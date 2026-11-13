@@ -1,0 +1,324 @@
+{
+  "zones": [
+    {
+      "id": "fog_crossing",
+      "name": "Fog Crossing",
+      "titleVietnamese": "Lối Mòn Xuyên Sương",
+      "bounds": { "x": 0, "y": 0, "width": 480, "height": 360 },
+      "defaultSpawn": { "x": 80, "y": 180 },
+      "atmosphere": {
+        "fogColor": 1184274,
+        "fogAlpha": 0.75,
+        "ambientLight": 0.4,
+        "ambientColor": 1118481,
+        "titleVietnamese": "LỐI MÒN XUYÊN SƯƠNG",
+        "subTitleVietnamese": "Màn sương dày đặc nuốt chửng mọi thanh âm..."
+      },
+      "colliders": [
+        { "id": "bound_top", "x": 0, "y": 0, "width": 480, "height": 40, "type": "boundary", "isSolid": true },
+        { "id": "bound_bottom", "x": 0, "y": 320, "width": 480, "height": 40, "type": "boundary", "isSolid": true },
+        { "id": "bound_left", "x": 0, "y": 0, "width": 20, "height": 360, "type": "boundary", "isSolid": true },
+        { "id": "fog_tree_1", "x": 160, "y": 100, "width": 32, "height": 16, "type": "tree_trunk", "isSolid": true },
+        { "id": "fog_tree_2", "x": 300, "y": 240, "width": 32, "height": 16, "type": "tree_trunk", "isSolid": true }
+      ],
+      "interactables": [
+        {
+          "id": "fog_sign",
+          "name": "Tấm Biển Cũ",
+          "type": "clue",
+          "x": 240,
+          "y": 180,
+          "width": 24,
+          "height": 24,
+          "promptText": "Nhấn [E] xem Tấm Biển Mục",
+          "actionId": "read_fog_sign"
+        }
+      ],
+      "transitions": [
+        {
+          "id": "to_bellhollow",
+          "fromZone": "fog_crossing",
+          "toZone": "bellhollow",
+          "triggerRect": { "x": 460, "y": 100, "width": 20, "height": 160 },
+          "targetSpawn": { "x": 520, "y": 260 },
+          "description": "Tiến vào cổng làng Bellhollow"
+        }
+      ]
+    },
+    {
+      "id": "bellhollow",
+      "name": "Bellhollow",
+      "titleVietnamese": "Làng Chuông Cổ",
+      "bounds": { "x": 480, "y": -200, "width": 1120, "height": 960 },
+      "defaultSpawn": { "x": 560, "y": 260 },
+      "atmosphere": {
+        "fogColor": 2236962,
+        "fogAlpha": 0.45,
+        "ambientLight": 0.7,
+        "ambientColor": 1315860,
+        "titleVietnamese": "LÀNG BELLHOLLOW",
+        "subTitleVietnamese": "Nơi những người sống sót canh giữ tháp chuông câm lặng."
+      },
+      "colliders": [
+        { "id": "fence_top", "x": 480, "y": -200, "width": 1120, "height": 30, "type": "fence", "isSolid": true },
+        { "id": "fence_bottom", "x": 480, "y": 730, "width": 1120, "height": 30, "type": "fence", "isSolid": true },
+        { "id": "house_edda", "x": 650, "y": 80, "width": 112, "height": 48, "type": "wall", "isSolid": true },
+        { "id": "house_neris", "x": 920, "y": 80, "width": 112, "height": 48, "type": "wall", "isSolid": true },
+        { "id": "bell_tower", "x": 800, "y": 280, "width": 80, "height": 64, "type": "wall", "isSolid": true },
+        { "id": "village_well", "x": 720, "y": 380, "width": 40, "height": 32, "type": "wall", "isSolid": true },
+        { "id": "crafting_bench", "x": 960, "y": 360, "width": 48, "height": 24, "type": "wall", "isSolid": true }
+      ],
+      "interactables": [
+        {
+          "id": "npc_edda",
+          "name": "Edda – Người Giữ Chuông",
+          "type": "npc",
+          "x": 700,
+          "y": 140,
+          "width": 32,
+          "height": 32,
+          "promptText": "Nhấn [E] nói chuyện với Edda",
+          "actionId": "talk_edda"
+        },
+        {
+          "id": "npc_neris",
+          "name": "Neris – Người Chữa Thảo Mộc",
+          "type": "npc",
+          "x": 970,
+          "y": 140,
+          "width": 32,
+          "height": 32,
+          "promptText": "Nhấn [E] nói chuyện với Neris",
+          "actionId": "talk_neris"
+        },
+        {
+          "id": "bell_tower_altar",
+          "name": "Bệ Tháp Chuông",
+          "type": "bell_shrine",
+          "x": 840,
+          "y": 350,
+          "width": 40,
+          "height": 30,
+          "promptText": "Nhấn [E] kiểm tra Quả Chuông Câm",
+          "actionId": "inspect_bell"
+        }
+      ],
+      "transitions": [
+        {
+          "id": "to_fog_crossing",
+          "fromZone": "bellhollow",
+          "toZone": "fog_crossing",
+          "triggerRect": { "x": 480, "y": 200, "width": 20, "height": 120 },
+          "targetSpawn": { "x": 440, "y": 180 },
+          "description": "Quay lại Lối Mòn Xuyên Sương"
+        },
+        {
+          "id": "to_crooked_path",
+          "fromZone": "bellhollow",
+          "toZone": "crooked_path",
+          "triggerRect": { "x": 1580, "y": 200, "width": 20, "height": 160 },
+          "targetSpawn": { "x": 1640, "y": 280 },
+          "description": "Bước qua Cổng Đông tiến vào Khu Rừng The Hollow Woods"
+        }
+      ]
+    },
+    {
+      "id": "crooked_path",
+      "name": "The Crooked Path",
+      "titleVietnamese": "Đường Mòn Quanh Co",
+      "bounds": { "x": 1600, "y": 0, "width": 1280, "height": 640 },
+      "defaultSpawn": { "x": 1660, "y": 280 },
+      "atmosphere": {
+        "fogColor": 1119504,
+        "fogAlpha": 0.65,
+        "ambientLight": 0.35,
+        "ambientColor": 789516,
+        "titleVietnamese": "ĐƯỜNG MÒN QUANH CO",
+        "subTitleVietnamese": "Lối đi bị bóp méo, cây cối dường như đang di chuyển..."
+      },
+      "colliders": [
+        { "id": "cp_bound_top", "x": 1600, "y": 0, "width": 1280, "height": 30, "type": "boundary", "isSolid": true },
+        { "id": "cp_bound_bottom", "x": 1600, "y": 610, "width": 1280, "height": 30, "type": "boundary", "isSolid": true },
+        { "id": "hollow_tree_1", "x": 1900, "y": 180, "width": 48, "height": 24, "type": "tree_trunk", "isSolid": true },
+        { "id": "hollow_tree_2", "x": 2350, "y": 420, "width": 48, "height": 24, "type": "tree_trunk", "isSolid": true },
+        { "id": "ancient_rock_1", "x": 2100, "y": 280, "width": 56, "height": 32, "type": "rock", "isSolid": true }
+      ],
+      "interactables": [
+        {
+          "id": "hide_bush_1",
+          "name": "Bụi Rậm Đặc",
+          "type": "hiding_spot",
+          "x": 1820,
+          "y": 260,
+          "width": 36,
+          "height": 36,
+          "promptText": "Nhấn [E] Ẩn nấp trong bụi rậm",
+          "actionId": "hide_player"
+        },
+        {
+          "id": "hide_tree_1",
+          "name": "Thân Cây Rỗng",
+          "type": "hiding_spot",
+          "x": 1900,
+          "y": 180,
+          "width": 48,
+          "height": 36,
+          "promptText": "Nhấn [E] Nấp vào hốc cây cổ thụ",
+          "actionId": "hide_player"
+        }
+      ],
+      "transitions": [
+        {
+          "id": "to_bellhollow_from_cp",
+          "fromZone": "crooked_path",
+          "toZone": "bellhollow",
+          "triggerRect": { "x": 1600, "y": 220, "width": 20, "height": 140 },
+          "targetSpawn": { "x": 1540, "y": 280 },
+          "description": "Quay về làng Bellhollow"
+        },
+        {
+          "id": "to_silent_mire",
+          "fromZone": "crooked_path",
+          "toZone": "silent_mire",
+          "triggerRect": { "x": 2860, "y": 240, "width": 20, "height": 160 },
+          "targetSpawn": { "x": 2940, "y": 320 },
+          "description": "Tiến vào Đầm Lầy Tĩnh Lặng"
+        }
+      ]
+    },
+    {
+      "id": "silent_mire",
+      "name": "Silent Mire",
+      "titleVietnamese": "Đầm Lầy Tĩnh Lặng",
+      "bounds": { "x": 2880, "y": 100, "width": 1120, "height": 640 },
+      "defaultSpawn": { "x": 2960, "y": 320 },
+      "atmosphere": {
+        "fogColor": 1383446,
+        "fogAlpha": 0.8,
+        "ambientLight": 0.25,
+        "ambientColor": 986900,
+        "titleVietnamese": "ĐẦM LẦY TĨNH LẶNG",
+        "subTitleVietnamese": "Nước bùn đen kịt. Ba cột đá cổ ngữ phát sáng kỳ bí."
+      },
+      "colliders": [
+        { "id": "sm_bound_top", "x": 2880, "y": 100, "width": 1120, "height": 30, "type": "boundary", "isSolid": true },
+        { "id": "sm_bound_bottom", "x": 2880, "y": 710, "width": 1120, "height": 30, "type": "boundary", "isSolid": true },
+        { "id": "mire_water_pool", "x": 3200, "y": 250, "width": 180, "height": 90, "type": "water", "isSolid": true },
+        { "id": "pillar_1", "x": 3400, "y": 220, "width": 24, "height": 24, "type": "shrine_pedestal", "isSolid": true },
+        { "id": "pillar_2", "x": 3520, "y": 360, "width": 24, "height": 24, "type": "shrine_pedestal", "isSolid": true },
+        { "id": "pillar_3", "x": 3640, "y": 220, "width": 24, "height": 24, "type": "shrine_pedestal", "isSolid": true }
+      ],
+      "interactables": [
+        {
+          "id": "rune_pillar_1",
+          "name": "Cột Đá Ký Hiệu Mặt Trăng",
+          "type": "runestone",
+          "x": 3400,
+          "y": 220,
+          "width": 32,
+          "height": 48,
+          "promptText": "Nhấn [E] chạm Cột Đá Mặt Trăng",
+          "actionId": "touch_pillar_1"
+        },
+        {
+          "id": "rune_pillar_2",
+          "name": "Cột Đá Ký Hiệu Rễ Cây",
+          "type": "runestone",
+          "x": 3520,
+          "y": 360,
+          "width": 32,
+          "height": 48,
+          "promptText": "Nhấn [E] chạm Cột Đá Rễ Cây",
+          "actionId": "touch_pillar_2"
+        },
+        {
+          "id": "rune_pillar_3",
+          "name": "Cột Đá Ký Hiệu Mắt Kẻ Săn",
+          "type": "runestone",
+          "x": 3640,
+          "y": 220,
+          "width": 32,
+          "height": 48,
+          "promptText": "Nhấn [E] chạm Cột Đá Con Mắt",
+          "actionId": "touch_pillar_3"
+        }
+      ],
+      "transitions": [
+        {
+          "id": "to_crooked_path_from_sm",
+          "fromZone": "silent_mire",
+          "toZone": "crooked_path",
+          "triggerRect": { "x": 2880, "y": 260, "width": 20, "height": 140 },
+          "targetSpawn": { "x": 2820, "y": 280 },
+          "description": "Quay lại Đường Mòn Quanh Co"
+        },
+        {
+          "id": "to_shrine",
+          "fromZone": "silent_mire",
+          "toZone": "broken_bell_shrine",
+          "triggerRect": { "x": 3980, "y": 240, "width": 20, "height": 160 },
+          "targetSpawn": { "x": 4050, "y": 280 },
+          "description": "Tiến vào Miếu Chuông Phế Tích"
+        }
+      ]
+    },
+    {
+      "id": "broken_bell_shrine",
+      "name": "The Broken Bell Shrine",
+      "titleVietnamese": "Miếu Chuông Phế Tích",
+      "bounds": { "x": 4000, "y": 0, "width": 960, "height": 600 },
+      "defaultSpawn": { "x": 4080, "y": 280 },
+      "atmosphere": {
+        "fogColor": 2496790,
+        "fogAlpha": 0.85,
+        "ambientLight": 0.3,
+        "ambientColor": 1904918,
+        "titleVietnamese": "MIẾU CHUÔNG PHẾ TÍCH",
+        "subTitleVietnamese": "Nơi cất giấu Lưỡi Chuông Đồng và nơi Kẻ Lắng Nghe rình rập..."
+      },
+      "colliders": [
+        { "id": "shrine_bound_top", "x": 4000, "y": 0, "width": 960, "height": 30, "type": "boundary", "isSolid": true },
+        { "id": "shrine_bound_bottom", "x": 4000, "y": 570, "width": 960, "height": 30, "type": "boundary", "isSolid": true },
+        { "id": "shrine_bound_right", "x": 4930, "y": 0, "width": 30, "height": 600, "type": "boundary", "isSolid": true },
+        { "id": "shrine_main_altar", "x": 4500, "y": 250, "width": 96, "height": 64, "type": "shrine_pedestal", "isSolid": true },
+        { "id": "shrine_pillar_l", "x": 4350, "y": 180, "width": 32, "height": 32, "type": "wall", "isSolid": true },
+        { "id": "shrine_pillar_r", "x": 4650, "y": 180, "width": 32, "height": 32, "type": "wall", "isSolid": true }
+      ],
+      "interactables": [
+        {
+          "id": "bell_tongue_item",
+          "name": "Lưỡi Chuông Đồng Cổ",
+          "type": "chest",
+          "x": 4530,
+          "y": 260,
+          "width": 32,
+          "height": 32,
+          "promptText": "Nhấn [E] Thu hồi LƯỠI CHUÔNG ĐỒNG",
+          "actionId": "collect_bell_tongue"
+        },
+        {
+          "id": "shrine_hiding_spot",
+          "name": "Bệ Thờ Đổ Sụp",
+          "type": "hiding_spot",
+          "x": 4360,
+          "y": 380,
+          "width": 48,
+          "height": 36,
+          "promptText": "Nhấn [E] Ẩn mình sau phiến đá vỡ",
+          "actionId": "hide_player"
+        }
+      ],
+      "transitions": [
+        {
+          "id": "to_silent_mire_from_shrine",
+          "fromZone": "broken_bell_shrine",
+          "toZone": "silent_mire",
+          "triggerRect": { "x": 4000, "y": 220, "width": 20, "height": 140 },
+          "targetSpawn": { "x": 3940, "y": 320 },
+          "description": "Trở lại Đầm Lầy Tĩnh Lặng"
+        }
+      ]
+    }
+  ]
+}
+

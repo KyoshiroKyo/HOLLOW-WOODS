@@ -1,0 +1,28 @@
+{
+  "puzzles": {
+    "crooked_path_lanterns": {
+      "id": "crooked_path_lanterns",
+      "zoneId": "crooked_path",
+      "name": "Chiếc Đèn Thứ Hai Trong Sương",
+      "ruleRef": "Quy Tắc 2: Đừng đi theo chiếc đèn thứ hai xuất hiện trong sương",
+      "clue": "Đèn ma trôi nổi giữa sương mù là mồi nhử của ảo giác. Hãy soi sáng ngọn đèn lồng thật [Phím F] và giải mã 3 ký hiệu ranh giới trên thân cây cổ thụ.",
+      "requiredTreeSymbols": ["symbol_owl", "symbol_deer", "symbol_wolf"],
+      "fakeLanternPos": { "x": 2200, "y": 140 },
+      "solvedFlag": "crooked_path_solved"
+    },
+    "silent_mire_pillars": {
+      "id": "silent_mire_pillars",
+      "zoneId": "silent_mire",
+      "name": "Ba Cột Đá Tiếng Vọng",
+      "ruleRef": "Cổ thư Đầm Lầy: Trăng Khuyết trên cao, Rễ Rừng dưới lòng đất, và Con Mắt Kẻ Săn",
+      "pillars": [
+        { "id": "pillar_moon", "symbol": "Trăng Khuyết", "runeCode": "RUNE_MOON", "orderIndex": 0, "x": 3400, "y": 220, "glowColor": "#5dade2" },
+        { "id": "pillar_root", "symbol": "Rễ Rừng", "runeCode": "RUNE_ROOT", "orderIndex": 1, "x": 3520, "y": 360, "glowColor": "#58d68d" },
+        { "id": "pillar_eye", "symbol": "Con Mắt", "runeCode": "RUNE_EYE", "orderIndex": 2, "x": 3640, "y": 220, "glowColor": "#af7ac5" }
+      ],
+      "correctSequence": ["pillar_moon", "pillar_root", "pillar_eye"],
+      "solvedFlag": "mire_pillars_solved"
+    }
+  }
+}
+

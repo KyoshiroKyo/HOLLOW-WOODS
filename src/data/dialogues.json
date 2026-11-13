@@ -1,0 +1,76 @@
+{
+  "dialogues": {
+    "garth_warning": {
+      "speaker": "Dân Làng Garth",
+      "portrait": "portrait_garth",
+      "lines": [
+        "Đứng lại! Đừng bước thêm một bước nào nữa!",
+        "Ngươi... vạt áo ngươi còn vương hơi sương trắng! Ngươi vừa bước ra từ Màn Sương Quỷ dữ sao?!",
+        "The Hollow Woods không bao giờ trả lại thứ gì nguyên vẹn! Mau đi gặp bà Edda tại Tháp Chuông trước khi tai ương giáng xuống làng ta!"
+      ],
+      "onCompleteFlag": "talked_to_villagers",
+      "nextQuestId": "Q01_MEET_EDDA"
+    },
+    "edda_intro": {
+      "speaker": "Edda – Người Giữ Chuông",
+      "portrait": "portrait_edda",
+      "lines": [
+        "Khuôn mặt này... ánh nhìn này... Đã bao nhiêu mùa trôi qua kể từ khi có một kẻ sống sót bước ra từ The Veil?",
+        "Ngươi tên Satyr sao? Nghe như một âm vang vọng lại từ bờ bên kia ranh giới.",
+        "Ở làng Bellhollow này, nếu ngươi muốn sống sót qua đêm nay, hãy khắc cốt ghi tâm BA QUY TẮC BẰNG MÁU:",
+        "QUY TẮC 1: Đừng bao giờ trả lời khi khu rừng cất tiếng gọi đúng họ tên mình. Đó không phải người quen, mà là Kẻ Lắng Nghe đang mượn giọng.",
+        "QUY TẮC 2: Đừng đi theo chiếc đèn thứ hai xuất hiện trong sương mù. Chiếc đèn đó không có người cầm.",
+        "QUY TẮC 3: Tuyệt đối không rung chuông khi màn sương đã vượt qua hàng rào làng.",
+        "Trái tim của ngôi làng là Quả Chuông Cổ, nhưng Lưỡi Chuông Đồng đã bị đánh cắp mang sâu vào Miếu Chuông Phế Tích.",
+        "Nếu ngươi muốn tìm đường trở về thế giới của mình, hãy tìm lại Lưỡi Chuông Đồng cho ta!"
+      ],
+      "onCompleteFlag": "talked_to_edda",
+      "nextQuestId": "Q02_MEET_NERIS"
+    },
+    "edda_reminder": {
+      "speaker": "Edda – Người Giữ Chuông",
+      "portrait": "portrait_edda",
+      "lines": [
+        "Hãy nhớ kỹ Ba Quy Tắc: Không trả lời tiếng gọi tên, Không theo chiếc đèn thứ hai, và Không rung chuông khi sương đã vào làng.",
+        "Cổng Đông đã mở. Miếu Chuông Phế Tích nằm sâu sau Đầm Lầy Tĩnh Lặng. Hãy chuẩn bị kỹ lưỡng trước khi bước vào rừng!"
+      ]
+    },
+    "neris_intro": {
+      "speaker": "Neris – Người Chữa Thảo Mộc",
+      "portrait": "portrait_neris",
+      "lines": [
+        "Ngươi thở dốc, mắt lờ đờ và mạch đập nhanh quá mức... Màn sương đã ngấm vào tâm trí ngươi rồi.",
+        "Cầm lấy nắm Thuốc Đắp Thảo Mộc này. Nó sẽ giúp vết thương khép miệng và xoa dịu nỗi sợ hãi trong đầu ngươi.",
+        "Khu rừng The Hollow Woods chứa đầy thảo dược bạc và nhựa cây thông. Hãy thu thập chúng bên các bờ suối và thân cây cổ thụ.",
+        "Dùng bàn chế tạo [Phím I]: Nhựa thông và Gỗ khô sẽ tạo ra Dầu Đèn. Hai nắm Thảo dược sẽ giã thành Thuốc Đắp. Còn Đá lửa ghép với Gỗ sẽ tạo thành Mồi Tiếng Động để ném đánh lạc hướng quái vật.",
+        "Ta đã phục hồi sinh lực cho ngươi. Hãy giữ ngọn đèn luôn cháy sáng, Satyr!"
+      ],
+      "onCompleteFlag": "talked_to_neris",
+      "nextQuestId": "Q03_PREPARE_RESOURCES",
+      "rewardItem": "item_herbal_poultice",
+      "rewardCount": 1,
+      "healPlayer": true
+    },
+    "neris_heal": {
+      "speaker": "Neris – Người Chữa Thảo Mộc",
+      "portrait": "portrait_neris",
+      "lines": [
+        "Để ta băng lại vết trầy xước cho ngươi... Hương thảo dược này sẽ giữ cho tâm trí ngươi không bị Màn Sương nuốt chửng.",
+        "Nếu ngọn đèn lồng cạn dầu, tâm lý ngươi sẽ suy sụp rất nhanh trong bóng tối. Đừng bao giờ để đèn tắt!"
+      ],
+      "healPlayer": true
+    },
+    "clapper_found": {
+      "speaker": "Satyr",
+      "portrait": "satyr_portrait",
+      "lines": [
+        "Khối đồng nặng trịch hình đầu chim ưng... Đây chính là Lưỡi Chuông Đồng Cổ mà bà Edda nhắc đến!",
+        "Một luồng hàn khí lạnh buốt chạy dọc sống lưng... Có thứ gì đó vừa mở mắt trong đầm lầy!",
+        "Kẻ Lắng Nghe đang tới gần! Mình phải nấp vào thân cây rỗng hoặc ném mồi tiếng động để chạy thoát về làng!"
+      ],
+      "onCompleteFlag": "clapper_collected",
+      "nextQuestId": "Q06_RETURN_TO_BELLHOLLOW"
+    }
+  }
+}
+

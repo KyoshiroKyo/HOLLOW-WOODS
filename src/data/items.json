@@ -1,0 +1,127 @@
+{
+  "items": [
+    {
+      "id": "res_dry_wood",
+      "name": "Gỗ Khô",
+      "category": "resource",
+      "description": "Cành gỗ khô cong rụng ven bìa rừng, dễ bắt lửa.",
+      "stackable": true,
+      "maxStack": 20,
+      "iconColor": "#8d6e63"
+    },
+    {
+      "id": "res_flint",
+      "name": "Đá Lửa",
+      "category": "resource",
+      "description": "Mảnh đá xám sắc cạnh, gõ vào nhau tạo ra tia lửa sáng.",
+      "stackable": true,
+      "maxStack": 20,
+      "iconColor": "#78909c"
+    },
+    {
+      "id": "res_tree_resin",
+      "name": "Nhựa Cây Dính",
+      "category": "resource",
+      "description": "Nhựa thông hổ phách rỉ ra từ thân cây già, cháy đượm và bốc khói cay nồng.",
+      "stackable": true,
+      "maxStack": 20,
+      "iconColor": "#ffb74d"
+    },
+    {
+      "id": "res_herbs",
+      "name": "Thảo Dược Bạc",
+      "category": "resource",
+      "description": "Loại cây thân cỏ có gân lá màu bạc mọc ở đất ẩm, có dược tính cầm máu kỳ diệu.",
+      "stackable": true,
+      "maxStack": 20,
+      "iconColor": "#81c784"
+    },
+    {
+      "id": "item_lantern_oil",
+      "name": "Bình Dầu Đèn",
+      "category": "consumable",
+      "description": "Nhiên liệu tinh chế nạp lại 50% dung tích ngọn đèn lồng.",
+      "stackable": true,
+      "maxStack": 10,
+      "iconColor": "#ff9800",
+      "effects": {
+        "lanternOil": 50
+      }
+    },
+    {
+      "id": "item_herbal_poultice",
+      "name": "Thuốc Đắp Thảo Mộc",
+      "category": "consumable",
+      "description": "Hỗn hợp lá thuốc nghiền nát thơm mùi đất ẩm. Hồi phục 40 Máu và xoa dịu 25 Bình Tâm.",
+      "stackable": true,
+      "maxStack": 10,
+      "iconColor": "#4caf50",
+      "effects": {
+        "health": 40,
+        "composure": 25
+      }
+    },
+    {
+      "id": "item_noise_lure",
+      "name": "Mồi Tạo Tiếng Động",
+      "category": "tool",
+      "description": "Khối gỗ tẩm nhựa kẹp đá lửa. Ném ra xa (Phím Q) để tạo chuỗi tiếng lách tách đánh lạc hướng.",
+      "stackable": true,
+      "maxStack": 5,
+      "iconColor": "#e65100"
+    },
+    {
+      "id": "quest_bronze_clapper",
+      "name": "Lưỡi Chuông Đồng Cổ",
+      "category": "quest",
+      "description": "Khối đồng đen đúc hình đầu chim ưng, trái tim của tháp chuông Bellhollow bị cướp đi.",
+      "stackable": false,
+      "maxStack": 1,
+      "iconColor": "#d4af37"
+    },
+    {
+      "id": "lore_satyr_journal",
+      "name": "Sổ Nhật Ký Lữ Khách",
+      "category": "lore",
+      "description": "Cuốn sổ da cũ mang hình bóng và những ghi chép kỳ bí về một kẻ đến từ Màn Sương.",
+      "stackable": false,
+      "maxStack": 1,
+      "iconColor": "#8e44ad"
+    }
+  ],
+  "recipes": [
+    {
+      "id": "craft_lantern_oil",
+      "resultItemId": "item_lantern_oil",
+      "resultCount": 1,
+      "name": "Chế Tạo Dầu Đèn",
+      "description": "Chưng cất nhựa cây thông cùng gỗ khô để tạo dầu thắp sáng.",
+      "ingredients": [
+        { "itemId": "res_tree_resin", "count": 1 },
+        { "itemId": "res_dry_wood", "count": 1 }
+      ]
+    },
+    {
+      "id": "craft_poultice",
+      "resultItemId": "item_herbal_poultice",
+      "resultCount": 1,
+      "name": "Giã Thuốc Đắp",
+      "description": "Nghiền nát 2 nắm Thảo dược bạc tạo cao thuốc sơ cứu vết thương.",
+      "ingredients": [
+        { "itemId": "res_herbs", "count": 2 }
+      ]
+    },
+    {
+      "id": "craft_noise_lure",
+      "resultItemId": "item_noise_lure",
+      "resultCount": 1,
+      "name": "Bó Mồi Tiếng Động",
+      "description": "Bó đá lửa vào cành cây khô để ném tạo tiếng động đánh lạc hướng kẻ săn.",
+      "ingredients": [
+        { "itemId": "res_flint", "count": 1 },
+        { "itemId": "res_dry_wood", "count": 1 }
+      ]
+    }
+  ]
+}
+

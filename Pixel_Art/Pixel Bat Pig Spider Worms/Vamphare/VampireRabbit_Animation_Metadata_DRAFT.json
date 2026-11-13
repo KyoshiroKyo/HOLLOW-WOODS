@@ -1,0 +1,263 @@
+{
+  "schemaVersion": "1.0-draft",
+  "monster": {
+    "id": "vampire_rabbit",
+    "name": "Vampire Rabbit",
+    "game": "HOLLOW WOODS",
+    "targetVersion": "3.0"
+  },
+  "status": "INCOMPLETE_NOT_PRODUCTION_READY",
+  "source": {
+    "file": "VampireRabbit_Source_Original.png",
+    "width": 321,
+    "height": 424,
+    "colorMode": "RGBA",
+    "alphaAtTopLeft": 0,
+    "preservedUnmodified": true
+  },
+  "productionSpriteSheet": {
+    "file": "VampireRabbit_Production.png",
+    "generated": false,
+    "usable": false,
+    "frameWidth": null,
+    "frameHeight": null,
+    "columns": null,
+    "rows": null,
+    "imageWidth": null,
+    "imageHeight": null,
+    "transparentAlphaVerified": false,
+    "frameCoordinatesStatus": "NOT_AVAILABLE_NO_VALID_PRODUCTION_SHEET"
+  },
+  "animationSpec": {
+    "directions": [
+      "DOWN",
+      "LEFT",
+      "RIGHT",
+      "UP"
+    ],
+    "animationsPerDirection": [
+      {
+        "name": "IDLE",
+        "frames": 4,
+        "proposedFrameRateFps": 6
+      },
+      {
+        "name": "WALK",
+        "frames": 6,
+        "proposedFrameRateFps": 10
+      },
+      {
+        "name": "ATTACK",
+        "frames": 6,
+        "proposedFrameRateFps": 12
+      },
+      {
+        "name": "HURT",
+        "frames": 4,
+        "proposedFrameRateFps": 10
+      },
+      {
+        "name": "DEATH",
+        "frames": 6,
+        "proposedFrameRateFps": 8
+      }
+    ],
+    "framesPerDirection": 26,
+    "expectedTotalFrames": 104,
+    "verifiedUniqueFrameCount": 0,
+    "logicalOrder": "direction-major; within each direction: IDLE, WALK, ATTACK, HURT, DEATH",
+    "timingNote": "Frame rates are proposals only; validate in-game after real frame artwork exists."
+  },
+  "logicalFrameMap": [
+    {
+      "direction": "DOWN",
+      "animations": [
+        {
+          "name": "IDLE",
+          "frameCount": 4,
+          "proposedFrameRateFps": 6,
+          "logicalFrameIndexStart": 0,
+          "logicalFrameIndexEndExclusive": 4,
+          "frameRects": null
+        },
+        {
+          "name": "WALK",
+          "frameCount": 6,
+          "proposedFrameRateFps": 10,
+          "logicalFrameIndexStart": 4,
+          "logicalFrameIndexEndExclusive": 10,
+          "frameRects": null
+        },
+        {
+          "name": "ATTACK",
+          "frameCount": 6,
+          "proposedFrameRateFps": 12,
+          "logicalFrameIndexStart": 10,
+          "logicalFrameIndexEndExclusive": 16,
+          "frameRects": null
+        },
+        {
+          "name": "HURT",
+          "frameCount": 4,
+          "proposedFrameRateFps": 10,
+          "logicalFrameIndexStart": 16,
+          "logicalFrameIndexEndExclusive": 20,
+          "frameRects": null
+        },
+        {
+          "name": "DEATH",
+          "frameCount": 6,
+          "proposedFrameRateFps": 8,
+          "logicalFrameIndexStart": 20,
+          "logicalFrameIndexEndExclusive": 26,
+          "frameRects": null
+        }
+      ]
+    },
+    {
+      "direction": "LEFT",
+      "animations": [
+        {
+          "name": "IDLE",
+          "frameCount": 4,
+          "proposedFrameRateFps": 6,
+          "logicalFrameIndexStart": 26,
+          "logicalFrameIndexEndExclusive": 30,
+          "frameRects": null
+        },
+        {
+          "name": "WALK",
+          "frameCount": 6,
+          "proposedFrameRateFps": 10,
+          "logicalFrameIndexStart": 30,
+          "logicalFrameIndexEndExclusive": 36,
+          "frameRects": null
+        },
+        {
+          "name": "ATTACK",
+          "frameCount": 6,
+          "proposedFrameRateFps": 12,
+          "logicalFrameIndexStart": 36,
+          "logicalFrameIndexEndExclusive": 42,
+          "frameRects": null
+        },
+        {
+          "name": "HURT",
+          "frameCount": 4,
+          "proposedFrameRateFps": 10,
+          "logicalFrameIndexStart": 42,
+          "logicalFrameIndexEndExclusive": 46,
+          "frameRects": null
+        },
+        {
+          "name": "DEATH",
+          "frameCount": 6,
+          "proposedFrameRateFps": 8,
+          "logicalFrameIndexStart": 46,
+          "logicalFrameIndexEndExclusive": 52,
+          "frameRects": null
+        }
+      ]
+    },
+    {
+      "direction": "RIGHT",
+      "animations": [
+        {
+          "name": "IDLE",
+          "frameCount": 4,
+          "proposedFrameRateFps": 6,
+          "logicalFrameIndexStart": 52,
+          "logicalFrameIndexEndExclusive": 56,
+          "frameRects": null
+        },
+        {
+          "name": "WALK",
+          "frameCount": 6,
+          "proposedFrameRateFps": 10,
+          "logicalFrameIndexStart": 56,
+          "logicalFrameIndexEndExclusive": 62,
+          "frameRects": null
+        },
+        {
+          "name": "ATTACK",
+          "frameCount": 6,
+          "proposedFrameRateFps": 12,
+          "logicalFrameIndexStart": 62,
+          "logicalFrameIndexEndExclusive": 68,
+          "frameRects": null
+        },
+        {
+          "name": "HURT",
+          "frameCount": 4,
+          "proposedFrameRateFps": 10,
+          "logicalFrameIndexStart": 68,
+          "logicalFrameIndexEndExclusive": 72,
+          "frameRects": null
+        },
+        {
+          "name": "DEATH",
+          "frameCount": 6,
+          "proposedFrameRateFps": 8,
+          "logicalFrameIndexStart": 72,
+          "logicalFrameIndexEndExclusive": 78,
+          "frameRects": null
+        }
+      ]
+    },
+    {
+      "direction": "UP",
+      "animations": [
+        {
+          "name": "IDLE",
+          "frameCount": 4,
+          "proposedFrameRateFps": 6,
+          "logicalFrameIndexStart": 78,
+          "logicalFrameIndexEndExclusive": 82,
+          "frameRects": null
+        },
+        {
+          "name": "WALK",
+          "frameCount": 6,
+          "proposedFrameRateFps": 10,
+          "logicalFrameIndexStart": 82,
+          "logicalFrameIndexEndExclusive": 88,
+          "frameRects": null
+        },
+        {
+          "name": "ATTACK",
+          "frameCount": 6,
+          "proposedFrameRateFps": 12,
+          "logicalFrameIndexStart": 88,
+          "logicalFrameIndexEndExclusive": 94,
+          "frameRects": null
+        },
+        {
+          "name": "HURT",
+          "frameCount": 4,
+          "proposedFrameRateFps": 10,
+          "logicalFrameIndexStart": 94,
+          "logicalFrameIndexEndExclusive": 98,
+          "frameRects": null
+        },
+        {
+          "name": "DEATH",
+          "frameCount": 6,
+          "proposedFrameRateFps": 8,
+          "logicalFrameIndexStart": 98,
+          "logicalFrameIndexEndExclusive": 104,
+          "frameRects": null
+        }
+      ]
+    }
+  ],
+  "anchors": {
+    "pivot": null,
+    "footAnchor": null,
+    "status": "NOT_MEASURED_FROM_PRODUCTION_FRAMES"
+  },
+  "phaser4": {
+    "textureKey": "monster_vampire_rabbit",
+    "integrationStatus": "BLOCKED_PENDING_VALID_PRODUCTION_SPRITESHEET",
+    "note": "Do not pass null frame dimensions or frame rectangles to Phaser. Populate only after exporting and measuring the real PNG."
+  }
+}
