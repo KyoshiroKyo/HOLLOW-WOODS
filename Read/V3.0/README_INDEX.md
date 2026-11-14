@@ -1,8 +1,8 @@
 # 📂 DANH MỤC TÀI LIỆU — HOLLOW WOODS V3.0
 ## THƯ MỤC TÀI LIỆU THUẦN MARKDOWN (100% .MD ONLY)
 
-> **HOLLOW WOODS V3.0 — THE FOG THAT REMEMBERS (SƯƠNG MÙ GHI NHỚ)**  
-> **Phiên bản:** V3.0 (Chuẩn hóa Kiến Trúc Dự Án)  
+> **HOLLOW WOODS V3.0 — THE FOG THAT REMEMBERS (SƯƠNG MÙ GHI NHỚ)**
+> **Phiên bản:** V3.0 (Chuẩn hóa Kiến Trúc Dự Án)
 > **Quy chuẩn quản trị:** Thư mục `Read/V3.0/` CHỈ CHỨA TÀI LIỆU MARKDOWN (`.md`). Tuyệt đối không chứa script code, file nháp, hay file ảnh.
 
 ---
@@ -52,6 +52,11 @@ Dự án tuân thủ nghiêm ngặt 6 phân vùng kiến trúc chuẩn mực:
 | 12 | `Reports/V3.0_PASS_G5_RELEASE_REPORT.md` | Báo Cáo Nghiệm Thu Phát Hành PASS G5 — Hệ thống âm thanh Web Audio và QA 10 tiêu chí. | ✅ Hoàn thành |
 | 13 | `Reports/V3.0_10H_OVERHAUL_REPORT.md` | Báo Cáo Tổng Kết Đại Tu 10 Giờ (Cycle 1 & Cycle 2) — 100% Pixel Art thật, chuẩn Native Canvas HD 1280×720, Zoom 2.2×, typography HD tiếng Việt và kiểm toán 10/10 PASS phát hành. | ✅ Hoàn thành |
 | 14 | `Reports/V3.0_GIT_PUSH_SUCCESS.md` | Báo Cáo Xác Nhận Git Push Thành Công V3.0 — đồng bộ toàn diện mã nguồn, asset và tài liệu lên kho lưu trữ chính thức GitHub KyoshiroKyo/HOLLOW-WOODS. | ✅ Hoàn thành |
+| 15 | `Reports/REMEDIATION/GATE_0_FORENSIC_VERIFICATION.md` | Báo Cáo Thẩm Tra Forensic & Kế Hoạch Phục Hồi GATE 0 — Kiểm chứng 10 BUG, bảo tồn Satyr, giải mã lỗi Camera Zoom vs UI, và lộ trình phục hồi Gates 1–4. | ✅ Hoàn thành |
+| 16 | `Reports/REMEDIATION/PROJECT_IDENTITY_MIGRATION_PREPARATION.md` | Báo Cáo Chuẩn Bị Chuyển Đổi Định Danh Dự Án & Workspace HOLLOW WOODS V1.1. | ✅ Hoàn thành |
+| 17 | `Reports/REMEDIATION/GATE_0_2_MIGRATION_READINESS.md` | Báo Cáo Thẩm Tra Độ Sẵn Sàng Chuyển Đổi Workspace & Checkpoint Git An Toàn GATE 0.2. | ✅ Hoàn thành |
+| 18 | `Reports/REMEDIATION/GATE_0_2_1_FINAL_MIGRATION_DECISION.md` | Quyết Định Chuyển Đổi Workspace & Tái Cấu Trúc Tài Liệu Chuẩn Read/V1/ và Read/V1.1/ GATE 0.2.1. | ✅ Hoàn thành |
+| 19 | `Reports/REMEDIATION/GATE_0_2_2_STAGING_REVIEW.md` | Báo Cáo Kiểm Soát Vùng Đệm Git & Thẩm Tra Checkpoint GATE 0.2.2. | ✅ Hoàn thành |
 
 ---
 
@@ -74,7 +79,13 @@ Read/V3.0/
     ├── V3.0_PASS_G4_REPORT.md                   ← Báo cáo nghiệm thu PASS G4
     ├── V3.0_PASS_G5_RELEASE_REPORT.md           ← Báo cáo nghiệm thu phát hành PASS G5
     ├── V3.0_10H_OVERHAUL_REPORT.md              ← Báo cáo tổng kết đại tu 10 giờ
-    └── V3.0_GIT_PUSH_SUCCESS.md                 ← Báo cáo xác nhận Git Push thành công
+    ├── V3.0_GIT_PUSH_SUCCESS.md                 ← Báo cáo xác nhận Git Push thành công
+    └── REMEDIATION/
+        ├── GATE_0_FORENSIC_VERIFICATION.md      ← Báo cáo thẩm tra Forensic & Kế hoạch phục hồi Gate 0
+        ├── PROJECT_IDENTITY_MIGRATION_PREPARATION.md ← Báo cáo chuẩn bị chuyển đổi định danh V1.1
+        ├── GATE_0_2_MIGRATION_READINESS.md      ← Báo cáo thẩm tra độ sẵn sàng chuyển đổi Gate 0.2
+        ├── GATE_0_2_1_FINAL_MIGRATION_DECISION.md ← Quyết định chuyển đổi & tái cấu trúc tài liệu Gate 0.2.1
+        └── GATE_0_2_2_STAGING_REVIEW.md         ← Báo cáo kiểm soát vùng đệm Git Gate 0.2.2
 ```
 
 ---
