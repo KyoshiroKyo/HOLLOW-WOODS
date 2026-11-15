@@ -1,7 +1,7 @@
 /**
- * HOLLOW WOODS V3.0 - PASS T15
- * HD OVERHAUL FOR CRAFTING MODAL
- * Khung chuẩn HD 1280×720, căn giữa (640, 360), kích thước 840×520 px
+ * HOLLOW WOODS V1.1 - GATE 1B
+ * HD CRAFTING MODAL ARCHITECTURE
+ * Khung chuẩn HD 1280×720 tại UIScene (Zoom 1.0), căn giữa (640, 360), kích thước 840×520 px
  */
 
 import * as Phaser from 'phaser';
@@ -11,13 +11,21 @@ import itemsData from '../data/items.json';
 import { AudioManager } from '../audio/AudioManager';
 import { HDTextHelper } from '../utils/HDTextHelper';
 
+interface RecipeRowRef {
+  recipe: CraftingRecipe;
+  rowContainer: Phaser.GameObjects.Container;
+  ingText: Phaser.GameObjects.Text;
+  craftBtnBg: Phaser.GameObjects.Graphics;
+  craftBtn: Phaser.GameObjects.Container;
+}
+
 export class CraftingModal {
   private scene: Phaser.Scene;
   private craftingSystem: CraftingSystem;
   private playerState: PlayerState;
 
   private container: Phaser.GameObjects.Container;
-  private recipeButtons: { recipe: CraftingRecipe; btn: Phaser.GameObjects.Container }[] = [];
+  private recipeRowRefs: RecipeRowRef[] = [];
   public isOpen: boolean = false;
 
   public onOpen?: () => void;
@@ -35,7 +43,7 @@ export class CraftingModal {
     this.buildUI();
     this.container.setVisible(false);
 
-    // Lắng nghe phím bấm I và TAB để mở/đóng túi chế tạo
+    // Lắng nghe phím bấm I, TAB và ESC
     if (scene.input && scene.input.keyboard) {
       scene.input.keyboard.on('keydown-I', () => this.toggle());
       scene.input.keyboard.on('keydown-TAB', (e: KeyboardEvent) => {
@@ -54,13 +62,13 @@ export class CraftingModal {
     const modalX = (1280 - modalW) / 2; // 220
     const modalY = (720 - modalH) / 2;  // 100
 
-    // 1. Lớp phủ mờ toàn màn hình HD 1280×720
+    // 1. Lớp phủ mờ toàn màn hình HD 1280×720 (ngăn chặn click xuyên thấu)
     const overlay = this.scene.add.graphics();
     overlay.fillStyle(0x000000, 0.75);
     overlay.fillRect(0, 0, 1280, 720);
     overlay.setInteractive(new Phaser.Geom.Rectangle(0, 0, 1280, 720), Phaser.Geom.Rectangle.Contains);
 
-    // 2. Khung sổ chế tạo phong cách trung cổ chuẩn HD (840×520 px)
+    // 2. Khung bàn chế tạo phong cách trung cổ chuẩn HD (840×520 px)
     const frame = this.scene.add.graphics();
     frame.fillStyle(0x0c1017, 0.98);
     frame.fillRoundedRect(modalX, modalY, modalW, modalH, 10);
@@ -88,18 +96,29 @@ export class CraftingModal {
 
     this.container.add([overlay, frame, title, closeBtn]);
 
-    // 3. Tạo danh sách các công thức chế tạo thoáng đãng chuẩn HD
+    // 3. Tạo danh sách các công thức chế tạo
     let itemY = modalY + 70;
     const rowW = modalW - 56; // 784px
     for (const recipe of this.craftingSystem.recipes) {
-      const row = this.createRecipeRow(modalX + 28, itemY, rowW, recipe);
-      this.recipeButtons.push({ recipe, btn: row });
-      this.container.add(row);
+      const rowRef = this.createRecipeRow(modalX + 28, itemY, rowW, recipe);
+      this.recipeRowRefs.push(rowRef);
+      this.container.add(rowRef.rowContainer);
       itemY += 135;
     }
   }
 
-  private createRecipeRow(x: number, y: number, w: number, recipe: CraftingRecipe): Phaser.GameObjects.Container {
+  private formatIngredients(recipe: CraftingRecipe): string {
+    let ingStr = 'Nguyên liệu cần: ';
+    recipe.ingredients.forEach((ing, idx) => {
+      const itemMeta = itemsData.items.find(i => i.id === ing.itemId);
+      const itemName = itemMeta ? itemMeta.name : ing.itemId;
+      const has = this.playerState.getItemCount(ing.itemId);
+      ingStr += `${has}/${ing.count} ${itemName}${idx < recipe.ingredients.length - 1 ? '   |   ' : ''}`;
+    });
+    return ingStr;
+  }
+
+  private createRecipeRow(x: number, y: number, w: number, recipe: CraftingRecipe): RecipeRowRef {
     const row = this.scene.add.container(x, y);
 
     const bg = this.scene.add.graphics();
@@ -122,22 +141,13 @@ export class CraftingModal {
       wordWrap: { width: w - 170 }
     });
 
-    // Liệt kê nguyên liệu
-    let ingStr = 'Nguyên liệu cần: ';
-    recipe.ingredients.forEach((ing, idx) => {
-      const itemMeta = itemsData.items.find(i => i.id === ing.itemId);
-      const itemName = itemMeta ? itemMeta.name : ing.itemId;
-      const has = this.playerState.getItemCount(ing.itemId);
-      ingStr += `${has}/${ing.count} ${itemName}${idx < recipe.ingredients.length - 1 ? '   |   ' : ''}`;
-    });
-
-    const ingText = HDTextHelper.createText(this.scene, 20, 80, ingStr, {
+    const ingText = HDTextHelper.createText(this.scene, 20, 80, this.formatIngredients(recipe), {
       fontSize: '13px',
       fontStyle: 'bold',
       color: '#f1c40f'
     });
 
-    // Nút [Chế Tạo] chuẩn HD
+    // Nút [Chế Tạo]
     const craftBtn = this.scene.add.container(w - 90, 59);
     const craftBtnBg = this.scene.add.graphics();
     craftBtnBg.fillStyle(0x27ae60, 1);
@@ -151,15 +161,37 @@ export class CraftingModal {
 
     craftBtn.add([craftBtnBg, craftBtnText]);
     craftBtn.setInteractive(new Phaser.Geom.Rectangle(-48, -18, 96, 36), Phaser.Geom.Rectangle.Contains);
+    if (craftBtn.input) {
+      craftBtn.input.cursor = 'pointer';
+    }
+
     craftBtn.on('pointerdown', () => {
-      if (this.craftingSystem.craft(recipe.id)) {
-        AudioManager.getInstance().playCraftSuccess();
-        this.refresh();
+      if (this.craftingSystem.canCraft(recipe)) {
+        if (this.craftingSystem.craft(recipe.id)) {
+          AudioManager.getInstance().playCraftSuccess();
+          this.refresh();
+          const ui = this.scene as any;
+          if (ui && typeof ui.showPopupMessage === 'function') {
+            ui.showPopupMessage(`✔ Đã chế tạo thành công: ${recipe.name}!`);
+          }
+        }
+      } else {
+        const ui = this.scene as any;
+        if (ui && typeof ui.showPopupMessage === 'function') {
+          ui.showPopupMessage('⚠️ Không đủ nguyên liệu để chế tạo vật phẩm này!');
+        }
       }
     });
 
     row.add([bg, nameText, descText, ingText, craftBtn]);
-    return row;
+
+    return {
+      recipe,
+      rowContainer: row,
+      ingText,
+      craftBtnBg,
+      craftBtn
+    };
   }
 
   public toggle(): void {
@@ -171,6 +203,16 @@ export class CraftingModal {
   }
 
   public open(): void {
+    const ui = this.scene as any;
+    // Ngăn chặn mở khi đối thoại đang chạy (GATE 1B Mutual Exclusion)
+    if (ui && ui.isDialogueActive) {
+      return;
+    }
+    // Đóng Journal nếu đang mở
+    if (ui && ui.journalModal && ui.journalModal.isOpen) {
+      ui.journalModal.close();
+    }
+
     this.isOpen = true;
     this.refresh();
     this.container.setVisible(true);
@@ -188,10 +230,15 @@ export class CraftingModal {
   }
 
   public refresh(): void {
-    // Làm mới lại bảng nguyên liệu và trạng thái nút bấm
-    for (const item of this.recipeButtons) {
+    // Làm mới lại bảng nguyên liệu và trạng thái nút bấm (tránh lưu trữ trạng thái hiển thị cũ)
+    for (const item of this.recipeRowRefs) {
       const can = this.craftingSystem.canCraft(item.recipe);
-      item.btn.setAlpha(can ? 1 : 0.65);
+      item.ingText.setText(this.formatIngredients(item.recipe));
+      item.rowContainer.setAlpha(can ? 1 : 0.65);
+
+      item.craftBtnBg.clear();
+      item.craftBtnBg.fillStyle(can ? 0x27ae60 : 0x4a5568, 1);
+      item.craftBtnBg.fillRoundedRect(-48, -18, 96, 36, 6);
     }
   }
 }

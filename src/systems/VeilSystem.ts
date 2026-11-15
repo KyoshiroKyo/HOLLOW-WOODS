@@ -119,7 +119,6 @@ export class VeilSystem {
       const chosenWhisper = Phaser.Utils.Array.GetRandom(this.whispers);
       
       this.whisperText.setText(chosenWhisper);
-      HDTextHelper.applyHD(this.whisperText);
       this.scene.tweens.add({
         targets: this.whisperText,
         alpha: 0.95,

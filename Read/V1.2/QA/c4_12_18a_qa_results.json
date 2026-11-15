@@ -1,0 +1,181 @@
+{
+  "timestamp": "2026-11-14T22:07:41.399Z",
+  "totalCollidersChecked": 47,
+  "bfsReachableGridCells": 31243,
+  "all17KeyLocationsReachable": true,
+  "npcClearance": {
+    "garthToWatchpostPx": 39,
+    "nerisToHouseWallPx": 38,
+    "eddaToBellTowerBottomPx": 20,
+    "eddaToBellTowerLeftPx": 30,
+    "eddaToBellAltarPromptDistPx": 70.3
+  },
+  "staticChecks": {
+    "hasSingleBakedGroundBellhollow": true,
+    "hasSingleBakedGroundFogCrossing": true,
+    "hasEastForestEntranceGate": true,
+    "hasOuterWoodsSignText": true,
+    "hasBellhollowVegetation": true,
+    "hasBoundaryFogReusingFogSmooth": true,
+    "noUpdateLoopInWorldBuilder": true,
+    "bellhollowFogAlphaReduced": true,
+    "toCrookedPathTransitionPreserved": true,
+    "npcCoordinatesUnchangedInGameScene": true,
+    "bellhollowResourceNodesCount": 7
+  },
+  "pointResults": [
+    {
+      "id": "spawn_west_transition",
+      "label": "Điểm vào từ Cổng Tây (targetSpawn)",
+      "x": 520,
+      "y": 260,
+      "directColliderOverlap": null,
+      "reachableFromWestSpawn": true,
+      "closestWalkableDistancePx": 0
+    },
+    {
+      "id": "spawn_bellhollow_default",
+      "label": "Điểm xuất phát mặc định Bellhollow",
+      "x": 560,
+      "y": 260,
+      "directColliderOverlap": null,
+      "reachableFromWestSpawn": true,
+      "closestWalkableDistancePx": 0
+    },
+    {
+      "id": "square_center",
+      "label": "Tâm Quảng Trường Trung Tâm",
+      "x": 810,
+      "y": 322,
+      "directColliderOverlap": null,
+      "reachableFromWestSpawn": true,
+      "closestWalkableDistancePx": 2.8
+    },
+    {
+      "id": "npc_garth",
+      "label": "NPC Garth (Dân Làng Cảnh Giác)",
+      "x": 530,
+      "y": 220,
+      "directColliderOverlap": null,
+      "reachableFromWestSpawn": true,
+      "closestWalkableDistancePx": 2
+    },
+    {
+      "id": "npc_edda",
+      "label": "NPC Bà Lão Edda (Người Giữ Chuông)",
+      "x": 790,
+      "y": 330,
+      "directColliderOverlap": null,
+      "reachableFromWestSpawn": true,
+      "closestWalkableDistancePx": 2.8
+    },
+    {
+      "id": "npc_neris",
+      "label": "NPC Neris (Người Chữa Thảo Mộc)",
+      "x": 970,
+      "y": 130,
+      "directColliderOverlap": null,
+      "reachableFromWestSpawn": true,
+      "closestWalkableDistancePx": 2.8
+    },
+    {
+      "id": "interact_crafting_bench",
+      "label": "Bàn Chế Tạo Sinh Tồn [E]",
+      "x": 978,
+      "y": 369,
+      "directColliderOverlap": "crafting_bench",
+      "reachableFromWestSpawn": true,
+      "closestWalkableDistancePx": 15.1
+    },
+    {
+      "id": "interact_bell_altar",
+      "label": "Bệ Tháp Chuông Câm [E]",
+      "x": 860,
+      "y": 324,
+      "directColliderOverlap": null,
+      "reachableFromWestSpawn": true,
+      "closestWalkableDistancePx": 0
+    },
+    {
+      "id": "node_wood_bellhollow_1",
+      "label": "Mỏ Gỗ Khô Tây-Bắc",
+      "x": 680,
+      "y": 220,
+      "directColliderOverlap": null,
+      "reachableFromWestSpawn": true,
+      "closestWalkableDistancePx": 0
+    },
+    {
+      "id": "node_resin_bellhollow_2",
+      "label": "Mỏ Nhựa Cây Tây-Bắc",
+      "x": 640,
+      "y": 185,
+      "directColliderOverlap": null,
+      "reachableFromWestSpawn": true,
+      "closestWalkableDistancePx": 1
+    },
+    {
+      "id": "node_flint_1",
+      "label": "Mỏ Đá Lửa Tây-Nam",
+      "x": 620,
+      "y": 350,
+      "directColliderOverlap": null,
+      "reachableFromWestSpawn": true,
+      "closestWalkableDistancePx": 2
+    },
+    {
+      "id": "node_resin_1",
+      "label": "Mỏ Nhựa Cây Bắc Quảng Trường",
+      "x": 880,
+      "y": 200,
+      "directColliderOverlap": null,
+      "reachableFromWestSpawn": true,
+      "closestWalkableDistancePx": 0
+    },
+    {
+      "id": "node_herb_1",
+      "label": "Mỏ Thảo Mộc Đông-Bắc",
+      "x": 1040,
+      "y": 180,
+      "directColliderOverlap": null,
+      "reachableFromWestSpawn": true,
+      "closestWalkableDistancePx": 0
+    },
+    {
+      "id": "node_herb_2",
+      "label": "Mỏ Thảo Mộc Nam Quảng Trường",
+      "x": 740,
+      "y": 440,
+      "directColliderOverlap": null,
+      "reachableFromWestSpawn": true,
+      "closestWalkableDistancePx": 0
+    },
+    {
+      "id": "node_wood_3",
+      "label": "Mỏ Gỗ Khô Đông-Nam",
+      "x": 1120,
+      "y": 380,
+      "directColliderOverlap": null,
+      "reachableFromWestSpawn": true,
+      "closestWalkableDistancePx": 0
+    },
+    {
+      "id": "east_forest_gate_underpass",
+      "label": "Cổng Đông — Rừng Ngoại Vi →",
+      "x": 1485,
+      "y": 280,
+      "directColliderOverlap": null,
+      "reachableFromWestSpawn": true,
+      "closestWalkableDistancePx": 1
+    },
+    {
+      "id": "transition_to_crooked_path",
+      "label": "Vạch chuyển vùng Outer Woods / Crooked Path",
+      "x": 1585,
+      "y": 280,
+      "directColliderOverlap": null,
+      "reachableFromWestSpawn": true,
+      "closestWalkableDistancePx": 1
+    }
+  ]
+}

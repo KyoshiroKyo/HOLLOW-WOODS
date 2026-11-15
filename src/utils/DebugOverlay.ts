@@ -1,7 +1,8 @@
 /**
- * HOLLOW WOODS V3.0 - PASS T17
+ * HOLLOW WOODS V1.1 - GATE 1C
  * HD DEBUG OVERLAY (PHÍM F4)
- * Hiển thị chuẩn khung 64×64 của Dark Rogue và hộp va chạm chân 14×8 px trên độ phân giải 1280×720
+ * Hiển thị chuẩn khung 64×64 của Satyr và hộp va chạm chân 14×8 px trên độ phân giải 1280×720
+ * Bảng chữ số liệu render tại UIScene (Zoom 1.0), bounding box render tại GameScene (World Space)
  */
 
 import * as Phaser from 'phaser';
@@ -21,21 +22,24 @@ import { HDTextHelper } from './HDTextHelper';
 
 export class DebugOverlay {
   private scene: Phaser.Scene;
+  private uiScene: Phaser.Scene;
   private player: SatyrPlayer;
   private graphics: Phaser.GameObjects.Graphics;
   private textObject: Phaser.GameObjects.Text;
   private isVisible: boolean = false;
   private f4Key: Phaser.Input.Keyboard.Key;
 
-  constructor(scene: Phaser.Scene, player: SatyrPlayer) {
+  constructor(scene: Phaser.Scene, player: SatyrPlayer, uiScene?: Phaser.Scene) {
     this.scene = scene;
+    this.uiScene = uiScene || scene;
     this.player = player;
 
+    // Graphics vẽ trong GameScene (world coordinates bao quanh player)
     this.graphics = scene.add.graphics();
     this.graphics.setDepth(9999);
 
-    // Bảng thông số Debug chuẩn HD đặt tại (24, 140)
-    this.textObject = HDTextHelper.createText(scene, 24, 140, '', {
+    // Bảng thông số Debug chuẩn HD đặt tại (24, 140) trên UIScene (Zoom 1.0 cố định)
+    this.textObject = HDTextHelper.createText(this.uiScene, 24, 140, '', {
       fontFamily: 'Consolas, monospace',
       fontSize: '13px',
       color: '#00ffcc',
@@ -57,6 +61,27 @@ export class DebugOverlay {
     }
   }
 
+  public setUIScene(uiScene: Phaser.Scene): void {
+    if (this.uiScene !== uiScene) {
+      if (this.textObject) {
+        this.textObject.destroy();
+      }
+      this.uiScene = uiScene;
+      this.textObject = HDTextHelper.createText(this.uiScene, 24, 140, '', {
+        fontFamily: 'Consolas, monospace',
+        fontSize: '13px',
+        color: '#00ffcc',
+        backgroundColor: '#0a0e14dd',
+        padding: { x: 12, y: 10 },
+        stroke: '#000000',
+        strokeThickness: 2
+      });
+      this.textObject.setScrollFactor(0);
+      this.textObject.setDepth(10000);
+      this.textObject.setVisible(this.isVisible);
+    }
+  }
+
   public update(currentZoneId: ZoneId): void {
     if (Phaser.Input.Keyboard.JustDown(this.f4Key)) {
       this.isVisible = !this.isVisible;
@@ -71,13 +96,13 @@ export class DebugOverlay {
     const px = this.player.x;
     const py = this.player.y;
 
-    // 1. Vẽ Canvas Bounds chuẩn 64×64 của Dark Rogue (Khung vàng)
+    // 1. Vẽ Canvas Bounds chuẩn 64×64 của Satyr (Khung vàng)
     const canvasTopLeftX = px - SATYR_FRAME_WIDTH * SATYR_ORIGIN_X;
     const canvasTopLeftY = py - SATYR_FRAME_HEIGHT * SATYR_ORIGIN_Y;
     this.graphics.lineStyle(1.5, 0xf1c40f, 0.95);
     this.graphics.strokeRect(canvasTopLeftX, canvasTopLeftY, SATYR_FRAME_WIDTH, SATYR_FRAME_HEIGHT);
 
-    // 2. Vẽ Opaque Bounds thực tế của Dark Rogue (Khoảng 36×58 px màu xanh lá)
+    // 2. Vẽ Opaque Bounds thực tế của Satyr (Khoảng 36×58 px màu xanh lá)
     const opaqueTopLeftX = canvasTopLeftX + 14;
     const opaqueTopLeftY = canvasTopLeftY + 4;
     this.graphics.lineStyle(1.5, 0x2ecc71, 0.9);
@@ -102,12 +127,12 @@ export class DebugOverlay {
     const flipStr = this.player.flipX ? 'CÓ (Lật phải)' : 'KHÔNG';
 
     this.textObject.setText([
-      '=== [F4] KIỂM TOÁN KỸ THUẬT DARK ROGUE (PASS T17 - HD 1280×720) ===',
+      '=== [F4] THÔNG SỐ KỸ THUẬT NHÂN VẬT SATYR (V1.1 - HD 1280×720) ===',
       `Tọa độ gót chân: X = ${Math.round(px)}, Y = ${Math.round(py)}`,
       `Phân khu hiện tại: ${currentZoneId}`,
       `Vận tốc: ${speed} px/s  |  Hướng mặt: ${this.player.facing}  |  FlipX: ${flipStr}`,
       `Hoạt ảnh đang chạy: ${animName}`,
-      `Khung Sprite Sheet: 64×64 px (Chuẩn lưới 22 cột × 4 hàng)`,
+      `Khung Sprite Sheet: 64×64 px (Chuẩn lưới Satyr 22 cột × 4 hàng)`,
       `Hộp va chạm chân (Collider): ${SATYR_BODY_WIDTH}×${SATYR_BODY_HEIGHT} px  |  Offset: (${SATYR_BODY_OFFSET_X}, ${SATYR_BODY_OFFSET_Y})`,
       `Điểm neo chân (Origin): (${SATYR_ORIGIN_X.toFixed(2)}, ${SATYR_ORIGIN_Y.toFixed(2)})  |  Bàn chân tại y = 58`,
       `Độ phân giải: 1280×720 HD  |  Camera Zoom: 2.2×  |  FPS: ${Math.round(this.scene.game.loop.actualFps)}`

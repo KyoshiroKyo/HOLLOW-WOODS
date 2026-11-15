@@ -9,11 +9,22 @@ export class TheListener extends Monster {
   private visualGfx!: Phaser.GameObjects.Graphics;
 
   constructor(scene: Phaser.Scene, x: number, y: number, waypoints: Waypoint[]) {
-    // Sử dụng sprite thật của The Listener (64×64 px) trích xuất từ Pixel_Art
+    // Sử dụng spritesheet thật của The Listener (64×64 px, 4 frames) từ Pixel_Art (GATE 2B)
     super(scene, x, y, SPRITE_THE_LISTENER);
 
     this.setOrigin(0.5, 0.95);
     this.ai = new ListenerAI(this, waypoints);
+
+    // GATE 2B: Đăng ký và kích hoạt hoạt ảnh lơ lửng / thở tự nhiên cho The Listener
+    if (!scene.anims.exists('listener_idle')) {
+      scene.anims.create({
+        key: 'listener_idle',
+        frames: scene.anims.generateFrameNumbers(SPRITE_THE_LISTENER, { start: 0, end: 3 }),
+        frameRate: 4,
+        repeat: -1
+      });
+    }
+    this.play('listener_idle');
 
     // 1. Dựng bóng đổ chân thực dưới chân quái vật
     this.visualGfx = scene.add.graphics();

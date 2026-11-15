@@ -1,7 +1,7 @@
 /**
- * HOLLOW WOODS V3.0 - PASS T15
- * HD OVERHAUL FOR JOURNAL MODAL
- * Khung chuẩn HD 1280×720, căn giữa (640, 360), kích thước 840×520 px
+ * HOLLOW WOODS V1.1 - GATE 1B
+ * HD JOURNAL MODAL ARCHITECTURE
+ * Khung chuẩn HD 1280×720 tại UIScene (Zoom 1.0), căn giữa (640, 360), kích thước 840×520 px
  */
 
 import * as Phaser from 'phaser';
@@ -38,7 +38,7 @@ export class JournalModal {
     this.buildUI();
     this.container.setVisible(false);
 
-    // Lắng nghe phím bấm J mở/đóng nhật ký
+    // Lắng nghe phím bấm J mở/đóng nhật ký và ESC
     if (scene.input && scene.input.keyboard) {
       scene.input.keyboard.on('keydown-J', () => this.toggle());
       scene.input.keyboard.on('keydown-ESC', () => {
@@ -122,6 +122,16 @@ export class JournalModal {
   }
 
   public open(): void {
+    const ui = this.scene as any;
+    // Ngăn chặn mở khi đối thoại đang chạy (GATE 1B Mutual Exclusion)
+    if (ui && ui.isDialogueActive) {
+      return;
+    }
+    // Đóng Crafting nếu đang mở
+    if (ui && ui.craftingModal && ui.craftingModal.isOpen) {
+      ui.craftingModal.close();
+    }
+
     this.isOpen = true;
     this.refresh();
     this.container.setVisible(true);
@@ -159,7 +169,16 @@ export class JournalModal {
 
   private renderQuestTab(mx: number, my: number, mw: number, _mh: number): void {
     const currentQ = this.playerState.getCurrentQuest();
-    if (!currentQ) return;
+    if (!currentQ) {
+      const emptyQ = HDTextHelper.createText(this.scene, mx + mw / 4, my + 150, 'Hiện tại chưa có nhiệm vụ nào được kích hoạt.', {
+        fontSize: '14px',
+        fontStyle: 'italic',
+        color: '#95a5a6',
+        wordWrap: { width: mw / 2 - 50 }
+      });
+      this.contentContainer.add(emptyQ);
+      return;
+    }
 
     // Cột bên trái: Chi tiết nhiệm vụ chính hiện tại
     const qTitle = HDTextHelper.createText(this.scene, mx + 30, my + 70, currentQ.title, {
@@ -225,10 +244,11 @@ export class JournalModal {
   private renderLoreTab(mx: number, my: number, mw: number, mh: number): void {
     const list = this.playerState.unlockedLore;
     if (list.length === 0) {
-      const emptyText = HDTextHelper.createText(this.scene, mx + mw / 2, my + mh / 2, 'Chưa tìm thấy cổ thư hay manh mối nào...', {
+      const emptyText = HDTextHelper.createText(this.scene, mx + mw / 2, my + mh / 2, 'Chưa tìm thấy cổ thư hay manh mối nào trong The Hollow Woods...\nHãy khám phá các miếu thờ và tàn tích cổ.', {
         fontSize: '16px',
         fontStyle: 'italic',
-        color: '#7f8c8d'
+        color: '#7f8c8d',
+        align: 'center'
       }).setOrigin(0.5, 0.5);
       this.contentContainer.add(emptyText);
       return;
@@ -264,18 +284,32 @@ export class JournalModal {
       lineSpacing: 8
     });
 
-    // Nút lật trang (Trang trước / Trang sau)
-    const pageNav = HDTextHelper.createText(this.scene, mx + mw / 2, my + mh - 30, `< Trang ${this.currentLoreIndex + 1} / ${list.length} > (Nhấn để lật trang)`, {
+    // Điều hướng trang cổ thư: [◀ Trang Trước]  Trang X / Y  [Trang Sau ▶]
+    const prevBtn = HDTextHelper.createText(this.scene, mx + mw / 2 - 130, my + mh - 30, '◀ Trang Trước', {
       fontSize: '14px',
       fontStyle: 'bold',
       color: '#f39c12'
     }).setOrigin(0.5, 0.5).setInteractive({ useHandCursor: true });
+    prevBtn.on('pointerdown', () => {
+      this.currentLoreIndex = (this.currentLoreIndex - 1 + list.length) % list.length;
+      this.refresh();
+    });
 
-    pageNav.on('pointerdown', () => {
+    const pageIndicator = HDTextHelper.createText(this.scene, mx + mw / 2, my + mh - 30, `Trang ${this.currentLoreIndex + 1} / ${list.length}`, {
+      fontSize: '14px',
+      color: '#bdc3c7'
+    }).setOrigin(0.5, 0.5);
+
+    const nextBtn = HDTextHelper.createText(this.scene, mx + mw / 2 + 130, my + mh - 30, 'Trang Sau ▶', {
+      fontSize: '14px',
+      fontStyle: 'bold',
+      color: '#f39c12'
+    }).setOrigin(0.5, 0.5).setInteractive({ useHandCursor: true });
+    nextBtn.on('pointerdown', () => {
       this.currentLoreIndex = (this.currentLoreIndex + 1) % list.length;
       this.refresh();
     });
 
-    this.contentContainer.add([lTitle, lAuthor, lContent, pageNav]);
+    this.contentContainer.add([lTitle, lAuthor, lContent, prevBtn, pageIndicator, nextBtn]);
   }
 }

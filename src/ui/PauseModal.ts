@@ -1,7 +1,7 @@
 /**
- * HOLLOW WOODS V3.0 - PASS T16
- * HD OVERHAUL FOR PAUSE MODAL
- * Khung chuẩn HD 1280×720, căn giữa (640, 360), kích thước 480×370 px
+ * HOLLOW WOODS V1.1 - GATE 1C
+ * HD PAUSE MODAL ARCHITECTURE
+ * Khung chuẩn HD 1280×720 tại UIScene (Zoom 1.0), căn giữa (640, 360), kích thước 480×370 px
  */
 
 import * as Phaser from 'phaser';
@@ -43,7 +43,7 @@ export class PauseModal {
     const modalX = (1280 - modalW) / 2; // 400
     const modalY = (720 - modalH) / 2;  // 175
 
-    // 1. Lớp phủ đen mờ toàn màn hình HD 1280×720
+    // 1. Lớp phủ đen mờ toàn màn hình HD 1280×720 (ngăn chặn click xuyên thấu)
     const overlay = this.scene.add.graphics();
     overlay.fillStyle(0x000000, 0.78);
     overlay.fillRect(0, 0, 1280, 720);
@@ -66,6 +66,17 @@ export class PauseModal {
       stroke: '#000000',
       strokeThickness: 4
     }).setOrigin(0.5, 0.5);
+
+    // Nút đóng nhanh [✕]
+    const closeBtn = HDTextHelper.createText(this.scene, modalX + modalW - 30, modalY + 30, '✕', {
+      fontSize: '20px',
+      fontStyle: 'bold',
+      color: '#e74c3c'
+    }).setOrigin(0.5, 0.5).setInteractive({ useHandCursor: true });
+    closeBtn.on('pointerdown', () => {
+      this.close();
+      this.callbacks.onResume();
+    });
 
     this.saveStatusText = HDTextHelper.createText(this.scene, 640, modalY + 62, '', {
       fontSize: '13px',
@@ -112,11 +123,12 @@ export class PauseModal {
       // Tự động lưu trước khi thoát
       this.callbacks.onSaveManual();
       this.close();
+      this.scene.scene.stop('GameScene');
       this.scene.scene.stop('UIScene');
       this.scene.scene.start(SCENE_MAIN_MENU);
     });
 
-    this.container.add([overlay, box, title, this.saveStatusText, resumeBtn, saveBtn, reloadBtn, quitBtn]);
+    this.container.add([overlay, box, title, closeBtn, this.saveStatusText, resumeBtn, saveBtn, reloadBtn, quitBtn]);
   }
 
   private createButton(x: number, y: number, text: string, color: string, onClick: () => void): Phaser.GameObjects.Container {
@@ -141,6 +153,9 @@ export class PauseModal {
     btnContainer.add([bg, txt]);
     btnContainer.setSize(btnW, btnH);
     btnContainer.setInteractive(new Phaser.Geom.Rectangle(-btnW / 2, -btnH / 2, btnW, btnH), Phaser.Geom.Rectangle.Contains);
+    if (btnContainer.input) {
+      btnContainer.input.cursor = 'pointer';
+    }
 
     btnContainer.on('pointerdown', onClick);
     btnContainer.on('pointerover', () => {
@@ -165,6 +180,19 @@ export class PauseModal {
   }
 
   public open(): void {
+    const ui = this.scene as any;
+    // Chặn mở khi đối thoại đang chạy (Mutual Exclusion)
+    if (ui && ui.isDialogueActive) {
+      return;
+    }
+    // Đóng các modal khác nếu đang mở
+    if (ui && ui.craftingModal && ui.craftingModal.isOpen) {
+      ui.craftingModal.close();
+    }
+    if (ui && ui.journalModal && ui.journalModal.isOpen) {
+      ui.journalModal.close();
+    }
+
     this.isOpen = true;
     this.container.setVisible(true);
     const summary = SaveManager.getSaveSummary();

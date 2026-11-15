@@ -29,8 +29,16 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   private keyShift!: Phaser.Input.Keyboard.Key;
   private keyE!: Phaser.Input.Keyboard.Key;
   private keyF!: Phaser.Input.Keyboard.Key;
+  private keyJ!: Phaser.Input.Keyboard.Key;
+  private keySpace!: Phaser.Input.Keyboard.Key;
   
   private eKeyJustPressed: boolean = false;
+
+  // Trạng thái hành động độc quyền (Exclusive Action States)
+  private _isAttacking: boolean = false;
+  private _isHurt: boolean = false;
+  private _isDead: boolean = false;
+  private _isStaminaExhausted: boolean = false;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, SATYR_SHEET_KEY, 0);
@@ -84,10 +92,17 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     this.keyShift = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
     this.keyE = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
     this.keyF = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+    this.keyJ = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J);
+    this.keySpace = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
   }
 
   public update(time: number, delta: number): void {
     super.update(time, delta);
+
+    if (this._isDead) {
+      this.setVelocity(0, 0);
+      return;
+    }
 
     if (this.stats.isHiding) {
       this.setVelocity(0, 0);
@@ -97,15 +112,26 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     const dt = delta / 1000;
 
     // Xử lý bật/tắt đèn lồng [F]
-    if (Phaser.Input.Keyboard.JustDown(this.keyF)) {
+    if (this.keyF && Phaser.Input.Keyboard.JustDown(this.keyF)) {
       this.toggleLantern();
     }
 
     // Xử lý phím tương tác [E]
-    this.eKeyJustPressed = Phaser.Input.Keyboard.JustDown(this.keyE);
+    this.eKeyJustPressed = this.keyE ? Phaser.Input.Keyboard.JustDown(this.keyE) : false;
 
-    // Xử lý di chuyển
-    this.handleMovement();
+    // Xử lý tấn công [J] hoặc [SPACE]
+    if (!this._isAttacking && !this._isHurt) {
+      const jPressed = this.keyJ && Phaser.Input.Keyboard.JustDown(this.keyJ);
+      const spacePressed = this.keySpace && Phaser.Input.Keyboard.JustDown(this.keySpace);
+      if (jPressed || spacePressed) {
+        this.attack();
+      }
+    }
+
+    // Xử lý di chuyển nếu không đang bị khóa hành động
+    if (!this._isAttacking && !this._isHurt) {
+      this.handleMovement();
+    }
 
     // Cập nhật các chỉ số sinh tồn theo thời gian thực
     this.updateSurvivalStats(dt);
@@ -119,19 +145,27 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     let moveY = 0;
 
     // Kiểm tra đầu vào từ WASD hoặc phím mũi tên
-    const left = this.keyA.isDown || this.cursors.left.isDown;
-    const right = this.keyD.isDown || this.cursors.right.isDown;
-    const up = this.keyW.isDown || this.cursors.up.isDown;
-    const down = this.keyS.isDown || this.cursors.down.isDown;
+    const left = (this.keyA && this.keyA.isDown) || (this.cursors && this.cursors.left && this.cursors.left.isDown);
+    const right = (this.keyD && this.keyD.isDown) || (this.cursors && this.cursors.right && this.cursors.right.isDown);
+    const up = (this.keyW && this.keyW.isDown) || (this.cursors && this.cursors.up && this.cursors.up.isDown);
+    const down = (this.keyS && this.keyS.isDown) || (this.cursors && this.cursors.down && this.cursors.down.isDown);
 
     if (left) moveX -= 1;
     if (right) moveX += 1;
     if (up) moveY -= 1;
     if (down) moveY += 1;
 
-    // Xác định trạng thái chạy nhanh
-    const wantsToSprint = (this.keyShift.isDown || this.cursors.shift.isDown) && (moveX !== 0 || moveY !== 0);
-    const canSprint = wantsToSprint && this.stats.stamina > 5;
+    // Quản lý thể lực chạy nhanh kèm ngưỡng phục hồi (Hysteresis)
+    const shiftDown = (this.keyShift && this.keyShift.isDown) || (this.cursors && this.cursors.shift && this.cursors.shift.isDown);
+    const wantsToSprint = shiftDown && (moveX !== 0 || moveY !== 0);
+
+    if (this.stats.stamina <= 0) {
+      this._isStaminaExhausted = true;
+    } else if (this.stats.stamina >= 15) {
+      this._isStaminaExhausted = false;
+    }
+
+    const canSprint = wantsToSprint && !this._isStaminaExhausted && this.stats.stamina > 5;
     this.stats.isSprinting = canSprint;
 
     const currentSpeed = canSprint ? PLAYER_SPRINT_SPEED : PLAYER_WALK_SPEED;
@@ -145,7 +179,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
 
       body.setVelocity(normX * currentSpeed, normY * currentSpeed);
 
-      // Cập nhật hướng nhìn
+      // Cập nhật hướng nhìn với nguyên tắc duy trì hướng khi đi chéo
       this.updateFacingDirection(moveX, moveY);
 
       // Cập nhật hoạt ảnh di chuyển
@@ -156,61 +190,197 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  private updateFacingDirection(moveX: number, moveY: number): void {
-    if (Math.abs(moveX) > Math.abs(moveY)) {
-      if (moveX < 0) {
-        this.facing = 'left';
-        this.setFlipX(false);
-      } else if (moveX > 0) {
-        this.facing = 'right';
-        this.setFlipX(false); // Không lật hình vì đã có riêng hàng RIGHT độc lập
+  /**
+   * Cập nhật hướng nhìn với NGUYÊN TẮC DUY TRÌ HƯỚNG NHÌN (Direction Persistence Rule).
+   * Triệt tiêu hoàn toàn lỗi giật hướng nhìn (Diagonal Stutter - BUG-05) khi đi chéo.
+   */
+  public updateFacingDirection(moveX: number, moveY: number): void {
+    if (moveX === 0 && moveY === 0) return;
+
+    const absX = Math.abs(moveX);
+    const absY = Math.abs(moveY);
+
+    if (absX > absY) {
+      // Chiều ngang chiếm ưu thế tuyệt đối
+      this.facing = moveX < 0 ? 'left' : 'right';
+    } else if (absY > absX) {
+      // Chiều dọc chiếm ưu thế tuyệt đối
+      this.facing = moveY < 0 ? 'up' : 'down';
+    } else {
+      // Đi chéo cân bằng (absX === absY > 0)
+      // NGUYÊN TẮC DUY TRÌ HƯỚNG NHÌN:
+      // Nếu hướng nhìn hiện tại đã thuộc về một trong hai trục đang di chuyển,
+      // GIỮ NGUYÊN hướng nhìn đó để tránh rung lắc hướng và reset animation.
+      const isCurrentFacingMoving =
+        (this.facing === 'left' && moveX < 0) ||
+        (this.facing === 'right' && moveX > 0) ||
+        (this.facing === 'up' && moveY < 0) ||
+        (this.facing === 'down' && moveY > 0);
+
+      if (!isCurrentFacingMoving) {
+        // Nếu hướng hiện tại không thuộc vector di chuyển, ưu tiên trục ngang làm mặc định ổn định
+        this.facing = moveX < 0 ? 'left' : 'right';
+      }
+    }
+
+    this.setFlipX(false);
+  }
+
+  /**
+   * Phát hoạt ảnh Walk hoặc Run.
+   * Nếu đang cùng hướng di chuyển và chỉ đổi tốc độ Walk <-> Run,
+   * bảo tồn tiến trình frame hiện tại để không bị ngắt quãng giật cục về frame 0.
+   */
+  private playWalkOrRunAnim(): void {
+    if (this._isAttacking || this._isHurt || this._isDead) return;
+
+    const isRunning = this.stats.isSprinting;
+    const prefix = isRunning ? 'satyr_run_' : 'satyr_walk_';
+    const targetKey = `${prefix}${this.facing}`;
+
+    const currentAnimKey = this.anims.currentAnim?.key;
+    if (currentAnimKey === targetKey && this.anims.isPlaying) {
+      return;
+    }
+
+    const isSameDirection = currentAnimKey?.endsWith(this.facing);
+    const isWalkRunSwitch =
+      (currentAnimKey?.startsWith('satyr_walk_') && isRunning) ||
+      (currentAnimKey?.startsWith('satyr_run_') && !isRunning);
+
+    if (isSameDirection && isWalkRunSwitch && this.anims.currentFrame) {
+      const currentFrameIndex = this.anims.currentFrame.index;
+      this.play(targetKey);
+      const targetAnim = this.anims.get(targetKey);
+      if (targetAnim && targetAnim.frames.length > 0) {
+        const frameIdx = (currentFrameIndex - 1) % targetAnim.frames.length;
+        this.anims.setCurrentFrame(targetAnim.frames[frameIdx]);
       }
     } else {
-      if (moveY < 0) {
-        this.facing = 'up';
-        this.setFlipX(false);
-      } else if (moveY > 0) {
-        this.facing = 'down';
-        this.setFlipX(false);
-      }
+      this.play(targetKey, true);
     }
   }
 
-  private playWalkOrRunAnim(): void {
-    const isRunning = this.stats.isSprinting;
-    const prefix = isRunning ? 'satyr_run_' : 'satyr_walk_';
-
-    let animKey = '';
-    if (this.facing === 'down') {
-      animKey = `${prefix}down`;
-    } else if (this.facing === 'up') {
-      animKey = `${prefix}up`;
-    } else if (this.facing === 'right') {
-      animKey = `${prefix}right`;
-    } else {
-      animKey = `${prefix}left`;
-    }
-
-    if (this.anims.currentAnim?.key !== animKey) {
-      this.play(animKey, true);
-    }
+  public playIdle(): void {
+    this.playIdleAnim();
   }
 
   private playIdleAnim(): void {
-    let animKey = '';
-    if (this.facing === 'down') {
-      animKey = 'satyr_idle_down';
-    } else if (this.facing === 'up') {
-      animKey = 'satyr_idle_up';
-    } else if (this.facing === 'right') {
-      animKey = 'satyr_idle_right';
-    } else {
-      animKey = 'satyr_idle_left';
+    if (this._isAttacking || this._isHurt || this._isDead) return;
+
+    const targetKey = `satyr_idle_${this.facing}`;
+    if (this.anims.currentAnim?.key === targetKey && this.anims.isPlaying) {
+      return;
     }
 
-    if (this.anims.currentAnim?.key !== animKey) {
-      this.play(animKey, true);
+    this.play(targetKey, true);
+  }
+
+  // =========================================================================
+  // CÁC HÀNH ĐỘNG CHIẾN ĐẤU & PHẢN ỨNG SÁT THƯƠNG (ATTACK, HURT, DEATH)
+  // =========================================================================
+
+  public isAttacking(): boolean {
+    return this._isAttacking;
+  }
+
+  public isHurt(): boolean {
+    return this._isHurt;
+  }
+
+  public isDead(): boolean {
+    return this._isDead;
+  }
+
+  public attack(): boolean {
+    if (this._isAttacking || this._isHurt || this._isDead) return false;
+
+    this._isAttacking = true;
+    (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
+
+    const animKey = `satyr_attack_${this.facing}`;
+    const keyToPlay = this.anims.exists(animKey) ? animKey : 'satyr_attack';
+    this.play(keyToPlay, true);
+
+    const onAnimComplete = (anim: Phaser.Animations.Animation) => {
+      if (anim.key === keyToPlay) {
+        this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
+        this._isAttacking = false;
+        this.playIdleAnim();
+      }
+    };
+    this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
+
+    // Fallback bảo vệ bằng Phaser delayedCall (550ms: 5 frames @ 10fps = 500ms)
+    this.scene.time.delayedCall(550, () => {
+      if (this._isAttacking) {
+        this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
+        this._isAttacking = false;
+        this.playIdleAnim();
+      }
+    });
+
+    return true;
+  }
+
+  public playHurt(knockbackVx?: number, knockbackVy?: number): boolean {
+    if (this._isDead) return false;
+
+    this._isHurt = true;
+    this._isAttacking = false;
+
+    const body = this.body as Phaser.Physics.Arcade.Body;
+    if (knockbackVx !== undefined && knockbackVy !== undefined) {
+      body.setVelocity(knockbackVx, knockbackVy);
+    } else {
+      body.setVelocity(0, 0);
     }
+
+    // Hiệu ứng màu đỏ khi trúng đòn
+    this.setTint(0xff6666);
+
+    const animKey = `satyr_hurt_${this.facing}`;
+    const keyToPlay = this.anims.exists(animKey) ? animKey : 'satyr_hurt';
+    this.play(keyToPlay, true);
+
+    const onAnimComplete = (anim: Phaser.Animations.Animation) => {
+      if (anim.key === keyToPlay) {
+        this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
+        this.clearTint();
+        this._isHurt = false;
+        this.playIdleAnim();
+      }
+    };
+    this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
+
+    // Fallback bảo vệ bằng Phaser delayedCall (550ms: 3 frames @ 6fps = 500ms)
+    this.scene.time.delayedCall(550, () => {
+      if (this._isHurt) {
+        this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
+        this.clearTint();
+        this._isHurt = false;
+        this.playIdleAnim();
+      }
+    });
+
+    return true;
+  }
+
+  public die(): void {
+    if (this._isDead) return;
+
+    this._isDead = true;
+    this._isAttacking = false;
+    this._isHurt = false;
+
+    (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
+    this.clearTint();
+
+    const animKey = `satyr_death_${this.facing}`;
+    const keyToPlay = this.anims.exists(animKey) ? animKey : 'satyr_death';
+    this.play(keyToPlay, true);
+
+    // Nhân vật nằm bất động trên mặt đất ở frame cuối cùng, không trở về idle
   }
 
   public toggleLantern(): void {
@@ -227,9 +397,13 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       this.stats.stamina = Math.max(0, this.stats.stamina - STAMINA_DRAIN_RATE * dt);
       if (this.stats.stamina <= 0) {
         this.stats.isSprinting = false;
+        this._isStaminaExhausted = true;
       }
     } else {
       this.stats.stamina = Math.min(this.stats.maxStamina, this.stats.stamina + STAMINA_RECOVERY_RATE * dt);
+      if (this.stats.stamina >= 15) {
+        this._isStaminaExhausted = false;
+      }
     }
 
     // 2. Quản lý Dầu đèn lồng (Lantern Oil)

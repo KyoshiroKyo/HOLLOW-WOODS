@@ -135,8 +135,11 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image(SPRITE_NPC_NERIS, 'assets/characters/npcs/npc_neris.png');
     this.load.image(PORTRAIT_NERIS, 'assets/characters/npcs/portrait_neris.png');
 
-    // 10. Nạp các sprite quái vật bóng đêm & tàn ảnh (PASS T10)
-    this.load.image(SPRITE_THE_LISTENER, 'assets/monsters/the_listener.png');
+    // 10. Nạp các sprite quái vật bóng đêm & tàn ảnh (PASS T10, GATE 2B)
+    this.load.spritesheet(SPRITE_THE_LISTENER, 'assets/monsters/the_listener.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
     this.load.image(SPRITE_THE_ECHO, 'assets/monsters/the_echo.png');
     this.load.image(SPRITE_FOG_SMOOTH, 'assets/environment/sprites/fog_smooth.png');
   }

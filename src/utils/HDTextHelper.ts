@@ -32,6 +32,10 @@ export class HDTextHelper {
     // Ghi đè phương thức setText để tự động làm mới bộ lọc và độ phân giải khi chuỗi ký tự thay đổi
     const originalSetText = textObj.setText.bind(textObj);
     textObj.setText = function (value: string | string[]) {
+      const stringValue = Array.isArray(value) ? value.join('\n') : String(value);
+      if (textObj.text === stringValue) {
+        return textObj; // Tránh tạo lại canvas context và texture upload nếu nội dung không đổi
+      }
       const result = originalSetText(value);
       textObj.setResolution(resolution);
       if (textObj.texture) {

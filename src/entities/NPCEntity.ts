@@ -26,11 +26,11 @@ export class NPCEntity extends Phaser.GameObjects.Container {
     super(scene, spec.x, spec.y);
     this.spec = spec;
 
-    // 1. Phân giải đúng sprite pixel art cho từng NPC (PASS T09 - Xóa bỏ hoàn toàn hình khối thô sơ)
+    // 1. Phân giải đúng sprite pixel art cho từng NPC (GATE 2B)
     let spriteKey = SPRITE_NPC_GARTH;
-    if (spec.id === 'edda' || spec.name.includes('Edda')) {
+    if (spec.id === 'edda' || spec.id === 'npc_edda' || spec.name.includes('Edda')) {
       spriteKey = SPRITE_NPC_EDDA;
-    } else if (spec.id === 'neris' || spec.name.includes('Neris')) {
+    } else if (spec.id === 'neris' || spec.id === 'npc_neris' || spec.name.includes('Neris')) {
       spriteKey = SPRITE_NPC_NERIS;
     }
 

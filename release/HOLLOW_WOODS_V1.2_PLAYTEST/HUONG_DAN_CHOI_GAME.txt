@@ -1,0 +1,55 @@
+================================================================================
+           HOLLOW WOODS V1.2 — DỊ CẢNH RỪNG LIỄU (THE FOG THAT REMEMBERS)
+                           BẢN ĐÓNG GÓI CHƠI THỬ (PLAYTEST BUILD)
+================================================================================
+
+1. CÁCH KHỞI ĐỘNG GAME (RẤT ĐƠN GIẢN):
+--------------------------------------------------------------------------------
+- Trên Windows: 
+  👉 Bạn chỉ cần NHẤP ĐÚP CHUỘT vào tệp: "CHƠI_GAME.bat"
+  Hệ thống sẽ tự động bật máy chủ cục bộ và mở cửa sổ game trên trình duyệt mặc định 
+  (Chrome, Edge, Firefox, Brave, Cốc Cốc...). Không cần cài đặt thêm phần mềm nào!
+
+- Trên macOS / Linux:
+  👉 Mở Terminal tại thư mục này và gõ: bash CHƠI_GAME.sh
+  Hoặc nếu có Python: python3 -m http.server 8080 rồi mở trình duyệt vào http://localhost:8080
+
+* Lưu ý: Khi chơi xong, bạn chỉ cần đóng cửa sổ trình duyệt và cửa sổ dòng lệnh màu đen là xong.
+
+
+2. BẢNG PHÍM ĐIỀU KHIỂN (CONTROLS):
+--------------------------------------------------------------------------------
+- [W] [A] [S] [D] hoặc [Các phím mũi tên]: Di chuyển nhân vật Lữ Khách Rêu Phong
+- [Shift] (giữ): Chạy nhanh (tiêu hao Thể Lực)
+- [E]: Tương tác / Nói chuyện với NPC / Thu thập tài nguyên / Khảo sát bia đá, bệ thờ
+- [F] hoặc Phím [3]: Bật / Tắt Đèn Lồng Hổ Phách
+- [1]: Sử dụng Thuốc Đắp Thảo Mộc (Hồi máu)
+- [2]: Bơm Dầu Đèn Lồng (khi có Bình Dầu Đèn)
+- [C] hoặc [I] hoặc [TAB]: Mở bảng Túi Đồ & Bàn Chế Tạo (Crafting)
+- [J]: Mở Sổ Tay Ghi Chép Cốt Truyện & Danh Sách Nhiệm Vụ (Journal)
+- [M]: Bật / Tắt Âm thanh môi trường & Hiệu ứng
+- [ESC]: Tạm dừng game / Mở Menu Cài Đặt / Lưu Game Thủ Công
+
+
+3. HƯỚNG DẪN CỐT TRUYỆN & CÁC BƯỚC ĐẦU GAME:
+--------------------------------------------------------------------------------
+- Bạn tỉnh dậy bên bìa sương mù và tiến vào làng Bellhollow an bình.
+- Bước 1: Hãy đến gặp Bác Garth (Người gác cổng làng phía Đông) để nhận thông tin cảnh báo.
+- Bước 2: Đến nhà Bà Lão Edda (Người giữ chuông làng) để lắng nghe 3 Quy Tắc Bằng Máu.
+- Bước 3: Tìm Cô Neris (Người chữa thảo mộc) để được chữa thương và nhận công thức pha chế Dầu Đèn.
+- Bước 4: Nhặt Gỗ Khô và Nhựa Cây xung quanh làng hoặc tại Nông Trại Sanctuary Farm (phía Nam làng).
+- Bước 5: Mở bảng Chế Tạo ([I] hoặc [C]) để pha chế Bình Dầu Đèn hoàn chỉnh.
+- Bước 6: Quay lại Cổng Đông, Bác Garth sẽ mở cổng để bạn tiến vào Rừng Ngoài (Outer Woods), 
+  Đường Mòn Quanh Co (The Crooked Path), Rừng Sâu (Deep Forest) và Đầm Lầy Tĩnh Lặng (Silent Mire)!
+
+
+4. CÁC ĐIỂM ĐẶC SẮC TRONG BẢN V1.2:
+--------------------------------------------------------------------------------
+- Đồ họa Pixel Art thủ công sắc nét (Dark Woodland Pixel Art).
+- Hệ thống nông trại thảo dược mini 4 ô đất tại Sanctuary Farm (phía Nam làng Bellhollow).
+- Quái vật The Listener (Kẻ Lắng Nghe) rình rập trong Rừng Sâu theo thính giác âm thanh.
+- Trận địa Giải đố Ba Cột Đá Cổ Ngữ (Ancient Rune Puzzle) huyền bí giữa Đầm Lầy Tĩnh Lặng.
+- Hỗ trợ gõ tiếng Việt hoàn hảo, tự động lưu tiến trình game an toàn vào trình duyệt.
+
+Chúc bạn có những giờ phút trải nghiệm sinh tồn kỳ bí và hấp dẫn cùng HOLLOW WOODS!
+================================================================================

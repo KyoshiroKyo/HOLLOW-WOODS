@@ -66,6 +66,12 @@ export class GameScene extends Phaser.Scene {
 
   private npcs: NPCEntity[] = [];
   private fogOfWarLayer!: Phaser.GameObjects.RenderTexture;
+  private lightMaskGfx!: Phaser.GameObjects.Graphics;
+  private lastFowScreenX: number = -9999;
+  private lastFowScreenY: number = -9999;
+  private lastFowRadius: number = -9999;
+  private lastFowColor: number = -9999;
+  private lastFowAlpha: number = -9999;
   private lanternGlowGfx!: Phaser.GameObjects.Graphics;
   private fireflyGfx!: Phaser.GameObjects.Graphics;
   private fireflies: Firefly[] = [];
@@ -167,46 +173,7 @@ export class GameScene extends Phaser.Scene {
       }
     };
     this.inventorySystem = new InventorySystem(this);
-    this.craftingModal = new CraftingModal(this);
-    this.craftingModal.onOpen = () => {
-      if (this.uiScene) {
-        this.uiScene.setDialogueActive(true);
-      }
-    };
-    this.craftingModal.onClose = () => {
-      if (this.uiScene) {
-        this.uiScene.setDialogueActive(false);
-      }
-    };
-
-    this.journalModal = new JournalModal(this);
-    this.journalModal.onOpen = () => {
-      if (this.uiScene) {
-        this.uiScene.setDialogueActive(true);
-      }
-    };
-    this.journalModal.onClose = () => {
-      if (this.uiScene) {
-        this.uiScene.setDialogueActive(false);
-      }
-    };
     this.endingSystem = new EndingSystem(this);
-
-    this.pauseModal = new PauseModal(this, {
-      onResume: () => {},
-      onSaveManual: () => this.handleSaveManual(),
-      onReloadCheckpoint: () => this.handleReloadCheckpoint()
-    });
-    this.pauseModal.onOpen = () => {
-      if (this.uiScene) {
-        this.uiScene.setDialogueActive(true);
-      }
-    };
-    this.pauseModal.onClose = () => {
-      if (this.uiScene) {
-        this.uiScene.setDialogueActive(false);
-      }
-    };
 
     // 9. Khởi tạo các hệ thống Kinh Dị & AI của PASS G3
     this.veilSystem = new VeilSystem(this);
@@ -219,9 +186,30 @@ export class GameScene extends Phaser.Scene {
     // 10. Khởi động UIScene pixel sắc nét (Overlay)
     this.scene.launch('UIScene');
     this.uiScene = this.scene.get('UIScene') as UIScene;
+    this.dialogueSystem.setView(this.uiScene);
+    // GATE 3C: Kết nối UIScene (Zoom 1.0) cho EndingSystem
+    this.endingSystem.setUIScene(this.uiScene);
 
-    // 11. Công cụ kiểm toán kỹ thuật F4 Debug
-    this.debugOverlay = new DebugOverlay(this, this.player);
+    // GATE 1B: Kết nối CraftingModal & JournalModal từ UIScene ở Zoom 1.0 cố định
+    this.craftingModal = this.uiScene.getCraftingModal();
+    this.journalModal = this.uiScene.getJournalModal();
+
+    // GATE 1C: Khởi tạo PauseModal trên UIScene ở Zoom 1.0 cố định
+    this.pauseModal = new PauseModal(this.uiScene, {
+      onResume: () => {},
+      onSaveManual: () => this.handleSaveManual(),
+      onReloadCheckpoint: () => this.handleReloadCheckpoint()
+    });
+    this.pauseModal.onOpen = () => {
+      this.uiScene.setDialogueActive(true);
+    };
+    this.pauseModal.onClose = () => {
+      this.uiScene.setDialogueActive(false);
+    };
+    this.uiScene.pauseModal = this.pauseModal;
+
+    // 11. Công cụ kiểm toán kỹ thuật F4 Debug (Graphics trên GameScene, Text trên UIScene Zoom 1.0)
+    this.debugOverlay = new DebugOverlay(this, this.player, this.uiScene);
 
     // 12. Tạo lớp phủ Sương Mù Động (Dynamic Fog of War) & Đom Đóm Lập Lòe (PASS T17)
     this.setupFogOfWar();
@@ -267,22 +255,29 @@ export class GameScene extends Phaser.Scene {
   }
 
   private handleESCPress(): void {
-    if (this.endingSystem && this.endingSystem.isEndingActive) return;
+    if (this.endingSystem && this.endingSystem.isEndingActive) {
+      if (this.endingSystem.canReturnToMenu()) {
+        this.endingSystem.returnToMainMenu();
+      }
+      return;
+    }
 
-    if (this.craftingModal.isOpen) {
+    if (this.craftingModal && this.craftingModal.isOpen) {
       this.craftingModal.close();
       return;
     }
-    if (this.journalModal.isOpen) {
+    if (this.journalModal && this.journalModal.isOpen) {
       this.journalModal.close();
       return;
     }
-    if (this.dialogueSystem.isActive) {
+    if (this.dialogueSystem && this.dialogueSystem.isActive) {
       this.dialogueSystem.endDialogue();
       return;
     }
 
-    this.pauseModal.toggle();
+    if (this.pauseModal) {
+      this.pauseModal.toggle();
+    }
   }
 
   private handleSaveManual(): boolean {
@@ -393,9 +388,9 @@ export class GameScene extends Phaser.Scene {
 
     // Va chạm rượt đuổi: nếu The Listener chạm vào Satyr ngoài chỗ nấp
     this.physics.add.overlap(this.player, this.listenerMonster, () => {
-      if (!this.player.stats.isHiding) {
+      if (!this.player.stats.isHiding && !this.player.isHurt() && !this.player.isDead()) {
         // Tấn công gây sát thương và hoảng loạn
-        this.playerState.stats.health = Math.max(10, this.playerState.stats.health - 25);
+        this.playerState.stats.health = Math.max(0, this.playerState.stats.health - 25);
         this.playerState.stats.composure = Math.max(5, this.playerState.stats.composure - 30);
         this.cameraSystem.shake(250, 0.015);
         this.cameraSystem.flash(200, 180, 0, 0);
@@ -407,6 +402,12 @@ export class GameScene extends Phaser.Scene {
         // Đẩy Satyr lùi lại
         const pushAngle = Math.atan2(this.player.y - this.listenerMonster.y, this.player.x - this.listenerMonster.x);
         this.player.setPosition(this.player.x + Math.cos(pushAngle) * 45, this.player.y + Math.sin(pushAngle) * 45);
+
+        if (this.playerState.stats.health <= 0) {
+          this.player.die();
+        } else {
+          this.player.playHurt();
+        }
       }
     });
   }
@@ -417,7 +418,10 @@ export class GameScene extends Phaser.Scene {
     this.fogOfWarLayer.setScrollFactor(0);
     this.fogOfWarLayer.setDepth(5000);
 
-    // Quầng sáng ấm áp phát ra từ Đèn Lồng của Dark Rogue
+    // Đối tượng Graphics mặt nạ ánh sáng tái sử dụng duy nhất (BUG-06 Fix - Không cấp phát rác mỗi frame)
+    this.lightMaskGfx = this.make.graphics();
+
+    // Quầng sáng ấm áp phát ra từ Đèn Lồng của Satyr
     this.lanternGlowGfx = this.add.graphics();
     this.lanternGlowGfx.setScrollFactor(0);
     this.lanternGlowGfx.setDepth(5020);
@@ -514,10 +518,21 @@ export class GameScene extends Phaser.Scene {
   public update(time: number, delta: number): void {
     const dt = delta / 1000;
 
+    // GATE 1C: Đóng băng toàn bộ thế giới trò chơi khi Pause Menu đang mở
+    if (this.pauseModal && this.pauseModal.isOpen) {
+      if (this.player && this.player.body) {
+        (this.player.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
+        this.player.playIdle();
+      }
+      if (this.debugOverlay) {
+        this.debugOverlay.update(this.currentZoneId);
+      }
+      return;
+    }
+
     // Khóa điều khiển nếu Ending đang chạy hoặc UI modal mở
     const isUIBusy = 
       this.endingSystem.isEndingActive ||
-      this.pauseModal.isOpen ||
       this.dialogueSystem.isActive || 
       this.craftingModal.isOpen || 
       this.journalModal.isOpen;
@@ -526,6 +541,7 @@ export class GameScene extends Phaser.Scene {
       this.player.update(time, delta);
     } else {
       (this.player.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
+      this.player.playIdle();
     }
 
     // Cập nhật camera
@@ -539,7 +555,9 @@ export class GameScene extends Phaser.Scene {
     this.playerState.stats.isSprinting = this.player.stats.isSprinting;
 
     // Cập nhật The Veil (Màn Sương) và hiệu ứng tâm lý (PASS G3)
-    this.veilSystem.update(time, delta, inDeepFog);
+    if (!this.endingSystem || !this.endingSystem.isEndingActive) {
+      this.veilSystem.update(time, delta, inDeepFog);
+    }
 
     // Cập nhật âm thanh khí quyển & hiệu ứng lọc The Veil (PASS G5)
     this.audioManager.updateVeilFilter(inDeepFog, this.playerState.stats.composure);
@@ -648,6 +666,10 @@ export class GameScene extends Phaser.Scene {
 
   private updateTheListenerAI(delta: number): void {
     if (!this.listenerMonster) return;
+    if (this.endingSystem && this.endingSystem.isEndingActive) {
+      this.listenerMonster.setVelocity(0, 0);
+      return;
+    }
 
     this.listenerMonster.update(delta, this.player.x, this.player.y, this.player.stats.isHiding);
 
@@ -904,7 +926,11 @@ export class GameScene extends Phaser.Scene {
         }
       }
     } else if (actionId === 'inspect_bell') {
-      if (this.playerState.getItemCount('quest_bronze_clapper') > 0) {
+      if (this.playerState.hasFlag('bell_rung')) {
+        if (this.uiScene) {
+          this.uiScene.showPopupMessage('🔔 Quả chuông đồng đã ngân vang, bảo vệ làng Bellhollow an toàn trong màn sương.');
+        }
+      } else if (this.playerState.getItemCount('quest_bronze_clapper') > 0) {
         if (this.uiScene) {
           this.uiScene.showPopupMessage('🔔 Satyr gắn Lưỡi Chuông Đồng vào quả chuông cổ làng Bellhollow...');
         }
@@ -960,8 +986,6 @@ export class GameScene extends Phaser.Scene {
   }
 
   private updateFogOfWar(): void {
-    this.fogOfWarLayer.clear();
-
     const activeZone = this.worldBuilder.getActiveZone();
     let fogAlpha = activeZone.atmosphere.fogAlpha;
     let fogColor = activeZone.atmosphere.fogColor;
@@ -971,8 +995,6 @@ export class GameScene extends Phaser.Scene {
       fogAlpha = 0.88;
       fogColor = 0x2d122b;
     }
-
-    this.fogOfWarLayer.fill(fogColor, fogAlpha);
 
     // Tính toán tọa độ chiếu chuẩn xác trên màn hình HD 1280×720 với Camera Zoom 2.2x
     const cam = this.cameras.main;
@@ -984,22 +1006,41 @@ export class GameScene extends Phaser.Scene {
     // Bán kính ánh sáng chuẩn HD 1280×720 zoom 2.2x
     const radius = baseRadius * cam.zoom * 0.82;
 
-    const lightG = this.make.graphics();
-    // 4 tầng ánh sáng gradient mềm mại, không bao giờ để lại viền sắc cạnh
-    lightG.fillStyle(0xffffff, 1.0);
-    lightG.fillCircle(screenX, screenY, radius * 0.65);
+    // Kiểm tra thay đổi (Dirty Checking) để tránh clear/fill/erase RenderTexture 1280×720 liên tục khi đứng yên
+    const isFowDirty =
+      Math.abs(screenX - this.lastFowScreenX) > 0.25 ||
+      Math.abs(screenY - this.lastFowScreenY) > 0.25 ||
+      Math.abs(radius - this.lastFowRadius) > 0.5 ||
+      fogColor !== this.lastFowColor ||
+      fogAlpha !== this.lastFowAlpha;
 
-    lightG.fillStyle(0xffffff, 0.72);
-    lightG.fillCircle(screenX, screenY, radius * 0.90);
+    if (isFowDirty) {
+      this.lastFowScreenX = screenX;
+      this.lastFowScreenY = screenY;
+      this.lastFowRadius = radius;
+      this.lastFowColor = fogColor;
+      this.lastFowAlpha = fogAlpha;
 
-    lightG.fillStyle(0xffffff, 0.40);
-    lightG.fillCircle(screenX, screenY, radius * 1.18);
+      this.fogOfWarLayer.clear();
+      this.fogOfWarLayer.fill(fogColor, fogAlpha);
 
-    lightG.fillStyle(0xffffff, 0.15);
-    lightG.fillCircle(screenX, screenY, radius * 1.45);
+      // Tái sử dụng đối tượng Graphics duy nhất thay vì cấp phát & hủy 60 lần/giây (BUG-06 Fix)
+      this.lightMaskGfx.clear();
+      // 4 tầng ánh sáng gradient mềm mại, không bao giờ để lại viền sắc cạnh
+      this.lightMaskGfx.fillStyle(0xffffff, 1.0);
+      this.lightMaskGfx.fillCircle(screenX, screenY, radius * 0.65);
 
-    this.fogOfWarLayer.erase(lightG);
-    lightG.destroy();
+      this.lightMaskGfx.fillStyle(0xffffff, 0.72);
+      this.lightMaskGfx.fillCircle(screenX, screenY, radius * 0.90);
+
+      this.lightMaskGfx.fillStyle(0xffffff, 0.40);
+      this.lightMaskGfx.fillCircle(screenX, screenY, radius * 1.18);
+
+      this.lightMaskGfx.fillStyle(0xffffff, 0.15);
+      this.lightMaskGfx.fillCircle(screenX, screenY, radius * 1.45);
+
+      this.fogOfWarLayer.erase(this.lightMaskGfx);
+    }
 
     // Hiệu ứng ánh sáng đèn lồng ấm áp (Dynamic Warm Lantern Glow - PASS T17)
     this.lanternGlowGfx.clear();

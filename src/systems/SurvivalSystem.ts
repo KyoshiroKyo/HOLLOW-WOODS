@@ -15,6 +15,14 @@ export class SurvivalSystem {
   private campfireY: number = 260;
   private campfireWarmthRadius: number = 90;
 
+  // Bộ nhớ đệm kiểm tra thay đổi (Dirty Checking Cache)
+  private lastHealth: number = -1;
+  private lastStamina: number = -1;
+  private lastOil: number = -1;
+  private lastComposure: number = -1;
+  private lastLanternState: boolean | null = null;
+  private lastSprinting: boolean | null = null;
+
   constructor() {
     this.playerState = PlayerState.getInstance();
   }
@@ -59,13 +67,32 @@ export class SurvivalSystem {
       }
     }
 
-    this.playerState.emit('stats_changed', stats);
+    // Chỉ phát sự kiện 'stats_changed' khi các giá trị có sự thay đổi thực sự
+    const isDirty =
+      Math.abs(stats.health - this.lastHealth) > 0.05 ||
+      Math.abs(stats.stamina - this.lastStamina) > 0.05 ||
+      Math.abs(stats.lanternOil - this.lastOil) > 0.05 ||
+      Math.abs(stats.composure - this.lastComposure) > 0.05 ||
+      stats.isLanternOn !== this.lastLanternState ||
+      stats.isSprinting !== this.lastSprinting;
+
+    if (isDirty) {
+      this.lastHealth = stats.health;
+      this.lastStamina = stats.stamina;
+      this.lastOil = stats.lanternOil;
+      this.lastComposure = stats.composure;
+      this.lastLanternState = stats.isLanternOn;
+      this.lastSprinting = stats.isSprinting;
+      this.playerState.emit('stats_changed', stats);
+    }
   }
 
   public healFull(): void {
     const stats = this.playerState.stats;
     stats.health = stats.maxHealth;
     stats.composure = stats.maxComposure;
+    this.lastHealth = stats.health;
+    this.lastComposure = stats.composure;
     this.playerState.emit('stats_changed', stats);
   }
 }
