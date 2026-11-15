@@ -132,3 +132,37 @@ Phiên bản **HOLLOW WOODS V1.3** đã hoàn thành xuất sắc toàn bộ m�
 - Bộ tài liệu 8 báo cáo vật lý tại `Read/V1.3/Reports/` được lập đầy đủ, khoa học và minh bạch.
 
 **Dự án HOLLOW WOODS V1.3 chính thức được nghiệm thu khóa sổ và sẵn sàng cho các cột mốc phát triển tiếp theo.**
+
+---
+
+## 7. GHI NHẬN MÃ BĂM GIT RELEASE & CỘT MỐC PHIÊN BẢN (C4-13-13)
+
+Dưới đây là thông tin chi tiết về hai cột mốc phát hành đã được đóng gói độc lập, gắn tag phiên bản và đẩy thành công lên kho lưu trữ GitHub từ xa (`origin` - `https://github.com/KyoshiroKyo/HOLLOW-WOODS.git`):
+
+### 7.1. Cột mốc phiên bản v1.2.0
+- **Tên phát hành:** `HOLLOW WOODS Version 1.2.0 - The Fog That Remembers`
+- **Git Tag:** `v1.2.0` (Annotated Tag)
+- **Commit SHA ngắn:** `6f55571`
+- **Commit SHA đầy đủ:** `6f555717da212007db27716a8bf7c911307a4d13`
+- **Commit Message:** `release: package HOLLOW WOODS v1.2.0 milestone and documentation`
+- **Trọng tâm gói:** Lưu trữ toàn bộ tài liệu và tài nguyên nền tảng của giai đoạn V1.2 (`Read/V1.2/`, `Read/V1.1/`, `Read/V1.0/`, thư mục `release/` và các tài nguyên gốc).
+- **Trạng thái GitHub Remote:** Đã đẩy thành công lên nhánh và thẻ từ xa (`origin/v1.2.0`).
+
+### 7.2. Cột mốc phiên bản v1.3.0
+- **Tên phát hành:** `HOLLOW WOODS Version 1.3.0 - Stability, AI & UI Upgrade`
+- **Git Tag:** `v1.3.0` (Annotated Tag)
+- **Commit SHA ngắn:** `605a0f5`
+- **Commit SHA đầy đủ:** `605a0f5ea6845b10f1d1632def89c8d62ebb794e`
+- **Commit Message:** `release: package HOLLOW WOODS v1.3.0 upgrade, AI enhancement and UI/UX redesign`
+- **Trọng tâm gói:** Toàn bộ 15 hạng mục sửa lỗi triệt để, hệ thống AI The Listener tuần tra/truy đuổi với ranh giới Vùng An Toàn Làng Bellhollow, tối ưu hóa vòng lặp Update 60 FPS chống rò rỉ bộ nhớ, tái thiết kế Menu & HUD bán trong suốt tinh tế, đồng bộ hoạt ảnh đèn lồng và gậy, hệ thống Game Over / Hồi sinh tại Garth, cùng bộ 8 báo cáo khóa sổ chuẩn mực tại `Read/V1.3/Reports/`.
+- **Trạng thái GitHub Remote:** Đã đẩy thành công lên nhánh chính và thẻ từ xa (`origin/main`, `origin/v1.3.0`).
+
+| Tiêu chí | Cột mốc v1.2.0 | Cột mốc v1.3.0 |
+| :--- | :--- | :--- |
+| **Git Tag** | `v1.2.0` | `v1.3.0` |
+| **Git Commit SHA** | `6f55571` (`6f555717da212007db27716a8bf7c911307a4d13`) | `605a0f5` (`605a0f5ea6845b10f1d1632def89c8d62ebb794e`) |
+| **Nhánh chính** | `main` | `main` |
+| **Remote URL** | `https://github.com/KyoshiroKyo/HOLLOW-WOODS.git` | `https://github.com/KyoshiroKyo/HOLLOW-WOODS.git` |
+| **Trạng thái phát hành** | `RELEASED & TAGGED` | `RELEASED & TAGGED` |
+| **Đồng bộ GitHub** | `PUSHED (origin/v1.2.0)` | `PUSHED (origin/main, origin/v1.3.0)` |
+
