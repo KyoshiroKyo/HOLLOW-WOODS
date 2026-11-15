@@ -27,6 +27,15 @@ export class CameraSystem {
     this.camera.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
   }
 
+  /**
+   * C4-13-02: Lập tức canh giữa camera vào tọa độ đích mà không bị trễ hay giật lag khi chuyển vùng
+   */
+  public centerOn(x: number, y: number): void {
+    this.camera.centerOn(x, y);
+    this.camera.scrollX = Math.round(this.camera.scrollX);
+    this.camera.scrollY = Math.round(this.camera.scrollY);
+  }
+
   public update(): void {
     // Đảm bảo tọa độ camera luôn được làm tròn nguyên số để pixel art luôn sắc nét 100%
     this.camera.scrollX = Math.round(this.camera.scrollX);

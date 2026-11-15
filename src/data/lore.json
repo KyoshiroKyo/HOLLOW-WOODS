@@ -67,7 +67,7 @@
       "description": "Thu thập nguyên liệu quanh làng và chế tạo trang bị sinh tồn.",
       "tasks": [
         { "id": "t1", "text": "Thu thập ít nhất 1 Gỗ Khô và 1 Nhựa Cây quanh làng", "done": false },
-        { "id": "t2", "text": "Mở túi chế tạo [Phím I / TAB] để pha chế Dầu Đèn", "done": false }
+        { "id": "t2", "text": "Mở túi chế tạo [Phím C / I] để pha chế Dầu Đèn", "done": false }
       ]
     },
     {

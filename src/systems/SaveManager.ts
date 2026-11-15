@@ -1,4 +1,5 @@
 import { PlayerState } from '../state/PlayerState';
+import { HerbPlotStage, ZoneId } from '../types';
 
 export interface SaveData {
   version: string;
@@ -18,6 +19,9 @@ export interface SaveData {
   currentQuestId: string;
   quests: { id: string; tasks: { id: string; done: boolean }[] }[];
   unlockedLoreIds: string[];
+  visitedZones?: string[];
+  unlockedZones?: string[];
+  herbPlots?: { id: string; stage: HerbPlotStage; plantedAt: number }[];
 }
 
 export class SaveManager {
@@ -54,6 +58,10 @@ export class SaveManager {
         tasks: q.tasks.map(t => ({ id: t.id, done: t.done }))
       }));
 
+      // C4-13-01: Tuyệt đối không lưu cứng trạng thái đang ẩn nấp hoặc chạy nhanh vào dữ liệu lưu trữ
+      state.stats.isHiding = false;
+      state.stats.isSprinting = false;
+
       const saveData: SaveData = {
         version: '3.0.0',
         timestamp: Date.now(),
@@ -71,7 +79,10 @@ export class SaveManager {
         flags: Array.from(state.flags),
         currentQuestId: state.currentQuestId,
         quests: questData,
-        unlockedLoreIds: state.unlockedLore.map(l => l.id)
+        unlockedLoreIds: state.unlockedLore.map(l => l.id),
+        visitedZones: state.getVisitedZones(),
+        unlockedZones: state.getUnlockedZones(),
+        herbPlots: state.getHerbPlots().map(p => ({ id: p.id, stage: p.stage, plantedAt: p.plantedAt }))
       };
 
       localStorage.setItem(SaveManager.SAVE_KEY, JSON.stringify(saveData));
@@ -96,6 +107,9 @@ export class SaveManager {
       state.stats.lanternOil = data.stats.lanternOil;
       state.stats.composure = data.stats.composure;
       state.stats.isLanternOn = data.stats.isLanternOn;
+      // C4-13-01: Tự động giải phóng trạng thái ẩn nấp và chạy nhanh khi tải lại điểm lưu
+      state.stats.isHiding = false;
+      state.stats.isSprinting = false;
 
       // Phục hồi túi đồ
       state.inventory.clear();
@@ -120,6 +134,30 @@ export class SaveManager {
           }
         }
       }
+
+      // Phục hồi các phân khu đã khám phá và vị trí hiện tại (C4-12-10 & C4-12-26)
+      state.visitedZones.clear();
+      if (data.visitedZones && Array.isArray(data.visitedZones)) {
+        for (const z of data.visitedZones) {
+          state.visitedZones.add(z);
+        }
+      } else {
+        state.visitedZones.add('fog_crossing');
+        state.visitedZones.add('bellhollow');
+      }
+      if (data.zoneId) {
+        state.setCurrentZone(data.zoneId as ZoneId);
+      }
+
+      // Phục hồi trạng thái nông trại thảo mộc Sanctuary Farm (C4-12-16)
+      if (data.herbPlots && Array.isArray(data.herbPlots)) {
+        for (const pSave of data.herbPlots) {
+          state.updateHerbPlot(pSave.id, pSave.stage, pSave.plantedAt);
+        }
+      }
+
+      // C4-12-28: Phục hồi trạng thái mở khóa phân khu bền vững và tự động tương thích ngược
+      state.restoreUnlockedZones(data.unlockedZones);
 
       state.emit('stats_changed', state.stats);
       state.emit('inventory_changed', {});

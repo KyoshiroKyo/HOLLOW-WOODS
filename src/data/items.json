@@ -37,6 +37,15 @@
       "iconColor": "#81c784"
     },
     {
+      "id": "seed_herbs",
+      "name": "Hạt Giống Thảo Dược",
+      "category": "resource",
+      "description": "Những hạt giống thảo dược quý mọc mầm nhanh, dùng để gieo trồng tại các luống đất Sanctuary Farm.",
+      "stackable": true,
+      "maxStack": 20,
+      "iconColor": "#2ecc71"
+    },
+    {
       "id": "item_lantern_oil",
       "name": "Bình Dầu Đèn",
       "category": "consumable",

@@ -126,6 +126,13 @@ export class DebugOverlay {
     const animName = this.player.anims.currentAnim?.key || 'none';
     const flipStr = this.player.flipX ? 'CÓ (Lật phải)' : 'KHÔNG';
 
+    let cullingInfo = '';
+    const wb = (this.scene as any).worldBuilder;
+    if (wb && typeof wb.getCullableStats === 'function') {
+      const stats = wb.getCullableStats();
+      cullingInfo = `  |  Culling: ${stats.visible}/${stats.total} hiện (${stats.culled} ẩn)`;
+    }
+
     this.textObject.setText([
       '=== [F4] THÔNG SỐ KỸ THUẬT NHÂN VẬT SATYR (V1.1 - HD 1280×720) ===',
       `Tọa độ gót chân: X = ${Math.round(px)}, Y = ${Math.round(py)}`,
@@ -135,7 +142,7 @@ export class DebugOverlay {
       `Khung Sprite Sheet: 64×64 px (Chuẩn lưới Satyr 22 cột × 4 hàng)`,
       `Hộp va chạm chân (Collider): ${SATYR_BODY_WIDTH}×${SATYR_BODY_HEIGHT} px  |  Offset: (${SATYR_BODY_OFFSET_X}, ${SATYR_BODY_OFFSET_Y})`,
       `Điểm neo chân (Origin): (${SATYR_ORIGIN_X.toFixed(2)}, ${SATYR_ORIGIN_Y.toFixed(2)})  |  Bàn chân tại y = 58`,
-      `Độ phân giải: 1280×720 HD  |  Camera Zoom: 2.2×  |  FPS: ${Math.round(this.scene.game.loop.actualFps)}`
+      `Độ phân giải: 1280×720 HD  |  Camera Zoom: 2.2×  |  FPS: ${Math.round(this.scene.game.loop.actualFps)}${cullingInfo}`
     ]);
   }
 }

@@ -5,7 +5,7 @@ export default defineConfig({
   server: {
     port: 3000,
     watch: {
-      ignored: ['**/Pixel_Art/**', '**/Read/**', '**/scripts/**', '**/reference/**', '**/dist/**']
+      ignored: ['**/Pixel_Art/**', '**/Read/**', '**/scripts/**', '**/reference/**', '**/dist/**', '**/Backups/**']
     }
   },
   build: {

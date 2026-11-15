@@ -83,7 +83,10 @@ export class DialogueSystem {
       if (this.currentPayload.speaker.includes('Edda')) portraitKey = 'portrait_edda';
       else if (this.currentPayload.speaker.includes('Garth')) portraitKey = 'portrait_garth';
       else if (this.currentPayload.speaker.includes('Neris')) portraitKey = 'portrait_neris';
-      else portraitKey = 'satyr_portrait';
+      else if (this.currentPayload.speaker.includes('Bram')) portraitKey = 'portrait_bram';
+      else if (this.currentPayload.speaker.includes('Finn')) portraitKey = 'portrait_finn';
+      else if (this.currentPayload.speaker.includes('Wayfarer') || this.currentPayload.speaker.includes('Lữ Khách')) portraitKey = 'wayfarer_portrait';
+      else portraitKey = 'wayfarer_portrait';
     }
 
     if (this.view) {

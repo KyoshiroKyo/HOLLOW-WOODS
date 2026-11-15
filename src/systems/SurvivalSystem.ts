@@ -45,6 +45,7 @@ export class SurvivalSystem {
       stats.lanternOil = Math.max(0, stats.lanternOil - LANTERN_OIL_DRAIN_RATE * dt);
       if (stats.lanternOil <= 0) {
         stats.isLanternOn = false;
+        this.playerState.emit('lantern_empty');
       }
     }
 
@@ -61,10 +62,20 @@ export class SurvivalSystem {
         // Trong bóng tối: Composure sụt giảm
         const drain = inDeepFog ? COMPOSURE_DRAIN_IN_DARK * 2.2 : COMPOSURE_DRAIN_IN_DARK;
         stats.composure = Math.max(0, stats.composure - drain * dt);
+        // C4-13-03: Khi bình tâm cạn kiệt trong sương tối, khí lạnh gặm mòn sinh lực
+        if (stats.composure <= 0) {
+          stats.health = Math.max(0, stats.health - 2.5 * dt);
+        }
       } else {
         // Có ánh đèn lồng: Composure hồi phục dần
         stats.composure = Math.min(stats.maxComposure, stats.composure + COMPOSURE_RECOVERY_NEAR_LIGHT * dt);
       }
+    }
+
+    // C4-13-03: Báo động tức thời khi sinh lực chạm đáy (health <= 0)
+    if (stats.health <= 0) {
+      stats.health = 0;
+      this.playerState.emit('player_health_depleted');
     }
 
     // Chỉ phát sự kiện 'stats_changed' khi các giá trị có sự thay đổi thực sự

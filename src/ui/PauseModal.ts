@@ -21,6 +21,7 @@ export class PauseModal {
   private callbacks: PauseModalCallbacks;
   public isOpen: boolean = false;
   private saveStatusText!: Phaser.GameObjects.Text;
+  private lastToggleTime: number = 0;
 
   public onOpen?: () => void;
   public onClose?: () => void;
@@ -217,7 +218,21 @@ export class PauseModal {
   }
 
   public toggle(): void {
+    const now = performance.now();
+    if (now - this.lastToggleTime < 250) return;
+    this.lastToggleTime = now;
+
     if (this.isOpen) this.close();
     else this.open();
+  }
+
+  /**
+   * C4-13-09: Dọn dẹp đối tượng hiển thị Modal tránh rò rỉ bộ nhớ
+   */
+  public destroy(): void {
+    if (this.container) {
+      this.container.removeAll(true);
+      this.container.destroy();
+    }
   }
 }

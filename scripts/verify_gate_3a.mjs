@@ -101,7 +101,7 @@ if (fs.existsSync(animJsonPath)) {
 try {
   const animData = JSON.parse(fs.readFileSync(animJsonPath, 'utf8'));
   const animMap = new Map(animData.animations.map(a => [a.key, a.frames]));
-  
+
   const idleDown = animMap.get('satyr_idle_down');
   const walkDown = animMap.get('satyr_walk_down');
   const attackDown = animMap.get('satyr_attack_down');
@@ -154,7 +154,7 @@ function simulateFacing(currentFacing, moveX, moveY) {
   } else if (absY > absX) {
     facing = moveY < 0 ? 'up' : 'down';
   } else {
-    const isCurrentFacingMoving = 
+    const isCurrentFacingMoving =
       (facing === 'left' && moveX < 0) ||
       (facing === 'right' && moveX > 0) ||
       (facing === 'up' && moveY < 0) ||
@@ -270,3 +270,4 @@ if (failCount === 0) {
   console.error(`>>> GATE 3A VERIFICATION FAILED WITH ${failCount} DEFECTS <<<\n`);
   process.exit(1);
 }
+

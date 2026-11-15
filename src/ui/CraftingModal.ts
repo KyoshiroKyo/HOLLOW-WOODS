@@ -27,6 +27,7 @@ export class CraftingModal {
   private container: Phaser.GameObjects.Container;
   private recipeRowRefs: RecipeRowRef[] = [];
   public isOpen: boolean = false;
+  private lastToggleTime: number = 0;
 
   public onOpen?: () => void;
   public onClose?: () => void;
@@ -54,6 +55,17 @@ export class CraftingModal {
         if (this.isOpen) this.close();
       });
     }
+
+    // C4-12-04: Lắng nghe thay đổi túi đồ để tự động làm mới nguyên liệu theo thời gian thực
+    const onInventoryChanged = () => {
+      if (this.isOpen) {
+        this.refresh();
+      }
+    };
+    this.playerState.on('inventory_changed', onInventoryChanged);
+    this.scene.events.once('shutdown', () => {
+      this.playerState.off('inventory_changed', onInventoryChanged);
+    });
   }
 
   private buildUI(): void {
@@ -195,6 +207,10 @@ export class CraftingModal {
   }
 
   public toggle(): void {
+    const now = performance.now();
+    if (now - this.lastToggleTime < 250) return;
+    this.lastToggleTime = now;
+
     if (this.isOpen) {
       this.close();
     } else {
@@ -239,6 +255,16 @@ export class CraftingModal {
       item.craftBtnBg.clear();
       item.craftBtnBg.fillStyle(can ? 0x27ae60 : 0x4a5568, 1);
       item.craftBtnBg.fillRoundedRect(-48, -18, 96, 36, 6);
+    }
+  }
+
+  /**
+   * C4-13-09: Dọn dẹp đối tượng hiển thị Modal tránh rò rỉ bộ nhớ
+   */
+  public destroy(): void {
+    if (this.container) {
+      this.container.removeAll(true);
+      this.container.destroy();
     }
   }
 }

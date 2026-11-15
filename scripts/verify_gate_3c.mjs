@@ -64,7 +64,7 @@ report(
 );
 
 // CHECK 4: Time Rift Cutscene text coordinates within 1280x720 Viewport
-const riftDialogueMatches = endingSystemContent.includes('640') && 
+const riftDialogueMatches = endingSystemContent.includes('640') &&
                             endingSystemContent.includes('Satyr: “Ánh đèn pha ô tô... quốc lộ ven rừng?!') &&
                             (endingSystemContent.includes('580') || endingSystemContent.includes('590') || endingSystemContent.includes('600'));
 report(
@@ -160,3 +160,4 @@ if (failCount === 0) {
   console.error('>>> SOME GATE 3C CHECKS FAILED <<<\n');
   process.exit(1);
 }
+

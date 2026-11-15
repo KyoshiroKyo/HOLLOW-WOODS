@@ -107,9 +107,34 @@ export class PuzzleSystem {
 
   // --- CÂU ĐỐ 2: BA CỘT ĐÁ TIẾNG VỌNG (ACT 4) ---
 
-  public interactPillar(pillarId: string): { solved: boolean; failed: boolean; msg: string } {
-    if (this.isMirePuzzleSolved) {
-      return { solved: true, failed: false, msg: 'Ba Cột Đá Tiếng Vọng đã được mở khóa hoàn toàn.' };
+  public interactPillar(pillarId: string): { 
+    solved: boolean; 
+    failed: boolean; 
+    msg: string; 
+    alreadySolved?: boolean; 
+    alreadyLit?: boolean; 
+    stepIndex?: number; 
+  } {
+    // 1. Kiểm tra trạng thái đã giải đố thành công (chống nhận thưởng/lặp thao tác trùng lặp)
+    if (this.isMirePuzzleSolved || this.playerState.hasFlag('mire_pillars_solved')) {
+      this.isMirePuzzleSolved = true;
+      return { 
+        solved: true, 
+        failed: false, 
+        alreadySolved: true, 
+        msg: '✨ Ba Cột Đá Tiếng Vọng đã được mở khóa hoàn toàn! Phong ấn Miếu Chuông đã được giải trừ.' 
+      };
+    }
+
+    // 2. Kiểm tra nếu cột đá này đã được kích hoạt trong chuỗi hiện tại
+    if (this.currentSequence.includes(pillarId)) {
+      return {
+        solved: false,
+        failed: false,
+        alreadyLit: true,
+        stepIndex: this.currentSequence.length,
+        msg: `Cột đá này đã được kích hoạt và đang tỏa sáng. Tiến trình: (${this.currentSequence.length}/3). Hãy tìm Cột Đá tiếp theo!`
+      };
     }
 
     const puzzleMeta = puzzlesData.puzzles.silent_mire_pillars;
@@ -119,24 +144,29 @@ export class PuzzleSystem {
       // Kích hoạt đúng cột đá kế tiếp
       this.currentSequence.push(pillarId);
       this.pillarStates.set(pillarId, true);
+      const step = this.currentSequence.length;
 
-      if (this.currentSequence.length === puzzleMeta.correctSequence.length) {
+      if (step === puzzleMeta.correctSequence.length) {
         this.isMirePuzzleSolved = true;
         this.playerState.setFlag('mire_pillars_solved');
+        this.playerState.setFlag('mire_puzzle_solved');
         return {
           solved: true,
           failed: false,
-          msg: '🎉 Kích hoạt thành công Ba Cột Đá Tiếng Vọng! Nước đầm lầy đã rút, con đường đến Miếu Chuông đã mở!'
+          stepIndex: step,
+          msg: '🎉 KÍCH HOẠT THÀNH CÔNG BA CỘT ĐÁ TIẾNG VỌNG! Nước đầm lầy đã rút, con đường đến Miếu Chuông đã mở!'
         };
       }
 
+      const pillarName = pillarId === 'pillar_moon' ? 'Mặt Trăng (1/3)' : 'Rễ Cây (2/3)';
       return {
         solved: false,
         failed: false,
-        msg: `Cột đá bừng sáng hào quang! Tiến trình: (${this.currentSequence.length}/3). Tiếp tục kích hoạt cột đá tiếp theo.`
+        stepIndex: step,
+        msg: `✨ Cột Đá ${pillarName} bừng sáng hào quang! Hãy kích hoạt cột đá tiếp theo.`
       };
     } else {
-      // Kích hoạt sai thứ tự!
+      // Kích hoạt sai thứ tự! Cơ chế đặt lại mượt mà (smooth reset)
       this.currentSequence = [];
       this.pillarStates.set('pillar_moon', false);
       this.pillarStates.set('pillar_root', false);
@@ -145,9 +175,25 @@ export class PuzzleSystem {
       return {
         solved: false,
         failed: true,
-        msg: '⚡ THỨ TỰ SAI! Tiếng gầm vọng lại từ đáy bùn sâu... Kẻ Lắng Nghe đang hướng tới vị trí này! Các cột đá đã được hoàn tác.'
+        stepIndex: 0,
+        msg: '⚡ SAI THỨ TỰ! Tiếng gầm vọng lại từ đáy bùn sâu... Kẻ Lắng Nghe đang hướng tới vị trí này! Các cột đá đã được hoàn tác.'
       };
     }
+  }
+
+  public resetPillars(): void {
+    this.currentSequence = [];
+    this.pillarStates.set('pillar_moon', false);
+    this.pillarStates.set('pillar_root', false);
+    this.pillarStates.set('pillar_eye', false);
+  }
+
+  public getLitPillarsCount(): number {
+    return this.currentSequence.length;
+  }
+
+  public isSolved(): boolean {
+    return this.isMirePuzzleSolved || this.playerState.hasFlag('mire_pillars_solved');
   }
 
   public isPillarLit(pillarId: string): boolean {

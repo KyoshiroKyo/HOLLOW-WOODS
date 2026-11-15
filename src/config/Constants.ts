@@ -18,11 +18,17 @@ export const LANTERN_OIL_DRAIN_RATE = 0.8; // tiêu hao dầu mỗi giây khi b�
 export const LANTERN_RADIUS_NORMAL = 120; // bán kính ánh sáng
 export const LANTERN_RADIUS_DIM = 45; // bán kính khi tắt đèn (ánh sáng yếu ớt của bóng tối)
 
+// Tọa độ tương đối của Đèn Lồng Hổ Phách trên cây gậy gỗ (gốc neo chân 32, 58 trong ô 64x64 - C4-13-04)
+export const LANTERN_OFFSET_DOWN = { x: -5, y: -16 };
+export const LANTERN_OFFSET_UP = { x: 13, y: -19 };
+export const LANTERN_OFFSET_LEFT = { x: -9, y: -16 };
+export const LANTERN_OFFSET_RIGHT = { x: 9, y: -16 };
+
 // Tâm lý bình tâm (Composure)
 export const COMPOSURE_DRAIN_IN_DARK = 1.2; // giảm bình tâm khi ở trong bóng tối không đèn
 export const COMPOSURE_RECOVERY_NEAR_LIGHT = 2.0;
 
-// Satyr Sprite Sheet Specs
+// Satyr / The Mossbound Wayfarer Sprite Sheet Specs
 export const SATYR_SHEET_KEY = 'satyr_sheet';
 export const SATYR_PORTRAIT_KEY = 'satyr_portrait';
 export const SATYR_FRAME_WIDTH = 64;
@@ -30,9 +36,30 @@ export const SATYR_FRAME_HEIGHT = 64;
 export const SATYR_COLS = 22;
 export const SATYR_ROWS = 4;
 
-// Điểm neo chân (Foot anchor) và va chạm gót chân
+// The Mossbound Wayfarer (Protagonist V1.2) Sprite Sheet & Portrait Keys
+export const WAYFARER_IDLE_KEY = 'wayfarer_idle';
+export const WAYFARER_WALK_KEY = 'wayfarer_walk';
+export const WAYFARER_RUN_KEY = 'wayfarer_run';
+export const WAYFARER_ATTACK_KEY = 'wayfarer_attack';
+export const WAYFARER_HURT_KEY = 'wayfarer_hurt';
+export const WAYFARER_DEATH_KEY = 'wayfarer_death';
+export const WAYFARER_INTERACT_KEY = 'wayfarer_interact';
+export const WAYFARER_GATHER_KEY = 'wayfarer_gather';
+export const WAYFARER_USE_ITEM_KEY = 'wayfarer_use_item';
+export const WAYFARER_PORTRAIT_KEY = 'wayfarer_portrait';
+
+export const WAYFARER_FRAME_WIDTH = 64;
+export const WAYFARER_FRAME_HEIGHT = 64;
+export const WAYFARER_ORIGIN_X = 0.5;
+export const WAYFARER_ORIGIN_Y = 0.90625; // Bàn chân tại y = 58 trong frame 64x64 (58/64)
+export const WAYFARER_BODY_WIDTH = 14;
+export const WAYFARER_BODY_HEIGHT = 8;
+export const WAYFARER_BODY_OFFSET_X = 25;
+export const WAYFARER_BODY_OFFSET_Y = 50;
+
+// Điểm neo chân (Foot anchor) và va chạm gót chân (Tương thích ngược)
 export const SATYR_ORIGIN_X = 0.5;
-export const SATYR_ORIGIN_Y = 0.90; // Bàn chân tại y = 58 trong frame 64x64 (58/64 ≈ 0.90)
+export const SATYR_ORIGIN_Y = 0.90625;
 export const SATYR_BODY_WIDTH = 14;
 export const SATYR_BODY_HEIGHT = 8;
 export const SATYR_BODY_OFFSET_X = 25;
@@ -67,6 +94,8 @@ export const SPRITE_PILLAR_EYE = 'pillar_eye';
 export const SPRITE_VILLAGE_WELL = 'village_well';
 export const SPRITE_CRAFTING_BENCH = 'crafting_bench';
 export const SPRITE_STONE_ALTAR = 'stone_altar';
+export const SPRITE_ROCK_LARGE = 'rock_large';
+export const SPRITE_ROCK_MEDIUM = 'rock_medium';
 export const SPRITE_WOODEN_FENCE = 'wooden_fence';
 export const SPRITE_SIGNPOST = 'signpost';
 
@@ -77,23 +106,40 @@ export const TILE_SWAMP_MUD = 'tile_swamp_mud';
 export const TILE_COBBLE_ROAD = 'tile_cobble_road';
 export const TILE_STONE_FLOOR = 'tile_stone_floor';
 
-// Khóa Texture NPC & Chân Dung (NPC Sprite & Portrait Keys - PASS T09)
+// Khóa Texture NPC & Chân Dung (NPC Sprite & Portrait Keys - PASS T09 / C4-12-08)
 export const SPRITE_NPC_GARTH = 'npc_garth';
 export const PORTRAIT_GARTH = 'portrait_garth';
 export const SPRITE_NPC_EDDA = 'npc_edda';
 export const PORTRAIT_EDDA = 'portrait_edda';
 export const SPRITE_NPC_NERIS = 'npc_neris';
 export const PORTRAIT_NERIS = 'portrait_neris';
+export const SPRITE_NPC_BRAM = 'npc_bram';
+export const PORTRAIT_BRAM = 'portrait_bram';
+export const SPRITE_NPC_FINN = 'npc_finn';
+export const PORTRAIT_FINN = 'portrait_finn';
+
+// Khóa Texture Hoạt Ảnh NPC Chuẩn Hóa (C4-12-08 / C4-12-09)
+export const SPRITE_GARTH_IDLE = 'garth_idle';
+export const SPRITE_GARTH_WALK = 'garth_walk';
+export const SPRITE_EDDA_IDLE = 'edda_idle';
+export const SPRITE_EDDA_WALK = 'edda_walk';
+export const SPRITE_NERIS_IDLE = 'neris_idle';
+export const SPRITE_NERIS_WALK = 'neris_walk';
+export const SPRITE_EDDA_IDLE_SHEET = 'edda_idle_sheet';
+export const SPRITE_NERIS_IDLE_SHEET = 'neris_idle_sheet';
+export const SPRITE_GARTH_WALK_SHEET = 'garth_walk_sheet';
+export const SPRITE_POTTER_WALK_SHEET = 'potter_walk_sheet';
+export const SPRITE_ERRAND_BOY_WALK_SHEET = 'errand_boy_walk_sheet';
 
 // Khóa Texture Quái Vật & Bóng Ma (Monster & Echo Sprite Keys - PASS T10)
 export const SPRITE_THE_LISTENER = 'the_listener';
 export const SPRITE_THE_ECHO = 'the_echo';
 export const SPRITE_FOG_SMOOTH = 'fog_smooth';
 
-
-
-
-
-
+// Khóa Texture Tài Nguyên Thu Thập (World Resource Sprite Keys - C4-02A)
+export const SPRITE_RES_DRY_WOOD = 'res_dry_wood';
+export const SPRITE_RES_TREE_RESIN = 'res_tree_resin';
+export const SPRITE_RES_FLINT = 'res_flint';
+export const SPRITE_RES_HERBS = 'res_herbs';
 
 

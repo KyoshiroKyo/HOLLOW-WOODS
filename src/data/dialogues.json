@@ -1,7 +1,7 @@
 {
   "dialogues": {
     "garth_warning": {
-      "speaker": "Dân Làng Garth",
+      "speaker": "Garth – Người Gác Cổng",
       "portrait": "portrait_garth",
       "lines": [
         "Đứng lại! Đừng bước thêm một bước nào nữa!",
@@ -11,12 +11,36 @@
       "onCompleteFlag": "talked_to_villagers",
       "nextQuestId": "Q01_MEET_EDDA"
     },
+    "garth_reminder_edda": {
+      "speaker": "Garth – Người Gác Cổng",
+      "portrait": "portrait_garth",
+      "lines": [
+        "Ta đã bảo mau đến gặp bà Edda tại Tháp Chuông ở quảng trường làng rồi cơ mà!",
+        "Bà lão là người duy nhất nắm giữ Ba Quy Tắc Bằng Máu để sống sót trong khu rừng này!"
+      ]
+    },
+    "garth_reminder_gate_locked": {
+      "speaker": "Garth – Người Gác Cổng",
+      "portrait": "portrait_garth",
+      "lines": [
+        "Bà Edda đã dặn rồi: Rừng ngoài kia nguy hiểm khôn lường. Muốn ta mở Cổng Đông, ngươi phải tới gặp Neris ở tiệm thuốc để chữa thương và chuẩn bị ít nhất 1 Bình Dầu Đèn dự phòng!",
+        "Không có dầu đèn giữ sáng, ngươi sẽ mất trí trong sương mù chỉ sau vài bước chân!"
+      ]
+    },
+    "garth_east_gate_open": {
+      "speaker": "Garth – Người Gác Cổng",
+      "portrait": "portrait_garth",
+      "lines": [
+        "Cổng Đông đã mở! Con đường phía trước là Đường Mòn Quanh Co (The Crooked Path).",
+        "Hãy cẩn thận từng bước chân, nhớ nấp vào thân cây rỗng nếu nghe thấy tiếng động lạ, và tìm lại Lưỡi Chuông Đồng cho làng!"
+      ]
+    },
     "edda_intro": {
       "speaker": "Edda – Người Giữ Chuông",
       "portrait": "portrait_edda",
       "lines": [
         "Khuôn mặt này... ánh nhìn này... Đã bao nhiêu mùa trôi qua kể từ khi có một kẻ sống sót bước ra từ The Veil?",
-        "Ngươi tên Satyr sao? Nghe như một âm vang vọng lại từ bờ bên kia ranh giới.",
+        "Chiếc áo choàng vương rêu xanh... Ngươi là một Lữ Khách bước ra từ sương mù rêu phong sao? Nghe như một âm vang vọng lại từ bờ bên kia ranh giới.",
         "Ở làng Bellhollow này, nếu ngươi muốn sống sót qua đêm nay, hãy khắc cốt ghi tâm BA QUY TẮC BẰNG MÁU:",
         "QUY TẮC 1: Đừng bao giờ trả lời khi khu rừng cất tiếng gọi đúng họ tên mình. Đó không phải người quen, mà là Kẻ Lắng Nghe đang mượn giọng.",
         "QUY TẮC 2: Đừng đi theo chiếc đèn thứ hai xuất hiện trong sương mù. Chiếc đèn đó không có người cầm.",
@@ -27,12 +51,28 @@
       "onCompleteFlag": "talked_to_edda",
       "nextQuestId": "Q02_MEET_NERIS"
     },
+    "edda_reminder_locked": {
+      "speaker": "Edda – Người Giữ Chuông",
+      "portrait": "portrait_edda",
+      "lines": [
+        "Hãy nhớ kỹ Ba Quy Tắc Bằng Máu: Không trả lời tiếng gọi tên, Không theo chiếc đèn thứ hai, và Không rung chuông khi sương đã vào làng.",
+        "Mau đến tìm Neris ở tiệm thuốc phía Đông Bắc làng để chữa trị vết thương và học cách pha chế Dầu Đèn. Chỉ khi ngươi chuẩn bị đủ dầu đèn sinh tồn, Garth mới được phép mở Cổng Đông cho ngươi!"
+      ]
+    },
+    "edda_reminder_open": {
+      "speaker": "Edda – Người Giữ Chuông",
+      "portrait": "portrait_edda",
+      "lines": [
+        "Cổng Đông đã mở rồi, hỡi Lữ Khách! Miếu Chuông Phế Tích nằm sâu sau Đầm Lầy Tĩnh Lặng.",
+        "Kẻ Lắng Nghe đang rình rập trong sương mù. Hãy luôn giữ ngọn đèn hổ phách cháy sáng và tìm lại Lưỡi Chuông Đồng cho làng Bellhollow!"
+      ]
+    },
     "edda_reminder": {
       "speaker": "Edda – Người Giữ Chuông",
       "portrait": "portrait_edda",
       "lines": [
-        "Hãy nhớ kỹ Ba Quy Tắc: Không trả lời tiếng gọi tên, Không theo chiếc đèn thứ hai, và Không rung chuông khi sương đã vào làng.",
-        "Cổng Đông đã mở. Miếu Chuông Phế Tích nằm sâu sau Đầm Lầy Tĩnh Lặng. Hãy chuẩn bị kỹ lưỡng trước khi bước vào rừng!"
+        "Hãy nhớ kỹ Ba Quy Tắc Bằng Máu: Không trả lời tiếng gọi tên, Không theo chiếc đèn thứ hai, và Không rung chuông khi sương đã vào làng.",
+        "Mau đến tìm Neris ở tiệm thuốc phía Đông Bắc làng để chữa trị vết thương và học cách pha chế Dầu Đèn. Garth sẽ mở Cổng Đông khi ngươi sẵn sàng!"
       ]
     },
     "neris_intro": {
@@ -43,12 +83,30 @@
         "Cầm lấy nắm Thuốc Đắp Thảo Mộc này. Nó sẽ giúp vết thương khép miệng và xoa dịu nỗi sợ hãi trong đầu ngươi.",
         "Khu rừng The Hollow Woods chứa đầy thảo dược bạc và nhựa cây thông. Hãy thu thập chúng bên các bờ suối và thân cây cổ thụ.",
         "Dùng bàn chế tạo [Phím I]: Nhựa thông và Gỗ khô sẽ tạo ra Dầu Đèn. Hai nắm Thảo dược sẽ giã thành Thuốc Đắp. Còn Đá lửa ghép với Gỗ sẽ tạo thành Mồi Tiếng Động để ném đánh lạc hướng quái vật.",
-        "Ta đã phục hồi sinh lực cho ngươi. Hãy giữ ngọn đèn luôn cháy sáng, Satyr!"
+        "Ta đã phục hồi sinh lực cho ngươi. Hãy giữ ngọn đèn luôn cháy sáng, hỡi Lữ Khách Rêu Phong!"
       ],
       "onCompleteFlag": "talked_to_neris",
       "nextQuestId": "Q03_PREPARE_RESOURCES",
       "rewardItem": "item_herbal_poultice",
       "rewardCount": 1,
+      "healPlayer": true
+    },
+    "neris_heal_locked": {
+      "speaker": "Neris – Người Chữa Thảo Mộc",
+      "portrait": "portrait_neris",
+      "lines": [
+        "Để ta băng lại vết trầy xước cho ngươi... Hương thảo dược này sẽ giữ cho tâm trí ngươi không bị Màn Sương nuốt chửng.",
+        "Nếu chưa đủ Dầu Đèn, hãy nhặt Nhựa Cây và Cành Gỗ quanh làng rồi mở túi chế tạo [Phím I] để pha chế. Khi có dầu đèn, Garth sẽ mở Cổng Đông cho ngươi."
+      ],
+      "healPlayer": true
+    },
+    "neris_heal_open": {
+      "speaker": "Neris – Người Chữa Thảo Mộc",
+      "portrait": "portrait_neris",
+      "lines": [
+        "Để ta phục hồi thể lực và làm dịu tinh thần cho ngươi... Cổng Đông đã mở rồi, khu rừng ngoài kia rất lạnh lẽo và tăm tối.",
+        "Đừng bao giờ để ngọn đèn lồng cạn dầu! Hãy mang theo Thuốc Đắp và Mồi Tiếng Động phòng thân nhé!"
+      ],
       "healPlayer": true
     },
     "neris_heal": {
@@ -61,16 +119,33 @@
       "healPlayer": true
     },
     "clapper_found": {
-      "speaker": "Satyr",
-      "portrait": "satyr_portrait",
+      "speaker": "The Mossbound Wayfarer",
+      "portrait": "wayfarer_portrait",
       "lines": [
         "Khối đồng nặng trịch hình đầu chim ưng... Đây chính là Lưỡi Chuông Đồng Cổ mà bà Edda nhắc đến!",
         "Một luồng hàn khí lạnh buốt chạy dọc sống lưng... Có thứ gì đó vừa mở mắt trong đầm lầy!",
         "Kẻ Lắng Nghe đang tới gần! Mình phải nấp vào thân cây rỗng hoặc ném mồi tiếng động để chạy thoát về làng!"
       ],
       "onCompleteFlag": "clapper_collected",
-      "nextQuestId": "Q06_RETURN_TO_BELLHOLLOW"
+      "nextQuestId": "Q06_RETRIEVE_CLAPPER"
+    },
+    "bram_chat": {
+      "speaker": "Bram – Thợ Thủ Công Làng",
+      "portrait": "portrait_bram",
+      "lines": [
+        "Xin chào người lạ mặt! Ta là Bram, thợ thủ công của làng Bellhollow.",
+        "Bàn chế tạo cạnh ta luôn sẵn sàng nếu ngươi có đủ Gỗ Khô và Đá Lửa để chế tạo vật dụng sinh tồn.",
+        "Hãy luôn kiểm tra ngọn đèn lồng trước khi bước ra cổng làng nhé!"
+      ]
+    },
+    "finn_chat": {
+      "speaker": "Finn – Cậu Bé Đưa Tin",
+      "portrait": "portrait_finn",
+      "lines": [
+        "Chào anh Lữ Khách! Anh vừa từ trong sương mù bước ra thật sao?!",
+        "Em là Finn, người chuyển tin tức và chạy việc quanh quảng trường làng Bellhollow.",
+        "Bà lão Edda dặn đừng đi lang thang ra Cổng Đông khi trời tối, sương mù ngoài đó nuốt chửng mọi thanh âm đấy!"
+      ]
     }
   }
 }
-

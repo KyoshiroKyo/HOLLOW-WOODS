@@ -6,6 +6,18 @@ import {
   SATYR_PORTRAIT_KEY, 
   SATYR_FRAME_WIDTH, 
   SATYR_FRAME_HEIGHT,
+  WAYFARER_IDLE_KEY,
+  WAYFARER_WALK_KEY,
+  WAYFARER_RUN_KEY,
+  WAYFARER_ATTACK_KEY,
+  WAYFARER_HURT_KEY,
+  WAYFARER_DEATH_KEY,
+  WAYFARER_INTERACT_KEY,
+  WAYFARER_GATHER_KEY,
+  WAYFARER_USE_ITEM_KEY,
+  WAYFARER_PORTRAIT_KEY,
+  WAYFARER_FRAME_WIDTH,
+  WAYFARER_FRAME_HEIGHT,
   VIRTUAL_WIDTH,
   VIRTUAL_HEIGHT,
   SPRITE_TREE_OAK_1,
@@ -25,6 +37,8 @@ import {
   SPRITE_VILLAGE_WELL,
   SPRITE_CRAFTING_BENCH,
   SPRITE_STONE_ALTAR,
+  SPRITE_ROCK_LARGE,
+  SPRITE_ROCK_MEDIUM,
   SPRITE_WOODEN_FENCE,
   SPRITE_SIGNPOST,
   TILE_FOREST_GRASS,
@@ -38,9 +52,28 @@ import {
   PORTRAIT_EDDA,
   SPRITE_NPC_NERIS,
   PORTRAIT_NERIS,
+  SPRITE_NPC_BRAM,
+  PORTRAIT_BRAM,
+  SPRITE_NPC_FINN,
+  PORTRAIT_FINN,
+  SPRITE_GARTH_IDLE,
+  SPRITE_GARTH_WALK,
+  SPRITE_EDDA_IDLE,
+  SPRITE_EDDA_WALK,
+  SPRITE_NERIS_IDLE,
+  SPRITE_NERIS_WALK,
+  SPRITE_EDDA_IDLE_SHEET,
+  SPRITE_NERIS_IDLE_SHEET,
+  SPRITE_GARTH_WALK_SHEET,
+  SPRITE_POTTER_WALK_SHEET,
+  SPRITE_ERRAND_BOY_WALK_SHEET,
   SPRITE_THE_LISTENER,
   SPRITE_THE_ECHO,
-  SPRITE_FOG_SMOOTH
+  SPRITE_FOG_SMOOTH,
+  SPRITE_RES_DRY_WOOD,
+  SPRITE_RES_TREE_RESIN,
+  SPRITE_RES_FLINT,
+  SPRITE_RES_HERBS
 } from '../config/Constants';
 
 export class PreloadScene extends Phaser.Scene {
@@ -81,14 +114,53 @@ export class PreloadScene extends Phaser.Scene {
       percentText.destroy();
     });
 
-    // 2. Nạp sprite sheet chính của Satyr (64×64 px)
+    // 2. Nạp sprite sheet chính của Satyr (64×64 px - tương thích ngược)
     this.load.spritesheet(SATYR_SHEET_KEY, 'assets/characters/satyr/satyr_sheet.png', {
       frameWidth: SATYR_FRAME_WIDTH,
       frameHeight: SATYR_FRAME_HEIGHT
     });
 
-    // 3. Nạp chân dung Satyr
+    // 2b. Nạp 9 sprite sheets gốc của nhân vật chính The Mossbound Wayfarer (64×64 px)
+    this.load.spritesheet(WAYFARER_IDLE_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_idle.png', {
+      frameWidth: WAYFARER_FRAME_WIDTH,
+      frameHeight: WAYFARER_FRAME_HEIGHT
+    });
+    this.load.spritesheet(WAYFARER_WALK_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_walk.png', {
+      frameWidth: WAYFARER_FRAME_WIDTH,
+      frameHeight: WAYFARER_FRAME_HEIGHT
+    });
+    this.load.spritesheet(WAYFARER_RUN_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_run.png', {
+      frameWidth: WAYFARER_FRAME_WIDTH,
+      frameHeight: WAYFARER_FRAME_HEIGHT
+    });
+    this.load.spritesheet(WAYFARER_ATTACK_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_attack.png', {
+      frameWidth: WAYFARER_FRAME_WIDTH,
+      frameHeight: WAYFARER_FRAME_HEIGHT
+    });
+    this.load.spritesheet(WAYFARER_HURT_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_hurt.png', {
+      frameWidth: WAYFARER_FRAME_WIDTH,
+      frameHeight: WAYFARER_FRAME_HEIGHT
+    });
+    this.load.spritesheet(WAYFARER_DEATH_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_death.png', {
+      frameWidth: WAYFARER_FRAME_WIDTH,
+      frameHeight: WAYFARER_FRAME_HEIGHT
+    });
+    this.load.spritesheet(WAYFARER_INTERACT_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_interact.png', {
+      frameWidth: WAYFARER_FRAME_WIDTH,
+      frameHeight: WAYFARER_FRAME_HEIGHT
+    });
+    this.load.spritesheet(WAYFARER_GATHER_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_gather.png', {
+      frameWidth: WAYFARER_FRAME_WIDTH,
+      frameHeight: WAYFARER_FRAME_HEIGHT
+    });
+    this.load.spritesheet(WAYFARER_USE_ITEM_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_use_item.png', {
+      frameWidth: WAYFARER_FRAME_WIDTH,
+      frameHeight: WAYFARER_FRAME_HEIGHT
+    });
+
+    // 3. Nạp chân dung hội thoại Satyr & The Mossbound Wayfarer (64×64 px)
     this.load.image(SATYR_PORTRAIT_KEY, 'assets/characters/satyr/satyr_portrait.png');
+    this.load.image(WAYFARER_PORTRAIT_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_portrait.png');
 
     // 4. Nạp các tileset môi trường đã trích xuất
     this.load.image('tx_grass', 'assets/environment/tilesets/TX Tileset Grass.png');
@@ -117,6 +189,8 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image(SPRITE_VILLAGE_WELL, 'assets/environment/sprites/village_well.png');
     this.load.image(SPRITE_CRAFTING_BENCH, 'assets/environment/sprites/crafting_bench.png');
     this.load.image(SPRITE_STONE_ALTAR, 'assets/environment/sprites/stone_altar.png');
+    this.load.image(SPRITE_ROCK_LARGE, 'assets/environment/sprites/rock_large.png');
+    this.load.image(SPRITE_ROCK_MEDIUM, 'assets/environment/sprites/rock_medium.png');
     this.load.image(SPRITE_WOODEN_FENCE, 'assets/environment/sprites/wooden_fence.png');
     this.load.image(SPRITE_SIGNPOST, 'assets/environment/sprites/signpost.png');
 
@@ -127,13 +201,67 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image(TILE_COBBLE_ROAD, 'assets/environment/tiles/tile_cobble_road.png');
     this.load.image(TILE_STONE_FLOOR, 'assets/environment/tiles/tile_stone_floor.png');
 
-    // 9. Nạp các sprite NPC & Chân dung hội thoại pixel art (PASS T09)
-    this.load.image(SPRITE_NPC_GARTH, 'assets/characters/npcs/npc_garth.png');
-    this.load.image(PORTRAIT_GARTH, 'assets/characters/npcs/portrait_garth.png');
-    this.load.image(SPRITE_NPC_EDDA, 'assets/characters/npcs/npc_edda.png');
-    this.load.image(PORTRAIT_EDDA, 'assets/characters/npcs/portrait_edda.png');
-    this.load.image(SPRITE_NPC_NERIS, 'assets/characters/npcs/npc_neris.png');
-    this.load.image(PORTRAIT_NERIS, 'assets/characters/npcs/portrait_neris.png');
+    // 9. Nạp các sprite NPC & Chân dung hội thoại pixel art C4-12-08 (Garth, Edda, Neris, Bram, Finn)
+    this.load.image(PORTRAIT_GARTH, 'assets/characters/villagers/portrait_garth.png');
+    this.load.image(PORTRAIT_EDDA, 'assets/characters/villagers/portrait_edda.png');
+    this.load.image(PORTRAIT_NERIS, 'assets/characters/villagers/portrait_neris.png');
+    this.load.image(PORTRAIT_BRAM, 'assets/characters/villagers/portrait_bram.png');
+    this.load.image(PORTRAIT_FINN, 'assets/characters/villagers/portrait_finn.png');
+
+    // Nạp các Spritesheet 64x64 px mới từ C4-12-08
+    this.load.spritesheet(SPRITE_EDDA_IDLE_SHEET, 'assets/characters/villagers/edda_idle_sheet.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet(SPRITE_NERIS_IDLE_SHEET, 'assets/characters/villagers/neris_idle_sheet.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet(SPRITE_GARTH_WALK_SHEET, 'assets/characters/villagers/garth_walk_sheet.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet(SPRITE_POTTER_WALK_SHEET, 'assets/characters/villagers/potter_walk_sheet.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet(SPRITE_ERRAND_BOY_WALK_SHEET, 'assets/characters/villagers/errand_boy_walk_sheet.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+
+    // Giữ tương thích các khóa nạp spritesheet cũ (garth_idle, garth_walk, edda_idle, edda_walk, neris_idle, neris_walk)
+    this.load.spritesheet(SPRITE_GARTH_IDLE, 'assets/characters/villagers/garth_walk_sheet.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet(SPRITE_GARTH_WALK, 'assets/characters/villagers/garth_walk_sheet.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet(SPRITE_EDDA_IDLE, 'assets/characters/villagers/edda_idle_sheet.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet(SPRITE_EDDA_WALK, 'assets/characters/villagers/edda_idle_sheet.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet(SPRITE_NERIS_IDLE, 'assets/characters/villagers/neris_idle_sheet.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet(SPRITE_NERIS_WALK, 'assets/characters/villagers/neris_idle_sheet.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+
+    // Giữ tương thích các khóa sprite ảnh tĩnh cũ (npc_garth, npc_edda, npc_neris, npc_bram, npc_finn)
+    this.load.image(SPRITE_NPC_GARTH, 'assets/characters/villagers/npc_garth.png');
+    this.load.image(SPRITE_NPC_EDDA, 'assets/characters/villagers/npc_edda.png');
+    this.load.image(SPRITE_NPC_NERIS, 'assets/characters/villagers/npc_neris.png');
+    this.load.image(SPRITE_NPC_BRAM, 'assets/characters/villagers/npc_bram.png');
+    this.load.image(SPRITE_NPC_FINN, 'assets/characters/villagers/npc_finn.png');
 
     // 10. Nạp các sprite quái vật bóng đêm & tàn ảnh (PASS T10, GATE 2B)
     this.load.spritesheet(SPRITE_THE_LISTENER, 'assets/monsters/the_listener.png', {
@@ -142,9 +270,21 @@ export class PreloadScene extends Phaser.Scene {
     });
     this.load.image(SPRITE_THE_ECHO, 'assets/monsters/the_echo.png');
     this.load.image(SPRITE_FOG_SMOOTH, 'assets/environment/sprites/fog_smooth.png');
+
+    // 11. Nạp các sprite tài nguyên thu thập thế giới 16×16 px (C4-02A)
+    this.load.image(SPRITE_RES_DRY_WOOD, 'assets/environment/sprites/res_dry_wood.png');
+    this.load.image(SPRITE_RES_TREE_RESIN, 'assets/environment/sprites/res_tree_resin.png');
+    this.load.image(SPRITE_RES_FLINT, 'assets/environment/sprites/res_flint.png');
+    this.load.image(SPRITE_RES_HERBS, 'assets/environment/sprites/res_herbs.png');
   }
 
   public create(): void {
+    // Tạo texture trong suốt 1x1 chuẩn cho các collider vô hình, chống fallback sang __DEFAULT (hộp xanh lá X)
+    if (!this.textures.exists('dummy_transparent')) {
+      const dummyGfx = this.make.graphics({ x: 0, y: 0 });
+      dummyGfx.generateTexture('dummy_transparent', 1, 1);
+      dummyGfx.destroy();
+    }
     this.scene.start(SCENE_MAIN_MENU);
   }
 }

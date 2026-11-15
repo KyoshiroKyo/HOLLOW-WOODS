@@ -6,6 +6,8 @@ import { SPRITE_THE_LISTENER } from '../config/Constants';
 export class TheListener extends Monster {
   public ai!: ListenerAI;
   private alertIcon!: Phaser.GameObjects.Container;
+  private alertBg!: Phaser.GameObjects.Graphics;
+  private alertText!: Phaser.GameObjects.Text;
   private visualGfx!: Phaser.GameObjects.Graphics;
 
   constructor(scene: Phaser.Scene, x: number, y: number, waypoints: Waypoint[]) {
@@ -30,22 +32,18 @@ export class TheListener extends Monster {
     this.visualGfx = scene.add.graphics();
     this.drawMonsterShadow();
 
-    // 2. Dựng biểu tượng cảnh báo Telegraph [!👂]
+    // 2. Dựng biểu tượng cảnh báo Telegraph [? / !] (C4-13-05)
     this.alertIcon = scene.add.container(0, -54);
-    const alertBg = scene.add.graphics();
-    alertBg.fillStyle(0x922b21, 0.95);
-    alertBg.fillCircle(0, 0, 10);
-    alertBg.lineStyle(1, 0xf1c40f, 1);
-    alertBg.strokeCircle(0, 0, 10);
-
-    const alertText = scene.add.text(0, 0, '!', {
+    this.alertBg = scene.add.graphics();
+    this.alertText = scene.add.text(0, 0, '!', {
       fontFamily: 'serif',
       fontSize: '11px',
       fontStyle: 'bold',
       color: '#ffffff'
     }).setOrigin(0.5, 0.5);
 
-    this.alertIcon.add([alertBg, alertText]);
+    this.drawAlertIconBadge('chase');
+    this.alertIcon.add([this.alertBg, this.alertText]);
     this.alertIcon.setVisible(false);
 
     // Cấu hình vật lý body chân thực tại chân (22×14 px)
@@ -60,22 +58,89 @@ export class TheListener extends Monster {
     const g = this.visualGfx;
     g.clear();
 
-    // Bóng đổ ma quái đen tuyền dưới chân
-    g.fillStyle(0x050608, 0.55);
-    g.fillEllipse(0, 0, 28, 8);
+    // C4-13-06: Bóng đổ mặt đất đen mờ mịn (alpha 0.25) ôm sát bàn chân
+    g.fillStyle(0x000000, 0.25);
+    g.fillEllipse(0, 0, 22, 6);
   }
 
-  public setAlertVisual(visible: boolean): void {
-    this.alertIcon.setVisible(visible);
-    if (visible) {
-      this.scene.tweens.add({
-        targets: this.alertIcon,
-        y: -58,
-        duration: 250,
-        yoyo: true,
-        repeat: 2
-      });
+  private drawAlertIconBadge(type: 'alert' | 'chase'): void {
+    if (!this.alertBg || !this.alertText) return;
+    this.alertBg.clear();
+    if (type === 'alert') {
+      // Dấu [?] màu vàng hổ phách (Nghi vấn / Tìm kiếm)
+      this.alertBg.fillStyle(0xd35400, 0.95);
+      this.alertBg.fillCircle(0, 0, 10);
+      this.alertBg.lineStyle(1.5, 0xf1c40f, 1);
+      this.alertBg.strokeCircle(0, 0, 10);
+      this.alertText.setText('?');
+      this.alertText.setColor('#ffffff');
+    } else {
+      // Dấu [!] màu đỏ thẫm (Truy đuổi khẩn cấp)
+      this.alertBg.fillStyle(0x922b21, 0.95);
+      this.alertBg.fillCircle(0, 0, 10);
+      this.alertBg.lineStyle(1.5, 0xe74c3c, 1);
+      this.alertBg.strokeCircle(0, 0, 10);
+      this.alertText.setText('!');
+      this.alertText.setColor('#ffffff');
     }
+  }
+
+  public setAlertVisual(visible: boolean, type: 'alert' | 'chase' = 'chase'): void {
+    if (!visible) {
+      this.alertIcon.setVisible(false);
+      return;
+    }
+
+    this.drawAlertIconBadge(type);
+    this.alertIcon.setVisible(true);
+    this.scene.tweens.add({
+      targets: this.alertIcon,
+      y: -58,
+      duration: 220,
+      yoyo: true,
+      repeat: type === 'chase' ? 2 : 1
+    });
+  }
+
+  public onAlertTelegraph(): void {
+    this.setAlertVisual(true, 'alert');
+    const audio = (this.scene as any).audioManager;
+    if (audio && typeof audio.playListenerAlert === 'function') {
+      audio.playListenerAlert();
+    }
+  }
+
+  public onChaseAlert(): void {
+    this.setAlertVisual(true, 'chase');
+    const audio = (this.scene as any).audioManager;
+    if (audio) {
+      if (typeof audio.playListenerAlert === 'function') {
+        audio.playListenerAlert();
+      }
+      if (typeof audio.setHeartbeatActive === 'function') {
+        audio.setHeartbeatActive(true, 420);
+      }
+    }
+  }
+
+  public onSearchVisual(): void {
+    this.setAlertVisual(true, 'alert');
+  }
+
+  public onChaseEnded(): void {
+    this.setAlertVisual(false);
+    const audio = (this.scene as any).audioManager;
+    if (audio && typeof audio.setHeartbeatActive === 'function') {
+      audio.setHeartbeatActive(false);
+    }
+  }
+
+  public canAttack(): boolean {
+    return this.ai.canAttack();
+  }
+
+  public triggerAttackCooldown(ms: number = 1500): void {
+    this.ai.triggerAttackCooldown(ms);
   }
 
   public hearSound(sourceX: number, sourceY: number, volume: number): void {
@@ -89,8 +154,12 @@ export class TheListener extends Monster {
     this.ai.forceChase();
   }
 
-  public update(delta: number, playerX: number, playerY: number, isPlayerHiding: boolean): void {
-    this.ai.update(delta, playerX, playerY, isPlayerHiding);
+  public resetToPatrol(initialX?: number, initialY?: number): void {
+    this.ai.resetToPatrol(initialX, initialY);
+  }
+
+  public update(delta: number, playerX: number, playerY: number, isPlayerHiding: boolean, isPlayerDead: boolean = false): void {
+    this.ai.update(delta, playerX, playerY, isPlayerHiding, isPlayerDead);
 
     // Cập nhật hướng mặt theo vận tốc di chuyển
     if (this.body && Math.abs(this.body.velocity.x) > 5) {
@@ -103,6 +172,22 @@ export class TheListener extends Monster {
     this.visualGfx.setDepth(this.y - 1);
     this.setDepth(this.y);
     this.alertIcon.setDepth(this.y + 100);
+  }
+
+  /**
+   * C4-13-09: Dọn dẹp triệt để Graphics, Containers và Tweens khi quái vật bị hủy hoặc chuyển scene
+   */
+  public destroy(fromScene?: boolean): void {
+    if (this.scene) {
+      this.scene.tweens.killTweensOf(this.alertIcon);
+    }
+    if (this.visualGfx) {
+      this.visualGfx.destroy();
+    }
+    if (this.alertIcon) {
+      this.alertIcon.destroy();
+    }
+    super.destroy(fromScene);
   }
 }
 

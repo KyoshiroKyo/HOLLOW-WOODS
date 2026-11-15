@@ -20,7 +20,13 @@ export class CraftingSystem {
   }
 
   public canCraft(recipe: CraftingRecipe): boolean {
+    if (!recipe || !Array.isArray(recipe.ingredients) || recipe.ingredients.length === 0) {
+      return false;
+    }
     for (const ing of recipe.ingredients) {
+      if (!ing.itemId || ing.count <= 0) {
+        return false;
+      }
       if (this.playerState.getItemCount(ing.itemId) < ing.count) {
         return false;
       }
@@ -29,19 +35,34 @@ export class CraftingSystem {
   }
 
   public craft(recipeId: string): boolean {
+    if (!recipeId) return false;
     const recipe = this.recipes.find(r => r.id === recipeId);
-    if (!recipe || !this.canCraft(recipe)) return false;
+    if (!recipe || recipe.resultCount <= 0 || !this.canCraft(recipe)) {
+      return false;
+    }
 
-    // Trừ nguyên liệu
+    // Trừ nguyên liệu chính xác và chống âm số lượng (Atomic Ingredient Deduction)
+    const deducted: { itemId: string; count: number }[] = [];
     for (const ing of recipe.ingredients) {
-      this.playerState.removeItem(ing.itemId, ing.count);
+      if (!this.playerState.removeItem(ing.itemId, ing.count)) {
+        for (const rollback of deducted) {
+          this.playerState.addItem(rollback.itemId, rollback.count);
+        }
+        return false;
+      }
+      deducted.push({ itemId: ing.itemId, count: ing.count });
     }
 
     // Thêm thành phẩm vào túi đồ
     this.playerState.addItem(recipe.resultItemId, recipe.resultCount);
 
-    // Kích hoạt cờ chế tạo đầu tiên hoàn tất
-    this.playerState.setFlag('craft_complete');
+    // Ghi nhận cờ riêng theo đúng công thức (setFlag chống phát lặp sự kiện)
+    this.playerState.setFlag(`crafted_${recipe.id}`);
+
+    // Chỉ hoàn thành nhiệm vụ Dầu Đèn Q03 khi chế tạo đúng công thức craft_lantern_oil
+    if (recipe.id === 'craft_lantern_oil') {
+      this.playerState.setFlag('craft_lantern_oil_complete');
+    }
 
     return true;
   }

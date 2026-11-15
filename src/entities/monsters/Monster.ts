@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 
-export type MonsterState = 'PATROL' | 'ALERT_TELEGRAPH' | 'INVESTIGATE_SOUND' | 'CHASE' | 'SEARCH' | 'RETURN';
+export type MonsterState = 'PATROL' | 'ALERT' | 'ALERT_TELEGRAPH' | 'INVESTIGATE_SOUND' | 'CHASE' | 'SEARCH' | 'RETURN' | 'DISENGAGE';
 
 export abstract class Monster extends Phaser.Physics.Arcade.Sprite {
   public currentState: MonsterState = 'PATROL';
