@@ -796,6 +796,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       return false;
     }
     if (this.playerState.useItem('item_herbal_poultice')) {
+      AudioManager.getInstance().playPoulticeHeal();
       this.showPopupMessage('✔ Đã dùng Thuốc Đắp (+40 Máu, +25 Bình Tâm)');
       const gameScene = this.scene.get('GameScene') as any;
       if (gameScene && gameScene.player && typeof gameScene.player.playUseItem === 'function') {
@@ -821,6 +822,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       return false;
     }
     if (this.playerState.useItem('item_lantern_oil')) {
+      AudioManager.getInstance().playOilRefill();
       const nowOil = Math.round(this.playerState.stats.lanternOil);
       this.showPopupMessage(`✔ Đã nạp Bình Dầu Đèn (+50 Dầu • Hiện tại: ${nowOil}%)`);
       const gameScene = this.scene.get('GameScene') as any;

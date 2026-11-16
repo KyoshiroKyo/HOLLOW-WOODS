@@ -22,6 +22,7 @@ const suites = [
   { id: 'C4-13-11', name: 'Rà soát lỗi tiềm ẩn 10 hệ thống & Tối ưu Edge Cases', script: 'verify_latent_bugs_c4_13_11.mjs' },
   { id: 'C4-13-22', name: 'Chuẩn hóa cấu hình, store assets & gói build P2Game', script: 'verify_p2game_packaging_c4_13_22.mjs' },
   { id: 'C4-13-23', name: 'Tương thích bộ gõ Tiếng Việt EVKey / UniKey (Telex & VNI)', script: 'verify_evkey_ime_support.mjs' },
+  { id: 'C4-133-02', name: 'Tuyển chọn & Tích hợp Bộ Âm Thanh Mã Nguồn Mở v1.3.3', script: 'verify_audio_pack_curation_c4_133_02.mjs' },
   { id: 'C4-12-31', name: 'Luồng chơi cốt lõi xuyên suốt Act 0 - Act 1', script: 'verify_full_game_flow_c4_12_31.mjs' }
 ];
 

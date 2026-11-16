@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import dialoguesData from '../data/dialogues.json';
 import { PlayerState } from '../state/PlayerState';
+import { AudioManager } from '../audio/AudioManager';
 
 export interface DialoguePayload {
   speaker: string;
@@ -103,6 +104,9 @@ export class DialogueSystem {
       this.view.showDialogue(this.currentPayload.speaker, portraitKey);
     }
 
+    // C4-133-02: Phát giọng thoại mở đầu của NPC
+    AudioManager.getInstance().playNPCSpeech(this.currentPayload.speaker);
+
     this.showLine(this.currentPayload.lines[0]);
   }
 
@@ -124,9 +128,14 @@ export class DialogueSystem {
       delay: 22,
       repeat: text.length - 1,
       callback: () => {
-        this.displayedText += text[charIndex];
+        const char = text[charIndex];
+        this.displayedText += char;
         if (this.view) {
           this.view.updateDialogueText(this.displayedText);
+        }
+        // C4-133-02: Phát âm typewriter êm dịu cách nhịp 2 ký tự và bỏ qua khoảng trắng
+        if (charIndex % 2 === 0 && char !== ' ') {
+          AudioManager.getInstance().playDialogueBlip();
         }
         charIndex++;
         if (charIndex >= text.length) {

@@ -86,6 +86,7 @@ import {
 } from '../config/Constants';
 
 import { HUDIconGenerator } from '../utils/HUDIconGenerator';
+import { AudioManager } from '../audio/AudioManager';
 
 export class PreloadScene extends Phaser.Scene {
   constructor() {
@@ -308,6 +309,44 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image(SPRITE_RES_TREE_RESIN, 'assets/environment/sprites/res_tree_resin.png');
     this.load.image(SPRITE_RES_FLINT, 'assets/environment/sprites/res_flint.png');
     this.load.image(SPRITE_RES_HERBS, 'assets/environment/sprites/res_herbs.png');
+
+    // 12. Nạp toàn bộ hiệu ứng âm thanh & âm thanh khí quyển mã nguồn mở (C4-133-02)
+    // Nhạc nền khí quyển theo vùng (Ambience)
+    this.load.audio('ambience_village', 'assets/audio/ambience/ambience_village.mp3');
+    this.load.audio('ambience_forest', 'assets/audio/ambience/ambience_forest.mp3');
+    this.load.audio('ambience_mire', 'assets/audio/ambience/ambience_mire.mp3');
+    this.load.audio('ambience_crossing', 'assets/audio/ambience/ambience_crossing.mp3');
+
+    // SFX Hành động, Sinh tồn & Chiến đấu
+    this.load.audio('attack_swing', 'assets/audio/sfx/attack_swing.mp3');
+    this.load.audio('bell_low', 'assets/audio/sfx/bell_low.mp3');
+    this.load.audio('bush_rustle', 'assets/audio/sfx/bush_rustle.mp3');
+    this.load.audio('craft_success', 'assets/audio/sfx/craft_success.wav');
+    this.load.audio('footstep_grass', 'assets/audio/sfx/footstep_grass.mp3');
+    this.load.audio('herb_gather', 'assets/audio/sfx/herb_gather.wav');
+    this.load.audio('hurt', 'assets/audio/sfx/hurt.wav');
+    this.load.audio('interact', 'assets/audio/sfx/interact.wav');
+    this.load.audio('lantern_toggle', 'assets/audio/sfx/lantern_toggle.mp3');
+    this.load.audio('listener_alert', 'assets/audio/sfx/listener_alert.mp3');
+    this.load.audio('monster_step', 'assets/audio/sfx/monster_step.mp3');
+    this.load.audio('player_death', 'assets/audio/sfx/player_death.wav');
+    this.load.audio('quest_update', 'assets/audio/sfx/quest_update.wav');
+    this.load.audio('resource_gather', 'assets/audio/sfx/resource_gather.mp3');
+    this.load.audio('rune_error', 'assets/audio/sfx/rune_error.mp3');
+    this.load.audio('rune_resonance', 'assets/audio/sfx/rune_resonance.mp3');
+    this.load.audio('ui_select', 'assets/audio/sfx/ui_select.wav');
+    this.load.audio('ui_confirm', 'assets/audio/sfx/ui_confirm.wav');
+    this.load.audio('ui_cancel', 'assets/audio/sfx/ui_cancel.wav');
+    this.load.audio('heal_poultice', 'assets/audio/sfx/heal_poultice.wav');
+    this.load.audio('oil_refill', 'assets/audio/sfx/oil_refill.wav');
+
+    // Giọng thoại mở đầu NPC & Hiệu ứng máy đánh chữ (Super Dialogue & 8-bit Pack)
+    this.load.audio('dialogue_garth', 'assets/audio/dialogue/dialogue_garth.wav');
+    this.load.audio('dialogue_edda', 'assets/audio/dialogue/dialogue_edda.wav');
+    this.load.audio('dialogue_neris', 'assets/audio/dialogue/dialogue_neris.wav');
+    this.load.audio('dialogue_bram', 'assets/audio/dialogue/dialogue_bram.wav');
+    this.load.audio('dialogue_finn', 'assets/audio/dialogue/dialogue_finn.wav');
+    this.load.audio('dialogue_text_blip', 'assets/audio/dialogue/dialogue_text_blip.wav');
   }
 
   public create(): void {
@@ -320,6 +359,9 @@ export class PreloadScene extends Phaser.Scene {
 
     // C4-13-15: Nạp 4 Icon Pixel Art (16x16 px) sắc nét cho các thuộc tính sinh tồn HUD
     HUDIconGenerator.generateAllHUDIcons(this);
+
+    // C4-133-02: Đồng bộ tức thì các AudioBuffer đã được Phaser nạp vào AudioManager
+    AudioManager.getInstance().syncWithPhaserCache(this);
 
     this.scene.start(SCENE_MAIN_MENU);
   }

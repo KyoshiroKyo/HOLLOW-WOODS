@@ -142,24 +142,36 @@ export class AudioManager {
     if (!this.ctx || typeof window === 'undefined') return;
 
     const audioManifest: Record<string, string> = {
-      listener_alert: 'assets/audio/listener_alert.mp3',
-      bronze_bell: 'assets/audio/bell_low.mp3',
-      attack: 'assets/audio/attack_swing.mp3',
-      interact: 'assets/audio/interact.wav',
-      craft: 'assets/audio/craft_success.wav',
-      lantern: 'assets/audio/lantern_toggle.mp3',
-      hurt: 'assets/audio/hurt.wav',
-      death: 'assets/audio/player_death.wav',
-      bush_rustle: 'assets/audio/bush_rustle.mp3',
-      quest_update: 'assets/audio/quest_update.wav',
-      gather: 'assets/audio/resource_gather.mp3',
-      runestone_err: 'assets/audio/rune_error.mp3',
-      runestone: 'assets/audio/rune_resonance.mp3',
-      footstep_grass: 'assets/audio/footstep_grass.mp3',
-      ambience_village: 'assets/audio/ambience_village.mp3',
-      ambience_forest: 'assets/audio/ambience_forest.mp3',
-      ambience_mire: 'assets/audio/ambience_mire.mp3',
-      ambience_crossing: 'assets/audio/ambience_crossing.mp3'
+      listener_alert: 'assets/audio/sfx/listener_alert.mp3',
+      bronze_bell: 'assets/audio/sfx/bell_low.mp3',
+      attack: 'assets/audio/sfx/attack_swing.mp3',
+      interact: 'assets/audio/sfx/interact.wav',
+      craft: 'assets/audio/sfx/craft_success.wav',
+      lantern: 'assets/audio/sfx/lantern_toggle.mp3',
+      hurt: 'assets/audio/sfx/hurt.wav',
+      death: 'assets/audio/sfx/player_death.wav',
+      bush_rustle: 'assets/audio/sfx/bush_rustle.mp3',
+      quest_update: 'assets/audio/sfx/quest_update.wav',
+      gather: 'assets/audio/sfx/resource_gather.mp3',
+      runestone_err: 'assets/audio/sfx/rune_error.mp3',
+      runestone: 'assets/audio/sfx/rune_resonance.mp3',
+      footstep_grass: 'assets/audio/sfx/footstep_grass.mp3',
+      ui_select: 'assets/audio/sfx/ui_select.wav',
+      ui_confirm: 'assets/audio/sfx/ui_confirm.wav',
+      ui_cancel: 'assets/audio/sfx/ui_cancel.wav',
+      heal_poultice: 'assets/audio/sfx/heal_poultice.wav',
+      oil_refill: 'assets/audio/sfx/oil_refill.wav',
+      ambience_village: 'assets/audio/ambience/ambience_village.mp3',
+      ambience_forest: 'assets/audio/ambience/ambience_forest.mp3',
+      ambience_mire: 'assets/audio/ambience/ambience_mire.mp3',
+      ambience_crossing: 'assets/audio/ambience/ambience_crossing.mp3',
+      dialogue_garth: 'assets/audio/dialogue/dialogue_garth.wav',
+      dialogue_edda: 'assets/audio/dialogue/dialogue_edda.wav',
+      dialogue_neris: 'assets/audio/dialogue/dialogue_neris.wav',
+      dialogue_bram: 'assets/audio/dialogue/dialogue_bram.wav',
+      dialogue_finn: 'assets/audio/dialogue/dialogue_finn.wav',
+      dialogue_text_blip: 'assets/audio/dialogue/dialogue_text_blip.wav',
+      dialogue_blip: 'assets/audio/dialogue/dialogue_text_blip.wav'
     };
 
     for (const [key, url] of Object.entries(audioManifest)) {
@@ -186,6 +198,38 @@ export class AudioManager {
         .finally(() => {
           this.loadingBuffers.delete(key);
         });
+    }
+  }
+
+  /**
+   * C4-133-02: Đồng bộ nhanh các AudioBuffer từ Phaser Cache nạp trước ở PreloadScene
+   */
+  public syncWithPhaserCache(scene: any): void {
+    if (!scene || !scene.cache || !scene.cache.audio) return;
+    const audioKeys = [
+      'ambience_village', 'ambience_forest', 'ambience_mire', 'ambience_crossing',
+      'attack_swing', 'bell_low', 'bush_rustle', 'craft_success', 'footstep_grass',
+      'herb_gather', 'hurt', 'interact', 'lantern_toggle', 'listener_alert',
+      'monster_step', 'player_death', 'quest_update', 'resource_gather',
+      'rune_error', 'rune_resonance', 'ui_select', 'ui_confirm', 'ui_cancel',
+      'heal_poultice', 'oil_refill', 'dialogue_garth', 'dialogue_edda',
+      'dialogue_neris', 'dialogue_bram', 'dialogue_finn', 'dialogue_text_blip'
+    ];
+    for (const key of audioKeys) {
+      if (scene.cache.audio.has(key)) {
+        const audioData = scene.cache.audio.get(key);
+        if (audioData && typeof audioData.getChannelData === 'function') {
+          this.audioBuffers.set(key, audioData);
+          if (key === 'attack_swing') this.audioBuffers.set('attack', audioData);
+          if (key === 'bell_low') this.audioBuffers.set('bronze_bell', audioData);
+          if (key === 'resource_gather') this.audioBuffers.set('gather', audioData);
+          if (key === 'rune_error') this.audioBuffers.set('runestone_err', audioData);
+          if (key === 'rune_resonance') this.audioBuffers.set('runestone', audioData);
+          if (key === 'lantern_toggle') this.audioBuffers.set('lantern', audioData);
+          if (key === 'player_death') this.audioBuffers.set('death', audioData);
+          if (key === 'dialogue_text_blip') this.audioBuffers.set('dialogue_blip', audioData);
+        }
+      }
     }
   }
 
@@ -1034,6 +1078,232 @@ export class AudioManager {
       osc.start(noteTime);
       osc.stop(noteTime + 0.65);
     }
+  }
+
+  // =========================================================================
+  // C4-133-02: LỜI THOẠI NPC, HIỆU ỨNG GÕ CHỮ & ÂM THANH GIAO DIỆN / VẬT PHẨM
+  // =========================================================================
+
+  /**
+   * C4-133-02: Phát lời chào của NPC khi bắt đầu hội thoại từ gói Super Dialogue Audio Pack
+   */
+  public playNPCSpeech(speakerNameOrId: string): void {
+    if (!this.ctx || this.isMuted) return;
+    if (!this.checkCooldown('npc_speech', 350)) return;
+    this.resumeAudio();
+
+    let sampleKey = 'dialogue_garth';
+    const lower = (speakerNameOrId || '').toLowerCase();
+    if (lower.includes('edda') || lower.includes('bà edda')) {
+      sampleKey = 'dialogue_edda';
+    } else if (lower.includes('neris') || lower.includes('y sư') || lower.includes('thảo dược')) {
+      sampleKey = 'dialogue_neris';
+    } else if (lower.includes('bram') || lower.includes('thợ rèn')) {
+      sampleKey = 'dialogue_bram';
+    } else if (lower.includes('finn') || lower.includes('cậu bé')) {
+      sampleKey = 'dialogue_finn';
+    } else if (lower.includes('garth') || lower.includes('người gác')) {
+      sampleKey = 'dialogue_garth';
+    }
+
+    if (this.playSampled(sampleKey, 0.8, 1.0, false)) {
+      return;
+    }
+
+    // Procedural voice formant fallback (tiếng ậm ừ trầm ấm của NPC)
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    const isFemale = sampleKey === 'dialogue_edda' || sampleKey === 'dialogue_neris';
+    const baseFreq = isFemale ? 280 : 160;
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(baseFreq, now);
+    osc.frequency.linearRampToValueAtTime(baseFreq * 1.15, now + 0.08);
+    osc.frequency.linearRampToValueAtTime(baseFreq * 0.9, now + 0.18);
+
+    gain.gain.setValueAtTime(0.001, now);
+    gain.gain.linearRampToValueAtTime(0.12 * this.sfxVolume, now + 0.03);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+    osc.connect(gain);
+    if (this.masterGain) gain.connect(this.masterGain);
+    osc.start(now);
+    osc.stop(now + 0.23);
+  }
+
+  /**
+   * C4-133-02: Phát âm gõ máy đánh chữ (Typewriter Blip) khi từng ký tự chạy trong hộp thoại
+   */
+  public playDialogueBlip(): void {
+    if (!this.ctx || this.isMuted) return;
+    if (!this.checkCooldown('dialogue_blip', 45)) return;
+    this.resumeAudio();
+
+    if (this.playSampled('dialogue_text_blip', 0.25, 1.0, false)) {
+      return;
+    }
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(680 + (Math.random() * 80 - 40), now);
+    osc.frequency.exponentialRampToValueAtTime(420, now + 0.025);
+
+    gain.gain.setValueAtTime(0.06 * this.sfxVolume, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+
+    osc.connect(gain);
+    if (this.masterGain) gain.connect(this.masterGain);
+    osc.start(now);
+    osc.stop(now + 0.035);
+  }
+
+  /**
+   * C4-133-02: Phát âm thanh chọn menu / hover UI
+   */
+  public playUISelect(): void {
+    if (!this.ctx || this.isMuted) return;
+    if (!this.checkCooldown('ui_select', 80)) return;
+    this.resumeAudio();
+
+    if (this.playSampled('ui_select', 0.5, 1.0, false)) {
+      return;
+    }
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(540, now);
+    osc.frequency.linearRampToValueAtTime(720, now + 0.04);
+
+    gain.gain.setValueAtTime(0.08 * this.sfxVolume, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+
+    osc.connect(gain);
+    if (this.masterGain) gain.connect(this.masterGain);
+    osc.start(now);
+    osc.stop(now + 0.055);
+  }
+
+  /**
+   * C4-133-02: Phát âm thanh xác nhận nút bấm UI / chấp nhận
+   */
+  public playUIConfirm(): void {
+    if (!this.ctx || this.isMuted) return;
+    if (!this.checkCooldown('ui_confirm', 120)) return;
+    this.resumeAudio();
+
+    if (this.playSampled('ui_confirm', 0.65, 1.0, false)) {
+      return;
+    }
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(440, now);
+    osc.frequency.linearRampToValueAtTime(880, now + 0.08);
+
+    gain.gain.setValueAtTime(0.12 * this.sfxVolume, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+
+    osc.connect(gain);
+    if (this.masterGain) gain.connect(this.masterGain);
+    osc.start(now);
+    osc.stop(now + 0.11);
+  }
+
+  /**
+   * C4-133-02: Phát âm thanh hủy bỏ / đóng modal UI
+   */
+  public playUICancel(): void {
+    if (!this.ctx || this.isMuted) return;
+    if (!this.checkCooldown('ui_cancel', 120)) return;
+    this.resumeAudio();
+
+    if (this.playSampled('ui_cancel', 0.6, 1.0, false)) {
+      return;
+    }
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(520, now);
+    osc.frequency.linearRampToValueAtTime(260, now + 0.08);
+
+    gain.gain.setValueAtTime(0.1 * this.sfxVolume, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+
+    osc.connect(gain);
+    if (this.masterGain) gain.connect(this.masterGain);
+    osc.start(now);
+    osc.stop(now + 0.11);
+  }
+
+  /**
+   * C4-133-02: Tiếng dùng thuốc đắp hồi sinh lực
+   */
+  public playPoulticeHeal(): void {
+    if (!this.ctx || this.isMuted) return;
+    if (!this.checkCooldown('poultice', 200)) return;
+    this.resumeAudio();
+
+    if (this.playSampled('heal_poultice', 0.7, 1.0, false)) {
+      return;
+    }
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(320, now);
+    osc.frequency.exponentialRampToValueAtTime(640, now + 0.12);
+
+    gain.gain.setValueAtTime(0.15 * this.sfxVolume, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+    osc.connect(gain);
+    if (this.masterGain) gain.connect(this.masterGain);
+    osc.start(now);
+    osc.stop(now + 0.16);
+  }
+
+  /**
+   * C4-133-02: Tiếng châm dầu đèn lồng
+   */
+  public playOilRefill(): void {
+    if (!this.ctx || this.isMuted) return;
+    if (!this.checkCooldown('oil_refill', 200)) return;
+    this.resumeAudio();
+
+    if (this.playSampled('oil_refill', 0.75, 1.0, false)) {
+      return;
+    }
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(220, now);
+    osc.frequency.exponentialRampToValueAtTime(440, now + 0.14);
+
+    gain.gain.setValueAtTime(0.16 * this.sfxVolume, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+
+    osc.connect(gain);
+    if (this.masterGain) gain.connect(this.masterGain);
+    osc.start(now);
+    osc.stop(now + 0.19);
   }
 
   // =========================================================================
