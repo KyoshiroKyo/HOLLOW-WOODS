@@ -81,7 +81,7 @@ export class NPCEntity extends Phaser.GameObjects.Container {
     } else if (this.baseId === 'neris') {
       initialSheet = scene.textures.exists('neris_idle_sheet') ? 'neris_idle_sheet' : 'neris_idle';
     } else if (this.baseId === 'bram') {
-      initialSheet = 'potter_walk_sheet';
+      initialSheet = scene.textures.exists('blacksmith_sheet') ? 'blacksmith_sheet' : 'potter_walk_sheet';
     } else if (this.baseId === 'finn') {
       initialSheet = 'errand_boy_walk_sheet';
     } else {
@@ -104,6 +104,15 @@ export class NPCEntity extends Phaser.GameObjects.Container {
     scene.add.existing(this);
     // Depth sorting nhân vật theo tọa độ Y chân
     this.setDepth(spec.y);
+
+    // C4-13-17: Hộp va chạm chân nhỏ gọn (22x14 px) chống nhân vật đi xuyên qua người NPC
+    scene.physics.add.existing(this);
+    const body = this.body as Phaser.Physics.Arcade.Body;
+    if (body) {
+      body.setSize(22, 14);
+      body.setOffset(-11, -7);
+      body.setImmovable(true);
+    }
   }
 
   /**
@@ -162,12 +171,63 @@ export class NPCEntity extends Phaser.GameObjects.Container {
       });
     }
 
-    // 3. Garth, Bram, Finn: Hoạt ảnh 4 hướng (Walk 8 frames, Idle breathing)
+    // 3. Bram / Blacksmith: Hoạt ảnh rèn sắt đập đe 6 frame liên tục (C4-13-21)
+    if (scene.textures.exists('blacksmith_sheet')) {
+      const animWork = 'anim_blacksmith_work';
+      if (!scene.anims.exists(animWork)) {
+        scene.anims.create({
+          key: animWork,
+          frames: scene.anims.generateFrameNumbers('blacksmith_sheet', { start: 0, end: 5 }),
+          frameRate: 6,
+          repeat: -1
+        });
+      }
+      if (!scene.anims.exists('npc_bram_work')) {
+        scene.anims.create({
+          key: 'npc_bram_work',
+          frames: scene.anims.generateFrameNumbers('blacksmith_sheet', { start: 0, end: 5 }),
+          frameRate: 6,
+          repeat: -1
+        });
+      }
+      if (!scene.anims.exists('npc_bram_idle')) {
+        scene.anims.create({
+          key: 'npc_bram_idle',
+          frames: scene.anims.generateFrameNumbers('blacksmith_sheet', { start: 0, end: 5 }),
+          frameRate: 6,
+          repeat: -1
+        });
+      }
+      ['down', 'up', 'left', 'right'].forEach(dir => {
+        const dIdleKey = `npc_bram_idle_${dir}`;
+        if (!scene.anims.exists(dIdleKey)) {
+          scene.anims.create({
+            key: dIdleKey,
+            frames: scene.anims.generateFrameNumbers('blacksmith_sheet', { start: 0, end: 5 }),
+            frameRate: 6,
+            repeat: -1
+          });
+        }
+        const dWalkKey = `npc_bram_walk_${dir}`;
+        if (!scene.anims.exists(dWalkKey)) {
+          scene.anims.create({
+            key: dWalkKey,
+            frames: scene.anims.generateFrameNumbers('blacksmith_sheet', { start: 0, end: 5 }),
+            frameRate: 6,
+            repeat: -1
+          });
+        }
+      });
+    }
+
+    // 4. Garth, Finn (và Bram dự phòng nếu thiếu blacksmith_sheet): Hoạt ảnh 4 hướng
     const fourDirNpcs = [
       { id: 'garth', sheet: scene.textures.exists('garth_walk_sheet') ? 'garth_walk_sheet' : 'garth_walk' },
-      { id: 'bram', sheet: 'potter_walk_sheet' },
       { id: 'finn', sheet: 'errand_boy_walk_sheet' }
     ];
+    if (!scene.textures.exists('blacksmith_sheet')) {
+      fourDirNpcs.push({ id: 'bram', sheet: 'potter_walk_sheet' });
+    }
 
     const dirs: { name: NPCDirection; row: number }[] = [
       { name: 'down', row: 0 },
@@ -234,7 +294,7 @@ export class NPCEntity extends Phaser.GameObjects.Container {
     let icon = '🛡️';
     if (this.baseId === 'edda') icon = '🔔';
     else if (this.baseId === 'neris') icon = '🌿';
-    else if (this.baseId === 'bram') icon = '🏺';
+    else if (this.baseId === 'bram') icon = '🔨';
     else if (this.baseId === 'finn') icon = '📜';
 
     // Dòng 1: Tên NPC (vàng kim đậm sắc nét)
@@ -379,6 +439,11 @@ export class NPCEntity extends Phaser.GameObjects.Container {
    * Cập nhật lộ trình tuần tra và đồng bộ vị trí NamePlate & PromptBubble
    */
   public update(delta: number): void {
+    // C4-13-17: Đồng bộ tọa độ hộp va chạm vật lý theo vị trí thực tế của NPC
+    if (this.body) {
+      (this.body as Phaser.Physics.Arcade.Body).reset(this.x, this.y);
+    }
+
     // Đồng bộ vị trí NamePlate và PromptBubble theo NPC
     if (this.namePlate) {
       this.namePlate.setPosition(this.x, this.y - 58);

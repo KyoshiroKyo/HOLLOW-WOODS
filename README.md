@@ -1,4 +1,4 @@
-# 🌲 HOLLOW WOODS V3.0 – THE FOG THAT REMEMBERS (SƯƠNG MÙ GHI NHỚ)
+# 🌲 HOLLOW WOODS V1.3 – THE FOG THAT REMEMBERS (SƯƠNG MÙ GHI NHỚ)
 
 > **Tập 1: The First Toll (Tiếng Chuông Đầu Tiên)**  
 > **Thể loại:** 2D Atmospheric Psychological Survival Horror  
@@ -58,11 +58,11 @@ Trình duyệt sẽ tự động mở tại địa chỉ `http://localhost:3000/
   ```
   *(Tạo gói tĩnh tối ưu hóa tại thư mục `dist/`)*
 
-- **Kiểm toán tự động 10 tiêu chuẩn chất lượng V3.0:**
+- **Kiểm toán tự động bộ kiểm thử hồi quy V1.3:**
   ```bash
-  node scripts/verify_v3_release.mjs
+  node scripts/run_v1_3_regression_suite.mjs
   ```
-  *(Đạt kết quả 10/10 PASS toàn diện)*
+  *(Đạt kết quả 19/19 kịch bản PASS 100% — 493/493 tests)*
 
 ---
 
@@ -97,12 +97,12 @@ HOLLOW-WOODS/
 │   └── audio/                     ← Âm thanh khí quyển và hiệu ứng
 ├── Pixel_Art/                     ← Kho asset gốc nguyên bản
 │   └── Dark Rogue/                ← Bảng sprite và reference của Dark Rogue
-├── Read/V3.0/                     ← 100% Tài liệu Markdown thiết kế & kiểm toán
+├── Read/V1.3/                     ← 100% Tài liệu Markdown thiết kế & kiểm toán V1.3
 │   ├── README_INDEX.md            ← Sổ chỉ mục tra cứu tài liệu
 │   ├── Asset_Registry/            ← Sổ đăng ký giấy phép bản quyền
 │   └── Reports/                   ← Báo cáo GDD, luồng nhiệm vụ và nghiệm thu từng Pass
 ├── scripts/                       ← Công cụ Node.js hỗ trợ cắt ảnh & kiểm toán QA
-│   ├── verify_v3_release.mjs      ← Script kiểm tra tự động 10 tiêu chuẩn phát hành
+│   ├── run_v1_3_regression_suite.mjs ← Script kiểm thử hồi quy 19 kịch bản tự động
 │   └── *.mjs                      ← Các script xử lý trích xuất asset
 ├── src/                           ← Toàn bộ mã nguồn TypeScript của game
 │   ├── animation/                 ← Đăng ký hoạt ảnh SatyrAnimations.ts
@@ -127,6 +127,6 @@ HOLLOW-WOODS/
 
 ## 🏆 Trạng Thái Dự Án
 
-- **Phiên bản:** HOLLOW WOODS V3.0 (Tập 1: The First Toll).
-- **Trạng thái kiểm toán:** 🎉 **10/10 TIÊU CHÍ ĐẠT CHUẨN PHÁT HÀNH 100% (PASS)**.
+- **Phiên bản:** HOLLOW WOODS V1.3 (1.3.0 - Tập 1: The First Toll).
+- **Trạng thái kiểm toán:** 🎉 **19/19 BỘ KIỂM THỬ HỒI QUY ĐẠT CHUẨN PHÁT HÀNH 100% (493/493 PASS)**.
 - **Tác quyền & Quản trị:** Dự án thực thi bởi Chief Software Architect cho `KyoshiroKyo/HOLLOW-WOODS`.

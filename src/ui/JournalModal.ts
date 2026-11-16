@@ -83,7 +83,7 @@ export class JournalModal {
       tierDisplayName: 'Tầng 1 — Core World (Vùng Lõi)',
       canvasX: 65,
       canvasY: 210,
-      description: 'Lối mòn ban sơ mịt mù sương trắng dẫn lối những kẻ lạc bước tiến vào khu rừng The Hollow Woods. Tiếng chuông ngân vang xa xa định hướng người lữ khách.',
+      description: 'Lối mòn ban sơ mịt mù sương trắng dẫn lối những kẻ lạc bước tiến vào Khu Rừng Rỗng (The Hollow Woods). Tiếng chuông ngân vang xa xa định hướng người lữ khách.',
       landmarks: [
         'Bờ Vực Sương Mù Khởi Đầu',
         'Đèn Lồng Cổ Dẫn Đường Ban Sơ',
@@ -573,7 +573,7 @@ export class JournalModal {
 
     const list = this.playerState.unlockedLore;
     if (list.length === 0) {
-      const emptyText = HDTextHelper.createText(this.scene, mx + mw / 2, my + mh / 2, 'Chưa tìm thấy cổ thư hay manh mối nào trong The Hollow Woods...\nHãy khám phá các miếu thờ và tàn tích cổ.', {
+      const emptyText = HDTextHelper.createText(this.scene, mx + mw / 2, my + mh / 2, 'Chưa tìm thấy cổ thư hay manh mối nào trong Khu Rừng Rỗng (The Hollow Woods)...\nHãy khám phá các miếu thờ và tàn tích cổ.', {
         fontSize: '16px',
         fontStyle: 'italic',
         color: '#7f8c8d',
@@ -678,7 +678,7 @@ export class JournalModal {
       .filter(n => n.id !== 'the_depths')
       .filter(n => this.playerState.hasVisitedZone(n.id)).length;
 
-    const mapTitle = HDTextHelper.createText(this.scene, mapCanvasX + 16, mapCanvasY + 12, '🗺 BẢN ĐỒ THẾ GIỚI — THE HOLLOW WOODS', {
+    const mapTitle = HDTextHelper.createText(this.scene, mapCanvasX + 16, mapCanvasY + 12, '🗺 BẢN ĐỒ THẾ GIỚI — KHU RỪNG RỖNG (THE HOLLOW WOODS)', {
       fontSize: '14px',
       fontStyle: 'bold',
       color: '#f1c40f'

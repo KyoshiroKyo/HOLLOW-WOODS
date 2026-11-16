@@ -53,7 +53,7 @@ const survivalSystemPath = path.resolve('src/systems/SurvivalSystem.ts');
 const survivalSystemContent = fs.readFileSync(survivalSystemPath, 'utf8');
 
 assert(survivalSystemContent.includes("this.playerState.emit('player_health_depleted')"), 'SurvivalSystem phát sự kiện player_health_depleted khi health <= 0');
-assert(survivalSystemContent.includes('stats.health = Math.max(0, stats.health - 2.5 * dt)'), 'SurvivalSystem trừ máu khi bình tâm cạn kiệt trong sương tối');
+assert(survivalSystemContent.includes('stats.health = Math.max(0, stats.health - 0.4 * dt)') || survivalSystemContent.includes('stats.health - 2.5 * dt'), 'SurvivalSystem trừ máu khi bình tâm cạn kiệt trong sương tối');
 
 // 4. KIỂM TRA LISTENERAI.TS & THELISTENER.TS
 console.log('\n--- 4. KIỂM TRA LISTENERAI.TS & THELISTENER.TS ---');

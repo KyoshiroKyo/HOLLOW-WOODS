@@ -56,6 +56,9 @@ import {
   PORTRAIT_BRAM,
   SPRITE_NPC_FINN,
   PORTRAIT_FINN,
+  SPRITE_BLACKSMITH_SHEET,
+  SPRITE_NPC_BLACKSMITH,
+  PORTRAIT_BLACKSMITH,
   SPRITE_GARTH_IDLE,
   SPRITE_GARTH_WALK,
   SPRITE_EDDA_IDLE,
@@ -76,13 +79,29 @@ import {
   SPRITE_RES_HERBS
 } from '../config/Constants';
 
+import { HUDIconGenerator } from '../utils/HUDIconGenerator';
+
 export class PreloadScene extends Phaser.Scene {
   constructor() {
     super({ key: SCENE_PRELOAD });
   }
 
   public preload(): void {
-    // 1. Dựng thanh tiến trình tải (Loading Bar)
+    // C4-13-11: Tạo texture trong suốt 1x1 sớm nhất có thể chống ô vuông lỗi texture
+    if (!this.textures.exists('dummy_transparent')) {
+      const dummyGfx = this.make.graphics({ x: 0, y: 0 });
+      dummyGfx.generateTexture('dummy_transparent', 1, 1);
+      dummyGfx.destroy();
+    }
+
+    // 1. Dựng thanh tiến trình tải (Loading Bar) & tiêu đề khởi động
+    this.cameras.main.setBackgroundColor('#0b0c10');
+    const titleText = this.add.text(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2 - 46, 'HOLLOW WOODS', {
+      fontFamily: 'serif',
+      fontSize: '16px',
+      color: '#e74c3c'
+    }).setOrigin(0.5, 0.5);
+
     const progressBar = this.add.graphics();
     const progressBox = this.add.graphics();
     progressBox.fillStyle(0x1a1c23, 0.8);
@@ -108,6 +127,7 @@ export class PreloadScene extends Phaser.Scene {
     });
 
     this.load.on('complete', () => {
+      titleText.destroy();
       progressBar.destroy();
       progressBox.destroy();
       loadingText.destroy();
@@ -201,14 +221,15 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image(TILE_COBBLE_ROAD, 'assets/environment/tiles/tile_cobble_road.png');
     this.load.image(TILE_STONE_FLOOR, 'assets/environment/tiles/tile_stone_floor.png');
 
-    // 9. Nạp các sprite NPC & Chân dung hội thoại pixel art C4-12-08 (Garth, Edda, Neris, Bram, Finn)
+    // 9. Nạp các sprite NPC & Chân dung hội thoại pixel art C4-12-08 / C4-13-21 (Garth, Edda, Neris, Bram, Finn, Blacksmith)
     this.load.image(PORTRAIT_GARTH, 'assets/characters/villagers/portrait_garth.png');
     this.load.image(PORTRAIT_EDDA, 'assets/characters/villagers/portrait_edda.png');
     this.load.image(PORTRAIT_NERIS, 'assets/characters/villagers/portrait_neris.png');
-    this.load.image(PORTRAIT_BRAM, 'assets/characters/villagers/portrait_bram.png');
+    this.load.image(PORTRAIT_BRAM, 'assets/characters/villagers/portrait_blacksmith.png');
+    this.load.image(PORTRAIT_BLACKSMITH, 'assets/characters/villagers/portrait_blacksmith.png');
     this.load.image(PORTRAIT_FINN, 'assets/characters/villagers/portrait_finn.png');
 
-    // Nạp các Spritesheet 64x64 px mới từ C4-12-08
+    // Nạp các Spritesheet 64x64 px mới từ C4-12-08 và NPC Thợ Rèn Bram C4-13-21
     this.load.spritesheet(SPRITE_EDDA_IDLE_SHEET, 'assets/characters/villagers/edda_idle_sheet.png', {
       frameWidth: 64,
       frameHeight: 64
@@ -226,6 +247,10 @@ export class PreloadScene extends Phaser.Scene {
       frameHeight: 64
     });
     this.load.spritesheet(SPRITE_ERRAND_BOY_WALK_SHEET, 'assets/characters/villagers/errand_boy_walk_sheet.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet(SPRITE_BLACKSMITH_SHEET, 'assets/characters/villagers/blacksmith_sheet.png', {
       frameWidth: 64,
       frameHeight: 64
     });
@@ -256,11 +281,12 @@ export class PreloadScene extends Phaser.Scene {
       frameHeight: 64
     });
 
-    // Giữ tương thích các khóa sprite ảnh tĩnh cũ (npc_garth, npc_edda, npc_neris, npc_bram, npc_finn)
+    // Giữ tương thích các khóa sprite ảnh tĩnh cũ (npc_garth, npc_edda, npc_neris, npc_bram, npc_finn, npc_blacksmith)
     this.load.image(SPRITE_NPC_GARTH, 'assets/characters/villagers/npc_garth.png');
     this.load.image(SPRITE_NPC_EDDA, 'assets/characters/villagers/npc_edda.png');
     this.load.image(SPRITE_NPC_NERIS, 'assets/characters/villagers/npc_neris.png');
-    this.load.image(SPRITE_NPC_BRAM, 'assets/characters/villagers/npc_bram.png');
+    this.load.image(SPRITE_NPC_BRAM, 'assets/characters/villagers/npc_blacksmith.png');
+    this.load.image(SPRITE_NPC_BLACKSMITH, 'assets/characters/villagers/npc_blacksmith.png');
     this.load.image(SPRITE_NPC_FINN, 'assets/characters/villagers/npc_finn.png');
 
     // 10. Nạp các sprite quái vật bóng đêm & tàn ảnh (PASS T10, GATE 2B)
@@ -285,6 +311,10 @@ export class PreloadScene extends Phaser.Scene {
       dummyGfx.generateTexture('dummy_transparent', 1, 1);
       dummyGfx.destroy();
     }
+
+    // C4-13-15: Nạp 4 Icon Pixel Art (16x16 px) sắc nét cho các thuộc tính sinh tồn HUD
+    HUDIconGenerator.generateAllHUDIcons(this);
+
     this.scene.start(SCENE_MAIN_MENU);
   }
 }

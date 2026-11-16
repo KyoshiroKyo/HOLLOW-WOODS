@@ -16,6 +16,10 @@ export class VeilSystem {
   private driftGroundX: number = 0;
   private driftMidX: number = 0;
   private driftHighX: number = 0;
+
+  // C4-13-20: Màn sương chuyển cảnh mượt mà khi bước qua ranh giới phân khu chính (Mist Fade Transition ~0.35s)
+  private transitionMistOverlay: Phaser.GameObjects.Graphics;
+  private isTransitioningMist: boolean = false;
   
   // Hiệu ứng nhận thức tâm lý (Psychological Horror)
   private whisperText: Phaser.GameObjects.Text;
@@ -75,6 +79,15 @@ export class VeilSystem {
       stroke: '#000000',
       strokeThickness: 3
     }).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(9900).setAlpha(0);
+
+    // 4. C4-13-20: MÀN SƯƠNG CHUYỂN CẢNH MƯỢT MÀ (Mist Fade Transition - Depth 8400)
+    // Phủ toàn màn hình ngay dưới HUD (8500), tạo hiệu ứng sương rừng cuộn trào khi qua phân khu mới
+    this.transitionMistOverlay = scene.add.graphics();
+    this.transitionMistOverlay.setScrollFactor(0);
+    this.transitionMistOverlay.setDepth(8400);
+    this.transitionMistOverlay.setAlpha(0);
+    this.transitionMistOverlay.fillStyle(0x131d18, 0.88);
+    this.transitionMistOverlay.fillRect(0, 0, 1280, 720);
   }
 
   public update(time: number, delta: number, inDeepFogZone: boolean, zoneId?: string): void {
@@ -203,12 +216,49 @@ export class VeilSystem {
     }
   }
 
+  /**
+   * C4-13-20: Kích hoạt hiệu ứng màn sương chuyển cảnh mượt mà (Mist Fade Transition 0.35 giây)
+   * khi người chơi bước qua ranh giới giữa các phân khu chính.
+   */
+  public triggerZoneTransitionMist(duration: number = 350, onMidpoint?: () => void): void {
+    if (this.isTransitioningMist) return;
+    this.isTransitioningMist = true;
+
+    const halfDuration = Math.round(duration * 0.48); // ~170ms
+
+    this.scene.tweens.add({
+      targets: this.transitionMistOverlay,
+      alpha: 0.82,
+      duration: halfDuration,
+      ease: 'Sine.easeIn',
+      onComplete: () => {
+        if (onMidpoint) {
+          try {
+            onMidpoint();
+          } catch (e) {
+            console.warn('[VeilSystem] onMidpoint error:', e);
+          }
+        }
+        this.scene.tweens.add({
+          targets: this.transitionMistOverlay,
+          alpha: 0,
+          duration: duration - halfDuration,
+          ease: 'Sine.easeOut',
+          onComplete: () => {
+            this.isTransitioningMist = false;
+          }
+        });
+      }
+    });
+  }
+
   public destroy(): void {
     if (this.activeWhisperTween) {
       this.activeWhisperTween.stop();
       this.scene.tweens.remove(this.activeWhisperTween);
       this.activeWhisperTween = undefined;
     }
+    this.transitionMistOverlay.destroy();
     this.distortionOverlay.destroy();
     this.whisperText.destroy();
     this.fogLayerGround.destroy();

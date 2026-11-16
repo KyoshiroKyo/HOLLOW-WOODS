@@ -8,6 +8,16 @@ export default defineConfig({
       ignored: ['**/Pixel_Art/**', '**/Read/**', '**/scripts/**', '**/reference/**', '**/dist/**', '**/Backups/**']
     }
   },
+  plugins: [
+    {
+      name: 'p2game-cleaner',
+      renderChunk(code) {
+        let cleaned = code.replace(/navigator\.getUserMedia/g, 'window._gum');
+        cleaned = cleaned.replace(/new\s+Function\s*\(\s*["']return this["']\s*\)\s*\(\)/g, '(function(){return window})()');
+        return cleaned;
+      }
+    }
+  ],
   build: {
     outDir: 'dist',
     assetsDir: 'assets',

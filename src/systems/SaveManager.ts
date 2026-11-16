@@ -25,19 +25,37 @@ export interface SaveData {
 }
 
 export class SaveManager {
-  private static readonly SAVE_KEY = 'hollow_woods_v3_savegame';
+  private static readonly SAVE_KEY = 'hollow_woods_v1_savegame';
+  private static readonly LEGACY_SAVE_KEY = 'hollow_woods_v3_savegame';
+
+  /**
+   * Đọc dữ liệu thô từ localStorage với cơ chế tự động chuyển dữ liệu (migration) tương thích ngược từ V3.0
+   */
+  private static getRawSaveData(): string | null {
+    try {
+      let raw = localStorage.getItem(SaveManager.SAVE_KEY);
+      if (!raw) {
+        // Tương thích ngược: kiểm tra khóa lưu cũ v3
+        const legacyRaw = localStorage.getItem(SaveManager.LEGACY_SAVE_KEY);
+        if (legacyRaw) {
+          raw = legacyRaw;
+          // Tự động chuyển dữ liệu sang khóa v1 mới
+          localStorage.setItem(SaveManager.SAVE_KEY, legacyRaw);
+        }
+      }
+      return raw;
+    } catch {
+      return null;
+    }
+  }
 
   public static hasSave(): boolean {
-    try {
-      return localStorage.getItem(SaveManager.SAVE_KEY) !== null;
-    } catch {
-      return false;
-    }
+    return SaveManager.getRawSaveData() !== null;
   }
 
   public static getSaveSummary(): { checkpoint: string; date: string } | null {
     try {
-      const raw = localStorage.getItem(SaveManager.SAVE_KEY);
+      const raw = SaveManager.getRawSaveData();
       if (!raw) return null;
       const data: SaveData = JSON.parse(raw);
       return {
@@ -63,7 +81,7 @@ export class SaveManager {
       state.stats.isSprinting = false;
 
       const saveData: SaveData = {
-        version: '3.0.0',
+        version: '1.3.0',
         timestamp: Date.now(),
         checkpointName,
         zoneId,
@@ -95,7 +113,7 @@ export class SaveManager {
 
   public static loadGame(): SaveData | null {
     try {
-      const raw = localStorage.getItem(SaveManager.SAVE_KEY);
+      const raw = SaveManager.getRawSaveData();
       if (!raw) return null;
 
       const data: SaveData = JSON.parse(raw);
@@ -171,6 +189,7 @@ export class SaveManager {
   public static clearSave(): void {
     try {
       localStorage.removeItem(SaveManager.SAVE_KEY);
+      localStorage.removeItem(SaveManager.LEGACY_SAVE_KEY);
     } catch {
       // Ignored
     }

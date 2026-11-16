@@ -6,8 +6,8 @@
 - **Thư mục dự án:** `G:\HOLLOW WOODS`
 - **Engine:** Phaser 3 (Arcade Physics, WebGL Pixel Art Mode)
 - **Chuẩn đánh giá chất lượng:** 4 mức trạng thái (**PASS / PARTIAL / FAIL / BLOCKED**)
-- **Kết quả tổng quát:** **11/11 TIÊU CHÍ ĐẠT MỨC PASS (100%) | 333/333 KIỂM THỬ TỰ ĐỘNG PASS**
-- **Trạng thái biên dịch:** `npx tsc --noEmit` -> **0 lỗi (Mã thoát 0)** | `npm run build` -> **Thành công (6.46s)**
+- **Kết quả tổng quát:** **11/11 TIÊU CHÍ ĐẠT MỨC PASS (100%) | 528/528 KIỂM THỬ TỰ ĐỘNG PASS (100%)**
+- **Trạng thái biên dịch:** `npx tsc --noEmit` -> **0 lỗi (Mã thoát 0)** | `npm run build` -> **Thành công (Bundle: dist/assets/index-CIfSCLdN.js, Gói P2Game ZIP: 2.56 MB)**
 
 ---
 
@@ -65,21 +65,31 @@ Báo cáo kiểm thử hồi quy phiên bản **HOLLOW WOODS V1.3** được thi
 
 ## 4. TỔNG HỢP KẾT QUẢ KIỂM THỬ TỰ ĐỘNG (AUTOMATED TEST SUITES)
 
-Dự án duy trì hệ thống kiểm thử tự động gồm 10 tệp kịch bản kiểm tra độc lập, bao phủ toàn bộ chức năng, đồ họa, âm thanh, AI và hiệu năng:
+Dự án duy trì hệ thống kiểm thử tự động toàn diện gồm 18 tệp kịch bản kiểm tra độc lập, bao phủ toàn bộ chức năng, đồ họa, âm thanh, AI, va chạm và hiệu năng của phiên bản V1.3:
 
-| STT | Tên Kịch Bản Kiểm Thử | Mục Tiêu Kiểm Định | Số Tiêu Chí | Kết Quả |
-| :---: | :--- | :--- | :---: | :---: |
-| **1** | `verify_hiding_unstuck_c4_13_01.mjs` | Kiểm tra cơ chế ẩn nấp, phím [E], thoát bằng WASD và AABB nudge | 18 | **18/18 PASS** |
-| **2** | `verify_deep_forest_visibility_c4_13_02.mjs` | Kiểm tra hiển thị player Rừng Sâu, tán cây trong suốt, camera center | 18 | **18/18 PASS** |
-| **3** | `verify_death_and_game_over_c4_13_03.mjs` | Kiểm tra quy trình tử vong, khóa input, AI disengage, GameOverModal | 26 | **26/26 PASS** |
-| **4** | `verify_lantern_and_attack_sync_c4_13_04.mjs` | Kiểm tra neo đèn 4 hướng, cung vung gậy attack, phím [F] debounce | 18 | **18/18 PASS** |
-| **5** | `verify_ai_and_safe_zone_c4_13_05.mjs` | Kiểm tra Safe Zone Làng Bellhollow, max leash 420px, 5 trạng thái AI | 23 | **23/23 PASS** |
-| **6** | `verify_visual_improvements_c4_13_06.mjs` | Kiểm tra sprite đá pixel art, bóng đổ mờ mịn, xóa vòng xám tài nguyên | 28 | **28/28 PASS** |
-| **7** | `verify_ui_ux_redesign_c4_13_07.mjs` | Kiểm tra Menu 4 nút, HUD bán trong suốt tự ẩn, nhãn [E] khoảng cách | 34 | **34/34 PASS** |
-| **8** | `verify_performance_and_audit_c4_13_09.mjs` | Kiểm tra zero GC loops, dirty checking, teardown, rà soát 10 hệ thống | 32 | **32/32 PASS** |
-| **9** | `verify_npc_runtime_c4_12_09.mjs` | Kiểm tra 5 NPC spritesheet hoạt ảnh, chân dung, vị trí không vật cản | 56 | **56/56 PASS** |
-| **10** | `verify_full_game_flow_c4_12_31.mjs` | Kiểm tra luồng chơi xuyên suốt từ Act 0 đến Act 1 qua toàn bộ 9 phân khu | 80 | **80/80 PASS** |
-| **--** | **TỔNG CỘNG TOÀN DỰ ÁN** | **Kiểm định toàn diện chất lượng phần mềm HOLLOW WOODS V1.3** | **333** | **333/333 PASS (100%)** |
+| STT | Mã Hạng Mục | Tên Kịch Bản Kiểm Thử | Mục Tiêu Kiểm Định | Số Tiêu Chí | Kết Quả |
+| :---: | :---: | :--- | :--- | :---: | :---: |
+| **1** | `C4-13-01` | `verify_hiding_unstuck_c4_13_01.mjs` | Kiểm tra cơ chế ẩn nấp, phím [E], thoát bằng WASD và AABB nudge | 18 | **18/18 PASS** |
+| **2** | `C4-13-02` | `verify_deep_forest_visibility_c4_13_02.mjs` | Kiểm tra hiển thị player Rừng Sâu, tán cây trong suốt, camera center | 18 | **18/18 PASS** |
+| **3** | `C4-13-03` | `verify_death_and_game_over_c4_13_03.mjs` | Kiểm tra quy trình tử vong, khóa input, AI disengage, GameOverModal | 26 | **26/26 PASS** |
+| **4** | `C4-13-04` | `verify_lantern_and_attack_sync_c4_13_04.mjs` | Kiểm tra neo đèn 4 hướng, cung vung gậy attack, phím [F] debounce | 18 | **18/18 PASS** |
+| **5** | `C4-13-05` | `verify_ai_and_safe_zone_c4_13_05.mjs` | Kiểm tra Safe Zone Làng Bellhollow, max leash 420px, 5 trạng thái AI | 23 | **23/23 PASS** |
+| **6** | `C4-13-06` | `verify_visual_improvements_c4_13_06.mjs` | Kiểm tra sprite đá pixel art, bóng đổ mờ mịn, xóa vòng xám tài nguyên | 28 | **28/28 PASS** |
+| **7** | `C4-13-07` | `verify_ui_ux_redesign_c4_13_07.mjs` | Kiểm tra Menu 4 nút, HUD bán trong suốt tự ẩn, nhãn [E] khoảng cách | 34 | **34/34 PASS** |
+| **8** | `C4-13-08` | `verify_audio_system_c4_13_08.mjs` | Kiểm tra Web Audio Context autoplay, SFX vung gậy, lá xào xạc, cân bằng | 17 | **17/17 PASS** |
+| **9** | `C4-13-09` | `verify_performance_and_audit_c4_13_09.mjs` | Kiểm tra zero GC loops, dirty checking, teardown, rà soát 10 hệ thống | 40 | **40/40 PASS** |
+| **10** | `C4-13-14` | `verify_dialogue_ui_and_text_c4_13_14.mjs` | Kiểm tra nhãn nút Menu chính, padding hộp thoại NPC, đồng bộ tiếng Việt | 14 | **14/14 PASS** |
+| **11** | `C4-13-15` | `verify_hud_pixel_icons_c4_13_15.mjs` | Kiểm tra 4 icon pixel art HUD 16x16 sắc nét (Tim, Sấm sét, Đèn, Pha lê) | 13 | **13/13 PASS** |
+| **12** | `C4-13-16` | `verify_west_barrier_narrative_c4_13_16.mjs` | Kiểm tra cảnh quan rào chắn tự nhiên phía Tây và suy nghĩ kể chuyện | 22 | **22/22 PASS** |
+| **13** | `C4-13-17` | `verify_village_colliders_and_depth_c4_13_17.mjs` | Kiểm tra hộp va chạm công trình xưởng rèn, tháp chuông & Y-sorting | 25 | **25/25 PASS** |
+| **14** | `C4-13-18` | `verify_harvest_stamina_composure_c4_13_18.mjs` | Kiểm tra dọn hạt thu thập, thể lực cạn về 0 kiệt sức & hoảng loạn | 17 | **17/17 PASS** |
+| **15** | `C4-13-19` | `verify_invisible_walls_and_shrine_c4_13_19.mjs` | Kiểm tra xóa tường tàng hình cổ ngữ, Hysteresis 80px & Texture Miếu Chuông | 22 | **22/22 PASS** |
+| **16** | `C4-13-20` | `verify_seam_transition_and_hibernation_c4_13_20.mjs` | Kiểm tra dải tiếp giáp 200px ranh giới vùng, mờ sương & ngủ đông phân khu | 19 | **19/19 PASS** |
+| **17** | `C4-13-21` | `verify_blacksmith_integration_c4_13_21.mjs` | Kiểm tra tài nguyên Thợ Rèn Bram, hoạt ảnh đập đe, tọa độ & hội thoại lore | 44 | **44/44 PASS** |
+| **18** | `C4-13-11` | `verify_latent_bugs_c4_13_11.mjs` | Rà soát lỗi tiềm ẩn 10 hệ thống, single authority stats, modal exclusion & nearest candidate | 15 | **15/15 PASS** |
+| **19** | `C4-13-22` | `verify_p2game_packaging_c4_13_22.mjs` | Kiểm tra cấu hình base relative, p2game.json, 5 store assets và gói build zip | 35 | **35/35 PASS** |
+| **20** | `C4-12-31` | `verify_full_game_flow_c4_12_31.mjs` | Kiểm tra luồng chơi xuyên suốt từ Act 0 đến Act 1 qua toàn bộ 9 phân khu | 80 | **80/80 PASS** |
+| **--** | **TỔNG CỘNG** | **Kiểm định toàn diện chất lượng phần mềm HOLLOW WOODS V1.3** | **528** | **528/528 PASS (100%)** |
 
 ---
 

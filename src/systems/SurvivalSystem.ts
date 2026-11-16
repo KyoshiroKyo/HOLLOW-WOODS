@@ -23,6 +23,9 @@ export class SurvivalSystem {
   private lastLanternState: boolean | null = null;
   private lastSprinting: boolean | null = null;
 
+  // C4-13-18: Thời gian hoãn hồi phục thể lực sau khi chạy nhanh (1.0 giây)
+  private sprintCooldownTimer: number = 0;
+
   constructor() {
     this.playerState = PlayerState.getInstance();
   }
@@ -30,14 +33,21 @@ export class SurvivalSystem {
   public update(dt: number, playerX: number, playerY: number, inDeepFog: boolean): void {
     const stats = this.playerState.stats;
 
-    // 1. Quản lý Thể lực (Stamina)
+    // 1. Quản lý Thể lực (Stamina) - C4-13-18: Tụt mượt mà về 0, hoãn hồi phục 1.0s sau khi dừng chạy
     if (stats.isSprinting) {
+      this.sprintCooldownTimer = 1.0;
       stats.stamina = Math.max(0, stats.stamina - STAMINA_DRAIN_RATE * dt);
       if (stats.stamina <= 0) {
+        stats.stamina = 0;
         stats.isSprinting = false;
+        this.playerState.emit('stamina_exhausted');
       }
     } else {
-      stats.stamina = Math.min(stats.maxStamina, stats.stamina + STAMINA_RECOVERY_RATE * dt);
+      if (this.sprintCooldownTimer > 0) {
+        this.sprintCooldownTimer = Math.max(0, this.sprintCooldownTimer - dt);
+      } else {
+        stats.stamina = Math.min(stats.maxStamina, stats.stamina + STAMINA_RECOVERY_RATE * dt);
+      }
     }
 
     // 2. Quản lý Dầu đèn lồng (Lantern Oil)
@@ -62,9 +72,9 @@ export class SurvivalSystem {
         // Trong bóng tối: Composure sụt giảm
         const drain = inDeepFog ? COMPOSURE_DRAIN_IN_DARK * 2.2 : COMPOSURE_DRAIN_IN_DARK;
         stats.composure = Math.max(0, stats.composure - drain * dt);
-        // C4-13-03: Khi bình tâm cạn kiệt trong sương tối, khí lạnh gặm mòn sinh lực
+        // C4-13-18: Khi bình tâm cạn kiệt (0/100) trong sương tối, khí lạnh gặm mòn sinh lực (-1 HP mỗi 2.5s = -0.4 HP/s)
         if (stats.composure <= 0) {
-          stats.health = Math.max(0, stats.health - 2.5 * dt);
+          stats.health = Math.max(0, stats.health - 0.4 * dt);
         }
       } else {
         // Có ánh đèn lồng: Composure hồi phục dần

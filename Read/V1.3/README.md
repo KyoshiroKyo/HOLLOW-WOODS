@@ -7,8 +7,8 @@
 - **Engine:** Phaser 3 (Arcade Physics, WebGL Pixel Art Mode, Zoom 1.0 cố định cho UI)
 - **Định hướng nghệ thuật:** **Visual Direction A — Dark Woodland Pixel Art**
 - **Trạng thái biên dịch TypeScript:** `npx tsc --noEmit` -> **0 lỗi (Mã thoát 0)**
-- **Trạng thái đóng gói sản phẩm:** `npm run build` -> **Thành công trong 6.46s**
-- **Kết luận nghiệm thu:** **CHẤP THUẬN NGHIỆM THU 100% (FULL ACCEPTANCE — 11/11 TIÊU CHÍ PASS)**
+- **Trạng thái đóng gói sản phẩm:** `npm run build` -> **Thành công trong 7.48s** (Bundle: `dist/assets/index-Ci54xOiR.js`)
+- **Kết luận nghiệm thu:** **CHẤP THUẬN NGHIỆM THU 100% (FULL ACCEPTANCE — 11/11 TIÊU CHÍ PASS | 478/478 TEST PASS)**
 
 ---
 
@@ -20,11 +20,11 @@ Toàn bộ quá trình đánh giá, phân tích nguyên nhân gốc rễ, thực
 | :---: | :--- | :--- | :--- |
 | **01** | **AUDIT** | [01_Project_Audit_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/01_Project_Audit_Report.md) | Đánh giá hiện trạng ban đầu, trạng thái kho mã nguồn Git, bảo toàn tài nguyên Dân làng C4-12-08, Runtime NPC C4-12-09, khảo sát 9 phân khu và 15 điểm ẩn nấp toàn bản đồ. |
 | **02** | **ROOT-CAUSE** | [02_Bug_Analysis_And_Root_Cause_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/02_Bug_Analysis_And_Root_Cause_Report.md) | Phân tích chuyên sâu nguyên nhân gốc rễ (Root Cause) và giải pháp xử lý của toàn bộ **15 hạng mục lỗi (BUG-01 đến BUG-15)** cùng **10 hệ thống tiềm ẩn**. |
-| **03** | **CORE-IMPL** | [03_Implementation_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/03_Implementation_Report.md) | Báo cáo chi tiết các giải pháp thực thi kỹ thuật cốt lõi: C4-13-01 (Ẩn nấp & gỡ kẹt hai chiều), C4-13-02 (Rừng Sâu & tán cây trong suốt), C4-13-03 (Quy trình tử vong & Game Over Gothic), C4-13-04 (Chuẩn hóa đèn cầm tay). |
+| **03** | **CORE-IMPL** | [03_Implementation_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/03_Implementation_Report.md) | Báo cáo chi tiết các giải pháp thực thi kỹ thuật cốt lõi: C4-13-01 (Ẩn nấp & gỡ kẹt hai chiều), C4-13-02 (Rừng Sâu & tán cây trong suốt), C4-13-03 (Quy trình tử vong & Game Over Gothic), C4-13-04 (Chuẩn hóa đèn cầm tay), C4-13-16 (Rào chắn phía Tây), C4-13-17 (Va chạm làng), C4-13-18 (Thể lực & Hoảng loạn), C4-13-19 (Tường tàng hình & Miếu Chuông), C4-13-21 (NPC Thợ Rèn Bram). |
 | **04** | **AI-PERF** | [04_AI_And_Performance_Optimization_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/04_AI_And_Performance_Optimization_Report.md) | Báo cáo tối ưu hóa AI thực thể (C4-13-05: Safe Zone Làng Bellhollow, 5 trạng thái thông minh) và Tối ưu hóa hiệu năng 60 FPS, Dirty-Checking toàn diện, Lifecycle Teardown (C4-13-09). |
-| **05** | **VISUAL-UI** | [05_UI_UX_And_Visual_Improvement_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/05_UI_UX_And_Visual_Improvement_Report.md) | Báo cáo nâng cấp đồ họa môi trường, sương mù đa tầng Parallax 3 lớp (C4-13-06) và Thiết kế lại toàn diện Menu chính, HUD sinh tồn bán trong suốt, nhãn tương tác [E] khoảng cách (C4-13-07). |
-| **06** | **INTEGRATION** | [06_Cross_System_Audit_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/06_Cross_System_Audit_Report.md) | Báo cáo rà soát tích hợp và kiểm định chéo giữa 10 hệ thống tiềm ẩn, ma trận tương tác phân hệ và kiểm định không rò rỉ bộ nhớ (Zero Memory Leak Audit). |
-| **07** | **REGRESSION** | [07_Regression_Testing_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/07_Regression_Testing_Report.md) | Báo cáo kiểm thử hồi quy toàn diện, đối chiếu 11 tiêu chí hoàn thành theo 4 mức trạng thái (**PASS/PARTIAL/FAIL/BLOCKED**), so sánh hiệu suất trước/sau và tổng hợp 10 kịch bản test tự động (**333/333 PASS**). |
+| **05** | **VISUAL-UI** | [05_UI_UX_And_Visual_Improvement_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/05_UI_UX_And_Visual_Improvement_Report.md) | Báo cáo nâng cấp đồ họa môi trường, sương mù đa tầng Parallax 3 lớp (C4-13-06), Thiết kế lại Menu chính & HUD (C4-13-07), Rút gọn nhãn nút & Sửa lẹm chữ (C4-13-14), Biểu tượng thuộc tính Pixel Art HUD 16x16 (C4-13-15) và Mượt hóa ranh giới vùng (C4-13-20). |
+| **06** | **AUDIO** | [06_Audio_Testing_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/06_Audio_Testing_Report.md) | Báo cáo rà soát và kiểm thử toàn diện hệ thống âm thanh Web Audio Synthesis (C4-13-08): Autoplay unlock, chống chồng âm/rò rỉ node, SFX vung gậy, lá xào xạc, tử nạn và cân bằng âm lượng. *(Kèm báo cáo rà soát 10 hệ thống phụ trợ: [06_Cross_System_Audit_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/06_Cross_System_Audit_Report.md))*. |
+| **07** | **REGRESSION** | [07_Regression_Testing_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/07_Regression_Testing_Report.md) | Báo cáo kiểm thử hồi quy toàn diện, đối chiếu 11 tiêu chí hoàn thành theo 4 mức trạng thái (**PASS/PARTIAL/FAIL/BLOCKED**), so sánh hiệu suất trước/sau và tổng hợp 18 kịch bản test tự động (**478/478 PASS - 100%**). |
 | **08** | **RELEASE** | [08_Final_Release_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/08_Final_Release_Report.md) | Báo cáo nghiệm thu khóa sổ (C4-13-12), công bố phát hành chính thức, hướng dẫn trải nghiệm và xác nhận chất lượng toàn diện phiên bản V1.3. |
 
 ---

@@ -31,6 +31,7 @@ export class AudioManager {
 
   // Quản lý Ambience đa tầng chống lặp
   private activeAmbience: AmbienceChannel | null = null;
+  private fadingChannels: { channel: AmbienceChannel; timerId: number }[] = [];
   private currentAmbienceZone: AmbienceZone | null = null;
   private noiseBuffer: AudioBuffer | null = null;
   private pendingAmbienceZone: AmbienceZone | null = null;
@@ -43,11 +44,11 @@ export class AudioManager {
   // Cooldown / Debounce cho One-shot SFX (Tránh dội âm khi spam phím)
   private sfxCooldowns: Map<string, number> = new Map();
 
-  // Cấu hình âm lượng
+  // Cấu hình âm lượng cân bằng chuẩn C4-13-08 (Ambience 0.38 giúp SFX & lời thoại nổi bật rõ nét)
   public isMuted: boolean = false;
   private masterVolume: number = 0.8;
   private sfxVolume: number = 0.85;
-  private ambienceVolume: number = 0.55;
+  private ambienceVolume: number = 0.38;
 
   // Trạng thái mở khóa AudioContext
   private isUnlocked: boolean = false;
@@ -101,15 +102,14 @@ export class AudioManager {
   private setupAutoplayUnlock(): void {
     if (typeof window === 'undefined') return;
 
+    const events = ['pointerdown', 'keydown', 'touchstart', 'mousedown', 'click'];
     const unlockHandler = () => {
       this.resumeAudio();
       if (this.ctx && this.ctx.state === 'running') {
         this.isUnlocked = true;
-        window.removeEventListener('pointerdown', unlockHandler);
-        window.removeEventListener('keydown', unlockHandler);
-        window.removeEventListener('touchstart', unlockHandler);
-
-        // Nếu có ambience đang chờ do autoplay bị hoãn, phát ngay lập tức
+        for (const ev of events) {
+          window.removeEventListener(ev, unlockHandler);
+        }
         if (this.pendingAmbienceZone) {
           const zone = this.pendingAmbienceZone;
           this.pendingAmbienceZone = null;
@@ -118,9 +118,9 @@ export class AudioManager {
       }
     };
 
-    window.addEventListener('pointerdown', unlockHandler, { passive: true, capture: true });
-    window.addEventListener('keydown', unlockHandler, { passive: true, capture: true });
-    window.addEventListener('touchstart', unlockHandler, { passive: true, capture: true });
+    for (const ev of events) {
+      window.addEventListener(ev, unlockHandler, { passive: true, capture: true });
+    }
   }
 
   /**
@@ -133,9 +133,19 @@ export class AudioManager {
     if (this.ctx && this.ctx.state === 'suspended') {
       this.ctx.resume().then(() => {
         this.isUnlocked = true;
+        if (this.pendingAmbienceZone) {
+          const zone = this.pendingAmbienceZone;
+          this.pendingAmbienceZone = null;
+          this.setAmbienceZone(zone, 1.2);
+        }
       }).catch(() => {});
     } else if (this.ctx && this.ctx.state === 'running') {
       this.isUnlocked = true;
+      if (this.pendingAmbienceZone) {
+        const zone = this.pendingAmbienceZone;
+        this.pendingAmbienceZone = null;
+        this.setAmbienceZone(zone, 1.2);
+      }
     }
   }
 
@@ -327,6 +337,28 @@ export class AudioManager {
   }
 
   /**
+   * C4-13-08: Dọn dẹp sạch sẽ toàn bộ các AudioNode và Timer của một kênh Ambience
+   * ngăn chặn rò rỉ bộ nhớ và dội âm lặp
+   */
+  private cleanupChannelNodes(channel: AmbienceChannel): void {
+    for (const item of channel.nodes) {
+      if (typeof item === 'number') {
+        clearInterval(item);
+      } else {
+        try {
+          (item as AudioScheduledSourceNode).stop?.();
+        } catch {}
+        try {
+          item.disconnect();
+        } catch {}
+      }
+    }
+    try {
+      channel.gainNode.disconnect();
+    } catch {}
+  }
+
+  /**
    * Chuyển đổi nhạc nền sang vùng mới với hiệu ứng Crossfade mượt mà, chống tạo vòng lặp kép
    */
   public setAmbienceZone(zoneIdOrType: string, fadeDurationSec: number = 1.4): void {
@@ -357,21 +389,12 @@ export class AudioManager {
       oldChannel.gainNode.gain.setValueAtTime(oldChannel.gainNode.gain.value, now);
       oldChannel.gainNode.gain.linearRampToValueAtTime(0.0001, now + fadeDurationSec);
 
-      window.setTimeout(() => {
-        for (const item of oldChannel.nodes) {
-          if (typeof item === 'number') {
-            clearInterval(item);
-          } else {
-            try {
-              (item as AudioScheduledSourceNode).stop?.();
-            } catch {}
-            try {
-              item.disconnect();
-            } catch {}
-          }
-        }
+      const timerId = window.setTimeout(() => {
+        this.cleanupChannelNodes(oldChannel);
+        this.fadingChannels = this.fadingChannels.filter(c => c.channel !== oldChannel);
       }, (fadeDurationSec + 0.1) * 1000);
 
+      this.fadingChannels.push({ channel: oldChannel, timerId });
       this.activeAmbience = null;
     }
 
@@ -492,35 +515,37 @@ export class AudioManager {
   }
 
   public stopAmbience(immediate: boolean = false): void {
-    if (!this.activeAmbience || !this.ctx) return;
+    if (!this.ctx) return;
     const now = this.ctx.currentTime;
-    const channel = this.activeAmbience;
 
-    if (immediate) {
-      for (const item of channel.nodes) {
-        if (typeof item === 'number') clearInterval(item);
-        else {
-          try { (item as AudioScheduledSourceNode).stop?.(); } catch {}
-          try { item.disconnect(); } catch {}
-        }
+    // Dọn sạch dứt điểm mọi kênh đang fade out trong bộ đệm
+    for (const fc of this.fadingChannels) {
+      clearTimeout(fc.timerId);
+      this.cleanupChannelNodes(fc.channel);
+    }
+    this.fadingChannels = [];
+
+    if (this.activeAmbience) {
+      const channel = this.activeAmbience;
+      if (immediate) {
+        this.cleanupChannelNodes(channel);
+        this.activeAmbience = null;
+        this.currentAmbienceZone = null;
+      } else {
+        channel.gainNode.gain.cancelScheduledValues(now);
+        channel.gainNode.gain.setValueAtTime(channel.gainNode.gain.value, now);
+        channel.gainNode.gain.linearRampToValueAtTime(0.0001, now + 0.6);
+        const timerId = window.setTimeout(() => {
+          this.cleanupChannelNodes(channel);
+          this.fadingChannels = this.fadingChannels.filter(c => c.channel !== channel);
+        }, 700);
+        this.fadingChannels.push({ channel, timerId });
+        this.activeAmbience = null;
+        this.currentAmbienceZone = null;
       }
     } else {
-      channel.gainNode.gain.cancelScheduledValues(now);
-      channel.gainNode.gain.setValueAtTime(channel.gainNode.gain.value, now);
-      channel.gainNode.gain.linearRampToValueAtTime(0.0001, now + 0.8);
-      window.setTimeout(() => {
-        for (const item of channel.nodes) {
-          if (typeof item === 'number') clearInterval(item);
-          else {
-            try { (item as AudioScheduledSourceNode).stop?.(); } catch {}
-            try { item.disconnect(); } catch {}
-          }
-        }
-      }, 900);
+      this.currentAmbienceZone = null;
     }
-
-    this.activeAmbience = null;
-    this.currentAmbienceZone = null;
   }
 
   // =========================================================================
@@ -881,6 +906,90 @@ export class AudioManager {
     }
   }
 
+  /**
+   * C4-13-08: Hiệu ứng âm thanh vung gậy / tấn công cận chiến (Staff/Stick Attack Swing)
+   */
+  public playAttackSwing(): void {
+    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    if (!this.checkCooldown('attack', 200)) return;
+    this.resumeAudio();
+
+    const now = this.ctx.currentTime;
+
+    // 1. Tiếng xé gió nhanh (Whoosh Noise)
+    const noiseBuffer = this.getOrCreateNoiseBuffer();
+    if (noiseBuffer) {
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = noiseBuffer;
+
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(1200, now);
+      filter.frequency.exponentialRampToValueAtTime(320, now + 0.14);
+      filter.Q.setValueAtTime(2.8, now);
+
+      const noiseGain = this.ctx.createGain();
+      noiseGain.gain.setValueAtTime(0.18 * this.sfxVolume, now);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+
+      noise.connect(filter);
+      filter.connect(noiseGain);
+      noiseGain.connect(this.veilFilter);
+
+      noise.start(now);
+      noise.stop(now + 0.15);
+    }
+
+    // 2. Tiếng gậy gỗ rít trầm đục
+    const osc = this.ctx.createOscillator();
+    const oscGain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(240, now);
+    osc.frequency.exponentialRampToValueAtTime(65, now + 0.12);
+
+    oscGain.gain.setValueAtTime(0.14 * this.sfxVolume, now);
+    oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+    osc.connect(oscGain);
+    oscGain.connect(this.veilFilter);
+
+    osc.start(now);
+    osc.stop(now + 0.13);
+  }
+
+  /**
+   * C4-13-08: Hiệu ứng âm thanh khi bước vào hoặc bước ra khỏi bụi rậm ẩn nấp (Bush Rustle)
+   */
+  public playBushRustle(entering: boolean = true): void {
+    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    if (!this.checkCooldown('bush_rustle', 200)) return;
+    this.resumeAudio();
+
+    const now = this.ctx.currentTime;
+    const noiseBuffer = this.getOrCreateNoiseBuffer();
+    if (noiseBuffer) {
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = noiseBuffer;
+
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(entering ? 850 : 1050, now);
+      filter.frequency.exponentialRampToValueAtTime(entering ? 320 : 450, now + 0.16);
+      filter.Q.setValueAtTime(2.2, now);
+
+      const gain = this.ctx.createGain();
+      gain.gain.setValueAtTime(0.15 * this.sfxVolume, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(this.veilFilter);
+
+      noise.start(now);
+      noise.stop(now + 0.19);
+    }
+  }
+
   // =========================================================================
   // 9. DỌN DẸP & GIẢI PHÓNG TÀI NGUYÊN (CLEANUP)
   // =========================================================================
@@ -894,10 +1003,13 @@ export class AudioManager {
   }
 
   /**
-   * C4-13-03: Hiệu ứng âm thanh khi nhân vật chịu đòn đau hoặc ngã gục
+   * C4-13-03: Hiệu ứng âm thanh khi nhân vật chịu đòn đau
    */
   public playHurt(): void {
-    if (!this.isUnlocked || !this.ctx || !this.masterGain || this.isMuted) return;
+    if (!this.ctx || !this.masterGain || this.isMuted) return;
+    if (!this.checkCooldown('hurt', 300)) return;
+    this.resumeAudio();
+
     const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
@@ -906,7 +1018,7 @@ export class AudioManager {
     osc.frequency.setValueAtTime(140, now);
     osc.frequency.exponentialRampToValueAtTime(45, now + 0.35);
 
-    gain.gain.setValueAtTime(0.35 * this.sfxVolume, now);
+    gain.gain.setValueAtTime(0.32 * this.sfxVolume, now);
     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
 
     osc.connect(gain);
@@ -914,6 +1026,47 @@ export class AudioManager {
 
     osc.start(now);
     osc.stop(now + 0.36);
+  }
+
+  /**
+   * C4-13-08: Hiệu ứng âm thanh khi nhân vật ngã gục / tử trận (Player Death Downfall & Impact)
+   */
+  public playPlayerDeath(): void {
+    if (!this.ctx || !this.masterGain || this.isMuted) return;
+    if (!this.checkCooldown('death', 1000)) return;
+    this.resumeAudio();
+
+    const now = this.ctx.currentTime;
+
+    // 1. Tiếng va chạm nặng xuống mặt đất (Heavy impact thud)
+    const thudOsc = this.ctx.createOscillator();
+    const thudGain = this.ctx.createGain();
+    thudOsc.type = 'sine';
+    thudOsc.frequency.setValueAtTime(95, now);
+    thudOsc.frequency.exponentialRampToValueAtTime(25, now + 0.45);
+
+    thudGain.gain.setValueAtTime(0.38 * this.sfxVolume, now);
+    thudGain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
+    thudOsc.connect(thudGain);
+    thudGain.connect(this.masterGain);
+    thudOsc.start(now);
+    thudOsc.stop(now + 0.48);
+
+    // 2. Âm thanh rền rĩ bi thương u ám kéo dài (Tragic down-sweep)
+    const tragicOsc = this.ctx.createOscillator();
+    const tragicGain = this.ctx.createGain();
+    tragicOsc.type = 'sawtooth';
+    tragicOsc.frequency.setValueAtTime(160, now + 0.05);
+    tragicOsc.frequency.exponentialRampToValueAtTime(32, now + 0.65);
+
+    tragicGain.gain.setValueAtTime(0.24 * this.sfxVolume, now + 0.05);
+    tragicGain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+
+    tragicOsc.connect(tragicGain);
+    tragicGain.connect(this.masterGain);
+    tragicOsc.start(now + 0.05);
+    tragicOsc.stop(now + 0.72);
   }
 
   public destroy(): void {

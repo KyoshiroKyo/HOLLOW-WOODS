@@ -329,6 +329,38 @@ export class InventorySystem {
       ease: 'Power2',
       onComplete: () => text.destroy()
     });
+
+    // C4-13-18: Tung 5 hạt lấp lánh màu xanh khi thu thập, đảm bảo 100% hạt tự destroy sau 500-700ms, không đọng lại
+    this.createHarvestParticles(x, y);
+  }
+
+  private createHarvestParticles(x: number, y: number): void {
+    const particleCount = 5;
+    for (let i = 0; i < particleCount; i++) {
+      const p = this.scene.add.graphics();
+      p.fillStyle(0x2ecc71, 0.9);
+      p.fillCircle(0, 0, 2);
+      p.setPosition(x, y);
+      p.setDepth(9999);
+
+      const angle = (i / particleCount) * Math.PI * 2 + (Math.random() - 0.5) * 0.5;
+      const dist = 14 + Math.random() * 12;
+      const targetX = x + Math.cos(angle) * dist;
+      const targetY = y + Math.sin(angle) * dist - 18;
+
+      this.scene.tweens.add({
+        targets: p,
+        x: targetX,
+        y: targetY,
+        alpha: 0,
+        scale: 0.5,
+        duration: 550 + Math.random() * 150,
+        ease: 'Cubic.easeOut',
+        onComplete: () => {
+          p.destroy();
+        }
+      });
+    }
   }
 }
 

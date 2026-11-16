@@ -106,7 +106,7 @@ export const TILE_SWAMP_MUD = 'tile_swamp_mud';
 export const TILE_COBBLE_ROAD = 'tile_cobble_road';
 export const TILE_STONE_FLOOR = 'tile_stone_floor';
 
-// Khóa Texture NPC & Chân Dung (NPC Sprite & Portrait Keys - PASS T09 / C4-12-08)
+// Khóa Texture NPC & Chân Dung (NPC Sprite & Portrait Keys - PASS T09 / C4-12-08 / C4-13-21)
 export const SPRITE_NPC_GARTH = 'npc_garth';
 export const PORTRAIT_GARTH = 'portrait_garth';
 export const SPRITE_NPC_EDDA = 'npc_edda';
@@ -117,6 +117,9 @@ export const SPRITE_NPC_BRAM = 'npc_bram';
 export const PORTRAIT_BRAM = 'portrait_bram';
 export const SPRITE_NPC_FINN = 'npc_finn';
 export const PORTRAIT_FINN = 'portrait_finn';
+export const SPRITE_BLACKSMITH_SHEET = 'blacksmith_sheet';
+export const SPRITE_NPC_BLACKSMITH = 'npc_blacksmith';
+export const PORTRAIT_BLACKSMITH = 'portrait_blacksmith';
 
 // Khóa Texture Hoạt Ảnh NPC Chuẩn Hóa (C4-12-08 / C4-12-09)
 export const SPRITE_GARTH_IDLE = 'garth_idle';

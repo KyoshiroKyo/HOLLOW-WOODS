@@ -224,3 +224,31 @@ HOLLOW WOODS V1.3 MASTER BUG & LATENT SYSTEMS AUDIT SUMMARY
 TOTAL: 15/15 BUGS RESOLVED | 10/10 SYSTEMS FULLY AUDITED | TSC 0 ERRORS | 100% PASS
 ========================================================================================
 ```
+
+## 5. BỔ SUNG KẾT QUẢ RÀ SOÁT LỖI TIỀM ẨN & THỬ NGHIỆM THỰC TẾ (C4-13-11)
+
+Trong bước **C4-13-11**, toàn bộ 10 hệ thống mã nguồn và các tình huống kiểm thử biên thực tế đã được rà soát sâu rộng và gia cố toàn diện:
+
+1. **Hệ thống Sinh tồn & Chỉ số (SurvivalSystem & SatyrPlayer):**
+   - Loại bỏ việc gán đè `stamina = 0` cục bộ trong `SatyrPlayer.updateMovementInput()`.
+   - Quy về một nguồn tính toán duy nhất (*Single Authority*) tại `SurvivalSystem.ts`, triệt tiêu hoàn toàn xung đột trừ/hồi thể lực và chỉ số sinh tồn.
+
+2. **Hệ thống Cửa sổ Giao diện & Bàn phím (UIScene, DialogueSystem & Modals):**
+   - Thiết lập nguyên tắc loại trừ lẫn nhau (*Modal Mutual Exclusion*): mở cửa sổ này tự động đóng triệt để cửa sổ khác.
+   - Khi mở hộp thoại NPC, `DialogueSystem` tự động đóng `CraftingModal`, `JournalModal`, `PauseModal`.
+   - Khi đóng bất kỳ modal nào, `UIScene` gọi `gameScene.player.resetAllInputState()` để dọn sạch phím kẹt, giải phóng chuyển động tức thì.
+   - Bổ sung thuộc tính `isAnyModalOpen` để bảo vệ các thao tác chuột/phím nền.
+
+3. **Hệ thống Tương tác & Chọn Ứng Viên Gần Nhất (Nearest-Neighbor Candidate):**
+   - Thay thế cơ chế kiểm tra `return;` rải rác bằng cấu trúc `InteractionCandidate[]` duy nhất trong `GameScene.handleInteractions()`.
+   - Đánh giá khoảng cách Euclid thực tế giữa người chơi với NPC, Mỏ tài nguyên, Đất trồng và Vật thể bản đồ (Bàn chế tạo, Biển báo, Cổng làng).
+   - Chọn duy nhất ứng viên có khoảng cách ngắn nhất ($d_{min}$), hiển thị đúng 1 nhãn gợi ý và kích hoạt chính xác 1 hành động khi nhấn `[E]`, chặn hoàn toàn việc tương tác phím `[E]` khi đang mở Modal hoặc khóa điều khiển.
+
+4. **Hệ thống Lưu trữ, Vòng Đời & Đồng Bộ Vùng (SaveManager & GameScene):**
+   - `GameScene.init()` thiết lập lại toàn bộ các biến trạng thái vòng đời (`isGameOverPending`, `isAct5ChaseActive`, `transitionCooldown`, `cullingTimer`, `lastWestBarrierThoughtTime`, `lastZoneBannerTime`, `npcs`, `fireflies`), loại bỏ hoàn toàn nguy cơ rò rỉ dữ liệu khi người chơi Restart / Reload.
+   - Khi chọn "Tiếp tục" (`isContinueMode`), `GameScene.create()` gọi `worldBuilder.detectCurrentZone({ x, y })` để xác định ngay phân khu thực tế từ tọa độ lưu, áp dụng ngay Camera Bounds và đồng bộ cổng chặn, triệt tiêu lỗi camera bị kẹp ở Fog Crossing.
+
+5. **An Toàn Tài Nguyên & Đồng Bộ Ngôn Ngữ (Texture Safety & Lore Consistency):**
+   - `PreloadScene.preload()` tạo sớm texture `dummy_transparent` 1x1 RGBA.
+   - `WorldBuilder.ts` triển khai phương thức `safeAddImage` bao bọc toàn bộ các hàm dựng công trình và cây cối, tự động fallback an toàn nếu thiếu asset.
+   - Đồng bộ hóa các cụm từ tiếng Anh đơn độc thành danh xưng Tiếng Việt tự nhiên và nhất quán: `"Khu Rừng Rỗng (The Hollow Woods)"`.

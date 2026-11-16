@@ -148,7 +148,7 @@ export class MainMenuScene extends Phaser.Scene {
     this.createMenuButton(
       startX,
       currentY,
-      '▶ BƯỚC VÀO MÀN SƯƠNG (BẮT ĐẦU MỚI)',
+      '► BƯỚC VÀO MÀN SƯƠNG',
       '#f39c12',
       true,
       () => this.startNewGame()
@@ -225,15 +225,19 @@ export class MainMenuScene extends Phaser.Scene {
       });
     }
 
-    // Mở khóa AudioContext và phát nhạc nền rừng huyền bí khi người chơi tương tác
-    const unlockAndPlayAmbience = () => {
-      const audio = AudioManager.getInstance();
-      audio.resumeAudio();
+    // Mở khóa AudioContext và phát nhạc nền rừng huyền bí khi người chơi tương tác (C4-13-08)
+    const audio = AudioManager.getInstance();
+    if (audio.isAudioUnlocked()) {
       audio.setAmbienceZone('forest', 2.0);
-    };
-    this.input.once('pointerdown', unlockAndPlayAmbience);
-    if (this.input.keyboard) {
-      this.input.keyboard.once('keydown', unlockAndPlayAmbience);
+    } else {
+      const unlockAndPlayAmbience = () => {
+        audio.resumeAudio();
+        audio.setAmbienceZone('forest', 2.0);
+      };
+      this.input.once('pointerdown', unlockAndPlayAmbience);
+      if (this.input.keyboard) {
+        this.input.keyboard.once('keydown', unlockAndPlayAmbience);
+      }
     }
 
     // 6. BẢNG HƯỚNG DẪN ĐIỀU KHIỂN CHUẨN HD Ở ĐÁY MÀN HÌNH (BÁN TRONG SUỐT)
@@ -256,12 +260,12 @@ export class MainMenuScene extends Phaser.Scene {
       }
     ).setOrigin(0.5, 0.5);
 
-    // Phiên bản V1.3 & Engine góc dưới phải
+    // Phiên bản V1.3.0 & Engine góc dưới phải
     HDTextHelper.createText(
       this, 
       1265, 
       705, 
-      'V1.3 (Visual Direction A + Hybrid Open World) | Phaser 4 + TypeScript | 1280×720 HD', 
+      'V1.3.0 (Visual Direction A + Hybrid Open World) | Phaser 4 + TypeScript | 1280×720 HD', 
       {
         fontSize: '11px',
         color: '#4a5568'
@@ -507,7 +511,7 @@ export class MainMenuScene extends Phaser.Scene {
       '──────────────────────────────────────────────────────────\n' +
       '• Engine: Phaser 4 + TypeScript | Độ phân giải chuẩn HD 1280×720\n' +
       '• Đồ họa: Visual Direction A — Pixel Art Gothic Rừng Sâu u tịch\n' +
-      '• Phiên bản: V1.3 (Hybrid Open World Architecture)',
+      '• Phiên bản: V1.3.0 (Hybrid Open World Architecture)',
       {
         fontSize: '11.5px',
         color: '#e2e8f0',

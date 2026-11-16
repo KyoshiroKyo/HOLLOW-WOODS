@@ -51,6 +51,15 @@
           "isSolid": true
         },
         {
+          "id": "fog_west_barrier",
+          "x": 36,
+          "y": 120,
+          "width": 28,
+          "height": 130,
+          "type": "boundary",
+          "isSolid": true
+        },
+        {
           "id": "fog_tree_1",
           "x": 160,
           "y": 100,
@@ -70,6 +79,17 @@
         }
       ],
       "interactables": [
+        {
+          "id": "fog_west_barrier",
+          "name": "Rào Chắn Phía Tây",
+          "type": "clue",
+          "x": 62,
+          "y": 184,
+          "width": 32,
+          "height": 48,
+          "promptText": "Nhấn [E] kiểm tra Lối Mòn Phía Sau",
+          "actionId": "inspect_west_barrier"
+        },
         {
           "id": "fog_sign",
           "name": "Tấm Biển Cũ",
@@ -155,9 +175,9 @@
         {
           "id": "npc_bram",
           "name": "Bram",
-          "title": "Thợ thủ công làng",
-          "x": 1025,
-          "y": 370,
+          "title": "Thợ rèn làng",
+          "x": 1045,
+          "y": 365,
           "dialogueKey": "bram_chat"
         },
         {
@@ -413,8 +433,8 @@
             "x": 1540,
             "y": 280
           },
-          "displayLabel": "Bước qua Cổng Đông tiến vào Khu Rừng The Hollow Woods",
-          "description": "Bước qua Cổng Đông tiến vào Khu Rừng The Hollow Woods"
+          "displayLabel": "Bước qua Cổng Đông tiến vào Khu Rừng Rỗng (The Hollow Woods)",
+          "description": "Bước qua Cổng Đông tiến vào Khu Rừng Rỗng (The Hollow Woods)"
         }
       ],
       "tier": "LAYER_1_CORE",
@@ -766,15 +786,6 @@
           "isSolid": true
         },
         {
-          "id": "mire_water_pool",
-          "x": 3200,
-          "y": 250,
-          "width": 180,
-          "height": 90,
-          "type": "water",
-          "isSolid": true
-        },
-        {
           "id": "sm_water_west",
           "x": 3020,
           "y": 380,
@@ -829,30 +840,21 @@
           "isSolid": true
         },
         {
-          "id": "pillar_1",
-          "x": 3400,
-          "y": 220,
-          "width": 24,
-          "height": 24,
-          "type": "shrine_pedestal",
+          "id": "mire_water_north_deep",
+          "x": 3200,
+          "y": 160,
+          "width": 170,
+          "height": 95,
+          "type": "water",
           "isSolid": true
         },
         {
-          "id": "pillar_2",
-          "x": 3520,
-          "y": 360,
-          "width": 24,
-          "height": 24,
-          "type": "shrine_pedestal",
-          "isSolid": true
-        },
-        {
-          "id": "pillar_3",
-          "x": 3640,
-          "y": 220,
-          "width": 24,
-          "height": 24,
-          "type": "shrine_pedestal",
+          "id": "mire_water_south_deep",
+          "x": 3200,
+          "y": 335,
+          "width": 170,
+          "height": 95,
+          "type": "water",
           "isSolid": true
         }
       ],
@@ -1143,15 +1145,6 @@
           "width": 30,
           "height": 600,
           "type": "boundary",
-          "isSolid": true
-        },
-        {
-          "id": "shrine_main_altar",
-          "x": 4500,
-          "y": 250,
-          "width": 96,
-          "height": 64,
-          "type": "shrine_pedestal",
           "isSolid": true
         },
         {
@@ -1961,35 +1954,7 @@
         "titleVietnamese": "CÂU ĐỐ CỔ NGỮ",
         "subTitleVietnamese": "Trận địa ba cột đá cổ ngữ ẩn giấu chìa khóa mở đường tới Miếu Chuông."
       },
-      "colliders": [
-        {
-          "id": "rune_arena_bound_top",
-          "x": 3350,
-          "y": 150,
-          "width": 350,
-          "height": 20,
-          "type": "boundary",
-          "isSolid": true
-        },
-        {
-          "id": "rune_arena_bound_bottom",
-          "x": 3350,
-          "y": 410,
-          "width": 350,
-          "height": 20,
-          "type": "boundary",
-          "isSolid": true
-        },
-        {
-          "id": "rune_central_altar_col",
-          "x": 3504,
-          "y": 271,
-          "width": 32,
-          "height": 18,
-          "type": "shrine_pedestal",
-          "isSolid": true
-        }
-      ],
+      "colliders": [],
       "interactables": [
         {
           "id": "rune_pedestal_center",

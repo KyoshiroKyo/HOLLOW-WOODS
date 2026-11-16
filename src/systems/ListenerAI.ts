@@ -462,15 +462,21 @@ export class ListenerAI {
     this.targetInvestigateX = Math.max(ListenerAI.FOREST_TERRITORY_MIN_X, soundX);
     this.targetInvestigateY = soundY;
 
-    // Kích hoạt tín hiệu cảnh báo Telegraph 0.7s với icon [?] vàng
+    // C4-13-08: Kích hoạt tín hiệu cảnh báo Telegraph 0.7s chỉ khi chuyển sang ALERT (không lặp)
+    const previousState = this.state;
     this.state = 'ALERT';
     this.alertTimer = 700;
-    this.listener.onAlertTelegraph();
+    if (previousState !== 'ALERT') {
+      this.listener.onAlertTelegraph();
+    }
   }
 
   public forceChase(): void {
     // Không bao giờ cho phép kích hoạt rượt đuổi nếu người chơi đang ở trong làng an toàn
     if (this.listener.x <= ListenerAI.SAFE_ZONE_BORDER_X) return;
+
+    // C4-13-08: Chỉ kích hoạt chuông báo và nhịp tim dồn dập khi chuyển trạng thái sang CHASE
+    if (this.state === 'CHASE') return;
 
     this.state = 'CHASE';
     this.lostSightTimer = 0;

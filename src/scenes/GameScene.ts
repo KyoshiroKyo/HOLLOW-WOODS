@@ -72,6 +72,8 @@ export class GameScene extends Phaser.Scene {
   private puzzleSystem!: PuzzleSystem;
 
   private npcs: NPCEntity[] = [];
+  // C4-13-17: Va chạm vật lý giữa người chơi và danh sách NPC làng Bellhollow
+  private npcCollider?: Phaser.Physics.Arcade.Collider;
   private fogOfWarLayer!: Phaser.GameObjects.RenderTexture;
   private lastFowScreenX: number = -9999;
   private lastFowScreenY: number = -9999;
@@ -85,6 +87,9 @@ export class GameScene extends Phaser.Scene {
   private fireflies: Firefly[] = [];
   private currentZoneId: ZoneId = 'fog_crossing';
   private previousZoneId: ZoneId = 'fog_crossing';
+
+  // C4-13-16: Thời điểm kích hoạt gần nhất dòng suy nghĩ kể chuyện ở rào chắn phía Tây (cooldown 6 giây)
+  private lastWestBarrierThoughtTime: number = 0;
 
   private keyQ!: Phaser.Input.Keyboard.Key;
   private keyESC!: Phaser.Input.Keyboard.Key;
@@ -113,6 +118,9 @@ export class GameScene extends Phaser.Scene {
   private transitionCooldown: number = 0;
   private isTransitioning: boolean = false;
   private lastTransitionId: string | null = null;
+  // C4-13-19: Khống chế thời gian chờ (cooldown 4 giây) và chống nháy/chống lặp banner phân khu
+  private lastZoneBannerTime: number = 0;
+  private lastBannerZoneId: string = '';
 
   // C4-12-29: Quản lý tối ưu hóa hiệu năng (Throttled Camera Culling & Graphics Redraw guards)
   private cullingTimer: number = 0;
@@ -133,6 +141,32 @@ export class GameScene extends Phaser.Scene {
       this.continueSaveData = null;
       this.isAct0IntroPending = true;
     }
+
+    // C4-13-11: Tái lập trình toàn diện các biến trạng thái vòng đời GameScene để chống rò rỉ khi Restart / Reload
+    this.isGameOverPending = false;
+    this.isAct5ChaseActive = false;
+    this.isTransitioning = false;
+    this.transitionCooldown = 0;
+    this.lastTransitionId = null;
+    this.lastWestBarrierThoughtTime = 0;
+    this.lastZoneBannerTime = 0;
+    this.lastBannerZoneId = '';
+    this.cullingTimer = 0;
+    this.isLanternGlowDrawn = false;
+    this.firefliesDrawnCount = 0;
+    this.lastFowScreenX = -9999;
+    this.lastFowScreenY = -9999;
+    this.lastFowRadius = -9999;
+    this.lastFowColor = -9999;
+    this.lastFowAlpha = -9999;
+    this.currentLanternRadius = LANTERN_RADIUS_DIM;
+    this.npcs = [];
+    this.fireflies = [];
+    this.act0TutorialDone = false;
+    this.footstepTimer = 0;
+    this.stepNoiseTimer = 0;
+    this.lastESCTime = 0;
+    this.lastMuteTime = 0;
   }
 
   public create(): void {
@@ -159,7 +193,7 @@ export class GameScene extends Phaser.Scene {
       for (const z of data.newlyUnlocked) {
         if (z === 'crooked_path') {
           if (this.uiScene) {
-            this.uiScene.showPopupMessage('🔔 Cổng Đông làng Bellhollow đã mở khóa! Lối vào The Hollow Woods đã thông suốt.');
+            this.uiScene.showPopupMessage('🔔 Cổng Đông làng Bellhollow đã mở khóa! Lối vào Khu Rừng Rỗng (The Hollow Woods) đã thông suốt.');
           }
           this.cameraSystem.shake(200, 0.004);
         } else if (z === 'silent_mire') {
@@ -187,6 +221,11 @@ export class GameScene extends Phaser.Scene {
     if (this.isContinueMode && this.continueSaveData) {
       spawnX = this.continueSaveData.playerPos.x;
       spawnY = this.continueSaveData.playerPos.y;
+      // C4-13-11: Xác định chính xác phân khu thực tế từ tọa độ và cập nhật ngay lập tức cho GameScene & Camera
+      const detectedZone = this.worldBuilder.detectCurrentZone({ x: spawnX, y: spawnY }) || (this.continueSaveData.zoneId as ZoneId) || 'fog_crossing';
+      this.currentZoneId = detectedZone;
+      this.previousZoneId = detectedZone;
+      this.playerState.setCurrentZone(detectedZone);
     }
 
     this.player = new SatyrPlayer(this, spawnX, spawnY);
@@ -386,6 +425,10 @@ export class GameScene extends Phaser.Scene {
       if (this.veilSystem) {
         this.veilSystem.destroy();
       }
+      if (this.npcCollider) {
+        this.npcCollider.destroy();
+        this.npcCollider = undefined;
+      }
       for (const npc of this.npcs) {
         npc.destroy();
       }
@@ -448,6 +491,8 @@ export class GameScene extends Phaser.Scene {
       this.time.delayedCall(500, () => {
         if (this.uiScene) {
           const zone = this.worldBuilder.getActiveZone();
+          this.lastZoneBannerTime = performance.now();
+          this.lastBannerZoneId = zone.id;
           this.uiScene.showZoneBanner(zone.atmosphere);
           this.uiScene.showPopupMessage('▶ Đã tiếp tục chuyến hành trình!');
         }
@@ -540,11 +585,13 @@ export class GameScene extends Phaser.Scene {
       this.listenerMonster.ai.resetToPatrol();
     }
 
-    // 3. Tắt nhịp tim căng thẳng và phát hiệu ứng rung giật màn hình
+    // 3. Tắt nhịp tim căng thẳng, phát hiệu ứng rung giật màn hình và âm thanh tử nạn (C4-13-08)
     this.audioManager.setHeartbeatActive(false);
     this.cameraSystem.shake(350, 0.018);
     this.cameraSystem.flash(300, 160, 0, 0);
     this.audioManager.playHurt();
+    this.audioManager.playPlayerDeath();
+    this.audioManager.stopAmbience();
 
     // 4. Đóng toàn bộ các modal/dialogue đang mở
     if (this.craftingModal && this.craftingModal.isOpen) this.craftingModal.close();
@@ -802,13 +849,13 @@ export class GameScene extends Phaser.Scene {
       hoodColor: 0x3d7055
     });
 
-    // 4. Bram — Thợ Thủ Công Làng: đứng gần khu vực Bàn Chế Tạo (x: 1025, y: 370)
+    // 4. Bram — Thợ Rèn Làng (C4-13-21): đứng cạnh khu vực Lò Rèn & Bàn Chế Tạo (x: 1045, y: 365)
     const bram = new NPCEntity(this, {
       id: 'npc_bram',
       name: 'Bram',
-      title: 'Thợ thủ công làng',
-      x: 1025,
-      y: 370,
+      title: 'Thợ rèn làng',
+      x: 1045,
+      y: 365,
       dialogueKey: 'bram_chat'
     });
 
@@ -826,6 +873,15 @@ export class GameScene extends Phaser.Scene {
     });
 
     this.npcs.push(garth, edda, neris, bram, finn);
+
+    // C4-13-17: Thiết lập va chạm vật lý giữa SatyrPlayer và toàn bộ NPC làng Bellhollow
+    if (this.npcCollider) {
+      this.npcCollider.destroy();
+      this.npcCollider = undefined;
+    }
+    if (this.player) {
+      this.npcCollider = this.physics.add.collider(this.player, this.npcs);
+    }
   }
 
   private spawnTheListener(): void {
@@ -1232,6 +1288,14 @@ export class GameScene extends Phaser.Scene {
     // C4-13-02: Tự động giảm độ đậm (alpha = 0.35) của tán cây khi nhân vật đi bên dưới
     this.worldBuilder.updateCanopyTransparency(this.player.x, this.player.y);
 
+    // C4-13-16: Kiểm tra nếu nhân vật đi ngược kịch về rào chắn phía Tây đầu game (fog_crossing)
+    if (this.currentZoneId === 'fog_crossing' && this.player) {
+      const foot = this.player.getFootPosition();
+      if (foot.x <= 75 && foot.y >= 120 && foot.y <= 248) {
+        this.triggerWestBarrierThought(false);
+      }
+    }
+
     // Kiểm tra NPC và tương tác gần
     this.handleInteractions(delta);
 
@@ -1311,6 +1375,12 @@ export class GameScene extends Phaser.Scene {
   }
 
   private emitNoiseWave(x: number, y: number, _vol: number): void {
+    // C4-13-18: Tuyệt đối không phát sóng âm vòng tròn xanh dương ở các khu vực an toàn (làng Bellhollow, nông trại)
+    // hoặc khi đứng gần NPC để tránh hiển thị ngoài ý muốn dưới chân nhân vật
+    if (this.currentZoneId === 'bellhollow' || this.currentZoneId === 'sanctuary_farm') {
+      return;
+    }
+
     const wave = this.add.graphics();
     wave.lineStyle(1, 0x3498db, 0.7);
     wave.strokeCircle(x, y, 6);
@@ -1322,6 +1392,7 @@ export class GameScene extends Phaser.Scene {
       scaleX: 2.8,
       scaleY: 2.8,
       duration: 500,
+      ease: 'Quad.easeOut',
       onComplete: () => wave.destroy()
     });
   }
@@ -1581,6 +1652,14 @@ export class GameScene extends Phaser.Scene {
     this.transitionCooldown = 1500; // 1.5s cooldown chống kích hoạt lặp liên tục
     this.lastTransitionId = trans.id;
 
+    // C4-13-20: Màn sương chuyển cảnh mượt mà (Mist Fade Transition 0.35s)
+    if (this.veilSystem) {
+      this.veilSystem.triggerZoneTransitionMist(350);
+    }
+
+    // C4-13-20: Tự động đặt trạng thái ngủ đông cho các đối tượng phân khu xa
+    this.worldBuilder.hibernateDistantZoneObjects(trans.toZone);
+
     // Hiệu ứng flash nhẹ camera tạo cảm giác chuyển tiếp tự nhiên
     this.cameraSystem.flash(180, 10, 15, 20);
 
@@ -1615,6 +1694,8 @@ export class GameScene extends Phaser.Scene {
     // Hiển thị banner khu vực mới
     const targetZoneData = this.worldBuilder.getZone(trans.toZone);
     if (targetZoneData && this.uiScene) {
+      this.lastZoneBannerTime = performance.now();
+      this.lastBannerZoneId = trans.toZone;
       this.uiScene.showZoneBanner(targetZoneData.atmosphere);
       this.cameraSystem.shake(120, 0.003);
     }
@@ -1650,6 +1731,14 @@ export class GameScene extends Phaser.Scene {
         }
         return;
       }
+
+      // C4-13-20: Màn sương chuyển cảnh mượt mà (Mist Fade Transition 0.35s) khi chuyển phân khu
+      if (this.veilSystem) {
+        this.veilSystem.triggerZoneTransitionMist(350);
+      }
+
+      // C4-13-20: Tự động đặt trạng thái ngủ đông cho các đối tượng phân khu xa
+      this.worldBuilder.hibernateDistantZoneObjects(detectedZone);
     }
 
     this.currentZoneId = detectedZone;
@@ -1719,7 +1808,14 @@ export class GameScene extends Phaser.Scene {
       this.playerState.markZoneVisited(this.currentZoneId);
 
       const zoneData = this.worldBuilder.getActiveZone();
-      if (zoneData && this.uiScene) {
+      // C4-13-19: Khống chế thời gian chờ (cooldown 4 giây) và chống lặp zone cho bảng thông báo tên phân khu
+      const now = performance.now();
+      const isCooldownElapsed = now - this.lastZoneBannerTime >= 4000;
+      const isDifferentBannerZone = this.currentZoneId !== this.lastBannerZoneId;
+
+      if (zoneData && this.uiScene && isCooldownElapsed && isDifferentBannerZone) {
+        this.lastZoneBannerTime = now;
+        this.lastBannerZoneId = this.currentZoneId;
         this.uiScene.showZoneBanner(zoneData.atmosphere);
         this.cameraSystem.shake(150, 0.003);
       }
@@ -1767,10 +1863,17 @@ export class GameScene extends Phaser.Scene {
   }
 
   private handleInteractions(delta: number = 16): void {
-    // PASS T13, T15, T16: Khi hộp thoại đang mở hoặc Modal (Chế tạo, Sổ tay, Tạm dừng) mở, BẮT BUỘC ẩn ngay lập tức nhãn gợi ý và nhãn NPC
-    if (this.dialogueSystem.isActive || this.craftingModal.isOpen || this.journalModal.isOpen || this.pauseModal.isOpen) {
+    // PASS T13, T15, T16 & C4-13-11: Khi hộp thoại đang mở hoặc Modal (Chế tạo, Sổ tay, Tạm dừng) mở, BẮT BUỘC ẩn ngay lập tức nhãn gợi ý và nhãn NPC
+    if (
+      this.dialogueSystem.isActive ||
+      this.craftingModal.isOpen ||
+      this.journalModal.isOpen ||
+      this.pauseModal.isOpen ||
+      (this.uiScene && this.uiScene.isAnyModalOpen) ||
+      this.isGameplayInputLocked()
+    ) {
       if (this.uiScene) {
-        this.uiScene.setDialogueActive(true);
+        this.uiScene.setInteractionPrompt(null);
       }
       for (const npc of this.npcs) {
         npc.setNearby(false);
@@ -1798,159 +1901,170 @@ export class GameScene extends Phaser.Scene {
     const px = this.player.x;
     const py = this.player.y;
 
-    // 1. Kiểm tra NPC gần với cơ chế khoảng cách 2 tầng (Gợi ý 38px–65px mờ 0.45, Trò chuyện <=38px rõ 1.0)
-    let nearbyNPC: NPCEntity | null = null;
-    let closestNPCDist = 9999;
+    interface InteractionCandidate {
+      dist: number;
+      triggerDist: number;
+      promptText: string;
+      x: number;
+      y: number;
+      proximityAlpha: number;
+      action: () => void;
+    }
+
+    const candidates: InteractionCandidate[] = [];
+
+    // 1. Kiểm tra NPC gần
     for (const npc of this.npcs) {
       npc.update(delta);
       const dist = Math.hypot(px - npc.x, py - npc.y);
       const isNear = dist <= 65;
       npc.setNearby(isNear, px, py, dist);
-      if (isNear && dist < closestNPCDist) {
-        closestNPCDist = dist;
-        nearbyNPC = npc;
+      if (isNear) {
+        const isWithinInteractRange = dist <= 38;
+        const proximityAlpha = isWithinInteractRange ? 1.0 : 0.45;
+        candidates.push({
+          dist,
+          triggerDist: 38,
+          promptText: `[E] Trò chuyện với ${npc.spec.name} (${npc.spec.title})`,
+          x: npc.x,
+          y: npc.y - 50,
+          proximityAlpha,
+          action: () => {
+            this.player.playInteract();
+            let dKey = npc.spec.dialogueKey;
+            if (npc.spec.id === 'npc_garth') {
+              if (!this.playerState.hasFlag('talked_to_villagers')) {
+                dKey = 'garth_warning';
+              } else if (!this.playerState.hasFlag('talked_to_edda')) {
+                dKey = 'garth_reminder_edda';
+              } else if (!this.playerState.isEastGateUnlocked()) {
+                dKey = 'garth_reminder_gate_locked';
+              } else {
+                dKey = 'garth_east_gate_open';
+              }
+            } else if (npc.spec.id === 'npc_edda') {
+              if (!this.playerState.hasFlag('talked_to_edda')) {
+                dKey = 'edda_intro';
+              } else if (!this.playerState.isEastGateUnlocked()) {
+                dKey = 'edda_reminder_locked';
+              } else {
+                dKey = 'edda_reminder_open';
+              }
+            } else if (npc.spec.id === 'npc_neris') {
+              if (!this.playerState.hasFlag('talked_to_neris')) {
+                dKey = 'neris_intro';
+              } else if (!this.playerState.isEastGateUnlocked()) {
+                dKey = 'neris_heal_locked';
+              } else {
+                dKey = 'neris_heal_open';
+              }
+            }
+            this.audioManager.playInteract();
+            this.dialogueSystem.startDialogue(dKey);
+          }
+        });
       }
     }
 
-    if (nearbyNPC) {
-      const isWithinInteractRange = closestNPCDist <= 38;
-      const proximityAlpha = isWithinInteractRange ? 1.0 : 0.45;
-      if (this.uiScene) {
-        this.uiScene.setInteractionPrompt(
-          `[E] Trò chuyện với ${nearbyNPC.spec.name} (${nearbyNPC.spec.title})`,
-          nearbyNPC.x,
-          nearbyNPC.y - 50,
-          proximityAlpha
-        );
-      }
-
-      if (isWithinInteractRange && this.player.isInteractRequested() && !this.dialogueSystem.isActive) {
-        this.player.playInteract();
-        let dKey = nearbyNPC.spec.dialogueKey;
-        if (nearbyNPC.spec.id === 'npc_garth') {
-          if (!this.playerState.hasFlag('talked_to_villagers')) {
-            dKey = 'garth_warning';
-          } else if (!this.playerState.hasFlag('talked_to_edda')) {
-            dKey = 'garth_reminder_edda';
-          } else if (!this.playerState.isEastGateUnlocked()) {
-            dKey = 'garth_reminder_gate_locked';
-          } else {
-            dKey = 'garth_east_gate_open';
-          }
-        } else if (nearbyNPC.spec.id === 'npc_edda') {
-          if (!this.playerState.hasFlag('talked_to_edda')) {
-            dKey = 'edda_intro';
-          } else if (!this.playerState.isEastGateUnlocked()) {
-            dKey = 'edda_reminder_locked';
-          } else {
-            dKey = 'edda_reminder_open';
-          }
-        } else if (nearbyNPC.spec.id === 'npc_neris') {
-          if (!this.playerState.hasFlag('talked_to_neris')) {
-            dKey = 'neris_intro';
-          } else if (!this.playerState.isEastGateUnlocked()) {
-            dKey = 'neris_heal_locked';
-          } else {
-            dKey = 'neris_heal_open';
-          }
-        }
-        this.audioManager.playInteract();
-        this.dialogueSystem.startDialogue(dKey);
-      }
-      return;
-    }
-
-    // 2. Kiểm tra mỏ tài nguyên gần trong bán kính 65px (gợi ý mờ) và <=38px (thu thập [E])
-    const nearbyResource = this.inventorySystem.getNearbyAvailableNode(
-      px,
-      py,
-      65
-    );
+    // 2. Kiểm tra mỏ tài nguyên gần
+    const nearbyResource = this.inventorySystem.getNearbyAvailableNode(px, py, 65);
     if (nearbyResource) {
       const resDist = Math.hypot(px - nearbyResource.x, py - nearbyResource.y);
       const isWithinHarvestRange = resDist <= InventorySystem.DEFAULT_INTERACTION_RADIUS;
       const proximityAlpha = isWithinHarvestRange ? 1.0 : 0.45;
+      candidates.push({
+        dist: resDist,
+        triggerDist: InventorySystem.DEFAULT_INTERACTION_RADIUS,
+        promptText: `[E] Thu thập ${nearbyResource.itemName} (x${nearbyResource.count})`,
+        x: nearbyResource.x,
+        y: nearbyResource.y,
+        proximityAlpha,
+        action: () => {
+          const wasQ03T1Done =
+            this.playerState.quests.get('Q03_PREPARE_RESOURCES')?.tasks.find(t => t.id === 't1')?.done ?? false;
+          const harvestResult = this.inventorySystem.checkHarvestNearby(
+            px,
+            py,
+            InventorySystem.DEFAULT_INTERACTION_RADIUS
+          );
+          const nowQ03T1Done =
+            this.playerState.quests.get('Q03_PREPARE_RESOURCES')?.tasks.find(t => t.id === 't1')?.done ?? false;
 
-      if (this.uiScene) {
-        this.uiScene.setInteractionPrompt(
-          `[E] Thu thập ${nearbyResource.itemName} (x${nearbyResource.count})`,
-          nearbyResource.x,
-          nearbyResource.y,
-          proximityAlpha
-        );
-      }
-
-      if (isWithinHarvestRange && this.player.isInteractRequested()) {
-        const wasQ03T1Done =
-          this.playerState.quests.get('Q03_PREPARE_RESOURCES')?.tasks.find(t => t.id === 't1')?.done ?? false;
-        const harvestResult = this.inventorySystem.checkHarvestNearby(
-          px,
-          py,
-          InventorySystem.DEFAULT_INTERACTION_RADIUS
-        );
-        const nowQ03T1Done =
-          this.playerState.quests.get('Q03_PREPARE_RESOURCES')?.tasks.find(t => t.id === 't1')?.done ?? false;
-
-        if (harvestResult && this.uiScene) {
-          // C4-12-15: Âm thanh thu hoạch tài nguyên theo chất liệu
-          this.audioManager.playResourceGather(harvestResult.itemId);
-          // Kích hoạt hoạt ảnh thu hoạch tài nguyên (gather) của The Mossbound Wayfarer
-          this.player.playGather();
-          // C4-12-04: Xóa ngay lập tức nhãn nhắc tương tác khi mỏ tài nguyên vừa được thu hoạch
-          this.uiScene.setInteractionPrompt(null);
-          const milestoneJustFired =
-            !wasQ03T1Done && nowQ03T1Done && this.playerState.currentQuestId === 'Q03_PREPARE_RESOURCES';
-          if (!milestoneJustFired) {
-            this.uiScene.showPopupMessage(`✔ Đã thu thập: +${harvestResult.count} ${harvestResult.itemName}`);
+          if (harvestResult && this.uiScene) {
+            this.audioManager.playResourceGather(harvestResult.itemId);
+            this.player.playGather();
+            this.uiScene.setInteractionPrompt(null);
+            const milestoneJustFired =
+              !wasQ03T1Done && nowQ03T1Done && this.playerState.currentQuestId === 'Q03_PREPARE_RESOURCES';
+            if (!milestoneJustFired) {
+              this.uiScene.showPopupMessage(`✔ Đã thu thập: +${harvestResult.count} ${harvestResult.itemName}`);
+            }
           }
         }
-      }
-      return;
+      });
     }
 
-    // 2.5. C4-12-16: Kiểm tra các ô đất trồng thảo dược tại Sanctuary Farm
+    // 2.5. Kiểm tra các ô đất trồng thảo dược tại Sanctuary Farm
     if (this.currentZoneId === 'bellhollow' || this.currentZoneId === 'sanctuary_farm') {
       const nearbyPlot = this.farmingSystem.checkNearbyPlot(px, py, 65);
       if (nearbyPlot) {
         const plotDist = Math.hypot(px - nearbyPlot.x, py - nearbyPlot.y);
         const isWithinPlotRange = plotDist <= FarmingSystem.INTERACTION_RADIUS;
-        const proximityAlpha = isWithinPlotRange ? 1.0 : 0.45;
-
-        if (this.uiScene) {
-          const prompt = this.farmingSystem.getPlotPrompt(nearbyPlot);
-          this.uiScene.setInteractionPrompt(prompt, nearbyPlot.x, nearbyPlot.y, proximityAlpha);
-        }
-
-        if (isWithinPlotRange && this.player.isInteractRequested()) {
-          this.player.playGather();
-          this.farmingSystem.interactWithPlot(nearbyPlot.id, (feedbackMsg: string) => {
-            if (this.uiScene) {
-              this.uiScene.showPopupMessage(feedbackMsg);
-            }
-          });
-        }
-        return;
+        candidates.push({
+          dist: plotDist,
+          triggerDist: FarmingSystem.INTERACTION_RADIUS,
+          promptText: this.farmingSystem.getPlotPrompt(nearbyPlot),
+          x: nearbyPlot.x,
+          y: nearbyPlot.y,
+          proximityAlpha: isWithinPlotRange ? 1.0 : 0.45,
+          action: () => {
+            this.player.playGather();
+            this.farmingSystem.interactWithPlot(nearbyPlot.id, (feedbackMsg: string) => {
+              if (this.uiScene) {
+                this.uiScene.showPopupMessage(feedbackMsg);
+              }
+            });
+          }
+        });
       }
     }
 
-    // 3. Kiểm tra các vật thể, Bàn Chế Tạo và câu đố trên bản đồ (gợi ý mờ 65px, kích hoạt <=42px)
+    // 3. Kiểm tra các vật thể, Bàn Chế Tạo và câu đố trên bản đồ
     const nearbyProximity = this.worldBuilder.checkInteractableProximity(this.player.getFootPosition(), 65);
     if (nearbyProximity) {
       const { item: nearby, dist } = nearbyProximity;
       const isWithinActionRange = dist <= 42;
-      const proximityAlpha = isWithinActionRange ? 1.0 : 0.45;
+      candidates.push({
+        dist,
+        triggerDist: 42,
+        promptText: nearby.promptText,
+        x: nearby.x,
+        y: nearby.y,
+        proximityAlpha: isWithinActionRange ? 1.0 : 0.45,
+        action: () => {
+          this.executeMapInteraction(nearby.actionId, nearby.name);
+        }
+      });
+    }
 
-      if (this.uiScene) {
-        this.uiScene.setInteractionPrompt(nearby.promptText, nearby.x, nearby.y, proximityAlpha);
-      }
-
-      if (isWithinActionRange && this.player.isInteractRequested()) {
-        this.executeMapInteraction(nearby.actionId, nearby.name);
-      }
-    } else {
+    // C4-13-11: Chọn duy nhất ứng viên có khoảng cách gần người chơi nhất (Nearest-Neighbor Candidate)
+    if (candidates.length === 0) {
       if (this.uiScene) {
         this.uiScene.setInteractionPrompt(null);
       }
+      return;
+    }
+
+    candidates.sort((a, b) => a.dist - b.dist);
+    const best = candidates[0];
+    const isWithinActionRange = best.dist <= best.triggerDist;
+
+    if (this.uiScene) {
+      this.uiScene.setInteractionPrompt(best.promptText, best.x, best.y, best.proximityAlpha);
+    }
+
+    if (isWithinActionRange && this.player.isInteractRequested() && !this.dialogueSystem.isActive) {
+      best.action();
     }
   }
 
@@ -1973,6 +2087,12 @@ export class GameScene extends Phaser.Scene {
       if (this.uiScene) {
         this.uiScene.showPopupMessage('📜 Biển Đá Mòn: "HƯỚNG ĐÔNG — Làng Chuông Bellhollow. Giữ ngọn đèn luôn cháy."');
       }
+      return;
+    }
+
+    // C4-13-16: Tương tác kiểm tra rào chắn sương mù phía Tây đầu game (fog_crossing)
+    if (actionId === 'inspect_west_barrier') {
+      this.triggerWestBarrierThought(true);
       return;
     }
 
@@ -2280,6 +2400,22 @@ export class GameScene extends Phaser.Scene {
         this.uiScene.showPopupMessage(`Đã tương tác với: ${name}`);
       }
     }
+  }
+
+  /**
+   * C4-13-16: Hiển thị dòng suy nghĩ ngắn kể chuyện của nhân vật khi đi ngược kịch về rào chắn phía Tây hoặc nhấn [E] kiểm tra.
+   * Cooldown 6 giây (6000ms) để không hiện lặp liên tục khi di chuyển va chạm vào rào chắn.
+   */
+  public triggerWestBarrierThought(isManualInspect: boolean = false): boolean {
+    const now = Date.now();
+    if (!isManualInspect && now - this.lastWestBarrierThoughtTime < 6000) {
+      return false;
+    }
+    this.lastWestBarrierThoughtTime = now;
+    if (this.uiScene) {
+      this.uiScene.showPopupMessage('Lối mòn phía sau đã bị sương mù đặc quánh nuốt chửng... Không thể quay lại được nữa.');
+    }
+    return true;
   }
 
   private handlePillarInteraction(pillarId: string): void {

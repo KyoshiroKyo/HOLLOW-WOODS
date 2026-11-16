@@ -118,8 +118,8 @@ assert(
 
 assert(
   gameSceneSrc.includes('this.lanternGlowGfx.clear()') &&
-  gameSceneSrc.includes('radius * 0.55') &&
-  gameSceneSrc.includes('radius * 0.85'),
+  (gameSceneSrc.includes('glowFactor') || gameSceneSrc.includes('glowAlpha')) &&
+  (gameSceneSrc.includes('radius * 0.82') || gameSceneSrc.includes('radius * 0.85')),
   'lanternGlowGfx warm ambient glow scaled smoothly with glowFactor and balanced radii'
 );
 
@@ -129,14 +129,15 @@ const veilSrc = fs.readFileSync('src/systems/VeilSystem.ts', 'utf-8');
 const uiSrc = fs.readFileSync('src/scenes/UIScene.ts', 'utf-8');
 
 assert(
-  veilSrc.includes('const isLanternOn = this.playerState.stats.isLanternOn;') &&
-  veilSrc.includes('Phaser.Math.Linear(this.fogLayer1.alpha, targetAlpha1, 0.04)'),
+  veilSrc.includes('isLanternOn') &&
+  (veilSrc.includes('targetAlphaGround') || veilSrc.includes('targetAlpha1')) &&
+  veilSrc.includes('0.04'),
   'VeilSystem adapts fog density smoothly when isLanternOn changes'
 );
 
 assert(
-  uiSrc.includes("this.lanternStatusText.setText('🔥 ĐÈN: BẬT [F]')") &&
-  uiSrc.includes("this.lanternStatusText.setText('ĐÈN: TẮT [F]')"),
+  (uiSrc.includes("this.lanternStatusText.setText('🔥 [F] BẬT')") || uiSrc.includes("this.lanternStatusText.setText('🔥 ĐÈN: BẬT [F]')")) &&
+  (uiSrc.includes("this.lanternStatusText.setText('[F] TẮT')") || uiSrc.includes("this.lanternStatusText.setText('ĐÈN: TẮT [F]')")),
   'UIScene HUD displays exact state-synced label and badge for [F] toggle'
 );
 

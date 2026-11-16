@@ -17,6 +17,7 @@ import {
 } from '../config/Constants';
 import { PlayerState } from '../state/PlayerState';
 import { FacingDirection, PlayerStats } from '../types';
+import { AudioManager } from '../audio/AudioManager';
 
 export type OneShotAction =
   | 'interact'
@@ -845,7 +846,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     if (up) moveY -= 1;
     if (down) moveY += 1;
 
-    // Quản lý thể lực chạy nhanh kèm ngưỡng phục hồi (Hysteresis)
+    // C4-13-18: Quản lý thể lực chạy nhanh & trạng thái Kiệt Sức (Exhaustion)
     const shiftDown =
       this.isPhysicalCodeDown('ShiftLeft') ||
       this.isPhysicalCodeDown('ShiftRight') ||
@@ -854,15 +855,28 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     const wantsToSprint = shiftDown && (moveX !== 0 || moveY !== 0);
 
     if (this.stats.stamina <= 0) {
-      this._isStaminaExhausted = true;
-    } else if (this.stats.stamina >= 15) {
+      if (!this._isStaminaExhausted) {
+        this._isStaminaExhausted = true;
+        const uiScene = this.scene.scene.get('UIScene') as any;
+        if (uiScene && typeof uiScene.showPopupMessage === 'function') {
+          uiScene.showPopupMessage('Kiệt sức! Cần nghỉ lấy hơi...');
+        }
+      }
+    } else if (this._isStaminaExhausted && this.stats.stamina >= 25) {
       this._isStaminaExhausted = false;
     }
 
-    const canSprint = wantsToSprint && !this._isStaminaExhausted && this.stats.stamina > 5;
+    const canSprint = wantsToSprint && !this._isStaminaExhausted && this.stats.stamina > 0;
     this.stats.isSprinting = canSprint;
 
-    const currentSpeed = canSprint ? PLAYER_SPRINT_SPEED : PLAYER_WALK_SPEED;
+    const baseSpeed = canSprint ? PLAYER_SPRINT_SPEED : PLAYER_WALK_SPEED;
+
+    // C4-13-18: Khi Bình Tâm cạn kiệt (0/100), nhân vật hoảng loạn: giảm 15% tốc độ di chuyển
+    let speedMultiplier = 1.0;
+    if (this.stats.composure <= 0) {
+      speedMultiplier *= 0.85;
+    }
+    const currentSpeed = baseSpeed * speedMultiplier;
 
     // Chuẩn hóa vector di chuyển (tránh đi chéo chạy nhanh hơn)
     const body = this.body as Phaser.Physics.Arcade.Body;
@@ -1067,6 +1081,9 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
 
     this._isAttacking = true;
     (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
+
+    // C4-13-08: Phát âm thanh vung gậy tấn công cận chiến
+    AudioManager.getInstance().playAttackSwing();
 
     const wayfarerKey = `wayfarer_attack_${this.facing}`;
     const satyrKey = `satyr_attack_${this.facing}`;
@@ -1634,6 +1651,8 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     if (this.body) {
       (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
     }
+    // C4-13-08: Phát tiếng lá xào xạc khi bước vào bụi rậm
+    AudioManager.getInstance().playBushRustle(true);
   }
 
   /**
@@ -1650,5 +1669,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     }
     this.playIdleAnim();
     this.resetAllInputState();
+    // C4-13-08: Phát tiếng lá xào xạc khi bước ra khỏi bụi rậm
+    AudioManager.getInstance().playBushRustle(false);
   }
 }

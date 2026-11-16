@@ -8,6 +8,7 @@ import { JournalModal } from '../ui/JournalModal';
 import { PauseModal } from '../ui/PauseModal';
 import { GameOverModal } from '../ui/GameOverModal';
 import { AudioManager } from '../audio/AudioManager';
+import { HUDIconGenerator, HUD_ICON_HEALTH, HUD_ICON_STAMINA, HUD_ICON_OIL, HUD_ICON_COMPOSURE } from '../utils/HUDIconGenerator';
 
 export interface QuickSlotRef {
   id: string;
@@ -29,6 +30,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   // Đồ họa 4 thanh chỉ số pixel và nhãn số lượng
   private statBarsGraphics!: Phaser.GameObjects.Graphics;
   private statIconsGraphics!: Phaser.GameObjects.Graphics;
+  private statIconImages: Phaser.GameObjects.Image[] = [];
   private healthValText!: Phaser.GameObjects.Text;
   private staminaValText!: Phaser.GameObjects.Text;
   private oilValText!: Phaser.GameObjects.Text;
@@ -40,6 +42,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   private zoneBannerContainer!: Phaser.GameObjects.Container;
   private zoneTitleText!: Phaser.GameObjects.Text;
   private zoneSubtitleText!: Phaser.GameObjects.Text;
+  // C4-13-19: Bộ đệm thời gian chống nháy banner phân khu
+  private lastBannerShownTime: number = 0;
+  private lastBannerZoneTitle: string = '';
 
   // Bảng nhiệm vụ góc trên phải
   private questBg!: Phaser.GameObjects.Graphics;
@@ -112,6 +117,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   private lastPoulticeTime: number = 0;
   private lastOilTime: number = 0;
 
+  // C4-13-18: Hiệu ứng viền tối/đỏ hoảng loạn khi cạn kiệt Bình Tâm
+  private panicVignetteGraphics!: Phaser.GameObjects.Graphics;
+  private isPanicVignetteActive: boolean = false;
+  private lastPanicWarningTime: number = 0;
+
   constructor() {
     super({ key: 'UIScene' });
   }
@@ -121,6 +131,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.cameras.main.setZoom(1.0);
 
     this.playerState = PlayerState.getInstance();
+
+    // C4-13-18: Hiệu ứng viền tối/đỏ hoảng loạn khi Bình Tâm cạn kiệt (depth: 900)
+    this.panicVignetteGraphics = this.add.graphics();
+    this.panicVignetteGraphics.setDepth(900);
+    this.panicVignetteGraphics.setScrollFactor(0);
 
     // 1. Khung chứa 4 thanh chỉ số sinh tồn tinh gọn, bán trong suốt (C4-13-07)
     this.statCardBg = this.add.graphics();
@@ -313,6 +328,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       if (this.pauseModal) this.pauseModal.destroy();
       if (this.gameOverModal) this.gameOverModal.destroy();
       if (this.pooledPopupText) this.pooledPopupText.destroy();
+      if (this.panicVignetteGraphics) this.panicVignetteGraphics.clear();
     });
 
     // Cập nhật ban đầu
@@ -356,32 +372,21 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   private drawPixelIcons(): void {
-    const g = this.statIconsGraphics;
-    g.clear();
+    // C4-13-15: Đảm bảo 4 texture Pixel Art 16×16 px chuẩn Nearest-Neighbor đã được tạo
+    HUDIconGenerator.generateAllHUDIcons(this);
 
-    // 1. Icon Máu: Trái tim đỏ HD (X: 18, Y: 32)
-    g.fillStyle(0xe74c3c, 1);
-    g.fillRect(18, 33, 14, 8);
-    g.fillRect(19, 31, 4, 3);
-    g.fillRect(26, 31, 4, 3);
+    // Vẽ trực tiếp 4 biểu tượng Pixel Art sắc nét có viền tối và điểm sáng phản quang lên Graphics
+    HUDIconGenerator.drawIconsToGraphics(this.statIconsGraphics, 18, [28, 44, 60, 76]);
 
-    // 2. Icon Thể lực: Sấm sét vàng HD (X: 18, Y: 48)
-    g.fillStyle(0xf1c40f, 1);
-    g.fillRect(23, 47, 5, 3);
-    g.fillRect(20, 50, 8, 3);
-    g.fillRect(22, 53, 4, 4);
+    // Khởi tạo/cập nhật 4 Sprite Image độc lập từ các Texture Pixel Art 16×16 px
+    if (this.statIconImages.length === 0) {
+      const heartIcon = this.add.image(26, 36, HUD_ICON_HEALTH).setDisplaySize(16, 16).setOrigin(0.5, 0.5);
+      const staminaIcon = this.add.image(26, 52, HUD_ICON_STAMINA).setDisplaySize(16, 16).setOrigin(0.5, 0.5);
+      const oilIcon = this.add.image(26, 68, HUD_ICON_OIL).setDisplaySize(16, 16).setOrigin(0.5, 0.5);
+      const composureIcon = this.add.image(26, 84, HUD_ICON_COMPOSURE).setDisplaySize(16, 16).setOrigin(0.5, 0.5);
 
-    // 3. Icon Dầu đèn: Ngọn lửa cam HD (X: 18, Y: 64)
-    g.fillStyle(0xe67e22, 1);
-    g.fillRect(22, 63, 5, 3);
-    g.fillRect(20, 66, 9, 5);
-    g.fillRect(22, 71, 5, 2);
-
-    // 4. Icon Bình tâm: Mắt tím HD (X: 18, Y: 80)
-    g.fillStyle(0x9b59b6, 1);
-    g.fillRect(19, 80, 11, 7);
-    g.fillStyle(0x2c3e50, 1);
-    g.fillRect(22, 82, 5, 4);
+      this.statIconImages = [heartIcon, staminaIcon, oilIcon, composureIcon];
+    }
   }
 
   public redrawStats(): void {
@@ -455,7 +460,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.lastCurC = curC;
       this.lastMaxC = maxC;
       this.composureValText.setText(`Bình Tâm: ${curC}/${maxC}`);
-      this.composureValText.setColor(curC <= maxC * 0.3 ? '#fd79a8' : '#a29bfe');
+      this.composureValText.setColor(curC <= 0 ? '#ff3838' : curC <= maxC * 0.3 ? '#fd79a8' : '#a29bfe');
     }
 
     // Cập nhật trạng thái đèn lồng
@@ -638,9 +643,55 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     g.fillRoundedRect(x - btnW / 2, -btnH / 2, btnW, btnH, 6);
   }
 
-  public update(): void {
+  public update(time: number = 0, _delta: number = 0): void {
     if (this.promptWorldTarget && this.promptContainer && this.promptContainer.alpha > 0) {
       this.updatePromptPosition();
+    }
+    this.updatePanicVignette(time);
+  }
+
+  /**
+   * C4-13-18: Cập nhật hiệu ứng viền tối/rung nhấp nháy hoảng loạn khi Bình Tâm < 20 và chạm 0/100
+   */
+  private updatePanicVignette(time: number = 0): void {
+    if (!this.panicVignetteGraphics || !this.playerState) return;
+
+    const composure = this.playerState.stats.composure;
+    if (composure >= 20) {
+      if (this.isPanicVignetteActive) {
+        this.panicVignetteGraphics.clear();
+        this.isPanicVignetteActive = false;
+      }
+      return;
+    }
+
+    this.isPanicVignetteActive = true;
+    this.panicVignetteGraphics.clear();
+
+    const isDepleted = composure <= 0;
+    const freq = isDepleted ? 0.007 : 0.0035;
+    const baseAlpha = isDepleted ? 0.38 : 0.16;
+    const pulse = baseAlpha + (isDepleted ? 0.20 : 0.10) * Math.sin(time * freq);
+
+    const w = 1280;
+    const h = 720;
+    const thick = isDepleted ? 52 : 30;
+
+    // Viền đen/tím/đỏ thẫm rung nhấp nháy ở 4 góc màn hình
+    const color = isDepleted ? 0x3d0b16 : 0x24112e;
+    this.panicVignetteGraphics.fillStyle(color, Math.max(0.06, pulse));
+    this.panicVignetteGraphics.fillRect(0, 0, w, thick);
+    this.panicVignetteGraphics.fillRect(0, h - thick, w, thick);
+    this.panicVignetteGraphics.fillRect(0, thick, thick, h - thick * 2);
+    this.panicVignetteGraphics.fillRect(w - thick, thick, thick, h - thick * 2);
+
+    // Cảnh báo HUD khi chạm đáy 0/100 (định kỳ mỗi 8 giây)
+    if (isDepleted) {
+      const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+      if (now - this.lastPanicWarningTime > 8000) {
+        this.lastPanicWarningTime = now;
+        this.showPopupMessage('⚠️ Hoảng loạn (Bình Tâm 0/100)! Hãy bật Đèn Lồng [F] hoặc tìm ánh lửa!');
+      }
     }
   }
 
@@ -768,7 +819,14 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     }
   }
 
-  public showZoneBanner(atmosphere: ZoneAtmosphere): void {
+  public showZoneBanner(atmosphere: ZoneAtmosphere, force: boolean = false): void {
+    const now = performance.now();
+    if (!force && now - this.lastBannerShownTime < 4000 && this.lastBannerZoneTitle === atmosphere.titleVietnamese) {
+      return;
+    }
+    this.lastBannerShownTime = now;
+    this.lastBannerZoneTitle = atmosphere.titleVietnamese;
+
     this.zoneTitleText.setText(atmosphere.titleVietnamese);
     this.zoneSubtitleText.setText(atmosphere.subTitleVietnamese);
 
@@ -903,6 +961,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.playerNameText) this.playerNameText.setVisible(visible);
     if (this.statBarsGraphics) this.statBarsGraphics.setVisible(visible);
     if (this.statIconsGraphics) this.statIconsGraphics.setVisible(visible);
+    for (const iconImg of this.statIconImages) {
+      if (iconImg) iconImg.setVisible(visible);
+    }
     if (this.healthValText) this.healthValText.setVisible(visible);
     if (this.staminaValText) this.staminaValText.setVisible(visible);
     if (this.oilValText) this.oilValText.setVisible(visible);
@@ -932,11 +993,19 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.redrawStats();
       this.updateQuestTracker();
       this.updateQuickSlotCounts();
+      // C4-13-11: Luôn trả lại quyền điều khiển nhân vật sạch sẽ khi đóng bảng
+      const gameScene = this.scene.get('GameScene') as any;
+      if (gameScene && gameScene.player && typeof gameScene.player.resetAllInputState === 'function') {
+        gameScene.player.resetAllInputState();
+      }
     }
   }
 
   public toggleCrafting(): void {
-    if (this.isDialogueActive || (this.gameOverModal && this.gameOverModal.isOpen)) return;
+    if (this.gameOverModal && this.gameOverModal.isOpen) return;
+    if (this.isDialogueActive) {
+      this.hideDialogue();
+    }
     AudioManager.getInstance().playInteract();
     if (this.pauseModal && this.pauseModal.isOpen) {
       this.pauseModal.close();
@@ -949,7 +1018,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   public openCraftingBench(): void {
-    if (this.isDialogueActive || (this.gameOverModal && this.gameOverModal.isOpen)) return;
+    if (this.gameOverModal && this.gameOverModal.isOpen) return;
+    if (this.isDialogueActive) {
+      this.hideDialogue();
+    }
     AudioManager.getInstance().playInteract();
     if (this.pauseModal && this.pauseModal.isOpen) {
       this.pauseModal.close();
@@ -964,7 +1036,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   public toggleJournal(): void {
-    if (this.isDialogueActive || (this.gameOverModal && this.gameOverModal.isOpen)) return;
+    if (this.gameOverModal && this.gameOverModal.isOpen) return;
+    if (this.isDialogueActive) {
+      this.hideDialogue();
+    }
     AudioManager.getInstance().playInteract();
     if (this.pauseModal && this.pauseModal.isOpen) {
       this.pauseModal.close();
@@ -978,7 +1053,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   public openWorldMap(): void {
-    if (this.isDialogueActive || (this.gameOverModal && this.gameOverModal.isOpen)) return;
+    if (this.gameOverModal && this.gameOverModal.isOpen) return;
+    if (this.isDialogueActive) {
+      this.hideDialogue();
+    }
     AudioManager.getInstance().playInteract();
     if (this.pauseModal && this.pauseModal.isOpen) {
       this.pauseModal.close();
@@ -991,7 +1069,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   public togglePause(): void {
-    if (this.isDialogueActive || (this.gameOverModal && this.gameOverModal.isOpen)) return;
+    if (this.gameOverModal && this.gameOverModal.isOpen) return;
+    if (this.isDialogueActive) {
+      this.hideDialogue();
+    }
     AudioManager.getInstance().playInteract();
     if (this.craftingModal && this.craftingModal.isOpen) {
       this.craftingModal.close();
@@ -1117,23 +1198,25 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.dialoguePortraitSprite = this.add.image(-halfW + 94, 0, 'satyr_portrait');
     this.dialoguePortraitSprite.setDisplaySize(124, 124);
 
-    // Tên người nói chuẩn HD Tiếng Việt (Cỡ 24px)
-    this.dialogueSpeakerText = HDTextHelper.createText(this, -halfW + 184, -halfH + 20, '', {
+    // Tên người nói chuẩn HD Tiếng Việt (Cỡ 24px, dịch phải 18px & padding 12px chống cắt lẹm nét chữ C4-13-14)
+    this.dialogueSpeakerText = HDTextHelper.createText(this, -halfW + 202, -halfH + 20, '', {
       fontSize: '24px',
       fontStyle: 'bold',
       color: '#f39c12',
       stroke: '#000000',
-      strokeThickness: 3
+      strokeThickness: 3,
+      padding: { left: 12, right: 12, top: 6, bottom: 6 }
     });
 
-    // Nội dung câu thoại chuẩn HD Tiếng Việt (Cỡ đúng chuẩn 20px, wrap 845 px)
-    this.dialogueContentText = HDTextHelper.createText(this, -halfW + 184, -halfH + 60, '', {
+    // Nội dung câu thoại chuẩn HD Tiếng Việt (Cỡ đúng chuẩn 20px, dịch phải 18px, padding 12px, wrap 810 px)
+    this.dialogueContentText = HDTextHelper.createText(this, -halfW + 202, -halfH + 60, '', {
       fontSize: '20px',
       color: '#f8f9fa',
-      wordWrap: { width: boxWidth - 215 },
+      wordWrap: { width: boxWidth - 250 },
       lineSpacing: 8,
       stroke: '#000000',
-      strokeThickness: 1
+      strokeThickness: 1,
+      padding: { left: 12, right: 12, top: 6, bottom: 6 }
     });
 
     // Lời nhắc tiếp tục chuẩn HD Tiếng Việt
@@ -1179,7 +1262,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         if (speaker.includes('Edda')) key = 'portrait_edda';
         else if (speaker.includes('Garth')) key = 'portrait_garth';
         else if (speaker.includes('Neris')) key = 'portrait_neris';
-        else if (speaker.includes('Bram')) key = 'portrait_bram';
+        else if (speaker.includes('Bram') || speaker.includes('Thợ Rèn') || speaker.includes('Blacksmith')) {
+          key = this.textures.exists('portrait_blacksmith') ? 'portrait_blacksmith' : 'portrait_bram';
+        }
         else if (speaker.includes('Finn')) key = 'portrait_finn';
         else if (this.textures.exists('wayfarer_portrait')) key = 'wayfarer_portrait';
         else key = 'satyr_portrait';

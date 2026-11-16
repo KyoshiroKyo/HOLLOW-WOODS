@@ -6,8 +6,18 @@ import { GameScene } from '../scenes/GameScene';
 import { HUDScene } from '../ui/HUDScene';
 import { UIScene } from '../scenes/UIScene';
 
+const canUseWebGL = (() => {
+  try {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return false;
+    const canvas = document.createElement('canvas');
+    return !!(window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+  } catch {
+    return false;
+  }
+})();
+
 export const GameConfig: Phaser.Types.Core.GameConfig = {
-  type: Phaser.AUTO,
+  type: canUseWebGL ? Phaser.WEBGL : Phaser.CANVAS,
   parent: 'game-container',
   width: 1280,
   height: 720,

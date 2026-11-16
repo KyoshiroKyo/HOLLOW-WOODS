@@ -466,7 +466,7 @@ export class ZoneConnectionRegistry {
         status: 'active',
         barrierType: 'gate',
         gatingCondition: 'Q03_PREPARE_RESOURCES / East Gate',
-        displayLabel: 'Cổng Đông — Lối vào Rừng Cấm The Hollow Woods',
+        displayLabel: 'Cổng Đông — Lối vào Rừng Cấm (The Hollow Woods)',
         triggerRect: { x: 1580, y: 200, width: 20, height: 160 },
         entryPoint: { x: 1640, y: 280, direction: 'right' },
         returnPoint: { x: 1540, y: 280, direction: 'left' },

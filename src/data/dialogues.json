@@ -6,7 +6,7 @@
       "lines": [
         "Đứng lại! Đừng bước thêm một bước nào nữa!",
         "Ngươi... vạt áo ngươi còn vương hơi sương trắng! Ngươi vừa bước ra từ Màn Sương Quỷ dữ sao?!",
-        "The Hollow Woods không bao giờ trả lại thứ gì nguyên vẹn! Mau đi gặp bà Edda tại Tháp Chuông trước khi tai ương giáng xuống làng ta!"
+        "Khu rừng Hollow Woods không bao giờ trả lại thứ gì nguyên vẹn! Mau đi gặp bà Edda tại Tháp Chuông trước khi tai ương giáng xuống làng ta!"
       ],
       "onCompleteFlag": "talked_to_villagers",
       "nextQuestId": "Q01_MEET_EDDA"
@@ -31,7 +31,7 @@
       "speaker": "Garth – Người Gác Cổng",
       "portrait": "portrait_garth",
       "lines": [
-        "Cổng Đông đã mở! Con đường phía trước là Đường Mòn Quanh Co (The Crooked Path).",
+        "Cổng Đông đã mở! Con đường phía trước là Đường Mòn Quanh Co dẫn vào Rừng Sâu.",
         "Hãy cẩn thận từng bước chân, nhớ nấp vào thân cây rỗng nếu nghe thấy tiếng động lạ, và tìm lại Lưỡi Chuông Đồng cho làng!"
       ]
     },
@@ -39,7 +39,7 @@
       "speaker": "Edda – Người Giữ Chuông",
       "portrait": "portrait_edda",
       "lines": [
-        "Khuôn mặt này... ánh nhìn này... Đã bao nhiêu mùa trôi qua kể từ khi có một kẻ sống sót bước ra từ The Veil?",
+        "Khuôn mặt này... ánh nhìn này... Đã bao nhiêu mùa trôi qua kể từ khi có một kẻ sống sót bước ra từ Màn Sương Rừng Sâu?",
         "Chiếc áo choàng vương rêu xanh... Ngươi là một Lữ Khách bước ra từ sương mù rêu phong sao? Nghe như một âm vang vọng lại từ bờ bên kia ranh giới.",
         "Ở làng Bellhollow này, nếu ngươi muốn sống sót qua đêm nay, hãy khắc cốt ghi tâm BA QUY TẮC BẰNG MÁU:",
         "QUY TẮC 1: Đừng bao giờ trả lời khi khu rừng cất tiếng gọi đúng họ tên mình. Đó không phải người quen, mà là Kẻ Lắng Nghe đang mượn giọng.",
@@ -81,7 +81,7 @@
       "lines": [
         "Ngươi thở dốc, mắt lờ đờ và mạch đập nhanh quá mức... Màn sương đã ngấm vào tâm trí ngươi rồi.",
         "Cầm lấy nắm Thuốc Đắp Thảo Mộc này. Nó sẽ giúp vết thương khép miệng và xoa dịu nỗi sợ hãi trong đầu ngươi.",
-        "Khu rừng The Hollow Woods chứa đầy thảo dược bạc và nhựa cây thông. Hãy thu thập chúng bên các bờ suối và thân cây cổ thụ.",
+        "Khu rừng Hollow Woods chứa đầy thảo dược bạc và nhựa cây thông. Hãy thu thập chúng bên các bờ suối và thân cây cổ thụ.",
         "Dùng bàn chế tạo [Phím I]: Nhựa thông và Gỗ khô sẽ tạo ra Dầu Đèn. Hai nắm Thảo dược sẽ giã thành Thuốc Đắp. Còn Đá lửa ghép với Gỗ sẽ tạo thành Mồi Tiếng Động để ném đánh lạc hướng quái vật.",
         "Ta đã phục hồi sinh lực cho ngươi. Hãy giữ ngọn đèn luôn cháy sáng, hỡi Lữ Khách Rêu Phong!"
       ],
@@ -119,7 +119,7 @@
       "healPlayer": true
     },
     "clapper_found": {
-      "speaker": "The Mossbound Wayfarer",
+      "speaker": "Lữ Khách Rêu Phong",
       "portrait": "wayfarer_portrait",
       "lines": [
         "Khối đồng nặng trịch hình đầu chim ưng... Đây chính là Lưỡi Chuông Đồng Cổ mà bà Edda nhắc đến!",
@@ -130,12 +130,13 @@
       "nextQuestId": "Q06_RETRIEVE_CLAPPER"
     },
     "bram_chat": {
-      "speaker": "Bram – Thợ Thủ Công Làng",
-      "portrait": "portrait_bram",
+      "speaker": "Bram – Thợ Rèn Làng",
+      "portrait": "portrait_blacksmith",
       "lines": [
-        "Xin chào người lạ mặt! Ta là Bram, thợ thủ công của làng Bellhollow.",
-        "Bàn chế tạo cạnh ta luôn sẵn sàng nếu ngươi có đủ Gỗ Khô và Đá Lửa để chế tạo vật dụng sinh tồn.",
-        "Hãy luôn kiểm tra ngọn đèn lồng trước khi bước ra cổng làng nhé!"
+        "Keng! Keng!... Chào người lữ khách! Ta là Bram, thợ rèn của ngôi làng Bellhollow này.",
+        "Màn sương lạnh ngoài Hollow Woods luôn chực chờ dập tắt mọi hơi ấm, nên ta phải giữ cho ngọn lửa lò rèn luôn rực cháy cả ngày lẫn đêm.",
+        "Bàn Chế Tạo ngay bên cạnh luôn sẵn sàng: chỉ cần gom đủ Gỗ Khô, Đá Lửa và Nhựa Cây, ngươi có thể tự rèn Bó Đuốc và châm thêm Dầu Đèn để sống sót giữa đêm sương!",
+        "Hãy luôn giữ ngọn lửa trong tim và kiểm tra bình dầu đèn trước khi bước qua Cổng Đông nhé!"
       ]
     },
     "finn_chat": {

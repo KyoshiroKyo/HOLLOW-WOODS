@@ -73,6 +73,14 @@ export class DialogueSystem {
     this.isActive = true;
     this.lastAdvanceTime = Date.now();
 
+    // C4-13-11: Tự động đóng mọi modal đang mở để đảm bảo chỉ có duy nhất 1 cửa sổ/hội thoại hiển thị
+    if (this.view) {
+      const ui = (this.view as any);
+      if (ui.craftingModal?.isOpen) ui.craftingModal.close();
+      if (ui.journalModal?.isOpen) ui.journalModal.close();
+      if (ui.pauseModal?.isOpen) ui.pauseModal.close();
+    }
+
     if (this.onDialogueStart) {
       this.onDialogueStart();
     }
@@ -83,7 +91,7 @@ export class DialogueSystem {
       if (this.currentPayload.speaker.includes('Edda')) portraitKey = 'portrait_edda';
       else if (this.currentPayload.speaker.includes('Garth')) portraitKey = 'portrait_garth';
       else if (this.currentPayload.speaker.includes('Neris')) portraitKey = 'portrait_neris';
-      else if (this.currentPayload.speaker.includes('Bram')) portraitKey = 'portrait_bram';
+      else if (this.currentPayload.speaker.includes('Bram') || this.currentPayload.speaker.includes('Thợ Rèn')) portraitKey = 'portrait_blacksmith';
       else if (this.currentPayload.speaker.includes('Finn')) portraitKey = 'portrait_finn';
       else if (this.currentPayload.speaker.includes('Wayfarer') || this.currentPayload.speaker.includes('Lữ Khách')) portraitKey = 'wayfarer_portrait';
       else portraitKey = 'wayfarer_portrait';

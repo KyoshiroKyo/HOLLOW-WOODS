@@ -8,14 +8,14 @@
 - **Engine:** Phaser 3 (Arcade Physics, WebGL Pixel Art Mode, Zoom 1.0 cố định cho UI)
 - **Định hướng nghệ thuật:** **Visual Direction A — Dark Woodland Pixel Art**
 - **Trạng thái biên dịch TypeScript:** `npx tsc --noEmit` -> **0 lỗi (Mã thoát 0)**
-- **Trạng thái đóng gói sản phẩm:** `npm run build` -> **Thành công trong 6.46s** (Bundle: `dist/assets/index-Ctc1WSTH.js`)
-- **Kết luận nghiệm thu:** **CHẤP THUẬN TOÀN DIỆN 100% (FULL ACCEPTANCE — 11/11 TIÊU CHÍ PASS)**
+- **Trạng thái đóng gói sản phẩm:** `npm run build` -> **Thành công** (Bundle: `dist/assets/index-CIfSCLdN.js`, dung lượng build: 4.47 MB, gói ZIP: 2.56 MB)
+- **Kết luận nghiệm thu:** **CHẤP THUẬN TOÀN DIỆN 100% (FULL ACCEPTANCE — 11/11 TIÊU CHÍ PASS | 528/528 TEST PASS)**
 
 ---
 
 ## 1. TUYÊN BỐ CÔNG BỐ PHÁT HÀNH PHIÊN BẢN V1.3
 
-Sau một chuỗi các bước nâng cấp chuyên sâu và chuẩn mực từ `C4-13-01` đến `C4-13-11`, đội ngũ kỹ thuật trân trọng công bố phát hành chính thức phiên bản **HOLLOW WOODS V1.3**.
+Sau một chuỗi các bước nâng cấp chuyên sâu và chuẩn mực từ `C4-13-01` đến `C4-13-21`, đội ngũ kỹ thuật trân trọng công bố phát hành chính thức phiên bản **HOLLOW WOODS V1.3**.
 
 Phiên bản V1.3 đánh dấu bước chuyển mình toàn diện về chất lượng gameplay, độ mượt mà của hiệu năng, độ hoàn thiện của đồ họa Dark Woodland và tính công bằng trong trải nghiệm sinh tồn:
 1. **Khắc phục triệt để lỗi kẹt khi ẩn nấp:** Người chơi hoàn toàn tự do ra/vào bụi rậm và hốc cây bằng phím `[E]` hoặc phím di chuyển `WASD`/Mũi tên, được bảo vệ bởi giải thuật gỡ kẹt AABB Nudge 12 vector tức thời.
@@ -26,6 +26,9 @@ Phiên bản V1.3 đánh dấu bước chuyển mình toàn diện về chất l
 6. **Đồ họa môi trường Pixel Art & Sương mù đa tầng Parallax 3 lớp:** Chuẩn hóa sprite tảng đá pixel art sắc nét; xóa các vòng xám thô dưới tài nguyên và bóng chân; sương mù đa tầng 3 lớp hiển thị ngay từ đầu game.
 7. **Menu chính, HUD sinh tồn & Nhãn tương tác bán trong suốt:** Menu chính u ám huyền bí với 4 nút chức năng; HUD bán trong suốt tự động ẩn khi mở modal; nhãn `[E]` viên nang phân cấp rõ dần theo khoảng cách.
 8. **Hiệu năng đỉnh cao 60 FPS & Không rò rỉ bộ nhớ:** 0 cấp phát đối tượng mới trong update loop; dirty-checking toàn diện UI; object pooling thông báo popup; dọn dẹp sạch sẽ tài nguyên khi tắt scene.
+9. **Cảnh quan kể chuyện, Va chạm kiến trúc & Thể lực sinh tồn:** Dựng rào chắn kể chuyện chặn đầu đường phía Tây; chuẩn hóa toàn bộ hộp va chạm và Y-sorting trong Làng Bellhollow; thể lực cạn về 0 có trạng thái kiệt sức; cạn bình tâm có hiệu ứng hoảng loạn viền tối nhấp nháy.
+10. **Giải phóng không gian, Mượt hóa ranh giới & NPC Thợ Rèn Bram:** Xóa toàn bộ tường tàng hình tại Miếu Chuông Vỡ và Câu Đố Cổ Ngữ; tạo dải tiếp giáp ranh giới 200px mượt mà xóa bỏ "hai thế cực"; tích hợp NPC Thợ Rèn Bram với hoạt ảnh rèn sắt lặp vô hạn và cốt truyện lore lôi cuốn.
+11. **Rà soát & triệt tiêu lỗi tiềm ẩn 10 hệ thống (C4-13-11):** Phân quyền chỉ số sinh tồn duy nhất về `SurvivalSystem`; bảo đảm độc quyền hiển thị cửa sổ Modal (`isAnyModalOpen`); dọn sạch phím bấm kẹt khi đóng Modal (`resetAllInputState`); chọn duy nhất ứng viên tương tác gần nhất không xung đột; dọn sạch trạng thái vòng đời `GameScene.init()`; và đồng bộ tức thời Camera Bounds cùng trạng thái cổng thế giới khi nạp save Continue.
 
 ---
 
@@ -37,11 +40,11 @@ Toàn bộ quá trình kiểm toán, phân tích lỗi, thực thi kỹ thuật,
 | :---: | :--- | :--- | :--- |
 | **01** | `01_Project_Audit_Report.md` | Đánh giá hiện trạng dự án trước V1.3, trạng thái Git, bảo toàn tài nguyên Dân làng C4-12-08, Runtime NPC C4-12-09, khảo sát 9 phân khu và 15 điểm ẩn nấp. | [01_Project_Audit_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/01_Project_Audit_Report.md) |
 | **02** | `02_Bug_Analysis_And_Root_Cause_Report.md` | Tổng hợp toàn diện nguyên nhân gốc rễ (Root Cause) và giải pháp xử lý của toàn bộ 15 hạng mục lỗi (BUG-01 đến BUG-15) cùng 10 hệ thống tiềm ẩn. | [02_Bug_Analysis_And_Root_Cause_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/02_Bug_Analysis_And_Root_Cause_Report.md) |
-| **03** | `03_Implementation_Report.md` | Báo cáo chi tiết các giải pháp thực thi kỹ thuật cốt lõi: C4-13-01 (Ẩn nấp & gỡ kẹt), C4-13-02 (Rừng Sâu & tán cây), C4-13-03 (Tử vong & Game Over), C4-13-04 (Đèn cầm tay). | [03_Implementation_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/03_Implementation_Report.md) |
+| **03** | `03_Implementation_Report.md` | Báo cáo chi tiết các giải pháp thực thi kỹ thuật cốt lõi: C4-13-01 (Ẩn nấp & gỡ kẹt), C4-13-02 (Rừng Sâu & tán cây), C4-13-03 (Tử vong & Game Over), C4-13-04 (Đèn cầm tay), C4-13-16 (Rào chắn phía Tây), C4-13-17 (Va chạm làng), C4-13-18 (Thể lực & Hoảng loạn), C4-13-19 (Tường tàng hình & Miếu Chuông), C4-13-21 (NPC Thợ Rèn Bram). | [03_Implementation_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/03_Implementation_Report.md) |
 | **04** | `04_AI_And_Performance_Optimization_Report.md` | Báo cáo tối ưu hóa AI thực thể (C4-13-05: Safe Zone Làng Bellhollow, 5 trạng thái thông minh) và Tối ưu hóa hiệu năng 60 FPS, Dirty-Checking, Lifecycle Teardown (C4-13-09). | [04_AI_And_Performance_Optimization_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/04_AI_And_Performance_Optimization_Report.md) |
-| **05** | `05_UI_UX_And_Visual_Improvement_Report.md` | Báo cáo nâng cấp đồ họa môi trường, sương mù đa tầng Parallax 3 lớp (C4-13-06) và Thiết kế lại toàn diện Menu chính, HUD sinh tồn bán trong suốt, nhãn [E] khoảng cách (C4-13-07). | [05_UI_UX_And_Visual_Improvement_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/05_UI_UX_And_Visual_Improvement_Report.md) |
-| **06** | `06_Cross_System_Audit_Report.md` | Báo cáo rà soát tích hợp và kiểm định chéo giữa 10 hệ thống tiềm ẩn, ma trận tương tác phân hệ và kiểm định không rò rỉ bộ nhớ (Zero Memory Leak Audit). | [06_Cross_System_Audit_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/06_Cross_System_Audit_Report.md) |
-| **07** | `07_Regression_Testing_Report.md` | Báo cáo kiểm thử hồi quy toàn diện, đối chiếu 11 tiêu chí hoàn thành theo 4 mức trạng thái, so sánh hiệu suất trước/sau và tổng hợp 10 kịch bản test tự động (333/333 PASS). | [07_Regression_Testing_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/07_Regression_Testing_Report.md) |
+| **05** | `05_UI_UX_And_Visual_Improvement_Report.md` | Báo cáo nâng cấp đồ họa môi trường, sương mù đa tầng Parallax 3 lớp (C4-13-06), Thiết kế lại Menu chính & HUD (C4-13-07), Rút gọn nhãn nút & Sửa lẹm chữ (C4-13-14), Biểu tượng thuộc tính Pixel Art HUD 16x16 (C4-13-15) và Mượt hóa ranh giới vùng (C4-13-20). | [05_UI_UX_And_Visual_Improvement_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/05_UI_UX_And_Visual_Improvement_Report.md) |
+| **06** | `06_Audio_Testing_Report.md` | Báo cáo rà soát và kiểm thử toàn diện hệ thống âm thanh Web Audio Synthesis (C4-13-08): Autoplay unlock, chống chồng âm/rò rỉ node, SFX vung gậy, lá xào xạc, tử nạn và cân bằng âm lượng. *(Kèm báo cáo rà soát phụ trợ: [06_Cross_System_Audit_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/06_Cross_System_Audit_Report.md))*. | [06_Audio_Testing_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/06_Audio_Testing_Report.md) |
+| **07** | `07_Regression_Testing_Report.md` | Báo cáo kiểm thử hồi quy toàn diện, đối chiếu 11 tiêu chí hoàn thành theo 4 mức trạng thái, so sánh hiệu suất trước/sau và tổng hợp 19 kịch bản test tự động (493/493 PASS - 100%). | [07_Regression_Testing_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/07_Regression_Testing_Report.md) |
 | **08** | `08_Final_Release_Report.md` | Báo cáo nghiệm thu khóa sổ, công bố phát hành chính thức, hướng dẫn trải nghiệm và xác nhận chất lượng toàn diện phiên bản V1.3. | [08_Final_Release_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/08_Final_Release_Report.md) |
 
 ---
@@ -156,6 +159,20 @@ Dưới đây là thông tin chi tiết về hai cột mốc phát hành đã đ
 - **Commit Message:** `release: package HOLLOW WOODS v1.3.0 upgrade, AI enhancement and UI/UX redesign`
 - **Trọng tâm gói:** Toàn bộ 15 hạng mục sửa lỗi triệt để, hệ thống AI The Listener tuần tra/truy đuổi với ranh giới Vùng An Toàn Làng Bellhollow, tối ưu hóa vòng lặp Update 60 FPS chống rò rỉ bộ nhớ, tái thiết kế Menu & HUD bán trong suốt tinh tế, đồng bộ hoạt ảnh đèn lồng và gậy, hệ thống Game Over / Hồi sinh tại Garth, cùng bộ 8 báo cáo khóa sổ chuẩn mực tại `Read/V1.3/Reports/`.
 - **Trạng thái GitHub Remote:** Đã đẩy thành công lên nhánh chính và thẻ từ xa (`origin/main`, `origin/v1.3.0`).
+
+### 7.3. Cột mốc đóng gói nền tảng P2Game.io (C4-13-22)
+- **Tệp lưu trữ phát hành:** [hollow-woods-p2game-v1.3.0.zip](file:///G:/HOLLOW%20WOODS/hollow-woods-p2game-v1.3.0.zip)
+- **Kích thước gói ZIP:** **2.56 MB** (ngưỡng tối đa cho phép: 30 MB -> Đạt chuẩn xuất sắc)
+- **Cấu trúc lưu trữ:** Nén trực tiếp nội dung bên trong thư mục `dist/` (gồm `index.html`, `p2game.json`, thư mục `store/` và `assets/`), không bọc thư mục cha.
+- **Tệp hợp đồng kỹ thuật (Manifest):** [p2game.json](file:///G:/HOLLOW%20WOODS/public/p2game.json) (đạt chuẩn schemaVersion 1).
+- **Bộ 5 tài nguyên cửa hàng P2Game:**
+  1. `store/icon.png`: 512×512 px (Mossbound Wayfarer với đèn bão phát sáng).
+  2. `store/cover.png`: 1280×720 px (Cảnh quan Làng Bellhollow, Tháp Chuông, nhân vật và tiêu đề game).
+  3. `store/screenshot1.png`: 1280×720 px (Làng Bellhollow và các NPC Dân Làng).
+  4. `store/screenshot2.png`: 1280×720 px (Rừng Sâu, sương mù đa tầng và cơ chế lẩn trốn).
+  5. `store/screenshot3.png`: 1280×720 px (Miếu Chuông Vỡ và giải đố Cổ Ngữ).
+- **Tuân thủ bảo mật & iframe CSP:** Hoàn toàn không sử dụng `eval()` hoặc `new Function()` (tuân thủ quy định CSP RT-002), 100% tài nguyên và script sử dụng đường dẫn tương đối `./`.
+- **Kết quả kiểm thử:** 35/35 tiêu chí kiểm thử chuyên biệt đạt chuẩn (`scripts/verify_p2game_packaging_c4_13_22.mjs`).
 
 | Tiêu chí | Cột mốc v1.2.0 | Cột mốc v1.3.0 |
 | :--- | :--- | :--- |

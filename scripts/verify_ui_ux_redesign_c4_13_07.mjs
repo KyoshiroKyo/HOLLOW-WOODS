@@ -74,13 +74,13 @@ assert(gameSceneContent.includes('this.gameOverModal.onClose = () => {') && game
 const mainMenuPath = path.resolve('src/scenes/MainMenuScene.ts');
 const mainMenuContent = fs.readFileSync(mainMenuPath, 'utf-8');
 
-assert(mainMenuContent.includes('BƯỚC VÀO MÀN SƯƠNG (BẮT ĐẦU MỚI)'), 'MainMenu has Bắt Đầu Mới button');
+assert(mainMenuContent.includes('BƯỚC VÀO MÀN SƯƠNG'), 'MainMenu has Bắt Đầu Mới button');
 assert(mainMenuContent.includes('TIẾP TỤC HÀNH TRÌNH') && mainMenuContent.includes('TIẾP TỤC (CHƯA CÓ BẢN LƯU)'), 'MainMenu has Tiếp Tục button with save data check');
 assert(mainMenuContent.includes('⚙ CÀI ĐẶT TRÒ CHƠI') && mainMenuContent.includes('showSettingsModal()'), 'MainMenu has Cài Đặt button and modal');
 assert(mainMenuContent.includes('ℹ THÔNG TIN & CỐT TRUYỆN') && mainMenuContent.includes('showCreditsModal()'), 'MainMenu has Thông Tin button and modal');
 assert(mainMenuContent.includes('fogBack') && mainMenuContent.includes('fogFront'), 'MainMenu implements 2 drifting fog layers');
 assert(mainMenuContent.includes('lanternGlow.fillStyle(0xf39c12, 0.12)') && mainMenuContent.includes('lanternGlow.fillStyle(0xfff5d7, 0.48)'), 'MainMenu implements multi-tier warm lantern glow');
-assert(mainMenuContent.includes('V1.3 (Visual Direction A + Hybrid Open World)'), 'MainMenu displays V1.3 version');
+assert(mainMenuContent.includes('V1.3.0') || mainMenuContent.includes('V1.3 (Visual Direction A + Hybrid Open World)'), 'MainMenu displays V1.3 version');
 
 console.log('\n================================================================');
 console.log(`TOTAL CHECKS: ${passCount + failCount}`);

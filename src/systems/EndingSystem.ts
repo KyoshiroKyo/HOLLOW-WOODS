@@ -1,5 +1,5 @@
 /**
- * HOLLOW WOODS V1.1 - GATE 3C
+ * HOLLOW WOODS V1.3
  * REPAIRED ENDING SYSTEM & SCREEN-SPACE FINALE PRESENTATION
  * Đảm bảo hiển thị chuẩn HD 1280×720 tại UIScene (Zoom 1.0),
  * triệt tiêu hoàn toàn lỗi lệch viewport, chồng lấn HUD và Soft-lock vĩnh viễn (BUG-10).
@@ -247,7 +247,7 @@ export class EndingSystem {
       { text: 'Trang giấy ố vàng phác họa chân dung một kẻ lữ khách từ hàng trăm năm trước...', delay: 2800, size: '18px', color: '#bdc3c7' },
       { text: 'Gương mặt ấy... đôi sừng ấy... giống hệt Satyr từng nét vẽ.', delay: 5200, size: '20px', color: '#e74c3c' },
       { text: '“Khu rừng không chỉ đưa ta đến đây. Có lẽ nó đã chờ ta từ rất lâu.”', delay: 7800, size: '22px', color: '#f39c12', italic: true },
-      { text: 'HOLLOW WOODS V1.1', delay: 10500, size: '36px', color: '#ffffff', bold: true },
+      { text: 'HOLLOW WOODS V1.3', delay: 10500, size: '36px', color: '#ffffff', bold: true },
       { text: 'TẬP 1: THE FIRST TOLL (TIẾNG CHUÔNG ĐẦU TIÊN) — HOÀN THÀNH', delay: 12200, size: '18px', color: '#2ecc71', bold: true },
       { text: 'THE FOREST REMEMBERS. TO BE CONTINUED...', delay: 13900, size: '16px', color: '#7f8c8d' }
     ];

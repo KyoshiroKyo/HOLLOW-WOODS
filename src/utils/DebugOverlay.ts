@@ -1,5 +1,5 @@
 /**
- * HOLLOW WOODS V1.1 - GATE 1C
+ * HOLLOW WOODS V1.3
  * HD DEBUG OVERLAY (PHÍM F4)
  * Hiển thị chuẩn khung 64×64 của Satyr và hộp va chạm chân 14×8 px trên độ phân giải 1280×720
  * Bảng chữ số liệu render tại UIScene (Zoom 1.0), bounding box render tại GameScene (World Space)
@@ -134,7 +134,7 @@ export class DebugOverlay {
     }
 
     this.textObject.setText([
-      '=== [F4] THÔNG SỐ KỸ THUẬT NHÂN VẬT SATYR (V1.1 - HD 1280×720) ===',
+      '=== [F4] THÔNG SỐ KỸ THUẬT NHÂN VẬT SATYR — HOLLOW WOODS V1.3 ===',
       `Tọa độ gót chân: X = ${Math.round(px)}, Y = ${Math.round(py)}`,
       `Phân khu hiện tại: ${currentZoneId}`,
       `Vận tốc: ${speed} px/s  |  Hướng mặt: ${this.player.facing}  |  FlipX: ${flipStr}`,

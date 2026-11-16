@@ -22,6 +22,7 @@ G:\HOLLOW WOODS\Read\V1.3\
     ├── 03_Implementation_Report.md
     ├── 04_AI_And_Performance_Optimization_Report.md
     ├── 05_UI_UX_And_Visual_Improvement_Report.md
+    ├── 06_Audio_Testing_Report.md
     ├── 06_Cross_System_Audit_Report.md
     ├── 07_Regression_Testing_Report.md
     └── 08_Final_Release_Report.md
@@ -40,9 +41,18 @@ G:\HOLLOW WOODS\Read\V1.3\
 | **`C4-13-05`** | **Giới hạn phạm vi truy đuổi Entity (Safe Zone Làng Bellhollow) & nâng cấp 5 trạng thái AI thông minh** | **COMPLETED** | [04_AI_And_Performance_Optimization_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/04_AI_And_Performance_Optimization_Report.md) |
 | **`C4-13-06`** | **Xử lý triệt để vật thể hình tròn xám, nâng cấp sương mù đa tầng Parallax 3 lớp & đồ họa môi trường** | **COMPLETED** | [05_UI_UX_And_Visual_Improvement_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/05_UI_UX_And_Visual_Improvement_Report.md) |
 | **`C4-13-07`** | **Thiết kế lại Menu chính (4 nút, modal cài đặt/thông tin), HUD trong game & nhãn [E] bán trong suốt** | **COMPLETED** | [05_UI_UX_And_Visual_Improvement_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/05_UI_UX_And_Visual_Improvement_Report.md) |
+| **`C4-13-08`** | **Rà soát toàn diện Audio: mở khóa Autoplay, chống lặp/rò rỉ node, thêm SFX gậy/bụi rậm/tử nạn & cân bằng âm lượng** | **COMPLETED** | [06_Audio_Testing_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/06_Audio_Testing_Report.md) |
 | **`C4-13-09`** | **Tối ưu hóa hiệu suất đồ họa, ánh sáng, AI, bộ nhớ (60 FPS) & rà soát chéo 10 hệ thống tiềm ẩn** | **COMPLETED** | [04_AI_And_Performance_Optimization_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/04_AI_And_Performance_Optimization_Report.md) |
 | **`C4-13-10`** | **Rà soát tích hợp và kiểm định chéo toàn diện 10 hệ thống tiềm ẩn (Cross-System Integration Audit)** | **COMPLETED** | [06_Cross_System_Audit_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/06_Cross_System_Audit_Report.md) |
 | **`C4-13-12`** | **Kiểm thử hồi quy 11 tiêu chí, so sánh hiệu suất & Nghiệm thu khóa sổ phát hành chính thức V1.3** | **COMPLETED** | [07_Regression_Testing_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/07_Regression_Testing_Report.md)<br>[08_Final_Release_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/08_Final_Release_Report.md) |
+| **`C4-13-14`** | **Rút gọn nhãn nút Menu chính, sửa lỗi cắt lẹm chữ mép trái hộp thoại NPC và đồng bộ ngôn ngữ tiếng Việt** | **COMPLETED** | [05_UI_UX_And_Visual_Improvement_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/05_UI_UX_And_Visual_Improvement_Report.md) |
+| **`C4-13-15`** | **Vẽ mới 4 biểu tượng thuộc tính nhân vật Pixel Art (16x16 px) sắc nét trên cụm HUD góc trên trái** | **COMPLETED** | [05_UI_UX_And_Visual_Improvement_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/05_UI_UX_And_Visual_Improvement_Report.md) |
+| **`C4-13-16`** | **Bổ sung cảnh quan kể chuyện chặn lối quay lại ở rìa phía Tây đầu màn chơi (x: 0..90)** | **COMPLETED** | [03_Implementation_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/03_Implementation_Report.md) |
+| **`C4-13-17`** | **Chuẩn hóa toàn bộ hộp va chạm công trình, đạo cụ và thứ tự lớp hiển thị Y-Sorting trong làng Bellhollow** | **COMPLETED** | [03_Implementation_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/03_Implementation_Report.md) |
+| **`C4-13-18`** | **Dọn dẹp hạt thu thập, sửa lỗi chạy nhanh cạn thể lực về 0, bổ sung phản hồi khi cạn Bình Tâm & chuẩn hóa Miếu Chuông** | **COMPLETED** | [03_Implementation_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/03_Implementation_Report.md) |
+| **`C4-13-19`** | **Xóa tường tàng hình, chống nháy bảng thông báo vùng & sửa lỗi chồng đè họa tiết tại Câu Đố Cổ Ngữ / Miếu Chuông Vỡ** | **COMPLETED** | [03_Implementation_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/03_Implementation_Report.md) |
+| **`C4-13-20`** | **Xóa đường cắt thẳng đứng "hai thái cực" tại ranh giới vùng và thêm hiệu ứng chuyển vùng tối ưu tài nguyên** | **COMPLETED** | [05_UI_UX_And_Visual_Improvement_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/05_UI_UX_And_Visual_Improvement_Report.md) |
+| **`C4-13-21`** | **Đóng gói và tích hợp NPC Thợ Rèn Bram từ gói tài nguyên Smith mới vào khu vực lò rèn làng Bellhollow** | **COMPLETED** | [03_Implementation_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/03_Implementation_Report.md) |
 
 ---
 
@@ -158,6 +168,22 @@ G:\HOLLOW WOODS\Read\V1.3\
    - Khung bảng nhiệm vụ góc trên phải thu gọn kích thước ($340 \times 78$ px) với nền bán trong suốt và vạch nhấn vàng kim thanh lịch.
    - Cơ chế tự động ẩn HUD: `handleModalOpened()` tự động ẩn toàn bộ HUD (`setHUDVisible(false)`) khi bất kỳ Modal nào (`CraftingModal`, `JournalModal`, `PauseModal`, `GameOverModal`, `Dialogue`) mở ra; tự động phục hồi nguyên vẹn khi tất cả modal đóng lại, triệt tiêu 100% hiện tượng đè chữ.
 
+### C4-13-08 — Rà Soát Toàn Diện Hệ Thống Âm Thanh (Web Audio Synthesis, Autoplay, SFX & Cân Bằng Âm Lượng)
+1. **Quản lý vòng đời AudioContext & Tự động mở khóa Autoplay:**
+   - Lắng nghe đa sự kiện (`pointerdown`, `keydown`, `touchstart`, `mousedown`, `click`) và xử lý bất đồng bộ `resume().then()`.
+   - Tự động xả hàng đợi phát nhạc nền đang chờ `pendingAmbienceZone` ngay khi người chơi tương tác đầu tiên.
+   - Tự động giải phóng toàn bộ event listener trên `window` sau khi mở khóa thành công.
+2. **Chống phát lặp, chồng âm & Ngăn ngừa rò rỉ AudioNode:**
+   - Quản lý kênh kép qua `fadingChannels`, giải phóng dứt điểm (`cleanupChannelNodes`) toàn bộ node âm thanh và timer khi chuyển vùng.
+   - Khi Game Over hoặc thoát Menu, `stopAmbience(true)` và `stopAll()` dọn sạch tức thời mọi node âm thanh đang mờ dần.
+3. **Bổ sung hiệu ứng âm thanh Gameplay độc quyền:**
+   - `playAttackSwing()`: âm thanh xé gió và vung gậy gỗ đanh thép khi bấm `[SPACE]`.
+   - `playBushRustle(entering)`: tiếng lá xào xạc tự nhiên khi ẩn nấp vào và bước ra khỏi bụi rậm/hốc cây.
+   - `playPlayerDeath()`: tiếng ngã gục đập người nặng nề kết hợp sóng âm bi tráng hạ tần khi cạn sinh lực.
+4. **Chuẩn hóa cảnh báo Entity AI & Cân bằng âm lượng:**
+   - Chỉ phát tín hiệu cảnh báo nghi vấn và tiếng rít rượt đuổi khi chuyển trạng thái sang `ALERT` hoặc `CHASE` (không lặp mỗi frame).
+   - Tinh chỉnh tỷ lệ âm lượng cân đối: Master 0.8, SFX 0.85, Ambience 0.38 (giúp tiếng bước chân và lời thoại nổi bật rõ nét).
+
 ### C4-13-09 — Tối Ưu Hóa 60 FPS, Dirty-Checking Toàn Diện, Ngăn Chặn Rò Rỉ Bộ Nhớ & Rà Soát 10 Hệ Thống Tiềm Ẩn
 1. **Triệt tiêu toàn bộ cấp phát đối tượng động trong vòng lặp 60 FPS (Zero Allocations in Update):**
    - Loại bỏ triệt để các lệnh `new Graphics()`, `new Text()`, `new Array()` hay `new Vector2()` trong vòng lặp cập nhật mỗi frame của mọi hệ thống.
@@ -173,6 +199,21 @@ G:\HOLLOW WOODS\Read\V1.3\
 5. **Rà soát chéo 10 hệ thống tiềm ẩn (10 Latent Systems Cross-Audit):**
    - Rà soát toàn diện: (1) Save/Load System, (2) Scene Transition, (3) Collision & Interaction, (4) Animation System, (5) Lighting System, (6) Entity AI, (7) Performance/FPS, (8) Audio System, (9) UI System, (10) Asset Management. Đạt 100% tiêu chuẩn chất lượng.
 
+### C4-13-14 — Rút Gọn Nhãn Nút Menu, Sửa Lỗi Cắt Lẹm Chữ Mép Trái Hộp Thoại & Đồng Bộ Ngôn Ngữ
+1. **Rút gọn nhãn nút Menu Chính:** Đổi thành `'► BƯỚC VÀO MÀN SƯƠNG'` ngắn gọn, bí ẩn, loại bỏ chú giải thừa lặp ý.
+2. **Sửa lỗi cắt lẹm mép trái hộp thoại NPC:** Dịch tọa độ x của tên người nói và nội dung thoại sang phải thêm 18px (`-halfW + 202`), bổ sung `padding: { left: 12, right: 12, top: 6, bottom: 6 }` và căn chỉnh `wordWrap.width: boxWidth - 250` loại bỏ 100% hiện tượng glyph clipping.
+3. **Đồng bộ ngôn ngữ tiếng Việt:** Chuẩn hóa các cụm từ tiếng Anh `"The Hollow Woods"`, `"(The Crooked Path)"`, `"The Veil?"` và danh xưng người nói `"The Mossbound Wayfarer"` sang tiếng Việt tự nhiên và nhất quán trong `dialogues.json`.
+
+### C4-13-20 — Mượt Hóa Ranh Giới Vùng & Tối Ưu Hóa Phân Khu Xa
+1. **Dải chuyển tiếp địa hình 200px đa tầng (`WorldBuilder.ts`):** Tạo dải chuyển màu tự nhiên x: 2780..2980 giữa Crooked Path và Silent Mire, nối liền mạch nền đường đất và lùi sàn gỗ sang x = 2940, xóa bỏ hoàn toàn hiện tượng "hai thế cực".
+2. **Hiệu ứng sương mù chuyển vùng êm dịu (`VeilSystem.ts`):** Kích hoạt tween mờ sương 350ms khi bước qua ranh giới.
+3. **Cơ chế ngủ đông phân khu xa (`WorldBuilder.ts`):** `hibernateDistantZoneObjects` và đồng bộ `setActive(isInside)` theo tầm nhìn camera, tiết kiệm tài nguyên bộ nhớ tối đa.
+
+### C4-13-21 — Đóng Gói & Tích Hợp NPC Thợ Rèn Bram Từ Gói SmithNPC Mới
+1. **Chuẩn hóa đồ họa bằng pngjs:** Trích xuất 6 frame từ `Pixel_Art/SmithNPC/SpriteSheet.png`, dịch chuyển căn lưới 64×64 px, bổ sung bóng đổ elip mềm mại alpha 0.25 dưới chân và đe rèn; cắt cúp ảnh chân dung đối thoại 2x Nearest-Neighbor.
+2. **Nạp tài nguyên & Đăng ký hoạt ảnh:** Khai báo hằng số trong `Constants.ts`, nạp spritesheet trong `PreloadScene.ts`, đăng ký hoạt ảnh đập đe liên tục `anim_blacksmith_work` / `npc_bram_work` / `npc_bram_idle` trong `NPCEntity.ts`, cập nhật icon búa 🔨.
+3. **Định vị & Hội thoại:** Đặt Bram tại tọa độ thông thoáng `(1045, 365)` cạnh Bàn Chế Tạo trong Làng Bellhollow; hộp va chạm chân 22×14 px immovable; bổ sung hội thoại tiếng Việt `bram_chat` truyền cảm về ngọn lửa lò rèn và hướng dẫn chế tạo sinh tồn.
+
 ---
 
 ## 4. BẢNG KIỂM TRA CHẤT LƯỢNG (QA / QC MATRIX)
@@ -186,9 +227,17 @@ G:\HOLLOW WOODS\Read\V1.3\
 | **AI 5 Trạng Thái & Safe Zone (C4-13-05)** | `node scripts/verify_ai_and_safe_zone_c4_13_05.mjs` | 23/23 PASS | **ĐẠT (100%)** |
 | **Đồ Họa & Sương Mù Đa Tầng (C4-13-06)** | `node scripts/verify_visual_improvements_c4_13_06.mjs` | 28/28 PASS | **ĐẠT (100%)** |
 | **Giao diện Menu, HUD & Nhãn tương tác (C4-13-07)** | `node scripts/verify_ui_ux_redesign_c4_13_07.mjs` | 34/34 PASS | **ĐẠT (100%)** |
+| **Rà soát & Sửa lỗi Hệ thống Âm thanh (C4-13-08)** | `node scripts/verify_audio_system_c4_13_08.mjs` | 15/15 PASS | **ĐẠT (100%)** |
 | **Thực thể NPC & Hoạt ảnh (C4-12-09)** | `node scripts/verify_npc_runtime_c4_12_09.mjs` | 56/56 PASS | **ĐẠT (100%)** |
 | **Tối ưu Hiệu suất & Rà soát 10 hệ thống (C4-13-09)** | `node scripts/verify_performance_and_audit_c4_13_09.mjs` | 32/32 PASS | **ĐẠT (100%)** |
+| **Hộp thoại, Nhãn Menu & Tiếng Việt (C4-13-14)** | `node scripts/verify_dialogue_ui_and_text_c4_13_14.mjs` | 12/12 PASS | **ĐẠT (100%)** |
+| **Biểu tượng thuộc tính Pixel Art HUD (C4-13-15)** | `node scripts/verify_hud_pixel_icons_c4_13_15.mjs` | 12/12 PASS | **ĐẠT (100%)** |
+| **Rào chắn kể chuyện phía Tây (C4-13-16)** | `node scripts/verify_west_boundary_barrier_c4_13_16.mjs` | 12/12 PASS | **ĐẠT (100%)** |
+| **Chuẩn hóa va chạm & Y-sorting làng (C4-13-17)** | `node scripts/verify_village_colliders_and_depth_c4_13_17.mjs` | 18/18 PASS | **ĐẠT (100%)** |
+| **Dọn hạt thu thập, Thể lực & Hoảng loạn (C4-13-18)** | `node scripts/verify_stamina_panic_and_particles_c4_13_18.mjs` | 15/15 PASS | **ĐẠT (100%)** |
+| **Xóa tường tàng hình, Hysteresis & Miếu Chuông (C4-13-19)** | `node scripts/verify_invisible_walls_and_shrine_c4_13_19.mjs` | 22/22 PASS | **ĐẠT (100%)** |
+| **Mượt hóa ranh giới & Ngủ đông phân khu (C4-13-20)** | `node scripts/verify_seam_transition_and_hibernation_c4_13_20.mjs` | 19/19 PASS | **ĐẠT (100%)** |
+| **Đóng gói & Tích hợp NPC Thợ Rèn Bram (C4-13-21)** | `node scripts/verify_blacksmith_integration_c4_13_21.mjs` | 44/44 PASS | **ĐẠT (100%)** |
 | **Kiểm thử luồng chơi xuyên suốt Act 0 - Act 1** | `node scripts/verify_full_game_flow_c4_12_31.mjs` | 80/80 PASS | **ĐẠT (100%)** |
-| **Tổng hợp kiểm thử hồi quy toàn diện V1.3** | [07_Regression_Testing_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.3/Reports/07_Regression_Testing_Report.md) | 333/333 PASS | **ĐẠT (100%)** |
 | **Kiểm tra biên dịch TypeScript** | `npx tsc --noEmit` | Mã thoát 0 | **ĐẠT (0 LỖI)** |
 | **Đóng gói sản phẩm production** | `npm run build` | Mã thoát 0 | **ĐẠT (6.46s)** |
