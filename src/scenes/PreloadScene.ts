@@ -1,3 +1,9 @@
+/**
+ * HOLLOW WOODS V1.3.2 - C4-132-08
+ * AUDITED RESOURCE PRELOADER & ASSET INTEGRITY SYSTEM
+ * 100% Relative Asset Paths for P2Game.io iframe compatibility
+ */
+
 import * as Phaser from 'phaser';
 import { 
   SCENE_PRELOAD, 

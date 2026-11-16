@@ -57,6 +57,20 @@ for (const suite of suites) {
   const status = (res.status === 0 && failed === 0) ? 'PASS' : 'FAIL';
   console.log(`${status} (${passed}/${total})`);
 
+  // C4-132-08: In chi tiết lỗi nếu tiến trình con thoát mã khác 0 hoặc có stderr/thất bại
+  if (res.status !== 0 || stderr.trim().length > 0 || failed > 0) {
+    if (stderr.trim().length > 0) {
+      console.error(`  ⚠️ [STDERR in ${suite.script}]:\n${stderr.trim()}`);
+    }
+    if (res.status !== 0 && res.status !== null) {
+      console.error(`  ❌ [EXIT CODE in ${suite.script}]: Process exited with code ${res.status}`);
+    }
+    const failLines = combined.split('\n').filter(line => line.includes('[FAIL]'));
+    if (failLines.length > 0) {
+      console.error(`  ❌ [FAILURES in ${suite.script}]:\n    ${failLines.join('\n    ')}`);
+    }
+  }
+
   results.push({
     id: suite.id,
     name: suite.name,
