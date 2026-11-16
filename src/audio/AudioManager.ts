@@ -96,11 +96,11 @@ export class AudioManager {
 
         // 2. Master Limiter / DynamicsCompressorNode (Triệt tiêu méo tiếng số và chống dội âm chói gắt)
         this.masterLimiter = this.ctx.createDynamicsCompressor();
-        this.masterLimiter.threshold.setValueAtTime(-10, this.ctx.currentTime);
-        this.masterLimiter.knee.setValueAtTime(10, this.ctx.currentTime);
-        this.masterLimiter.ratio.setValueAtTime(12, this.ctx.currentTime);
-        this.masterLimiter.attack.setValueAtTime(0.003, this.ctx.currentTime);
-        this.masterLimiter.release.setValueAtTime(0.18, this.ctx.currentTime);
+        this.masterLimiter.threshold.setValueAtTime(-4, this.ctx.currentTime);
+        this.masterLimiter.knee.setValueAtTime(20, this.ctx.currentTime);
+        this.masterLimiter.ratio.setValueAtTime(4, this.ctx.currentTime);
+        this.masterLimiter.attack.setValueAtTime(0.015, this.ctx.currentTime);
+        this.masterLimiter.release.setValueAtTime(0.25, this.ctx.currentTime);
 
         // 3. The Veil Low-Pass Filter (Mặc định 18000Hz: thông thoáng)
         this.veilFilter = this.ctx.createBiquadFilter();
@@ -141,7 +141,11 @@ export class AudioManager {
       gather: 'assets/audio/resource_gather.mp3',
       runestone_err: 'assets/audio/rune_error.mp3',
       runestone: 'assets/audio/rune_resonance.mp3',
-      footstep_grass: 'assets/audio/footstep_grass.mp3'
+      footstep_grass: 'assets/audio/footstep_grass.mp3',
+      ambience_village: 'assets/audio/ambience_village.mp3',
+      ambience_forest: 'assets/audio/ambience_forest.mp3',
+      ambience_mire: 'assets/audio/ambience_mire.mp3',
+      ambience_crossing: 'assets/audio/ambience_crossing.mp3'
     };
 
     for (const [key, url] of Object.entries(audioManifest)) {
@@ -474,9 +478,22 @@ export class AudioManager {
       const bufferSize = this.ctx.sampleRate * 2;
       this.noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
       const output = this.noiseBuffer.getChannelData(0);
+      
+      // Tạo Brownian Noise (1/f^2) bằng Leaky Integrator để triệt tiêu hoàn toàn dải cao rè rè
+      let brown = 0.0;
       for (let i = 0; i < bufferSize; i++) {
-        output[i] = Math.random() * 2 - 1;
+        const white = Math.random() * 2 - 1;
+        brown = (brown + 0.015 * white) / 1.015;
+        output[i] = brown * 3.0;
       }
+
+      // Khử giật ở điểm tiếp giáp vòng lặp (Loop Seam Smoothing)
+      const seamSamples = Math.floor(this.ctx.sampleRate * 0.1);
+      for (let i = 0; i < seamSamples; i++) {
+        const alpha = i / seamSamples;
+        output[i] = output[i] * alpha + output[bufferSize - seamSamples + i] * (1 - alpha);
+      }
+
       return this.noiseBuffer;
     } catch {
       return null;
@@ -569,91 +586,114 @@ export class AudioManager {
     this.windGain = newChannelGain; // Lưu lại để setWindIntensity có thể tinh chỉnh
 
     const nodesToTrack: (AudioNode | number)[] = [newChannelGain];
-    const noiseBuffer = this.getOrCreateNoiseBuffer();
 
-    if (noiseBuffer) {
-      const noiseSource = this.ctx.createBufferSource();
-      noiseSource.buffer = noiseBuffer;
-      noiseSource.loop = true;
+    // Ưu tiên nạp và phát tệp âm thanh thực tế từ nguồn Horror SFX đã chọn lọc
+    const sampleKey = 'ambience_' + targetZone;
+    const sampledBuffer = this.audioBuffers.get(sampleKey);
 
-      const bandpass = this.ctx.createBiquadFilter();
+    if (sampledBuffer) {
+      const sampleSource = this.ctx.createBufferSource();
+      sampleSource.buffer = sampledBuffer;
+      sampleSource.loop = true;
+      sampleSource.connect(newChannelGain);
+      sampleSource.start(now);
+      nodesToTrack.push(sampleSource);
+    } else {
+      // Procedural fallback với Brownian Noise siêu trầm ấm & bộ lọc kép Lowpass 420Hz loại bỏ 100% dải cao rè rè
+      const noiseBuffer = this.getOrCreateNoiseBuffer();
 
-      if (targetZone === 'village') {
-        // LÀNG BELLHOLLOW: Gió êm đềm, tiếng vo ve ấm áp của mái nhà và ánh lửa
-        bandpass.type = 'bandpass';
-        bandpass.frequency.setValueAtTime(450, now);
-        bandpass.Q.setValueAtTime(1.4, now); // Giảm Q từ 1.8 -> 1.4 chống rít
+      if (noiseBuffer) {
+        const noiseSource = this.ctx.createBufferSource();
+        noiseSource.buffer = noiseBuffer;
+        noiseSource.loop = true;
 
-        const villageDrone = this.ctx.createOscillator();
-        const droneGain = this.ctx.createGain();
-        villageDrone.type = 'sine';
-        villageDrone.frequency.setValueAtTime(130.81, now); // C3 êm đềm
-        droneGain.gain.setValueAtTime(0.035, now);
+        const bandpass = this.ctx.createBiquadFilter();
+        const lowpass = this.ctx.createBiquadFilter();
+        lowpass.type = 'lowpass';
+        lowpass.frequency.setValueAtTime(420, now);
+        lowpass.Q.setValueAtTime(0.707, now); // Butterworth alignment: phẳng phiu, loại bỏ 100% dải cao
 
-        villageDrone.connect(droneGain);
-        droneGain.connect(newChannelGain);
-        villageDrone.start(now);
-        nodesToTrack.push(villageDrone, droneGain);
+        if (targetZone === 'village') {
+          // LÀNG BELLHOLLOW: Gió êm đềm, tiếng vo ve ấm áp của mái nhà và ánh lửa
+          bandpass.type = 'bandpass';
+          bandpass.frequency.setValueAtTime(450, now);
+          bandpass.Q.setValueAtTime(1.2, now);
 
-        noiseSource.connect(bandpass);
-        bandpass.connect(newChannelGain);
-        noiseSource.start(now);
-        nodesToTrack.push(noiseSource, bandpass);
+          const villageDrone = this.ctx.createOscillator();
+          const droneGain = this.ctx.createGain();
+          villageDrone.type = 'sine';
+          villageDrone.frequency.setValueAtTime(130.81, now); // C3 êm đềm
+          droneGain.gain.setValueAtTime(0.025, now);
 
-      } else if (targetZone === 'mire') {
-        // ĐẦM LẦY TĨNH LẶNG: Âm trầm đục, gió rít ngột ngạt dưới lòng bùn
-        bandpass.type = 'lowpass';
-        bandpass.frequency.setValueAtTime(220, now);
-        bandpass.Q.setValueAtTime(1.5, now); // Giảm Q từ 3.2 -> 1.5 loại bỏ hoàn toàn tiếng ré rít đầm lầy
+          villageDrone.connect(droneGain);
+          droneGain.connect(newChannelGain);
+          villageDrone.start(now);
+          nodesToTrack.push(villageDrone, droneGain);
 
-        const mireDrone = this.ctx.createOscillator();
-        const droneGain = this.ctx.createGain();
-        mireDrone.type = 'sine';
-        mireDrone.frequency.setValueAtTime(48, now); // Tiếng ục ục trầm 48Hz
-        droneGain.gain.setValueAtTime(0.05, now);
+          noiseSource.connect(bandpass);
+          bandpass.connect(lowpass);
+          lowpass.connect(newChannelGain);
+          noiseSource.start(now);
+          nodesToTrack.push(noiseSource, bandpass, lowpass);
 
-        mireDrone.connect(droneGain);
-        droneGain.connect(newChannelGain);
-        mireDrone.start(now);
-        nodesToTrack.push(mireDrone, droneGain);
+        } else if (targetZone === 'mire') {
+          // ĐẦM LẦY TĨNH LẶNG: Âm trầm đục, gió rít ngột ngạt dưới lòng bùn
+          bandpass.type = 'lowpass';
+          bandpass.frequency.setValueAtTime(220, now);
+          bandpass.Q.setValueAtTime(1.2, now);
 
-        noiseSource.connect(bandpass);
-        bandpass.connect(newChannelGain);
-        noiseSource.start(now);
-        nodesToTrack.push(noiseSource, bandpass);
+          const mireDrone = this.ctx.createOscillator();
+          const droneGain = this.ctx.createGain();
+          mireDrone.type = 'sine';
+          mireDrone.frequency.setValueAtTime(48, now); // Tiếng ục ục trầm 48Hz
+          droneGain.gain.setValueAtTime(0.04, now);
 
-      } else if (targetZone === 'crossing') {
-        // FOG CROSSING: Gió rít cô độc, sương giá buốt
-        bandpass.type = 'bandpass';
-        bandpass.frequency.setValueAtTime(340, now);
-        bandpass.Q.setValueAtTime(1.5, now); // Giảm Q từ 3.5 -> 1.5 loại bỏ hiện tượng feedback rít tai
+          mireDrone.connect(droneGain);
+          droneGain.connect(newChannelGain);
+          mireDrone.start(now);
+          nodesToTrack.push(mireDrone, droneGain);
 
-        noiseSource.connect(bandpass);
-        bandpass.connect(newChannelGain);
-        noiseSource.start(now);
-        nodesToTrack.push(noiseSource, bandpass);
+          noiseSource.connect(bandpass);
+          bandpass.connect(lowpass);
+          lowpass.connect(newChannelGain);
+          noiseSource.start(now);
+          nodesToTrack.push(noiseSource, bandpass, lowpass);
 
-      } else {
-        // RỪNG NGOÀI & ĐƯỜNG MÒN (FOREST): Gió rít ma mị, cành cây kẽo kẹt
-        bandpass.type = 'bandpass';
-        bandpass.frequency.setValueAtTime(270, now);
-        bandpass.Q.setValueAtTime(1.3, now); // Giảm Q từ 2.6 -> 1.3 êm dịu hơn
+        } else if (targetZone === 'crossing') {
+          // FOG CROSSING: Gió rít cô độc, sương giá buốt
+          bandpass.type = 'bandpass';
+          bandpass.frequency.setValueAtTime(340, now);
+          bandpass.Q.setValueAtTime(1.2, now);
 
-        const forestDrone = this.ctx.createOscillator();
-        const droneGain = this.ctx.createGain();
-        forestDrone.type = 'sine'; // Dùng sine thay vì raw sawtooth để triệt tiêu dội âm
-        forestDrone.frequency.setValueAtTime(58, now);
-        droneGain.gain.setValueAtTime(0.02, now);
+          noiseSource.connect(bandpass);
+          bandpass.connect(lowpass);
+          lowpass.connect(newChannelGain);
+          noiseSource.start(now);
+          nodesToTrack.push(noiseSource, bandpass, lowpass);
 
-        forestDrone.connect(droneGain);
-        droneGain.connect(newChannelGain);
-        forestDrone.start(now);
-        nodesToTrack.push(forestDrone, droneGain);
+        } else {
+          // RỪNG NGOÀI & ĐƯỜNG MÒN (FOREST): Gió rít ma mị, cành cây kẽo kẹt
+          bandpass.type = 'bandpass';
+          bandpass.frequency.setValueAtTime(270, now);
+          bandpass.Q.setValueAtTime(1.2, now);
 
-        noiseSource.connect(bandpass);
-        bandpass.connect(newChannelGain);
-        noiseSource.start(now);
-        nodesToTrack.push(noiseSource, bandpass);
+          const forestDrone = this.ctx.createOscillator();
+          const droneGain = this.ctx.createGain();
+          forestDrone.type = 'sine';
+          forestDrone.frequency.setValueAtTime(58, now);
+          droneGain.gain.setValueAtTime(0.015, now);
+
+          forestDrone.connect(droneGain);
+          droneGain.connect(newChannelGain);
+          forestDrone.start(now);
+          nodesToTrack.push(forestDrone, droneGain);
+
+          noiseSource.connect(bandpass);
+          bandpass.connect(lowpass);
+          lowpass.connect(newChannelGain);
+          noiseSource.start(now);
+          nodesToTrack.push(noiseSource, bandpass, lowpass);
+        }
       }
     }
 
