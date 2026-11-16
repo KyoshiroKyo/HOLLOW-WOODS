@@ -132,6 +132,7 @@ export class GameScene extends Phaser.Scene {
   // C4-132-02: Bộ đệm phím [E] và phản hồi sưởi ấm Lửa Trại
   private lastEKeyPressTime: number = 0;
   private lastWarmthFeedbackTime: number = 0;
+  private lastInDeepFog: boolean | null = null;
 
   // C4-132-05: Cảnh báo Bình Tâm sớm
   private lastEarlyComposureWarningTime: number = 0;
@@ -1240,7 +1241,10 @@ export class GameScene extends Phaser.Scene {
 
     // Cập nhật âm thanh khí quyển & hiệu ứng lọc The Veil (PASS G5)
     this.audioManager.updateVeilFilter(inDeepFog, this.playerState.stats.composure);
-    this.audioManager.setWindIntensity(inDeepFog ? 1.4 : 0.6);
+    if (this.lastInDeepFog !== inDeepFog) {
+      this.lastInDeepFog = inDeepFog;
+      this.audioManager.setWindIntensity(inDeepFog ? 1.4 : 0.6);
+    }
 
     // Xử lý âm thanh bước chân trên từng địa hình
     const body = this.player.body as Phaser.Physics.Arcade.Body;

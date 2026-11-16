@@ -57,11 +57,11 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   private lastKeyActivityTime: Map<string, number> = new Map();
   private hasRecentIMEEvent: boolean = false;
   private lastWindowFocusTime: number = 0;
-  private _requireShiftReleaseAfterExhaust: boolean = false;
   private lastExhaustPopupTime: number = 0;
   private isComposingInTextInput: boolean = false;
   private isTextInputFocused: boolean = false;
   private domListenersAttached: boolean = false;
+  private isPhysicalShiftHeld: boolean = false;
 
   private readonly boundKeyDown = (e: KeyboardEvent) => this.handleDOMKeyDown(e);
   private readonly boundKeyUp = (e: KeyboardEvent) => this.handleDOMKeyUp(e);
@@ -574,6 +574,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   }
 
   public resetAllInputState(): void {
+    this.isPhysicalShiftHeld = false;
     this.activePhysicalCodes.clear();
     this.lastKeyActivityTime.clear();
     this.physicalKeyHeldForOneShot.clear();
@@ -638,8 +639,19 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       this.setPhaserKeyboardsEnabled(true);
     }
 
+    // C4-135-01: Đồng bộ trạng thái phím Shift từ native OS / browser modifier state
+    if (typeof event.getModifierState === 'function') {
+      this.isPhysicalShiftHeld = event.getModifierState('Shift');
+    } else if (typeof event.shiftKey === 'boolean') {
+      this.isPhysicalShiftHeld = event.shiftKey;
+    }
+
     const code = SatyrPlayer.resolvePhysicalCode(event);
     if (!code) return;
+
+    if (code === 'ShiftLeft' || code === 'ShiftRight') {
+      this.isPhysicalShiftHeld = true;
+    }
 
     // Chặn hành vi mặc định của trình duyệt cho các phím điều khiển game khi đang chơi
     // (ngăn cuộn trang Space/Arrows, ngăn nhảy tab khỏi canvas, và ngăn hệ điều hành đệm gõ văn bản/IME)
@@ -667,7 +679,14 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       }
       this.activePhysicalCodes.add(code);
 
-      if (isSyntheticOrIME) {
+      // C4-135-01: Nếu người chơi đang giữ Shift trong khi gõ các phím di chuyển, duy trì trạng thái Shift
+      if (this.isPhysicalShiftHeld) {
+        this.activePhysicalCodes.add('ShiftLeft');
+        this.lastKeyActivityTime.set('ShiftLeft', performance.now());
+      }
+
+      // C4-135-01: Tuyệt đối không lập lịch giải phóng tự động (synthetic watchdog) cho phím Shift
+      if (isSyntheticOrIME && code !== 'ShiftLeft' && code !== 'ShiftRight') {
         this.armSyntheticHoldWatchdog(code, 450);
       }
       return;
@@ -714,6 +733,13 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
+    // C4-135-01: Đồng bộ trạng thái phím Shift từ native OS / browser modifier state
+    if (typeof event.getModifierState === 'function') {
+      this.isPhysicalShiftHeld = event.getModifierState('Shift');
+    } else if (typeof event.shiftKey === 'boolean') {
+      this.isPhysicalShiftHeld = event.shiftKey;
+    }
+
     const code = SatyrPlayer.resolvePhysicalCode(event);
     if (!code) return;
 
@@ -734,7 +760,15 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
+    // C4-135-01: Nếu OS xác nhận phím Shift vẫn đang được giữ vật lý, không giải phóng Shift
+    if ((code === 'ShiftLeft' || code === 'ShiftRight') && this.isPhysicalShiftHeld) {
+      return;
+    }
+
     this.releasePhysicalCode(code);
+    if (code === 'ShiftLeft' || code === 'ShiftRight') {
+      this.isPhysicalShiftHeld = false;
+    }
   }
 
   public consumeAction(action: OneShotAction): boolean {
@@ -865,10 +899,21 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
 
       // Xử lý riêng Shift: trong Windows phím Shift không phát sinh sự kiện keydown lặp lại (auto-repeat).
       // Shift được giải phóng chuẩn xác thông qua DOM keyup hoặc khi cả 2 hệ thống đều xác nhận nhả phím.
+      // Tách biệt cơ chế giám sát phím Shift (do Windows không auto-repeat Shift khi giữ)
       if (code === 'ShiftLeft' || code === 'ShiftRight') {
-        if (!phaserKeyIsDown && timeSinceLastActivity > 1200) {
-          this.releasePhysicalCode(code);
+        const isShiftHeld =
+          this.isPhysicalShiftHeld ||
+          phaserKeyIsDown ||
+          Boolean(this.keyShift && this.keyShift.isDown) ||
+          Boolean(this.cursors && this.cursors.shift && this.cursors.shift.isDown);
+
+        if (isShiftHeld) {
+          this.lastKeyActivityTime.set(code, nowPerf);
+          continue;
         }
+
+        // Chỉ giải phóng khi cả OS modifier, Phaser và DOM keyup đều xác nhận Shift đã thực sự nhả
+        this.releasePhysicalCode(code);
         continue;
       }
 
@@ -942,8 +987,9 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     if (up) moveY -= 1;
     if (down) moveY += 1;
 
-    // C4-13-18 & C4-132-01: Quản lý thể lực chạy nhanh & chu trình Kiệt Sức (Exhaustion) chuẩn hóa
+    // C4-13-18 & C4-132-01 & C4-135-01: Quản lý thể lực chạy nhanh & chu trình Kiệt Sức (Exhaustion) chuẩn hóa
     const shiftDown =
+      this.isPhysicalShiftHeld ||
       this.isPhysicalCodeDown('ShiftLeft') ||
       this.isPhysicalCodeDown('ShiftRight') ||
       Boolean(this.keyShift && this.keyShift.isDown) ||
@@ -951,15 +997,9 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     const isMoving = moveX !== 0 || moveY !== 0;
     const wantsToSprint = shiftDown && isMoving;
 
-    // C4-132-01: Khi người chơi nhả phím Shift, giải phóng cờ bắt buộc nhả Shift
-    if (!shiftDown) {
-      this._requireShiftReleaseAfterExhaust = false;
-    }
-
     if (this.stats.stamina <= 0) {
       if (!this._isStaminaExhausted) {
         this._isStaminaExhausted = true;
-        this._requireShiftReleaseAfterExhaust = true;
         const now = Date.now();
         if (now - this.lastExhaustPopupTime >= 4000) {
           this.lastExhaustPopupTime = now;
@@ -970,8 +1010,8 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
         }
       }
     } else if (this._isStaminaExhausted && this.stats.stamina >= 25) {
-      // C4-132-01: Chỉ mở khóa khi đạt ĐỒNG THỜI: (stamina >= 30) VÀ (!this._requireShiftReleaseAfterExhaust)
-      if (this.stats.stamina >= 30 && !this._requireShiftReleaseAfterExhaust) {
+      // C4-132-01 & C4-135-01: Khi thể lực hồi phục đủ (>= 30/100), tự động mở khóa kiệt sức để người chơi duy trì giữ Shift chạy tiếp
+      if (this.stats.stamina >= 30) {
         this._isStaminaExhausted = false;
       }
     }

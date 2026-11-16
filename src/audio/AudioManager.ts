@@ -34,6 +34,7 @@ export class AudioManager {
   private masterLimiter: DynamicsCompressorNode | null = null;
   private veilFilter: BiquadFilterNode | null = null;
   private synthFilter: BiquadFilterNode | null = null; // C4-133: Lowpass 5200Hz cho Synth/Noise loại bỏ rít chói tai
+  private ambienceFilter: BiquadFilterNode | null = null; // C4-135: Lowpass 2600Hz cho Ambience khử triệt để mọi tiếng rít cao tần
 
   // Quản lý kênh SFX đồng thời (giới hạn tối đa 4 kênh trùng lặp để chống dội âm / méo tiếng)
   private activeSFXChannels: Map<string, { source: AudioBufferSourceNode; gain: GainNode }[]> = new Map();
@@ -53,6 +54,7 @@ export class AudioManager {
   // Tránh spam lập lịch AudioParam gây xung đột / bùng nổ bộ lọc số IIR
   private lastVeilTargetFreq: number = 18000;
   private lastWindTargetGain: number = -1;
+  private lastWindIntensity: number = -1;
 
   // Nhịp tim hoảng loạn (Heartbeat Loop)
   private heartbeatTimer: number | null = null;
@@ -107,11 +109,11 @@ export class AudioManager {
         this.masterLimiter.attack.setValueAtTime(0.003, this.ctx.currentTime);
         this.masterLimiter.release.setValueAtTime(0.18, this.ctx.currentTime);
 
-        // 3. The Veil Low-Pass Filter (Mặc định 18000Hz: thông thoáng)
+        // 3. The Veil Low-Pass Filter (Mặc định 18000Hz: thông thoáng, Q = 0.707 Butterworth chống đỉnh cộng hưởng chói tai)
         this.veilFilter = this.ctx.createBiquadFilter();
         this.veilFilter.type = 'lowpass';
         this.veilFilter.frequency.setValueAtTime(18000, this.ctx.currentTime);
-        this.veilFilter.Q.setValueAtTime(1.0, this.ctx.currentTime);
+        this.veilFilter.Q.setValueAtTime(0.707, this.ctx.currentTime);
 
         // 4. Synth Low-Pass Filter (Cắt 5200Hz cho các nguồn âm tổng hợp/nhiễu trắng, triệt tiêu 100% tiếng rít chói tai)
         this.synthFilter = this.ctx.createBiquadFilter();
@@ -119,10 +121,18 @@ export class AudioManager {
         this.synthFilter.frequency.setValueAtTime(5200, this.ctx.currentTime);
         this.synthFilter.Q.setValueAtTime(0.707, this.ctx.currentTime);
 
+        // 5. Ambience Low-Pass Filter (C4-135: Cắt 2600Hz cho nhạc nền/tiếng gió/khí quyển, loại bỏ sạch dải cao rít kim loại)
+        this.ambienceFilter = this.ctx.createBiquadFilter();
+        this.ambienceFilter.type = 'lowpass';
+        this.ambienceFilter.frequency.setValueAtTime(2600, this.ctx.currentTime);
+        this.ambienceFilter.Q.setValueAtTime(0.707, this.ctx.currentTime);
+
         // Đồ thị âm thanh chuẩn hóa:
         // Procedural Synth -> synthFilter -> veilFilter -> masterGain -> masterLimiter -> ctx.destination
+        // Ambience Channels -> ambienceFilter -> veilFilter -> masterGain -> masterLimiter -> ctx.destination
         // Direct Sampled SFX -> veilFilter -> masterGain -> masterLimiter -> ctx.destination
         this.synthFilter.connect(this.veilFilter);
+        this.ambienceFilter.connect(this.veilFilter);
         this.veilFilter.connect(this.masterGain);
         this.masterGain.connect(this.masterLimiter);
         this.masterLimiter.connect(this.ctx.destination);
@@ -671,7 +681,8 @@ export class AudioManager {
     const newChannelGain = this.ctx.createGain();
     newChannelGain.gain.setValueAtTime(0.0001, now);
     newChannelGain.gain.linearRampToValueAtTime(this.ambienceVolume, now + fadeDurationSec);
-    newChannelGain.connect(this.veilFilter!);
+    const ambienceDest = this.ambienceFilter || this.veilFilter!;
+    newChannelGain.connect(ambienceDest);
     this.windGain = newChannelGain; // Lưu lại để setWindIntensity có thể tinh chỉnh
 
     const nodesToTrack: (AudioNode | number)[] = [newChannelGain];
@@ -802,6 +813,9 @@ export class AudioManager {
 
   public setWindIntensity(intensity: number): void {
     if (!this.ctx || !this.windGain) return;
+    if (Math.abs(intensity - this.lastWindIntensity) < 0.05) return;
+    this.lastWindIntensity = intensity;
+
     const targetGain = Math.max(0.02, Math.min(0.25, intensity * 0.12 * this.ambienceVolume));
 
     // Chống spam gọi AudioParam làm nghẽn CPU âm thanh
