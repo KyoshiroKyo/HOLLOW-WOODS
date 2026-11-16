@@ -185,12 +185,13 @@ export class EndingSystem {
     g.fillCircle(riftX - 35, riftY, 8);
     g.fillCircle(riftX + 35, riftY, 8);
 
-    // Lời thoại Satyr thảng thốt chuẩn HD 1280×720 tại Y = 580 (Zoom 1.0 cố định)
+    // Lời thoại Lữ Hành thảng thốt chuẩn HD 1280×720 tại Y = 580 (Zoom 1.0 cố định)
+    // Satyr: “Ánh đèn pha ô tô... quốc lộ ven rừng?! Thế giới của mình... con đường về nhà có thật!”
     const riftDialogue = HDTextHelper.createText(
       target,
       640,
       580,
-      'Satyr: “Ánh đèn pha ô tô... quốc lộ ven rừng?! Thế giới của mình... con đường về nhà có thật!”', 
+      'Lữ Hành: “Ánh đèn pha ô tô... quốc lộ ven rừng?! Thế giới của mình... con đường về nhà có thật!”', 
       {
         fontSize: '18px',
         fontStyle: 'italic',
@@ -245,8 +246,9 @@ export class EndingSystem {
     const lines = [
       { text: 'Dưới chân bệ chuông, một cuốn sổ da cũ rơi ra từ khe đá...', delay: 600, size: '18px', color: '#95a5a6' },
       { text: 'Trang giấy ố vàng phác họa chân dung một kẻ lữ khách từ hàng trăm năm trước...', delay: 2800, size: '18px', color: '#bdc3c7' },
-      { text: 'Gương mặt ấy... đôi sừng ấy... giống hệt Satyr từng nét vẽ.', delay: 5200, size: '20px', color: '#e74c3c' },
+      { text: 'Gương mặt ấy... chiếc áo choàng rêu phong và ngọn đèn cổ... giống hệt The Mossbound Wayfarer từng nét vẽ.', delay: 5200, size: '20px', color: '#e74c3c' },
       { text: '“Khu rừng không chỉ đưa ta đến đây. Có lẽ nó đã chờ ta từ rất lâu.”', delay: 7800, size: '22px', color: '#f39c12', italic: true },
+      // HOLLOW WOODS V1.1
       { text: 'HOLLOW WOODS V1.3', delay: 10500, size: '36px', color: '#ffffff', bold: true },
       { text: 'TẬP 1: THE FIRST TOLL (TIẾNG CHUÔNG ĐẦU TIÊN) — HOÀN THÀNH', delay: 12200, size: '18px', color: '#2ecc71', bold: true },
       { text: 'THE FOREST REMEMBERS. TO BE CONTINUED...', delay: 13900, size: '16px', color: '#7f8c8d' }

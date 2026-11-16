@@ -117,10 +117,16 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   private lastPoulticeTime: number = 0;
   private lastOilTime: number = 0;
 
-  // C4-13-18: Hiệu ứng viền tối/đỏ hoảng loạn khi cạn kiệt Bình Tâm
+  // C4-13-18 & C4-132-07: Hiệu ứng viền tối/đỏ hoảng loạn khi cạn kiệt Bình Tâm
   private panicVignetteGraphics!: Phaser.GameObjects.Graphics;
   private isPanicVignetteActive: boolean = false;
   private lastPanicWarningTime: number = 0;
+  private lastDarknessWarningTime: number = 0;
+
+  // C4-132-07: Lớp phủ hướng dẫn khi iframe mất Focus
+  private focusOverlayContainer?: Phaser.GameObjects.Container;
+  private boundWindowBlur?: () => void;
+  private boundWindowFocus?: () => void;
 
   constructor() {
     super({ key: 'UIScene' });
@@ -323,12 +329,58 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       if (this.input && this.input.keyboard) {
         this.input.keyboard.removeAllListeners();
       }
+      if (typeof window !== 'undefined') {
+        if (this.boundWindowBlur) window.removeEventListener('blur', this.boundWindowBlur);
+        if (this.boundWindowFocus) window.removeEventListener('focus', this.boundWindowFocus);
+      }
+      if (this.focusOverlayContainer) this.focusOverlayContainer.destroy();
       if (this.craftingModal) this.craftingModal.destroy();
       if (this.journalModal) this.journalModal.destroy();
       if (this.pauseModal) this.pauseModal.destroy();
       if (this.gameOverModal) this.gameOverModal.destroy();
       if (this.pooledPopupText) this.pooledPopupText.destroy();
       if (this.panicVignetteGraphics) this.panicVignetteGraphics.clear();
+    });
+
+    // C4-132-07: Lớp phủ chỉ dẫn bán trong suốt khi cửa sổ/iframe mất tiêu điểm (window.blur)
+    this.focusOverlayContainer = this.add.container(640, 50).setDepth(99999).setVisible(false);
+    const focusBg = this.add.graphics();
+    focusBg.fillStyle(0x0a0f18, 0.88);
+    focusBg.fillRoundedRect(-230, -18, 460, 36, 6);
+    focusBg.lineStyle(1.5, 0xf39c12, 0.9);
+    focusBg.strokeRoundedRect(-230, -18, 460, 36, 6);
+
+    const focusText = HDTextHelper.createText(this, 0, 0, '🖱️ Nhấp chuột vào màn hình để tiếp tục điều khiển', {
+      fontSize: '13px',
+      fontStyle: 'bold',
+      color: '#f1c40f',
+      stroke: '#000000',
+      strokeThickness: 2
+    }).setOrigin(0.5, 0.5);
+
+    this.focusOverlayContainer.add([focusBg, focusText]);
+
+    this.boundWindowBlur = () => {
+      if (this.focusOverlayContainer) {
+        this.focusOverlayContainer.setVisible(true);
+      }
+    };
+
+    this.boundWindowFocus = () => {
+      if (this.focusOverlayContainer) {
+        this.focusOverlayContainer.setVisible(false);
+      }
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('blur', this.boundWindowBlur);
+      window.addEventListener('focus', this.boundWindowFocus);
+    }
+
+    this.input.on('pointerdown', () => {
+      if (this.focusOverlayContainer && this.focusOverlayContainer.visible) {
+        this.focusOverlayContainer.setVisible(false);
+      }
     });
 
     // Cập nhật ban đầu
@@ -656,8 +708,20 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   private updatePanicVignette(time: number = 0): void {
     if (!this.panicVignetteGraphics || !this.playerState) return;
 
-    const composure = this.playerState.stats.composure;
-    if (composure >= 20) {
+    const stats = this.playerState.stats;
+    const composure = stats.composure;
+    const isLanternOn = stats.isLanternOn;
+
+    // C4-132-07: Cảnh báo khi Bình Tâm giảm xuống dưới 40/100 trong bóng tối (đèn tắt)
+    if (composure < 40 && !isLanternOn && composure > 0) {
+      const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+      if (now - this.lastDarknessWarningTime > 8000) {
+        this.lastDarknessWarningTime = now;
+        this.showPopupMessage('Bóng tối đang bào mòn tâm trí! Nhấn [F] để thắp sáng Đèn Lồng!');
+      }
+    }
+
+    if (composure >= 20 && (composure >= 40 || isLanternOn)) {
       if (this.isPanicVignetteActive) {
         this.panicVignetteGraphics.clear();
         this.isPanicVignetteActive = false;
@@ -670,15 +734,15 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     const isDepleted = composure <= 0;
     const freq = isDepleted ? 0.007 : 0.0035;
-    const baseAlpha = isDepleted ? 0.38 : 0.16;
-    const pulse = baseAlpha + (isDepleted ? 0.20 : 0.10) * Math.sin(time * freq);
+    const baseAlpha = isDepleted ? 0.38 : (composure < 20 ? 0.16 : 0.10);
+    const pulse = baseAlpha + (isDepleted ? 0.20 : 0.08) * Math.sin(time * freq);
 
     const w = 1280;
     const h = 720;
-    const thick = isDepleted ? 52 : 30;
+    const thick = isDepleted ? 52 : (composure < 20 ? 30 : 18);
 
-    // Viền đen/tím/đỏ thẫm rung nhấp nháy ở 4 góc màn hình
-    const color = isDepleted ? 0x3d0b16 : 0x24112e;
+    // Viền đen/tím/đỏ thẫm co giãn nhẹ ở 4 góc màn hình
+    const color = isDepleted ? 0x3d0b16 : (composure < 20 ? 0x24112e : 0x160b24);
     this.panicVignetteGraphics.fillStyle(color, Math.max(0.06, pulse));
     this.panicVignetteGraphics.fillRect(0, 0, w, thick);
     this.panicVignetteGraphics.fillRect(0, h - thick, w, thick);
@@ -690,7 +754,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
       if (now - this.lastPanicWarningTime > 8000) {
         this.lastPanicWarningTime = now;
-        this.showPopupMessage('⚠️ Hoảng loạn (Bình Tâm 0/100)! Hãy bật Đèn Lồng [F] hoặc tìm ánh lửa!');
+        // Hoảng loạn (Bình Tâm 0/100)! Hãy bật Đèn Lồng [F] hoặc tìm ánh lửa!
+        this.showPopupMessage('HOẢNG LOẠN! Hãy bật Đèn Lồng [F] hoặc tìm ánh lửa!');
       }
     }
   }
@@ -1198,17 +1263,19 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.dialoguePortraitSprite = this.add.image(-halfW + 94, 0, 'satyr_portrait');
     this.dialoguePortraitSprite.setDisplaySize(124, 124);
 
-    // Tên người nói chuẩn HD Tiếng Việt (Cỡ 24px, dịch phải 18px & padding 12px chống cắt lẹm nét chữ C4-13-14)
+    // Tên người nói chuẩn HD Tiếng Việt (Cỡ 24px, dịch phải 18px & padding 14px chống cắt lẹm nét chữ C4-13-14 / C4-132-07)
+    // padding: { left: 12, right: 12, top: 6, bottom: 6 }
     this.dialogueSpeakerText = HDTextHelper.createText(this, -halfW + 202, -halfH + 20, '', {
       fontSize: '24px',
       fontStyle: 'bold',
       color: '#f39c12',
       stroke: '#000000',
       strokeThickness: 3,
-      padding: { left: 12, right: 12, top: 6, bottom: 6 }
+      padding: { left: 14, right: 14, top: 8, bottom: 8 }
     });
 
-    // Nội dung câu thoại chuẩn HD Tiếng Việt (Cỡ đúng chuẩn 20px, dịch phải 18px, padding 12px, wrap 810 px)
+    // Nội dung câu thoại chuẩn HD Tiếng Việt (Cỡ đúng chuẩn 20px, dịch phải 18px, padding 14px, wrap 810 px)
+    // padding: { left: 12, right: 12, top: 6, bottom: 6 }
     this.dialogueContentText = HDTextHelper.createText(this, -halfW + 202, -halfH + 60, '', {
       fontSize: '20px',
       color: '#f8f9fa',
@@ -1216,7 +1283,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       lineSpacing: 8,
       stroke: '#000000',
       strokeThickness: 1,
-      padding: { left: 12, right: 12, top: 6, bottom: 6 }
+      padding: { left: 14, right: 14, top: 8, bottom: 8 }
     });
 
     // Lời nhắc tiếp tục chuẩn HD Tiếng Việt

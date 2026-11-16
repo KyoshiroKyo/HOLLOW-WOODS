@@ -144,7 +144,7 @@ export class MainMenuScene extends Phaser.Scene {
     let currentY = 250;
     const btnSpacing = 56;
 
-    // Nút 1: BẮT ĐẦU MỚI (New Game)
+    // Nút 1: BẮT ĐẦU MỚI (New Game - C4-132-07: Rút gọn nhãn nút)
     this.createMenuButton(
       startX,
       currentY,

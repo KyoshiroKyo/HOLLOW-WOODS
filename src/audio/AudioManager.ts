@@ -174,6 +174,46 @@ export class AudioManager {
     return this.isMuted;
   }
 
+  // C4-132-07: Điều chỉnh âm lượng Master, BGM và SFX
+  public getMasterVolume(): number {
+    return this.masterVolume;
+  }
+
+  public setMasterVolume(val: number): void {
+    this.resumeAudio();
+    this.masterVolume = Math.max(0, Math.min(1, Math.round(val * 100) / 100));
+    if (this.masterGain && this.ctx && !this.isMuted) {
+      const now = this.ctx.currentTime;
+      this.masterGain.gain.cancelScheduledValues(now);
+      this.masterGain.gain.setValueAtTime(this.masterGain.gain.value, now);
+      this.masterGain.gain.linearRampToValueAtTime(this.masterVolume, now + 0.05);
+    }
+  }
+
+  public getMusicVolume(): number {
+    return this.ambienceVolume;
+  }
+
+  public setMusicVolume(val: number): void {
+    this.resumeAudio();
+    this.ambienceVolume = Math.max(0, Math.min(1, Math.round(val * 100) / 100));
+    if (this.activeAmbience && this.ctx) {
+      const now = this.ctx.currentTime;
+      this.activeAmbience.gainNode.gain.cancelScheduledValues(now);
+      this.activeAmbience.gainNode.gain.setValueAtTime(this.activeAmbience.gainNode.gain.value, now);
+      this.activeAmbience.gainNode.gain.linearRampToValueAtTime(this.ambienceVolume, now + 0.05);
+    }
+  }
+
+  public getSfxVolume(): number {
+    return this.sfxVolume;
+  }
+
+  public setSfxVolume(val: number): void {
+    this.resumeAudio();
+    this.sfxVolume = Math.max(0, Math.min(1, Math.round(val * 100) / 100));
+  }
+
   /**
    * Kiểm tra thời gian chờ để không dội âm khi spam phím
    */
