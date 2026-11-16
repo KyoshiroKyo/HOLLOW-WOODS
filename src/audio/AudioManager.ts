@@ -1,15 +1,19 @@
 /**
- * HOLLOW WOODS V1.2 – HỆ THỐNG ÂM THANH KHÍ QUYỂN & HIỆU ỨNG GAMEPLAY
- * (PROCEDURAL WEB AUDIO SYNTHESIZER & AMBIENCE ENGINE)
+ * HOLLOW WOODS V1.3.2 – HỆ THỐNG ÂM THANH KHÍ QUYỂN & HIỆU ỨNG GAMEPLAY
+ * (HYBRID PROCEDURAL & SAMPLED WEB AUDIO ENGINE)
  *
  * Tính năng chính:
- * 1. Tổng hợp thủ tục hoàn toàn (Procedural Synthesis) qua Web Audio API thuần (Zero 404, Zero external asset).
- * 2. Tuân thủ 100% Chính sách Autoplay của trình duyệt (Browser Autoplay Policy): mở khóa khi có thao tác người dùng.
- * 3. Ambience đa tầng theo vùng (Village, Forest, Mire, Crossing) với cơ chế Crossfade êm ái, chống phát lặp / chồng âm.
- * 4. Hệ thống bước chân 5 loại bề mặt (Grass, Dirt, Stone, Wood, Mud).
- * 5. Bộ lọc Màn Sương u ám (The Veil Low-Pass Filter) gắn kết chặt chẽ với chỉ số Bình tâm (Composure).
- * 6. Cơ chế thời gian chờ (Cooldown / Debounce) cho các âm thanh một lần (One-shot SFX) chống dội âm / méo tiếng.
- * 7. Bật / Tắt âm thanh êm ái (Smooth Gain Ramp), loại bỏ tiếng nổ lách tách (click/pop artifact).
+ * 1. Kiến trúc Hybrid: Tự động nạp các âm thanh mẫu chất lượng cao (Sampled SFX) từ nguồn Horror & Pixel SFX,
+ *    đồng thời duy trì bộ tổng hợp thủ tục (Procedural Synth) làm lớp bảo vệ dự phòng không độ trễ (Zero 404).
+ * 2. Bộ nén đỉnh âm lượng Master (Master Limiter / DynamicsCompressorNode): Triệt tiêu hoàn toàn hiện tượng
+ *    vỡ âm kỹ thuật số (digital clipping) hay ré âm chói tai khi nhiều nguồn âm phát cùng lúc.
+ * 3. Chống lỗi bùng nổ tham số âm học (AudioParam Glitch Protection): Kiểm tra ngưỡng thay đổi trước khi
+ *    lập lịch điều biến tần số lọc The Veil và cường độ gió, chấm dứt tiếng rít giật bất ngờ khi di chuyển trong sương.
+ * 4. Tuân thủ 100% Chính sách Autoplay của trình duyệt: mở khóa êm ái khi có thao tác người dùng.
+ * 5. Ambience đa tầng theo vùng (Village, Forest, Mire, Crossing) với cơ chế Crossfade êm dịu, không chồng lặp.
+ * 6. Hệ thống bước chân 5 loại bề mặt (Grass, Dirt, Stone, Wood, Mud).
+ * 7. Cơ chế thời gian chờ (Cooldown / Debounce) cho các One-shot SFX chống dội âm / méo tiếng.
+ * 8. Bật / Tắt âm thanh êm ái (Smooth Gain Ramp), loại bỏ hoàn toàn tiếng nổ lách tách (click/pop artifact).
  */
 
 export type TerrainType = 'grass' | 'dirt' | 'stone' | 'wood' | 'mud';
@@ -25,9 +29,14 @@ export class AudioManager {
   private static instance: AudioManager | null = null;
   private ctx: AudioContext | null = null;
 
-  // Master Gain & The Veil BiquadFilter (Low-pass filter bóp nghẹt âm thanh trong sương)
+  // Master Gain, Master Limiter & The Veil BiquadFilter (Low-pass filter bóp nghẹt âm thanh trong sương)
   private masterGain: GainNode | null = null;
+  private masterLimiter: DynamicsCompressorNode | null = null;
   private veilFilter: BiquadFilterNode | null = null;
+
+  // Bộ nhớ đệm tệp âm thanh mẫu (Sampled Audio Cache)
+  private audioBuffers: Map<string, AudioBuffer> = new Map();
+  private loadingBuffers: Set<string> = new Set();
 
   // Quản lý Ambience đa tầng chống lặp
   private activeAmbience: AmbienceChannel | null = null;
@@ -36,6 +45,10 @@ export class AudioManager {
   private noiseBuffer: AudioBuffer | null = null;
   private pendingAmbienceZone: AmbienceZone | null = null;
   private windGain: GainNode | null = null; // Tương thích ngược với setWindIntensity
+
+  // Tránh spam lập lịch AudioParam gây xung đột / bùng nổ bộ lọc số IIR
+  private lastVeilTargetFreq: number = 18000;
+  private lastWindTargetGain: number = -1;
 
   // Nhịp tim hoảng loạn (Heartbeat Loop)
   private heartbeatTimer: number | null = null;
@@ -81,18 +94,113 @@ export class AudioManager {
         this.masterGain = this.ctx.createGain();
         this.masterGain.gain.setValueAtTime(this.masterVolume, this.ctx.currentTime);
 
-        // 2. The Veil Low-Pass Filter (Mặc định 18000Hz: thông thoáng)
+        // 2. Master Limiter / DynamicsCompressorNode (Triệt tiêu méo tiếng số và chống dội âm chói gắt)
+        this.masterLimiter = this.ctx.createDynamicsCompressor();
+        this.masterLimiter.threshold.setValueAtTime(-10, this.ctx.currentTime);
+        this.masterLimiter.knee.setValueAtTime(10, this.ctx.currentTime);
+        this.masterLimiter.ratio.setValueAtTime(12, this.ctx.currentTime);
+        this.masterLimiter.attack.setValueAtTime(0.003, this.ctx.currentTime);
+        this.masterLimiter.release.setValueAtTime(0.18, this.ctx.currentTime);
+
+        // 3. The Veil Low-Pass Filter (Mặc định 18000Hz: thông thoáng)
         this.veilFilter = this.ctx.createBiquadFilter();
         this.veilFilter.type = 'lowpass';
         this.veilFilter.frequency.setValueAtTime(18000, this.ctx.currentTime);
         this.veilFilter.Q.setValueAtTime(1.0, this.ctx.currentTime);
 
-        // Đồ thị âm thanh: Sources -> veilFilter -> masterGain -> destination
-        this.veilFilter.connect(this.masterGain);
+        // Đồ thị âm thanh: Sources -> veilFilter -> masterLimiter -> masterGain -> destination
+        this.veilFilter.connect(this.masterLimiter);
+        this.masterLimiter.connect(this.masterGain);
         this.masterGain.connect(this.ctx.destination);
+
+        // Nạp trước các tệp âm thanh mẫu
+        this.preloadSampledAudio();
       }
     } catch (e) {
       console.warn('[AudioManager] Web Audio API không được hỗ trợ hoặc bị hạn chế:', e);
+    }
+  }
+
+  /**
+   * Nạp bất đồng bộ các tệp âm thanh nguồn chất lượng cao (WAV / MP3)
+   */
+  private preloadSampledAudio(): void {
+    if (!this.ctx || typeof window === 'undefined') return;
+
+    const audioManifest: Record<string, string> = {
+      listener_alert: 'assets/audio/listener_alert.mp3',
+      bronze_bell: 'assets/audio/bell_low.mp3',
+      attack: 'assets/audio/attack_swing.mp3',
+      interact: 'assets/audio/interact.wav',
+      craft: 'assets/audio/craft_success.wav',
+      lantern: 'assets/audio/lantern_toggle.mp3',
+      hurt: 'assets/audio/hurt.wav',
+      death: 'assets/audio/player_death.wav',
+      bush_rustle: 'assets/audio/bush_rustle.mp3',
+      quest_update: 'assets/audio/quest_update.wav',
+      gather: 'assets/audio/resource_gather.mp3',
+      runestone_err: 'assets/audio/rune_error.mp3',
+      runestone: 'assets/audio/rune_resonance.mp3',
+      footstep_grass: 'assets/audio/footstep_grass.mp3'
+    };
+
+    for (const [key, url] of Object.entries(audioManifest)) {
+      if (this.audioBuffers.has(key) || this.loadingBuffers.has(key)) continue;
+      this.loadingBuffers.add(key);
+
+      fetch(url)
+        .then(res => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.arrayBuffer();
+        })
+        .then(arrayBuffer => {
+          if (!this.ctx) return;
+          return this.ctx.decodeAudioData(arrayBuffer);
+        })
+        .then(decodedBuffer => {
+          if (decodedBuffer) {
+            this.audioBuffers.set(key, decodedBuffer);
+          }
+        })
+        .catch(() => {
+          // Tự động chuyển tiếp sang tổng hợp thủ tục an toàn nếu mạng trễ hoặc lỗi nạp
+        })
+        .finally(() => {
+          this.loadingBuffers.delete(key);
+        });
+    }
+  }
+
+  /**
+   * Phát tệp âm thanh mẫu đã nạp trong bộ đệm
+   */
+  private playSampled(
+    key: string,
+    volume: number = 1.0,
+    playbackRate: number = 1.0,
+    routeToVeil: boolean = true
+  ): boolean {
+    if (!this.ctx || this.isMuted) return false;
+    const buffer = this.audioBuffers.get(key);
+    if (!buffer) return false;
+
+    try {
+      this.resumeAudio();
+      const source = this.ctx.createBufferSource();
+      source.buffer = buffer;
+      source.playbackRate.setValueAtTime(playbackRate, this.ctx.currentTime);
+
+      const gain = this.ctx.createGain();
+      gain.gain.setValueAtTime(volume * this.sfxVolume, this.ctx.currentTime);
+
+      source.connect(gain);
+      const targetNode = routeToVeil && this.veilFilter ? this.veilFilter : (this.masterLimiter || this.masterGain!);
+      gain.connect(targetNode);
+
+      source.start(0);
+      return true;
+    } catch {
+      return false;
     }
   }
 
@@ -107,6 +215,7 @@ export class AudioManager {
       this.resumeAudio();
       if (this.ctx && this.ctx.state === 'running') {
         this.isUnlocked = true;
+        this.preloadSampledAudio();
         for (const ev of events) {
           window.removeEventListener(ev, unlockHandler);
         }
@@ -133,6 +242,7 @@ export class AudioManager {
     if (this.ctx && this.ctx.state === 'suspended') {
       this.ctx.resume().then(() => {
         this.isUnlocked = true;
+        this.preloadSampledAudio();
         if (this.pendingAmbienceZone) {
           const zone = this.pendingAmbienceZone;
           this.pendingAmbienceZone = null;
@@ -245,7 +355,14 @@ export class AudioManager {
       targetFreq = Math.min(targetFreq, 500 + composure * 18);
     }
 
-    this.veilFilter.frequency.setTargetAtTime(targetFreq, this.ctx.currentTime, 0.35);
+    // Chống bùng nổ AudioParam (Filter Glitch): chỉ lập lịch khi tần số thay đổi đáng kể (>= 15Hz)
+    if (Math.abs(targetFreq - this.lastVeilTargetFreq) >= 15) {
+      this.lastVeilTargetFreq = targetFreq;
+      const now = this.ctx.currentTime;
+      this.veilFilter.frequency.cancelScheduledValues(now);
+      this.veilFilter.frequency.setValueAtTime(this.veilFilter.frequency.value, now);
+      this.veilFilter.frequency.linearRampToValueAtTime(targetFreq, now + 0.25);
+    }
   }
 
   // =========================================================================
@@ -256,6 +373,12 @@ export class AudioManager {
     if (!this.ctx || this.isMuted || !this.veilFilter) return;
     if (!this.checkCooldown('footstep', 130)) return;
     this.resumeAudio();
+
+    if (terrain === 'grass') {
+      if (this.playSampled('footstep_grass', 0.5, 0.95 + Math.random() * 0.1, true)) {
+        return;
+      }
+    }
 
     const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
@@ -459,7 +582,7 @@ export class AudioManager {
         // LÀNG BELLHOLLOW: Gió êm đềm, tiếng vo ve ấm áp của mái nhà và ánh lửa
         bandpass.type = 'bandpass';
         bandpass.frequency.setValueAtTime(450, now);
-        bandpass.Q.setValueAtTime(1.8, now);
+        bandpass.Q.setValueAtTime(1.4, now); // Giảm Q từ 1.8 -> 1.4 chống rít
 
         const villageDrone = this.ctx.createOscillator();
         const droneGain = this.ctx.createGain();
@@ -481,13 +604,13 @@ export class AudioManager {
         // ĐẦM LẦY TĨNH LẶNG: Âm trầm đục, gió rít ngột ngạt dưới lòng bùn
         bandpass.type = 'lowpass';
         bandpass.frequency.setValueAtTime(220, now);
-        bandpass.Q.setValueAtTime(3.2, now);
+        bandpass.Q.setValueAtTime(1.5, now); // Giảm Q từ 3.2 -> 1.5 loại bỏ hoàn toàn tiếng ré rít đầm lầy
 
         const mireDrone = this.ctx.createOscillator();
         const droneGain = this.ctx.createGain();
         mireDrone.type = 'sine';
         mireDrone.frequency.setValueAtTime(48, now); // Tiếng ục ục trầm 48Hz
-        droneGain.gain.setValueAtTime(0.06, now);
+        droneGain.gain.setValueAtTime(0.05, now);
 
         mireDrone.connect(droneGain);
         droneGain.connect(newChannelGain);
@@ -503,7 +626,7 @@ export class AudioManager {
         // FOG CROSSING: Gió rít cô độc, sương giá buốt
         bandpass.type = 'bandpass';
         bandpass.frequency.setValueAtTime(340, now);
-        bandpass.Q.setValueAtTime(3.5, now);
+        bandpass.Q.setValueAtTime(1.5, now); // Giảm Q từ 3.5 -> 1.5 loại bỏ hiện tượng feedback rít tai
 
         noiseSource.connect(bandpass);
         bandpass.connect(newChannelGain);
@@ -514,13 +637,13 @@ export class AudioManager {
         // RỪNG NGOÀI & ĐƯỜNG MÒN (FOREST): Gió rít ma mị, cành cây kẽo kẹt
         bandpass.type = 'bandpass';
         bandpass.frequency.setValueAtTime(270, now);
-        bandpass.Q.setValueAtTime(2.6, now);
+        bandpass.Q.setValueAtTime(1.3, now); // Giảm Q từ 2.6 -> 1.3 êm dịu hơn
 
         const forestDrone = this.ctx.createOscillator();
         const droneGain = this.ctx.createGain();
-        forestDrone.type = 'sawtooth';
-        forestDrone.frequency.setValueAtTime(58, now); // Dissonance nhẹ
-        droneGain.gain.setValueAtTime(0.018, now);
+        forestDrone.type = 'sine'; // Dùng sine thay vì raw sawtooth để triệt tiêu dội âm
+        forestDrone.frequency.setValueAtTime(58, now);
+        droneGain.gain.setValueAtTime(0.02, now);
 
         forestDrone.connect(droneGain);
         droneGain.connect(newChannelGain);
@@ -551,7 +674,15 @@ export class AudioManager {
   public setWindIntensity(intensity: number): void {
     if (!this.ctx || !this.windGain) return;
     const targetGain = Math.max(0.02, Math.min(0.25, intensity * 0.12 * this.ambienceVolume));
-    this.windGain.gain.setTargetAtTime(targetGain, this.ctx.currentTime, 0.5);
+
+    // Chống spam gọi AudioParam làm nghẽn CPU âm thanh
+    if (Math.abs(targetGain - this.lastWindTargetGain) >= 0.01) {
+      this.lastWindTargetGain = targetGain;
+      const now = this.ctx.currentTime;
+      this.windGain.gain.cancelScheduledValues(now);
+      this.windGain.gain.setValueAtTime(this.windGain.gain.value, now);
+      this.windGain.gain.linearRampToValueAtTime(targetGain, now + 0.3);
+    }
   }
 
   public stopAmbience(immediate: boolean = false): void {
@@ -650,6 +781,10 @@ export class AudioManager {
     if (!this.checkCooldown('interact', 160)) return;
     this.resumeAudio();
 
+    if (this.playSampled('interact', 0.7, 1.0, true)) {
+      return;
+    }
+
     const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
@@ -676,6 +811,10 @@ export class AudioManager {
     if (!this.checkCooldown('gather', 180)) return;
     this.resumeAudio();
 
+    if (this.playSampled('gather', 0.75, 1.0, true)) {
+      return;
+    }
+
     const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
@@ -697,7 +836,7 @@ export class AudioManager {
       osc.frequency.exponentialRampToValueAtTime(140, now + 0.09);
     }
 
-    gain.gain.setValueAtTime(0.18 * this.sfxVolume, now);
+    gain.gain.setValueAtTime(0.16 * this.sfxVolume, now);
     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
 
     osc.connect(gain);
@@ -715,6 +854,10 @@ export class AudioManager {
     if (!this.checkCooldown('craft', 250)) return;
     this.resumeAudio();
 
+    if (this.playSampled('craft', 0.8, 1.0, true)) {
+      return;
+    }
+
     const now = this.ctx.currentTime;
     // Hợp âm 3 nốt vui tươi (C5 - E5 - G5)
     const notes = [523.25, 659.25, 783.99];
@@ -726,7 +869,7 @@ export class AudioManager {
       osc.type = 'triangle';
       osc.frequency.setValueAtTime(notes[i], noteTime);
 
-      gain.gain.setValueAtTime(0.16 * this.sfxVolume, noteTime);
+      gain.gain.setValueAtTime(0.14 * this.sfxVolume, noteTime);
       gain.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.25);
 
       osc.connect(gain);
@@ -745,6 +888,10 @@ export class AudioManager {
     if (!this.checkCooldown('lantern', 180)) return;
     this.resumeAudio();
 
+    if (this.playSampled('lantern', 0.75, isOn ? 1.08 : 0.88, true)) {
+      return;
+    }
+
     const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
@@ -760,7 +907,7 @@ export class AudioManager {
       osc.frequency.exponentialRampToValueAtTime(180, now + 0.1);
     }
 
-    gain.gain.setValueAtTime(0.15 * this.sfxVolume, now);
+    gain.gain.setValueAtTime(0.14 * this.sfxVolume, now);
     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
 
     osc.connect(gain);
@@ -778,6 +925,10 @@ export class AudioManager {
     if (!this.checkCooldown('quest_update', 300)) return;
     this.resumeAudio();
 
+    if (this.playSampled('quest_update', 0.8, 1.0, true)) {
+      return;
+    }
+
     const now = this.ctx.currentTime;
     // Chuông 2 nốt thanh thoát (G5 -> C6)
     const chimeNotes = [783.99, 1046.50];
@@ -789,7 +940,7 @@ export class AudioManager {
       osc.type = 'sine';
       osc.frequency.setValueAtTime(chimeNotes[i], noteTime);
 
-      gain.gain.setValueAtTime(0.18 * this.sfxVolume, noteTime);
+      gain.gain.setValueAtTime(0.16 * this.sfxVolume, noteTime);
       gain.gain.exponentialRampToValueAtTime(0.0001, noteTime + 0.6);
 
       osc.connect(gain);
@@ -804,33 +955,53 @@ export class AudioManager {
   // 8. TÍN HIỆU CẢNH BÁO THE LISTENER & CHUÔNG ĐỒNG MIẾU CỔ
   // =========================================================================
 
+  /**
+   * C4-13-08 & C4-132-10: Cảnh báo Kẻ Lắng Nghe - Sử dụng Horror Stinger chân thực hoặc
+   * sóng âm tam giác dịu êm, loại bỏ hoàn toàn tiếng còi sawtooth 880Hz chói tai gây điếc tai.
+   */
   public playListenerAlert(): void {
     if (!this.ctx || this.isMuted || !this.veilFilter) return;
     if (!this.checkCooldown('listener_alert', 1200)) return;
     this.resumeAudio();
 
+    if (this.playSampled('listener_alert', 0.85, 1.0, true)) {
+      return;
+    }
+
     const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
+    const filter = this.ctx.createBiquadFilter();
     const gain = this.ctx.createGain();
 
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(880, now);
-    osc.frequency.exponentialRampToValueAtTime(320, now + 0.5);
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(1100, now);
+    filter.Q.setValueAtTime(1.0, now);
 
-    gain.gain.setValueAtTime(0.18 * this.sfxVolume, now);
-    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+    // Chuyển sang dạng sóng triangle qua bộ lọc dải thấp thay vì sawtooth trực tiếp
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(440, now);
+    osc.frequency.exponentialRampToValueAtTime(180, now + 0.55);
 
-    osc.connect(gain);
+    gain.gain.setValueAtTime(0.001, now);
+    gain.gain.linearRampToValueAtTime(0.18 * this.sfxVolume, now + 0.03); // Attack mượt 30ms chống pop
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+
+    osc.connect(filter);
+    filter.connect(gain);
     gain.connect(this.veilFilter);
 
     osc.start(now);
-    osc.stop(now + 0.55);
+    osc.stop(now + 0.58);
   }
 
   public playBronzeBellToll(): void {
     if (!this.ctx || this.isMuted || !this.masterGain) return;
     if (!this.checkCooldown('bronze_bell', 800)) return;
     this.resumeAudio();
+
+    if (this.playSampled('bronze_bell', 0.9, 1.0, false)) {
+      return;
+    }
 
     const now = this.ctx.currentTime;
     // Chuông đồng tạo từ 4 hài âm cộng hưởng
@@ -848,7 +1019,7 @@ export class AudioManager {
       gain.gain.exponentialRampToValueAtTime(0.0001, now + 3.5);
 
       osc.connect(gain);
-      gain.connect(this.masterGain);
+      gain.connect(this.masterLimiter || this.masterGain);
 
       osc.start(now);
       osc.stop(now + 3.6);
@@ -859,6 +1030,12 @@ export class AudioManager {
     if (!this.ctx || this.isMuted || !this.veilFilter) return;
     if (!this.checkCooldown('runestone', 300)) return;
     this.resumeAudio();
+
+    const pitchModifiers = [1.0, 1.25, 1.5];
+    const rate = pitchModifiers[noteIndex % pitchModifiers.length] || 1.0;
+    if (this.playSampled('runestone', 0.8, rate, true)) {
+      return;
+    }
 
     const now = this.ctx.currentTime;
     const baseFreqs = [261.63, 329.63, 392.0]; // Hợp âm C-E-G thanh tao
@@ -871,7 +1048,7 @@ export class AudioManager {
     osc.frequency.setValueAtTime(freq, now);
     osc.frequency.exponentialRampToValueAtTime(freq * 1.5, now + 0.8);
 
-    gain.gain.setValueAtTime(0.25 * this.sfxVolume, now);
+    gain.gain.setValueAtTime(0.22 * this.sfxVolume, now);
     gain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
 
     osc.connect(gain);
@@ -883,19 +1060,27 @@ export class AudioManager {
 
   /**
    * C4-12-24: Âm thanh cảnh báo khi kích hoạt sai thứ tự Cột Đá Cổ Ngữ.
-   * Tiếng gầm gừ trầm đục (sawtooth + detuned sine) trượt tần số xuống vực sâu.
+   * Tiếng gầm gừ trầm u ám qua bộ lọc dải thấp, loại bỏ hài cao chát chúa.
    */
   public playRunestoneError(): void {
     if (!this.ctx || this.isMuted || !this.veilFilter) return;
     if (!this.checkCooldown('runestone_err', 350)) return;
     this.resumeAudio();
 
+    if (this.playSampled('runestone_err', 0.85, 1.0, true)) {
+      return;
+    }
+
     const now = this.ctx.currentTime;
     const osc1 = this.ctx.createOscillator();
     const osc2 = this.ctx.createOscillator();
+    const filter = this.ctx.createBiquadFilter();
     const gain = this.ctx.createGain();
 
-    osc1.type = 'sawtooth';
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(320, now);
+
+    osc1.type = 'triangle';
     osc1.frequency.setValueAtTime(115, now);
     osc1.frequency.exponentialRampToValueAtTime(45, now + 0.65);
 
@@ -903,11 +1088,12 @@ export class AudioManager {
     osc2.frequency.setValueAtTime(122, now); // Detuned for discordant rumble
     osc2.frequency.exponentialRampToValueAtTime(40, now + 0.65);
 
-    gain.gain.setValueAtTime(0.28 * this.sfxVolume, now);
+    gain.gain.setValueAtTime(0.22 * this.sfxVolume, now);
     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
 
-    osc1.connect(gain);
-    osc2.connect(gain);
+    osc1.connect(filter);
+    osc2.connect(filter);
+    filter.connect(gain);
     gain.connect(this.veilFilter);
 
     osc1.start(now);
@@ -954,6 +1140,10 @@ export class AudioManager {
     if (!this.checkCooldown('attack', 200)) return;
     this.resumeAudio();
 
+    if (this.playSampled('attack', 0.8, 1.0, true)) {
+      return;
+    }
+
     const now = this.ctx.currentTime;
 
     // 1. Tiếng xé gió nhanh (Whoosh Noise)
@@ -966,10 +1156,10 @@ export class AudioManager {
       filter.type = 'bandpass';
       filter.frequency.setValueAtTime(1200, now);
       filter.frequency.exponentialRampToValueAtTime(320, now + 0.14);
-      filter.Q.setValueAtTime(2.8, now);
+      filter.Q.setValueAtTime(1.5, now); // Giảm Q từ 2.8 -> 1.5 chống rít chói
 
       const noiseGain = this.ctx.createGain();
-      noiseGain.gain.setValueAtTime(0.18 * this.sfxVolume, now);
+      noiseGain.gain.setValueAtTime(0.15 * this.sfxVolume, now);
       noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
 
       noise.connect(filter);
@@ -987,7 +1177,7 @@ export class AudioManager {
     osc.frequency.setValueAtTime(240, now);
     osc.frequency.exponentialRampToValueAtTime(65, now + 0.12);
 
-    oscGain.gain.setValueAtTime(0.14 * this.sfxVolume, now);
+    oscGain.gain.setValueAtTime(0.12 * this.sfxVolume, now);
     oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
 
     osc.connect(oscGain);
@@ -1005,6 +1195,10 @@ export class AudioManager {
     if (!this.checkCooldown('bush_rustle', 200)) return;
     this.resumeAudio();
 
+    if (this.playSampled('bush_rustle', 0.65, entering ? 1.05 : 0.95, true)) {
+      return;
+    }
+
     const now = this.ctx.currentTime;
     const noiseBuffer = this.getOrCreateNoiseBuffer();
     if (noiseBuffer) {
@@ -1013,12 +1207,12 @@ export class AudioManager {
 
       const filter = this.ctx.createBiquadFilter();
       filter.type = 'bandpass';
-      filter.frequency.setValueAtTime(entering ? 850 : 1050, now);
-      filter.frequency.exponentialRampToValueAtTime(entering ? 320 : 450, now + 0.16);
-      filter.Q.setValueAtTime(2.2, now);
+      filter.frequency.setValueAtTime(entering ? 750 : 880, now);
+      filter.frequency.exponentialRampToValueAtTime(entering ? 280 : 360, now + 0.16);
+      filter.Q.setValueAtTime(1.2, now); // Giảm Q từ 2.2 -> 1.2 cho âm thanh xào xạc tự nhiên
 
       const gain = this.ctx.createGain();
-      gain.gain.setValueAtTime(0.15 * this.sfxVolume, now);
+      gain.gain.setValueAtTime(0.12 * this.sfxVolume, now);
       gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
 
       noise.connect(filter);
@@ -1050,19 +1244,28 @@ export class AudioManager {
     if (!this.checkCooldown('hurt', 300)) return;
     this.resumeAudio();
 
+    if (this.playSampled('hurt', 0.85, 1.0, false)) {
+      return;
+    }
+
     const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
+    const filter = this.ctx.createBiquadFilter();
     const gain = this.ctx.createGain();
 
-    osc.type = 'sawtooth';
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(450, now);
+
+    osc.type = 'triangle'; // Dùng triangle êm dịu hơn nhiều so với sawtooth
     osc.frequency.setValueAtTime(140, now);
     osc.frequency.exponentialRampToValueAtTime(45, now + 0.35);
 
-    gain.gain.setValueAtTime(0.32 * this.sfxVolume, now);
+    gain.gain.setValueAtTime(0.24 * this.sfxVolume, now);
     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
 
-    osc.connect(gain);
-    gain.connect(this.masterGain);
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.masterLimiter || this.masterGain);
 
     osc.start(now);
     osc.stop(now + 0.36);
@@ -1076,6 +1279,10 @@ export class AudioManager {
     if (!this.checkCooldown('death', 1000)) return;
     this.resumeAudio();
 
+    if (this.playSampled('death', 0.95, 1.0, false)) {
+      return;
+    }
+
     const now = this.ctx.currentTime;
 
     // 1. Tiếng va chạm nặng xuống mặt đất (Heavy impact thud)
@@ -1085,26 +1292,32 @@ export class AudioManager {
     thudOsc.frequency.setValueAtTime(95, now);
     thudOsc.frequency.exponentialRampToValueAtTime(25, now + 0.45);
 
-    thudGain.gain.setValueAtTime(0.38 * this.sfxVolume, now);
+    thudGain.gain.setValueAtTime(0.32 * this.sfxVolume, now);
     thudGain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
 
     thudOsc.connect(thudGain);
-    thudGain.connect(this.masterGain);
+    thudGain.connect(this.masterLimiter || this.masterGain);
     thudOsc.start(now);
     thudOsc.stop(now + 0.48);
 
     // 2. Âm thanh rền rĩ bi thương u ám kéo dài (Tragic down-sweep)
     const tragicOsc = this.ctx.createOscillator();
+    const tragicFilter = this.ctx.createBiquadFilter();
     const tragicGain = this.ctx.createGain();
-    tragicOsc.type = 'sawtooth';
+
+    tragicFilter.type = 'lowpass';
+    tragicFilter.frequency.setValueAtTime(500, now + 0.05);
+
+    tragicOsc.type = 'triangle'; // Dùng triangle thay cho raw sawtooth
     tragicOsc.frequency.setValueAtTime(160, now + 0.05);
     tragicOsc.frequency.exponentialRampToValueAtTime(32, now + 0.65);
 
-    tragicGain.gain.setValueAtTime(0.24 * this.sfxVolume, now + 0.05);
+    tragicGain.gain.setValueAtTime(0.20 * this.sfxVolume, now + 0.05);
     tragicGain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
 
-    tragicOsc.connect(tragicGain);
-    tragicGain.connect(this.masterGain);
+    tragicOsc.connect(tragicFilter);
+    tragicFilter.connect(tragicGain);
+    tragicGain.connect(this.masterLimiter || this.masterGain);
     tragicOsc.start(now + 0.05);
     tragicOsc.stop(now + 0.72);
   }
@@ -1119,6 +1332,8 @@ export class AudioManager {
       this.ctx.close().catch(() => {});
     }
     this.isUnlocked = false;
+    this.audioBuffers.clear();
+    this.loadingBuffers.clear();
     AudioManager.instance = null;
   }
 }
