@@ -42,7 +42,7 @@ if (fs.existsSync(manifestPath)) {
   assert(manifest.schemaVersion === 1, 'manifest.schemaVersion === 1');
   assert(manifest.id === 'hollow-woods', 'manifest.id === "hollow-woods"');
   assert(manifest.name === 'HOLLOW WOODS', 'manifest.name === "HOLLOW WOODS"');
-  assert(manifest.version === '1.3.2' || manifest.version === '1.3.1', 'manifest.version is "1.3.2" (or "1.3.1")');
+  assert(manifest.version === '1.3.3' || manifest.version === '1.3.2' || manifest.version === '1.3.1', 'manifest.version is "1.3.3" (or "1.3.2")');
   assert(manifest.entry === 'index.html', 'manifest.entry === "index.html"');
   assert(manifest.engine === 'webgl', 'manifest.engine === "webgl"');
   assert(manifest.orientation === 'landscape', 'manifest.orientation === "landscape"');
@@ -144,7 +144,9 @@ if (fs.existsSync(distDir)) {
 }
 
 // 6. Zip archive verification
-const zipPath = fs.existsSync(path.join(rootDir, 'hollow-woods-p2game-v1.3.2.zip'))
+const zipPath = fs.existsSync(path.join(rootDir, 'hollow-woods-p2game-v1.3.3.zip'))
+  ? path.join(rootDir, 'hollow-woods-p2game-v1.3.3.zip')
+  : fs.existsSync(path.join(rootDir, 'hollow-woods-p2game-v1.3.2.zip'))
   ? path.join(rootDir, 'hollow-woods-p2game-v1.3.2.zip')
   : path.join(rootDir, 'hollow-woods-p2game-v1.3.1.zip');
 assert(fs.existsSync(zipPath), 'hollow-woods-p2game archive exists');

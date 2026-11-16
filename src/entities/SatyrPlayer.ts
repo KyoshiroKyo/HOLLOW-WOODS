@@ -271,18 +271,6 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       case 'â':
         return 'KeyA';
       case 's':
-      case 'á':
-      case 'ắ':
-      case 'ấ':
-      case 'é':
-      case 'ế':
-      case 'ứ':
-      case 'ú':
-      case 'ó':
-      case 'ớ':
-      case 'ố':
-      case 'í':
-      case 'ý':
         return 'KeyS';
       case 'd':
       case 'đ':
@@ -291,18 +279,6 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       case 'ê':
         return 'KeyE';
       case 'f':
-      case 'à':
-      case 'ằ':
-      case 'ầ':
-      case 'è':
-      case 'ề':
-      case 'ừ':
-      case 'ù':
-      case 'ò':
-      case 'ờ':
-      case 'ồ':
-      case 'ì':
-      case 'ỳ':
         return 'KeyF';
       case 'q':
         return 'KeyQ';
@@ -389,6 +365,36 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
+  public static isGameControlCode(code: string | null): boolean {
+    if (!code) return false;
+    switch (code) {
+      case 'KeyW':
+      case 'KeyA':
+      case 'KeyS':
+      case 'KeyD':
+      case 'ArrowUp':
+      case 'ArrowDown':
+      case 'ArrowLeft':
+      case 'ArrowRight':
+      case 'ShiftLeft':
+      case 'ShiftRight':
+      case 'Space':
+      case 'KeyE':
+      case 'KeyF':
+      case 'KeyQ':
+      case 'KeyI':
+      case 'KeyJ':
+      case 'KeyM':
+      case 'Digit1':
+      case 'Digit2':
+      case 'Tab':
+      case 'Escape':
+        return true;
+      default:
+        return false;
+    }
+  }
+
   private isEditableTextContext(eventTarget?: EventTarget | null): boolean {
     if (SatyrPlayer.isEditableElement(eventTarget)) return true;
     if (typeof document !== 'undefined' && SatyrPlayer.isEditableElement(document.activeElement)) {
@@ -430,8 +436,8 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       this.cleanupDOMListeners();
     }
 
-    window.addEventListener('keydown', this.boundKeyDown, { capture: true });
-    window.addEventListener('keyup', this.boundKeyUp, { capture: true });
+    window.addEventListener('keydown', this.boundKeyDown, { capture: true, passive: false });
+    window.addEventListener('keyup', this.boundKeyUp, { capture: true, passive: false });
     window.addEventListener('compositionstart', this.boundCompositionStart, { capture: true });
     window.addEventListener('compositionend', this.boundCompositionEnd, { capture: true });
     window.addEventListener('blur', this.boundWindowBlur);
@@ -635,6 +641,14 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     const code = SatyrPlayer.resolvePhysicalCode(event);
     if (!code) return;
 
+    // Chặn hành vi mặc định của trình duyệt cho các phím điều khiển game khi đang chơi
+    // (ngăn cuộn trang Space/Arrows, ngăn nhảy tab khỏi canvas, và ngăn hệ điều hành đệm gõ văn bản/IME)
+    if (SatyrPlayer.isGameControlCode(code)) {
+      if (typeof event.preventDefault === 'function') {
+        event.preventDefault();
+      }
+    }
+
     const isSyntheticOrIME =
       !event.code ||
       event.keyCode === 231 ||
@@ -702,6 +716,14 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
 
     const code = SatyrPlayer.resolvePhysicalCode(event);
     if (!code) return;
+
+    // Chặn hành vi mặc định của trình duyệt cho các phím điều khiển game khi đang chơi
+    // (ngăn cuộn trang Space/Arrows, ngăn nhảy tab khỏi canvas, và ngăn hệ điều hành đệm gõ văn bản/IME)
+    if (SatyrPlayer.isGameControlCode(code)) {
+      if (typeof event.preventDefault === 'function') {
+        event.preventDefault();
+      }
+    }
 
     const isSyntheticVKPacketKeyUp =
       !event.code && (event.keyCode === 231 || event.keyCode === 229 || event.keyCode === 0);
@@ -841,9 +863,26 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
           break;
       }
 
-      // Tự động xóa mã phím nếu phím Phaser tương ứng là false,
-      // hoặc không nhận được sự kiện keydown/repeat mới sau 450ms khi phát hiện có dấu hiệu IME
-      if (!phaserKeyIsDown || (this.hasRecentIMEEvent && timeSinceLastActivity > 450)) {
+      // Xử lý riêng Shift: trong Windows phím Shift không phát sinh sự kiện keydown lặp lại (auto-repeat).
+      // Shift được giải phóng chuẩn xác thông qua DOM keyup hoặc khi cả 2 hệ thống đều xác nhận nhả phím.
+      if (code === 'ShiftLeft' || code === 'ShiftRight') {
+        if (!phaserKeyIsDown && timeSinceLastActivity > 1200) {
+          this.releasePhysicalCode(code);
+        }
+        continue;
+      }
+
+      // Đối với các phím di chuyển WASD / Mũi tên:
+      // Tuyệt đối KHÔNG xóa mã phím chỉ vì phaserKeyIsDown == false khi người chơi đang giữ phím,
+      // bởi vì bộ gõ Tiếng Việt (EVKey / UniKey) gửi sự kiện với keyCode=229 (VK_PROCESSKEY) khiến phaserKeyIsDown luôn là false.
+      // Chỉ giải phóng khi:
+      // 1. Phím Phaser không down VÀ không nhận được sự kiện lặp lại (auto-repeat) DOM nào trong hơn 650ms.
+      // 2. Hoặc phát hiện sự kiện IME và đã quá 650ms không có tín hiệu mới.
+      const isPhaserDown = phaserKeyIsDown;
+      const isDOMActive = timeSinceLastActivity <= 650;
+      if (!isPhaserDown && !isDOMActive) {
+        this.releasePhysicalCode(code);
+      } else if (this.hasRecentIMEEvent && timeSinceLastActivity > 650) {
         this.releasePhysicalCode(code);
       }
     }

@@ -21,6 +21,7 @@ const suites = [
   { id: 'C4-13-21', name: 'Đóng gói & Tích hợp NPC Thợ Rèn Bram từ SmithNPC', script: 'verify_blacksmith_integration_c4_13_21.mjs' },
   { id: 'C4-13-11', name: 'Rà soát lỗi tiềm ẩn 10 hệ thống & Tối ưu Edge Cases', script: 'verify_latent_bugs_c4_13_11.mjs' },
   { id: 'C4-13-22', name: 'Chuẩn hóa cấu hình, store assets & gói build P2Game', script: 'verify_p2game_packaging_c4_13_22.mjs' },
+  { id: 'C4-13-23', name: 'Tương thích bộ gõ Tiếng Việt EVKey / UniKey (Telex & VNI)', script: 'verify_evkey_ime_support.mjs' },
   { id: 'C4-12-31', name: 'Luồng chơi cốt lõi xuyên suốt Act 0 - Act 1', script: 'verify_full_game_flow_c4_12_31.mjs' }
 ];
 

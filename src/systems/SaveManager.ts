@@ -253,7 +253,7 @@ export class SaveManager {
 
       const saveData: SaveData = {
         saveSchemaVersion: 2,
-        version: '1.3.2',
+        version: '1.3.3',
         timestamp: Date.now(),
         checkpointName,
         zoneId,
