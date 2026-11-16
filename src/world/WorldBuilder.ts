@@ -2491,6 +2491,10 @@ export class WorldBuilder {
     this.createDenseBush(42, 224);
     this.createDenseBush(20, 208);
 
+    // C4-132-06: Bổ sung các khối đá tảng rêu phong tự nhiên kẹp chặt rào chắn phía Tây
+    this.createRock(20, 155, 34, 20);
+    this.createRock(18, 215, 32, 18);
+
     // 5. Lớp sương mù dày đặc cuộn trào che kín phần mép đen của bản đồ (x: 0..65)
     if (this.scene.textures.exists(SPRITE_FOG_SMOOTH)) {
       const addWestDenseMist = (
@@ -5918,6 +5922,13 @@ export class WorldBuilder {
     turfGfx.fillRect(seamX - 70, 276, 140, 7);
     turfGfx.fillRect(seamX - 70, 317, 140, 7);
 
+    // C4-132-06: Dải chuyển tiếp địa hình mặt đường Transition Blend Strip (rộng 200px: seamX - 100 .. seamX + 100)
+    // Nối liền mạch màu đất rừng sang bùn đầm lầy, xóa sạch đường cắt dọc
+    turfGfx.fillStyle(0x383023, 0.50);
+    turfGfx.fillRect(seamX - 100, 280, 200, 38);
+    turfGfx.fillStyle(0x272b25, 0.45);
+    turfGfx.fillRect(seamX - 35, 280, 85, 38);
+
     this.registerCullable(turfGfx, seamX, 300, 260);
 
     // 1.2. Đá cuội, sỏi rừng và sỏi đầm lầy rải rác (Pebbles & Fieldstones)
@@ -6008,6 +6019,12 @@ export class WorldBuilder {
     turfGfx.fillRect(seamX - 35, 287, 24, 12);
     turfGfx.fillRect(seamX + 8, 285, 22, 11);
 
+    // C4-132-06: Dải chuyển tiếp bùn lầy sang sân đá phế tích miếu cổ (Transition Blend Strip 200px)
+    turfGfx.fillStyle(0x26302e, 0.55);
+    turfGfx.fillRect(seamX - 100, 270, 200, 36);
+    turfGfx.fillStyle(0x313d39, 0.40);
+    turfGfx.fillRect(seamX - 25, 270, 80, 36);
+
     this.registerCullable(turfGfx, seamX, 280, 260);
 
     // Bụi rậm và sỏi đá tự nhiên hai bên lối vào
@@ -6052,6 +6069,12 @@ export class WorldBuilder {
     turfGfx.fillEllipse(seamX - 15, 350, 140, 42);
     turfGfx.fillStyle(0x2b3924, 0.68);
     turfGfx.fillEllipse(seamX + 20, 400, 130, 40);
+
+    // C4-132-06: Dải chuyển tiếp đường đất Làng sang Đường Mòn Quanh Co (Transition Blend Strip 180px: seamX - 90 .. seamX + 90)
+    turfGfx.fillStyle(0x3e3527, 0.50);
+    turfGfx.fillRect(seamX - 90, 260, 180, 44);
+    turfGfx.fillStyle(0x312b20, 0.40);
+    turfGfx.fillRect(seamX - 20, 260, 70, 44);
 
     this.registerCullable(turfGfx, seamX, 280, 240);
 

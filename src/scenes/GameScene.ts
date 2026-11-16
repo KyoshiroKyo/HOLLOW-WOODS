@@ -865,7 +865,7 @@ export class GameScene extends Phaser.Scene {
       hoodColor: 0x3d7055
     });
 
-    // 4. Bram — Thợ Rèn Làng (C4-13-21): đứng cạnh khu vực Lò Rèn & Bàn Chế Tạo (x: 1045, y: 365)
+    // 4. Bram — Thợ Rèn Làng (C4-13-21 & C4-132-06): đứng cạnh khu vực Lò Rèn & Bàn Chế Tạo (x: 1045, y: 365)
     const bram = new NPCEntity(this, {
       id: 'npc_bram',
       name: 'Bram',
@@ -874,6 +874,11 @@ export class GameScene extends Phaser.Scene {
       y: 365,
       dialogueKey: 'bram_chat'
     });
+    const bramBody = bram.body as Phaser.Physics.Arcade.Body;
+    if (bramBody) {
+      bramBody.setSize(20, 12);
+      bramBody.setOffset(-10, -6);
+    }
 
     // 5. Finn — Cậu Bé Đưa Tin: đi lại nhẹ quanh rìa quảng trường Tháp Chuông (x: 760, y: 260)
     const finn = new NPCEntity(this, {
@@ -2597,7 +2602,7 @@ export class GameScene extends Phaser.Scene {
     }
     this.lastWestBarrierThoughtTime = now;
     if (this.uiScene) {
-      this.uiScene.showPopupMessage('Lối mòn phía sau đã bị sương mù đặc quánh nuốt chửng... Không thể quay lại được nữa.');
+      this.uiScene.showPopupMessage('Lối mòn phía sau đã bị sương mù đặc quánh nuốt chửng... Không thể quay lại được nữa. Chỉ còn cách tiến sâu vào Bellhollow.');
     }
     return true;
   }

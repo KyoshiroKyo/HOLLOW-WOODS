@@ -221,7 +221,7 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image(TILE_COBBLE_ROAD, 'assets/environment/tiles/tile_cobble_road.png');
     this.load.image(TILE_STONE_FLOOR, 'assets/environment/tiles/tile_stone_floor.png');
 
-    // 9. Nạp các sprite NPC & Chân dung hội thoại pixel art C4-12-08 / C4-13-21 (Garth, Edda, Neris, Bram, Finn, Blacksmith)
+    // 9. Nạp các sprite NPC & Chân dung hội thoại pixel art C4-12-08 / C4-13-21 / C4-132-06 (Garth, Edda, Neris, Bram, Finn, Blacksmith)
     this.load.image(PORTRAIT_GARTH, 'assets/characters/villagers/portrait_garth.png');
     this.load.image(PORTRAIT_EDDA, 'assets/characters/villagers/portrait_edda.png');
     this.load.image(PORTRAIT_NERIS, 'assets/characters/villagers/portrait_neris.png');
