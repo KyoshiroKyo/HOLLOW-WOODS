@@ -1,5 +1,6 @@
 import { MonsterState } from '../entities/monsters/Monster';
 import { TheListener } from '../entities/TheListener';
+import { PlayerState } from '../state/PlayerState';
 
 export interface Waypoint {
   x: number;
@@ -115,9 +116,28 @@ export class ListenerAI {
   }
 
   /**
-   * Kiểm tra xem một tọa độ có nằm trong Khu Vực An Toàn (Làng Bellhollow) hay không
+   * C4-13-05 & C4-132-05: Kiểm tra xem một tọa độ/vị trí có nằm trong Khu Vực An Toàn hay không.
+   * Xác định dựa trên mã phân khu thực tế (bellhollow, sanctuary_farm, fog_crossing)
+   * và vùng đệm cổng làng thay vì chỉ so sánh cứng x <= 1620 trên toàn bản đồ (tránh outer_woods bị nhận nhầm).
    */
-  public isInsideSafeZone(x: number): boolean {
+  public isInsideSafeZone(x: number, _y?: number, currentZoneId?: string): boolean {
+    const zone = currentZoneId || PlayerState.getInstance().getCurrentZone();
+    if (zone === 'bellhollow') {
+      return x <= ListenerAI.SAFE_ZONE_BORDER_X;
+    }
+    if (zone === 'sanctuary_farm' || zone === 'fog_crossing') {
+      return true;
+    }
+    if (
+      zone === 'outer_woods' ||
+      zone === 'crooked_path' ||
+      zone === 'deep_forest' ||
+      zone === 'silent_mire' ||
+      zone === 'ancient_rune_puzzle' ||
+      zone === 'broken_bell_shrine'
+    ) {
+      return false;
+    }
     return x <= ListenerAI.SAFE_ZONE_BORDER_X;
   }
 
@@ -462,10 +482,10 @@ export class ListenerAI {
     this.targetInvestigateX = Math.max(ListenerAI.FOREST_TERRITORY_MIN_X, soundX);
     this.targetInvestigateY = soundY;
 
-    // C4-13-08: Kích hoạt tín hiệu cảnh báo Telegraph 0.7s chỉ khi chuyển sang ALERT (không lặp)
+    // C4-13-08 & C4-132-05: Kích hoạt tín hiệu cảnh báo Telegraph (tăng lên 1150ms) chỉ khi chuyển sang ALERT (không lặp)
     const previousState = this.state;
     this.state = 'ALERT';
-    this.alertTimer = 700;
+    this.alertTimer = 1150;
     if (previousState !== 'ALERT') {
       this.listener.onAlertTelegraph();
     }

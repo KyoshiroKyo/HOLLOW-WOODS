@@ -132,6 +132,9 @@ export class GameScene extends Phaser.Scene {
   private lastEKeyPressTime: number = 0;
   private lastWarmthFeedbackTime: number = 0;
 
+  // C4-132-05: Cảnh báo Bình Tâm sớm
+  private lastEarlyComposureWarningTime: number = 0;
+
   constructor() {
     super({ key: SCENE_GAME });
   }
@@ -1253,9 +1256,18 @@ export class GameScene extends Phaser.Scene {
       this.audioManager.playLanternToggle(this.lastLanternState);
     }
 
-    // Nhịp tim hoảng loạn khi Bình Tâm suy giảm nghiêm trọng
+    // C4-132-05: Nhịp tim & cảnh báo Bình Tâm sớm khi suy giảm xuống mức nguy hiểm
     if (this.playerState.stats.composure < 40 && !this.isAct5ChaseActive) {
       this.audioManager.setHeartbeatActive(true, 750);
+      if (this.playerState.stats.composure <= 25 && this.playerState.stats.composure > 0) {
+        const now = Date.now();
+        if (now - this.lastEarlyComposureWarningTime > 12000) {
+          this.lastEarlyComposureWarningTime = now;
+          if (this.uiScene) {
+            this.uiScene.showPopupMessage('⚠️ Bình Tâm đang xuống thấp! Hãy bật Đèn Lồng [F] hoặc tìm nguồn lửa ấm áp.');
+          }
+        }
+      }
     } else if (!this.isAct5ChaseActive && this.playerState.stats.composure >= 50) {
       this.audioManager.setHeartbeatActive(false);
     }
@@ -1369,8 +1381,8 @@ export class GameScene extends Phaser.Scene {
 
     this.listenerMonster.update(delta, this.player.x, this.player.y, this.player.stats.isHiding, this.player.isDead());
 
-    // C4-13-05: Toàn bộ Làng Bellhollow và khu vực cổng làng là Khu Vực An Toàn (Safe Zone)
-    const isPlayerInSafeZone = this.currentZoneId === 'bellhollow' || this.currentZoneId === 'sanctuary_farm' || this.currentZoneId === 'fog_crossing' || this.player.x <= 1620;
+    // C4-13-05 & C4-132-05: Toàn bộ Làng Bellhollow và khu vực cổng làng là Khu Vực An Toàn (Safe Zone)
+    const isPlayerInSafeZone = (this.currentZoneId === 'bellhollow' && this.player.x <= 1620) || this.currentZoneId === 'sanctuary_farm' || this.currentZoneId === 'fog_crossing';
 
     // Cảnh báo âm thanh nhịp tim căng thẳng khi The Listener ở cự ly gần (<260px) trong phân khu rừng
     if ((this.currentZoneId === 'crooked_path' || this.currentZoneId === 'deep_forest') && !this.isAct5ChaseActive && !isPlayerInSafeZone) {
@@ -1417,7 +1429,15 @@ export class GameScene extends Phaser.Scene {
       scaleY: 2.8,
       duration: 500,
       ease: 'Quad.easeOut',
-      onComplete: () => wave.destroy()
+      onComplete: () => wave.destroy(),
+      onStop: () => wave.destroy()
+    });
+
+    // C4-132-05: Tự hủy tối đa 800ms
+    this.time.delayedCall(800, () => {
+      if (wave && wave.active) {
+        wave.destroy();
+      }
     });
   }
 
@@ -1507,7 +1527,15 @@ export class GameScene extends Phaser.Scene {
       scaleY: 1.8,
       duration: 250,
       ease: 'Quad.easeOut',
-      onComplete: () => spark.destroy()
+      onComplete: () => spark.destroy(),
+      onStop: () => spark.destroy()
+    });
+
+    // C4-132-05: Tự hủy tối đa 800ms
+    this.time.delayedCall(800, () => {
+      if (spark && spark.active) {
+        spark.destroy();
+      }
     });
   }
 
@@ -1584,7 +1612,14 @@ export class GameScene extends Phaser.Scene {
       scaleX: 3.0,
       scaleY: 3.0,
       duration: 1600,
-      onComplete: () => spark.destroy()
+      onComplete: () => spark.destroy(),
+      onStop: () => spark.destroy()
+    });
+
+    this.time.delayedCall(2000, () => {
+      if (spark && spark.active) {
+        spark.destroy();
+      }
     });
   }
 
@@ -2074,6 +2109,12 @@ export class GameScene extends Phaser.Scene {
                 dKey = 'edda_reminder_open';
               }
             } else if (npc.spec.id === 'npc_neris') {
+              // C4-132-05: Kích hoạt cơ chế cứu trợ hạt giống khi trò chuyện với Neris
+              if (this.farmingSystem) {
+                this.farmingSystem.checkAndGrantEmergencySeeds((msg) => {
+                  if (this.uiScene) this.uiScene.showPopupMessage(msg);
+                });
+              }
               if (!this.playerState.hasFlag('talked_to_neris')) {
                 dKey = 'neris_intro';
               } else if (!this.playerState.isEastGateUnlocked()) {
@@ -2137,6 +2178,14 @@ export class GameScene extends Phaser.Scene {
         const plotDist = Math.hypot(px - nearbyPlot.x, py - nearbyPlot.y);
         const plotTriggerDist = 52;
         const isWithinPlotRange = plotDist <= plotTriggerDist;
+
+        // C4-132-05: Kiểm tra cơ chế cứu trợ hạt giống khi người chơi đứng tại khu vực ô đất trồng ở Sanctuary Farm
+        if (this.currentZoneId === 'sanctuary_farm' && isWithinPlotRange) {
+          this.farmingSystem.checkAndGrantEmergencySeeds((msg) => {
+            if (this.uiScene) this.uiScene.showPopupMessage(msg);
+          });
+        }
+
         const rawPrompt = this.farmingSystem.getPlotPrompt(nearbyPlot);
         const basePlotName = rawPrompt.replace(/^\[E\]\s*/, '');
         const promptText = isWithinPlotRange ? `[E] ${basePlotName}` : basePlotName;

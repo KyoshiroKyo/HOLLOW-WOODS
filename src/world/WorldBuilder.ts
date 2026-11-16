@@ -4316,6 +4316,38 @@ export class WorldBuilder {
     for (const item of zone.interactables) {
       this.interactables.push(item);
     }
+
+    // C4-132-05: Bổ sung 2 bụi rậm ẩn nấp (hiding spot) dọc trục đường chính phân khu The Crooked Path
+    if (zone.id === 'crooked_path') {
+      const extraSpot1: InteractableSpec = {
+        id: 'hide_bush_cp_mid_1',
+        name: 'Bụi Rậm Ẩn Nấp (Đường Mòn Giữa)',
+        type: 'hiding_spot',
+        x: 2040,
+        y: 280,
+        width: 38,
+        height: 38,
+        promptText: 'Nhấn [E] Ẩn nấp trong bụi rậm',
+        actionId: 'hide_player'
+      };
+      const extraSpot2: InteractableSpec = {
+        id: 'hide_bush_cp_mid_2',
+        name: 'Bụi Rậm Ẩn Nấp (Bìa Đầm Lầy)',
+        type: 'hiding_spot',
+        x: 2680,
+        y: 340,
+        width: 38,
+        height: 38,
+        promptText: 'Nhấn [E] Ẩn nấp trong bụi rậm',
+        actionId: 'hide_player'
+      };
+      if (!this.interactables.some(i => i.id === extraSpot1.id)) {
+        this.interactables.push(extraSpot1);
+      }
+      if (!this.interactables.some(i => i.id === extraSpot2.id)) {
+        this.interactables.push(extraSpot2);
+      }
+    }
   }
 
   private setupZoneTransitions(zone: ZoneData): void {
@@ -4976,6 +5008,9 @@ export class WorldBuilder {
     this.createDenseBush(1820, 260); // Bụi trốn 1
     this.createDenseBush(2180, 200); // Bụi trốn 2
     this.createDenseBush(2500, 380); // Bụi trốn 3
+    // C4-132-05: 2 bụi rậm ẩn nấp bổ sung dọc trục đường chính The Crooked Path
+    this.createDenseBush(2040, 280); // Bụi trốn bổ sung 1
+    this.createDenseBush(2680, 340); // Bụi trốn bổ sung 2
     this.createDenseBush(1710, 390);
     this.createDenseBush(2010, 160);
     this.createDenseBush(2320, 300);

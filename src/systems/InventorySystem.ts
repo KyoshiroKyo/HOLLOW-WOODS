@@ -358,6 +358,16 @@ export class InventorySystem {
         ease: 'Cubic.easeOut',
         onComplete: () => {
           p.destroy();
+        },
+        onStop: () => {
+          p.destroy();
+        }
+      });
+
+      // C4-132-05: Hẹn giờ an toàn tự hủy tối đa 800ms để tuyệt đối không còn bất kỳ chấm tròn màu xanh nào đọng lại lơ lửng trên bản đồ
+      this.scene.time.delayedCall(800, () => {
+        if (p && p.active) {
+          p.destroy();
         }
       });
     }

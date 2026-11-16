@@ -290,7 +290,11 @@ export class FarmingSystem {
         onFeedback?.('🌱 Đã ươm mầm nhánh Thảo Dược Bạc vào ô đất!');
         return true;
       } else {
-        onFeedback?.('⚠️ Cần có Hạt Giống hoặc Thảo Dược trong túi đồ để gieo trồng.');
+        // C4-132-05: Kích hoạt cơ chế cứu trợ cấp lại 2 Hạt Giống Thảo Dược miễn phí từ túi dự trữ của Neris
+        const granted = this.checkAndGrantEmergencySeeds(onFeedback);
+        if (!granted) {
+          onFeedback?.('⚠️ Cần có Hạt Giống hoặc Thảo Dược trong túi đồ để gieo trồng.');
+        }
         return false;
       }
     }
@@ -319,6 +323,32 @@ export class FarmingSystem {
     }
 
     return false;
+  }
+
+  /**
+   * C4-132-05: Cơ chế cứu trợ Hạt Giống Thảo Dược tại Sanctuary Farm (M-16).
+   * Kiểm tra khi người chơi đứng tại khu vực ô đất trồng ở Sanctuary Farm (hoặc khi trò chuyện với Neris):
+   * nếu tổng số Hạt Giống Thảo Dược trong túi đồ bằng 0 VÀ cả 4 ô đất trồng đều đang trống
+   * (không có cây nào đang lớn để chờ thu hoạch), tự động kích hoạt cơ chế cứu trợ cấp lại
+   * 2 Hạt Giống Thảo Dược miễn phí từ túi dự trữ của Neris kèm thông báo hướng dẫn:
+   * "Neris vừa chia sẻ thêm cho bạn 2 Hạt Giống Thảo Dược dự phòng. Hãy gieo trồng cẩn thận!"
+   */
+  public checkAndGrantEmergencySeeds(onFeedback?: (msg: string) => void): boolean {
+    const seedCount = this.playerState.getItemCount('seed_herbs');
+    if (seedCount > 0) return false;
+
+    const plots = this.playerState.getHerbPlots();
+    const allEmpty = plots.every(p => this.computeStage(p.plantedAt) === 'empty');
+    if (!allEmpty) return false;
+
+    // Cấp lại 2 Hạt Giống Thảo Dược miễn phí từ túi dự trữ của Neris
+    this.playerState.addItem('seed_herbs', 2);
+    AudioManager.getInstance().playResourceGather('seed_herbs');
+    const msg = 'Neris vừa chia sẻ thêm cho bạn 2 Hạt Giống Thảo Dược dự phòng. Hãy gieo trồng cẩn thận!';
+    if (onFeedback) {
+      onFeedback(msg);
+    }
+    return true;
   }
 
   /**
