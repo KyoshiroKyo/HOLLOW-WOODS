@@ -33,6 +33,10 @@ export class AudioManager {
   private masterGain: GainNode | null = null;
   private masterLimiter: DynamicsCompressorNode | null = null;
   private veilFilter: BiquadFilterNode | null = null;
+  private synthFilter: BiquadFilterNode | null = null; // C4-133: Lowpass 5200Hz cho Synth/Noise loại bỏ rít chói tai
+
+  // Quản lý kênh SFX đồng thời (giới hạn tối đa 4 kênh trùng lặp để chống dội âm / méo tiếng)
+  private activeSFXChannels: Map<string, { source: AudioBufferSourceNode; gain: GainNode }[]> = new Map();
 
   // Bộ nhớ đệm tệp âm thanh mẫu (Sampled Audio Cache)
   private audioBuffers: Map<string, AudioBuffer> = new Map();
@@ -94,13 +98,14 @@ export class AudioManager {
         this.masterGain = this.ctx.createGain();
         this.masterGain.gain.setValueAtTime(this.masterVolume, this.ctx.currentTime);
 
-        // 2. Master Limiter / DynamicsCompressorNode (Triệt tiêu méo tiếng số và chống dội âm chói gắt)
+        // 2. Master Limiter / DynamicsCompressorNode nối trực tiếp vào đầu ra tổng (masterGain -> compressor -> destination)
+        // Chặn đứng hoàn toàn hiện tượng vỡ âm kỹ thuật số (clipping) khi nhiều âm thanh phát cùng lúc
         this.masterLimiter = this.ctx.createDynamicsCompressor();
-        this.masterLimiter.threshold.setValueAtTime(-4, this.ctx.currentTime);
-        this.masterLimiter.knee.setValueAtTime(20, this.ctx.currentTime);
-        this.masterLimiter.ratio.setValueAtTime(4, this.ctx.currentTime);
-        this.masterLimiter.attack.setValueAtTime(0.015, this.ctx.currentTime);
-        this.masterLimiter.release.setValueAtTime(0.25, this.ctx.currentTime);
+        this.masterLimiter.threshold.setValueAtTime(-6, this.ctx.currentTime);
+        this.masterLimiter.knee.setValueAtTime(10, this.ctx.currentTime);
+        this.masterLimiter.ratio.setValueAtTime(12, this.ctx.currentTime);
+        this.masterLimiter.attack.setValueAtTime(0.003, this.ctx.currentTime);
+        this.masterLimiter.release.setValueAtTime(0.18, this.ctx.currentTime);
 
         // 3. The Veil Low-Pass Filter (Mặc định 18000Hz: thông thoáng)
         this.veilFilter = this.ctx.createBiquadFilter();
@@ -108,10 +113,19 @@ export class AudioManager {
         this.veilFilter.frequency.setValueAtTime(18000, this.ctx.currentTime);
         this.veilFilter.Q.setValueAtTime(1.0, this.ctx.currentTime);
 
-        // Đồ thị âm thanh: Sources -> veilFilter -> masterLimiter -> masterGain -> destination
-        this.veilFilter.connect(this.masterLimiter);
-        this.masterLimiter.connect(this.masterGain);
-        this.masterGain.connect(this.ctx.destination);
+        // 4. Synth Low-Pass Filter (Cắt 5200Hz cho các nguồn âm tổng hợp/nhiễu trắng, triệt tiêu 100% tiếng rít chói tai)
+        this.synthFilter = this.ctx.createBiquadFilter();
+        this.synthFilter.type = 'lowpass';
+        this.synthFilter.frequency.setValueAtTime(5200, this.ctx.currentTime);
+        this.synthFilter.Q.setValueAtTime(0.707, this.ctx.currentTime);
+
+        // Đồ thị âm thanh chuẩn hóa:
+        // Procedural Synth -> synthFilter -> veilFilter -> masterGain -> masterLimiter -> ctx.destination
+        // Direct Sampled SFX -> veilFilter -> masterGain -> masterLimiter -> ctx.destination
+        this.synthFilter.connect(this.veilFilter);
+        this.veilFilter.connect(this.masterGain);
+        this.masterGain.connect(this.masterLimiter);
+        this.masterLimiter.connect(this.ctx.destination);
 
         // Nạp trước các tệp âm thanh mẫu
         this.preloadSampledAudio();
@@ -176,7 +190,7 @@ export class AudioManager {
   }
 
   /**
-   * Phát tệp âm thanh mẫu đã nạp trong bộ đệm
+   * Phát tệp âm thanh mẫu đã nạp trong bộ đệm (giới hạn tối đa 4 kênh trùng lặp, giải phóng sạch qua onended)
    */
   private playSampled(
     key: string,
@@ -190,6 +204,23 @@ export class AudioManager {
 
     try {
       this.resumeAudio();
+
+      // Giới hạn số lượng âm thanh SFX trùng lặp tối đa 4 kênh cùng lúc
+      const channels = this.activeSFXChannels.get(key) || [];
+      if (channels.length >= 4) {
+        const oldest = channels.shift();
+        if (oldest) {
+          const t = this.ctx.currentTime;
+          oldest.gain.gain.cancelScheduledValues(t);
+          oldest.gain.gain.setValueAtTime(oldest.gain.gain.value, t);
+          oldest.gain.gain.setTargetAtTime(0.0001, t, 0.025);
+          setTimeout(() => {
+            try { oldest.source.stop(); } catch {}
+            try { oldest.source.disconnect(); oldest.gain.disconnect(); } catch {}
+          }, 35);
+        }
+      }
+
       const source = this.ctx.createBufferSource();
       source.buffer = buffer;
       source.playbackRate.setValueAtTime(playbackRate, this.ctx.currentTime);
@@ -198,8 +229,22 @@ export class AudioManager {
       gain.gain.setValueAtTime(volume * this.sfxVolume, this.ctx.currentTime);
 
       source.connect(gain);
-      const targetNode = routeToVeil && this.veilFilter ? this.veilFilter : (this.masterLimiter || this.masterGain!);
+      const targetNode = routeToVeil && this.veilFilter ? this.veilFilter : this.masterGain!;
       gain.connect(targetNode);
+
+      channels.push({ source, gain });
+      this.activeSFXChannels.set(key, channels);
+
+      source.onended = () => {
+        const list = this.activeSFXChannels.get(key);
+        if (list) {
+          this.activeSFXChannels.set(key, list.filter(item => item.source !== source));
+        }
+        try {
+          source.disconnect();
+          gain.disconnect();
+        } catch {}
+      };
 
       source.start(0);
       return true;
@@ -1269,11 +1314,22 @@ export class AudioManager {
   // =========================================================================
 
   /**
-   * C4-13-03: Dừng toàn bộ âm thanh môi trường và nhịp tim
+   * C4-13-03 & C4-133: Dừng toàn bộ âm thanh môi trường, nhịp tim và giải phóng toàn bộ kênh SFX
    */
   public stopAll(): void {
     this.stopAmbience(true);
     this.setHeartbeatActive(false);
+    for (const channels of this.activeSFXChannels.values()) {
+      for (const ch of channels) {
+        try { ch.source.stop(); } catch {}
+        try { ch.source.disconnect(); ch.gain.disconnect(); } catch {}
+      }
+    }
+    this.activeSFXChannels.clear();
+  }
+
+  public stopAllLoops(): void {
+    this.stopAll();
   }
 
   /**
