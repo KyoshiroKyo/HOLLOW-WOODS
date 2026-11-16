@@ -126,6 +126,7 @@ export class GameScene extends Phaser.Scene {
   private cullingTimer: number = 0;
   private isLanternGlowDrawn: boolean = false;
   private firefliesDrawnCount: number = 0;
+  private lastMonsterStaggerTime: number = 0;
 
   constructor() {
     super({ key: SCENE_GAME });
@@ -167,6 +168,7 @@ export class GameScene extends Phaser.Scene {
     this.stepNoiseTimer = 0;
     this.lastESCTime = 0;
     this.lastMuteTime = 0;
+    this.lastMonsterStaggerTime = 0;
   }
 
   public create(): void {
@@ -235,6 +237,11 @@ export class GameScene extends Phaser.Scene {
     this.player.setVisible(true);
     this.player.lastSafePosition = { x: spawnX, y: spawnY };
     this.player.resetAllInputState();
+
+    // C4-132-01: Lắng nghe sự kiện vung gậy của nhân vật để xử lý âm thanh cảnh báo và quét va chạm thực thể
+    this.player.on('player_attack', (hitbox: { x: number; y: number; radius: number; facing: string; playerX: number; playerY: number }) => {
+      this.handlePlayerAttackHitbox(hitbox);
+    });
 
     // 5. Thiết lập va chạm vật lý với thế giới & mở rộng giới hạn không gian Vùng Lõi (C4-12-17)
     this.physics.world.setBounds(0, -250, 5000, 1400);
@@ -1394,6 +1401,96 @@ export class GameScene extends Phaser.Scene {
       duration: 500,
       ease: 'Quad.easeOut',
       onComplete: () => wave.destroy()
+    });
+  }
+
+  // C4-132-01: Xử lý tác động thực tế của đòn vung gậy (phát âm thanh cảnh báo & quét trúng quái vật)
+  private handlePlayerAttackHitbox(hitbox: { x: number; y: number; radius: number; facing: string; playerX: number; playerY: number }): void {
+    // 1. Phát xung âm thanh cảnh báo để The Listener trong phạm vi nghe thấy
+    this.emitNoiseWave(hitbox.playerX, hitbox.playerY, 1.2);
+    if (this.listenerMonster && typeof this.listenerMonster.hearSound === 'function') {
+      this.listenerMonster.hearSound(hitbox.playerX, hitbox.playerY, 1.2);
+    }
+
+    // 2. Quét thực thể The Listener trong tầm quét bán kính 42px
+    if (this.listenerMonster && this.listenerMonster.active && this.listenerMonster.body) {
+      const distToListener = Math.hypot(this.listenerMonster.x - hitbox.x, this.listenerMonster.y - hitbox.y);
+      if (distToListener <= hitbox.radius + 24) {
+        const now = Date.now();
+        // Cooldown chống spam stagger 5 giây
+        if (now - this.lastMonsterStaggerTime >= 5000) {
+          this.lastMonsterStaggerTime = now;
+
+          // Hiệu ứng tia sáng va chạm (Clash hit spark)
+          this.createHitSpark(hitbox.x, hitbox.y);
+
+          // Đẩy lùi nhẹ (Knockback) và làm khựng (Stagger 500ms)
+          const angle = Math.atan2(this.listenerMonster.y - hitbox.playerY, this.listenerMonster.x - hitbox.playerX);
+          const knockbackSpeed = 120;
+          const body = this.listenerMonster.body as Phaser.Physics.Arcade.Body;
+          body.setVelocity(Math.cos(angle) * knockbackSpeed, Math.sin(angle) * knockbackSpeed);
+
+          // Kích hoạt hồi chiêu tấn công để quái vật không phản đòn ngay
+          this.listenerMonster.triggerAttackCooldown(1800);
+
+          // Sau 500ms dừng khựng lại
+          this.time.delayedCall(500, () => {
+            if (this.listenerMonster && this.listenerMonster.active && this.listenerMonster.body) {
+              (this.listenerMonster.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
+            }
+          });
+
+          if (this.uiScene) {
+            this.uiScene.showPopupMessage('Đòn gậy trúng đích! Kẻ Lắng Nghe bị khựng lại!');
+          }
+        }
+      }
+    }
+
+    // 3. Quét The Echo nếu đang hiển thị
+    if (this.echoSystem) {
+      const echoContainer = (this.echoSystem as any).activeEchoContainer as Phaser.GameObjects.Container | undefined;
+      if (echoContainer && echoContainer.visible) {
+        const distToEcho = Math.hypot(echoContainer.x - hitbox.x, echoContainer.y - hitbox.y);
+        if (distToEcho <= hitbox.radius + 20) {
+          this.createHitSpark(hitbox.x, hitbox.y);
+          this.tweens.add({
+            targets: echoContainer,
+            alpha: 0,
+            duration: 300,
+            onComplete: () => {
+              echoContainer.setVisible(false);
+            }
+          });
+          if (this.uiScene) {
+            this.uiScene.showPopupMessage('Bóng hình Tiếng Vọng tan biến vào màn sương...');
+          }
+        }
+      }
+    }
+  }
+
+  private createHitSpark(x: number, y: number): void {
+    const spark = this.add.graphics();
+    spark.setDepth(9999);
+    spark.fillStyle(0xffffff, 1);
+    spark.fillCircle(x, y, 4);
+    spark.lineStyle(2, 0xffd700, 1);
+    spark.beginPath();
+    spark.moveTo(x - 14, y); spark.lineTo(x + 14, y);
+    spark.moveTo(x, y - 14); spark.lineTo(x, y + 14);
+    spark.moveTo(x - 10, y - 10); spark.lineTo(x + 10, y + 10);
+    spark.moveTo(x - 10, y + 10); spark.lineTo(x + 10, y - 10);
+    spark.strokePath();
+
+    this.tweens.add({
+      targets: spark,
+      alpha: 0,
+      scaleX: 1.8,
+      scaleY: 1.8,
+      duration: 250,
+      ease: 'Quad.easeOut',
+      onComplete: () => spark.destroy()
     });
   }
 

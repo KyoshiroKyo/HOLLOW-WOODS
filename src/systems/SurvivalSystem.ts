@@ -33,7 +33,7 @@ export class SurvivalSystem {
   public update(dt: number, playerX: number, playerY: number, inDeepFog: boolean): void {
     const stats = this.playerState.stats;
 
-    // 1. Quản lý Thể lực (Stamina) - C4-13-18: Tụt mượt mà về 0, hoãn hồi phục 1.0s sau khi dừng chạy
+    // 1. Quản lý Thể lực (Stamina) - C4-132-01: Tụt mượt mà về đúng 0/100, hoãn hồi phục 1.0s sau khi dừng chạy
     if (stats.isSprinting) {
       this.sprintCooldownTimer = 1.0;
       stats.stamina = Math.max(0, stats.stamina - STAMINA_DRAIN_RATE * dt);

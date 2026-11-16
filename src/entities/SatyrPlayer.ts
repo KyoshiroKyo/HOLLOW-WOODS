@@ -54,6 +54,11 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   private pendingOneShotActions: Set<OneShotAction> = new Set();
   private keyDownTimestamps: Map<string, number> = new Map();
   private syntheticHoldTimers: Map<string, number> = new Map();
+  private lastKeyActivityTime: Map<string, number> = new Map();
+  private hasRecentIMEEvent: boolean = false;
+  private lastWindowFocusTime: number = 0;
+  private _requireShiftReleaseAfterExhaust: boolean = false;
+  private lastExhaustPopupTime: number = 0;
   private isComposingInTextInput: boolean = false;
   private isTextInputFocused: boolean = false;
   private domListenersAttached: boolean = false;
@@ -64,6 +69,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   private readonly boundCompositionEnd = (e: CompositionEvent) => this.handleDOMCompositionEnd(e);
   private readonly boundWindowBlur = () => this.resetAllInputState();
   private readonly boundWindowFocus = () => {
+    this.lastWindowFocusTime = Date.now();
     this.syncTextInputFocusState();
     this.resetAllInputState();
   };
@@ -75,6 +81,14 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   private readonly boundFocusChange = () => this.syncTextInputFocusState();
   private readonly boundPointerDown = (pointer: Phaser.Input.Pointer) => {
     if (pointer.leftButtonDown()) {
+      // C4-132-01: Bỏ qua click chuột khi vừa lấy lại focus trong 350ms đầu
+      if (Date.now() - this.lastWindowFocusTime < 350) {
+        return;
+      }
+      // C4-132-01: Bỏ qua khi con trỏ chuột nằm trên vùng HUD góc trên trái hoặc thanh phím tắt dưới đáy
+      if (pointer.y > 640 || (pointer.x < 340 && pointer.y < 160)) {
+        return;
+      }
       const uiScene = this.scene.scene.get('UIScene') as any;
       if (uiScene && uiScene.isAnyModalOpen) {
         return;
@@ -546,6 +560,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
 
   private releasePhysicalCode(code: string): void {
     this.activePhysicalCodes.delete(code);
+    this.lastKeyActivityTime.delete(code);
     this.keyDownTimestamps.delete(code);
     this.physicalKeyHeldForOneShot.delete(code);
     this.clearSyntheticHoldWatchdog(code);
@@ -554,11 +569,13 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
 
   public resetAllInputState(): void {
     this.activePhysicalCodes.clear();
+    this.lastKeyActivityTime.clear();
     this.physicalKeyHeldForOneShot.clear();
     this.pendingOneShotActions.clear();
     this.keyDownTimestamps.clear();
     this.clearAllSyntheticHoldTimers();
     this.eKeyJustPressed = false;
+    this.hasRecentIMEEvent = false;
 
     this.keyW?.reset();
     this.keyA?.reset();
@@ -622,16 +639,22 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       !event.code ||
       event.keyCode === 231 ||
       event.keyCode === 229 ||
+      event.key === 'Process' ||
       event.isComposing === true;
 
+    if (isSyntheticOrIME) {
+      this.hasRecentIMEEvent = true;
+    }
+
     if (this.isMovementOrSprintCode(code)) {
+      this.lastKeyActivityTime.set(code, performance.now());
       if (!this.activePhysicalCodes.has(code)) {
         this.keyDownTimestamps.set(code, performance.now());
       }
       this.activePhysicalCodes.add(code);
 
       if (isSyntheticOrIME) {
-        this.armSyntheticHoldWatchdog(code, 550);
+        this.armSyntheticHoldWatchdog(code, 450);
       }
       return;
     }
@@ -791,6 +814,40 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       this.attack();
     }
 
+    // C4-132-01: Chống kẹt trôi phím khi bật gõ Tiếng Việt Telex/VNI hoặc mất focus
+    const nowPerf = performance.now();
+    for (const code of Array.from(this.activePhysicalCodes)) {
+      if (!this.isMovementOrSprintCode(code)) continue;
+
+      const lastTime = this.lastKeyActivityTime.get(code) ?? 0;
+      const timeSinceLastActivity = nowPerf - lastTime;
+
+      let phaserKeyIsDown = false;
+      switch (code) {
+        case 'KeyW': phaserKeyIsDown = Boolean(this.keyW && this.keyW.isDown); break;
+        case 'KeyA': phaserKeyIsDown = Boolean(this.keyA && this.keyA.isDown); break;
+        case 'KeyS': phaserKeyIsDown = Boolean(this.keyS && this.keyS.isDown); break;
+        case 'KeyD': phaserKeyIsDown = Boolean(this.keyD && this.keyD.isDown); break;
+        case 'ArrowUp': phaserKeyIsDown = Boolean(this.cursors?.up && this.cursors.up.isDown); break;
+        case 'ArrowDown': phaserKeyIsDown = Boolean(this.cursors?.down && this.cursors.down.isDown); break;
+        case 'ArrowLeft': phaserKeyIsDown = Boolean(this.cursors?.left && this.cursors.left.isDown); break;
+        case 'ArrowRight': phaserKeyIsDown = Boolean(this.cursors?.right && this.cursors.right.isDown); break;
+        case 'ShiftLeft':
+        case 'ShiftRight':
+          phaserKeyIsDown = Boolean(
+            (this.keyShift && this.keyShift.isDown) ||
+            (this.cursors?.shift && this.cursors.shift.isDown)
+          );
+          break;
+      }
+
+      // Tự động xóa mã phím nếu phím Phaser tương ứng là false,
+      // hoặc không nhận được sự kiện keydown/repeat mới sau 450ms khi phát hiện có dấu hiệu IME
+      if (!phaserKeyIsDown || (this.hasRecentIMEEvent && timeSinceLastActivity > 450)) {
+        this.releasePhysicalCode(code);
+      }
+    }
+
     // Xử lý di chuyển nếu không đang bị khóa hành động
     if (!this.isActionLocked()) {
       this.handleMovement();
@@ -846,24 +903,38 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     if (up) moveY -= 1;
     if (down) moveY += 1;
 
-    // C4-13-18: Quản lý thể lực chạy nhanh & trạng thái Kiệt Sức (Exhaustion)
+    // C4-13-18 & C4-132-01: Quản lý thể lực chạy nhanh & chu trình Kiệt Sức (Exhaustion) chuẩn hóa
     const shiftDown =
       this.isPhysicalCodeDown('ShiftLeft') ||
       this.isPhysicalCodeDown('ShiftRight') ||
       Boolean(this.keyShift && this.keyShift.isDown) ||
       Boolean(this.cursors && this.cursors.shift && this.cursors.shift.isDown);
-    const wantsToSprint = shiftDown && (moveX !== 0 || moveY !== 0);
+    const isMoving = moveX !== 0 || moveY !== 0;
+    const wantsToSprint = shiftDown && isMoving;
+
+    // C4-132-01: Khi người chơi nhả phím Shift, giải phóng cờ bắt buộc nhả Shift
+    if (!shiftDown) {
+      this._requireShiftReleaseAfterExhaust = false;
+    }
 
     if (this.stats.stamina <= 0) {
       if (!this._isStaminaExhausted) {
         this._isStaminaExhausted = true;
-        const uiScene = this.scene.scene.get('UIScene') as any;
-        if (uiScene && typeof uiScene.showPopupMessage === 'function') {
-          uiScene.showPopupMessage('Kiệt sức! Cần nghỉ lấy hơi...');
+        this._requireShiftReleaseAfterExhaust = true;
+        const now = Date.now();
+        if (now - this.lastExhaustPopupTime >= 4000) {
+          this.lastExhaustPopupTime = now;
+          const uiScene = this.scene.scene.get('UIScene') as any;
+          if (uiScene && typeof uiScene.showPopupMessage === 'function') {
+            uiScene.showPopupMessage('Kiệt sức! Cần nghỉ lấy hơi...');
+          }
         }
       }
     } else if (this._isStaminaExhausted && this.stats.stamina >= 25) {
-      this._isStaminaExhausted = false;
+      // C4-132-01: Chỉ mở khóa khi đạt ĐỒNG THỜI: (stamina >= 30) VÀ (!this._requireShiftReleaseAfterExhaust)
+      if (this.stats.stamina >= 30 && !this._requireShiftReleaseAfterExhaust) {
+        this._isStaminaExhausted = false;
+      }
     }
 
     const canSprint = wantsToSprint && !this._isStaminaExhausted && this.stats.stamina > 0;
@@ -1084,6 +1155,27 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
 
     // C4-13-08: Phát âm thanh vung gậy tấn công cận chiến
     AudioManager.getInstance().playAttackSwing();
+
+    // C4-132-01: Tính toán vùng quét tấn công phía trước mặt nhân vật (bán kính 42px)
+    let hitX = this.x;
+    let hitY = this.y;
+    const reach = 28;
+    switch (this.facing) {
+      case 'left': hitX -= reach; break;
+      case 'right': hitX += reach; break;
+      case 'up': hitY -= reach; break;
+      case 'down': hitY += reach; break;
+    }
+
+    // Phát sự kiện để GameScene xử lý âm thanh cảnh báo và quét va chạm thực thể
+    this.emit('player_attack', {
+      x: hitX,
+      y: hitY,
+      radius: 42,
+      facing: this.facing,
+      playerX: this.x,
+      playerY: this.y
+    });
 
     const wayfarerKey = `wayfarer_attack_${this.facing}`;
     const satyrKey = `satyr_attack_${this.facing}`;
