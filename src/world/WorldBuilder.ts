@@ -184,21 +184,24 @@ export class WorldBuilder {
   private renderFogCrossingTerrain(bounds: { x: number; y: number; width: number; height: number }): void {
     const texKey = 'fog_crossing_ground_baked_v12';
     if (!this.scene.textures.exists(texKey)) {
-      const canvasTex = this.scene.textures.createCanvas(texKey, bounds.width, bounds.height);
+      // C4-134-01: Mở rộng Canvas với overlapPadding = 44px (x: 0..524) để chờm chồng lên ranh giới Bellhollow (x: 480), xóa sạch 100% khe hở 1px
+      const overlapPadding = 44;
+      const totalWidth = bounds.width + overlapPadding;
+      const canvasTex = this.scene.textures.createCanvas(texKey, totalWidth, bounds.height);
       if (canvasTex) {
         const ctx = canvasTex.getContext();
         ctx.imageSmoothingEnabled = false;
 
         // 1. Nền cỏ rừng sương mù tối màu có chiều sâu (không lặp ô xanh ô-liu đơn điệu)
         ctx.fillStyle = '#263326';
-        ctx.fillRect(0, 0, bounds.width, bounds.height);
+        ctx.fillRect(0, 0, totalWidth, bounds.height);
 
         const grassImg = this.scene.textures.get(TILE_FOREST_GRASS).getSourceImage() as HTMLImageElement | HTMLCanvasElement;
         if (grassImg && grassImg.width > 0) {
           ctx.save();
           ctx.globalAlpha = 0.35;
           for (let gy = 0; gy < bounds.height; gy += 32) {
-            for (let gx = 0; gx < bounds.width; gx += 32) {
+            for (let gx = 0; gx < totalWidth; gx += 32) {
               ctx.drawImage(grassImg, gx, gy, 32, 32);
             }
           }
@@ -210,13 +213,13 @@ export class WorldBuilder {
         topGrad.addColorStop(0, 'rgba(12, 18, 14, 0.82)');
         topGrad.addColorStop(1, 'rgba(12, 18, 14, 0)');
         ctx.fillStyle = topGrad;
-        ctx.fillRect(0, 0, bounds.width, 95);
+        ctx.fillRect(0, 0, totalWidth, 95);
 
         const botGrad = ctx.createLinearGradient(0, bounds.height - 95, 0, bounds.height);
         botGrad.addColorStop(0, 'rgba(12, 18, 14, 0)');
         botGrad.addColorStop(1, 'rgba(12, 18, 14, 0.82)');
         ctx.fillStyle = botGrad;
-        ctx.fillRect(0, bounds.height - 95, bounds.width, 95);
+        ctx.fillRect(0, bounds.height - 95, totalWidth, 95);
 
         // Thảm rêu và bụi cỏ tự nhiên rải rác
         let seed = 104729;
@@ -224,8 +227,8 @@ export class WorldBuilder {
           seed = (seed * 1664525 + 1013904223) >>> 0;
           return seed / 4294967296;
         };
-        for (let i = 0; i < 240; i++) {
-          const px = Math.floor(nextRand() * bounds.width);
+        for (let i = 0; i < 260; i++) {
+          const px = Math.floor(nextRand() * totalWidth);
           const py = Math.floor(nextRand() * bounds.height);
           const w = 4 + Math.floor(nextRand() * 8);
           const h = 3 + Math.floor(nextRand() * 5);
@@ -239,12 +242,12 @@ export class WorldBuilder {
           if (x <= 240) {
             return 184 + Math.sin(x * 0.025) * 4;
           }
-          const t = (x - 240) / 240; // 0..1 từ x=240 đến x=480
+          const t = Math.min(1.0, (x - 240) / 240); // 0..1 từ x=240 đến x=480, giữ ổn định ở 232 khi x >= 480
           const smooth = t * t * (3 - 2 * t);
           return 184 + smooth * 48; // 184 -> 232 tại x=480
         };
 
-        for (let x = 0; x < bounds.width; x += 2) {
+        for (let x = 0; x < totalWidth; x += 2) {
           const cy = Math.round(trailCenterY(x));
           const halfW = 22 + Math.round(Math.sin(x * 0.07) * 2);
 
@@ -266,8 +269,8 @@ export class WorldBuilder {
         }
 
         // Sỏi đá nhỏ và đá bước chân dọc lối mòn
-        for (let i = 0; i < 140; i++) {
-          const px = Math.floor(nextRand() * bounds.width);
+        for (let i = 0; i < 150; i++) {
+          const px = Math.floor(nextRand() * totalWidth);
           const cy = trailCenterY(px);
           const offset = (nextRand() - 0.5) * 38;
           const py = Math.round(cy + offset);
@@ -275,8 +278,8 @@ export class WorldBuilder {
           ctx.fillRect(px, py, 2 + Math.floor(nextRand() * 2), 2);
         }
 
-        // Bậc đá cổ dẫn vào cổng Tây làng ở x = 452..480
-        for (let sx = 452; sx < 480; sx += 7) {
+        // Bậc đá cổ dẫn vào cổng Tây làng ở x = 452..515
+        for (let sx = 452; sx < totalWidth - 5; sx += 7) {
           const sy = Math.round(trailCenterY(sx));
           ctx.fillStyle = '#545b61';
           ctx.fillRect(sx, sy - 16, 5, 32);
@@ -5881,6 +5884,9 @@ export class WorldBuilder {
    * xóa bỏ hoàn toàn đường cắt thẳng đứng "hai thái cực" chia đôi màn hình.
    */
   private renderZoneBoundaryTransitions(): void {
+    // 0. C4-134-01: RANH GIỚI FOG CROSSING <-> BELLHOLLOW (x = 480, Dải tiếp giáp 100px: 430..530)
+    this.renderFogCrossingToVillageTransition(480);
+
     // 1. RANH GIỚI CROOKED PATH <-> SILENT MIRE (x = 2880, Dải tiếp giáp 200px: 2780..2980)
     this.renderCrookedPathToMireTransition(2880);
 
@@ -5889,6 +5895,73 @@ export class WorldBuilder {
 
     // 3. RANH GIỚI BELLHOLLOW <-> CROOKED PATH (x = 1600, Dải tiếp giáp 180px: 1510..1690)
     this.renderVillageToForestTransition(1600);
+  }
+
+  /**
+   * C4-134-01: Dải chuyển tiếp địa hình tự nhiên giữa Lối Mòn Xuyên Sương (Fog Crossing) và Làng Chuông (Bellhollow) tại x = 480.
+   * Xóa sạch 100% khe hở 1px dưới camera zoom 2.2x và xóa cảm giác bị cắt đôi theo đường thẳng.
+   */
+  private renderFogCrossingToVillageTransition(seamX: number): void {
+    // 1. Mảng cỏ rêu đan xen và dải phủ ranh giới (Seam Cover Strip - depth -90)
+    const turfGfx = this.scene.add.graphics();
+    turfGfx.setDepth(-90);
+
+    // Mảng rêu và cỏ rừng phía Bắc lối đi (y: 60..200)
+    turfGfx.fillStyle(0x233324, 0.76);
+    turfGfx.fillEllipse(seamX - 15, 95, 120, 48);
+    turfGfx.fillStyle(0x2a3d28, 0.70);
+    turfGfx.fillEllipse(seamX + 20, 135, 110, 42);
+    turfGfx.fillStyle(0x203020, 0.82);
+    turfGfx.fillEllipse(seamX - 10, 180, 100, 36);
+
+    // Mảng rêu và cỏ rừng phía Nam lối đi (y: 260..360)
+    turfGfx.fillStyle(0x223222, 0.78);
+    turfGfx.fillEllipse(seamX + 10, 280, 110, 44);
+    turfGfx.fillStyle(0x283b27, 0.72);
+    turfGfx.fillEllipse(seamX - 20, 320, 120, 46);
+    turfGfx.fillStyle(0x1e2d1f, 0.85);
+    turfGfx.fillEllipse(seamX + 15, 350, 130, 48);
+
+    // Dải chuyển tiếp mặt đường Transition Blend Strip (rộng 100px: seamX - 50 .. seamX + 50, y: 206..258)
+    // Nối liền mạch nền đất nâu ấm từ Fog Crossing sang đường đá cuội của Bellhollow
+    turfGfx.fillStyle(0x453424, 0.65);
+    turfGfx.fillRect(seamX - 50, 210, 100, 44);
+    turfGfx.fillStyle(0x5a4430, 0.55);
+    turfGfx.fillRect(seamX - 35, 216, 70, 32);
+    turfGfx.fillStyle(0x6e533b, 0.45);
+    turfGfx.fillRect(seamX - 20, 222, 40, 20);
+
+    this.registerCullable(turfGfx, seamX, 230, 200);
+
+    // 2. Đá lát cổ, đá cuội và sỏi bước chân bắc cầu qua ranh giới (depth -88)
+    const stonesGfx = this.scene.add.graphics();
+    stonesGfx.setDepth(-88);
+    const borderStones = [
+      { x: seamX - 32, y: 216, w: 10, h: 6, c: 0x545b61 },
+      { x: seamX - 12, y: 214, w: 12, h: 7, c: 0x626a71 },
+      { x: seamX + 10, y: 215, w: 11, h: 6, c: 0x586066 },
+      { x: seamX + 28, y: 218, w: 9, h: 5, c: 0x4e555b },
+      { x: seamX - 25, y: 248, w: 11, h: 6, c: 0x565d63 },
+      { x: seamX - 6, y: 250, w: 13, h: 7, c: 0x656c73 },
+      { x: seamX + 16, y: 247, w: 10, h: 6, c: 0x596168 },
+      { x: seamX + 34, y: 249, w: 8, h: 5, c: 0x4f565c },
+      // Phiến đá bước chân ở lòng đường
+      { x: seamX - 18, y: 232, w: 14, h: 8, c: 0x687077 },
+      { x: seamX + 8, y: 231, w: 16, h: 9, c: 0x727b82 }
+    ];
+    for (const st of borderStones) {
+      stonesGfx.fillStyle(0x101713, 0.45);
+      stonesGfx.fillEllipse(st.x + 1, st.y + 2, st.w + 2, st.h);
+      stonesGfx.fillStyle(st.c, 1);
+      stonesGfx.fillRoundedRect(st.x - Math.round(st.w / 2), st.y - Math.round(st.h / 2), st.w, st.h, 2);
+    }
+    this.registerCullable(stonesGfx, seamX, 230, 200);
+
+    // 3. Bụi cây tự nhiên che chắn hai bên mép đường (y ~ 205 và y ~ 265)
+    this.createDenseBush(seamX - 22, 202);
+    this.createDenseBush(seamX + 22, 206);
+    this.createDenseBush(seamX - 18, 264);
+    this.createDenseBush(seamX + 24, 268);
   }
 
   /**

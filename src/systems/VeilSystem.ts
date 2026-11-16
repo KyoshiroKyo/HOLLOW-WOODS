@@ -12,10 +12,16 @@ export class VeilSystem {
   private fogLayerMid: Phaser.GameObjects.TileSprite;
   private fogLayerHigh: Phaser.GameObjects.TileSprite;
 
+  // C4-134-01: Lớp sương huyền ảo màu hồng ban mai (Mystical Pastel/Morning Pink Mist) tại phân khu khởi đầu
+  private fogLayerPinkDawn: Phaser.GameObjects.TileSprite;
+  private fogLayerPinkGlow: Phaser.GameObjects.TileSprite;
+
   // Biến tích lũy trôi dạt tự nhiên (Autonomous Drift)
   private driftGroundX: number = 0;
   private driftMidX: number = 0;
   private driftHighX: number = 0;
+  private driftPinkDawnX: number = 0;
+  private driftPinkGlowX: number = 0;
 
   // C4-13-20: Màn sương chuyển cảnh mượt mà khi bước qua ranh giới phân khu chính (Mist Fade Transition ~0.35s)
   private transitionMistOverlay: Phaser.GameObjects.Graphics;
@@ -67,6 +73,26 @@ export class VeilSystem {
     this.fogLayerHigh.setAlpha(0.14);
     this.fogLayerHigh.setTileScale(1.55, 1.45);
 
+    // 4. C4-134-01: TẦNG SƯƠNG HỒNG BAN MAI (Morning Pink Mist - Depth -38)
+    // Phủ lên mặt đất phân khu khởi đầu Fog Crossing, tạo không gian huyền ảo lung linh
+    this.fogLayerPinkDawn = scene.add.tileSprite(0, 0, 1280, 720, SPRITE_FOG_SMOOTH);
+    this.fogLayerPinkDawn.setOrigin(0, 0);
+    this.fogLayerPinkDawn.setScrollFactor(0);
+    this.fogLayerPinkDawn.setDepth(-38);
+    this.fogLayerPinkDawn.setTint(0xff94b8);
+    this.fogLayerPinkDawn.setAlpha(0.48);
+    this.fogLayerPinkDawn.setTileScale(1.2, 1.15);
+
+    // 5. C4-134-01: TẦNG ÁNH SƯƠNG HỒNG HUYỀN ẢO (Mystical Pink Glow - Depth 455)
+    // Tầng sương lững lờ lưng chừng thân cây và tán lá
+    this.fogLayerPinkGlow = scene.add.tileSprite(0, 0, 1280, 720, SPRITE_FOG_SMOOTH);
+    this.fogLayerPinkGlow.setOrigin(0, 0);
+    this.fogLayerPinkGlow.setScrollFactor(0);
+    this.fogLayerPinkGlow.setDepth(455);
+    this.fogLayerPinkGlow.setTint(0xf472b6);
+    this.fogLayerPinkGlow.setAlpha(0.34);
+    this.fogLayerPinkGlow.setTileScale(1.3, 1.25);
+
     this.distortionOverlay = scene.add.graphics();
     this.distortionOverlay.setScrollFactor(0);
     this.distortionOverlay.setDepth(5600);
@@ -90,7 +116,7 @@ export class VeilSystem {
     this.transitionMistOverlay.fillRect(0, 0, 1280, 720);
   }
 
-  public update(time: number, delta: number, inDeepFogZone: boolean, zoneId?: string): void {
+  public update(time: number, delta: number, inDeepFogZone: boolean, zoneId?: string, playerX?: number): void {
     const dt = delta / 1000;
     const composure = this.playerState.stats.composure;
     const isLanternOn = this.playerState.stats.isLanternOn;
@@ -102,6 +128,8 @@ export class VeilSystem {
     this.driftGroundX += 12 * dt;
     this.driftMidX += 19 * dt;
     this.driftHighX += 7 * dt;
+    this.driftPinkDawnX += 14 * dt;
+    this.driftPinkGlowX += 9 * dt;
 
     // Cuộn sương Parallax đồng bộ chuyển động Camera
     this.fogLayerGround.tilePositionX = (camScrollX * 0.15) + this.driftGroundX;
@@ -112,6 +140,54 @@ export class VeilSystem {
 
     this.fogLayerHigh.tilePositionX = (camScrollX * 0.55) + this.driftHighX;
     this.fogLayerHigh.tilePositionY = (camScrollY * 0.55) + 2 * Math.sin(time * 0.0005);
+
+    // Cuộn sương hồng Parallax
+    this.fogLayerPinkDawn.tilePositionX = (camScrollX * 0.20) + this.driftPinkDawnX;
+    this.fogLayerPinkDawn.tilePositionY = (camScrollY * 0.20) + 2.5 * Math.sin(time * 0.0008);
+
+    this.fogLayerPinkGlow.tilePositionX = (camScrollX * 0.40) + this.driftPinkGlowX;
+    this.fogLayerPinkGlow.tilePositionY = (camScrollY * 0.40) - 2.0 * Math.cos(time * 0.0006);
+
+    // Tính toán độ đậm nhạt & đổi màu của sương hồng theo phong cách "Con đường sương mù" Doraemon:
+    // Tại điểm xuất phát / cửa ngõ (x <= 160): sương mù phủ dày đặc (alpha: 0.48, tone hồng/tím sương mai 0xFF94B8 / 0xF472B6)
+    // Khi nhân vật tiến sâu dần về phía làng Bellhollow (x: 160 -> 560):
+    // Lớp sương tự động giảm độ đậm (alpha từ 0.48 xuống 0.05 rồi tan dần) và chuyển sắc sang tone sương đêm tự nhiên (0x1a2620)
+    let pinkFactor = 0;
+    if (playerX !== undefined) {
+      if (playerX <= 160) {
+        pinkFactor = 1.0;
+      } else if (playerX < 560) {
+        pinkFactor = (560 - playerX) / 400; // Giảm đều từ 1.0 -> 0.0
+      } else {
+        pinkFactor = 0;
+      }
+    } else if (zoneId === 'fog_crossing') {
+      pinkFactor = 1.0;
+    }
+
+    // Đổi màu chuyển sắc từ tone hồng sương mai / tím khói sang tone sương đêm tự nhiên (0x1a2620)
+    const dawnR = Math.round(Phaser.Math.Linear(0x1a, 0xff, pinkFactor));
+    const dawnG = Math.round(Phaser.Math.Linear(0x26, 0x94, pinkFactor));
+    const dawnB = Math.round(Phaser.Math.Linear(0x20, 0xb8, pinkFactor));
+    this.fogLayerPinkDawn.setTint((dawnR << 16) | (dawnG << 8) | dawnB);
+
+    const glowR = Math.round(Phaser.Math.Linear(0x18, 0xf4, pinkFactor));
+    const glowG = Math.round(Phaser.Math.Linear(0x24, 0x72, pinkFactor));
+    const glowB = Math.round(Phaser.Math.Linear(0x1d, 0xb6, pinkFactor));
+    this.fogLayerPinkGlow.setTint((glowR << 16) | (glowG << 8) | glowB);
+
+    // Alpha giảm mượt từ 0.48 xuống 0.05 theo pinkFactor
+    let targetPinkDawnAlpha = pinkFactor > 0 ? (0.05 + 0.43 * pinkFactor) : 0;
+    let targetPinkGlowAlpha = pinkFactor > 0 ? (0.03 + 0.31 * pinkFactor) : 0;
+
+    // Khi bật Đèn Lồng [F]: ánh sáng đèn khoét thủng và làm sương tản bớt ra xung quanh
+    if (isLanternOn) {
+      targetPinkDawnAlpha *= 0.65;
+      targetPinkGlowAlpha *= 0.55;
+    }
+
+    this.fogLayerPinkDawn.alpha = Phaser.Math.Linear(this.fogLayerPinkDawn.alpha, targetPinkDawnAlpha, 0.05);
+    this.fogLayerPinkGlow.alpha = Phaser.Math.Linear(this.fogLayerPinkGlow.alpha, targetPinkGlowAlpha, 0.05);
 
     // 2. C4-13-06: Phân tầng độ đậm nhạt chuyển tiếp tự nhiên theo vùng không gian
     let targetAlphaGround = 0.24;
@@ -264,6 +340,8 @@ export class VeilSystem {
     this.fogLayerGround.destroy();
     this.fogLayerMid.destroy();
     this.fogLayerHigh.destroy();
+    this.fogLayerPinkDawn.destroy();
+    this.fogLayerPinkGlow.destroy();
   }
 }
 

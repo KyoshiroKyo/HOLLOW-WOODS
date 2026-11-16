@@ -116,6 +116,7 @@ export class GameScene extends Phaser.Scene {
 
   // C4-12-27: Quản lý chuyển vùng thế giới, chống kích hoạt lặp (debounce/cooldown) và ổn định camera
   private transitionCooldown: number = 0;
+  private transitionCooldownUntil: number = 0;
   private isTransitioning: boolean = false;
   private lastTransitionId: string | null = null;
   // C4-13-19: Khống chế thời gian chờ (cooldown 4 giây) và chống nháy/chống lặp banner phân khu
@@ -1234,7 +1235,7 @@ export class GameScene extends Phaser.Scene {
 
     // Cập nhật The Veil (Màn Sương) và hiệu ứng tâm lý (PASS G3 & C4-12-30)
     if (!this.endingSystem || !this.endingSystem.isEndingActive) {
-      this.veilSystem.update(time, delta, inDeepFog, this.currentZoneId);
+      this.veilSystem.update(time, delta, inDeepFog, this.currentZoneId, this.player ? this.player.x : undefined);
     }
 
     // Cập nhật âm thanh khí quyển & hiệu ứng lọc The Veil (PASS G5)
@@ -1739,14 +1740,40 @@ export class GameScene extends Phaser.Scene {
   }
 
   /**
-   * C4-12-27: Kiểm tra va chạm với các Trigger chuyển vùng (có cơ chế Debounce/Cooldown)
+   * C4-134-01: Kiểm tra xem 2 phân khu có phải là cặp liền kề liên tục trên bản đồ thế giới hay không
+   */
+  private isSeamlessAdjacentTransition(fromZone: string, toZone: string): boolean {
+    const seamlessPairs = new Set([
+      'fog_crossing:bellhollow',
+      'bellhollow:fog_crossing',
+      'bellhollow:sanctuary_farm',
+      'sanctuary_farm:bellhollow',
+      'bellhollow:outer_woods',
+      'outer_woods:bellhollow',
+      'sanctuary_farm:outer_woods',
+      'outer_woods:sanctuary_farm',
+      'bellhollow:crooked_path',
+      'crooked_path:bellhollow',
+      'outer_woods:crooked_path',
+      'crooked_path:outer_woods',
+      'crooked_path:silent_mire',
+      'silent_mire:crooked_path',
+      'silent_mire:broken_bell_shrine',
+      'broken_bell_shrine:silent_mire'
+    ]);
+    return seamlessPairs.has(`${fromZone}:${toZone}`);
+  }
+
+  /**
+   * C4-12-27 & C4-134-01: Kiểm tra va chạm với các Trigger chuyển vùng (có cơ chế Debounce/Cooldown & Lockout)
    */
   public checkZoneTransitions(delta: number): void {
     if (this.transitionCooldown > 0) {
       this.transitionCooldown -= delta;
     }
 
-    if (this.isTransitioning || this.transitionCooldown > 0) {
+    const now = performance.now();
+    if (this.isTransitioning || this.transitionCooldown > 0 || now < this.transitionCooldownUntil) {
       return;
     }
 
@@ -1762,6 +1789,9 @@ export class GameScene extends Phaser.Scene {
 
     // Duyệt qua tất cả các transitions đã nạp trong WorldBuilder
     for (const trans of this.worldBuilder.transitions) {
+      // Chỉ kích hoạt trigger thuộc về phân khu người chơi đang đứng
+      if (trans.fromZone !== this.currentZoneId) continue;
+
       const trig = trans.triggerRect;
       if (
         footPos.x >= trig.x &&
@@ -1776,10 +1806,11 @@ export class GameScene extends Phaser.Scene {
   }
 
   /**
-   * C4-12-27: Thực thi chuyển vùng an toàn hoặc đẩy lùi nếu đang khóa
+   * C4-12-27 & C4-134-01: Thực thi chuyển vùng an toàn hoặc đẩy lùi nếu đang khóa
    */
   public executeTransition(trans: TransitionZone): void {
-    if (this.isTransitioning || this.transitionCooldown > 0) return;
+    const now = performance.now();
+    if (this.isTransitioning || this.transitionCooldown > 0 || now < this.transitionCooldownUntil) return;
 
     const gating = WorldGatingSystem.getInstance();
     const isUnlocked = gating.isZoneUnlocked(trans.toZone, this.playerState);
@@ -1788,6 +1819,7 @@ export class GameScene extends Phaser.Scene {
     // TRƯỜNG HỢP 1: VÙNG ĐÍCH ĐANG KHÓA HOẶC CHỜ HOÀN THIỆN
     if (!isUnlocked || trans.status === 'pending_construction') {
       this.transitionCooldown = 1200; // 1.2s cooldown chống spam
+      this.transitionCooldownUntil = performance.now() + 1200;
       const retPoint = trans.returnPoint || this.worldBuilder.getZone(trans.fromZone)?.defaultSpawn || { x: this.player.x, y: this.player.y };
       this.player.setPosition(retPoint.x, retPoint.y);
       this.player.setVelocity(0, 0);
@@ -1801,9 +1833,56 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    // TRƯỜNG HỢP 2: VÙNG ĐÍCH ĐÃ MỞ — THỰC HIỆN CHUYỂN VÙNG AN TOÀN
+    // TRƯỜNG HỢP 2A: PHÂN KHU LIỀN KỀ LIÊN TỤC (SEAMLESS ADJACENT ZONES)
+    // Giữ nguyên vị trí và vận tốc di chuyển tự nhiên của người chơi (TUYỆT ĐỐI KHÔNG setPosition/reset velocity)
+    if (this.isSeamlessAdjacentTransition(trans.fromZone, trans.toZone)) {
+      this.isTransitioning = true;
+      this.transitionCooldown = 1000;
+      this.transitionCooldownUntil = performance.now() + 1000;
+      this.lastTransitionId = trans.id;
+
+      if (this.veilSystem) {
+        this.veilSystem.triggerZoneTransitionMist(350);
+      }
+      this.worldBuilder.hibernateDistantZoneObjects(trans.toZone);
+
+      this.applyCameraBoundsForZone(trans.toZone);
+      this.worldBuilder.updateCameraCulling(this.cameras.main);
+
+      if (!this.player.stats.isHiding) {
+        this.player.setVisible(true);
+        this.player.setActive(true);
+      }
+
+      this.currentZoneId = trans.toZone;
+      this.previousZoneId = trans.toZone;
+      this.playerState.setCurrentZone(trans.toZone);
+      this.audioManager.setAmbienceZone(trans.toZone);
+
+      const targetZoneData = this.worldBuilder.getZone(trans.toZone);
+      const currentTime = performance.now();
+      if (targetZoneData && this.uiScene && (currentTime - this.lastZoneBannerTime >= 4000) && (trans.toZone !== this.lastBannerZoneId)) {
+        this.lastZoneBannerTime = currentTime;
+        this.lastBannerZoneId = trans.toZone;
+        this.uiScene.showZoneBanner(targetZoneData.atmosphere);
+        this.cameraSystem.shake(100, 0.002);
+      }
+
+      if (!this.isAct5ChaseActive) {
+        const title = targetZoneData?.atmosphere.titleVietnamese || trans.toZone;
+        SaveManager.saveGame(`KHU VỰC: ${title}`, trans.toZone, this.player.x, this.player.y);
+      }
+
+      this.time.delayedCall(200, () => {
+        this.isTransitioning = false;
+      });
+      return;
+    }
+
+    // TRƯỜNG HỢP 2B: CỔNG DỊCH CHUYỂN / PHÂN KHU ĐẶC BIỆT (PORTAL / GATEWAY)
     this.isTransitioning = true;
     this.transitionCooldown = 1500; // 1.5s cooldown chống kích hoạt lặp liên tục
+    this.transitionCooldownUntil = performance.now() + 1500;
     this.lastTransitionId = trans.id;
 
     // C4-13-20: Màn sương chuyển cảnh mượt mà (Mist Fade Transition 0.35s)
@@ -1893,6 +1972,8 @@ export class GameScene extends Phaser.Scene {
 
       // C4-13-20: Tự động đặt trạng thái ngủ đông cho các đối tượng phân khu xa
       this.worldBuilder.hibernateDistantZoneObjects(detectedZone);
+      this.transitionCooldown = 1000;
+      this.transitionCooldownUntil = performance.now() + 1000;
     }
 
     this.currentZoneId = detectedZone;
@@ -2676,6 +2757,16 @@ export class GameScene extends Phaser.Scene {
     if (this.isAct5ChaseActive) {
       fogAlpha = 0.88;
       fogColor = 0x2d122b;
+    } else if (this.currentZoneId === 'fog_crossing' || this.player.x < 560) {
+      // C4-134-01: Hiệu ứng "Con Đường Sương Mù" Doraemon tại Fog Crossing & lối vào làng
+      const fogFactor = Phaser.Math.Clamp((560 - this.player.x) / 400, 0, 1);
+      if (fogFactor > 0) {
+        fogAlpha = Phaser.Math.Linear(activeZone.atmosphere.fogAlpha, 0.48, fogFactor);
+        const cr = Math.round(Phaser.Math.Linear((activeZone.atmosphere.fogColor >> 16) & 0xff, 0x32, fogFactor));
+        const cg = Math.round(Phaser.Math.Linear((activeZone.atmosphere.fogColor >> 8) & 0xff, 0x18, fogFactor));
+        const cb = Math.round(Phaser.Math.Linear(activeZone.atmosphere.fogColor & 0xff, 0x28, fogFactor));
+        fogColor = (cr << 16) | (cg << 8) | cb;
+      }
     }
 
     const cam = this.cameras.main;
