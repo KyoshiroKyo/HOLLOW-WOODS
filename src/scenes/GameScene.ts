@@ -887,7 +887,7 @@ export class GameScene extends Phaser.Scene {
 
     this.npcs.push(garth, edda, neris, bram, finn);
 
-    // C4-13-17: Thiết lập va chạm vật lý giữa SatyrPlayer và toàn bộ NPC làng Bellhollow
+    // C4-13-17 & C4-132-03: Thiết lập va chạm vật lý giữa SatyrPlayer và toàn bộ 5 NPC làng Bellhollow (hộp chân gọn 22x14 px)
     if (this.npcCollider) {
       this.npcCollider.destroy();
       this.npcCollider = undefined;

@@ -2592,6 +2592,12 @@ export class WorldBuilder {
   }
 
   private createDenseBush(x: number, y: number): void {
+    // C4-132-03: Vùng cấm rải chướng ngại vật ngẫu nhiên (Exclusion Zone bán kính 220px quanh tâm Miếu Chuông Vỡ 4500, 250)
+    // đảm bảo tuyệt đối không có bụi cây đè chồng lên giữa Miếu Chuông Vỡ
+    if (Math.hypot(x - 4500, y - 250) < 220) {
+      return;
+    }
+
     const bushKey = (Math.floor(x) % 2 === 0) ? SPRITE_BUSH_DENSE_1 : SPRITE_BUSH_DENSE_2;
     const bush = this.safeAddImage(x, y, bushKey);
     bush.setOrigin(0.5, 0.85);
@@ -3768,6 +3774,12 @@ export class WorldBuilder {
    * Đồng bộ bóng đổ mờ mịn (alpha 0.25) và hitbox vật lý ẩn chuẩn xác.
    */
   private createRock(x: number, y: number, w: number, h: number): void {
+    // C4-132-03: Vùng cấm rải chướng ngại vật ngẫu nhiên (Exclusion Zone bán kính 220px quanh tâm Miếu Chuông Vỡ 4500, 250)
+    // đảm bảo tuyệt đối không có tảng đá lớn (rock_large) hay đá trung đè chồng lên giữa Miếu Chuông Vỡ
+    if (Math.hypot(x + w / 2 - 4500, y + h / 2 - 250) < 220) {
+      return;
+    }
+
     // 1. Bóng đổ mặt đất mịn màng (alpha 0.25) ôm sát chân đá
     const shadow = this.scene.add.graphics();
     shadow.fillStyle(0x000000, 0.25);
@@ -5485,7 +5497,7 @@ export class WorldBuilder {
     this.createHidingRubble(4360, 380); // Khối đá đổ nát che chở shrine_hiding_spot
     this.createHollowTree(4140, 190, 'Hốc Cây Cổ Miếu (Chỗ trốn)');
     this.createDenseBush(4180, 360);   // Bụi rậm ngõ Nam
-    this.createDenseBush(4700, 340);   // Bụi rậm phía Đông
+    this.createDenseBush(4730, 350);   // Bụi rậm phía Đông ngoài sân miếu (C4-132-03)
 
     // 5. Đạo Cụ Kể Chuyện Qua Môi Trường (Environmental Storytelling)
     this.createShrineInscribedStele(4280, 270); // Bia Đá Cổ Miếu Chuông
@@ -6034,8 +6046,8 @@ export class WorldBuilder {
   }
 
   public detectCurrentZone(pos: Point2D): ZoneId {
-    // C4-13-19: Cơ chế vùng đệm trễ vị trí (Hysteresis Margin 80px) chống dao động phân khu lặp lại
-    // Đặc biệt bảo vệ ranh giới giữa Đầm Lầy Tĩnh Lặng và Câu Đố Cổ Ngữ
+    // C4-13-19 & C4-132-03: Cơ chế vùng đệm trễ vị trí (Hysteresis Margin 80px) chống dao động phân khu lặp lại
+    // Đặc biệt bảo vệ ranh giới giữa Đầm Lầy Tĩnh Lặng, Câu Đố Cổ Ngữ và Miếu Chuông Phế Tích
     if (this.activeZoneId === 'ancient_rune_puzzle') {
       const activeZone = this.zones.get('ancient_rune_puzzle');
       if (activeZone) {
@@ -6048,6 +6060,22 @@ export class WorldBuilder {
           pos.y <= b.y + b.height + margin
         ) {
           return 'ancient_rune_puzzle';
+        }
+      }
+    }
+
+    if (this.activeZoneId === 'broken_bell_shrine') {
+      const activeZone = this.zones.get('broken_bell_shrine');
+      if (activeZone) {
+        const b = activeZone.bounds;
+        const margin = 80;
+        if (
+          pos.x >= b.x - margin &&
+          pos.x <= b.x + b.width + margin &&
+          pos.y >= b.y - margin &&
+          pos.y <= b.y + b.height + margin
+        ) {
+          return 'broken_bell_shrine';
         }
       }
     }

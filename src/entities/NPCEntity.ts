@@ -444,6 +444,12 @@ export class NPCEntity extends Phaser.GameObjects.Container {
       (this.body as Phaser.Physics.Arcade.Body).reset(this.x, this.y);
     }
 
+    // C4-132-03: Đồng bộ độ sâu Y-Sorting theo cạnh đáy chân tiếp đất của NPC
+    const targetDepth = Math.floor(this.y);
+    if (this.depth !== targetDepth) {
+      this.setDepth(targetDepth);
+    }
+
     // Đồng bộ vị trí NamePlate và PromptBubble theo NPC
     if (this.namePlate) {
       this.namePlate.setPosition(this.x, this.y - 58);
