@@ -154,18 +154,35 @@ export class WorldGatingSystem {
    */
   public isZoneUnlocked(zoneId: ZoneId, playerState: PlayerState): boolean {
     const rule = this.accessRules.get(zoneId);
-    if (!rule) return true;
+    if (!rule) {
+      console.warn(`[WorldGatingSystem] Phân khu chưa được đăng ký hoặc không xác định: ${zoneId}`);
+      return false;
+    }
 
     // Tầng 1 (Core World): luôn luôn mở tự do
     if (rule.tier === 'LAYER_1_CORE' || rule.conditionType === 'always_unlocked') {
       return true;
     }
 
-    // Tầng 2 (Frontier): Mở khóa khi hoàn thành Q03 / mở Cổng Đông Bellhollow
-    if (zoneId === 'crooked_path' || zoneId === 'deep_forest') {
+    // C4-132-04: Tách riêng quy tắc mở khóa crooked_path và deep_forest (zoneId === 'crooked_path' || zoneId === 'deep_forest')
+    // 1. Tuyến đường mòn The Crooked Path: Mở khóa khi hoàn thành Q03 (chế tạo dầu đèn) hoặc mở Cổng Đông
+    if (zoneId === 'crooked_path') {
       return (
         playerState.hasFlag('craft_lantern_oil_complete') ||
         playerState.hasFlag('east_gate_unlocked') ||
+        playerState.currentQuestId === 'Q04_ANCIENT_RUNES' ||
+        playerState.currentQuestId === 'Q05_SOLVE_MIRE' ||
+        playerState.currentQuestId === 'Q06_RETRIEVE_CLAPPER'
+      );
+    }
+
+    // 2. Khu vực Rừng Sâu Deep Forest: Chỉ mở khi Cổng Đông đã mở VÀ tiến trình đạt từ Q04 trở đi (hoặc có flag deep_forest_unlocked)
+    if (zoneId === 'deep_forest') {
+      const eastGateOpen = this.isZoneUnlocked('crooked_path', playerState);
+      if (!eastGateOpen) return false;
+
+      return (
+        playerState.hasFlag('deep_forest_unlocked') ||
         playerState.currentQuestId === 'Q04_ANCIENT_RUNES' ||
         playerState.currentQuestId === 'Q05_SOLVE_MIRE' ||
         playerState.currentQuestId === 'Q06_RETRIEVE_CLAPPER'
@@ -201,15 +218,15 @@ export class WorldGatingSystem {
       );
     }
 
-    // Kiểm tra quy tắc mở rộng theo điều kiện đăng ký
+    // Kiểm tra quy tắc mở rộng theo điều kiện đăng ký (Fail-Closed nếu không khớp)
     switch (rule.conditionType) {
       case 'item_required': {
-        if (!rule.requiredItem) return true;
+        if (!rule.requiredItem) return false;
         return (playerState.inventory.get(rule.requiredItem) || 0) >= 1;
       }
 
       case 'flag_required': {
-        if (!rule.requiredFlag) return true;
+        if (!rule.requiredFlag) return false;
         return playerState.hasFlag(rule.requiredFlag);
       }
 
@@ -225,12 +242,12 @@ export class WorldGatingSystem {
       }
 
       default:
-        return true;
+        return false;
     }
   }
 
   /**
-   * C4-12-28: Kiểm tra trạng thái cổng chặn thế giới tập trung (Gate Check)
+   * C4-12-28 & C4-132-04: Kiểm tra trạng thái cổng chặn thế giới tập trung (Gate Check)
    */
   public isGateOpen(gateId: string, playerState: PlayerState): boolean {
     switch (gateId) {
@@ -238,8 +255,13 @@ export class WorldGatingSystem {
       case 'gate_bellhollow_east':
         return this.isZoneUnlocked('crooked_path', playerState);
 
+      case 'deep_forest_gate':
+      case 'gate_deep_forest':
+        return this.isZoneUnlocked('deep_forest', playerState);
+
       case 'mire_boundary':
       case 'mire_ward':
+      case 'gate_silent_mire':
         return this.isZoneUnlocked('silent_mire', playerState);
 
       case 'shrine_ward':
@@ -247,7 +269,8 @@ export class WorldGatingSystem {
         return this.isZoneUnlocked('broken_bell_shrine', playerState);
 
       default:
-        return true;
+        console.warn(`[WorldGatingSystem] Cổng không xác định hoặc chưa đăng ký: ${gateId}`);
+        return false;
     }
   }
 
