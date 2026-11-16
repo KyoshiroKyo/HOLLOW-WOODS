@@ -128,6 +128,10 @@ export class GameScene extends Phaser.Scene {
   private firefliesDrawnCount: number = 0;
   private lastMonsterStaggerTime: number = 0;
 
+  // C4-132-02: Bộ đệm phím [E] và phản hồi sưởi ấm Lửa Trại
+  private lastEKeyPressTime: number = 0;
+  private lastWarmthFeedbackTime: number = 0;
+
   constructor() {
     super({ key: SCENE_GAME });
   }
@@ -169,6 +173,8 @@ export class GameScene extends Phaser.Scene {
     this.lastESCTime = 0;
     this.lastMuteTime = 0;
     this.lastMonsterStaggerTime = 0;
+    this.lastEKeyPressTime = 0;
+    this.lastWarmthFeedbackTime = 0;
   }
 
   public create(): void {
@@ -1207,6 +1213,17 @@ export class GameScene extends Phaser.Scene {
     const inDeepFog = this.currentZoneId === 'fog_crossing' || this.currentZoneId === 'silent_mire' || this.currentZoneId === 'deep_forest' || this.isAct5ChaseActive;
     this.survivalSystem.update(dt, this.player.x, this.player.y, inDeepFog);
 
+    // C4-132-02: Thông báo phản hồi nhẹ nhàng khi người chơi đứng sưởi ấm bên lửa trại hồi phục
+    if (this.survivalSystem.isNearWarmth(this.player.x, this.player.y)) {
+      const now = Date.now();
+      if (!this.lastWarmthFeedbackTime || now - this.lastWarmthFeedbackTime > 12000) {
+        this.lastWarmthFeedbackTime = now;
+        if (this.uiScene) {
+          this.uiScene.showPopupMessage('🔥 Hơi ấm lửa trại đang xoa dịu vết thương và tâm trí...');
+        }
+      }
+    }
+
     // Cập nhật The Veil (Màn Sương) và hiệu ứng tâm lý (PASS G3 & C4-12-30)
     if (!this.endingSystem || !this.endingSystem.isEndingActive) {
       this.veilSystem.update(time, delta, inDeepFog, this.currentZoneId);
@@ -1998,6 +2015,12 @@ export class GameScene extends Phaser.Scene {
     const px = this.player.x;
     const py = this.player.y;
 
+    // C4-132-02: Ghi nhận thời điểm bấm [E] với bộ đệm (input buffer) 150ms để vừa chạy tới vừa bấm là kích hoạt ngay
+    if (this.player.isInteractRequested()) {
+      this.lastEKeyPressTime = Date.now();
+    }
+    const isEBuffered = (Date.now() - this.lastEKeyPressTime) <= 150;
+
     interface InteractionCandidate {
       dist: number;
       triggerDist: number;
@@ -2010,19 +2033,22 @@ export class GameScene extends Phaser.Scene {
 
     const candidates: InteractionCandidate[] = [];
 
-    // 1. Kiểm tra NPC gần
+    // 1. Kiểm tra NPC gần (triggerDist: 52px, quét gợi ý: 65px)
     for (const npc of this.npcs) {
       npc.update(delta);
       const dist = Math.hypot(px - npc.x, py - npc.y);
       const isNear = dist <= 65;
       npc.setNearby(isNear, px, py, dist);
       if (isNear) {
-        const isWithinInteractRange = dist <= 38;
-        const proximityAlpha = isWithinInteractRange ? 1.0 : 0.45;
+        const triggerDist = 52;
+        const isWithinInteractRange = dist <= triggerDist;
+        const proximityAlpha = isWithinInteractRange ? 0.9 : 0.35; // proximityAlpha = isWithinInteractRange ? 1.0 : 0.45;
+        const baseName = `Trò chuyện với ${npc.spec.name} (${npc.spec.title})`;
+        const promptText = isWithinInteractRange ? `[E] ${baseName}` : baseName;
         candidates.push({
           dist,
-          triggerDist: 38,
-          promptText: `[E] Trò chuyện với ${npc.spec.name} (${npc.spec.title})`,
+          triggerDist,
+          promptText,
           x: npc.x,
           y: npc.y - 50,
           proximityAlpha,
@@ -2063,16 +2089,19 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    // 2. Kiểm tra mỏ tài nguyên gần
+    // 2. Kiểm tra mỏ tài nguyên gần (triggerDist: 50px, quét gợi ý: 65px)
     const nearbyResource = this.inventorySystem.getNearbyAvailableNode(px, py, 65);
     if (nearbyResource) {
       const resDist = Math.hypot(px - nearbyResource.x, py - nearbyResource.y);
-      const isWithinHarvestRange = resDist <= InventorySystem.DEFAULT_INTERACTION_RADIUS;
-      const proximityAlpha = isWithinHarvestRange ? 1.0 : 0.45;
+      const resTriggerDist = 50;
+      const isWithinHarvestRange = resDist <= resTriggerDist;
+      const proximityAlpha = isWithinHarvestRange ? 0.9 : 0.35; // isWithinHarvestRange ? 1.0 : 0.45
+      const baseName = `Thu thập ${nearbyResource.itemName} (x${nearbyResource.count})`;
+      const promptText = isWithinHarvestRange ? `[E] ${baseName}` : baseName;
       candidates.push({
         dist: resDist,
-        triggerDist: InventorySystem.DEFAULT_INTERACTION_RADIUS,
-        promptText: `[E] Thu thập ${nearbyResource.itemName} (x${nearbyResource.count})`,
+        triggerDist: resTriggerDist,
+        promptText,
         x: nearbyResource.x,
         y: nearbyResource.y,
         proximityAlpha,
@@ -2082,7 +2111,7 @@ export class GameScene extends Phaser.Scene {
           const harvestResult = this.inventorySystem.checkHarvestNearby(
             px,
             py,
-            InventorySystem.DEFAULT_INTERACTION_RADIUS
+            resTriggerDist
           );
           const nowQ03T1Done =
             this.playerState.quests.get('Q03_PREPARE_RESOURCES')?.tasks.find(t => t.id === 't1')?.done ?? false;
@@ -2101,19 +2130,23 @@ export class GameScene extends Phaser.Scene {
       });
     }
 
-    // 2.5. Kiểm tra các ô đất trồng thảo dược tại Sanctuary Farm
+    // 2.5. Kiểm tra các ô đất trồng thảo dược tại Sanctuary Farm (triggerDist: 52px, quét gợi ý: 65px)
     if (this.currentZoneId === 'bellhollow' || this.currentZoneId === 'sanctuary_farm') {
       const nearbyPlot = this.farmingSystem.checkNearbyPlot(px, py, 65);
       if (nearbyPlot) {
         const plotDist = Math.hypot(px - nearbyPlot.x, py - nearbyPlot.y);
-        const isWithinPlotRange = plotDist <= FarmingSystem.INTERACTION_RADIUS;
+        const plotTriggerDist = 52;
+        const isWithinPlotRange = plotDist <= plotTriggerDist;
+        const rawPrompt = this.farmingSystem.getPlotPrompt(nearbyPlot);
+        const basePlotName = rawPrompt.replace(/^\[E\]\s*/, '');
+        const promptText = isWithinPlotRange ? `[E] ${basePlotName}` : basePlotName;
         candidates.push({
           dist: plotDist,
-          triggerDist: FarmingSystem.INTERACTION_RADIUS,
-          promptText: this.farmingSystem.getPlotPrompt(nearbyPlot),
+          triggerDist: plotTriggerDist,
+          promptText,
           x: nearbyPlot.x,
           y: nearbyPlot.y,
-          proximityAlpha: isWithinPlotRange ? 1.0 : 0.45,
+          proximityAlpha: isWithinPlotRange ? 0.9 : 0.35,
           action: () => {
             this.player.playGather();
             this.farmingSystem.interactWithPlot(nearbyPlot.id, (feedbackMsg: string) => {
@@ -2126,18 +2159,22 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    // 3. Kiểm tra các vật thể, Bàn Chế Tạo và câu đố trên bản đồ
+    // 3. Kiểm tra các vật thể, Bàn Chế Tạo và câu đố trên bản đồ (triggerDist: 52px, quét gợi ý: 65px)
     const nearbyProximity = this.worldBuilder.checkInteractableProximity(this.player.getFootPosition(), 65);
     if (nearbyProximity) {
       const { item: nearby, dist } = nearbyProximity;
-      const isWithinActionRange = dist <= 42;
+      const worldTriggerDist = 52;
+      const isWithinActionRange = dist <= worldTriggerDist;
+      const rawPrompt = nearby.promptText;
+      const baseWorldName = rawPrompt.replace(/^\[E\]\s*/, '');
+      const promptText = isWithinActionRange ? `[E] ${baseWorldName}` : baseWorldName;
       candidates.push({
         dist,
-        triggerDist: 42,
-        promptText: nearby.promptText,
+        triggerDist: worldTriggerDist,
+        promptText,
         x: nearby.x,
         y: nearby.y,
-        proximityAlpha: isWithinActionRange ? 1.0 : 0.45,
+        proximityAlpha: isWithinActionRange ? 0.9 : 0.35,
         action: () => {
           this.executeMapInteraction(nearby.actionId, nearby.name);
         }
@@ -2160,7 +2197,8 @@ export class GameScene extends Phaser.Scene {
       this.uiScene.setInteractionPrompt(best.promptText, best.x, best.y, best.proximityAlpha);
     }
 
-    if (isWithinActionRange && this.player.isInteractRequested() && !this.dialogueSystem.isActive) {
+    if (isWithinActionRange && isEBuffered && !this.dialogueSystem.isActive) {
+      this.lastEKeyPressTime = 0;
       best.action();
     }
   }

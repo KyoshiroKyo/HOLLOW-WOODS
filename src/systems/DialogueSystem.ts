@@ -62,6 +62,9 @@ export class DialogueSystem {
   }
 
   public startDialogue(dialogueKey: string): void {
+    // C4-132-02: Khóa cứng sự kiện tua thoại trong 260ms đầu tiên để cú nhấn [E] mở thoại không bao giờ nuốt mất câu số 1
+    this.lastAdvanceTime = Date.now();
+
     const rawData = (dialoguesData.dialogues as Record<string, DialoguePayload>)[dialogueKey];
     if (!rawData) {
       console.warn(`Không tìm thấy đoạn hội thoại: ${dialogueKey}`);
@@ -71,7 +74,6 @@ export class DialogueSystem {
     this.currentPayload = rawData;
     this.currentLineIndex = 0;
     this.isActive = true;
-    this.lastAdvanceTime = Date.now();
 
     // C4-13-11: Tự động đóng mọi modal đang mở để đảm bảo chỉ có duy nhất 1 cửa sổ/hội thoại hiển thị
     if (this.view) {
@@ -137,9 +139,9 @@ export class DialogueSystem {
   public handleAdvance(): void {
     if (!this.isActive || !this.currentPayload) return;
 
-    // Ngăn chặn double-trigger trong cùng một khoảnh khắc (100ms)
+    // C4-132-02: Tăng thời gian chống dội phím (debounce) từ 100ms lên 260ms chống nhảy cóc thoại
     const now = Date.now();
-    if (now - this.lastAdvanceTime < 100) return;
+    if (now - this.lastAdvanceTime < 260) return;
     this.lastAdvanceTime = now;
 
     if (this.isTyping) {

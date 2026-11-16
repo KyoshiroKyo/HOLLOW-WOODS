@@ -10,10 +10,17 @@ import {
 export class SurvivalSystem {
   private playerState: PlayerState;
   
-  // Vị trí lửa trại ấm áp của làng Bellhollow
-  private campfireX: number = 780;
-  private campfireY: number = 260;
-  private campfireWarmthRadius: number = 90;
+  // C4-132-02: Danh sách các điểm nguồn nhiệt/lửa trại hợp lệ để hồi phục Sinh Lực và Bình Tâm (bán kính 110px)
+  private warmSources: Array<{ x: number; y: number; radius: number; name: string }> = [
+    { x: 1320, y: 720, radius: 110, name: 'Lửa Trại Thợ Săn' },
+    { x: 960, y: 360, radius: 110, name: 'Lò Rèn Xưởng Chế Tạo' },
+    { x: 780, y: 260, radius: 110, name: 'Lửa Trại Làng Bellhollow' }
+  ];
+
+  // Giữ tọa độ và bán kính tương thích cho làng Bellhollow
+  public campfireX: number = 780;
+  public campfireY: number = 260;
+  public campfireWarmthRadius: number = 110;
 
   // Bộ nhớ đệm kiểm tra thay đổi (Dirty Checking Cache)
   private lastHealth: number = -1;
@@ -59,12 +66,20 @@ export class SurvivalSystem {
       }
     }
 
-    // 3. Quản lý Bình tâm (Composure) & Máu (Health) theo vùng an toàn
-    const distToCampfire = Math.hypot(playerX - this.campfireX, playerY - this.campfireY);
-    const nearCampfire = distToCampfire <= this.campfireWarmthRadius;
+    // 3. Quản lý Bình tâm (Composure) & Máu (Health) theo vùng nguồn nhiệt ấm áp (C4-132-02)
+    let nearCampfire = false;
+    for (const source of this.warmSources) {
+      if (Math.hypot(playerX - source.x, playerY - source.y) <= source.radius) {
+        nearCampfire = true;
+        break;
+      }
+    }
+    if (!nearCampfire) {
+      nearCampfire = Math.hypot(playerX - this.campfireX, playerY - this.campfireY) <= this.campfireWarmthRadius;
+    }
 
     if (nearCampfire) {
-      // Hồi máu nhẹ và hồi phục mạnh mẽ tinh thần khi nghỉ bên lửa trại làng
+      // Hồi máu nhẹ (+4 HP/s) và hồi phục mạnh mẽ tinh thần (+8 Composure/s) khi nghỉ bên nguồn nhiệt/lửa trại
       stats.health = Math.min(stats.maxHealth, stats.health + 4 * dt);
       stats.composure = Math.min(stats.maxComposure, stats.composure + 8 * dt);
     } else {
@@ -115,6 +130,12 @@ export class SurvivalSystem {
     this.lastHealth = stats.health;
     this.lastComposure = stats.composure;
     this.playerState.emit('stats_changed', stats);
+  }
+
+  // C4-132-02: Kiểm tra người chơi có đang đứng trong bán kính nguồn nhiệt ấm áp hay không
+  public isNearWarmth(playerX: number, playerY: number): boolean {
+    return this.warmSources.some(s => Math.hypot(playerX - s.x, playerY - s.y) <= s.radius) ||
+      Math.hypot(playerX - this.campfireX, playerY - this.campfireY) <= this.campfireWarmthRadius;
   }
 }
 
