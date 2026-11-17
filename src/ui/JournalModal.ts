@@ -23,14 +23,14 @@
  */
 
 import * as Phaser from 'phaser';
-import { PlayerState, LoreEntry } from '../state/PlayerState';
+import { PlayerState } from '../state/PlayerState';
 import { HDTextHelper } from '../utils/HDTextHelper';
 import { ZoneId, WorldTier } from '../types';
 import { WorldGatingSystem } from '../world/WorldGatingSystem';
 import { ZoneConnectionRegistry } from '../world/ZoneConnectionRegistry';
 import { AudioManager } from '../audio/AudioManager';
 
-export type JournalTab = 'quest' | 'lore' | 'map';
+export type JournalTab = 'quest' | 'lore' | 'bestiary' | 'map';
 export type WorldMapZoneStatus = 'EXPLORED' | 'OPEN' | 'LOCKED' | 'UNIMPLEMENTED';
 
 export interface WorldMapNodeSpec {
@@ -62,11 +62,11 @@ export class JournalModal {
   private contentContainer: Phaser.GameObjects.Container;
   private tabQuestBtn!: Phaser.GameObjects.Text;
   private tabLoreBtn!: Phaser.GameObjects.Text;
+  private tabBestiaryBtn!: Phaser.GameObjects.Text;
   private tabMapBtn!: Phaser.GameObjects.Text;
 
   private questFilter: 'all' | 'main' | 'side' = 'all';
   private selectedQuestId: string | null = null;
-  private loreSubTab: 'lore' | 'bestiary' = 'lore';
   private selectedBestiarySpecies: string = 'crow';
 
   public isOpen: boolean = false;
@@ -381,7 +381,14 @@ export class JournalModal {
       });
       scene.input.keyboard.on('keydown-THREE', () => {
         if (this.isOpen) {
+          this.currentTab = 'bestiary';
+          this.refresh();
+        }
+      });
+      scene.input.keyboard.on('keydown-FOUR', () => {
+        if (this.isOpen) {
           this.currentTab = 'map';
+          this.selectedZoneId = this.playerState.getCurrentZone();
           this.refresh();
         }
       });
@@ -435,9 +442,9 @@ export class JournalModal {
       this.close();
     });
 
-    // 3. Ba Tab điều hướng chuẩn HD: [1. NHIỆM VỤ], [2. CỔ THƯ], [3. BẢN ĐỒ THẾ GIỚI]
-    this.tabQuestBtn = HDTextHelper.createText(this.scene, modalX + 270, modalY + 22, '[1. NHIỆM VỤ]', {
-      fontSize: '14px',
+    // 3. Bốn Tab điều hướng chuẩn HD: [1. NHIỆM VỤ], [2. MẢNH KÝ ỨC], [3. SINH VẬT RỪNG], [4. BẢN ĐỒ THẾ GIỚI]
+    this.tabQuestBtn = HDTextHelper.createText(this.scene, modalX + 225, modalY + 22, '[1. NHIỆM VỤ]', {
+      fontSize: '13px',
       fontStyle: 'bold',
       color: '#f39c12'
     }).setInteractive({ useHandCursor: true });
@@ -447,8 +454,8 @@ export class JournalModal {
       this.refresh();
     });
 
-    this.tabLoreBtn = HDTextHelper.createText(this.scene, modalX + 410, modalY + 22, '[2. CỔ THƯ & MANH MỐI]', {
-      fontSize: '14px',
+    this.tabLoreBtn = HDTextHelper.createText(this.scene, modalX + 350, modalY + 22, '[2. MẢNH KÝ ỨC]', {
+      fontSize: '13px',
       fontStyle: 'bold',
       color: '#7f8c8d'
     }).setInteractive({ useHandCursor: true });
@@ -458,8 +465,19 @@ export class JournalModal {
       this.refresh();
     });
 
-    this.tabMapBtn = HDTextHelper.createText(this.scene, modalX + 630, modalY + 22, '[3. BẢN ĐỒ THẾ GIỚI]', {
-      fontSize: '14px',
+    this.tabBestiaryBtn = HDTextHelper.createText(this.scene, modalX + 490, modalY + 22, '[3. SINH VẬT RỪNG]', {
+      fontSize: '13px',
+      fontStyle: 'bold',
+      color: '#7f8c8d'
+    }).setInteractive({ useHandCursor: true });
+    this.tabBestiaryBtn.on('pointerdown', () => {
+      AudioManager.getInstance().playInteract();
+      this.currentTab = 'bestiary';
+      this.refresh();
+    });
+
+    this.tabMapBtn = HDTextHelper.createText(this.scene, modalX + 660, modalY + 22, '[4. BẢN ĐỒ THẾ GIỚI]', {
+      fontSize: '13px',
       fontStyle: 'bold',
       color: '#7f8c8d'
     }).setInteractive({ useHandCursor: true });
@@ -470,7 +488,7 @@ export class JournalModal {
       this.refresh();
     });
 
-    this.container.add([overlay, book, title, closeBtn, this.tabQuestBtn, this.tabLoreBtn, this.tabMapBtn, this.contentContainer]);
+    this.container.add([overlay, book, title, closeBtn, this.tabQuestBtn, this.tabLoreBtn, this.tabBestiaryBtn, this.tabMapBtn, this.contentContainer]);
   }
 
   public toggle(): void {
@@ -514,6 +532,18 @@ export class JournalModal {
     this.openTab('map');
   }
 
+  public openBestiary(): void {
+    this.openTab('bestiary');
+  }
+
+  public openLore(): void {
+    this.openTab('lore');
+  }
+
+  public openQuests(): void {
+    this.openTab('quest');
+  }
+
   public close(): void {
     this.isOpen = false;
     this.container.setVisible(false);
@@ -530,15 +560,18 @@ export class JournalModal {
     const modalX = (1280 - modalW) / 2; // 220
     const modalY = (720 - modalH) / 2;  // 100
 
-    // Cập nhật màu sắc 3 Tab
+    // Cập nhật màu sắc 4 Tab
     this.tabQuestBtn.setColor(this.currentTab === 'quest' ? '#f39c12' : '#7f8c8d');
     this.tabLoreBtn.setColor(this.currentTab === 'lore' ? '#f39c12' : '#7f8c8d');
+    this.tabBestiaryBtn.setColor(this.currentTab === 'bestiary' ? '#f39c12' : '#7f8c8d');
     this.tabMapBtn.setColor(this.currentTab === 'map' ? '#f39c12' : '#7f8c8d');
 
     if (this.currentTab === 'quest') {
       this.renderQuestTab(modalX, modalY, modalW, modalH);
     } else if (this.currentTab === 'lore') {
       this.renderLoreTab(modalX, modalY, modalW, modalH);
+    } else if (this.currentTab === 'bestiary') {
+      this.renderBestiaryTab(modalX, modalY, modalW, modalH);
     } else {
       this.renderMapTab(modalX, modalY, modalW, modalH);
     }
@@ -687,39 +720,9 @@ export class JournalModal {
   }
 
   // ===========================================================================
-  // TAB 2: CỔ THƯ & MANH MỐI (LORE TAB)
+  // TAB 2: MẢNH KÝ ỨC (LORE TAB) — DẠNG SÁCH CỔ 2 TRANG LẬT MỞ
   // ===========================================================================
   private renderLoreTab(mx: number, my: number, mw: number, mh: number): void {
-    // 2 Nút chuyển đổi phụ: [📜 CỔ THƯ & MANH MỐI] và [🐾 SỔ TAY SINH VẬT]
-    const subLoreBtn = HDTextHelper.createText(this.scene, mx + 30, my + 64, '[📜 CỔ THƯ & MANH MỐI]', {
-      fontSize: '13px',
-      fontStyle: 'bold',
-      color: this.loreSubTab === 'lore' ? '#f39c12' : '#7f8c8d'
-    }).setInteractive({ useHandCursor: true });
-    subLoreBtn.on('pointerdown', () => {
-      AudioManager.getInstance().playInteract();
-      this.loreSubTab = 'lore';
-      this.refresh();
-    });
-
-    const subBestiaryBtn = HDTextHelper.createText(this.scene, mx + 240, my + 64, '[🐾 SỔ TAY SINH VẬT (BESTIARY)]', {
-      fontSize: '13px',
-      fontStyle: 'bold',
-      color: this.loreSubTab === 'bestiary' ? '#f39c12' : '#7f8c8d'
-    }).setInteractive({ useHandCursor: true });
-    subBestiaryBtn.on('pointerdown', () => {
-      AudioManager.getInstance().playInteract();
-      this.loreSubTab = 'bestiary';
-      this.refresh();
-    });
-
-    this.contentContainer.add([subLoreBtn, subBestiaryBtn]);
-
-    if (this.loreSubTab === 'bestiary') {
-      this.renderBestiaryView(mx, my, mw, mh);
-      return;
-    }
-
     // Đường gáy sổ phân 2 trang
     const spine = this.scene.add.graphics();
     spine.lineStyle(2, 0x4a3c22, 0.7);
@@ -728,7 +731,7 @@ export class JournalModal {
 
     const list = this.playerState.unlockedLore;
     if (list.length === 0) {
-      const emptyText = HDTextHelper.createText(this.scene, mx + mw / 2, my + mh / 2, 'Chưa tìm thấy cổ thư hay manh mối nào trong Khu Rừng Rỗng (The Hollow Woods)...\nHãy khám phá các miếu thờ và tàn tích cổ.', {
+      const emptyText = HDTextHelper.createText(this.scene, mx + mw / 2, my + mh / 2, 'Chưa tìm thấy cổ thư hay manh mối nào trong Khu Rừng Rỗng (The Hollow Woods)...\nHãy khám phá các miếu thờ, xưởng rèn và tàn tích cổ.', {
         fontSize: '16px',
         fontStyle: 'italic',
         color: '#7f8c8d',
@@ -742,31 +745,82 @@ export class JournalModal {
       this.currentLoreIndex = 0;
     }
 
-    const entry: LoreEntry = list[this.currentLoreIndex];
+    // --- TRANG TRÁI: DANH SÁCH CÁC BẢN GHI KÝ ỨC ---
+    const leftTitle = HDTextHelper.createText(this.scene, mx + 30, my + 66, '📜 CÁC MẢNH KÝ ỨC ĐÃ TÌM THẤY:', {
+      fontSize: '13px',
+      fontStyle: 'bold',
+      color: '#3498db'
+    });
+    this.contentContainer.add(leftTitle);
 
-    const lTitle = HDTextHelper.createText(this.scene, mx + 40, my + 95, entry.title, {
-      fontSize: '18px',
+    let rowY = my + 94;
+    for (let i = 0; i < list.length; i++) {
+      const item = list[i];
+      const isSel = i === this.currentLoreIndex;
+      const cardW = mw / 2 - 50; // 370px
+      const cardH = 46;
+
+      const cardBg = this.scene.add.graphics();
+      cardBg.fillStyle(isSel ? 0x2e2417 : 0x181512, 0.95);
+      cardBg.fillRoundedRect(mx + 30, rowY, cardW, cardH, 6);
+      cardBg.lineStyle(1.5, isSel ? 0xf39c12 : 0x4a3c22, 0.8);
+      cardBg.strokeRoundedRect(mx + 30, rowY, cardW, cardH, 6);
+
+      const marker = isSel ? '▶ ' : '• ';
+      const shortTitle = item.title.length > 28 ? item.title.substring(0, 26) + '...' : item.title;
+      const titleTxt = HDTextHelper.createText(this.scene, mx + 42, rowY + 8, `${marker}${shortTitle}`, {
+        fontSize: '12px',
+        fontStyle: isSel ? 'bold' : 'normal',
+        color: isSel ? '#f39c12' : '#ecf0f1'
+      });
+      const authorTxt = HDTextHelper.createText(this.scene, mx + 42, rowY + 26, `Bởi: ${item.author}`, {
+        fontSize: '10px',
+        color: '#95a5a6'
+      });
+
+      const zone = this.scene.add.zone(mx + 30 + cardW / 2, rowY + cardH / 2, cardW, cardH);
+      zone.setInteractive({ useHandCursor: true });
+      zone.on('pointerdown', () => {
+        AudioManager.getInstance().playInteract();
+        this.currentLoreIndex = i;
+        this.refresh();
+      });
+
+      this.contentContainer.add([cardBg, titleTxt, authorTxt, zone]);
+      rowY += 52;
+      if (rowY > my + mh - 70) break;
+    }
+
+    // --- TRANG PHẢI: CHI TIẾT NỘI DUNG MẢNH KÝ ỨC ĐƯỢC CHỌN ---
+    const entry = list[this.currentLoreIndex];
+    const rightX = mx + mw / 2 + 25;
+    const rightW = mw / 2 - 45;
+
+    const rTitle = HDTextHelper.createText(this.scene, rightX, my + 66, entry.title, {
+      fontSize: '14.5px',
       fontStyle: 'bold',
       color: '#d4af37',
       stroke: '#000000',
-      strokeThickness: 2
+      strokeThickness: 2,
+      wordWrap: { width: rightW }
     });
 
-    const lAuthor = HDTextHelper.createText(this.scene, mx + 40, my + 125, `Ghi lại bởi: ${entry.author}`, {
-      fontSize: '13px',
+    const rAuthor = HDTextHelper.createText(this.scene, rightX, my + 105, `Ghi lại bởi: ${entry.author}`, {
+      fontSize: '12px',
       fontStyle: 'italic',
       color: '#95a5a6'
     });
 
-    const lContent = HDTextHelper.createText(this.scene, mx + 40, my + 155, entry.content, {
-      fontSize: '14.5px',
+    const rContent = HDTextHelper.createText(this.scene, rightX, my + 130, entry.content, {
+      fontSize: '12.5px',
       color: '#f0e6d2',
-      wordWrap: { width: mw - 80 },
-      lineSpacing: 8
+      wordWrap: { width: rightW },
+      lineSpacing: 5
     });
 
-    const prevBtn = HDTextHelper.createText(this.scene, mx + mw / 2 - 130, my + mh - 30, '◀ Trang Trước', {
-      fontSize: '14px',
+    // Điều hướng lật trang ở chân trang phải
+    const prevBtn = HDTextHelper.createText(this.scene, rightX + 60, my + mh - 30, '◀ Trước', {
+      fontSize: '13px',
       fontStyle: 'bold',
       color: '#f39c12'
     }).setOrigin(0.5, 0.5).setInteractive({ useHandCursor: true });
@@ -776,13 +830,13 @@ export class JournalModal {
       this.refresh();
     });
 
-    const pageIndicator = HDTextHelper.createText(this.scene, mx + mw / 2, my + mh - 30, `Trang ${this.currentLoreIndex + 1} / ${list.length}`, {
-      fontSize: '14px',
+    const pageIndicator = HDTextHelper.createText(this.scene, rightX + rightW / 2, my + mh - 30, `Mảnh ${this.currentLoreIndex + 1} / ${list.length}`, {
+      fontSize: '13px',
       color: '#bdc3c7'
     }).setOrigin(0.5, 0.5);
 
-    const nextBtn = HDTextHelper.createText(this.scene, mx + mw / 2 + 130, my + mh - 30, 'Trang Sau ▶', {
-      fontSize: '14px',
+    const nextBtn = HDTextHelper.createText(this.scene, rightX + rightW - 60, my + mh - 30, 'Sau ▶', {
+      fontSize: '13px',
       fontStyle: 'bold',
       color: '#f39c12'
     }).setOrigin(0.5, 0.5).setInteractive({ useHandCursor: true });
@@ -792,47 +846,58 @@ export class JournalModal {
       this.refresh();
     });
 
-    this.contentContainer.add([lTitle, lAuthor, lContent, prevBtn, pageIndicator, nextBtn]);
+    this.contentContainer.add([rTitle, rAuthor, rContent, prevBtn, pageIndicator, nextBtn]);
   }
 
   // ===========================================================================
-  // SỔ TAY SINH VẬT (BESTIARY VIEW)
+  // TAB 3: SINH VẬT RỪNG (BESTIARY TAB) — DẠNG SÁCH CỔ 2 TRANG LẬT MỞ
   // ===========================================================================
-  private renderBestiaryView(mx: number, my: number, mw: number, mh: number): void {
+  public renderBestiaryTab(mx: number, my: number, mw: number, mh: number): void {
+    // Đường gáy sổ phân 2 trang
+    const spine = this.scene.add.graphics();
+    spine.lineStyle(2, 0x4a3c22, 0.7);
+    spine.lineBetween(mx + mw / 2, my + 60, mx + mw / 2, my + mh - 25);
+    this.contentContainer.add(spine);
+
     const entries = this.playerState.getBestiaryEntries();
     const currentEntry = entries.find(e => e.species === this.selectedBestiarySpecies) || entries[0];
+    const observedCount = entries.filter(e => e.observed).length;
 
-    // Cột bên trái: Danh sách 4 sinh vật (Quạ Rừng, Bướm Đêm, The Echo, The Listener)
-    const listTitle = HDTextHelper.createText(this.scene, mx + 30, my + 98, 'SINH THÁI KHU RỪNG:', {
+    // --- TRANG TRÁI: DANH SÁCH SINH VẬT RỪNG ---
+    const listTitle = HDTextHelper.createText(this.scene, mx + 30, my + 66, '🐾 SINH THÁI KHU RỪNG RỖNG:', {
       fontSize: '13px',
       fontStyle: 'bold',
       color: '#3498db'
     });
     this.contentContainer.add(listTitle);
 
-    let rowY = my + 126;
+    let rowY = my + 94;
     for (const b of entries) {
       const isSel = b.species === currentEntry.species;
       const statusIcon = b.observed ? '🌟' : '❓';
       const rowColor = isSel ? '#f39c12' : (b.observed ? '#ecf0f1' : '#7f8c8d');
+      const cardW = mw / 2 - 50; // 370px
+      const cardH = 50;
 
       const cardBtn = this.scene.add.graphics();
       cardBtn.fillStyle(isSel ? 0x2e2417 : 0x181512, 0.95);
-      cardBtn.fillRoundedRect(mx + 30, rowY, 210, 52, 6);
+      cardBtn.fillRoundedRect(mx + 30, rowY, cardW, cardH, 6);
       cardBtn.lineStyle(1.5, isSel ? 0xf39c12 : 0x4a3c22, 0.8);
-      cardBtn.strokeRoundedRect(mx + 30, rowY, 210, 52, 6);
+      cardBtn.strokeRoundedRect(mx + 30, rowY, cardW, cardH, 6);
 
-      const nameTxt = HDTextHelper.createText(this.scene, mx + 42, rowY + 10, `${statusIcon} ${b.nameVi}`, {
+      const displayName = b.observed ? b.nameVi : '??? (Chưa quan sát)';
+      const nameTxt = HDTextHelper.createText(this.scene, mx + 42, rowY + 9, `${statusIcon} ${displayName}`, {
         fontSize: '13px',
         fontStyle: isSel ? 'bold' : 'normal',
         color: rowColor
       });
-      const roleTxt = HDTextHelper.createText(this.scene, mx + 42, rowY + 30, b.roleVi, {
+      const displayRole = b.observed ? b.roleVi : 'Tiếp cận quan sát trong rừng để mở khóa';
+      const roleTxt = HDTextHelper.createText(this.scene, mx + 42, rowY + 28, displayRole, {
         fontSize: '10.5px',
-        color: '#95a5a6'
+        color: b.observed ? '#95a5a6' : '#7f8c8d'
       });
 
-      const zone = this.scene.add.zone(mx + 30 + 105, rowY + 26, 210, 52);
+      const zone = this.scene.add.zone(mx + 30 + cardW / 2, rowY + cardH / 2, cardW, cardH);
       zone.setInteractive({ useHandCursor: true });
       zone.on('pointerdown', () => {
         AudioManager.getInstance().playInteract();
@@ -841,71 +906,128 @@ export class JournalModal {
       });
 
       this.contentContainer.add([cardBtn, nameTxt, roleTxt, zone]);
-      rowY += 60;
+      rowY += 56;
     }
 
-    // Cột bên phải: Hồ sơ chi tiết của sinh vật được chọn
-    const panelX = mx + 260;
-    const panelY = my + 98;
-    const panelW = mw - 290;
-    const panelH = mh - 130;
+    // Huy hiệu tiến độ quan sát sinh vật dưới đáy trang trái
+    const progText = HDTextHelper.createText(this.scene, mx + 30, my + mh - 32, `📊 Tiến độ Bestiary: ${observedCount} / ${entries.length} loài sinh vật`, {
+      fontSize: '12px',
+      fontStyle: 'bold',
+      color: observedCount === entries.length ? '#2ecc71' : '#f1c40f'
+    });
+    this.contentContainer.add(progText);
+
+    // --- TRANG PHẢI: HỒ SƠ SINH THÁI CHI TIẾT ---
+    const panelX = mx + mw / 2 + 20;
+    const panelY = my + 66;
+    const panelW = mw / 2 - 40;
+    const panelH = mh - 90;
 
     const panelBg = this.scene.add.graphics();
     panelBg.fillStyle(0x15120f, 0.98);
     panelBg.fillRoundedRect(panelX, panelY, panelW, panelH, 8);
     panelBg.lineStyle(1.5, 0xa08149, 0.85);
     panelBg.strokeRoundedRect(panelX, panelY, panelW, panelH, 8);
+    this.contentContainer.add(panelBg);
 
-    const bTitle = HDTextHelper.createText(this.scene, panelX + 16, panelY + 16, currentEntry.nameVi.toUpperCase(), {
-      fontSize: '16px',
-      fontStyle: 'bold',
-      color: '#d4af37'
-    });
+    if (currentEntry.observed) {
+      const bTitle = HDTextHelper.createText(this.scene, panelX + 16, panelY + 14, currentEntry.nameVi.toUpperCase(), {
+        fontSize: '15.5px',
+        fontStyle: 'bold',
+        color: '#d4af37'
+      });
 
-    const statusBadge = currentEntry.observed
-      ? '🌟 ĐÃ GHI CHÉP VÀO SỔ TAY'
-      : '❓ CHƯA QUAN SÁT TRỰC TIẾP (HÃY TIẾP CẬN TRONG RỪNG)';
-    const statusColor = currentEntry.observed ? '#2ecc71' : '#e67e22';
+      const bStatus = HDTextHelper.createText(this.scene, panelX + 16, panelY + 36, '🌟 ĐÃ GHI CHÉP VÀO SỔ TAY', {
+        fontSize: '11px',
+        fontStyle: 'bold',
+        color: '#2ecc71'
+      });
 
-    const bStatus = HDTextHelper.createText(this.scene, panelX + 16, panelY + 40, statusBadge, {
-      fontSize: '11px',
-      fontStyle: 'bold',
-      color: statusColor
-    });
+      const bHabitat = HDTextHelper.createText(this.scene, panelX + 16, panelY + 58, `📍 ĐỊA BÀN: ${currentEntry.habitatVi}`, {
+        fontSize: '11px',
+        color: '#3498db',
+        wordWrap: { width: panelW - 32 }
+      });
 
-    const bHabitat = HDTextHelper.createText(this.scene, panelX + 16, panelY + 65, `📍 ĐỊA BÀN: ${currentEntry.habitatVi}`, {
-      fontSize: '11px',
-      color: '#3498db',
-      wordWrap: { width: panelW - 32 }
-    });
+      const bBehaviorHdr = HDTextHelper.createText(this.scene, panelX + 16, panelY + 90, '• TẬP TÍNH SINH THÁI:', {
+        fontSize: '12px',
+        fontStyle: 'bold',
+        color: '#f1c40f'
+      });
 
-    const bBehaviorHdr = HDTextHelper.createText(this.scene, panelX + 16, panelY + 95, '• TẬP TÍNH SINH THÁI:', {
-      fontSize: '12px',
-      fontStyle: 'bold',
-      color: '#f1c40f'
-    });
+      const bBehavior = HDTextHelper.createText(this.scene, panelX + 16, panelY + 110, currentEntry.behaviorVi, {
+        fontSize: '11.5px',
+        color: '#ecf0f1',
+        wordWrap: { width: panelW - 32 },
+        lineSpacing: 4
+      });
 
-    const bBehavior = HDTextHelper.createText(this.scene, panelX + 16, panelY + 115, currentEntry.behaviorVi, {
-      fontSize: '11.5px',
-      color: '#ecf0f1',
-      wordWrap: { width: panelW - 32 },
-      lineSpacing: 4
-    });
+      const bCounterHdr = HDTextHelper.createText(this.scene, panelX + 16, panelY + 205, '• CHIẾN THUẬT ĐỐI PHÓ & TỰ VỆ:', {
+        fontSize: '12px',
+        fontStyle: 'bold',
+        color: '#e74c3c'
+      });
 
-    const bCounterHdr = HDTextHelper.createText(this.scene, panelX + 16, panelY + 195, '• CHIẾN THUẬT ĐỐI PHÓ & TỰ VỆ:', {
-      fontSize: '12px',
-      fontStyle: 'bold',
-      color: '#e74c3c'
-    });
+      const bCounter = HDTextHelper.createText(this.scene, panelX + 16, panelY + 225, currentEntry.counterVi, {
+        fontSize: '11.5px',
+        color: '#f39c12',
+        wordWrap: { width: panelW - 32 },
+        lineSpacing: 4
+      });
 
-    const bCounter = HDTextHelper.createText(this.scene, panelX + 16, panelY + 215, currentEntry.counterVi, {
-      fontSize: '11.5px',
-      color: '#f39c12',
-      wordWrap: { width: panelW - 32 },
-      lineSpacing: 4
-    });
+      this.contentContainer.add([bTitle, bStatus, bHabitat, bBehaviorHdr, bBehavior, bCounterHdr, bCounter]);
+    } else {
+      const bTitle = HDTextHelper.createText(this.scene, panelX + 16, panelY + 14, '??? SINH VẬT CHƯA XÁC ĐỊNH', {
+        fontSize: '15.5px',
+        fontStyle: 'bold',
+        color: '#95a5a6'
+      });
 
-    this.contentContainer.add([panelBg, bTitle, bStatus, bHabitat, bBehaviorHdr, bBehavior, bCounterHdr, bCounter]);
+      const bStatus = HDTextHelper.createText(this.scene, panelX + 16, panelY + 36, '❓ CHƯA QUAN SÁT TRỰC TIẾP', {
+        fontSize: '11px',
+        fontStyle: 'bold',
+        color: '#e67e22'
+      });
+
+      const bHabitat = HDTextHelper.createText(this.scene, panelX + 16, panelY + 58, '📍 KHU VỰC: Khám phá các phân khu trong Khu Rừng Rỗng (The Hollow Woods)', {
+        fontSize: '11px',
+        color: '#3498db',
+        wordWrap: { width: panelW - 32 }
+      });
+
+      const bBehaviorHdr = HDTextHelper.createText(this.scene, panelX + 16, panelY + 95, '• CƠ CHẾ MỞ KHÓA TỰ NHIÊN:', {
+        fontSize: '12px',
+        fontStyle: 'bold',
+        color: '#f1c40f'
+      });
+
+      const bBehavior = HDTextHelper.createText(this.scene, panelX + 16, panelY + 115, 'Trò chơi tuyệt đối KHÔNG yêu cầu giết hay làm hại động vật.\n\nChỉ cần lữ khách đứng quan sát sinh vật trong phạm vi tầm nhìn hoặc kích hoạt thành công sự kiện môi trường liên quan, thông tin sinh thái sẽ tự động được ghi nhận và sáng lên trong Sổ Tay.', {
+        fontSize: '12px',
+        color: '#bdc3c7',
+        wordWrap: { width: panelW - 32 },
+        lineSpacing: 5
+      });
+
+      const bHintHdr = HDTextHelper.createText(this.scene, panelX + 16, panelY + 220, '• MẸO LỮ KHÁCH:', {
+        fontSize: '12px',
+        fontStyle: 'bold',
+        color: '#2ecc71'
+      });
+
+      const bHint = HDTextHelper.createText(this.scene, panelX + 16, panelY + 240, 'Bật Đèn Lồng [F] và lắng nghe kỹ âm thanh khu rừng. Mỗi loài sinh vật đều mang thông điệp sinh tồn riêng biệt.', {
+        fontSize: '11.5px',
+        color: '#f39c12',
+        wordWrap: { width: panelW - 32 },
+        lineSpacing: 4
+      });
+
+      this.contentContainer.add([bTitle, bStatus, bHabitat, bBehaviorHdr, bBehavior, bHintHdr, bHint]);
+    }
+  }
+
+  // Wrapper tương thích ngược
+  public renderBestiaryView(mx: number, my: number, mw: number, mh: number): void {
+    this.renderBestiaryTab(mx, my, mw, mh);
   }
 
   // ===========================================================================

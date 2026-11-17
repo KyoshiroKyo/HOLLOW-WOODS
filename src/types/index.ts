@@ -352,7 +352,7 @@ export interface WorldEventDef {
 }
 
 // V1.4 - P6: Sổ Tay Sinh Vật (Bestiary Ecosystem)
-export type BestiarySpecies = 'crow' | 'lantern_moth' | 'echo' | 'listener';
+export type BestiarySpecies = 'crow' | 'lantern_moth' | 'echo' | 'listener' | 'mire_warden';
 
 export interface BestiaryEntry {
   species: BestiarySpecies;

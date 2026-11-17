@@ -1658,6 +1658,9 @@ export class GameScene extends Phaser.Scene {
       const dist = (this.listenerMonster && !isPlayerInSafeZone)
         ? Math.hypot(this.player.x - this.listenerMonster.x, this.player.y - this.listenerMonster.y)
         : 9999;
+      if (dist < 380) {
+        this.playerState.observeCreature('listener');
+      }
       const isRaining = this.weatherSystem ? this.weatherSystem.isRaining() : false;
       this.veilSystem.updateRainThreatVisualIndicator(dist, isRaining);
     }
@@ -3567,6 +3570,9 @@ export class GameScene extends Phaser.Scene {
     if (zoneId === 'deep_forest' || zoneId === 'crooked_path') {
       this.playerState.observeCreature('listener');
     }
+    if (zoneId === 'broken_bell_shrine') {
+      this.playerState.observeCreature('mire_warden');
+    }
   }
 
   /**
@@ -3826,6 +3832,7 @@ export class GameScene extends Phaser.Scene {
     }
     this.mireWardenBoss.setDepth(4500);
     this.mireWardenBoss.startBossFight();
+    this.playerState.observeCreature('mire_warden');
     BossEncounterSystem.getInstance().initArena(this, this.mireWardenBoss as BossMireWarden);
 
     // 4. Khởi tạo 2 Trụ Cổ Ngữ Pha 1 (Tây Bắc & Đông Bắc)

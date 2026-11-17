@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import { WildlifeSpec } from '../types';
 import { WildlifeEntity } from '../entities/WildlifeEntity';
+import { PlayerState } from '../state/PlayerState';
 
 export interface WildlifeUpdateContext {
   playerX: number;
@@ -141,6 +142,16 @@ export class WildlifeSystem {
         if (ent.isHibernating) {
           ent.setHibernating(false);
         }
+
+        // Cơ chế mở khóa tự nhiên Sổ Tay Sinh Vật (Bestiary): Quan sát trong phạm vi nhìn thấy (<= 260px)
+        if (dist <= 260) {
+          if (ent.species === 'crow') {
+            PlayerState.getInstance().observeCreature('crow');
+          } else if (ent.species === 'lantern_moth') {
+            PlayerState.getInstance().observeCreature('lantern_moth');
+          }
+        }
+
         ent.update(time, delta, ctx);
       }
     }

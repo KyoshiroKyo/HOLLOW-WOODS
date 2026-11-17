@@ -675,6 +675,18 @@ export class PlayerState extends Phaser.Events.EventEmitter {
       counterVi: 'Đi bộ nhẹ nhàng, nấp vào Thân Cây Rỗng [E], ném Mồi Tạo Tiếng Động [Q] cách xa hoặc cắm Bó Đuốc Nhựa Thông để làm choáng đẩy lùi.',
       observed: false
     });
+    this.bestiary.set('mire_warden', {
+      species: 'mire_warden',
+      contentId: 'HW-BOS-WARDEN-000001',
+      runtimeKey: 'bos_mire_warden',
+      nameVi: 'Kẻ Nuốt Tiếng Chuông (The Mire Warden)',
+      nameEn: 'The Mire Warden',
+      roleVi: 'Thực thể Trùm Cổ Đại Miếu Chuông',
+      habitatVi: 'Miếu Chuông Phế Tích (The Broken Bell Shrine), Sân Đá Cổ',
+      behaviorVi: 'Thực thể khổng lồ mù hoàn toàn, định vị và lao húc cực nhanh theo nguồn âm thanh [Q]. Sở hữu giáp sương mù bất hoại trước đòn đánh trực diện. Pha 2 dập tắt trụ lửa và triệu hồi ảo ảnh The Echo.',
+      counterVi: 'Dẫn dụ Boss húc đâm sầm vào Trụ Lửa Cổ Ngữ để làm choáng (Stun 3.5s) nứt giáp sương mù, sau đó tấn công điểm yếu bằng Giáo hoặc Gậy. Dùng Đèn Lồng [F] thắp lại 3 trụ lửa để phá giải sương đặc.',
+      observed: false
+    });
   }
 
   public observeCreature(species: BestiarySpecies): boolean {
