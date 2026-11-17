@@ -101,6 +101,80 @@
         { "id": "t2", "text": "Cắt đuôi Kẻ Lắng Nghe và trở về an toàn làng Bellhollow", "done": false }
       ]
     }
+  ],
+  "subAreaLoreEntries": [
+    {
+      "id": "lore_blacksmith_journal",
+      "act": 2,
+      "title": "NHẬT KÝ THỢ RÈN XƯỞNG CHUÔNG CŨ",
+      "author": "Thợ Rèn Cổ Đại Bellhollow",
+      "content": "Màn sương bắt đầu ngưng tụ từ rễ đại ngàn. Quả chuông lớn cần một hợp kim đặc biệt để thanh âm có thể xuyên qua The Veil. Chúng ta đã đúc thử nghiệm khuôn chuông và các phụ kiện sắt rèn cổ ngữ tại xưởng ngoài rừng. Nếu ta không thể trở về làng, hãy để ai đó tìm thấy khuôn đúc này và mang về cho người giữ chuông..."
+    },
+    {
+      "id": "lore_fog_origin",
+      "act": 3,
+      "title": "BÍ MẬT NGUỒN GỐC MÀN SƯƠNG BELLHOLLOW",
+      "author": "Bích Họa Cổ Dưới Hầm Rễ",
+      "content": "Dưới lòng đất ẩm lạnh, những nét vẽ cổ xưa kể lại: Màn sương The Veil không sinh ra từ bóng tối, mà là hơi thở của Rừng Rỗng khi quả chuông đồng lớn ngừng ngân. Cội rễ cổ đại nối liền mạch sống từ đầm lầy tới đỉnh tháp chuông. Khi ngọn lửa trại rực sáng và tiếng chuông vang lên, sương mù sẽ lùi bước, mở lối cho kẻ biết lắng nghe sự thật."
+    }
+  ],
+  "sideQuestLog": [
+    {
+      "id": "SQ01_RUNED_IRON",
+      "act": 2,
+      "category": "side",
+      "title": "NHIỆM VỤ PHỤ: SẮT RÈN CỔ NGỮ",
+      "description": "Tìm Phụ Kiện Sắt Rèn Cổ Ngữ tại Xưởng Chuông Bỏ Hoang đem về cho thợ rèn Bram.",
+      "tasks": [
+        { "id": "t1", "text": "Khám phá Xưởng Chuông Bỏ Hoang ở rìa Nam Rừng Ngoại Vi", "done": false },
+        { "id": "t2", "text": "Mang Phụ Kiện Sắt Rèn Cổ Ngữ về cho Bram", "done": false }
+      ]
+    },
+    {
+      "id": "SQ02_BELL_MEMORY",
+      "act": 2,
+      "category": "side",
+      "title": "NHIỆM VỤ PHỤ: KÝ ỨC QUẢ CHUÔNG CŨ",
+      "description": "Thu hồi Khuôn Đúc Chuông Cũ từ Xưởng Chuông và trao đổi với bà lão Edda.",
+      "tasks": [
+        { "id": "t1", "text": "Tìm Khuôn Đúc Chuông Cũ trên bàn chế tác của xưởng", "done": false },
+        { "id": "t2", "text": "Mang khuôn đúc về cho bà lão Edda dưới chân tháp chuông", "done": false }
+      ]
+    },
+    {
+      "id": "SQ03_CELLAR_TEA",
+      "act": 2,
+      "category": "side",
+      "title": "NHIỆM VỤ PHỤ: DƯỢC LIỆU HẦM RỄ",
+      "description": "Xuống Hầm Rễ Cổ dưới Nông Trại Sanctuary, thu hoạch Rễ Thuốc Cổ và sắc Trà An Thần.",
+      "tasks": [
+        { "id": "t1", "text": "Xuống Hầm Rễ Cổ qua cửa sập cạnh chòi nông cụ", "done": false },
+        { "id": "t2", "text": "Thu hoạch ít nhất 1 Rễ Thuốc Cổ và giải mã cơ quan ánh sáng", "done": false },
+        { "id": "t3", "text": "Nấu Trà Thảo Dược An Thần tại Nồi Nấu Thảo Dược", "done": false }
+      ]
+    },
+    {
+      "id": "SQ04_CLEARING_PATROL",
+      "act": 3,
+      "category": "side",
+      "title": "NHIỆM VỤ PHỤ: TRINH SÁT VÙNG THÌ THẦM",
+      "description": "Thực hiện chuyến tuần tra qua Khoảng Trống Thì Thầm và kiểm tra 3 cột đá vọng âm.",
+      "tasks": [
+        { "id": "t1", "text": "Tiến vào Khoảng Trống Thì Thầm giữa Outer Woods và Deep Forest", "done": false },
+        { "id": "t2", "text": "Kiểm tra 3 Cột Đá Vọng Âm và đối diện ảo ảnh The Echo", "done": false },
+        { "id": "t3", "text": "Báo cáo an toàn với Người Tuần Tra Garth để nhận Ủng Đi Rừng", "done": false }
+      ]
+    },
+    {
+      "id": "SQ05_FINN_INTEL",
+      "act": 1,
+      "category": "side",
+      "title": "NHIỆM VỤ PHỤ: TIN ĐỒN LỐI MÒN BÍ MẬT",
+      "description": "Lắng nghe tin tức và các lối đi bí mật từ cậu bé đưa tin Finn.",
+      "tasks": [
+        { "id": "t1", "text": "Trò chuyện với Finn tại quảng trường làng Bellhollow", "done": false }
+      ]
+    }
   ]
 }
 

@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import { PlayerState } from '../state/PlayerState';
 import { SPRITE_FOG_SMOOTH } from '../config/Constants';
 import { HDTextHelper } from '../utils/HDTextHelper';
+import { TimeSystem } from './TimeSystem';
 
 export class VeilSystem {
   private scene: Phaser.Scene;
@@ -26,6 +27,10 @@ export class VeilSystem {
   // C4-13-20: Màn sương chuyển cảnh mượt mà khi bước qua ranh giới phân khu chính (Mist Fade Transition ~0.35s)
   private transitionMistOverlay: Phaser.GameObjects.Graphics;
   private isTransitioningMist: boolean = false;
+
+  // V14-P7-01: Chỉ báo thị giác khi tiếng động bị mưa sương át (Rain Threat Visual Indicator)
+  private rainAuraThreatOverlay: Phaser.GameObjects.Graphics;
+  private hasThreatAuraDrawn: boolean = false;
   
   // Hiệu ứng nhận thức tâm lý (Psychological Horror)
   private whisperText: Phaser.GameObjects.Text;
@@ -114,9 +119,16 @@ export class VeilSystem {
     this.transitionMistOverlay.setAlpha(0);
     this.transitionMistOverlay.fillStyle(0x131d18, 0.88);
     this.transitionMistOverlay.fillRect(0, 0, 1280, 720);
+
+    // 5. V14-P7-01: CHỈ BÁO THỊ GIÁC NGUY HIỂM KHI MƯA SƯƠNG ÁT ÂM THANH (Visual Threat Indicator - Depth 3200)
+    // Hiển thị viền đỏ hổ phách rung động ở rìa màn hình hỗ trợ trợ năng (Accessibility)
+    this.rainAuraThreatOverlay = scene.add.graphics();
+    this.rainAuraThreatOverlay.setScrollFactor(0);
+    this.rainAuraThreatOverlay.setDepth(3200);
+    this.rainAuraThreatOverlay.setAlpha(0);
   }
 
-  public update(time: number, delta: number, inDeepFogZone: boolean, zoneId?: string, playerX?: number): void {
+  public update(time: number, delta: number, inDeepFogZone: boolean, zoneId?: string, playerX?: number, timeSystem?: TimeSystem): void {
     const dt = delta / 1000;
     const composure = this.playerState.stats.composure;
     const isLanternOn = this.playerState.stats.isLanternOn;
@@ -223,6 +235,19 @@ export class VeilSystem {
       targetAlphaHigh += 0.08;
     }
 
+    // V1.4: Tích hợp hệ số nhân alpha và sắc độ sương mù theo chu kỳ Ngày / Hoàng Hôn / Đêm Sương
+    if (timeSystem) {
+      const alphaMult = timeSystem.getFogAlphaMultiplier();
+      targetAlphaGround *= alphaMult;
+      targetAlphaMid *= alphaMult;
+      targetAlphaHigh *= alphaMult;
+
+      const fogTint = timeSystem.getFogTint();
+      this.fogLayerGround.setTint(fogTint);
+      this.fogLayerMid.setTint(fogTint);
+      this.fogLayerHigh.setTint(fogTint);
+    }
+
     // Chuyển dịch alpha êm ái hơn với lerp factor 0.04 (chống giật nấc khi qua cổng chuyển vùng)
     this.fogLayerGround.alpha = Phaser.Math.Linear(this.fogLayerGround.alpha, targetAlphaGround, 0.04);
     this.fogLayerMid.alpha = Phaser.Math.Linear(this.fogLayerMid.alpha, targetAlphaMid, 0.04);
@@ -231,6 +256,15 @@ export class VeilSystem {
     // 3. Xử lý hiệu ứng Tâm Lý Kinh Dị khi Composure < 50 hoặc ở vùng sương sâu mà tắt đèn
     const isMindUnstable = composure < 50 || (inDeepFogZone && !isLanternOn);
     this.updatePsychologicalEffects(time, isMindUnstable, composure);
+  }
+
+  /**
+   * V14-P8-01: Hệ số phân tán sương mù khi bật Đèn Lồng (0.65 khi bật, 1.0 khi tắt).
+   * Cung cấp chỉ số đồng bộ hóa nhất quán giữa lớp sương cuộn Parallax (VeilSystem)
+   * và vùng sáng đèn lồng (GameScene FogOfWarLayer / Lantern Lighting).
+   */
+  public getLanternDissipationFactor(): number {
+    return this.playerState.stats.isLanternOn ? 0.65 : 1.0;
   }
 
   private updatePsychologicalEffects(time: number, unstable: boolean, composure: number): void {
@@ -328,12 +362,62 @@ export class VeilSystem {
     });
   }
 
-  public destroy(): void {
+  /**
+   * V14-P7-01: Hiển thị chỉ báo thị giác (Visual Threat Indicator) dạng viền rung hổ phách/đỏ sương mù
+   * khi trời mưa/sương dày làm át tiếng động (acoustic dampening) và kẻ săn mồi (The Listener) đang đến gần.
+   */
+  public updateRainThreatVisualIndicator(listenerDist: number, isRaining: boolean): void {
+    if (!isRaining || listenerDist >= 260 || listenerDist < 0) {
+      if (this.hasThreatAuraDrawn) {
+        this.rainAuraThreatOverlay.clear();
+        this.rainAuraThreatOverlay.setAlpha(0);
+        this.hasThreatAuraDrawn = false;
+      }
+      return;
+    }
+
+    const proximityFactor = Math.max(0, Math.min(1, 1 - listenerDist / 260));
+    const pulseAlpha = proximityFactor * (0.28 + 0.18 * Math.sin(Date.now() * 0.007));
+
+    this.rainAuraThreatOverlay.clear();
+    // Màu đỏ hổ phách cảnh báo sương mù (0xba3c1e)
+    this.rainAuraThreatOverlay.fillStyle(0xba3c1e, pulseAlpha);
+    // Viền cảnh báo 4 phía màn hình HD 1280x720
+    const borderThickness = Math.round(18 + proximityFactor * 22);
+    this.rainAuraThreatOverlay.fillRect(0, 0, 1280, borderThickness);
+    this.rainAuraThreatOverlay.fillRect(0, 720 - borderThickness, 1280, borderThickness);
+    this.rainAuraThreatOverlay.fillRect(0, 0, borderThickness, 720);
+    this.rainAuraThreatOverlay.fillRect(1280 - borderThickness, 0, borderThickness, 720);
+    this.rainAuraThreatOverlay.setAlpha(1);
+    this.hasThreatAuraDrawn = true;
+  }
+
+  /**
+   * V14-P7-01: Thu dọn sạch tài nguyên VFX, overlay và tween khi chuyển Scene / chuyển Zone
+   */
+  public cleanupTransitionVFX(): void {
     if (this.activeWhisperTween) {
       this.activeWhisperTween.stop();
       this.scene.tweens.remove(this.activeWhisperTween);
       this.activeWhisperTween = undefined;
     }
+    if (this.hasDistortionDrawn) {
+      this.distortionOverlay.clear();
+      this.hasDistortionDrawn = false;
+    }
+    if (this.hasThreatAuraDrawn) {
+      this.rainAuraThreatOverlay.clear();
+      this.rainAuraThreatOverlay.setAlpha(0);
+      this.hasThreatAuraDrawn = false;
+    }
+    this.whisperText.setAlpha(0);
+    this.transitionMistOverlay.setAlpha(0);
+    this.isTransitioningMist = false;
+  }
+
+  public destroy(): void {
+    this.cleanupTransitionVFX();
+    this.rainAuraThreatOverlay.destroy();
     this.transitionMistOverlay.destroy();
     this.distortionOverlay.destroy();
     this.whisperText.destroy();

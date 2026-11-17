@@ -1,6 +1,7 @@
 import { MonsterState } from '../entities/monsters/Monster';
 import { TheListener } from '../entities/TheListener';
 import { PlayerState } from '../state/PlayerState';
+import { SoundMemoryEntry } from '../types';
 
 export interface Waypoint {
   x: number;
@@ -10,6 +11,11 @@ export interface Waypoint {
 export class ListenerAI {
   private listener: TheListener;
   public state: MonsterState = 'PATROL';
+
+  // V1.4: Trí nhớ ngắn hạn và Cơ chế Chống lặp mồi nhử (Anti-Repeat Lure Memory)
+  private soundMemories: SoundMemoryEntry[] = [];
+  public static readonly MEMORY_EXPIRY_MS: number = 30000;
+  public static readonly REPEAT_LURE_RADIUS: number = 75;
 
   private waypoints: Waypoint[] = [];
   private currentWaypointIdx: number = 0;
@@ -275,10 +281,13 @@ export class ListenerAI {
    * TRẠNG THÁI 2: ALERT (Phát hiện nghi vấn — Hiện dấu [?] vàng & đi tới nguồn âm thanh)
    */
   private updateAlert(delta: number, playerX: number, playerY: number, isPlayerHiding: boolean, shouldUpdatePath: boolean): void {
-    // 1. Pha Telegraph dừng lại lắng nghe (0.7s)
+    // 1. Pha Telegraph dừng lại lắng nghe (V1.4 - P8-03: 2.0s nghi ngờ nghe ngóng, xoay đầu về hướng âm thanh)
     if (this.alertTimer > 0) {
       this.alertTimer -= delta;
       this.listener.setVelocity(0, 0);
+      if (typeof this.listener.setFlipX === 'function') {
+        this.listener.setFlipX(this.targetInvestigateX > this.listener.x);
+      }
       if (this.alertTimer <= 0) {
         // Kết thúc pha đứng nghe, tiếp tục giữ icon [?] vàng khi tiến tới kiểm tra
         this.listener.setAlertVisual(true, 'alert');
@@ -467,9 +476,39 @@ export class ListenerAI {
   }
 
   /**
-   * Tiếp nhận âm thanh nghi vấn (Sprint bước chân, mồi ném [Q], hoặc tương tác thế giới)
+   * V1.4: Lấy danh sách trí nhớ ngắn hạn về các điểm âm thanh
    */
-  public triggerSoundAlert(soundX: number, soundY: number, volume: number): void {
+  public getSoundMemories(): SoundMemoryEntry[] {
+    return this.soundMemories;
+  }
+
+  /**
+   * V1.4: Đặt lại toàn bộ trí nhớ âm thanh
+   */
+  public resetSoundMemories(): void {
+    this.soundMemories = [];
+  }
+
+  /**
+   * V1.4: Đo lường mức độ hiệu quả đánh lừa của mồi nhử tại tọa độ xác định (Anti-Repeat)
+   * Lần 1: 1.0 (100% tin cậy) | Lần 2: 0.5 (50% nghi vấn) | Lần 3+: 0.15 (Nhận ra bẫy)
+   */
+  public getLureEffectiveness(soundX: number, soundY: number): number {
+    const now = Date.now();
+    const existing = this.soundMemories.find(
+      m => now - m.timestamp < ListenerAI.MEMORY_EXPIRY_MS && Math.hypot(m.x - soundX, m.y - soundY) <= ListenerAI.REPEAT_LURE_RADIUS
+    );
+    if (!existing) return 1.0;
+    if (existing.repeatCount === 1) return 1.0;
+    if (existing.repeatCount === 2) return 0.5;
+    return 0.15;
+  }
+
+  /**
+   * Tiếp nhận âm thanh nghi vấn (Sprint bước chân, mồi ném [Q], hoặc tương tác thế giới)
+   * V1.4: Tích hợp Trí nhớ ngắn hạn và Cơ chế chống lặp mồi nhử (Anti-Repeat Memory)
+   */
+  public triggerSoundAlert(soundX: number, soundY: number, volume: number, originX?: number, originY?: number): void {
     // Nếu âm thanh phát ra trong làng an toàn (Bellhollow) và Entity đang ở rừng, bỏ qua không tràn vào làng
     if (this.isInsideSafeZone(soundX) && soundX < ListenerAI.SAFE_ZONE_BORDER_X - 40) {
       return;
@@ -479,13 +518,65 @@ export class ListenerAI {
     if (this.state === 'CHASE' && volume < 2.0) return;
     if (this.detectionCooldown > 0 && volume < 2.0) return;
 
-    this.targetInvestigateX = Math.max(ListenerAI.FOREST_TERRITORY_MIN_X, soundX);
-    this.targetInvestigateY = soundY;
+    // 1. Cập nhật trí nhớ ngắn hạn và kiểm tra số lần lặp lại tại cùng vị trí
+    const now = Date.now();
+    this.soundMemories = this.soundMemories.filter(m => now - m.timestamp < ListenerAI.MEMORY_EXPIRY_MS);
 
-    // C4-13-08 & C4-132-05: Kích hoạt tín hiệu cảnh báo Telegraph (tăng lên 1150ms) chỉ khi chuyển sang ALERT (không lặp)
+    let effectiveness = 1.0;
+    const existing = this.soundMemories.find(
+      m => Math.hypot(m.x - soundX, m.y - soundY) <= ListenerAI.REPEAT_LURE_RADIUS
+    );
+
+    if (existing) {
+      existing.repeatCount++;
+      existing.timestamp = now;
+      if (originX !== undefined && originY !== undefined) {
+        existing.originX = originX;
+        existing.originY = originY;
+      }
+      if (existing.repeatCount === 2) {
+        effectiveness = 0.5;
+      } else if (existing.repeatCount >= 3) {
+        effectiveness = 0.15;
+      }
+    } else {
+      this.soundMemories.push({
+        x: soundX,
+        y: soundY,
+        timestamp: now,
+        repeatCount: 1,
+        originX,
+        originY
+      });
+    }
+
+    // 2. Điều chỉnh mục tiêu điều tra theo mức độ bị đánh lừa (Anti-Repeat Strategy)
+    if (effectiveness <= 0.15 && originX !== undefined && originY !== undefined) {
+      // Lặp lại nhiều lần: The Listener nhận ra bẫy mồi nhử và quay đầu mở rộng tìm kiếm về hướng ném
+      this.targetInvestigateX = Math.max(ListenerAI.FOREST_TERRITORY_MIN_X, originX);
+      this.targetInvestigateY = originY;
+      this.alertTimer = 600; // Giảm mạnh thời gian đứng đờ
+    } else if (effectiveness === 0.5 && originX !== undefined && originY !== undefined) {
+      // Lặp lần 2: Giảm thời gian và chia đôi khoảng cách về phía người ném
+      this.targetInvestigateX = Math.max(ListenerAI.FOREST_TERRITORY_MIN_X, Math.round((soundX + originX) / 2));
+      this.targetInvestigateY = Math.round((soundY + originY) / 2);
+      this.alertTimer = Math.round(1150 * effectiveness);
+    } else {
+      // V1.4 - P8-03: Lần đầu hoặc âm thanh lạ: Dừng lại đúng 2.0 giây (alertTimer = 2000) nghi ngờ nghe ngóng
+      this.targetInvestigateX = Math.max(ListenerAI.FOREST_TERRITORY_MIN_X, soundX);
+      this.targetInvestigateY = soundY;
+      this.alertTimer = 2000;
+    }
+
+    // V1.4 - P8-03: Xoay đầu về hướng phát ra tiếng động ngay lập tức và dừng lại nghe ngóng
+    if (typeof this.listener.setFlipX === 'function') {
+      this.listener.setFlipX(this.targetInvestigateX > this.listener.x);
+    }
+    this.listener.setVelocity(0, 0);
+
+    // C4-13-08 & C4-132-05: Kích hoạt tín hiệu cảnh báo Telegraph chỉ khi chuyển sang ALERT (không lặp)
     const previousState = this.state;
     this.state = 'ALERT';
-    this.alertTimer = 1150;
     if (previousState !== 'ALERT') {
       this.listener.onAlertTelegraph();
     }
@@ -502,5 +593,23 @@ export class ListenerAI {
     this.lostSightTimer = 0;
     this.patrolWaitTimer = 0;
     this.listener.onChaseAlert();
+  }
+
+  /**
+   * V1.4 - P8-03: Tác động xua đuổi của Đuốc Nhựa Thông Khẩn Cấp (Resin Flare)
+   * Khi quái vật tiến vào quầng sáng rực rỡ, bị chói lóa mắt lùi lại và không dám áp sát
+   */
+  public repelByFlare(flareX: number, flareY: number, durationMs: number = 15000): void {
+    this.triggerFlareRepel(flareX, flareY, durationMs);
+  }
+
+  public triggerFlareRepel(flareX: number, flareY: number, durationMs: number = 3500): void {
+    this.attackCooldown = Math.max(this.attackCooldown, durationMs);
+    this.detectionCooldown = durationMs;
+    const angle = Math.atan2(this.listener.y - flareY, this.listener.x - flareX);
+    const repelSpeed = 110;
+    this.listener.setVelocity(Math.cos(angle) * repelSpeed, Math.sin(angle) * repelSpeed);
+    this.state = 'ALERT';
+    this.alertTimer = Math.min(2500, durationMs);
   }
 }

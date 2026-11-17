@@ -21,7 +21,11 @@ export type ZoneId =
   // Layer 3 - Forbidden Regions (Khóa theo cốt truyện)
   | 'silent_mire' 
   | 'ancient_rune_puzzle'
-  | 'broken_bell_shrine';
+  | 'broken_bell_shrine'
+  // V1.4 - Sub-areas (Tiểu khu khám phá)
+  | 'sub_bell_workshop'
+  | 'sub_root_cellar'
+  | 'sub_whispering_clearing';
 
 export type GatingConditionType = 
   | 'always_unlocked' 
@@ -221,6 +225,8 @@ export interface PlayerStats {
   isLanternOn: boolean;
   isSprinting: boolean;
   isHiding: boolean;
+  moisture?: number;
+  temperature?: number;
 }
 
 export interface AnimationDefinition {
@@ -232,6 +238,7 @@ export interface AnimationDefinition {
 
 // C4-12-16: Kiểu dữ liệu nông trại canh tác thảo dược tại Sanctuary Farm
 export type HerbPlotStage = 'empty' | 'planted' | 'growing' | 'harvest_ready';
+export type CropType = 'herbs' | 'roots' | 'mushroom' | 'fiber';
 
 export interface HerbPlotData {
   id: string;
@@ -239,6 +246,129 @@ export interface HerbPlotData {
   y: number;
   stage: HerbPlotStage;
   plantedAt: number;
+  cropType?: CropType;
+  isPrepared?: boolean;
 }
+
+// V1.4: Hệ thống 4 Ô Trang Bị Cá Nhân (BODY, FEET, BACK, CHARM)
+export type EquipmentSlot = 'body' | 'feet' | 'back' | 'charm';
+
+export interface EquipmentItemDef {
+  id: string;
+  name: string;
+  slot: EquipmentSlot;
+  description: string;
+  moistureRateMod?: number;      // Hệ số tăng độ ẩm (0.60 = giảm 40%)
+  coldRateMod?: number;          // Hệ số nhiễm lạnh (0.60 = giảm 40%)
+  sprintSpeedMod?: number;       // Hệ số tốc độ chạy (0.95 = giảm 5%)
+  noiseRadiusMod?: number;       // Hệ số tiếng ồn bước chân (0.70 = giảm 30%)
+  mireSlowImmunity?: boolean;    // Miễn nhiễm làm chậm khi đi trên đất lầy
+  extraInventorySlots?: number;  // Ô chứa đồ mở rộng (+4)
+  sprintStaminaDrainMod?: number;// Hệ số tiêu hao thể lực khi chạy (1.15 = +15%)
+  composureDrainMod?: number;    // Hệ số tụt bình tâm (0.75 = giảm 25%)
+  detectEchoProximity?: boolean; // Rung báo hiệu khi gần Echo
+}
+
+// V1.4: Hệ thống Vũ Khí & Tự Vệ Sinh Tồn (Survival Defense)
+export type WeaponId = 'wpn_walking_staff' | 'wpn_iron_spear' | 'wpn_hunting_hatchet';
+
+export interface WeaponDef {
+  id: WeaponId;
+  name: string;
+  reach: number;
+  radius: number;
+  knockback: number;
+  knockbackDistance?: number;
+  damage: number;
+  staggerDuration: number;
+  attackCooldown: number;
+  staminaCost: number;
+  noiseRadius: number;
+  attackDuration: number;
+  woodcuttingMultiplier?: number;
+  canTriggerWeakness?: boolean;
+}
+
+// V1.4: Hệ sinh thái Sinh vật hoang dã (Wildlife Ecosystem)
+export type WildlifeSpecies = 'crow' | 'lantern_moth';
+export type WildlifeState = 'perched' | 'alert' | 'spooked' | 'fluttering' | 'hibernating';
+
+export interface WildlifeSpec {
+  id: string;
+  species: WildlifeSpecies;
+  x: number;
+  y: number;
+  zoneId: string;
+  contentId: string;    // HW-ANI-AMBIENT-000001 (Crow) | HW-ANI-AMBIENT-000002 (Lantern Moth)
+  runtimeKey: string;   // ani_crow | ani_lantern_moth
+  perchType?: 'branch' | 'fence' | 'rock' | 'ground' | 'herb_bush';
+}
+
+export interface WildlifeSpookEvent {
+  crowId: string;
+  x: number;
+  y: number;
+  cause: 'player_sprint' | 'player_attack' | 'listener_near' | 'flare_ignite';
+  noiseRadius: number;
+}
+
+// V1.4: Bộ nhớ âm thanh & Trí nhớ ngắn hạn của The Listener
+export interface SoundMemoryEntry {
+  x: number;
+  y: number;
+  timestamp: number;
+  repeatCount: number;
+  originX?: number;
+  originY?: number;
+}
+
+// V1.4: Hiện Tượng Ký Ức (The Echo - Memory Phenomenon)
+export interface EchoSpec {
+  id: string;
+  x: number;
+  y: number;
+  message: string;
+  targetClueX?: number;
+  targetClueY?: number;
+  loreFragmentId?: string;
+  composureDrain?: number;
+}
+
+// V1.4: 5 Sự kiện môi trường động (World Events)
+export type WorldEventType = 
+  | 'event_bell_echo'
+  | 'event_fog_surge'
+  | 'event_crow_alarm'
+  | 'event_false_footsteps'
+  | 'event_abandoned_camp';
+
+export interface WorldEventDef {
+  type: WorldEventType;
+  contentId: string;
+  nameVi: string;
+  nameEn: string;
+  descriptionVi: string;
+  minIntervalSec: number;
+}
+
+// V1.4 - P6: Sổ Tay Sinh Vật (Bestiary Ecosystem)
+export type BestiarySpecies = 'crow' | 'lantern_moth' | 'echo' | 'listener';
+
+export interface BestiaryEntry {
+  species: BestiarySpecies;
+  contentId: string;
+  runtimeKey: string;
+  nameVi: string;
+  nameEn: string;
+  roleVi: string;
+  habitatVi: string;
+  behaviorVi: string;
+  counterVi: string;
+  observed: boolean;
+  discoveredAt?: number;
+}
+
+
+
 
 

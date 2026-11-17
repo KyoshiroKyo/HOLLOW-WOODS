@@ -16,6 +16,7 @@ Backups/
 *.log
 .DS_Store
 Thumbs.db
+*.bak
 
 # C4-132-00 Release Archive and Archives
 Release_Archive/

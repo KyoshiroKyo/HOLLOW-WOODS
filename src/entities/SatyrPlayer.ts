@@ -16,6 +16,7 @@ import {
   PLAYER_SPRINT_SPEED
 } from '../config/Constants';
 import { PlayerState } from '../state/PlayerState';
+import { EquipmentSystem } from '../systems/EquipmentSystem';
 import { FacingDirection, PlayerStats } from '../types';
 import { AudioManager } from '../audio/AudioManager';
 
@@ -111,6 +112,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   private _isInteracting: boolean = false;
   private _isUsingItem: boolean = false;
   private _isStaminaExhausted: boolean = false;
+  private _lastAttackTime: number = 0;
 
   // Lớp hiển thị đồ họa trực quan của chiếc đèn lồng hổ phách (C4-12-07 Lantern Overlay)
   private lanternOverlayGfx: Phaser.GameObjects.Graphics | null = null;
@@ -1019,7 +1021,9 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     const canSprint = wantsToSprint && !this._isStaminaExhausted && this.stats.stamina > 0;
     this.stats.isSprinting = canSprint;
 
-    const baseSpeed = canSprint ? PLAYER_SPRINT_SPEED : PLAYER_WALK_SPEED;
+    const equipSys = EquipmentSystem.getInstance();
+    const sprintSpeed = PLAYER_SPRINT_SPEED * equipSys.getSprintSpeedMultiplier();
+    const baseSpeed = canSprint ? sprintSpeed : PLAYER_WALK_SPEED;
 
     // C4-13-18: Khi Bình Tâm cạn kiệt (0/100), nhân vật hoảng loạn: giảm 15% tốc độ di chuyển
     let speedMultiplier = 1.0;
@@ -1229,16 +1233,32 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   public attack(): boolean {
     if (this.isActionLocked()) return false;
 
+    const equipSys = EquipmentSystem.getInstance();
+    const weaponDef = equipSys.getActiveWeaponDef();
+
+    // V1.4 - P8-03: Kiểm tra hồi chiêu vũ khí (Attack Cooldown)
+    const now = Date.now();
+    if (now - this._lastAttackTime < weaponDef.attackCooldown) {
+      return false;
+    }
+
+    // V1.4: Kiểm tra và tiêu hao Thể Lực (Stamina) hợp lý theo từng loại vũ khí
+    if (this.stats.stamina < weaponDef.staminaCost) {
+      return false;
+    }
+    this.stats.stamina = Math.max(0, this.stats.stamina - weaponDef.staminaCost);
+    this._lastAttackTime = now;
+
     this._isAttacking = true;
     (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
 
     // C4-13-08: Phát âm thanh vung gậy tấn công cận chiến
     AudioManager.getInstance().playAttackSwing();
 
-    // C4-132-01: Tính toán vùng quét tấn công phía trước mặt nhân vật (bán kính 42px)
+    // V1.4 - P8-03: Tính toán vùng quét va chạm 4 hướng chuẩn xác theo reach của từng vũ khí
     let hitX = this.x;
     let hitY = this.y;
-    const reach = 28;
+    const reach = weaponDef.reach || 42;
     switch (this.facing) {
       case 'left': hitX -= reach; break;
       case 'right': hitX += reach; break;
@@ -1250,10 +1270,12 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     this.emit('player_attack', {
       x: hitX,
       y: hitY,
-      radius: 42,
+      radius: weaponDef.radius || 42,
+      reach,
       facing: this.facing,
       playerX: this.x,
-      playerY: this.y
+      playerY: this.y,
+      weapon: weaponDef
     });
 
     const wayfarerKey = `wayfarer_attack_${this.facing}`;

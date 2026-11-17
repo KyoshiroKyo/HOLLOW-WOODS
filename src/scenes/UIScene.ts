@@ -7,8 +7,13 @@ import { CraftingModal } from '../ui/CraftingModal';
 import { JournalModal } from '../ui/JournalModal';
 import { PauseModal } from '../ui/PauseModal';
 import { GameOverModal } from '../ui/GameOverModal';
+import { StorageChestModal } from '../ui/StorageChestModal';
+import { CampfireModal } from '../ui/CampfireModal';
+import { CauldronModal } from '../ui/CauldronModal';
+import { EquipmentModal } from '../ui/EquipmentModal';
 import { AudioManager } from '../audio/AudioManager';
 import { HUDIconGenerator, HUD_ICON_HEALTH, HUD_ICON_STAMINA, HUD_ICON_OIL, HUD_ICON_COMPOSURE } from '../utils/HUDIconGenerator';
+import { TimePhase, TIME_CONFIG } from '../config/TimeConfig';
 
 export interface QuickSlotRef {
   id: string;
@@ -52,6 +57,27 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   private questTitleText!: Phaser.GameObjects.Text;
   private questTrackerText!: Phaser.GameObjects.Text;
 
+  // V1.4: Widget Thời gian & Chu kỳ Ngày / Đêm thế giới
+  private timeWidgetBg!: Phaser.GameObjects.Graphics;
+  private timeClockGfx!: Phaser.GameObjects.Graphics; // V14-P8-02: Mặt đồng hồ tròn 3 múi màu
+  private timeIconText!: Phaser.GameObjects.Text;
+  private timeDayText!: Phaser.GameObjects.Text;
+  private timePhaseText!: Phaser.GameObjects.Text;
+  private timeTimerText!: Phaser.GameObjects.Text;
+  private timeProgressBar!: Phaser.GameObjects.Graphics;
+  private quickActionButtonsContainer!: Phaser.GameObjects.Container; // V14-P8-02: Cụm nút nhanh góc dưới trái
+  private lastRenderedPhase: string = '';
+  private lastRenderedDay: number = -1;
+  private lastRenderedTimeSec: number = -1;
+
+  // V1.4: 2 Huy hiệu trạng thái phụ (Moisture & Temperature Badges)
+  private moistureBadgeBg!: Phaser.GameObjects.Graphics;
+  private moistureBadgeText!: Phaser.GameObjects.Text;
+  private temperatureBadgeBg!: Phaser.GameObjects.Graphics;
+  private temperatureBadgeText!: Phaser.GameObjects.Text;
+  private lastRenderedMoisture: number = -1;
+  private lastRenderedTemperature: number = -1;
+
   // Thanh vật phẩm nhanh (Quick Slot)
   private quickSlotContainer!: Phaser.GameObjects.Container;
   private quickSlotRefs: QuickSlotRef[] = [];
@@ -83,6 +109,16 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   public journalModal!: JournalModal;
   public pauseModal!: PauseModal;
   public gameOverModal!: GameOverModal;
+  public storageChestModal!: StorageChestModal;
+  public campfireModal!: CampfireModal;
+  public cauldronModal!: CauldronModal;
+  public equipmentModal!: EquipmentModal;
+
+  // V1.4 - P6: Thanh Độ Ổn Định Phong Ấn (Boss Seal Bar)
+  private bossSealContainer!: Phaser.GameObjects.Container;
+  private bossSealTitleText!: Phaser.GameObjects.Text;
+  private bossSealBg!: Phaser.GameObjects.Graphics;
+  private bossSealNodes: Phaser.GameObjects.Text[] = [];
 
   // Bộ nhớ đệm đồ họa chỉ số (Dirty Checking Cache - GATE 3B)
   private lastHealthW: number = -1;
@@ -198,15 +234,36 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       strokeThickness: 2
     });
 
-    // 2. Chữ trạng thái Đèn lồng chuẩn HD đặt cạnh thanh Dầu Đèn với nền badge bán trong suốt
+    // 2. Chữ trạng thái Đèn lồng chuẩn HD đặt cạnh thanh Dầu Đèn với nền badge bán trong suốt (V14-P8-01: dịch x=308 để không đè chữ Dầu Đèn)
     this.lanternStatusBg = this.add.graphics();
-    this.lanternStatusText = HDTextHelper.createText(this, 280, 68, 'ĐÈN: TẮT [F]', {
+    this.lanternStatusText = HDTextHelper.createText(this, 308, 68, 'ĐÈN: TẮT [F]', {
       fontSize: '9.5px',
       fontStyle: 'bold',
       color: '#95a5a6',
       stroke: '#000000',
       strokeThickness: 2
     }).setOrigin(0.5, 0.5);
+
+    // 2b. V1.4: 2 Huy hiệu trạng thái phụ (Độ Ẩm & Thân Nhiệt)
+    this.moistureBadgeBg = this.add.graphics();
+    this.moistureBadgeText = HDTextHelper.createText(this, 24, 107, '💧 Khô ráo', {
+      fontSize: '9.5px',
+      fontStyle: 'bold',
+      color: '#1abc9c',
+      stroke: '#000000',
+      strokeThickness: 2
+    });
+
+    this.temperatureBadgeBg = this.add.graphics();
+    this.temperatureBadgeText = HDTextHelper.createText(this, 172, 107, '🔥 Ấm áp', {
+      fontSize: '9.5px',
+      fontStyle: 'bold',
+      color: '#f39c12',
+      stroke: '#000000',
+      strokeThickness: 2
+    });
+
+    this.updateStatusBadges(0, 80);
 
     // 3. Khung bảng theo dõi nhiệm vụ góc trên phải bán trong suốt (C4-13-07)
     const questBoxW = 340;
@@ -248,6 +305,47 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       strokeThickness: 1
     });
 
+    // 3B. V1.4 - P8: Widget Đồng Hồ Tròn 3 Múi Thời Gian (DAY-NIGHT CIRCULAR CLOCK)
+    const timeBoxW = 210;
+    const timeBoxX = questBoxX - timeBoxW - 12; // 920 - 210 - 12 = 698
+    const timeBoxY = 16;
+
+    this.timeWidgetBg = this.add.graphics();
+    this.timeWidgetBg.setDepth(8000);
+
+    this.timeClockGfx = this.add.graphics();
+    this.timeClockGfx.setDepth(8001);
+
+    this.timeProgressBar = this.add.graphics();
+    this.timeProgressBar.setDepth(8001);
+
+    this.timeDayText = HDTextHelper.createText(this, timeBoxX + 74, timeBoxY + 12, 'Ngày 1 — Mùa Sương Lạnh', {
+      fontSize: '11px',
+      fontStyle: 'bold',
+      color: '#f6ad55',
+      stroke: '#000000',
+      strokeThickness: 2
+    }).setDepth(8002);
+
+    this.timePhaseText = HDTextHelper.createText(this, timeBoxX + 74, timeBoxY + 31, '☀️ BAN NGÀY', {
+      fontSize: '12px',
+      fontStyle: 'bold',
+      color: '#f1c40f',
+      stroke: '#000000',
+      strokeThickness: 2
+    }).setDepth(8002);
+
+    this.timeTimerText = HDTextHelper.createText(this, timeBoxX + 74, timeBoxY + 50, '0:00 / 3:00', {
+      fontSize: '10.5px',
+      color: '#bdc3c7',
+      stroke: '#000000',
+      strokeThickness: 1
+    }).setDepth(8002);
+
+    this.timeIconText = HDTextHelper.createText(this, 0, 0, '').setVisible(false);
+
+    this.updateTimeWidget(1, 0, 'DAY', 0);
+
     // 4. Banner tên phân khu có nền tối chống chìm chữ (Tâm tại 640, 85)
     this.zoneBannerContainer = this.add.container(640, 85);
     this.zoneBannerContainer.setDepth(8500);
@@ -274,8 +372,13 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.zoneBannerContainer.add([bannerBg, this.zoneTitleText, this.zoneSubtitleText]);
     this.zoneBannerContainer.setAlpha(0);
 
+    // V1.4 - P6: Dựng Thanh Độ Ổn Định Phong Ấn tại đỉnh màn hình (640, 42)
+    this.buildBossSealBar();
+
     // 5. Thanh vật phẩm nhanh dưới đáy màn hình đặt tại (640, 684)
     this.buildQuickSlots();
+    // V14-P8-02: Cụm nút chức năng nhanh ở góc dưới bên trái HUD
+    this.buildQuickActionButtons();
 
     // 5b. Dựng khung hộp thoại HD 1280×720 tại (640, 590) (GATE 1A)
     this.buildDialogueUI();
@@ -338,8 +441,24 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       if (this.journalModal) this.journalModal.destroy();
       if (this.pauseModal) this.pauseModal.destroy();
       if (this.gameOverModal) this.gameOverModal.destroy();
+      if (this.storageChestModal) this.storageChestModal.destroy();
+      if (this.campfireModal) this.campfireModal.destroy();
+      if (this.cauldronModal) this.cauldronModal.destroy();
+      if (this.equipmentModal) this.equipmentModal.destroy();
       if (this.pooledPopupText) this.pooledPopupText.destroy();
       if (this.panicVignetteGraphics) this.panicVignetteGraphics.clear();
+      if (this.timeWidgetBg) this.timeWidgetBg.destroy();
+      if (this.timeClockGfx) this.timeClockGfx.destroy();
+      if (this.quickActionButtonsContainer) this.quickActionButtonsContainer.destroy();
+      if (this.timeProgressBar) this.timeProgressBar.destroy();
+      if (this.timeIconText) this.timeIconText.destroy();
+      if (this.timeDayText) this.timeDayText.destroy();
+      if (this.timePhaseText) this.timePhaseText.destroy();
+      if (this.timeTimerText) this.timeTimerText.destroy();
+      if (this.moistureBadgeBg) this.moistureBadgeBg.destroy();
+      if (this.moistureBadgeText) this.moistureBadgeText.destroy();
+      if (this.temperatureBadgeBg) this.temperatureBadgeBg.destroy();
+      if (this.temperatureBadgeText) this.temperatureBadgeText.destroy();
     });
 
     // C4-132-07: Lớp phủ chỉ dẫn bán trong suốt khi cửa sổ/iframe mất tiêu điểm (window.blur)
@@ -400,6 +519,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         this.selectQuickSlot(1);
         this.tryConsumeLanternOil();
       });
+      this.input.keyboard.on('keydown-THREE', () => {
+        if (this.isAnyModalOpen) return;
+        this.tryPlantResinFlare();
+      });
       this.input.keyboard.on('keydown-Q', () => {
         if (this.isAnyModalOpen) return;
         this.selectQuickSlot(2);
@@ -408,17 +531,32 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         if (this.isAnyModalOpen) return;
         this.selectQuickSlot(3);
       });
-      this.input.keyboard.on('keydown-I', () => {
+      this.input.keyboard.on('keydown-E', () => {
         if (this.isAnyModalOpen) return;
         this.selectQuickSlot(4);
       });
-      this.input.keyboard.on('keydown-J', () => {
+      this.input.keyboard.on('keydown-C', () => {
         if (this.isAnyModalOpen) return;
         this.selectQuickSlot(5);
+        this.toggleCrafting();
+      });
+      this.input.keyboard.on('keydown-I', () => {
+        if (this.isAnyModalOpen) return;
+        this.selectQuickSlot(5);
+        this.toggleCrafting();
+      });
+      this.input.keyboard.on('keydown-J', () => {
+        if (this.isAnyModalOpen) return;
+        this.selectQuickSlot(6);
+        this.toggleJournal();
       });
       this.input.keyboard.on('keydown-ESC', () => {
         if (this.isAnyModalOpen) return;
-        this.selectQuickSlot(6);
+        this.selectQuickSlot(7);
+      });
+      this.input.keyboard.on('keydown-B', () => {
+        if (this.gameOverModal && this.gameOverModal.isOpen) return;
+        this.toggleEquipment();
       });
     }
   }
@@ -522,21 +660,24 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         this.lanternStatusBg.clear();
         if (stats.isLanternOn) {
           this.lanternStatusBg.fillStyle(0x3d2800, 0.85);
-          this.lanternStatusBg.fillRoundedRect(252, 59, 58, 18, 4);
+          this.lanternStatusBg.fillRoundedRect(280, 59, 58, 18, 4);
           this.lanternStatusBg.lineStyle(1, 0xf39c12, 0.9);
-          this.lanternStatusBg.strokeRoundedRect(252, 59, 58, 18, 4);
+          this.lanternStatusBg.strokeRoundedRect(280, 59, 58, 18, 4);
           this.lanternStatusText.setText('🔥 [F] BẬT');
           this.lanternStatusText.setColor('#f1c40f');
         } else {
           this.lanternStatusBg.fillStyle(0x0e1118, 0.75);
-          this.lanternStatusBg.fillRoundedRect(252, 59, 58, 18, 4);
+          this.lanternStatusBg.fillRoundedRect(280, 59, 58, 18, 4);
           this.lanternStatusBg.lineStyle(1, 0x4a5568, 0.7);
-          this.lanternStatusBg.strokeRoundedRect(252, 59, 58, 18, 4);
+          this.lanternStatusBg.strokeRoundedRect(280, 59, 58, 18, 4);
           this.lanternStatusText.setText('[F] TẮT');
           this.lanternStatusText.setColor('#7f8c8d');
         }
       }
     }
+
+    // V1.4: Cập nhật 2 huy hiệu trạng thái phụ (Độ Ẩm & Thân Nhiệt)
+    this.updateStatusBadges(stats.moisture ?? 0, stats.temperature ?? 80);
   }
 
   private drawThickBar(g: Phaser.GameObjects.Graphics, x: number, y: number, w: number, h: number, val: number, max: number, darkColor: number, lightColor: number): void {
@@ -564,19 +705,23 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.slotHighlightGraphics = this.add.graphics();
     this.quickSlotContainer.add(this.slotHighlightGraphics);
 
+    // V1.4: 8 Ô phím tắt sinh tồn & tương tác chuẩn Canon Bellhollow
     const slotNames = [
       { key: '[1] Thuốc Đắp', id: 'poultice' },
       { key: '[2] Dầu Đèn', id: 'oil' },
       { key: '[Q] Mồi Ném', id: 'lure' },
       { key: '[F] Đèn Lồng', id: 'lantern' },
+      { key: '[E] Tương Tác', id: 'interact' },
       { key: '[I] Chế Tạo', id: 'craft' },
       { key: '[J] Sổ Tay', id: 'journal' },
       { key: '[ESC] Tạm Dừng', id: 'pause' }
     ];
 
-    let startX = -348;
-    const btnW = 108;
-    const btnH = 34;
+    const btnW = 98;
+    const btnH = 36;
+    const gap = 8;
+    const totalW = slotNames.length * btnW + (slotNames.length - 1) * gap; // 8 * 98 + 7 * 8 = 840
+    let startX = -totalW / 2 + btnW / 2; // -371
 
     this.quickSlotRefs = [];
 
@@ -585,15 +730,31 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       const slotX = startX;
 
       const g = this.add.graphics();
-      g.fillStyle(0x090e15, 0.78);
-      g.fillRoundedRect(slotX - btnW / 2, -btnH / 2, btnW, btnH, 6);
-      g.lineStyle(1, 0x3d4a5d, 0.7);
-      g.strokeRoundedRect(slotX - btnW / 2, -btnH / 2, btnW, btnH, 6);
+      // Ngôn ngữ gỗ tối, da cũ và đồng xỉn
+      g.fillStyle(0x18110b, 0.88);
+      g.fillRoundedRect(slotX - btnW / 2, -btnH / 2, btnW, btnH, 5);
+
+      // Viền kim loại đồng xỉn mộc mạc
+      g.lineStyle(1.5, 0x6e5233, 0.85);
+      g.strokeRoundedRect(slotX - btnW / 2, -btnH / 2, btnW, btnH, 5);
+
+      // Vạch bóng kim loại trong
+      g.lineStyle(1, 0x9c774b, 0.35);
+      g.strokeRoundedRect(slotX - btnW / 2 + 1, -btnH / 2 + 1, btnW - 2, btnH - 2, 4);
+
+      // 4 đinh tán đồng ở góc
+      g.fillStyle(0xb89058, 0.9);
+      g.fillRect(slotX - btnW / 2 + 2, -btnH / 2 + 2, 2, 2);
+      g.fillRect(slotX + btnW / 2 - 4, -btnH / 2 + 2, 2, 2);
+      g.fillRect(slotX - btnW / 2 + 2, btnH / 2 - 4, 2, 2);
+      g.fillRect(slotX + btnW / 2 - 4, btnH / 2 - 4, 2, 2);
 
       const label = HDTextHelper.createText(this, slotX, 0, slot.key, {
-        fontSize: '12px',
+        fontSize: '11px',
         fontStyle: 'bold',
-        color: '#ecf0f1'
+        color: '#f5eedc',
+        stroke: '#0c0805',
+        strokeThickness: 2
       }).setOrigin(0.5, 0.5);
 
       this.quickSlotContainer.add([g, label]);
@@ -625,6 +786,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
           this.events.emit('ui_toggle_lantern');
         } else if (slot.id === 'lure') {
           this.events.emit('ui_throw_lure');
+        } else if (slot.id === 'interact') {
+          const gameScene = this.scene.get('GameScene') as any;
+          if (gameScene && typeof gameScene.triggerInteractionFromUI === 'function') {
+            gameScene.triggerInteractionFromUI();
+          }
         }
       });
       this.quickSlotContainer.add(hitZone);
@@ -661,10 +827,122 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         this.quickSlotContainer.add([this.lureCountBadge, this.lureCountText]);
       }
 
-      startX += 116;
+      startX += (btnW + gap);
     }
 
     this.redrawQuickSlotHighlights();
+  }
+
+  /**
+   * V14-P8-02: Dựng cụm nút chức năng nhanh ở góc dưới bên trái HUD
+   * Đặt kề cạnh Hotbar 8 ô, hỗ trợ cả chuột lẫn phím tắt mở Bảng Chế Tạo [C]/[I] và Sổ Tay [J]
+   */
+  private buildQuickActionButtons(): void {
+    this.quickActionButtonsContainer = this.add.container(0, 0);
+    this.quickActionButtonsContainer.setDepth(8000);
+
+    const btnH = 36;
+    const btnW = 92;
+    const btnY = 684;
+
+    // Nút 1: [C] / [I] Chế Tạo (Crafting - Biểu tượng Búa & Đe)
+    const craftX = 66; // spans x = 20 to 112
+    const craftBg = this.add.graphics();
+    craftBg.fillStyle(0x18110b, 0.92);
+    craftBg.fillRoundedRect(craftX - btnW / 2, btnY - btnH / 2, btnW, btnH, 5);
+    craftBg.lineStyle(1.5, 0x6e5233, 0.9);
+    craftBg.strokeRoundedRect(craftX - btnW / 2, btnY - btnH / 2, btnW, btnH, 5);
+    craftBg.lineStyle(1, 0x9c774b, 0.35);
+    craftBg.strokeRoundedRect(craftX - btnW / 2 + 1, btnY - btnH / 2 + 1, btnW - 2, btnH - 2, 4);
+
+    // 4 đinh tán đồng
+    craftBg.fillStyle(0xb89058, 0.9);
+    craftBg.fillRect(craftX - btnW / 2 + 2, btnY - btnH / 2 + 2, 2, 2);
+    craftBg.fillRect(craftX + btnW / 2 - 4, btnY - btnH / 2 + 2, 2, 2);
+    craftBg.fillRect(craftX - btnW / 2 + 2, btnY + btnH / 2 - 4, 2, 2);
+    craftBg.fillRect(craftX + btnW / 2 - 4, btnY + btnH / 2 - 4, 2, 2);
+
+    const craftLabel = HDTextHelper.createText(this, craftX, btnY, '🔨 [C] Chế Tạo', {
+      fontSize: '11px',
+      fontStyle: 'bold',
+      color: '#f5eedc',
+      stroke: '#0c0805',
+      strokeThickness: 2
+    }).setOrigin(0.5, 0.5);
+
+    const craftHit = this.add.zone(craftX, btnY, btnW, btnH).setInteractive({ useHandCursor: true });
+    craftHit.on('pointerdown', () => {
+      this.selectQuickSlot(5);
+      this.toggleCrafting();
+    });
+    craftHit.on('pointerover', () => {
+      craftBg.clear();
+      craftBg.fillStyle(0x281d13, 0.98);
+      craftBg.fillRoundedRect(craftX - btnW / 2, btnY - btnH / 2, btnW, btnH, 5);
+      craftBg.lineStyle(1.5, 0xf1c40f, 1.0);
+      craftBg.strokeRoundedRect(craftX - btnW / 2, btnY - btnH / 2, btnW, btnH, 5);
+    });
+    craftHit.on('pointerout', () => {
+      craftBg.clear();
+      craftBg.fillStyle(0x18110b, 0.92);
+      craftBg.fillRoundedRect(craftX - btnW / 2, btnY - btnH / 2, btnW, btnH, 5);
+      craftBg.lineStyle(1.5, 0x6e5233, 0.9);
+      craftBg.strokeRoundedRect(craftX - btnW / 2, btnY - btnH / 2, btnW, btnH, 5);
+      craftBg.lineStyle(1, 0x9c774b, 0.35);
+      craftBg.strokeRoundedRect(craftX - btnW / 2 + 1, btnY - btnH / 2 + 1, btnW - 2, btnH - 2, 4);
+    });
+
+    // Nút 2: [J] Sổ Tay (Journal - Biểu tượng Cuốn Sách Cổ)
+    const journalX = 164; // spans x = 118 to 210
+    const journalBg = this.add.graphics();
+    journalBg.fillStyle(0x18110b, 0.92);
+    journalBg.fillRoundedRect(journalX - btnW / 2, btnY - btnH / 2, btnW, btnH, 5);
+    journalBg.lineStyle(1.5, 0x6e5233, 0.9);
+    journalBg.strokeRoundedRect(journalX - btnW / 2, btnY - btnH / 2, btnW, btnH, 5);
+    journalBg.lineStyle(1, 0x9c774b, 0.35);
+    journalBg.strokeRoundedRect(journalX - btnW / 2 + 1, btnY - btnH / 2 + 1, btnW - 2, btnH - 2, 4);
+
+    // 4 đinh tán đồng
+    journalBg.fillStyle(0xb89058, 0.9);
+    journalBg.fillRect(journalX - btnW / 2 + 2, btnY - btnH / 2 + 2, 2, 2);
+    journalBg.fillRect(journalX + btnW / 2 - 4, btnY - btnH / 2 + 2, 2, 2);
+    journalBg.fillRect(journalX - btnW / 2 + 2, btnY + btnH / 2 - 4, 2, 2);
+    journalBg.fillRect(journalX + btnW / 2 - 4, btnY + btnH / 2 - 4, 2, 2);
+
+    const journalLabel = HDTextHelper.createText(this, journalX, btnY, '📖 [J] Sổ Tay', {
+      fontSize: '11px',
+      fontStyle: 'bold',
+      color: '#f5eedc',
+      stroke: '#0c0805',
+      strokeThickness: 2
+    }).setOrigin(0.5, 0.5);
+
+    const journalHit = this.add.zone(journalX, btnY, btnW, btnH).setInteractive({ useHandCursor: true });
+    journalHit.on('pointerdown', () => {
+      this.selectQuickSlot(6);
+      this.toggleJournal();
+    });
+    journalHit.on('pointerover', () => {
+      journalBg.clear();
+      journalBg.fillStyle(0x281d13, 0.98);
+      journalBg.fillRoundedRect(journalX - btnW / 2, btnY - btnH / 2, btnW, btnH, 5);
+      journalBg.lineStyle(1.5, 0xf1c40f, 1.0);
+      journalBg.strokeRoundedRect(journalX - btnW / 2, btnY - btnH / 2, btnW, btnH, 5);
+    });
+    journalHit.on('pointerout', () => {
+      journalBg.clear();
+      journalBg.fillStyle(0x18110b, 0.92);
+      journalBg.fillRoundedRect(journalX - btnW / 2, btnY - btnH / 2, btnW, btnH, 5);
+      journalBg.lineStyle(1.5, 0x6e5233, 0.9);
+      journalBg.strokeRoundedRect(journalX - btnW / 2, btnY - btnH / 2, btnW, btnH, 5);
+      journalBg.lineStyle(1, 0x9c774b, 0.35);
+      journalBg.strokeRoundedRect(journalX - btnW / 2 + 1, btnY - btnH / 2 + 1, btnW - 2, btnH - 2, 4);
+    });
+
+    this.quickActionButtonsContainer.add([
+      craftBg, craftLabel, craftHit,
+      journalBg, journalLabel, journalHit
+    ]);
   }
 
   public selectQuickSlot(index: number): void {
@@ -680,19 +958,26 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     const activeSlot = this.quickSlotRefs[this.selectedQuickSlotIndex];
     if (!activeSlot) return;
 
-    const btnW = 108;
-    const btnH = 34;
+    const btnW = 98;
+    const btnH = 36;
     const x = activeSlot.x;
 
-    // Viền kép vàng hổ phách nổi bật ô đang được chọn
-    g.lineStyle(2, 0xf1c40f, 1);
-    g.strokeRoundedRect(x - btnW / 2 - 2, -btnH / 2 - 2, btnW + 4, btnH + 4, 7);
-    g.lineStyle(1, 0xffffff, 0.7);
-    g.strokeRoundedRect(x - btnW / 2, -btnH / 2, btnW, btnH, 6);
+    // Viền kép ánh sáng hổ phách nổi bật ô đang được chọn theo thẩm mỹ V1.4
+    g.lineStyle(2, 0xf39c12, 1);
+    g.strokeRoundedRect(x - btnW / 2 - 2, -btnH / 2 - 2, btnW + 4, btnH + 4, 6);
+    g.lineStyle(1, 0xffe082, 0.85);
+    g.strokeRoundedRect(x - btnW / 2, -btnH / 2, btnW, btnH, 5);
 
     // Ánh sáng nổi hổ phách mờ
-    g.fillStyle(0xf39c12, 0.18);
-    g.fillRoundedRect(x - btnW / 2, -btnH / 2, btnW, btnH, 6);
+    g.fillStyle(0xf39c12, 0.22);
+    g.fillRoundedRect(x - btnW / 2, -btnH / 2, btnW, btnH, 5);
+
+    // Điểm nhấn 4 góc nẹp đồng vàng sáng
+    g.fillStyle(0xfff3d1, 1);
+    g.fillRect(x - btnW / 2 - 1, -btnH / 2 - 1, 3, 3);
+    g.fillRect(x + btnW / 2 - 2, -btnH / 2 - 1, 3, 3);
+    g.fillRect(x - btnW / 2 - 1, btnH / 2 - 2, 3, 3);
+    g.fillRect(x + btnW / 2 - 2, btnH / 2 - 2, 3, 3);
   }
 
   public update(time: number = 0, _delta: number = 0): void {
@@ -834,6 +1119,14 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     return false;
   }
 
+  public tryPlantResinFlare(): boolean {
+    const gameScene = this.scene.get('GameScene') as any;
+    if (gameScene && typeof gameScene.plantResinFlare === 'function') {
+      return gameScene.plantResinFlare();
+    }
+    return false;
+  }
+
   public updateQuickSlotCounts(): void {
     const poulticeCount = this.playerState.getItemCount('item_herbal_poultice');
     const oilCount = this.playerState.getItemCount('item_lantern_oil');
@@ -883,6 +1176,217 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         this.questTrackerText.setText('Tự do khám phá vùng Bellhollow...');
         this.questTrackerText.setColor('#ecf0f1');
       }
+    }
+  }
+
+  /**
+   * V14-P8-02: Hoàn thiện widget Đồng Hồ Tròn 3 múi màu (DAY-NIGHT CIRCULAR CLOCK)
+   * - 3 Múi màu: Ban Ngày 180s (Vàng hổ phách), Hoàng Hôn 90s (Cam hoàng hôn), Đêm Sương 90s (Xanh tím đêm)
+   * - Kim đồng hồ xoay mượt theo thời gian thực (360s chu kỳ)
+   * - Dòng nhãn trạng thái: "Ngày X — Mùa Sương Lạnh"
+   */
+  public updateTimeWidget(dayCount: number, timeOfDay: number, phase: TimePhase, _phaseProgress: number): void {
+    if (!this.timeWidgetBg || !this.timeDayText || !this.timePhaseText || !this.timeClockGfx) return;
+
+    const timeSec = Math.floor(timeOfDay);
+    const dayChanged = dayCount !== this.lastRenderedDay;
+    const phaseChanged = phase !== this.lastRenderedPhase;
+    const timeChanged = timeSec !== this.lastRenderedTimeSec;
+
+    if (!dayChanged && !phaseChanged && !timeChanged) return;
+
+    this.lastRenderedDay = dayCount;
+    this.lastRenderedPhase = phase;
+    this.lastRenderedTimeSec = timeSec;
+
+    const timeBoxW = 210;
+    const timeBoxH = 78;
+    const timeBoxX = (1260 - 340) - timeBoxW - 12; // 698
+    const timeBoxY = 16;
+
+    const cfg = TIME_CONFIG.phases[phase] || TIME_CONFIG.phases.DAY;
+
+    // 1. Cập nhật khung nền hộp nếu đổi ngày hoặc đổi pha
+    if (phaseChanged || dayChanged) {
+      this.timeWidgetBg.clear();
+      // Nền đen sẫm mang phong cách da & gỗ tối
+      this.timeWidgetBg.fillStyle(0x080d14, 0.82);
+      this.timeWidgetBg.fillRoundedRect(timeBoxX, timeBoxY, timeBoxW, timeBoxH, 6);
+      this.timeWidgetBg.lineStyle(1.5, 0x8a6d3b, 0.75);
+      this.timeWidgetBg.strokeRoundedRect(timeBoxX, timeBoxY, timeBoxW, timeBoxH, 6);
+      this.timeWidgetBg.lineStyle(1, 0x4a3b20, 0.45);
+      this.timeWidgetBg.strokeRoundedRect(timeBoxX + 2, timeBoxY + 2, timeBoxW - 4, timeBoxH - 4, 5);
+
+      // Cập nhật nhãn trạng thái Ngày X — Mùa Sương Lạnh
+      this.timeDayText.setText(`Ngày ${dayCount} — Mùa Sương Lạnh`);
+      this.timePhaseText.setText(`${cfg.icon} ${cfg.vietnameseName.toUpperCase()}`);
+      this.timePhaseText.setColor(cfg.colorHex);
+    }
+
+    // 2. Tính toán thời gian trôi trong pha hiện tại
+    const dayDur = TIME_CONFIG.phases.DAY.duration;
+    const duskDur = TIME_CONFIG.phases.DUSK.duration;
+    let elapsedInPhase = timeOfDay;
+    if (phase === 'DUSK') elapsedInPhase = timeOfDay - dayDur;
+    else if (phase === 'NIGHT') elapsedInPhase = timeOfDay - dayDur - duskDur;
+
+    const elM = Math.floor(elapsedInPhase / 60);
+    const elS = Math.floor(elapsedInPhase % 60);
+    const totM = Math.floor(cfg.duration / 60);
+    const totS = Math.floor(cfg.duration % 60);
+    const elStr = `${elM}:${elS < 10 ? '0' : ''}${elS}`;
+    const totStr = `${totM}:${totS < 10 ? '0' : ''}${totS}`;
+    this.timeTimerText.setText(`⏳ ${elStr} / ${totStr}`);
+
+    // 3. Vẽ Mặt Đồng Hồ Tròn 3 Múi Màu (Circular 3-Wedge Clock)
+    const clockCx = timeBoxX + 38;
+    const clockCy = timeBoxY + 39;
+    const clockR = 25;
+
+    this.timeClockGfx.clear();
+
+    // Nền kim loại / gỗ sẫm của mặt đồng hồ
+    this.timeClockGfx.fillStyle(0x0a0f18, 0.95);
+    this.timeClockGfx.fillCircle(clockCx, clockCy, clockR + 3);
+    this.timeClockGfx.lineStyle(2, 0x8a6d3b, 0.9);
+    this.timeClockGfx.strokeCircle(clockCx, clockCy, clockR + 3);
+    this.timeClockGfx.lineStyle(1, 0x4a3b20, 0.6);
+    this.timeClockGfx.strokeCircle(clockCx, clockCy, clockR + 1);
+
+    // Múi 1: Ban Ngày (DAY — 180s = 50% = 180° = PI rad)
+    // Góc: từ -PI/2 đến PI/2 (nửa bên phải từ đỉnh 12h đến đáy 6h)
+    this.timeClockGfx.fillStyle(0xf1c40f, 0.85); // Vàng hổ phách
+    this.timeClockGfx.beginPath();
+    this.timeClockGfx.moveTo(clockCx, clockCy);
+    this.timeClockGfx.arc(clockCx, clockCy, clockR, -Math.PI / 2, Math.PI / 2, false);
+    this.timeClockGfx.closePath();
+    this.timeClockGfx.fillPath();
+
+    // Múi 2: Hoàng Hôn (DUSK — 90s = 25% = 90° = PI/2 rad)
+    // Góc: từ PI/2 đến PI (góc phần tư dưới bên trái từ 6h đến 9h)
+    this.timeClockGfx.fillStyle(0xe67e22, 0.85); // Cam hoàng hôn
+    this.timeClockGfx.beginPath();
+    this.timeClockGfx.moveTo(clockCx, clockCy);
+    this.timeClockGfx.arc(clockCx, clockCy, clockR, Math.PI / 2, Math.PI, false);
+    this.timeClockGfx.closePath();
+    this.timeClockGfx.fillPath();
+
+    // Múi 3: Đêm Sương (NIGHT — 90s = 25% = 90° = PI/2 rad)
+    // Góc: từ PI đến 3PI/2 (góc phần tư trên bên trái từ 9h đến 12h)
+    this.timeClockGfx.fillStyle(0x5b4a8e, 0.85); // Xanh tím đêm
+    this.timeClockGfx.beginPath();
+    this.timeClockGfx.moveTo(clockCx, clockCy);
+    this.timeClockGfx.arc(clockCx, clockCy, clockR, Math.PI, (3 * Math.PI) / 2, false);
+    this.timeClockGfx.closePath();
+    this.timeClockGfx.fillPath();
+
+    // Vạch chia múi giờ tinh tế
+    this.timeClockGfx.lineStyle(1, 0x131a16, 0.9);
+    this.timeClockGfx.lineBetween(clockCx, clockCy, clockCx, clockCy - clockR); // Đỉnh 12h
+    this.timeClockGfx.lineBetween(clockCx, clockCy, clockCx, clockCy + clockR); // Đáy 6h
+    this.timeClockGfx.lineBetween(clockCx, clockCy, clockCx - clockR, clockCy); // Trái 9h
+
+    // 4. Kim Đồng Hồ Xoay Mượt Theo Thời Gian Thực (Rotating Clock Hand)
+    const handAngle = -Math.PI / 2 + (Math.max(0, Math.min(360, timeOfDay)) / 360) * (Math.PI * 2);
+    const handLen = clockR - 4;
+    const tipX = clockCx + Math.cos(handAngle) * handLen;
+    const tipY = clockCy + Math.sin(handAngle) * handLen;
+    const tailX = clockCx - Math.cos(handAngle) * 4;
+    const tailY = clockCy - Math.sin(handAngle) * 4;
+
+    // Thân kim đồng hồ màu vàng kim sáng
+    this.timeClockGfx.lineStyle(2, 0xfff8db, 0.95);
+    this.timeClockGfx.lineBetween(tailX, tailY, tipX, tipY);
+
+    // Chốt đồng tâm (Center Brass Pin)
+    this.timeClockGfx.fillStyle(0xd4af37, 1.0);
+    this.timeClockGfx.fillCircle(clockCx, clockCy, 3.5);
+    this.timeClockGfx.fillStyle(0x1a1a1a, 1.0);
+    this.timeClockGfx.fillCircle(clockCx, clockCy, 1.5);
+  }
+
+  /**
+   * V1.4: Cập nhật 2 Huy hiệu trạng thái phụ (Độ Ẩm & Thân Nhiệt)
+   * Hiển thị gọn gàng bên dưới cụm chỉ số sinh tồn (không thêm thanh đo mới)
+   */
+  public updateStatusBadges(moisture: number, temperature: number): void {
+    if (!this.moistureBadgeBg || !this.temperatureBadgeBg) return;
+
+    const m = Math.round(moisture);
+    const t = Math.round(temperature);
+
+    if (m === this.lastRenderedMoisture && t === this.lastRenderedTemperature) return;
+    this.lastRenderedMoisture = m;
+    this.lastRenderedTemperature = t;
+
+    // 1. Huy hiệu Độ Ẩm (Moisture)
+    // 0–29%: DRY (Khô ráo), 30–69%: DAMP (Ẩm ướt), 70–100%: SOAKED (Ướt sũng)
+    this.moistureBadgeBg.clear();
+    const bX = 18;
+    const bY = 104;
+    const bW = 142;
+    const bH = 20;
+
+    let mLabel = `💧 Khô ráo (${m}%)`;
+    let mColorHex = '#1abc9c';
+    let mBgColor = 0x0f221c;
+    let mBorderColor = 0x1abc9c;
+
+    if (m >= 70) {
+      mLabel = `🌊 Ướt sũng (${m}%)`;
+      mColorHex = '#3498db';
+      mBgColor = 0x12253a;
+      mBorderColor = 0x2980b9;
+    } else if (m >= 30) {
+      mLabel = `💧 Ẩm ướt (${m}%)`;
+      mColorHex = '#00cec9';
+      mBgColor = 0x0e282a;
+      mBorderColor = 0x00cec9;
+    }
+
+    this.moistureBadgeBg.fillStyle(mBgColor, 0.85);
+    this.moistureBadgeBg.fillRoundedRect(bX, bY, bW, bH, 4);
+    this.moistureBadgeBg.lineStyle(1, mBorderColor, 0.7);
+    this.moistureBadgeBg.strokeRoundedRect(bX, bY, bW, bH, 4);
+
+    if (this.moistureBadgeText) {
+      this.moistureBadgeText.setText(mLabel);
+      this.moistureBadgeText.setColor(mColorHex);
+    }
+
+    // 2. Huy hiệu Thân Nhiệt (Temperature)
+    // >= 70: WARM (Ấm áp), 35–69: CHILLY (Se lạnh), <= 34: FREEZING (Lạnh cóng)
+    this.temperatureBadgeBg.clear();
+    const tX = 166;
+    const tY = 104;
+    const tW = 146;
+    const tH = 20;
+
+    let tLabel = `🔥 Ấm áp (${t}°)`;
+    let tColorHex = '#f39c12';
+    let tBgColor = 0x2b1c0a;
+    let tBorderColor = 0xf39c12;
+
+    if (t <= 34) {
+      tLabel = `❄️ Cóng lạnh (${t}°)`;
+      tColorHex = '#74b9ff';
+      tBgColor = 0x0e1c2e;
+      tBorderColor = 0x0984e3;
+    } else if (t < 70) {
+      tLabel = `🌡️ Se lạnh (${t}°)`;
+      tColorHex = '#81ecec';
+      tBgColor = 0x12242b;
+      tBorderColor = 0x81ecec;
+    }
+
+    this.temperatureBadgeBg.fillStyle(tBgColor, 0.85);
+    this.temperatureBadgeBg.fillRoundedRect(tX, tY, tW, tH, 4);
+    this.temperatureBadgeBg.lineStyle(1, tBorderColor, 0.7);
+    this.temperatureBadgeBg.strokeRoundedRect(tX, tY, tW, tH, 4);
+
+    if (this.temperatureBadgeText) {
+      this.temperatureBadgeText.setText(tLabel);
+      this.temperatureBadgeText.setColor(tColorHex);
     }
   }
 
@@ -973,6 +1477,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.quickSlotContainer) {
       this.quickSlotContainer.setVisible(shouldShowHUD);
     }
+    if (this.quickActionButtonsContainer) {
+      this.quickActionButtonsContainer.setVisible(shouldShowHUD);
+    }
     if (active || this.isAnyModalOpen) {
       this.setInteractionPrompt(null);
       if (this.zoneBannerContainer) {
@@ -994,7 +1501,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       (!!this.craftingModal && this.craftingModal.isOpen) ||
       (!!this.journalModal && this.journalModal.isOpen) ||
       (!!this.pauseModal && this.pauseModal.isOpen) ||
-      (!!this.gameOverModal && this.gameOverModal.isOpen);
+      (!!this.gameOverModal && this.gameOverModal.isOpen) ||
+      (!!this.storageChestModal && this.storageChestModal.isOpen) ||
+      (!!this.campfireModal && this.campfireModal.isOpen) ||
+      (!!this.cauldronModal && this.cauldronModal.isOpen) ||
+      (!!this.equipmentModal && this.equipmentModal.isOpen);
   }
 
   /**
@@ -1004,6 +1515,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.craftingModal && this.craftingModal.isOpen) this.craftingModal.close();
     if (this.journalModal && this.journalModal.isOpen) this.journalModal.close();
     if (this.pauseModal && this.pauseModal.isOpen) this.pauseModal.close();
+    if (this.storageChestModal && this.storageChestModal.isOpen) this.storageChestModal.close();
+    if (this.campfireModal && this.campfireModal.isOpen) this.campfireModal.close();
+    if (this.cauldronModal && this.cauldronModal.isOpen) this.cauldronModal.close();
+    if (this.equipmentModal && this.equipmentModal.isOpen) this.equipmentModal.close();
     this.hideDialogue();
     this.handleModalOpened();
     this.setInteractionPrompt(null);
@@ -1046,6 +1561,19 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.promptText) this.promptText.setVisible(visible);
     if (this.zoneBannerContainer) this.zoneBannerContainer.setVisible(visible);
     if (this.activePopup) this.activePopup.setVisible(visible);
+    // V1.4: Widget thời gian & Huy hiệu trạng thái phụ
+    if (this.quickActionButtonsContainer) this.quickActionButtonsContainer.setVisible(visible);
+    if (this.timeWidgetBg) this.timeWidgetBg.setVisible(visible);
+    if (this.timeClockGfx) this.timeClockGfx.setVisible(visible);
+    if (this.timeProgressBar) this.timeProgressBar.setVisible(visible);
+    if (this.timeIconText) this.timeIconText.setVisible(visible);
+    if (this.timeDayText) this.timeDayText.setVisible(visible);
+    if (this.timePhaseText) this.timePhaseText.setVisible(visible);
+    if (this.timeTimerText) this.timeTimerText.setVisible(visible);
+    if (this.moistureBadgeBg) this.moistureBadgeBg.setVisible(visible);
+    if (this.moistureBadgeText) this.moistureBadgeText.setVisible(visible);
+    if (this.temperatureBadgeBg) this.temperatureBadgeBg.setVisible(visible);
+    if (this.temperatureBadgeText) this.temperatureBadgeText.setVisible(visible);
   }
 
   public handleModalOpened(): void {
@@ -1170,6 +1698,94 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.journalModal.onClose = () => this.handleModalClosed();
     }
     return this.journalModal;
+  }
+
+  public getStorageChestModal(): StorageChestModal {
+    if (!this.storageChestModal) {
+      this.storageChestModal = new StorageChestModal(this);
+      this.storageChestModal.onOpen = () => this.handleModalOpened();
+      this.storageChestModal.onClose = () => this.handleModalClosed();
+    }
+    return this.storageChestModal;
+  }
+
+  public openStorageChest(): void {
+    if (this.gameOverModal && this.gameOverModal.isOpen) return;
+    if (this.pauseModal && this.pauseModal.isOpen) this.pauseModal.close();
+    if (this.craftingModal && this.craftingModal.isOpen) this.craftingModal.close();
+    if (this.journalModal && this.journalModal.isOpen) this.journalModal.close();
+    if (this.campfireModal && this.campfireModal.isOpen) this.campfireModal.close();
+    if (this.cauldronModal && this.cauldronModal.isOpen) this.cauldronModal.close();
+    const modal = this.getStorageChestModal();
+    modal.open();
+  }
+
+  public getCampfireModal(): CampfireModal {
+    if (!this.campfireModal) {
+      this.campfireModal = new CampfireModal(this);
+      this.campfireModal.onOpen = () => this.handleModalOpened();
+      this.campfireModal.onClose = () => this.handleModalClosed();
+    }
+    return this.campfireModal;
+  }
+
+  public openCampfireModal(): void {
+    if (this.gameOverModal && this.gameOverModal.isOpen) return;
+    if (this.pauseModal && this.pauseModal.isOpen) this.pauseModal.close();
+    if (this.craftingModal && this.craftingModal.isOpen) this.craftingModal.close();
+    if (this.journalModal && this.journalModal.isOpen) this.journalModal.close();
+    if (this.storageChestModal && this.storageChestModal.isOpen) this.storageChestModal.close();
+    if (this.cauldronModal && this.cauldronModal.isOpen) this.cauldronModal.close();
+    const modal = this.getCampfireModal();
+    modal.open();
+  }
+
+  public getCauldronModal(): CauldronModal {
+    if (!this.cauldronModal) {
+      this.cauldronModal = new CauldronModal(this);
+      this.cauldronModal.onOpen = () => this.handleModalOpened();
+      this.cauldronModal.onClose = () => this.handleModalClosed();
+    }
+    return this.cauldronModal;
+  }
+
+  public openCauldronModal(): void {
+    if (this.gameOverModal && this.gameOverModal.isOpen) return;
+    if (this.pauseModal && this.pauseModal.isOpen) this.pauseModal.close();
+    if (this.craftingModal && this.craftingModal.isOpen) this.craftingModal.close();
+    if (this.journalModal && this.journalModal.isOpen) this.journalModal.close();
+    if (this.storageChestModal && this.storageChestModal.isOpen) this.storageChestModal.close();
+    if (this.campfireModal && this.campfireModal.isOpen) this.campfireModal.close();
+    if (this.equipmentModal && this.equipmentModal.isOpen) this.equipmentModal.close();
+    const modal = this.getCauldronModal();
+    modal.open();
+  }
+
+  public getEquipmentModal(): EquipmentModal {
+    if (!this.equipmentModal) {
+      this.equipmentModal = new EquipmentModal(this);
+      this.equipmentModal.onOpen = () => this.handleModalOpened();
+      this.equipmentModal.onClose = () => this.handleModalClosed();
+    }
+    return this.equipmentModal;
+  }
+
+  public openEquipmentModal(): void {
+    if (this.gameOverModal && this.gameOverModal.isOpen) return;
+    if (this.pauseModal && this.pauseModal.isOpen) this.pauseModal.close();
+    if (this.craftingModal && this.craftingModal.isOpen) this.craftingModal.close();
+    if (this.journalModal && this.journalModal.isOpen) this.journalModal.close();
+    if (this.storageChestModal && this.storageChestModal.isOpen) this.storageChestModal.close();
+    if (this.campfireModal && this.campfireModal.isOpen) this.campfireModal.close();
+    if (this.cauldronModal && this.cauldronModal.isOpen) this.cauldronModal.close();
+    const modal = this.getEquipmentModal();
+    modal.open();
+  }
+
+  public toggleEquipment(): void {
+    if (this.gameOverModal && this.gameOverModal.isOpen) return;
+    const modal = this.getEquipmentModal();
+    modal.toggle();
   }
 
   public showPopupMessage(msg: string): void {
@@ -1372,5 +1988,109 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
   public setAdvanceHandler(handler: () => void): void {
     this.dialogueAdvanceHandler = handler;
+  }
+
+  // ===========================================================================
+  // V1.4 - P6: THANH ĐỘ ỔN ĐỊNH PHONG ẤN (BOSS SEAL PROGRESS BAR)
+  // ===========================================================================
+  private buildBossSealBar(): void {
+    this.bossSealContainer = this.add.container(640, 42);
+    this.bossSealContainer.setDepth(8600);
+    this.bossSealContainer.setAlpha(0);
+    this.bossSealContainer.setVisible(false);
+
+    this.bossSealBg = this.add.graphics();
+    this.bossSealContainer.add(this.bossSealBg);
+
+    this.bossSealTitleText = HDTextHelper.createText(this, 0, -10, '᛭ PHONG ẤN MẠCH RỄ — KẺ NUỐT TIẾNG CHUÔNG ᛭', {
+      fontSize: '12px',
+      fontStyle: 'bold',
+      color: '#d4af37',
+      stroke: '#000000',
+      strokeThickness: 2
+    }).setOrigin(0.5, 0.5);
+    this.bossSealContainer.add(this.bossSealTitleText);
+
+    this.bossSealNodes = [];
+    const nodeOffsets = [-150, 0, 150];
+    const defaultLabels = ['[ 🔒 ᚱ ANH NĂNG CỔ ]', '[ 🔒 ᚦ ĐỊA MẠCH RỄ ]', '[ 🔒 ᛉ BẢO HỘ CHUÔNG ]'];
+    for (let i = 0; i < 3; i++) {
+      const nodeText = HDTextHelper.createText(this, nodeOffsets[i], 8, defaultLabels[i], {
+        fontSize: '10.5px',
+        color: '#7f8c8d',
+        stroke: '#000000',
+        strokeThickness: 1
+      }).setOrigin(0.5, 0.5);
+      this.bossSealNodes.push(nodeText);
+      this.bossSealContainer.add(nodeText);
+    }
+  }
+
+  public showBossSealBar(title: string = 'PHONG ẤN MẠCH RỄ — KẺ NUỐT TIẾNG CHUÔNG', currentProgress: number = 0, maxProgress: number = 3): void {
+    if (!this.bossSealContainer) return;
+    this.bossSealTitleText.setText(`᛭ ${title.toUpperCase()} ᛭`);
+    this.updateBossSealBar(currentProgress, maxProgress);
+    this.bossSealContainer.setVisible(true);
+    this.tweens.add({
+      targets: this.bossSealContainer,
+      alpha: 1,
+      duration: 400
+    });
+  }
+
+  public updateBossSealBar(progress: number, _maxProgress: number = 3): void {
+    if (!this.bossSealContainer || !this.bossSealBg) return;
+    this.bossSealBg.clear();
+
+    // Nền thanh gỗ sẫm cổ kính và đồng xỉn
+    this.bossSealBg.fillStyle(0x120e0a, 0.94);
+    this.bossSealBg.fillRoundedRect(-240, -22, 480, 44, 8);
+    this.bossSealBg.lineStyle(2, 0xd4af37, 0.95);
+    this.bossSealBg.strokeRoundedRect(-240, -22, 480, 44, 8);
+
+    const labels = [
+      'ᚱ ANH NĂNG CỔ',
+      'ᚦ ĐỊA MẠCH RỄ',
+      'ᛉ BẢO HỘ CHUÔNG'
+    ];
+
+    const startX = -150;
+    const spacing = 150;
+
+    for (let i = 0; i < 3; i++) {
+      const isSealed = i < progress;
+      const nodeX = startX + i * spacing;
+      const nodeText = this.bossSealNodes[i];
+      if (nodeText) {
+        nodeText.setText(isSealed ? `[ 🌟 ${labels[i]} ]` : `[ 🔒 ${labels[i]} ]`);
+        nodeText.setColor(isSealed ? '#00d2d3' : '#7f8c8d');
+        nodeText.setFontStyle(isSealed ? 'bold' : 'normal');
+      }
+
+      // Vòng tròn ấn rực sáng
+      if (isSealed) {
+        this.bossSealBg.fillStyle(0x00d2d3, 0.25);
+        this.bossSealBg.fillCircle(nodeX, 8, 14);
+        this.bossSealBg.lineStyle(1.5, 0x00d2d3, 0.85);
+        this.bossSealBg.strokeCircle(nodeX, 8, 14);
+      } else {
+        this.bossSealBg.fillStyle(0x222222, 0.5);
+        this.bossSealBg.fillCircle(nodeX, 8, 12);
+        this.bossSealBg.lineStyle(1, 0x555555, 0.5);
+        this.bossSealBg.strokeCircle(nodeX, 8, 12);
+      }
+    }
+  }
+
+  public hideBossSealBar(): void {
+    if (!this.bossSealContainer) return;
+    this.tweens.add({
+      targets: this.bossSealContainer,
+      alpha: 0,
+      duration: 600,
+      onComplete: () => {
+        this.bossSealContainer.setVisible(false);
+      }
+    });
   }
 }

@@ -143,15 +143,27 @@ export class TheListener extends Monster {
     this.ai.triggerAttackCooldown(ms);
   }
 
-  public hearSound(sourceX: number, sourceY: number, volume: number): void {
-    const dist = Math.hypot(this.x - sourceX, this.y - sourceY);
+  public hearSound(x: number, y: number, volume: number = 1.0, originX?: number, originY?: number): void {
+    const dist = Math.hypot(this.x - x, this.y - y);
     if (dist <= this.hearingRadius * volume) {
-      this.ai.triggerSoundAlert(sourceX, sourceY, volume);
+      this.ai.triggerSoundAlert(x, y, volume, originX, originY);
     }
   }
 
   public forceChase(): void {
     this.ai.forceChase();
+  }
+
+  public repelByFlare(flareX: number, flareY: number, durationMs: number = 15000): void {
+    this.triggerFlareRepel(flareX, flareY, durationMs);
+  }
+
+  public triggerFlareRepel(flareX: number, flareY: number, durationMs: number = 3500): void {
+    this.ai.triggerFlareRepel(flareX, flareY, durationMs);
+    this.setTint(0xffbb77);
+    this.scene.time.delayedCall(Math.min(1500, durationMs), () => {
+      if (this.active) this.clearTint();
+    });
   }
 
   public resetToPatrol(initialX?: number, initialY?: number): void {

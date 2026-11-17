@@ -64,6 +64,11 @@ export class JournalModal {
   private tabLoreBtn!: Phaser.GameObjects.Text;
   private tabMapBtn!: Phaser.GameObjects.Text;
 
+  private questFilter: 'all' | 'main' | 'side' = 'all';
+  private selectedQuestId: string | null = null;
+  private loreSubTab: 'lore' | 'bestiary' = 'lore';
+  private selectedBestiarySpecies: string = 'crow';
+
   public isOpen: boolean = false;
   private lastToggleTime: number = 0;
 
@@ -277,6 +282,67 @@ export class JournalModal {
       connections: [],
       icon: '⏳',
       isImplemented: false
+    },
+
+    // =========================================================================
+    // TIỂU KHU KHÁM PHÁ MỚI V1.4 (SUB-AREAS)
+    // =========================================================================
+    {
+      id: 'sub_bell_workshop',
+      canonicalName: 'Xưởng Chuông Bỏ Hoang',
+      subTitle: 'Abandoned Bell Workshop',
+      tier: 'LAYER_1_CORE',
+      tierDisplayName: 'Tiểu Khu — Rừng Ngoại Vi',
+      canvasX: 255,
+      canvasY: 340,
+      description: 'Tàn tích xưởng đúc chuông bỏ hoang nằm ven rìa Nam Rừng Ngoại Vi. Nơi lưu giữ khuôn đúc chuông và phụ kiện sắt rèn cổ ngữ.',
+      landmarks: [
+        'Bàn Chế Tác Thợ Rèn Cổ',
+        'Bệ Đúc Khuôn Chuông Cũ',
+        'Đống Phế Liệu Sắt Rèn Cổ Ngữ',
+        'Lối Ra Rừng Ngoại Vi'
+      ],
+      connections: ['outer_woods'],
+      icon: '⚒️',
+      isImplemented: true
+    },
+    {
+      id: 'sub_root_cellar',
+      canonicalName: 'Hầm Rễ Cổ',
+      subTitle: 'Root Cellar',
+      tier: 'LAYER_1_CORE',
+      tierDisplayName: 'Tiểu Khu — Nông Trại Trú Ẩn',
+      canvasX: 145,
+      canvasY: 360,
+      description: 'Căn hầm ẩm lạnh dưới nền Nông Trại Sanctuary, rễ đại thụ ngàn năm đan kín vòm đá. Nơi lưu giữ rễ thuốc quý và bích họa nguồn gốc màn sương.',
+      landmarks: [
+        'Cửa Sập Gỗ Nông Trại',
+        'Khóm Rễ Thuốc Cổ Quý Hiếm',
+        'Cơ Quan Khóa Ánh Sáng Rễ Cổ',
+        'Bích Họa Nguồn Gốc Sương Mù'
+      ],
+      connections: ['sanctuary_farm'],
+      icon: '🌱',
+      isImplemented: true
+    },
+    {
+      id: 'sub_whispering_clearing',
+      canonicalName: 'Khoảng Trống Thì Thầm',
+      subTitle: 'Whispering Clearing',
+      tier: 'LAYER_2_FRONTIER',
+      tierDisplayName: 'Tiểu Khu — Vùng Biên Viễn',
+      canvasX: 210,
+      canvasY: 60,
+      description: 'Vạt rừng trũng thâm u giữa Outer Woods và Deep Forest. Ba cột đá cổ ngữ phát ra tiếng vọng âm và ảo ảnh ký ức The Echo.',
+      landmarks: [
+        'Ba Cột Đá Vọng Âm',
+        'Vạt Rừng Đom Đóm Huyền Ảo',
+        'Lối Dẫn Vào Rừng Sâu',
+        'Lối Về Đường Mòn Quanh Co'
+      ],
+      connections: ['outer_woods', 'deep_forest'],
+      icon: '🔊',
+      isImplemented: true
     }
   ];
 
@@ -488,7 +554,7 @@ export class JournalModal {
     spine.lineBetween(mx + mw / 2, my + 60, mx + mw / 2, my + mh - 25);
     this.contentContainer.add(spine);
 
-    const currentQ = this.playerState.getCurrentQuest();
+    const currentQ = (this.selectedQuestId ? this.playerState.quests.get(this.selectedQuestId) : null) || this.playerState.getCurrentQuest();
     if (!currentQ) {
       const emptyQ = HDTextHelper.createText(this.scene, mx + mw / 4, my + 150, 'Hiện tại chưa có nhiệm vụ nào được kích hoạt.', {
         fontSize: '14px',
@@ -500,34 +566,45 @@ export class JournalModal {
       return;
     }
 
-    // Cột bên trái: Chi tiết nhiệm vụ chính hiện tại
-    const qTitle = HDTextHelper.createText(this.scene, mx + 30, my + 70, currentQ.title, {
-      fontSize: '18px',
+    const isSide = currentQ.category === 'side';
+    const tagText = isSide ? '[NHIỆM VỤ PHỤ]' : '[NHIỆM VỤ CHÍNH]';
+    const tagColor = isSide ? '#00d2d3' : '#f39c12';
+
+    const qTag = HDTextHelper.createText(this.scene, mx + 30, my + 66, tagText, {
+      fontSize: '11px',
+      fontStyle: 'bold',
+      color: tagColor
+    });
+
+    // Cột bên trái: Chi tiết nhiệm vụ chính/phụ hiện tại
+    const qTitle = HDTextHelper.createText(this.scene, mx + 30, my + 84, currentQ.title, {
+      fontSize: '17px',
       fontStyle: 'bold',
       color: '#e67e22',
       stroke: '#000000',
-      strokeThickness: 2
+      strokeThickness: 2,
+      wordWrap: { width: mw / 2 - 50 }
     });
 
-    const qDesc = HDTextHelper.createText(this.scene, mx + 30, my + 105, currentQ.description, {
-      fontSize: '13px',
+    const qDesc = HDTextHelper.createText(this.scene, mx + 30, my + 118, currentQ.description, {
+      fontSize: '12.5px',
       color: '#bdc3c7',
       wordWrap: { width: mw / 2 - 50 },
       lineSpacing: 5
     });
 
-    const taskTitle = HDTextHelper.createText(this.scene, mx + 30, my + 175, 'MỤC TIÊU CẦN LÀM:', {
-      fontSize: '14px',
+    const taskTitle = HDTextHelper.createText(this.scene, mx + 30, my + 185, 'MỤC TIÊU CẦN LÀM:', {
+      fontSize: '13px',
       fontStyle: 'bold',
       color: '#f1c40f'
     });
 
-    let taskY = my + 205;
+    let taskY = my + 210;
     for (const task of currentQ.tasks) {
       const mark = task.done ? '☑' : '☐';
       const color = task.done ? '#2ecc71' : '#f8f9fa';
       const t = HDTextHelper.createText(this.scene, mx + 30, taskY, `${mark} ${task.text}`, {
-        fontSize: '13px',
+        fontSize: '12.5px',
         color: color,
         wordWrap: { width: mw / 2 - 50 },
         lineSpacing: 4
@@ -537,34 +614,112 @@ export class JournalModal {
     }
 
     // Cột bên phải: Danh mục các Hồi đã mở khóa
-    const histTitle = HDTextHelper.createText(this.scene, mx + mw / 2 + 30, my + 70, 'DANH SÁCH CÁC HỒI:', {
-      fontSize: '17px',
+    const histTitle = HDTextHelper.createText(this.scene, mx + mw / 2 + 30, my + 66, 'DANH SÁCH CÁC HỒI:', {
+      fontSize: '16px',
       fontStyle: 'bold',
       color: '#3498db'
     });
 
-    let histY = my + 108;
-    for (const q of this.playerState.quests.values()) {
+    // Nút lọc [TẤT CẢ] [CHÍNH] [PHỤ]
+    const fAll = HDTextHelper.createText(this.scene, mx + mw / 2 + 195, my + 68, '[TẤT CẢ]', {
+      fontSize: '11px',
+      fontStyle: 'bold',
+      color: this.questFilter === 'all' ? '#f1c40f' : '#7f8c8d'
+    }).setInteractive({ useHandCursor: true });
+    fAll.on('pointerdown', () => {
+      this.questFilter = 'all';
+      this.refresh();
+    });
+
+    const fMain = HDTextHelper.createText(this.scene, mx + mw / 2 + 255, my + 68, '[CHÍNH]', {
+      fontSize: '11px',
+      fontStyle: 'bold',
+      color: this.questFilter === 'main' ? '#f1c40f' : '#7f8c8d'
+    }).setInteractive({ useHandCursor: true });
+    fMain.on('pointerdown', () => {
+      this.questFilter = 'main';
+      this.refresh();
+    });
+
+    const fSide = HDTextHelper.createText(this.scene, mx + mw / 2 + 310, my + 68, '[PHỤ]', {
+      fontSize: '11px',
+      fontStyle: 'bold',
+      color: this.questFilter === 'side' ? '#f1c40f' : '#7f8c8d'
+    }).setInteractive({ useHandCursor: true });
+    fSide.on('pointerdown', () => {
+      this.questFilter = 'side';
+      this.refresh();
+    });
+
+    let histY = my + 98;
+    const questsToDisplay = Array.from(this.playerState.quests.values()).filter(q => {
+      if (this.questFilter === 'main') return (q.category || 'main') === 'main';
+      if (this.questFilter === 'side') return q.category === 'side';
+      return true;
+    });
+
+    for (const q of questsToDisplay) {
       const isCurrent = q.id === currentQ.id;
       const marker = isCurrent ? '▶ ' : '• ';
-      const color = isCurrent ? '#f39c12' : '#95a5a6';
+      const allDone = q.tasks.length > 0 && q.tasks.every(t => t.done);
+      const statusIcon = allDone ? ' [Xong]' : '';
+      let color = isCurrent ? '#f39c12' : '#95a5a6';
+      if (allDone && !isCurrent) color = '#2ecc71';
 
-      const row = HDTextHelper.createText(this.scene, mx + mw / 2 + 30, histY, `${marker}${q.title}`, {
-        fontSize: '14px',
+      const shortTitle = q.title.length > 32 ? q.title.substring(0, 30) + '...' : q.title;
+      const row = HDTextHelper.createText(this.scene, mx + mw / 2 + 30, histY, `${marker}${shortTitle}${statusIcon}`, {
+        fontSize: '12.5px',
         fontStyle: isCurrent ? 'bold' : 'normal',
         color: color
+      }).setInteractive({ useHandCursor: true });
+
+      row.on('pointerdown', () => {
+        AudioManager.getInstance().playInteract();
+        this.selectedQuestId = q.id;
+        this.refresh();
       });
+
       this.contentContainer.add(row);
-      histY += 32;
+      histY += 28;
     }
 
-    this.contentContainer.add([qTitle, qDesc, taskTitle, histTitle]);
+    this.contentContainer.add([qTag, qTitle, qDesc, taskTitle, histTitle, fAll, fMain, fSide]);
   }
 
   // ===========================================================================
   // TAB 2: CỔ THƯ & MANH MỐI (LORE TAB)
   // ===========================================================================
   private renderLoreTab(mx: number, my: number, mw: number, mh: number): void {
+    // 2 Nút chuyển đổi phụ: [📜 CỔ THƯ & MANH MỐI] và [🐾 SỔ TAY SINH VẬT]
+    const subLoreBtn = HDTextHelper.createText(this.scene, mx + 30, my + 64, '[📜 CỔ THƯ & MANH MỐI]', {
+      fontSize: '13px',
+      fontStyle: 'bold',
+      color: this.loreSubTab === 'lore' ? '#f39c12' : '#7f8c8d'
+    }).setInteractive({ useHandCursor: true });
+    subLoreBtn.on('pointerdown', () => {
+      AudioManager.getInstance().playInteract();
+      this.loreSubTab = 'lore';
+      this.refresh();
+    });
+
+    const subBestiaryBtn = HDTextHelper.createText(this.scene, mx + 240, my + 64, '[🐾 SỔ TAY SINH VẬT (BESTIARY)]', {
+      fontSize: '13px',
+      fontStyle: 'bold',
+      color: this.loreSubTab === 'bestiary' ? '#f39c12' : '#7f8c8d'
+    }).setInteractive({ useHandCursor: true });
+    subBestiaryBtn.on('pointerdown', () => {
+      AudioManager.getInstance().playInteract();
+      this.loreSubTab = 'bestiary';
+      this.refresh();
+    });
+
+    this.contentContainer.add([subLoreBtn, subBestiaryBtn]);
+
+    if (this.loreSubTab === 'bestiary') {
+      this.renderBestiaryView(mx, my, mw, mh);
+      return;
+    }
+
     // Đường gáy sổ phân 2 trang
     const spine = this.scene.add.graphics();
     spine.lineStyle(2, 0x4a3c22, 0.7);
@@ -589,22 +744,22 @@ export class JournalModal {
 
     const entry: LoreEntry = list[this.currentLoreIndex];
 
-    const lTitle = HDTextHelper.createText(this.scene, mx + 40, my + 70, entry.title, {
-      fontSize: '19px',
+    const lTitle = HDTextHelper.createText(this.scene, mx + 40, my + 95, entry.title, {
+      fontSize: '18px',
       fontStyle: 'bold',
       color: '#d4af37',
       stroke: '#000000',
       strokeThickness: 2
     });
 
-    const lAuthor = HDTextHelper.createText(this.scene, mx + 40, my + 102, `Ghi lại bởi: ${entry.author}`, {
+    const lAuthor = HDTextHelper.createText(this.scene, mx + 40, my + 125, `Ghi lại bởi: ${entry.author}`, {
       fontSize: '13px',
       fontStyle: 'italic',
       color: '#95a5a6'
     });
 
-    const lContent = HDTextHelper.createText(this.scene, mx + 40, my + 135, entry.content, {
-      fontSize: '15px',
+    const lContent = HDTextHelper.createText(this.scene, mx + 40, my + 155, entry.content, {
+      fontSize: '14.5px',
       color: '#f0e6d2',
       wordWrap: { width: mw - 80 },
       lineSpacing: 8
@@ -638,6 +793,119 @@ export class JournalModal {
     });
 
     this.contentContainer.add([lTitle, lAuthor, lContent, prevBtn, pageIndicator, nextBtn]);
+  }
+
+  // ===========================================================================
+  // SỔ TAY SINH VẬT (BESTIARY VIEW)
+  // ===========================================================================
+  private renderBestiaryView(mx: number, my: number, mw: number, mh: number): void {
+    const entries = this.playerState.getBestiaryEntries();
+    const currentEntry = entries.find(e => e.species === this.selectedBestiarySpecies) || entries[0];
+
+    // Cột bên trái: Danh sách 4 sinh vật (Quạ Rừng, Bướm Đêm, The Echo, The Listener)
+    const listTitle = HDTextHelper.createText(this.scene, mx + 30, my + 98, 'SINH THÁI KHU RỪNG:', {
+      fontSize: '13px',
+      fontStyle: 'bold',
+      color: '#3498db'
+    });
+    this.contentContainer.add(listTitle);
+
+    let rowY = my + 126;
+    for (const b of entries) {
+      const isSel = b.species === currentEntry.species;
+      const statusIcon = b.observed ? '🌟' : '❓';
+      const rowColor = isSel ? '#f39c12' : (b.observed ? '#ecf0f1' : '#7f8c8d');
+
+      const cardBtn = this.scene.add.graphics();
+      cardBtn.fillStyle(isSel ? 0x2e2417 : 0x181512, 0.95);
+      cardBtn.fillRoundedRect(mx + 30, rowY, 210, 52, 6);
+      cardBtn.lineStyle(1.5, isSel ? 0xf39c12 : 0x4a3c22, 0.8);
+      cardBtn.strokeRoundedRect(mx + 30, rowY, 210, 52, 6);
+
+      const nameTxt = HDTextHelper.createText(this.scene, mx + 42, rowY + 10, `${statusIcon} ${b.nameVi}`, {
+        fontSize: '13px',
+        fontStyle: isSel ? 'bold' : 'normal',
+        color: rowColor
+      });
+      const roleTxt = HDTextHelper.createText(this.scene, mx + 42, rowY + 30, b.roleVi, {
+        fontSize: '10.5px',
+        color: '#95a5a6'
+      });
+
+      const zone = this.scene.add.zone(mx + 30 + 105, rowY + 26, 210, 52);
+      zone.setInteractive({ useHandCursor: true });
+      zone.on('pointerdown', () => {
+        AudioManager.getInstance().playInteract();
+        this.selectedBestiarySpecies = b.species;
+        this.refresh();
+      });
+
+      this.contentContainer.add([cardBtn, nameTxt, roleTxt, zone]);
+      rowY += 60;
+    }
+
+    // Cột bên phải: Hồ sơ chi tiết của sinh vật được chọn
+    const panelX = mx + 260;
+    const panelY = my + 98;
+    const panelW = mw - 290;
+    const panelH = mh - 130;
+
+    const panelBg = this.scene.add.graphics();
+    panelBg.fillStyle(0x15120f, 0.98);
+    panelBg.fillRoundedRect(panelX, panelY, panelW, panelH, 8);
+    panelBg.lineStyle(1.5, 0xa08149, 0.85);
+    panelBg.strokeRoundedRect(panelX, panelY, panelW, panelH, 8);
+
+    const bTitle = HDTextHelper.createText(this.scene, panelX + 16, panelY + 16, currentEntry.nameVi.toUpperCase(), {
+      fontSize: '16px',
+      fontStyle: 'bold',
+      color: '#d4af37'
+    });
+
+    const statusBadge = currentEntry.observed
+      ? '🌟 ĐÃ GHI CHÉP VÀO SỔ TAY'
+      : '❓ CHƯA QUAN SÁT TRỰC TIẾP (HÃY TIẾP CẬN TRONG RỪNG)';
+    const statusColor = currentEntry.observed ? '#2ecc71' : '#e67e22';
+
+    const bStatus = HDTextHelper.createText(this.scene, panelX + 16, panelY + 40, statusBadge, {
+      fontSize: '11px',
+      fontStyle: 'bold',
+      color: statusColor
+    });
+
+    const bHabitat = HDTextHelper.createText(this.scene, panelX + 16, panelY + 65, `📍 ĐỊA BÀN: ${currentEntry.habitatVi}`, {
+      fontSize: '11px',
+      color: '#3498db',
+      wordWrap: { width: panelW - 32 }
+    });
+
+    const bBehaviorHdr = HDTextHelper.createText(this.scene, panelX + 16, panelY + 95, '• TẬP TÍNH SINH THÁI:', {
+      fontSize: '12px',
+      fontStyle: 'bold',
+      color: '#f1c40f'
+    });
+
+    const bBehavior = HDTextHelper.createText(this.scene, panelX + 16, panelY + 115, currentEntry.behaviorVi, {
+      fontSize: '11.5px',
+      color: '#ecf0f1',
+      wordWrap: { width: panelW - 32 },
+      lineSpacing: 4
+    });
+
+    const bCounterHdr = HDTextHelper.createText(this.scene, panelX + 16, panelY + 195, '• CHIẾN THUẬT ĐỐI PHÓ & TỰ VỆ:', {
+      fontSize: '12px',
+      fontStyle: 'bold',
+      color: '#e74c3c'
+    });
+
+    const bCounter = HDTextHelper.createText(this.scene, panelX + 16, panelY + 215, currentEntry.counterVi, {
+      fontSize: '11.5px',
+      color: '#f39c12',
+      wordWrap: { width: panelW - 32 },
+      lineSpacing: 4
+    });
+
+    this.contentContainer.add([panelBg, bTitle, bStatus, bHabitat, bBehaviorHdr, bBehavior, bCounterHdr, bCounter]);
   }
 
   // ===========================================================================
@@ -1065,6 +1333,9 @@ export class JournalModal {
       case 'ancient_rune_puzzle': return 'Cổ Ngữ';
       case 'broken_bell_shrine': return 'Miếu Chuông';
       case 'the_depths': return 'Vực Sâu';
+      case 'sub_bell_workshop': return 'Xưởng Chuông';
+      case 'sub_root_cellar': return 'Hầm Rễ';
+      case 'sub_whispering_clearing': return 'Thì Thầm';
       default: return id;
     }
   }

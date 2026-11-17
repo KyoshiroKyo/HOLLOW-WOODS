@@ -96,6 +96,228 @@
       "stackable": false,
       "maxStack": 1,
       "iconColor": "#8e44ad"
+    },
+    {
+      "id": "mat_forest_rope",
+      "name": "Dây Thừng Rừng",
+      "category": "material",
+      "description": "Dây bện từ cỏ dai và rễ cây, dùng làm nguyên liệu chế tạo vũ khí, bẫy và túi đồ.",
+      "stackable": true,
+      "maxStack": 20,
+      "iconColor": "#a0815c"
+    },
+    {
+      "id": "mat_charcoal",
+      "name": "Than Củi",
+      "category": "material",
+      "description": "Thu được từ Lửa Trại cháy tàn hoặc Lò Rèn Bram, dùng sắc thuốc và rèn đúc.",
+      "stackable": true,
+      "maxStack": 20,
+      "iconColor": "#2d3748"
+    },
+    {
+      "id": "mat_runed_iron",
+      "name": "Phụ Kiện Sắt Rèn Cổ Ngữ",
+      "category": "material",
+      "description": "Mảnh sắt cổ khắc cổ ngữ thu được từ tàn tích hoặc Thợ Rèn Bram; dùng nâng cấp Đèn Lồng và sửa cơ cấu chuông.",
+      "stackable": true,
+      "maxStack": 10,
+      "iconColor": "#718096"
+    },
+    {
+      "id": "food_calming_tea",
+      "name": "Trà Thảo Dược An Thần",
+      "category": "consumable",
+      "description": "Trà thảo mộc ấm nấu tại Nồi Thảo Dược, hồi 40 Bình Tâm và làm ấm Thân Nhiệt (+15°).",
+      "stackable": true,
+      "maxStack": 10,
+      "iconColor": "#48bb78",
+      "effects": {
+        "composure": 40
+      }
+    },
+    {
+      "id": "food_roasted_mushroom",
+      "name": "Nấm Rừng Nướng",
+      "category": "consumable",
+      "description": "Nấm rừng nướng trên than hồng, hồi phục 25 Sinh Lực và 30 Thể Lực.",
+      "stackable": true,
+      "maxStack": 10,
+      "iconColor": "#dd6b20",
+      "effects": {
+        "health": 25,
+        "stamina": 30
+      }
+    },
+    {
+      "id": "food_forest_root_soup",
+      "name": "Súp Rễ Rừng",
+      "category": "consumable",
+      "description": "Món súp hầm từ rễ rừng bồi bổ 35 Sinh Lực, 40 Thể Lực và làm ấm cơ thể.",
+      "stackable": true,
+      "maxStack": 10,
+      "iconColor": "#d69e2e",
+      "effects": {
+        "health": 35,
+        "stamina": 40
+      }
+    },
+    {
+      "id": "res_forest_roots",
+      "name": "Rễ Rừng",
+      "category": "resource",
+      "description": "Rễ củ giàu tinh bột thu hoạch từ cây rừng hoặc gieo trồng tại nông trại.",
+      "stackable": true,
+      "maxStack": 20,
+      "iconColor": "#8c6239"
+    },
+    {
+      "id": "res_forest_mushroom",
+      "name": "Nấm Rừng",
+      "category": "resource",
+      "description": "Khóm nấm tươi mọc ven gốc cây mục hoặc ươm từ bào tử nấm.",
+      "stackable": true,
+      "maxStack": 20,
+      "iconColor": "#b7791f"
+    },
+    {
+      "id": "res_tough_fiber",
+      "name": "Cỏ Sợi Bện Dây",
+      "category": "resource",
+      "description": "Bụi cỏ sợi dai bền chắc thu hoạch từ nông trại để bện dây thừng.",
+      "stackable": true,
+      "maxStack": 20,
+      "iconColor": "#68d391"
+    },
+    {
+      "id": "seed_roots",
+      "name": "Củ Giống Rễ Rừng",
+      "category": "resource",
+      "description": "Mầm củ giống dùng để gieo trồng cây rễ thực phẩm tại luống đất Sanctuary Farm.",
+      "stackable": true,
+      "maxStack": 20,
+      "iconColor": "#9c4221"
+    },
+    {
+      "id": "seed_mushroom",
+      "name": "Bào Tử Nấm Rừng",
+      "category": "resource",
+      "description": "Bào tử nấm rừng ươm mầm trên luống đất mùn ẩm Sanctuary Farm.",
+      "stackable": true,
+      "maxStack": 20,
+      "iconColor": "#d69e2e"
+    },
+    {
+      "id": "seed_fiber",
+      "name": "Hạt Giống Cỏ Sợi",
+      "category": "resource",
+      "description": "Hạt giống cỏ dai để trồng cây vật liệu lấy sợi bện dây.",
+      "stackable": true,
+      "maxStack": 20,
+      "iconColor": "#38a169"
+    },
+    {
+      "id": "eqp_moss_cloak",
+      "name": "Áo Choàng Rêu Lót Lông",
+      "category": "equipment",
+      "slot": "body",
+      "description": "Áo choàng may từ rêu rừng và sợi dai, giảm 40% tốc độ tích tụ Độ Ẩm và Nhiễm Lạnh, giảm nhẹ 5% tốc độ chạy nước rút.",
+      "stackable": false,
+      "maxStack": 1,
+      "iconColor": "#27ae60"
+    },
+    {
+      "id": "eqp_trail_boots",
+      "name": "Ủng Đi Rừng",
+      "category": "equipment",
+      "slot": "feet",
+      "description": "Ủng da đế gỗ bọc rễ cây, giảm 30% tiếng bước chân và di chuyển vững chãi không bị chậm trên đất lầy Silent Mire.",
+      "stackable": false,
+      "maxStack": 1,
+      "iconColor": "#8d6e63"
+    },
+    {
+      "id": "eqp_field_backpack",
+      "name": "Túi Hành Trang",
+      "category": "equipment",
+      "slot": "back",
+      "description": "Túi đeo lưng bện sợi mở rộng thêm 4 ô chứa đồ mang theo (8 -> 12 ô), tiêu hao thêm 15% thể lực khi chạy.",
+      "stackable": false,
+      "maxStack": 1,
+      "iconColor": "#a1887f"
+    },
+    {
+      "id": "eqp_bell_ward_charm",
+      "name": "Bùa Chuông Cổ",
+      "category": "equipment",
+      "slot": "charm",
+      "description": "Bùa hộ mệnh chuông đồng ban tặng bởi Edda, giảm 25% tốc độ tụt Bình Tâm trong bóng tối và rung báo hiệu khi gần Ký Ức.",
+      "stackable": false,
+      "maxStack": 1,
+      "iconColor": "#f1c40f"
+    },
+    {
+      "id": "wpn_walking_staff",
+      "name": "Gậy Lữ Hành",
+      "category": "weapon",
+      "description": "Cây gậy gỗ đi rừng quen thuộc, tầm quét 42px, đẩy lùi nhẹ tạo khoảng trống để thoát thân.",
+      "stackable": false,
+      "maxStack": 1,
+      "iconColor": "#8d6e63"
+    },
+    {
+      "id": "wpn_iron_spear",
+      "name": "Giáo Gỗ Bịt Sắt",
+      "category": "weapon",
+      "description": "Ngọn giáo tầm xa (72px reach), đẩy lùi mạnh mẽ và dùng để kích hoạt điểm yếu / trụ phong ấn, vung chậm hơn gậy.",
+      "stackable": false,
+      "maxStack": 1,
+      "iconColor": "#90a4ae"
+    },
+    {
+      "id": "wpn_hunting_hatchet",
+      "name": "Rìu Rừng Nhỏ",
+      "category": "weapon",
+      "description": "Rìu sắc bén rèn bởi Bram, chặt lấy gỗ/nhựa nhanh gấp đôi và tự vệ cự ly gần.",
+      "stackable": false,
+      "maxStack": 1,
+      "iconColor": "#78909c"
+    },
+    {
+      "id": "item_resin_flare",
+      "name": "Đuốc Nhựa Thông Khẩn Cấp",
+      "category": "consumable",
+      "description": "Bó đuốc tẩm nhựa thông cắm xuống đất tạo quầng sáng rực rỡ trong 15s xua tan sương mù và đẩy lùi The Listener.",
+      "stackable": true,
+      "maxStack": 5,
+      "iconColor": "#e67e22"
+    },
+    {
+      "id": "item_bell_mold",
+      "name": "Khuôn Đúc Chuông Cũ",
+      "category": "quest",
+      "description": "Khuôn đất sét nung và đồng xỉn dùng để đúc thử nghiệm chuông làng, tìm thấy tại Xưởng Chuông Bỏ Hoang.",
+      "stackable": false,
+      "maxStack": 1,
+      "iconColor": "#b8860b"
+    },
+    {
+      "id": "item_medicinal_roots",
+      "name": "Rễ Thuốc Cổ Quý Hiếm",
+      "category": "material",
+      "description": "Rễ cây thảo dược cổ thụ mọc ngầm dưới lòng đất Hầm Rễ Cổ, dùng sắc Trà An Thần thượng hạng xoa dịu Bình Tâm.",
+      "stackable": true,
+      "maxStack": 10,
+      "iconColor": "#795548"
+    },
+    {
+      "id": "relic_heart_of_roots",
+      "name": "Trái Tim Mạch Rễ Cổ",
+      "category": "quest",
+      "description": "Di vật thiêng liêng đúc kết từ tinh hoa đất mẹ Khu Rừng Rỗng, giải phóng sau khi hoàn tất phong ấn Kẻ Nuốt Tiếng Chuông tại Miếu Chuông.",
+      "stackable": false,
+      "maxStack": 1,
+      "iconColor": "#9b59b6"
     }
   ],
   "recipes": [
@@ -129,6 +351,128 @@
       "ingredients": [
         { "itemId": "res_flint", "count": 1 },
         { "itemId": "res_dry_wood", "count": 1 }
+      ]
+    },
+    {
+      "id": "craft_forest_rope",
+      "resultItemId": "mat_forest_rope",
+      "resultCount": 1,
+      "name": "Bện Dây Thừng Rừng",
+      "description": "Bện cỏ sợi hoặc rễ rừng thành dây thừng chắc chắn.",
+      "ingredients": [
+        { "itemId": "res_tough_fiber", "count": 2 }
+      ]
+    },
+    {
+      "id": "craft_charcoal",
+      "resultItemId": "mat_charcoal",
+      "resultCount": 2,
+      "name": "Đốt Than Củi",
+      "description": "Ủ cành gỗ khô trong tro lửa tạo than củi nguyên chất.",
+      "ingredients": [
+        { "itemId": "res_dry_wood", "count": 2 }
+      ]
+    },
+    {
+      "id": "craft_roasted_mushroom",
+      "resultItemId": "food_roasted_mushroom",
+      "resultCount": 1,
+      "name": "Nướng Nấm Rừng",
+      "description": "Nướng nấm rừng trên than hồng tạo món ăn dã ngoại thơm ngon.",
+      "ingredients": [
+        { "itemId": "res_forest_mushroom", "count": 2 },
+        { "itemId": "mat_charcoal", "count": 1 }
+      ]
+    },
+    {
+      "id": "craft_forest_root_soup",
+      "resultItemId": "food_forest_root_soup",
+      "resultCount": 1,
+      "name": "Nấu Súp Rễ Rừng",
+      "description": "Hầm rễ rừng cùng nhựa cây tạo món súp đậm đà hồi phục sức khỏe.",
+      "ingredients": [
+        { "itemId": "res_forest_roots", "count": 2 },
+        { "itemId": "res_tree_resin", "count": 1 }
+      ]
+    },
+    {
+      "id": "craft_calming_tea",
+      "resultItemId": "food_calming_tea",
+      "resultCount": 1,
+      "name": "Sắc Trà An Thần",
+      "description": "Sắc thảo dược bạc hòa cùng than củi và nhựa thơm xoa dịu tâm trí.",
+      "ingredients": [
+        { "itemId": "res_herbs", "count": 2 },
+        { "itemId": "mat_charcoal", "count": 1 }
+      ]
+    },
+    {
+      "id": "craft_moss_cloak",
+      "resultItemId": "eqp_moss_cloak",
+      "resultCount": 1,
+      "name": "May Áo Choàng Rêu",
+      "description": "Dệt áo choàng từ thảo dược bạc và cỏ sợi bện dai, giảm 40% nhiễm lạnh và ẩm ướt.",
+      "ingredients": [
+        { "itemId": "res_herbs", "count": 3 },
+        { "itemId": "res_tough_fiber", "count": 3 }
+      ]
+    },
+    {
+      "id": "craft_trail_boots",
+      "resultItemId": "eqp_trail_boots",
+      "resultCount": 1,
+      "name": "Đóng Ủng Đi Rừng",
+      "description": "Bện ủng dã ngoại từ dây thừng rừng và cỏ sợi, giảm 30% tiếng bước chân và chống lầy bùn.",
+      "ingredients": [
+        { "itemId": "mat_forest_rope", "count": 2 },
+        { "itemId": "res_tough_fiber", "count": 2 }
+      ]
+    },
+    {
+      "id": "craft_field_backpack",
+      "resultItemId": "eqp_field_backpack",
+      "resultCount": 1,
+      "name": "May Túi Hành Trang",
+      "description": "Khâu túi đeo lưng mở rộng thêm 4 ô chứa đồ mang theo người.",
+      "ingredients": [
+        { "itemId": "mat_forest_rope", "count": 3 },
+        { "itemId": "res_tough_fiber", "count": 4 }
+      ]
+    },
+    {
+      "id": "craft_iron_spear",
+      "resultItemId": "wpn_iron_spear",
+      "resultCount": 1,
+      "name": "Rèn Giáo Gỗ Bịt Sắt",
+      "description": "Bịt sắt cổ ngữ vào cán giáo gỗ và bện dây thừng chắc chắn, tầm đánh xa và đẩy lùi mạnh.",
+      "ingredients": [
+        { "itemId": "res_dry_wood", "count": 2 },
+        { "itemId": "mat_forest_rope", "count": 1 },
+        { "itemId": "mat_runed_iron", "count": 1 }
+      ]
+    },
+    {
+      "id": "craft_hunting_hatchet",
+      "resultItemId": "wpn_hunting_hatchet",
+      "resultCount": 1,
+      "name": "Rèn Rìu Rừng Nhỏ",
+      "description": "Ghép lưỡi đá lửa và cán gỗ khô bằng dây thừng rừng, chặt cây nhanh gấp đôi.",
+      "ingredients": [
+        { "itemId": "res_dry_wood", "count": 2 },
+        { "itemId": "res_flint", "count": 2 },
+        { "itemId": "mat_forest_rope", "count": 1 }
+      ]
+    },
+    {
+      "id": "craft_resin_flare",
+      "resultItemId": "item_resin_flare",
+      "resultCount": 2,
+      "name": "Bó Đuốc Nhựa Thông Khẩn Cấp",
+      "description": "Bó gỗ khô nhúng nhựa thông bắt lửa tạo quầng sáng cứu nạn khẩn cấp và đẩy lùi quái vật.",
+      "ingredients": [
+        { "itemId": "res_dry_wood", "count": 1 },
+        { "itemId": "res_tree_resin", "count": 2 },
+        { "itemId": "res_flint", "count": 1 }
       ]
     }
   ]

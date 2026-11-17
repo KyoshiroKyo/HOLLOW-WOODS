@@ -147,6 +147,59 @@
         "Em là Finn, người chuyển tin tức và chạy việc quanh quảng trường làng Bellhollow.",
         "Bà lão Edda dặn đừng đi lang thang ra Cổng Đông khi trời tối, sương mù ngoài đó nuốt chửng mọi thanh âm đấy!"
       ]
+    },
+    "bram_quest_runed_iron": {
+      "speaker": "Bram – Thợ Rèn Làng",
+      "portrait": "portrait_blacksmith",
+      "lines": [
+        "Này lữ khách! Ta nghe nói ở rìa Nam Rừng Ngoại Vi có phế tích Xưởng Chuông Bỏ Hoang từ thời xưa cũ.",
+        "Nơi đó từng đúc thử nghiệm chuông làng, chắc chắn còn sót lại Phụ Kiện Sắt Rèn Cổ Ngữ.",
+        "Nếu ngươi tìm được và mang về đây, ta sẽ dùng than rèn nhiệt luyện để gia cố cán giáo gỗ và nâng cấp dụng cụ sinh tồn cho ngươi!"
+      ],
+      "onCompleteFlag": "quest_bram_iron_accepted"
+    },
+    "edda_quest_bell_memory": {
+      "speaker": "Edda – Người Giữ Chuông",
+      "portrait": "portrait_edda",
+      "lines": [
+        "Khuôn Đúc Chuông Cũ ư?! Ôi trời ơi, nó vẫn còn nguyên vẹn trong tàn tích Xưởng Chuông sao?!",
+        "Khuôn đúc này chứa các ký tự cổ ghi lại bí mật tạo nên tiếng ngân thanh tịnh xua tan màn sương The Veil...",
+        "Quả chuông lớn của làng không tự nhiên mà vỡ; nó bị rạn nứt khi một lữ khách năm xưa cố rung chuông trong hoảng loạn.",
+        "Nhờ khuôn đúc này, ta đã hiểu được tần số cộng hưởng của chuông. Hãy giữ vững ngọn đèn, định mệnh làng nằm trong tay ngươi!"
+      ],
+      "onCompleteFlag": "quest_edda_memory_completed"
+    },
+    "neris_quest_cellar_tea": {
+      "speaker": "Neris – Người Chữa Thảo Mộc",
+      "portrait": "portrait_neris",
+      "lines": [
+        "Bình Tâm của ngươi đang dao động... Sương mù rừng già luôn tìm cách len lỏi vào tâm trí kẻ lữ hành.",
+        "Ngay dưới chòi nông cụ Nông Trại Trú Ẩn có một lối xuống Hầm Rễ Cổ. Nơi đó rễ đại thụ ngàn năm tiết ra dược chất quý hiếm.",
+        "Hãy thắp sáng đèn lồng [F], tìm xuống hầm thu hoạch Rễ Thuốc Cổ và mang về Nồi Thảo Dược, ta sẽ chỉ ngươi cách nấu Trà An Thần xoa dịu tâm trí!"
+      ],
+      "onCompleteFlag": "quest_neris_tea_accepted"
+    },
+    "garth_quest_clearing_patrol": {
+      "speaker": "Garth – Người Tuần Tra",
+      "portrait": "portrait_garth",
+      "lines": [
+        "Dừng lại một chút, lữ khách. Tuyến đường tuần tra giữa Rừng Ngoại Vi và Rừng Sâu có một vùng đất trũng gọi là Khoảng Trống Thì Thầm.",
+        "Nơi đó có ba cột đá vọng âm phát ra tiếng thì thầm và bước chân ma quái The Echo. Rất nhiều thợ rừng hoảng sợ mà đâm đầu vào ổ phục kích của The Listener.",
+        "Ngươi hãy can đảm tiến vào trinh sát, học cách phân biệt tiếng gió thì thầm với bước chân quái vật thật.",
+        "Nếu hoàn thành chuyến tuần tra này an toàn, ta sẽ tặng ngươi đôi Ủng Đi Rừng để bước đi vững vàng trên bùn lầy!"
+      ],
+      "onCompleteFlag": "quest_garth_patrol_accepted"
+    },
+    "finn_rumors": {
+      "speaker": "Finn – Cậu Bé Đưa Tin",
+      "portrait": "portrait_finn",
+      "lines": [
+        "Suỵt! Em vừa nghe lỏm được vài chuyện bí mật quanh làng này!",
+        "Phía Nam Rừng Ngoại Vi có một lối mòn khuất sau hàng cây sồi đổ, dẫn thẳng tới Xưởng Chuông Bỏ Hoang đấy!",
+        "Còn ở Nông Trại Trú Ẩn, cửa sập dưới đất cạnh kho nông cụ chính là lối vào Hầm Rễ Cổ. Nhớ bật đèn [F] kẻo vấp ngã!",
+        "À còn nữa: nếu nghe thấy tiếng bước chân dồn dập ở Khoảng Trống Thì Thầm mà không thấy mặt đất rung, đó chỉ là Ký Ức The Echo thôi, đừng sợ nhé!"
+      ],
+      "onCompleteFlag": "talked_to_finn_rumors"
     }
   }
 }

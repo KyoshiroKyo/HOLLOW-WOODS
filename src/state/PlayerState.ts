@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 import itemsData from '../data/items.json';
 import loreData from '../data/lore.json';
-import { PlayerStats, HerbPlotData, HerbPlotStage, ZoneId } from '../types';
+import { PlayerStats, HerbPlotData, HerbPlotStage, CropType, ZoneId, BestiaryEntry, BestiarySpecies } from '../types';
 import { WorldGatingSystem } from '../world/WorldGatingSystem';
 import { ZoneConnectionRegistry } from '../world/ZoneConnectionRegistry';
 
@@ -22,6 +22,7 @@ export interface Quest {
   title: string;
   description: string;
   tasks: QuestTask[];
+  category?: 'main' | 'side';
 }
 
 export interface LoreEntry {
@@ -42,6 +43,7 @@ export class PlayerState extends Phaser.Events.EventEmitter {
   public currentQuestId: string = 'Q01_MEET_EDDA';
   public quests: Map<string, Quest> = new Map();
   public unlockedLore: LoreEntry[] = [];
+  public bestiary: Map<BestiarySpecies, BestiaryEntry> = new Map();
   public currentZoneId: ZoneId = 'fog_crossing';
   public visitedZones: Set<string> = new Set(['fog_crossing', 'bellhollow']);
   // C4-12-28: Cache theo dõi danh sách phân khu đã mở khóa để phát hiện sự kiện thay đổi
@@ -52,6 +54,22 @@ export class PlayerState extends Phaser.Events.EventEmitter {
     { id: 'plot_3', x: 760, y: 690, stage: 'empty', plantedAt: 0 },
     { id: 'plot_4', x: 840, y: 690, stage: 'empty', plantedAt: 0 }
   ];
+
+  // V1.4 Mở rộng: Thuộc tính ngày đêm, trang bị và rương đồ Sanctuary
+  public dayCount: number = 1;
+  public timeOfDay: number = 0;
+  public equippedSlots: { body: string | null; feet: string | null; back: string | null; charm: string | null } = {
+    body: null,
+    feet: null,
+    back: null,
+    charm: null
+  };
+  public storageChest: Map<string, number> = new Map();
+  public campfireLevel: number = 1;
+  public campfireFuel: number = 180;
+  public activeWeapon: string = 'wpn_walking_staff';
+  // V1.4 - P8-04: Vùng lưu dự phòng an toàn cho các khóa dữ liệu mở rộng/lạ từ V1.3 hoặc Mod
+  public legacyExtraData?: Record<string, any>;
 
   private constructor() {
     super();
@@ -68,23 +86,45 @@ export class PlayerState extends Phaser.Events.EventEmitter {
       maxComposure: 100,
       isLanternOn: false,
       isSprinting: false,
-      isHiding: false
+      isHiding: false,
+      moisture: 0,
+      temperature: 80
     };
+
+    // V1.4 Mở rộng: Trạng thái ngày đêm, trang bị và rương đồ
+    this.dayCount = 1;
+    this.timeOfDay = 0;
+    this.equippedSlots = { body: null, feet: null, back: null, charm: null };
+    this.storageChest = new Map();
 
     // 2. Khởi tạo túi đồ ban đầu (Đèn Lồng + 1 ít cành cây + Hạt giống thảo dược ban đầu)
     this.inventory.set('res_dry_wood', 2);
     this.inventory.set('seed_herbs', 3);
 
-    // 3. Nạp danh sách nhiệm vụ từ lore.json
+    // 3. Nạp danh sách nhiệm vụ từ lore.json (Nhiệm vụ chính + Nhiệm vụ phụ)
     for (const q of loreData.questLog as Quest[]) {
       this.quests.set(q.id, {
         ...q,
+        category: 'main',
         tasks: q.tasks.map(t => ({ ...t }))
       });
+    }
+    const sideQuests = (loreData as any).sideQuestLog as Quest[] | undefined;
+    if (sideQuests) {
+      for (const sq of sideQuests) {
+        this.quests.set(sq.id, {
+          ...sq,
+          category: 'side',
+          tasks: sq.tasks.map(t => ({ ...t }))
+        });
+      }
     }
 
     // 4. Mở khóa trang nhật ký ban đầu
     this.unlockedLore.push(loreData.loreEntries[0] as LoreEntry);
+
+    // 5. Khởi tạo Sổ Tay Sinh Vật (Bestiary)
+    this.initDefaultBestiary();
   }
 
   public reset(): void {
@@ -99,8 +139,16 @@ export class PlayerState extends Phaser.Events.EventEmitter {
       maxComposure: 100,
       isLanternOn: false,
       isSprinting: false,
-      isHiding: false
+      isHiding: false,
+      moisture: 0,
+      temperature: 80
     });
+
+    this.dayCount = 1;
+    this.timeOfDay = 0;
+    this.equippedSlots = { body: null, feet: null, back: null, charm: null };
+    this.storageChest.clear();
+    this.legacyExtraData = undefined;
 
     this.inventory.clear();
     this.inventory.set('res_dry_wood', 2);
@@ -112,11 +160,23 @@ export class PlayerState extends Phaser.Events.EventEmitter {
     for (const q of loreData.questLog as Quest[]) {
       this.quests.set(q.id, {
         ...q,
+        category: 'main',
         tasks: q.tasks.map(t => ({ ...t, done: q.id === 'Q00_WAKE_UP' ? true : false }))
       });
     }
+    const sideQuests = (loreData as any).sideQuestLog as Quest[] | undefined;
+    if (sideQuests) {
+      for (const sq of sideQuests) {
+        this.quests.set(sq.id, {
+          ...sq,
+          category: 'side',
+          tasks: sq.tasks.map(t => ({ ...t, done: false }))
+        });
+      }
+    }
 
     this.unlockedLore = [loreData.loreEntries[0] as LoreEntry];
+    this.initDefaultBestiary();
     this.currentZoneId = 'fog_crossing';
     this.visitedZones = new Set(['fog_crossing', 'bellhollow']);
     this.unlockedZoneCache = new Set(['fog_crossing', 'bellhollow', 'sanctuary_farm', 'outer_woods']);
@@ -206,12 +266,78 @@ export class PlayerState extends Phaser.Events.EventEmitter {
   }
 
   /**
+   * V1.4: Bảo vệ toàn bộ vật phẩm nhiệm vụ (Quest) và nhật ký (Lore)
+   * Không thể bị vứt bỏ, tiêu hao nhầm hoặc xóa khỏi túi đồ
+   */
+  public isProtectedItem(itemId: string): boolean {
+    if (!itemId) return false;
+    if (itemId.startsWith('quest_') || itemId.startsWith('lore_')) return true;
+    const meta = itemsData.items.find(i => i.id === itemId);
+    return meta ? (meta.category === 'quest' || meta.category === 'lore') : false;
+  }
+
+  // --- V1.4: QUẢN LÝ TRANG BỊ CÁ NHÂN & VŨ KHÍ ---
+
+  public getMaxInventorySlots(): number {
+    return this.equippedSlots?.back === 'eqp_field_backpack' ? 12 : 8;
+  }
+
+  public getEquipped(slot: 'body' | 'feet' | 'back' | 'charm'): string | null {
+    if (!this.equippedSlots) {
+      this.equippedSlots = { body: null, feet: null, back: null, charm: null };
+    }
+    return this.equippedSlots[slot] ?? null;
+  }
+
+  public equipItem(slot: 'body' | 'feet' | 'back' | 'charm', itemId: string): boolean {
+    const count = this.getItemCount(itemId);
+    if (count <= 0) return false;
+
+    const oldItem = this.getEquipped(slot);
+    if (oldItem) {
+      this.addItem(oldItem, 1);
+    }
+    this.removeItem(itemId, 1);
+    this.equippedSlots[slot] = itemId;
+    this.emit('equipment_changed', { slot, itemId, oldItem });
+    return true;
+  }
+
+  public unequipItem(slot: 'body' | 'feet' | 'back' | 'charm'): boolean {
+    const current = this.getEquipped(slot);
+    if (!current) return false;
+
+    this.addItem(current, 1);
+    this.equippedSlots[slot] = null;
+    this.emit('equipment_changed', { slot, itemId: null, oldItem: current });
+    return true;
+  }
+
+  public setActiveWeapon(weaponId: string): void {
+    this.activeWeapon = weaponId;
+    this.emit('weapon_changed', { weaponId });
+  }
+
+  public getActiveWeapon(): string {
+    return this.activeWeapon || 'wpn_walking_staff';
+  }
+
+  /**
    * C4-12-04: Sử dụng vật phẩm tiêu hao (áp dụng hiệu ứng đúng 1 lần và giảm đúng 1 đơn vị)
    * Tránh lãng phí vật phẩm nếu các chỉ số tương ứng đã đạt tối đa (100%)
    */
   public useItem(itemId: string): boolean {
+    if (this.isProtectedItem(itemId)) return false;
+
     const count = this.getItemCount(itemId);
     if (count <= 0) return false;
+
+    // V1.4 - P8-03: Đuốc Nhựa Thông là vật phẩm tiêu hao chiến thuật cắm đất
+    if (itemId === 'item_resin_flare') {
+      this.removeItem(itemId, 1);
+      this.emit('item_used', { itemId });
+      return true;
+    }
 
     const itemMeta = itemsData.items.find(i => i.id === itemId);
     if (!itemMeta || !itemMeta.effects) return false;
@@ -219,6 +345,10 @@ export class PlayerState extends Phaser.Events.EventEmitter {
     let applied = false;
     if (itemMeta.effects.health !== undefined && this.stats.health < this.stats.maxHealth) {
       this.stats.health = Math.min(this.stats.maxHealth, this.stats.health + itemMeta.effects.health);
+      applied = true;
+    }
+    if (itemMeta.effects.stamina !== undefined && this.stats.stamina < this.stats.maxStamina) {
+      this.stats.stamina = Math.min(this.stats.maxStamina, this.stats.stamina + itemMeta.effects.stamina);
       applied = true;
     }
     if (itemMeta.effects.composure !== undefined && this.stats.composure < this.stats.maxComposure) {
@@ -253,6 +383,15 @@ export class PlayerState extends Phaser.Events.EventEmitter {
 
   public hasFlag(flag: string): boolean {
     return this.flags.has(flag);
+  }
+
+  /**
+   * V1.4: Điều chỉnh chỉ số Bình Tâm an toàn trong giới hạn [0, maxComposure]
+   */
+  public modifyComposure(delta: number): number {
+    this.stats.composure = Math.max(0, Math.min(this.stats.maxComposure, this.stats.composure + delta));
+    this.emit('stats_changed', this.stats);
+    return this.stats.composure;
   }
 
   /**
@@ -468,13 +607,94 @@ export class PlayerState extends Phaser.Events.EventEmitter {
     return this.quests.get(this.currentQuestId);
   }
 
+  public getQuestsByCategory(category: 'main' | 'side'): Quest[] {
+    return Array.from(this.quests.values()).filter(q => (q.category || 'main') === category);
+  }
+
   public unlockLore(loreId: string): void {
     if (this.unlockedLore.some(l => l.id === loreId)) return;
-    const lore = loreData.loreEntries.find(l => l.id === loreId);
+    const allLore = [
+      ...loreData.loreEntries,
+      ...(((loreData as any).subAreaLoreEntries as LoreEntry[]) || [])
+    ];
+    const lore = allLore.find(l => l.id === loreId);
     if (lore) {
       this.unlockedLore.push(lore as LoreEntry);
       this.emit('lore_unlocked', lore);
     }
+  }
+
+  // --- V1.4: Sổ Tay Sinh Vật (Bestiary Ecosystem) ---
+  private initDefaultBestiary(): void {
+    this.bestiary.clear();
+    this.bestiary.set('crow', {
+      species: 'crow',
+      contentId: 'HW-ANI-AMBIENT-000001',
+      runtimeKey: 'ani_crow',
+      nameVi: 'Quạ Rừng',
+      nameEn: 'Forest Crow',
+      roleVi: 'Sinh vật cảnh báo tự nhiên',
+      habitatVi: 'Outer Woods, Crooked Path, cành cây & hàng rào',
+      behaviorVi: 'Đậu im lặng quan sát. Giật mình vỗ cánh bay lên phát ra tiếng quạ lớn khi người chơi chạy nhanh ([Shift]) hoặc khi The Listener tiến lại gần.',
+      counterVi: 'Đi bộ chậm ([WASD]), cúi mình hoặc ẩn nấp khi nghe quạ kêu để không đánh động Kẻ Lắng Nghe.',
+      observed: false
+    });
+    this.bestiary.set('lantern_moth', {
+      species: 'lantern_moth',
+      contentId: 'HW-ANI-AMBIENT-000002',
+      runtimeKey: 'ani_lantern_moth',
+      nameVi: 'Bướm Đêm Hổ Phách',
+      nameEn: 'Amber Lantern Moth',
+      roleVi: 'Sinh thái chỉ dẫn & tài nguyên sáng',
+      habitatVi: 'Vườn Thảo Dược Sanctuary Farm, khóm hoa đêm ven Rừng Sâu',
+      behaviorVi: 'Bị hấp dẫn bởi ánh sáng đèn lồng [F] và lửa trại. Khi bay lượn phát ra vệt bụi phấn ấm áp xua tan sương mù.',
+      counterVi: 'Bật đèn lồng để thu hút bướm đêm tụ lại gần. Thu thập phấn bướm làm nguyên liệu chế tạo Dầu Đèn và Bó Đuốc.',
+      observed: false
+    });
+    this.bestiary.set('echo', {
+      species: 'echo',
+      contentId: 'HW-MON-ECHO-000001',
+      runtimeKey: 'mon_the_echo',
+      nameVi: 'Hiện Tượng Ký Ức (The Echo)',
+      nameEn: 'The Echo',
+      roleVi: 'Ảo ảnh tâm lý & Dấu vết lịch sử',
+      habitatVi: 'Khoảng Trống Thì Thầm, Rìa Rừng Ngoại Vi vào ban đêm/hoàng hôn',
+      behaviorVi: 'Bóng mờ lững lờ phát ra tiếng thì thầm, tiếng bước chân giả đánh lừa giác quan. Tuyệt đối không gây sát thương vật lý.',
+      counterVi: 'Bật đèn lồng [F] soi thẳng hoặc đến gần để bóng mờ tan biến. Lắng nghe tiếng gió hú để phân biệt bước chân giả với Kẻ Lắng Nghe thật.',
+      observed: false
+    });
+    this.bestiary.set('listener', {
+      species: 'listener',
+      contentId: 'HW-MON-LISTENER-000001',
+      runtimeKey: 'mon_the_listener',
+      nameVi: 'Kẻ Lắng Nghe (The Listener)',
+      nameEn: 'The Listener',
+      roleVi: 'Thực thể săn đuổi thính giác',
+      habitatVi: 'Rừng Sâu (Deep Forest), Đầm Lầy Tĩnh Lặng, Lối Mòn Quanh Co',
+      behaviorVi: 'Mù hoàn toàn, phản ứng cực nhạy với tiếng bước chân chạy và âm thanh va đập. Có bộ nhớ chống lặp mồi nhử nếu ném liên tục vào cùng vị trí.',
+      counterVi: 'Đi bộ nhẹ nhàng, nấp vào Thân Cây Rỗng [E], ném Mồi Tạo Tiếng Động [Q] cách xa hoặc cắm Bó Đuốc Nhựa Thông để làm choáng đẩy lùi.',
+      observed: false
+    });
+  }
+
+  public observeCreature(species: BestiarySpecies): boolean {
+    const entry = this.bestiary.get(species);
+    if (!entry) return false;
+    if (!entry.observed) {
+      entry.observed = true;
+      entry.discoveredAt = Date.now();
+      this.emit('creature_observed', entry);
+      return true;
+    }
+    return false;
+  }
+
+  public isCreatureObserved(species: BestiarySpecies): boolean {
+    return this.bestiary.get(species)?.observed ?? false;
+  }
+
+  public getBestiaryEntries(): BestiaryEntry[] {
+    return Array.from(this.bestiary.values());
   }
 
   // --- C4-12-10 & C4-12-26: Quản lý vị trí hiện tại và vết tích khám phá 3 Tầng Thế Giới ---
@@ -515,11 +735,13 @@ export class PlayerState extends Phaser.Events.EventEmitter {
     return this.herbPlots.find(p => p.id === id);
   }
 
-  public updateHerbPlot(id: string, stage: HerbPlotStage, plantedAt: number): void {
+  public updateHerbPlot(id: string, stage: HerbPlotStage, plantedAt: number, cropType?: CropType, isPrepared?: boolean): void {
     const plot = this.herbPlots.find(p => p.id === id);
     if (plot) {
       plot.stage = stage;
       plot.plantedAt = plantedAt;
+      if (cropType !== undefined) plot.cropType = cropType;
+      if (isPrepared !== undefined) plot.isPrepared = isPrepared;
       this.emit('herb_plots_changed', this.herbPlots);
     }
   }
@@ -534,6 +756,26 @@ export class PlayerState extends Phaser.Events.EventEmitter {
       return { ...p };
     });
     this.emit('herb_plots_changed', this.herbPlots);
+  }
+
+  // --- V1.4 - P8-04: Quản lý vùng lưu dự phòng legacyExtraData ---
+  public getLegacyExtraData(): Record<string, any> | undefined {
+    return this.legacyExtraData;
+  }
+
+  public setLegacyExtraData(data?: Record<string, any>): void {
+    this.legacyExtraData = data ? { ...data } : undefined;
+  }
+
+  public setLegacyExtraValue(key: string, value: any): void {
+    if (!this.legacyExtraData) {
+      this.legacyExtraData = {};
+    }
+    this.legacyExtraData[key] = value;
+  }
+
+  public getLegacyExtraValue(key: string): any {
+    return this.legacyExtraData ? this.legacyExtraData[key] : undefined;
   }
 }
 

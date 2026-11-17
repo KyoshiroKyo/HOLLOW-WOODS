@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import { SPRITE_THE_ECHO } from '../config/Constants';
+import { TheEcho } from '../entities/TheEcho';
 
 export interface EchoSpawnPoint {
   id: string;
@@ -43,14 +43,21 @@ export class EchoSystem {
     }
   ];
 
-  private activeEchoContainer: Phaser.GameObjects.Container | null = null;
+  public activeEchoContainer: TheEcho | null = null;
   private currentSpawnPoint: EchoSpawnPoint | null = null;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
   }
 
-  public update(playerX: number, playerY: number, onEchoDisappear?: (msg: string) => void): void {
+  public update(
+    playerX: number,
+    playerY: number,
+    onEchoDisappear?: (msg: string) => void,
+    playerFacing: string = 'down',
+    isLanternLit: boolean = false,
+    onGazeNotice?: (msg: string) => void
+  ): void {
     // 1. Kiểm tra kích hoạt Echo mới nếu chưa có Echo đang hiển thị
     if (!this.activeEchoContainer) {
       for (const sp of this.echoSpawns) {
@@ -64,10 +71,17 @@ export class EchoSystem {
         }
       }
     } else if (this.currentSpawnPoint) {
-      // 2. Nếu Satyr tiến lại gần trong bán kính 45px -> Echo tan biến
+      // 2. Nếu Satyr tiến lại gần trong bán kính 48px -> Echo tan biến thành tàn tro phát sáng
       const dist = Math.hypot(playerX - this.currentSpawnPoint.x, playerY - this.currentSpawnPoint.y);
       if (dist <= 48) {
         this.dissolveEcho(onEchoDisappear);
+      } else {
+        // V1.4 - P8-03: Kiểm tra góc nhìn trực diện khi đèn lồng TẮT (-5 Composure)
+        if (this.activeEchoContainer.checkDirectGaze(playerX, playerY, playerFacing, isLanternLit)) {
+          if (onGazeNotice) {
+            onGazeNotice('👁️ Ánh nhìn vào bóng hình trong bóng tối khiến bạn lạnh gáy... (-5 Tĩnh Tâm)');
+          }
+        }
       }
     }
   }
@@ -76,31 +90,14 @@ export class EchoSystem {
     sp.triggered = true;
     this.currentSpawnPoint = sp;
 
-    this.activeEchoContainer = this.scene.add.container(sp.x, sp.y);
-
-    // Vầng hào quang sương mù mờ ảo phát sáng nhẹ
-    const aura = this.scene.add.graphics();
-    aura.fillStyle(0xaed6f1, 0.22);
-    aura.fillCircle(0, -32, 24);
-
-    // Sprite thật của The Echo trích xuất từ pixel art
-    const echoSprite = this.scene.add.image(0, 0, SPRITE_THE_ECHO);
-    echoSprite.setOrigin(0.5, 0.95);
-    echoSprite.setAlpha(0.85);
-
-    this.activeEchoContainer.add([aura, echoSprite]);
-    this.activeEchoContainer.setDepth(sp.y);
-    this.activeEchoContainer.setAlpha(0);
-
-    // Xuất hiện chập chờn
-    this.scene.tweens.add({
-      targets: this.activeEchoContainer,
-      alpha: 0.65,
-      y: sp.y - 4,
-      duration: 1200,
-      yoyo: true,
-      repeat: -1,
-      ease: 'Sine.easeInOut'
+    // V1.4: Khởi tạo thực thể TheEcho độc lập không gây sát thương vật lý
+    this.activeEchoContainer = new TheEcho(this.scene, {
+      id: sp.id,
+      x: sp.x,
+      y: sp.y,
+      message: sp.message,
+      targetClueX: sp.targetClueX,
+      targetClueY: sp.targetClueY
     });
   }
 
@@ -108,25 +105,16 @@ export class EchoSystem {
     if (!this.activeEchoContainer || !this.currentSpawnPoint) return;
 
     const sp = this.currentSpawnPoint;
-    const container = this.activeEchoContainer;
+    const echo = this.activeEchoContainer;
 
-    // Hiệu ứng tan biến thành sương
-    this.scene.tweens.add({
-      targets: container,
-      alpha: 0,
-      scaleX: 1.8,
-      scaleY: 0.2,
-      duration: 600,
-      ease: 'Power2',
-      onComplete: () => {
-        container.destroy();
-        this.activeEchoContainer = null;
-        this.currentSpawnPoint = null;
-        if (callback) {
-          callback(sp.message);
-        }
+    echo.dissolve((msg) => {
+      this.activeEchoContainer = null;
+      this.currentSpawnPoint = null;
+      if (callback) {
+        callback(msg || sp.message);
       }
     });
   }
 }
+
 

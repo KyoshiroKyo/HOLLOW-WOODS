@@ -67,6 +67,23 @@ export class WorldGatingSystem {
       hintVietnamese: 'Vùng đệm ven làng Bellhollow, an toàn cho việc tìm kiếm củi khô và thảo dược.'
     });
 
+    // V1.4 - Tiểu khu Core World
+    this.registerRule({
+      zoneId: 'sub_bell_workshop',
+      tier: 'LAYER_1_CORE',
+      conditionType: 'always_unlocked',
+      lockedReasonVietnamese: 'Xưởng Chuông Bỏ Hoang nằm ven Rừng Ngoại Vi.',
+      hintVietnamese: 'Khám phá nhánh rừng phía Nam Outer Woods để tìm tàn tích xưởng rèn chuông.'
+    });
+
+    this.registerRule({
+      zoneId: 'sub_root_cellar',
+      tier: 'LAYER_1_CORE',
+      conditionType: 'always_unlocked',
+      lockedReasonVietnamese: 'Hầm Rễ Cổ nằm dưới nền Nông Trại Sanctuary.',
+      hintVietnamese: 'Lối xuống nằm cạnh chòi nông cụ Sanctuary Farm.'
+    });
+
     // =========================================================================
     // TẦNG 2: FRONTIER (Vùng Biên viễn khám phá & thử thách sinh tồn)
     // =========================================================================
@@ -79,6 +96,15 @@ export class WorldGatingSystem {
       requiredFlag: 'talked_to_neris',
       lockedReasonVietnamese: 'Cổng Đông làng Bellhollow đang bị khóa chặt bằng xích sắt phong ấn!',
       hintVietnamese: 'Hãy gặp Thầy Thuốc Neris và chế tạo Dầu Đèn [Phím I] trước khi tiến vào Rừng Cấm.'
+    });
+
+    this.registerRule({
+      zoneId: 'sub_whispering_clearing',
+      tier: 'LAYER_2_FRONTIER',
+      conditionType: 'quest_required',
+      requiredQuestId: 'Q03_PREPARE_RESOURCES',
+      lockedReasonVietnamese: 'Khoảng Trống Thì Thầm nằm sâu trong vùng rừng sương mù.',
+      hintVietnamese: 'Cần mở Cổng Đông để tiếp cận từ Outer Woods hoặc Deep Forest.'
     });
 
     this.registerRule({
