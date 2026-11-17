@@ -6449,12 +6449,18 @@ export class WorldBuilder {
 
   private renderSubBellWorkshopDecorations(zone: ZoneData): void {
     const b = zone.bounds;
-    // Bàn đúc phế tích và lò rèn cũ
+    // Bàn thao tác cổ và lò đúc chuông phủ đầy rêu phong
     const forgeGfx = this.scene.add.graphics();
     forgeGfx.fillStyle(0x3a3224, 1);
     forgeGfx.fillRoundedRect(b.x + 180, b.y + 140, 80, 40, 4);
     forgeGfx.lineStyle(1.5, 0x8a7040, 0.8);
     forgeGfx.strokeRoundedRect(b.x + 180, b.y + 140, 80, 40, 4);
+
+    // Mảng rêu phong bám trên bàn thao tác cổ
+    forgeGfx.fillStyle(0x2e4a2b, 0.85);
+    forgeGfx.fillRect(b.x + 184, b.y + 142, 28, 12);
+    forgeGfx.fillRect(b.x + 224, b.y + 160, 32, 16);
+
     forgeGfx.setDepth(b.y + 160);
     this.registerCullable(forgeGfx, b.x + 220, b.y + 160, 60);
 
@@ -6475,7 +6481,7 @@ export class WorldBuilder {
 
   private renderSubRootCellarDecorations(zone: ZoneData): void {
     const b = zone.bounds;
-    // Cột trụ đá trung tâm
+    // Cột trụ đá trung tâm với rễ cây đại thụ đâm xuyên vách đá
     const pillarGfx = this.scene.add.graphics();
     pillarGfx.fillStyle(0x242d25, 1);
     pillarGfx.fillRoundedRect(b.x + 280, b.y + 160, 80, 60, 6);
@@ -6484,26 +6490,61 @@ export class WorldBuilder {
     pillarGfx.setDepth(b.y + 190);
     this.registerCullable(pillarGfx, b.x + 320, b.y + 190, 60);
 
-    // Dây leo và rễ cây xoắn quanh cột
+    // Dây leo và rễ cây đại thụ xoắn quanh cột vách đá
     const rootsGfx = this.scene.add.graphics();
     rootsGfx.lineStyle(3, 0x5a4228, 0.9);
     rootsGfx.lineBetween(b.x + 270, b.y + 150, b.x + 370, b.y + 230);
     rootsGfx.lineBetween(b.x + 370, b.y + 150, b.x + 270, b.y + 230);
+    rootsGfx.lineBetween(b.x + 250, b.y + 130, b.x + 300, b.y + 180);
     rootsGfx.setDepth(b.y + 195);
     this.registerCullable(rootsGfx, b.x + 320, b.y + 190, 60);
 
-    // Ánh huỳnh quang xanh nhẹ của nấm và rêu ẩm
+    // Vũng nước ngầm thanh khiết trong vắt để nấu trà
+    const springGfx = this.scene.add.graphics();
+    springGfx.fillStyle(0x1a4850, 0.75);
+    springGfx.fillEllipse(b.x + 420, b.y + 240, 56, 34);
+    springGfx.lineStyle(1.5, 0x38b2ac, 0.65);
+    springGfx.strokeEllipse(b.x + 420, b.y + 240, 56, 34);
+    springGfx.setDepth(b.y + 230);
+    this.registerCullable(springGfx, b.x + 420, b.y + 240, 50);
+
+    // Khóm nấm rừng quý hiếm phát huỳnh quang lam ngọc
     const bioGfx = this.scene.add.graphics();
-    bioGfx.fillStyle(0x38b2ac, 0.18);
+    bioGfx.fillStyle(0x38b2ac, 0.28);
+    bioGfx.fillCircle(b.x + 120, b.y + 140, 36);
     bioGfx.fillCircle(b.x + 200, b.y + 180, 50);
     bioGfx.fillCircle(b.x + 440, b.y + 180, 50);
+
+    // Mũ nấm tí hon phát sáng
+    bioGfx.fillStyle(0x4fd1c5, 0.9);
+    bioGfx.fillCircle(b.x + 115, b.y + 138, 4);
+    bioGfx.fillCircle(b.x + 123, b.y + 142, 3);
+    bioGfx.fillCircle(b.x + 195, b.y + 176, 5);
+    bioGfx.fillCircle(b.x + 204, b.y + 182, 4);
     bioGfx.setDepth(-40);
     this.registerCullable(bioGfx, b.x + 320, b.y + 180, 150);
   }
 
   private renderSubWhisperingClearingDecorations(zone: ZoneData): void {
     const b = zone.bounds;
-    // 3 Cột đá vọng âm bố trí hình tam giác
+    const cx = b.x + zone.bounds.width / 2;
+    const cy = b.y + zone.bounds.height / 2;
+
+    // Các thân cây cổ thụ uốn cong kỳ dị bao quanh bãi đất trống hình tròn
+    const treeAngles = [0, 0.7, 1.4, 2.2, 2.9, 3.6, 4.3, 5.1, 5.8];
+    const treeGfx = this.scene.add.graphics();
+    for (const ang of treeAngles) {
+      const tx = cx + Math.cos(ang) * 140;
+      const ty = cy + Math.sin(ang) * 115;
+      treeGfx.fillStyle(0x231d2e, 1);
+      treeGfx.fillEllipse(tx, ty, 28, 36);
+      treeGfx.lineStyle(2, 0x4a3b5c, 0.8);
+      treeGfx.strokeEllipse(tx, ty, 28, 36);
+    }
+    treeGfx.setDepth(b.y + 80);
+    this.registerCullable(treeGfx, cx, cy, 160);
+
+    // 3 Cột đá vọng âm bố trí hình tam giác giao thoa tiếng chuông
     const pillarPositions = [
       { x: b.x + 140, y: b.y + 110, id: '1' },
       { x: b.x + 240, y: b.y + 210, id: '2' },

@@ -2201,6 +2201,17 @@
       ],
       "interactables": [
         {
+          "id": "inspect_ancient_workbench",
+          "name": "Bàn Thao Tác Cổ",
+          "type": "clue",
+          "x": 1300,
+          "y": 1180,
+          "width": 64,
+          "height": 40,
+          "promptText": "[E] Khám phá Bàn Thao Tác Cổ",
+          "actionId": "inspect_ancient_workbench"
+        },
+        {
           "id": "inspect_runed_iron_part",
           "name": "Phụ Kiện Sắt Rèn Cổ Ngữ",
           "type": "clue",
@@ -2330,9 +2341,49 @@
           "height": 60,
           "type": "wall",
           "isSolid": true
+        },
+        {
+          "id": "rc_spring_pool",
+          "x": 900,
+          "y": 1260,
+          "width": 60,
+          "height": 40,
+          "type": "water",
+          "isSolid": true
+        },
+        {
+          "id": "rc_mushrooms_cluster",
+          "x": 590,
+          "y": 1170,
+          "width": 40,
+          "height": 40,
+          "type": "rock",
+          "isSolid": true
         }
       ],
       "interactables": [
+        {
+          "id": "inspect_rare_mushrooms",
+          "name": "Khóm Nấm Rừng Quý Hiếm",
+          "type": "clue",
+          "x": 600,
+          "y": 1180,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Thu hoạch Nấm Rừng Quý Hiếm",
+          "actionId": "collect_rare_mushrooms"
+        },
+        {
+          "id": "inspect_pure_spring",
+          "name": "Nguồn Nước Ngầm Thanh Khiết",
+          "type": "clue",
+          "x": 920,
+          "y": 1280,
+          "width": 40,
+          "height": 32,
+          "promptText": "[E] Múc Nước Ngầm Thanh Khiết Nấu Trà",
+          "actionId": "collect_pure_spring"
+        },
         {
           "id": "inspect_rare_roots",
           "name": "Khóm Rễ Thuốc Cổ",
@@ -2480,6 +2531,42 @@
           "width": 36,
           "height": 48,
           "type": "shrine_pedestal",
+          "isSolid": true
+        },
+        {
+          "id": "wc_curved_tree_nw",
+          "x": 1680,
+          "y": -290,
+          "width": 44,
+          "height": 44,
+          "type": "tree",
+          "isSolid": true
+        },
+        {
+          "id": "wc_curved_tree_ne",
+          "x": 2000,
+          "y": -290,
+          "width": 44,
+          "height": 44,
+          "type": "tree",
+          "isSolid": true
+        },
+        {
+          "id": "wc_curved_tree_sw",
+          "x": 1680,
+          "y": -90,
+          "width": 44,
+          "height": 44,
+          "type": "tree",
+          "isSolid": true
+        },
+        {
+          "id": "wc_curved_tree_se",
+          "x": 2000,
+          "y": -90,
+          "width": 44,
+          "height": 44,
+          "type": "tree",
           "isSolid": true
         }
       ],

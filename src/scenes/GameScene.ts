@@ -3246,7 +3246,44 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
+    if (actionId === 'inspect_ancient_workbench') {
+      this.audioManager.playInteract();
+      this.player.playGather();
+      if (!this.playerState.hasFlag('has_runed_iron_part')) {
+        this.playerState.addItem('mat_runed_iron', 1);
+        this.playerState.setFlag('has_runed_iron_part');
+        this.playerState.completeQuestTask('SQ01_RUNED_IRON', 't2');
+      }
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('🔨 [BÀN THAO TÁC CỔ]: Bàn rèn phủ rêu phong của thợ đúc chuông, nơi tìm thấy Phôi Sắt Cổ Ngữ!');
+      }
+      return;
+    }
+
     // V1.4 - P6: Tương tác Hầm Rễ Cổ (Root Cellar)
+    if (actionId === 'collect_rare_mushrooms') {
+      this.audioManager.playInteract();
+      this.player.playGather();
+      this.playerState.addItem('res_forest_mushroom', 3);
+      this.playerState.addItem('seed_mushroom', 1);
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('🍄 Đã thu hoạch Nấm Rừng Quý Hiếm (+3) & Bào Tử Nấm (+1) từ vách đá hầm rễ ẩm ướt!');
+      }
+      return;
+    }
+
+    if (actionId === 'collect_pure_spring') {
+      this.audioManager.playInteract();
+      this.player.playGather();
+      this.player.stats.composure = Math.min(this.player.stats.maxComposure, this.player.stats.composure + 15);
+      const currentTemp = this.player.stats.temperature ?? 80;
+      this.player.stats.temperature = Math.min(100, currentTemp + 10);
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('💧 Dòng nước ngầm thanh khiết len qua vách đá, tinh sạch để nấu Trà An Thần (+15 Bình Tâm)!');
+      }
+      return;
+    }
+
     if (actionId === 'collect_rare_roots') {
       this.audioManager.playInteract();
       this.player.playGather();
