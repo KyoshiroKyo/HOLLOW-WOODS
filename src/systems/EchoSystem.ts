@@ -20,7 +20,7 @@ export class EchoSystem {
       y: 180,
       targetClueX: 450,
       targetClueY: 180,
-      message: 'Một bóng hình lữ khách mờ ảo chỉ tay về phía Cổng Làng trước khi tan biến...',
+      message: 'Một bóng hình lữ khách mờ ảo thì thầm về ngày ngôi làng bị sương mù nuốt chửng: “Khi tiếng chuông câm lặng... sương mù nuốt chửng Bellhollow... đừng để ngọn lửa lụi tàn...”',
       triggered: false
     },
     {
@@ -29,7 +29,7 @@ export class EchoSystem {
       y: 220,
       targetClueX: 1900,
       targetClueY: 180,
-      message: 'Tiếng vọng chỉ vào Thân Cây Rỗng: “Ẩn nấp... khi tiếng bước chân cất lên...”',
+      message: 'Tiếng vọng ký ức thì thào: “Ngày màn sương dâng lên, dân làng chạy vào những thân cây rỗng... Ẩn nấp khi tiếng bước chân cất lên...”',
       triggered: false
     },
     {
@@ -38,7 +38,7 @@ export class EchoSystem {
       y: 280,
       targetClueX: 2820,
       targetClueY: 280,
-      message: 'Hình bóng mờ thì thào: “Đừng theo chiếc đèn thứ hai... hãy nhìn ký hiệu cổ...”',
+      message: 'Hình bóng mờ thì thào về ngày ngôi làng chìm vào bóng tối: “Đừng theo chiếc đèn thứ hai... hãy nhìn ký hiệu cổ nơi miếu chuông để phục hồi phong ấn...”',
       triggered: false
     }
   ];

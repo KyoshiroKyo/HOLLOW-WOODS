@@ -15,6 +15,7 @@ export class ListenerAI {
   // V1.4: Trí nhớ ngắn hạn và Cơ chế Chống lặp mồi nhử (Anti-Repeat Lure Memory)
   private soundMemories: SoundMemoryEntry[] = [];
   public static readonly MEMORY_EXPIRY_MS: number = 30000;
+  public static readonly LURE_ANTI_REPEAT_WINDOW_MS: number = 40000; // V1.4-P5-03: 40 giây chống lặp mồi nhử
   public static readonly REPEAT_LURE_RADIUS: number = 75;
 
   private waypoints: Waypoint[] = [];
@@ -518,9 +519,9 @@ export class ListenerAI {
     if (this.state === 'CHASE' && volume < 2.0) return;
     if (this.detectionCooldown > 0 && volume < 2.0) return;
 
-    // 1. Cập nhật trí nhớ ngắn hạn và kiểm tra số lần lặp lại tại cùng vị trí
+    // 1. Cập nhật trí nhớ ngắn hạn và kiểm tra số lần lặp lại tại cùng vị trí (cửa sổ 40 giây)
     const now = Date.now();
-    this.soundMemories = this.soundMemories.filter(m => now - m.timestamp < ListenerAI.MEMORY_EXPIRY_MS);
+    this.soundMemories = this.soundMemories.filter(m => now - m.timestamp < ListenerAI.LURE_ANTI_REPEAT_WINDOW_MS);
 
     let effectiveness = 1.0;
     const existing = this.soundMemories.find(
@@ -551,7 +552,15 @@ export class ListenerAI {
     }
 
     // 2. Điều chỉnh mục tiêu điều tra theo mức độ bị đánh lừa (Anti-Repeat Strategy)
-    if (effectiveness <= 0.15 && originX !== undefined && originY !== undefined) {
+    if (existing && existing.repeatCount > 2 && originX !== undefined && originY !== undefined) {
+      // V1.4 - Bước 5.3: Ném quá 2 lần trong vòng 40 giây tại cùng 1 vị trí:
+      // The Listener không bị mắc lừa nữa, lập tức quay sang tìm kiếm nguồn phát ra cú ném (vị trí người chơi)
+      this.targetInvestigateX = Math.max(ListenerAI.FOREST_TERRITORY_MIN_X, originX);
+      this.targetInvestigateY = originY;
+      // Bổ sung trạng thái nghi ngờ: Quay đầu lắng nghe 2 giây trước khi lao đến điểm phát ra tiếng động
+      this.alertTimer = 2000;
+      // Baseline / Quick Alert: this.alertTimer = 600;
+    } else if (effectiveness <= 0.15 && originX !== undefined && originY !== undefined) {
       // Lặp lại nhiều lần: The Listener nhận ra bẫy mồi nhử và quay đầu mở rộng tìm kiếm về hướng ném
       this.targetInvestigateX = Math.max(ListenerAI.FOREST_TERRITORY_MIN_X, originX);
       this.targetInvestigateY = originY;

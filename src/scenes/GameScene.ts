@@ -2074,9 +2074,9 @@ export class GameScene extends Phaser.Scene {
       this.uiScene.showPopupMessage('💥 Mồi nổ phát ra tiếng động lớn! Kẻ Lắng Nghe đang hướng tới vị trí đó!');
     }
 
-    // Báo động The Listener chạy tới vị trí mồi ném
+    // Báo động The Listener chạy tới vị trí mồi ném (truyền kèm vị trí người chơi ném mồi)
     if (this.listenerMonster) {
-      this.listenerMonster.hearSound(x, y, 2.5);
+      this.listenerMonster.hearSound(x, y, 2.5, this.player.x, this.player.y);
     }
 
     // V1.4 - P6: Kẻ Nuốt Tiếng Chuông (Mire Warden) nghe thấy mồi nổ -> lao húc CHARGING!
