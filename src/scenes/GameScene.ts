@@ -37,7 +37,8 @@ import { EquipmentSystem } from '../systems/EquipmentSystem';
 import { WildlifeSystem } from '../systems/WildlifeSystem';
 import { WorldEventSystem } from '../systems/WorldEventSystem';
 import { TheEcho } from '../entities/TheEcho';
-import { MireWardenBoss, RunePillarTarget, BrazierTarget } from '../entities/MireWardenBoss';
+import { MireWardenBoss, RunePillarTarget, BrazierTarget, BossMireWarden } from '../entities/BossMireWarden';
+import { BossEncounterSystem } from '../systems/BossEncounterSystem';
 import { ZoneId, TransitionZone, FacingDirection, WeaponDef, WildlifeSpookEvent } from '../types';
 
 export interface PlantedResinFlare {
@@ -3821,10 +3822,11 @@ export class GameScene extends Phaser.Scene {
 
     // 3. Khởi tạo thực thể Boss Kẻ Nuốt Tiếng Chuông tại trung tâm tế đàn
     if (!this.mireWardenBoss) {
-      this.mireWardenBoss = new MireWardenBoss(this, 4500, 240);
+      this.mireWardenBoss = new BossMireWarden(this, 4500, 240);
     }
     this.mireWardenBoss.setDepth(4500);
     this.mireWardenBoss.startBossFight();
+    BossEncounterSystem.getInstance().initArena(this, this.mireWardenBoss as BossMireWarden);
 
     // 4. Khởi tạo 2 Trụ Cổ Ngữ Pha 1 (Tây Bắc & Đông Bắc)
     this.runePillarTargets.forEach(p => p.graphics?.destroy());
@@ -4131,6 +4133,9 @@ export class GameScene extends Phaser.Scene {
     this.playerState.setFlag('boss_mire_warden_defeated');
     this.playerState.setFlag('root_seal_restored');
     this.playerState.setFlag('clapper_collected');
+    this.playerState.setFlag('title_purifier_of_mist');
+    this.playerState.unlockLore('lore_mire_warden_memory');
+    BossEncounterSystem.getInstance().completeEncounter();
 
     // Lưu checkpoint an toàn vĩnh viễn
     SaveManager.saveGame('CHIẾN THẮNG MIẾU CHUÔNG — PHONG ẤN HOÀN TẤT', 'broken_bell_shrine', 4500, 260);
@@ -4142,7 +4147,7 @@ export class GameScene extends Phaser.Scene {
     });
 
     if (this.uiScene) {
-      this.uiScene.showPopupMessage('✨ PHONG ẤN HOÀN TẤT! Kẻ Nuốt Tiếng Chuông đã yên nghỉ. Bạn nhận được [Trái Tim Mạch Rễ Cổ] & [Lưỡi Chuông Đồng]!');
+      this.uiScene.showPopupMessage('✨ PHONG ẤN HOÀN TẤT! Kẻ Nuốt Tiếng Chuông đã yên nghỉ. Bạn nhận được [Trái Tim Mạch Rễ Cổ], danh hiệu [Người Thanh Tẩy Màn Sương] & Mảnh Ký Ức Cốt Truyện!');
     }
   }
 }

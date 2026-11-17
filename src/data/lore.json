@@ -27,6 +27,13 @@
       "title": "LỜI NGUYỀN MIẾU CHUÔNG PHẾ TÍCH",
       "author": "Bia Đá Cổ",
       "content": "Lưỡi chuông bằng đồng đúc mang âm sắc nguyên sơ có thể xuyên thủng màn sương thời đại. Khi tiếng chuông đầu tiên gióng lên, khe nứt thời gian sẽ mở ra trong khoảnh khắc ngắn ngủi.\n\nNhưng hãy cẩn thận: Kẻ Lắng Nghe không có mắt, nó chỉ săn tìm theo tiếng động. Khi cầm lưỡi chuông trong tay, bước chân của bạn sẽ nặng nề hơn và tiếng tim đập sẽ trở thành mồi ngon cho nó."
+    },
+    {
+      "id": "lore_mire_warden_memory",
+      "act": 6,
+      "title": "KÝ ỨC BI KỊCH: KẺ NUỐT TIẾNG CHUÔNG",
+      "author": "Mảnh Ký Ức Cổ Ngữ",
+      "content": "Kẻ Nuốt Tiếng Chuông từng là Người Bảo Hộ Đại Mạch Rễ cổ xưa của Bellhollow. Khi lời nguyền The Veil bùng phát và tháp chuông bị phá hủy, người bảo hộ đã hiến dâng thể xác nuốt trọn những thanh âm cuối cùng để ngăn màn sương đen nuốt chửng ngôi làng. Giờ đây khi phong ấn được tái lập và tiếng chuông ngân vang, linh hồn người bảo hộ đã được giải thoát, để lại Trái Tim Mạch Rễ Cổ như một minh chứng cho sự trường tồn của lòng quả cảm."
     }
   ],
   "questLog": [
