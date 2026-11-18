@@ -42,6 +42,9 @@ export class ShadowCrowEntity extends Phaser.Physics.Arcade.Sprite {
   private alarmCooldown: number = 0;
   private darkLingerTimer: number = 0;
 
+  // V1.5 - BƯỚC V15-08: Mắt quạ đỏ rực phát sáng trong bóng đêm
+  private eyeGfx: Phaser.GameObjects.Graphics | null = null;
+
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, SPRITE_SHADOW_CROW);
     this.perchX = x;
@@ -53,6 +56,15 @@ export class ShadowCrowEntity extends Phaser.Physics.Arcade.Sprite {
     this.setOrigin(0.5, 0.90);
     this.setDepth(Math.floor(y));
     this.setScale(1.0);
+
+    // Mắt đỏ phát sáng ban đêm
+    this.eyeGfx = scene.add.graphics();
+    this.eyeGfx.fillStyle(0xff2222, 0.95);
+    this.eyeGfx.fillCircle(0, 0, 1.8);
+    this.eyeGfx.fillStyle(0xff6666, 0.4);
+    this.eyeGfx.fillCircle(0, 0, 3.5);
+    this.eyeGfx.setVisible(false);
+
     this.initAnims();
     this.play('shadow_crow_idle', true);
   }
@@ -130,14 +142,31 @@ export class ShadowCrowEntity extends Phaser.Physics.Arcade.Sprite {
     }
 
     const distToPlayer = Phaser.Math.Distance.Between(this.x, this.y, ctx.playerX, ctx.playerY);
+    const isNight = ctx.timePhase === 'NIGHT';
+
+    // V1.5 - BƯỚC V15-08: Cập nhật vị trí mắt quạ đỏ rực vào ban đêm
+    if (this.eyeGfx) {
+      if (isNight && this.visible) {
+        const eyeOffsetX = this.flipX ? 4 : -4;
+        this.eyeGfx.setPosition(this.x + eyeOffsetX, this.y - 14);
+        this.eyeGfx.setDepth(targetDepth + 1);
+        this.eyeGfx.setVisible(true);
+      } else {
+        this.eyeGfx.setVisible(false);
+      }
+    }
 
     // Ghi nhận vào Sổ tay khi tiếp cận tầm nhìn (240px)
     if (distToPlayer <= 240) {
       PlayerState.getInstance().observeCreature('shadow_crow');
     }
 
-    // 1. Kiểm tra báo động The Listener khi người chơi chạy ồn gần quạ (< 200px)
-    if (distToPlayer <= 200 && this.alarmCooldown <= 0 && this.crowState === 'perch') {
+    // V1.5 - BƯỚC V15-08: Ban đêm tầm phát hiện người chơi tăng 35% (200px -> 270px; dive: 190px -> 256px)
+    const alertDetectRadius = isNight ? Math.round(200 * 1.35) : 200;
+    const diveDetectRadius = isNight ? Math.round(190 * 1.35) : 190;
+
+    // 1. Kiểm tra báo động The Listener khi người chơi chạy ồn gần quạ
+    if (distToPlayer <= alertDetectRadius && this.alarmCooldown <= 0 && this.crowState === 'perch') {
       this.alarmCooldown = 8000;
       this.crowState = 'caw_alarm';
       this.stateTimer = 1200;
@@ -145,15 +174,16 @@ export class ShadowCrowEntity extends Phaser.Physics.Arcade.Sprite {
       AudioManager.getInstance().playShadowCrowCaw();
       this.play('shadow_crow_jump', true);
 
-      // Đánh động The Listener tới vị trí người chơi
+      // V1.5 - BƯỚC V15-08: Đánh động The Listener và Sói Xương: Ban đêm truyền sóng âm xa gấp rưỡi (2.2 * 1.5 = 3.3)
+      const alarmVol = isNight ? 2.2 * 1.5 : 2.2;
       if (ctx.listenerMonster && typeof ctx.listenerMonster.hearSound === 'function') {
-        ctx.listenerMonster.hearSound(this.x, this.y, 2.2, ctx.playerX, ctx.playerY);
+        ctx.listenerMonster.hearSound(this.x, this.y, alarmVol, ctx.playerX, ctx.playerY);
       }
-      this.scene.events.emit('shadow_crow_alarm', { x: this.x, y: this.y });
+      this.scene.events.emit('shadow_crow_alarm', { x: this.x, y: this.y, isNight, soundRadius: isNight ? 360 : 240 });
     }
 
     // 2. Tấn công mổ quấy rối (Dive Attack) nếu người chơi ở trong bóng tối quá 2.5 giây
-    if (distToPlayer <= 190 && !ctx.isLanternLit) {
+    if (distToPlayer <= diveDetectRadius && !ctx.isLanternLit) {
       this.darkLingerTimer += delta;
       if (this.darkLingerTimer >= 2500 && this.crowState === 'perch') {
         this.darkLingerTimer = 0;
@@ -218,6 +248,14 @@ export class ShadowCrowEntity extends Phaser.Physics.Arcade.Sprite {
       this.stateTimer = 400;
       this.play('shadow_crow_damage', true);
     }
+  }
+
+  public destroy(fromScene?: boolean): void {
+    if (this.eyeGfx) {
+      this.eyeGfx.destroy();
+      this.eyeGfx = null;
+    }
+    super.destroy(fromScene);
   }
 }
 
@@ -295,18 +333,22 @@ export class ShadowEyesEntity extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    // 2. Khi ở trong bóng tối và người chơi ở gần (< 170px): nhìn chằm chằm và rút cạn Bình Tâm
-    if (!ctx.isLanternLit && distToPlayer <= 170 && !ctx.isPlayerInSafeZone) {
+    // 2. Khi ở trong bóng tối và người chơi ở gần: nhìn chằm chằm và rút cạn Bình Tâm
+    const isNight = ctx.timePhase === 'NIGHT';
+    const gazeDistance = isNight ? 190 : 170;
+    if (!ctx.isLanternLit && distToPlayer <= gazeDistance && !ctx.isPlayerInSafeZone) {
       this.gazeDrainTimer += delta;
+      // V1.5 - BƯỚC V15-08: Tốc độ rút Bình Tâm tăng thêm 40% vào ban đêm (8 * 1.40 = 11.2)
       if (this.gazeDrainTimer >= 1000) {
         this.gazeDrainTimer = 0;
         AudioManager.getInstance().playShadowEyesGaze();
 
-        // Rút 8 điểm Bình Tâm
+        // Rút 8 điểm (ban ngày/hoàng hôn) hoặc 11.2 điểm (ban đêm [+40%])
+        const drainAmount = isNight ? 11.2 : 8;
         const state = PlayerState.getInstance();
-        state.stats.composure = Math.max(5, state.stats.composure - 8);
+        state.stats.composure = Math.max(5, state.stats.composure - drainAmount);
 
-        this.scene.events.emit('shadow_eyes_drain', { x: this.x, y: this.y, drain: 8 });
+        this.scene.events.emit('shadow_eyes_drain', { x: this.x, y: this.y, drain: drainAmount, isNight });
       }
     } else {
       this.gazeDrainTimer = 0;

@@ -64,8 +64,9 @@ export class WildlifeSystem {
   };
 
   private static readonly SHADOW_EYES_HABITATS: Record<string, Array<{ x: number; y: number }>> = {
+    crooked_path: [{ x: 1100, y: 260 }, { x: 1680, y: 290 }],
     fog_crossing: [{ x: 380, y: 220 }],
-    deep_forest: [{ x: 740, y: 280 }],
+    deep_forest: [{ x: 740, y: 280 }, { x: 1120, y: 310 }],
     silent_mire: [{ x: 450, y: 310 }, { x: 850, y: 330 }],
     sub_root_cellar: [{ x: 320, y: 240 }]
   };
@@ -188,6 +189,21 @@ export class WildlifeSystem {
     this.scene.events.on('player_ambush_hit', () => {
       this.lastAmbushHitTime = this.scene.time.now;
     });
+
+    // V1.5 - BƯỚC V15-08: Lắng nghe tiếng quạ bóng tối báo động để kích động đàn Sói Xương gần đó kéo tới
+    this.scene.events.on('shadow_crow_alarm', (data: { x: number; y: number; isNight?: boolean; soundRadius?: number }) => {
+      const radius = data.soundRadius ?? (data.isNight ? 360 : 240);
+      for (const wolf of this.skullWolves) {
+        if (wolf.active && !wolf.isDefeated) {
+          const dist = Phaser.Math.Distance.Between(wolf.x, wolf.y, data.x, data.y);
+          if (dist <= radius) {
+            const angle = Phaser.Math.Angle.Between(wolf.x, wolf.y, data.x, data.y);
+            const speed = data.isNight ? 110 : 85;
+            wolf.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed);
+          }
+        }
+      }
+    });
   }
 
   public static getInstance(scene?: Phaser.Scene): WildlifeSystem {
@@ -296,12 +312,24 @@ export class WildlifeSystem {
       }
     }
 
+    // --- V1.4 - P8-08 & V1.5-08: Ranh giới Vùng An Toàn & Bảo Hộ Lửa Trại ---
+    const isCampfireProtected = Boolean(
+      ctx.campfirePos &&
+      ctx.campfirePos.active &&
+      Phaser.Math.Distance.Between(px, py, ctx.campfirePos.x, ctx.campfirePos.y) <= 180
+    );
+
+    const isSafeZone = (this.currentZoneId === 'bellhollow' && ctx.playerX <= 1620) ||
+                       this.currentZoneId === 'sanctuary_farm' ||
+                       this.currentZoneId === 'fog_crossing' ||
+                       isCampfireProtected;
+
     // --- V1.4 - P8-08: Quản lý & Cập nhật AI Sói Xương (Skull Wolf) ---
     const isNocturnal = ctx.timePhase === 'DUSK' || ctx.timePhase === 'NIGHT';
     const wolfHabitats = WildlifeSystem.SKULL_WOLF_HABITATS[this.currentZoneId];
 
-    // Chỉ xuất hiện tại The Crooked Path, Deep Forest và rìa Silent Mire vào ban đêm/hoàng hôn
-    if (isNocturnal && wolfHabitats && wolfHabitats.length > 0 && this.skullWolves.length === 0) {
+    // Chỉ xuất hiện tại The Crooked Path, Deep Forest và rìa Silent Mire vào ban đêm/hoàng hôn ngoài Safe Zone
+    if (isNocturnal && !isSafeZone && wolfHabitats && wolfHabitats.length > 0 && this.skullWolves.length === 0) {
       const spawnCount = Math.min(wolfHabitats.length, WildlifeSystem.MAX_SKULL_WOLVES_PER_ZONE);
       for (let i = 0; i < spawnCount; i++) {
         const h = wolfHabitats[i];
@@ -325,10 +353,6 @@ export class WildlifeSystem {
       const lightY = ctx.playerLightPos ? ctx.playerLightPos.y : ctx.playerY;
       const lightRadius = lightActive ? 140 : 0;
 
-      const isSafe = (this.currentZoneId === 'bellhollow' && ctx.playerX <= 1620) ||
-                     this.currentZoneId === 'sanctuary_farm' ||
-                     this.currentZoneId === 'fog_crossing';
-
       for (let w = this.skullWolves.length - 1; w >= 0; w--) {
         const wolf = this.skullWolves[w];
         if (!wolf.active || wolf.isDefeated) {
@@ -347,7 +371,7 @@ export class WildlifeSystem {
           lightX,
           lightY,
           lightRadius,
-          isPlayerInSafeZone: isSafe,
+          isPlayerInSafeZone: isSafeZone,
           timePhase: ctx.timePhase,
           playerComposure,
           packFlankOffset,
@@ -363,9 +387,6 @@ export class WildlifeSystem {
     }
 
     // --- V1.4 - P8-09: Quản lý & Cập nhật AI Quái Vật Bóng Tối (Shadow Monsters) ---
-    const isSafeZone = (this.currentZoneId === 'bellhollow' && ctx.playerX <= 1620) ||
-                       this.currentZoneId === 'sanctuary_farm' ||
-                       this.currentZoneId === 'fog_crossing';
 
     const lightActive = Boolean(ctx.playerLightPos && ctx.playerLightPos.active);
     const lightRadius = lightActive ? 140 : 0;

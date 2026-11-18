@@ -2,11 +2,11 @@
 ## HỆ THỐNG TINH THẦN (BÌNH TÂM), RÚT MÁU LŨY TIẾN & KHU AN TOÀN
 
 **Dự án:** HOLLOW WOODS: The Fog That Remembers  
-**Mã tài liệu:** `V15-05`, `V15-06` & `V15-07` / `03_Sanity_Vision_And_NightAI.md`  
+**Mã tài liệu:** `V15-05`, `V15-06`, `V15-07` & `V15-08` / `03_Sanity_Vision_And_NightAI.md`  
 **Phiên bản:** V1.5 (Visual & Gameplay Overhaul)  
 **Nhánh Git:** `feat/v1.5-visual-gameplay-overhaul`  
 **Ngày thực hiện:** 18/11/2026  
-**Trạng thái:** Hoàn tất xuất sắc (58/58 bài kiểm tra tự động PASS [19/19 V15-05 + 16/16 V15-06 + 23/23 V15-07], 0 lỗi TypeScript, bản dựng Vite thành công)  
+**Trạng thái:** Hoàn tất xuất sắc (69/69 bài kiểm tra tự động PASS [19/19 V15-05 + 16/16 V15-06 + 23/23 V15-07 + 11/11 V15-08], 0 lỗi TypeScript, bản dựng Vite thành công)  
 
 ---
 
@@ -156,3 +156,49 @@ Khi đồng hồ chu kỳ thế giới vừa chuyển sang pha **Đêm Sương (
 | **WildlifeSystem.ts** | Truyền góc lệch bọc sườn $\pm 0.61\text{ rad}$ ($\pm 35^\circ$) cho cặp sói và chỉ số Bình Tâm | **PASS** (1/1) |
 | **AudioManager & GameScene** | Chuông nứt `playCrackedBellToll`, sói hú `playDistantWolfHowl`, lắng nghe `phase_changed` kích hoạt cảnh báo đêm xuống | **PASS** (4/4) |
 | **Tổng Cộng** | **Tất cả các tiêu chí của V15-07** | **23/23 PASS (100%)** |
+
+---
+
+### 9. BƯỚC V15-08: NÂNG CẤP ÁP LỰC BAN ĐÊM CHO QUẠ BÓNG TỐI, BÓNG MẮT VÀ NHÓM HIỆP SĨ TÀ ÁC
+
+#### 9.1. Quạ Bóng Tối (Shadow Crow)
+- **Mắt Đỏ Phát Sáng Ban Đêm:** Quạ đậu trên cành hoặc tảng đá trong đêm phát sáng chấm đỏ rực (`0xff2222`, tâm $1.8\text{px}$, quầng hào quang mờ $3.5\text{px}$ `0xff6666`), cảnh báo nguy hiểm tiềm tàng.
+- **Tầm Phát Hiện Tăng 35% Ban Đêm:**
+  - Bán kính phát hiện cảnh giác: từ $200\text{px}$ tăng lên $270\text{px}$ ($200 \times 1.35$).
+  - Bán kính sà xuống tấn công quấy rối (Dive Attack): từ $190\text{px}$ tăng lên $256\text{px}$ ($190 \times 1.35$) khi người chơi tắt đèn.
+- **Sóng Âm Báo Động Đi Xa Gấp Rưỡi:**
+  - Âm lượng sóng âm báo động tăng từ $2.2$ lên $3.3$ ($2.2 \times 1.5$).
+  - Phát sự kiện `shadow_crow_alarm` với bán kính truyền âm ban đêm là $360\text{px}$ (ban ngày là $240\text{px}$).
+  - Kích động The Listener lao đến kiểm tra và bầy Sói Xương gần đó chuyển hướng truy lùng mục tiêu.
+
+#### 9.2. Bóng Mắt Sương Mù (Shadow Eyes)
+- **Mở Rộng Mật Độ Sinh Cảnh Đêm:**
+  - Bổ sung các điểm sinh cảnh tại các ngã rẽ rừng sâu hiểm trở: `crooked_path` ($x=1100, y=260$ và $x=1680, y=290$) và mở rộng `deep_forest` ($x=740, y=280$ và $x=1120, y=310$).
+- **Tăng Tốc Độ Rút Bình Tâm 40% Ban Đêm:**
+  - Khi người chơi nhìn phải Bóng Mắt trong cự ly $190\text{px}$ mà không thắp đèn lồng, lượng Bình Tâm bị hút mỗi giây tăng từ $8.0$ lên **$11.2\text{ điểm}$** ($8.0 \times 1.40$).
+- **Tan Biến Khi Gặp Ánh Sáng:**
+  - Khi người chơi rọi thẳng Đèn Lồng [F] vào, Bóng Mắt lập tức phát âm thanh rên rỉ tan biến (`playShadowEyesDissolve`), kích hoạt animation `shadow_eyes_dissolve` và tự hủy sau $500\text{ms}$.
+
+#### 9.3. Nhóm Hiệp Sĩ Tà Ác (Evil Knights Faction)
+Bao gồm Hiệp Sĩ Sa Ngã (`FallenKnightEntity`), Kỵ Sĩ Kinh Hoàng (`DreadHorsemanEntity`) và Chỉ Huy Hiệp Sĩ Trùm Mũ (`HoodedKnightBoss`):
+- **Khói Đen Mờ Tỏa Ra Quanh Kiếm & Giáp:**
+  - Ban đêm, thanh kiếm và bộ giáp sắt rỉ sét tỏa ra làn khói đen tím huyền bí (`darkAuraGfx`, bán kính từ $22\text{px}$ đến $38\text{px}$, màu $0x180924$ / $0x2d1240$) và thân thể ám sắc tím tối (`0x9988aa`).
+- **Giảm 25% Thời Gian Nghỉ Giữa Các Đòn Đánh:**
+  - `FallenKnightEntity`: Cooldown giữa các đòn vung kiếm giảm từ $1800\text{ms}$ xuống **$1350\text{ms}$** ($1800 \times 0.75$). Thời gian vung chém giảm từ $900\text{ms}$ xuống **$675\text{ms}$**. Tầm phát hiện ban đêm tăng từ $130\text{px}$ lên **$180\text{px}$** ($270\text{px}$ nếu người chơi bật đèn).
+  - `DreadHorsemanEntity`: Cooldown giữa các đợt phi ngựa phóng giáo giảm từ $2800\text{ms}$ xuống **$2100\text{ms}$** ($2800 \times 0.75$). Tốc độ tuần tra ban đêm tăng từ $42\text{px/s}$ lên **$62\text{px/s}$**.
+  - `HoodedKnightBoss`: Cooldown giữa các đòn chém cuồng nộ giảm từ $3200\text{ms}$ xuống **$2400\text{ms}$** ($3200 \times 0.75$). Cooldown sau khi hồi phục choáng giảm từ $2000\text{ms}$ xuống **$1500\text{ms}$**. Tốc độ truy lùng di tích tăng từ $52\text{px/s}$ lên **$65\text{px/s}$**.
+- **Quy Tắc Ranh Giới Bất Biến:**
+  - Tất cả quái vật tuyệt đối tôn trọng ranh giới Vùng An Toàn làng Bellhollow ($x \le 1620$), Farm Sanctuary và bán kính bảo hộ của Lửa Trại ($180\text{px}$ quanh `ctx.campfirePos`), không bao giờ xâm nhập hoặc truy sát người chơi khi đang trú ẩn an toàn.
+
+---
+
+### 10. BẢNG TỔNG HỢP KIỂM THỬ V15-08 (`verify_v15_08_night_pressure.mjs`)
+
+| Nhóm Kiểm Thử | Nội Dung Kiểm Tra | Kết Quả |
+|:---|:---|:---:|
+| **ShadowCrowEntity** | Chấm mắt đỏ rực (`0xff2222`), tầm phát hiện & sà mổ tăng $35\%$, âm lượng báo động tăng gấp rưỡi ($3.3$), phát sự kiện `shadow_crow_alarm` | **PASS** (3/3) |
+| **ShadowEyesEntity** | Hút Bình Tâm tăng $40\%$ ($8 \to 11.2\text{ pts/s}$), mở rộng sinh cảnh `crooked_path` & `deep_forest`, tan biến khi rọi đèn | **PASS** (3/3) |
+| **EvilKnights Faction** | Khói đen mờ và ám tím (`0x9988aa`), giảm $25\%$ cooldown hồi chiêu (Fallen: $1350\text{ms}$, Horseman: $2100\text{ms}$, Boss: $2400\text{ms}$), tăng tốc độ tuần tra/truy đuổi | **PASS** (3/3) |
+| **Hệ Thống Sinh Thái** | Lắng nghe `shadow_crow_alarm` kích động bầy Sói Xương, tuyệt đối tôn trọng vùng an toàn làng và bán kính bảo hộ Lửa Trại | **PASS** (2/2) |
+| **Tổng Cộng** | **Tất cả các tiêu chí của V15-08** | **11/11 PASS (100%)** |
+

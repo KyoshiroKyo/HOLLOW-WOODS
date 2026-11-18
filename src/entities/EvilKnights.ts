@@ -65,6 +65,7 @@ export class FallenKnightEntity extends Phaser.Physics.Arcade.Sprite {
   private stateTimer: number = 0;
   private attackCooldown: number = 0;
   private footShadowGfx: Phaser.GameObjects.Graphics | null = null;
+  private darkAuraGfx: Phaser.GameObjects.Graphics | null = null;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, SPRITE_FALLEN_KNIGHT);
@@ -90,8 +91,23 @@ export class FallenKnightEntity extends Phaser.Physics.Arcade.Sprite {
     this.footShadowGfx.fillEllipse(0, 0, 26, 8);
     this.footShadowGfx.setDepth(this.depth - 1);
 
+    // V1.5 - BƯỚC V15-08: Khói đen mờ tỏa ra quanh kiếm và giáp ban đêm
+    this.darkAuraGfx = scene.add.graphics();
+    this.drawDarkSmokeAura();
+    this.darkAuraGfx.setVisible(false);
+
     this.initAnims();
     this.play('fallen_knight_pray', true);
+  }
+
+  private drawDarkSmokeAura(): void {
+    if (!this.darkAuraGfx) return;
+    this.darkAuraGfx.clear();
+    this.darkAuraGfx.fillStyle(0x180924, 0.38);
+    this.darkAuraGfx.fillCircle(0, -18, 22);
+    this.darkAuraGfx.fillStyle(0x2d1240, 0.25);
+    this.darkAuraGfx.fillCircle(6, -26, 16);
+    this.darkAuraGfx.fillCircle(-6, -14, 18);
   }
 
   private initAnims(): void {
@@ -162,6 +178,20 @@ export class FallenKnightEntity extends Phaser.Physics.Arcade.Sprite {
       this.footShadowGfx.setPosition(this.x, this.y - 2);
     }
 
+    const isNight = ctx.timePhase === 'NIGHT';
+    // V1.5 - BƯỚC V15-08: Khói đen mờ quanh kiếm và giáp ban đêm
+    if (this.darkAuraGfx) {
+      if (isNight && this.visible && !this.isDefeated) {
+        this.darkAuraGfx.setPosition(this.x, this.y);
+        this.darkAuraGfx.setDepth(targetDepth - 1);
+        this.darkAuraGfx.setVisible(true);
+        if (!this.isVulnerable) this.setTint(0x9988aa);
+      } else {
+        this.darkAuraGfx.setVisible(false);
+        if (!this.isVulnerable) this.clearTint();
+      }
+    }
+
     if (this.attackCooldown > 0) {
       this.attackCooldown -= delta;
     }
@@ -193,7 +223,9 @@ export class FallenKnightEntity extends Phaser.Physics.Arcade.Sprite {
 
     switch (this.knightState) {
       case 'pray': {
-        const detectRange = ctx.isLanternLit ? 220 : 130;
+        // V1.5 - BƯỚC V15-08: Tăng tần suất và phạm vi phát hiện ban đêm
+        const baseDetect = isNight ? 180 : 130;
+        const detectRange = ctx.isLanternLit ? (isNight ? 270 : 220) : baseDetect;
         if (distToPlayer <= detectRange) {
           this.knightState = 'chase';
           AudioManager.getInstance().playArmorClank();
@@ -230,10 +262,11 @@ export class FallenKnightEntity extends Phaser.Physics.Arcade.Sprite {
         this.stateTimer -= delta;
         if (this.stateTimer <= 0) {
           // Vào trạng thái thở dốc sơ hở (vulnerable)
+          // V1.5 - BƯỚC V15-08: Giảm 25% thời gian nghỉ giữa các đòn vung kiếm ban đêm (1800ms -> 1350ms)
           this.knightState = 'vulnerable';
           this.isVulnerable = true;
-          this.stateTimer = 900;
-          this.attackCooldown = 1800;
+          this.stateTimer = isNight ? Math.round(900 * 0.75) : 900;
+          this.attackCooldown = isNight ? Math.round(1800 * 0.75) : 1800;
           this.setVelocity(0, 0);
           this.play('fallen_knight_idle', true);
         }
@@ -317,6 +350,10 @@ export class FallenKnightEntity extends Phaser.Physics.Arcade.Sprite {
       this.footShadowGfx.destroy();
       this.footShadowGfx = null;
     }
+    if (this.darkAuraGfx) {
+      this.darkAuraGfx.destroy();
+      this.darkAuraGfx = null;
+    }
     super.destroy(fromScene);
   }
 }
@@ -341,6 +378,7 @@ export class DreadHorsemanEntity extends Phaser.Physics.Arcade.Sprite {
   private chargeCooldown: number = 0;
   private chargeVelX: number = 0;
   private footShadowGfx: Phaser.GameObjects.Graphics | null = null;
+  private darkAuraGfx: Phaser.GameObjects.Graphics | null = null;
 
   constructor(scene: Phaser.Scene, x: number, y: number, patrolRange: number = 200) {
     super(scene, x, y, SPRITE_DREAD_HORSEMAN);
@@ -365,8 +403,23 @@ export class DreadHorsemanEntity extends Phaser.Physics.Arcade.Sprite {
     this.footShadowGfx.fillEllipse(0, 0, 42, 12);
     this.footShadowGfx.setDepth(this.depth - 1);
 
+    // V1.5 - BƯỚC V15-08: Khói đen mờ quanh kỵ sĩ và chiến mã ban đêm
+    this.darkAuraGfx = scene.add.graphics();
+    this.drawDarkSmokeAura();
+    this.darkAuraGfx.setVisible(false);
+
     this.initAnims();
     this.play('dread_horseman_trot', true);
+  }
+
+  private drawDarkSmokeAura(): void {
+    if (!this.darkAuraGfx) return;
+    this.darkAuraGfx.clear();
+    this.darkAuraGfx.fillStyle(0x180924, 0.35);
+    this.darkAuraGfx.fillCircle(-6, -20, 28);
+    this.darkAuraGfx.fillCircle(12, -26, 22);
+    this.darkAuraGfx.fillStyle(0x2d1240, 0.22);
+    this.darkAuraGfx.fillCircle(0, -12, 34);
   }
 
   private initAnims(): void {
@@ -429,6 +482,20 @@ export class DreadHorsemanEntity extends Phaser.Physics.Arcade.Sprite {
       this.footShadowGfx.setPosition(this.x, this.y - 2);
     }
 
+    const isNight = ctx.timePhase === 'NIGHT';
+    // V1.5 - BƯỚC V15-08: Khói đen mờ quanh kỵ sĩ và chiến mã ban đêm
+    if (this.darkAuraGfx) {
+      if (isNight && this.visible && !this.isDefeated) {
+        this.darkAuraGfx.setPosition(this.x, this.y);
+        this.darkAuraGfx.setDepth(targetDepth - 1);
+        this.darkAuraGfx.setVisible(true);
+        if (!this.isVulnerable) this.setTint(0x9988aa);
+      } else {
+        this.darkAuraGfx.setVisible(false);
+        if (!this.isVulnerable) this.clearTint();
+      }
+    }
+
     if (this.chargeCooldown > 0) {
       this.chargeCooldown -= delta;
     }
@@ -441,7 +508,7 @@ export class DreadHorsemanEntity extends Phaser.Physics.Arcade.Sprite {
 
     // Không tấn công người chơi nếu đang trong Safe Zone
     if (ctx.isPlayerInSafeZone || ctx.isPlayerHiding) {
-      this.updatePatrol();
+      this.updatePatrol(isNight);
       return;
     }
 
@@ -458,7 +525,7 @@ export class DreadHorsemanEntity extends Phaser.Physics.Arcade.Sprite {
           AudioManager.getInstance().playHorseCharge();
           this.play('dread_horseman_rear', true);
         } else {
-          this.updatePatrol();
+          this.updatePatrol(isNight);
         }
         break;
       }
@@ -482,10 +549,11 @@ export class DreadHorsemanEntity extends Phaser.Physics.Arcade.Sprite {
         this.setVelocity(this.chargeVelX, 0);
         if (this.stateTimer <= 0) {
           // Kết thúc cú phóng, vào trạng thái khựng lại hồi sức
+          // V1.5 - BƯỚC V15-08: Giảm 25% thời gian nghỉ giữa các đòn phóng ban đêm (2800ms -> 2100ms)
           this.horseState = 'cooldown';
           this.isVulnerable = true;
-          this.stateTimer = 1400;
-          this.chargeCooldown = 2800;
+          this.stateTimer = isNight ? Math.round(1400 * 0.75) : 1400;
+          this.chargeCooldown = isNight ? Math.round(2800 * 0.75) : 2800;
           this.setVelocity(0, 0);
           this.play('dread_horseman_idle', true);
         }
@@ -512,13 +580,15 @@ export class DreadHorsemanEntity extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  private updatePatrol(): void {
+  private updatePatrol(isNight: boolean = false): void {
     if (this.x <= this.minX) {
       this.patrolDir = 1;
     } else if (this.x >= this.maxX) {
       this.patrolDir = -1;
     }
-    this.setVelocity(this.patrolDir * 42, 0);
+    // V1.5 - BƯỚC V15-08: Tăng tần suất và tốc độ tuần tra dọc các tuyến đường ban đêm (42 -> 62 px/s)
+    const patrolSpeed = isNight ? 62 : 42;
+    this.setVelocity(this.patrolDir * patrolSpeed, 0);
     this.setFlipX(this.patrolDir < 0);
     this.play('dread_horseman_trot', true);
   }
@@ -578,6 +648,10 @@ export class DreadHorsemanEntity extends Phaser.Physics.Arcade.Sprite {
       this.footShadowGfx.destroy();
       this.footShadowGfx = null;
     }
+    if (this.darkAuraGfx) {
+      this.darkAuraGfx.destroy();
+      this.darkAuraGfx = null;
+    }
     super.destroy(fromScene);
   }
 }
@@ -599,6 +673,7 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
   private stateTimer: number = 0;
   private attackCooldown: number = 2400;
   private footShadowGfx: Phaser.GameObjects.Graphics | null = null;
+  private darkAuraGfx: Phaser.GameObjects.Graphics | null = null;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, SPRITE_HOODED_KNIGHT);
@@ -622,8 +697,23 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
     this.footShadowGfx.fillEllipse(0, 0, 52, 14);
     this.footShadowGfx.setDepth(this.depth - 1);
 
+    // V1.5 - BƯỚC V15-08: Khói đen mờ tỏa ra quanh kiếm và giáp ban đêm
+    this.darkAuraGfx = scene.add.graphics();
+    this.drawDarkSmokeAura();
+    this.darkAuraGfx.setVisible(false);
+
     this.initAnims();
     this.play('hooded_knight_idle', true);
+  }
+
+  private drawDarkSmokeAura(): void {
+    if (!this.darkAuraGfx) return;
+    this.darkAuraGfx.clear();
+    this.darkAuraGfx.fillStyle(0x180924, 0.42);
+    this.darkAuraGfx.fillCircle(0, -32, 38);
+    this.darkAuraGfx.fillStyle(0x2d1240, 0.28);
+    this.darkAuraGfx.fillCircle(12, -45, 26);
+    this.darkAuraGfx.fillCircle(-12, -22, 30);
   }
 
   private initAnims(): void {
@@ -676,6 +766,20 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
 
     if (this.footShadowGfx) {
       this.footShadowGfx.setPosition(this.x, this.y - 2);
+    }
+
+    const isNight = ctx.timePhase === 'NIGHT';
+    // V1.5 - BƯỚC V15-08: Khói đen mờ quanh kiếm và giáp ban đêm
+    if (this.darkAuraGfx) {
+      if (isNight && this.visible && !this.isDefeated) {
+        this.darkAuraGfx.setPosition(this.x, this.y);
+        this.darkAuraGfx.setDepth(targetDepth - 1);
+        this.darkAuraGfx.setVisible(true);
+        if (!this.isVulnerable) this.setTint(0x9988aa);
+      } else {
+        this.darkAuraGfx.setVisible(false);
+        if (!this.isVulnerable) this.clearTint();
+      }
     }
 
     if (this.attackCooldown > 0) {
@@ -744,7 +848,7 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
           });
         } else if (distToPlayer > 40 && distToPlayer <= 260) {
           const angle = Phaser.Math.Angle.Between(this.x, this.y, ctx.playerX, ctx.playerY);
-          const bossSpeed = 52;
+          const bossSpeed = isNight ? 65 : 52;
           this.setVelocity(Math.cos(angle) * bossSpeed, Math.sin(angle) * bossSpeed);
           this.bossState = 'walk';
           this.play('hooded_knight_idle', true);
@@ -787,7 +891,7 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
         this.stateTimer -= delta;
         if (this.stateTimer <= 0) {
           this.bossState = 'idle';
-          this.attackCooldown = 3200;
+          this.attackCooldown = isNight ? Math.round(3200 * 0.75) : 3200;
           this.play('hooded_knight_idle', true);
         }
         break;
@@ -798,7 +902,7 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
         if (this.stateTimer <= 0) {
           this.isVulnerable = false;
           this.bossState = 'idle';
-          this.attackCooldown = 2000;
+          this.attackCooldown = isNight ? Math.round(2000 * 0.75) : 2000;
           this.play('hooded_knight_idle', true);
         }
         break;
@@ -901,6 +1005,10 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
     if (this.footShadowGfx) {
       this.footShadowGfx.destroy();
       this.footShadowGfx = null;
+    }
+    if (this.darkAuraGfx) {
+      this.darkAuraGfx.destroy();
+      this.darkAuraGfx = null;
     }
     super.destroy(fromScene);
   }
