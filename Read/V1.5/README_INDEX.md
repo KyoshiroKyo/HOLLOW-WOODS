@@ -36,8 +36,9 @@
 | 06 | `V15-06` | [03_Sanity_Vision_And_NightAI.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/03_Sanity_Vision_And_NightAI.md#5-bước-v15-06-thu-hẹp-tầm-nhìn-động--hiệu-ứng-thị-giác-u-ám) — Thu hẹp tầm nhìn động và hiệu ứng thị giác u ám khi Tinh thần xuống thấp | Hoàn tất (Đã nghiệm thu) |
 | 07 | `V15-07` | [03_Sanity_Vision_And_NightAI.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/03_Sanity_Vision_And_NightAI.md#7-bước-v15-07-hệ-số-hung-hãn-ban-đêm-night-aggression-multiplier) — Nâng cấp độ hung hăng của The Listener và Sói Xương khi màn đêm buông xuống | Hoàn tất (Đã nghiệm thu) |
 | 08 | `V15-08` | [03_Sanity_Vision_And_NightAI.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/03_Sanity_Vision_And_NightAI.md#9-bước-v15-08-nâng-cấp-áp-lực-ban-đêm-cho-quạ-bóng-tối-bóng-mắt-và-nhóm-hiệp-sĩ-tà-ác) — Nâng cấp áp lực ban đêm cho Quạ Bóng Tối, Bóng Mắt và Nhóm Hiệp Sĩ Tà Ác | Hoàn tất (Đã nghiệm thu) |
-| 09 | `V15-09` | *06_Visual_Scale_And_Sprite_Harmonization.md* — Chuẩn hóa tỷ lệ sprite nhân vật, NPC và công trình (Giai đoạn 2) | Sắp tới |
-| 10 | `V15-10` | *07_UI_Deduplication_And_HUD_Polishing.md* — Dọn dẹp trùng lặp và tối ưu hóa UIScene | Sắp tới |
+| 09 | `V15-09` | [04_Graphics_And_World_Layout.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/04_Graphics_And_World_Layout.md) — Chuẩn hóa quy chuẩn kích thước Pixel Art, điểm neo và bảng màu cho toàn bộ Nhân vật, NPC và Quái vật | Hoàn tất (Đã nghiệm thu) |
+| 10 | `V15-10` | *05_World_Layout_And_Building_Scale.md* — Đồng bộ tỷ lệ công trình kiến trúc, nhà cửa, cây cối và chiều sâu thị giác (Giai đoạn 3) | Sắp tới |
+| 11 | `V15-11` | *06_UI_Deduplication_And_HUD_Polishing.md* — Dọn dẹp trùng lặp và tối ưu hóa UIScene | Sắp tới |
 
 ---
 *Tài liệu được cập nhật tự động trong suốt quá trình phát triển HOLLOW WOODS V1.5.*

@@ -41,7 +41,8 @@ export class MistBatAmbushEntity extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    this.setOrigin(0.5, 0.90);
+    // V1.5-09: Căn chuẩn điểm neo chân origin(0.5, 1.0)
+    this.setOrigin(0.5, 1.0);
     this.setDepth(Math.floor(startY));
     this.setScale(1.0);
     this.setTint(0xff5555); // Ánh mắt đỏ le lói trong tán cây lúc báo hiệu
@@ -154,7 +155,8 @@ export class WanderingShadeEntity extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    this.setOrigin(0.5, 0.90);
+    // V1.5-09: Căn chuẩn điểm neo chân origin(0.5, 1.0)
+    this.setOrigin(0.5, 1.0);
     this.setDepth(Math.floor(y));
     this.setScale(1.0);
     this.setAlpha(0.85);
@@ -252,7 +254,8 @@ export class GoblinScoutEntity extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    this.setOrigin(0.5, 0.90);
+    // V1.5-09: Căn chuẩn điểm neo chân origin(0.5, 1.0)
+    this.setOrigin(0.5, 1.0);
     this.setDepth(Math.floor(y));
     this.setScale(1.0);
     this.setTint(0x775599);

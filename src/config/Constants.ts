@@ -51,19 +51,19 @@ export const WAYFARER_PORTRAIT_KEY = 'wayfarer_portrait';
 export const WAYFARER_FRAME_WIDTH = 64;
 export const WAYFARER_FRAME_HEIGHT = 64;
 export const WAYFARER_ORIGIN_X = 0.5;
-export const WAYFARER_ORIGIN_Y = 0.90625; // Bàn chân tại y = 58 trong frame 64x64 (58/64)
+export const WAYFARER_ORIGIN_Y = 1.0; // V1.5-09: Chuẩn hóa điểm neo chân 100% tại đáy frame (y = 64/64 = 1.0)
 export const WAYFARER_BODY_WIDTH = 18;
 export const WAYFARER_BODY_HEIGHT = 12;
 export const WAYFARER_BODY_OFFSET_X = 23;
-export const WAYFARER_BODY_OFFSET_Y = 46;
+export const WAYFARER_BODY_OFFSET_Y = 52; // 64 - 12 = 52 (nằm gọn tại bàn chân sát đáy frame)
 
 // Điểm neo chân (Foot anchor) và va chạm gót chân (Tương thích ngược)
 export const SATYR_ORIGIN_X = 0.5;
-export const SATYR_ORIGIN_Y = 0.90625;
+export const SATYR_ORIGIN_Y = 1.0;
 export const SATYR_BODY_WIDTH = 14;
 export const SATYR_BODY_HEIGHT = 8;
 export const SATYR_BODY_OFFSET_X = 25;
-export const SATYR_BODY_OFFSET_Y = 50;
+export const SATYR_BODY_OFFSET_Y = 56;
 
 // Tên Scene
 export const SCENE_BOOT = 'BootScene';

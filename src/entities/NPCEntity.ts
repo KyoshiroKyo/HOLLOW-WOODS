@@ -35,6 +35,8 @@ export class NPCEntity extends Phaser.GameObjects.Container {
   private isWaitingAtPatrolPoint: boolean = false;
   private waitTimer: number = 0;
   private bubbleTween?: Phaser.Tweens.Tween;
+  private headOffsetY: number = 52;
+  private bubbleOffsetY: number = 72;
 
   constructor(scene: Phaser.Scene, spec: NPCSpec) {
     super(scene, spec.x, spec.y);
@@ -68,13 +70,36 @@ export class NPCEntity extends Phaser.GameObjects.Container {
       this.baseId = 'garth';
     }
 
-    // 3. C4-13-06: Bóng đổ mặt đất đen mờ mịn (alpha 0.25) ôm sát chân NPC
+    if (this.baseId === 'finn') {
+      this.headOffsetY = 42;
+      this.bubbleOffsetY = 60;
+    } else if (this.baseId === 'bram') {
+      this.headOffsetY = 56;
+      this.bubbleOffsetY = 76;
+    } else {
+      this.headOffsetY = 52;
+      this.bubbleOffsetY = 72;
+    }
+
+    // 3. V1.5-09: Đồng bộ kích thước bóng đổ elip mềm dưới chân tương ứng chiều rộng vai từng NPC
     const shadow = scene.add.graphics();
-    shadow.fillStyle(0x000000, 0.25);
-    shadow.fillEllipse(0, 0, 16, 5);
+    shadow.fillStyle(0x000000, 0.28);
+    let shadowW = 18, shadowH = 5.5;
+    if (this.baseId === 'bram') {
+      shadowW = 24; shadowH = 7.5;
+    } else if (this.baseId === 'garth' || this.baseId === 'campfire_knight') {
+      shadowW = 22; shadowH = 7.0;
+    } else if (this.baseId === 'edda') {
+      shadowW = 16; shadowH = 5.0;
+    } else if (this.baseId === 'neris') {
+      shadowW = 15; shadowH = 5.0;
+    } else if (this.baseId === 'finn') {
+      shadowW = 12; shadowH = 4.0;
+    }
+    shadow.fillEllipse(0, 0, shadowW, shadowH);
     this.add(shadow);
 
-    // 4. Sprite hoạt ảnh chính (Căn chỉnh neo chân origin 0.5, 58/64 = 0.90625 khớp chuẩn đáy ô)
+    // 4. V1.5-09: Căn chuẩn điểm neo chân origin(0.5, 1.0) cho 100% thực thể
     let initialSheet = 'garth_walk_sheet';
     if (this.baseId === 'edda') {
       initialSheet = scene.textures.exists('edda_idle_sheet') ? 'edda_idle_sheet' : 'edda_idle';
@@ -91,7 +116,7 @@ export class NPCEntity extends Phaser.GameObjects.Container {
     }
 
     this.npcSprite = scene.add.sprite(0, 0, initialSheet);
-    this.npcSprite.setOrigin(0.5, 58 / 64);
+    this.npcSprite.setOrigin(0.5, 1.0);
     this.add(this.npcSprite);
 
     // Khởi chạy hoạt ảnh ban đầu (mặc định idle)
@@ -107,12 +132,16 @@ export class NPCEntity extends Phaser.GameObjects.Container {
     // Depth sorting nhân vật theo tọa độ Y chân
     this.setDepth(spec.y);
 
-    // C4-13-17 / V1.5: Hộp va chạm chân nhỏ gọn (22x14 px) chuẩn xác tại bàn chân NPC trong frame 64x64 px
+    // V1.5-09: Hộp va chạm chân nhỏ gọn căn chuẩn theo tâm chân (0, 0) của Container
     scene.physics.add.existing(this);
     const body = this.body as Phaser.Physics.Arcade.Body;
     if (body) {
-      body.setSize(22, 14);
-      body.setOffset(21, 50);
+      let bw = 20, bh = 12;
+      if (this.baseId === 'bram') { bw = 24; bh = 14; }
+      else if (this.baseId === 'garth' || this.baseId === 'campfire_knight') { bw = 22; bh = 12; }
+      else if (this.baseId === 'finn') { bw = 14; bh = 10; }
+      body.setSize(bw, bh);
+      body.setOffset(-bw / 2, -bh);
       body.setImmovable(true);
     }
   }
@@ -315,8 +344,8 @@ export class NPCEntity extends Phaser.GameObjects.Container {
    * Bảng nhãn tên và chức vụ NPC với khung nền đen mờ gọn gàng phía sau chữ (depth = 5000)
    */
   private createNamePlate(scene: Phaser.Scene, spec: NPCSpec): Phaser.GameObjects.Container {
-    // Đặt độc lập trong scene tại vị trí (x, y - 58) trên đỉnh đầu nhân vật
-    const container = scene.add.container(spec.x, spec.y - 58);
+    // V1.5-09: Đặt độc lập trong scene phía trên đỉnh đầu nhân vật theo headOffsetY
+    const container = scene.add.container(spec.x, spec.y - this.headOffsetY);
     container.setDepth(5000);
 
     const badgeW = 84;
@@ -369,7 +398,7 @@ export class NPCEntity extends Phaser.GameObjects.Container {
    * Bong bóng nhắc tương tác [E] Trò chuyện (depth = 5001, mặc định ẩn, bán trong suốt chuẩn C4-13-07)
    */
   private createPromptBubble(scene: Phaser.Scene): Phaser.GameObjects.Container {
-    const container = scene.add.container(this.spec.x, this.spec.y - 80);
+    const container = scene.add.container(this.spec.x, this.spec.y - this.bubbleOffsetY);
     container.setDepth(5001);
 
     const bubbleBg = scene.add.graphics();
@@ -545,10 +574,10 @@ export class NPCEntity extends Phaser.GameObjects.Container {
 
     // Đồng bộ vị trí NamePlate và PromptBubble theo NPC
     if (this.namePlate) {
-      this.namePlate.setPosition(this.x, this.y - 58);
+      this.namePlate.setPosition(this.x, this.y - this.headOffsetY);
     }
     if (this.promptBubble) {
-      const baseY = this.y - 80;
+      const baseY = this.y - this.bubbleOffsetY;
       if (!this.bubbleTween || !this.bubbleTween.isPlaying()) {
         this.promptBubble.setPosition(this.x, baseY);
       } else {

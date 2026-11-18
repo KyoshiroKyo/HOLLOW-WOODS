@@ -75,20 +75,20 @@ export class FallenKnightEntity extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    // Điểm tựa chân ở y=63 trong khung 64x64
-    this.setOrigin(0.5, 0.95);
+    // V1.5-09: Căn chuẩn điểm neo chân origin(0.5, 1.0)
+    this.setOrigin(0.5, 1.0);
     this.setDepth(Math.floor(y));
 
     const body = this.body as Phaser.Physics.Arcade.Body;
     if (body) {
       body.setSize(24, 28);
-      body.setOffset(20, 32);
+      body.setOffset(20, 36);
       body.setCollideWorldBounds(true);
     }
 
     this.footShadowGfx = scene.add.graphics();
     this.footShadowGfx.fillStyle(0x000000, 0.28);
-    this.footShadowGfx.fillEllipse(0, 0, 26, 8);
+    this.footShadowGfx.fillEllipse(0, 0, 24, 7.5);
     this.footShadowGfx.setDepth(this.depth - 1);
 
     // V1.5 - BƯỚC V15-08: Khói đen mờ tỏa ra quanh kiếm và giáp ban đêm
@@ -388,19 +388,20 @@ export class DreadHorsemanEntity extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    this.setOrigin(0.5, 0.95);
+    // V1.5-09: Căn chuẩn điểm neo chân origin(0.5, 1.0)
+    this.setOrigin(0.5, 1.0);
     this.setDepth(Math.floor(y));
 
     const body = this.body as Phaser.Physics.Arcade.Body;
     if (body) {
-      body.setSize(38, 28);
-      body.setOffset(13, 32);
+      body.setSize(42, 28);
+      body.setOffset(11, 36);
       body.setCollideWorldBounds(true);
     }
 
     this.footShadowGfx = scene.add.graphics();
-    this.footShadowGfx.fillStyle(0x000000, 0.3);
-    this.footShadowGfx.fillEllipse(0, 0, 42, 12);
+    this.footShadowGfx.fillStyle(0x000000, 0.32);
+    this.footShadowGfx.fillEllipse(0, 0, 48, 14);
     this.footShadowGfx.setDepth(this.depth - 1);
 
     // V1.5 - BƯỚC V15-08: Khói đen mờ quanh kỵ sĩ và chiến mã ban đêm
@@ -681,14 +682,14 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    // Điểm tựa chân ở y=140 trong khung 160x160 -> 140/160 = 0.875
-    this.setOrigin(0.5, 0.875);
+    // V1.5-09: Căn chuẩn điểm neo chân origin(0.5, 1.0)
+    this.setOrigin(0.5, 1.0);
     this.setDepth(Math.floor(y));
 
     const body = this.body as Phaser.Physics.Arcade.Body;
     if (body) {
-      body.setSize(44, 46);
-      body.setOffset(58, 96);
+      body.setSize(48, 46);
+      body.setOffset(56, 114);
       body.setCollideWorldBounds(true);
     }
 

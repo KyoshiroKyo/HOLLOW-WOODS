@@ -53,22 +53,22 @@ export class SkullWolfEntity extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    // Anchor at bottom-center (feet at y=58 in 64x64 frame -> 58/64 = 0.90625)
-    this.setOrigin(0.5, 0.90625);
+    // V1.5-09: Căn chuẩn điểm neo chân origin(0.5, 1.0)
+    this.setOrigin(0.5, 1.0);
     this.setDepth(Math.floor(y));
 
     // Collider configuration: compact body for smooth woodland navigation
     const body = this.body as Phaser.Physics.Arcade.Body;
     if (body) {
       body.setSize(36, 18);
-      body.setOffset(14, 40);
+      body.setOffset(14, 46);
       body.setCollideWorldBounds(true);
     }
 
     // Foot shadow
     this.footShadowGfx = scene.add.graphics();
-    this.footShadowGfx.fillStyle(0x000000, 0.25);
-    this.footShadowGfx.fillEllipse(0, 0, 36, 10);
+    this.footShadowGfx.fillStyle(0x000000, 0.28);
+    this.footShadowGfx.fillEllipse(0, 0, 34, 10);
     this.footShadowGfx.setDepth(this.depth - 1);
 
     // V1.5 - BƯỚC V15-07: Hốc mắt đầu lâu rực xanh lân tinh trong bóng tối

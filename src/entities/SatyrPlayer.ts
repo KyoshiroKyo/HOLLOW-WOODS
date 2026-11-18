@@ -172,10 +172,10 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     // Khởi tạo phím điều khiển
     this.setupInput();
 
-    // C4-13-06: Khởi tạo bóng đổ mặt đất mịn màng (alpha 0.25) ôm sát chân nhân vật
+    // V1.5-09: Bóng đổ elip mềm ôm sát chân nhân vật theo chiều rộng vai (18px)
     this.footShadowGfx = scene.add.graphics();
-    this.footShadowGfx.fillStyle(0x000000, 0.25);
-    this.footShadowGfx.fillEllipse(0, 0, 16, 5);
+    this.footShadowGfx.fillStyle(0x000000, 0.28);
+    this.footShadowGfx.fillEllipse(0, 0, 18, 6);
     this.footShadowGfx.setDepth(this.depth - 1);
 
     // Khởi tạo lớp đồ họa đèn lồng trực quan gắn trên nhân vật

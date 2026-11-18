@@ -16,7 +16,8 @@ export class TheListener extends Monster {
     // Sử dụng spritesheet thật của The Listener (64×64 px, 4 frames) từ Pixel_Art (GATE 2B)
     super(scene, x, y, SPRITE_THE_LISTENER);
 
-    this.setOrigin(0.5, 0.95);
+    // V1.5-09: Căn chuẩn điểm neo chân origin(0.5, 1.0)
+    this.setOrigin(0.5, 1.0);
     this.ai = new ListenerAI(this, waypoints);
 
     // GATE 2B: Đăng ký và kích hoạt hoạt ảnh lơ lửng / thở tự nhiên cho The Listener
@@ -57,7 +58,7 @@ export class TheListener extends Monster {
     const body = this.body as Phaser.Physics.Arcade.Body;
     if (body) {
       body.setSize(22, 14);
-      body.setOffset(21, 48);
+      body.setOffset(21, 50);
     }
   }
 
@@ -65,9 +66,9 @@ export class TheListener extends Monster {
     const g = this.visualGfx;
     g.clear();
 
-    // C4-13-06: Bóng đổ mặt đất đen mờ mịn (alpha 0.25) ôm sát bàn chân
-    g.fillStyle(0x000000, 0.25);
-    g.fillEllipse(0, 0, 22, 6);
+    // V1.5-09: Bóng đổ mặt đất mịn màng tương ứng chiều rộng vai (24px)
+    g.fillStyle(0x000000, 0.28);
+    g.fillEllipse(0, 0, 24, 7);
   }
 
   /**

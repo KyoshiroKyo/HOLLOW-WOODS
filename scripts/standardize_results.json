@@ -1,0 +1,442 @@
+[
+  {
+    "name": "Wayfarer Idle",
+    "filePath": "public/assets/characters/mossbound_wayfarer/wayfarer_idle.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 43,
+    "finalHeight": 43,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Wayfarer Walk",
+    "filePath": "public/assets/characters/mossbound_wayfarer/wayfarer_walk.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 37,
+    "finalHeight": 37,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Wayfarer Run",
+    "filePath": "public/assets/characters/mossbound_wayfarer/wayfarer_run.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 37,
+    "finalHeight": 37,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Wayfarer Attack",
+    "filePath": "public/assets/characters/mossbound_wayfarer/wayfarer_attack.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 42,
+    "finalHeight": 42,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Wayfarer Hurt",
+    "filePath": "public/assets/characters/mossbound_wayfarer/wayfarer_hurt.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 31,
+    "finalHeight": 31,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Wayfarer Death",
+    "filePath": "public/assets/characters/mossbound_wayfarer/wayfarer_death.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 41,
+    "finalHeight": 41,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Wayfarer Interact",
+    "filePath": "public/assets/characters/mossbound_wayfarer/wayfarer_interact.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 41,
+    "finalHeight": 41,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Wayfarer Gather",
+    "filePath": "public/assets/characters/mossbound_wayfarer/wayfarer_gather.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 45,
+    "finalHeight": 43,
+    "bottomGap": 0,
+    "scale": "0.956"
+  },
+  {
+    "name": "Wayfarer Use Item",
+    "filePath": "public/assets/characters/mossbound_wayfarer/wayfarer_use_item.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 41,
+    "finalHeight": 41,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Garth Walk Sheet",
+    "filePath": "public/assets/characters/villagers/garth_walk_sheet.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 55,
+    "finalHeight": 46,
+    "bottomGap": 0,
+    "scale": "0.836"
+  },
+  {
+    "name": "Garth NPC Single",
+    "filePath": "public/assets/characters/villagers/npc_garth.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 53,
+    "finalHeight": 46,
+    "bottomGap": 0,
+    "scale": "0.868"
+  },
+  {
+    "name": "Garth Char Single",
+    "filePath": "public/assets/characters/garth.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 46,
+    "finalHeight": 46,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Garth NPC Copy",
+    "filePath": "public/assets/characters/npcs/npc_garth.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 53,
+    "finalHeight": 46,
+    "bottomGap": 0,
+    "scale": "0.868"
+  },
+  {
+    "name": "Edda Idle Sheet",
+    "filePath": "public/assets/characters/villagers/edda_idle_sheet.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 51,
+    "finalHeight": 45,
+    "bottomGap": 0,
+    "scale": "0.882"
+  },
+  {
+    "name": "Edda Idle Subdir",
+    "filePath": "public/assets/characters/villagers/edda/edda_idle_sheet.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 51,
+    "finalHeight": 45,
+    "bottomGap": 0,
+    "scale": "0.882"
+  },
+  {
+    "name": "Edda NPC Single",
+    "filePath": "public/assets/characters/villagers/npc_edda.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 49,
+    "finalHeight": 45,
+    "bottomGap": 0,
+    "scale": "0.918"
+  },
+  {
+    "name": "Edda Char Single",
+    "filePath": "public/assets/characters/edda.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 49,
+    "finalHeight": 45,
+    "bottomGap": 0,
+    "scale": "0.918"
+  },
+  {
+    "name": "Edda NPC Copy",
+    "filePath": "public/assets/characters/npcs/npc_edda.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 49,
+    "finalHeight": 45,
+    "bottomGap": 0,
+    "scale": "0.918"
+  },
+  {
+    "name": "Neris Idle Sheet",
+    "filePath": "public/assets/characters/villagers/neris_idle_sheet.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 44,
+    "finalHeight": 44,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Neris Idle Subdir",
+    "filePath": "public/assets/characters/villagers/neris/neris_idle_sheet.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 44,
+    "finalHeight": 44,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Neris NPC Single",
+    "filePath": "public/assets/characters/villagers/npc_neris.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 43,
+    "finalHeight": 43,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Neris Char Single",
+    "filePath": "public/assets/characters/neris.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 43,
+    "finalHeight": 43,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Neris NPC Copy",
+    "filePath": "public/assets/characters/npcs/npc_neris.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 43,
+    "finalHeight": 43,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Blacksmith Sheet",
+    "filePath": "public/assets/characters/villagers/blacksmith_sheet.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 63,
+    "finalHeight": 47,
+    "bottomGap": 0,
+    "scale": "0.746"
+  },
+  {
+    "name": "Blacksmith NPC Single",
+    "filePath": "public/assets/characters/villagers/npc_blacksmith.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 63,
+    "finalHeight": 47,
+    "bottomGap": 0,
+    "scale": "0.746"
+  },
+  {
+    "name": "Potter Walk Sheet",
+    "filePath": "public/assets/characters/villagers/potter_walk_sheet.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 53,
+    "finalHeight": 47,
+    "bottomGap": 0,
+    "scale": "0.887"
+  },
+  {
+    "name": "Blacksmith NPC Copy",
+    "filePath": "public/assets/characters/npcs/npc_blacksmith.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 63,
+    "finalHeight": 47,
+    "bottomGap": 0,
+    "scale": "0.746"
+  },
+  {
+    "name": "Finn Walk Sheet",
+    "filePath": "public/assets/characters/villagers/errand_boy_walk_sheet.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 50,
+    "finalHeight": 35,
+    "bottomGap": 0,
+    "scale": "0.700"
+  },
+  {
+    "name": "Finn NPC Single",
+    "filePath": "public/assets/characters/villagers/npc_finn.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 49,
+    "finalHeight": 35,
+    "bottomGap": 0,
+    "scale": "0.714"
+  },
+  {
+    "name": "Finn NPC Copy",
+    "filePath": "public/assets/characters/npcs/npc_finn.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 49,
+    "finalHeight": 35,
+    "bottomGap": 0,
+    "scale": "0.714"
+  },
+  {
+    "name": "Campfire Knight Idle",
+    "filePath": "public/assets/characters/npcs/campfire_knight_idle_sheet.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 47,
+    "finalHeight": 47,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Campfire Knight Pray",
+    "filePath": "public/assets/characters/npcs/campfire_knight_pray_sheet.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 44,
+    "finalHeight": 44,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Campfire Knight Idle Villagers",
+    "filePath": "public/assets/characters/villagers/campfire_knight_idle_sheet.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 47,
+    "finalHeight": 47,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Campfire Knight Pray Villagers",
+    "filePath": "public/assets/characters/villagers/campfire_knight_pray_sheet.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 44,
+    "finalHeight": 44,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Bat Sheet",
+    "filePath": "public/assets/characters/monsters/bat_sheet.png",
+    "fw": 32,
+    "fh": 32,
+    "origHeight": 31,
+    "finalHeight": 30,
+    "bottomGap": 0,
+    "scale": "0.968"
+  },
+  {
+    "name": "Ghost Sheet",
+    "filePath": "public/assets/characters/monsters/ghost_sheet.png",
+    "fw": 32,
+    "fh": 32,
+    "origHeight": 31,
+    "finalHeight": 30,
+    "bottomGap": 0,
+    "scale": "0.968"
+  },
+  {
+    "name": "Goblin Scout",
+    "filePath": "public/assets/characters/monsters/goblin_scout_dagger_sheet.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 23,
+    "finalHeight": 23,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Skull Wolf",
+    "filePath": "public/assets/characters/monsters/skull_wolf_sheet.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 53,
+    "finalHeight": 52,
+    "bottomGap": 0,
+    "scale": "0.981"
+  },
+  {
+    "name": "The Listener",
+    "filePath": "public/assets/monsters/the_listener.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 62,
+    "finalHeight": 62,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Shadow Crow",
+    "filePath": "public/assets/characters/monsters/shadow_crow_sheet.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 33,
+    "finalHeight": 32,
+    "bottomGap": 0,
+    "scale": "0.970"
+  },
+  {
+    "name": "Shadow Eyes",
+    "filePath": "public/assets/characters/monsters/shadow_eyes_sheet.png",
+    "fw": 48,
+    "fh": 48,
+    "origHeight": 18,
+    "finalHeight": 18,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Fallen Knight",
+    "filePath": "public/assets/characters/enemies/fallen_knight_sheet.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 47,
+    "finalHeight": 47,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Dread Horseman",
+    "filePath": "public/assets/characters/enemies/dread_horseman_sheet.png",
+    "fw": 64,
+    "fh": 64,
+    "origHeight": 56,
+    "finalHeight": 56,
+    "bottomGap": 0,
+    "scale": "1.000"
+  },
+  {
+    "name": "Hooded Knight Boss",
+    "filePath": "public/assets/characters/bosses/hooded_knight_sheet.png",
+    "fw": 160,
+    "fh": 160,
+    "origHeight": 160,
+    "finalHeight": 140,
+    "bottomGap": 0,
+    "scale": "0.875"
+  }
+]
