@@ -74,7 +74,14 @@ export class SurvivalSystem {
       } else {
         // V1.4: Khi bị ướt sũng (SOAKED >= 70%), tốc độ hồi phục thể lực giảm nhẹ 25%
         const isSoaked = stats.moisture !== undefined && stats.moisture >= 70;
-        const recoveryRate = isSoaked ? STAMINA_RECOVERY_RATE * 0.75 : STAMINA_RECOVERY_RATE;
+        let recoveryRate = isSoaked ? STAMINA_RECOVERY_RATE * 0.75 : STAMINA_RECOVERY_RATE;
+
+        // V1.5 (BƯỚC V15-05): Ngưỡng Bất An (Bình Tâm từ 25 đến 40/100) và các ngưỡng thấp hơn:
+        // Tốc độ hồi Thể Lực giảm 15% do áp lực tâm lý
+        if (stats.composure <= 40) {
+          recoveryRate *= 0.85;
+        }
+
         stats.stamina = Math.min(stats.maxStamina, stats.stamina + recoveryRate * dt);
       }
     }
@@ -101,20 +108,23 @@ export class SurvivalSystem {
     }
 
     const isBellhollowSafe = zoneId === 'bellhollow';
+    const isDaytime = timePhase === 'DAY';
+    const isProtected = isDaytime || isBellhollowSafe;
 
     if (nearCampfire) {
       const campSanctuary = CampSanctuarySystem.getInstance();
       const inSanctuary = campSanctuary.isPlayerInSanctuary(playerX, playerY, zoneId);
       const composureMult = inSanctuary ? campSanctuary.getComposureRecoveryMultiplier() : 1.0;
-      // Hồi máu nhẹ (+4 HP/s) và hồi phục mạnh mẽ tinh thần (+8 Composure/s) khi nghỉ bên nguồn nhiệt/lửa trại
+      // V1.5 (BƯỚC V15-05): Hồi máu nhẹ (+4 HP/s) và hồi phục Bình Tâm (+4.0/s) khi đứng cạnh nguồn nhiệt / lửa trại đang cháy
       stats.health = Math.min(stats.maxHealth, stats.health + 4 * dt);
-      stats.composure = Math.min(stats.maxComposure, stats.composure + (8 * composureMult) * dt);
-    } else if (isBellhollowSafe) {
-      // C4-14-B04: Vùng an toàn Làng Bellhollow bảo vệ tuyệt đối tâm trí, hồi phục nhẹ (+2.0 Composure/s), không bị sụt giảm
-      stats.composure = Math.min(stats.maxComposure, stats.composure + 2.0 * dt);
+      stats.composure = Math.min(stats.maxComposure, stats.composure + (4.0 * composureMult) * dt);
+    } else if (isProtected) {
+      // V1.5 (BƯỚC V15-05): Khi là BAN NGÀY (DAY) hoặc đứng trong vùng an toàn Làng Bellhollow:
+      // Bình Tâm không tự tụt mà được hồi phục chậm tự nhiên (+1.5 mỗi giây)
+      stats.composure = Math.min(stats.maxComposure, stats.composure + 1.5 * dt);
     } else {
       if (!stats.isLanternOn) {
-        // Ngoài vùng an toàn & trong bóng tối: Composure sụt giảm dựa trên chu kỳ ngày/đêm V1.4 (hoặc fallback V1.3)
+        // Ngoài vùng an toàn, vào ban đêm/hoàng hôn & trong bóng tối: Composure sụt giảm dựa trên chu kỳ ngày/đêm V1.4
         let drain: number;
         if (timePhase && TIME_CONFIG.phases[timePhase]) {
           const phaseCfg = TIME_CONFIG.phases[timePhase];
@@ -125,11 +135,6 @@ export class SurvivalSystem {
 
         const composureDrainMod = equipSys.getComposureDrainMultiplier();
         stats.composure = Math.max(0, stats.composure - drain * composureDrainMod * dt);
-
-        // Khi bình tâm cạn kiệt (0/100) trong sương tối/đêm lạnh, khí lạnh gặm mòn sinh lực
-        if (stats.composure <= 0) {
-          stats.health = Math.max(0, stats.health - 0.4 * dt);
-        }
       } else {
         // Có ánh đèn lồng: Composure hồi phục dần theo pha
         let recoveryRate = COMPOSURE_RECOVERY_NEAR_LIGHT;
@@ -138,6 +143,21 @@ export class SurvivalSystem {
         }
         stats.composure = Math.min(stats.maxComposure, stats.composure + recoveryRate * dt);
       }
+    }
+
+    // V1.5 (BƯỚC V15-05): Thiết lập cơ chế rút Sinh Lực (HP) mạnh dần khi Tinh thần suy sụp ngoài vùng tối
+    // Khi không ở gần lửa trại, không phải ban ngày / vùng an toàn, và không bật đèn lồng:
+    if (!nearCampfire && !isProtected && !stats.isLanternOn) {
+      if (stats.composure < 10) {
+        // Ngưỡng Hoảng Loạn Cực Độ (dưới 10/100 và chạm 0/100): Rút Sinh Lực -3.5 HP mỗi 1.5 giây (-2.333 HP/s)
+        const drainHp = (3.5 / 1.5) * dt;
+        stats.health = Math.max(0, stats.health - drainHp);
+      } else if (stats.composure < 25) {
+        // Ngưỡng Sợ Hãi (10 đến 24/100): Bắt đầu rút Sinh Lực ở mức -1.5 HP mỗi 2 giây (-0.75 HP/s)
+        const drainHp = (1.5 / 2.0) * dt;
+        stats.health = Math.max(0, stats.health - drainHp);
+      }
+      // Ngưỡng Bất An (25 đến 40/100): Chưa mất máu!
     }
 
     // 4. V1.4: Quản lý Độ Ẩm (Moisture) & Thân Nhiệt (Temperature)

@@ -3079,6 +3079,40 @@ export class AudioManager {
     }
   }
 
+  /**
+   * V1.5 (BƯỚC V15-05): Tiếng thở nhẹ cảnh báo khi Bình Tâm ở Ngưỡng Bất An (25..40/100)
+   */
+  public playUneasyBreathing(): void {
+    if (!this.ctx || !this.masterGain || this.isMuted) return;
+    if (!this.checkCooldown('uneasy_breathing', 5000)) return;
+    this.resumeAudio();
+
+    const now = this.ctx.currentTime;
+    const noiseBuffer = this.getOrCreateNoiseBuffer();
+    if (!noiseBuffer || !this.veilFilter) return;
+
+    const source = this.ctx.createBufferSource();
+    source.buffer = noiseBuffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(320, now);
+    filter.frequency.exponentialRampToValueAtTime(180, now + 0.8);
+    filter.Q.setValueAtTime(1.5, now);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.001, now);
+    gain.gain.linearRampToValueAtTime(0.18 * this.sfxVolume, now + 0.25);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.85);
+
+    source.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.veilFilter);
+
+    source.start(now);
+    source.stop(now + 0.9);
+  }
+
   public destroy(): void {
     this.stopAmbience(true);
     if (this.heartbeatTimer) {

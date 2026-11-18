@@ -1047,7 +1047,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   /**
-   * C4-14-B04: Cập nhật hiệu ứng viền tối/rung nhấp nháy hoảng loạn hữu cơ 5 tầng đồng bộ nhịp tim
+   * C4-14-B04 & V1.5 (BƯỚC V15-05): Cập nhật hiệu ứng viền tối hoảng loạn đồng bộ nhịp tim
+   * Sửa dứt điểm lỗi cảnh báo sai ban ngày và tự động tắt khi Bình Tâm vượt lên trên ngưỡng nguy hiểm.
    */
   private updatePanicVignette(time: number = 0): void {
     if (!this.panicVignetteGraphics || !this.playerState) return;
@@ -1056,17 +1057,18 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     const composure = stats.composure;
     const isLanternOn = stats.isLanternOn;
 
-    // C4-132-07: Cảnh báo khi Bình Tâm giảm xuống dưới 40/100 trong bóng tối (đèn tắt)
-    if (composure < 40 && !isLanternOn && composure > 0) {
-      const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
-      if (now - this.lastDarknessWarningTime > 8000) {
-        this.lastDarknessWarningTime = now;
-        this.showPopupMessage('⚠️ Bóng tối đang bào mòn tâm trí! Nhấn [F] để thắp sáng Đèn Lồng!');
-      }
-    }
+    // V1.5 (BƯỚC V15-05): Kiểm tra điều kiện Ban Ngày, Làng An Toàn hoặc Gần Lửa Trại
+    const gameScene = this.scene.get('GameScene') as any;
+    const isDaytime = gameScene?.timeSystem?.getCurrentPhase() === 'DAY';
+    const isSafeVillage = gameScene?.currentZoneId === 'bellhollow' || gameScene?.currentZoneId === 'sanctuary_farm';
+    const isNearWarmth = gameScene?.survivalSystem?.isNearWarmth
+      ? gameScene.survivalSystem.isNearWarmth(gameScene.player?.x ?? 0, gameScene.player?.y ?? 0)
+      : false;
+    const isProtectedZone = isDaytime || isSafeVillage || isNearWarmth;
 
-    // Nếu Bình Tâm dồi dào (>= 50) và có đèn lồng hoặc đang hồi phục: xóa viền tối
-    if (composure >= 50 && (composure >= 60 || isLanternOn)) {
+    // Khi ở BAN NGÀY, trong VÙNG AN TOÀN, có ĐÈN LỒNG thắp sáng hoặc Bình Tâm đã vượt lên trên 40/100:
+    // Tự động tắt hoàn toàn biểu ngữ cảnh báo và xóa sạch viền vignette co bóp
+    if (isProtectedZone || isLanternOn || composure >= 40) {
       if (this.isPanicVignetteActive) {
         this.panicVignetteGraphics.clear();
         this.isPanicVignetteActive = false;
@@ -1077,7 +1079,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.isPanicVignetteActive = true;
     this.panicVignetteGraphics.clear();
 
-    const isDepleted = composure <= 0;
+    const isDepleted = composure < 10;
     const isCritical = composure < 25;
     const freq = isDepleted ? 0.008 : (isCritical ? 0.005 : 0.003);
     const pulseBase = isDepleted ? 0.40 : (isCritical ? 0.22 : 0.10);
@@ -1086,7 +1088,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     const w = 1280;
     const h = 720;
-    // Đỏ thẫm khi 0 HP/Composure, Tím sẫm khi < 25, Đen tro khi < 50
+    // Đỏ thẫm khi Hoảng Loạn Cực Độ (<10), Tím sẫm khi Sợ Hãi (<25), Đen tro khi Bất An (<40)
     const color = isDepleted ? 0x3d0b16 : (isCritical ? 0x240d24 : 0x120b18);
 
     // C4-14-B04: Viền mờ hữu cơ 5 tầng từ ngoài mép vào trong, tạo cảm giác bóng tối co bóp theo nhịp tim
@@ -1111,12 +1113,19 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.panicVignetteGraphics.fillRect(w - l.inset - l.thick, l.inset + l.thick, l.thick, h - (l.inset + l.thick) * 2);
     }
 
-    // Cảnh báo HUD khi chạm đáy 0/100 (định kỳ mỗi 8 giây)
+    // Cảnh báo HUD khi bước vào các ngưỡng nguy hiểm trong bóng tối ban đêm
+    const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
     if (isDepleted) {
-      const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
-      if (now - this.lastPanicWarningTime > 8000) {
+      // Ngưỡng Hoảng Loạn Cực Độ (<10/100)
+      if (now - this.lastPanicWarningTime > 6000) {
         this.lastPanicWarningTime = now;
-        this.showPopupMessage('⚡ HOẢNG LOẠN! Hãy bật Đèn Lồng [F] hoặc tìm nguồn sáng!');
+        this.showPopupMessage('⚡ HOẢNG LOẠN! Hãy lập tức bật Đèn Lồng [F] hoặc chạy về nguồn lửa!');
+      }
+    } else if (isCritical) {
+      // Ngưỡng Sợ Hãi (10..24/100)
+      if (now - this.lastDarknessWarningTime > 8000) {
+        this.lastDarknessWarningTime = now;
+        this.showPopupMessage('⚠️ Bóng tối đang gặm nhấm sinh lực! Nhấn [F] để thắp sáng Đèn Lồng!');
       }
     }
   }

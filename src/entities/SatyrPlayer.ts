@@ -1066,11 +1066,16 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     const sprintSpeed = PLAYER_SPRINT_SPEED * equipSys.getSprintSpeedMultiplier();
     const baseSpeed = canSprint ? sprintSpeed : PLAYER_WALK_SPEED;
 
-    // C4-13-18: Khi Bình Tâm cạn kiệt (0/100), nhân vật hoảng loạn: giảm 15% tốc độ di chuyển
+    // V1.5 (BƯỚC V15-05): Tác động của 3 cấp độ suy giảm Bình Tâm lên tốc độ di chuyển
     let speedMultiplier = 1.0;
-    if (this.stats.composure <= 0) {
-      speedMultiplier *= 0.85;
+    if (this.stats.composure < 10) {
+      // Ngưỡng Hoảng Loạn Cực Độ (<10/100): Di chuyển lảo đảo, giảm mạnh tốc độ di chuyển (-20%)
+      speedMultiplier *= 0.80;
+    } else if (this.stats.composure < 25) {
+      // Ngưỡng Sợ Hãi (10 đến 24/100): Giảm 10% tốc độ di chuyển
+      speedMultiplier *= 0.90;
     }
+    // Ngưỡng Bất An (25 đến 40/100): Tốc độ di chuyển bình thường (100%)
     const currentSpeed = baseSpeed * speedMultiplier;
 
     // Chuẩn hóa vector di chuyển (tránh đi chéo chạy nhanh hơn và chống vọt lố vào vật cản)

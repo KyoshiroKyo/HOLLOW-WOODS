@@ -123,6 +123,10 @@ export class GameScene extends Phaser.Scene {
   // V14-P8-13: Thời điểm kích hoạt suy nghĩ dẫn hướng khi lại gần Cầu Đá Bị Sập chặn lối thẳng
   private lastCollapsedBridgeThoughtTime: number = 0;
 
+  // V1.5 (BƯỚC V15-05): Timer hiệu ứng rung camera và tiếng thở nhẹ cảnh báo
+  private panicCameraShakeTimer: number = 0;
+  private uneasyBreathingTimer: number = 0;
+
   private keyQ!: Phaser.Input.Keyboard.Key;
   private key3!: Phaser.Input.Keyboard.Key;
   private keyESC!: Phaser.Input.Keyboard.Key;
@@ -167,9 +171,6 @@ export class GameScene extends Phaser.Scene {
   private lastEKeyPressTime: number = 0;
   private lastWarmthFeedbackTime: number = 0;
   private lastInDeepFog: boolean | null = null;
-
-  // C4-132-05: Cảnh báo Bình Tâm sớm
-  private lastEarlyComposureWarningTime: number = 0;
 
   // C4-14-B04: Điểm hút mở đầu 30-60s & Nhịp độ sinh tồn kinh dị
   private hasTriggeredAct0Telegraph: boolean = false;
@@ -1768,20 +1769,44 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    // C4-132-05: Nhịp tim & cảnh báo Bình Tâm sớm khi suy giảm xuống mức nguy hiểm
-    if (this.playerState.stats.composure < 40 && !this.isAct5ChaseActive) {
-      this.audioManager.setHeartbeatActive(true, 750);
-      if (this.playerState.stats.composure <= 25 && this.playerState.stats.composure > 0) {
-        const now = Date.now();
-        if (now - this.lastEarlyComposureWarningTime > 12000) {
-          this.lastEarlyComposureWarningTime = now;
-          if (this.uiScene) {
-            this.uiScene.showPopupMessage('⚠️ Bình Tâm đang xuống thấp! Hãy bật Đèn Lồng [F] hoặc tìm nguồn lửa ấm áp.');
-          }
+    // V1.5 (BƯỚC V15-05): Xử lý nhịp tim, rung camera và tiếng thở nhẹ theo 3 cấp độ suy giảm Bình Tâm
+    const isDay = Boolean(this.timeSystem && this.timeSystem.getCurrentPhase() === 'DAY');
+    const isSafeVillageZone = (this.currentZoneId === 'bellhollow' && this.player.x <= 1620) || this.currentZoneId === 'sanctuary_farm' || this.currentZoneId === 'fog_crossing';
+    const isNearWarmth = Boolean(this.survivalSystem && this.survivalSystem.isNearWarmth(this.player.x, this.player.y));
+    const isComposureProtected = isDay || isSafeVillageZone || isNearWarmth || Boolean(this.player.stats.isLanternOn && this.player.stats.lanternOil > 0);
+
+    const comp = this.playerState.stats.composure;
+
+    if (isComposureProtected || comp >= 40) {
+      // Khi an toàn hoặc Bình Tâm vượt lên trên ngưỡng nguy hiểm (>= 40): Tắt nhịp tim và reset timer
+      if (!this.isAct5ChaseActive) {
+        this.audioManager.setHeartbeatActive(false);
+      }
+      this.panicCameraShakeTimer = 0;
+      this.uneasyBreathingTimer = 0;
+    } else if (!this.isAct5ChaseActive) {
+      if (comp < 10) {
+        // Cấp độ 3: Ngưỡng Hoảng Loạn Cực Độ (<10/100): Nhịp tim dồn dập (480ms) và rung camera theo nhịp tim
+        this.audioManager.setHeartbeatActive(true, 480);
+        this.panicCameraShakeTimer += delta;
+        if (this.panicCameraShakeTimer >= 1500) {
+          this.panicCameraShakeTimer = 0;
+          this.cameraSystem.shake(160, 0.0035);
+        }
+      } else if (comp < 25) {
+        // Cấp độ 2: Ngưỡng Sợ Hãi (10..24/100): Nhịp tim vừa phải (750ms), không rung camera
+        this.audioManager.setHeartbeatActive(true, 750);
+        this.panicCameraShakeTimer = 0;
+      } else {
+        // Cấp độ 1: Ngưỡng Bất An (25..40/100): Tắt nhịp tim dồn dập, định kỳ phát tiếng thở nhẹ cảnh báo (10s)
+        this.audioManager.setHeartbeatActive(false);
+        this.panicCameraShakeTimer = 0;
+        this.uneasyBreathingTimer += delta;
+        if (this.uneasyBreathingTimer >= 10000) {
+          this.uneasyBreathingTimer = 0;
+          this.audioManager.playUneasyBreathing();
         }
       }
-    } else if (!this.isAct5ChaseActive && this.playerState.stats.composure >= 50) {
-      this.audioManager.setHeartbeatActive(false);
     }
 
     // C4-14-B04: Điểm hút mở đầu (30-60s) - Telegraph cành cây gãy & bóng ma thoáng qua tại Fog Crossing
