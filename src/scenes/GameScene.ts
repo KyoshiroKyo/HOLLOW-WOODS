@@ -4959,8 +4959,16 @@ export class GameScene extends Phaser.Scene {
       }
     } else if (actionId === 'inspect_bell') {
       if (this.playerState.hasFlag('bell_rung')) {
+        let endingTitle = 'Đại Hồng Chung';
+        if (this.playerState.hasStoryFlag('ending_true_achieved')) {
+          endingTitle = 'Hồi Kết: Bình Minh Của Tiếng Chuông (True Ending)';
+        } else if (this.playerState.hasStoryFlag('ending_sacrifice_achieved')) {
+          endingTitle = 'Hồi Kết: Người Canh Gác Vĩnh Hằng (Sacrifice Ending)';
+        } else if (this.playerState.hasStoryFlag('ending_fog_loop_achieved')) {
+          endingTitle = 'Hồi Kết: Vòng Lặp Của Sương Mù (Fog Loop Ending)';
+        }
         if (this.uiScene) {
-          this.uiScene.showPopupMessage('🔔 Quả chuông đồng đã ngân vang, bảo vệ làng Bellhollow an toàn trong màn sương.');
+          this.uiScene.showPopupMessage(`🔔 Quả chuông đồng đã ngân vang [${endingTitle}], ghi dấu hành trình của Lữ Khách.`);
         }
       } else if (this.playerState.getItemCount('quest_bronze_clapper') > 0) {
         if (this.uiScene) {

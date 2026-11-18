@@ -385,3 +385,106 @@ flowchart TD
 | **Kiểm thử Kiểm Toán Cốt Truyện V15-16 (Hồi quy)** | `verify_v15_16_story_and_dialogue.mjs` | **89 / 89** | **PASS 100%** |
 | **Kiểm tra Kiểu Dữ Liệu TypeScript** | `npx tsc --noEmit` | **0 Lỗi** | **PASS** |
 | **Đóng gói Bản Dựng Production** | `npm run build` | **83 modules** | **SUCCESS (9.85s)** |
+
+---
+
+## 17. BƯỚC V15-20: HỆ THỐNG 3 KẾT THÚC CỐT TRUYỆN PHÂN NHÁNH (MULTIPLE BRANCHING ENDINGS)
+
+```mermaid
+flowchart TD
+    Trigger["Tương tác Bệ Tháp Chuông (inspect_bell)<br/>Có Lưỡi Chuông Đồng (quest_bronze_clapper)"] --> Shake["Rung lắc & Lóa sáng Camera (Shake + Flash)<br/>Đóng băng nhân vật & quái vật"]
+    Shake --> Eval{"Kiểm tra Điều Kiện Phân Nhánh<br/>(determineEndingType)"}
+
+    Eval -- "memoryAwakeningStage >= 3<br/>VÀ villageTrustScore >= 65" --> E1["KẾT THÚC I: BÌNH MINH CỦA TIẾNG CHUÔNG<br/>(TRUE ENDING)"]
+    Eval -- "memoryAwakeningStage >= 2<br/>(nhưng villageTrustScore < 65)" --> E2["KẾT THÚC II: NGƯỜI CANH GÁC VĨNH HẰNG<br/>(BITTERSWEET SACRIFICE ENDING)"]
+    Eval -- "memoryAwakeningStage < 2<br/>(Chưa đại thức tỉnh)" --> E3["KẾT THÚC III: VÒNG LẶP CỦA SƯƠNG MÙ<br/>(FOG LOOP ENDING)"]
+
+    E1 --> P1["Phát chuông đồng bronze_bell<br/>Mở khóa lore_ending_true<br/>Cờ ending_true_achieved"]
+    E2 --> P2["Phát chuông đồng bronze_bell<br/>Mở khóa lore_ending_sacrifice<br/>Cờ ending_sacrifice_achieved"]
+    E3 --> P3["Phát chuông vỡ cracked_bell<br/>Mở khóa lore_ending_fog_loop<br/>Cờ ending_fog_loop_achieved"]
+
+    P1 --> Screen["Màn hình trình chiếu Kết Thúc HD 1280×720 (UIScene Zoom 1.0)<br/>- Khung tranh Pixel Art minh họa độc quyền<br/>- Đoạn văn tự sự hào hùng / bi tráng<br/>- Bảng Thống Kê Hành Trình Sinh Tồn (Survival Chronicle)<br/>- Nút [▶ QUAY VỀ MENU CHÍNH] & Phím ENTER/SPACE/ESC"]
+    P2 --> Screen
+    P3 --> Screen
+```
+
+### 17.1. Logic Phân Nhánh và Điều Kiện Kích Hoạt 3 Kết Thúc
+Hệ thống kết thúc trong `EndingSystem.ts` không còn đơn tuyến như bản thử nghiệm cũ, mà phân nhánh chặt chẽ dựa trên hai trục tiến trình người chơi đã tích lũy trong suốt hành trình:
+1. **Trục Nhận Thức Bản Thể (Thức Tỉnh Ký Ức — `memoryAwakeningStage`):** Thang đo từ 0 đến 3 (0: Kẻ Lữ Hành Mất Trí $\to$ 1: Manh Mối Xưởng Chuông $\to$ 2: Tàn Tích Hiệp Sĩ $\to$ 3: Chỉ Huy Hiệp Sĩ Đen).
+2. **Trục Gắn Kết Cộng Đồng (Điểm Tin Cậy Dân Làng — `villageTrustScore`):** Thang điểm $[0, 100]$ phản ánh mức độ hoàn thành nhiệm vụ phụ và sự thấu cảm trong các lựa chọn hội thoại tương tác với Edda, Garth, Neris, Bram và Finn.
+
+| Kết Thúc | Tên & Danh Nghĩa | Điều Kiện Thuật Toán | Diễn Biến Cốt Truyện & Ý Nghĩa |
+|:---:|:---|:---|:---|
+| **Ending 1** | **Bình Minh Của Tiếng Chuông**<br/>*(True Ending)* | `memoryAwakeningStage >= 3`<br/>$\mathbf{\land}$ `villageTrustScore >= 65` | Hồi chuông thứ bảy ngân vang phá tan màn sương The Veil vĩnh cửu. Đại Mạch Rễ được thanh tẩy, ánh nắng ban mai trở lại sưởi ấm Bellhollow. Vị Chỉ Huy Hiệp Sĩ Đen tháo giáp trụ, ở lại bên đống lửa ấm bảo hộ bình yên cho ngôi làng hồi sinh. |
+| **Ending 2** | **Người Canh Gác Vĩnh Hằng**<br/>*(Bittersweet Sacrifice Ending)* | `memoryAwakeningStage >= 2`<br/>$\mathbf{\land}$ `villageTrustScore < 65` | Nhớ lại trách nhiệm kỵ sĩ nhưng thiếu vắng sự gắn kết bền chặt với dân làng. Hiệp Sĩ Đen đơn độc tiến vào tâm chấn Mạch Rễ, cắm gươm và đặt ngọn đèn hổ phách, dùng chính thân xác và linh hồn mình phong tỏa khe nứt từ bên trong, hóa thành pho tượng rêu phong vĩnh cửu canh gác khu rừng. |
+| **Ending 3** | **Vòng Lặp Của Sương Mù**<br/>*(Fog Loop Ending)* | `memoryAwakeningStage < 2` | Vội vã gắn lưỡi chuông khi tâm trí chưa tìm lại cội nguồn. Sức mạnh chưa trọn vẹn chỉ xua tan sương mù trong giây lát trước khi chuông toác nứt lần nữa. Tiếng chuông nghẹn lại, sương tím tái cuộn trào trở lại. Kẻ lữ hành ngã gục mất trí nhớ, khu rừng tái lập vòng lặp chờ ngày thức tỉnh thật sự. |
+
+---
+
+### 17.2. Bộ 3 Mảnh Truyền Thuyết Kết Thúc Trong Sổ Tay [J] (`lore.json`)
+Ba mảnh ký ức kết thúc được bổ sung vào `src/data/lore.json` thuộc Hồi 6 (Act 6), tự động mở khóa vào Sổ Tay `[J]` ngay khi kết thúc tương ứng được kích hoạt:
+1. `lore_ending_true`: *"KẾT THÚC I: BÌNH MINH CỦA TIẾNG CHUÔNG (TRUE ENDING)"* — Biên Niên Sử Bellhollow Mới.
+2. `lore_ending_sacrifice`: *"KẾT THÚC II: NGƯỜI CANH GÁC VĨNH HẰNG (BITTERSWEET ENDING)"* — Lời Nguyện Cầu Khắc Trên Đá.
+3. `lore_ending_fog_loop`: *"KẾT THÚC III: VÒNG LẶP CỦA SƯƠNG MÙ (FOG LOOP ENDING)"* — Tiếng Vọng Trong Sương Lạnh.
+
+---
+
+### 17.3. Trình Chiếu Khung Tranh Pixel Art Minh Họa Độc Quyền
+Mỗi kết thúc được trang bị một khung tranh nghệ thuật Pixel Art riêng biệt (kích thước $720\times 155\text{px}$, tọa độ căn giữa $X=640, Y=180$) vẽ bằng Phaser Graphics:
+- **True Ending (`drawTrueEndingIllustration`):**
+  + Bầu trời chuyển sắc từ tím đêm sang rạng đông vàng kim (`0xdf8a35`, `0xf1c40f`).
+  + Mặt trời ban mai tỏa rạng từ chân trời cùng chùm tia nắng rọi chéo thung lũng.
+  + Tháp chuông Bellhollow và mái nhà làng tỏa khói lam chiều thanh bình.
+  + Hình bóng The Mossbound Wayfarer đứng nhìn về phía ánh dương cùng nhóm 5 dân làng (Edda, Garth, Neris, Bram, Finn vẫy tay).
+  + Hạt lân tinh lấp lánh bay lên trời cao, viền tranh mạ vàng hoàng kim.
+- **Sacrifice Ending (`drawSacrificeEndingIllustration`):**
+  + Trần hang đại mạch ngầm u tối với các chùm rễ cây rêu phong khổng lồ (`0x271a10`, `0x2ecc71`).
+  + Quầng sáng Hổ Phách thiêng liêng hình cầu tỏa ra từ Ngọn Đèn Lồng xua tan màn sương đen The Veil.
+  + Hiệp Sĩ Đen quỳ gối cắm gươm giữ chặt ngọn đèn, thân thể đang dần bị tinh thể rêu và ngọc hổ phách hóa thạch bao phủ.
+  + Viền tranh xanh lam cổ ngữ trầm mặc.
+- **Fog Loop Ending (`drawFogLoopEndingIllustration`):**
+  + Bầu trời tím tái u ám đặc quánh (`0x261336`, `0x381952`).
+  + Rừng cây khô khốc trơ cành ma quái với các đôi mắt đỏ rực của Kẻ Lắng Nghe ẩn hiện rình rập.
+  + Tháp chuông nghiêng ngả với Đại Hồng Chung bị nứt toác phát ánh đỏ rực tà khí.
+  + Kẻ Lữ Hành kiệt sức gục ngã trên nền bùn, chiếc đèn lồng rơi tắt ngấm le lói khói tàn.
+  + Viền tranh tím ma mị.
+
+---
+
+### 17.4. Bảng Thống Kê Hành Trình Sinh Tồn (Survival Chronicle)
+Nằm ở vị trí trung tâm dưới đoạn văn tự sự ($X=640, Y=445$, kích thước $840\times 145\text{px}$), trình bày trực quan và sống động 3 cột dữ liệu tổng kết toàn bộ quá trình chơi:
+- **Cột 1 (Sinh tồn & Thời gian):**
+  + ⏱️ Thời gian sống sót: Ngày $N$ (Ban Ngày / Ban Đêm)
+  + ❤️ Sinh lực: $\text{HP}/\text{Max HP}$
+  + 🧠 Tỉnh táo: Bình Tâm $\%$ $\mid$ 🕯️ Nhiên liệu Dầu Đèn $\%$
+- **Cột 2 (Gắn kết & Thức tỉnh):**
+  + 🤝 Điểm Tin Cậy Dân Làng: $\text{Score}/100$ [Gắn Kết Sâu Sắc / Thân Thiết / Hòa Thuận / Xa Cách]
+  + ⚔️ Tiến Trình Thức Tỉnh Ký Ức: Cấp $N/3$
+  + 🛡️ Danh xưng đạt được: [Chỉ Huy Hiệp Sĩ Đen / Tàn Tích Kỵ Sĩ / Manh Mối Xưởng Chuông / Kẻ Lữ Hành]
+- **Cột 3 (Khám phá & Bản đồ):**
+  + 📜 Ký ức đã mở: $N/24$ Mảnh Lore
+  + 🐾 Bestiary ghi nhận: $N$ Loài Sinh Vật
+  + 🗺️ Bản đồ khám phá: $N/9$ Phân Khu
+
+---
+
+### 17.5. Điều Khiển Điều Hướng An Toàn & Chống Soft-lock
+- Nút bấm `▶ QUAY VỀ MENU CHÍNH` đặt tại $(640, 580)$ chuẩn HD với hiệu ứng hover bừng sáng.
+- Hỗ trợ đầy đủ phím cứng `ENTER`, `SPACE` và `ESC` trên `UIScene`.
+- Khi kích hoạt, dừng toàn bộ `GameScene` và `UIScene`, giải phóng tài nguyên và đưa người chơi về `SCENE_MAIN_MENU` an toàn tuyệt đối.
+
+---
+
+## 18. BẢNG TỔNG HỢP KIỂM THỬ BƯỚC V15-20
+
+| Bộ Kiểm Thử | Tệp Kịch Bản | Số Lượng Assertions | Kết Quả |
+|:---|:---|:---:|:---:|
+| **Kiểm thử 3 Kết Thúc Cốt Truyện V15-20** | `verify_v15_20_multiple_endings.mjs` | **46 / 46** | **PASS 100%** |
+| **Kiểm thử Kể Chuyện Môi Trường V15-19 (Hồi quy)** | `verify_v15_19_environmental_storytelling.mjs` | **114 / 114** | **PASS 100%** |
+| **Kiểm thử Bi Kịch Kỵ Sĩ V15-18 (Hồi quy)** | `verify_v15_18_knight_awakening.mjs` | **41 / 41** | **PASS 100%** |
+| **Kiểm thử Tuyến Truyện 5 Dân Làng V15-17 (Hồi quy)** | `verify_v15_17_villager_stories.mjs` | **48 / 48** | **PASS 100%** |
+| **Kiểm thử Kiểm Toán Cốt Truyện V15-16 (Hồi quy)** | `verify_v15_16_story_and_dialogue.mjs` | **89 / 89** | **PASS 100%** |
+| **Kiểm thử Gate 3C Finale Presentation** | `verify_gate_3c.mjs` | **12 / 12** | **PASS 100%** |
+| **Kiểm thử Phát Hành V3.0 Release Audit** | `verify_v3_release.mjs` | **10 / 10** | **PASS 100%** |
+| **Kiểm tra Kiểu Dữ Liệu TypeScript** | `npx tsc --noEmit` | **0 Lỗi** | **PASS** |
+| **Đóng gói Bản Dựng Production** | `npm run build` | **83 modules** | **SUCCESS (11.05s)** |

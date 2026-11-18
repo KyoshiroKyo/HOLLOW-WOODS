@@ -146,6 +146,27 @@
       "title": "BẢN ĐỒ DA CỪU: HỘI TỤ MẠCH RỄ",
       "author": "Bản Đồ Chiến Lược Cổ",
       "content": "Tấm bản đồ da cừu cào xước đặt trong ống da cạnh bậc thềm đổ nát của Miếu Chuông:\n\nBản vẽ chi tiết mạng lưới rễ ngầm của thung lũng Hollow Woods. Mọi mạch rễ độc đều bắt nguồn từ Tâm Điểm The Veil và tỏa ra như mạng nhện. Nhưng tại đỉnh Tháp Chuông, một vòng tròn cổ ngữ ghi rõ: 'Tần số cộng hưởng của Đại Hồng Chung khi được gióng lên đủ 7 hồi sẽ kích hoạt sự sụp đổ của toàn bộ mạng rễ tha hóa, vĩnh viễn trục xuất màn sương khỏi thế giới thực.' Cạnh bản đồ có một bình gốm nhỏ chứa dầu đèn lồng tinh khiết."
+    },
+    {
+      "id": "lore_ending_true",
+      "act": 6,
+      "title": "KẾT THÚC I: BÌNH MINH CỦA TIẾNG CHUÔNG (TRUE ENDING)",
+      "author": "Biên Niên Sử Bellhollow Mới",
+      "content": "Khi Lưỡi Chuông Đồng được gắn trở lại và hồi chuông thứ bảy của Đại Hồng Chung ngân vang dội khắp thung lũng, ánh sáng bình minh ấm áp sau hàng trăm năm đã xuyên thủng tầng mây mù The Veil...\n\nNhờ sự thức tỉnh toàn vẹn của Chỉ Huy Hiệp Sĩ Đen và sự gắn kết bền chặt, tin cậy sâu sắc từ những người dân làng Bellhollow (Edda, Neris, Garth, Bram và Finn), Mạch Rễ cổ đã được thanh tẩy hoàn toàn. Màn sương vĩnh cửu tan biến, để lại mặt đất màu mỡ và bầu trời xanh ngát. Người anh hùng không rời đi, mà ở lại làm người bảo hộ bình yên cho Bellhollow – một vùng đất hồi sinh từ tro tàn."
+    },
+    {
+      "id": "lore_ending_sacrifice",
+      "act": 6,
+      "title": "KẾT THÚC II: NGƯỜI CANH GÁC VĨNH HẰNG (BITTERSWEET ENDING)",
+      "author": "Lời Nguyện Cầu Khắc Trên Đá",
+      "content": "Nhớ lại danh xưng và trách nhiệm năm xưa của Chỉ Huy Hiệp Sĩ Đen, nhưng giữa sự xa cách và thiếu vắng niềm tin trọn vẹn từ dân làng, người lữ hành hiểu rằng không thể cùng lúc giữ lấy cả sinh mạng lẫn sự an toàn cho ngôi làng...\n\nChàng hiệp sĩ bước vào tâm chấn Mạch Rễ, cắm thanh kiếm và đặt ngọn đèn lồng rực sáng vào khe nứt thời đại, dùng chính thân xác và linh hồn mình để phong tỏa hoàn toàn lối thoát của The Veil. Màn sương ngoài thung lũng tan đi, làng Bellhollow được cứu thoát; nhưng sâu trong rừng cấm vĩnh viễn lưu lại một pho tượng hiệp sĩ phủ đầy rêu phong, lặng lẽ canh giữ cõi vĩnh hằng."
+    },
+    {
+      "id": "lore_ending_fog_loop",
+      "act": 6,
+      "title": "KẾT THÚC III: VÒNG LẶP CỦA SƯƠNG MÙ (FOG LOOP ENDING)",
+      "author": "Tiếng Vọng Trong Sương Lạnh",
+      "content": "Hồi chuông gióng lên trong vội vã khi tâm trí lữ khách chưa tìm lại được cội nguồn thân phận. Thiếu đi ý chí kiên định của Chỉ Huy Hiệp Sĩ Đen và sự thấu hiểu bí mật cội rễ, âm thanh của Đại Hồng Chung chỉ có thể xua tan lớp sương bề mặt trong chốc lát...\n\nChẳng bao lâu sau, một vết nứt mới lại toác ra trên thân chuông đồng. Tiếng chuông nghẹn lại rồi lịm dần, và những làn sương mù tím tái lạnh lẽo lại cuộn trào từ đáy vực, bao trùm Bellhollow. Kẻ lữ hành lại ngã xuống trong cơn mê sảng... Khu rừng lại tái sinh vòng lặp, chờ đợi một ngày người tìm thấy đầy đủ mọi mảnh ghép ký ức để phá tan lời nguyền."
     }
   ],
   "questLog": [
