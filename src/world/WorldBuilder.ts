@@ -2723,7 +2723,7 @@ export class WorldBuilder {
     return this.scene.add.image(x, y, validKey);
   }
 
-  private createTree(x: number, y: number, label?: string): void {
+  private createTree(x: number, y: number, label?: string, withCollider: boolean = true): void {
     let treeKey = SPRITE_TREE_OAK_1;
     if (label?.includes('Khô')) {
       treeKey = SPRITE_TREE_DEAD;
@@ -2741,8 +2741,10 @@ export class WorldBuilder {
     this.registerCullable(tree, x, y, 90);
     this.treeCanopyGroup.add(tree);
 
-    // Chuẩn collider gốc cây (20×12 px) để nhân vật có thể đi xuyên dưới tán lá
-    this.createStaticBoxColliderCentered(x, y, 20, 12, 'Gốc Cây');
+    // V1.5 (BƯỚC V15-03): Chuẩn hitbox gốc cây ôm sát phần gỗ chạm đất (20×16 px)
+    if (withCollider) {
+      this.createStaticBoxColliderCentered(x, y + 2, 20, 16, 'Gốc Cây');
+    }
   }
 
   private createHollowTree(x: number, y: number, _label?: string): void {
@@ -3184,44 +3186,48 @@ export class WorldBuilder {
    * có collider chuẩn xác và chừa lối đi thông thoáng tại mọi ngả đường.
    */
   private createVillageFence(_bounds: { x: number; y: number; width: number; height: number }): void {
-    const addFenceSegment = (fx: number, fy: number, withCollider: boolean = true) => {
+    const addFenceSegment = (fx: number, fy: number) => {
       const fence = this.scene.add.image(fx, fy, SPRITE_WOODEN_FENCE);
       fence.setOrigin(0, 0.78);
       fence.setDepth(fy);
       this.registerCullable(fence, fx + 23, fy, 40);
-
-      if (withCollider) {
-        this.createStaticBoxColliderCentered(fx + 23, fy - 4, 42, 10, 'Hàng Rào Làng');
-      }
     };
 
-    // 1. Hàng rào gỗ trang trí hai bên Cổng Tây & lối dẫn vào Quảng Trường (chừa trống hoàn toàn đường đi & mỏ tài nguyên)
-    addFenceSegment(510, 290, true);
-    addFenceSegment(556, 290, true);
+    // 1. Hàng rào gỗ trang trí hai bên Cổng Tây & lối dẫn vào Quảng Trường
+    addFenceSegment(510, 290);
+    addFenceSegment(556, 290);
+    // V1.5 (BƯỚC V15-03): Gộp thành 1 thanh collider liền mạch duy nhất (w: 92px, h: 12px), xóa sạch rãnh kẹt 4px
+    this.createStaticBoxColliderCentered(556, 286, 92, 12, 'Hàng Rào Cổng Tây');
 
     // 2. Hàng rào gỗ dọc khuôn viên giữa Nhà Edda và Nhà Neris ở phía Bắc (x: 775..895, y: 92)
-    addFenceSegment(778, 92, true);
-    addFenceSegment(826, 92, true);
+    addFenceSegment(778, 92);
+    addFenceSegment(826, 92);
+    // V1.5: Gộp thành 1 thanh collider liền mạch duy nhất
+    this.createStaticBoxColliderCentered(825, 88, 94, 12, 'Hàng Rào Bắc Làng');
 
     // 3. Hàng rào gỗ bao quanh phía Bắc & Nam Khu Vườn Thảo Dược Đông-Nam (x: 1030..1130)
-    addFenceSegment(1030, 418, false);
-    addFenceSegment(1078, 418, false);
-    addFenceSegment(1030, 482, true);
-    addFenceSegment(1078, 482, true);
+    addFenceSegment(1030, 418);
+    addFenceSegment(1078, 418);
+    addFenceSegment(1030, 482);
+    addFenceSegment(1078, 482);
+    // V1.5: Gộp thành 1 thanh collider liền mạch duy nhất cho cạnh Nam vườn thuốc
+    this.createStaticBoxColliderCentered(1077, 478, 94, 12, 'Hàng Rào Vườn Dược');
 
     // 4. Hàng rào gỗ dọc lối ra Cổng Đông (x: 1050..1240, phía Bắc đường rừng Đông ở y=236)
-    addFenceSegment(1060, 236, true);
-    addFenceSegment(1108, 236, true);
-    addFenceSegment(1156, 236, true);
+    addFenceSegment(1060, 236);
+    addFenceSegment(1108, 236);
+    addFenceSegment(1156, 236);
+    // V1.5: Gộp 3 đoạn rào thành 1 thanh collider liền mạch dài 142px, không đứt đoạn
+    this.createStaticBoxColliderCentered(1131, 232, 142, 12, 'Hàng Rào Cổng Đông');
 
     // 5. Hàng rào ranh giới Bắc (y = 26) & Nam (y = 532) của ngôi làng trong tầm nhìn camera
     for (let fx = 490; fx < 1540; fx += 92) {
-      addFenceSegment(fx, 26, false);
+      addFenceSegment(fx, 26);
       // C4-12-17: Chừa lối đi thông thoáng cho Lối Nam Nông Trại (610..710) và Lối Đông-Nam Rừng Ngoại Vi (1150..1270)
       const inFarmGate = fx >= 580 && fx <= 710;
       const inOuterWoodsGate = fx >= 1150 && fx <= 1270;
       if (!inFarmGate && !inOuterWoodsGate) {
-        addFenceSegment(fx, 532, false);
+        addFenceSegment(fx, 532);
       }
     }
 
@@ -5350,16 +5356,22 @@ export class WorldBuilder {
     // Dàn cây viền phía Bắc (chừa nhánh rẽ Rừng Sâu 2020..2120, y < 50)
     for (let x = bounds.x + 40; x < bounds.x + bounds.width - 40; x += 110) {
       if (x < 2010 || x > 2130) {
-        this.createTree(x, 100 + ((x % 3) * 20), 'Cây Rừng Cổ Thụ Viền Bắc');
+        this.createTree(x, 100 + ((x % 3) * 20), 'Cây Rừng Cổ Thụ Viền Bắc', false);
       }
     }
 
     // Dàn cây viền phía Nam (chừa lối mòn kết nối Outer Woods 1600..1660 và Cầu Gỗ Phụ 2700..2800)
     for (let x = bounds.x + 40; x < bounds.x + bounds.width - 40; x += 115) {
       if (x > 1660 && (x < 2690 || x > 2810)) {
-        this.createTree(x, 500 + ((x % 2) * 25), 'Cây Rừng Cổ Thụ Viền Nam');
+        this.createTree(x, 500 + ((x % 2) * 25), 'Cây Rừng Cổ Thụ Viền Nam', false);
       }
     }
+
+    // V1.5 (BƯỚC V15-03): Gộp rặng cây viền Bắc/Nam thành các thanh collider liền mạch, xóa bỏ 19 ô vuông rời rạc
+    this.createStaticBoxCollider(bounds.x + 40, 90, 2010 - (bounds.x + 40), 30, 'Rặng Cây Viền Bắc Tây');
+    this.createStaticBoxCollider(2130, 90, bounds.x + bounds.width - 40 - 2130, 30, 'Rặng Cây Viền Bắc Đông');
+    this.createStaticBoxCollider(1660, 500, 2690 - 1660, 30, 'Rặng Cây Viền Nam');
+    this.createStaticBoxCollider(2810, 500, bounds.x + bounds.width - 40 - 2810, 30, 'Rặng Cây Viền Nam Đông');
 
     // 8. Sương Mù Ranh Giới Khí Quyển (Crooked Path Atmospheric Fog)
     this.createCrookedPathAtmosphericFog();
@@ -5821,21 +5833,21 @@ export class WorldBuilder {
     // Dàn cây viền phía Bắc (wy: -610..-570, chừa lối vào Abyssal Chasm 2200..2280)
     for (let x = bounds.x + 40; x < bounds.x + bounds.width - 40; x += 55) {
       if (x < 2190 || x > 2290) {
-        this.createTree(x, -600 + ((x % 3) * 12), 'Cây Rừng Cổ Thụ Viền Bắc');
+        this.createTree(x, -600 + ((x % 3) * 12), 'Cây Rừng Cổ Thụ Viền Bắc', false);
         this.createDenseBush(x + 25, -590);
       }
     }
 
     // Dàn cây viền phía Tây (wx: 1620..1660)
     for (let y = bounds.y + 40; y < bounds.y + bounds.height - 40; y += 55) {
-      this.createTree(1630 + ((Math.abs(y) % 2) * 15), y, 'Cây Rừng Cổ Thụ Viền Tây');
+      this.createTree(1630 + ((Math.abs(y) % 2) * 15), y, 'Cây Rừng Cổ Thụ Viền Tây', false);
       this.createDenseBush(1635, y + 25);
     }
 
     // Dàn cây viền phía Đông (wx: 2820..2860, chừa lối sang Đầm Lầy tại y ~ -320..-200)
     for (let y = bounds.y + 40; y < bounds.y + bounds.height - 40; y += 55) {
       if (y < -330 || y > -190) {
-        this.createTree(2850 + ((Math.abs(y) % 2) * 15), y, 'Cây Rừng Cổ Thụ Viền Đông');
+        this.createTree(2850 + ((Math.abs(y) % 2) * 15), y, 'Cây Rừng Cổ Thụ Viền Đông', false);
         this.createDenseBush(2845, y + 25);
       }
     }
@@ -5845,10 +5857,20 @@ export class WorldBuilder {
       const inWc = x >= 1790 && x <= 1890;
       const inCp = x >= 1990 && x <= 2170;
       if (!inWc && !inCp) {
-        this.createTree(x, -35 + ((x % 2) * 12), 'Cây Rừng Cổ Thụ Viền Nam');
+        this.createTree(x, -35 + ((x % 2) * 12), 'Cây Rừng Cổ Thụ Viền Nam', false);
         this.createDenseBush(x + 25, -30);
       }
     }
+
+    // V1.5 (BƯỚC V15-03): Gộp rặng cây viền Deep Forest thành các thanh collider liền mạch, xóa bỏ hơn 50 collider thừa
+    this.createStaticBoxCollider(bounds.x + 40, -610, 2190 - (bounds.x + 40), 36, 'Rặng Cây Viền Bắc Tây Deep Forest');
+    this.createStaticBoxCollider(2290, -610, bounds.x + bounds.width - 40 - 2290, 36, 'Rặng Cây Viền Bắc Đông Deep Forest');
+    this.createStaticBoxCollider(1620, -600, 35, 560, 'Rặng Cây Viền Tây Deep Forest');
+    this.createStaticBoxCollider(2845, -600, 35, 270, 'Rặng Cây Viền Đông Bắc Deep Forest');
+    this.createStaticBoxCollider(2845, -190, 35, 150, 'Rặng Cây Viền Đông Nam Deep Forest');
+    this.createStaticBoxCollider(bounds.x + 40, -45, 1790 - (bounds.x + 40), 35, 'Rặng Cây Viền Nam Tây Deep Forest');
+    this.createStaticBoxCollider(1890, -45, 100, 35, 'Rặng Cây Viền Nam Giữa Deep Forest');
+    this.createStaticBoxCollider(2170, -45, bounds.x + bounds.width - 40 - 2170, 35, 'Rặng Cây Viền Nam Đông Deep Forest');
 
     // 8. C4-14-B03: Khóa kín 4 góc chu vi Rừng Sâu (Perimeter Corner Fortifications)
     // Góc Tây Bắc (NW):
@@ -6209,27 +6231,36 @@ export class WorldBuilder {
     // 9. Quần Thể Cây Liễu Khô & Cây Khẳng Khiu Viền Đầm Lầy (Boundary Trees)
     // Dàn cây viền phía Bắc (wy: 120..150)
     for (let x = bounds.x + 40; x < bounds.x + bounds.width - 40; x += 110) {
-      this.createTree(x, 130 + ((x % 3) * 16), 'Cây Khô Đầm Lầy Viền Bắc');
+      this.createTree(x, 130 + ((x % 3) * 16), 'Cây Khô Đầm Lầy Viền Bắc', false);
     }
 
     // Dàn cây viền phía Nam (wy: 660..700)
     for (let x = bounds.x + 40; x < bounds.x + bounds.width - 40; x += 115) {
-      this.createTree(x, 670 + ((x % 2) * 18), 'Cây Khô Đầm Lầy Viền Nam');
+      this.createTree(x, 670 + ((x % 2) * 18), 'Cây Khô Đầm Lầy Viền Nam', false);
     }
 
     // Dàn cây viền phía Tây (chừa lối vào Crooked Path y: 260..400 và lối Rừng Sâu y: 160..240)
     for (let y = bounds.y + 40; y < bounds.y + bounds.height - 40; y += 95) {
       if (y < 150 || (y > 235 && y < 265) || y > 400) {
-        this.createTree(2900 + ((Math.abs(y) % 2) * 18), y, 'Cây Khô Viền Tây');
+        this.createTree(2900 + ((Math.abs(y) % 2) * 18), y, 'Cây Khô Viền Tây', false);
       }
     }
 
     // Dàn cây viền phía Đông (chừa lối sang Miếu Chuông y: 240..400)
     for (let y = bounds.y + 40; y < bounds.y + bounds.height - 40; y += 95) {
       if (y < 235 || y > 400) {
-        this.createTree(3960 + ((Math.abs(y) % 2) * 18), y, 'Cây Khô Viền Đông');
+        this.createTree(3960 + ((Math.abs(y) % 2) * 18), y, 'Cây Khô Viền Đông', false);
       }
     }
+
+    // V1.5 (BƯỚC V15-03): Gộp rặng cây viền Silent Mire thành các thanh collider liền mạch, xóa bỏ 28 ô vuông rời rạc
+    this.createStaticBoxCollider(bounds.x + 40, 125, bounds.width - 80, 35, 'Rặng Cây Khô Viền Bắc Silent Mire');
+    this.createStaticBoxCollider(bounds.x + 40, 665, bounds.width - 80, 35, 'Rặng Cây Khô Viền Nam Silent Mire');
+    this.createStaticBoxCollider(2895, bounds.y + 40, 35, Math.max(20, 150 - (bounds.y + 40)), 'Rặng Cây Khô Viền Tây Bắc Silent Mire');
+    this.createStaticBoxCollider(2895, 235, 35, 30, 'Rặng Cây Khô Viền Tây Giữa Silent Mire');
+    this.createStaticBoxCollider(2895, 400, 35, bounds.y + bounds.height - 40 - 400, 'Rặng Cây Khô Viền Tây Nam Silent Mire');
+    this.createStaticBoxCollider(3955, bounds.y + 40, 35, 235 - (bounds.y + 40), 'Rặng Cây Khô Viền Đông Bắc Silent Mire');
+    this.createStaticBoxCollider(3955, 400, 35, bounds.y + bounds.height - 40 - 400, 'Rặng Cây Khô Viền Đông Nam Silent Mire');
 
     // 10. Sương Mù Khí Quyển Đầm Lầy (Silent Mire Atmospheric Fog)
     this.createSilentMireAtmosphericFog();
@@ -6302,25 +6333,32 @@ export class WorldBuilder {
     // 8. Quần Thể Cây Khô Viền Miếu Chuông (Boundary Trees)
     // Cây viền phía Bắc (wy: 30..60)
     for (let x = bounds.x + 30; x < bounds.x + bounds.width - 30; x += 105) {
-      this.createTree(x, 40 + ((x % 3) * 14), 'Cây Khô Miếu Viền Bắc');
+      this.createTree(x, 40 + ((x % 3) * 14), 'Cây Khô Miếu Viền Bắc', false);
     }
 
     // Cây viền phía Nam (wy: 550..580)
     for (let x = bounds.x + 30; x < bounds.x + bounds.width - 30; x += 110) {
-      this.createTree(x, 560 + ((x % 2) * 16), 'Cây Khô Miếu Viền Nam');
+      this.createTree(x, 560 + ((x % 2) * 16), 'Cây Khô Miếu Viền Nam', false);
     }
 
     // Cây viền phía Đông (wx: 4910..4940)
     for (let y = bounds.y + 40; y < bounds.y + bounds.height - 40; y += 90) {
-      this.createTree(4920 + ((Math.abs(y) % 2) * 16), y, 'Cây Khô Miếu Viền Đông');
+      this.createTree(4920 + ((Math.abs(y) % 2) * 16), y, 'Cây Khô Miếu Viền Đông', false);
     }
 
     // Cây viền phía Tây (chừa lối vào đầm lầy y: 220..360)
     for (let y = bounds.y + 40; y < bounds.y + bounds.height - 40; y += 90) {
       if (y < 210 || y > 370) {
-        this.createTree(4010 + ((Math.abs(y) % 2) * 16), y, 'Cây Khô Miếu Viền Tây');
+        this.createTree(4010 + ((Math.abs(y) % 2) * 16), y, 'Cây Khô Miếu Viền Tây', false);
       }
     }
+
+    // V1.5 (BƯỚC V15-03): Gộp rặng cây viền Broken Bell Shrine thành các thanh collider liền mạch, xóa bỏ 28 ô vuông rời rạc
+    this.createStaticBoxCollider(bounds.x + 30, 35, bounds.width - 60, 35, 'Rặng Cây Khô Viền Bắc Miếu Chuông');
+    this.createStaticBoxCollider(bounds.x + 30, 555, bounds.width - 60, 35, 'Rặng Cây Khô Viền Nam Miếu Chuông');
+    this.createStaticBoxCollider(4915, bounds.y + 40, 35, bounds.height - 80, 'Rặng Cây Khô Viền Đông Miếu Chuông');
+    this.createStaticBoxCollider(4005, bounds.y + 40, 35, 210 - (bounds.y + 40), 'Rặng Cây Khô Viền Tây Bắc Miếu Chuông');
+    this.createStaticBoxCollider(4005, 370, 35, bounds.y + bounds.height - 40 - 370, 'Rặng Cây Khô Viền Tây Nam Miếu Chuông');
 
     // 9. Lớp Sương Mù Khí Quyển Miếu Chuông (Atmospheric Fog)
     this.createBrokenBellShrineAtmosphericFog();

@@ -365,7 +365,11 @@ export class GameScene extends Phaser.Scene {
 
     // 5. Thiết lập va chạm vật lý với thế giới & mở rộng giới hạn không gian Vùng Lõi (C4-12-17)
     this.physics.world.setBounds(0, -250, 5000, 1400);
-    this.physics.add.collider(this.player, this.worldBuilder.colliderGroup);
+    this.physics.add.collider(this.player, this.worldBuilder.colliderGroup, (_playerObj, obstacleObj) => {
+      if (this.player && typeof this.player.applyCornerAssistWith === 'function') {
+        this.player.applyCornerAssistWith(obstacleObj as Phaser.Physics.Arcade.Sprite);
+      }
+    });
     if (this.isContinueMode) {
       this.unstuckPlayerFromColliders();
     }
@@ -1251,7 +1255,11 @@ export class GameScene extends Phaser.Scene {
       this.npcCollider = undefined;
     }
     if (this.player) {
-      this.npcCollider = this.physics.add.collider(this.player, this.npcs);
+      this.npcCollider = this.physics.add.collider(this.player, this.npcs, (_playerObj, npcObj) => {
+        if (this.player && typeof this.player.applyCornerAssistWith === 'function') {
+          this.player.applyCornerAssistWith(npcObj as Phaser.Physics.Arcade.Sprite);
+        }
+      });
     }
   }
 

@@ -1313,6 +1313,96 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   }
 
   /**
+   * V1.5 (BƯỚC V15-03): THUẬT TOÁN TRƯỢT GÓC (CORNER ASSIST / EDGE SLIDING)
+   * Khi nhân vật đi thẳng hoặc đi chéo chạm nhẹ vào rìa góc của hộp va chạm tĩnh (sai số lệch tâm dưới 10px),
+   * tự động đẩy nhẹ nhân vật trượt vòng qua góc vật cản thay vì kẹt đứng im tại chỗ.
+   */
+  public applyCornerAssistWith(obstacle: Phaser.Physics.Arcade.Sprite): void {
+    if (!obstacle || !obstacle.body || !this.body || this._isDead) return;
+
+    const pBody = this.body as Phaser.Physics.Arcade.Body;
+    const oBody = obstacle.body as Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody;
+
+    const CORNER_THRESHOLD = 10; // Ngưỡng lệch tâm tối đa 10px để kích hoạt trượt góc
+    const SLIDE_NUDGE = 2.0;     // Tốc độ lướt trượt qua góc (px mỗi khung hình)
+
+    const pLeft = pBody.x;
+    const pRight = pBody.right;
+    const pTop = pBody.y;
+    const pBottom = pBody.bottom;
+
+    const oLeft = oBody.x;
+    const oRight = oBody.right;
+    const oTop = oBody.y;
+    const oBottom = oBody.bottom;
+
+    let nudgeX = 0;
+    let nudgeY = 0;
+
+    // 1. Trượt góc khi bị chặn hướng LÊN (Blocked UP): Chạm đáy vật cản
+    if (pBody.blocked.up || Math.abs(pTop - oBottom) <= 3) {
+      const overlapLeft = oRight - pLeft;   // Mép phải vật cản quẹt vào mép trái nhân vật
+      const overlapRight = pRight - oLeft;  // Mép trái vật cản quẹt vào mép phải nhân vật
+
+      if (overlapLeft > 0 && overlapLeft <= CORNER_THRESHOLD) {
+        // Chỉ quẹt nhẹ mép trái: Lướt sang PHẢI để vòng qua góc
+        nudgeX = Math.min(overlapLeft, SLIDE_NUDGE);
+      } else if (overlapRight > 0 && overlapRight <= CORNER_THRESHOLD) {
+        // Chỉ quẹt nhẹ mép phải: Lướt sang TRÁI để vòng qua góc
+        nudgeX = -Math.min(overlapRight, SLIDE_NUDGE);
+      }
+    }
+
+    // 2. Trượt góc khi bị chặn hướng XUỐNG (Blocked DOWN): Chạm đỉnh vật cản
+    if (pBody.blocked.down || Math.abs(pBottom - oTop) <= 3) {
+      const overlapLeft = oRight - pLeft;
+      const overlapRight = pRight - oLeft;
+
+      if (overlapLeft > 0 && overlapLeft <= CORNER_THRESHOLD) {
+        nudgeX = Math.min(overlapLeft, SLIDE_NUDGE);
+      } else if (overlapRight > 0 && overlapRight <= CORNER_THRESHOLD) {
+        nudgeX = -Math.min(overlapRight, SLIDE_NUDGE);
+      }
+    }
+
+    // 3. Trượt góc khi bị chặn hướng TRÁI (Blocked LEFT): Chạm sườn phải vật cản
+    if (pBody.blocked.left || Math.abs(pLeft - oRight) <= 3) {
+      const overlapTop = oBottom - pTop;    // Mép đáy vật cản quẹt vào mép trên nhân vật
+      const overlapBottom = pBottom - oTop; // Mép đỉnh vật cản quẹt vào mép dưới nhân vật
+
+      if (overlapTop > 0 && overlapTop <= CORNER_THRESHOLD) {
+        // Chỉ quẹt nhẹ mép trên: Lướt XUỐNG để vòng qua góc
+        nudgeY = Math.min(overlapTop, SLIDE_NUDGE);
+      } else if (overlapBottom > 0 && overlapBottom <= CORNER_THRESHOLD) {
+        // Chỉ quẹt nhẹ mép dưới: Lướt LÊN để vòng qua góc
+        nudgeY = -Math.min(overlapBottom, SLIDE_NUDGE);
+      }
+    }
+
+    // 4. Trượt góc khi bị chặn hướng PHẢI (Blocked RIGHT): Chạm sườn trái vật cản
+    if (pBody.blocked.right || Math.abs(pRight - oLeft) <= 3) {
+      const overlapTop = oBottom - pTop;
+      const overlapBottom = pBottom - oTop;
+
+      if (overlapTop > 0 && overlapTop <= CORNER_THRESHOLD) {
+        nudgeY = Math.min(overlapTop, SLIDE_NUDGE);
+      } else if (overlapBottom > 0 && overlapBottom <= CORNER_THRESHOLD) {
+        nudgeY = -Math.min(overlapBottom, SLIDE_NUDGE);
+      }
+    }
+
+    // Áp dụng trượt mượt mà
+    if (nudgeX !== 0) {
+      this.x += nudgeX;
+      pBody.x += nudgeX;
+    }
+    if (nudgeY !== 0) {
+      this.y += nudgeY;
+      pBody.y += nudgeY;
+    }
+  }
+
+  /**
    * V1.5 (BƯỚC V15-02): Giải phóng cưỡng bức toàn bộ trạng thái khóa hành động.
    * Đảm bảo sau khi tấn công, thu thập [E], bật tắt đèn [F] hoặc đóng hộp thoại,
    * nhân vật không bao giờ bị đơ phím hay đứng im vô thời hạn.

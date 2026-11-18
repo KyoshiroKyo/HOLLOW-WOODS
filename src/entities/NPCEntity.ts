@@ -107,12 +107,12 @@ export class NPCEntity extends Phaser.GameObjects.Container {
     // Depth sorting nhân vật theo tọa độ Y chân
     this.setDepth(spec.y);
 
-    // C4-13-17: Hộp va chạm chân nhỏ gọn (22x14 px) chống nhân vật đi xuyên qua người NPC
+    // C4-13-17 / V1.5: Hộp va chạm chân nhỏ gọn (22x14 px) chuẩn xác tại bàn chân NPC trong frame 64x64 px
     scene.physics.add.existing(this);
     const body = this.body as Phaser.Physics.Arcade.Body;
     if (body) {
       body.setSize(22, 14);
-      body.setOffset(-11, -7);
+      body.setOffset(21, 50);
       body.setImmovable(true);
     }
   }
