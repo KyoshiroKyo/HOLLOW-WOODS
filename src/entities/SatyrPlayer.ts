@@ -114,6 +114,16 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   private _isStaminaExhausted: boolean = false;
   private _lastAttackTime: number = 0;
 
+  // V1.5 (BƯỚC V15-02): Bộ đếm bảo hiểm tự giải phóng khóa hành động (Safety Watchdog Timeout tối đa 600ms)
+  public static readonly ACTION_SAFETY_TIMEOUT_MS: number = 600;
+  private _actionLockTimestamp: number = 0;
+
+  // V1.5 (BƯỚC V15-02): Bộ đệm chuyển hướng 40ms (Direction Buffer) chống giật hoạt ảnh khi nhấp nhả phím
+  public static readonly DIRECTION_BUFFER_MS: number = 40;
+  private desiredDirection: FacingDirection | null = null;
+  private directionBufferStartTime: number = 0;
+  private _wasMoving: boolean = false;
+
   // Lớp hiển thị đồ họa trực quan của chiếc đèn lồng hổ phách (C4-12-07 Lantern Overlay)
   private lanternOverlayGfx: Phaser.GameObjects.Graphics | null = null;
   private footShadowGfx: Phaser.GameObjects.Graphics | null = null;
@@ -576,6 +586,14 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   }
 
   public resetAllInputState(): void {
+    // V1.5: Giải phóng cưỡng bức trạng thái khóa hành động nếu không tử vong, chống đơ nhân vật
+    if (!this._isDead) {
+      this.forceUnlockActionState();
+    }
+    this.desiredDirection = null;
+    this.directionBufferStartTime = 0;
+    this._wasMoving = false;
+
     this.isPhysicalShiftHeld = false;
     this.activePhysicalCodes.clear();
     this.lastKeyActivityTime.clear();
@@ -837,6 +855,18 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
+    // V1.5 (BƯỚC V15-02): BỘ ĐẾM BẢO HIỂM TỰ GIẢI PHÓNG HÀNH ĐỘNG (SAFETY WATCHDOG TIMEOUT 600ms)
+    // Nếu nhân vật bị kẹt ở bất kỳ trạng thái khóa hành động nào (tấn công, nhặt đồ [E], dùng vật phẩm, trúng đòn)
+    // vượt quá 600ms mà animation không tự hoàn tất (do frame drop, timer trôi, đóng hộp thoại hoặc chuyển cảnh),
+    // tự động cưỡng bức giải phóng trạng thái khóa để người chơi không bao giờ bị đơ phím hay đứng im.
+    if (this.isActionLocked() && !this._isDead) {
+      const now = performance.now();
+      if (this._actionLockTimestamp > 0 && now - this._actionLockTimestamp > SatyrPlayer.ACTION_SAFETY_TIMEOUT_MS) {
+        this.forceUnlockActionState();
+        this.playIdleAnim();
+      }
+    }
+
     // C4-13-01: Ưu tiên xử lý phím tương tác [E] trước các lệnh khóa di chuyển/ẩn nấp
     const phaserE = this.keyE ? Phaser.Input.Keyboard.JustDown(this.keyE) : false;
     const physicalE = this.consumeOneShotAction('interact');
@@ -1043,16 +1073,20 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     }
     const currentSpeed = baseSpeed * speedMultiplier;
 
-    // Chuẩn hóa vector di chuyển (tránh đi chéo chạy nhanh hơn)
+    // Chuẩn hóa vector di chuyển (tránh đi chéo chạy nhanh hơn và chống vọt lố vào vật cản)
     const body = this.body as Phaser.Physics.Arcade.Body;
     if (moveX !== 0 || moveY !== 0) {
-      const length = Math.sqrt(moveX * moveX + moveY * moveY);
-      const normX = moveX / length;
-      const normY = moveY / length;
+      if (moveX !== 0 && moveY !== 0) {
+        // V1.5: Đi chéo đồng thời 2 phím (W+D, S+A, v.v.):
+        // Chuẩn hóa bằng hệ số chia căn bậc 2 (Math.SQRT1_2 = 1 / Math.SQRT2 ≈ 0.70710678)
+        // để độ lớn vận tốc vector đi chéo bằng đúng tốc độ đi thẳng, triệt tiêu hiện tượng vọt lố vào vật cản
+        body.setVelocity(moveX * Math.SQRT1_2 * currentSpeed, moveY * Math.SQRT1_2 * currentSpeed);
+      } else {
+        // Đi thẳng 1 hướng duy nhất:
+        body.setVelocity(moveX * currentSpeed, moveY * currentSpeed);
+      }
 
-      body.setVelocity(normX * currentSpeed, normY * currentSpeed);
-
-      // Cập nhật hướng nhìn với nguyên tắc duy trì hướng khi đi chéo
+      // Cập nhật hướng nhìn với Direction Buffer 40ms và Direction Persistence
       this.updateFacingDirection(moveX, moveY);
 
       // Cập nhật hoạt ảnh di chuyển
@@ -1064,21 +1098,28 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   }
 
   /**
-   * Cập nhật hướng nhìn với NGUYÊN TẮC DUY TRÌ HƯỚNG NHÌN (Direction Persistence Rule).
-   * Triệt tiêu hoàn toàn lỗi giật hướng nhìn (Diagonal Stutter - BUG-05) khi đi chéo.
+   * Cập nhật hướng nhìn với NGUYÊN TẮC DUY TRÌ HƯỚNG NHÌN (Direction Persistence Rule)
+   * kết hợp DIRECTION BUFFER 40ms: Triệt tiêu hoàn toàn lỗi giật hoạt ảnh khi nhấp nhả phím.
    */
   public updateFacingDirection(moveX: number, moveY: number): void {
-    if (moveX === 0 && moveY === 0) return;
+    if (moveX === 0 && moveY === 0) {
+      this._wasMoving = false;
+      this.desiredDirection = null;
+      this.directionBufferStartTime = 0;
+      return;
+    }
 
     const absX = Math.abs(moveX);
     const absY = Math.abs(moveY);
 
+    let targetDir: FacingDirection;
+
     if (absX > absY) {
       // Chiều ngang chiếm ưu thế tuyệt đối
-      this.facing = moveX < 0 ? 'left' : 'right';
+      targetDir = moveX < 0 ? 'left' : 'right';
     } else if (absY > absX) {
       // Chiều dọc chiếm ưu thế tuyệt đối
-      this.facing = moveY < 0 ? 'up' : 'down';
+      targetDir = moveY < 0 ? 'up' : 'down';
     } else {
       // Đi chéo cân bằng (absX === absY > 0)
       // NGUYÊN TẮC DUY TRÌ HƯỚNG NHÌN:
@@ -1090,10 +1131,37 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
         (this.facing === 'up' && moveY < 0) ||
         (this.facing === 'down' && moveY > 0);
 
-      if (!isCurrentFacingMoving) {
+      if (isCurrentFacingMoving) {
+        targetDir = this.facing;
+      } else {
         // Nếu hướng hiện tại không thuộc vector di chuyển, ưu tiên trục ngang làm mặc định ổn định
-        this.facing = moveX < 0 ? 'left' : 'right';
+        targetDir = moveX < 0 ? 'left' : 'right';
       }
+    }
+
+    // V1.5 (BƯỚC V15-02): ĐỒNG BỘ MƯỢT HOẠT ẢNH 4 HƯỚNG VỚI DIRECTION BUFFER 40ms
+    // 1. Khi nhân vật vừa từ trạng thái đứng yên bắt đầu di chuyển: cập nhật hướng ngay lập tức (không có độ trễ)
+    if (!this._wasMoving) {
+      this._wasMoving = true;
+      this.facing = targetDir;
+      this.desiredDirection = null;
+      this.directionBufferStartTime = 0;
+    } else if (targetDir !== this.facing) {
+      // 2. Đang di chuyển và người chơi đổi hướng hoặc nhấp nhả phím:
+      const now = performance.now();
+      if (this.desiredDirection !== targetDir) {
+        this.desiredDirection = targetDir;
+        this.directionBufferStartTime = now;
+      } else if (now - this.directionBufferStartTime >= SatyrPlayer.DIRECTION_BUFFER_MS) {
+        // Đã giữ phím hướng mới vượt qua ngưỡng đệm 40ms: cam kết chuyển hướng mượt mà
+        this.facing = targetDir;
+        this.desiredDirection = null;
+        this.directionBufferStartTime = 0;
+      }
+    } else {
+      // 3. Đang đi cùng hướng: giải phóng bộ đệm
+      this.desiredDirection = null;
+      this.directionBufferStartTime = 0;
     }
 
     // Với The Mossbound Wayfarer (đã có đủ 4 hàng Down/Up/Left/Right), không lật gương flipX.
@@ -1244,6 +1312,22 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     return this._isUsingItem;
   }
 
+  /**
+   * V1.5 (BƯỚC V15-02): Giải phóng cưỡng bức toàn bộ trạng thái khóa hành động.
+   * Đảm bảo sau khi tấn công, thu thập [E], bật tắt đèn [F] hoặc đóng hộp thoại,
+   * nhân vật không bao giờ bị đơ phím hay đứng im vô thời hạn.
+   */
+  public forceUnlockActionState(): void {
+    if (this._isDead) return;
+    this._isAttacking = false;
+    this._isHurt = false;
+    this._isGathering = false;
+    this._isInteracting = false;
+    this._isUsingItem = false;
+    this._actionLockTimestamp = 0;
+    this.clearTint();
+  }
+
   public isActionLocked(): boolean {
     return this._isAttacking || this._isHurt || this._isDead || this._isGathering || this._isInteracting || this._isUsingItem;
   }
@@ -1268,6 +1352,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     this._lastAttackTime = now;
 
     this._isAttacking = true;
+    this._actionLockTimestamp = performance.now();
     (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
 
     // C4-13-08: Phát âm thanh vung gậy tấn công cận chiến
@@ -1309,6 +1394,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       if (anim.key === keyToPlay) {
         this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
         this._isAttacking = false;
+        this._actionLockTimestamp = 0;
         this.playIdleAnim();
       }
     };
@@ -1319,6 +1405,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       if (this._isAttacking) {
         this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
         this._isAttacking = false;
+        this._actionLockTimestamp = 0;
         this.playIdleAnim();
       }
     });
@@ -1330,6 +1417,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     if (this._isDead) return false;
 
     this._isHurt = true;
+    this._actionLockTimestamp = performance.now();
     this._isAttacking = false;
     this._isGathering = false;
     this._isInteracting = false;
@@ -1359,6 +1447,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
         this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
         this.clearTint();
         this._isHurt = false;
+        this._actionLockTimestamp = 0;
         this.playIdleAnim();
       }
     };
@@ -1370,6 +1459,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
         this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
         this.clearTint();
         this._isHurt = false;
+        this._actionLockTimestamp = 0;
         this.playIdleAnim();
       }
     });
@@ -1452,6 +1542,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     if (this.isActionLocked()) return false;
 
     this._isInteracting = true;
+    this._actionLockTimestamp = performance.now();
     (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
 
     const wayfarerKey = `wayfarer_interact_${this.facing}`;
@@ -1464,6 +1555,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
 
     if (!keyToPlay) {
       this._isInteracting = false;
+      this._actionLockTimestamp = 0;
       return false;
     }
 
@@ -1473,6 +1565,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       if (anim.key === keyToPlay) {
         this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
         this._isInteracting = false;
+        this._actionLockTimestamp = 0;
         this.playIdleAnim();
       }
     };
@@ -1483,6 +1576,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       if (this._isInteracting) {
         this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
         this._isInteracting = false;
+        this._actionLockTimestamp = 0;
         this.playIdleAnim();
       }
     });
@@ -1498,6 +1592,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     if (this.isActionLocked()) return false;
 
     this._isGathering = true;
+    this._actionLockTimestamp = performance.now();
     (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
 
     const wayfarerKey = `wayfarer_gather_${this.facing}`;
@@ -1510,6 +1605,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
 
     if (!keyToPlay) {
       this._isGathering = false;
+      this._actionLockTimestamp = 0;
       return false;
     }
 
@@ -1519,6 +1615,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       if (anim.key === keyToPlay) {
         this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
         this._isGathering = false;
+        this._actionLockTimestamp = 0;
         this.playIdleAnim();
       }
     };
@@ -1529,6 +1626,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       if (this._isGathering) {
         this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
         this._isGathering = false;
+        this._actionLockTimestamp = 0;
         this.playIdleAnim();
       }
     });
@@ -1544,6 +1642,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     if (this.isActionLocked()) return false;
 
     this._isUsingItem = true;
+    this._actionLockTimestamp = performance.now();
     (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
 
     const wayfarerKey = `wayfarer_use_item_${this.facing}`;
@@ -1556,6 +1655,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
 
     if (!keyToPlay) {
       this._isUsingItem = false;
+      this._actionLockTimestamp = 0;
       return false;
     }
 
@@ -1565,6 +1665,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       if (anim.key === keyToPlay) {
         this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
         this._isUsingItem = false;
+        this._actionLockTimestamp = 0;
         this.playIdleAnim();
       }
     };
@@ -1575,6 +1676,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       if (this._isUsingItem) {
         this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
         this._isUsingItem = false;
+        this._actionLockTimestamp = 0;
         this.playIdleAnim();
       }
     });
@@ -1588,6 +1690,14 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       return; // Chống dội phím [F] (180ms debounce) ngăn ngừa giật lag và nhấp nháy ánh sáng
     }
     this.lastLanternToggleTime = now;
+
+    // V1.5: Đảm bảo sau khi bật tắt đèn lồng [F], nếu có trạng thái khóa hành động nào bị kẹt, tự động giải phóng
+    if (this.isActionLocked() && !this._isDead) {
+      if (this._actionLockTimestamp > 0 && now - this._actionLockTimestamp > 300) {
+        this.forceUnlockActionState();
+        this.playIdleAnim();
+      }
+    }
 
     const state = PlayerState.getInstance();
     if (this.stats.lanternOil <= 0) {

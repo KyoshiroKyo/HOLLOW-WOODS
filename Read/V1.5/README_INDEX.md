@@ -29,7 +29,7 @@
 | STT | Mã Báo Cáo | Tên Tài Liệu / Báo Cáo | Trạng Thái |
 |:---:|:---|:---|:---:|
 | 01 | `V15-01` | [01_System_And_Asset_Audit.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/01_System_And_Asset_Audit.md) — Rà soát toàn diện hệ thống di chuyển, va chạm, tỷ lệ asset và UI | Hoàn tất (Đã nghiệm thu) |
-| 02 | `V15-02` | *02_Collider_And_Movement_Overhaul.md* — Tái cấu trúc hitbox và chống kẹt góc di chuyển | Sắp tới |
+| 02 | `V15-02` | [02_Movement_And_Physics_Fix.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/02_Movement_And_Physics_Fix.md) — Sửa triệt để lỗi điều khiển, chuẩn hóa vận tốc và chống đơ phím nhân vật | Hoàn tất (Đã nghiệm thu) |
 | 03 | `V15-03` | *03_Visual_Scale_And_Sprite_Harmonization.md* — Chuẩn hóa tỷ lệ sprite nhân vật, NPC và công trình | Sắp tới |
 | 04 | `V15-04` | *04_Survival_Composure_And_Vision_Tuning.md* — Tinh chỉnh Bình Tâm và tầm nhìn sương mù | Sắp tới |
 | 05 | `V15-05` | *05_UI_Deduplication_And_HUD_Polishing.md* — Dọn dẹp trùng lặp và tối ưu hóa UIScene | Sắp tới |

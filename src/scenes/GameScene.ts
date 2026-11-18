@@ -398,6 +398,7 @@ export class GameScene extends Phaser.Scene {
     };
     this.dialogueSystem.onDialogueEnd = () => {
       if (this.player) {
+        this.player.forceUnlockActionState();
         this.player.resetAllInputState();
       }
       if (this.uiScene) {
@@ -1640,16 +1641,19 @@ export class GameScene extends Phaser.Scene {
         if (this.craftingModal && this.craftingModal.isOpen) {
           if (this.player.isCraftingRequested() || this.player.isPauseRequested()) {
             this.craftingModal.close();
+            this.player.forceUnlockActionState();
           }
         }
         if (this.journalModal && this.journalModal.isOpen) {
           if (this.player.isJournalRequested() || this.player.isPauseRequested()) {
             this.journalModal.close();
+            this.player.forceUnlockActionState();
           }
         }
         if (this.uiScene && this.uiScene.parchmentWorldMapModal && this.uiScene.parchmentWorldMapModal.isOpen) {
           if (this.player.isPauseRequested()) {
             this.uiScene.parchmentWorldMapModal.close();
+            this.player.forceUnlockActionState();
           }
         }
       }
