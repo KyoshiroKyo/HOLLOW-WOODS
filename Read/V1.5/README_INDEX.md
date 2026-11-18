@@ -47,6 +47,7 @@
 | 18 | `V15-18` | [05_Story_Expansion_Report.md#9-bước-v15-18-bi-kịch-đoàn-kỵ-sĩ-cổ-xưa--lời-thề-hiệp-sĩ-canh-lửa](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/05_Story_Expansion_Report.md) — Mở rộng chiều sâu bi kịch Đoàn Kỵ Sĩ Cổ Xưa, Hiệp Sĩ Canh Lửa và quá trình thức tỉnh của Hiệp Sĩ Đen | Hoàn tất (Đã nghiệm thu) |
 | 19 | `V15-19` | [05_Story_Expansion_Report.md#13-bước-v15-19-hệ-thống-kể-chuyện-môi-trường-environmental-storytelling](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/05_Story_Expansion_Report.md) — Bổ sung hệ thống Kể chuyện Môi trường (Environmental Storytelling) trên khắp các phân khu | Hoàn tất (Đã nghiệm thu) |
 | 20 | `V15-20` | [05_Story_Expansion_Report.md#17-bước-v15-20-hệ-thống-3-kết-thúc-cốt-truyện-phân-nhánh-multiple-branching-endings](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/05_Story_Expansion_Report.md) — Thiết lập hệ thống 3 Kết Thúc Cốt Truyện (Multiple Endings) dựa trên hành trình của người chơi | Hoàn tất (Đã nghiệm thu) |
+| 21 | `V15-21` | [06_Menu_And_HUD_UIUX.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/06_Menu_And_HUD_UIUX.md) — Thiết kế mới toàn diện Màn hình Chờ / Loading Screen nghệ thuật trong PreloadScene | Hoàn tất (Đã nghiệm thu) |
 
 ---
 *Tài liệu được cập nhật tự động trong suốt quá trình phát triển HOLLOW WOODS V1.5.*

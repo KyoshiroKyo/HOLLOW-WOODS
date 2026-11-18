@@ -24,8 +24,6 @@ import {
   WAYFARER_PORTRAIT_KEY,
   WAYFARER_FRAME_WIDTH,
   WAYFARER_FRAME_HEIGHT,
-  VIRTUAL_WIDTH,
-  VIRTUAL_HEIGHT,
   TILE_FOREST_GRASS,
   TILE_DIRT_TRAIL,
   TILE_SWAMP_MUD,
@@ -133,6 +131,20 @@ import {
 } from '../utils/AtlasTextureResolver';
 
 export class PreloadScene extends Phaser.Scene {
+  // V15-21: Bộ sưu tập Mẹo Sinh Tồn & Mảnh Truyền Thuyết Rừng Sương
+  private static readonly LORE_TIPS: string[] = [
+    'Khi màn đêm buông xuống, lũ quái vật trong sương trở nên hung hãn hơn gấp bội — hãy giữ chặt ánh lửa của bạn.',
+    'Đừng bao giờ bước chệch khỏi con đường mòn khi ngọn đèn lồng chưa được châm đầy dầu thông.',
+    'Ba Quy Tắc Bằng Máu của Bà Lão Edda là bức tường thành duy nhất ngăn tâm trí bạn sụp đổ trước Kẻ Lắng Nghe.',
+    'Dùng gậy gỗ hoặc vũ khí khua rậm vào bụi cây có thể làm lộ diện các dược thảo quý và hạt nhựa thông ẩn giấu.',
+    'Khi chỉ số Bình Tâm tụt xuống mức báo động, màn sương sẽ co thắt tầm nhìn và đánh thức những ảo ảnh kinh hoàng.',
+    'Đứng gần ngọn Lửa Trại Sanctuary Camp sẽ sưởi ấm thân nhiệt và phục hồi sự tỉnh táo cho tâm trí bạn.',
+    'Kẻ Lắng Nghe săn mồi hoàn toàn bằng âm thanh — hãy bước đi thật khẽ hoặc ném mồi đánh lạc hướng [Phím Q].',
+    'Đại Hồng Chung làng Bellhollow từng cứu cả thung lũng... cho đến đêm định mệnh khi thân chuông nứt làm đôi.',
+    'Thảo dược bạc kết hợp với cành khô có thể chế thành Thuốc Đắp giúp hồi sinh lực và trấn an tinh thần tức thì.',
+    'Những chiếc đèn ma lập lòe trong đầm lầy không có người cầm — tiến lại gần sẽ dẫn bạn vào hố bùn không đáy.'
+  ];
+
   constructor() {
     super({ key: SCENE_PRELOAD });
   }
@@ -145,44 +157,309 @@ export class PreloadScene extends Phaser.Scene {
       dummyGfx.destroy();
     }
 
-    // 1. Dựng thanh tiến trình tải (Loading Bar) & tiêu đề khởi động
-    this.cameras.main.setBackgroundColor('#0b0c10');
-    const titleText = this.add.text(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2 - 46, 'HOLLOW WOODS', {
+    // =========================================================================
+    // V15-21: XÂY DỰNG GIAO DIỆN MÀN HÌNH CHỜ DARK WOODLAND FOLKLORE (HD 1280×720)
+    // =========================================================================
+    this.cameras.main.setBackgroundColor('#0b0e14');
+
+    // 1. Phông nền rừng sương thẫm (#0b0e14) có chiều sâu điện ảnh
+    const bgGraphics = this.add.graphics();
+    bgGraphics.fillGradientStyle(0x06080d, 0x06080d, 0x0b0e14, 0x081016, 1);
+    bgGraphics.fillRect(0, 0, 1280, 720);
+
+    // Hàng cây thông rừng sâu mờ ảo phía xa dưới chân màn hình
+    bgGraphics.fillStyle(0x070b0e, 0.45);
+    const treePositions = [60, 130, 210, 300, 960, 1050, 1140, 1220];
+    const treeHeights = [110, 140, 95, 125, 100, 135, 115, 150];
+    treePositions.forEach((tx, idx) => {
+      const th = treeHeights[idx];
+      bgGraphics.fillTriangle(tx - 35, 720, tx, 720 - th, tx + 35, 720);
+    });
+
+    // Lớp sương mù chân đất mờ ảo
+    bgGraphics.fillStyle(0x0a1017, 0.4);
+    bgGraphics.fillRect(0, 650, 1280, 70);
+
+    // 2. Biểu tượng Đèn Lồng Cổ (Ancient Brass Lantern) đung đưa phát quầng sáng hổ phách
+    const lanternContainer = this.add.container(640, 185);
+
+    // Quầng sáng hổ phách tỏa rộng
+    const auraGfx = this.add.graphics();
+    auraGfx.fillStyle(0xf39c12, 0.08);
+    auraGfx.fillCircle(0, 0, 85);
+    auraGfx.fillStyle(0xe67e22, 0.15);
+    auraGfx.fillCircle(0, 0, 54);
+    auraGfx.fillStyle(0xfff9c4, 0.28);
+    auraGfx.fillCircle(0, 0, 28);
+    lanternContainer.add(auraGfx);
+
+    // Cấu trúc thân đèn lồng bằng đồng cổ
+    const lanternGfx = this.add.graphics();
+    // Dây xích treo phía trên
+    lanternGfx.lineStyle(2, 0x5d4037, 1);
+    lanternGfx.lineBetween(0, -50, 0, -20);
+    // Vòng khuyên treo
+    lanternGfx.lineStyle(2, 0xd4af37, 1);
+    lanternGfx.strokeCircle(0, -20, 6);
+    // Mái che nón chóp đèn
+    lanternGfx.fillStyle(0x3e2723, 1);
+    lanternGfx.fillTriangle(0, -22, -20, -10, 20, -10);
+    lanternGfx.fillRect(-22, -10, 44, 4);
+    // Buồng kính hổ phách
+    lanternGfx.fillStyle(0xffecb3, 0.14);
+    lanternGfx.fillRect(-17, -6, 34, 38);
+    // Khung nẹp nan đồng 4 cạnh
+    lanternGfx.lineStyle(2, 0x5d4037, 0.95);
+    lanternGfx.strokeRect(-17, -6, 34, 38);
+    lanternGfx.lineBetween(-6, -6, -6, 32);
+    lanternGfx.lineBetween(6, -6, 6, 32);
+    // Đế đèn lồng bằng sắt sẫm
+    lanternGfx.fillStyle(0x27170e, 1);
+    lanternGfx.fillRect(-20, 32, 40, 7);
+    lanternContainer.add(lanternGfx);
+
+    // Ngọn lửa lập lòe bên trong buồng kính
+    const flameGfx = this.add.graphics();
+    flameGfx.fillStyle(0xf39c12, 1);
+    flameGfx.fillCircle(0, 14, 7);
+    flameGfx.fillStyle(0xffeb3b, 1);
+    flameGfx.fillCircle(0, 13, 4);
+    flameGfx.fillStyle(0xffffff, 1);
+    flameGfx.fillCircle(0, 12, 2);
+    lanternContainer.add(flameGfx);
+
+    // Hiệu ứng đung đưa nhẹ nhàng cho đèn lồng
+    this.tweens.add({
+      targets: lanternContainer,
+      angle: { from: -3.5, to: 3.5 },
+      duration: 2600,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut'
+    });
+
+    // Hiệu ứng bập bùng cho ngọn lửa
+    this.tweens.add({
+      targets: flameGfx,
+      scaleY: { from: 0.88, to: 1.15 },
+      scaleX: { from: 0.92, to: 1.08 },
+      alpha: { from: 0.85, to: 1.0 },
+      duration: 320,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut'
+    });
+
+    // Hiệu ứng thở nhẹ nhàng cho quầng sáng hổ phách
+    this.tweens.add({
+      targets: auraGfx,
+      scale: { from: 0.94, to: 1.07 },
+      alpha: { from: 0.8, to: 1.0 },
+      duration: 1500,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut'
+    });
+
+    // Các hạt tàn lửa (Embers) bay lên từ đèn lồng
+    const embers: Phaser.GameObjects.Arc[] = [];
+    for (let i = 0; i < 12; i++) {
+      const ember = this.add.circle(
+        640 + Phaser.Math.Between(-18, 18),
+        195 + Phaser.Math.Between(-10, 15),
+        Phaser.Math.FloatBetween(1.2, 2.4),
+        i % 2 === 0 ? 0xf39c12 : 0xfff9c4
+      );
+      ember.setAlpha(0);
+      embers.push(ember);
+
+      this.tweens.add({
+        targets: ember,
+        y: ember.y - Phaser.Math.Between(70, 130),
+        x: ember.x + Phaser.Math.Between(-35, 35),
+        alpha: { from: 0.85, to: 0 },
+        duration: Phaser.Math.Between(1800, 3000),
+        delay: Phaser.Math.Between(0, 2200),
+        repeat: -1,
+        ease: 'Quad.easeOut'
+      });
+    }
+
+    // 3. Tiêu đề trò chơi HOLLOW WOODS & Dòng mô tả
+    this.add.text(640, 280, 'HOLLOW WOODS', {
       fontFamily: 'serif',
-      fontSize: '16px',
-      color: '#e74c3c'
+      fontSize: '28px',
+      fontStyle: 'bold',
+      color: '#f39c12',
+      stroke: '#000000',
+      strokeThickness: 4
     }).setOrigin(0.5, 0.5);
+
+    this.add.text(640, 310, 'THE FOG THAT REMEMBERS', {
+      fontFamily: 'serif',
+      fontSize: '12px',
+      fontStyle: 'italic',
+      color: '#8c9ba5',
+      stroke: '#000000',
+      strokeThickness: 2
+    }).setOrigin(0.5, 0.5);
+
+    // 4. Thanh tiến trình tải (Loading Bar) — Khung viền gỗ sồi nạm đồng cổ
+    const barWidth = 480;
+    const barHeight = 22;
+    const barX = 640 - barWidth / 2;
+    const barY = 380 - barHeight / 2;
+
+    const progressBox = this.add.graphics();
+    // Nền gỗ sồi tối
+    progressBox.fillStyle(0x140e0a, 0.95);
+    progressBox.fillRect(barX, barY, barWidth, barHeight);
+    // Viền đồng cổ 2px
+    progressBox.lineStyle(2, 0x8c6d36, 1);
+    progressBox.strokeRect(barX, barY, barWidth, barHeight);
+    // 4 đinh tán đồng tại 4 góc
+    progressBox.fillStyle(0xd4af37, 1);
+    progressBox.fillCircle(barX + 4, barY + 4, 2.5);
+    progressBox.fillCircle(barX + barWidth - 4, barY + 4, 2.5);
+    progressBox.fillCircle(barX + 4, barY + barHeight - 4, 2.5);
+    progressBox.fillCircle(barX + barWidth - 4, barY + barHeight - 4, 2.5);
+    // Rãnh trũng lòng trong
+    progressBox.fillStyle(0x080b0f, 1);
+    progressBox.fillRect(barX + 4, barY + 4, barWidth - 8, barHeight - 8);
 
     const progressBar = this.add.graphics();
-    const progressBox = this.add.graphics();
-    progressBox.fillStyle(0x1a1c23, 0.8);
-    progressBox.fillRect(VIRTUAL_WIDTH / 2 - 100, VIRTUAL_HEIGHT / 2 - 8, 200, 16);
 
-    const loadingText = this.add.text(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2 - 24, 'Đang xuyên qua Màn Sương...', {
+    // Dòng trạng thái chung phía trên thanh tải
+    const loadingText = this.add.text(640, 350, 'Đang xuyên qua Màn Sương...', {
       fontFamily: 'serif',
-      fontSize: '11px',
-      color: '#bdc3c7'
+      fontSize: '13px',
+      color: '#cbd5e1',
+      stroke: '#000000',
+      strokeThickness: 2
     }).setOrigin(0.5, 0.5);
 
-    const percentText = this.add.text(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, '0%', {
+    // Con số phần trăm nằm chính giữa thanh tải
+    const percentText = this.add.text(640, 380, '0%', {
       fontFamily: 'sans-serif',
-      fontSize: '8px',
-      color: '#ecf0f1'
+      fontSize: '11px',
+      fontStyle: 'bold',
+      color: '#ffffff',
+      stroke: '#000000',
+      strokeThickness: 3
     }).setOrigin(0.5, 0.5);
 
+    // Dòng hiển thị tên tài nguyên đang nạp phía dưới thanh tải
+    const assetStatusText = this.add.text(640, 408, 'Đang chuẩn bị tài nguyên khởi động...', {
+      fontFamily: 'sans-serif',
+      fontSize: '11px',
+      color: '#7f8c8d',
+      stroke: '#000000',
+      strokeThickness: 2
+    }).setOrigin(0.5, 0.5);
+
+    // 5. Khu vực Mẹo Sinh Tồn & Mảnh Truyền Thuyết (Survival Tips & Lore Quotes)
+    const tipBox = this.add.graphics();
+    const boxW = 680;
+    const boxH = 88;
+    const boxX = 640 - boxW / 2;
+    const boxY = 485 - boxH / 2;
+
+    tipBox.fillStyle(0x0d121a, 0.88);
+    tipBox.fillRoundedRect(boxX, boxY, boxW, boxH, 6);
+    tipBox.lineStyle(1, 0x4a3728, 0.8);
+    tipBox.strokeRoundedRect(boxX, boxY, boxW, boxH, 6);
+
+    this.add.text(640, boxY + 16, '❖ MẸO SINH TỒN & TRUYỀN THUYẾT ❖', {
+      fontFamily: 'serif',
+      fontSize: '12px',
+      fontStyle: 'bold',
+      color: '#d4af37',
+      stroke: '#000000',
+      strokeThickness: 2
+    }).setOrigin(0.5, 0.5);
+
+    // Lựa chọn ngẫu nhiên một câu mẹo truyền thuyết khi khởi động
+    let currentTipIndex = Phaser.Math.Between(0, PreloadScene.LORE_TIPS.length - 1);
+    const tipText = this.add.text(640, boxY + 50, `“${PreloadScene.LORE_TIPS[currentTipIndex]}”`, {
+      fontFamily: 'serif',
+      fontSize: '13px',
+      fontStyle: 'italic',
+      color: '#ecf0f1',
+      align: 'center',
+      wordWrap: { width: 620 },
+      stroke: '#000000',
+      strokeThickness: 2
+    }).setOrigin(0.5, 0.5);
+
+    // Tự động xoay tua mẹo truyền thuyết mỗi 4.5 giây nếu quá trình nạp kéo dài
+    const tipTimerEvent = this.time.addEvent({
+      delay: 4500,
+      loop: true,
+      callback: () => {
+        this.tweens.add({
+          targets: tipText,
+          alpha: 0,
+          duration: 350,
+          onComplete: () => {
+            currentTipIndex = (currentTipIndex + 1) % PreloadScene.LORE_TIPS.length;
+            tipText.setText(`“${PreloadScene.LORE_TIPS[currentTipIndex]}”`);
+            this.tweens.add({
+              targets: tipText,
+              alpha: 1,
+              duration: 350
+            });
+          }
+        });
+      }
+    });
+
+    // =========================================================================
+    // LẮNG NGHE TIẾN TRÌNH TẢI TÀI NGUYÊN (LOADER EVENTS)
+    // =========================================================================
     this.load.on('progress', (value: number) => {
       percentText.setText(`${Math.floor(value * 100)}%`);
+      const fillW = Math.max(0, (barWidth - 8) * value);
+
       progressBar.clear();
-      progressBar.fillStyle(0x78281f, 1);
-      progressBar.fillRect(VIRTUAL_WIDTH / 2 - 98, VIRTUAL_HEIGHT / 2 - 6, 196 * value, 12);
+      // Lõi thanh tải chảy mượt màu vàng hổ phách ấm
+      progressBar.fillStyle(0xd35400, 1);
+      progressBar.fillRect(barX + 4, barY + 4, fillW, barHeight - 8);
+      progressBar.fillStyle(0xf39c12, 1);
+      progressBar.fillRect(barX + 4, barY + 4, fillW, (barHeight - 8) - 3);
+      // Dải sáng óng ánh trên đỉnh
+      progressBar.fillStyle(0xfff9c4, 0.65);
+      progressBar.fillRect(barX + 4, barY + 5, fillW, 2);
+
+      // Điểm sáng đầu mút thanh tải
+      if (fillW > 4) {
+        progressBar.fillStyle(0xfff9c4, 0.9);
+        progressBar.fillRect(barX + 4 + fillW - 3, barY + 4, 3, barHeight - 8);
+      }
+    });
+
+    this.load.on('fileprogress', (file: Phaser.Loader.File) => {
+      const rawName = typeof file.key === 'string' && file.key.trim().length > 0
+        ? file.key
+        : (typeof file.url === 'string' ? file.url : 'Tài nguyên');
+      let displayName = String(rawName);
+      if (displayName.length > 36) {
+        displayName = '...' + displayName.substring(displayName.length - 33);
+      }
+      assetStatusText.setText(`Đang nạp: ${displayName}`);
     });
 
     this.load.on('complete', () => {
-      titleText.destroy();
-      progressBar.destroy();
-      progressBox.destroy();
-      loadingText.destroy();
-      percentText.destroy();
+      tipTimerEvent.destroy();
+      percentText.setText('100%');
+      loadingText.setText('Khởi tạo thế giới hoàn tất...');
+      assetStatusText.setText('Sẵn sàng bước vào Khu Rừng Rỗng...');
+
+      // Điền đầy đủ thanh tải vàng kim rực rỡ
+      progressBar.clear();
+      progressBar.fillStyle(0xf39c12, 1);
+      progressBar.fillRect(barX + 4, barY + 4, barWidth - 8, barHeight - 8);
+      progressBar.fillStyle(0xfff9c4, 0.7);
+      progressBar.fillRect(barX + 4, barY + 5, barWidth - 8, 2);
     });
 
     // 2. Nạp sprite sheet chính của Satyr (64×64 px - tương thích ngược)
@@ -551,7 +828,17 @@ export class PreloadScene extends Phaser.Scene {
     // C4-133-02: Đồng bộ tức thì các AudioBuffer đã được Phaser nạp vào AudioManager
     AudioManager.getInstance().syncWithPhaserCache(this);
 
-    this.scene.start(SCENE_MAIN_MENU);
+    // V15-21: Thêm hiệu ứng mờ dần chuyển cảnh mượt mà (Camera Fade Out 450ms) khi tải xong 100%
+    let isTransitioning = false;
+    const proceedToMenu = () => {
+      if (isTransitioning) return;
+      isTransitioning = true;
+      this.scene.start(SCENE_MAIN_MENU);
+    };
+
+    this.cameras.main.fadeOut(450, 11, 14, 20);
+    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, proceedToMenu);
+    this.time.delayedCall(550, proceedToMenu);
   }
 }
 
