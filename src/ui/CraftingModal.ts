@@ -17,6 +17,7 @@ import { PlayerState } from '../state/PlayerState';
 import itemsData from '../data/items.json';
 import { AudioManager } from '../audio/AudioManager';
 import { HDTextHelper } from '../utils/HDTextHelper';
+import { ItemTooltipHelper } from './ItemTooltipHelper';
 
 interface RecipeRowRef {
   recipe: CraftingRecipe;
@@ -127,9 +128,9 @@ export class CraftingModal {
     this.panelW = panelW;
     this.panelH = panelH;
 
-    // 1. Lớp phủ mờ toàn màn hình HD 1280×720 (ngăn chặn click xuyên thấu)
+    // 1. Lớp phủ mờ toàn màn hình HD 1280×720 (Dark Woodland Dim Overlay)
     const overlay = this.scene.add.graphics();
-    overlay.fillStyle(0x000000, 0.35);
+    overlay.fillStyle(0x000000, 0.68);
     overlay.fillRect(0, 0, 1280, 720);
     overlay.setInteractive(new Phaser.Geom.Rectangle(0, 0, 1280, 720), Phaser.Geom.Rectangle.Contains);
     // Nhấp chuột ra ngoài vùng side panel để đóng bảng
@@ -175,17 +176,41 @@ export class CraftingModal {
       color: '#a0aec0'
     });
 
-    // Nút đóng [✕]
-    const closeBtn = HDTextHelper.createText(this.scene, panelX + panelW - 28, panelY + 22, '✕', {
-      fontSize: '20px',
+    // Nút đóng thống nhất [✕ ESC] viền đồng sang trọng (V15-26)
+    const closeBtnContainer = this.scene.add.container(panelX + panelW - 54, panelY + 22);
+    const closeBtnBg = this.scene.add.graphics();
+    const drawCloseBtn = (isHover: boolean) => {
+      closeBtnBg.clear();
+      closeBtnBg.fillStyle(isHover ? 0x2e1810 : 0x140e0a, 0.95);
+      closeBtnBg.fillRoundedRect(-32, -12, 64, 24, 4);
+      closeBtnBg.lineStyle(1.5, isHover ? 0xf1c40f : 0x7a5e35, 1);
+      closeBtnBg.strokeRoundedRect(-32, -12, 64, 24, 4);
+    };
+    drawCloseBtn(false);
+
+    const closeBtnText = HDTextHelper.createText(this.scene, 0, 0, '✕ ESC', {
+      fontSize: '11.5px',
       fontStyle: 'bold',
       color: '#e2d4b7'
-    }).setOrigin(0.5, 0.5).setInteractive({ useHandCursor: true });
-    closeBtn.on('pointerdown', () => this.close());
-    closeBtn.on('pointerover', () => closeBtn.setColor('#e74c3c'));
-    closeBtn.on('pointerout', () => closeBtn.setColor('#e2d4b7'));
+    }).setOrigin(0.5, 0.5);
 
-    this.sidePanelContainer.add([frame, title, subtitle, closeBtn]);
+    closeBtnContainer.add([closeBtnBg, closeBtnText]);
+    closeBtnContainer.setSize(64, 24);
+    closeBtnContainer.setInteractive({ useHandCursor: true });
+    closeBtnContainer.on('pointerover', () => {
+      drawCloseBtn(true);
+      closeBtnText.setColor('#f39c12');
+    });
+    closeBtnContainer.on('pointerout', () => {
+      drawCloseBtn(false);
+      closeBtnText.setColor('#e2d4b7');
+    });
+    closeBtnContainer.on('pointerdown', () => {
+      AudioManager.getInstance().playInteract();
+      this.close();
+    });
+
+    this.sidePanelContainer.add([frame, title, subtitle, closeBtnContainer]);
 
     // 3. Tab Lọc Thể Loại (Sinh Tồn, Nấu Ăn, Công Cụ & Trang Bị)
     this.buildCategoryTabs(panelX + 24, panelY + 68);
@@ -407,6 +432,23 @@ export class CraftingModal {
       }
     });
 
+    // V15-26: Tooltip chi tiết khi di chuột vào tên hoặc thẻ công thức
+    nameText.setInteractive({ useHandCursor: true });
+    nameText.on('pointerover', (pointer: Phaser.Input.Pointer) => {
+      ItemTooltipHelper.getInstance().show(this.scene, pointer.x, pointer.y, recipe.resultItemId, recipe.name, recipe.description);
+    });
+    nameText.on('pointerout', () => {
+      ItemTooltipHelper.getInstance().hide();
+    });
+
+    outputBadge.setInteractive({ useHandCursor: true });
+    outputBadge.on('pointerover', (pointer: Phaser.Input.Pointer) => {
+      ItemTooltipHelper.getInstance().show(this.scene, pointer.x, pointer.y, recipe.resultItemId, recipe.name, recipe.description);
+    });
+    outputBadge.on('pointerout', () => {
+      ItemTooltipHelper.getInstance().hide();
+    });
+
     row.add([bg, nameText, outputBadge, catTag, descText, ingText, statusBadge, craftBtn]);
 
     return {
@@ -463,6 +505,7 @@ export class CraftingModal {
   }
 
   public close(): void {
+    ItemTooltipHelper.getInstance().hide();
     this.isOpen = false;
     this.container.setVisible(false);
     if (this.onClose) {

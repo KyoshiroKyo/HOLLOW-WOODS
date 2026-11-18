@@ -29,6 +29,7 @@ import { ZoneId, WorldTier } from '../types';
 import { WorldGatingSystem } from '../world/WorldGatingSystem';
 import { ZoneConnectionRegistry } from '../world/ZoneConnectionRegistry';
 import { AudioManager } from '../audio/AudioManager';
+import { ItemTooltipHelper } from './ItemTooltipHelper';
 import {
   PORTRAIT_SKULL_WOLF,
   PORTRAIT_SHADOW_BIG_BOSS,
@@ -414,13 +415,13 @@ export class JournalModal {
     const modalX = (1280 - modalW) / 2; // 220
     const modalY = (720 - modalH) / 2;  // 100
 
-    // 1. Lớp phủ đen mờ nền toàn màn hình HD 1280×720
+    // 1. Lớp phủ đen mờ nền toàn màn hình HD 1280×720 (Dark Woodland Dim Overlay)
     const overlay = this.scene.add.graphics();
-    overlay.fillStyle(0x000000, 0.78);
+    overlay.fillStyle(0x000000, 0.75);
     overlay.fillRect(0, 0, 1280, 720);
     overlay.setInteractive(new Phaser.Geom.Rectangle(0, 0, 1280, 720), Phaser.Geom.Rectangle.Contains);
 
-    // 2. Khung sổ nhật ký giấy da sẫm màu chuẩn HD (840×520 px)
+    // 2. Khung sổ nhật ký giấy da sẫm màu chuẩn HD (840×520 px) viền nẹp đồng cổ
     const book = this.scene.add.graphics();
     book.fillStyle(0x151310, 0.98); // Nền giấy da cổ tối
     book.fillRoundedRect(modalX, modalY, modalW, modalH, 10);
@@ -429,29 +430,65 @@ export class JournalModal {
     book.lineStyle(1, 0x4a3c22, 0.8);
     book.strokeRoundedRect(modalX + 4, modalY + 4, modalW - 8, modalH - 8, 8);
 
+    // Đinh tán nẹp đồng 4 góc (Tarnished Brass Rivets)
+    const rivetPositions = [
+      { x: modalX + 10, y: modalY + 10 },
+      { x: modalX + modalW - 10, y: modalY + 10 },
+      { x: modalX + 10, y: modalY + modalH - 10 },
+      { x: modalX + modalW - 10, y: modalY + modalH - 10 }
+    ];
+    book.fillStyle(0xd4af37, 0.9);
+    for (const r of rivetPositions) {
+      book.fillCircle(r.x, r.y, 2.5);
+    }
+
     // Tiêu đề chính
-    const title = HDTextHelper.createText(this.scene, modalX + 25, modalY + 20, '📖 SỔ TAY LỮ KHÁCH [Phím J]', {
-      fontSize: '18px',
+    const title = HDTextHelper.createText(this.scene, modalX + 18, modalY + 20, '📖 SỔ TAY LỮ KHÁCH', {
+      fontSize: '15px',
       fontStyle: 'bold',
       color: '#d4af37',
       stroke: '#000000',
       strokeThickness: 3
     });
 
-    // Nút đóng [✕]
-    const closeBtn = HDTextHelper.createText(this.scene, modalX + modalW - 30, modalY + 22, '✕', {
-      fontSize: '22px',
+    // Nút đóng thống nhất [✕ ESC] viền đồng nẹp góc trên bên phải
+    const closeBtnX = modalX + modalW - 54;
+    const closeBtnY = modalY + 22;
+    const closeBtnContainer = this.scene.add.container(closeBtnX, closeBtnY);
+    const closeBg = this.scene.add.graphics();
+    const drawCloseBg = (hover: boolean) => {
+      closeBg.clear();
+      closeBg.fillStyle(hover ? 0x2e1810 : 0x140e0a, 0.95);
+      closeBg.fillRoundedRect(-32, -12, 64, 24, 4);
+      closeBg.lineStyle(1.2, hover ? 0xf1c40f : 0x7a5e35, 0.9);
+      closeBg.strokeRoundedRect(-32, -12, 64, 24, 4);
+    };
+    drawCloseBg(false);
+
+    const closeTxt = HDTextHelper.createText(this.scene, 0, 0, '✕ ESC', {
+      fontSize: '11.5px',
       fontStyle: 'bold',
-      color: '#e74c3c'
-    }).setOrigin(0.5, 0.5).setInteractive({ useHandCursor: true });
-    closeBtn.on('pointerdown', () => {
+      color: '#e2d4b7'
+    }).setOrigin(0.5, 0.5);
+
+    closeBtnContainer.add([closeBg, closeTxt]);
+    closeBtnContainer.setInteractive(new Phaser.Geom.Rectangle(-32, -12, 64, 24), Phaser.Geom.Rectangle.Contains);
+    closeBtnContainer.on('pointerover', () => {
+      drawCloseBg(true);
+      closeTxt.setColor('#f39c12');
+    });
+    closeBtnContainer.on('pointerout', () => {
+      drawCloseBg(false);
+      closeTxt.setColor('#e2d4b7');
+    });
+    closeBtnContainer.on('pointerdown', () => {
       AudioManager.getInstance().playInteract();
       this.close();
     });
 
-    // 3. Bốn Tab điều hướng chuẩn HD: [1. NHIỆM VỤ], [2. MẢNH KÝ ỨC], [3. SINH VẬT RỪNG], [4. BẢN ĐỒ THẾ GIỚI]
-    this.tabQuestBtn = HDTextHelper.createText(this.scene, modalX + 225, modalY + 22, '[1. NHIỆM VỤ]', {
-      fontSize: '13px',
+    // 3. Bốn Tab điều hướng chuẩn HD: [1. NHIỆM VỤ], [2. KÝ ỨC HIỆP SĨ ĐEN], [3. SỔ TAY SINH VẬT], [4. SƠ ĐỒ BELLHOLLOW]
+    this.tabQuestBtn = HDTextHelper.createText(this.scene, modalX + 195, modalY + 22, '[1. NHIỆM VỤ]', {
+      fontSize: '12px',
       fontStyle: 'bold',
       color: '#f39c12'
     }).setInteractive({ useHandCursor: true });
@@ -461,8 +498,8 @@ export class JournalModal {
       this.refresh();
     });
 
-    this.tabLoreBtn = HDTextHelper.createText(this.scene, modalX + 350, modalY + 22, '[2. MẢNH KÝ ỨC]', {
-      fontSize: '13px',
+    this.tabLoreBtn = HDTextHelper.createText(this.scene, modalX + 315, modalY + 22, '[2. KÝ ỨC HIỆP SĨ ĐEN]', {
+      fontSize: '12px',
       fontStyle: 'bold',
       color: '#7f8c8d'
     }).setInteractive({ useHandCursor: true });
@@ -472,8 +509,8 @@ export class JournalModal {
       this.refresh();
     });
 
-    this.tabBestiaryBtn = HDTextHelper.createText(this.scene, modalX + 490, modalY + 22, '[3. SINH VẬT RỪNG]', {
-      fontSize: '13px',
+    this.tabBestiaryBtn = HDTextHelper.createText(this.scene, modalX + 490, modalY + 22, '[3. SỔ TAY SINH VẬT]', {
+      fontSize: '12px',
       fontStyle: 'bold',
       color: '#7f8c8d'
     }).setInteractive({ useHandCursor: true });
@@ -483,8 +520,8 @@ export class JournalModal {
       this.refresh();
     });
 
-    this.tabMapBtn = HDTextHelper.createText(this.scene, modalX + 660, modalY + 22, '[4. BẢN ĐỒ THẾ GIỚI]', {
-      fontSize: '13px',
+    this.tabMapBtn = HDTextHelper.createText(this.scene, modalX + 650, modalY + 22, '[4. SƠ ĐỒ BELLHOLLOW]', {
+      fontSize: '12px',
       fontStyle: 'bold',
       color: '#7f8c8d'
     }).setInteractive({ useHandCursor: true });
@@ -495,7 +532,7 @@ export class JournalModal {
       this.refresh();
     });
 
-    this.container.add([overlay, book, title, closeBtn, this.tabQuestBtn, this.tabLoreBtn, this.tabBestiaryBtn, this.tabMapBtn, this.contentContainer]);
+    this.container.add([overlay, book, title, closeBtnContainer, this.tabQuestBtn, this.tabLoreBtn, this.tabBestiaryBtn, this.tabMapBtn, this.contentContainer]);
   }
 
   public toggle(): void {
@@ -552,6 +589,7 @@ export class JournalModal {
   }
 
   public close(): void {
+    ItemTooltipHelper.getInstance().hide();
     this.isOpen = false;
     this.container.setVisible(false);
     if (this.onClose) {
@@ -753,10 +791,10 @@ export class JournalModal {
     }
 
     // --- TRANG TRÁI: DANH SÁCH CÁC BẢN GHI KÝ ỨC ---
-    const leftTitle = HDTextHelper.createText(this.scene, mx + 30, my + 66, '📜 CÁC MẢNH KÝ ỨC ĐÃ TÌM THẤY:', {
+    const leftTitle = HDTextHelper.createText(this.scene, mx + 30, my + 66, '📜 BIÊN NIÊN KÝ ỨC HIỆP SĨ ĐEN & CỔ THƯ:', {
       fontSize: '13px',
       fontStyle: 'bold',
-      color: '#3498db'
+      color: '#d4af37'
     });
     this.contentContainer.add(leftTitle);
 
@@ -836,10 +874,10 @@ export class JournalModal {
     });
 
     const rContent = HDTextHelper.createText(this.scene, rightX, my + 130, entry.content, {
-      fontSize: '12.5px',
+      fontSize: entry.content.length > 500 ? '11px' : '12px',
       color: '#f0e6d2',
-      wordWrap: { width: rightW },
-      lineSpacing: 5
+      wordWrap: { width: rightW - 10 },
+      lineSpacing: 4
     });
 
     // Điều hướng lật trang ở chân trang phải
@@ -1143,7 +1181,7 @@ export class JournalModal {
       .filter(n => n.id !== 'the_depths')
       .filter(n => this.playerState.hasVisitedZone(n.id)).length;
 
-    const mapTitle = HDTextHelper.createText(this.scene, mapCanvasX + 16, mapCanvasY + 12, '🗺 BẢN ĐỒ THẾ GIỚI — KHU RỪNG RỖNG (THE HOLLOW WOODS)', {
+    const mapTitle = HDTextHelper.createText(this.scene, mapCanvasX + 16, mapCanvasY + 12, '🗺 SƠ ĐỒ VÙNG BELLHOLLOW & KHU RỪNG RỖNG', {
       fontSize: '14px',
       fontStyle: 'bold',
       color: '#f1c40f'

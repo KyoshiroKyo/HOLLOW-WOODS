@@ -748,5 +748,121 @@ Bước **V15-25** đã hoàn thành xuất sắc và toàn diện 2 mục tiêu
 1. **Không gian làng Bellhollow hoàn toàn sạch thoáng và thông minh:** Chấm dứt triệt để tình trạng các bảng tên khổng lồ che khuất tầm nhìn từ xa. Người chơi chỉ thấy các biểu tượng nhiệm vụ nhỏ lơ lửng tinh tế khi có quest, và nhãn tên chỉ xuất hiện mượt mà khi bước lại gần đúng 1 NPC muốn trò chuyện.
 2. **Khung hội thoại đạt đỉnh cao mỹ thuật Dark Woodland Folklore:** Tông màu giấy da cổ thẫm kết hợp viền đồng và đinh tán mang lại cảm giác nhập vai sâu sắc; chân dung hội thoại hiển thị đúng tỷ lệ Pixel Art $64\times 64\text{ px}$ sắc nét, cùng hệ thống nút lựa chọn tương tác $1, 2, 3$ vô cùng trực quan và dễ sử dụng.
 
-*Dự án đã sẵn sàng tiếp tục các bước tiếp theo của Giai đoạn 6.*
+---
+
+## PHẦN 5: ĐỒNG BỘ HÓA THẨM MỸ MODALS & HỆ THỐNG ITEM TOOLTIP (BƯỚC V15-26)
+
+### 1. TỔNG QUAN YÊU CẦU & MỤC TIÊU KỸ THUẬT
+
+Bước **V15-26** tập trung đồng bộ hóa toàn diện ngôn ngữ thiết kế **Dark Woodland Parchment & Tarnished Brass** cho toàn bộ 4 cửa sổ giao diện chính của trò chơi:
+1. **Bàn Chế Tạo Dụng Cụ & Thuốc (`CraftingModal.ts`)**
+2. **Rương Lưu Trữ Sanctuary Split-View (`StorageChestModal.ts`)**
+3. **Bảng Hành Trang & Trang Bị Sinh Tồn (`EquipmentModal.ts`)**
+4. **Sổ Tay Lữ Khách & Bản Đồ Vùng (`JournalModal.ts`)**
+
+Đồng thời xây dựng một hệ thống **Hộp Thông Tin Nổi Thông Minh (`ItemTooltipHelper.ts`)** hiển thị đầy đủ tên tiếng Việt, phân loại, tác dụng sinh tồn/đánh đổi chỉ số và nguồn gốc thu thập khi người chơi rê chuột vào bất kỳ vật phẩm, trang bị hoặc vũ khí nào trong trò chơi.
+
+---
+
+### 2. SƠ ĐỒ KIẾN TRÚC ĐỒNG BỘ MODALS & TOOLTIPS
+
+```mermaid
+flowchart TD
+    subgraph TooltipSystem["Hệ Thống Tooltip Nổi Thông Minh (ItemTooltipHelper.ts - Depth 9999)"]
+        T1["Từ Điển 39+ Vật Phẩm, 4 Trang Bị & 3 Vũ Khí Sinh Tồn"]
+        T2["Tra Cứu Chi Tiết: Tên Tiếng Việt + Phân Loại + Vạch Kim Loại Đồng"]
+        T3["Chỉ Số Tác Dụng: Hồi Phục Thể Lực/Bình Tâm + Đánh Đổi Chỉ Số (Buff/Nerf)"]
+        T4["Nguồn Thu Thập: Địa Danh Bản Đồ / Công Thức Chế Tạo / NPC Trao Tặng"]
+        T5["Smart Clamping: Tự Động Kẹp Biên Màn Hình HD 1280×720 (Không Tràn Mép)"]
+    end
+
+    subgraph StandardModals["Ngôn Ngữ Thiết Kế Dark Woodland Parchment & Tarnished Brass"]
+        M1["Dim Overlay Mờ Tối (0.68..0.75) Tập Trung Thị Giác"]
+        M2["Nẹp Đồng 4 Góc (Tarnished Brass Brackets & Rivets)"]
+        M3["Nút Đóng Thống Nhất [✕ ESC] Viền Đồng Nẹp Góc Trên Bên Phải (64×24 px)"]
+    end
+
+    subgraph Modals["4 Cửa Sổ Modal Chính Trong Game"]
+        CRAFT["CraftingModal.ts<br/>• Overlay 0.68 + Nút [✕ ESC]<br/>• Hover Công Thức / Vật Phẩm Ra Hiện Tooltip"]
+        CHEST["StorageChestModal.ts<br/>• Overlay 0.75 + Nút [✕ ESC]<br/>• Hover Ô Đồ Túi & Rương Lưu Trữ Hiện Tooltip"]
+        EQP["EquipmentModal.ts<br/>• Overlay 0.70 + Nút [✕ ESC]<br/>• Tooltip Cho 4 Ô Trang Bị, Túi Đồ & 3 Vũ Khí Tự Vệ"]
+        JOURNAL["JournalModal.ts<br/>• Overlay 0.75 + Nút [✕ ESC]<br/>• 4 Tab: [1. NHIỆM VỤ], [2. KÝ ỨC HIỆP SĨ ĐEN],<br/>  [3. SỔ TAY SINH VẬT], [4. SƠ ĐỒ BELLHOLLOW]<br/>• Chống Tràn Chữ (wordWrap) Toàn Phần"]
+    end
+
+    TooltipSystem --> CRAFT
+    TooltipSystem --> CHEST
+    TooltipSystem --> EQP
+    TooltipSystem --> JOURNAL
+    StandardModals --> CRAFT
+    StandardModals --> CHEST
+    StandardModals --> EQP
+    StandardModals --> JOURNAL
+```
+
+---
+
+### 3. CHI TIẾT CÁC HẠNG MỤC NÂNG CẤP
+
+#### 3.1. Hộp Thông Tin Nổi Thông Minh (`src/ui/ItemTooltipHelper.ts`)
+- **Kiến trúc Singleton & Độ sâu tuyệt đối:**
+  + Tự động khởi tạo duy nhất tại `depth = 9999`, luôn hiển thị phía trên toàn bộ các modal (vốn có `depth` từ 9500 đến 9650).
+  + Khung nền hộp thoại $260\text{ px}$ bằng chất liệu gỗ sẫm cổ tối `0x100c08` (alpha 0.97), viền đồng kép `0x8c6d3b` ($1.5\text{ px}$) và chỉ vàng `0xd4af37` ($0.5\text{ px}$) cùng 4 đinh tán đồng tại các góc.
+- **Dữ liệu từ điển toàn diện:**
+  + **Tên tiếng Việt:** Hiển thị nổi bật kèm icon phân loại với sắc vàng kim `#f1c40f` bold $12\text{px}$.
+  + **Badge phân loại:** Thể hiện rõ loại trang bị/vật phẩm (Trang Bị Thân, Chân, Lưng, Bùa Hộ Mệnh, Vũ Khí Tự Vệ, Dược Liệu, Nguyên Liệu Rừng).
+  + **Tác dụng sinh tồn & Đánh đổi chỉ số:** Thể hiện rõ ràng các dòng tăng/giảm chỉ số với màu xanh lá `#2ecc71` (tích cực) và màu cam đỏ `#e67e22` (đánh đổi/tiêu hao).
+  + **Nguồn thu thập / Vị trí tìm kiếm:** Hướng dẫn lữ khách cách tìm kiếm, thu hoạch hoặc rèn đúc vật phẩm trong thế giới mở.
+- **Thuật toán Smart Clamping chống tràn mép:**
+  + Tự động tính toán kích thước thực tế sau khi nạp văn bản.
+  + Nếu mép phải vượt quá $X > 1260$, hộp lật tự động sang bên trái con trỏ chuột ($X - W - 12$).
+  + Nếu mép dưới vượt quá $Y > 705$, hộp lật tự động lên phía trên con trỏ chuột ($Y - H - 8$).
+
+#### 3.2. Chuẩn Hóa Nút Đóng `[✕ ESC]` & Dim Overlay Đồng Nhất
+- **Nút đóng `[✕ ESC]` đồng bộ chuẩn mực:**
+  + Kích thước badge $64\times 24\text{ px}$ bo góc $r=4$, đặt tại góc trên bên phải của mọi cửa sổ modal.
+  + Trạng thái tĩnh: Nền gỗ sẫm `0x140e0a` (alpha 0.95), viền đồng `0x7a5e35`, chữ `✕ ESC` bold $11.5\text{px}$ màu kem sương `#e2d4b7`.
+  + Trạng thái Hover: Nền sồi ấm `0x2e1810`, viền sáng vàng kim `0xf1c40f`, chữ màu vàng hổ phách `#f39c12`.
+  + Tương tác: Bấm chuột hoặc nhấn phím `ESC` đều phát âm thanh xúc giác `AudioManager.getInstance().playInteract()` và đóng modal an toàn.
+- **Dim Overlay mờ tối dị cảnh rừng sương:**
+  + `CraftingModal`: Lớp phủ `0x000000` alpha 0.68.
+  + `StorageChestModal`: Lớp phủ `0x000000` alpha 0.75.
+  + `EquipmentModal`: Lớp phủ `0x000000` alpha 0.70.
+  + `JournalModal`: Lớp phủ `0x000000` alpha 0.75.
+
+#### 3.3. Đại Tu 4 Thẻ Sổ Tay Lữ Khách (`src/ui/JournalModal.ts`)
+- **Thanh điều hướng 4 Tab thoáng đãng:**
+  + Tab 1: `[1. NHIỆM VỤ]` — Quản lý nhiệm vụ chính/phụ, mục tiêu chi tiết và lọc theo danh mục.
+  + Tab 2: `[2. KÝ ỨC HIỆP SĨ ĐEN]` — Đổi tên và tối ưu hóa hiển thị toàn bộ Biên Niên Ký Ức Hiệp Sĩ Đen và các Tiếng Vọng Môi Trường The Echo.
+  + Tab 3: `[3. SỔ TAY SINH VẬT]` — Sổ tay sinh vật Bestiary hiển thị ảnh chân dung minh họa Pixel Art $48\times 48\text{ px}$, tập tính sinh thái và chiến thuật đối phó.
+  + Tab 4: `[4. SƠ ĐỒ BELLHOLLOW]` — Bản đồ thế giới chi tiết 9 phân khu và các tiểu khu khám phá mới, kèm bảng thanh tra địa danh.
+- **Chống tràn chữ tuyệt đối (No Text Clipping):**
+  + Tích hợp thuộc tính `wordWrap` đồng nhất cho tất cả các đoạn văn bản mô tả, nhiệm vụ, cổ thư và hồ sơ sinh thái.
+  + Điều chỉnh cỡ chữ linh hoạt: Nếu văn bản cổ thư dài $> 500$ ký tự, font tự động chuyển sang $11\text{px}$ với `lineSpacing: 4`, đảm bảo 100% nội dung nằm gọn trên trang sách mà không bao giờ bị cắt cụt hay đè lên cụm nút lật trang ở chân trang.
+  + Đảm bảo tự động tắt mọi Tooltip đang mở khi người chơi đóng Sổ Tay.
+
+---
+
+### 4. BẢNG TỔNG HỢP KIỂM THỬ BƯỚC V15-26
+
+| STT | Nhóm Kiểm Tra | Tệp Kịch Bản / Công Cụ | Tiêu Chí Kiểm Tra | Kết Quả |
+|:---:|:---|:---|:---|:---:|
+| 1 | **Hệ Thống ItemTooltipHelper** | `verify_v15_26_modals_and_tooltips.mjs` | Singleton pattern, độ sâu `depth = 9999`, có API `show()` & `hide()`, đầy đủ từ điển 39+ vật phẩm, 4 trang bị, 3 vũ khí | **7 / 7 PASS** |
+| 2 | **Bàn Chế Tạo CraftingModal** | `verify_v15_26_modals_and_tooltips.mjs` | Dim Overlay `0.68`, nút đóng `[✕ ESC]`, gọi `show()` khi hover và `hide()` khi thoát/đóng | **4 / 4 PASS** |
+| 3 | **Rương Sanctuary StorageChestModal** | `verify_v15_26_modals_and_tooltips.mjs` | Dim Overlay `0.75`, nút đóng `[✕ ESC]`, gọi `show()` khi hover ô đồ và `hide()` khi cất/lấy/đóng | **4 / 4 PASS** |
+| 4 | **Bảng Trang Bị EquipmentModal** | `verify_v15_26_modals_and_tooltips.mjs` | Dim Overlay `0.70`, nút đóng `[✕ ESC]`, gọi `show()` cho 4 slot trang bị, túi đồ và 3 vũ khí tự vệ | **4 / 4 PASS** |
+| 5 | **Sổ Tay Lữ Khách JournalModal** | `verify_v15_26_modals_and_tooltips.mjs` | Dim Overlay `0.75`, nút đóng `[✕ ESC]`, 4 tab chuẩn hóa `[1. NHIỆM VỤ]`, `[2. KÝ ỨC HIỆP SĨ ĐEN]`, `[3. SỔ TAY SINH VẬT]`, `[4. SƠ ĐỒ BELLHOLLOW]`, chống tràn chữ `wordWrap` | **10 / 10 PASS** |
+| 6 | **Kiểm Tra Kiểu Dữ Liệu TypeScript** | `npx tsc --noEmit` | Toàn bộ codebase kiểm tra nghiêm ngặt với 0 lỗi kiểu dữ liệu | **0 LỖI (PASS)** |
+| 7 | **Đóng Gói Bản Dựng Production** | `npm run build` | Vite minify & Rollup chunking thành công 100% trong 8.77s | **SUCCESS** |
+
+---
+
+### 5. KẾT LUẬN & ĐÁNH GIÁ BƯỚC V15-26
+
+Bước **V15-26** đã hoàn thiện mỹ mãn công đoạn đồng bộ hóa giao diện người dùng theo ngôn ngữ Dark Woodland Parchment & Tarnished Brass:
+1. **Trải nghiệm đóng/mở trực quan và thống nhất:** Người chơi có cảm giác quen thuộc, dễ chịu khi chuyển đổi giữa Bàn Chế Tạo, Rương Gỗ, Bảng Trang Bị và Sổ Tay nhờ lớp nền mờ tối tập trung thị giác và nút đóng `[✕ ESC]` nẹp đồng góc trên bên phải.
+2. **Thông tin vật phẩm minh bạch và hữu ích:** Hộp thoại nổi thông minh Tooltip cung cấp mọi dữ liệu quan trọng về phân loại, chỉ số và vị trí tìm kiếm giúp giảm thiểu tối đa thời gian lúng túng của người chơi mới.
+3. **Sổ Tay Lữ Khách tinh tế và chống tràn chữ:** 4 phân hệ chính được bố trí khoa học, kết nối hoàn hảo với hệ thống hồi ức Hiệp Sĩ Đen và các tuyến khám phá thế giới mở.
+
+*Giai đoạn 6 đã hoàn thành xuất sắc toàn bộ các hạng mục nâng cấp UI/UX trong game HOLLOW WOODS.*
+
 
