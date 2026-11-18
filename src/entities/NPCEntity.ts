@@ -20,9 +20,13 @@ export type NPCDirection = 'down' | 'up' | 'left' | 'right';
 export class NPCEntity extends Phaser.GameObjects.Container {
   public spec: NPCSpec;
   public npcSprite: Phaser.GameObjects.Sprite;
-  private promptBubble: Phaser.GameObjects.Container;
   private namePlate: Phaser.GameObjects.Container;
+  private questIndicator: Phaser.GameObjects.Container;
+  private questStatus: 'none' | 'new' | 'complete' = 'none';
+  private questIndicatorText!: Phaser.GameObjects.Text;
+  private questIndicatorBg!: Phaser.GameObjects.Graphics;
   private isPlayerNearby: boolean = false;
+  private isShowingNamePlate: boolean = false;
   private currentDirection: NPCDirection = 'down';
   private baseId: string = 'garth';
 
@@ -34,9 +38,9 @@ export class NPCEntity extends Phaser.GameObjects.Container {
   private isPatrolling: boolean = false;
   private isWaitingAtPatrolPoint: boolean = false;
   private waitTimer: number = 0;
-  private bubbleTween?: Phaser.Tweens.Tween;
+  private namePlateTween?: Phaser.Tweens.Tween;
+  private indicatorTween?: Phaser.Tweens.Tween;
   private headOffsetY: number = 52;
-  private bubbleOffsetY: number = 72;
 
   constructor(scene: Phaser.Scene, spec: NPCSpec) {
     super(scene, spec.x, spec.y);
@@ -72,13 +76,10 @@ export class NPCEntity extends Phaser.GameObjects.Container {
 
     if (this.baseId === 'finn') {
       this.headOffsetY = 42;
-      this.bubbleOffsetY = 60;
     } else if (this.baseId === 'bram') {
       this.headOffsetY = 56;
-      this.bubbleOffsetY = 76;
     } else {
       this.headOffsetY = 52;
-      this.bubbleOffsetY = 72;
     }
 
     // 3. V1.5-09: Đồng bộ kích thước bóng đổ elip mềm dưới chân tương ứng chiều rộng vai từng NPC
@@ -122,11 +123,11 @@ export class NPCEntity extends Phaser.GameObjects.Container {
     // Khởi chạy hoạt ảnh ban đầu (mặc định idle)
     this.playDirectionalAnim('idle', 'down');
 
-    // 5. Bảng Nhãn Tên & Vai Trò (Scene-level Container đặt depth 5000, không bị mái nhà / Tháp Chuông che)
+    // 5. Bảng Nhãn Tên & Vai Trò (Scene-level Container đặt depth 5000, ẩn mặc định, fade-in 150ms khi <= 95px)
     this.namePlate = this.createNamePlate(scene, spec);
 
-    // 6. Bong bóng tương tác [E] Trò Chuyện (Đặt depth 5001, chỉ hiện khi người chơi ở gần)
-    this.promptBubble = this.createPromptBubble(scene);
+    // 6. Biểu tượng Nhiệm Vụ lơ lửng tinh tế khi ở xa > 95px (!: nhiệm vụ mới, ?: trả nhiệm vụ)
+    this.questIndicator = this.createQuestIndicator(scene);
 
     scene.add.existing(this);
     // Depth sorting nhân vật theo tọa độ Y chân
@@ -341,24 +342,26 @@ export class NPCEntity extends Phaser.GameObjects.Container {
   }
 
   /**
-   * Bảng nhãn tên và chức vụ NPC với khung nền đen mờ gọn gàng phía sau chữ (depth = 5000)
+   * Bảng nhãn tên và chức vụ NPC với khung nền đen mờ tinh tế (depth = 5000, mặc định ẩn, fade-in 150ms khi <= 95px)
    */
   private createNamePlate(scene: Phaser.Scene, spec: NPCSpec): Phaser.GameObjects.Container {
     // V1.5-09: Đặt độc lập trong scene phía trên đỉnh đầu nhân vật theo headOffsetY
     const container = scene.add.container(spec.x, spec.y - this.headOffsetY);
     container.setDepth(5000);
+    container.setAlpha(0);
+    container.setVisible(false);
 
-    const badgeW = 84;
-    const badgeH = 22;
+    const badgeW = 100;
+    const badgeH = 32;
 
     const bg = scene.add.graphics();
-    // Khung nền đen mờ gọn gàng tương phản cao (opacity 0.90)
-    bg.fillStyle(0x090d0b, 0.90);
+    // Khung nền đen mờ gọn gàng tương phản cao (opacity 0.94)
+    bg.fillStyle(0x090d0b, 0.94);
     bg.fillRoundedRect(-badgeW / 2, -badgeH / 2, badgeW, badgeH, 4);
     // Viền đồng cổ kép sắc sảo không bị chìm trong sương
     bg.lineStyle(1.5, 0x9b7b4d, 0.95);
     bg.strokeRoundedRect(-badgeW / 2, -badgeH / 2, badgeW, badgeH, 4);
-    bg.lineStyle(0.5, 0xd4af37, 0.45);
+    bg.lineStyle(0.5, 0xd4af37, 0.5);
     bg.strokeRoundedRect(-badgeW / 2 + 1.5, -badgeH / 2 + 1.5, badgeW - 3, badgeH - 3, 3);
 
     // Biểu tượng đại diện chức danh
@@ -371,20 +374,20 @@ export class NPCEntity extends Phaser.GameObjects.Container {
 
     // Dòng 1: Tên NPC (vàng kim đậm sắc nét)
     const cleanName = spec.name.replace(/\s*\(.*\)/, '').trim();
-    const nameText = HDTextHelper.createText(scene, 0, -5, `${icon} ${cleanName}`, {
-      fontSize: '9px',
+    const nameText = HDTextHelper.createText(scene, 0, -6, `${icon} ${cleanName}`, {
+      fontSize: '9.5px',
       fontStyle: 'bold',
       color: '#f1c40f',
       stroke: '#000000',
       strokeThickness: 2
     }).setOrigin(0.5, 0.5);
 
-    // Dòng 2: Chức danh / Vai trò (ngà ấm áp)
-    const titleText = HDTextHelper.createText(scene, 0, 5, spec.title, {
+    // Dòng 2: Chức danh / Vai trò + gợi ý [E] (ngà ấm áp)
+    const titleText = HDTextHelper.createText(scene, 0, 7, `${spec.title} • [E]`, {
       fontSize: '7.5px',
       color: '#d8ccb8',
       stroke: '#000000',
-      strokeThickness: 1
+      strokeThickness: 1.5
     }).setOrigin(0.5, 0.5);
 
     container.add([bg, nameText, titleText]);
@@ -392,51 +395,73 @@ export class NPCEntity extends Phaser.GameObjects.Container {
   }
 
   /**
-   * Bong bóng nhắc tương tác [E] Trò chuyện (depth = 5001, mặc định ẩn)
+   * Biểu tượng nhiệm vụ nhỏ tinh tế lơ lửng trên đầu NPC khi người chơi ở xa (> 95px)
+   * (!: nhiệm vụ mới, ?: trả nhiệm vụ)
    */
-  /**
-   * Bong bóng nhắc tương tác [E] Trò chuyện (depth = 5001, mặc định ẩn, bán trong suốt chuẩn C4-13-07)
-   */
-  private createPromptBubble(scene: Phaser.Scene): Phaser.GameObjects.Container {
-    const container = scene.add.container(this.spec.x, this.spec.y - this.bubbleOffsetY);
-    container.setDepth(5001);
+  private createQuestIndicator(scene: Phaser.Scene): Phaser.GameObjects.Container {
+    const container = scene.add.container(this.spec.x, this.spec.y - this.headOffsetY - 12);
+    container.setDepth(5002);
+    container.setVisible(false);
 
-    const bubbleBg = scene.add.graphics();
-    // Nền bán trong suốt tinh tế (alpha 0.70) chống đè che tầm nhìn
-    bubbleBg.fillStyle(0x090e15, 0.70);
-    bubbleBg.fillRoundedRect(-32, -9, 64, 18, 5);
-    bubbleBg.lineStyle(1, 0xd4af37, 0.75);
-    bubbleBg.strokeRoundedRect(-32, -9, 64, 18, 5);
+    this.questIndicatorBg = scene.add.graphics();
+    this.questIndicatorBg.fillStyle(0x090e15, 0.92);
+    this.questIndicatorBg.fillCircle(0, 0, 8.5);
+    this.questIndicatorBg.lineStyle(1.5, 0xf39c12, 1);
+    this.questIndicatorBg.strokeCircle(0, 0, 8.5);
 
-    // Mũi nhọn hướng xuống bảng tên
-    bubbleBg.fillStyle(0x090e15, 0.70);
-    bubbleBg.fillTriangle(-3, 9, 3, 9, 0, 12);
-    bubbleBg.lineStyle(1, 0xd4af37, 0.75);
-    bubbleBg.lineBetween(-3, 9, 0, 12);
-    bubbleBg.lineBetween(3, 9, 0, 12);
-
-    const bubbleText = HDTextHelper.createText(scene, 0, 0, '[E] Trò chuyện', {
-      fontSize: '8.5px',
+    this.questIndicatorText = HDTextHelper.createText(scene, 0, 0, '!', {
+      fontSize: '11px',
       fontStyle: 'bold',
-      color: '#f1c40f',
+      color: '#f39c12',
       stroke: '#000000',
       strokeThickness: 2
     }).setOrigin(0.5, 0.5);
 
-    container.add([bubbleBg, bubbleText]);
-    container.setVisible(false);
+    container.add([this.questIndicatorBg, this.questIndicatorText]);
 
-    // Hiệu ứng nhịp bập bùng nhẹ nhàng
-    this.bubbleTween = scene.tweens.add({
+    // Hiệu ứng nhấp nhô nhẹ lơ lửng (bobbing +-3px)
+    this.indicatorTween = scene.tweens.add({
       targets: container,
-      y: this.spec.y - 83,
-      duration: 800,
+      y: this.spec.y - this.headOffsetY - 16,
+      duration: 750,
       yoyo: true,
       repeat: -1,
       ease: 'Sine.easeInOut'
     });
 
     return container;
+  }
+
+  /**
+   * Cập nhật trạng thái nhiệm vụ của NPC ('none' | 'new' | 'complete')
+   */
+  public setQuestStatus(status: 'none' | 'new' | 'complete'): void {
+    if (this.questStatus === status) return;
+    this.questStatus = status;
+
+    if (status === 'none') {
+      this.questIndicator.setVisible(false);
+      return;
+    }
+
+    const isNew = status === 'new';
+    const color = isNew ? 0xf39c12 : 0xf1c40f;
+    const colorHex = isNew ? '#f39c12' : '#f1c40f';
+    const char = isNew ? '!' : '?';
+
+    this.questIndicatorBg.clear();
+    this.questIndicatorBg.fillStyle(0x090e15, 0.92);
+    this.questIndicatorBg.fillCircle(0, 0, 8.5);
+    this.questIndicatorBg.lineStyle(1.5, color, 1);
+    this.questIndicatorBg.strokeCircle(0, 0, 8.5);
+
+    this.questIndicatorText.setText(char);
+    this.questIndicatorText.setColor(colorHex);
+
+    // Chỉ hiển thị biểu tượng nếu nhãn tên chưa mở
+    if (!this.isShowingNamePlate) {
+      this.questIndicator.setVisible(true);
+    }
   }
 
   /**
@@ -504,30 +529,43 @@ export class NPCEntity extends Phaser.GameObjects.Container {
   }
 
   /**
-   * C4-13-07: Cập nhật trạng thái người chơi ở gần với độ mờ gợi ý theo khoảng cách và xoay hướng nhìn
+   * V15-25: Cập nhật hiển thị nhãn tên mượt mà theo khoảng cách <= 95px cho đúng 1 NPC gần nhất
    */
-  public setNearby(nearby: boolean, playerX?: number, playerY?: number, distance?: number): void {
-    let proximityAlpha = 1.0;
-    if (distance !== undefined) {
-      if (distance <= 38) {
-        proximityAlpha = 1.0;
-        nearby = true;
-      } else if (distance <= 65) {
-        proximityAlpha = 0.45;
-        nearby = true;
-      } else {
-        nearby = false;
-        proximityAlpha = 0;
+  public setNearby(nearby: boolean, playerX?: number, playerY?: number, distance?: number, isClosest: boolean = true): void {
+    this.isPlayerNearby = nearby;
+    const shouldShowPlate = isClosest && distance !== undefined && distance <= 95;
+
+    if (shouldShowPlate !== this.isShowingNamePlate) {
+      this.isShowingNamePlate = shouldShowPlate;
+      if (this.namePlateTween) {
+        this.namePlateTween.stop();
+        this.namePlateTween.remove();
+        this.namePlateTween = undefined;
       }
-    }
 
-    if (this.isPlayerNearby !== nearby) {
-      this.isPlayerNearby = nearby;
-      this.promptBubble.setVisible(nearby);
-    }
-
-    if (nearby) {
-      this.promptBubble.setAlpha(proximityAlpha);
+      if (shouldShowPlate) {
+        this.questIndicator.setVisible(false);
+        this.namePlate.setVisible(true);
+        this.namePlateTween = this.scene.tweens.add({
+          targets: this.namePlate,
+          alpha: 1,
+          duration: 150,
+          ease: 'Quad.easeOut'
+        });
+      } else {
+        this.namePlateTween = this.scene.tweens.add({
+          targets: this.namePlate,
+          alpha: 0,
+          duration: 150,
+          ease: 'Quad.easeIn',
+          onComplete: () => {
+            this.namePlate.setVisible(false);
+            if (this.questStatus !== 'none') {
+              this.questIndicator.setVisible(true);
+            }
+          }
+        });
+      }
     }
 
     // Hiệp Sĩ Canh Lửa: giữ nguyên tư thế quỳ canh lửa hướng về bếp lửa hồng cho đến khi nhấn [E] đối thoại
@@ -558,7 +596,7 @@ export class NPCEntity extends Phaser.GameObjects.Container {
   }
 
   /**
-   * Cập nhật lộ trình tuần tra và đồng bộ vị trí NamePlate & PromptBubble
+   * Cập nhật lộ trình tuần tra và đồng bộ vị trí NamePlate & QuestIndicator
    */
   public update(delta: number): void {
     // C4-13-17: Đồng bộ tọa độ hộp va chạm vật lý theo vị trí thực tế của NPC
@@ -572,16 +610,14 @@ export class NPCEntity extends Phaser.GameObjects.Container {
       this.setDepth(targetDepth);
     }
 
-    // Đồng bộ vị trí NamePlate và PromptBubble theo NPC
+    // Đồng bộ vị trí NamePlate và QuestIndicator theo NPC
     if (this.namePlate) {
       this.namePlate.setPosition(this.x, this.y - this.headOffsetY);
     }
-    if (this.promptBubble) {
-      const baseY = this.y - this.bubbleOffsetY;
-      if (!this.bubbleTween || !this.bubbleTween.isPlaying()) {
-        this.promptBubble.setPosition(this.x, baseY);
-      } else {
-        this.promptBubble.x = this.x;
+    if (this.questIndicator) {
+      this.questIndicator.x = this.x;
+      if (!this.indicatorTween || !this.indicatorTween.isPlaying()) {
+        this.questIndicator.y = this.y - this.headOffsetY - 12;
       }
     }
 
@@ -629,21 +665,27 @@ export class NPCEntity extends Phaser.GameObjects.Container {
 
   public override setVisible(value: boolean): this {
     super.setVisible(value);
-    if (this.namePlate) this.namePlate.setVisible(value);
-    if (this.promptBubble) this.promptBubble.setVisible(value && this.isPlayerNearby);
+    if (this.namePlate) this.namePlate.setVisible(value && this.isShowingNamePlate);
+    if (this.questIndicator) this.questIndicator.setVisible(value && !this.isShowingNamePlate && this.questStatus !== 'none');
     return this;
   }
 
   public override destroy(fromScene?: boolean): void {
-    if (this.bubbleTween) {
-      this.bubbleTween.stop();
-      this.bubbleTween.remove();
+    if (this.namePlateTween) {
+      this.namePlateTween.stop();
+      this.namePlateTween.remove();
+      this.namePlateTween = undefined;
+    }
+    if (this.indicatorTween) {
+      this.indicatorTween.stop();
+      this.indicatorTween.remove();
+      this.indicatorTween = undefined;
     }
     if (this.namePlate) {
       this.namePlate.destroy();
     }
-    if (this.promptBubble) {
-      this.promptBubble.destroy();
+    if (this.questIndicator) {
+      this.questIndicator.destroy();
     }
     super.destroy(fromScene);
   }

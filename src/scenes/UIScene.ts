@@ -2194,29 +2194,45 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   /**
-   * Dựng khung hộp thoại chuẩn HD 1280×720 đặt tại (640, 590) kích thước 1060×185 px (GATE 1A)
+   * Dựng khung hộp thoại chuẩn HD 1280×720 đặt tại (640, 595) kích thước 1060×180 px (GATE 1A - V15-25)
    */
   private buildDialogueUI(): void {
     if (this.dialogueContainer) return;
 
     const boxWidth = 1060;
-    const boxHeight = 185;
+    const boxHeight = 180;
     const halfW = boxWidth / 2;
     const halfH = boxHeight / 2;
 
-    this.dialogueContainer = this.add.container(640, 590);
+    this.dialogueContainer = this.add.container(640, 595);
     this.dialogueContainer.setDepth(9000);
 
-    // Nền hộp thoại màu đá đen trung cổ viền vàng mộc sang trọng
+    // Nền hộp thoại giấy da cổ sẫm màu viền đồng cổ kính (V15-25)
     const bg = this.add.graphics();
-    bg.fillStyle(0x0a0e14, 0.96);
-    bg.fillRoundedRect(-halfW, -halfH, boxWidth, boxHeight, 10);
-    bg.lineStyle(2, 0xd4af37, 1);
-    bg.strokeRoundedRect(-halfW, -halfH, boxWidth, boxHeight, 10);
+    bg.fillStyle(0x140e0a, 0.96);
+    bg.fillRoundedRect(-halfW, -halfH, boxWidth, boxHeight, 8);
+    // Viền đồng kép cổ kính
+    bg.lineStyle(2, 0x6e5228, 1);
+    bg.strokeRoundedRect(-halfW, -halfH, boxWidth, boxHeight, 8);
+    bg.lineStyle(1, 0x8c6d3b, 0.85);
+    bg.strokeRoundedRect(-halfW + 3, -halfH + 3, boxWidth - 6, boxHeight - 6, 6);
 
-    // Viền lót bên trong tăng chiều sâu mỹ thuật
-    bg.lineStyle(1, 0x4a3b22, 0.7);
-    bg.strokeRoundedRect(-halfW + 4, -halfH + 4, boxWidth - 8, boxHeight - 8, 8);
+    // 4 Đinh tán đồng tại 4 góc
+    const rivetOffset = 11;
+    const drawRivet = (rx: number, ry: number) => {
+      bg.fillStyle(0x2d1f14, 0.95);
+      bg.fillCircle(rx, ry, 3.5);
+      bg.fillStyle(0xb89058, 0.95);
+      bg.fillCircle(rx, ry, 2.2);
+    };
+    drawRivet(-halfW + rivetOffset, -halfH + rivetOffset);
+    drawRivet(halfW - rivetOffset, -halfH + rivetOffset);
+    drawRivet(-halfW + rivetOffset, halfH - rivetOffset);
+    drawRivet(halfW - rivetOffset, halfH - rivetOffset);
+
+    // Vách ngăn kim loại mảnh phân chia khung ảnh chân dung và nội dung thoại
+    bg.lineStyle(1, 0x4a361e, 0.65);
+    bg.lineBetween(-halfW + 104, -halfH + 16, -halfW + 104, halfH - 16);
 
     // Hỗ trợ click chuột trực tiếp lên hộp thoại để tiếp tục
     bg.setInteractive(
@@ -2232,45 +2248,53 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       }
     });
 
-    // Khung chân dung bên trái (140×140 px, căn giữa theo trục Y: -70 đến +70)
+    // Khung chân dung bên trái đóng viền trang trọng (76×76 px, căn giữa theo trục Y: -38 đến +38)
     const portraitBg = this.add.graphics();
-    portraitBg.fillStyle(0x151b24, 1);
-    portraitBg.fillRoundedRect(-halfW + 24, -70, 140, 140, 8);
-    portraitBg.lineStyle(2, 0xb8860b, 1);
-    portraitBg.strokeRoundedRect(-halfW + 24, -70, 140, 140, 8);
+    const pX = -halfW + 56;
+    const pY = 0;
+    const pSize = 76;
+    portraitBg.fillStyle(0x1a1410, 1);
+    portraitBg.fillRoundedRect(pX - pSize / 2, pY - pSize / 2, pSize, pSize, 6);
+    portraitBg.lineStyle(1.5, 0x8c6d3b, 1);
+    portraitBg.strokeRoundedRect(pX - pSize / 2, pY - pSize / 2, pSize, pSize, 6);
+    portraitBg.lineStyle(0.5, 0xd4af37, 0.5);
+    portraitBg.strokeRoundedRect(pX - pSize / 2 + 2, pY - pSize / 2 + 2, pSize - 4, pSize - 4, 4);
 
-    // Chân dung người nói (Tâm tại x = -halfW + 94, y = 0, kích thước hiển thị 124×124 px)
-    this.dialoguePortraitSprite = this.add.image(-halfW + 94, 0, 'satyr_portrait');
-    this.dialoguePortraitSprite.setDisplaySize(124, 124);
+    // Chân dung người nói chuẩn Pixel Art 64×64 px nguyên bản sắc nét
+    this.dialoguePortraitSprite = this.add.image(pX, pY, 'satyr_portrait');
+    this.dialoguePortraitSprite.setDisplaySize(64, 64);
 
-    // Tên người nói chuẩn HD Tiếng Việt (Cỡ 24px, dịch phải 18px & padding 14px chống cắt lẹm nét chữ C4-13-14 / C4-132-07)
-    // padding: { left: 12, right: 12, top: 6, bottom: 6 }
-    this.dialogueSpeakerText = HDTextHelper.createText(this, -halfW + 202, -halfH + 20, '', {
-      fontSize: '24px',
+    // Tên người nói nổi bật chuẩn HD Tiếng Việt (Cỡ 20px bold vàng kim, kèm lề an toàn)
+    this.dialogueSpeakerText = HDTextHelper.createText(this, -halfW + 120, -halfH + 20, '', {
+      fontSize: '20px',
       fontStyle: 'bold',
-      color: '#f39c12',
+      color: '#f1c40f',
       stroke: '#000000',
       strokeThickness: 3,
-      padding: { left: 14, right: 14, top: 8, bottom: 8 }
+      padding: { left: 4, right: 8, top: 2, bottom: 2 }
     });
 
-    // Nội dung câu thoại chuẩn HD Tiếng Việt (Cỡ đúng chuẩn 20px, dịch phải 18px, padding 14px, wrap 810 px)
-    // padding: { left: 12, right: 12, top: 6, bottom: 6 }
-    this.dialogueContentText = HDTextHelper.createText(this, -halfW + 202, -halfH + 60, '', {
-      fontSize: '20px',
-      color: '#f8f9fa',
-      wordWrap: { width: boxWidth - 250 },
-      lineSpacing: 8,
+    // Vạch đồng kẻ ngang mảnh trang trí dưới tên người nói
+    const nameDivider = this.add.graphics();
+    nameDivider.lineStyle(1, 0x5c4224, 0.7);
+    nameDivider.lineBetween(-halfW + 120, -halfH + 46, halfW - 24, -halfH + 46);
+
+    // Nội dung câu thoại chuẩn HD Tiếng Việt (Cỡ 18px ngà ấm, lề đệm an toàn padding chống lẹm chữ 100%)
+    this.dialogueContentText = HDTextHelper.createText(this, -halfW + 120, -halfH + 54, '', {
+      fontSize: '18px',
+      color: '#f5eedc',
+      wordWrap: { width: boxWidth - 160 },
+      lineSpacing: 7,
       stroke: '#000000',
-      strokeThickness: 1,
-      padding: { left: 14, right: 14, top: 8, bottom: 8 }
+      strokeThickness: 1.5,
+      padding: { left: 8, right: 8, top: 4, bottom: 4 }
     });
 
     // Lời nhắc tiếp tục chuẩn HD Tiếng Việt
-    this.dialogueContinuePrompt = HDTextHelper.createText(this, halfW - 25, halfH - 25, '▶ [E / SPACE]', {
-      fontSize: '15px',
+    this.dialogueContinuePrompt = HDTextHelper.createText(this, halfW - 28, halfH - 22, '▶ [E / SPACE]', {
+      fontSize: '14px',
       fontStyle: 'bold',
-      color: '#bdc3c7'
+      color: '#d8ccb8'
     }).setOrigin(1, 0.5);
 
     this.dialogueContainer.add([
@@ -2278,6 +2302,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       portraitBg,
       this.dialoguePortraitSprite,
       this.dialogueSpeakerText,
+      nameDivider,
       this.dialogueContentText,
       this.dialogueContinuePrompt
     ]);
@@ -2318,7 +2343,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       }
       if (this.textures.exists(key)) {
         this.dialoguePortraitSprite.setTexture(key);
-        this.dialoguePortraitSprite.setDisplaySize(124, 124);
+        this.dialoguePortraitSprite.setDisplaySize(64, 64);
         this.dialoguePortraitSprite.setVisible(true);
       } else {
         this.dialoguePortraitSprite.setVisible(false);
@@ -2350,19 +2375,19 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   /**
-   * V1.5 - V15-16: Hiển thị các nút Lựa Chọn Hội Thoại (Interactive Dialogue Choices)
+   * V1.5 - V15-16 & V15-25: Hiển thị các nút Lựa Chọn Hội Thoại (Interactive Dialogue Choices)
    * Nổi trang nhã ngay phía trên hộp thoại chính, hỗ trợ click chuột hoặc phím số [1], [2], [3]
    */
   public showChoices(choices: Array<{ text: string; index: number }>, onSelect: (index: number) => void): void {
     if (!this.dialogueChoicesContainer) {
-      this.dialogueChoicesContainer = this.add.container(640, 488);
+      this.dialogueChoicesContainer = this.add.container(640, 485);
       this.dialogueChoicesContainer.setDepth(9100);
     }
 
     this.dialogueChoicesContainer.removeAll(true);
     this.dialogueChoicesContainer.setVisible(true);
 
-    const btnWidth = 840;
+    const btnWidth = 920;
     const btnHeight = 36;
     const spacing = 8;
     const totalCount = choices.length;
@@ -2376,10 +2401,12 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       const bg = this.add.graphics();
       const drawBtn = (isHover: boolean) => {
         bg.clear();
-        bg.fillStyle(isHover ? 0x182433 : 0x0c1117, isHover ? 0.98 : 0.93);
+        bg.fillStyle(isHover ? 0x261a12 : 0x140f0c, isHover ? 0.98 : 0.94);
         bg.fillRoundedRect(-btnWidth / 2, -btnHeight / 2, btnWidth, btnHeight, 6);
-        bg.lineStyle(isHover ? 2 : 1, isHover ? 0xf1c40f : 0x8a7238, 1);
+        bg.lineStyle(isHover ? 2 : 1.5, isHover ? 0xf1c40f : 0x7a5e35, 1);
         bg.strokeRoundedRect(-btnWidth / 2, -btnHeight / 2, btnWidth, btnHeight, 6);
+        bg.lineStyle(0.5, 0x4a361e, 0.7);
+        bg.strokeRoundedRect(-btnWidth / 2 + 1.5, -btnHeight / 2 + 1.5, btnWidth - 3, btnHeight - 3, 5);
       };
       drawBtn(false);
 
@@ -2406,7 +2433,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
       const choiceText = HDTextHelper.createText(this, -btnWidth / 2 + 56, 0, choice.text, {
         fontSize: '15px',
-        color: '#ecf0f1'
+        color: '#f5eedc',
+        padding: { left: 4, right: 8, top: 2, bottom: 2 }
       }).setOrigin(0, 0.5);
 
       btnContainer.add([bg, keyBadge, choiceText]);

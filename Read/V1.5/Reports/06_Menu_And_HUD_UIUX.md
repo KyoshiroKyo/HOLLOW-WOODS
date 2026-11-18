@@ -598,3 +598,155 @@ Bước **V15-24** đã giải quyết triệt để và dứt điểm toàn b�
 4. Bố cục đỉnh màn hình thông thoáng, giải phóng hành lang trung tâm phía Bắc rộng $314\text{ px}$ kết hợp tính năng thu gọn khung nhiệm vụ mang lại trải nghiệm khám phá vô cùng thoải mái.
 
 *Dự án đã sẵn sàng tiếp tục các bước tiếp theo của Giai đoạn 6.*
+
+---
+
+## BÁO CÁO KỸ THUẬT V15-25: TỐI ƯU HÓA NHÃN TÊN NPC THÔNG MINH THEO KHOẢNG CÁCH VÀ NÂNG CẤP KHUNG HỘI THOẠI TRONG GAMESCENE, NPCENTITY, DIALOGUESYSTEM, UISCENE
+
+**Dự án:** HOLLOW WOODS: The Fog That Remembers  
+**Mã tài liệu:** `V15-25` / `06_Menu_And_HUD_UIUX.md`  
+**Giai đoạn:** Giai đoạn 6 — Nâng cấp toàn diện UI/UX trong game HOLLOW WOODS  
+**Phiên bản:** V1.5 (Visual & Gameplay Overhaul)  
+**Nhánh Git:** `feat/v1.5-visual-gameplay-overhaul`  
+**Ngày thực hiện:** 19/11/2026  
+**Trạng thái:** Hoàn tất xuất sắc (25/25 assertions PASS 100%, 0 lỗi TypeScript, bản dựng Vite Production thành công)
+
+---
+
+### 1. HIỆN TRẠNG & MỤC TIÊU CẢI TIẾN
+
+#### 1.1. Tồn tại trước khi nâng cấp
+- **Các bảng tên NPC cố định khổng lồ gây rối mắt:**
+  + Trước đây, mỗi NPC trong làng Bellhollow đều mang một bảng tên hình chữ nhật cố định liên tục (`visible = true`, `alpha = 1`) ở depth 5000. Dù người chơi đứng ở bất cứ đâu trên bản đồ, các bảng tên đều hiển thị che kín tầm nhìn.
+  + Khi người chơi bước lại gần, hệ thống lại sinh thêm một bong bóng `[E] Trò chuyện` (`promptBubble`) lơ lửng ngay phía trên bảng tên, tạo thành 2 khối hộp đè chồng lên nhau rất mất thẩm mỹ.
+  + Khi nhiều NPC đứng gần nhau, bảng tên của họ tranh chấp và đè lên nhau, gây nhiễu loạn không gian làng.
+- **Khung hội thoại đáy màn hình thô sơ và chân dung bị vỡ nét:**
+  + Khung chân dung bên trái hộp thoại hiển thị với kích thước phóng đại $124\times 124\text{ px}$ trong khung $140\times 140\text{ px}$, khiến các tài nguyên chân dung chuẩn Pixel Art $64\times 64\text{ px}$ bị upscale mờ nhòe và mất đi độ sắc nét nguyên bản.
+  + Hộp thoại màu đá đen đơn giản chưa toát lên chất Dark Woodland Folklore cổ kính viền đồng của làng Bellhollow.
+  + Nội dung văn bản thoại và tên nhân vật chưa có vách ngăn mỹ thuật trang trọng và lề đệm an toàn, dễ gây cảm giác bí bách khi đọc các đoạn hội thoại dài.
+
+#### 1.2. Mục tiêu kỹ thuật bước V15-25
+1. **Hệ thống Nhãn Tên Thông Minh theo Khoảng Cách (Smart Distance-based Nameplates):**
+   - Khi ở xa ($> 95\text{px}$): Ẩn hoàn toàn bảng tên chữ nhật; chỉ hiển thị một biểu tượng nhỏ tinh tế lơ lửng nhẹ trên đầu nếu NPC đó có nhiệm vụ mới (`"!"` vàng hổ phách) hoặc hoàn thành nhiệm vụ (`"?"` vàng kim sáng), có hiệu ứng nhấp nhô nhẹ ($\pm 3\text{px}$).
+   - Khi ở gần ($\le 95\text{px}$): Hiển thị mượt mà (fade-in $150\text{ms}$) bảng tên gọn gàng kích thước $100\times 32\text{px}$ gồm Icon + Tên + Chức danh ngắn + gợi ý phím `"[E]"` cho **đúng 1 NPC gần nhất**.
+   - Hợp nhất hoàn toàn gợi ý `[E]` vào nhãn tên, xóa bỏ triệt để tình trạng 2 hộp chữ nhật đè chồng nhau.
+2. **Nâng cấp Khung Hội Thoại Đáy Màn Hình Chuẩn Nghệ Thuật Dark Woodland Folklore:**
+   - Kích thước chuẩn HD $1060\times 180\text{px}$ tại $(640, 595)$.
+   - Nền giấy da cổ sẫm `0x140e0a` viền đồng kép `0x6e5228` và `0x8c6d3b` nẹp 4 đinh tán đồng cổ `0xb89058` tại 4 góc.
+   - Khung chân dung bên trái $76\times 76\text{px}$ đóng viền trang trọng, hiển thị chân dung chuẩn Pixel Art **$64\times 64\text{ px}$** (`setDisplaySize(64, 64)`) sắc sảo nguyên bản.
+   - Tên người nói $20\text{px}$ bold vàng kim `#f1c40f` kèm vạch kẻ ngang kim loại mảnh ngăn cách phía dưới.
+   - Văn bản thoại $18\text{px}$ ngà ấm `#f5eedc` với lề đệm an toàn `padding: { left: 8, right: 8, top: 4, bottom: 4 }` và `wordWrap: 900px`, chống lẹm chữ tiếng Việt 100%.
+   - Nút lựa chọn hội thoại tương tác $920\times 36\text{px}$ nền da gỗ `0x140f0c`, viền đồng `0x7a5e35`, hover vàng kim `#f1c40f` và badge phím tắt `[1]`, `[2]`, `[3]` sắc nét.
+
+---
+
+### 2. SƠ ĐỒ KIẾN TRÚC ĐIỀU PHỐI TƯƠNG TÁC VÀ GIAO DIỆN HỘI THOẠI
+
+```mermaid
+flowchart TD
+    subgraph DistanceDetection["Quét Khoảng Cách & Phân Phối Trạng Thái (GameScene.ts)"]
+        P["SatyrPlayer (px, py)"] --> Scan["Quét Khoảng Cách tới Toàn Bộ Danh Sách NPC"]
+        Scan --> QStat["Cập nhật Trạng Thái Nhiệm Vụ NPC<br/>(getNPCQuestStatus -> setQuestStatus)"]
+        Scan --> Closest["Tìm đúng 1 closestNPC trong phạm vi dist <= 95px"]
+        Closest --> CheckFar{"NPC có phải là closestNPC<br/>VÀ dist <= 95px?"}
+    end
+
+    subgraph NPCPresentation["Hiển Thị Nhãn Thực Thể (NPCEntity.ts)"]
+        CheckFar -- "KHÔNG (Ở xa > 95px hoặc không phải gần nhất)" --> HidePlate["Fade-out NamePlate (150ms -> visible = false)"]
+        HidePlate --> QuestCheck{"questStatus !== 'none'?"}
+        QuestCheck -- "Có quest mới ('new')" --> ShowExcl["Hiện biểu tượng '!' vàng hổ phách<br/>nhấp nhô nhẹ lơ lửng (+-3px)"]
+        QuestCheck -- "Hoàn thành quest ('complete')" --> ShowQuestMark["Hiện biểu tượng '?' vàng kim sáng<br/>nhấp nhô nhẹ lơ lửng (+-3px)"]
+        QuestCheck -- "Không có quest ('none')" --> CleanHead["Ẩn sạch sẽ trên đỉnh đầu (Zero Clutter)"]
+
+        CheckFar -- "CÓ (Đúng 1 NPC gần nhất <= 95px)" --> ShowPlate["Ẩn biểu tượng Quest Indicator<br/>Fade-in NamePlate (150ms, alpha: 0 -> 1)<br/>Khung 100x32px: Icon + Tên + Chức Danh • [E]"]
+    end
+
+    subgraph InteractionTrigger["Tương Tác Phím [E] & Hội Thoại (UIScene.ts)"]
+        ShowPlate --> RangeCheck{"dist <= 65px?"}
+        RangeCheck -- "Có" --> AddCandidate["Đưa duy nhất closestNPC vào candidates [E]"]
+        AddCandidate --> KeyE["Nhấn [E] Bắt Đầu Hội Thoại<br/>(dialogueSystem.startDialogue)"]
+        KeyE --> DialogueBox["Khung Hội Thoại Đáy Màn Hình (1060x180 px tại 640, 595)<br/>- Nền giấy da cổ sẫm 0x140e0a viền đồng kép & 4 đinh tán<br/>- Khung chân dung 76x76px chứa ảnh 64x64px nguyên bản<br/>- Tên người nói 20px vàng kim + Vạch kẻ ngang đồng<br/>- Nội dung thoại 18px ngà ấm + Padding an toàn chống lẹm nét<br/>- Nút tiếp tục ▶ [E / SPACE] nhấp nháy"]
+        DialogueBox --> ChoicesBox["Hộp Lựa Chọn Hội Thoại Nổi (920x36 px tại 640, 485)<br/>Nút da gỗ cổ viền đồng hover vàng kim + Badge [1], [2], [3]"]
+    end
+```
+
+---
+
+### 3. CHI TIẾT CÁC HẠNG MỤC NÂNG CẤP KỸ THUẬT
+
+#### 3.1. Tái Cấu Trúc Thực Thể NPCEntity (`src/entities/NPCEntity.ts`)
+- **Loại bỏ triệt để `promptBubble`:** Xóa bỏ hoàn toàn container `promptBubble` và tween liên quan nhằm loại bỏ vĩnh viễn hiện tượng 2 hộp đè chồng lên nhau.
+- **Tạo mới `questIndicator`:**
+  + Container đặt tại tọa độ đỉnh đầu `(this.x, this.y - this.headOffsetY - 12)` ở độ sâu `depth = 5002`.
+  + Nền tròn đen mờ bán kính $8.5\text{ px}$ (`0x090e15`, alpha 0.92), viền tròn đồng $1.5\text{ px}$.
+  + Chữ `"!"` màu vàng hổ phách `#f39c12` (khi có quest mới) hoặc `"?"` màu vàng kim sáng `#f1c40f` (khi sẵn sàng trả quest).
+  + Hoạt ảnh lơ lửng nhấp nhô mềm mại (`duration: 750ms`, `yoyo: true`, lặp vô hạn, biên độ $\pm 3\text{px}$).
+  + Mặc định khởi tạo `visible = false`.
+- **Tái thiết kế `namePlate` tinh gọn:**
+  + Kích thước vừa vặn $100\times 32\text{ px}$ đặt tại `(spec.x, spec.y - this.headOffsetY)` ở `depth = 5000`.
+  + Nền đen mờ `0x090d0b` (alpha 0.94), bo góc $r=4$, viền kép đồng cổ `0x9b7b4d` ($1.5\text{ px}$) và chỉ vàng mờ `0xd4af37` ($0.5\text{ px}$).
+  + Dòng 1 ($Y = -6$): Biểu tượng đại diện chức năng (`🛡️` Garth, `🔔` Edda, `🌿` Neris, `🔨` Bram, `📜` Finn, `🔥` Hiệp Sĩ Canh Lửa) + Tên NPC ($9.5\text{px}$ bold màu vàng kim `#f1c40f`).
+  + Dòng 2 ($Y = 7$): Chức danh rút gọn + gợi ý `[E]` ($7.5\text{px}$ ngà ấm `#d8ccb8`).
+  + Mặc định khởi tạo: `setAlpha(0)`, `setVisible(false)`.
+- **Cơ chế chuyển tiếp Fade-in / Fade-out $150\text{ms}$ (`setNearby`):**
+  + Tiếp nhận cờ `isClosest: boolean`. Chỉ khi `isClosest === true` VÀ `distance <= 95px` mới kích hoạt fade-in `namePlate` ($150\text{ms}$, `ease: 'Quad.easeOut'`) và ẩn `questIndicator`.
+  + Khi rời xa hoặc không còn là NPC gần nhất: fade-out `namePlate` ($150\text{ms}$, `ease: 'Quad.easeIn'`), khi kết thúc tween thì `setVisible(false)` và hiển thị lại `questIndicator` nếu `questStatus !== 'none'`.
+
+#### 3.2. Quản Lý Tương Tác & Trạng Thái Nhiệm Vụ Trong GameScene (`src/scenes/GameScene.ts`)
+- **Bộ nhận diện trạng thái nhiệm vụ `getNPCQuestStatus(npcId: string)`:**
+  + `npc_garth`: `'complete'` nếu nhặt được đèn tuần tra vỡ hoặc đã kiểm tra bia đá tiếng vọng; `'new'` nếu chưa trò chuyện mở đầu.
+  + `npc_edda`: `'complete'` nếu có khuôn đúc chuông cổ; `'new'` nếu chưa nói chuyện lần đầu.
+  + `npc_neris`: `'complete'` nếu có hoa mạch rễ hoặc rễ cây quý; `'new'` nếu chưa nhận hỗ trợ hạt giống thảo mộc.
+  + `npc_bram`: `'complete'` nếu có mảnh sắt cổ ngữ; `'new'` nếu chưa mở khóa hội thoại nhiệm vụ xưởng rèn.
+  + `npc_finn`: `'new'` nếu chưa hoàn thành lấy tin tức dị thường SQ05.
+  + `npc_campfire_knight`: `'complete'` nếu có kỷ vật vấy bẩn (Q3), sắt cổ ngữ (Q2) hoặc gỗ/nhựa thông (Q1); `'new'` khi có quest kế tiếp sẵn sàng nhận.
+- **Thuật toán quét chọn 1 NPC duy nhất:**
+  + Trong `updateInteraction(delta)`: Quét toàn bộ NPC để tính khoảng cách và cập nhật `setQuestStatus`.
+  + Tìm NPC có `dist <= 95px` và đạt khoảng cách tối thiểu `minNpcDist`.
+  + Gửi tín hiệu `isClosestIn95` riêng biệt cho từng NPC, triệt tiêu 100% tình trạng nhiều nhãn tên hiện cùng lúc.
+  + Chỉ đưa duy nhất `closestNPC` vào danh sách `candidates` tương tác `[E]` khi `minNpcDist <= 65px`.
+
+#### 3.3. Đại Tu Khung Hội Thoại Đáy Màn Hình Trong UIScene (`src/scenes/UIScene.ts`)
+- **Khung hộp thoại giấy da sẫm $1060\times 180\text{ px}$ tại $(640, 595)$:**
+  + Nền giấy da cổ thẫm `0x140e0a` (alpha 0.96) bo góc $8\text{ px}$.
+  + Viền đồng kép: viền ngoài `0x6e5228` ($2\text{ px}$), viền chỉ lót `0x8c6d3b` ($1\text{ px}$).
+  + 4 đinh tán đồng đúc tròn cổ điển tại 4 góc ($X \pm 519, Y \pm 79$) với lõi vàng đồng `0xb89058`.
+  + Vách kim loại mảnh phân chia khung ảnh chân dung và nội dung thoại tại $X = -426$.
+- **Khung chân dung Pixel Art $64\times 64\text{ px}$ chuẩn mực:**
+  + Khung ngoài $76\times 76\text{ px}$ nền sồi thẫm `0x1a1410`, viền đồng `0x8c6d3b` và chỉ vàng mờ `0xd4af37`.
+  + Đặt chân dung `dialoguePortraitSprite` chuẩn Pixel Art kích thước **$64\times 64\text{ px}$** (`setDisplaySize(64, 64)`), khắc phục hoàn toàn hiện tượng vỡ nét do phóng to $124\times 124\text{ px}$ trước đây.
+- **Bố cục văn bản & Vạch ngăn mỹ thuật:**
+  + Tên người nói: Đặt tại $(-410, -70)$, cỡ chữ $20\text{px}$ bold vàng kim `#f1c40f`, stroke đen $3\text{px}$.
+  + Vạch đồng kẻ ngang mảnh trang trí dưới tên người nói kéo dài từ $(-410, -44)$ đến $(506, -44)$.
+  + Nội dung câu thoại: Đặt tại $(-410, -36)$, cỡ chữ $18\text{px}$ ngà ấm `#f5eedc`, `lineSpacing: 7`, `wordWrap: 900px`, lề đệm `padding: { left: 8, right: 8, top: 4, bottom: 4 }` bảo đảm không bao giờ bị cắt lẹm dấu tiếng Việt.
+  + Lời nhắc tiếp tục: `▶ [E / SPACE]` đặt tại góc phải dưới $(502, 68)$ với hiệu ứng nhấp nháy êm dịu.
+- **Hộp lựa chọn hội thoại tương tác nổi ($920\times 36\text{ px}$ tại $Y=485$):**
+  + Nền da gỗ cổ `0x140f0c` (alpha 0.94), viền đồng `0x7a5e35` ($1.5\text{ px}$).
+  + Hiệu ứng rê chuột (Hover): nền chuyển sáng `0x261a12` (alpha 0.98), viền bừng sáng vàng kim `0xf1c40f` ($2\text{ px}$).
+  + Badge phím tắt `[1]`, `[2]`, `[3]` màu vàng hổ phách `#f39c12` bold $15\text{px}$.
+  + Chữ lựa chọn ngà sáng `#f5eedc` $15\text{px}$ căn lề trái thẳng thớm, phản hồi âm thanh bấm chọn ngay tức thì.
+
+---
+
+### 4. BẢNG TỔNG HỢP KIỂM THỬ BƯỚC V15-25
+
+| STT | Nhóm Kiểm Tra | Tệp Kịch Bản / Công Cụ | Tiêu Chí Kiểm Tra | Kết Quả |
+|:---:|:---|:---|:---|:---:|
+| 1 | **Thực Thể NPCEntity** | `verify_v15_25_npc_labels_and_dialogue.mjs` | Có `questIndicator`, quản lý 3 trạng thái `questStatus`, tween nhấp nhô 750ms $\pm 3\text{px}$, namePlate ẩn mặc định, fade-in 150ms khi $\le 95\text{px}$ & `isClosest`, xóa sạch promptBubble | **9 / 9 PASS** |
+| 2 | **Điều Phối GameScene** | `verify_v15_25_npc_labels_and_dialogue.mjs` | Hàm `getNPCQuestStatus` cho 6 NPC, tìm đúng 1 `closestNPC` trong $95\text{px}$, gửi cờ `isClosestIn95`, giới hạn tương tác `[E]` trong $65\text{px}$ | **5 / 5 PASS** |
+| 3 | **Giao Diện Hộp Thoại UIScene** | `verify_v15_25_npc_labels_and_dialogue.mjs` | Tọa độ $(640, 595)$, kích thước $1060\times 180\text{px}$, nền giấy da cổ `0x140e0a` viền đồng kép & 4 đinh tán, chân dung chuẩn $64\times 64\text{px}$, tên $20\text{px}$ vàng kim, thoại $18\text{px}$ ngà ấm có padding an toàn, nút choices $920\times 36\text{px}$ hover vàng kim | **10 / 10 PASS** |
+| 4 | **Tiện Ích PlayerState** | `verify_v15_25_npc_labels_and_dialogue.mjs` | Helper `isQuestTaskCompleted(questId, taskId)` kiểm tra tiến trình nhiệm vụ an toàn | **1 / 1 PASS** |
+| 5 | **Hồi Quy HUD Đáy V15-24** | `verify_v15_24_hud_redesign.mjs` | 8 ô HUD đáy không lặp nút, ô số [3] khẩn cấp, chỉ số sinh tồn $376\times 96$, đồng hồ tròn $X=704$ | **23 / 23 PASS** |
+| 6 | **Kiểm Tra Kiểu Dữ Liệu TypeScript** | `npx tsc --noEmit` | Kiểm tra nghiêm ngặt toàn bộ codebase với 0 lỗi kiểu dữ liệu | **0 LỖI (PASS)** |
+| 7 | **Đóng Gói Bản Dựng Production** | `npm run build` | Vite minify & Rollup chunking hoàn tất thành công trong 9.14s | **SUCCESS** |
+
+---
+
+### 5. KẾT LUẬN & ĐÁNH GIÁ BƯỚC V15-25
+
+Bước **V15-25** đã hoàn thành xuất sắc và toàn diện 2 mục tiêu lớn về trải nghiệm người dùng trong không gian làng và tương tác cốt truyện:
+1. **Không gian làng Bellhollow hoàn toàn sạch thoáng và thông minh:** Chấm dứt triệt để tình trạng các bảng tên khổng lồ che khuất tầm nhìn từ xa. Người chơi chỉ thấy các biểu tượng nhiệm vụ nhỏ lơ lửng tinh tế khi có quest, và nhãn tên chỉ xuất hiện mượt mà khi bước lại gần đúng 1 NPC muốn trò chuyện.
+2. **Khung hội thoại đạt đỉnh cao mỹ thuật Dark Woodland Folklore:** Tông màu giấy da cổ thẫm kết hợp viền đồng và đinh tán mang lại cảm giác nhập vai sâu sắc; chân dung hội thoại hiển thị đúng tỷ lệ Pixel Art $64\times 64\text{ px}$ sắc nét, cùng hệ thống nút lựa chọn tương tác $1, 2, 3$ vô cùng trực quan và dễ sử dụng.
+
+*Dự án đã sẵn sàng tiếp tục các bước tiếp theo của Giai đoạn 6.*
+

@@ -1294,6 +1294,97 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
+  /**
+   * V15-25: Xác định trạng thái nhiệm vụ của NPC để hiển thị biểu tượng lơ lửng khi ở xa (! hoặc ?)
+   */
+  private getNPCQuestStatus(npcId: string): 'none' | 'new' | 'complete' {
+    if (!this.playerState) return 'none';
+
+    if (npcId === 'npc_garth') {
+      const hasBrokenLantern = this.playerState.getItemCount('item_broken_patrol_lantern') > 0 || this.playerState.hasFlag('has_broken_lantern');
+      if (hasBrokenLantern && !this.playerState.hasFlag('garth_lantern_rewarded')) {
+        return 'complete';
+      }
+      if (this.playerState.hasFlag('inspected_echo_pillar') && !this.playerState.hasFlag('garth_patrol_rewarded')) {
+        return 'complete';
+      }
+      if (!this.playerState.hasFlag('talked_to_villagers') || !this.playerState.hasFlag('talked_to_garth')) {
+        return 'new';
+      }
+      return 'none';
+    }
+
+    if (npcId === 'npc_edda') {
+      if (this.playerState.hasFlag('has_bell_mold') && !this.playerState.hasFlag('edda_mold_rewarded')) {
+        return 'complete';
+      }
+      if (!this.playerState.hasFlag('talked_to_edda')) {
+        return 'new';
+      }
+      return 'none';
+    }
+
+    if (npcId === 'npc_neris') {
+      const hasRootFlower = this.playerState.getItemCount('item_root_flower') > 0 || this.playerState.hasFlag('has_root_flower');
+      if (hasRootFlower && !this.playerState.hasFlag('neris_flower_rewarded')) {
+        return 'complete';
+      }
+      if (this.playerState.hasFlag('has_rare_roots') && !this.playerState.hasFlag('neris_tea_rewarded')) {
+        return 'complete';
+      }
+      if (!this.playerState.hasFlag('talked_to_neris')) {
+        return 'new';
+      }
+      return 'none';
+    }
+
+    if (npcId === 'npc_bram') {
+      if (this.playerState.hasFlag('has_runed_iron_part') && !this.playerState.hasFlag('bram_iron_rewarded')) {
+        return 'complete';
+      }
+      if (!this.playerState.hasFlag('bram_iron_rewarded') && !this.playerState.hasFlag('bram_talked')) {
+        return 'new';
+      }
+      return 'none';
+    }
+
+    if (npcId === 'npc_finn') {
+      if (!this.playerState.isQuestTaskCompleted('SQ05_FINN_INTEL', 't1') && !this.playerState.hasFlag('finn_talked')) {
+        return 'new';
+      }
+      return 'none';
+    }
+
+    if (npcId === 'npc_campfire_knight') {
+      if (this.playerState.hasFlag('campfire_knight_q3_accepted') && !this.playerState.hasFlag('campfire_knight_q3_completed')) {
+        const hasCorruptedCrest = (this.playerState.getItemCount('quest_corrupted_knight_crest') > 0 ||
+                                   this.playerState.getItemCount('quest_corrupted_crest') > 0 ||
+                                   this.playerState.hasFlag('boss_hooded_knight_defeated'));
+        if (hasCorruptedCrest) return 'complete';
+      } else if (this.playerState.hasFlag('campfire_knight_q2_accepted') && !this.playerState.hasFlag('campfire_knight_q2_completed')) {
+        const hasRunedIron = (this.playerState.getItemCount('mat_runed_iron') > 0 ||
+                              this.playerState.getItemCount('item_knight_journal_page') > 0 ||
+                              this.playerState.hasFlag('has_runed_iron_part') ||
+                              this.playerState.hasFlag('workshop_visited'));
+        if (hasRunedIron) return 'complete';
+      } else if (this.playerState.hasFlag('campfire_knight_q1_accepted') && !this.playerState.hasFlag('campfire_knight_q1_completed')) {
+        const hasWoodAndResin = (this.playerState.getItemCount('res_dry_wood') >= 2 && this.playerState.getItemCount('res_tree_resin') >= 2) ||
+                                (this.playerState.campfireLevel >= 2) ||
+                                this.playerState.hasFlag('outer_woods_scouted');
+        if (hasWoodAndResin) return 'complete';
+      } else if (!this.playerState.hasFlag('talked_to_campfire_knight')) {
+        return 'new';
+      } else if (this.playerState.hasFlag('campfire_knight_q1_completed') && !this.playerState.hasFlag('campfire_knight_q2_accepted')) {
+        return 'new';
+      } else if (this.playerState.hasFlag('campfire_knight_q2_completed') && !this.playerState.hasFlag('campfire_knight_q3_accepted')) {
+        return 'new';
+      }
+      return 'none';
+    }
+
+    return 'none';
+  }
+
   private spawnTheListener(): void {
     // Lộ trình tuần tra mặc định của The Listener trong rừng The Crooked Path
     const waypoints = [
@@ -3727,33 +3818,48 @@ export class GameScene extends Phaser.Scene {
 
     const candidates: InteractionCandidate[] = [];
 
-    // 1. Kiểm tra NPC gần (triggerDist: 52px, quét gợi ý: 65px)
+    // 1. Kiểm tra NPC gần (V15-25: tối ưu hóa nhãn tên khoảng cách <= 95px cho đúng 1 NPC gần nhất)
+    let closestNPC: NPCEntity | null = null;
+    let minNpcDist = 999999;
     for (const npc of this.npcs) {
       npc.update(delta);
       const dist = Math.hypot(px - npc.x, py - npc.y);
-      const isNear = dist <= 65;
-      npc.setNearby(isNear, px, py, dist);
-      if (isNear) {
-        const triggerDist = 52;
-        const isWithinInteractRange = dist <= triggerDist;
-        const proximityAlpha = isWithinInteractRange ? 0.9 : 0.35; // proximityAlpha = isWithinInteractRange ? 1.0 : 0.45;
-        const baseName = `Trò chuyện với ${npc.spec.name} (${npc.spec.title})`;
-        const promptText = isWithinInteractRange ? `[E] ${baseName}` : baseName;
-        candidates.push({
-          dist,
-          triggerDist,
-          promptText,
-          x: npc.x,
-          y: npc.y - 16,
-          promptX: npc.x,
-          promptY: npc.y - 48,
-          width: 24,
-          height: 34,
-          proximityAlpha,
-          action: () => {
-            this.player.playInteract();
-            let dKey = npc.spec.dialogueKey;
-            if (npc.spec.id === 'npc_garth') {
+      npc.setQuestStatus(this.getNPCQuestStatus(npc.spec.id));
+      if (dist <= 95 && dist < minNpcDist) {
+        minNpcDist = dist;
+        closestNPC = npc;
+      }
+    }
+
+    for (const npc of this.npcs) {
+      const dist = Math.hypot(px - npc.x, py - npc.y);
+      const isClosestIn95 = (npc === closestNPC && dist <= 95);
+      npc.setNearby(isClosestIn95, px, py, dist, isClosestIn95);
+    }
+
+    if (closestNPC && minNpcDist <= 65) {
+      const npc = closestNPC;
+      const dist = minNpcDist;
+      const triggerDist = 52;
+      const isWithinInteractRange = dist <= triggerDist;
+      const proximityAlpha = isWithinInteractRange ? 0.9 : 0.35;
+      const baseName = `Trò chuyện với ${npc.spec.name} (${npc.spec.title})`;
+      const promptText = isWithinInteractRange ? `[E] ${baseName}` : baseName;
+      candidates.push({
+        dist,
+        triggerDist,
+        promptText,
+        x: npc.x,
+        y: npc.y - 16,
+        promptX: npc.x,
+        promptY: npc.y - 48,
+        width: 24,
+        height: 34,
+        proximityAlpha,
+        action: () => {
+          this.player.playInteract();
+          let dKey = npc.spec.dialogueKey;
+          if (npc.spec.id === 'npc_garth') {
               const hasBrokenLantern = this.playerState.getItemCount('item_broken_patrol_lantern') > 0 || this.playerState.hasFlag('has_broken_lantern');
               if (hasBrokenLantern && !this.playerState.hasFlag('garth_lantern_rewarded')) {
                 dKey = 'garth_broken_lantern_complete';
@@ -3920,7 +4026,6 @@ export class GameScene extends Phaser.Scene {
             this.dialogueSystem.startDialogue(dKey);
           }
         });
-      }
     }
 
     // 2. Kiểm tra mỏ tài nguyên gần (triggerDist: 50px, quét gợi ý: 65px)

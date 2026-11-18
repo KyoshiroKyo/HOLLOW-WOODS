@@ -640,6 +640,13 @@ export class PlayerState extends Phaser.Events.EventEmitter {
     }
   }
 
+  public isQuestTaskCompleted(questId: string, taskId: string): boolean {
+    const q = this.quests.get(questId);
+    if (!q) return false;
+    const task = q.tasks.find(t => t.id === taskId);
+    return task ? !!task.done : false;
+  }
+
   /**
    * C4-12-24: Đặt lại toàn bộ tasks của một nhiệm vụ khi thực hiện sai chuỗi câu đố.
    */
