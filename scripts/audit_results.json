@@ -1,0 +1,687 @@
+{
+  "colliders": {
+    "zoneCollidersCount": 125,
+    "autoPerimeterCount": 107,
+    "treeLoopColliders": 131,
+    "discreteCalls": 58,
+    "discreteHollowTrees": 12,
+    "grandTotalColliders": 433,
+    "collidersByZone": {
+      "fog_crossing": 6,
+      "bellhollow": 9,
+      "crooked_path": 7,
+      "silent_mire": 16,
+      "broken_bell_shrine": 7,
+      "sanctuary_farm": 7,
+      "outer_woods": 11,
+      "deep_forest": 8,
+      "ancient_rune_puzzle": 0,
+      "sub_bell_workshop": 7,
+      "sub_root_cellar": 9,
+      "sub_whispering_clearing": 13,
+      "abyssal_chasm": 6,
+      "drowned_mire_depths": 5,
+      "whispering_grove_sanctum": 5,
+      "sunken_crypt_ruins": 4,
+      "veil_origin_cavern": 5
+    },
+    "autoPerimeterByZone": {
+      "fog_crossing": 5,
+      "bellhollow": 6,
+      "crooked_path": 8,
+      "silent_mire": 9,
+      "broken_bell_shrine": 5,
+      "sanctuary_farm": 7,
+      "outer_woods": 10,
+      "deep_forest": 8,
+      "ancient_rune_puzzle": 6,
+      "sub_bell_workshop": 5,
+      "sub_root_cellar": 6,
+      "sub_whispering_clearing": 7,
+      "abyssal_chasm": 5,
+      "drowned_mire_depths": 5,
+      "whispering_grove_sanctum": 5,
+      "sunken_crypt_ruins": 5,
+      "veil_origin_cavern": 5
+    }
+  },
+  "spritesheets": [
+    {
+      "key": "SPRITE_EDDA_IDLE_SHEET",
+      "relPath": "assets/characters/villagers/edda_idle_sheet.png",
+      "fullPath": "public\\assets\\characters\\villagers\\edda_idle_sheet.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "pngWidth": 576,
+      "pngHeight": 64,
+      "totalFrames": 9
+    },
+    {
+      "key": "SPRITE_NERIS_IDLE_SHEET",
+      "relPath": "assets/characters/villagers/neris_idle_sheet.png",
+      "fullPath": "public\\assets\\characters\\villagers\\neris_idle_sheet.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "pngWidth": 384,
+      "pngHeight": 64,
+      "totalFrames": 6
+    },
+    {
+      "key": "SPRITE_GARTH_WALK_SHEET",
+      "relPath": "assets/characters/villagers/garth_walk_sheet.png",
+      "fullPath": "public\\assets\\characters\\villagers\\garth_walk_sheet.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "pngWidth": 512,
+      "pngHeight": 256,
+      "totalFrames": 32
+    },
+    {
+      "key": "SPRITE_POTTER_WALK_SHEET",
+      "relPath": "assets/characters/villagers/potter_walk_sheet.png",
+      "fullPath": "public\\assets\\characters\\villagers\\potter_walk_sheet.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "pngWidth": 512,
+      "pngHeight": 256,
+      "totalFrames": 32
+    },
+    {
+      "key": "SPRITE_ERRAND_BOY_WALK_SHEET",
+      "relPath": "assets/characters/villagers/errand_boy_walk_sheet.png",
+      "fullPath": "public\\assets\\characters\\villagers\\errand_boy_walk_sheet.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "pngWidth": 512,
+      "pngHeight": 256,
+      "totalFrames": 32
+    },
+    {
+      "key": "SPRITE_BLACKSMITH_SHEET",
+      "relPath": "assets/characters/villagers/blacksmith_sheet.png",
+      "fullPath": "public\\assets\\characters\\villagers\\blacksmith_sheet.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "pngWidth": 384,
+      "pngHeight": 64,
+      "totalFrames": 6
+    },
+    {
+      "key": "SPRITE_CAMPFIRE_KNIGHT_PRAY",
+      "relPath": "assets/characters/npcs/campfire_knight_pray_sheet.png",
+      "fullPath": "public\\assets\\characters\\npcs\\campfire_knight_pray_sheet.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "pngWidth": 768,
+      "pngHeight": 64,
+      "totalFrames": 12
+    },
+    {
+      "key": "SPRITE_CAMPFIRE_KNIGHT_IDLE",
+      "relPath": "assets/characters/npcs/campfire_knight_idle_sheet.png",
+      "fullPath": "public\\assets\\characters\\npcs\\campfire_knight_idle_sheet.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "pngWidth": 512,
+      "pngHeight": 64,
+      "totalFrames": 8
+    },
+    {
+      "key": "SPRITE_GARTH_IDLE",
+      "relPath": "assets/characters/villagers/garth_walk_sheet.png",
+      "fullPath": "public\\assets\\characters\\villagers\\garth_walk_sheet.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "pngWidth": 512,
+      "pngHeight": 256,
+      "totalFrames": 32
+    },
+    {
+      "key": "SPRITE_GARTH_WALK",
+      "relPath": "assets/characters/villagers/garth_walk_sheet.png",
+      "fullPath": "public\\assets\\characters\\villagers\\garth_walk_sheet.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "pngWidth": 512,
+      "pngHeight": 256,
+      "totalFrames": 32
+    },
+    {
+      "key": "SPRITE_EDDA_IDLE",
+      "relPath": "assets/characters/villagers/edda_idle_sheet.png",
+      "fullPath": "public\\assets\\characters\\villagers\\edda_idle_sheet.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "pngWidth": 576,
+      "pngHeight": 64,
+      "totalFrames": 9
+    },
+    {
+      "key": "SPRITE_EDDA_WALK",
+      "relPath": "assets/characters/villagers/edda_idle_sheet.png",
+      "fullPath": "public\\assets\\characters\\villagers\\edda_idle_sheet.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "pngWidth": 576,
+      "pngHeight": 64,
+      "totalFrames": 9
+    },
+    {
+      "key": "SPRITE_NERIS_IDLE",
+      "relPath": "assets/characters/villagers/neris_idle_sheet.png",
+      "fullPath": "public\\assets\\characters\\villagers\\neris_idle_sheet.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "pngWidth": 384,
+      "pngHeight": 64,
+      "totalFrames": 6
+    },
+    {
+      "key": "SPRITE_NERIS_WALK",
+      "relPath": "assets/characters/villagers/neris_idle_sheet.png",
+      "fullPath": "public\\assets\\characters\\villagers\\neris_idle_sheet.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "pngWidth": 384,
+      "pngHeight": 64,
+      "totalFrames": 6
+    },
+    {
+      "key": "SPRITE_THE_LISTENER",
+      "relPath": "assets/monsters/the_listener.png",
+      "fullPath": "public\\assets\\monsters\\the_listener.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "pngWidth": 256,
+      "pngHeight": 64,
+      "totalFrames": 4
+    },
+    {
+      "key": "SPRITE_SKULL_WOLF",
+      "relPath": "assets/characters/monsters/skull_wolf_sheet.png",
+      "fullPath": "public\\assets\\characters\\monsters\\skull_wolf_sheet.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "pngWidth": 448,
+      "pngHeight": 256,
+      "totalFrames": 28
+    },
+    {
+      "key": "SPRITE_SHADOW_CROW",
+      "relPath": "assets/characters/monsters/shadow_crow_sheet.png",
+      "fullPath": "public\\assets\\characters\\monsters\\shadow_crow_sheet.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "pngWidth": 384,
+      "pngHeight": 384,
+      "totalFrames": 36
+    },
+    {
+      "key": "SPRITE_SHADOW_EYES",
+      "relPath": "assets/characters/monsters/shadow_eyes_sheet.png",
+      "fullPath": "public\\assets\\characters\\monsters\\shadow_eyes_sheet.png",
+      "frameWidth": 48,
+      "frameHeight": 48,
+      "pngWidth": 384,
+      "pngHeight": 144,
+      "totalFrames": 24
+    },
+    {
+      "key": "SPRITE_SHADOW_BIG_BOSS",
+      "relPath": "assets/characters/bosses/shadow_big_boss_sheet.png",
+      "fullPath": "public\\assets\\characters\\bosses\\shadow_big_boss_sheet.png",
+      "frameWidth": 80,
+      "frameHeight": 80,
+      "pngWidth": 1280,
+      "pngHeight": 640,
+      "totalFrames": 128
+    },
+    {
+      "key": "SPRITE_MIST_BAT",
+      "relPath": "assets/characters/monsters/bat_sheet.png",
+      "fullPath": "public\\assets\\characters\\monsters\\bat_sheet.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "pngWidth": 192,
+      "pngHeight": 640,
+      "totalFrames": 120
+    },
+    {
+      "key": "SPRITE_WANDERING_SHADE",
+      "relPath": "assets/characters/monsters/ghost_sheet.png",
+      "fullPath": "public\\assets\\characters\\monsters\\ghost_sheet.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "pngWidth": 192,
+      "pngHeight": 640,
+      "totalFrames": 120
+    },
+    {
+      "key": "SPRITE_GOBLIN_SCOUT",
+      "relPath": "assets/characters/monsters/goblin_scout_dagger_sheet.png",
+      "fullPath": "public\\assets\\characters\\monsters\\goblin_scout_dagger_sheet.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "pngWidth": 1024,
+      "pngHeight": 1216,
+      "totalFrames": 304
+    },
+    {
+      "key": "SPRITE_FALLEN_KNIGHT",
+      "relPath": "assets/characters/enemies/fallen_knight_sheet.png",
+      "fullPath": "public\\assets\\characters\\enemies\\fallen_knight_sheet.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "pngWidth": 512,
+      "pngHeight": 384,
+      "totalFrames": 48
+    },
+    {
+      "key": "SPRITE_DREAD_HORSEMAN",
+      "relPath": "assets/characters/enemies/dread_horseman_sheet.png",
+      "fullPath": "public\\assets\\characters\\enemies\\dread_horseman_sheet.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "pngWidth": 448,
+      "pngHeight": 384,
+      "totalFrames": 42
+    },
+    {
+      "key": "SPRITE_HOODED_KNIGHT",
+      "relPath": "assets/characters/bosses/hooded_knight_sheet.png",
+      "fullPath": "public\\assets\\characters\\bosses\\hooded_knight_sheet.png",
+      "frameWidth": 160,
+      "frameHeight": 160,
+      "pngWidth": 1920,
+      "pngHeight": 800,
+      "totalFrames": 60
+    }
+  ],
+  "images": [
+    {
+      "key": "SATYR_PORTRAIT_KEY",
+      "relPath": "assets/characters/satyr/satyr_portrait.png",
+      "pngWidth": 64,
+      "pngHeight": 64
+    },
+    {
+      "key": "WAYFARER_PORTRAIT_KEY",
+      "relPath": "assets/characters/mossbound_wayfarer/wayfarer_portrait.png",
+      "pngWidth": 64,
+      "pngHeight": 64
+    },
+    {
+      "key": "tx_grass",
+      "relPath": "assets/environment/tilesets/TX Tileset Grass.png",
+      "pngWidth": 256,
+      "pngHeight": 256
+    },
+    {
+      "key": "tx_stone",
+      "relPath": "assets/environment/tilesets/TX Tileset Stone Ground.png",
+      "pngWidth": 256,
+      "pngHeight": 256
+    },
+    {
+      "key": "tx_wall",
+      "relPath": "assets/environment/tilesets/TX Tileset Wall.png",
+      "pngWidth": 512,
+      "pngHeight": 512
+    },
+    {
+      "key": "TILE_FOREST_GRASS",
+      "relPath": "assets/environment/tiles/tile_forest_grass.png",
+      "pngWidth": 32,
+      "pngHeight": 32
+    },
+    {
+      "key": "TILE_DIRT_TRAIL",
+      "relPath": "assets/environment/tiles/tile_dirt_trail.png",
+      "pngWidth": 32,
+      "pngHeight": 32
+    },
+    {
+      "key": "TILE_SWAMP_MUD",
+      "relPath": "assets/environment/tiles/tile_swamp_mud.png",
+      "pngWidth": 32,
+      "pngHeight": 32
+    },
+    {
+      "key": "TILE_COBBLE_ROAD",
+      "relPath": "assets/environment/tiles/tile_cobble_road.png",
+      "pngWidth": 16,
+      "pngHeight": 16
+    },
+    {
+      "key": "TILE_STONE_FLOOR",
+      "relPath": "assets/environment/tiles/tile_stone_floor.png",
+      "pngWidth": 16,
+      "pngHeight": 16
+    },
+    {
+      "key": "TILE_FOREST_GRASS_V14_A",
+      "relPath": "assets/environment/v14/tiles/tile_forest_grass_v14_a.png",
+      "pngWidth": 32,
+      "pngHeight": 32
+    },
+    {
+      "key": "TILE_FOREST_GRASS_V14_B",
+      "relPath": "assets/environment/v14/tiles/tile_forest_grass_v14_b.png",
+      "pngWidth": 32,
+      "pngHeight": 32
+    },
+    {
+      "key": "TILE_FOREST_GRASS_V14_C",
+      "relPath": "assets/environment/v14/tiles/tile_forest_grass_v14_c.png",
+      "pngWidth": 32,
+      "pngHeight": 32
+    },
+    {
+      "key": "TILE_DIRT_TRAIL_V14_A",
+      "relPath": "assets/environment/v14/tiles/tile_dirt_trail_v14_a.png",
+      "pngWidth": 32,
+      "pngHeight": 32
+    },
+    {
+      "key": "TILE_DIRT_TRAIL_V14_B",
+      "relPath": "assets/environment/v14/tiles/tile_dirt_trail_v14_b.png",
+      "pngWidth": 32,
+      "pngHeight": 32
+    },
+    {
+      "key": "TILE_COBBLE_ROAD_V14",
+      "relPath": "assets/environment/v14/tiles/tile_cobble_road_v14.png",
+      "pngWidth": 32,
+      "pngHeight": 32
+    },
+    {
+      "key": "TILE_STONE_FLOOR_V14",
+      "relPath": "assets/environment/v14/tiles/tile_stone_floor_v14.png",
+      "pngWidth": 32,
+      "pngHeight": 32
+    },
+    {
+      "key": "TILE_SWAMP_MUD_V14_A",
+      "relPath": "assets/environment/v14/tiles/tile_swamp_mud_v14_a.png",
+      "pngWidth": 32,
+      "pngHeight": 32
+    },
+    {
+      "key": "TILE_SWAMP_MUD_V14_B",
+      "relPath": "assets/environment/v14/tiles/tile_swamp_mud_v14_b.png",
+      "pngWidth": 32,
+      "pngHeight": 32
+    },
+    {
+      "key": "TILE_ABYSSAL_SOIL_V14_A",
+      "relPath": "assets/environment/v14/tiles/tile_abyssal_soil_v14_a.png",
+      "pngWidth": 32,
+      "pngHeight": 32
+    },
+    {
+      "key": "TILE_ABYSSAL_SOIL_V14_B",
+      "relPath": "assets/environment/v14/tiles/tile_abyssal_soil_v14_b.png",
+      "pngWidth": 32,
+      "pngHeight": 32
+    },
+    {
+      "key": "TILE_TILLED_SOIL_V14",
+      "relPath": "assets/environment/v14/tiles/tile_tilled_soil_v14.png",
+      "pngWidth": 32,
+      "pngHeight": 32
+    },
+    {
+      "key": "TILE_WOOD_PLANK_WEATHERED_V14",
+      "relPath": "assets/environment/v14/tiles/tile_wood_plank_weathered_v14.png",
+      "pngWidth": 32,
+      "pngHeight": 32
+    },
+    {
+      "key": "PORTRAIT_GARTH",
+      "relPath": "assets/characters/villagers/portrait_garth.png",
+      "pngWidth": 64,
+      "pngHeight": 64
+    },
+    {
+      "key": "PORTRAIT_EDDA",
+      "relPath": "assets/characters/villagers/portrait_edda.png",
+      "pngWidth": 64,
+      "pngHeight": 64
+    },
+    {
+      "key": "PORTRAIT_NERIS",
+      "relPath": "assets/characters/villagers/portrait_neris.png",
+      "pngWidth": 64,
+      "pngHeight": 64
+    },
+    {
+      "key": "PORTRAIT_BRAM",
+      "relPath": "assets/characters/villagers/portrait_blacksmith.png",
+      "pngWidth": 64,
+      "pngHeight": 64
+    },
+    {
+      "key": "PORTRAIT_BLACKSMITH",
+      "relPath": "assets/characters/villagers/portrait_blacksmith.png",
+      "pngWidth": 64,
+      "pngHeight": 64
+    },
+    {
+      "key": "PORTRAIT_FINN",
+      "relPath": "assets/characters/villagers/portrait_finn.png",
+      "pngWidth": 64,
+      "pngHeight": 64
+    },
+    {
+      "key": "PORTRAIT_CAMPFIRE_KNIGHT",
+      "relPath": "assets/characters/npcs/portrait_campfire_knight.png",
+      "pngWidth": 64,
+      "pngHeight": 64
+    },
+    {
+      "key": "SPRITE_NPC_GARTH",
+      "relPath": "assets/characters/villagers/npc_garth.png",
+      "pngWidth": 64,
+      "pngHeight": 64
+    },
+    {
+      "key": "SPRITE_NPC_EDDA",
+      "relPath": "assets/characters/villagers/npc_edda.png",
+      "pngWidth": 64,
+      "pngHeight": 64
+    },
+    {
+      "key": "SPRITE_NPC_NERIS",
+      "relPath": "assets/characters/villagers/npc_neris.png",
+      "pngWidth": 64,
+      "pngHeight": 64
+    },
+    {
+      "key": "SPRITE_NPC_BRAM",
+      "relPath": "assets/characters/villagers/npc_blacksmith.png",
+      "pngWidth": 64,
+      "pngHeight": 64
+    },
+    {
+      "key": "SPRITE_NPC_BLACKSMITH",
+      "relPath": "assets/characters/villagers/npc_blacksmith.png",
+      "pngWidth": 64,
+      "pngHeight": 64
+    },
+    {
+      "key": "SPRITE_NPC_FINN",
+      "relPath": "assets/characters/villagers/npc_finn.png",
+      "pngWidth": 64,
+      "pngHeight": 64
+    },
+    {
+      "key": "SPRITE_THE_ECHO",
+      "relPath": "assets/monsters/the_echo.png",
+      "pngWidth": 32,
+      "pngHeight": 64
+    },
+    {
+      "key": "PORTRAIT_SKULL_WOLF",
+      "relPath": "assets/characters/monsters/portrait_skull_wolf.png",
+      "pngWidth": 64,
+      "pngHeight": 64
+    },
+    {
+      "key": "PORTRAIT_SHADOW_BIG_BOSS",
+      "relPath": "assets/characters/bosses/portrait_shadow_big_boss.png",
+      "pngWidth": 64,
+      "pngHeight": 64
+    },
+    {
+      "key": "PORTRAIT_FALLEN_KNIGHT",
+      "relPath": "assets/characters/enemies/portrait_fallen_knight.png",
+      "pngWidth": 64,
+      "pngHeight": 64
+    },
+    {
+      "key": "PORTRAIT_DREAD_HORSEMAN",
+      "relPath": "assets/characters/enemies/portrait_dread_horseman.png",
+      "pngWidth": 64,
+      "pngHeight": 64
+    },
+    {
+      "key": "PORTRAIT_HOODED_KNIGHT",
+      "relPath": "assets/characters/bosses/portrait_hooded_knight.png",
+      "pngWidth": 64,
+      "pngHeight": 64
+    },
+    {
+      "key": "SPRITE_FOG_SMOOTH",
+      "relPath": "assets/environment/sprites/fog_smooth.png",
+      "pngWidth": 512,
+      "pngHeight": 256
+    }
+  ],
+  "scaleUsages": [
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 2613,
+      "code": "mist.setScale(scaleX, scaleY);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 2713,
+      "code": "sprite.setScale(scaleX, scaleY ?? scaleX);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 2738,
+      "code": "tree.setScale(scale);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 3001,
+      "code": "house.setScale(0.92, 0.92);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 3342,
+      "code": "markerNorth.setScale(0.55);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 3347,
+      "code": "markerSouth.setScale(0.55);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 3680,
+      "code": "tree.setScale(finalScale);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 3699,
+      "code": "bush.setScale(scale);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 3866,
+      "code": "mist.setScale(scaleX, scaleY);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 3945,
+      "code": "rockImg.setScale(targetScale);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 4425,
+      "code": "fog.setScale(p.scale);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 5247,
+      "code": "mist.setScale(scaleX, scaleY);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 5729,
+      "code": "mist.setScale(scaleX, scaleY);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 6112,
+      "code": "mist.setScale(scaleX, scaleY);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 6394,
+      "code": "monolithImg.setScale(0.85);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 6597,
+      "code": "mist.setScale(scaleX, scaleY);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 6801,
+      "code": "mist.setScale(1.2, 0.85);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 6866,
+      "code": "mist.setScale(1.25, 0.85);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 6916,
+      "code": "mist.setScale(1.2, 0.8);"
+    },
+    {
+      "file": "src/entities/AmbushMonsters.ts",
+      "line": 46,
+      "code": "this.setScale(1.0);"
+    },
+    {
+      "file": "src/entities/AmbushMonsters.ts",
+      "line": 159,
+      "code": "this.setScale(1.0);"
+    },
+    {
+      "file": "src/entities/AmbushMonsters.ts",
+      "line": 257,
+      "code": "this.setScale(1.0);"
+    },
+    {
+      "file": "src/entities/ShadowMonsters.ts",
+      "line": 55,
+      "code": "this.setScale(1.0);"
+    },
+    {
+      "file": "src/entities/ShadowMonsters.ts",
+      "line": 241,
+      "code": "this.setScale(1.0);"
+    },
+    {
+      "file": "src/entities/ShadowMonsters.ts",
+      "line": 361,
+      "code": "this.setScale(1.0);"
+    }
+  ]
+}
