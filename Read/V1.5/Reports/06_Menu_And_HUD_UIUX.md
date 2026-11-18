@@ -264,10 +264,176 @@ flowchart TD
 
 ---
 
-### 5. KẾT LUẬN
+## BÁO CÁO KỸ THUẬT V15-23: NÂNG CẤP GIAO DIỆN CÁC BẢNG CÀI ĐẶT, BIÊN NIÊN SỬ & HƯỚNG DẪN ĐIỀU KHIỂN TRÊN MENU CHÍNH VÀ MÀN HÌNH TẠM DỪNG (PAUSE MODAL)
 
-Bước **V15-22** đã hoàn thành xuất sắc việc đại tu Màn hình Menu Chính của **Hollow Woods**:
-- Cảnh nền Animated Diorama 3 lớp chiều sâu mang lại bầu không khí điện ảnh Dark Woodland Folklore sống động.
-- Tiểu cảnh sinh tồn góc phải với bếp lửa trại bập bùng, quầng sáng tỏa mịn ấm áp và nhân vật tiếp đất vững chãi đã khắc phục triệt để các hạn chế thị giác trước đây.
-- Cụm tiêu đề serif uy nghiêm kết hợp 4 nút thẻ gỗ viền đồng cổ, mũi tên cổ ngữ và âm thanh gõ gỗ tạo nên trải nghiệm tương tác sang trọng, đẳng cấp.
+**Dự án:** HOLLOW WOODS: The Fog That Remembers  
+**Mã tài liệu:** `V15-23` / `06_Menu_And_HUD_UIUX.md`  
+**Giai đoạn:** Giai đoạn 5 — Nâng cấp UI/UX Màn hình Chờ và Menu Chính  
+**Phiên bản:** V1.5 (Visual & Gameplay Overhaul)  
+**Nhánh Git:** `feat/v1.5-visual-gameplay-overhaul`  
+**Ngày thực hiện:** 19/11/2026  
+**Trạng thái:** Hoàn tất xuất sắc (52/52 assertions PASS 100%, 0 lỗi TypeScript, bản dựng Vite Production thành công)
+
+---
+
+### 1. HIỆN TRẠNG & MỤC TIÊU CẢI TIẾN BƯỚC V15-23
+
+#### 1.1. Những bất cập tồn đọng trước nâng cấp:
+1. **Bảng Cài Đặt (Settings Modal) sơ sài:**
+   - Trước đây chỉ có một nút Bật/Tắt âm thanh toàn cục và một đoạn văn bản tóm tắt phím tắt, thiếu vắng hoàn toàn thanh trượt điều chỉnh âm lượng riêng biệt cho Nhạc Nền (BGM) và Hiệu Ứng Sinh Tồn (SFX).
+   - Chưa có tùy chọn cho phép người chơi Bật/Tắt hiệu ứng Rung Màn Hình (Screen Shake) khi nhân vật rơi vào trạng thái hoảng loạn (panic) hoặc bị quái vật tập kích, gây khó chịu cho người chơi nhạy cảm với chuyển động camera.
+   - Thiếu chức năng Xóa Bản Lưu (Clear Save Data) hoặc nếu có thì dễ gây bấm nhầm mất dữ liệu hành trình do thiếu bước xác nhận an toàn 2 lần.
+2. **Dải chữ hướng dẫn nhỏ, dày đặc và khó đọc dưới đáy màn hình:**
+   - Dưới đáy Menu Chính và trong hộp thoại hướng dẫn là 2 dòng chữ text thô sơ, liệt kê dồn dập hàng loạt phím bấm trong ngoặc vuông (`[W, A, S, D] ... | [Shift] ... | [F] ...`), vừa đơn điệu, kém thẩm mỹ vừa khó tra cứu nhanh.
+3. **Màn hình Tạm Dừng (PauseModal in-game) thiếu đồng bộ:**
+   - Menu tạm dừng khi nhấn `[ESC]` trong game vẫn dùng các nút cộng trừ `[-]` `[+]` đơn giản thay vì thanh trượt slider trực quan, chưa hỗ trợ xem bảng phím bấm minh họa Keycaps và chưa có tùy chọn khóa rung màn hình.
+
+#### 1.2. Mục tiêu trọng tâm của bước V15-23:
+1. **Xây dựng `SettingsManager.ts` & `SettingsUIHelper.ts`:**
+   - Quản lý tập trung toàn bộ cấu hình: Âm lượng Master, BGM, SFX, Mute, Rung Màn Hình (Screen Shake) và Chất lượng Đồ Họa (Graphics Quality).
+   - Cung cấp component thanh trượt âm lượng (Volume Slider) tương tác mượt mà (kéo chuột, bấm thanh trượt, nút `[-]` `[+]` và % hiển thị).
+   - Nút công tắc Bật/Tắt Rung Màn Hình (Screen Shake Toggle) với nhãn trạng thái và mô tả sinh tồn.
+   - Nút Xóa Bản Lưu an toàn với xác nhận 2 lần (2-Step Safe Confirmation): Bấm lần 1 chuyển sang cảnh báo xác nhận khẩn cấp kèm nút HỦY và đếm 5s tự động hoàn tác; bấm lần 2 mới xóa dữ liệu.
+2. **Xây dựng `KeycapBadgeHelper.ts` & Bảng Phím Bấm Sinh Tồn Trực Quan:**
+   - Thiết kế các thẻ phím cơ 3D (Keycap Badges) nổi bật, sắc nét, có gờ nổi và bóng đổ vát cạnh.
+   - Phân chia thành 3 nhóm rõ rệt:
+     + 🏃 **Nhóm 1: Di Chuyển & Thể Lực (Movement & Stamina):** `[WASD]`, `[Shift]` Chạy.
+     + 🕯️ **Nhóm 2: Ánh Sáng & Sinh Tồn (Light & Survival):** `[F]` Đèn Lồng Hổ Phách, `[E]` Tương Tác, `[C]`/`[I]` Chế Tạo, `[J]` Sổ Tay.
+     + ⚔️ **Nhóm 3: Chiến Đấu & Tự Vệ (Combat & Evasion):** `[Q]` Ném Mồi Tiếng Động, `[Space]` Vũ Khí Tự Vệ, `[ESC]` Tạm Dừng.
+   - Thay thế hoàn toàn dải chữ nhỏ khó đọc ở đáy Main Menu bằng cụm Keycap Badges trực quan 3 nhóm, hỗ trợ bấm chuột hoặc phím tắt `[H]` để mở Sổ Tay Hướng Dẫn & Biên Niên Sử Chi Tiết.
+3. **Đồng bộ toàn diện `PauseModal.ts`:**
+   - Tích hợp đầy đủ Sliders BGM, SFX, Master, Mute, Screen Shake toggle, Clear save an toàn và nút `[H]` mở bảng overlay Keycap Badges ngay trong khi tạm dừng game.
+4. **Khóa Rung Màn Hình Triệt Để:**
+   - `CameraSystem.shake()` và các thực thể phục kích (`AmbushMonsters.ts`) kiểm tra nghiêm ngặt cờ `SettingsManager.getInstance().isScreenShakeEnabled()`, bảo đảm khi tắt rung thì camera êm ái 100%.
+
+---
+
+### 2. KIẾN TRÚC & GIẢI PHÁP KỸ THUẬT V15-23
+
+```mermaid
+flowchart TD
+    subgraph CoreSettings["src/systems/SettingsManager.ts (Singleton)"]
+        SM["SettingsManager<br/>- Master: 0.0 - 1.0<br/>- BGM: 0.0 - 1.0<br/>- SFX: 0.0 - 1.0<br/>- isMuted: boolean<br/>- screenShakeEnabled: boolean<br/>- graphicsQuality: HIGH/MED/LOW"]
+        SM --> LS["LocalStorage<br/>('hw_settings', 'hollow_woods_settings')"]
+        SM --> CS["CloudSaveService<br/>(p2.storage 'hw_settings')"]
+        SM --> AM["AudioManager<br/>(Master, Ambience/BGM, SFX Gain)"]
+        SM --> CAM["CameraSystem.shake()<br/>(Khóa rung khi Screen Shake = OFF)"]
+    end
+
+    subgraph UIComponents["src/ui/ (Helpers)"]
+        SUH["SettingsUIHelper<br/>- createVolumeSlider()<br/>- createScreenShakeToggle()<br/>- createSafeClearSaveButton()"]
+        KBH["KeycapBadgeHelper<br/>- createKeycap() (3D Bevel & Shadow)<br/>- createKeyCluster()<br/>- buildControlsGuideContent()<br/>  (3 Nhóm: Di Chuyển, Sinh Tồn, Tự Vệ)"]
+    end
+
+    subgraph MainMenu["src/scenes/MainMenuScene.ts"]
+        MM_Set["showSettingsModal()<br/>- Sliders BGM & SFX<br/>- Toggle Screen Shake<br/>- Nút Xóa Bản Lưu 2 Lần"]
+        MM_Chr["showChronicleAndGuideModal()<br/>- Biên niên sử bối cảnh làng<br/>- Bảng Keycap Badges 3 nhóm"]
+        MM_Bot["Dải Đáy Màn Hình<br/>- Cụm Keycaps [WASD], [F], [E], [Q], [ESC]<br/>- Nhấn hoặc bấm [H] mở modal"]
+    end
+
+    subgraph PauseMenu["src/ui/PauseModal.ts"]
+        PM_Set["⚙️ Cấu Hình Hệ Thống<br/>- Sliders BGM & SFX<br/>- Toggle Screen Shake<br/>- Nút Xóa Bản Lưu 2 Lần"]
+        PM_Ovr["📜 Bảng Phím [H]<br/>- toggleGuideOverlay()<br/>- Keycap Badges 3 nhóm"]
+    end
+
+    SM --> MM_Set
+    SM --> PM_Set
+    SUH --> MM_Set
+    SUH --> PM_Set
+    KBH --> MM_Chr
+    KBH --> MM_Bot
+    KBH --> PM_Ovr
+```
+
+---
+
+### 3. CHI TIẾT CÁC HẠNG MỤC THỰC HIỆN
+
+#### 3.1. Hệ Thống Quản Lý Cài Đặt Toàn Cục (`SettingsManager.ts`)
+- **Quản lý đa kênh:** Quản lý tập trung 3 kênh âm thanh độc lập (`masterVolume`, `musicVolume`, `sfxVolume`), trạng thái `isMuted`, tùy chọn `screenShakeEnabled` (mặc định: `true`) và mức cấu hình `graphicsQuality`.
+- **Cơ chế lưu trữ kép (Dual Persistence):** Lưu ngay lập tức vào `localStorage` với 2 key tương thích ngược `hollow_woods_settings` và `hw_settings`; đồng thời sử dụng debounced timer $1000\text{ms}$ đồng bộ lên `CloudSaveService` (`p2.storage`) để bảo toàn cài đặt qua các phiên chơi và thiết bị.
+- **Phát sự kiện (Event-driven):** Hỗ trợ `onSettingsChange(callback)` để các scene và modal tự động đồng bộ giao diện khi có thay đổi.
+
+#### 3.2. Bộ Trợ Giúp Giao Diện Cài Đặt (`SettingsUIHelper.ts`)
+1. **Thanh Kéo Âm Lượng Tương Tác (`createVolumeSlider`):**
+   - **Thao tác đa dạng:** Người chơi có thể kéo chuột trực tiếp nút tròn kim loại (Thumb), bấm vào bất kỳ điểm nào trên thanh rãnh (Track) để nhảy mức nhanh, hoặc bấm hai nút bước nhảy `[-]` và `[+]` với bước nhảy $5\%$.
+   - **Phản hồi thời gian thực:** Hiển thị số phần trăm rõ nét bên phải thanh trượt (`0%` $\to$ `100%`), thanh tiến trình lấp đầy đổi màu mượt mà theo từng kênh âm thanh (Xanh dương cho BGM, Cam lửa cho SFX, Xanh lục cho Master).
+2. **Công Tắc Rung Màn Hình (`createScreenShakeToggle`):**
+   - Hộp công tắc hiển thị trạng thái `✔ ĐANG BẬT` (nền xanh thẫm, viền xanh lục) hoặc `✖ ĐÃ TẮT` (nền đỏ thẫm, viền đỏ tươi).
+   - Kèm dòng mô tả công năng: *"Rung giật camera khi hoảng loạn mất bình tâm hoặc bị quái vật tập kích."*
+3. **Nút Xóa Bản Lưu An Toàn 2 Lần (`createSafeClearSaveButton`):**
+   - **Bước 1 (Trạng thái chờ):** Nút màu đỏ gạch `🗑️ XÓA TIẾN TRÌNH BẢN LƯU`.
+   - **Bước 2 (Cảnh báo khẩn cấp):** Khi bấm lần 1, nút chuyển sang màu đỏ rực với viền vàng nổi bật: `⚠️ XÁC NHẬN XÓA TIẾN TRÌNH? (BẤM LẦN NỮA)`. Đồng thời xuất hiện nút `[HỦY]` bên cạnh để hủy thao tác.
+   - **Cơ chế an toàn tự động:** Nếu người chơi không bấm xác nhận trong vòng 5 giây, nút sẽ tự động hoàn tác về Bước 1.
+   - **Bước 3 (Hoàn tất):** Khi bấm lần 2, thực thi `SaveManager.clearSave()`, nút chuyển sang màu xanh lá `✔ ĐÃ XÓA TOÀN BỘ TIẾN TRÌNH THÀNH CÔNG` trong 3 giây rồi trở về bình thường.
+
+#### 3.3. Bộ Trợ Giúp Thẻ Phím Bấm Cơ 3D (`KeycapBadgeHelper.ts`)
+- **Tạo hình Keycap 3D:** Mỗi phím bấm được dựng bằng hình khối chữ nhật bo góc với 3 lớp: Bóng đổ đáy sâu `0x070a0e`, thân phím tối `0x1a212d` (hoặc hổ phách `0x3d2b12` cho các phím quan trọng như `[F]` và `[H]`), viền vát cạnh phản quang `0x5a6a7e` và đường gờ đỉnh phím tạo cảm giác như nút bàn phím cơ thật.
+- **Phân chia 3 nhóm sinh tồn trực quan:**
+  - **Nhóm 1: Di Chuyển & Thể Lực (Movement & Stamina):** Cụm phím `[W] [A] [S] [D]` (hoặc phím mũi tên) và phím rộng `[SHIFT]` kèm giải thích cơ chế gây tiếng động thu hút quái vật khi chạy nhanh.
+  - **Nhóm 2: Ánh Sáng & Sinh Tồn (Light & Survival):** Phím nổi bật `[F]` (Đèn Lồng Hổ Phách), `[E]` (Tương Tác / Lửa Trại / Dân Làng), `[C] [I]` (Chế Tạo Đuốc / Bẫy), `[J]` (Sổ Tay Biên Niên Sử).
+  - **Nhóm 3: Chiến Đấu & Tự Vệ (Combat & Evasion):** Phím `[Q]` (Ném Mồi Tiếng Động dụ quái vật mù), `[SPACE]` (Vũ Khí Tự Vệ khi bị dồn vào đường cùng), `[ESC]` (Tạm Dừng & Lưu Game).
+
+#### 3.4. Đại Tu Giao Diện Trong `MainMenuScene.ts`
+- **Bảng Cài Đặt Trò Chơi (`showSettingsModal`):**
+  - Mở rộng kích thước lên $680\times 540\text{ px}$ viền đồng kép cổ điển.
+  - Tích hợp đồng thời 3 thanh trượt Slider cho BGM, SFX và Master Volume kèm nút Mute.
+  - Tích hợp công tắc Bật/Tắt Rung Màn Hình (Screen Shake Toggle) và nút Đổi chất lượng đồ họa.
+  - Tích hợp nút Xóa Bản Lưu An Toàn: Khi xóa save, lập tức gọi `onSaveDataCleared()` để làm mới nút `► TIẾP TỤC HÀNH TRÌNH` trên Menu chính thành `▷ TIẾP TỤC (CHƯA CÓ BẢN LƯU)` và hiển thị thông báo toast xác nhận.
+- **Bảng Biên Niên Sử & Hướng Dẫn (`showChronicleAndGuideModal`):**
+  - Kích thước $760\times 580\text{ px}$.
+  - Phía trên là khung truyền thuyết làng Bellhollow tóm lược Màn Sương Ký Ức, Đại Hồng Chung nứt vỡ và cơ chế 3 Kết Thúc Cốt Truyện.
+  - Phía dưới là toàn bộ bảng Keycap Badges 3 nhóm được trình bày thoáng đãng, sắc sảo.
+- **Dải Đáy Màn Hình Mới:**
+  - Xóa bỏ triệt để dải chữ nhỏ dày đặc trước đây.
+  - Thay bằng cụm Keycap Badges thu nhỏ chia theo 3 nhóm trực quan: `[W][A][S][D]`, `[SHIFT]`, `[F]`, `[E]`, `[C]`, `[J]`, `[Q]`, `[ESC]`, `[M]`, `[H]`.
+  - Toàn bộ dải đáy có thể click chuột trực tiếp hoặc nhấn phím `[H]` để mở ngay modal Hướng Dẫn Chi Tiết.
+
+#### 3.5. Đồng Bộ Giao Diện Màn Hình Tạm Dừng (`PauseModal.ts`)
+- Mở rộng khung modal lên $540\times 550\text{ px}$.
+- Thay thế các nút cộng trừ cũ bằng bộ Sliders tương tác mượt mà cho BGM, SFX và Master.
+- Bổ sung tùy chọn Bật/Tắt Rung Màn Hình (Screen Shake Toggle) ngay trong mục cấu hình.
+- Bổ sung nút Xóa Bản Lưu An Toàn có xác nhận 2 lần.
+- Bổ sung nút `📜 BẢNG PHÍM ĐIỀU KHIỂN & HƯỚNG DẪN [H]`: Khi bấm (hoặc nhấn phím `[H]`), mở overlay phụ hiển thị trực quan các thẻ Keycap Badges 3 nhóm giúp người chơi tra cứu phím bấm tức thì mà không cần thoát ra Menu chính.
+
+#### 3.6. Cơ Chế Khóa Rung Màn Hình (Screen Shake Protection)
+- Trong `src/systems/camera/CameraSystem.ts`:
+  ```typescript
+  public shake(duration: number = 250, intensity: number = 0.008): void {
+    if (!SettingsManager.getInstance().isScreenShakeEnabled()) return;
+    this.camera.shake(duration, intensity);
+  }
+  ```
+- Đồng thời chuẩn hóa lệnh gọi rung camera trong `GameScene.ts` và thực thể quái vật phục kích trong `src/entities/AmbushMonsters.ts`, bảo đảm mọi hiệu ứng rung giật camera khi hoảng loạn hay bị tấn công đều tuân thủ 100% tùy chọn của người chơi.
+
+---
+
+### 4. BẢNG TỔNG HỢP KIỂM THỬ BƯỚC V15-23
+
+| STT | Nhóm Kiểm Tra | Tệp Kịch Bản / Công Cụ | Tiêu Chí Kiểm Tra | Kết Quả |
+|:---:|:---|:---|:---:|:---:|
+| 1 | **Hệ Thống SettingsManager** | `verify_v15_23_settings_and_guides.mjs` | Singleton, 3 kênh âm lượng, Screen Shake, Lưu kép | **8 / 8 PASS** |
+| 2 | **Component SettingsUIHelper** | `verify_v15_23_settings_and_guides.mjs` | Sliders kéo/bấm/%/step, Screen Shake Toggle, Nút Xóa 2 lần | **10 / 10 PASS** |
+| 3 | **Component KeycapBadgeHelper** | `verify_v15_23_settings_and_guides.mjs` | Keycap 3D, Cluster, Action Row, 3 nhóm sinh tồn | **7 / 7 PASS** |
+| 4 | **Giao Diện MainMenuScene** | `verify_v15_23_settings_and_guides.mjs` | Keycaps đáy màn hình, Click/Phím [H], Settings Modal, Chronicle Modal | **14 / 14 PASS** |
+| 5 | **Giao Diện PauseModal** | `verify_v15_23_settings_and_guides.mjs` | Sliders BGM/SFX, Toggle Shake, Nút xóa 2 lần, Overlay Keycaps [H] | **7 / 7 PASS** |
+| 6 | **Khóa Rung Màn Hình (Camera)** | `verify_v15_23_settings_and_guides.mjs` | CameraSystem & AmbushMonsters kiểm tra cờ Screen Shake | **6 / 6 PASS** |
+| 7 | **Hồi Quy Menu Chính V15-22** | `verify_v15_22_main_menu.mjs` | Animated Diorama, Lửa trại, Quầng sáng mịn, Thẻ gỗ | **33 / 33 PASS** |
+| 8 | **Hồi Quy Màn Hình Chờ V15-21** | `verify_v15_21_loading_screen.mjs` | Loading Bar gỗ sồi, Đèn lồng, Mẹo sinh tồn, Fade out | **32 / 32 PASS** |
+| 9 | **Kiểm Toán Collision Bản Đồ** | `audit_tiled_json_collision.mjs` | Tiled GID flip flags, Scale collider, Hở biên rừng sâu | **5 / 5 (0 Lỗi)** |
+| 10 | **Kiểm Tra Biên Dịch TypeScript** | `npx tsc --noEmit` | Nghiêm ngặt không bỏ qua cảnh báo kiểu dữ liệu | **0 LỖI (PASS)** |
+| 11 | **Đóng Gói Bản Dựng Production** | `npm run build` | Vite minify & Rollup chunking hoàn tất trong 9.13s | **SUCCESS** |
+
+---
+
+### 5. KẾT LUẬN & CHUẨN BỊ BƯỚC SANG GIAI ĐOẠN 6
+
+Bước **V15-23** đã hoàn thành xuất sắc việc đại tu toàn bộ giao diện Cài Đặt và Hướng Dẫn Điều Khiển trên cả Menu Chính và Màn hình Tạm Dừng:
+1. Người chơi có quyền kiểm soát âm lượng chi tiết từng kênh (BGM, SFX, Master) qua thanh kéo Slider mượt mà.
+2. Tùy chọn Bật/Tắt Rung Màn Hình mang lại sự dễ chịu cho mọi nhóm người chơi.
+3. Cơ chế Xóa Bản Lưu an toàn 2 lần chấm dứt hoàn toàn nguy cơ mất dữ liệu do bấm nhầm.
+4. Bảng hướng dẫn phím bấm dạng Keycap Badges 3D phân tầng theo 3 nhóm hành động vừa trực quan, giàu tính thẩm mỹ vừa tiện lợi tra cứu cả ngoài Menu lẫn ngay trong khi tạm dừng trò chơi qua phím tắt `[H]`.
+
+**Giai đoạn 5 (Nâng cấp UI/UX Màn hình chờ và Menu Chính) đã hoàn thành toàn diện 100%! Dự án đã sẵn sàng bước sang Giai đoạn 6.**
+
 

@@ -546,7 +546,7 @@ export class GameScene extends Phaser.Scene {
         if (this.uiScene) {
           this.uiScene.showPopupMessage('🌙 ĐÊM SƯƠNG BUÔNG XUỐNG! Tiếng sói hú xa xăm... Kẻ Lắng Nghe và bầy quái vật bước vào trạng thái Săn Đêm!');
         }
-        this.cameras.main.shake(350, 0.0025);
+        this.cameraSystem?.shake(350, 0.0025);
         if (this.listenerMonster) {
           this.listenerMonster.onNightfall();
         }

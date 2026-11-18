@@ -49,6 +49,7 @@
 | 20 | `V15-20` | [05_Story_Expansion_Report.md#17-bước-v15-20-hệ-thống-3-kết-thúc-cốt-truyện-phân-nhánh-multiple-branching-endings](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/05_Story_Expansion_Report.md) — Thiết lập hệ thống 3 Kết Thúc Cốt Truyện (Multiple Endings) dựa trên hành trình của người chơi | Hoàn tất (Đã nghiệm thu) |
 | 21 | `V15-21` | [06_Menu_And_HUD_UIUX.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/06_Menu_And_HUD_UIUX.md) — Thiết kế mới toàn diện Màn hình Chờ / Loading Screen nghệ thuật trong PreloadScene | Hoàn tất (Đã nghiệm thu) |
 | 22 | `V15-22` | [06_Menu_And_HUD_UIUX.md#báo-cáo-kỹ-thuật-v15-22-đại-tu-giao-diện-màn-hình-menu-chính-mainmenuscene](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/06_Menu_And_HUD_UIUX.md) — Đại tu giao diện Màn hình Menu Chính (MainMenuScene.ts) với Animated Diorama và Thẻ Gỗ | Hoàn tất (Đã nghiệm thu) |
+| 23 | `V15-23` | [06_Menu_And_HUD_UIUX.md#báo-cáo-kỹ-thuật-v15-23-nâng-cấp-giao-diện-các-bảng-cài-đặt-biên-niên-sử--hướng-dẫn-điều-khiển-trên-menu-chính-và-màn-hình-tạm-dừng-pause-modal](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/06_Menu_And_HUD_UIUX.md) — Nâng cấp giao diện các bảng Cài Đặt, Biên Niên Sử & Hướng Dẫn Điều Khiển trên Menu Chính và Màn hình Tạm Dừng | Hoàn tất (Đã nghiệm thu) |
 
 ---
 *Tài liệu được cập nhật tự động trong suốt quá trình phát triển HOLLOW WOODS V1.5.*

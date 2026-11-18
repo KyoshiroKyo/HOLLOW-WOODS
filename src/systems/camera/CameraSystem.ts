@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import { SatyrPlayer } from '../../entities/SatyrPlayer';
 import { BoundsRect } from '../../types';
+import { SettingsManager } from '../SettingsManager';
 
 export class CameraSystem {
   private camera: Phaser.Cameras.Scene2D.Camera;
@@ -43,6 +44,7 @@ export class CameraSystem {
   }
 
   public shake(duration: number = 250, intensity: number = 0.008): void {
+    if (!SettingsManager.getInstance().isScreenShakeEnabled()) return;
     this.camera.shake(duration, intensity);
   }
 

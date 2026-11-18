@@ -1,7 +1,12 @@
 /**
- * HOLLOW WOODS V1.1 - GATE 1C
+ * HOLLOW WOODS V1.5 - GATE 1C & V15-23
  * HD PAUSE MODAL ARCHITECTURE
- * Khung chuẩn HD 1280×720 tại UIScene (Zoom 1.0), căn giữa (640, 360), kích thước 480×370 px
+ * Khung chuẩn HD 1280×720 tại UIScene (Zoom 1.0), căn giữa (640, 360).
+ * Tích hợp:
+ * 1. Các nút hành động chính (Tiếp tục, Lưu thủ công, Nạp Checkpoint, Quay về Menu, Hướng dẫn phím)
+ * 2. Cấu hình hệ thống: Thanh kéo Slider BGM, SFX, Master, Bật/Tắt âm thanh, Toggle Rung Màn Hình (Screen Shake), Đồ họa
+ * 3. Nút Xóa Bản Lưu an toàn với xác nhận 2 lần (2-Step Safe Confirmation)
+ * 4. Bảng hướng dẫn phím bấm minh họa Keycap Badges trực quan 3 nhóm (Di chuyển, Sinh tồn, Tự vệ)
  */
 
 import * as Phaser from 'phaser';
@@ -10,6 +15,9 @@ import { SaveManager } from '../systems/SaveManager';
 import { HDTextHelper } from '../utils/HDTextHelper';
 import { AudioManager } from '../audio/AudioManager';
 import { GraphicsQualitySystem } from '../systems/GraphicsQualitySystem';
+import { SettingsManager } from '../systems/SettingsManager';
+import { SettingsUIHelper } from './SettingsUIHelper';
+import { KeycapBadgeHelper } from './KeycapBadgeHelper';
 
 export interface PauseModalCallbacks {
   onResume: () => void;
@@ -25,18 +33,22 @@ export class PauseModal {
   private saveStatusText!: Phaser.GameObjects.Text;
   private lastToggleTime: number = 0;
 
-  // C4-132-07: Các phần tử hiển thị âm lượng trong PauseModal
-  private masterValText!: Phaser.GameObjects.Text;
-  private bgmValText!: Phaser.GameObjects.Text;
-  private sfxValText!: Phaser.GameObjects.Text;
-  private muteBtnText!: Phaser.GameObjects.Text;
-  private muteBtnBg!: Phaser.GameObjects.Graphics;
-
   // Hiển thị chất lượng đồ họa & sương mù / ánh sáng
   private graphicsQualityBtnText!: Phaser.GameObjects.Text;
   private graphicsQualityBtnBg!: Phaser.GameObjects.Graphics;
   private graphicsDescText!: Phaser.GameObjects.Text;
   private unsubscribeQuality?: () => void;
+
+  // Hộp thoại phụ hướng dẫn phím (Controls Guide Sub-Modal)
+  private guideOverlayContainer?: Phaser.GameObjects.Container;
+
+  // Sliders và toggles tham chiếu
+  private bgmSliderControl?: { container: Phaser.GameObjects.Container; setValue: (val: number) => void; getValue: () => number };
+  private sfxSliderControl?: { container: Phaser.GameObjects.Container; setValue: (val: number) => void; getValue: () => number };
+  private masterSliderControl?: { container: Phaser.GameObjects.Container; setValue: (val: number) => void; getValue: () => number };
+  private shakeToggleControl?: { container: Phaser.GameObjects.Container; setEnabled: (val: boolean) => void };
+  private muteBtnTxt?: Phaser.GameObjects.Text;
+  private muteBtnBg?: Phaser.GameObjects.Graphics;
 
   public onOpen?: () => void;
   public onClose?: () => void;
@@ -55,13 +67,22 @@ export class PauseModal {
 
     this.buildUI();
     this.container.setVisible(false);
+
+    // Lắng nghe phím H để mở hướng dẫn phím khi đang mở Pause Menu
+    if (this.scene.input && this.scene.input.keyboard) {
+      this.scene.input.keyboard.on('keydown-H', () => {
+        if (this.isOpen) {
+          this.toggleGuideOverlay();
+        }
+      });
+    }
   }
 
   private buildUI(): void {
-    const modalW = 500;
-    const modalH = 460;
-    const modalX = (1280 - modalW) / 2; // 390
-    const modalY = (720 - modalH) / 2;  // 130
+    const modalW = 540;
+    const modalH = 550;
+    const modalX = (1280 - modalW) / 2; // 370
+    const modalY = (720 - modalH) / 2;  // 85
 
     // 1. Lớp phủ đen mờ toàn màn hình HD 1280×720 (ngăn chặn click xuyên thấu)
     const overlay = this.scene.add.graphics();
@@ -72,11 +93,11 @@ export class PauseModal {
     // 2. Khung modal chính phong cách gothic sẫm màu chuẩn HD
     const box = this.scene.add.graphics();
     box.fillStyle(0x0d1118, 0.98);
-    box.fillRoundedRect(modalX, modalY, modalW, modalH, 8);
+    box.fillRoundedRect(modalX, modalY, modalW, modalH, 10);
     box.lineStyle(2, 0xd4af37, 0.95);
-    box.strokeRoundedRect(modalX, modalY, modalW, modalH, 8);
+    box.strokeRoundedRect(modalX, modalY, modalW, modalH, 10);
     box.lineStyle(1, 0x4a3b22, 0.7);
-    box.strokeRoundedRect(modalX + 4, modalY + 4, modalW - 8, modalH - 8, 6);
+    box.strokeRoundedRect(modalX + 4, modalY + 4, modalW - 8, modalH - 8, 8);
 
     // Tiêu đề
     const title = HDTextHelper.createText(this.scene, 640, modalY + 22, 'TẠM DỪNG HÀNH TRÌNH [ESC]', {
@@ -99,20 +120,20 @@ export class PauseModal {
     });
 
     this.saveStatusText = HDTextHelper.createText(this.scene, 640, modalY + 44, '', {
-      fontSize: '12px',
+      fontSize: '11.5px',
       color: '#2ecc71'
     }).setOrigin(0.5, 0.5);
 
-    // 3. Các nút bấm chức năng chuẩn HD (Rộng 360px, cao 28px)
+    // 3. Các nút bấm chức năng chính (Rộng 380px, cao 26px)
     let btnY = modalY + 68;
 
     // Nút 1: Tiếp tục
     const resumeBtn = this.createButton(640, btnY, '▶ TIẾP TỤC TRÒ CHƠI', '#2ecc71', () => {
       this.close();
       this.callbacks.onResume();
-    }, 360, 28);
+    }, 380, 26);
 
-    btnY += 34;
+    btnY += 31;
     // Nút 2: Lưu thủ công
     const saveBtn = this.createButton(640, btnY, '💾 LƯU GAME THỦ CÔNG', '#f39c12', () => {
       const success = this.callbacks.onSaveManual();
@@ -123,9 +144,9 @@ export class PauseModal {
         this.saveStatusText.setText('✖ Không thể lưu tiến trình!');
         this.saveStatusText.setColor('#e74c3c');
       }
-    }, 360, 28);
+    }, 380, 26);
 
-    btnY += 34;
+    btnY += 31;
     // Nút 3: Tải lại Checkpoint
     const reloadBtn = this.createButton(640, btnY, '↺ NẠP LẠI ĐIỂM LƯU GẦN NHẤT', '#3498db', () => {
       if (SaveManager.hasSave()) {
@@ -135,157 +156,172 @@ export class PauseModal {
         this.saveStatusText.setText('Không tìm thấy điểm lưu nào để nạp!');
         this.saveStatusText.setColor('#e74c3c');
       }
-    }, 360, 28);
+    }, 380, 26);
 
-    btnY += 34;
-    // Nút 4: Quay về Menu
+    btnY += 31;
+    // Nút 4: Hướng dẫn phím bấm trực quan (Keycaps)
+    const guideBtn = this.createButton(640, btnY, '📜 BẢNG PHÍM ĐIỀU KHIỂN & HƯỚNG DẪN [H]', '#b8860b', () => {
+      this.toggleGuideOverlay();
+    }, 380, 26);
+
+    btnY += 31;
+    // Nút 5: Quay về Menu
     const quitBtn = this.createButton(640, btnY, '🏠 QUAY VỀ MENU CHÍNH', '#95a5a6', () => {
-      // Tự động lưu trước khi thoát
       this.callbacks.onSaveManual();
       this.close();
       this.scene.scene.stop('GameScene');
       this.scene.scene.stop('UIScene');
       this.scene.scene.start(SCENE_MAIN_MENU);
-    }, 360, 28);
+    }, 380, 26);
 
     // 4. Bảng điều chỉnh cấu hình hệ thống & âm lượng đa kênh
     const settingsBox = this.scene.add.graphics();
-    settingsBox.fillStyle(0x0a0e14, 0.88);
-    settingsBox.fillRoundedRect(modalX + 16, modalY + 204, modalW - 32, 238, 6);
+    const sBoxY = modalY + 224;
+    const sBoxH = modalH - 238;
+    settingsBox.fillStyle(0x0a0e14, 0.92);
+    settingsBox.fillRoundedRect(modalX + 14, sBoxY, modalW - 28, sBoxH, 6);
     settingsBox.lineStyle(1, 0x3d4852, 0.7);
-    settingsBox.strokeRoundedRect(modalX + 16, modalY + 204, modalW - 32, 238, 6);
+    settingsBox.strokeRoundedRect(modalX + 14, sBoxY, modalW - 28, sBoxH, 6);
 
-    const settingsTitle = HDTextHelper.createText(this.scene, 640, modalY + 218, '⚙️ CẤU HÌNH ĐỒ HỌA & ÂM LƯỢNG', {
-      fontSize: '11.5px',
+    const settingsTitle = HDTextHelper.createText(this.scene, 640, sBoxY + 14, '⚙️ CẤU HÌNH HỆ THỐNG & ÂM LƯỢNG', {
+      fontSize: '12px',
       fontStyle: 'bold',
       color: '#f1c40f',
       stroke: '#000000',
       strokeThickness: 2
     }).setOrigin(0.5, 0.5);
 
+    const settings = SettingsManager.getInstance();
+
     // --- Mục Đồ Họa & Sương Mù ---
-    const graphicsLabel = HDTextHelper.createText(this.scene, modalX + 32, modalY + 244, '🖥️ Đồ Họa:', {
+    const graphicsLabel = HDTextHelper.createText(this.scene, modalX + 28, sBoxY + 36, '🖥️ Đồ Họa:', {
       fontSize: '11.5px',
       fontStyle: 'bold',
       color: '#cbd5e1'
     }).setOrigin(0, 0.5);
 
-    const graphicsBtnContainer = this.scene.add.container(modalX + 310, modalY + 244);
+    const graphicsBtnContainer = this.scene.add.container(modalX + 330, sBoxY + 36);
     this.graphicsQualityBtnBg = this.scene.add.graphics();
     this.graphicsQualityBtnText = HDTextHelper.createText(this.scene, 0, 0, '🌟 CAO (HIGH)', {
-      fontSize: '11.5px',
+      fontSize: '11px',
       fontStyle: 'bold',
       color: '#f1c40f'
     }).setOrigin(0.5, 0.5);
     graphicsBtnContainer.add([this.graphicsQualityBtnBg, this.graphicsQualityBtnText]);
-    graphicsBtnContainer.setSize(240, 24);
-    graphicsBtnContainer.setInteractive(new Phaser.Geom.Rectangle(-120, -12, 240, 24), Phaser.Geom.Rectangle.Contains);
+    graphicsBtnContainer.setSize(220, 22);
+    graphicsBtnContainer.setInteractive(new Phaser.Geom.Rectangle(-110, -11, 220, 22), Phaser.Geom.Rectangle.Contains);
     if (graphicsBtnContainer.input) graphicsBtnContainer.input.cursor = 'pointer';
     graphicsBtnContainer.on('pointerdown', () => {
       GraphicsQualitySystem.getInstance().cycleQuality();
       this.updateGraphicsQualityText();
     });
 
-    this.graphicsDescText = HDTextHelper.createText(this.scene, modalX + 32, modalY + 270, '', {
+    this.graphicsDescText = HDTextHelper.createText(this.scene, modalX + 28, sBoxY + 58, '', {
       fontSize: '10px',
       fontStyle: 'italic',
       color: '#94a3b8'
     }).setOrigin(0, 0.5);
 
-    // --- Phân cách mỏng ---
+    // --- Mục Rung Màn Hình (Screen Shake Toggle) ---
+    this.shakeToggleControl = SettingsUIHelper.createScreenShakeToggle(
+      this.scene,
+      modalX + 260,
+      sBoxY + 84,
+      settings.isScreenShakeEnabled(),
+      (enabled) => settings.setScreenShakeEnabled(enabled),
+      modalW - 60
+    );
+
+    // --- Phân cách ---
     const divider = this.scene.add.graphics();
     divider.lineStyle(1, 0x243142, 0.8);
-    divider.lineBetween(modalX + 30, modalY + 288, modalX + modalW - 30, modalY + 288);
+    divider.lineBetween(modalX + 24, sBoxY + 112, modalX + modalW - 24, sBoxY + 112);
 
-    // --- Mục Âm Lượng ---
-    const audio = AudioManager.getInstance();
+    // --- Thanh trượt Nhạc Nền (BGM Slider) ---
+    this.bgmSliderControl = SettingsUIHelper.createVolumeSlider(
+      this.scene,
+      modalX + 320,
+      sBoxY + 132,
+      '🎵 Nhạc Nền (BGM):',
+      settings.getMusicVolume(),
+      (val) => settings.setMusicVolume(val),
+      { trackWidth: 160, fillColor: 0x3498db, labelWidth: 130 }
+    );
 
-    // Hàng 1: Âm Lượng Tổng & Nút Bật/Tắt
-    const masterLabel = HDTextHelper.createText(this.scene, modalX + 32, modalY + 310, 'Âm Lượng Tổng:', {
-      fontSize: '11.5px',
-      fontStyle: 'bold',
-      color: '#cbd5e1'
-    }).setOrigin(0, 0.5);
+    // --- Thanh trượt Hiệu Ứng (SFX Slider) ---
+    this.sfxSliderControl = SettingsUIHelper.createVolumeSlider(
+      this.scene,
+      modalX + 320,
+      sBoxY + 164,
+      '🔊 Hiệu Ứng (SFX):',
+      settings.getSfxVolume(),
+      (val) => settings.setSfxVolume(val),
+      { trackWidth: 160, fillColor: 0xe67e22, labelWidth: 130 }
+    );
 
-    const decMasterBtn = this.createStepBtn(modalX + 172, modalY + 310, '[-]', () => {
-      audio.setMasterVolume(audio.getMasterVolume() - 0.1);
-    });
+    // --- Âm Lượng Tổng & Nút Bật/Tắt Âm Thanh ---
+    this.masterSliderControl = SettingsUIHelper.createVolumeSlider(
+      this.scene,
+      modalX + 260,
+      sBoxY + 196,
+      '🎚️ Âm Lượng Tổng:',
+      settings.getMasterVolume(),
+      (val) => settings.setMasterVolume(val),
+      { trackWidth: 110, fillColor: 0x2ecc71, labelWidth: 120 }
+    );
 
-    this.masterValText = HDTextHelper.createText(this.scene, modalX + 204, modalY + 310, `${Math.round(audio.getMasterVolume() * 100)}%`, {
-      fontSize: '11.5px',
-      fontStyle: 'bold',
-      color: '#2ecc71'
-    }).setOrigin(0.5, 0.5);
-
-    const incMasterBtn = this.createStepBtn(modalX + 236, modalY + 310, '[+]', () => {
-      audio.setMasterVolume(audio.getMasterVolume() + 0.1);
-    });
-
-    const muteLabel = HDTextHelper.createText(this.scene, modalX + 295, modalY + 310, 'Bật/Tắt:', {
-      fontSize: '11.5px',
-      fontStyle: 'bold',
-      color: '#cbd5e1'
-    }).setOrigin(0, 0.5);
-
-    const muteBtnContainer = this.scene.add.container(modalX + 380, modalY + 310);
+    // Nút Mute
+    const muteBtnContainer = this.scene.add.container(modalX + modalW - 74, sBoxY + 196);
     this.muteBtnBg = this.scene.add.graphics();
-    this.muteBtnText = HDTextHelper.createText(this.scene, 0, 0, audio.isMuted ? '🔇 TẮT' : '🔊 BẬT', {
+    this.muteBtnTxt = HDTextHelper.createText(this.scene, 0, 0, settings.isMuted() ? '🔇 TẮT' : '🔊 BẬT', {
       fontSize: '11px',
       fontStyle: 'bold',
-      color: audio.isMuted ? '#ff7675' : '#2ecc71'
+      color: settings.isMuted() ? '#ff7675' : '#2ecc71'
     }).setOrigin(0.5, 0.5);
-    muteBtnContainer.add([this.muteBtnBg, this.muteBtnText]);
-    muteBtnContainer.setSize(76, 22);
-    muteBtnContainer.setInteractive(new Phaser.Geom.Rectangle(-38, -11, 76, 22), Phaser.Geom.Rectangle.Contains);
+    muteBtnContainer.add([this.muteBtnBg, this.muteBtnTxt]);
+    muteBtnContainer.setSize(68, 22);
+    muteBtnContainer.setInteractive(new Phaser.Geom.Rectangle(-34, -11, 68, 22), Phaser.Geom.Rectangle.Contains);
     if (muteBtnContainer.input) muteBtnContainer.input.cursor = 'pointer';
+
+    const renderMute = (isHover: boolean = false) => {
+      if (!this.muteBtnBg || !this.muteBtnTxt) return;
+      this.muteBtnBg.clear();
+      const muted = settings.isMuted();
+      const fill = muted ? (isHover ? 0x3d1c21 : 0x2b1418) : (isHover ? 0x1b3827 : 0x14281e);
+      const stroke = muted ? 0xe74c3c : 0x2ecc71;
+      this.muteBtnBg.fillStyle(fill, 0.95);
+      this.muteBtnBg.fillRoundedRect(-34, -11, 68, 22, 4);
+      this.muteBtnBg.lineStyle(1, stroke, 0.85);
+      this.muteBtnBg.strokeRoundedRect(-34, -11, 68, 22, 4);
+      this.muteBtnTxt.setText(muted ? '🔇 TẮT' : '🔊 BẬT');
+      this.muteBtnTxt.setColor(muted ? '#ff7675' : '#2ecc71');
+    };
+    renderMute();
+
+    muteBtnContainer.on('pointerover', () => renderMute(true));
+    muteBtnContainer.on('pointerout', () => renderMute(false));
     muteBtnContainer.on('pointerdown', () => {
-      audio.toggleMute();
-      this.updateVolumeTexts();
+      AudioManager.getInstance().playInteract();
+      settings.toggleMute();
+      renderMute(true);
     });
 
-    // Hàng 2: Nhạc Nền (BGM) & Hiệu Ứng (SFX)
-    const bgmLabel = HDTextHelper.createText(this.scene, modalX + 32, modalY + 346, 'Nhạc Nền:', {
-      fontSize: '11.5px',
-      fontStyle: 'bold',
-      color: '#cbd5e1'
-    }).setOrigin(0, 0.5);
+    // --- Nút Xóa Bản Lưu An Toàn (Safe Clear Save với 2 lần xác nhận) ---
+    const clearSaveBtn = SettingsUIHelper.createSafeClearSaveButton(
+      this.scene,
+      640,
+      sBoxY + 238,
+      () => {
+        SaveManager.clearSave();
+        this.saveStatusText.setText('✔ Đã xóa toàn bộ tiến trình bản lưu!');
+        this.saveStatusText.setColor('#e74c3c');
+      },
+      360,
+      26
+    );
 
-    const decBgmBtn = this.createStepBtn(modalX + 128, modalY + 346, '[-]', () => {
-      audio.setMusicVolume(audio.getMusicVolume() - 0.1);
-    });
-
-    this.bgmValText = HDTextHelper.createText(this.scene, modalX + 156, modalY + 346, `${Math.round(audio.getMusicVolume() * 100)}%`, {
-      fontSize: '11.5px',
-      fontStyle: 'bold',
-      color: '#3498db'
-    }).setOrigin(0.5, 0.5);
-
-    const incBgmBtn = this.createStepBtn(modalX + 184, modalY + 346, '[+]', () => {
-      audio.setMusicVolume(audio.getMusicVolume() + 0.1);
-    });
-
-    const sfxLabel = HDTextHelper.createText(this.scene, modalX + 242, modalY + 346, 'Hiệu Ứng:', {
-      fontSize: '11.5px',
-      fontStyle: 'bold',
-      color: '#cbd5e1'
-    }).setOrigin(0, 0.5);
-
-    const decSfxBtn = this.createStepBtn(modalX + 338, modalY + 346, '[-]', () => {
-      audio.setSfxVolume(audio.getSfxVolume() - 0.1);
-    });
-
-    this.sfxValText = HDTextHelper.createText(this.scene, modalX + 366, modalY + 346, `${Math.round(audio.getSfxVolume() * 100)}%`, {
-      fontSize: '11.5px',
-      fontStyle: 'bold',
-      color: '#e67e22'
-    }).setOrigin(0.5, 0.5);
-
-    const incSfxBtn = this.createStepBtn(modalX + 394, modalY + 346, '[+]', () => {
-      audio.setSfxVolume(audio.getSfxVolume() + 0.1);
-    });
-
-    // Hàng 3: Ghi chú phím tắt
-    const tipText = HDTextHelper.createText(this.scene, 640, modalY + 395, '💡 Phím [F8]: Đổi Đồ Họa nhanh • [-] [+] Chỉnh âm lượng • [M]: Bật/Tắt tiếng', {
+    // Ghi chú phím tắt
+    const tipText = HDTextHelper.createText(this.scene, 640, sBoxY + 276, '💡 Phím [F8]: Đổi Đồ Họa • [H]: Xem Hướng Dẫn Phím • [ESC]: Tiếp Tục', {
       fontSize: '10.5px',
       fontStyle: 'italic',
       color: '#7f8c8d'
@@ -293,58 +329,75 @@ export class PauseModal {
 
     this.container.add([
       overlay, box, title, closeBtn, this.saveStatusText,
-      resumeBtn, saveBtn, reloadBtn, quitBtn,
+      resumeBtn, saveBtn, reloadBtn, guideBtn, quitBtn,
       settingsBox, settingsTitle,
-      graphicsLabel, graphicsBtnContainer, this.graphicsDescText, divider,
-      masterLabel, decMasterBtn, this.masterValText, incMasterBtn,
-      muteLabel, muteBtnContainer,
-      bgmLabel, decBgmBtn, this.bgmValText, incBgmBtn,
-      sfxLabel, decSfxBtn, this.sfxValText, incSfxBtn,
+      graphicsLabel, graphicsBtnContainer, this.graphicsDescText,
+      this.shakeToggleControl.container,
+      divider,
+      this.bgmSliderControl.container,
+      this.sfxSliderControl.container,
+      this.masterSliderControl.container,
+      muteBtnContainer,
+      clearSaveBtn,
       tipText
     ]);
 
-    this.updateVolumeTexts();
     this.updateGraphicsQualityText();
   }
 
-  private createStepBtn(x: number, y: number, text: string, onClick: () => void): Phaser.GameObjects.Container {
-    const btn = this.scene.add.container(x, y);
-    const bg = this.scene.add.graphics();
-    bg.fillStyle(0x1a2332, 0.95);
-    bg.fillRoundedRect(-12, -10, 24, 20, 4);
-    bg.lineStyle(1, 0x4a5568, 0.9);
-    bg.strokeRoundedRect(-12, -10, 24, 20, 4);
+  /**
+   * Bật/Tắt hiển thị bảng Keycap Badges hướng dẫn phím bấm
+   */
+  public toggleGuideOverlay(): void {
+    if (this.guideOverlayContainer) {
+      this.guideOverlayContainer.destroy();
+      this.guideOverlayContainer = undefined;
+      return;
+    }
 
-    const txt = HDTextHelper.createText(this.scene, 0, 0, text, {
-      fontSize: '12px',
+    const overlay = this.scene.add.container(640, 360).setDepth(9950);
+    const w = 700;
+    const h = 500;
+
+    const bgCover = this.scene.add.graphics();
+    bgCover.fillStyle(0x000000, 0.85);
+    bgCover.fillRect(-640, -360, 1280, 720);
+    bgCover.setInteractive(new Phaser.Geom.Rectangle(-640, -360, 1280, 720), Phaser.Geom.Rectangle.Contains);
+
+    const box = this.scene.add.graphics();
+    box.fillStyle(0x10151f, 0.98);
+    box.fillRoundedRect(-w / 2, -h / 2, w, h, 8);
+    box.lineStyle(2, 0xd4af37, 0.95);
+    box.strokeRoundedRect(-w / 2, -h / 2, w, h, 8);
+
+    const title = HDTextHelper.createText(this.scene, 0, -h / 2 + 25, '📜 BẢNG PHÍM ĐIỀU KHIỂN & SINH TỒN [H]', {
+      fontSize: '18px',
       fontStyle: 'bold',
-      color: '#ecf0f1'
+      color: '#f1c40f',
+      stroke: '#000000',
+      strokeThickness: 2
     }).setOrigin(0.5, 0.5);
 
-    btn.add([bg, txt]);
-    btn.setSize(24, 20);
-    btn.setInteractive(new Phaser.Geom.Rectangle(-12, -10, 24, 20), Phaser.Geom.Rectangle.Contains);
-    if (btn.input) btn.input.cursor = 'pointer';
+    const closeBtn = HDTextHelper.createText(this.scene, w / 2 - 25, -h / 2 + 25, '✕', {
+      fontSize: '18px',
+      fontStyle: 'bold',
+      color: '#e74c3c'
+    }).setOrigin(0.5, 0.5).setInteractive({ useHandCursor: true });
+    closeBtn.on('pointerdown', () => this.toggleGuideOverlay());
 
-    btn.on('pointerdown', () => {
-      onClick();
-      this.updateVolumeTexts();
-    });
-    btn.on('pointerover', () => {
-      bg.clear();
-      bg.fillStyle(0x2d3748, 1);
-      bg.fillRoundedRect(-12, -10, 24, 20, 4);
-      bg.lineStyle(1, 0xf1c40f, 1);
-      bg.strokeRoundedRect(-12, -10, 24, 20, 4);
-    });
-    btn.on('pointerout', () => {
-      bg.clear();
-      bg.fillStyle(0x1a2332, 0.95);
-      bg.fillRoundedRect(-12, -10, 24, 20, 4);
-      bg.lineStyle(1, 0x4a5568, 0.9);
-      bg.strokeRoundedRect(-12, -10, 24, 20, 4);
-    });
-    return btn;
+    const guideContent = KeycapBadgeHelper.buildControlsGuideContent(
+      this.scene,
+      -w / 2 + 25,
+      -h / 2 + 55,
+      w - 50
+    );
+
+    const closeBottomBtn = this.createButton(0, h / 2 - 25, '✕ ĐÓNG BẢNG HƯỚNG DẪN [ESC / H]', '#ecf0f1', () => {
+      this.toggleGuideOverlay();
+    }, 280, 26);
+
+    overlay.add([bgCover, box, title, closeBtn, guideContent, closeBottomBtn]);
+    this.guideOverlayContainer = overlay;
   }
 
   private updateGraphicsQualityText(): void {
@@ -377,35 +430,28 @@ export class PauseModal {
     if (this.graphicsQualityBtnBg) {
       this.graphicsQualityBtnBg.clear();
       this.graphicsQualityBtnBg.fillStyle(badgeColor, 0.95);
-      this.graphicsQualityBtnBg.fillRoundedRect(-120, -12, 240, 24, 4);
+      this.graphicsQualityBtnBg.fillRoundedRect(-110, -11, 220, 22, 4);
       this.graphicsQualityBtnBg.lineStyle(1.5, strokeColor, 0.9);
-      this.graphicsQualityBtnBg.strokeRoundedRect(-120, -12, 240, 24, 4);
+      this.graphicsQualityBtnBg.strokeRoundedRect(-110, -11, 220, 22, 4);
     }
     if (this.graphicsDescText) {
-      this.graphicsDescText.setText(`Buffer: ${settings.lightingScale}x • Sương: ${settings.maxFogLayers} lớp • Đom đóm: ${settings.maxFireflies} • Frustum Culling: ON`);
+      this.graphicsDescText.setText(`Buffer: ${settings.lightingScale}x • Sương: ${settings.maxFogLayers} lớp • Đom đóm: ${settings.maxFireflies}`);
     }
   }
 
-  private updateVolumeTexts(): void {
-    const audio = AudioManager.getInstance();
-    if (this.masterValText) {
-      this.masterValText.setText(`${Math.round(audio.getMasterVolume() * 100)}%`);
+  public updateVolumeTexts(): void {
+    const settings = SettingsManager.getInstance();
+    if (this.masterSliderControl) {
+      this.masterSliderControl.setValue(settings.getMasterVolume());
     }
-    if (this.bgmValText) {
-      this.bgmValText.setText(`${Math.round(audio.getMusicVolume() * 100)}%`);
+    if (this.bgmSliderControl) {
+      this.bgmSliderControl.setValue(settings.getMusicVolume());
     }
-    if (this.sfxValText) {
-      this.sfxValText.setText(`${Math.round(audio.getSfxVolume() * 100)}%`);
+    if (this.sfxSliderControl) {
+      this.sfxSliderControl.setValue(settings.getSfxVolume());
     }
-    if (this.muteBtnText && this.muteBtnBg) {
-      const isMuted = audio.isMuted;
-      this.muteBtnText.setText(isMuted ? '🔇 TẮT' : '🔊 BẬT');
-      this.muteBtnText.setColor(isMuted ? '#ff7675' : '#2ecc71');
-      this.muteBtnBg.clear();
-      this.muteBtnBg.fillStyle(isMuted ? 0x2c1417 : 0x14281f, 0.95);
-      this.muteBtnBg.fillRoundedRect(-38, -11, 76, 22, 4);
-      this.muteBtnBg.lineStyle(1, isMuted ? 0xe74c3c : 0x2ecc71, 0.85);
-      this.muteBtnBg.strokeRoundedRect(-38, -11, 76, 22, 4);
+    if (this.shakeToggleControl) {
+      this.shakeToggleControl.setEnabled(settings.isScreenShakeEnabled());
     }
   }
 
@@ -419,7 +465,7 @@ export class PauseModal {
     bg.strokeRoundedRect(-btnW / 2, -btnH / 2, btnW, btnH, 6);
 
     const txt = HDTextHelper.createText(this.scene, 0, 0, text, {
-      fontSize: btnH >= 40 ? '15px' : '13.5px',
+      fontSize: btnH >= 40 ? '15px' : '12.5px',
       fontStyle: 'bold',
       color: color,
       stroke: '#000000',
@@ -487,6 +533,10 @@ export class PauseModal {
   }
 
   public close(): void {
+    if (this.guideOverlayContainer) {
+      this.guideOverlayContainer.destroy();
+      this.guideOverlayContainer = undefined;
+    }
     this.isOpen = false;
     this.container.setVisible(false);
     if (this.onClose) {
@@ -504,9 +554,13 @@ export class PauseModal {
   }
 
   /**
-   * C4-13-09: Dọn dẹp đối tượng hiển thị Modal tránh rò rỉ bộ nhớ
+   * Dọn dẹp đối tượng hiển thị Modal tránh rò rỉ bộ nhớ
    */
   public destroy(): void {
+    if (this.guideOverlayContainer) {
+      this.guideOverlayContainer.destroy();
+      this.guideOverlayContainer = undefined;
+    }
     if (this.unsubscribeQuality) {
       this.unsubscribeQuality();
       this.unsubscribeQuality = undefined;

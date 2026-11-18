@@ -15,6 +15,7 @@ import {
 } from '../config/Constants';
 import { AudioManager } from '../audio/AudioManager';
 import { PlayerState } from '../state/PlayerState';
+import { SettingsManager } from '../systems/SettingsManager';
 
 export interface AmbushContext {
   playerX: number;
@@ -114,7 +115,9 @@ export class MistBatAmbushEntity extends Phaser.Physics.Arcade.Sprite {
         playerState.stats.health = Math.max(0, playerState.stats.health - 8);
         playerState.modifyComposure(-15);
         playerState.emit('stats_changed', playerState.stats);
-        this.scene.cameras.main.shake(250, 0.008);
+        if (SettingsManager.getInstance().isScreenShakeEnabled()) {
+          this.scene.cameras.main.shake(250, 0.008);
+        }
 
         // Hiệu ứng chao đảo ánh sáng đèn lồng (Flicker 2.5s)
         this.scene.events.emit('lantern_flicker', { duration: 2500 });

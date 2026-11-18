@@ -41,11 +41,17 @@ import { registerWayfarerAnimations } from '../animation/SatyrAnimations';
 import { SaveManager } from '../systems/SaveManager';
 import { HDTextHelper } from '../utils/HDTextHelper';
 import { AudioManager } from '../audio/AudioManager';
+import { SettingsManager } from '../systems/SettingsManager';
+import { SettingsUIHelper } from '../ui/SettingsUIHelper';
+import { KeycapBadgeHelper } from '../ui/KeycapBadgeHelper';
 
 export class MainMenuScene extends Phaser.Scene {
   private activeMenuModal?: Phaser.GameObjects.Container;
   private emberParticles: Phaser.GameObjects.Arc[] = [];
   private campfireEmbers: Phaser.GameObjects.Arc[] = [];
+  private continueBtnContainer?: Phaser.GameObjects.Container;
+  private continueBtnX: number = 390;
+  private continueBtnY: number = 308;
 
   constructor() {
     super({ key: SCENE_MAIN_MENU });
@@ -235,9 +241,6 @@ export class MainMenuScene extends Phaser.Scene {
     // =========================================================================
     // 4. HỆ THỐNG 4 NÚT ĐIỀU HƯỚNG SANG TRỌNG DẠNG THẺ GỖ KHẮC VIỀN ĐỒNG
     // =========================================================================
-    const hasSaveGame = SaveManager.hasSave();
-    const saveSummary = SaveManager.getSaveSummary();
-
     let currentY = 246;
     const btnSpacing = 62;
 
@@ -253,37 +256,10 @@ export class MainMenuScene extends Phaser.Scene {
     );
     currentY += btnSpacing;
 
-    // Nút 2: TIẾP TỤC HÀNH TRÌNH (Continue Game - 2 dòng thông tin gọn gàng không tràn viền)
-    if (hasSaveGame && saveSummary) {
-      const checkpointDesc = saveSummary.checkpoint || 'Hồi 0 • Cổng Làng Bellhollow • Ngày 1';
-      const continueBtn = this.createMenuButton(
-        menuCenterX,
-        currentY,
-        '► TIẾP TỤC HÀNH TRÌNH',
-        checkpointDesc,
-        '#e5a93c',
-        true,
-        () => this.continueGame()
-      );
-
-      this.tweens.add({
-        targets: continueBtn,
-        alpha: 0.90,
-        duration: 1300,
-        yoyo: true,
-        repeat: -1
-      });
-    } else {
-      this.createMenuButton(
-        menuCenterX,
-        currentY,
-        '▷ TIẾP TỤC (CHƯA CÓ BẢN LƯU)',
-        'Chưa có bản lưu hành trình',
-        '#685d50',
-        false,
-        () => this.showNoticeToast('⚠️ Chưa có bản lưu hành trình! Vui lòng chọn Bước Vào Màn Sương.')
-      );
-    }
+    // Nút 2: TIẾP TỤC HÀNH TRÌNH (Continue Game - Có thể cập nhật động khi xóa bản lưu)
+    this.continueBtnX = menuCenterX;
+    this.continueBtnY = currentY;
+    this.renderContinueButton();
     currentY += btnSpacing;
 
     // Nút 3: CÀI ĐẶT TRÒ CHƠI (Settings)
@@ -310,42 +286,82 @@ export class MainMenuScene extends Phaser.Scene {
     );
 
     // =========================================================================
-    // 5. BẢNG HƯỚNG DẪN ĐIỀU KHIỂN TINH TẾ Ở ĐÁY MÀN HÌNH
+    // 5. BẢNG HƯỚNG DẪN ĐIỀU KHIỂN & PHÍM BẤM MINH HỌA TRỰC QUAN (KEYCAP BADGES)
     // =========================================================================
     const guideBox = this.add.graphics();
-    guideBox.fillStyle(0x100c08, 0.92);
-    guideBox.fillRoundedRect(180, 576, 920, 84, 8);
-    guideBox.lineStyle(1.5, 0x5c4627, 0.85);
-    guideBox.strokeRoundedRect(180, 576, 920, 84, 8);
-    guideBox.lineStyle(1, 0x8a6d3b, 0.35);
-    guideBox.strokeRoundedRect(182, 578, 916, 80, 6);
+    const gBoxW = 960;
+    const gBoxH = 86;
+    const gBoxX = (1280 - gBoxW) / 2; // 160
+    const gBoxY = 574;
 
-    HDTextHelper.createText(
+    guideBox.fillStyle(0x100c08, 0.94);
+    guideBox.fillRoundedRect(gBoxX, gBoxY, gBoxW, gBoxH, 8);
+    guideBox.lineStyle(1.5, 0x5c4627, 0.9);
+    guideBox.strokeRoundedRect(gBoxX, gBoxY, gBoxW, gBoxH, 8);
+    guideBox.lineStyle(1, 0x8a6d3b, 0.4);
+    guideBox.strokeRoundedRect(gBoxX + 2, gBoxY + 2, gBoxW - 4, gBoxH - 4, 6);
+
+    // Tiêu đề & Lời mời tương tác
+    const guideTitle = HDTextHelper.createText(
       this,
       640,
-      592,
-      '✦ HƯỚNG DẪN ĐIỀU KHIỂN & PHÍM TẮT ✦',
+      gBoxY + 16,
+      '✦ HƯỚNG DẪN ĐIỀU KHIỂN SINH TỒN (BẤM ĐÂY HOẶC PHÍM [H] ĐỂ MỞ BIÊN NIÊN SỬ CHI TIẾT) ✦',
       {
         fontSize: '11px',
         fontStyle: 'bold',
-        color: '#d1a858',
+        color: '#e5a93c',
         align: 'center'
       }
     ).setOrigin(0.5, 0.5);
 
-    HDTextHelper.createText(
-      this,
-      640,
-      624,
-      '[W, A, S, D] / [Mũi tên]: Di chuyển Lữ Khách   |   [Shift]: Chạy nhanh   |   [F]: Bật / Tắt Đèn Lồng   |   [E]: Tương tác / Trò chuyện\n' +
-      '[Q]: Ném Mồi Tiếng Động   |   [C / I]: Bàn Chế Tạo   |   [J]: Sổ Tay   |   [M]: Bật / Tắt Âm Thanh   |   [ESC]: Tạm Dừng & Lưu Game   |   [F9]: Hitbox Debug',
-      {
-        fontSize: '11.5px',
-        color: '#aba08f',
-        align: 'center',
-        lineSpacing: 5
-      }
-    ).setOrigin(0.5, 0.5);
+    // HitZone click toàn bộ guideBox mở modal hướng dẫn chi tiết
+    const guideHit = this.add.zone(640, gBoxY + gBoxH / 2, gBoxW, gBoxH).setInteractive({ useHandCursor: true });
+    guideHit.on('pointerdown', () => {
+      AudioManager.getInstance().playWoodTap();
+      this.showChronicleAndGuideModal();
+    });
+    guideHit.on('pointerover', () => {
+      guideTitle.setColor('#fff2c2');
+      guideBox.lineStyle(1.5, 0xe5a93c, 1);
+      guideBox.strokeRoundedRect(gBoxX, gBoxY, gBoxW, gBoxH, 8);
+    });
+    guideHit.on('pointerout', () => {
+      guideTitle.setColor('#e5a93c');
+      guideBox.lineStyle(1.5, 0x5c4627, 0.9);
+      guideBox.strokeRoundedRect(gBoxX, gBoxY, gBoxW, gBoxH, 8);
+    });
+
+    // Cột 1: Di Chuyển (Movement)
+    KeycapBadgeHelper.createKeyCluster(this, 185, gBoxY + 50, ['W', 'A', 'S', 'D'], 3, { fontSize: '10px' });
+    KeycapBadgeHelper.createKeycap(this, 335, gBoxY + 50, 'SHIFT', { minWidth: 44, fontSize: '10px' });
+    HDTextHelper.createText(this, 365, gBoxY + 50, 'Chạy', { fontSize: '10.5px', color: '#cbd5e1' }).setOrigin(0, 0.5);
+
+    // Cột 2: Sinh Tồn (Survival)
+    KeycapBadgeHelper.createKeycap(this, 420, gBoxY + 50, 'F', { highlight: true, fontSize: '10px' });
+    HDTextHelper.createText(this, 438, gBoxY + 50, 'Đèn', { fontSize: '10.5px', color: '#f1c40f' }).setOrigin(0, 0.5);
+
+    KeycapBadgeHelper.createKeycap(this, 482, gBoxY + 50, 'E', { fontSize: '10px' });
+    HDTextHelper.createText(this, 500, gBoxY + 50, 'Tương Tác', { fontSize: '10.5px', color: '#cbd5e1' }).setOrigin(0, 0.5);
+
+    KeycapBadgeHelper.createKeycap(this, 580, gBoxY + 50, 'C', { fontSize: '10px' });
+    HDTextHelper.createText(this, 598, gBoxY + 50, 'Chế Tạo', { fontSize: '10.5px', color: '#cbd5e1' }).setOrigin(0, 0.5);
+
+    KeycapBadgeHelper.createKeycap(this, 665, gBoxY + 50, 'J', { fontSize: '10px' });
+    HDTextHelper.createText(this, 683, gBoxY + 50, 'Sổ Tay', { fontSize: '10.5px', color: '#cbd5e1' }).setOrigin(0, 0.5);
+
+    // Cột 3: Tự Vệ & Hệ Thống (Combat & System)
+    KeycapBadgeHelper.createKeycap(this, 750, gBoxY + 50, 'Q', { fontSize: '10px' });
+    HDTextHelper.createText(this, 768, gBoxY + 50, 'Ném Mồi', { fontSize: '10.5px', color: '#e74c3c' }).setOrigin(0, 0.5);
+
+    KeycapBadgeHelper.createKeycap(this, 845, gBoxY + 50, 'ESC', { minWidth: 36, fontSize: '10px' });
+    HDTextHelper.createText(this, 868, gBoxY + 50, 'Tạm Dừng', { fontSize: '10.5px', color: '#cbd5e1' }).setOrigin(0, 0.5);
+
+    KeycapBadgeHelper.createKeycap(this, 940, gBoxY + 50, 'M', { fontSize: '10px' });
+    HDTextHelper.createText(this, 958, gBoxY + 50, 'Âm', { fontSize: '10.5px', color: '#cbd5e1' }).setOrigin(0, 0.5);
+
+    KeycapBadgeHelper.createKeycap(this, 1000, gBoxY + 50, 'H', { highlight: true, fontSize: '10px' });
+    HDTextHelper.createText(this, 1018, gBoxY + 50, 'Chi Tiết', { fontSize: '10.5px', color: '#f39c12' }).setOrigin(0, 0.5);
 
     // Phiên bản V1.5 hiển thị ở góc dưới phải
     HDTextHelper.createText(
@@ -365,17 +381,24 @@ export class MainMenuScene extends Phaser.Scene {
     if (this.input.keyboard) {
       this.input.keyboard.on('keydown-ENTER', () => {
         if (this.activeMenuModal) return;
-        if (hasSaveGame) this.continueGame();
+        if (SaveManager.hasSave()) this.continueGame();
         else this.startNewGame();
       });
       this.input.keyboard.on('keydown-SPACE', () => {
         if (this.activeMenuModal) return;
-        if (hasSaveGame) this.continueGame();
+        if (SaveManager.hasSave()) this.continueGame();
         else this.startNewGame();
       });
       this.input.keyboard.on('keydown-ESC', () => {
         if (this.activeMenuModal) {
           this.closeActiveMenuModal();
+        }
+      });
+      this.input.keyboard.on('keydown-H', () => {
+        if (this.activeMenuModal) {
+          this.closeActiveMenuModal();
+        } else {
+          this.showChronicleAndGuideModal();
         }
       });
     }
@@ -853,6 +876,52 @@ export class MainMenuScene extends Phaser.Scene {
     });
   }
 
+  private renderContinueButton(): void {
+    if (this.continueBtnContainer) {
+      this.continueBtnContainer.destroy();
+      this.continueBtnContainer = undefined;
+    }
+
+    const hasSaveGame = SaveManager.hasSave();
+    const saveSummary = SaveManager.getSaveSummary();
+
+    if (hasSaveGame && saveSummary) {
+      const checkpointDesc = saveSummary.checkpoint || 'Hồi 0 • Cổng Làng Bellhollow • Ngày 1';
+      this.continueBtnContainer = this.createMenuButton(
+        this.continueBtnX,
+        this.continueBtnY,
+        '► TIẾP TỤC HÀNH TRÌNH',
+        checkpointDesc,
+        '#e5a93c',
+        true,
+        () => this.continueGame()
+      );
+
+      this.tweens.add({
+        targets: this.continueBtnContainer,
+        alpha: 0.90,
+        duration: 1300,
+        yoyo: true,
+        repeat: -1
+      });
+    } else {
+      this.continueBtnContainer = this.createMenuButton(
+        this.continueBtnX,
+        this.continueBtnY,
+        '▷ TIẾP TỤC (CHƯA CÓ BẢN LƯU)',
+        'Chưa có bản lưu hành trình',
+        '#685d50',
+        false,
+        () => this.showNoticeToast('⚠️ Chưa có bản lưu hành trình! Vui lòng chọn Bước Vào Màn Sương.')
+      );
+    }
+  }
+
+  private onSaveDataCleared(): void {
+    this.renderContinueButton();
+    this.showNoticeToast('✔ Đã xóa toàn bộ tiến trình bản lưu!');
+  }
+
   /**
    * Hộp thoại Cài Đặt (Settings Modal)
    */
@@ -860,145 +929,12 @@ export class MainMenuScene extends Phaser.Scene {
     this.closeActiveMenuModal();
 
     const modal = this.add.container(640, 360).setDepth(9000);
-    const modalW = 580;
-    const modalH = 400;
+    const modalW = 680;
+    const modalH = 540;
 
     // Lớp phủ mờ nền
     const overlay = this.add.graphics();
-    overlay.fillStyle(0x000000, 0.65);
-    overlay.fillRect(-640, -360, 1280, 720);
-    
-    // HitZone đóng modal khi nhấn ra ngoài
-    const overlayHit = this.add.zone(0, 0, 1280, 720).setInteractive();
-    overlayHit.on('pointerdown', () => this.closeActiveMenuModal());
-
-    // Khung hộp thoại gỗ tối viền đồng xỉn
-    const box = this.add.graphics();
-    box.fillStyle(0x120d09, 0.95);
-    box.fillRoundedRect(-modalW / 2, -modalH / 2, modalW, modalH, 10);
-    box.lineStyle(1.8, 0x8a6d3b, 0.9);
-    box.strokeRoundedRect(-modalW / 2, -modalH / 2, modalW, modalH, 10);
-    box.lineStyle(1, 0x5c4627, 0.5);
-    box.strokeRoundedRect(-modalW / 2 + 3, -modalH / 2 + 3, modalW - 6, modalH - 6, 8);
-
-    const title = HDTextHelper.createText(this, 0, -modalH / 2 + 34, '⚙ CÀI ĐẶT TRÒ CHƠI', {
-      fontSize: '20px',
-      fontStyle: 'bold',
-      color: '#e5a93c',
-      stroke: '#140d06',
-      strokeThickness: 3
-    }).setOrigin(0.5, 0.5);
-
-    // Nút Bật/Tắt Âm Thanh
-    const audio = AudioManager.getInstance();
-    const audioBtn = this.add.container(0, -modalH / 2 + 95);
-    const audioBg = this.add.graphics();
-    const isMuted = audio.isMuted;
-
-    const renderAudioBtn = (muted: boolean, isHover: boolean = false) => {
-      audioBg.clear();
-      audioBg.fillStyle(muted ? (isHover ? 0x30181c : 0x241416) : (isHover ? 0x1a3325 : 0x14221a), 0.95);
-      audioBg.fillRoundedRect(-160, -18, 320, 36, 6);
-      audioBg.lineStyle(1.5, muted ? (isHover ? 0xe74c3c : 0xc0392b) : (isHover ? 0x2ecc71 : 0x27ae60), 0.9);
-      audioBg.strokeRoundedRect(-160, -18, 320, 36, 6);
-    };
-    renderAudioBtn(isMuted);
-
-    const audioText = HDTextHelper.createText(
-      this,
-      0,
-      0,
-      isMuted ? '🔇 ÂM THANH: ĐANG TẮT (BẤM ĐỂ BẬT)' : '🔊 ÂM THANH: ĐANG BẬT (BẤM ĐỂ TẮT)',
-      {
-        fontSize: '13px',
-        fontStyle: 'bold',
-        color: isMuted ? '#e74c3c' : '#2ecc71',
-        stroke: '#000000',
-        strokeThickness: 2
-      }
-    ).setOrigin(0.5, 0.5);
-
-    const audioHit = this.add.zone(0, 0, 320, 36).setInteractive({ useHandCursor: true });
-    audioHit.on('pointerover', () => renderAudioBtn(audio.isMuted, true));
-    audioHit.on('pointerout', () => renderAudioBtn(audio.isMuted, false));
-    audioHit.on('pointerdown', () => {
-      const nowMuted = audio.toggleMute();
-      renderAudioBtn(nowMuted, true);
-      audioText.setText(nowMuted ? '🔇 ÂM THANH: ĐANG TẮT (BẤM ĐỂ BẬT)' : '🔊 ÂM THANH: ĐANG BẬT (BẤM ĐỂ TẮT)');
-      audioText.setColor(nowMuted ? '#e74c3c' : '#2ecc71');
-    });
-
-    audioBtn.add([audioBg, audioText, audioHit]);
-
-    // Nội dung tóm tắt điều khiển
-    const infoText = HDTextHelper.createText(
-      this,
-      0,
-      15,
-      'BẢNG PHÍM TẮT ĐIỀU KHIỂN CHÍNH:\n' +
-      '• [W, A, S, D] / [Mũi tên]: Di chuyển Lữ Khách\n' +
-      '• [Shift]: Chạy nhanh (tiêu hao Thể Lực)\n' +
-      '• [F]: Bật / Tắt Đèn Lồng xua tan Màn Sương\n' +
-      '• [E]: Tương tác / Trò chuyện NPC / Thu hoạch\n' +
-      '• [Q]: Ném Mồi Tiếng Động đánh lạc hướng Quái Vật\n' +
-      '• [I / C]: Mở Bàn Chế Tạo | [J]: Mở Sổ Tay Nhiệm Vụ\n' +
-      '• [ESC]: Tạm Dừng & Lưu Game',
-      {
-        fontSize: '12px',
-        color: '#d4cbbe',
-        lineSpacing: 6,
-        align: 'left'
-      }
-    ).setOrigin(0.5, 0.5);
-
-    // Nút Đóng
-    const closeBtn = this.add.container(0, modalH / 2 - 36);
-    const closeBg = this.add.graphics();
-    const renderCloseBtn = (isHover: boolean) => {
-      closeBg.clear();
-      closeBg.fillStyle(isHover ? 0x2e2017 : 0x1e1610, 0.95);
-      closeBg.fillRoundedRect(-90, -16, 180, 32, 6);
-      closeBg.lineStyle(1.4, isHover ? 0xe5a93c : 0x6e5233, 0.9);
-      closeBg.strokeRoundedRect(-90, -16, 180, 32, 6);
-    };
-    renderCloseBtn(false);
-
-    const closeText = HDTextHelper.createText(this, 0, 0, '✕ ĐÓNG [ESC]', {
-      fontSize: '13px',
-      fontStyle: 'bold',
-      color: '#f5eedc'
-    }).setOrigin(0.5, 0.5);
-
-    const closeHit = this.add.zone(0, 0, 180, 32).setInteractive({ useHandCursor: true });
-    closeHit.on('pointerover', () => {
-      renderCloseBtn(true);
-      closeText.setColor('#fff4da');
-    });
-    closeHit.on('pointerout', () => {
-      renderCloseBtn(false);
-      closeText.setColor('#f5eedc');
-    });
-    closeHit.on('pointerdown', () => this.closeActiveMenuModal());
-
-    closeBtn.add([closeBg, closeText, closeHit]);
-
-    modal.add([overlay, overlayHit, box, title, audioBtn, infoText, closeBtn]);
-    this.activeMenuModal = modal;
-  }
-
-  /**
-   * Hộp thoại Biên Niên Sử & Hướng Dẫn (Chronicle, Lore & Controls Guide Modal)
-   */
-  private showChronicleAndGuideModal(): void {
-    this.closeActiveMenuModal();
-
-    const modal = this.add.container(640, 360).setDepth(9000);
-    const modalW = 660;
-    const modalH = 460;
-
-    // Lớp phủ mờ nền
-    const overlay = this.add.graphics();
-    overlay.fillStyle(0x000000, 0.68);
+    overlay.fillStyle(0x000000, 0.72);
     overlay.fillRect(-640, -360, 1280, 720);
 
     // HitZone đóng modal khi nhấn ra ngoài
@@ -1007,14 +943,14 @@ export class MainMenuScene extends Phaser.Scene {
 
     // Khung hộp thoại gỗ tối viền đồng xỉn
     const box = this.add.graphics();
-    box.fillStyle(0x120d09, 0.96);
+    box.fillStyle(0x120d09, 0.98);
     box.fillRoundedRect(-modalW / 2, -modalH / 2, modalW, modalH, 10);
-    box.lineStyle(1.8, 0x8a6d3b, 0.9);
+    box.lineStyle(1.8, 0x8a6d3b, 0.95);
     box.strokeRoundedRect(-modalW / 2, -modalH / 2, modalW, modalH, 10);
-    box.lineStyle(1, 0x5c4627, 0.5);
+    box.lineStyle(1, 0x5c4627, 0.55);
     box.strokeRoundedRect(-modalW / 2 + 3, -modalH / 2 + 3, modalW - 6, modalH - 6, 8);
 
-    const title = HDTextHelper.createText(this, 0, -modalH / 2 + 34, '📜 BIÊN NIÊN SỬ & HƯỚNG DẪN', {
+    const title = HDTextHelper.createText(this, 0, -modalH / 2 + 30, '⚙ CÀI ĐẶT TRÒ CHƠI & HỆ THỐNG', {
       fontFamily: 'Cinzel, Georgia, "Times New Roman", serif',
       fontSize: '20px',
       fontStyle: 'bold',
@@ -1023,30 +959,184 @@ export class MainMenuScene extends Phaser.Scene {
       strokeThickness: 3
     }).setOrigin(0.5, 0.5);
 
-    const contentText = HDTextHelper.createText(
+    const subTitle = HDTextHelper.createText(this, 0, -modalH / 2 + 52, 'Âm thanh đa kênh • Rung màn hình hoảng loạn • Quản lý bản lưu', {
+      fontSize: '11px',
+      fontStyle: 'italic',
+      color: '#9e8c75'
+    }).setOrigin(0.5, 0.5);
+
+    // Phân cách 1
+    const div1 = this.add.graphics();
+    div1.lineStyle(1, 0x3d2b18, 0.8);
+    div1.lineBetween(-modalW / 2 + 24, -modalH / 2 + 66, modalW / 2 - 24, -modalH / 2 + 66);
+
+    const settings = SettingsManager.getInstance();
+
+    // 1. THANH KÉO ÂM LƯỢNG NHẠC NỀN (BGM)
+    const bgmSlider = SettingsUIHelper.createVolumeSlider(
+      this,
+      40,
+      -modalH / 2 + 96,
+      '🎵 Nhạc Nền (BGM):',
+      settings.getMusicVolume(),
+      (val) => settings.setMusicVolume(val),
+      { trackWidth: 200, fillColor: 0x3498db, thumbColor: 0x5dade2 }
+    );
+
+    // 2. THANH KÉO ÂM LƯỢNG HIỆU ỨNG (SFX)
+    const sfxSlider = SettingsUIHelper.createVolumeSlider(
+      this,
+      40,
+      -modalH / 2 + 134,
+      '🔊 Hiệu Ứng (SFX):',
+      settings.getSfxVolume(),
+      (val) => settings.setSfxVolume(val),
+      { trackWidth: 200, fillColor: 0xe67e22, thumbColor: 0xf39c12 }
+    );
+
+    // 3. THANH KÉO ÂM LƯỢNG TỔNG (MASTER) & NÚT MUTE
+    const masterSlider = SettingsUIHelper.createVolumeSlider(
+      this,
+      -10,
+      -modalH / 2 + 172,
+      '🎚️ Âm Lượng Tổng:',
+      settings.getMasterVolume(),
+      (val) => settings.setMasterVolume(val),
+      { trackWidth: 150, fillColor: 0x2ecc71, thumbColor: 0x58d68d }
+    );
+
+    // Nút Bật/Tắt Toàn Bộ Âm Thanh (Mute)
+    const muteBtnContainer = this.add.container(modalW / 2 - 95, -modalH / 2 + 172);
+    const muteBtnBg = this.add.graphics();
+    const muteBtnTxt = HDTextHelper.createText(this, 0, 0, settings.isMuted() ? '🔇 TẮT TIẾNG' : '🔊 BẬT TIẾNG', {
+      fontSize: '11px',
+      fontStyle: 'bold',
+      color: settings.isMuted() ? '#e74c3c' : '#2ecc71'
+    }).setOrigin(0.5, 0.5);
+    muteBtnContainer.add([muteBtnBg, muteBtnTxt]);
+    muteBtnContainer.setSize(96, 26);
+    muteBtnContainer.setInteractive(new Phaser.Geom.Rectangle(-48, -13, 96, 26), Phaser.Geom.Rectangle.Contains);
+    if (muteBtnContainer.input) muteBtnContainer.input.cursor = 'pointer';
+
+    const renderMuteBtn = (isHover: boolean = false) => {
+      muteBtnBg.clear();
+      const muted = settings.isMuted();
+      const fill = muted ? (isHover ? 0x3d1c21 : 0x2b1418) : (isHover ? 0x1b3827 : 0x14281e);
+      const stroke = muted ? 0xe74c3c : 0x2ecc71;
+      muteBtnBg.fillStyle(fill, 0.95);
+      muteBtnBg.fillRoundedRect(-48, -13, 96, 26, 4);
+      muteBtnBg.lineStyle(1.5, stroke, 0.9);
+      muteBtnBg.strokeRoundedRect(-48, -13, 96, 26, 4);
+      muteBtnTxt.setText(muted ? '🔇 TẮT TIẾNG' : '🔊 BẬT TIẾNG');
+      muteBtnTxt.setColor(muted ? '#ff7675' : '#2ecc71');
+    };
+    renderMuteBtn();
+
+    muteBtnContainer.on('pointerover', () => renderMuteBtn(true));
+    muteBtnContainer.on('pointerout', () => renderMuteBtn(false));
+    muteBtnContainer.on('pointerdown', () => {
+      AudioManager.getInstance().playInteract();
+      settings.toggleMute();
+      renderMuteBtn(true);
+    });
+
+    // Phân cách 2
+    const div2 = this.add.graphics();
+    div2.lineStyle(1, 0x3d2b18, 0.8);
+    div2.lineBetween(-modalW / 2 + 24, -modalH / 2 + 206, modalW / 2 - 24, -modalH / 2 + 206);
+
+    // 4. TÙY CHỌN RUNG MÀN HÌNH (SCREEN SHAKE)
+    const shakeToggle = SettingsUIHelper.createScreenShakeToggle(
       this,
       0,
-      12,
-      'HOLLOW WOODS: DỊ CẢNH RỪNG SƯƠNG (THE FOG THAT REMEMBERS)\n\n' +
-      'Ngươi tỉnh giấc nơi rìa làng cổ Bellhollow — một thánh địa hoang phế bị giam hãm trong Màn Sương Ký Ức.\n' +
-      'Đại Hồng Chung bị nứt đôi khiến mạch rễ tha hóa trỗi dậy, giam cầm thung lũng trong vòng lặp thời gian vĩnh cửu.\n\n' +
-      '• ĐÈN LỒNG HỔ PHÁCH [F]: Nguồn sáng thiêng liêng duy nhất duy trì Bình Tâm và xua đuổi Màn Sương.\n' +
-      '• KẺ LẮNG NGHE (THE LISTENER): Quái vật mù lòa săn mồi bằng âm thanh — hãy đi khẽ hoặc ném mồi [Q].\n' +
-      '• LỬA TRẠI SANCTUARY: Điểm dừng chân phục hồi Bình Tâm, hồi phục thể lực và liên kết với linh hồn kỵ sĩ.\n' +
-      '• 3 KẾT THÚC CỐT TRUYỆN: Tùy thuộc vào mức độ thức tỉnh thân phận Hiệp Sĩ Đen và sự gắn kết với dân làng.\n\n' +
-      '──────────────────────────────────────────────────────────\n' +
-      '• Phím điều khiển: [WASD] Di chuyển  |  [Shift] Chạy  |  [E] Tương tác  |  [I/C] Chế Tạo  |  [J] Sổ Tay\n' +
-      '• Engine: Phaser 4 + TypeScript | Độ phân giải chuẩn HD 1280×720 | Phiên bản V1.5.0',
-      {
-        fontSize: '11.5px',
-        color: '#d8cfbe',
-        lineSpacing: 5,
-        align: 'center',
-        wordWrap: { width: modalW - 48 }
-      }
-    ).setOrigin(0.5, 0.5);
+      -modalH / 2 + 236,
+      settings.isScreenShakeEnabled(),
+      (enabled) => settings.setScreenShakeEnabled(enabled),
+      540
+    );
 
-    // Nút Đóng
+    // 5. CHẤT LƯỢNG ĐỒ HỌA (GRAPHICS QUALITY)
+    const gfxContainer = this.add.container(0, -modalH / 2 + 300);
+    const gfxLabel = HDTextHelper.createText(this, -270, 0, '🖥️ Mức Đồ Họa & Sương Mù:', {
+      fontSize: '12px',
+      fontStyle: 'bold',
+      color: '#cbd5e1'
+    }).setOrigin(0, 0.5);
+
+    const gfxBtn = this.add.container(170, 0);
+    const gfxBtnBg = this.add.graphics();
+    const gfxBtnTxt = HDTextHelper.createText(this, 0, 0, '', {
+      fontSize: '11px',
+      fontStyle: 'bold',
+      color: '#f1c40f'
+    }).setOrigin(0.5, 0.5);
+    gfxBtn.add([gfxBtnBg, gfxBtnTxt]);
+    gfxBtn.setSize(200, 26);
+    gfxBtn.setInteractive(new Phaser.Geom.Rectangle(-100, -13, 200, 26), Phaser.Geom.Rectangle.Contains);
+    if (gfxBtn.input) gfxBtn.input.cursor = 'pointer';
+
+    const renderGfxBtn = (isHover: boolean = false) => {
+      const q = settings.getGraphicsQuality();
+      let label = '🌟 CAO (HIGH)';
+      let col = '#f1c40f';
+      let bgC = 0x2e2305;
+      let strokeC = 0xf1c40f;
+      if (q === 'MEDIUM') {
+        label = '⚡ CÂN BẰNG (MEDIUM)';
+        col = '#3498db';
+        bgC = 0x0e243b;
+        strokeC = 0x3498db;
+      } else if (q === 'LOW') {
+        label = '🍃 MƯỢT MÀ (LOW)';
+        col = '#2ecc71';
+        bgC = 0x0e2b1b;
+        strokeC = 0x2ecc71;
+      }
+      gfxBtnBg.clear();
+      gfxBtnBg.fillStyle(isHover ? (bgC + 0x111111) : bgC, 0.95);
+      gfxBtnBg.fillRoundedRect(-100, -13, 200, 26, 4);
+      gfxBtnBg.lineStyle(1.5, strokeC, 0.9);
+      gfxBtnBg.strokeRoundedRect(-100, -13, 200, 26, 4);
+      gfxBtnTxt.setText(label);
+      gfxBtnTxt.setColor(col);
+    };
+    renderGfxBtn();
+
+    gfxBtn.on('pointerover', () => renderGfxBtn(true));
+    gfxBtn.on('pointerout', () => renderGfxBtn(false));
+    gfxBtn.on('pointerdown', () => {
+      AudioManager.getInstance().playInteract();
+      settings.cycleGraphicsQuality();
+      renderGfxBtn(true);
+    });
+
+    gfxContainer.add([gfxLabel, gfxBtn]);
+
+    // Phân cách 3
+    const div3 = this.add.graphics();
+    div3.lineStyle(1, 0x3d2b18, 0.8);
+    div3.lineBetween(-modalW / 2 + 24, -modalH / 2 + 332, modalW / 2 - 24, -modalH / 2 + 332);
+
+    // 6. QUẢN LÝ BẢN LƯU (XÓA BẢN LƯU AN TOÀN 2 LẦN)
+    const saveSectionLabel = HDTextHelper.createText(this, 0, -modalH / 2 + 350, 'QUẢN LÝ TIẾN TRÌNH LƯU TRỮ TRÒ CHƠI', {
+      fontSize: '11px',
+      fontStyle: 'bold',
+      color: '#e74c3c'
+    }).setOrigin(0.5, 0.5);
+
+    const clearSaveBtn = SettingsUIHelper.createSafeClearSaveButton(
+      this,
+      0,
+      -modalH / 2 + 386,
+      () => {
+        SaveManager.clearSave();
+        this.onSaveDataCleared();
+      },
+      380,
+      30
+    );
+
+    // Nút Đóng [ESC]
     const closeBtn = this.add.container(0, modalH / 2 - 34);
     const closeBg = this.add.graphics();
     const renderCloseBtn = (isHover: boolean) => {
@@ -1077,7 +1167,127 @@ export class MainMenuScene extends Phaser.Scene {
 
     closeBtn.add([closeBg, closeText, closeHit]);
 
-    modal.add([overlay, overlayHit, box, title, contentText, closeBtn]);
+    modal.add([
+      overlay,
+      overlayHit,
+      box,
+      title,
+      subTitle,
+      div1,
+      bgmSlider.container,
+      sfxSlider.container,
+      masterSlider.container,
+      muteBtnContainer,
+      div2,
+      shakeToggle.container,
+      gfxContainer,
+      div3,
+      saveSectionLabel,
+      clearSaveBtn,
+      closeBtn
+    ]);
+
+    this.activeMenuModal = modal;
+  }
+
+  /**
+   * Hộp thoại Biên Niên Sử & Hướng Dẫn (Chronicle, Lore & Controls Guide Modal)
+   */
+  private showChronicleAndGuideModal(): void {
+    this.closeActiveMenuModal();
+
+    const modal = this.add.container(640, 360).setDepth(9000);
+    const modalW = 760;
+    const modalH = 580;
+
+    // Lớp phủ mờ nền
+    const overlay = this.add.graphics();
+    overlay.fillStyle(0x000000, 0.72);
+    overlay.fillRect(-640, -360, 1280, 720);
+
+    const overlayHit = this.add.zone(0, 0, 1280, 720).setInteractive();
+    overlayHit.on('pointerdown', () => this.closeActiveMenuModal());
+
+    const box = this.add.graphics();
+    box.fillStyle(0x120d09, 0.98);
+    box.fillRoundedRect(-modalW / 2, -modalH / 2, modalW, modalH, 10);
+    box.lineStyle(1.8, 0x8a6d3b, 0.95);
+    box.strokeRoundedRect(-modalW / 2, -modalH / 2, modalW, modalH, 10);
+    box.lineStyle(1, 0x5c4627, 0.55);
+    box.strokeRoundedRect(-modalW / 2 + 3, -modalH / 2 + 3, modalW - 6, modalH - 6, 8);
+
+    const title = HDTextHelper.createText(this, 0, -modalH / 2 + 28, '📜 BIÊN NIÊN SỬ & HƯỚNG DẪN ĐIỀU KHIỂN', {
+      fontFamily: 'Cinzel, Georgia, "Times New Roman", serif',
+      fontSize: '20px',
+      fontStyle: 'bold',
+      color: '#e5a93c',
+      stroke: '#140d06',
+      strokeThickness: 3
+    }).setOrigin(0.5, 0.5);
+
+    // Phần Cốt Truyện / Lore Banner súc tích
+    const loreBox = this.add.graphics();
+    loreBox.fillStyle(0x0a0705, 0.65);
+    loreBox.fillRoundedRect(-modalW / 2 + 20, -modalH / 2 + 48, modalW - 40, 68, 6);
+    loreBox.lineStyle(1, 0x422f1d, 0.75);
+    loreBox.strokeRoundedRect(-modalW / 2 + 20, -modalH / 2 + 48, modalW - 40, 68, 6);
+
+    const loreText = HDTextHelper.createText(
+      this,
+      0,
+      -modalH / 2 + 82,
+      '✦ DỊ CẢNH RỪNG SƯƠNG (THE FOG THAT REMEMBERS) ✦\n' +
+      'Đại Hồng Chung Bellhollow nứt đôi khiến mạch rễ tha hóa trỗi dậy, giam cầm thung lũng trong Màn Sương Ký Ức vĩnh cửu.\n' +
+      'Ngươi — Chỉ huy Hiệp Sĩ Đen mang mảnh ký ức ngủ vùi — thắp sáng Đèn Lồng Hổ Phách để giữ vững Bình Tâm, giải mã cổ ngữ,\n' +
+      'và quyết định vận mệnh thung lũng qua 3 Kết Thúc: Bình Minh Của Tiếng Chuông, Người Canh Gác Vĩnh Hằng, hoặc Màn Đêm Vĩnh Cửu.',
+      {
+        fontSize: '11px',
+        color: '#dfd5c4',
+        align: 'center',
+        lineSpacing: 4
+      }
+    ).setOrigin(0.5, 0.5);
+
+    // Bảng Phím Bấm Trực Quan (Keycap Badges theo 3 nhóm)
+    const controlsGuide = KeycapBadgeHelper.buildControlsGuideContent(
+      this,
+      -modalW / 2 + 50,
+      -modalH / 2 + 130,
+      modalW - 100
+    );
+
+    // Nút Đóng
+    const closeBtn = this.add.container(0, modalH / 2 - 30);
+    const closeBg = this.add.graphics();
+    const renderCloseBtn = (isHover: boolean) => {
+      closeBg.clear();
+      closeBg.fillStyle(isHover ? 0x2e2017 : 0x1e1610, 0.95);
+      closeBg.fillRoundedRect(-90, -16, 180, 32, 6);
+      closeBg.lineStyle(1.4, isHover ? 0xe5a93c : 0x6e5233, 0.9);
+      closeBg.strokeRoundedRect(-90, -16, 180, 32, 6);
+    };
+    renderCloseBtn(false);
+
+    const closeText = HDTextHelper.createText(this, 0, 0, '✕ ĐÓNG [ESC]', {
+      fontSize: '13px',
+      fontStyle: 'bold',
+      color: '#f5eedc'
+    }).setOrigin(0.5, 0.5);
+
+    const closeHit = this.add.zone(0, 0, 180, 32).setInteractive({ useHandCursor: true });
+    closeHit.on('pointerover', () => {
+      renderCloseBtn(true);
+      closeText.setColor('#fff4da');
+    });
+    closeHit.on('pointerout', () => {
+      renderCloseBtn(false);
+      closeText.setColor('#f5eedc');
+    });
+    closeHit.on('pointerdown', () => this.closeActiveMenuModal());
+
+    closeBtn.add([closeBg, closeText, closeHit]);
+
+    modal.add([overlay, overlayHit, box, title, loreBox, loreText, controlsGuide, closeBtn]);
     this.activeMenuModal = modal;
   }
 
