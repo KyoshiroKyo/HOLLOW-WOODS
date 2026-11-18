@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import { Monster } from './monsters/Monster';
 import { ListenerAI, Waypoint } from '../systems/ListenerAI';
 import { SPRITE_THE_LISTENER } from '../config/Constants';
+import { TimePhase } from '../systems/DayNightSystem';
 
 export class TheListener extends Monster {
   public ai!: ListenerAI;
@@ -9,6 +10,7 @@ export class TheListener extends Monster {
   private alertBg!: Phaser.GameObjects.Graphics;
   private alertText!: Phaser.GameObjects.Text;
   private visualGfx!: Phaser.GameObjects.Graphics;
+  private eyesGfx!: Phaser.GameObjects.Graphics;
 
   constructor(scene: Phaser.Scene, x: number, y: number, waypoints: Waypoint[]) {
     // Sử dụng spritesheet thật của The Listener (64×64 px, 4 frames) từ Pixel_Art (GATE 2B)
@@ -31,6 +33,11 @@ export class TheListener extends Monster {
     // 1. Dựng bóng đổ chân thực dưới chân quái vật
     this.visualGfx = scene.add.graphics();
     this.drawMonsterShadow();
+
+    // V1.5 - BƯỚC V15-07: Mắt quái vật rực đỏ trong bóng tối (Glowing Crimson Eyes)
+    this.eyesGfx = scene.add.graphics();
+    this.drawGlowingEyes();
+    this.eyesGfx.setVisible(false);
 
     // 2. Dựng biểu tượng cảnh báo Telegraph [? / !] (C4-13-05)
     this.alertIcon = scene.add.container(0, -54);
@@ -61,6 +68,62 @@ export class TheListener extends Monster {
     // C4-13-06: Bóng đổ mặt đất đen mờ mịn (alpha 0.25) ôm sát bàn chân
     g.fillStyle(0x000000, 0.25);
     g.fillEllipse(0, 0, 22, 6);
+  }
+
+  /**
+   * V1.5 - BƯỚC V15-07: Vẽ hai đốm mắt đỏ rực / lân tinh đỏ rực sắc nhọn trong bóng tối
+   */
+  private drawGlowingEyes(): void {
+    const g = this.eyesGfx;
+    if (!g) return;
+    g.clear();
+
+    // Quầng sáng đỏ mờ tỏa ra (outer glow halo)
+    g.fillStyle(0xff1111, 0.35);
+    g.fillCircle(-4, -44, 4);
+    g.fillCircle(4, -44, 4);
+
+    // Đồng tử mắt đỏ rực sắc nhọn (inner piercing core)
+    g.fillStyle(0xff5555, 0.95);
+    g.fillCircle(-4, -44, 1.8);
+    g.fillCircle(4, -44, 1.8);
+  }
+
+  /**
+   * V1.5 - BƯỚC V15-07: Đồng bộ pha thời gian với AI và độ sáng của mắt quái vật
+   */
+  public setTimePhase(phase: TimePhase): void {
+    this.ai.setTimePhase(phase);
+    this.hearingRadius = this.ai.getAggressionConfig().listenerHearingRadius;
+
+    if (this.eyesGfx) {
+      if (phase === 'NIGHT') {
+        this.eyesGfx.setVisible(true);
+        this.eyesGfx.setAlpha(0.95);
+      } else if (phase === 'DUSK') {
+        this.eyesGfx.setVisible(true);
+        this.eyesGfx.setAlpha(0.45);
+      } else {
+        this.eyesGfx.setVisible(false);
+      }
+    }
+  }
+
+  /**
+   * V1.5 - BƯỚC V15-07: Kích hoạt hiệu ứng lóe sáng mắt đỏ khi màn đêm buông xuống
+   */
+  public onNightfall(): void {
+    this.setTimePhase('NIGHT');
+    if (this.scene && this.eyesGfx) {
+      this.scene.tweens.add({
+        targets: this.eyesGfx,
+        alpha: { from: 0.2, to: 1.0 },
+        scaleX: { from: 1.6, to: 1.0 },
+        scaleY: { from: 1.6, to: 1.0 },
+        duration: 900,
+        ease: 'Cubic.easeOut'
+      });
+    }
   }
 
   private drawAlertIconBadge(type: 'alert' | 'chase'): void {
@@ -170,17 +233,22 @@ export class TheListener extends Monster {
     this.ai.resetToPatrol(initialX, initialY);
   }
 
-  public update(delta: number, playerX: number, playerY: number, isPlayerHiding: boolean, isPlayerDead: boolean = false): void {
-    this.ai.update(delta, playerX, playerY, isPlayerHiding, isPlayerDead);
+  public update(delta: number, playerX: number, playerY: number, isPlayerHiding: boolean, isPlayerDead: boolean = false, timePhase?: TimePhase): void {
+    this.ai.update(delta, playerX, playerY, isPlayerHiding, isPlayerDead, timePhase);
 
     // Cập nhật hướng mặt theo vận tốc di chuyển
     if (this.body && Math.abs(this.body.velocity.x) > 5) {
       this.setFlipX(this.body.velocity.x > 0);
     }
 
-    // Cập nhật vị trí bóng đổ và biểu tượng cảnh báo
+    // Cập nhật vị trí bóng đổ, mắt đỏ và biểu tượng cảnh báo
     this.visualGfx.setPosition(this.x, this.y);
     this.alertIcon.setPosition(this.x, this.y - 54);
+    if (this.eyesGfx) {
+      this.eyesGfx.setPosition(this.x, this.y);
+      this.eyesGfx.setScale(this.flipX ? -1 : 1, 1);
+      this.eyesGfx.setDepth(this.y + 1);
+    }
     this.visualGfx.setDepth(this.y - 1);
     this.setDepth(this.y);
     this.alertIcon.setDepth(this.y + 100);
@@ -192,9 +260,15 @@ export class TheListener extends Monster {
   public destroy(fromScene?: boolean): void {
     if (this.scene) {
       this.scene.tweens.killTweensOf(this.alertIcon);
+      if (this.eyesGfx) {
+        this.scene.tweens.killTweensOf(this.eyesGfx);
+      }
     }
     if (this.visualGfx) {
       this.visualGfx.destroy();
+    }
+    if (this.eyesGfx) {
+      this.eyesGfx.destroy();
     }
     if (this.alertIcon) {
       this.alertIcon.destroy();

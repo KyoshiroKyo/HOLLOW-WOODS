@@ -533,6 +533,26 @@ export class GameScene extends Phaser.Scene {
     const savedDay = (this.playerState as any).rawSaveData?.dayNumber ?? (this.continueSaveData as any)?.dayCount ?? 1;
     const savedTime = (this.playerState as any).rawSaveData?.timeOfDay ?? (this.continueSaveData as any)?.timeOfDay ?? 0;
     this.timeSystem = new TimeSystem(savedDay, savedTime);
+
+    // V1.5 - BƯỚC V15-07: Lắng nghe chuyển giao chu kỳ Ngày / Đêm và kích hoạt cảnh báo đêm xuống
+    this.timeSystem.on('phase_changed', (evt: any) => {
+      const newPhase = evt && evt.to ? evt.to : 'DAY';
+      if (this.listenerMonster) {
+        this.listenerMonster.setTimePhase(newPhase);
+      }
+      if (newPhase === 'NIGHT') {
+        // Tín hiệu cảnh báo công bằng khi đêm xuống: Chuông nứt ngân trầm + tiếng sói hú xa xăm
+        this.audioManager.playNightfallWarningSound();
+        if (this.uiScene) {
+          this.uiScene.showPopupMessage('🌙 ĐÊM SƯƠNG BUÔNG XUỐNG! Tiếng sói hú xa xăm... Kẻ Lắng Nghe và bầy quái vật bước vào trạng thái Săn Đêm!');
+        }
+        this.cameras.main.shake(350, 0.0025);
+        if (this.listenerMonster) {
+          this.listenerMonster.onNightfall();
+        }
+      }
+    });
+
     this.weatherSystem = new WeatherSystem();
     this.rainGfx = this.add.graphics();
     this.rainGfx.setScrollFactor(0);
@@ -1282,6 +1302,9 @@ export class GameScene extends Phaser.Scene {
     ];
 
     this.listenerMonster = new TheListener(this, 2300, 240, waypoints);
+    if (this.timeSystem) {
+      this.listenerMonster.setTimePhase(this.timeSystem.getCurrentPhase());
+    }
 
     // Va chạm giữa The Listener và thế giới
     this.physics.add.collider(this.listenerMonster, this.worldBuilder.colliderGroup);
@@ -2194,7 +2217,8 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    this.listenerMonster.update(delta, this.player.x, this.player.y, this.player.stats.isHiding, this.player.isDead());
+    const currentPhase = this.timeSystem ? this.timeSystem.getCurrentPhase() : 'DAY';
+    this.listenerMonster.update(delta, this.player.x, this.player.y, this.player.stats.isHiding, this.player.isDead(), currentPhase);
 
     // C4-13-05 & C4-132-05: Toàn bộ Làng Bellhollow và khu vực cổng làng là Khu Vực An Toàn (Safe Zone)
     const isPlayerInSafeZone = (this.currentZoneId === 'bellhollow' && this.player.x <= 1620) || this.currentZoneId === 'sanctuary_farm' || this.currentZoneId === 'fog_crossing';

@@ -2,6 +2,7 @@ import { MonsterState } from '../entities/monsters/Monster';
 import { TheListener } from '../entities/TheListener';
 import { PlayerState } from '../state/PlayerState';
 import { SoundMemoryEntry } from '../types';
+import { DayNightSystem, NightAggressionConfig, TimePhase } from './DayNightSystem';
 
 export interface Waypoint {
   x: number;
@@ -11,6 +12,10 @@ export interface Waypoint {
 export class ListenerAI {
   private listener: TheListener;
   public state: MonsterState = 'PATROL';
+
+  // V1.5 - BƯỚC V15-07: Hệ Số Hung Hãn Ban Đêm (Night Aggression Multiplier)
+  private currentPhase: TimePhase = 'DAY';
+  private aggressionConfig: NightAggressionConfig = DayNightSystem.getNightAggressionConfig('DAY');
 
   // V1.4: Trí nhớ ngắn hạn và Cơ chế Chống lặp mồi nhử (Anti-Repeat Lure Memory)
   private soundMemories: SoundMemoryEntry[] = [];
@@ -75,6 +80,24 @@ export class ListenerAI {
       this.currentWaypointIdx = 0;
       this.patrolWaitTimer = 0;
     }
+  }
+
+  /**
+   * V1.5 - BƯỚC V15-07: Đồng bộ pha thời gian và cấu hình hung hãn ban đêm
+   */
+  public setTimePhase(phase: TimePhase): void {
+    if (this.currentPhase !== phase) {
+      this.currentPhase = phase;
+      this.aggressionConfig = DayNightSystem.getNightAggressionConfig(phase);
+    }
+  }
+
+  public getAggressionConfig(): NightAggressionConfig {
+    return this.aggressionConfig;
+  }
+
+  public getTimePhase(): TimePhase {
+    return this.currentPhase;
   }
 
   public canAttack(): boolean {
@@ -148,7 +171,11 @@ export class ListenerAI {
     return x <= ListenerAI.SAFE_ZONE_BORDER_X;
   }
 
-  public update(delta: number, playerX: number, playerY: number, isPlayerHiding: boolean, isPlayerDead: boolean = false): void {
+  public update(delta: number, playerX: number, playerY: number, isPlayerHiding: boolean, isPlayerDead: boolean = false, timePhase?: TimePhase): void {
+    if (timePhase && timePhase !== this.currentPhase) {
+      this.setTimePhase(timePhase);
+    }
+
     if (this.attackCooldown > 0) {
       this.attackCooldown -= delta;
     }
@@ -273,7 +300,7 @@ export class ListenerAI {
 
     if (shouldUpdatePath) {
       let angle = Math.atan2(wp.y - this.listener.y, wp.x - this.listener.x) + this.avoidanceAngleOffset;
-      const speed = 42;
+      const speed = this.aggressionConfig.listenerPatrolSpeed;
       this.listener.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed);
     }
   }
@@ -282,7 +309,7 @@ export class ListenerAI {
    * TRẠNG THÁI 2: ALERT (Phát hiện nghi vấn — Hiện dấu [?] vàng & đi tới nguồn âm thanh)
    */
   private updateAlert(delta: number, playerX: number, playerY: number, isPlayerHiding: boolean, shouldUpdatePath: boolean): void {
-    // 1. Pha Telegraph dừng lại lắng nghe (V1.4 - P8-03: 2.0s nghi ngờ nghe ngóng, xoay đầu về hướng âm thanh)
+    // 1. Pha Telegraph dừng lại lắng nghe (V1.4 - P8-03: nghi ngờ nghe ngóng, xoay đầu về hướng âm thanh)
     if (this.alertTimer > 0) {
       this.alertTimer -= delta;
       this.listener.setVelocity(0, 0);
@@ -367,8 +394,8 @@ export class ListenerAI {
     const distToPlayer = Math.hypot(this.listener.x - playerX, this.listener.y - playerY);
     if (distToPlayer > 220) {
       this.lostSightTimer += delta;
-      if (this.lostSightTimer >= 2200) {
-        // Mất dấu hơn 2.2 giây -> Chuyển sang tìm kiếm tại vị trí cuối cùng nhìn thấy
+      if (this.lostSightTimer >= this.aggressionConfig.listenerLostSightTimeMs) {
+        // Mất dấu -> Chuyển sang tìm kiếm tại vị trí cuối cùng nhìn thấy
         this.lostSightTimer = 0;
         this.triggerSearchAt(this.lastKnownPlayerX, this.lastKnownPlayerY);
         return;
@@ -377,10 +404,10 @@ export class ListenerAI {
       this.lostSightTimer = 0;
     }
 
-    // Di chuyển truy đuổi tốc độ cao (105 px/s) có né vật cản
+    // Di chuyển truy đuổi tốc độ cao (105 px/s ban ngày -> 136.5 px/s ban đêm [+30%]) có né vật cản
     if (shouldUpdatePath) {
       let angle = Math.atan2(playerY - this.listener.y, playerX - this.listener.x) + this.avoidanceAngleOffset;
-      const speed = 105;
+      const speed = this.aggressionConfig.listenerChaseSpeed;
       this.listener.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed);
     }
   }
@@ -392,7 +419,7 @@ export class ListenerAI {
     this.searchTimer -= delta;
 
     if (this.searchTimer <= 0) {
-      // Hết 4.5s tìm kiếm không thấy gì -> Từ bỏ và quay về tuyến tuần tra
+      // Hết thời gian tìm kiếm không thấy gì -> Từ bỏ và quay về tuyến tuần tra
       this.state = 'RETURN';
       this.detectionCooldown = 2500; // 2.5s nghỉ ngơi không phát hiện lặp
       this.listener.onChaseEnded();
@@ -454,11 +481,11 @@ export class ListenerAI {
   }
 
   /**
-   * Chuyển sang tìm kiếm công bằng tại tọa độ được chỉ định trong 4.5 giây
+   * Chuyển sang tìm kiếm công bằng tại tọa độ được chỉ định
    */
   private triggerSearchAt(x: number, y: number): void {
     this.state = 'SEARCH';
-    this.searchTimer = 4500; // Tìm kiếm trong 4.5s
+    this.searchTimer = this.aggressionConfig.listenerSearchDurationMs; // 4.5s ban ngày, 6.5s ban đêm sương
     this.searchOriginX = Math.max(ListenerAI.FOREST_TERRITORY_MIN_X, x);
     this.searchOriginY = y;
     this.currentSearchOffsetIdx = 0;
@@ -552,29 +579,30 @@ export class ListenerAI {
     }
 
     // 2. Điều chỉnh mục tiêu điều tra theo mức độ bị đánh lừa (Anti-Repeat Strategy)
+    // V1.5 - BƯỚC V15-07: Thời gian đứng lắng nghe nghi ngờ dựa theo Hệ Số Hung Hãn Ban Đêm
+    // (DAY: 2.0s, DUSK: 1.5s, NIGHT: 0.75s là lao tới vồ ngay)
+    const baseListenTime = this.aggressionConfig.listenerSuspicionListenTimeMs;
     if (existing && existing.repeatCount > 2 && originX !== undefined && originY !== undefined) {
       // V1.4 - Bước 5.3: Ném quá 2 lần trong vòng 40 giây tại cùng 1 vị trí:
       // The Listener không bị mắc lừa nữa, lập tức quay sang tìm kiếm nguồn phát ra cú ném (vị trí người chơi)
       this.targetInvestigateX = Math.max(ListenerAI.FOREST_TERRITORY_MIN_X, originX);
       this.targetInvestigateY = originY;
-      // Bổ sung trạng thái nghi ngờ: Quay đầu lắng nghe 2 giây trước khi lao đến điểm phát ra tiếng động
-      this.alertTimer = 2000;
-      // Baseline / Quick Alert: this.alertTimer = 600;
+      this.alertTimer = baseListenTime;
     } else if (effectiveness <= 0.15 && originX !== undefined && originY !== undefined) {
       // Lặp lại nhiều lần: The Listener nhận ra bẫy mồi nhử và quay đầu mở rộng tìm kiếm về hướng ném
       this.targetInvestigateX = Math.max(ListenerAI.FOREST_TERRITORY_MIN_X, originX);
       this.targetInvestigateY = originY;
-      this.alertTimer = 600; // Giảm mạnh thời gian đứng đờ
+      this.alertTimer = Math.min(400, baseListenTime); // Giảm mạnh thời gian đứng đờ
     } else if (effectiveness === 0.5 && originX !== undefined && originY !== undefined) {
       // Lặp lần 2: Giảm thời gian và chia đôi khoảng cách về phía người ném
       this.targetInvestigateX = Math.max(ListenerAI.FOREST_TERRITORY_MIN_X, Math.round((soundX + originX) / 2));
       this.targetInvestigateY = Math.round((soundY + originY) / 2);
-      this.alertTimer = Math.round(1150 * effectiveness);
+      this.alertTimer = Math.round(baseListenTime * 0.55);
     } else {
-      // V1.4 - P8-03: Lần đầu hoặc âm thanh lạ: Dừng lại đúng 2.0 giây (alertTimer = 2000) nghi ngờ nghe ngóng
+      // Lần đầu hoặc âm thanh lạ: Dừng lại nghe ngóng theo độ hung hãn thời gian thực
       this.targetInvestigateX = Math.max(ListenerAI.FOREST_TERRITORY_MIN_X, soundX);
       this.targetInvestigateY = soundY;
-      this.alertTimer = 2000;
+      this.alertTimer = baseListenTime;
     }
 
     // V1.4 - P8-03: Xoay đầu về hướng phát ra tiếng động ngay lập tức và dừng lại nghe ngóng

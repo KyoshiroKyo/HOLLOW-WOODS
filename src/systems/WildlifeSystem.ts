@@ -336,6 +336,10 @@ export class WildlifeSystem {
           continue;
         }
 
+        // V1.5 - BƯỚC V15-07: Săn theo cặp 2 con phối hợp bọc sườn (Flanking) & Kiểm tra Bình Tâm
+        const packFlankOffset = w === 0 ? -0.61 : 0.61;
+        const playerComposure = PlayerState.getInstance().stats.composure;
+
         wolf.updateAI(time, delta, {
           playerX: px,
           playerY: py,
@@ -345,6 +349,8 @@ export class WildlifeSystem {
           lightRadius,
           isPlayerInSafeZone: isSafe,
           timePhase: ctx.timePhase,
+          playerComposure,
+          packFlankOffset,
           crows: activeCrows
         });
 

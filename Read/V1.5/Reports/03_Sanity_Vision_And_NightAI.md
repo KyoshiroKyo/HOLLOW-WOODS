@@ -2,11 +2,11 @@
 ## HỆ THỐNG TINH THẦN (BÌNH TÂM), RÚT MÁU LŨY TIẾN & KHU AN TOÀN
 
 **Dự án:** HOLLOW WOODS: The Fog That Remembers  
-**Mã tài liệu:** `V15-05` & `V15-06` / `03_Sanity_Vision_And_NightAI.md`  
+**Mã tài liệu:** `V15-05`, `V15-06` & `V15-07` / `03_Sanity_Vision_And_NightAI.md`  
 **Phiên bản:** V1.5 (Visual & Gameplay Overhaul)  
 **Nhánh Git:** `feat/v1.5-visual-gameplay-overhaul`  
 **Ngày thực hiện:** 18/11/2026  
-**Trạng thái:** Hoàn tất xuất sắc (35/35 bài kiểm tra tự động PASS [19/19 V15-05 + 16/16 V15-06], 0 lỗi TypeScript, bản dựng Vite thành công)  
+**Trạng thái:** Hoàn tất xuất sắc (58/58 bài kiểm tra tự động PASS [19/19 V15-05 + 16/16 V15-06 + 23/23 V15-07], 0 lỗi TypeScript, bản dựng Vite thành công)  
 
 ---
 
@@ -111,3 +111,48 @@ Khi Bình Tâm rơi xuống dưới ngưỡng nguy kịch ($C < 30\%$):
 | **UIScene.ts** | Phương thức `getComposureVisionFactor`, đồng bộ viền tối 4 góc co bóp theo nhịp tim khi $< 30\%$ | **PASS** (2/2) |
 | **GameScene.ts** | Gọi `getComposureVisionScale`, nhân `compScale` vào `targetBaseRadius`, quầng sáng chập chờn khi $< 50\%$, phát hiện mở rộng tầm nhìn, `lerpFactor = 0.045` trong $\sim 1.5\text{s}$ | **PASS** (5/5) |
 | **Tổng Cộng** | **Tất cả các tiêu chí của V15-06** | **16/16 PASS (100%)** |
+
+---
+
+### 7. BƯỚC V15-07: HỆ SỐ HUNG HÃN BAN ĐÊM (NIGHT AGGRESSION MULTIPLIER)
+
+#### 7.1. Cấu Trúc Hệ Thống Cân Bằng Chu Kỳ Ngày / Hoàng Hôn / Đêm
+Hệ thống kết nối trực tiếp giữa [DayNightSystem.ts](file:///g:/HOLLOW%20WOODS/src/systems/DayNightSystem.ts) với [ListenerAI.ts](file:///g:/HOLLOW%20WOODS/src/systems/ListenerAI.ts) và [SkullWolfEntity.ts](file:///g:/HOLLOW%20WOODS/src/entities/SkullWolfEntity.ts) thông qua giao diện `NightAggressionConfig`:
+
+| Tiêu Chí Kỹ Thuật | Ban Ngày (DAY) | Hoàng Hôn (DUSK) | Đêm Sương (NIGHT) |
+|:---|:---:|:---:|:---:|
+| **The Listener: Tốc độ tuần tra** | $30\text{ px/s}$ *(Chậm rãi rìa rừng)* | $42\text{ px/s}$ *(Bình thường)* | $42\text{ px/s}$ |
+| **The Listener: Tốc độ truy đuổi** | $90\text{ px/s}$ | $105\text{ px/s}$ *(Cơ bản)* | **$136.5\text{ px/s}$ (+30%)** |
+| **The Listener: Bán kính phát hiện âm thanh** | $140\text{ px}$ | **$161\text{ px}$ (+15%)** | **$196\text{ px}$ (+40%)** |
+| **The Listener: Thời gian đứng nghe nghi ngờ** | $2.0\text{ giây}$ ($2000\text{ms}$) | $1.5\text{ giây}$ ($1500\text{ms}$) | **$0.75\text{ giây}$ ($750\text{ms}$)** *(Lao tới vồ ngay)* |
+| **The Listener: Thời gian bám vết tích mất dấu** | $1.8\text{ giây}$ | $2.2\text{ giây}$ | **$3.5\text{ giây}$** *(Bám dai dẳng hơn)* |
+| **The Listener: Thời gian lùng sục hiện trường** | $3.5\text{ giây}$ | $4.5\text{ giây}$ | **$6.5\text{ giây}$** *(Tìm kiếm quyết liệt)* |
+| **Sói Xương: Trạng thái hoạt động** | **Rút về hang nghỉ ngơi** (`den_rest`) | Bắt đầu thức giấc săn mồi | **Săn Đêm Hung Hãn** |
+| **Sói Xương: Phối hợp bọc sườn (Flanking)** | Tắt | Tắt | **Bật (Sói 1: $-35^\circ$, Sói 2: $+35^\circ$)** |
+| **Sói Xương: Tốc độ vồ (Lunge Speed)** | $195\text{ px/s}$ | $195\text{ px/s}$ | **$243.75\text{ px/s}$ (+25%)** |
+| **Sói Xương: Khoảng cách ép rìa đèn lồng** | An toàn trong hang | $45 - 50\text{ px}$ | **$15\text{ px}$** *(Ép sát ngay mép sáng)* |
+| **Sói Xương: Vượt ranh giới khi Bình Tâm $< 25\%$** | Không | Không | **Dám lao chồm qua ánh sáng để cắn** |
+
+#### 7.2. Tín Hiệu Cảnh Báo Công Bằng Khi Đêm Xuống (Fair Warning Telegraphed Feedback)
+Khi đồng hồ chu kỳ thế giới vừa chuyển sang pha **Đêm Sương (`NIGHT`)**:
+1. **Âm thanh tổng hợp Procedural Web Audio API:**
+   - `playCrackedBellToll()`: Tiếng chuông nứt ngân trầm với 6 hài âm bất hòa ($115\text{Hz}, 168\text{Hz}, 248\text{Hz}, 375\text{Hz}, 520\text{Hz}, 780\text{Hz}$), mô phỏng tiếng chuông cổ rạn nứt u ám từ Miếu Chuông Vỡ.
+   - `playDistantWolfHowl()`: Tiếng sói hú xa xăm trong sương ($320\text{Hz} \to 540\text{Hz} \to 280\text{Hz}$, vibrato $5.2\text{Hz}$, lọc bandpass $650\text{Hz}$), cất lên sau tiếng chuông $450\text{ms}$.
+2. **Hiệu ứng thị giác & Camera:**
+   - **Mắt The Listener:** Hai đốm mắt đỏ rực (`0xff1111` / `0xff5555`) lóe sáng mạnh mẽ với tween phóng to $1.6\times$ trong bóng tối.
+   - **Mắt Sói Xương:** Hai hốc mắt đầu lâu rực màu xanh lân tinh hắc ám (`0x00ffcc` / `0xaaffea`).
+   - **Popup HUD & Rung Camera:** Thông báo `"🌙 ĐÊM SƯƠNG BUÔNG XUỐNG! Tiếng sói hú xa xăm... Kẻ Lắng Nghe và bầy quái vật bước vào trạng thái Săn Đêm!"` đi kèm rung chấn nhẹ `shake(350, 0.0025)`.
+
+---
+
+### 8. BẢNG TỔNG HỢP KIỂM THỬ V15-07 (`verify_v15_07_night_aggression.mjs`)
+
+| Nhóm Kiểm Thử | Nội Dung Kiểm Tra | Kết Quả |
+|:---|:---|:---:|
+| **DayNightSystem.ts** | Interface `NightAggressionConfig`, phương thức `getNightAggressionConfig`, thông số chuẩn 3 pha DAY / DUSK / NIGHT | **PASS** (5/5) |
+| **ListenerAI.ts** | Thuộc tính `currentPhase`, `aggressionConfig`, tốc độ tuần tra/truy đuổi, thời gian nghe nghi ngờ $0.75\text{s}$, thời gian bám dấu vết $3.5\text{s}$, thời gian tìm kiếm $6.5\text{s}$ | **PASS** (5/5) |
+| **TheListener.ts** | Phương thức `setTimePhase`, đồng bộ bán kính nghe, hàm `onNightfall`, vẽ mắt đỏ rực `drawGlowingEyes` | **PASS** (2/2) |
+| **SkullWolfEntity.ts** | Trạng thái `den_rest`, mắt xanh lân tinh `0x00ffcc`, ép rìa đèn $15\text{px}$, tăng $25\%$ tốc độ vồ, lao chồm qua ánh sáng khi $C < 25\%$, bọc sườn | **PASS** (6/6) |
+| **WildlifeSystem.ts** | Truyền góc lệch bọc sườn $\pm 0.61\text{ rad}$ ($\pm 35^\circ$) cho cặp sói và chỉ số Bình Tâm | **PASS** (1/1) |
+| **AudioManager & GameScene** | Chuông nứt `playCrackedBellToll`, sói hú `playDistantWolfHowl`, lắng nghe `phase_changed` kích hoạt cảnh báo đêm xuống | **PASS** (4/4) |
+| **Tổng Cộng** | **Tất cả các tiêu chí của V15-07** | **23/23 PASS (100%)** |

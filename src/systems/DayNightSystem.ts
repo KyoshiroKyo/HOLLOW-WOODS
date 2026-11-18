@@ -19,8 +19,96 @@ export interface ClockWedgeConfig {
   color: number;
 }
 
+/**
+ * V1.5 - BƯỚC V15-07: Cấu hình Hệ Số Hung Hãn Ban Đêm (Night Aggression Multiplier)
+ * Đồng bộ toàn diện giữa chu kỳ thời gian Ngày/Đêm với Kẻ Lắng Nghe và Sói Xương
+ */
+export interface NightAggressionConfig {
+  phase: TimePhase;
+  // The Listener
+  listenerPatrolSpeed: number;           // DAY: 30 px/s, DUSK: 42 px/s, NIGHT: 42 px/s
+  listenerChaseSpeed: number;            // DAY: 90 px/s, DUSK: 105 px/s, NIGHT: 136.5 px/s (+30%)
+  listenerHearingRadius: number;         // DAY: 140 px, DUSK: 161 px (+15%), NIGHT: 196 px (+40%)
+  listenerSuspicionListenTimeMs: number; // DAY: 2000 ms, DUSK: 1500 ms, NIGHT: 750 ms (-62.5%)
+  listenerLostSightTimeMs: number;       // DAY: 1800 ms, DUSK: 2200 ms, NIGHT: 3500 ms (bám vết tích lâu hơn)
+  listenerSearchDurationMs: number;      // DAY: 3500 ms, DUSK: 4500 ms, NIGHT: 6500 ms (tìm kiếm dai dẳng hơn)
+  // Skull Wolf
+  wolfActive: boolean;                   // DAY: false (nghỉ ngơi trong hang), DUSK/NIGHT: true
+  wolfLungeSpeed: number;                // Base: 195 px/s, NIGHT: 243.75 px/s (+25%)
+  wolfHearingRadiusMultiplier: number;   // DAY: 1.0, DUSK: 1.15 (+15%), NIGHT: 1.40 (+40%)
+  wolfLightPerimeterOffset: number;      // DUSK: 45 px, NIGHT: 15 px (thu hẹp khoảng cách gầm gừ ép sát ngay rìa đèn)
+  wolfFlankingEnabled: boolean;          // NIGHT: true (săn theo cặp bọc sườn)
+  wolfBreachLowComposure: boolean;       // NIGHT: true (Bình Tâm < 25%: Dám lao chồm qua mép sáng cắn)
+}
+
 export class DayNightSystem extends TimeSystem {
   public static readonly SEASON_NAME = 'Mùa Sương Lạnh';
+
+  /**
+   * V1.5 - BƯỚC V15-07: Cung cấp thông số Hệ Số Hung Hãn Ban Đêm theo từng pha thời gian
+   */
+  public static getNightAggressionConfig(phase: TimePhase): NightAggressionConfig {
+    switch (phase) {
+      case 'DAY':
+        return {
+          phase: 'DAY',
+          listenerPatrolSpeed: 30, // Tuần tra chậm rìa rừng sâu
+          listenerChaseSpeed: 90,
+          listenerHearingRadius: 140, // Bán kính nghe chuẩn
+          listenerSuspicionListenTimeMs: 2000, // Đứng nghe ngóng thận trọng 2.0s
+          listenerLostSightTimeMs: 1800,
+          listenerSearchDurationMs: 3500,
+          wolfActive: false, // Rút về hang nghỉ ngơi
+          wolfLungeSpeed: 195,
+          wolfHearingRadiusMultiplier: 1.0,
+          wolfLightPerimeterOffset: 50,
+          wolfFlankingEnabled: false,
+          wolfBreachLowComposure: false
+        };
+
+      case 'DUSK':
+        return {
+          phase: 'DUSK',
+          listenerPatrolSpeed: 42,
+          listenerChaseSpeed: 105,
+          listenerHearingRadius: 161, // 140 * 1.15 (+15% bán kính nghe)
+          listenerSuspicionListenTimeMs: 1500,
+          listenerLostSightTimeMs: 2200,
+          listenerSearchDurationMs: 4500,
+          wolfActive: true, // Bắt đầu thức giấc
+          wolfLungeSpeed: 195,
+          wolfHearingRadiusMultiplier: 1.15, // +15%
+          wolfLightPerimeterOffset: 45,
+          wolfFlankingEnabled: false,
+          wolfBreachLowComposure: false
+        };
+
+      case 'NIGHT':
+      default:
+        return {
+          phase: 'NIGHT',
+          listenerPatrolSpeed: 42,
+          listenerChaseSpeed: 136.5, // 105 * 1.30 (+30% tốc độ truy đuổi)
+          listenerHearingRadius: 196, // 140 * 1.40 (+40% bán kính phát hiện âm thanh)
+          listenerSuspicionListenTimeMs: 750, // Giảm từ 2.0s xuống 0.75s là lao tới vồ ngay
+          listenerLostSightTimeMs: 3500, // Bám theo dấu vết lâu hơn trước khi bỏ cuộc
+          listenerSearchDurationMs: 6500, // Tìm kiếm quanh vị trí mất dấu lâu hơn
+          wolfActive: true, // Săn đêm hung hãn
+          wolfLungeSpeed: 243.75, // 195 * 1.25 (+25% tốc độ vồ)
+          wolfHearingRadiusMultiplier: 1.40, // +40%
+          wolfLightPerimeterOffset: 15, // Thu hẹp khoảng cách gầm gừ ép sát ngay rìa quầng sáng
+          wolfFlankingEnabled: true, // Đi săn theo cặp 2 con phối hợp bọc sườn
+          wolfBreachLowComposure: true // Bình Tâm < 25%: Dám lao chồm qua mép sáng để cắn
+        };
+    }
+  }
+
+  /**
+   * Lấy cấu hình hung hãn hiện tại theo pha của instance
+   */
+  public getCurrentAggressionConfig(): NightAggressionConfig {
+    return DayNightSystem.getNightAggressionConfig(this.getCurrentPhase());
+  }
 
   /**
    * Tính toán góc quay của kim đồng hồ thời gian thực (từ -PI/2 tại 0s đến 3PI/2 tại 360s)

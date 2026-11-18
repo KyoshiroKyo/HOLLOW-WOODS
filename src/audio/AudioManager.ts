@@ -1917,6 +1917,104 @@ export class AudioManager {
     }
   }
 
+  /**
+   * V1.5 - BƯỚC V15-07: Tiếng chuông nứt ngân trầm báo hiệu màn đêm buông xuống
+   * Các hài âm bất hòa (Inharmonic Dissonance: 115Hz, 168Hz, 248Hz, 375Hz, 520Hz)
+   * tạo cảm giác chuông cổ bị rạn nứt, u ám và điềm gở.
+   */
+  public playCrackedBellToll(): void {
+    if (!this.ctx || this.isMuted || !this.masterGain) return;
+    if (!this.checkCooldown('cracked_bell', 1500)) return;
+    this.resumeAudio();
+
+    if (this.playSampled('bell_toll_low', 0.95, 0.85, false)) {
+      return;
+    }
+
+    const now = this.ctx.currentTime;
+    const freqs = [115, 168, 248, 375, 520, 780];
+    const weights = [0.45, 0.30, 0.22, 0.14, 0.08, 0.04];
+    const decayTimes = [4.2, 3.8, 3.2, 2.5, 1.8, 1.2];
+
+    for (let i = 0; i < freqs.length; i++) {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = i % 2 === 0 ? 'sine' : 'triangle';
+      osc.frequency.setValueAtTime(freqs[i], now);
+      osc.frequency.linearRampToValueAtTime(freqs[i] * 0.985, now + decayTimes[i]);
+
+      gain.gain.setValueAtTime(weights[i] * this.masterVolume * 0.9, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + decayTimes[i]);
+
+      osc.connect(gain);
+      gain.connect(this.masterLimiter || this.masterGain);
+
+      osc.start(now);
+      osc.stop(now + decayTimes[i] + 0.1);
+    }
+  }
+
+  /**
+   * V1.5 - BƯỚC V15-07: Tiếng sói hú xa xăm trong màn sương đêm (Distant Wolf Howl)
+   * Sử dụng tổng hợp sóng sin lướt tần số (Portamento: 320Hz -> 540Hz -> 280Hz)
+   * kết hợp LFO rung âm (5.2Hz) và bộ lọc Bandpass mô phỏng tiếng hú vọng qua sương mù dày đặc.
+   */
+  public playDistantWolfHowl(): void {
+    if (!this.ctx || this.isMuted || !this.masterGain) return;
+    if (!this.checkCooldown('distant_wolf_howl', 2500)) return;
+    this.resumeAudio();
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const lfo = this.ctx.createOscillator();
+    const lfoGain = this.ctx.createGain();
+    const filter = this.ctx.createBiquadFilter();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(320, now);
+    osc.frequency.linearRampToValueAtTime(540, now + 0.8);
+    osc.frequency.linearRampToValueAtTime(490, now + 1.8);
+    osc.frequency.exponentialRampToValueAtTime(280, now + 3.4);
+
+    lfo.type = 'sine';
+    lfo.frequency.setValueAtTime(5.2, now);
+    lfoGain.gain.setValueAtTime(8, now);
+    lfo.connect(osc.frequency);
+
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(650, now);
+    filter.Q.setValueAtTime(2.2, now);
+
+    gain.gain.setValueAtTime(0.001, now);
+    gain.gain.linearRampToValueAtTime(0.22 * this.masterVolume, now + 0.7);
+    gain.gain.setValueAtTime(0.20 * this.masterVolume, now + 2.0);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 3.5);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.veilFilter || this.masterLimiter || this.masterGain);
+
+    osc.start(now);
+    lfo.start(now);
+    osc.stop(now + 3.6);
+    lfo.stop(now + 3.6);
+  }
+
+  /**
+   * V1.5 - BƯỚC V15-07: Tín hiệu cảnh báo công bằng khi chuyển sang Đêm Sương
+   * Kết hợp tiếng chuông nứt ngân trầm và tiếng sói hú xa xăm
+   */
+  public playNightfallWarningSound(): void {
+    this.playCrackedBellToll();
+    if (this.ctx) {
+      setTimeout(() => {
+        this.playDistantWolfHowl();
+      }, 450);
+    }
+  }
+
   public playRunestoneResonance(noteIndex: number = 0): void {
     if (!this.ctx || this.isMuted || !this.veilFilter) return;
     if (!this.checkCooldown('runestone', 300)) return;
