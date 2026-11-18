@@ -90,7 +90,13 @@ import {
   SPRITE_MIST_BAT,
   SPRITE_WANDERING_SHADE,
   SPRITE_GOBLIN_SCOUT,
-  SPRITE_FOG_SMOOTH
+  SPRITE_FOG_SMOOTH,
+  SPRITE_HOUSE_ELDER_EDDA_V15,
+  SPRITE_HOUSE_HERBALIST_NERIS_V15,
+  SPRITE_SMITHY_WORKSHOP_BRAM_V15,
+  SPRITE_GATEHOUSE_GARTH_V15,
+  SPRITE_BELL_TOWER_GRAND_V15,
+  SPRITE_VILLAGE_WELL_DETAILED_V15
 } from '../config/Constants';
 
 import { HUDIconGenerator } from '../utils/HUDIconGenerator';
@@ -220,6 +226,14 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image(TILE_SWAMP_MUD, 'assets/environment/tiles/tile_swamp_mud.png');
     this.load.image(TILE_COBBLE_ROAD, 'assets/environment/tiles/tile_cobble_road.png');
     this.load.image(TILE_STONE_FLOOR, 'assets/environment/tiles/tile_stone_floor.png');
+
+    // V15-10: Nạp bộ Sprite Kiến Trúc Làng Bellhollow Pixel Art Chuẩn Hóa V1.5
+    this.load.image(SPRITE_HOUSE_ELDER_EDDA_V15, 'assets/buildings/house_elder_edda.png');
+    this.load.image(SPRITE_HOUSE_HERBALIST_NERIS_V15, 'assets/buildings/house_herbalist_neris.png');
+    this.load.image(SPRITE_SMITHY_WORKSHOP_BRAM_V15, 'assets/buildings/smithy_workshop_bram.png');
+    this.load.image(SPRITE_GATEHOUSE_GARTH_V15, 'assets/buildings/gatehouse_garth.png');
+    this.load.image(SPRITE_BELL_TOWER_GRAND_V15, 'assets/buildings/bell_tower_grand.png');
+    this.load.image(SPRITE_VILLAGE_WELL_DETAILED_V15, 'assets/buildings/village_well_detailed.png');
 
     // 8.1 Nạp các tài nguyên môi trường V1.4 Mẫu & Mở Rộng Toàn Hệ Thống (HW-V14-EXP)
     if (CONFIG_USE_V14_PILOT_ENVIRONMENT || CONFIG_USE_V14_ENVIRONMENT) {

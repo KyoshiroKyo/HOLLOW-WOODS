@@ -37,8 +37,8 @@
 | 07 | `V15-07` | [03_Sanity_Vision_And_NightAI.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/03_Sanity_Vision_And_NightAI.md#7-bước-v15-07-hệ-số-hung-hãn-ban-đêm-night-aggression-multiplier) — Nâng cấp độ hung hăng của The Listener và Sói Xương khi màn đêm buông xuống | Hoàn tất (Đã nghiệm thu) |
 | 08 | `V15-08` | [03_Sanity_Vision_And_NightAI.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/03_Sanity_Vision_And_NightAI.md#9-bước-v15-08-nâng-cấp-áp-lực-ban-đêm-cho-quạ-bóng-tối-bóng-mắt-và-nhóm-hiệp-sĩ-tà-ác) — Nâng cấp áp lực ban đêm cho Quạ Bóng Tối, Bóng Mắt và Nhóm Hiệp Sĩ Tà Ác | Hoàn tất (Đã nghiệm thu) |
 | 09 | `V15-09` | [04_Graphics_And_World_Layout.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/04_Graphics_And_World_Layout.md) — Chuẩn hóa quy chuẩn kích thước Pixel Art, điểm neo và bảng màu cho toàn bộ Nhân vật, NPC và Quái vật | Hoàn tất (Đã nghiệm thu) |
-| 10 | `V15-10` | *05_World_Layout_And_Building_Scale.md* — Đồng bộ tỷ lệ công trình kiến trúc, nhà cửa, cây cối và chiều sâu thị giác (Giai đoạn 3) | Sắp tới |
-| 11 | `V15-11` | *06_UI_Deduplication_And_HUD_Polishing.md* — Dọn dẹp trùng lặp và tối ưu hóa UIScene | Sắp tới |
+| 10 | `V15-10` | [04_Graphics_And_World_Layout.md#báo-cáo-kỹ-thuật-v15-10-thiết-kế--đại-tu-bộ-công-trình-kiến-trúc-làng-bellhollow](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/04_Graphics_And_World_Layout.md) — Thiết kế & vẽ mới bộ công trình kiến trúc Làng Bellhollow sắc nét, đúng tỷ lệ Trung cổ u ám | Hoàn tất (Đã nghiệm thu) |
+| 11 | `V15-11` | *05_UI_Deduplication_And_HUD_Polishing.md* — Dọn dẹp trùng lặp và tối ưu hóa UIScene | Sắp tới |
 
 ---
 *Tài liệu được cập nhật tự động trong suốt quá trình phát triển HOLLOW WOODS V1.5.*

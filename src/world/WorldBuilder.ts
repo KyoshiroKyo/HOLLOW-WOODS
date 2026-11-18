@@ -20,6 +20,12 @@ import {
   SPRITE_HOUSE_NERIS,
   SPRITE_BELL_TOWER,
   SPRITE_BROKEN_SHRINE,
+  SPRITE_HOUSE_ELDER_EDDA_V15,
+  SPRITE_HOUSE_HERBALIST_NERIS_V15,
+  SPRITE_SMITHY_WORKSHOP_BRAM_V15,
+  SPRITE_GATEHOUSE_GARTH_V15,
+  SPRITE_BELL_TOWER_GRAND_V15,
+  SPRITE_VILLAGE_WELL_DETAILED_V15,
   SPRITE_PILLAR_MOON,
   SPRITE_PILLAR_ROOT,
   SPRITE_PILLAR_EYE,
@@ -2380,23 +2386,23 @@ export class WorldBuilder {
       // và giữ toàn bộ 7 mỏ tài nguyên + Bàn Chế Tạo (978,369) + Bệ Tháp Chuông (860,324) dễ tiếp cận.
       // =========================================================================
 
-      // 1. Nhà của Edda (Tây-Bắc Quảng Trường: x=648, y=50, chân tường kết thúc ở y=98)
-      this.createBuilding(648, 50, 112, 48, 0x5a3d28, 0x8a6338, 'Nhà Edda – Người Giữ Chuông');
-      this.createChimneySmoke(732, 34);
-      this.createVillagePropCluster(630, 94, 'firewood');
-      this.createVillagePropCluster(770, 96, 'barrels');
-      this.createVillageLanternPost(638, 134);
+      // 1. Nhà của Edda (Tây-Bắc Quảng Trường: tâm x=704, chân tường kết thúc ở y=110)
+      this.createBuilding(704, 110, 160, 144, 0x5a3d28, 0x8a6338, 'Nhà Edda – Người Giữ Chuông');
+      this.createChimneySmoke(658, -20);
+      this.createVillagePropCluster(620, 104, 'firewood');
+      this.createVillagePropCluster(780, 106, 'barrels');
+      this.createVillageLanternPost(630, 134);
 
-      // 2. Nhà Thảo Mộc của Neris (Đông-Bắc Quảng Trường: x=914, y=44, chân tường kết thúc ở y=92)
-      // NPC Neris đứng tại (970, 130) trên sân đá hiên nhà, cách chân tường 38px hoàn toàn thông thoáng!
-      this.createBuilding(914, 44, 112, 48, 0x4a4335, 0x6e7845, 'Nhà Neris – Thảo Mộc');
-      this.createChimneySmoke(940, 28);
-      this.createApothecaryTables(892, 110, 1044, 110);
-      this.createVillageLanternPost(902, 146);
+      // 2. Nhà Thảo Mộc của Neris (Đông-Bắc Quảng Trường: tâm x=970, chân tường kết thúc ở y=108)
+      // NPC Neris đứng tại (990, 145) trên sân đá hiên nhà, cách chân tường 37px hoàn toàn thông thoáng!
+      this.createBuilding(970, 108, 152, 136, 0x4a4335, 0x6e7845, 'Nhà Neris – Thảo Mộc');
+      this.createChimneySmoke(1016, -20);
+      this.createApothecaryTables(884, 110, 1052, 110);
+      this.createVillageLanternPost(896, 146);
 
-      // 3. Tháp Chuông Làng Bellhollow (Bắc-Trung Tâm Quảng Trường: x=820, y=252, chân tháp ở y=310)
-      // Bà Lão Edda đứng tại (790, 330) (depth 330 > 310), hoàn toàn tách biệt không bị đè hình hay kẹt tên!
-      this.createBellTower(820, 252, 80, 58);
+      // 3. Tháp Chuông Làng Bellhollow (Bắc-Trung Tâm Quảng Trường: tâm x=870, chân tháp ở y=310)
+      // Bà Lão Edda đứng tại (785, 345) (depth 345 > 310), hoàn toàn tách biệt không bị đè hình hay kẹt tên!
+      this.createBellTower(870, 310, 160, 240);
       this.createVillageLanternPost(756, 286);
 
       // V1.4: Cụm Trại Chuẩn Bị Sanctuary Camp Hub Thống Nhất trong Bellhollow
@@ -2408,18 +2414,19 @@ export class WorldBuilder {
       // 4. Giếng Nước Làng Có Mái Che tại Quảng Trường Trung Tâm (726, 376)
       this.createVillageWell(726, 376);
 
-      // 5. Xưởng Chế Tạo & Lò Rèn Có Mái Che (Đông-Nam Quảng Trường: 960, 360; tương tác tại 978, 369)
-      this.createCraftingWorkshopPavilion(936, 318);
+      // 5. Xưởng Chế Tạo & Lò Rèn Có Mái Che (Đông-Nam Quảng Trường: tâm 1000, 352; tương tác tại 978, 369)
+      this.createCraftingWorkshopPavilion(1000, 352);
       this.createCraftingBench(960, 360);
       this.createVillageLanternPost(922, 372);
 
-      // 6. Trạm Gác Cổng Tây (Phía Bắc vị trí Garth 530, 220; chân trạm gác kết thúc ở y=184)
-      this.createWestWatchpost(504, 136);
+      // 6. Trạm Gác Cổng Tây (Phía Bắc vị trí Garth 520, 265; chân trạm gác kết thúc ở y=180)
+      this.createWestWatchpost(516, 180);
       this.createStoneSign(580, 194, 'LÀNG BELLHOLLOW');
       this.createVillageLanternPost(496, 202);
 
-      // 7. Nhà Dân Làng Tây-Nam (x=516, y=376, cân đối bố cục Tây-Nam như ảnh concept, cách xa mỏ đá lửa 620,350)
-      this.createSouthWestCottage(516, 376);
+      // 7. Nhà Dân Làng Tây-Nam (x=516, y=428, cân đối bố cục Tây-Nam, cách xa mỏ đá lửa)
+      this.createSouthWestCottage(516, 428);
+      this.createVillagePropCluster(632, 436, 'barrels');
       this.createVillagePropCluster(632, 418, 'barrels');
 
       // 8. Khu Vườn Thảo Dược & Nhà Kho Đông-Nam (x=1030, y=420, phía Nam mỏ gỗ 1120,380)
@@ -2818,67 +2825,71 @@ export class WorldBuilder {
 
   private createBuilding(x: number, y: number, w: number, h: number, _wallColor: number, _roofColor: number, name?: string): void {
     const isEdda = name?.includes('Edda');
-    const houseKey = isEdda ? SPRITE_HOUSE_EDDA : SPRITE_HOUSE_NERIS;
+    const houseKey = isEdda ? SPRITE_HOUSE_ELDER_EDDA_V15 : SPRITE_HOUSE_HERBALIST_NERIS_V15;
+    const fallbackKey = isEdda ? SPRITE_HOUSE_EDDA : SPRITE_HOUSE_NERIS;
 
-    // C4-12-30: Chân móng công trình mềm mại với bóng đổ tiếp xúc và viền đất đá rêu phong (depth -95)
+    // V15-10: Chân móng công trình mềm mại với bóng đổ tiếp xúc và viền đất đá rêu phong (depth -95)
     const footingGfx = this.scene.add.graphics();
-    footingGfx.fillStyle(0x080c09, 0.52);
-    footingGfx.fillRoundedRect(x - 3, y + h - 8, w + 6, 14, 5);
-    footingGfx.fillStyle(0x1e261f, 0.40);
-    footingGfx.fillRect(x + 2, y + h - 4, w - 4, 7);
+    footingGfx.fillStyle(0x060907, 0.55);
+    footingGfx.fillRoundedRect(x - w / 2 - 4, y - 8, w + 8, 14, 5);
+    footingGfx.fillStyle(0x1a221b, 0.42);
+    footingGfx.fillRect(x - w / 2 + 4, y - 4, w - 8, 7);
     footingGfx.setDepth(DEPTH_GROUND_FOOTING);
-    this.registerCullable(footingGfx, x + w / 2, y + h, Math.max(w, h));
+    this.registerCullable(footingGfx, x, y, Math.max(w, h));
 
-    // Sprite nhà có kích thước 112×80 px, đặt tại (x, y - 24) để mái nhà vươn lên cao
-    // và chân tường khớp chính xác với đường Y-sorting (y + h)
-    const house = this.safeAddImage(x, y - 24, houseKey);
-    house.setOrigin(0, 0);
-    house.setDepth(y + 56);
-    this.registerCullable(house, x + w / 2, y + h / 2, Math.max(w, h));
+    // V15-10: Sprite nhà pixel art chuẩn hóa tỷ lệ trung cổ (origin 0.5, 1.0 đặt tại chân móng x, y)
+    const house = this.safeAddImage(x, y, houseKey, fallbackKey);
+    house.setOrigin(0.5, 1.0);
+    house.setDepth(y);
+    this.registerCullable(house, x, y - h / 2, Math.max(w, h));
 
-    // C4-13-17: Chuẩn hóa hộp va chạm bao phủ trọn vẹn thân tường và chân công trình,
-    // chống nhân vật đi xuyên qua tường hoặc leo lên mái nhà từ phía bắc/hai bên
-    // C4-14-FIX: Thiết kế hitbox chân đế (Foot-level Hitbox ~32.5% phần đáy công trình).
-    // Đáy sprite nhà 112x80 nằm tại y + 56. Hitbox chân tường bao phủ 26px đáy (y+30..y+56)
-    // cho phép nhân vật đi lách tự nhiên sau mái nhà, nhưng bị chặn vững chắc trước mặt tiền.
-    const colW = Math.min(w - 12, 100);
-    const colH = 26;
-    this.createStaticBoxCollider(x + 6, y + 56 - colH, colW, colH, name);
+    // V15-10: Căn chỉnh hộp va chạm vật lý chân đế (Foot-level Hitbox ~22-26% phần đáy công trình).
+    // Đáy sprite nằm tại y. Hitbox chân tường bao phủ 30-32px đáy, chừa toàn bộ mái và thân trên
+    // cho phép nhân vật đi lướt tự nhiên sau mái nhà với Y-sorting hoàn hảo.
+    const colW = isEdda ? 136 : 130;
+    const colH = isEdda ? 32 : 30;
+    this.createStaticBoxCollider(x - colW / 2, y - colH, colW, colH, name);
   }
 
   private createBellTower(x: number, y: number, w: number, h: number): void {
-    // C4-12-30: Móng đá tiếp xúc và bóng đổ chân tháp chuông (depth -95)
+    // V15-10: Móng đá tiếp xúc và bóng đổ chân tháp chuông (depth -95)
     const towerFooting = this.scene.add.graphics();
-    towerFooting.fillStyle(0x080c09, 0.55);
-    towerFooting.fillRoundedRect(x - 4, y + h - 10, w + 8, 16, 6);
-    towerFooting.fillStyle(0x222a24, 0.42);
-    towerFooting.fillRect(x + 2, y + h - 5, w - 4, 8);
+    towerFooting.fillStyle(0x060907, 0.58);
+    towerFooting.fillRoundedRect(x - 74, y - 10, 148, 16, 6);
+    towerFooting.fillStyle(0x1d2620, 0.45);
+    towerFooting.fillRect(x - 66, y - 5, 132, 8);
     towerFooting.setDepth(DEPTH_GROUND_FOOTING);
-    this.registerCullable(towerFooting, x + w / 2, y + h, Math.max(w, h));
+    this.registerCullable(towerFooting, x, y, Math.max(w, h));
 
-    // Tháp chuông làng Bellhollow bằng sprite SPRITE_BELL_TOWER (80×112 px)
-    // Đặt đỉnh tháp tại (x, y - 52) để chân tháp kết thúc đúng tại (y + h = 310),
-    // nằm hoàn toàn phía Bắc Bà Lão Edda (790, 330)
-    const tower = this.safeAddImage(x, y - 52, SPRITE_BELL_TOWER);
-    tower.setOrigin(0, 0);
-    tower.setDepth(312);
-    this.registerCullable(tower, x + w / 2, y + h / 2, Math.max(w, h));
+    // V15-10: Tháp chuông cổ đại sừng sững (SPRITE_BELL_TOWER_GRAND_V15 160×240 px)
+    const tower = this.safeAddImage(x, y, SPRITE_BELL_TOWER_GRAND_V15, SPRITE_BELL_TOWER);
+    tower.setOrigin(0.5, 1.0);
+    tower.setDepth(y);
+    this.registerCullable(tower, x, y - h / 2, Math.max(w, h));
 
-    // C4-13-17: Chuẩn hóa hộp va chạm Tháp Chuông bao phủ toàn bộ bệ đá và thân tháp
-    // C4-14-FIX: Hitbox chân đế bệ đá tháp chuông (64x30 px tại đáy y=312)
-    const colW = 64;
-    const colH = 30;
-    this.createStaticBoxCollider(x + 8, 312 - colH, colW, colH, 'Tháp Chuông');
+    // V15-10: Hitbox chân đế bệ đá tháp chuông (~15% phần đáy: 110x34 px tại đáy y)
+    const colW = 110;
+    const colH = 34;
+    this.createStaticBoxCollider(x - colW / 2, y - colH, colW, colH, 'Tháp Chuông');
   }
 
   private createVillageWell(x: number, y: number): void {
-    const well = this.safeAddImage(x, y, SPRITE_VILLAGE_WELL);
-    well.setOrigin(0.5, 0.88);
-    well.setDepth(y);
-    this.registerCullable(well, x, y, 40);
+    const wellY = y + 8;
+    // V15-10: Bóng đổ tròn mềm dưới chân giếng đá
+    const wellFooting = this.scene.add.graphics();
+    wellFooting.fillStyle(0x060907, 0.52);
+    wellFooting.fillEllipse(x, wellY - 4, 54, 16);
+    wellFooting.setDepth(DEPTH_GROUND_FOOTING);
+    this.registerCullable(wellFooting, x, wellY, 40);
 
-    // C4-13-17: Chuẩn hóa hộp va chạm thành giếng đá bao phủ chân công trình
-    this.createStaticBoxColliderCentered(x, y - 4, 30, 18, 'Giếng Nước Làng');
+    // V15-10: Giếng đá cổ chi tiết (SPRITE_VILLAGE_WELL_DETAILED_V15 64×72 px)
+    const well = this.safeAddImage(x, wellY, SPRITE_VILLAGE_WELL_DETAILED_V15, SPRITE_VILLAGE_WELL);
+    well.setOrigin(0.5, 1.0);
+    well.setDepth(wellY);
+    this.registerCullable(well, x, wellY - 36, 40);
+
+    // V15-10: Hộp va chạm thành giếng đá bao phủ chân đế (38x20 px)
+    this.createStaticBoxColliderCentered(x, wellY - 10, 38, 20, 'Giếng Nước Làng');
   }
 
   private createCraftingBench(x: number, y: number): void {
@@ -2892,122 +2903,91 @@ export class WorldBuilder {
   }
 
   /**
-   * Dựng mái vòm xưởng rèn & kho củi phía sau Bàn Chế Tạo (không cản lối tiếp cận phía trước bàn).
+   * V15-10: Xưởng rèn & lò lửa kiên cố của Bram (SPRITE_SMITHY_WORKSHOP_BRAM_V15 176×148 px).
+   * Tích hợp lò than hồng rực, đe thép mỏ nhọn, thùng nước tôi thép và giá vũ khí.
    */
   private createCraftingWorkshopPavilion(x: number, y: number): void {
-    const g = this.scene.add.graphics();
-    // Khung cột gỗ & tường hậu che gió phía Bắc bàn chế tạo
-    g.fillStyle(0x1f150e, 1);
-    g.fillRect(x, y + 18, 84, 24);
-    g.fillStyle(0x362417, 1);
-    g.fillRect(x + 2, y + 20, 80, 20);
+    const w = 176;
+    const h = 148;
 
-    // Ngăn xếp củi khô bên trái xưởng (như ảnh concept!)
-    g.fillStyle(0x1a110b, 1);
-    g.fillRect(x + 4, y + 22, 22, 16);
-    const logColors = [0x6e472b, 0x855836, 0x54351f];
-    for (let row = 0; row < 3; row++) {
-      for (let col = 0; col < 4; col++) {
-        g.fillStyle(logColors[(row + col) % logColors.length], 1);
-        g.fillCircle(x + 8 + col * 4, y + 35 - row * 4, 2.2);
-      }
-    }
+    // Bóng đổ chân móng xưởng rèn
+    const footing = this.scene.add.graphics();
+    footing.fillStyle(0x060907, 0.55);
+    footing.fillRoundedRect(x - w / 2 - 4, y - 8, w + 8, 14, 5);
+    footing.fillStyle(0x1e2426, 0.42);
+    footing.fillRect(x - w / 2 + 4, y - 4, w - 8, 7);
+    footing.setDepth(DEPTH_GROUND_FOOTING);
+    this.registerCullable(footing, x, y, Math.max(w, h));
 
-    // Mái ngói đá đen phủ rêu của xưởng chế tạo
-    g.fillStyle(0x1b222b, 1);
-    g.fillRect(x - 4, y, 92, 20);
-    g.fillStyle(0x283240, 1);
-    g.fillRect(x - 2, y + 2, 88, 16);
-    g.fillStyle(0x3b281a, 1);
-    g.fillRect(x - 4, y + 18, 92, 3);
-    // Rêu xanh trên mái xưởng
-    g.fillStyle(0x35542c, 1);
-    g.fillRect(x + 8, y + 4, 20, 5);
-    g.fillRect(x + 54, y + 6, 22, 5);
+    // Sprite xưởng rèn Bram
+    const smithy = this.safeAddImage(x, y, SPRITE_SMITHY_WORKSHOP_BRAM_V15);
+    smithy.setOrigin(0.5, 1.0);
+    smithy.setDepth(y);
+    this.registerCullable(smithy, x, y - h / 2, Math.max(w, h));
 
-    // Thùng gỗ & xô nước rèn bên phải xưởng
-    g.fillStyle(0x4a301d, 1);
-    g.fillRect(x + 86, y + 28, 11, 14);
-    g.fillStyle(0x2c3e50, 1);
-    g.fillRect(x + 86, y + 31, 11, 2);
-    g.fillRect(x + 86, y + 37, 11, 2);
+    // Khói bốc lên từ ống khói đá lò rèn (x - 48, y - h + 4)
+    this.createChimneySmoke(x - 48, y - h + 4);
 
-    g.setDepth(y + 42);
-    this.registerCullable(g, x + 42, y + 20, 60);
-
-    // C4-13-17: Chuẩn hóa hộp va chạm toàn bộ xưởng rèn & kho củi (bao trùm mái nhà và tường hậu)
-    // chống triệt để việc nhân vật đi xuyên lên mái từ phía bắc hoặc xuyên qua đống củi
-    this.createStaticBoxCollider(x, y + 18, 84, 24, 'Mái Xưởng Rèn');
+    // V15-10: Hitbox chân đế (~21% phần đáy công trình: 154x32 px)
+    const colW = 154;
+    const colH = 32;
+    this.createStaticBoxCollider(x - colW / 2, y - colH, colW, colH, 'Mái Xưởng Rèn');
   }
 
   /**
-   * Trạm gác Cổng Tây phía Bắc NPC Garth (530, 220), tạo chiều sâu cho lối vào làng mà không chắn đường đi.
+   * V15-10: Trạm gác Cổng Tây của Garth (SPRITE_GATEHOUSE_GARTH_V15 128×136 px).
+   * Kiến trúc chòi canh đá & gỗ lim uy nghi với cửa sổ quan sát sáng ấm và giá vũ khí canh gác.
    */
   private createWestWatchpost(x: number, y: number): void {
-    const g = this.scene.add.graphics();
-    // Bóng đổ
-    g.fillStyle(0x0a0e0c, 0.55);
-    g.fillRect(x + 2, y + 42, 64, 6);
+    const w = 128;
+    const h = 136;
 
-    // Thân chòi gác gỗ & chân đá
-    g.fillStyle(0x221811, 1);
-    g.fillRect(x + 4, y + 18, 56, 28);
-    g.fillStyle(0x4a3728, 1);
-    g.fillRect(x + 6, y + 20, 52, 16);
-    g.fillStyle(0x3d464f, 1);
-    g.fillRect(x + 6, y + 36, 52, 9);
+    // Bóng đổ chân trạm gác
+    const footing = this.scene.add.graphics();
+    footing.fillStyle(0x060907, 0.55);
+    footing.fillRoundedRect(x - w / 2 - 4, y - 8, w + 8, 14, 5);
+    footing.fillStyle(0x1e2522, 0.42);
+    footing.fillRect(x - w / 2 + 4, y - 4, w - 8, 7);
+    footing.setDepth(DEPTH_GROUND_FOOTING);
+    this.registerCullable(footing, x, y, Math.max(w, h));
 
-    // Cửa sổ nhỏ phát sáng vàng ấm trên chòi gác
-    g.fillStyle(0x1f150e, 1);
-    g.fillRect(x + 16, y + 23, 10, 9);
-    g.fillStyle(0xf39c12, 1);
-    g.fillRect(x + 18, y + 25, 6, 5);
-    g.fillStyle(0xfef9e7, 1);
-    g.fillRect(x + 19, y + 26, 4, 3);
+    // Sprite trạm gác cổng Tây
+    const gatehouse = this.safeAddImage(x, y, SPRITE_GATEHOUSE_GARTH_V15);
+    gatehouse.setOrigin(0.5, 1.0);
+    gatehouse.setDepth(y);
+    this.registerCullable(gatehouse, x, y - h / 2, Math.max(w, h));
 
-    // Giá treo giáo/khiên & thùng tiếp tế cạnh chòi gác
-    g.fillStyle(0x543824, 1);
-    g.fillRect(x + 36, y + 24, 16, 18);
-    g.fillStyle(0x7f8c8d, 1);
-    g.fillRect(x + 41, y + 27, 6, 8);
-
-    // Mái ngói đá đen phủ rêu
-    g.fillStyle(0x1c232b, 1);
-    g.fillRect(x, y, 64, 20);
-    g.fillStyle(0x2b3642, 1);
-    g.fillRect(x + 2, y + 2, 60, 16);
-    g.fillStyle(0x36542d, 1);
-    g.fillRect(x + 8, y + 5, 18, 5);
-    g.fillRect(x + 38, y + 8, 16, 5);
-
-    g.setDepth(y + 46);
-    this.registerCullable(g, x + 32, y + 23, 50);
-
-    // C4-13-17: Chuẩn hóa hộp va chạm trạm gác bao phủ toàn bộ mái và thân chòi
-    this.createStaticBoxCollider(x + 6, y + 20, 52, 26, 'Trạm Gác Cổng Tây');
+    // V15-10: Hitbox chân đế (~23% phần đáy công trình: 96x32 px)
+    const colW = 96;
+    const colH = 32;
+    this.createStaticBoxCollider(x - colW / 2, y - colH, colW, colH, 'Trạm Gác Cổng Tây');
   }
 
   /**
-   * Nhà dân làng phía Tây-Nam Quảng Trường (x=516, y=376), tái sử dụng sprite kiến trúc gỗ đá trung cổ.
+   * V15-10: Nhà dân làng phía Tây-Nam (tái sử dụng sprite kiến trúc chuẩn hóa V1.5).
    */
   private createSouthWestCottage(x: number, y: number): void {
-    // C4-12-30: Chân móng nhà phụ Tây Nam tiếp xúc êm ái với nền đất (depth -95)
+    const w = Math.round(160 * 0.88);
+    const h = Math.round(144 * 0.88);
+
+    // Chân móng nhà phụ Tây Nam
     const cottageFooting = this.scene.add.graphics();
-    cottageFooting.fillStyle(0x080c09, 0.48);
-    cottageFooting.fillRoundedRect(x - 2, y + 42, 98, 12, 5);
+    cottageFooting.fillStyle(0x060907, 0.48);
+    cottageFooting.fillRoundedRect(x - w / 2 - 4, y - 8, w + 8, 14, 5);
     cottageFooting.setDepth(DEPTH_GROUND_FOOTING);
-    this.registerCullable(cottageFooting, x + 47, y + 46, 60);
+    this.registerCullable(cottageFooting, x, y, Math.max(w, h));
 
-    const house = this.scene.add.image(x, y - 22, SPRITE_HOUSE_EDDA);
-    house.setOrigin(0, 0);
-    house.setScale(0.92, 0.92);
-    house.setTint(0xd8cfc4);
-    house.setDepth(428);
-    this.registerCullable(house, x + 47, y + 20, 60);
+    const house = this.safeAddImage(x, y, SPRITE_HOUSE_ELDER_EDDA_V15, SPRITE_HOUSE_EDDA);
+    house.setOrigin(0.5, 1.0);
+    house.setScale(0.88, 0.88);
+    house.setTint(0xd0c8bc);
+    house.setDepth(y);
+    this.registerCullable(house, x, y - h / 2, Math.max(w, h));
 
-    // C4-13-17: Chuẩn hóa hộp va chạm nhà dân Tây-Nam bao phủ toàn bộ thân tường và mái nhà
-    // C4-14-FIX: Foot-level Hitbox chân đế nhà dân Tây-Nam (đáy tại y=428)
-    this.createStaticBoxCollider(x + 6, 428 - 24, 91, 24, 'Nhà Dân Tây-Nam');
+    // Hitbox chân đế nhà dân Tây-Nam
+    const colW = 110;
+    const colH = 28;
+    this.createStaticBoxCollider(x - colW / 2, y - colH, colW, colH, 'Nhà Dân Tây-Nam');
   }
 
   /**
@@ -3165,7 +3145,7 @@ export class WorldBuilder {
     smoke.fillCircle(4, -7, 6);
     smoke.fillCircle(1, -15, 7);
     smoke.setPosition(x, y);
-    smoke.setDepth(y + 90);
+    smoke.setDepth(Math.max(y + 140, 160));
     this.registerCullable(smoke, x, y, 30);
 
     if (this.scene.tweens) {

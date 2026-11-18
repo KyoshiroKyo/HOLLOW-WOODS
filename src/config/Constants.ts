@@ -87,6 +87,14 @@ export const SPRITE_HOUSE_NERIS = 'house_neris';
 export const SPRITE_BELL_TOWER = 'bell_tower';
 export const SPRITE_BROKEN_SHRINE = 'broken_shrine';
 
+// Khóa Texture Công Trình Kiến Trúc Làng Bellhollow Chuẩn Hóa V1.5 (High-Fidelity Medieval Buildings)
+export const SPRITE_HOUSE_ELDER_EDDA_V15 = 'house_elder_edda';
+export const SPRITE_HOUSE_HERBALIST_NERIS_V15 = 'house_herbalist_neris';
+export const SPRITE_SMITHY_WORKSHOP_BRAM_V15 = 'smithy_workshop_bram';
+export const SPRITE_GATEHOUSE_GARTH_V15 = 'gatehouse_garth';
+export const SPRITE_BELL_TOWER_GRAND_V15 = 'bell_tower_grand';
+export const SPRITE_VILLAGE_WELL_DETAILED_V15 = 'village_well_detailed';
+
 // Khóa Texture Vật Thể & Đạo Cụ (Props Sprite Keys - PASS T06)
 export const SPRITE_PILLAR_MOON = 'pillar_moon';
 export const SPRITE_PILLAR_ROOT = 'pillar_root';
