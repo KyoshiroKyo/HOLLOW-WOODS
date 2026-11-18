@@ -196,3 +196,70 @@ Trong giai đoạn tinh chỉnh giao diện V1.4, thực hiện nâng cấp toà
 
 Toàn bộ 4 tệp backup an toàn (`.v14_p8_02.bak`) được lưu trữ nguyên vẹn tại workspace. Hệ thống giao diện V1.4 đạt độ hoàn thiện cao, trực quan và tiện dụng tối đa cho trải nghiệm sinh tồn kinh dị!
 
+---
+
+## 7. BỔ SUNG NGHIỆM THU V14-P8-07: CHUẨN HÓA BỘ HÌNH ẢNH & HOẠT ẢNH NHÂN VẬT CHÍNH BLACK KNIGHT VỚI DANH TÍNH THE MOSSBOUND WAYFARER VÀ BẢO TOÀN SAVE CŨ
+
+### 7.1. Mục Tiêu & Nguyên Tắc Chuyển Đổi
+1. **Nâng cấp toàn bộ hình ảnh và hoạt ảnh:**
+   - Thay thế toàn bộ 9 spritesheet và chân dung đối thoại của nhân vật chính sang gói tài nguyên pixel art cao cấp **Black Knight** tại `Pixel_Art/Black Knight/`.
+   - Tạo bản sao lưu an toàn tại `public/assets/characters/mossbound_wayfarer.bak/` trước khi thực hiện ghi đè.
+2. **Khóa cứng danh tính nhân vật:**
+   - Tên nhân vật trên toàn bộ trò chơi, giao diện HUD, hội thoại cốt truyện, Bestiary, Sổ tay nhật ký, tệp lưu game TUYỆT ĐỐI GIỮ NGUYÊN là **"The Mossbound Wayfarer"** (hoặc "The Wayfarer"). Tuyệt đối không hiển thị tên "Black Knight" ra phía người chơi.
+3. **Bảo toàn 100% tính tương thích của Save cũ:**
+   - Không thay đổi bất kỳ `runtimeKey`, `storageKey`, schema lưu trữ hay cấu trúc trường nào trong [SaveManager.ts](file:///G:/HOLLOW%20WOODS/src/systems/SaveManager.ts). Các file lưu game từ V1.3 và V1.4 nạp vào hiển thị mô hình mới mượt mà ngay lập tức.
+
+### 7.2. Quy Trình Chuẩn Hóa Bằng Node.js (`scripts/extract_black_knight_wayfarer.mjs`)
+- **Nguồn tài nguyên:**
+  - `Pixel_Art/Black Knight/ALL_In_One_NEW/Black_Knight_All_In_One_New.png`: Kích thước gốc $2592 \times 1152\text{px}$, bố cục lưới $18 \times 18$ cells, mỗi ô cell $144 \times 64\text{px}$, đường chân đế $y = 62\text{px}$.
+  - `Pixel_Art/Black Knight/WEB_Images/knight_no_text.png`: Ảnh minh họa gốc $1920 \times 1080\text{px}$ với tỉ lệ pixel art 8x.
+- **Tiêu chuẩn khung hình 64×64 px đồng nhất:**
+  - Điểm tựa chính giữa cạnh đáy bàn chân (Foot Anchor): Tọa độ $(32, 58)$ trong khung hình $64 \times 64\text{px}$, tương ứng `originX = 0.5`, `originY = 0.90625` ($58/64$).
+  - Bàn chân tiếp đất tự nhiên tại $y = 58\text{px}$, tạo khoảng đệm đầu thoáng đãng $20\text{px}$ phía trên.
+  - Nền RGBA trong suốt hoàn toàn, độ sắc nét Nearest-Neighbor tuyệt đối, bảo toàn từng điểm ảnh pixel art gốc.
+  - Bóng đổ mềm ellipse alpha 0.25 (RGBA `0, 0, 0, 64`) bán kính $rx = 13\text{px}, ry = 4\text{px}$ đặt trực tiếp dưới bàn chân tại $(32, 58)$. Đối với hoạt ảnh tử vong, bóng đổ mờ dần theo hiệu ứng tan biến của nhân vật.
+- **Cấu trúc 4 hướng chuẩn hóa theo Phaser:**
+  - Hàng 0 ($y \in [0, 63]$): **DOWN** — Nhân vật hướng về phía trước/chếch dưới.
+  - Hàng 1 ($y \in [64, 127]$): **UP** — Nhân vật quay lưng đi lên.
+  - Hàng 2 ($y \in [128, 191]$): **LEFT** — Nhân vật quay sang trái với hiệu ứng lật ngang đối xứng (`flipX` pre-baked).
+  - Hàng 3 ($y \in [192, 255]$): **RIGHT** — Nhân vật quay sang phải (hướng gốc).
+
+### 7.3. Danh Mục 9 Dải Hoạt Ảnh & Chân Dung Xuất Bản
+| Tệp Asset | Kích Thước | Cấu Hình Frames | Nguồn Trích Xuất (Black Knight Grid) | Mô Tả Hoạt Ảnh |
+| :--- | :---: | :---: | :--- | :--- |
+| **`wayfarer_idle.png`** | $256 \times 256$ | 4 frames/hướng (16 frames) | Hàng 1, Cột 2..5 (`BK_weapon_idle`) | Đứng thở nghỉ ngơi, tay cầm chuôi kiếm/vũ khí sẵn sàng. |
+| **`wayfarer_walk.png`** | $384 \times 256$ | 6 frames/hướng (24 frames) | Hàng 8, Cột 4, 6, 8, 10, 12, 14 | Bước đi chậm rãi, nhịp nhàng, áo choàng vẫy nhẹ. |
+| **`wayfarer_run.png`** | $384 \times 256$ | 6 frames/hướng (24 frames) | Hàng 8, Cột 4, 5, 7, 9, 11, 13 | Chạy nhanh linh hoạt, tư thế đổ người về phía trước. |
+| **`wayfarer_attack.png`** | $384 \times 256$ | 6 frames/hướng (24 frames) | Hàng 3, Cột 0..5 (`BK_light_attack`) | Vung kiếm chém quét ngang với vệt sáng hổ phách uy lực. |
+| **`wayfarer_hurt.png`** | $192 \times 256$ | 3 frames/hướng (12 frames) | Hàng 7, Cột 0..2 (`BK_hurt`) | Bị trúng đòn, lùi người co mình che chắn. |
+| **`wayfarer_death.png`** | $384 \times 256$ | 6 frames/hướng (24 frames) | Hàng 16, Cột 4..9 (Tan rã) | Gục ngã và tan biến thành các hạt bụi bóng tối trong sương mù. |
+| **`wayfarer_interact.png`**| $256 \times 256$ | 4 frames/hướng (16 frames) | Hàng 14, Cột 5..8 (`BK_weapon_on-off`)| Vươn tay tương tác mở rương, chạm cột đá Cổ Ngữ. |
+| **`wayfarer_gather.png`** | $256 \times 256$ | 4 frames/hướng (16 frames) | Hàng 10, Cột 5..8 (Quỳ gối) | Cúi người quỳ gối hái thảo dược, lượm củi khô, xúc đất cày. |
+| **`wayfarer_use_item.png`**| $256 \times 256$ | 4 frames/hướng (16 frames) | Hàng 14, Cột 6..9 (Dùng vật phẩm) | Nâng tay uống Trà An Thần, châm Dầu Đèn hoặc Đuốc Nhựa Thông. |
+| **`wayfarer_portrait.png`**| $64 \times 64$ | 1 ảnh tĩnh 64x64 | `knight_no_text.png` ($200, 280, 512 \times 512$) | Cúp cận cảnh đầu-vai, mũ giáp sắt hiệp sĩ và khe kính hổ phách rực sáng. |
+
+### 7.4. Đồng Bộ Điểm Neo Đèn Lồng & Hitbox Va Chạm
+1. **Điểm neo đèn lồng 4 hướng:**
+   - Hướng DOWN: `x = -5, y = -16`.
+   - Hướng UP: `x = 13, y = -19`.
+   - Hướng LEFT: `x = -9, y = -16`.
+   - Hướng RIGHT: `x = 9, y = -16`.
+   - Bảng tọa độ 6 frame hoạt ảnh tấn công `ATTACK_LANTERN_OFFSETS` khớp khít với chuyển động của vệt chém kiếm hổ phách.
+2. **Hitbox va chạm chân chuẩn AABB:**
+   - Kích thước: Rộng `14px`, cao `8px` (`WAYFARER_BODY_WIDTH = 14`, `WAYFARER_BODY_HEIGHT = 8`).
+   - Tọa độ bù trừ: `OFFSET_X = 25`, `OFFSET_Y = 50`.
+   - Bàn chân lướt êm qua mọi góc rẽ hẹp của Đầm Lầy và cổng vòm làng Bellhollow mà không bị kẹt mép gạch.
+
+### 7.5. Tổng Hợp Kiểm Thử Nghiệm Thu V14-P8-07
+| Bộ Kiểm Thử | Lệnh Kiểm Tra | Số Test / Kết Quả | Trạng Thái |
+| :--- | :--- | :---: | :---: |
+| **Kiểm tra TypeScript Type Safety** | `npx tsc --noEmit` | 0 lỗi (Exit 0) | **PASS** |
+| **Hồi quy toàn diện V1.3 (22 module)** | `node scripts/run_v1_3_regression_suite.mjs` | 571/571 PASS | **PASS (100%)** |
+| **Kiểm thử di trú Save V1.4** | `node scripts/verify_v1_4_save_migration.mjs` | 88/88 PASS | **PASS (100%)** |
+| **Kiểm thử 4 Content Packs V1.4** | `node scripts/test_v14_step_8_1.mjs` | 71/71 PASS | **PASS (100%)** |
+| **Kiểm thử Playtest toàn diện V1.4** | `node scripts/verify_v1_4_acceptance_playtest.mjs` | 32/32 PASS | **PASS (100%)** |
+| **Đóng gói Vite Production** | `npm run build` | 8.16s (Exit 0) | **PASS** |
+
+Gói hình ảnh nhân vật The Mossbound Wayfarer đã chính thức được nâng cấp toàn diện sang tạo hình Black Knight sắc nét, hùng vĩ mà vẫn giữ vẹn nguyên linh hồn huyền bí của HOLLOW WOODS!
+
+
