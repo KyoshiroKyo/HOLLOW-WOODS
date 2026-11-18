@@ -76,6 +76,76 @@
       "title": "NHẬT KÝ LỮ KHÁCH: LỜI THỀ TRONG RÊU PHONG",
       "author": "Lữ Khách Rêu Phong (Chỉ Huy Hiệp Sĩ Đen)",
       "content": "Từng mảnh ký ức như dòng nước ấm chảy qua lớp băng giá của thời gian...\n\nTa nhớ lại rồi. Đêm hôm đó, trước khi The Veil nuốt chửng lý trí của ta, ta đã quỳ gối trước Mạch Rễ cổ thụ, dùng Cổ Ngữ Algiz phong ấn toàn bộ ký ức của chính mình. Ta không thể để một Chỉ Huy bị biến chất quay lại tàn sát những sinh linh mà ta đã thề bảo vệ.\n\nTa đã chọn quên đi tất cả, chấp nhận thức giấc giữa sương mù rêu phong như một kẻ vô danh. Nhưng ngọn lửa của Hiệp Sĩ Canh Lửa, chén thuốc thảo mộc của Neris, sự tận tụy của Bram, lòng dũng cảm của Garth và đôi tai của bé Finn... tất cả đã thắp sáng lại con đường mà ta từng đi.\n\nLời thề bảo vệ Bellhollow chưa bao giờ tắt. Ta sẽ đưa Lưỡi Chuông Đồng trở về đỉnh tháp, hàn gắn Đại Hồng Chung và gióng lên hồi chuông giải phóng vĩnh hằng!"
+    },
+    {
+      "id": "lore_knights_memorial_stele",
+      "act": 2,
+      "title": "BIA ĐÁ TƯỞNG NIỆM ĐOÀN KỴ SĨ",
+      "author": "Văn Bia Cổ Xưởng Chuông",
+      "content": "Nơi an nghỉ của 12 hiệp sĩ danh dự đã ngã xuống bảo vệ phòng tuyến Bellhollow trong Mùa Sương đầu tiên: Sir Cedric, Sir Valen, Sir Rowen, Sir Gareth, Sir Alistair...\n\nTên của vị Tổng Chỉ Huy ở đầu văn bia đã bị một vết chém sâu cào mòn có chủ ý. Dưới chân bia đá có khắc dòng chữ nhỏ: 'Dù thân xác chôn vùi trong sương lạnh, lời thề giữ ngọn lửa sẽ mãi trường tồn.'"
+    },
+    {
+      "id": "lore_bellmaker_dew_journal",
+      "act": 2,
+      "title": "TRANG NHẬT KÝ ƯỚT SƯƠNG: HỢP KIM NGÂN VANG",
+      "author": "Ghi Chép Của Thợ Đúc Chuông Cuối Cùng",
+      "content": "Trang giấy da ướt đẫm sương đêm kẹp dưới đế đe sắt mục:\n\n'Hôm nay ta đã thử nghiệm tôi luyện đồng đỏ cùng nhựa thông cổ thụ và phôi sắt khắc cổ ngữ Rad. Hợp kim phát ra thứ ánh sáng hoàng kim khi nung nóng... Âm sắc của nó không chỉ vang xa, mà còn tạo ra sóng chấn động làm tan rã tà khí The Veil trong bán kính 100 bước chân. Hỡi người đến sau, hãy gom đủ đá lửa và nhựa thông để nung chảy hợp kim này!'"
+    },
+    {
+      "id": "lore_broken_sword_mire",
+      "act": 3,
+      "title": "THANH KIẾM GÃY BÊN BỜ ĐẦM LẦY",
+      "author": "Di Vật Hiệp Sĩ Hộ Tống",
+      "content": "Lưỡi đại kiếm bạc gãy làm đôi cắm phập xuống lớp bùn lầy rêu phong, chuôi kiếm quấn dải ruy-băng hộ mệnh đã bạc màu. Vết nứt trên sống kiếm cho thấy nó đã chặn đứng cú bổ chí mạng của một thực thể khổng lồ.\n\nTrên tảng đá phủ rêu bên cạnh có vệt cào dẫn lối: 'Đầm lầy nuốt chửng mọi âm thanh... Khi nước rút, hãy đi theo những cọc gỗ có khắc Cổ Ngữ Algiz để không lọt vào hố bùn không đáy.'"
+    },
+    {
+      "id": "lore_elian_unsent_letter",
+      "act": 2,
+      "title": "BỨC THƯ CHƯA KỊP GỬI CỦA ELIAN",
+      "author": "Elian – Em Trai Người Gác Cổng Garth",
+      "content": "Lá thư gấp vội nhét trong hốc cây khô ven đường mòn hiểm trở:\n\n'Anh Garth thân mến, nếu anh đọc được bức thư này, nghĩa là đội tuần tra chúng em đã bị Kỵ Binh Hắc Ám mai phục... Đừng phái người ra tìm kiếm em! Hãy khóa chặt cổng làng phía Tây, thắp đuốc thật sáng dọc tường rào. Chúng sợ ánh sáng rọi thẳng vào mắt ngựa! Chiếc đèn tuần tra của em đã vỡ ở bờ suối... Hãy tha thứ cho em vì không thể cùng anh uống cạn vò rượu mùa thu năm nay.'"
+    },
+    {
+      "id": "lore_ancient_oak_hollow",
+      "act": 1,
+      "title": "GỐC SỒI NGÀN NĂM & DẤU ẤN MẠCH RỄ",
+      "author": "Ghi Nhớ Cổ Xưa Của Rừng Sương",
+      "content": "Hốc cây sồi ngàn tuổi rêu phủ dày đặc tỏa ra ánh sáng xanh lục dịu mắt. Bên trong thân cây rỗng, các thớ gỗ đã hóa thạch đan kết thành một mạng lưới rễ cây đập nhẹ từng nhịp như quả tim.\n\nNơi đây là điểm giao thoa giữa sinh mệnh của đất làng Bellhollow và đại mạch ngầm; khi chạm tay vào, một cảm giác bình yên ấm áp lạ kỳ tràn ngập tâm trí, đẩy lùi mọi nỗi hoang mang sợ hãi."
+    },
+    {
+      "id": "lore_root_cellar_alchemy",
+      "act": 1,
+      "title": "GHI CHÉP DƯỢC THẢO DƯỚI HẦM RỄ",
+      "author": "Bàn Thảo Mộc Cũ Dưới Lòng Đất",
+      "content": "Mẩu giấy ố vàng dán trên thành bàn đá phủ rêu dưới Hầm Rễ Cổ:\n\n'Loài Nấm Dạ Quang sinh trưởng bên cạnh rễ cây không hề mang độc tố như dân làng lầm tưởng. Nếu kết hợp dịch chiết nấm cùng cánh Hoa Mạch Rễ tím, nó sẽ tạo thành chất xúc tác ổn định tinh thần tuyệt hảo, chữa lành Hội Chứng Trắng Não do sương mù. Dưới chân kệ thuốc có một phiến đá lỏng, gạt nhẹ sẽ mở ra hốc cất giấu thảo dược dự phòng.'"
+    },
+    {
+      "id": "lore_echo_ruins_prayer",
+      "act": 2,
+      "title": "TIẾNG VỌNG KÝ ỨC: LỜI NGUYỆN CẦU TÀN TÍCH",
+      "author": "The Echo – Vọng Âm Quá Khứ",
+      "content": "Đốm sáng xanh lam mờ ảo ngưng tụ thành hình bóng một hiệp sĩ giáp bạc đang quỳ gối trước bệ đá đổ nát. Bàn tay sắt siết chặt chiếc bùa hộ thân chuông đồng, đôi môi khẽ lẩm nhẩm:\n\n'Hỡi Mạch Rễ thiêng liêng, xin hãy bảo bọc người dân làng chuông... Chúng con sẽ giữ vững chiến tuyến này cho đến hơi thở cuối cùng.' Bóng dáng ấy mỉm cười thanh thản rồi hóa thành những hạt lân tinh tan biến vào gió rừng."
+    },
+    {
+      "id": "lore_echo_mire_path",
+      "act": 3,
+      "title": "TIẾNG VỌNG KÝ ỨC: BƯỚC CHÂN ĐẦM LẦY",
+      "author": "The Echo – Vọng Âm Quá Khứ",
+      "content": "Ánh sáng huỳnh quang tái hiện lại cuộc tháo chạy nghẹt thở năm xưa: Ba hiệp sĩ cầm đuốc rọi thẳng vào màn sương, vừa đẩy lùi móng vuốt của Kẻ Lắng Nghe vừa hô lớn:\n\n'Kích hoạt Cột Nước Rad trước để hạ mực nước! Kế đó chạm vào Cột Băng Isa để đóng băng lớp bùn, cuối cùng thắp sáng Cột Mộc Algiz để dựng lại hàng rào thánh!' Tiếng bước chân dồn dập vang lên rồi chìm vào đáy nước tĩnh lặng."
+    },
+    {
+      "id": "lore_stone_chessboard",
+      "act": 3,
+      "title": "BÀN CỜ ĐÁ GIỮA MÀN SƯƠNG",
+      "author": "Kỷ Vật Chiến Hữu Cũ",
+      "content": "Bàn cờ tướng đá được đục đẽo tỉ mỉ trên phiến đá phẳng ven đường mòn. Những quân cờ bằng đá cuội sứt mẻ vẫn nằm nguyên trên thế cờ giằng co quyết liệt giữa quân Vua Đen và Kỵ Binh Trắng.\n\nDưới đáy phiến đá có khắc hai chữ ký tắt: 'C.K' (Campfire Knight) và 'H.K' (Hooded Knight) cùng dòng ghi chú hài hước: 'Ván cờ thứ 142... Tạm hoãn vì tiếng còi báo động. Khi chiến dịch kết thúc, ai thua sẽ phải gác cổng làng một tuần.'"
+    },
+    {
+      "id": "lore_shrine_parchment_map",
+      "act": 5,
+      "title": "BẢN ĐỒ DA CỪU: HỘI TỤ MẠCH RỄ",
+      "author": "Bản Đồ Chiến Lược Cổ",
+      "content": "Tấm bản đồ da cừu cào xước đặt trong ống da cạnh bậc thềm đổ nát của Miếu Chuông:\n\nBản vẽ chi tiết mạng lưới rễ ngầm của thung lũng Hollow Woods. Mọi mạch rễ độc đều bắt nguồn từ Tâm Điểm The Veil và tỏa ra như mạng nhện. Nhưng tại đỉnh Tháp Chuông, một vòng tròn cổ ngữ ghi rõ: 'Tần số cộng hưởng của Đại Hồng Chung khi được gióng lên đủ 7 hồi sẽ kích hoạt sự sụp đổ của toàn bộ mạng rễ tha hóa, vĩnh viễn trục xuất màn sương khỏi thế giới thực.' Cạnh bản đồ có một bình gốm nhỏ chứa dầu đèn lồng tinh khiết."
     }
   ],
   "questLog": [

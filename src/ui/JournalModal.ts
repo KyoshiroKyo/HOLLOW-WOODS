@@ -771,25 +771,26 @@ export class JournalModal {
       const item = list[i];
       const isSel = i === this.currentLoreIndex;
       const isMemoryChapter = item.id.startsWith('lore_memory_chapter_') || item.id === 'lore_black_knight_chronicle' || item.id === 'lore_wayfarer_inner_journal';
+      const isEcho = item.id.includes('echo');
       const cardW = mw / 2 - 50; // 370px
       const cardH = 46;
 
       const cardBg = this.scene.add.graphics();
-      cardBg.fillStyle(isSel ? 0x2e2417 : (isMemoryChapter ? 0x201a14 : 0x181512), 0.95);
+      cardBg.fillStyle(isSel ? 0x2e2417 : (isMemoryChapter ? 0x201a14 : (isEcho ? 0x141e28 : 0x181512)), 0.95);
       cardBg.fillRoundedRect(mx + 30, rowY, cardW, cardH, 6);
-      cardBg.lineStyle(1.5, isSel ? 0xf39c12 : (isMemoryChapter ? 0x9c7a28 : 0x4a3c22), 0.85);
+      cardBg.lineStyle(1.5, isSel ? 0xf39c12 : (isMemoryChapter ? 0x9c7a28 : (isEcho ? 0x3498db : 0x4a3c22)), 0.85);
       cardBg.strokeRoundedRect(mx + 30, rowY, cardW, cardH, 6);
 
-      const marker = isSel ? '▶ ' : (isMemoryChapter ? '⚔️ ' : '• ');
+      const marker = isSel ? '▶ ' : (isMemoryChapter ? '⚔️ ' : (isEcho ? '✨ ' : '• '));
       const shortTitle = item.title.length > 28 ? item.title.substring(0, 26) + '...' : item.title;
       const titleTxt = HDTextHelper.createText(this.scene, mx + 42, rowY + 8, `${marker}${shortTitle}`, {
         fontSize: '12px',
-        fontStyle: (isSel || isMemoryChapter) ? 'bold' : 'normal',
-        color: isSel ? '#f39c12' : (isMemoryChapter ? '#ffc048' : '#ecf0f1')
+        fontStyle: (isSel || isMemoryChapter || isEcho) ? 'bold' : 'normal',
+        color: isSel ? '#f39c12' : (isMemoryChapter ? '#ffc048' : (isEcho ? '#88ccff' : '#ecf0f1'))
       });
       const authorTxt = HDTextHelper.createText(this.scene, mx + 42, rowY + 26, `Bởi: ${item.author}`, {
         fontSize: '10px',
-        color: isMemoryChapter ? '#f5cd79' : '#95a5a6'
+        color: isMemoryChapter ? '#f5cd79' : (isEcho ? '#74b9ff' : '#95a5a6')
       });
 
       const zone = this.scene.add.zone(mx + 30 + cardW / 2, rowY + cardH / 2, cardW, cardH);
@@ -818,10 +819,11 @@ export class JournalModal {
     const rightX = mx + mw / 2 + 25;
     const rightW = mw / 2 - 45;
 
-    const rTitle = HDTextHelper.createText(this.scene, rightX, my + 66, (isEntryMemory ? '⚔️ ' : '') + entry.title, {
+    const isEntryEcho = entry.id.includes('echo');
+    const rTitle = HDTextHelper.createText(this.scene, rightX, my + 66, (isEntryMemory ? '⚔️ ' : (isEntryEcho ? '✨ ' : '')) + entry.title, {
       fontSize: '14.5px',
       fontStyle: 'bold',
-      color: isEntryMemory ? '#ffc048' : '#d4af37',
+      color: isEntryMemory ? '#ffc048' : (isEntryEcho ? '#88ccff' : '#d4af37'),
       stroke: '#000000',
       strokeThickness: 2,
       wordWrap: { width: rightW }

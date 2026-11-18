@@ -4182,8 +4182,160 @@ export class GameScene extends Phaser.Scene {
     else if (actionId.includes('resin')) burstColor = 0xf59e0b;
     else if (actionId.includes('herb')) burstColor = 0x48bb78;
     else if (actionId.includes('flint') || actionId.includes('stone') || actionId.includes('rock')) burstColor = 0xbdc3c7;
+    else if (actionId.includes('echo')) burstColor = 0x88ccff;
+    else if (actionId.includes('stele') || actionId.includes('chessboard')) burstColor = 0xbdc3c7;
     else if (actionId.includes('journal') || actionId.includes('clue') || actionId.includes('sign')) burstColor = 0xfdebd0;
     this.createResourcePopEffect(this.player.x, this.player.y, burstColor, 6);
+
+    // =========================================================================
+    // V1.5 - BƯỚC V15-19: 10 ĐIỂM TƯƠNG TÁC KỂ CHUYỆN MÔI TRƯỜNG (ENVIRONMENTAL STORYTELLING)
+    // =========================================================================
+    if (actionId === 'inspect_knights_memorial_stele') {
+      this.audioManager.playInteract();
+      this.playerState.unlockLore('lore_knights_memorial_stele');
+      const isFirstTime = !this.playerState.hasFlag('inspected_knights_memorial_stele');
+      if (isFirstTime) {
+        this.playerState.setFlag('inspected_knights_memorial_stele');
+        this.playerState.modifyComposure(15);
+        this.uiScene?.showPopupMessage('⚔️ [BIA ĐÁ ĐOÀN KỴ SĨ]: Nơi an nghỉ của 12 hiệp sĩ danh dự... Nhìn vết chém cào mòn tên vị Chỉ Huy, lòng quả cảm bừng sáng (+15 Bình Tâm)!');
+      } else {
+        this.uiScene?.showPopupMessage('⚔️ [BIA ĐÁ ĐOÀN KỴ SĨ]: "Dù thân xác chôn vùi trong sương lạnh, lời thề giữ ngọn lửa sẽ mãi trường tồn."');
+      }
+      return;
+    }
+
+    if (actionId === 'inspect_bellmaker_dew_journal') {
+      this.audioManager.playInteract();
+      this.playerState.unlockLore('lore_bellmaker_dew_journal');
+      const isFirstTime = !this.playerState.hasFlag('inspected_bellmaker_dew_journal');
+      if (isFirstTime) {
+        this.playerState.setFlag('inspected_bellmaker_dew_journal');
+        this.playerState.addItem('res_tree_resin', 1);
+        this.playerState.modifyComposure(10);
+        this.uiScene?.showPopupMessage('📜 [NHẬT KÝ THỢ ĐÚC CHUÔNG]: Ghi chép về hợp kim đồng cổ xua tan The Veil! Nhận 1 Nhựa Thông Cổ Thụ (+10 Bình Tâm).');
+      } else {
+        this.uiScene?.showPopupMessage('📜 [NHẬT KÝ THỢ ĐÚC CHUÔNG]: Ghi chép về tỷ lệ tôi luyện hợp kim đồng cổ xua tan tà khí.');
+      }
+      return;
+    }
+
+    if (actionId === 'inspect_broken_sword_mire') {
+      this.audioManager.playInteract();
+      this.playerState.unlockLore('lore_broken_sword_mire');
+      const isFirstTime = !this.playerState.hasFlag('inspected_broken_sword_mire');
+      if (isFirstTime) {
+        this.playerState.setFlag('inspected_broken_sword_mire');
+        this.playerState.addItem('mat_runed_iron', 1);
+        this.playerState.modifyComposure(15);
+        this.uiScene?.showPopupMessage('🗡️ [THANH KIẾM GÃY BÊN BỜ ĐẦM]: Lưỡi kiếm bạc chặn đứng quái vật cứu đoàn tản cư. Nhặt được 1 Mảnh Sắt Cổ Ngữ (+15 Bình Tâm)!');
+      } else {
+        this.uiScene?.showPopupMessage('🗡️ [THANH KIẾM GÃY]: Lưỡi đại kiếm bạc cắm sâu trong bùn lầy rêu phong.');
+      }
+      return;
+    }
+
+    if (actionId === 'inspect_elian_unsent_letter') {
+      this.audioManager.playInteract();
+      this.playerState.unlockLore('lore_elian_unsent_letter');
+      const isFirstTime = !this.playerState.hasFlag('inspected_elian_unsent_letter');
+      if (isFirstTime) {
+        this.playerState.setFlag('inspected_elian_unsent_letter');
+        this.playerState.setFlag('lore_elian_letter_found');
+        this.playerState.modifyComposure(15);
+        this.uiScene?.showPopupMessage('✉️ [BỨC THƯ CỦA ELIAN]: "Anh Garth, đừng phái người tìm em... Hãy khóa chặt cổng làng!" Nỗi đau thắt lại (+15 Bình Tâm).');
+      } else {
+        this.uiScene?.showPopupMessage('✉️ [BỨC THƯ CỦA ELIAN]: Lá thư gửi anh trai Garth giấu kín trong hốc cây khô.');
+      }
+      return;
+    }
+
+    if (actionId === 'inspect_ancient_oak_hollow') {
+      this.audioManager.playInteract();
+      this.playerState.unlockLore('lore_ancient_oak_hollow');
+      const isFirstTime = !this.playerState.hasFlag('inspected_ancient_oak_hollow');
+      if (isFirstTime) {
+        this.playerState.setFlag('inspected_ancient_oak_hollow');
+        this.playerState.addItem('res_tree_resin', 2);
+        this.playerState.modifyComposure(20);
+        this.uiScene?.showPopupMessage('🌳 [GỐC SỒI NGÀN NĂM]: Hốc cây rỗng đập nhẹ nhịp sống của đại ngàn. Bạn tìm thấy 2 Nhựa Cây Tinh Khiết (+20 Bình Tâm)!');
+      } else {
+        this.uiScene?.showPopupMessage('🌳 [GỐC SỒI NGÀN NĂM]: Hơi ấm bình yên của đại ngàn xoa dịu tâm hồn.');
+      }
+      return;
+    }
+
+    if (actionId === 'inspect_root_cellar_alchemy') {
+      this.audioManager.playInteract();
+      this.playerState.unlockLore('lore_root_cellar_alchemy');
+      const isFirstTime = !this.playerState.hasFlag('inspected_root_cellar_alchemy');
+      if (isFirstTime) {
+        this.playerState.setFlag('inspected_root_cellar_alchemy');
+        this.playerState.addItem('res_herbs', 2);
+        this.playerState.modifyComposure(20);
+        this.uiScene?.showPopupMessage('🌿 [BÀN THẢO MỘC HẦM RỄ]: Công thức ổn định tinh thần từ Nấm Dạ Quang. Nhận 2 Thảo Dược Bạc (+20 Bình Tâm)!');
+      } else {
+        this.uiScene?.showPopupMessage('🌿 [BÀN THẢO MỘC HẦM RỄ]: Những ghi chép tiền nhân về đặc tính kỳ diệu của Hoa Mạch Rễ.');
+      }
+      return;
+    }
+
+    if (actionId === 'inspect_echo_ruins_prayer') {
+      this.audioManager.playInteract();
+      this.playerState.unlockLore('lore_echo_ruins_prayer');
+      const isFirstTime = !this.playerState.hasFlag('inspected_echo_ruins_prayer');
+      if (isFirstTime) {
+        this.playerState.setFlag('inspected_echo_ruins_prayer');
+        this.playerState.modifyComposure(25);
+        this.uiScene?.showPopupMessage('✨ [TIẾNG VỌNG KÝ ỨC]: Hình bóng hiệp sĩ giáp bạc cầu nguyện giữ lửa cho Bellhollow. Vọng âm xoa dịu tâm trí (+25 Bình Tâm)!');
+      } else {
+        this.uiScene?.showPopupMessage('✨ [TIẾNG VỌNG KÝ ỨC]: Những hạt lân tinh lung linh lưu giữ lời nguyện thề trung trinh.');
+      }
+      return;
+    }
+
+    if (actionId === 'inspect_echo_mire_path') {
+      this.audioManager.playInteract();
+      this.playerState.unlockLore('lore_echo_mire_path');
+      const isFirstTime = !this.playerState.hasFlag('inspected_echo_mire_path');
+      if (isFirstTime) {
+        this.playerState.setFlag('inspected_echo_mire_path');
+        this.playerState.modifyComposure(20);
+        this.uiScene?.showPopupMessage('✨ [TIẾNG VỌNG KÝ ỨC]: Vọng âm hé lộ thứ tự giải đố Ba Cột Đá: Cột Nước -> Cột Băng -> Cột Mộc (+20 Bình Tâm)!');
+      } else {
+        this.uiScene?.showPopupMessage('✨ [TIẾNG VỌNG KÝ ỨC]: "Kích hoạt Cột Nước Rad trước... Kế đó Cột Băng Isa... Cuối cùng Cột Mộc Algiz!"');
+      }
+      return;
+    }
+
+    if (actionId === 'inspect_stone_chessboard') {
+      this.audioManager.playInteract();
+      this.playerState.unlockLore('lore_stone_chessboard');
+      const isFirstTime = !this.playerState.hasFlag('inspected_stone_chessboard');
+      if (isFirstTime) {
+        this.playerState.setFlag('inspected_stone_chessboard');
+        this.playerState.addItem('res_dry_wood', 2);
+        this.playerState.modifyComposure(15);
+        this.uiScene?.showPopupMessage('♟️ [BÀN CỜ ĐÁ CỦA HAI KỴ SĨ]: Kỷ vật tình bạn giữa Hiệp Sĩ Canh Lửa và Hooded Knight. Nhặt 2 Gỗ Khô (+15 Bình Tâm)!');
+      } else {
+        this.uiScene?.showPopupMessage('♟️ [BÀN CỜ ĐÁ]: Ván cờ thứ 142 dang dở của hai người đồng đội trước giờ xuất chinh.');
+      }
+      return;
+    }
+
+    if (actionId === 'inspect_shrine_parchment_map') {
+      this.audioManager.playInteract();
+      this.playerState.unlockLore('lore_shrine_parchment_map');
+      const isFirstTime = !this.playerState.hasFlag('inspected_shrine_parchment_map');
+      if (isFirstTime) {
+        this.playerState.setFlag('inspected_shrine_parchment_map');
+        this.playerState.modifyComposure(25);
+        this.playerState.stats.lanternOil = Math.min(this.playerState.stats.maxLanternOil, this.playerState.stats.lanternOil + 90);
+        this.uiScene?.showPopupMessage('🗺️ [BẢN ĐỒ MẠCH RỄ]: Bản vẽ chỉ rõ tiếng chuông Đại Hồng Chung sẽ phá tan The Veil. Hồi phục Dầu Đèn (+90s) & (+25 Bình Tâm)!');
+      } else {
+        this.uiScene?.showPopupMessage('🗺️ [BẢN ĐỒ MẠCH RỄ]: Sơ đồ mạng lưới cội rễ kết nối từ Đầm Lầy tới đỉnh Tháp Chuông.');
+      }
+      return;
+    }
 
     // C4-14-B04: Điểm hút mở đầu - Mẩu Nhật Ký Rách #1 tại Fog Crossing
     if (actionId === 'inspect_fog_journal_1') {

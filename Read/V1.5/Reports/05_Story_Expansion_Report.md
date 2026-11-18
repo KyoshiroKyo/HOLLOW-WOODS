@@ -317,3 +317,71 @@ sequenceDiagram
 | **Kiểm thử Kiểm Toán Cốt Truyện & Choices (Hồi quy)** | `verify_v15_16_story_and_dialogue.mjs` | **89 / 89** | **PASS 100%** |
 | **Kiểm tra Kiểu Dữ Liệu TypeScript** | `npx tsc --noEmit` | **0 Lỗi** | **PASS** |
 | **Đóng gói Bản Dựng Production** | `npm run build` | **83 modules** | **SUCCESS (8.81s)** |
+
+---
+
+## 13. BƯỚC V15-19: HỆ THỐNG KỂ CHUYỆN MÔI TRƯỜNG (ENVIRONMENTAL STORYTELLING)
+
+```mermaid
+flowchart TD
+    subgraph WorldExploration["Khám Phá Thế Giới Hollow Woods"]
+        A["Phế Tích Rừng Ngoài (Outer Woods)"] --> A1["Bia Đá Đoàn Kỵ Sĩ & The Echo Cầu Nguyện"]
+        B["Xưởng Chuông Cũ (Sub Bell Workshop)"] --> B1["Trang Nhật Ký Ướt Sương Hợp Kim Đồng Cổ"]
+        C["Đường Mòn Quanh Co (The Crooked Path)"] --> C1["Thư Chưa Gửi Của Elian & Bàn Cờ Đá Hai Kỵ Sĩ"]
+        D["Đầm Lầy Tĩnh Lặng (Silent Mire)"] --> D1["Thanh Kiếm Gãy Bờ Đầm & The Echo Thứ Tự 3 Cột Đá"]
+        E["Hầm Rễ & Làng Bellhollow"] --> E1["Bàn Thảo Mộc Hầm Rễ & Gốc Sồi Ngàn Năm"]
+        F["Chân Tháp Chuông Đổ (Broken Bell Shrine)"] --> F1["Bản Đồ Da Cừu Sơ Đồ Cội Rễ & 7 Hồi Chuông"]
+    end
+
+    subgraph Rewards["Phần Thưởng Tương Tác & Lợi Ích Khám Phá"]
+        R1["Mở Khóa Mục Mới Trong Sổ Tay [J] (10 Mảnh Lore Cổ)"]
+        R2["Hồi Phục Tức Thì Chỉ Số Bình Tâm (+10 đến +25 Composure)"]
+        R3["Thưởng Tài Nguyên Quý: Nhựa Thông, Phôi Sắt, Thảo Dược, Dầu Đèn"]
+        R4["Hé Lộ Cơ Chế: Thứ Tự 3 Cột Đá, Mù Mắt Ngựa, 7 Hồi Chuông Đại Thức Tỉnh"]
+    end
+
+    WorldExploration --> Rewards
+```
+
+### 13.1. Triết Lý Thiết Kế & Mục Tiêu Kể Chuyện Môi Trường
+- **Biến thế giới tĩnh thành thế giới biết thở:** Thay vì tiếp nhận cốt truyện thụ động qua NPC, người chơi được khuyến khích lùng sục mọi góc phế tích, hốc cây, ngã rẽ hiểm trở và mép đầm lầy để ghép nối từng mảnh vỡ của thảm kịch năm xưa.
+- **Tạo động lực khám phá bền vững (Exploration Incentive Loop):**
+  + Mỗi khi phát hiện và đọc một điểm môi trường, nhân vật không chỉ ghi chép vào Sổ Tay Ký Ức `[J]` mà còn nhận được sự an ủi tâm lý trực tiếp (hồi phục $+10$ đến $+25$ điểm Bình Tâm).
+  + Người chơi cạn dầu đèn hoặc kiệt sức có thể tìm thấy các nguồn tiếp tế cứu cánh ẩn giấu trong hốc đá, gầm bàn rèn, hoặc ống da cổ.
+
+---
+
+## 14. DANH MỤC 10 ĐIỂM TƯƠNG TÁC KỂ CHUYỆN MÔI TRƯỜNG
+
+| STT | Tên Điểm Khám Phá | Phân Khu & Tọa Độ $(X, Y)$ | Lore ID & Action ID | Chi Tiết Cốt Truyện & Lợi Ích Khám Phá |
+|:---:|:---|:---|:---|:---|
+| 01 | **Bia Đá Khắc Tên Đoàn Kỵ Sĩ** | `outer_woods`<br/>$(1250, 720)$ | `lore_knights_memorial_stele`<br/>`inspect_knights_memorial_stele` | Ghi danh 12 hiệp sĩ ngã xuống; tên vị Chỉ Huy bị cào mòn có chủ ý. Thưởng $+15$ Bình Tâm. |
+| 02 | **Trang Nhật Ký Ướt Sương Của Thợ Đúc Chuông** | `sub_bell_workshop`<br/>$(1420, 1200)$ | `lore_bellmaker_dew_journal`<br/>`inspect_bellmaker_dew_journal` | Ghi chép tỷ lệ tôi luyện đồng đỏ cùng nhựa thông và phôi sắt Rad xua tan The Veil. Thưởng $+10$ Bình Tâm, $+1$ Nhựa Cây Cổ Thụ. |
+| 03 | **Thanh Kiếm Gãy Cắm Bên Bờ Đầm** | `silent_mire`<br/>$(3120, 460)$ | `lore_broken_sword_mire`<br/>`inspect_broken_sword_mire` | Lưỡi kiếm bạc chặn đứng quái vật cứu đoàn tản cư; hướng dẫn đi men theo cọc gỗ Cổ Ngữ Algiz. Thưởng $+15$ Bình Tâm, $+1$ Phôi Sắt Cổ Ngữ. |
+| 04 | **Bức Thư Chưa Kịp Gửi Về Làng Của Elian** | `crooked_path`<br/>$(1980, 240)$ | `lore_elian_unsent_letter`<br/>`inspect_elian_unsent_letter` | Lá thư giấu trong hốc cây của em trai Garth cảnh báo Kỵ Binh Hắc Ám sợ ánh đèn rọi thẳng vào mắt ngựa. Thưởng $+15$ Bình Tâm, cờ `lore_elian_letter_found`. |
+| 05 | **Gốc Cây Sồi Cổ Thụ Ngàn Năm & Dấu Mạch Rễ** | `bellhollow`<br/>$(760, 120)$ | `lore_ancient_oak_hollow`<br/>`inspect_ancient_oak_hollow` | Hốc cây sồi rỗng nhịp đập sự sống đại ngàn, điểm giao thoa sinh mệnh làng. Thưởng $+20$ Bình Tâm, $+2$ Nhựa Thông Cổ Thụ. |
+| 06 | **Bàn Thảo Mộc Rêu Phong Hầm Rễ Cổ** | `sub_root_cellar`<br/>$(780, 1220)$ | `lore_root_cellar_alchemy`<br/>`inspect_root_cellar_alchemy` | Công thức chiết xuất Nấm Dạ Quang và Hoa Mạch Rễ trị Hội Chứng Trắng Não. Thưởng $+20$ Bình Tâm, $+2$ Thảo Dược Bạc. |
+| 07 | **Tiếng Vọng Ký Ức #1: Lời Nguyện Cầu Tàn Tích** | `outer_woods`<br/>$(1480, 840)$ | `lore_echo_ruins_prayer`<br/>`inspect_echo_ruins_prayer` | Vọng âm xanh lơ tái hiện hình bóng hiệp sĩ giáp bạc cầu nguyện giữ lửa cho Bellhollow. Thưởng $+25$ Bình Tâm. |
+| 08 | **Tiếng Vọng Ký Ức #2: Bước Chân Trong Bùn Đầm** | `silent_mire`<br/>$(3420, 380)$ | `lore_echo_mire_path`<br/>`inspect_echo_mire_path` | Tái hiện cuộc tháo chạy và hô vang thứ tự giải mã Ba Cột Đá: Cột Nước $\to$ Cột Băng $\to$ Cột Mộc. Thưởng $+20$ Bình Tâm. |
+| 09 | **Bàn Cờ Đá Của Hai Kỵ Sĩ** | `crooked_path`<br/>$(2340, 310)$ | `lore_stone_chessboard`<br/>`inspect_stone_chessboard` | Bàn cờ đá phẳng dang dở ghi dấu ván cờ thứ 142 giữa Hiệp Sĩ Canh Lửa và Hooded Knight thời thanh bình. Thưởng $+15$ Bình Tâm, $+2$ Gỗ Khô. |
+| 10 | **Bản Đồ Da Cừu Cào Xước Tại Lối Vào Tháp Chuông** | `broken_bell_shrine`<br/>$(4180, 260)$ | `lore_shrine_parchment_map`<br/>`inspect_shrine_parchment_map` | Sơ đồ cội rễ thung lũng, khẳng định 7 hồi chuông Đại Hồng Chung sẽ tiêu diệt vĩnh viễn mạng rễ The Veil. Thưởng $+25$ Bình Tâm, $+90\text{s}$ Dầu Đèn Lồng. |
+
+---
+
+## 15. NÂNG CẤP GIAO DIỆN SỔ TAY KÝ ỨC [J] VỚI TIẾNG VỌNG KÝ ỨC
+
+- Trong `src/ui/JournalModal.ts`, các mục truyền thuyết chứa từ khóa `echo` (The Echo) được trang bị biểu tượng ngôi sao lân tinh lung linh (`✨ `) cùng sắc xanh lam huyền ảo `#88ccff` / `#74b9ff`.
+- Các mục ký ức kỵ sĩ và chương hồi ức tiếp tục mang biểu tượng kiếm vàng (`⚔️ `) cùng viền vàng hoàng kim `#ffc048` / `#d4af37`.
+
+---
+
+## 16. BẢNG TỔNG HỢP KIỂM THỬ BƯỚC V15-19
+
+| Bộ Kiểm Thử | Tệp Kịch Bản | Số Lượng Assertions | Kết Quả |
+|:---|:---|:---:|:---:|
+| **Kiểm thử Kể Chuyện Môi Trường V15-19** | `verify_v15_19_environmental_storytelling.mjs` | **114 / 114** | **PASS 100%** |
+| **Kiểm thử Bi Kịch Kỵ Sĩ V15-18 (Hồi quy)** | `verify_v15_18_knight_awakening.mjs` | **41 / 41** | **PASS 100%** |
+| **Kiểm thử Tuyến Truyện 5 Dân Làng V15-17 (Hồi quy)** | `verify_v15_17_villager_stories.mjs` | **48 / 48** | **PASS 100%** |
+| **Kiểm thử Kiểm Toán Cốt Truyện V15-16 (Hồi quy)** | `verify_v15_16_story_and_dialogue.mjs` | **89 / 89** | **PASS 100%** |
+| **Kiểm tra Kiểu Dữ Liệu TypeScript** | `npx tsc --noEmit` | **0 Lỗi** | **PASS** |
+| **Đóng gói Bản Dựng Production** | `npm run build` | **83 modules** | **SUCCESS (9.85s)** |

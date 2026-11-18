@@ -45,6 +45,7 @@
 | 16 | `V15-16` | [05_Story_Expansion_Report.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/05_Story_Expansion_Report.md) — Kiểm toán tính nhất quán cốt truyện hiện tại và nâng cấp DialogueSystem hỗ trợ Lựa chọn Hội thoại tương tác | Hoàn tất (Đã nghiệm thu) |
 | 17 | `V15-17` | [05_Story_Expansion_Report.md#6-mở-rộng-tuyến-cốt-truyện-cá-nhân--nhiệm-vụ-phụ-5-dân-làng-bước-v15-17](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/05_Story_Expansion_Report.md) — Mở rộng tuyến cốt truyện cá nhân và nhiệm vụ phụ sâu sắc cho 5 dân làng Bellhollow | Hoàn tất (Đã nghiệm thu) |
 | 18 | `V15-18` | [05_Story_Expansion_Report.md#9-bước-v15-18-bi-kịch-đoàn-kỵ-sĩ-cổ-xưa--lời-thề-hiệp-sĩ-canh-lửa](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/05_Story_Expansion_Report.md) — Mở rộng chiều sâu bi kịch Đoàn Kỵ Sĩ Cổ Xưa, Hiệp Sĩ Canh Lửa và quá trình thức tỉnh của Hiệp Sĩ Đen | Hoàn tất (Đã nghiệm thu) |
+| 19 | `V15-19` | [05_Story_Expansion_Report.md#13-bước-v15-19-hệ-thống-kể-chuyện-môi-trường-environmental-storytelling](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/05_Story_Expansion_Report.md) — Bổ sung hệ thống Kể chuyện Môi trường (Environmental Storytelling) trên khắp các phân khu | Hoàn tất (Đã nghiệm thu) |
 
 ---
 *Tài liệu được cập nhật tự động trong suốt quá trình phát triển HOLLOW WOODS V1.5.*

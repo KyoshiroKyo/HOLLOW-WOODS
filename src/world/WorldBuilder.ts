@@ -57,6 +57,9 @@ import {
   SPRITE_WOODEN_FENCE,
   SPRITE_SIGNPOST,
   SPRITE_FOG_SMOOTH,
+  SPRITE_THE_ECHO,
+  SPRITE_PROP_CRATE_WEATHERED_V14,
+  SPRITE_PROP_TANGLED_ROOTS_V14,
   SPRITE_STRUCTURE_ABYSSAL_GATE_V14,
   SPRITE_PROP_ANCIENT_MONOLITH_V14,
   DEPTH_GROUND_BASE,
@@ -212,6 +215,9 @@ export class WorldBuilder {
 
     // C4-13-20: Dựng các dải tiếp giáp địa hình chuyển tiếp tự nhiên (180px–220px) xóa bỏ đường cắt dọc hai thái cực
     this.renderZoneBoundaryTransitions();
+
+    // V1.5 - BƯỚC V15-19: Dựng các thực thể và đạo cụ Kể Chuyện Môi Trường (Environmental Storytelling)
+    this.renderEnvironmentalStorytellingProps();
 
     // C4-13-06: Đảm bảo toàn bộ vật thể va chạm trong colliderGroup vô hình tuyệt đối (alpha 0, visible false)
     const children = this.colliderGroup.getChildren();
@@ -4720,6 +4726,224 @@ export class WorldBuilder {
         this.interactables.push(collapsedBridgeInteractable);
       }
     }
+
+    // V1.5 - BƯỚC V15-19: Bổ sung 10 điểm tương tác kể chuyện môi trường (Environmental Storytelling)
+    const envProps: Record<string, InteractableSpec[]> = {
+      bellhollow: [
+        {
+          id: 'env_ancient_oak_hollow',
+          name: 'Gốc Sồi Cổ Thụ & Dấu Mạch Rễ',
+          type: 'clue',
+          x: 760,
+          y: 120,
+          width: 42,
+          height: 42,
+          promptText: '[E] Chạm Vào Hốc Sồi Ngàn Năm',
+          actionId: 'inspect_ancient_oak_hollow'
+        }
+      ],
+      outer_woods: [
+        {
+          id: 'env_knights_memorial_stele',
+          name: 'Bia Đá Tưởng Niệm Kỵ Sĩ',
+          type: 'clue',
+          x: 1250,
+          y: 720,
+          width: 36,
+          height: 36,
+          promptText: '[E] Đọc Bia Đá Tưởng Niệm Kỵ Sĩ',
+          actionId: 'inspect_knights_memorial_stele'
+        },
+        {
+          id: 'env_echo_ruins_prayer',
+          name: 'Tiếng Vọng Ký Ức (Tàn Tích)',
+          type: 'clue',
+          x: 1480,
+          y: 840,
+          width: 32,
+          height: 32,
+          promptText: '[E] Lắng Nghe Tiếng Vọng Ký Ức',
+          actionId: 'inspect_echo_ruins_prayer'
+        }
+      ],
+      crooked_path: [
+        {
+          id: 'env_elian_unsent_letter',
+          name: 'Hốc Cây Giấu Thư Của Elian',
+          type: 'clue',
+          x: 1980,
+          y: 240,
+          width: 32,
+          height: 32,
+          promptText: '[E] Đọc Bức Thư Của Elian',
+          actionId: 'inspect_elian_unsent_letter'
+        },
+        {
+          id: 'env_stone_chessboard',
+          name: 'Bàn Cờ Đá Của Hai Kỵ Sĩ',
+          type: 'clue',
+          x: 2340,
+          y: 310,
+          width: 36,
+          height: 36,
+          promptText: '[E] Xem Bàn Cờ Đá Giữa Sương',
+          actionId: 'inspect_stone_chessboard'
+        }
+      ],
+      silent_mire: [
+        {
+          id: 'env_broken_sword_mire',
+          name: 'Thanh Kiếm Gãy Bên Bờ Đầm',
+          type: 'clue',
+          x: 3120,
+          y: 460,
+          width: 32,
+          height: 32,
+          promptText: '[E] Khảo sát Thanh Kiếm Gãy',
+          actionId: 'inspect_broken_sword_mire'
+        },
+        {
+          id: 'env_echo_mire_path',
+          name: 'Tiếng Vọng Ký Ức (Đầm Lầy)',
+          type: 'clue',
+          x: 3420,
+          y: 380,
+          width: 32,
+          height: 32,
+          promptText: '[E] Lắng Nghe Tiếng Vọng Ký Ức',
+          actionId: 'inspect_echo_mire_path'
+        }
+      ],
+      broken_bell_shrine: [
+        {
+          id: 'env_shrine_parchment_map',
+          name: 'Bản Đồ Da Cừu Mạch Rễ',
+          type: 'clue',
+          x: 4180,
+          y: 260,
+          width: 32,
+          height: 32,
+          promptText: '[E] Khảo Sát Bản Đồ Da Cừu',
+          actionId: 'inspect_shrine_parchment_map'
+        }
+      ],
+      sub_bell_workshop: [
+        {
+          id: 'env_bellmaker_dew_journal',
+          name: 'Trang Nhật Ký Ướt Sương',
+          type: 'clue',
+          x: 1420,
+          y: 1200,
+          width: 28,
+          height: 28,
+          promptText: '[E] Đọc Trang Nhật Ký Ướt Sương',
+          actionId: 'inspect_bellmaker_dew_journal'
+        }
+      ],
+      sub_root_cellar: [
+        {
+          id: 'env_root_cellar_alchemy',
+          name: 'Bàn Thảo Mộc Rêu Phong Hầm Rễ',
+          type: 'clue',
+          x: 780,
+          y: 1220,
+          width: 36,
+          height: 36,
+          promptText: '[E] Đọc Ghi Chép Thảo Mộc',
+          actionId: 'inspect_root_cellar_alchemy'
+        }
+      ]
+    };
+
+    if (envProps[zone.id]) {
+      for (const item of envProps[zone.id]) {
+        if (!this.interactables.some(i => i.id === item.id)) {
+          this.interactables.push(item);
+        }
+      }
+    }
+  }
+
+  /**
+   * V1.5 - BƯỚC V15-19: Dựng các thực thể và đạo cụ Kể Chuyện Môi Trường (Environmental Storytelling)
+   */
+  private renderEnvironmentalStorytellingProps(): void {
+    // 1. Bia Đá Tưởng Niệm Kỵ Sĩ (outer_woods, 1250, 720)
+    const stele = this.safeAddImage(1250, 720, SPRITE_STONE_ALTAR);
+    stele.setDepth(720);
+    this.registerCullable(stele, 1250, 720, 60);
+
+    // 2. Trang Nhật Ký Ướt Sương của Thợ Đúc Chuông (sub_bell_workshop, 1420, 1200)
+    const journalCrate = this.safeAddImage(1420, 1200, SPRITE_PROP_CRATE_WEATHERED_V14);
+    journalCrate.setDepth(1200);
+    this.registerCullable(journalCrate, 1420, 1200, 50);
+
+    // 3. Thanh Kiếm Gãy Cắm Bên Bờ Đầm (silent_mire, 3120, 460)
+    const brokenSwordMarker = this.safeAddImage(3120, 460, SPRITE_DECAL_PEBBLES_STONES_V15);
+    brokenSwordMarker.setDepth(459);
+    brokenSwordMarker.setTint(0x95a5a6);
+    this.registerCullable(brokenSwordMarker, 3120, 460, 50);
+
+    // 4. Hốc Cây Giấu Thư Của Elian (crooked_path, 1980, 240)
+    const stump = this.safeAddImage(1980, 240, SPRITE_PROP_TANGLED_ROOTS_V14);
+    stump.setDepth(240);
+    this.registerCullable(stump, 1980, 240, 60);
+
+    // 5. Gốc Sồi Ngàn Năm & Dấu Mạch Rễ (bellhollow, 760, 120)
+    const oakDecal = this.safeAddImage(760, 120, SPRITE_DECAL_GLOWING_MUSHROOMS_V15);
+    oakDecal.setDepth(119);
+    this.registerCullable(oakDecal, 760, 120, 60);
+
+    // 6. Bàn Thảo Mộc Rêu Phong Hầm Rễ (sub_root_cellar, 780, 1220)
+    const cellarTable = this.safeAddImage(780, 1220, SPRITE_PROP_CAULDRON_TRIPOD_V15);
+    cellarTable.setDepth(1220);
+    this.registerCullable(cellarTable, 780, 1220, 50);
+
+    // 7. Tiếng Vọng Ký Ức: Lời Nguyện Cầu Tàn Tích (outer_woods, 1480, 840)
+    const echoRuins = this.safeAddImage(1480, 840, SPRITE_THE_ECHO);
+    echoRuins.setDepth(840);
+    echoRuins.setAlpha(0.55);
+    echoRuins.setScale(0.85);
+    echoRuins.setTint(0x88ccff);
+    this.registerCullable(echoRuins, 1480, 840, 50);
+    this.scene.tweens.add({
+      targets: echoRuins,
+      y: 834,
+      alpha: 0.75,
+      duration: 1800,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut'
+    });
+
+    // 8. Tiếng Vọng Ký Ức: Bước Chân Trong Bùn Đầm (silent_mire, 3420, 380)
+    const echoMire = this.safeAddImage(3420, 380, SPRITE_THE_ECHO);
+    echoMire.setDepth(380);
+    echoMire.setAlpha(0.55);
+    echoMire.setScale(0.85);
+    echoMire.setTint(0x77ddff);
+    this.registerCullable(echoMire, 3420, 380, 50);
+    this.scene.tweens.add({
+      targets: echoMire,
+      y: 374,
+      alpha: 0.75,
+      duration: 2000,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut'
+    });
+
+    // 9. Bàn Cờ Đá Của Hai Kỵ Sĩ (crooked_path, 2340, 310)
+    const chessboard = this.safeAddImage(2340, 310, SPRITE_STONE_ALTAR);
+    chessboard.setDepth(310);
+    chessboard.setScale(0.9);
+    chessboard.setTint(0xa0a8b0);
+    this.registerCullable(chessboard, 2340, 310, 50);
+
+    // 10. Bản Đồ Da Cừu Mạch Rễ (broken_bell_shrine, 4180, 260)
+    const mapChest = this.safeAddImage(4180, 260, SPRITE_PROP_CHEST_BRONZE_V15);
+    mapChest.setDepth(260);
+    this.registerCullable(mapChest, 4180, 260, 50);
   }
 
   private setupZoneTransitions(zone: ZoneData): void {

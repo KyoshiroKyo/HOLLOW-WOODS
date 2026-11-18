@@ -415,6 +415,17 @@
           "height": 26,
           "promptText": "[E] Đọc Bảng Tin Dị Thường",
           "actionId": "read_bellhollow_notice_board"
+        },
+        {
+          "id": "env_ancient_oak_hollow",
+          "name": "Gốc Sồi Cổ Thụ & Dấu Mạch Rễ",
+          "type": "clue",
+          "x": 760,
+          "y": 120,
+          "width": 42,
+          "height": 42,
+          "promptText": "[E] Chạm Vào Hốc Sồi Ngàn Năm",
+          "actionId": "inspect_ancient_oak_hollow"
         }
       ],
       "transitions": [
@@ -767,6 +778,28 @@
           "height": 36,
           "promptText": "Nhấn [E] Nấp vào hốc cây cổ thụ",
           "actionId": "hide_player"
+        },
+        {
+          "id": "env_elian_unsent_letter",
+          "name": "Hốc Cây Giấu Thư Của Elian",
+          "type": "clue",
+          "x": 1980,
+          "y": 240,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Đọc Bức Thư Của Elian",
+          "actionId": "inspect_elian_unsent_letter"
+        },
+        {
+          "id": "env_stone_chessboard",
+          "name": "Bàn Cờ Đá Của Hai Kỵ Sĩ",
+          "type": "clue",
+          "x": 2340,
+          "y": 310,
+          "width": 36,
+          "height": 36,
+          "promptText": "[E] Xem Bàn Cờ Đá Giữa Sương",
+          "actionId": "inspect_stone_chessboard"
         }
       ],
       "transitions": [
@@ -1189,6 +1222,28 @@
           "height": 24,
           "promptText": "[E] Đẩy Đổ Thân Cây Cổ Thụ Làm Cầu Vượt Vực",
           "actionId": "activate_titan_trunk_shortcut"
+        },
+        {
+          "id": "env_broken_sword_mire",
+          "name": "Thanh Kiếm Gãy Bên Bờ Đầm",
+          "type": "clue",
+          "x": 3120,
+          "y": 460,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Khảo sát Thanh Kiếm Gãy",
+          "actionId": "inspect_broken_sword_mire"
+        },
+        {
+          "id": "env_echo_mire_path",
+          "name": "Tiếng Vọng Ký Ức (Đầm Lầy)",
+          "type": "clue",
+          "x": 3420,
+          "y": 380,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Lắng Nghe Tiếng Vọng Ký Ức",
+          "actionId": "inspect_echo_mire_path"
         }
       ],
       "transitions": [
@@ -1466,6 +1521,17 @@
           "height": 40,
           "promptText": "Nhấn [E] Khảo sát Chuông Cổ",
           "actionId": "inspect_cracked_bell"
+        },
+        {
+          "id": "env_shrine_parchment_map",
+          "name": "Bản Đồ Da Cừu Mạch Rễ",
+          "type": "clue",
+          "x": 4180,
+          "y": 260,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Khảo Sát Bản Đồ Da Cừu",
+          "actionId": "inspect_shrine_parchment_map"
         }
       ],
       "resourceNodes": [
@@ -2015,6 +2081,28 @@
           "height": 24,
           "promptText": "[E] Cầu Thân Cây Đổ (Đường tắt Đầm Lầy)",
           "actionId": "inspect_titan_trunk_shortcut_outer"
+        },
+        {
+          "id": "env_knights_memorial_stele",
+          "name": "Bia Đá Tưởng Niệm Kỵ Sĩ",
+          "type": "clue",
+          "x": 1250,
+          "y": 720,
+          "width": 36,
+          "height": 36,
+          "promptText": "[E] Đọc Bia Đá Tưởng Niệm Kỵ Sĩ",
+          "actionId": "inspect_knights_memorial_stele"
+        },
+        {
+          "id": "env_echo_ruins_prayer",
+          "name": "Tiếng Vọng Ký Ức (Tàn Tích)",
+          "type": "clue",
+          "x": 1480,
+          "y": 840,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Lắng Nghe Tiếng Vọng Ký Ức",
+          "actionId": "inspect_echo_ruins_prayer"
         }
       ],
       "transitions": [
@@ -2708,6 +2796,17 @@
           "height": 36,
           "promptText": "[E] Đọc Văn Bia Cổ Hiệp Sĩ Đen",
           "actionId": "read_black_knight_stele"
+        },
+        {
+          "id": "env_bellmaker_dew_journal",
+          "name": "Trang Nhật Ký Ướt Sương",
+          "type": "clue",
+          "x": 1420,
+          "y": 1200,
+          "width": 28,
+          "height": 28,
+          "promptText": "[E] Đọc Trang Nhật Ký Ướt Sương",
+          "actionId": "inspect_bellmaker_dew_journal"
         }
       ],
       "transitions": [
@@ -2899,6 +2998,17 @@
           "height": 32,
           "promptText": "[E] Quan sát Bích Họa Cổ",
           "actionId": "read_fog_origin_mural"
+        },
+        {
+          "id": "env_root_cellar_alchemy",
+          "name": "Bàn Thảo Mộc Rêu Phong Hầm Rễ",
+          "type": "clue",
+          "x": 780,
+          "y": 1220,
+          "width": 36,
+          "height": 36,
+          "promptText": "[E] Đọc Ghi Chép Thảo Mộc",
+          "actionId": "inspect_root_cellar_alchemy"
         }
       ],
       "transitions": [
