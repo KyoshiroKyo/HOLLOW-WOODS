@@ -351,8 +351,8 @@ export interface WorldEventDef {
   minIntervalSec: number;
 }
 
-// V1.4 - P6: Sổ Tay Sinh Vật (Bestiary Ecosystem)
-export type BestiarySpecies = 'crow' | 'lantern_moth' | 'echo' | 'listener' | 'mire_warden';
+// V1.4 - P6 & P8: Sổ Tay Sinh Vật (Bestiary Ecosystem)
+export type BestiarySpecies = 'crow' | 'lantern_moth' | 'echo' | 'listener' | 'mire_warden' | 'skull_wolf' | 'shadow_crow' | 'shadow_eyes' | 'shadow_behemoth' | 'fallen_knight' | 'dread_horseman' | 'hooded_knight';
 
 export interface BestiaryEntry {
   species: BestiarySpecies;

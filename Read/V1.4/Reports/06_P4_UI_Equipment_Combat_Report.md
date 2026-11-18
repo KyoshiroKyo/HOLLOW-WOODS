@@ -262,4 +262,70 @@ Toàn bộ 4 tệp backup an toàn (`.v14_p8_02.bak`) được lưu trữ nguyê
 
 Gói hình ảnh nhân vật The Mossbound Wayfarer đã chính thức được nâng cấp toàn diện sang tạo hình Black Knight sắc nét, hùng vĩ mà vẫn giữ vẹn nguyên linh hồn huyền bí của HOLLOW WOODS!
 
+---
+
+## PHẦN 8: BÁO CÁO THIẾT KẾ LẠI GIAO DIỆN MENU CHÍNH VÀ TỐI ƯU TOÀN BỘ HUD (V14-P8-12)
+
+### 8.1. Thiết Kế Lại Toàn Diện Giao Diện Menu Chính (`MainMenuScene.ts`)
+1. **Không gian & Bầu không khí Rừng Đêm Có Chiều Sâu:**
+   - Thay thế nền đen trơn bằng dải màu gradient rừng đêm tự nhiên (xanh rêu than `0x06090d` -> chàm đêm `0x10151a` -> đất ẩm `0x0c1214`).
+   - Tích hợp bóng cây cổ thụ đa tầng phía sau (`SPRITE_TREE_OAK_1` và `SPRITE_TREE_DEAD`) với các độ đậm và sắc thái mờ ảo khác nhau.
+   - 2 Tầng sương mù trôi chậm ngược hướng (hậu cảnh trôi sang phải chu kỳ 38s, tiền cảnh trôi sang trái chu kỳ 26s).
+   - Hệ thống đom đóm & tàn lửa hổ phách (`createAmbientEmbers`): 30 hạt phát sáng hổ phách (`0xf39c12`, `0xf1c40f`, `0xffd37f`, `0xe67e22`) bay lượn lững lờ theo trục Y và dao động ngang hình sin.
+
+2. **Tiêu Đề & Nút Bấm Gỗ Tối Viền Đồng Xỉn:**
+   - Tiêu đề `HOLLOW WOODS` sắc nét ánh hổ phách trầm `#e5a93c`, đổ bóng viền đồng đen `#140d06` dày 6px.
+   - Phụ đề kem ấm `#e8dfcf` ("DỊ CẢNH RỪNG LIỄU — THE FOG THAT REMEMBERS") và trích dẫn giấy cũ `#a89f8c`.
+   - Các nút bấm sử dụng ngôn ngữ gỗ tối `0x15100b`, viền đồng xỉn `0x6e5233` với đường chỉ bóng kim loại và đinh tán 4 góc. Khi di chuột/chọn, nút bừng sáng viền hổ phách rực rỡ `0xe5a93c` trên nền gỗ ấm `0x22180e`.
+   - **Sửa triệt để lỗi tràn chữ nút "TIẾP TỤC HÀNH TRÌNH":**
+     - Mở rộng chiều rộng khung nút lên 460px (cao 52px).
+     - Tách thành 2 dòng cân đối tuyệt đối:
+       - Dòng 1 (Chính): `► TIẾP TỤC HÀNH TRÌNH` (font 14px bold, màu `#e5a93c`).
+       - Dòng 2 (Phụ): Lấy tự động từ checkpoint bản lưu (`Hồi 0 • Cổng Làng Bellhollow`, font 11px, màu `#baa892`).
+     - Chữ luôn nằm gọn gàng bên trong viền với lề an toàn > 35px mỗi bên.
+
+3. **Sửa Khu Vực Xem Trước Nhân Vật (Character Showcase):**
+   - Đặt nhân vật chính The Mossbound Wayfarer (tạo hình Black Knight) đứng trực tiếp lên mặt đất với `origin (0.5, 1.0)`, bàn chân chạm khít tâm bóng đổ elip `(990, 502)` (xóa bỏ hoàn toàn lỗi nhân vật bay lơ lửng cách bóng 38px).
+   - Thay thế 3 vòng tròn đồng tâm cắt thô bằng quầng sáng đèn lồng tỏa tròn mịn CanvasTexture `menu_lantern_glow_smooth` (340x340 px) với tâm vàng ấm tỏa dần sang cam hổ phách và tan vào bóng đêm.
+
+---
+
+### 8.2. Tối Ưu HUD Và Sửa Lỗi Tràn Khung Trong Game (`UIScene.ts`)
+1. **Khung Thông Báo Tên Phân Khu (Zone Banner):**
+   - Tự động đo đạc độ dài thực tế của dòng tiêu đề và dòng mô tả: `Math.max(zoneTitleText.width, zoneSubtitleText.width)`.
+   - Tự động co giãn chiều rộng khung `zoneBannerBg = Math.max(420, maxTextW + 64)` (bảo đảm lề trái/phải luôn $\ge 32$px).
+   - Thiết kế lại khung theo phong cách gỗ tối `0x120d09`, viền đồng xỉn `0x7a5e30` có đinh tán góc, kèm thuộc tính `wordWrap: 720` chống tràn màn hình.
+
+2. **Sửa Dứt Điểm Lỗi Nút `[F]` Đè Lên Chữ `Dầu Đèn`:**
+   - Mở rộng thẻ trạng thái `statCardBg` lên chiều rộng 362px (gỗ tối `0x140f0c`, viền đồng xỉn `0x6e5228`).
+   - Đẩy toàn bộ huy hiệu nút `[F]` sang $x = 300$ (tâm chữ $x = 328$), cách mép phải của chữ "Dầu Đèn: 100/100" một khoảng an toàn 18px ($> 12$px theo yêu cầu).
+   - Trạng thái BẬT: Nền gỗ ấm `0x241808`, viền hổ phách sáng `0xe5a93c`, chữ `🔥 [F] BẬT`.
+   - Trạng thái TẮT: Nền gỗ tối `0x13110e`, viền đồng xỉn `0x6e5832`, chữ `[F] TẮT`.
+
+3. **Sửa Lỗi Chính Tả Khung Nhiệm Vụ & Đồng Bộ Thẩm Mỹ:**
+   - Sửa lỗi chính tả trong hàm cập nhật nhiệm vụ: tự động chuyển hóa mọi cụm `"Bụi Rậm Đắc"` thành `"Bụi Rậm Đặc"`.
+   - Đồng bộ khung nhiệm vụ góc trên phải, khung nhắc tương tác `[E]`, và thanh Hotbar 8 ô dưới đáy theo chất liệu gỗ tối viền đồng xỉn mộc mạc và ánh hổ phách đặc trưng của HOLLOW WOODS.
+
+---
+
+### 8.3. Việt Hóa Biển Chỉ Đường Game World (`signpost.png`)
+- Dùng `pngjs` chỉnh sửa trực tiếp từng pixel trên tệp đồ họa [signpost.png](file:///g:/HOLLOW%20WOODS/public/assets/environment/sprites/signpost.png) (29x32 px):
+- Thay thế hoàn toàn dòng chữ tiếng Anh "EAST" bằng chữ tiếng Việt và mũi tên chỉ hướng: **"ĐÔNG ►"** khắc chìm tinh tế vào thớ gỗ.
+
+---
+
+### 8.4. Bảng Tổng Hợp Kiểm Thử Nghiệm Thu V14-P8-12
+| Bộ Kiểm Thử | Tệp Kịch Bản | Số Test / Kết Quả | Trạng Thái |
+| :--- | :--- | :---: | :---: |
+| **Kiểm thử Menu & HUD Redesign V1.4** | `scripts/verify_v14_p8_12_menu_hud_redesign.mjs` | 26/26 PASS | **PASS (100%)** |
+| **Kiểm tra TypeScript Type Safety** | `npx tsc --noEmit` | 0 Lỗi (Code 0) | **PASS** |
+| **Hồi quy toàn diện V1.3 (22 module)** | `scripts/run_v1_3_regression_suite.mjs` | 571/571 PASS | **PASS (100%)** |
+| **Kiểm thử di trú Save V1.4** | `scripts/verify_v1_4_save_migration.mjs` | 88/88 PASS | **PASS (100%)** |
+| **Kiểm thử hiển thị Rừng Sâu V1.4** | `scripts/verify_v14_p8_11_deep_forest_visibility.mjs` | 55/55 PASS | **PASS (100%)** |
+| **Kiểm thử Sói Xương (Skull Wolf)** | `scripts/verify_v14_p8_08_skull_wolf.mjs` | 42/42 PASS | **PASS (100%)** |
+| **Kiểm thử Quái Vật Bóng Tối** | `scripts/verify_v14_p8_09_shadow_monsters.mjs` | 53/53 PASS | **PASS (100%)** |
+| **Kiểm thử Hiệp Sĩ Tà Ác (Evil Knights)** | `scripts/verify_v14_p8_10_evil_knights.mjs` | 63/63 PASS | **PASS (100%)** |
+| **Đóng gói Vite Production** | `npm run build` | 9.55s (Code 0) | **PASS** |
+
+
 

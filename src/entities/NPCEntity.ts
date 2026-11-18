@@ -84,6 +84,8 @@ export class NPCEntity extends Phaser.GameObjects.Container {
       initialSheet = scene.textures.exists('blacksmith_sheet') ? 'blacksmith_sheet' : 'potter_walk_sheet';
     } else if (this.baseId === 'finn') {
       initialSheet = 'errand_boy_walk_sheet';
+    } else if (this.baseId === 'campfire_knight') {
+      initialSheet = scene.textures.exists('campfire_knight_pray_sheet') ? 'campfire_knight_pray_sheet' : 'campfire_knight_idle_sheet';
     } else {
       initialSheet = scene.textures.exists('garth_walk_sheet') ? 'garth_walk_sheet' : 'garth_walk';
     }
@@ -267,6 +269,46 @@ export class NPCEntity extends Phaser.GameObjects.Container {
         }
       }
     }
+
+    // 5. Hiệp Sĩ Canh Lửa: Quỳ cầu nguyện (12 frames) & Đứng trò chuyện (8 frames)
+    if (scene.textures.exists('campfire_knight_pray_sheet')) {
+      const prayFrames = scene.anims.generateFrameNumbers('campfire_knight_pray_sheet', { start: 0, end: 11 });
+      if (!scene.anims.exists('anim_campfire_knight_pray')) {
+        scene.anims.create({
+          key: 'anim_campfire_knight_pray',
+          frames: prayFrames,
+          frameRate: 4,
+          repeat: -1
+        });
+      }
+      if (!scene.anims.exists('npc_campfire_knight_pray')) {
+        scene.anims.create({
+          key: 'npc_campfire_knight_pray',
+          frames: prayFrames,
+          frameRate: 4,
+          repeat: -1
+        });
+      }
+    }
+    if (scene.textures.exists('campfire_knight_idle_sheet')) {
+      const idleFrames = scene.anims.generateFrameNumbers('campfire_knight_idle_sheet', { start: 0, end: 7 });
+      if (!scene.anims.exists('anim_campfire_knight_idle')) {
+        scene.anims.create({
+          key: 'anim_campfire_knight_idle',
+          frames: idleFrames,
+          frameRate: 6,
+          repeat: -1
+        });
+      }
+      if (!scene.anims.exists('npc_campfire_knight_idle')) {
+        scene.anims.create({
+          key: 'npc_campfire_knight_idle',
+          frames: idleFrames,
+          frameRate: 6,
+          repeat: -1
+        });
+      }
+    }
   }
 
   /**
@@ -296,6 +338,7 @@ export class NPCEntity extends Phaser.GameObjects.Container {
     else if (this.baseId === 'neris') icon = '🌿';
     else if (this.baseId === 'bram') icon = '🔨';
     else if (this.baseId === 'finn') icon = '📜';
+    else if (this.baseId === 'campfire_knight') icon = '🔥';
 
     // Dòng 1: Tên NPC (vàng kim đậm sắc nét)
     const cleanName = spec.name.replace(/\s*\(.*\)/, '').trim();
@@ -373,6 +416,19 @@ export class NPCEntity extends Phaser.GameObjects.Container {
   public playDirectionalAnim(state: 'idle' | 'walk', dir: NPCDirection): void {
     this.currentDirection = dir;
 
+    if (this.baseId === 'campfire_knight') {
+      const animKey = this.scene.anims.exists('anim_campfire_knight_pray')
+        ? 'anim_campfire_knight_pray'
+        : (this.scene.anims.exists('npc_campfire_knight_pray') ? 'npc_campfire_knight_pray' : 'anim_campfire_knight_idle');
+      if (this.scene && this.scene.anims && this.scene.anims.exists(animKey)) {
+        if (this.npcSprite.anims.currentAnim?.key !== animKey) {
+          this.npcSprite.play(animKey, true);
+        }
+      }
+      this.npcSprite.setFlipX(true);
+      return;
+    }
+
     let animKey = `npc_${this.baseId}_${state}_${dir}`;
     if (!this.scene.anims.exists(animKey)) {
       if (this.scene.anims.exists(`npc_${this.baseId}_idle`)) {
@@ -385,6 +441,35 @@ export class NPCEntity extends Phaser.GameObjects.Container {
     if (this.scene && this.scene.anims && this.scene.anims.exists(animKey)) {
       if (this.npcSprite.anims.currentAnim?.key !== animKey) {
         this.npcSprite.play(animKey);
+      }
+    }
+  }
+
+  /**
+   * Chuyển trạng thái khi trò chuyện (đứng đối thoại <-> quỳ canh lửa)
+   */
+  public setInteracting(active: boolean, targetX?: number): void {
+    if (this.baseId === 'campfire_knight') {
+      if (active) {
+        // Tạm chuyển sang dáng đứng tương tác (anim_campfire_knight_idle)
+        if (targetX !== undefined) {
+          this.npcSprite.setFlipX(targetX < this.x);
+        }
+        const idleKey = this.scene.anims.exists('anim_campfire_knight_idle')
+          ? 'anim_campfire_knight_idle'
+          : (this.scene.anims.exists('npc_campfire_knight_idle') ? 'npc_campfire_knight_idle' : '');
+        if (idleKey && this.scene.anims.exists(idleKey)) {
+          this.npcSprite.play(idleKey, true);
+        }
+      } else {
+        // Quay lại tư thế quỳ canh lửa (anim_campfire_knight_pray) hướng về ngọn lửa hồng
+        this.npcSprite.setFlipX(true);
+        const prayKey = this.scene.anims.exists('anim_campfire_knight_pray')
+          ? 'anim_campfire_knight_pray'
+          : (this.scene.anims.exists('npc_campfire_knight_pray') ? 'npc_campfire_knight_pray' : '');
+        if (prayKey && this.scene.anims.exists(prayKey)) {
+          this.npcSprite.play(prayKey, true);
+        }
       }
     }
   }
@@ -414,6 +499,14 @@ export class NPCEntity extends Phaser.GameObjects.Container {
 
     if (nearby) {
       this.promptBubble.setAlpha(proximityAlpha);
+    }
+
+    // Hiệp Sĩ Canh Lửa: giữ nguyên tư thế quỳ canh lửa hướng về bếp lửa hồng cho đến khi nhấn [E] đối thoại
+    if (this.baseId === 'campfire_knight') {
+      if (!nearby || this.npcSprite.anims.currentAnim?.key?.includes('pray')) {
+        this.npcSprite.setFlipX(true);
+      }
+      return;
     }
 
     if (nearby && playerX !== undefined && playerY !== undefined) {

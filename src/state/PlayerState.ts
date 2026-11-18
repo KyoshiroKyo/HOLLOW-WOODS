@@ -68,6 +68,8 @@ export class PlayerState extends Phaser.Events.EventEmitter {
   public campfireLevel: number = 1;
   public campfireFuel: number = 180;
   public activeWeapon: string = 'wpn_walking_staff';
+  // V1.4 - P8-15A: Tiến trình Thức Tỉnh Ký Ức (0: Kẻ Lữ Hành Mất Trí -> 1: Manh Mối Xưởng Chuông -> 2: Tàn Tích Hiệp Sĩ -> 3: Đại Thức Tỉnh)
+  public memoryAwakeningStage: number = 0;
   // V1.4 - P8-04: Vùng lưu dự phòng an toàn cho các khóa dữ liệu mở rộng/lạ từ V1.3 hoặc Mod
   public legacyExtraData?: Record<string, any>;
 
@@ -148,6 +150,7 @@ export class PlayerState extends Phaser.Events.EventEmitter {
     this.timeOfDay = 0;
     this.equippedSlots = { body: null, feet: null, back: null, charm: null };
     this.storageChest.clear();
+    this.memoryAwakeningStage = 0;
     this.legacyExtraData = undefined;
 
     this.inventory.clear();
@@ -624,6 +627,39 @@ export class PlayerState extends Phaser.Events.EventEmitter {
     }
   }
 
+  /**
+   * V1.4 - P8-15B: Cập nhật tiến trình Thức Tỉnh Ký Ức và tự động giải phóng các chương hồi ức tương ứng
+   */
+  public setMemoryAwakeningStage(stage: number): void {
+    const clamped = Math.max(0, Math.min(3, Math.floor(stage)));
+    if (clamped <= this.memoryAwakeningStage) return;
+    this.memoryAwakeningStage = clamped;
+
+    if (clamped >= 1) {
+      this.unlockLore('lore_memory_chapter_1');
+      this.unlockLore('lore_memory_chapter_2');
+      this.unlockLore('lore_black_knight_chronicle');
+    }
+    if (clamped >= 2) {
+      this.unlockLore('lore_memory_chapter_3');
+    }
+    if (clamped >= 3) {
+      this.unlockLore('lore_memory_chapter_4');
+    }
+
+    this.emit('memory_awakening_changed', clamped);
+  }
+
+  /**
+   * Mở khóa trọn vẹn 4 Chương Hồi Ức trong Sổ Tay [J]
+   */
+  public unlockAllMemoryChapters(): void {
+    this.unlockLore('lore_memory_chapter_1');
+    this.unlockLore('lore_memory_chapter_2');
+    this.unlockLore('lore_memory_chapter_3');
+    this.unlockLore('lore_memory_chapter_4');
+  }
+
   // --- V1.4: Sổ Tay Sinh Vật (Bestiary Ecosystem) ---
   private initDefaultBestiary(): void {
     this.bestiary.clear();
@@ -685,6 +721,90 @@ export class PlayerState extends Phaser.Events.EventEmitter {
       habitatVi: 'Miếu Chuông Phế Tích (The Broken Bell Shrine), Sân Đá Cổ',
       behaviorVi: 'Thực thể khổng lồ mù hoàn toàn, định vị và lao húc cực nhanh theo nguồn âm thanh [Q]. Sở hữu giáp sương mù bất hoại trước đòn đánh trực diện. Pha 2 dập tắt trụ lửa và triệu hồi ảo ảnh The Echo.',
       counterVi: 'Dẫn dụ Boss húc đâm sầm vào Trụ Lửa Cổ Ngữ để làm choáng (Stun 3.5s) nứt giáp sương mù, sau đó tấn công điểm yếu bằng Giáo hoặc Gậy. Dùng Đèn Lồng [F] thắp lại 3 trụ lửa để phá giải sương đặc.',
+      observed: false
+    });
+    this.bestiary.set('skull_wolf', {
+      species: 'skull_wolf',
+      contentId: 'HW-MON-BEAST-000001',
+      runtimeKey: 'mon_skull_wolf',
+      nameVi: 'Sói Xương (Skull Wolf)',
+      nameEn: 'Skull Wolf',
+      roleVi: 'Dã thú săn đêm & Kẻ rình rập',
+      habitatVi: 'The Crooked Path, Deep Forest & Rìa Silent Mire vào ban đêm/hoàng hôn',
+      behaviorVi: 'Dã thú lộ xương đầu hung dữ. Rình rập và đánh hơi tiếng chạy của con mồi. Sợ ánh lửa đèn lồng [F] và lửa trại; chỉ dám vồ mồi (Lunge) khi người chơi bước vào bóng tối hoặc hết dầu đèn.',
+      counterVi: 'Bật Đèn Lồng [F], đứng gần Lửa Trại hoặc cắm Đuốc Nhựa Thông để buộc Sói Xương chùn bước. Dùng Giáo Gỗ Bịt Sắt hoặc Rìu Rừng phản công 2-3 đòn để đánh tan thành tro bụi, thu thập Nanh Xương Cổ.',
+      observed: false
+    });
+    this.bestiary.set('shadow_crow', {
+      species: 'shadow_crow',
+      contentId: 'HW-MON-SHADOW-000001',
+      runtimeKey: 'mon_shadow_crow',
+      nameVi: 'Quạ Bóng Tối (Shadow Crow)',
+      nameEn: 'Shadow Crow',
+      roleVi: 'Chim quấy rối & Cảnh giới bóng đêm',
+      habitatVi: 'Outer Woods & Deep Forest vào ban đêm',
+      behaviorVi: 'Quạ đen hấp thụ tà khí bóng tối, đậu rình rập trên cành khô. Khi phát hiện người chơi chạy ồn hoặc đứng lâu trong bóng tối, chúng sà xuống mổ quấy rối và cất tiếng kêu sắc nhọn báo động The Listener.',
+      counterVi: 'Bật Đèn Lồng [F] để xua đuổi. Dùng Gậy Gỗ hoặc Giáo đập trúng khi chúng sà xuống để đánh tan.',
+      observed: false
+    });
+    this.bestiary.set('shadow_eyes', {
+      species: 'shadow_eyes',
+      contentId: 'HW-MON-SHADOW-000002',
+      runtimeKey: 'mon_shadow_eyes',
+      nameVi: 'Bóng Mắt Sương Mù (Mist Stalker)',
+      nameEn: 'Mist Stalker Eyes',
+      roleVi: 'Bóng ma theo dõi & Rút cạn tinh thần',
+      habitatVi: 'Deep Forest & Silent Mire trong sương mù dày đặc',
+      behaviorVi: 'Những cặp mắt quỷ dị lơ lửng ẩn hiện trong sương. Nhìn trực diện vào chúng trong bóng tối sẽ khiến Bình Tâm tụt dốc không phanh vì hoảng loạn.',
+      counterVi: 'Rọi thẳng Đèn Lồng [F] vào chúng — ánh sáng thanh tẩy sẽ khiến cặp mắt lập tức tan biến vào hư không.',
+      observed: false
+    });
+    this.bestiary.set('shadow_behemoth', {
+      species: 'shadow_behemoth',
+      contentId: 'HW-MON-BOSS-000003',
+      runtimeKey: 'boss_shadow_behemoth',
+      nameVi: 'Trùm Bóng Tối Khổng Lồ (Abyssal Shade Behemoth)',
+      nameEn: 'Abyssal Shade Behemoth',
+      roleVi: 'Chúa tể bóng tối vùng cấm & Thực thể khổng lồ',
+      habitatVi: 'Silent Mire & Tàn tích Đền Cổ',
+      behaviorVi: 'Quái vật khổng lồ mang thân xác bóng tối đặc quánh. Tung đòn vung tay và giẫm đất tạo sóng chấn động diện rộng (2a -> 2b -> 2c). Khi đánh trượt (miss), cơ thể sẽ bị khựng lại để lộ lõi yếu điểm.',
+      counterVi: 'Né tránh cú đập khi mặt đất báo động đỏ. Tận dụng nhịp khựng lại của Boss để dùng Giáo Gỗ Bịt Sắt đâm vào lõi bóng tối, kết hợp ánh sáng đèn lồng để thanh tẩy, thu thập Mảnh Tinh Chất Bóng Tối.',
+      observed: false
+    });
+    this.bestiary.set('fallen_knight', {
+      species: 'fallen_knight',
+      contentId: 'HW-MON-KNIGHT-000001',
+      runtimeKey: 'mon_fallen_knight',
+      nameVi: 'Hiệp Sĩ Sa Ngã (Fallen Knight)',
+      nameEn: 'Fallen Knight',
+      roleVi: 'Tàn quân hộ vệ & Chiến binh cận chiến',
+      habitatVi: 'Đường Mòn Quanh Co (Crooked Path) & Rừng Sâu',
+      behaviorVi: 'Quỳ cầu nguyện trong vô thức bên phế tích. Khi nghe tiếng bước chân chạy ồn hoặc ánh đèn lồng rọi vào, hắn lập tức đứng dậy tuốt kiếm truy đuổi và tung chuỗi đòn chém liên hoàn.',
+      counterVi: 'Lợi dụng nhịp thở hồi phục sau chuỗi chém kiếm của hắn để phản công. Đòn đâm Giáo Gỗ Bịt Sắt hoặc rìu chém sẽ làm hắn loạng choạng sơ hở.',
+      observed: false
+    });
+    this.bestiary.set('dread_horseman', {
+      species: 'dread_horseman',
+      contentId: 'HW-MON-KNIGHT-000002',
+      runtimeKey: 'mon_dread_horseman',
+      nameVi: 'Kỵ Binh Hắc Ám (Dread Horseman)',
+      nameEn: 'Dread Horseman',
+      roleVi: 'Kỵ binh tuần tra & Đột kích tốc độ cao',
+      habitatVi: 'Đường Mòn Quanh Co & Bìa Rừng Ngoại Vi',
+      behaviorVi: 'Cưỡi chiến mã đen tuyền tuần tra dọc các ngả đường mòn. Khi phát hiện mục tiêu, chiến mã hí vang giương vó rồi phóng nước đại càn quét thẳng hàng với tốc độ xé gió.',
+      counterVi: 'Lập tức lăn xả né sang bụi rậm hai bên đường khi nghe tiếng ngựa hí báo hiệu. Cú lao thẳng không thể rẽ ngoặt, để lộ sườn cho người chơi dùng Giáo phản kích.',
+      observed: false
+    });
+    this.bestiary.set('hooded_knight', {
+      species: 'hooded_knight',
+      contentId: 'HW-MON-BOSS-000002',
+      runtimeKey: 'boss_hooded_knight',
+      nameVi: 'Chỉ Huy Hiệp Sĩ Trùm Mũ (Hooded Knight Boss)',
+      nameEn: 'Hooded Knight Commander',
+      roleVi: 'Thủ lĩnh tà phái hiệp sĩ & Trùm trấn giữ tàn tích',
+      habitatVi: 'Ngưỡng cửa Rừng Sâu & Tàn tích Đền Cổ',
+      behaviorVi: 'Đại tướng hiệp sĩ sa ngã với sức mạnh hắc ám vượt trội. Hắn tích tụ luồng khí đen quanh cơ thể trước khi tung ra nhát chém cuồng nộ quét sạch mọi chướng ngại phía trước.',
+      counterVi: 'Áp sát rọi Đèn Lồng [F] cường độ cao hoặc ném Đuốc Nhựa Thông để ngắt chiêu tích tụ tà khí, đẩy Boss vào trạng thái Choáng Váng (Stagger) nhận gấp đôi sát thương.',
       observed: false
     });
   }

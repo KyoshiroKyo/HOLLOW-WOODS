@@ -47,6 +47,7 @@ export interface SaveData {
   campfireFuel?: number;      // Nhiên liệu còn lại (giây)
   unlockedBestiary?: string[]; // V1.4 Mặc định: []
   observedCreatures?: string[]; // Danh sách sinh vật đã quan sát (Bestiary)
+  memoryAwakeningStage?: number; // V1.4 - P8-15A: Giai đoạn Thức Tỉnh Ký Ức (0 -> 1 -> 2 -> 3)
   legacyExtraData?: Record<string, any>; // Lưu trữ an toàn các trường không xác định
 }
 
@@ -67,7 +68,8 @@ export class SaveManager {
     'item_bell_mold', 'item_medicinal_roots', 'relic_heart_of_roots',
     'food_calming_tea', 'food_roasted_mushroom', 'food_root_soup', 'item_resin_flare',
     'wpn_walking_staff', 'wpn_iron_spear', 'wpn_hunting_hatchet',
-    'eqp_moss_cloak', 'eqp_trail_boots', 'eqp_field_backpack', 'eqp_bell_ward_charm'
+    'eqp_moss_cloak', 'eqp_trail_boots', 'eqp_field_backpack', 'eqp_bell_ward_charm',
+    'quest_corrupted_crest', 'quest_corrupted_knight_crest', 'item_knight_journal_page'
   ]);
 
   /**
@@ -348,7 +350,8 @@ export class SaveManager {
         'playerPos', 'stats', 'inventory', 'flags', 'questFlags', 'currentQuestId', 'quests',
         'unlockedLoreIds', 'visitedZones', 'unlockedZones', 'herbPlots',
         'dayCount', 'timeOfDay', 'equippedSlots', 'storageChest', 'storageChestInventory',
-        'campfireLevel', 'campfireFuel', 'observedCreatures', 'unlockedBestiary', 'legacyExtraData'
+        'campfireLevel', 'campfireFuel', 'observedCreatures', 'unlockedBestiary',
+        'memoryAwakeningStage', 'legacyExtraData'
       ]);
       const legacyExtraData: Record<string, any> = rawObj.legacyExtraData ? { ...rawObj.legacyExtraData } : {};
       for (const [k, v] of Object.entries(rawObj)) {
@@ -384,6 +387,7 @@ export class SaveManager {
         campfireFuel: typeof rawObj.campfireFuel === 'number' ? Math.max(0, rawObj.campfireFuel) : 180,
         unlockedBestiary: observedCreatures,
         observedCreatures,
+        memoryAwakeningStage: typeof rawObj.memoryAwakeningStage === 'number' ? Math.max(0, Math.min(3, Math.floor(rawObj.memoryAwakeningStage))) : 0,
         legacyExtraData: Object.keys(legacyExtraData).length > 0 ? legacyExtraData : undefined
       };
     } catch (e) {
@@ -464,6 +468,7 @@ export class SaveManager {
         campfireFuel: state.campfireFuel ?? 180,
         unlockedBestiary: Array.from(state.bestiary.values()).filter(b => b.observed).map(b => b.species),
         observedCreatures: Array.from(state.bestiary.values()).filter(b => b.observed).map(b => b.species),
+        memoryAwakeningStage: state.memoryAwakeningStage ?? 0,
         legacyExtraData: state.legacyExtraData ? { ...state.legacyExtraData } : undefined
       };
 
@@ -585,6 +590,7 @@ export class SaveManager {
       }
       state.campfireLevel = data.campfireLevel ?? 1;
       state.campfireFuel = data.campfireFuel ?? 180;
+      state.memoryAwakeningStage = data.memoryAwakeningStage ?? 0;
 
       // Phục hồi Sổ Tay Sinh Vật (Bestiary)
       const bestiaryList = data.unlockedBestiary || data.observedCreatures;

@@ -1,5 +1,6 @@
 import { PlayerState } from '../state/PlayerState';
 import { EquipmentSystem } from './EquipmentSystem';
+import { CampSanctuarySystem } from './CampSanctuarySystem';
 import { 
   STAMINA_DRAIN_RATE, 
   STAMINA_RECOVERY_RATE, 
@@ -100,9 +101,12 @@ export class SurvivalSystem {
     }
 
     if (nearCampfire) {
+      const campSanctuary = CampSanctuarySystem.getInstance();
+      const inSanctuary = campSanctuary.isPlayerInSanctuary(playerX, playerY, zoneId);
+      const composureMult = inSanctuary ? campSanctuary.getComposureRecoveryMultiplier() : 1.0;
       // Hồi máu nhẹ (+4 HP/s) và hồi phục mạnh mẽ tinh thần (+8 Composure/s) khi nghỉ bên nguồn nhiệt/lửa trại
       stats.health = Math.min(stats.maxHealth, stats.health + 4 * dt);
-      stats.composure = Math.min(stats.maxComposure, stats.composure + 8 * dt);
+      stats.composure = Math.min(stats.maxComposure, stats.composure + (8 * composureMult) * dt);
     } else {
       if (!stats.isLanternOn) {
         // Trong bóng tối: Composure sụt giảm dựa trên chu kỳ ngày/đêm V1.4 (hoặc fallback V1.3)
@@ -136,8 +140,11 @@ export class SurvivalSystem {
     if (stats.temperature === undefined) stats.temperature = 80;
 
     if (nearCampfire) {
-      // Đứng gần lửa trại / lò rèn: sưởi ấm và hong khô rất nhanh
-      stats.moisture = Math.max(0, stats.moisture - 10.0 * dt);
+      // Đứng gần lửa trại / lò rèn: sưởi ấm và hong khô rất nhanh (gia tốc 20% khi trong Sanctuary)
+      const campSanctuary = CampSanctuarySystem.getInstance();
+      const inSanctuary = campSanctuary.isPlayerInSanctuary(playerX, playerY, zoneId);
+      const dryingMult = inSanctuary ? campSanctuary.getMoistureDryingMultiplier() : 1.0;
+      stats.moisture = Math.max(0, stats.moisture - 10.0 * dryingMult * dt);
       stats.temperature = Math.min(100, stats.temperature + 7.5 * dt);
     } else {
       // Độ ẩm: tăng khi đi dưới mưa sương hoặc lội đầm lầy (Áo Choàng Rêu giảm 40%)

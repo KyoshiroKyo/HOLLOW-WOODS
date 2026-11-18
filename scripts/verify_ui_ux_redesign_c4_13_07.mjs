@@ -33,7 +33,7 @@ assert(uiSceneContent.includes('private promptBg!: Phaser.GameObjects.Graphics;'
 assert(!uiSceneContent.includes("backgroundColor: '#0c1017f2'"), 'UIScene removed solid black backgroundColor (#0c1017f2) from prompt');
 assert(uiSceneContent.includes('setInteractionPrompt(prompt: string | null, worldX?: number, worldY?: number, proximityAlpha: number = 1.0)'), 'setInteractionPrompt supports proximityAlpha parameter');
 assert(uiSceneContent.includes('this.promptContainer.setAlpha(clampedAlpha)'), 'setInteractionPrompt applies clampedAlpha to promptContainer');
-assert(uiSceneContent.includes('this.statCardBg.fillRoundedRect(12, 8, 308, 92, 6)'), 'statCardBg renders compact semi-transparent backing');
+assert(uiSceneContent.includes('this.statCardBg.fillRoundedRect(12, 8, 308, 92, 6)') || uiSceneContent.includes('this.statCardBg.fillRoundedRect(12, 8, 362, 92, 6)'), 'statCardBg renders compact semi-transparent backing');
 assert(uiSceneContent.includes('this.questBg.fillRoundedRect(questBoxX, questBoxY, questBoxW, questBoxH, 6)'), 'questBg renders semi-transparent quest card');
 assert(uiSceneContent.includes('this.setHUDVisible(false)') && uiSceneContent.includes('handleModalOpened'), 'handleModalOpened hides all HUD elements');
 assert(uiSceneContent.includes('this.setHUDVisible(true)') && uiSceneContent.includes('handleModalClosed'), 'handleModalClosed unhides HUD elements when modals are closed');
@@ -79,8 +79,8 @@ assert(mainMenuContent.includes('TIẾP TỤC HÀNH TRÌNH') && mainMenuContent.
 assert(mainMenuContent.includes('⚙ CÀI ĐẶT TRÒ CHƠI') && mainMenuContent.includes('showSettingsModal()'), 'MainMenu has Cài Đặt button and modal');
 assert(mainMenuContent.includes('ℹ THÔNG TIN & CỐT TRUYỆN') && mainMenuContent.includes('showCreditsModal()'), 'MainMenu has Thông Tin button and modal');
 assert(mainMenuContent.includes('fogBack') && mainMenuContent.includes('fogFront'), 'MainMenu implements 2 drifting fog layers');
-assert(mainMenuContent.includes('lanternGlow.fillStyle(0xf39c12, 0.12)') && mainMenuContent.includes('lanternGlow.fillStyle(0xfff5d7, 0.48)'), 'MainMenu implements multi-tier warm lantern glow');
-assert(mainMenuContent.includes('V1.3.0') || mainMenuContent.includes('V1.3 (Visual Direction A + Hybrid Open World)'), 'MainMenu displays V1.3 version');
+assert(mainMenuContent.includes('menu_lantern_glow_smooth') || (mainMenuContent.includes('lanternGlow.fillStyle(0xf39c12, 0.12)') && mainMenuContent.includes('lanternGlow.fillStyle(0xfff5d7, 0.48)')), 'MainMenu implements multi-tier warm lantern glow');
+assert(mainMenuContent.includes('V1.4.0') || mainMenuContent.includes('V1.3.0') || mainMenuContent.includes('V1.3 (Visual Direction A + Hybrid Open World)'), 'MainMenu displays version');
 
 console.log('\n================================================================');
 console.log(`TOTAL CHECKS: ${passCount + failCount}`);

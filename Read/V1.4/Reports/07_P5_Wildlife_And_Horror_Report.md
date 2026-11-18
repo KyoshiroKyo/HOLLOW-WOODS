@@ -333,3 +333,131 @@ npm run build
 # dist/assets/index-DrA3-BBM.js  2,342.25 kB │ gzip: 556.31 kB
 # ✓ built in 7.97s
 ```
+
+---
+
+## 15. TÍCH HỢP SINH VẬT SÓI XƯƠNG (SKULL WOLF — BƯỚC V14-P8-08)
+
+### 15.1. Chuẩn Hóa Tài Nguyên Đồ Họa Từ Gói Skullwolf / Massacre Sprite Sheet
+- **Nguồn tài nguyên:** Trích xuất từ gói `Pixel_Art/Skullwolf/` (`Massacre Sprite Sheet.png` 448×256 px và `Massacre.aseprite`).
+- **Xử lý Node.js (`pngjs`):**
+  - **Spritesheet hành động:** [skull_wolf_sheet.png](file:///g:/HOLLOW%20WOODS/public/assets/characters/monsters/skull_wolf_sheet.png) gồm 4 hàng × 7 cột khung hình chuẩn hóa 64×64 px:
+    - Hàng 0 (Y=0): Hoạt ảnh `idle` thở nhịp nhàng (6 frames).
+    - Hàng 1 (Y=64): Hoạt ảnh `lunge` chồm vồ mồi tốc độ cao (5 frames).
+    - Hàng 2 (Y=128): Hoạt ảnh `walk` rình rập trong sương mù (4 frames).
+    - Hàng 3 (Y=192): Hoạt ảnh `death` tan rã thành tàn tro phát sáng (7 frames).
+    - Bàn chân được căn chỉnh đồng bộ tại `y=58` (khớp hoàn hảo với trọng tâm `origin (0.5, 0.90625)` trong Arcade Physics).
+    - Tự động phủ bóng đổ mềm elip mờ (`rgba(0, 0, 0, 0.25)`) dưới bàn chân để ăn khớp mặt đất rừng.
+  - **Chân dung minh họa:** [portrait_skull_wolf.png](file:///g:/HOLLOW%20WOODS/public/assets/characters/monsters/portrait_skull_wolf.png) kích thước 64×64 px, cắt riêng cận cảnh hộp sọ sói sắc bén, nền viền vignette gothic lam đen.
+
+### 15.2. Đăng Ký Hệ Thống Định Danh 4 Tầng & Bảng Vật Phẩm / Công Thức
+- **ContentRegistry 4 tầng ([content_registry.json](file:///g:/HOLLOW%20WOODS/src/data/content_registry.json) & [registryData.ts](file:///g:/HOLLOW%20WOODS/src/registry/registryData.ts)):**
+  - **Asset IDs:** `HW-AST-CHAR-SKULLWOLF` (spritesheet), `HW-AST-PORT-SKULLWOLF` (portrait).
+  - **Mục quái vật:** Content ID `HW-MON-BEAST-000001`, runtimeKey `mon_skull_wolf`.
+  - **Mục vật phẩm rơi:** Content ID `HW-ITM-MAT-000004`, runtimeKey `mat_skull_fang` (Nanh Xương Cổ).
+- **Vật phẩm & Công thức chế tạo ([items.json](file:///g:/HOLLOW%20WOODS/src/data/items.json)):**
+  - Vật phẩm `mat_skull_fang`: Vật phẩm nguyên liệu quý rơi từ tro tàn Sói Xương khi bị tiêu diệt (tối đa x10/ô).
+  - Công thức `craft_skull_fang_spear`: Rèn Giáo Gỗ Bịt Sắt Gia Cố Nanh Sói (+3 sát thương, tăng tầm đẩy lùi).
+  - Công thức `craft_skull_fang_charm`: Chế tác Bùa Nanh Sói Xương (giảm 25% sát thương nhận từ quái thú hoang dã).
+
+### 15.3. Trí Tuệ Nhân Tạo & Tập Tính Săn Đêm ([SkullWolfEntity.ts](file:///g:/HOLLOW%20WOODS/src/entities/SkullWolfEntity.ts) & [WildlifeSystem.ts](file:///g:/HOLLOW%20WOODS/src/systems/WildlifeSystem.ts))
+- **Địa bàn sinh sống:** Chỉ xuất hiện khi trời chập tối và đêm đen (`DUSK` và `NIGHT`) tại `crooked_path`, `deep_forest` và rìa `silent_mire`. Tuyệt đối không bao giờ bước qua ranh giới an toàn của Làng Bellhollow.
+- **Máy trạng thái AI 6 bậc:**
+  - `PATROL`: Đi tuần tra chậm rãi quanh lãnh thổ trong màn đêm.
+  - `STALK`: Đánh hơi và rình rập người chơi từ rìa màn sương mù, phát ra tiếng xương lách cách (`playBoneRattle`).
+  - `FEAR_LIGHT`: **Sợ hãi ánh lửa** — Khi người chơi bật Đèn Lồng [F], đứng gần Lửa Trại hoặc cắm Đuốc Nhựa Thông, Sói Xương lập tức chùn bước, lùi giật lùi về bóng tối ngoài bán kính ánh sáng (`lightRadius + 45px`), phát tiếng gầm gừ đe dọa (`playWolfGrowl`).
+  - `LUNGE`: **Tấn công chồm vồ** — Khi người chơi ở trong bóng tối (đèn tắt/cạn dầu) trong phạm vi 160px, sói chồm tới với vận tốc 195px/s (`playWolfLunge`). Gây 15 HP, 15 Composure, rung màn hình và đẩy văng người chơi. Có cơ chế chống dính đa chấn thương lặp (`hasHitPlayerInCurrentLunge`).
+  - `HURT`: Khi bị trúng vũ khí người chơi vung chém, sói nhấp nháy đỏ (`setTint(0xff4444)`), bị đẩy lùi theo góc va chạm và choáng 550ms.
+  - `DISSOLVE`: Nhận đủ 3 sát thương, Sói Xương phát tiếng tan rã (`playWolfDissolve`), tan biến thành tro tàn và rơi ra 1 Nanh Xương Cổ (`mat_skull_fang`).
+- **Kinh động Quạ Rừng:** Khi Sói Xương di chuyển trong phạm vi 130px quanh quạ đang đậu, quạ lập tức giật mình cất cánh kêu toáng lên báo động.
+
+### 15.4. Sổ Tay Sinh Vật Bestiary & Chân Dung Nghệ Thuật ([JournalModal.ts](file:///g:/HOLLOW%20WOODS/src/ui/JournalModal.ts))
+- **Mở khóa tự nhiên:** Tự động mở khóa trang Sổ Tay khi người chơi tiến lại gần quan sát thấy Sói Xương trong bán kính 260px hoặc hạ gục cá thể.
+- **Khung chân dung nghệ thuật:** Khi mở mục Sói Xương trong Sổ Tay, góc trên bên phải trang phải hiển thị chân dung hộp sọ sói viền vàng kim (`#d4af37`) nổi bật trên nền đá thạch anh tối. Khi chưa quan sát, hiển thị khung bí ẩn với dấu chấm hỏi `❓`.
+
+### 15.5. Nghiệm Thu Kiểm Thử Tự Động Toàn Diện
+- `node scripts/verify_v14_p8_08_skull_wolf.mjs`: **42/42 PASS (100%)**.
+- `node scripts/run_v1_3_regression_suite.mjs`: **571/571 PASS (100%)**.
+- `node scripts/verify_v1_4_save_migration.mjs`: **88/88 PASS (100%)**.
+- `node scripts/test_v14_step_8_1.mjs`: **71/71 PASS (100%)**.
+- `npx tsc --noEmit`: **0 lỗi (EXIT CODE 0)**.
+- `npm run build`: **Đóng gói thành công (dist/assets/index-*.js)**.
+
+---
+
+## 16. TÍCH HỢP NHÓM QUÁI VẬT BÓNG TỐI (SHADOW MONSTERS — BƯỚC V14-P8-09)
+
+### 16.1. Chuẩn Hóa Tài Nguyên Đồ Họa Từ 3 Gói Quái Vật Bóng Tối
+- **1. Quạ Bóng Tối (Shadow Crow) — từ gói Crow Animations:**
+  - Gộp các hoạt ảnh `crow_idle.png`, `crow_walk.png`, `crow_jump.png`, `crow_attack.png`, `crow_damage.png`, `crow_death2.png` thành spritesheet chuẩn hóa [shadow_crow_sheet.png](file:///g:/HOLLOW%20WOODS/public/assets/characters/monsters/shadow_crow_sheet.png):
+  - Kích thước 384×384 px (6 hàng × 6 cột 64×64 px).
+  - Row 0: `idle` đậu nghỉ quan sát (4 frames).
+  - Row 1: `walk` đi bộ trên cành/đá (4 frames).
+  - Row 2: `jump` vỗ cánh cất tiếng caw báo động (6 frames).
+  - Row 3: `attack` sà xuống mổ quấy rối (5 frames).
+  - Row 4: `damage` bị thương khi trúng đòn (3 frames).
+  - Row 5: `death` tan biến thành khói đen (6 frames).
+- **2. Bóng Mắt Sương Mù (Mist Stalker / Shadow Eyes) — từ gói monster_pack_1_free:**
+  - Xử lý `monster001eyes.png` thành spritesheet chuẩn [shadow_eyes_sheet.png](file:///g:/HOLLOW%20WOODS/public/assets/characters/monsters/shadow_eyes_sheet.png):
+  - Kích thước 384×144 px (3 hàng × 8 cột 48×48 px).
+  - Row 0: `idle` cặp mắt lập lòe trong sương (8 frames).
+  - Row 1: `look` liếc ngang đảo mắt rùng rợn (8 frames).
+  - Row 2: `dissolve` bốc hơi tan rã thành sương khói khi bị ánh sáng rọi vào (8 frames).
+- **3. Trùm Bóng Tối Khổng Lồ (Abyssal Shade Behemoth) — từ gói 2023.10.6 dark fantasy big boss free:**
+  - Gộp các dải hoạt ảnh và hiệu ứng địa chấn thành [shadow_big_boss_sheet.png](file:///g:/HOLLOW%20WOODS/public/assets/characters/bosses/shadow_big_boss_sheet.png):
+  - Kích thước 1280×640 px (8 hàng × 16 cột 80×80 px).
+  - Căn đồng bộ trọng tâm chân tại `y=67` và tâm chấn `y=67` (khớp hoàn hảo giữa thân quái vật và sóng xung kích địa chấn).
+  - Row 0: `idle` thở nhịp nhàng (16 frames).
+  - Row 1: `walk` bước chân nặng nề làm rung chuyển mặt đất (16 frames).
+  - Row 2..4: `combo_slam` chuỗi 3 pha vung tay đập đất tạo sóng xung kích địa chấn lan tỏa (16 frames/hàng).
+  - Row 5: `vulnerable_miss` tư thế đánh trượt vào không khí bị khựng lại lộ sơ hở trong 2.5 giây.
+  - Row 6: `hit` nhấp nháy choáng váng khi nhận đòn (16 frames).
+  - Row 7: `death` nổ tung bóng tối sụp đổ (16 frames).
+  - **Chân dung minh họa Boss:** [portrait_shadow_big_boss.png](file:///g:/HOLLOW%20WOODS/public/assets/characters/bosses/portrait_shadow_big_boss.png) kích thước 64×64 px, cắt cận cảnh đầu trùm với viền vàng kim quý tộc.
+
+### 16.2. Đăng Ký Hệ Thống Định Danh 4 Tầng & Bảng Vật Phẩm / Công Thức
+- **ContentRegistry 4 tầng ([content_registry.json](file:///g:/HOLLOW%20WOODS/src/data/content_registry.json) & [registryData.ts](file:///g:/HOLLOW%20WOODS/src/registry/registryData.ts)):**
+  - **Asset IDs:**
+    - `HW-AST-CHAR-SHADOWCROW`: Quạ Bóng Tối (`shadow_crow_sheet.png`)
+    - `HW-AST-CHAR-SHADOWEYES`: Bóng Mắt Sương Mù (`shadow_eyes_sheet.png`)
+    - `HW-AST-CHAR-SHADOWBOSS`: Trùm Bóng Tối Khổng Lồ (`shadow_big_boss_sheet.png`)
+    - `HW-AST-PORT-SHADOWBOSS`: Chân dung Trùm Bóng Tối (`portrait_shadow_big_boss.png`)
+  - **Mục Quái Vật & Boss:**
+    - `HW-MON-SHADOW-000001` (`mon_shadow_crow`): Quạ Bóng Tối
+    - `HW-MON-SHADOW-000002` (`mon_shadow_eyes`): Bóng Mắt Sương Mù
+    - `HW-MON-BOSS-000003` (`boss_shadow_behemoth`): Trùm Bóng Tối Khổng Lồ
+  - **Mục Vật Phẩm Rơi:**
+    - `HW-ITM-MAT-000005` (`mat_shadow_essence`): Mảnh Tinh Chất Bóng Tối (x5/ô).
+- **Vật phẩm & Công thức mới ([items.json](file:///g:/HOLLOW%20WOODS/src/data/items.json)):**
+  - `craft_abyssal_ward_charm`: Thanh Tẩy Bùa Hộ Mệnh Vực Thẳm (kết hợp Mảnh Tinh Chất Bóng Tối với Bùa Chuông Đồng và Nhựa Thông Cổ, tạo khiên chống hoảng loạn tối thượng).
+
+### 16.3. Trí Tuệ Nhân Tạo (AI) & Cơ Chế Chiến Đấu ([ShadowMonsters.ts](file:///g:/HOLLOW%20WOODS/src/entities/ShadowMonsters.ts) & [WildlifeSystem.ts](file:///g:/HOLLOW%20WOODS/src/systems/WildlifeSystem.ts))
+- **1. Quạ Bóng Tối (ShadowCrowEntity):**
+  - **Báo động The Listener:** Đậu trên cành khô ở Outer Woods / Deep Forest. Khi phát hiện người chơi chạy trong cự ly 200px, quạ kêu sắc nhọn (`playShadowCrowCaw`) và phát sóng âm đánh động The Listener trực tiếp tìm tới.
+  - **Sà mổ quấy rối (Dive Attack):** Nếu người chơi đứng trong bóng tối quá 2.5s không bật đèn lồng, quạ sà xuống cắn xé (`playShadowCrowAttack`), gây 8 HP và -10 Composure. Bị đánh trúng sẽ tan biến thành khói đen.
+- **2. Bóng Mắt Sương Mù (ShadowEyesEntity):**
+  - Lơ lửng ẩn hiện trong sương mù dày tại Deep Forest và Silent Mire vào ban đêm.
+  - **Rút cạn Bình Tâm:** Khi người chơi trong cự ly 170px và tắt đèn, mắt phát tiếng thì thầm quỷ dị (`playShadowEyesGaze`) rút 8 Composure mỗi giây.
+  - **Khắc tinh ánh sáng (Dissolve by Light):** Khi người chơi bật Đèn Lồng [F] rọi tới (`dist <= lightRadius + 24px`), cặp mắt lập tức phát tiếng xèo xèo bốc hơi (`playShadowEyesDissolve`), tan biến vĩnh viễn và mở khóa Bestiary.
+- **3. Trùm Bóng Tối Khổng Lồ (ShadowBehemothBoss):**
+  - Trấn giữ vùng cấm Silent Mire và Miếu Chuông Phế Tích.
+  - **Chuỗi đòn đập đất địa chấn (Combo Fissure):** Gầm vang trời (`playBehemothRoar`), vung tay đập đất tạo rung chấn màn hình và cảnh báo đỏ mặt đất. Người chơi đứng gần bị trúng 25 HP, 20 Composure và bị văng ra xa.
+  - **Cơ chế sơ hở phản công (Vulnerable Miss):** Sau khi tung đòn hụt (người chơi lùi tránh kịp thời), Trùm bị khựng lại trong **2.5 giây** (`vulnerable_miss`), thân xác phát sáng lân tinh lam (`0xbbddff`). Trong khoảng thời gian này, mọi đòn đánh của người chơi vào Boss đều được **nhân đôi sát thương (x2 Critical)**!
+  - Khi HP = 0, Boss gầm tiếng tan vỡ (`playBehemothDefeat`), nổ tung thành tro tàn và rơi ra **Mảnh Tinh Chất Bóng Tối** (`mat_shadow_essence`).
+- **Ranh giới an toàn (Safe Zone):** Cả 3 loài quái vật bóng tối đều bị chặn tuyệt đối ngoài rìa Làng Bellhollow (`x <= 1620`), Nông Trại Sanctuary và Cửa Ngõ Sương Mù.
+
+### 16.4. Sổ Tay Sinh Vật (Bestiary [J]) & Âm Thanh Đặc Trưng ([JournalModal.ts](file:///g:/HOLLOW%20WOODS/src/ui/JournalModal.ts) & [AudioManager.ts](file:///g:/HOLLOW%20WOODS/src/audio/AudioManager.ts))
+- **Bestiary:** Bổ sung đầy đủ 3 mục `shadow_crow`, `shadow_eyes`, `shadow_behemoth` vào hệ thống quan sát tự nhiên.
+- **Chân dung nghệ thuật:** Khi chọn Trùm Bóng Tối Khổng Lồ trong Sổ Tay, góc trên bên phải hiển thị chân dung [portrait_shadow_big_boss.png](file:///g:/HOLLOW%20WOODS/public/assets/characters/bosses/portrait_shadow_big_boss.png) đóng khung viền vàng kim `#d4af37`.
+- **Âm thanh tổng hợp:** 9 phương thức Web Audio mới tái hiện chân thực từ tiếng rít quạ, tiếng mắt bốc hơi xèo xèo đến tiếng bước chân làm rung chuyển đất và tiếng gầm trầm đục của Boss.
+
+### 16.5. Nghiệm Thu Kiểm Thử Tự Động Bước V14-P8-09
+- `node scripts/verify_v14_p8_09_shadow_monsters.mjs`: **60/60 PASS (100%)**.
+- `node scripts/verify_v14_p8_08_skull_wolf.mjs`: **42/42 PASS (100%)**.
+- `node scripts/run_v1_3_regression_suite.mjs`: **571/571 PASS (100%)**.
+- `node scripts/verify_v1_4_save_migration.mjs`: **88/88 PASS (100%)**.
+- `node scripts/test_v14_step_8_1.mjs`: **71/71 PASS (100%)**.
+- `npx tsc --noEmit`: **0 lỗi (EXIT CODE 0)**.
+- `npm run build`: **Đóng gói hoàn tất không lỗi (dist/assets/index-XUWRsU9w.js)**.
+
+

@@ -291,4 +291,68 @@ Trong quá trình trải nghiệm thực tế, phát hiện 3 vấn đề cần 
 | **Kiểm Tra TypeScript** | `npx tsc --noEmit` | Không còn lỗi kiểu dữ liệu hoặc tham chiếu | **0 Lỗi (Code 0)** |
 | **Đóng Gói Bản Dựng Production** | `npm run build` | Vite build hoàn thành trong 6.97s | **Thành công (Code 0)** |
 
+---
+
+## PHẦN 9: BÁO CÁO KHẮC PHỤC TRIỆT ĐỂ SỰ CỐ HIỂN THỊ RỪNG SÂU (V14-P8-11: DEEP FOREST CHARACTER VISIBILITY FIX)
+
+### 9.1 Nguyên Nhân Gốc Rễ (Root Cause Analysis)
+
+1. **Nghịch đảo Tọa độ Y Âm với Độ sâu Mặt đất (Negative Coordinate Inversion):**
+   - Trong `src/data/zones.json`, phân khu Rừng Sâu (`deep_forest`) có biên giới không gian $y \in [-640 .. 0]$ và điểm sinh mặc định tại $(2080, -80)$. Phân khu Bãi Trống Vọng Âm (`sub_whispering_clearing`) có $y \in [-360 .. 0]$, và phần phía bắc làng Bellhollow có $y \in [-200 .. 0]$.
+   - Hệ thống sắp xếp hiển thị 2D (Y-sorting) trong `SatyrPlayer.ts` gán độ sâu `targetDepth = Math.floor(this.y)`. Khi người chơi di chuyển sâu vào Rừng Sâu ($y = -100, -200, -320$), độ sâu của nhân vật nhận giá trị âm tương ứng ($-100, -200, -320$).
+   - Tuy nhiên, trong `WorldBuilder.ts`, ảnh nền địa hình baked (`deep_forest_ground_baked_v12`) được đặt cứng ở `depth = -98`. Sương mù ranh giới đặt ở `depth = -65`, và sương mù mặt đất của `VeilSystem.ts` (`fogLayerGround`) đặt ở `depth = -40`.
+   - **Hậu quả đồ họa:** Khi $y < -98$ (ví dụ: $y = -150$), ta có $-150 < -98 < -65 < -40$. Động cơ đồ họa Phaser WebGL vẽ nhân vật trước, sau đó vẽ tấm ảnh mặt đất mờ đục 100% kích thước 1280x640 px lên trên, che khuất hoàn toàn thân thể nhân vật!
+   - **Lý do chỉ còn lại chiếc đèn lồng:** Trong `GameScene.ts`, quầng sáng đèn lồng (`this.lanternGlowImage`) nằm ở lớp mặt nạ chiếu sáng màn hình cố định `depth = 5020` và xóa một vòng tròn trong lớp Fog of War. Do đó, quầng sáng đèn lồng vẫn di chuyển trên màn hình ở độ sâu 5020 trong khi toàn bộ thân xác nhân vật bên dưới bị tấm nền địa hình depth $-98$ nuốt chửng.
+
+2. **Thiếu Chuẩn Phân Tầng Hệ Thống (Lack of Standardized Layering Constants):**
+   - Các giá trị depth rải rác trong `WorldBuilder.ts` và `VeilSystem.ts` sử dụng các hằng số số nguyên cứng (`-98`, `-97`, `-95`, `-90`, `-88`, `-80`, `-65`, `-40`, `-100`), được thiết kế khi bản đồ game còn có tọa độ $y \ge 0$. Khi thế giới mở rộng về hướng bắc với tọa độ âm, các giả định này bị phá vỡ.
+
+---
+
+### 9.2 Giải Pháp Kiến Trúc & Triển Khai Kỹ Thuật
+
+1. **Chuẩn Hóa Hằng Số Phân Tầng Độ Sâu Toàn Cục (`Constants.ts`):**
+   Đưa toàn bộ các tầng nền địa hình, chân móng, thực vật sàn, vũng nước, phù điêu sàn và sương mù mặt đất xuống dải độ sâu $\le -6900$:
+   - `DEPTH_GROUND_BASE = -10000`: Nền đất baked cơ sở của tất cả 12 phân khu.
+   - `DEPTH_GROUND_FOOTING = -9500`: Chân móng công trình, bờ đá.
+   - `DEPTH_GROUND_TURF = -9200`: Đốm cỏ rêu, mảng đất phủ ranh giới.
+   - `DEPTH_GROUND_STONES = -9100`: Sỏi đá cuội trên mặt đất.
+   - `DEPTH_GROUND_FLORA = -9000`: Hoa cỏ sát mặt sàn.
+   - `DEPTH_GROUND_WATER = -8900`: Vũng nước, dòng suối sát đất.
+   - `DEPTH_GROUND_DECALS = -8500`: Quầng sáng đèn sàn, nấm dạ quang, hào quang bệ thờ.
+   - `DEPTH_GROUND_MIST = -8000`: Sương mù ranh giới địa hình (WorldBuilder boundary mist).
+   - `DEPTH_VEIL_GROUND_FOG = -7000`: Sương mù mặt đất của VeilSystem.
+   - `DEPTH_VEIL_PINK_DAWN = -6900`: Sương mù hồng bình minh Fog Crossing.
+
+   **Khoảng cách an toàn (Safety Margin):**
+   Vị trí cao nhất về phía bắc của thế giới là $y = -640$ (đỉnh Rừng Sâu).
+   Khoảng cách an toàn giữa nhân vật/quái vật/cây cối thấp nhất và lớp sương mù/đất nền:
+   $$\Delta \text{Depth} = -640 - (-7000) = +6360 \text{ depth units}$$
+   Đảm bảo 100% không một thực thể nào trong game có thể bị nền đất hoặc sương mù mặt đất che phủ.
+
+2. **Cơ Chế Bảo Vệ Hiển Thị Nhân Vật (Display Guardrails in `SatyrPlayer.ts`):**
+   - Trong `update()`: Tự động kiểm tra và cưỡng chế `visible = true` và `alpha = 1` mỗi khung hình khi nhân vật không ở trong bụi rậm/thân cây ẩn nấp và chưa chết.
+   - Trong `safePlayAnim()`: Bổ sung fallback an toàn tự động phát `wayfarer_idle_down` / `satyr_idle_down` nếu khóa hoạt ảnh đích bị thiếu hoặc rỗng frame, bảo đảm sprite không bao giờ bị rơi vào trạng thái rỗng vô hình.
+   - Trong `exitHiding()`: Tái xác nhận `setVisible(true)` và `setAlpha(1)`.
+
+3. **Cơ Chế Bảo Vệ Chuyển Phân Khu Trong `GameScene.ts`:**
+   - Trong `handleZoneTransition()` (cả chuyển tiếp liền mạch 2A và cổng dịch chuyển 2B): Tự động giải phóng trạng thái ẩn nấp `if (this.player.stats.isHiding) this.player.exitHiding()`, đồng thời kích hoạt lại `setVisible(true)`, `setActive(true)`, `setAlpha(1)`.
+   - Trong vòng lặp `update()`: Duy trì kiểm tra liên tục tính hiển thị của nhân vật.
+
+---
+
+### 9.3 Bảng Tổng Hợp Kiểm Thử Nghiệm Thu V14-P8-11
+
+| Bộ Kiểm Thử | Tệp Kịch Bản | Số Bài Test | Kết Quả |
+| :--- | :--- | :---: | :---: |
+| **Kiểm Thử Hiển Thị & Phân Tầng Rừng Sâu** | `scripts/verify_v14_p8_11_deep_forest_visibility.mjs` | 55/55 | **PASS (100%)** |
+| **Hồi Quy Toàn Diện Kế Thừa V1.3** | `scripts/run_v1_3_regression_suite.mjs` | 571/571 | **PASS (100%)** |
+| **Xác Minh Di Trú Dữ Liệu Save V1.3 -> V1.4** | `scripts/verify_v1_4_save_migration.mjs` | 88/88 | **PASS (100%)** |
+| **Kiểm Thử Sinh Vật Sói Xương (Skull Wolf)** | `scripts/verify_v14_p8_08_skull_wolf.mjs` | 42/42 | **PASS (100%)** |
+| **Kiểm Thử Quái Vật Bóng Tối (Shadow Monsters)** | `scripts/verify_v14_p8_09_shadow_monsters.mjs` | 53/53 | **PASS (100%)** |
+| **Kiểm Thử Nhóm Hiệp Sĩ Tà Ác (Evil Knights)** | `scripts/verify_v14_p8_10_evil_knights.mjs` | 63/63 | **PASS (100%)** |
+| **Kiểm Tra Kiểu Dữ Liệu TypeScript** | `npx tsc --noEmit` | 0 Lỗi | **0 Lỗi (Code 0)** |
+| **Đóng Gói Bản Dựng Production** | `npm run build` | Vite 7.84s | **Thành công (Code 0)** |
+
+
 

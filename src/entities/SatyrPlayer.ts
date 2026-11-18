@@ -941,6 +941,17 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
     }
 
+    // C4-14-11 Display Guardrail: Bảo đảm nhân vật chính luôn hiển thị đầy đủ Sprite (visible = true, alpha = 1)
+    // khi không ẩn nấp và không chết, chống tàng hình hoặc mờ đục ngoài ý muốn khi chuyển phân khu
+    if (!this.stats.isHiding && !this._isDead) {
+      if (!this.visible) {
+        this.setVisible(true);
+      }
+      if (!this._isHurt && this.alpha < 1) {
+        this.setAlpha(1);
+      }
+    }
+
     // Cập nhật độ sâu đồ họa theo trục trời (Y-sorting) chỉ khi thay đổi integer Y
     const targetDepth = Math.floor(this.y);
     if (this.depth !== targetDepth) {
@@ -1127,6 +1138,13 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   private safePlayAnim(key: string, ignoreIfPlaying: boolean = true): boolean {
     const anim = this.scene.anims.get(key);
     if (!anim || !anim.frames || anim.frames.length === 0) {
+      // V14-P8-11: Nếu animation đích không tồn tại hoặc rỗng, bảo đảm sprite luôn có frame hoạt ảnh hiển thị
+      const fallbackIdle = this.scene.anims.exists('wayfarer_idle_down')
+        ? 'wayfarer_idle_down'
+        : (this.scene.anims.exists('satyr_idle_down') ? 'satyr_idle_down' : null);
+      if (fallbackIdle && key !== fallbackIdle) {
+        this.play(fallbackIdle, true);
+      }
       return false;
     }
     this.play(key, ignoreIfPlaying);
@@ -1854,6 +1872,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   public exitHiding(): void {
     this.stats.isHiding = false;
     this.setVisible(true);
+    this.setAlpha(1);
     if (this.lastSafePosition.x !== 0 || this.lastSafePosition.y !== 0) {
       this.setPosition(this.lastSafePosition.x, this.lastSafePosition.y);
       if (this.body) {

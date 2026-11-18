@@ -29,6 +29,13 @@ import { ZoneId, WorldTier } from '../types';
 import { WorldGatingSystem } from '../world/WorldGatingSystem';
 import { ZoneConnectionRegistry } from '../world/ZoneConnectionRegistry';
 import { AudioManager } from '../audio/AudioManager';
+import {
+  PORTRAIT_SKULL_WOLF,
+  PORTRAIT_SHADOW_BIG_BOSS,
+  PORTRAIT_FALLEN_KNIGHT,
+  PORTRAIT_DREAD_HORSEMAN,
+  PORTRAIT_HOODED_KNIGHT
+} from '../config/Constants';
 
 export type JournalTab = 'quest' | 'lore' | 'bestiary' | 'map';
 export type WorldMapZoneStatus = 'EXPLORED' | 'OPEN' | 'LOCKED' | 'UNIMPLEMENTED';
@@ -753,29 +760,36 @@ export class JournalModal {
     });
     this.contentContainer.add(leftTitle);
 
+    const itemsPerPage = 7;
+    const totalPages = Math.ceil(list.length / itemsPerPage);
+    const currentPage = Math.floor(this.currentLoreIndex / itemsPerPage);
+    const startIdx = currentPage * itemsPerPage;
+    const endIdx = Math.min(list.length, startIdx + itemsPerPage);
+
     let rowY = my + 94;
-    for (let i = 0; i < list.length; i++) {
+    for (let i = startIdx; i < endIdx; i++) {
       const item = list[i];
       const isSel = i === this.currentLoreIndex;
+      const isMemoryChapter = item.id.startsWith('lore_memory_chapter_');
       const cardW = mw / 2 - 50; // 370px
       const cardH = 46;
 
       const cardBg = this.scene.add.graphics();
-      cardBg.fillStyle(isSel ? 0x2e2417 : 0x181512, 0.95);
+      cardBg.fillStyle(isSel ? 0x2e2417 : (isMemoryChapter ? 0x201a14 : 0x181512), 0.95);
       cardBg.fillRoundedRect(mx + 30, rowY, cardW, cardH, 6);
-      cardBg.lineStyle(1.5, isSel ? 0xf39c12 : 0x4a3c22, 0.8);
+      cardBg.lineStyle(1.5, isSel ? 0xf39c12 : (isMemoryChapter ? 0x9c7a28 : 0x4a3c22), 0.85);
       cardBg.strokeRoundedRect(mx + 30, rowY, cardW, cardH, 6);
 
-      const marker = isSel ? '▶ ' : '• ';
+      const marker = isSel ? '▶ ' : (isMemoryChapter ? '⚔️ ' : '• ');
       const shortTitle = item.title.length > 28 ? item.title.substring(0, 26) + '...' : item.title;
       const titleTxt = HDTextHelper.createText(this.scene, mx + 42, rowY + 8, `${marker}${shortTitle}`, {
         fontSize: '12px',
-        fontStyle: isSel ? 'bold' : 'normal',
-        color: isSel ? '#f39c12' : '#ecf0f1'
+        fontStyle: (isSel || isMemoryChapter) ? 'bold' : 'normal',
+        color: isSel ? '#f39c12' : (isMemoryChapter ? '#ffc048' : '#ecf0f1')
       });
       const authorTxt = HDTextHelper.createText(this.scene, mx + 42, rowY + 26, `Bởi: ${item.author}`, {
         fontSize: '10px',
-        color: '#95a5a6'
+        color: isMemoryChapter ? '#f5cd79' : '#95a5a6'
       });
 
       const zone = this.scene.add.zone(mx + 30 + cardW / 2, rowY + cardH / 2, cardW, cardH);
@@ -788,18 +802,26 @@ export class JournalModal {
 
       this.contentContainer.add([cardBg, titleTxt, authorTxt, zone]);
       rowY += 52;
-      if (rowY > my + mh - 70) break;
+    }
+
+    if (totalPages > 1) {
+      const leftPageIndicator = HDTextHelper.createText(this.scene, mx + 30 + (mw / 4 - 25), my + mh - 30, `Trang ${currentPage + 1} / ${totalPages}`, {
+        fontSize: '12px',
+        color: '#7f8c8d'
+      }).setOrigin(0.5, 0.5);
+      this.contentContainer.add(leftPageIndicator);
     }
 
     // --- TRANG PHẢI: CHI TIẾT NỘI DUNG MẢNH KÝ ỨC ĐƯỢC CHỌN ---
     const entry = list[this.currentLoreIndex];
+    const isEntryMemory = entry.id.startsWith('lore_memory_chapter_');
     const rightX = mx + mw / 2 + 25;
     const rightW = mw / 2 - 45;
 
-    const rTitle = HDTextHelper.createText(this.scene, rightX, my + 66, entry.title, {
+    const rTitle = HDTextHelper.createText(this.scene, rightX, my + 66, (isEntryMemory ? '⚔️ ' : '') + entry.title, {
       fontSize: '14.5px',
       fontStyle: 'bold',
-      color: '#d4af37',
+      color: isEntryMemory ? '#ffc048' : '#d4af37',
       stroke: '#000000',
       strokeThickness: 2,
       wordWrap: { width: rightW }
@@ -808,7 +830,7 @@ export class JournalModal {
     const rAuthor = HDTextHelper.createText(this.scene, rightX, my + 105, `Ghi lại bởi: ${entry.author}`, {
       fontSize: '12px',
       fontStyle: 'italic',
-      color: '#95a5a6'
+      color: isEntryMemory ? '#f5cd79' : '#95a5a6'
     });
 
     const rContent = HDTextHelper.createText(this.scene, rightX, my + 130, entry.content, {
@@ -934,8 +956,37 @@ export class JournalModal {
       const bTitle = HDTextHelper.createText(this.scene, panelX + 16, panelY + 14, currentEntry.nameVi.toUpperCase(), {
         fontSize: '15.5px',
         fontStyle: 'bold',
-        color: '#d4af37'
+        color: '#d4af37',
+        wordWrap: { width: panelW - 80 }
       });
+
+      // V1.4: Hiển thị chân dung minh họa sinh vật nếu có tài nguyên
+      let portraitKey: string | null = null;
+      if (currentEntry.species === 'skull_wolf' && this.scene.textures.exists(PORTRAIT_SKULL_WOLF)) {
+        portraitKey = PORTRAIT_SKULL_WOLF;
+      } else if (currentEntry.species === 'shadow_behemoth' && this.scene.textures.exists(PORTRAIT_SHADOW_BIG_BOSS)) {
+        portraitKey = PORTRAIT_SHADOW_BIG_BOSS;
+      } else if (currentEntry.species === 'fallen_knight' && this.scene.textures.exists(PORTRAIT_FALLEN_KNIGHT)) {
+        portraitKey = PORTRAIT_FALLEN_KNIGHT;
+      } else if (currentEntry.species === 'dread_horseman' && this.scene.textures.exists(PORTRAIT_DREAD_HORSEMAN)) {
+        portraitKey = PORTRAIT_DREAD_HORSEMAN;
+      } else if (currentEntry.species === 'hooded_knight' && this.scene.textures.exists(PORTRAIT_HOODED_KNIGHT)) {
+        portraitKey = PORTRAIT_HOODED_KNIGHT;
+      }
+
+      if (portraitKey) {
+        const portX = panelX + panelW - 68;
+        const portY = panelY + 12;
+        const portBg = this.scene.add.graphics();
+        portBg.fillStyle(0x0e1114, 0.95);
+        portBg.fillRoundedRect(portX, portY, 52, 52, 6);
+        portBg.lineStyle(1.5, 0xd4af37, 0.9);
+        portBg.strokeRoundedRect(portX, portY, 52, 52, 6);
+
+        const portImg = this.scene.add.image(portX + 26, portY + 26, portraitKey);
+        portImg.setDisplaySize(48, 48);
+        this.contentContainer.add([portBg, portImg]);
+      }
 
       const bStatus = HDTextHelper.createText(this.scene, panelX + 16, panelY + 36, '🌟 ĐÃ GHI CHÉP VÀO SỔ TAY', {
         fontSize: '11px',
@@ -980,8 +1031,30 @@ export class JournalModal {
       const bTitle = HDTextHelper.createText(this.scene, panelX + 16, panelY + 14, '??? SINH VẬT CHƯA XÁC ĐỊNH', {
         fontSize: '15.5px',
         fontStyle: 'bold',
-        color: '#95a5a6'
+        color: '#95a5a6',
+        wordWrap: { width: panelW - 80 }
       });
+
+      if (
+        currentEntry.species === 'skull_wolf' ||
+        currentEntry.species === 'shadow_behemoth' ||
+        currentEntry.species === 'fallen_knight' ||
+        currentEntry.species === 'dread_horseman' ||
+        currentEntry.species === 'hooded_knight'
+      ) {
+        const portX = panelX + panelW - 68;
+        const portY = panelY + 12;
+        const portBg = this.scene.add.graphics();
+        portBg.fillStyle(0x0e1114, 0.95);
+        portBg.fillRoundedRect(portX, portY, 52, 52, 6);
+        portBg.lineStyle(1.5, 0x4a3c22, 0.6);
+        portBg.strokeRoundedRect(portX, portY, 52, 52, 6);
+
+        const qmark = HDTextHelper.createText(this.scene, portX + 26, portY + 26, '❓', {
+          fontSize: '18px'
+        }).setOrigin(0.5);
+        this.contentContainer.add([portBg, qmark]);
+      }
 
       const bStatus = HDTextHelper.createText(this.scene, panelX + 16, panelY + 36, '❓ CHƯA QUAN SÁT TRỰC TIẾP', {
         fontSize: '11px',

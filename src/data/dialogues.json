@@ -200,6 +200,136 @@
         "À còn nữa: nếu nghe thấy tiếng bước chân dồn dập ở Khoảng Trống Thì Thầm mà không thấy mặt đất rung, đó chỉ là Ký Ức The Echo thôi, đừng sợ nhé!"
       ],
       "onCompleteFlag": "talked_to_finn_rumors"
+    },
+    "campfire_knight_intro": {
+      "speaker": "Hiệp Sĩ Canh Lửa",
+      "portrait": "portrait_campfire_knight",
+      "lines": [
+        "Chào người lữ khách bước ra từ Màn Sương... Hãy ngồi xuống đây, bên cạnh hơi ấm này.",
+        "Khoan đã... Bộ giáp đen đó... và cách ngươi giữ ngọn đèn... ta ngỡ người đó đã tan biến trong màn sương từ lâu rồi... Không, có lẽ ta nhìn nhầm trong ánh lửa chập chờn.",
+        "Ta là kẻ canh gác cuối cùng còn sót lại của Đội Hiệp Sĩ Canh Lửa. Đoàn kỵ sĩ giáp bạc năm xưa đã tiến sâu vào rừng để bảo vệ làng, nhưng màn sương đen The Veil đã nuốt chửng tất cả...",
+        "Giờ đây, ngọn lửa trại này là thành trì duy nhất giữ cho tâm trí của chúng ta không bị tà khí xâm chiếm.",
+        "Nhưng than củi đang cạn dần. Ngươi có thể giúp ta gom 2 Gỗ Khô và 2 Nhựa Cây quanh bìa rừng để tiếp lửa nâng cấp Lửa Trại lên Cấp 2 không? Đồng thời hãy trinh sát bìa Rừng Ngoài xem lũ quái vật có động tĩnh gì không."
+      ],
+      "onCompleteFlag": "campfire_knight_q1_accepted",
+      "nextQuestId": "SQ06_KEEP_FIRE"
+    },
+    "campfire_knight_q1_reminder": {
+      "speaker": "Hiệp Sĩ Canh Lửa",
+      "portrait": "portrait_campfire_knight",
+      "lines": [
+        "Gió rừng đang thổi mạnh, ngọn lửa này cần thêm Gỗ Khô và Nhựa Cây để bùng cháy rực rỡ lên Cấp 2.",
+        "Hãy cẩn thận khi bước ra bìa Rừng Ngoài. Bật đèn lồng [F] và luôn nhớ nấp vào bụi rậm nếu nghe thấy tiếng quạ kêu báo động nhé!"
+      ]
+    },
+    "campfire_knight_q1_complete": {
+      "speaker": "Hiệp Sĩ Canh Lửa",
+      "portrait": "portrait_campfire_knight",
+      "lines": [
+        "Ánh lửa bùng lên ấm áp rồi! Tạ ơn người lữ khách dũng cảm, ngọn lửa Cấp 2 này sẽ xua tan hàn khí và phục hồi tinh thần nhanh hơn rất nhiều.",
+        "Cầm lấy gói trà an thần này, uống vào sẽ giúp tâm trí ngươi vững vàng trước màn sương.",
+        "Nhưng nhìn ngọn lửa nhảy múa, ta lại nhớ đến những người đồng đội năm xưa... Toán tuần tra từng tiến về phía Nam hướng tới Xưởng Chuông Bỏ Hoang và chưa từng quay trở lại.",
+        "Ngươi có thể đi theo con đường vòng uốn lượn tới Xưởng Chuông để tìm xem còn dấu vết gì của họ không? Nếu thấy Phôi Sắt Cổ Ngữ hoặc mảnh nhật ký nào, xin hãy mang về đây cho ta."
+      ],
+      "onCompleteFlag": "campfire_knight_q2_accepted",
+      "nextQuestId": "SQ07_LOST_COMRADES",
+      "rewardItem": "food_calming_tea",
+      "rewardCount": 1
+    },
+    "campfire_knight_q2_reminder": {
+      "speaker": "Hiệp Sĩ Canh Lửa",
+      "portrait": "portrait_campfire_knight",
+      "lines": [
+        "Con đường dẫn thẳng tới Tháp Chuông đã sập nhịp cầu đá cổ. Ngươi buộc phải đi theo đường vòng chữ S qua Rừng Ngoài và Đường Mòn Quanh Co để tiếp cận Xưởng Chuông Bỏ Hoang ở phía Nam.",
+        "Hãy chú ý tìm Phôi Sắt Cổ Ngữ và những trang nhật ký kỵ sĩ vương lại trong tàn tích hoang phế."
+      ]
+    },
+    "campfire_knight_q2_complete": {
+      "speaker": "Hiệp Sĩ Canh Lửa",
+      "portrait": "portrait_campfire_knight",
+      "lines": [
+        "Phôi Sắt Cổ Ngữ này... và cả nét chữ trên mảnh nhật ký cháy sém này nữa! Đúng là nét bút của trung úy kỵ sĩ rồi!",
+        "(Hiệp sĩ nghẹn ngào đọc trang nhật ký)... 'Bóng tối The Veil quá mạnh... Chỉ huy đã bị tà khí nuốt chửng linh hồn, trở thành bóng ma trùm mũ canh giữ cổ tự... Ai tìm thấy di ngôn này, xin hãy giải thoát cho ngài ấy...'",
+        "Trời ơi... Vị chỉ huy đáng kính của chúng ta đã biến thành Hooded Knight Boss bị sương đen sai khiến!",
+        "Hỡi lữ khách! Xin ngươi hãy giúp ta hoàn thành tâm nguyện đau đớn này: Tiến sâu vào cấm địa Rừng Sâu, đánh bại ngài ấy để giải thoát linh hồn, và mang 'Huy Hiệu Hiệp Sĩ Tha Hóa' về đây để ta thanh tẩy bên ngọn lửa!"
+      ],
+      "onCompleteFlag": "campfire_knight_q3_accepted",
+      "nextQuestId": "SQ08_PURIFY_FALLEN",
+      "rewardItem": "res_tree_resin",
+      "rewardCount": 2
+    },
+    "campfire_knight_q3_reminder": {
+      "speaker": "Hiệp Sĩ Canh Lửa",
+      "portrait": "portrait_campfire_knight",
+      "lines": [
+        "Chỉ Huy Hiệp Sĩ Trùm Mũ mang sức mạnh hắc ám khủng khiếp. Khi ngài ấy tụ năng lượng tà khí màu xanh thẫm, hãy nhanh tay vung gậy gỗ [Phím F / Chuột trái] để ngắt chiêu khiến ngài bị choáng váng!",
+        "Hãy cẩn trọng từng nhịp thở, và mang Huy Hiệu Hiệp Sĩ Tha Hóa trở về an toàn nhé!"
+      ]
+    },
+    "campfire_knight_q3_complete": {
+      "speaker": "Hiệp Sĩ Canh Lửa",
+      "portrait": "portrait_campfire_knight",
+      "lines": [
+        "Chiếc huy hiệu này... tà khí đen ngòm đang bốc hơi khi tiếp xúc với ánh lửa thiêng Sanctuary Camp!",
+        "(Hiệp Sĩ Canh Lửa chăm chú nhìn vết khắc biểu tượng trên mặt huy hiệu, rồi ngẩng đầu bàng hoàng nhìn sâu vào mắt bạn)...",
+        "Không thể nào... Đây là Quân Huy Tổng Chỉ Huy! Vết chém chéo đặc trưng và phong ấn bóng tối này... Người đứng trước mặt ta bấy lâu nay...",
+        "(Hiệp Sĩ Canh Lửa buông gươm, quỳ một gối phủ phục xuống nền đất trước mặt bạn với sự tôn kính tột cùng)...",
+        "Thần... xin kính cẩn bái kiến Ngài, Chỉ Huy Hiệp Sĩ Đen (The Black Knight)! Năm xưa chính ngài đã tự phong ấn ký ức để bảo vệ linh hồn khỏi lời nguyền The Veil... Giờ đây ngài đã thức tỉnh và trở về giải cứu chúng thần!",
+        "Huy hiệu đã được thanh tẩy hoàn toàn thành Bùa Hộ Thân Hiệp Sĩ. Xin trao lại bảo vật này cho ngài, cùng danh hiệu chân chính vốn thuộc về ngài!"
+      ],
+      "onCompleteFlag": "campfire_knight_q3_completed",
+      "rewardItem": "eqp_bronze_bell_charm",
+      "rewardCount": 1,
+      "healPlayer": true
+    },
+    "campfire_knight_idle_talk": {
+      "speaker": "Hiệp Sĩ Canh Lửa",
+      "portrait": "portrait_campfire_knight",
+      "lines": [
+        "Kính chào Chỉ Huy Hiệp Sĩ Đen! Thanh gươm của thần và ngọn lửa Sanctuary Camp này sẽ mãi mãi phục vụ theo mệnh lệnh của ngài.",
+        "Xin ngài hãy mở Sổ Tay [J] mục Ký Ức để xem lại toàn bộ 4 Chương Hồi Ức đã được phục hồi trọn vẹn!"
+      ],
+      "healPlayer": true
+    },
+    "garth_black_knight_reverence": {
+      "speaker": "Garth – Người Gác Cổng",
+      "portrait": "portrait_garth",
+      "lines": [
+        "Trời đất ơi... Kẻ Lữ Hành mà tôi từng nghi ngờ khi ngài bước ra từ màn sương... lại chính là vị Chỉ Huy Hiệp Sĩ Đen huyền thoại năm xưa sao?!",
+        "Xin tha thứ cho sự lỗ mãng trước đây của tôi! Cổng làng Bellhollow từ nay sẽ luôn mở rộng cung nghênh bước chân ngài. Ngài chính là niềm hy vọng duy nhất để xua tan màn sương The Veil này!"
+      ]
+    },
+    "edda_black_knight_reverence": {
+      "speaker": "Bà Edda – Người Giữ Chuông",
+      "portrait": "portrait_edda",
+      "lines": [
+        "Ta đã cảm nhận được điều này ngay từ khi ngài mang chiếc lưỡi chuông đồng trở về... Khí phách kiên định không hề khuất phục trước bóng tối.",
+        "Hỡi vị Hiệp Sĩ Đen của Bellhollow, lời nguyền trăm năm đang dần tan biến dưới từng nhát kiếm và ngọn đèn dẫn lối của ngài. Thần linh và linh hồn tổ tiên sẽ luôn che chở cho ngài!"
+      ]
+    },
+    "neris_black_knight_reverence": {
+      "speaker": "Neris – Thảo Dược Sư",
+      "portrait": "portrait_neris",
+      "lines": [
+        "Gió rừng và mạch rễ cổ đại đang reo vang những lời thì thầm hân hoan... Chúng nói rằng vị Hộ Vệ Vĩ Đại trong bộ giáp đen đã thức tỉnh.",
+        "Thưa Hiệp Sĩ Đen, các loại thảo dược và trà tễ của con bé này sẽ luôn sẵn sàng tiếp thêm sinh lực cho ngài bất cứ lúc nào ngài cần."
+      ]
+    },
+    "bram_black_knight_reverence": {
+      "speaker": "Bram – Thợ Rèn Làng",
+      "portrait": "portrait_blacksmith",
+      "lines": [
+        "Haha! Tôi biết ngay mà! Chỉ có một đại kiếm sư đích thực như vị Hiệp Sĩ Đen năm xưa mới có thể vung lưỡi gươm nặng trịch đó nhẹ nhàng như gió thoảng!",
+        "Thật vinh dự cho xưởng rèn tồi tàn này khi được phục vụ và tu bổ vũ khí cho ngài, thưa Chỉ Huy! Bất cứ thỏi sắt hay khuôn chuông nào ngài cần, Bram này xin dốc hết sức mình!"
+      ]
+    },
+    "finn_black_knight_reverence": {
+      "speaker": "Finn – Cậu Bé Tinh Nghịch",
+      "portrait": "portrait_finn",
+      "lines": [
+        "Oa! Anh Wayfarer... không phải, ngài chính là Ngài Hiệp Sĩ Đen trong truyền thuyết mà chú Garth hay kể sao?! Tuyệt vời quá đi mất!",
+        "Sau này lớn lên, em nhất định cũng sẽ rèn luyện thật giỏi và gia nhập đoàn hiệp sĩ để cùng ngài bảo vệ tháp chuông làng Bellhollow!"
+      ]
     }
   }
 }

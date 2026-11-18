@@ -34,6 +34,41 @@
       "title": "KÝ ỨC BI KỊCH: KẺ NUỐT TIẾNG CHUÔNG",
       "author": "Mảnh Ký Ức Cổ Ngữ",
       "content": "Kẻ Nuốt Tiếng Chuông từng là Người Bảo Hộ Đại Mạch Rễ cổ xưa của Bellhollow. Khi lời nguyền The Veil bùng phát và tháp chuông bị phá hủy, người bảo hộ đã hiến dâng thể xác nuốt trọn những thanh âm cuối cùng để ngăn màn sương đen nuốt chửng ngôi làng. Giờ đây khi phong ấn được tái lập và tiếng chuông ngân vang, linh hồn người bảo hộ đã được giải thoát, để lại Trái Tim Mạch Rễ Cổ như một minh chứng cho sự trường tồn của lòng quả cảm."
+    },
+    {
+      "id": "lore_campfire_knight_vow",
+      "act": 2,
+      "title": "LỜI THỀ CỦA ĐOÀN HIỆP SĨ CANH LỬA",
+      "author": "Hiệp Sĩ Canh Lửa",
+      "content": "Khi Màn Sương The Veil dâng cao và tiếng chuông làng câm bặt, đoàn kỵ sĩ giáp bạc chúng ta đã tuyên thệ: Cho dù bóng tối nuốt trọn bầu trời, chừng nào đống tro tàn này còn le lói một đốm than hồng, thanh gươm này sẽ không bao giờ hạ xuống.\n\nNgọn lửa trại không chỉ xua tan giá buốt, mà là bức tường thành vô hình bảo hộ Bình Tâm của những kẻ lữ hành còn muốn giữ lấy nhân tính giữa rừng hoang."
+    },
+    {
+      "id": "lore_memory_chapter_1",
+      "act": 1,
+      "title": "HỒI ỨC I: KẺ LỮ HÀNH MẤT TRÍ TRONG SƯƠNG",
+      "author": "Tàn Dư Ký Ức Bản Thể",
+      "content": "Ta tỉnh dậy nơi bìa rừng Bellhollow ẩm ướt với chiếc đèn lồng le lói trên tay và bộ giáp sắt bám đầy rêu phong. Tâm trí ta hoàn toàn trống rỗng, không nhớ nổi tên mình hay lý do vì sao lại lạc bước vào vùng đất bị nguyền rủa này. Dân làng gọi ta là 'The Mossbound Wayfarer' — kẻ lữ hành phủ rêu cô độc. Nhưng mỗi khi bước đi trong sương mù, từng nhịp đập trong lồng ngực luôn thôi thúc ta phải tiến về phía ngọn lửa và tìm kiếm sự thật đã bị chôn vùi dưới lớp sương đen."
+    },
+    {
+      "id": "lore_memory_chapter_2",
+      "act": 2,
+      "title": "HỒI ỨC II: MANH MỐI XƯỞNG CHUÔNG & VĂN BIA CỔ",
+      "author": "Tàn Dư Ký Ức Bản Thể",
+      "content": "Lần theo lời chỉ dẫn của Hiệp Sĩ Canh Lửa tới Xưởng Chuông Cũ bị lãng quên, ta chạm tay vào những phiến bia đá rêu phong khắc họa cuộc đại chiến năm xưa. Bia đá ghi lại hình bóng một vị Chỉ Huy Hiệp Sĩ Đen đã dẫn đầu đoàn hiệp sĩ tiến sâu vào lòng rễ ngàn năm để phong ấn khe nứt The Veil. Nhìn thanh gươm và những vết chém quen thuộc trên vách đá, một cảm giác nhức nhối quen thuộc bùng lên nơi đáy mắt... Phải chăng ta không chỉ là một kẻ lữ hành tình cờ ghé qua?"
+    },
+    {
+      "id": "lore_memory_chapter_3",
+      "act": 3,
+      "title": "HỒI ỨC III: TIẾNG GỌI THE ECHO & KẺ SA NGÃ",
+      "author": "Tàn Dư Ký Ức Bản Thể",
+      "content": "Khi chạm trán ảo ảnh The Echo và đối mặt với Hiệp Sĩ Trùm Trùm Đầu (Hooded Knight Boss) nơi rừng sâu, sự thật bàng hoàng hé lộ. Tên trùm khựng lại trong bàng hoàng trước đường kiếm và chiếc áo choàng bóng tối của ta: 'Chỉ Huy Hiệp Sĩ Đen?! Sao ngài lại quay mũi kiếm về phía chúng tôi?'. Những kỵ binh sa ngã từng là thuộc hạ trung kiên nhất dưới trướng ta trước khi bị màn sương The Veil tha hóa và nuốt trọn linh hồn. Trận chiến sinh tử không chỉ để sinh tồn, mà là nhát kiếm giải thoát cho những người đồng đội cũ khỏi cơn ác mộng vĩnh hằng."
+    },
+    {
+      "id": "lore_memory_chapter_4",
+      "act": 4,
+      "title": "HỒI ỨC IV: ĐẠI THỨC TỈNH — CHÂN TƯỚNG HIỆP SĨ ĐEN",
+      "author": "Hiệp Sĩ Đen (Black Knight)",
+      "content": "Khi cầm trên tay Huy Hiệu Hiệp Sĩ Tha Hóa và đứng trước ngọn lửa ấm Sanctuary Camp, Hiệp Sĩ Canh Lửa đã quỳ gối phủ phục trước ta: 'Mừng ngài trở về, thưa Chỉ Huy Hiệp Sĩ Đen!'. Ký Ức cuối cùng bừng sáng: Ta chính là vị Chỉ Huy huyền thoại đã tự tay xóa đi ký ức của chính mình để tránh bị tâm ma The Veil làm tha hóa, chấp nhận trở thành Kẻ Lữ Hành vô danh để một ngày nào đó quay lại nhổ tận gốc rễ lời nguyền. Giờ đây, thanh gươm bóng tối đã tìm lại chủ nhân chân chính. Ngọn đèn trên tay ta không còn chỉ để soi đường, mà là ngọn lửa dẫn lối giải thoát toàn bộ Khu Rừng Rỗng."
     }
   ],
   "questLog": [
@@ -43,8 +78,16 @@
       "title": "HỒI 0: XUYÊN QUA MÀN SƯƠNG",
       "description": "Thoát khỏi màn sương The Veil và tìm kiếm dấu vết sự sống.",
       "tasks": [
-        { "id": "t1", "text": "Di chuyển bằng [WASD / Mũi tên] và bật đèn bằng [F]", "done": true },
-        { "id": "t2", "text": "Tiếp cận ánh sáng xa và vượt qua Màn Sương", "done": true }
+        {
+          "id": "t1",
+          "text": "Di chuyển bằng [WASD / Mũi tên] và bật đèn bằng [F]",
+          "done": true
+        },
+        {
+          "id": "t2",
+          "text": "Tiếp cận ánh sáng xa và vượt qua Màn Sương",
+          "done": true
+        }
       ]
     },
     {
@@ -53,8 +96,16 @@
       "title": "HỒI 1: LÀNG CHUÔNG BELLHOLLOW",
       "description": "Tìm gặp Người Giữ Chuông để tìm hiểu nguồn gốc của khu rừng.",
       "tasks": [
-        { "id": "t1", "text": "Trò chuyện với dân làng Garth tại cổng làng", "done": false },
-        { "id": "t2", "text": "Gặp bà lão Edda dưới chân Tháp Chuông", "done": false }
+        {
+          "id": "t1",
+          "text": "Trò chuyện với dân làng Garth tại cổng làng",
+          "done": false
+        },
+        {
+          "id": "t2",
+          "text": "Gặp bà lão Edda dưới chân Tháp Chuông",
+          "done": false
+        }
       ]
     },
     {
@@ -63,8 +114,16 @@
       "title": "HỒI 1: THUỐC CỨU SINH MẠNG",
       "description": "Gặp Neris tại căn nhà thảo mộc để chữa trị vết thương.",
       "tasks": [
-        { "id": "t1", "text": "Tìm gặp Neris ở phía Đông Bắc làng Bellhollow", "done": false },
-        { "id": "t2", "text": "Nhận Thuốc Đắp và công thức sơ cứu", "done": false }
+        {
+          "id": "t1",
+          "text": "Tìm gặp Neris ở phía Đông Bắc làng Bellhollow",
+          "done": false
+        },
+        {
+          "id": "t2",
+          "text": "Nhận Thuốc Đắp và công thức sơ cứu",
+          "done": false
+        }
       ]
     },
     {
@@ -73,8 +132,16 @@
       "title": "HỒI 2: CHUẨN BỊ VÀO RỪNG CẤM",
       "description": "Thu thập nguyên liệu quanh làng và chế tạo trang bị sinh tồn.",
       "tasks": [
-        { "id": "t1", "text": "Thu thập ít nhất 1 Gỗ Khô và 1 Nhựa Cây quanh làng", "done": false },
-        { "id": "t2", "text": "Mở túi chế tạo [Phím C / I] để pha chế Dầu Đèn", "done": false }
+        {
+          "id": "t1",
+          "text": "Thu thập ít nhất 1 Gỗ Khô và 1 Nhựa Cây quanh làng",
+          "done": false
+        },
+        {
+          "id": "t2",
+          "text": "Mở túi chế tạo [Phím C / I] để pha chế Dầu Đèn",
+          "done": false
+        }
       ]
     },
     {
@@ -83,8 +150,16 @@
       "title": "HỒI 3: ĐƯỜNG MÒN QUANH CO",
       "description": "Tiến vào The Crooked Path, tránh né các mối nguy và tìm lối vào đầm lầy.",
       "tasks": [
-        { "id": "t1", "text": "Bước qua Cổng Đông của làng Bellhollow", "done": false },
-        { "id": "t2", "text": "Tập ẩn nấp trong Thân Cây Rỗng hoặc Bụi Rậm Đặc", "done": false }
+        {
+          "id": "t1",
+          "text": "Bước qua Cổng Đông của làng Bellhollow",
+          "done": false
+        },
+        {
+          "id": "t2",
+          "text": "Tập ẩn nấp trong Thân Cây Rỗng hoặc Bụi Rậm Đặc",
+          "done": false
+        }
       ]
     },
     {
@@ -93,9 +168,21 @@
       "title": "HỒI 4: ĐẦM LẦY TĨNH LẶNG",
       "description": "Giải mã 3 Cột Đá Cổ Ngữ để hạ mực nước bùn độc.",
       "tasks": [
-        { "id": "t1", "text": "Chạm vào Cột Đá Trăng Khuyết", "done": false },
-        { "id": "t2", "text": "Chạm vào Cột Đá Rễ Rừng", "done": false },
-        { "id": "t3", "text": "Chạm vào Cột Đá Con Mắt Kẻ Săn", "done": false }
+        {
+          "id": "t1",
+          "text": "Chạm vào Cột Đá Trăng Khuyết",
+          "done": false
+        },
+        {
+          "id": "t2",
+          "text": "Chạm vào Cột Đá Rễ Rừng",
+          "done": false
+        },
+        {
+          "id": "t3",
+          "text": "Chạm vào Cột Đá Con Mắt Kẻ Săn",
+          "done": false
+        }
       ]
     },
     {
@@ -104,8 +191,16 @@
       "title": "HỒI 5: MIẾU CHUÔNG PHẾ TÍCH",
       "description": "Đoạt lại Lưỡi Chuông Đồng từ bệ thờ và thoát khỏi sự truy đuổi của Kẻ Lắng Nghe.",
       "tasks": [
-        { "id": "t1", "text": "Thu hồi Lưỡi Chuông Đồng Cổ trên bệ đá", "done": false },
-        { "id": "t2", "text": "Cắt đuôi Kẻ Lắng Nghe và trở về an toàn làng Bellhollow", "done": false }
+        {
+          "id": "t1",
+          "text": "Thu hồi Lưỡi Chuông Đồng Cổ trên bệ đá",
+          "done": false
+        },
+        {
+          "id": "t2",
+          "text": "Cắt đuôi Kẻ Lắng Nghe và trở về an toàn làng Bellhollow",
+          "done": false
+        }
       ]
     }
   ],
@@ -123,6 +218,13 @@
       "title": "BÍ MẬT NGUỒN GỐC MÀN SƯƠNG BELLHOLLOW",
       "author": "Bích Họa Cổ Dưới Hầm Rễ",
       "content": "Dưới lòng đất ẩm lạnh, những nét vẽ cổ xưa kể lại: Màn sương The Veil không sinh ra từ bóng tối, mà là hơi thở của Rừng Rỗng khi quả chuông đồng lớn ngừng ngân. Cội rễ cổ đại nối liền mạch sống từ đầm lầy tới đỉnh tháp chuông. Khi ngọn lửa trại rực sáng và tiếng chuông vang lên, sương mù sẽ lùi bước, mở lối cho kẻ biết lắng nghe sự thật."
+    },
+    {
+      "id": "lore_black_knight_chronicle",
+      "act": 2,
+      "title": "VĂN BIA CỔ: HIỆP SĨ ĐEN VÀ PHONG ẤN ĐẠI MẠCH RỄ",
+      "author": "Văn Bia Cổ Xưởng Chuông",
+      "content": "Những dòng chữ khắc sâu trên phiến đá cổ kể lại: Khi thảm họa Màn Sương The Veil bùng phát từ lòng đất, 'Hiệp Sĩ Đen (Black Knight)' — vị chỉ huy duy nhất năm xưa dám tiến vào tâm điểm Mạch Rễ để phong ấn lời nguyền và đánh đổi toàn bộ ký ức của mình. Ngài đã biến mất vào sương sâu trong bộ giáp đen rêu phong, chỉ để lại thanh kiếm và ngọn đèn dẫn lối cho người kế tục..."
     }
   ],
   "sideQuestLog": [
@@ -133,8 +235,16 @@
       "title": "NHIỆM VỤ PHỤ: SẮT RÈN CỔ NGỮ",
       "description": "Tìm Phụ Kiện Sắt Rèn Cổ Ngữ tại Xưởng Chuông Bỏ Hoang đem về cho thợ rèn Bram.",
       "tasks": [
-        { "id": "t1", "text": "Khám phá Xưởng Chuông Bỏ Hoang ở rìa Nam Rừng Ngoại Vi", "done": false },
-        { "id": "t2", "text": "Mang Phụ Kiện Sắt Rèn Cổ Ngữ về cho Bram", "done": false }
+        {
+          "id": "t1",
+          "text": "Khám phá Xưởng Chuông Bỏ Hoang ở rìa Nam Rừng Ngoại Vi",
+          "done": false
+        },
+        {
+          "id": "t2",
+          "text": "Mang Phụ Kiện Sắt Rèn Cổ Ngữ về cho Bram",
+          "done": false
+        }
       ]
     },
     {
@@ -144,8 +254,16 @@
       "title": "NHIỆM VỤ PHỤ: KÝ ỨC QUẢ CHUÔNG CŨ",
       "description": "Thu hồi Khuôn Đúc Chuông Cũ từ Xưởng Chuông và trao đổi với bà lão Edda.",
       "tasks": [
-        { "id": "t1", "text": "Tìm Khuôn Đúc Chuông Cũ trên bàn chế tác của xưởng", "done": false },
-        { "id": "t2", "text": "Mang khuôn đúc về cho bà lão Edda dưới chân tháp chuông", "done": false }
+        {
+          "id": "t1",
+          "text": "Tìm Khuôn Đúc Chuông Cũ trên bàn chế tác của xưởng",
+          "done": false
+        },
+        {
+          "id": "t2",
+          "text": "Mang khuôn đúc về cho bà lão Edda dưới chân tháp chuông",
+          "done": false
+        }
       ]
     },
     {
@@ -155,9 +273,21 @@
       "title": "NHIỆM VỤ PHỤ: DƯỢC LIỆU HẦM RỄ",
       "description": "Xuống Hầm Rễ Cổ dưới Nông Trại Sanctuary, thu hoạch Rễ Thuốc Cổ và sắc Trà An Thần.",
       "tasks": [
-        { "id": "t1", "text": "Xuống Hầm Rễ Cổ qua cửa sập cạnh chòi nông cụ", "done": false },
-        { "id": "t2", "text": "Thu hoạch ít nhất 1 Rễ Thuốc Cổ và giải mã cơ quan ánh sáng", "done": false },
-        { "id": "t3", "text": "Nấu Trà Thảo Dược An Thần tại Nồi Nấu Thảo Dược", "done": false }
+        {
+          "id": "t1",
+          "text": "Xuống Hầm Rễ Cổ qua cửa sập cạnh chòi nông cụ",
+          "done": false
+        },
+        {
+          "id": "t2",
+          "text": "Thu hoạch ít nhất 1 Rễ Thuốc Cổ và giải mã cơ quan ánh sáng",
+          "done": false
+        },
+        {
+          "id": "t3",
+          "text": "Nấu Trà Thảo Dược An Thần tại Nồi Nấu Thảo Dược",
+          "done": false
+        }
       ]
     },
     {
@@ -167,9 +297,21 @@
       "title": "NHIỆM VỤ PHỤ: TRINH SÁT VÙNG THÌ THẦM",
       "description": "Thực hiện chuyến tuần tra qua Khoảng Trống Thì Thầm và kiểm tra 3 cột đá vọng âm.",
       "tasks": [
-        { "id": "t1", "text": "Tiến vào Khoảng Trống Thì Thầm giữa Outer Woods và Deep Forest", "done": false },
-        { "id": "t2", "text": "Kiểm tra 3 Cột Đá Vọng Âm và đối diện ảo ảnh The Echo", "done": false },
-        { "id": "t3", "text": "Báo cáo an toàn với Người Tuần Tra Garth để nhận Ủng Đi Rừng", "done": false }
+        {
+          "id": "t1",
+          "text": "Tiến vào Khoảng Trống Thì Thầm giữa Outer Woods và Deep Forest",
+          "done": false
+        },
+        {
+          "id": "t2",
+          "text": "Kiểm tra 3 Cột Đá Vọng Âm và đối diện ảo ảnh The Echo",
+          "done": false
+        },
+        {
+          "id": "t3",
+          "text": "Báo cáo an toàn với Người Tuần Tra Garth để nhận Ủng Đi Rừng",
+          "done": false
+        }
       ]
     },
     {
@@ -179,9 +321,84 @@
       "title": "NHIỆM VỤ PHỤ: TIN ĐỒN LỐI MÒN BÍ MẬT",
       "description": "Lắng nghe tin tức và các lối đi bí mật từ cậu bé đưa tin Finn.",
       "tasks": [
-        { "id": "t1", "text": "Trò chuyện với Finn tại quảng trường làng Bellhollow", "done": false }
+        {
+          "id": "t1",
+          "text": "Trò chuyện với Finn tại quảng trường làng Bellhollow",
+          "done": false
+        }
+      ]
+    },
+    {
+      "id": "SQ06_KEEP_FIRE",
+      "act": 2,
+      "category": "side",
+      "title": "NHIỆM VỤ TIẾN TRÌNH: GIỮ LỬA TRONG SƯƠNG",
+      "description": "Hiệp Sĩ Canh Lửa nhờ thu thập Gỗ Khô và Nhựa Thông để tiếp lửa nâng cấp Lửa Trại Trung Tâm làng Bellhollow lên Cấp 2, đồng thời trinh sát bìa Rừng Ngoài (Outer Woods).",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Thu thập ít nhất 2 Gỗ Khô và 2 Nhựa Cây quanh bìa rừng",
+          "done": false
+        },
+        {
+          "id": "t2",
+          "text": "Tiếp nhiên liệu nâng cấp Lửa Trại Trung Tâm lên Cấp 2",
+          "done": false
+        },
+        {
+          "id": "t3",
+          "text": "Trinh sát bìa Rừng Ngoài và báo cáo với Hiệp Sĩ Canh Lửa",
+          "done": false
+        }
+      ]
+    },
+    {
+      "id": "SQ07_LOST_COMRADES",
+      "act": 3,
+      "category": "side",
+      "title": "NHIỆM VỤ TIẾN TRÌNH: DẤU VẾT ĐỒNG ĐỘI CŨ",
+      "description": "Men theo con đường vòng uốn lượn tới Xưởng Chuông Bỏ Hoang ở phía Nam để thu hồi Phôi Sắt Cổ Ngữ và Mảnh Nhật Ký còn sót lại của đoàn kỵ sĩ.",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Men theo đường mòn uốn lượn qua Outer Woods tới Xưởng Chuông Bỏ Hoang",
+          "done": false
+        },
+        {
+          "id": "t2",
+          "text": "Thu hồi Phôi Sắt Cổ Ngữ (Runed Iron) và Mảnh Nhật Ký Kỵ Sĩ",
+          "done": false
+        },
+        {
+          "id": "t3",
+          "text": "Mang kỷ vật trở về bên ánh lửa trao cho Hiệp Sĩ Canh Lửa",
+          "done": false
+        }
+      ]
+    },
+    {
+      "id": "SQ08_PURIFY_FALLEN",
+      "act": 4,
+      "category": "side",
+      "title": "NHIỆM VỤ TIẾN TRÌNH: GIẢI THOÁT CHO NHỮNG KẺ THA HÓA",
+      "description": "Tiến sâu vào Rừng Sâu, đánh bại Chỉ Huy Hiệp Sĩ Trùm Mũ (Hooded Knight Boss) bị bóng tối điều khiển và mang Huy Hiệu Hiệp Sĩ Tha Hóa trở về bên bếp lửa để thanh tẩy.",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Vượt qua Đầm Lầy Tĩnh Lặng tiến sâu vào cấm địa Rừng Sâu",
+          "done": false
+        },
+        {
+          "id": "t2",
+          "text": "Đánh bại Chỉ Huy Hiệp Sĩ Trùm Mũ (Hooded Knight Boss)",
+          "done": false
+        },
+        {
+          "id": "t3",
+          "text": "Mang Huy Hiệu Hiệp Sĩ Tha Hóa về bên Lửa Trại để hiệp sĩ niệm chú thanh tẩy",
+          "done": false
+        }
       ]
     }
   ]
 }
-

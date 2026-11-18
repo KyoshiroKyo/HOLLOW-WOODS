@@ -76,8 +76,23 @@ import {
   SPRITE_GARTH_WALK_SHEET,
   SPRITE_POTTER_WALK_SHEET,
   SPRITE_ERRAND_BOY_WALK_SHEET,
+  SPRITE_CAMPFIRE_KNIGHT_PRAY,
+  SPRITE_CAMPFIRE_KNIGHT_IDLE,
+  PORTRAIT_CAMPFIRE_KNIGHT,
   SPRITE_THE_LISTENER,
   SPRITE_THE_ECHO,
+  SPRITE_SKULL_WOLF,
+  PORTRAIT_SKULL_WOLF,
+  SPRITE_SHADOW_CROW,
+  SPRITE_SHADOW_EYES,
+  SPRITE_SHADOW_BIG_BOSS,
+  PORTRAIT_SHADOW_BIG_BOSS,
+  SPRITE_FALLEN_KNIGHT,
+  PORTRAIT_FALLEN_KNIGHT,
+  SPRITE_DREAD_HORSEMAN,
+  PORTRAIT_DREAD_HORSEMAN,
+  SPRITE_HOODED_KNIGHT,
+  PORTRAIT_HOODED_KNIGHT,
   SPRITE_FOG_SMOOTH,
   SPRITE_RES_DRY_WOOD,
   SPRITE_RES_TREE_RESIN,
@@ -262,6 +277,17 @@ export class PreloadScene extends Phaser.Scene {
       frameHeight: 64
     });
 
+    // V14-P8-14A: Nạp sprite NPC Hiệp Sĩ Canh Lửa (Campfire Knight)
+    this.load.spritesheet(SPRITE_CAMPFIRE_KNIGHT_PRAY, 'assets/characters/npcs/campfire_knight_pray_sheet.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet(SPRITE_CAMPFIRE_KNIGHT_IDLE, 'assets/characters/npcs/campfire_knight_idle_sheet.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.image(PORTRAIT_CAMPFIRE_KNIGHT, 'assets/characters/npcs/portrait_campfire_knight.png');
+
     // Giữ tương thích các khóa nạp spritesheet cũ (garth_idle, garth_walk, edda_idle, edda_walk, neris_idle, neris_walk)
     this.load.spritesheet(SPRITE_GARTH_IDLE, 'assets/characters/villagers/garth_walk_sheet.png', {
       frameWidth: 64,
@@ -302,6 +328,44 @@ export class PreloadScene extends Phaser.Scene {
       frameHeight: 64
     });
     this.load.image(SPRITE_THE_ECHO, 'assets/monsters/the_echo.png');
+    this.load.spritesheet(SPRITE_SKULL_WOLF, 'assets/characters/monsters/skull_wolf_sheet.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.image(PORTRAIT_SKULL_WOLF, 'assets/characters/monsters/portrait_skull_wolf.png');
+
+    // V1.4 - P8-09: Quái Vật Bóng Tối (Shadow Crow, Shadow Eyes, Abyssal Shade Behemoth)
+    this.load.spritesheet(SPRITE_SHADOW_CROW, 'assets/characters/monsters/shadow_crow_sheet.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet(SPRITE_SHADOW_EYES, 'assets/characters/monsters/shadow_eyes_sheet.png', {
+      frameWidth: 48,
+      frameHeight: 48
+    });
+    this.load.spritesheet(SPRITE_SHADOW_BIG_BOSS, 'assets/characters/bosses/shadow_big_boss_sheet.png', {
+      frameWidth: 80,
+      frameHeight: 80
+    });
+    this.load.image(PORTRAIT_SHADOW_BIG_BOSS, 'assets/characters/bosses/portrait_shadow_big_boss.png');
+
+    // V1.4 - P8-10: Nhóm Hiệp Sĩ Tà Ác (Evil Knights Faction)
+    this.load.spritesheet(SPRITE_FALLEN_KNIGHT, 'assets/characters/enemies/fallen_knight_sheet.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.image(PORTRAIT_FALLEN_KNIGHT, 'assets/characters/enemies/portrait_fallen_knight.png');
+    this.load.spritesheet(SPRITE_DREAD_HORSEMAN, 'assets/characters/enemies/dread_horseman_sheet.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.image(PORTRAIT_DREAD_HORSEMAN, 'assets/characters/enemies/portrait_dread_horseman.png');
+    this.load.spritesheet(SPRITE_HOODED_KNIGHT, 'assets/characters/bosses/hooded_knight_sheet.png', {
+      frameWidth: 160,
+      frameHeight: 160
+    });
+    this.load.image(PORTRAIT_HOODED_KNIGHT, 'assets/characters/bosses/portrait_hooded_knight.png');
+
     this.load.image(SPRITE_FOG_SMOOTH, 'assets/environment/sprites/fog_smooth.png');
 
     // 11. Nạp các sprite tài nguyên thu thập thế giới 16×16 px (C4-02A)
@@ -359,6 +423,24 @@ export class PreloadScene extends Phaser.Scene {
 
     // C4-13-15: Nạp 4 Icon Pixel Art (16x16 px) sắc nét cho các thuộc tính sinh tồn HUD
     HUDIconGenerator.generateAllHUDIcons(this);
+
+    // V14-P8-14B: Đăng ký 2 hoạt ảnh chuẩn của Hiệp Sĩ Canh Lửa (anim_campfire_knight_pray và anim_campfire_knight_idle)
+    if (this.textures.exists(SPRITE_CAMPFIRE_KNIGHT_PRAY) && !this.anims.exists('anim_campfire_knight_pray')) {
+      this.anims.create({
+        key: 'anim_campfire_knight_pray',
+        frames: this.anims.generateFrameNumbers(SPRITE_CAMPFIRE_KNIGHT_PRAY, { start: 0, end: 11 }),
+        frameRate: 4,
+        repeat: -1
+      });
+    }
+    if (this.textures.exists(SPRITE_CAMPFIRE_KNIGHT_IDLE) && !this.anims.exists('anim_campfire_knight_idle')) {
+      this.anims.create({
+        key: 'anim_campfire_knight_idle',
+        frames: this.anims.generateFrameNumbers(SPRITE_CAMPFIRE_KNIGHT_IDLE, { start: 0, end: 7 }),
+        frameRate: 6,
+        repeat: -1
+      });
+    }
 
     // C4-133-02: Đồng bộ tức thì các AudioBuffer đã được Phaser nạp vào AudioManager
     AudioManager.getInstance().syncWithPhaserCache(this);

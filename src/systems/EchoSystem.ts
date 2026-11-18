@@ -1,5 +1,6 @@
 import * as Phaser from 'phaser';
 import { TheEcho } from '../entities/TheEcho';
+import { PlayerState } from '../state/PlayerState';
 
 export interface EchoSpawnPoint {
   id: string;
@@ -106,6 +107,12 @@ export class EchoSystem {
 
     const sp = this.currentSpawnPoint;
     const echo = this.activeEchoContainer;
+
+    const ps = PlayerState.getInstance();
+    if (ps.memoryAwakeningStage < 2) {
+      ps.setMemoryAwakeningStage(2);
+      this.scene.events.emit('memory_awakening_stage_changed', 2);
+    }
 
     echo.dissolve((msg) => {
       this.activeEchoContainer = null;

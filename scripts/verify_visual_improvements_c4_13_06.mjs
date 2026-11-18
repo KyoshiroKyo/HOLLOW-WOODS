@@ -93,7 +93,7 @@ assert(playerContent.includes('this.footShadowGfx = scene.add.graphics();') && p
 console.log('\n--- 7. KIỂM TRA SƯƠNG MÙ ĐA TẦNG PARALLAX (VEILSYSTEM) ---');
 const veilContent = fs.readFileSync(path.join(PROJECT_ROOT, 'src/systems/VeilSystem.ts'), 'utf-8');
 assert(veilContent.includes('fogLayerGround') && veilContent.includes('fogLayerMid') && veilContent.includes('fogLayerHigh'), 'VeilSystem thiết lập đầy đủ 3 tầng sương mù: Ground, Mid, High');
-assert(veilContent.includes('this.fogLayerGround.setDepth(-40);'), 'fogLayerGround đặt ở depth -40 (là là mặt đất, dưới nhân vật)');
+assert(veilContent.includes('this.fogLayerGround.setDepth(-40);') || veilContent.includes('this.fogLayerGround.setDepth(DEPTH_VEIL_GROUND_FOG);'), 'fogLayerGround đặt ở depth tầng đất dưới nhân vật');
 assert(veilContent.includes('this.fogLayerMid.setDepth(450);'), 'fogLayerMid đặt ở depth 450 (lưng chừng thân cây)');
 assert(veilContent.includes('this.fogLayerHigh.setDepth(2800);'), 'fogLayerHigh đặt ở depth 2800 (tán cây trên cao, dưới HUD/UI)');
 assert(veilContent.includes('this.fogLayerGround.setAlpha(0.24);'), 'Sương mù được kích hoạt alpha ngay từ constructor (thấy sương từ frame 0)');

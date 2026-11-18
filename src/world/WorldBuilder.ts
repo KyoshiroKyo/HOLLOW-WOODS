@@ -29,7 +29,15 @@ import {
   SPRITE_ROCK_MEDIUM,
   SPRITE_WOODEN_FENCE,
   SPRITE_SIGNPOST,
-  SPRITE_FOG_SMOOTH
+  SPRITE_FOG_SMOOTH,
+  DEPTH_GROUND_BASE,
+  DEPTH_GROUND_FOOTING,
+  DEPTH_GROUND_TURF,
+  DEPTH_GROUND_STONES,
+  DEPTH_GROUND_FLORA,
+  DEPTH_GROUND_WATER,
+  DEPTH_GROUND_DECALS,
+  DEPTH_GROUND_MIST
 } from '../config/Constants';
 
 export interface RunestoneVisualEntry {
@@ -309,7 +317,7 @@ export class WorldBuilder {
 
     const groundImg = this.scene.add.image(bounds.x, bounds.y, texKey);
     groundImg.setOrigin(0, 0);
-    groundImg.setDepth(-98);
+    groundImg.setDepth(DEPTH_GROUND_BASE);
   }
 
   /**
@@ -735,7 +743,7 @@ export class WorldBuilder {
 
     const groundImg = this.scene.add.image(bounds.x, bounds.y, texKey);
     groundImg.setOrigin(0, 0);
-    groundImg.setDepth(-98);
+    groundImg.setDepth(DEPTH_GROUND_BASE);
   }
 
   /**
@@ -1006,7 +1014,7 @@ export class WorldBuilder {
 
     const groundImg = this.scene.add.image(bounds.x, bounds.y, texKey);
     groundImg.setOrigin(0, 0);
-    groundImg.setDepth(-98);
+    groundImg.setDepth(DEPTH_GROUND_BASE);
   }
 
   /**
@@ -1015,7 +1023,7 @@ export class WorldBuilder {
    * Bao gồm thảm lá kim tối màu, rêu rừng ẩm, bãi trại thợ săn và đường mòn đất uốn lượn tự nhiên.
    */
   private renderOuterWoodsTerrain(bounds: { x: number; y: number; width: number; height: number }): void {
-    const texKey = 'outer_woods_ground_baked_v12';
+    const texKey = 'outer_woods_ground_baked_v14';
     if (!this.scene.textures.exists(texKey)) {
       const W = bounds.width;  // 480 (x: 1120..1600)
       const H = bounds.height; // 480 (y: 560..1040)
@@ -1185,12 +1193,15 @@ export class WorldBuilder {
           }
         };
 
-        // Tuyến đường chính: Từ Cổng Làng Bellhollow (1210, 560) qua Bãi Cửa Rừng xuống Ngã Ba Trại Thợ Săn (1270, 740)
+        // V14-P8-13 Chặng 1: Tuyến đường vòng uốn lượn chữ S qua rặng thông & sồi rậm rạp
+        // Từ Cổng Làng Bellhollow (1210, 560) lượn chữ S sang Tây rồi vòng Đông qua Trại Thợ Săn (1330, 730)
         drawWoodsPath([
           { x: 1210, y: 560, r: 20 },
-          { x: 1235, y: 620, r: 20 },
-          { x: 1255, y: 680, r: 21 },
-          { x: 1270, y: 740, r: 22 }
+          { x: 1170, y: 625, r: 21 }, // Cua chữ S sang Tây men rặng sồi
+          { x: 1165, y: 685, r: 20 },
+          { x: 1210, y: 715, r: 21 },
+          { x: 1270, y: 735, r: 22 }, // Uốn sang Đông qua Trại Thợ Săn
+          { x: 1330, y: 730, r: 24 }
         ]);
 
         // Nhánh liên thông từ Nông Trại Trú Ẩn (1120, 740) sang Ngã Ba Trại (1270, 740) và vào Bãi Trại (1330, 730)
@@ -1201,11 +1212,13 @@ export class WorldBuilder {
           { x: 1330, y: 730, r: 24 }
         ]);
 
-        // Nhánh rẽ chính tiếp nối từ Bãi Trại về phía Bãi Suối Rừng Đông-Nam (1330 -> 1460, 810)
+        // Nhánh rẽ chính tiếp nối từ Bãi Trại uốn lượn chữ S qua Bãi Suối Rừng Đông-Nam tới lối mòn sang Crooked Path
         drawWoodsPath([
           { x: 1330, y: 730, r: 24 },
-          { x: 1390, y: 760, r: 20 },
-          { x: 1460, y: 810, r: 19 }
+          { x: 1385, y: 770, r: 21 },
+          { x: 1440, y: 810, r: 20 }, // Bờ suối & đá cuội
+          { x: 1500, y: 805, r: 19 },
+          { x: 1555, y: 775, r: 18 }  // Nối sang The Crooked Path
         ]);
 
         // C4-12-20: Nhánh rẽ phụ khám phá tiếp nối về phía Đông tiếp giáp biên giới Đường Mòn Quanh Co
@@ -1250,7 +1263,7 @@ export class WorldBuilder {
 
     const groundImg = this.scene.add.image(bounds.x, bounds.y, texKey);
     groundImg.setOrigin(0, 0);
-    groundImg.setDepth(-98);
+    groundImg.setDepth(DEPTH_GROUND_BASE);
   }
 
   /**
@@ -1259,7 +1272,7 @@ export class WorldBuilder {
    * Khớp nối chuẩn xác 100% với Cổng Đông Bellhollow tại (1600, 282) và Đầm Lầy Tĩnh Lặng tại (2880, 300).
    */
   private renderCrookedPathTerrain(bounds: { x: number; y: number; width: number; height: number }): void {
-    const texKey = 'crooked_path_ground_baked_v12';
+    const texKey = 'crooked_path_ground_baked_v14';
     if (!this.scene.textures.exists(texKey)) {
       const W = bounds.width;  // 1280
       const H = bounds.height; // 640
@@ -1446,27 +1459,43 @@ export class WorldBuilder {
         drawClearing(1900, 180, 36, 26); // Thân cây rỗng 1
         drawClearing(2100, 280, 48, 32); // Tảng đá lớn giữa rừng
         drawClearing(2350, 420, 36, 26); // Thân cây rỗng 2
+        drawClearing(1750, 278, 30, 20); // Mép Tây Cầu Sập Chặn Lối Thẳng (V14-P8-13)
+        drawClearing(2060, 170, 34, 22); // Ngã Rẽ Biển Chỉ Đường Tuyến Vòng (V14-P8-13)
+        drawClearing(2740, 390, 38, 24); // Đầu Cầu Gỗ Phụ Xuyên Sương (V14-P8-13)
 
-        // 3.1. Tuyến đường chính uốn lượn từ Cổng Đông Bellhollow sang Silent Mire
+        // 3.1. V14-P8-13: Lối thẳng cũ từ Cổng Đông bị đứt đoạn tại mép Cầu Đá Cổ Bị Sập x = 1750
         drawTrail([
           { x: 1600, y: 282, r: 22 }, // Khớp 100% Cổng Đông Bellhollow!
-          { x: 1720, y: 275, r: 21 },
-          { x: 1820, y: 265, r: 20 }, // Gần bụi rậm trốn 1 (1820, 260)
-          { x: 1910, y: 235, r: 22 }, // Gần thân cây rỗng 1 (1900, 180)
-          { x: 2020, y: 245, r: 22 }, // Ngã 3 rẽ Rừng Sâu
-          { x: 2120, y: 270, r: 23 }, // Vòng qua tảng đá (2100, 280)
-          { x: 2240, y: 310, r: 21 }, // Lượn xuống phía Nam
-          { x: 2340, y: 345, r: 22 }, // Gần thân cây rỗng 2 (2350, 420)
-          { x: 2480, y: 340, r: 21 }, // Gần bụi rậm 3 (2500, 380)
-          { x: 2620, y: 315, r: 21 },
-          { x: 2750, y: 295, r: 20 },
-          { x: 2880, y: 300, r: 20 }  // Khớp 100% cổng vào Silent Mire!
+          { x: 1680, y: 280, r: 21 },
+          { x: 1750, y: 278, r: 20 }  // Chạm vào mép vực sương & chướng ngại vật cầu sập!
         ], true);
 
-        // 3.2. Nhánh rẽ phía Bắc lên Rừng Sâu (Deep Forest Branch)
+        // 3.2. V14-P8-13 Chặng 2: Tuyến đường vòng uốn lượn từ nhánh Outer Woods (1610, 500)
+        // qua ngã ba tiền tuyến, vòng lên phía Bắc sát bìa Rừng Sâu và Xưởng Chuông Bỏ Hoang
         drawTrail([
-          { x: 2020, y: 245, r: 20 },
-          { x: 2055, y: 170, r: 18 },
+          { x: 1610, y: 500, r: 22 }, // Khớp hoàn hảo vạch chuyển vùng Outer Woods
+          { x: 1660, y: 440, r: 21 },
+          { x: 1750, y: 410, r: 20 },
+          { x: 1860, y: 360, r: 20 },
+          { x: 1980, y: 280, r: 21 },
+          { x: 2060, y: 200, r: 22 }, // Ngã rẽ Biển Chỉ Đường & bìa Rừng Sâu
+          { x: 2140, y: 150, r: 21 },
+          { x: 2280, y: 150, r: 22 }  // Bìa rừng phía Bắc
+        ], true);
+
+        // 3.3. V14-P8-13 Chặng 3: Từ nhánh Bắc vòng ngược xuống phía Nam qua Cây Cầu Gỗ Phụ Xuyên Sương (2740, 390) sang Silent Mire
+        drawTrail([
+          { x: 2280, y: 150, r: 22 },
+          { x: 2420, y: 220, r: 21 },
+          { x: 2540, y: 300, r: 21 },
+          { x: 2660, y: 365, r: 20 },
+          { x: 2740, y: 390, r: 21 }, // Bắc qua Cầu Gỗ Phụ Xuyên Sương
+          { x: 2880, y: 380, r: 20 }  // Kết nối sang Đầm Lầy Tĩnh Lặng
+        ], true);
+
+        // 3.4. Nhánh rẽ phía Bắc lên Rừng Sâu (Deep Forest Branch)
+        drawTrail([
+          { x: 2060, y: 200, r: 20 },
           { x: 2085, y: 95, r: 17 },
           { x: 2100, y: 35, r: 18 }   // Tới biển cảnh báo Rừng Sâu (2100, 35)
         ], false);
@@ -1475,21 +1504,13 @@ export class WorldBuilder {
         drawClearing(1680, 320, 36, 24); // Ngã Ba Rừng Biên Giới
         drawClearing(2650, 260, 30, 20); // Bọc hành trang cũ
 
-        // 3.3. Nhánh rẽ phía Tây-Nam kết nối hai chiều với Rừng Ngoại Vi (Outer Woods Branch C4-12-21)
-        drawTrail([
-          { x: 1680, y: 285, r: 20 },
-          { x: 1660, y: 360, r: 20 },
-          { x: 1635, y: 440, r: 21 },
-          { x: 1610, y: 500, r: 22 }   // Khớp hoàn hảo vạch chuyển vùng Outer Woods (1600, 440..560)
-        ], false);
-
         canvasTex.refresh();
       }
     }
 
     const groundImg = this.scene.add.image(bounds.x, bounds.y, texKey);
     groundImg.setOrigin(0, 0);
-    groundImg.setDepth(-98);
+    groundImg.setDepth(DEPTH_GROUND_BASE);
   }
 
   /**
@@ -1731,7 +1752,7 @@ export class WorldBuilder {
 
     const groundImg = this.scene.add.image(bounds.x, bounds.y, texKey);
     groundImg.setOrigin(0, 0);
-    groundImg.setDepth(-98);
+    groundImg.setDepth(DEPTH_GROUND_BASE);
   }
 
   /**
@@ -1943,7 +1964,7 @@ export class WorldBuilder {
 
     const groundImg = this.scene.add.image(bounds.x, bounds.y, texKey);
     groundImg.setOrigin(0, 0);
-    groundImg.setDepth(-98);
+    groundImg.setDepth(DEPTH_GROUND_BASE);
   }
 
   /**
@@ -2108,7 +2129,7 @@ export class WorldBuilder {
 
     const groundImg = this.scene.add.image(bounds.x, bounds.y, texKey);
     groundImg.setOrigin(0, 0);
-    groundImg.setDepth(-97);
+    groundImg.setDepth(DEPTH_GROUND_BASE);
   }
 
   /**
@@ -2280,7 +2301,7 @@ export class WorldBuilder {
 
     const groundImg = this.scene.add.image(bounds.x, bounds.y, texKey);
     groundImg.setOrigin(0, 0);
-    groundImg.setDepth(-98);
+    groundImg.setDepth(DEPTH_GROUND_BASE);
   }
 
   private renderDecorations(zone: ZoneData): void {
@@ -2650,7 +2671,7 @@ export class WorldBuilder {
     footingGfx.fillRoundedRect(x - 3, y + h - 8, w + 6, 14, 5);
     footingGfx.fillStyle(0x1e261f, 0.40);
     footingGfx.fillRect(x + 2, y + h - 4, w - 4, 7);
-    footingGfx.setDepth(-95);
+    footingGfx.setDepth(DEPTH_GROUND_FOOTING);
     this.registerCullable(footingGfx, x + w / 2, y + h, Math.max(w, h));
 
     // Sprite nhà có kích thước 112×80 px, đặt tại (x, y - 24) để mái nhà vươn lên cao
@@ -2677,7 +2698,7 @@ export class WorldBuilder {
     towerFooting.fillRoundedRect(x - 4, y + h - 10, w + 8, 16, 6);
     towerFooting.fillStyle(0x222a24, 0.42);
     towerFooting.fillRect(x + 2, y + h - 5, w - 4, 8);
-    towerFooting.setDepth(-95);
+    towerFooting.setDepth(DEPTH_GROUND_FOOTING);
     this.registerCullable(towerFooting, x + w / 2, y + h, Math.max(w, h));
 
     // Tháp chuông làng Bellhollow bằng sprite SPRITE_BELL_TOWER (80×112 px)
@@ -2833,7 +2854,7 @@ export class WorldBuilder {
     const cottageFooting = this.scene.add.graphics();
     cottageFooting.fillStyle(0x080c09, 0.48);
     cottageFooting.fillRoundedRect(x - 2, y + 42, 98, 12, 5);
-    cottageFooting.setDepth(-95);
+    cottageFooting.setDepth(DEPTH_GROUND_FOOTING);
     this.registerCullable(cottageFooting, x + 47, y + 46, 60);
 
     const house = this.scene.add.image(x, y - 22, SPRITE_HOUSE_EDDA);
@@ -3717,7 +3738,7 @@ export class WorldBuilder {
       floorFlora.fillStyle(0x3b5e31, 1);
       floorFlora.fillRect(fb.x + 4, fb.y + 1, 6, 2);
     }
-    floorFlora.setDepth(-90);
+    floorFlora.setDepth(DEPTH_GROUND_FLORA);
   }
 
   /**
@@ -3735,7 +3756,7 @@ export class WorldBuilder {
       scaleY: number,
       alpha: number,
       tint: number,
-      _depth: number = -65,
+      _depth: number = DEPTH_GROUND_MIST,
       driftX: number = 22,
       duration: number = 7200
     ) => {
@@ -3744,7 +3765,7 @@ export class WorldBuilder {
       mist.setScale(scaleX, scaleY);
       mist.setAlpha(alpha);
       mist.setTint(tint);
-      mist.setDepth(-65); // C4-12-30: Sương mù ranh giới ở depth -65 (trên nền đất, tuyệt đối không che người chơi, NPC, bảng tên hay tương tác)
+      mist.setDepth(DEPTH_GROUND_MIST); // C4-12-30: Sương mù ranh giới ở depth -65 (trên nền đất, tuyệt đối không che người chơi, NPC, bảng tên hay tương tác)
       this.registerCullable(mist, x, y, 120);
 
       if (this.scene.tweens && driftX > 0) {
@@ -3856,7 +3877,7 @@ export class WorldBuilder {
     water.fillEllipse(x + w / 2, y + h / 2, w, h);
     water.lineStyle(2, 0x192e27, 0.8);
     water.strokeEllipse(x + w / 2, y + h / 2, w, h);
-    water.setDepth(-80);
+    water.setDepth(DEPTH_GROUND_WATER);
     this.registerCullable(water, x + w / 2, y + h / 2, Math.max(w, h));
 
     const body = this.colliderGroup.create(x + w / 2, y + h / 2, undefined) as Phaser.Physics.Arcade.Sprite;
@@ -4301,7 +4322,7 @@ export class WorldBuilder {
       fog.setTint(0x403d52);
       fog.setAlpha(p.alpha);
       fog.setScale(p.scale);
-      fog.setDepth(-65); // C4-12-30: Sương mù ranh giới ở depth -65 (trên nền đất, tuyệt đối không che Miếu Chuông hay Bệ Thờ)
+      fog.setDepth(DEPTH_GROUND_MIST); // C4-12-30: Sương mù ranh giới ở depth -65 (trên nền đất, tuyệt đối không che Miếu Chuông hay Bệ Thờ)
       this.registerCullable(fog, p.x, p.y, 140);
 
       if (this.scene.tweens) {
@@ -4368,6 +4389,22 @@ export class WorldBuilder {
       }
       if (!this.interactables.some(i => i.id === extraSpot2.id)) {
         this.interactables.push(extraSpot2);
+      }
+
+      // V14-P8-13: Đăng ký tương tác chướng ngại vật Cầu Đá Cổ Bị Sập
+      const collapsedBridgeInteractable: InteractableSpec = {
+        id: 'collapsed_shrine_bridge',
+        name: 'Cầu Đá Cổ Bị Sập',
+        type: 'clue',
+        x: 1760,
+        y: 280,
+        width: 48,
+        height: 48,
+        promptText: '[E] Khảo sát Cầu Đá Bị Sập',
+        actionId: 'inspect_collapsed_bridge'
+      };
+      if (!this.interactables.some(i => i.id === collapsedBridgeInteractable.id)) {
+        this.interactables.push(collapsedBridgeInteractable);
       }
     }
   }
@@ -4510,6 +4547,12 @@ export class WorldBuilder {
     this.createRock(1410, 750, 38, 22);
     this.createRock(1450, 840, 32, 18);
     this.createRock(1490, 920, 30, 16);
+
+    // V14-P8-13: Bụi Rậm Khúc Cua Chữ S & Điểm Thu Thập Nguyên Liệu Tuyến Đường Vòng
+    this.createDenseBush(1180, 650); // Bụi Rậm Khúc Cua Chữ S
+    this.createGatheringNodeProp(1240, 660, 'wood', 'Cành Gỗ Khô Rơi');
+    this.createGatheringNodeProp(1360, 630, 'resin', 'Nhựa Cây Sồi Cổ');
+    this.createGatheringNodeProp(1480, 830, 'herbs', 'Bụi Thảo Dược Ven Suối');
 
     // 8. Sương Mù Ranh Giới Nhẹ Nhàng (Boundary Mist)
     this.createOuterWoodsBoundaryFog();
@@ -5116,7 +5159,7 @@ export class WorldBuilder {
       scaleY: number,
       alpha: number,
       tint: number,
-      _depth: number = -65,
+      _depth: number = DEPTH_GROUND_MIST,
       driftX: number = 18,
       duration: number = 7500
     ) => {
@@ -5125,7 +5168,7 @@ export class WorldBuilder {
       mist.setScale(scaleX, scaleY);
       mist.setAlpha(alpha);
       mist.setTint(tint);
-      mist.setDepth(-65); // C4-12-30: Sương mù ranh giới ở depth -65 (trên nền đất, tuyệt đối không che người chơi, NPC, bảng tên hay tương tác)
+      mist.setDepth(DEPTH_GROUND_MIST); // C4-12-30: Sương mù ranh giới ở depth -65 (trên nền đất, tuyệt đối không che người chơi, NPC, bảng tên hay tương tác)
       this.registerCullable(mist, x, y, 120);
 
       if (this.scene.tweens && driftX > 0) {
@@ -5208,6 +5251,22 @@ export class WorldBuilder {
     // 6. Bọc Hành Trang Người Đi Rừng (Hunter's Lost Cache)
     this.createHunterLostCache(2650, 260);
 
+    // V14-P8-13: Chướng Ngại Vật Cầu Đá Cổ Bị Sập Chặn Lối Thẳng Tới Tháp Chuông
+    this.createCollapsedStoneBridgeObstacle(1790, 280);
+
+    // V14-P8-13: Cây Cầu Gỗ Phụ Xuyên Sương Đưa Lối Vòng Phía Nam Sang Silent Mire & Tháp Chuông
+    this.createDetourWoodenBridge(2740, 390, 68);
+
+    // V14-P8-13: Biển Chỉ Dẫn Tuyến Đường Vòng Tại Ngã Rẽ Bìa Rừng Sâu
+    this.createStoneSign(2060, 170, 'LỐI VÒNG THÁP CHUÔNG');
+
+    // V14-P8-13: Nơi Ẩn Nấp & Điểm Thu Thập Nguyên Liệu Dọc Tuyến Đường Vòng
+    this.createDenseBush(2520, 330);
+    this.createHollowTree(2680, 390, 'Thân Cây Rỗng Cầu Phụ');
+    this.createGatheringNodeProp(2060, 210, 'wood', 'Khúc Gỗ Sồi Mục');
+    this.createGatheringNodeProp(2240, 150, 'resin', 'Nhựa Thông Rừng');
+    this.createGatheringNodeProp(2640, 350, 'herbs', 'Thảo Dược Đầm Lầy');
+
     // 7. Quần Thể Cây Sồi & Thông Cổ Thụ Dày Đặc Dọc Viền Bắc/Nam (Natural Boundary Framing)
     // Dàn cây viền phía Bắc (chừa nhánh rẽ Rừng Sâu 2020..2120, y < 50)
     for (let x = bounds.x + 40; x < bounds.x + bounds.width - 40; x += 110) {
@@ -5216,9 +5275,9 @@ export class WorldBuilder {
       }
     }
 
-    // Dàn cây viền phía Nam (chừa lối mòn kết nối Outer Woods 1600..1660, y: 440..540)
+    // Dàn cây viền phía Nam (chừa lối mòn kết nối Outer Woods 1600..1660 và Cầu Gỗ Phụ 2700..2800)
     for (let x = bounds.x + 40; x < bounds.x + bounds.width - 40; x += 115) {
-      if (x > 1660) {
+      if (x > 1660 && (x < 2690 || x > 2810)) {
         this.createTree(x, 500 + ((x % 2) * 25), 'Cây Rừng Cổ Thụ Viền Nam');
       }
     }
@@ -5317,6 +5376,265 @@ export class WorldBuilder {
   }
 
   /**
+   * V14-P8-13: Dựng chướng ngại vật môi trường tự nhiên kết hợp cốt truyện chặn lối đi thẳng cũ tới Tháp Chuông:
+   * 1. Cây cầu đá cổ bị sập nhịp giữa vực sương sâu (deep mist chasm & collapsed stone piers)
+   * 2. Thân cây cổ thụ đổ chắn ngang toàn bộ bề rộng lối đi (massive fallen ancient tree trunk)
+   * 3. Cổng sắt rỉ sét khóa chặt bằng xích đen và chông nhọn (rusted iron gate with heavy chains)
+   * 4. Khối va chạm Arcade Physics body kiên cố chặn hoàn toàn người chơi và quái vật
+   * 5. Điểm tương tác kiểm tra [E] dẫn hướng người chơi tìm đường vòng qua Rừng Ngoài và Đường Mòn Quanh Co
+   */
+  private createCollapsedStoneBridgeObstacle(bridgeX: number, roadY: number): void {
+    const g = this.scene.add.graphics();
+    g.setDepth(roadY - 10);
+
+    // 1. Vực sương sâu (Deep Mist Chasm) cắt đứt hoàn toàn lối đi (x: bridgeX - 35 .. bridgeX + 35, y: roadY - 44 .. roadY + 44)
+    g.fillStyle(0x06090c, 0.95);
+    g.fillRoundedRect(bridgeX - 36, roadY - 44, 72, 88, 8);
+    g.fillStyle(0x0c1218, 0.85);
+    g.fillRect(bridgeX - 30, roadY - 38, 60, 76);
+
+    // Sương mù cuộn xoáy dưới vực sâu
+    g.fillStyle(0x2d3e38, 0.55);
+    g.fillEllipse(bridgeX, roadY, 52, 28);
+    g.fillStyle(0x4a6558, 0.35);
+    g.fillEllipse(bridgeX - 10, roadY - 8, 38, 20);
+    g.fillEllipse(bridgeX + 12, roadY + 10, 42, 22);
+
+    // 2. Mố cầu đá và nhịp cầu gãy đôi (Collapsed Ancient Stone Piers)
+    // Bờ Tây (bên trái vực): Mố đá cổ nứt toác, các phiến đá sập nghiêng
+    g.fillStyle(0x1a2128, 1);
+    g.fillRect(bridgeX - 44, roadY - 36, 18, 72);
+    g.fillStyle(0x353f4a, 1);
+    g.fillRect(bridgeX - 42, roadY - 34, 14, 68);
+    g.fillStyle(0x4d5b6a, 1);
+    g.fillRect(bridgeX - 40, roadY - 32, 10, 64);
+    // Mảng rêu phong bám trên đá cổ
+    g.fillStyle(0x2d4829, 0.9);
+    g.fillRect(bridgeX - 42, roadY - 24, 6, 20);
+    g.fillRect(bridgeX - 41, roadY + 8, 7, 18);
+
+    // Phiến đá gãy cắm xuống vực sương
+    g.fillStyle(0x273038, 1);
+    g.beginPath();
+    g.moveTo(bridgeX - 26, roadY - 28);
+    g.lineTo(bridgeX - 10, roadY - 10);
+    g.lineTo(bridgeX - 14, roadY + 5);
+    g.lineTo(bridgeX - 28, roadY - 12);
+    g.closePath();
+    g.fill();
+
+    // Bờ Đông (bên phải vực): Mố đá gãy đối xứng
+    g.fillStyle(0x1a2128, 1);
+    g.fillRect(bridgeX + 26, roadY - 36, 18, 72);
+    g.fillStyle(0x353f4a, 1);
+    g.fillRect(bridgeX + 28, roadY - 34, 14, 68);
+    g.fillStyle(0x4d5b6a, 1);
+    g.fillRect(bridgeX + 30, roadY - 32, 10, 64);
+    g.fillStyle(0x2d4829, 0.9);
+    g.fillRect(bridgeX + 34, roadY - 18, 6, 22);
+
+    // 3. Thân cây đại thụ đổ chắn ngang toàn bộ bề rộng lối đi (Massive Fallen Tree Trunk)
+    const trunkGfx = this.scene.add.graphics();
+    trunkGfx.setDepth(roadY + 12);
+    trunkGfx.fillStyle(0x06080a, 0.6);
+    trunkGfx.fillRoundedRect(bridgeX - 42, roadY - 16, 84, 22, 6);
+    trunkGfx.fillStyle(0x281a10, 1);
+    trunkGfx.fillRoundedRect(bridgeX - 40, roadY - 22, 80, 20, 5);
+    trunkGfx.fillStyle(0x3e2819, 1);
+    trunkGfx.fillRect(bridgeX - 38, roadY - 20, 76, 16);
+    trunkGfx.fillStyle(0x563823, 1);
+    trunkGfx.fillRect(bridgeX - 36, roadY - 18, 72, 10);
+    trunkGfx.fillStyle(0x2e5c30, 0.95);
+    trunkGfx.fillRect(bridgeX - 32, roadY - 24, 34, 4);
+    trunkGfx.fillRect(bridgeX + 8, roadY - 24, 28, 4);
+    trunkGfx.fillStyle(0x438a46, 0.85);
+    trunkGfx.fillRect(bridgeX - 28, roadY - 23, 24, 2);
+    // Cụm nấm mộc nhĩ / nấm cam
+    trunkGfx.fillStyle(0xd35400, 1);
+    trunkGfx.fillCircle(bridgeX - 16, roadY - 14, 4);
+    trunkGfx.fillCircle(bridgeX - 10, roadY - 12, 3);
+    trunkGfx.fillCircle(bridgeX + 18, roadY - 13, 4);
+    trunkGfx.fillStyle(0xf39c12, 1);
+    trunkGfx.fillCircle(bridgeX - 16, roadY - 14, 2);
+    trunkGfx.fillCircle(bridgeX + 18, roadY - 13, 2);
+
+    // 4. Cổng sắt rỉ sét khóa chặt (Rusted Iron Gate with Heavy Chains)
+    const gateGfx = this.scene.add.graphics();
+    gateGfx.setDepth(roadY + 24);
+    gateGfx.fillStyle(0x241812, 1);
+    gateGfx.fillRect(bridgeX - 34, roadY - 48, 8, 56);
+    gateGfx.fillRect(bridgeX + 26, roadY - 48, 8, 56);
+    gateGfx.fillStyle(0x4a3224, 1);
+    gateGfx.fillRect(bridgeX - 32, roadY - 46, 4, 52);
+    gateGfx.fillRect(bridgeX + 28, roadY - 46, 4, 52);
+
+    for (let bx = bridgeX - 24; bx <= bridgeX + 20; bx += 8) {
+      gateGfx.fillStyle(0x1d140e, 1);
+      gateGfx.fillRect(bx, roadY - 42, 4, 48);
+      gateGfx.fillStyle(0x422c1f, 1);
+      gateGfx.fillRect(bx + 1, roadY - 40, 2, 44);
+      gateGfx.fillStyle(0x6e4832, 1);
+      gateGfx.beginPath();
+      gateGfx.moveTo(bx + 2, roadY - 46);
+      gateGfx.lineTo(bx - 1, roadY - 41);
+      gateGfx.lineTo(bx + 5, roadY - 41);
+      gateGfx.closePath();
+      gateGfx.fill();
+    }
+
+    gateGfx.fillStyle(0x221710, 1);
+    gateGfx.fillRect(bridgeX - 32, roadY - 32, 62, 6);
+    gateGfx.fillRect(bridgeX - 32, roadY - 12, 62, 6);
+    gateGfx.lineStyle(2, 0x111114, 0.95);
+    gateGfx.lineBetween(bridgeX - 28, roadY - 34, bridgeX + 24, roadY - 8);
+    gateGfx.lineBetween(bridgeX - 28, roadY - 8, bridgeX + 24, roadY - 34);
+
+    gateGfx.fillStyle(0x1a120c, 1);
+    gateGfx.fillRect(bridgeX - 6, roadY - 24, 12, 14);
+    gateGfx.fillStyle(0x78562d, 1);
+    gateGfx.fillRect(bridgeX - 4, roadY - 22, 8, 10);
+    gateGfx.lineStyle(2, 0x3d2b16, 1);
+    gateGfx.strokeCircle(bridgeX, roadY - 25, 4);
+
+    this.registerCullable(g, bridgeX, roadY, 80);
+    this.registerCullable(trunkGfx, bridgeX, roadY, 80);
+    this.registerCullable(gateGfx, bridgeX, roadY, 80);
+
+    // 5. Arcade Physics Collider vững chắc chặn đứng hoàn toàn lối thẳng
+    const dummyKey = this.scene.textures && this.scene.textures.exists('dummy_transparent') ? 'dummy_transparent' : undefined;
+    const blocker = this.colliderGroup.create(bridgeX, roadY, dummyKey) as Phaser.Physics.Arcade.Sprite;
+    blocker.setVisible(false);
+    blocker.setAlpha(0);
+    const body = blocker.body as Phaser.Physics.Arcade.Body;
+    body.setSize(38, 86);
+    body.setOffset(-19, -43);
+    body.immovable = true;
+  }
+
+  /**
+   * V14-P8-13: Dựng cây cầu gỗ phụ (Detour Wooden Footbridge) bắc qua khe sương lầy
+   * đưa tuyến đường vòng từ phía Nam kết nối thông suốt sang Miếu Chuông / Đầm Lầy
+   */
+  private createDetourWoodenBridge(bridgeX: number, bridgeY: number, length: number = 70): void {
+    const g = this.scene.add.graphics();
+    g.setDepth(bridgeY - 4);
+
+    const halfL = Math.round(length / 2);
+    const bridgeH = 34;
+
+    // 1. Bóng đổ và khe sương lầy bên dưới cầu
+    g.fillStyle(0x0a1012, 0.65);
+    g.fillRect(bridgeX - halfL - 4, bridgeY - bridgeH / 2 - 2, length + 8, bridgeH + 4);
+    g.fillStyle(0x182824, 0.85);
+    g.fillRect(bridgeX - halfL, bridgeY - bridgeH / 2, length, bridgeH);
+
+    // Làn sương mờ trôi lững lờ dưới gầm cầu
+    g.fillStyle(0x354e45, 0.42);
+    g.fillEllipse(bridgeX, bridgeY, length * 0.8, 16);
+
+    // 2. Các đà dầm gỗ sồi dọc đỡ cầu
+    g.fillStyle(0x281a10, 1);
+    g.fillRect(bridgeX - halfL, bridgeY - bridgeH / 2 + 2, length, 4);
+    g.fillRect(bridgeX - halfL, bridgeY + bridgeH / 2 - 6, length, 4);
+    g.fillStyle(0x422a1a, 1);
+    g.fillRect(bridgeX - halfL, bridgeY - bridgeH / 2 + 3, length, 2);
+    g.fillRect(bridgeX - halfL, bridgeY + bridgeH / 2 - 5, length, 2);
+
+    // 3. Các tấm ván sàn cầu gỗ sồi xếp ngang
+    for (let x = bridgeX - halfL + 3; x <= bridgeX + halfL - 3; x += 6) {
+      g.fillStyle(0x1d130b, 1);
+      g.fillRect(x - 2, bridgeY - bridgeH / 2 + 2, 5, bridgeH - 4);
+      g.fillStyle(0x48321e, 1);
+      g.fillRect(x - 1, bridgeY - bridgeH / 2 + 3, 3, bridgeH - 6);
+      g.fillStyle(0x61442b, 1);
+      g.fillRect(x - 1, bridgeY - bridgeH / 2 + 4, 2, bridgeH - 8);
+      g.fillStyle(0x12100e, 1);
+      g.fillRect(x, bridgeY - bridgeH / 2 + 4, 1, 1);
+      g.fillRect(x, bridgeY + bridgeH / 2 - 5, 1, 1);
+    }
+
+    // 4. Cọc gỗ lan can hai bên và dây thừng rừng buộc chắc chắn
+    const railGfx = this.scene.add.graphics();
+    railGfx.setDepth(bridgeY + bridgeH / 2 + 6);
+
+    const postPositions = [
+      bridgeX - halfL + 6,
+      bridgeX - Math.round(halfL / 3),
+      bridgeX + Math.round(halfL / 3),
+      bridgeX + halfL - 6
+    ];
+    for (const px of postPositions) {
+      // Cọc bờ Bắc
+      railGfx.fillStyle(0x23170e, 1);
+      railGfx.fillRect(px - 2, bridgeY - bridgeH / 2 - 10, 4, 14);
+      railGfx.fillStyle(0x48301d, 1);
+      railGfx.fillRect(px - 1, bridgeY - bridgeH / 2 - 9, 2, 12);
+
+      // Cọc bờ Nam
+      railGfx.fillStyle(0x23170e, 1);
+      railGfx.fillRect(px - 2, bridgeY + bridgeH / 2 - 4, 4, 14);
+      railGfx.fillStyle(0x48301d, 1);
+      railGfx.fillRect(px - 1, bridgeY + bridgeH / 2 - 3, 2, 12);
+    }
+
+    // Dây thừng rừng căng dọc hai bên lan can
+    railGfx.lineStyle(2, 0x3d2c1c, 0.95);
+    railGfx.lineBetween(bridgeX - halfL + 6, bridgeY - bridgeH / 2 - 7, bridgeX + halfL - 6, bridgeY - bridgeH / 2 - 7);
+    railGfx.lineBetween(bridgeX - halfL + 6, bridgeY + bridgeH / 2 + 5, bridgeX + halfL - 6, bridgeY + bridgeH / 2 + 5);
+
+    // Mảng rêu bám xanh tươi hai đầu mố cầu
+    railGfx.fillStyle(0x2e5c30, 0.9);
+    railGfx.fillRect(bridgeX - halfL, bridgeY - 8, 8, 16);
+    railGfx.fillRect(bridgeX + halfL - 8, bridgeY - 8, 8, 16);
+
+    this.registerCullable(g, bridgeX, bridgeY, length);
+    this.registerCullable(railGfx, bridgeX, bridgeY, length);
+  }
+
+  /**
+   * V14-P8-13: Tạo điểm thu thập nguyên liệu sinh tồn (Gỗ Khô, Nhựa Thông, Thảo Dược) dọc tuyến đường vòng
+   */
+  private createGatheringNodeProp(x: number, y: number, type: 'wood' | 'resin' | 'herbs', _label: string): void {
+    const g = this.scene.add.graphics();
+    g.setDepth(y - 1);
+
+    // Bóng đổ nhẹ dưới đất
+    g.fillStyle(0x0a0f0d, 0.42);
+    g.fillEllipse(x, y + 4, 22, 10);
+
+    if (type === 'wood') {
+      g.fillStyle(0x2b1c11, 1);
+      g.fillRoundedRect(x - 9, y - 4, 18, 7, 2);
+      g.fillStyle(0x4a321f, 1);
+      g.fillRect(x - 7, y - 3, 14, 4);
+      g.fillStyle(0x355e2b, 0.85);
+      g.fillRect(x - 3, y - 4, 6, 2);
+    } else if (type === 'resin') {
+      g.fillStyle(0x23170e, 1);
+      g.fillRoundedRect(x - 6, y - 7, 12, 13, 3);
+      g.fillStyle(0xd35400, 1);
+      g.fillCircle(x, y - 2, 4);
+      g.fillStyle(0xf39c12, 1);
+      g.fillCircle(x - 1, y - 3, 2);
+      g.fillStyle(0xfff5cc, 0.9);
+      g.fillRect(x - 1, y - 4, 1, 1);
+    } else if (type === 'herbs') {
+      g.fillStyle(0x1d3a1f, 1);
+      g.fillCircle(x - 4, y - 2, 5);
+      g.fillCircle(x + 4, y - 2, 5);
+      g.fillCircle(x, y - 6, 6);
+      g.fillStyle(0x3a753e, 1);
+      g.fillCircle(x - 3, y - 3, 3);
+      g.fillCircle(x + 3, y - 3, 3);
+      g.fillCircle(x, y - 6, 4);
+      g.fillStyle(0xa8e6cf, 1);
+      g.fillRect(x - 1, y - 7, 2, 2);
+    }
+
+    this.registerCullable(g, x, y, 32);
+  }
+
+  /**
    * C4-12-21: Hiệu ứng sương mù khí quyển u ám dọc hai bên viền Đường Mòn Quanh Co (The Crooked Path).
    * Giữ lòng đường mòn và các ngọn đèn lồng rõ nét để người chơi định vị và lẩn trốn.
    */
@@ -5330,7 +5648,7 @@ export class WorldBuilder {
       scaleY: number,
       alpha: number,
       tint: number,
-      _depth: number = -65,
+      _depth: number = DEPTH_GROUND_MIST,
       driftX: number = 20,
       duration: number = 7400
     ) => {
@@ -5339,7 +5657,7 @@ export class WorldBuilder {
       mist.setScale(scaleX, scaleY);
       mist.setAlpha(alpha);
       mist.setTint(tint);
-      mist.setDepth(-65); // C4-12-30: Sương mù ranh giới ở depth -65 (trên nền đất, tuyệt đối không che người chơi, NPC, bảng tên hay tương tác)
+      mist.setDepth(DEPTH_GROUND_MIST); // C4-12-30: Sương mù ranh giới ở depth -65 (trên nền đất, tuyệt đối không che người chơi, NPC, bảng tên hay tương tác)
       this.registerCullable(mist, x, y, 120);
 
       if (this.scene.tweens && driftX > 0) {
@@ -5538,7 +5856,7 @@ export class WorldBuilder {
       scaleY: number,
       alpha: number,
       tint: number,
-      _depth: number = -65,
+      _depth: number = DEPTH_GROUND_MIST,
       driftX: number = 22,
       duration: number = 7800
     ) => {
@@ -5547,7 +5865,7 @@ export class WorldBuilder {
       mist.setScale(scaleX, scaleY);
       mist.setAlpha(alpha);
       mist.setTint(tint);
-      mist.setDepth(-65); // C4-12-30: Sương mù ranh giới ở depth -65 (trên nền đất, tuyệt đối không che người chơi, NPC, bảng tên hay tương tác)
+      mist.setDepth(DEPTH_GROUND_MIST); // C4-12-30: Sương mù ranh giới ở depth -65 (trên nền đất, tuyệt đối không che người chơi, NPC, bảng tên hay tương tác)
       this.registerCullable(mist, x, y, 120);
 
       if (this.scene.tweens && driftX > 0) {
@@ -6009,7 +6327,7 @@ export class WorldBuilder {
       scaleY: number,
       alpha: number,
       tint: number,
-      _depth: number = -65,
+      _depth: number = DEPTH_GROUND_MIST,
       driftX: number = 22,
       duration: number = 7600
     ) => {
@@ -6018,7 +6336,7 @@ export class WorldBuilder {
       mist.setScale(scaleX, scaleY);
       mist.setAlpha(alpha);
       mist.setTint(tint);
-      mist.setDepth(-65); // C4-12-30: Sương mù ranh giới ở depth -65 (trên nền đất, tuyệt đối không che người chơi, NPC, bảng tên hay tương tác)
+      mist.setDepth(DEPTH_GROUND_MIST); // C4-12-30: Sương mù ranh giới ở depth -65 (trên nền đất, tuyệt đối không che người chơi, NPC, bảng tên hay tương tác)
       this.registerCullable(mist, x, y, 120);
 
       if (this.scene.tweens && driftX > 0) {
@@ -6079,7 +6397,7 @@ export class WorldBuilder {
   private renderFogCrossingToVillageTransition(seamX: number): void {
     // 1. Mảng cỏ rêu đan xen và dải phủ ranh giới (Seam Cover Strip - depth -90)
     const turfGfx = this.scene.add.graphics();
-    turfGfx.setDepth(-90);
+    turfGfx.setDepth(DEPTH_GROUND_TURF);
 
     // Mảng rêu và cỏ rừng phía Bắc lối đi (y: 60..200)
     turfGfx.fillStyle(0x233324, 0.76);
@@ -6110,7 +6428,7 @@ export class WorldBuilder {
 
     // 2. Đá lát cổ, đá cuội và sỏi bước chân bắc cầu qua ranh giới (depth -88)
     const stonesGfx = this.scene.add.graphics();
-    stonesGfx.setDepth(-88);
+    stonesGfx.setDepth(DEPTH_GROUND_STONES);
     const borderStones = [
       { x: seamX - 32, y: 216, w: 10, h: 6, c: 0x545b61 },
       { x: seamX - 12, y: 214, w: 12, h: 7, c: 0x626a71 },
@@ -6145,7 +6463,7 @@ export class WorldBuilder {
   private renderCrookedPathToMireTransition(seamX: number): void {
     // 1.1. Mảng cỏ sẫm, thảm rêu ẩm và bờ đất đan xen bắc cầu qua ranh giới (depth: -90)
     const turfGfx = this.scene.add.graphics();
-    turfGfx.setDepth(-90);
+    turfGfx.setDepth(DEPTH_GROUND_TURF);
 
     // Cụm rêu và bùn đất hữu cơ phía Bắc đường mòn (y: 110..265)
     turfGfx.fillStyle(0x1a2620, 0.72);
@@ -6181,7 +6499,7 @@ export class WorldBuilder {
 
     // 1.2. Đá cuội, sỏi rừng và sỏi đầm lầy rải rác (Pebbles & Fieldstones)
     const stonesGfx = this.scene.add.graphics();
-    stonesGfx.setDepth(-88);
+    stonesGfx.setDepth(DEPTH_GROUND_STONES);
     const stoneList = [
       { x: seamX - 42, y: 275, w: 9, h: 5, c: 0x48524d },
       { x: seamX - 16, y: 274, w: 7, h: 4, c: 0x36403b },
@@ -6222,7 +6540,7 @@ export class WorldBuilder {
       mist.setScale(1.2, 0.85);
       mist.setAlpha(0.38);
       mist.setTint(0x1b2722);
-      mist.setDepth(-65);
+      mist.setDepth(DEPTH_GROUND_MIST);
       this.registerCullable(mist, x, y, 110);
       if (this.scene.tweens && drift > 0) {
         this.scene.tweens.add({
@@ -6246,7 +6564,7 @@ export class WorldBuilder {
    */
   private renderMireToShrineTransition(seamX: number): void {
     const turfGfx = this.scene.add.graphics();
-    turfGfx.setDepth(-90);
+    turfGfx.setDepth(DEPTH_GROUND_TURF);
 
     // Mảng đất và đá vụn chuyển tiếp từ bùn lầy sang sân đá phế tích miếu cổ
     turfGfx.fillStyle(0x1c2522, 0.75);
@@ -6287,7 +6605,7 @@ export class WorldBuilder {
     mist.setScale(1.25, 0.85);
     mist.setAlpha(0.35);
     mist.setTint(0x181e26);
-    mist.setDepth(-65);
+    mist.setDepth(DEPTH_GROUND_MIST);
     this.registerCullable(mist, seamX, 280, 120);
     if (this.scene.tweens) {
       this.scene.tweens.add({
@@ -6306,7 +6624,7 @@ export class WorldBuilder {
    */
   private renderVillageToForestTransition(seamX: number): void {
     const turfGfx = this.scene.add.graphics();
-    turfGfx.setDepth(-90);
+    turfGfx.setDepth(DEPTH_GROUND_TURF);
 
     // Mảng đất và rêu rừng bìa làng
     turfGfx.fillStyle(0x273622, 0.72);
@@ -6337,7 +6655,7 @@ export class WorldBuilder {
     mist.setScale(1.2, 0.8);
     mist.setAlpha(0.32);
     mist.setTint(0x17221b);
-    mist.setDepth(-65);
+    mist.setDepth(DEPTH_GROUND_MIST);
     this.registerCullable(mist, seamX, 282, 110);
     if (this.scene.tweens) {
       this.scene.tweens.add({
@@ -6380,7 +6698,7 @@ export class WorldBuilder {
     }
     const ground = this.scene.add.image(bounds.x, bounds.y, texKey);
     ground.setOrigin(0, 0);
-    ground.setDepth(-100);
+    ground.setDepth(DEPTH_GROUND_BASE);
     this.registerCullable(ground, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, bounds.width);
   }
 
@@ -6411,7 +6729,7 @@ export class WorldBuilder {
     }
     const ground = this.scene.add.image(bounds.x, bounds.y, texKey);
     ground.setOrigin(0, 0);
-    ground.setDepth(-100);
+    ground.setDepth(DEPTH_GROUND_BASE);
     this.registerCullable(ground, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, bounds.width);
   }
 
@@ -6443,7 +6761,7 @@ export class WorldBuilder {
     }
     const ground = this.scene.add.image(bounds.x, bounds.y, texKey);
     ground.setOrigin(0, 0);
-    ground.setDepth(-100);
+    ground.setDepth(DEPTH_GROUND_BASE);
     this.registerCullable(ground, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, bounds.width);
   }
 
@@ -6475,7 +6793,7 @@ export class WorldBuilder {
     const lampGfx = this.scene.add.graphics();
     lampGfx.fillStyle(0xffaa33, 0.25);
     lampGfx.fillCircle(b.x + 240, b.y + 80, 60);
-    lampGfx.setDepth(-40);
+    lampGfx.setDepth(DEPTH_GROUND_DECALS);
     this.registerCullable(lampGfx, b.x + 240, b.y + 80, 60);
   }
 
@@ -6521,7 +6839,7 @@ export class WorldBuilder {
     bioGfx.fillCircle(b.x + 123, b.y + 142, 3);
     bioGfx.fillCircle(b.x + 195, b.y + 176, 5);
     bioGfx.fillCircle(b.x + 204, b.y + 182, 4);
-    bioGfx.setDepth(-40);
+    bioGfx.setDepth(DEPTH_GROUND_DECALS);
     this.registerCullable(bioGfx, b.x + 320, b.y + 180, 150);
   }
 
@@ -6568,7 +6886,7 @@ export class WorldBuilder {
       const aura = this.scene.add.graphics();
       aura.fillStyle(0x8e44ad, 0.15);
       aura.fillCircle(p.x, p.y, 45);
-      aura.setDepth(-40);
+      aura.setDepth(DEPTH_GROUND_DECALS);
       this.registerCullable(aura, p.x, p.y, 45);
       if (this.scene.tweens) {
         this.scene.tweens.add({

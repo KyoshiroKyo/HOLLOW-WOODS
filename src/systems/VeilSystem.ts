@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 import { PlayerState } from '../state/PlayerState';
-import { SPRITE_FOG_SMOOTH } from '../config/Constants';
+import { SPRITE_FOG_SMOOTH, DEPTH_VEIL_GROUND_FOG, DEPTH_VEIL_PINK_DAWN } from '../config/Constants';
 import { HDTextHelper } from '../utils/HDTextHelper';
 import { TimeSystem } from './TimeSystem';
 
@@ -51,12 +51,12 @@ export class VeilSystem {
     this.scene = scene;
     this.playerState = PlayerState.getInstance();
 
-    // 1. TẦNG SƯƠNG LÀ LÀ MẶT ĐẤT (Ground-Level Drift Mist - Depth -40)
-    // Nằm ngay trên nền cỏ/đường mòn (-98), bên dưới nhân vật, NPC và công trình để tăng chiều sâu
+    // 1. TẦNG SƯƠNG LÀ LÀ MẶT ĐẤT (Ground-Level Drift Mist - Depth -7000)
+    // Nằm ngay trên nền cỏ/đường mòn (-10000), bên dưới mọi nhân vật, NPC và công trình để tăng chiều sâu (kể cả vùng tọa độ âm như Rừng Sâu)
     this.fogLayerGround = scene.add.tileSprite(0, 0, 1280, 720, SPRITE_FOG_SMOOTH);
     this.fogLayerGround.setOrigin(0, 0);
     this.fogLayerGround.setScrollFactor(0);
-    this.fogLayerGround.setDepth(-40);
+    this.fogLayerGround.setDepth(DEPTH_VEIL_GROUND_FOG);
     this.fogLayerGround.setAlpha(0.24);
     this.fogLayerGround.setTileScale(1.15, 1.1);
 
@@ -78,12 +78,12 @@ export class VeilSystem {
     this.fogLayerHigh.setAlpha(0.14);
     this.fogLayerHigh.setTileScale(1.55, 1.45);
 
-    // 4. C4-134-01: TẦNG SƯƠNG HỒNG BAN MAI (Morning Pink Mist - Depth -38)
+    // 4. C4-134-01: TẦNG SƯƠNG HỒNG BAN MAI (Morning Pink Mist - Depth -6900)
     // Phủ lên mặt đất phân khu khởi đầu Fog Crossing, tạo không gian huyền ảo lung linh
     this.fogLayerPinkDawn = scene.add.tileSprite(0, 0, 1280, 720, SPRITE_FOG_SMOOTH);
     this.fogLayerPinkDawn.setOrigin(0, 0);
     this.fogLayerPinkDawn.setScrollFactor(0);
-    this.fogLayerPinkDawn.setDepth(-38);
+    this.fogLayerPinkDawn.setDepth(DEPTH_VEIL_PINK_DAWN);
     this.fogLayerPinkDawn.setTint(0xff94b8);
     this.fogLayerPinkDawn.setAlpha(0.48);
     this.fogLayerPinkDawn.setTileScale(1.2, 1.15);

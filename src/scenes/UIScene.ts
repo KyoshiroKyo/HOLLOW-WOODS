@@ -45,6 +45,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
   // Banner phân khu
   private zoneBannerContainer!: Phaser.GameObjects.Container;
+  private zoneBannerBg!: Phaser.GameObjects.Graphics;
   private zoneTitleText!: Phaser.GameObjects.Text;
   private zoneSubtitleText!: Phaser.GameObjects.Text;
   // C4-13-19: Bộ đệm thời gian chống nháy banner phân khu
@@ -179,20 +180,23 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.panicVignetteGraphics.setDepth(900);
     this.panicVignetteGraphics.setScrollFactor(0);
 
-    // 1. Khung chứa 4 thanh chỉ số sinh tồn tinh gọn, bán trong suốt (C4-13-07)
+    // 1. Khung chứa 4 thanh chỉ số sinh tồn tinh gọn, gỗ tối viền đồng xỉn (V14-P8-12)
     this.statCardBg = this.add.graphics();
-    this.statCardBg.fillStyle(0x080d14, 0.72);
-    this.statCardBg.fillRoundedRect(12, 8, 308, 92, 6);
-    this.statCardBg.lineStyle(1, 0x2c3e50, 0.6);
-    this.statCardBg.strokeRoundedRect(12, 8, 308, 92, 6);
+    this.statCardBg.fillStyle(0x140f0c, 0.88);
+    this.statCardBg.fillRoundedRect(12, 8, 362, 92, 6);
+    this.statCardBg.lineStyle(1.5, 0x6e5228, 0.85);
+    this.statCardBg.strokeRoundedRect(12, 8, 362, 92, 6);
+    this.statCardBg.lineStyle(1, 0x8c6d3b, 0.35);
+    this.statCardBg.strokeRoundedRect(14, 10, 358, 88, 5);
 
-    // Tên nhân vật chính hiển thị góc trên trái
-    this.playerNameText = HDTextHelper.createText(this, 22, 12, '🌲 The Mossbound Wayfarer', {
+    // Tên nhân vật chính hiển thị góc trên trái (V14-P8-15B: Đồng bộ theo memoryAwakeningStage)
+    const isAwakened = (this.playerState.memoryAwakeningStage >= 3);
+    this.playerNameText = HDTextHelper.createText(this, 22, 12, isAwakened ? '⚔️ Hiệp Sĩ Đen (Black Knight)' : '🌲 The Mossbound Wayfarer', {
       fontSize: '11.5px',
       fontStyle: 'bold',
-      color: '#f39c12',
-      stroke: '#000000',
-      strokeThickness: 2
+      color: isAwakened ? '#ffc048' : '#e5a93c',
+      stroke: isAwakened ? '#3d1a04' : '#000000',
+      strokeThickness: isAwakened ? 3 : 2
     });
 
     this.statBarsGraphics = this.add.graphics();
@@ -234,12 +238,12 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       strokeThickness: 2
     });
 
-    // 2. Chữ trạng thái Đèn lồng chuẩn HD đặt cạnh thanh Dầu Đèn với nền badge bán trong suốt (V14-P8-01: dịch x=308 để không đè chữ Dầu Đèn)
+    // 2. Chữ trạng thái Đèn lồng chuẩn HD đặt cạnh thanh Dầu Đèn với khoảng cách an toàn >= 16px (V14-P8-12)
     this.lanternStatusBg = this.add.graphics();
-    this.lanternStatusText = HDTextHelper.createText(this, 308, 68, 'ĐÈN: TẮT [F]', {
+    this.lanternStatusText = HDTextHelper.createText(this, 328, 67.5, 'ĐÈN: TẮT [F]', {
       fontSize: '9.5px',
       fontStyle: 'bold',
-      color: '#95a5a6',
+      color: '#8a8275',
       stroke: '#000000',
       strokeThickness: 2
     }).setOrigin(0.5, 0.5);
@@ -265,43 +269,46 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     this.updateStatusBadges(0, 80);
 
-    // 3. Khung bảng theo dõi nhiệm vụ góc trên phải bán trong suốt (C4-13-07)
+    // 3. Khung bảng theo dõi nhiệm vụ góc trên phải gỗ tối viền đồng xỉn (V14-P8-12)
     const questBoxW = 340;
     const questBoxH = 78;
     const questBoxX = 1260 - questBoxW; // 920
     const questBoxY = 16;
 
     this.questBg = this.add.graphics();
-    this.questBg.fillStyle(0x080d14, 0.75);
+    this.questBg.fillStyle(0x140f0c, 0.88);
     this.questBg.fillRoundedRect(questBoxX, questBoxY, questBoxW, questBoxH, 6);
-    this.questBg.lineStyle(1, 0xd4af37, 0.6);
+    this.questBg.lineStyle(1.5, 0x6e5228, 0.9);
     this.questBg.strokeRoundedRect(questBoxX, questBoxY, questBoxW, questBoxH, 6);
-    // Vạch nhấn vàng kim dọc mép trái
-    this.questBg.fillStyle(0xd4af37, 0.4);
-    this.questBg.fillRect(questBoxX, questBoxY + 4, 3, questBoxH - 8);
+    this.questBg.lineStyle(1, 0x8a6d3b, 0.35);
+    this.questBg.strokeRoundedRect(questBoxX + 2, questBoxY + 2, questBoxW - 4, questBoxH - 4, 5);
+
+    // Vạch nhấn vàng hổ phách dọc mép trái
+    this.questBg.fillStyle(0xc68a2e, 0.75);
+    this.questBg.fillRect(questBoxX, questBoxY + 4, 3.5, questBoxH - 8);
 
     this.questHeaderText = HDTextHelper.createText(this, questBoxX + 12, questBoxY + 8, '📜 NHIỆM VỤ HIỆN TẠI [J]:', {
       fontSize: '11px',
       fontStyle: 'bold',
-      color: '#f39c12',
-      stroke: '#000000',
+      color: '#e5a93c',
+      stroke: '#0c0805',
       strokeThickness: 2
     });
 
     this.questTitleText = HDTextHelper.createText(this, questBoxX + 12, questBoxY + 26, '', {
       fontSize: '12px',
       fontStyle: 'bold',
-      color: '#f1c40f',
-      stroke: '#000000',
+      color: '#f5eedc',
+      stroke: '#0c0805',
       strokeThickness: 2
     });
 
     this.questTrackerText = HDTextHelper.createText(this, questBoxX + 12, questBoxY + 45, '', {
-      fontSize: '11.5px',
-      color: '#ecf0f1',
+      fontSize: '11px',
+      color: '#d8cfbe',
       wordWrap: { width: questBoxW - 24 },
       lineSpacing: 2,
-      stroke: '#000000',
+      stroke: '#0c0805',
       strokeThickness: 1
     });
 
@@ -346,30 +353,28 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     this.updateTimeWidget(1, 0, 'DAY', 0);
 
-    // 4. Banner tên phân khu có nền tối chống chìm chữ (Tâm tại 640, 85)
+    // 4. Banner tên phân khu có nền gỗ tối viền đồng xỉn co giãn động (V14-P8-12, Tâm tại 640, 85)
     this.zoneBannerContainer = this.add.container(640, 85);
     this.zoneBannerContainer.setDepth(8500);
-    const bannerBg = this.add.graphics();
-    bannerBg.fillStyle(0x000000, 0.85);
-    bannerBg.fillRoundedRect(-240, -28, 480, 56, 8);
-    bannerBg.lineStyle(2, 0xd4af37, 0.9);
-    bannerBg.strokeRoundedRect(-240, -28, 480, 56, 8);
+    this.zoneBannerBg = this.add.graphics();
 
     this.zoneTitleText = HDTextHelper.createText(this, 0, -10, '', {
       fontSize: '22px',
       fontStyle: 'bold',
-      color: '#ffffff',
-      stroke: '#000000',
+      color: '#f5eedc',
+      stroke: '#0f0a06',
       strokeThickness: 3
     }).setOrigin(0.5, 0.5);
 
     this.zoneSubtitleText = HDTextHelper.createText(this, 0, 12, '', {
       fontSize: '13px',
       fontStyle: 'italic',
-      color: '#bdc3c7'
+      color: '#baa892',
+      wordWrap: { width: 720 },
+      align: 'center'
     }).setOrigin(0.5, 0.5);
 
-    this.zoneBannerContainer.add([bannerBg, this.zoneTitleText, this.zoneSubtitleText]);
+    this.zoneBannerContainer.add([this.zoneBannerBg, this.zoneTitleText, this.zoneSubtitleText]);
     this.zoneBannerContainer.setAlpha(0);
 
     // V1.4 - P6: Dựng Thanh Độ Ổn Định Phong Ấn tại đỉnh màn hình (640, 42)
@@ -415,17 +420,20 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       AudioManager.getInstance().playQuestUpdate();
     };
     const onInventoryChanged = () => this.updateQuickSlotCounts();
+    const onMemoryAwakened = () => this.redrawStats();
 
     this.playerState.on('stats_changed', onStatsChanged);
     this.playerState.on('quest_changed', onQuestChanged);
     this.playerState.on('quest_updated', onQuestUpdated);
     this.playerState.on('inventory_changed', onInventoryChanged);
+    this.playerState.on('memory_awakening_changed', onMemoryAwakened);
 
     this.events.once('shutdown', () => {
       this.playerState.off('stats_changed', onStatsChanged);
       this.playerState.off('quest_changed', onQuestChanged);
       this.playerState.off('quest_updated', onQuestUpdated);
       this.playerState.off('inventory_changed', onInventoryChanged);
+      this.playerState.off('memory_awakening_changed', onMemoryAwakened);
       // C4-13-09: Dọn dẹp triệt để tweens, timer events và keyboard listeners khi tắt/chuyển scene
       this.tweens.killAll();
       this.time.removeAllEvents();
@@ -658,26 +666,51 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.lastLanternState = stats.isLanternOn;
       if (this.lanternStatusBg && this.lanternStatusText) {
         this.lanternStatusBg.clear();
+        // V14-P8-12: Đặt nút [F] sang hẳn bên phải thanh Dầu Đèn với lề an toàn >= 16px
+        const badgeX = 300;
+        const badgeY = 58;
+        const badgeW = 56;
+        const badgeH = 19;
         if (stats.isLanternOn) {
-          this.lanternStatusBg.fillStyle(0x3d2800, 0.85);
-          this.lanternStatusBg.fillRoundedRect(280, 59, 58, 18, 4);
-          this.lanternStatusBg.lineStyle(1, 0xf39c12, 0.9);
-          this.lanternStatusBg.strokeRoundedRect(280, 59, 58, 18, 4);
+          this.lanternStatusBg.fillStyle(0x241808, 0.94);
+          this.lanternStatusBg.fillRoundedRect(badgeX, badgeY, badgeW, badgeH, 4);
+          this.lanternStatusBg.lineStyle(1.5, 0xe5a93c, 0.95);
+          this.lanternStatusBg.strokeRoundedRect(badgeX, badgeY, badgeW, badgeH, 4);
           this.lanternStatusText.setText('🔥 [F] BẬT');
-          this.lanternStatusText.setColor('#f1c40f');
+          this.lanternStatusText.setColor('#ffdc73');
         } else {
-          this.lanternStatusBg.fillStyle(0x0e1118, 0.75);
-          this.lanternStatusBg.fillRoundedRect(280, 59, 58, 18, 4);
-          this.lanternStatusBg.lineStyle(1, 0x4a5568, 0.7);
-          this.lanternStatusBg.strokeRoundedRect(280, 59, 58, 18, 4);
+          this.lanternStatusBg.fillStyle(0x13110e, 0.85);
+          this.lanternStatusBg.fillRoundedRect(badgeX, badgeY, badgeW, badgeH, 4);
+          this.lanternStatusBg.lineStyle(1, 0x6e5832, 0.75);
+          this.lanternStatusBg.strokeRoundedRect(badgeX, badgeY, badgeW, badgeH, 4);
           this.lanternStatusText.setText('[F] TẮT');
-          this.lanternStatusText.setColor('#7f8c8d');
+          this.lanternStatusText.setColor('#8a8275');
         }
+        this.lanternStatusText.setPosition(badgeX + badgeW / 2, badgeY + badgeH / 2);
       }
     }
 
     // V1.4: Cập nhật 2 huy hiệu trạng thái phụ (Độ Ẩm & Thân Nhiệt)
     this.updateStatusBadges(stats.moisture ?? 0, stats.temperature ?? 80);
+
+    // V14-P8-15B: Cập nhật danh hiệu người chơi khi thức tỉnh ký ức (Giai đoạn 3: Hiệp Sĩ Đen)
+    if (this.playerNameText) {
+      if (this.playerState.memoryAwakeningStage >= 3) {
+        const title = '⚔️ Hiệp Sĩ Đen (Black Knight)';
+        if (this.playerNameText.text !== title) {
+          this.playerNameText.setText(title);
+          this.playerNameText.setColor('#ffc048');
+          this.playerNameText.setStroke('#3d1a04', 3);
+        }
+      } else {
+        const title = '🌲 The Mossbound Wayfarer';
+        if (this.playerNameText.text !== title) {
+          this.playerNameText.setText(title);
+          this.playerNameText.setColor('#e5a93c');
+          this.playerNameText.setStroke('#000000', 2);
+        }
+      }
+    }
   }
 
   private drawThickBar(g: Phaser.GameObjects.Graphics, x: number, y: number, w: number, h: number, val: number, max: number, darkColor: number, lightColor: number): void {
@@ -1158,8 +1191,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       }
       const activeTask = q.tasks.find(t => !t.done);
       if (this.questTrackerText) {
-        const taskText = activeTask ? `☐ ${activeTask.text}` : '✔ Phân đoạn đã xong. Mở Sổ Tay [J].';
-        const taskColor = activeTask ? '#ecf0f1' : '#2ecc71';
+        let taskText = activeTask ? `☐ ${activeTask.text}` : '✔ Phân đoạn đã xong. Mở Sổ Tay [J].';
+        // V14-P8-12: Sửa lỗi chính tả "Bụi Rậm Đắc" -> "Bụi Rậm Đặc"
+        taskText = taskText.replace(/Bụi Rậm Đắc/g, 'Bụi Rậm Đặc').replace(/bụi rậm đắc/g, 'bụi rậm đặc');
+        const taskColor = activeTask ? '#d8cfbe' : '#2ecc71';
         if (this.lastQuestTaskText !== taskText) {
           this.lastQuestTaskText = taskText;
           this.questTrackerText.setText(taskText);
@@ -1401,6 +1436,29 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.zoneTitleText.setText(atmosphere.titleVietnamese);
     this.zoneSubtitleText.setText(atmosphere.subTitleVietnamese);
 
+    // V14-P8-12: Tự động tính chiều rộng khung viền dựa theo độ dài thực tế của chữ + lề an toàn >= 32px mỗi bên
+    const maxTextW = Math.max(this.zoneTitleText.width, this.zoneSubtitleText.width);
+    const bannerW = Math.max(420, maxTextW + 64);
+    const bannerH = 58;
+
+    this.zoneBannerBg.clear();
+    // Nền gỗ tối bán trong suốt
+    this.zoneBannerBg.fillStyle(0x120d09, 0.88);
+    this.zoneBannerBg.fillRoundedRect(-bannerW / 2, -bannerH / 2, bannerW, bannerH, 8);
+    // Viền đồng xỉn
+    this.zoneBannerBg.lineStyle(1.6, 0x7a5e30, 0.95);
+    this.zoneBannerBg.strokeRoundedRect(-bannerW / 2, -bannerH / 2, bannerW, bannerH, 8);
+    // Đường viền bên trong ấm áp
+    this.zoneBannerBg.lineStyle(1, 0x8a6d3b, 0.35);
+    this.zoneBannerBg.strokeRoundedRect(-bannerW / 2 + 2, -bannerH / 2 + 2, bannerW - 4, bannerH - 4, 6);
+
+    // 4 đinh tán đồng ở góc
+    this.zoneBannerBg.fillStyle(0xb89058, 0.85);
+    this.zoneBannerBg.fillRect(-bannerW / 2 + 3, -bannerH / 2 + 3, 2, 2);
+    this.zoneBannerBg.fillRect(bannerW / 2 - 5, -bannerH / 2 + 3, 2, 2);
+    this.zoneBannerBg.fillRect(-bannerW / 2 + 3, bannerH / 2 - 5, 2, 2);
+    this.zoneBannerBg.fillRect(bannerW / 2 - 5, bannerH / 2 - 5, 2, 2);
+
     this.tweens.killTweensOf(this.zoneBannerContainer);
     this.zoneBannerContainer.setAlpha(0);
 
@@ -1444,11 +1502,13 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         const pillH = textH + padY * 2;
 
         this.promptBg.clear();
-        // Nền bán trong suốt tinh tế (alpha ~0.72) viền vàng hổ phách mảnh
-        this.promptBg.fillStyle(0x090e15, 0.72);
+        // V14-P8-12: Gỗ tối viền đồng xỉn với đường chỉ ấm bên trong
+        this.promptBg.fillStyle(0x15110d, 0.88);
         this.promptBg.fillRoundedRect(-pillW / 2, -pillH / 2, pillW, pillH, 6);
-        this.promptBg.lineStyle(1, 0xd4af37, 0.65);
+        this.promptBg.lineStyle(1.5, 0x7a5e30, 0.9);
         this.promptBg.strokeRoundedRect(-pillW / 2, -pillH / 2, pillW, pillH, 6);
+        this.promptBg.lineStyle(1, 0x9c774b, 0.35);
+        this.promptBg.strokeRoundedRect(-pillW / 2 + 1, -pillH / 2 + 1, pillW - 2, pillH - 2, 5);
       }
 
       // Chỉ cập nhật alpha khi có chênh lệch đáng kể tránh ghi đè liên tục

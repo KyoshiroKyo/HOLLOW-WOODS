@@ -2119,6 +2119,649 @@ export class AudioManager {
     noise.stop(now + 3.1);
   }
 
+  /**
+   * V1.4 - P8: Tiếng gầm gừ đe dọa của Sói Xương (Skull Wolf Menacing Growl)
+   * Dao động âm tần thấp 65Hz - 42Hz kết hợp LFO rung cổ họng u ám
+   */
+  public playWolfGrowl(): void {
+    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    if (!this.checkCooldown('wolf_growl', 1800)) return;
+    this.resumeAudio();
+    this.duckAmbience(0.7, 1200);
+
+    if (this.playSampled('wolf_growl', 0.85, 0.95 + Math.random() * 0.1, true)) {
+      return;
+    }
+
+    const now = this.ctx.currentTime;
+    const osc1 = this.ctx.createOscillator();
+    const osc2 = this.ctx.createOscillator();
+    const filter = this.ctx.createBiquadFilter();
+    const gain = this.ctx.createGain();
+
+    osc1.type = 'sawtooth';
+    osc1.frequency.setValueAtTime(75, now);
+    osc1.frequency.linearRampToValueAtTime(55, now + 0.4);
+    osc1.frequency.exponentialRampToValueAtTime(38, now + 0.9);
+
+    osc2.type = 'triangle';
+    osc2.frequency.setValueAtTime(62, now);
+    osc2.frequency.linearRampToValueAtTime(48, now + 0.5);
+    osc2.frequency.exponentialRampToValueAtTime(32, now + 0.9);
+
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(220, now);
+    filter.frequency.exponentialRampToValueAtTime(140, now + 0.8);
+    filter.Q.setValueAtTime(3.2, now);
+
+    gain.gain.setValueAtTime(0.01 * this.sfxVolume, now);
+    gain.gain.linearRampToValueAtTime(0.24 * this.sfxVolume, now + 0.2);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.95);
+
+    osc1.connect(filter);
+    osc2.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.veilFilter);
+
+    osc1.start(now);
+    osc2.start(now);
+    osc1.stop(now + 1.0);
+    osc2.stop(now + 1.0);
+  }
+
+  /**
+   * V1.4 - P8: Tiếng xương lách cách khi Sói Xương di chuyển / rình rập (Bone Rattle Clatter)
+   */
+  public playBoneRattle(): void {
+    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    if (!this.checkCooldown('bone_rattle', 1400)) return;
+    this.resumeAudio();
+
+    if (this.playSampled('bone_rattle', 0.75, 1.0, true)) {
+      return;
+    }
+
+    const now = this.ctx.currentTime;
+    const noiseBuffer = this.getOrCreateNoiseBuffer();
+    if (!noiseBuffer) return;
+
+    // 4 nhịp va đập xương khô lách cách
+    [0, 0.045, 0.09, 0.14].forEach((delay, idx) => {
+      if (!this.ctx || !this.veilFilter) return;
+      const t = now + delay;
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = noiseBuffer;
+
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(2400 + idx * 250, t);
+      filter.Q.setValueAtTime(7.0, t);
+
+      const gain = this.ctx.createGain();
+      gain.gain.setValueAtTime(0.18 * this.sfxVolume, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.035);
+
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(this.veilFilter);
+
+      noise.start(t);
+      noise.stop(t + 0.04);
+    });
+  }
+
+  /**
+   * V1.4 - P8: Tiếng Sói Xương vồ mồi (Skull Wolf Lunge / Snap)
+   */
+  public playWolfLunge(): void {
+    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    if (!this.checkCooldown('wolf_lunge', 800)) return;
+    this.resumeAudio();
+
+    if (this.playSampled('wolf_lunge', 0.85, 1.0, true)) {
+      return;
+    }
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const filter = this.ctx.createBiquadFilter();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(120, now);
+    osc.frequency.linearRampToValueAtTime(280, now + 0.08);
+    osc.frequency.exponentialRampToValueAtTime(60, now + 0.22);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(600, now);
+    filter.Q.setValueAtTime(2.0, now);
+
+    gain.gain.setValueAtTime(0.28 * this.sfxVolume, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.veilFilter);
+
+    osc.start(now);
+    osc.stop(now + 0.26);
+  }
+
+  /**
+   * V1.4 - P8: Tiếng rạn nứt xương và tan biến thành tro bụi khi bị đánh tan
+   */
+  public playWolfDissolve(): void {
+    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    this.resumeAudio();
+
+    const now = this.ctx.currentTime;
+    const noiseBuffer = this.getOrCreateNoiseBuffer();
+    if (!noiseBuffer) return;
+
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = noiseBuffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(1400, now);
+    filter.frequency.exponentialRampToValueAtTime(350, now + 0.8);
+    filter.Q.setValueAtTime(3.5, now);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.22 * this.sfxVolume, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.85);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.veilFilter);
+
+    noise.start(now);
+    noise.stop(now + 0.9);
+  }
+
+  // =========================================================================
+  // V1.4 - P8-09: HIỆU ỨNG ÂM THANH QUÁI VẬT BÓNG TỐI (SHADOW MONSTERS SFX)
+  // =========================================================================
+
+  /**
+   * Tiếng Quạ Bóng Tối kêu chói tai báo động The Listener
+   */
+  public playShadowCrowCaw(): void {
+    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    this.resumeAudio();
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    const filter = this.ctx.createBiquadFilter();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(680, now);
+    osc.frequency.exponentialRampToValueAtTime(320, now + 0.35);
+
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(800, now);
+    filter.Q.setValueAtTime(4.0, now);
+
+    gain.gain.setValueAtTime(0.24 * this.sfxVolume, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.veilFilter);
+
+    osc.start(now);
+    osc.stop(now + 0.42);
+  }
+
+  /**
+   * Tiếng Quạ Bóng Tối vỗ cánh lao xuống tấn công quấy rối
+   */
+  public playShadowCrowAttack(): void {
+    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    this.resumeAudio();
+
+    const now = this.ctx.currentTime;
+    const noiseBuffer = this.getOrCreateNoiseBuffer();
+    if (!noiseBuffer) return;
+
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = noiseBuffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(900, now);
+    filter.frequency.linearRampToValueAtTime(400, now + 0.3);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.2 * this.sfxVolume, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.veilFilter);
+
+    noise.start(now);
+    noise.stop(now + 0.35);
+  }
+
+  /**
+   * Tiếng thì thầm tâm linh khi người chơi nhìn thẳng vào Bóng Mắt Sương Mù
+   */
+  public playShadowEyesGaze(): void {
+    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    this.resumeAudio();
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(140, now);
+    osc.frequency.linearRampToValueAtTime(110, now + 0.5);
+
+    gain.gain.setValueAtTime(0.18 * this.sfxVolume, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+
+    osc.connect(gain);
+    gain.connect(this.veilFilter);
+
+    osc.start(now);
+    osc.stop(now + 0.6);
+  }
+
+  /**
+   * Tiếng xèo xèo bốc hơi khi Bóng Mắt bị ánh đèn lồng rọi vào tan biến
+   */
+  public playShadowEyesDissolve(): void {
+    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    this.resumeAudio();
+
+    const now = this.ctx.currentTime;
+    const noiseBuffer = this.getOrCreateNoiseBuffer();
+    if (!noiseBuffer) return;
+
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = noiseBuffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'highpass';
+    filter.frequency.setValueAtTime(2500, now);
+    filter.frequency.exponentialRampToValueAtTime(800, now + 0.4);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.16 * this.sfxVolume, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.veilFilter);
+
+    noise.start(now);
+    noise.stop(now + 0.5);
+  }
+
+  /**
+   * Tiếng gầm vang trời của Trùm Bóng Tối Khổng Lồ (Behemoth)
+   */
+  public playBehemothRoar(): void {
+    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    this.resumeAudio();
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    const filter = this.ctx.createBiquadFilter();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(75, now);
+    osc.frequency.linearRampToValueAtTime(55, now + 0.8);
+    osc.frequency.exponentialRampToValueAtTime(35, now + 1.4);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(350, now);
+    filter.frequency.linearRampToValueAtTime(150, now + 1.4);
+
+    gain.gain.setValueAtTime(0.35 * this.sfxVolume, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 1.5);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.veilFilter);
+
+    osc.start(now);
+    osc.stop(now + 1.6);
+  }
+
+  /**
+   * Tiếng bước chân nặng trĩu làm rung chuyển mặt đất của Trùm
+   */
+  public playBehemothStep(): void {
+    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    this.resumeAudio();
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(50, now);
+    osc.frequency.exponentialRampToValueAtTime(25, now + 0.35);
+
+    gain.gain.setValueAtTime(0.28 * this.sfxVolume, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+
+    osc.connect(gain);
+    gain.connect(this.veilFilter);
+
+    osc.start(now);
+    osc.stop(now + 0.4);
+  }
+
+  /**
+   * Tiếng đòn vỗ đất tạo sóng xung kích địa chấn của Trùm
+   */
+  public playBehemothSlam(): void {
+    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    this.resumeAudio();
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    const filter = this.ctx.createBiquadFilter();
+
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(90, now);
+    osc.frequency.exponentialRampToValueAtTime(30, now + 0.6);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(450, now);
+    filter.frequency.exponentialRampToValueAtTime(100, now + 0.65);
+
+    gain.gain.setValueAtTime(0.38 * this.sfxVolume, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.veilFilter);
+
+    osc.start(now);
+    osc.stop(now + 0.75);
+  }
+
+  /**
+   * Tiếng đánh hụt vào không khí và khựng lại lộ sơ hở của Trùm
+   */
+  public playBehemothMiss(): void {
+    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    this.resumeAudio();
+
+    const now = this.ctx.currentTime;
+    const noiseBuffer = this.getOrCreateNoiseBuffer();
+    if (!noiseBuffer) return;
+
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = noiseBuffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(320, now);
+    filter.frequency.linearRampToValueAtTime(160, now + 0.5);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.22 * this.sfxVolume, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.veilFilter);
+
+    noise.start(now);
+    noise.stop(now + 0.6);
+  }
+
+  /**
+   * Tiếng nổ bóng tối và tan biến của Trùm khi bị đánh bại
+   */
+  public playBehemothDefeat(): void {
+    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    this.resumeAudio();
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    const filter = this.ctx.createBiquadFilter();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(120, now);
+    osc.frequency.exponentialRampToValueAtTime(25, now + 2.0);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(600, now);
+    filter.frequency.linearRampToValueAtTime(80, now + 2.0);
+
+    gain.gain.setValueAtTime(0.4 * this.sfxVolume, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 2.2);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.veilFilter);
+
+    osc.start(now);
+    osc.stop(now + 2.3);
+  }
+
+  // =========================================================================
+  // V1.4 - P8-10: HIỆU ỨNG ÂM THANH NHÓM HIỆP SĨ TÀ ÁC (EVIL KNIGHTS FACTION)
+  // =========================================================================
+
+  /**
+   * Tiếng va chạm giáp sắt vang rền (Armor Clank / Parry)
+   */
+  public playArmorClank(): void {
+    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    this.resumeAudio();
+
+    const now = this.ctx.currentTime;
+    const osc1 = this.ctx.createOscillator();
+    const osc2 = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    const filter = this.ctx.createBiquadFilter();
+
+    osc1.type = 'triangle';
+    osc1.frequency.setValueAtTime(1400, now);
+    osc1.frequency.exponentialRampToValueAtTime(320, now + 0.35);
+
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(880, now);
+    osc2.frequency.exponentialRampToValueAtTime(220, now + 0.35);
+
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(1200, now);
+    filter.Q.setValueAtTime(4.0, now);
+
+    gain.gain.setValueAtTime(0.3 * this.sfxVolume, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+
+    osc1.connect(filter);
+    osc2.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.veilFilter);
+
+    osc1.start(now);
+    osc2.start(now);
+    osc1.stop(now + 0.38);
+    osc2.stop(now + 0.38);
+  }
+
+  /**
+   * Tiếng vó ngựa dồn dập & ngựa hí báo hiệu cú húc càn quét của Kỵ Binh Hắc Ám
+   */
+  public playHorseCharge(): void {
+    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    this.resumeAudio();
+
+    const now = this.ctx.currentTime;
+    // 1. Tiếng ngựa hí (Whinny / Snort)
+    const whinny = this.ctx.createOscillator();
+    const whinnyGain = this.ctx.createGain();
+    whinny.type = 'sawtooth';
+    whinny.frequency.setValueAtTime(450, now);
+    whinny.frequency.linearRampToValueAtTime(750, now + 0.2);
+    whinny.frequency.linearRampToValueAtTime(320, now + 0.55);
+
+    whinnyGain.gain.setValueAtTime(0.2 * this.sfxVolume, now);
+    whinnyGain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+
+    whinny.connect(whinnyGain);
+    whinnyGain.connect(this.veilFilter);
+    whinny.start(now);
+    whinny.stop(now + 0.58);
+
+    // 2. Nhịp vó ngựa phi nước đại (Gallop hooves)
+    const noiseBuffer = this.getOrCreateNoiseBuffer();
+    if (noiseBuffer) {
+      for (let i = 0; i < 4; i++) {
+        const stepTime = now + 0.12 * i;
+        const hoof = this.ctx.createBufferSource();
+        hoof.buffer = noiseBuffer;
+
+        const hoofFilter = this.ctx.createBiquadFilter();
+        hoofFilter.type = 'lowpass';
+        hoofFilter.frequency.setValueAtTime(220, stepTime);
+
+        const hoofGain = this.ctx.createGain();
+        hoofGain.gain.setValueAtTime(0.25 * this.sfxVolume, stepTime);
+        hoofGain.gain.exponentialRampToValueAtTime(0.001, stepTime + 0.08);
+
+        hoof.connect(hoofFilter);
+        hoofFilter.connect(hoofGain);
+        hoofGain.connect(this.veilFilter);
+
+        hoof.start(stepTime);
+        hoof.stop(stepTime + 0.1);
+      }
+    }
+  }
+
+  /**
+   * Tiếng vung kiếm chém sắc bén của Hiệp Sĩ (Sword Slash)
+   */
+  public playKnightSwordSlash(): void {
+    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    this.resumeAudio();
+
+    const now = this.ctx.currentTime;
+    const noiseBuffer = this.getOrCreateNoiseBuffer();
+    if (!noiseBuffer) return;
+
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = noiseBuffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(2400, now);
+    filter.frequency.exponentialRampToValueAtTime(600, now + 0.25);
+    filter.Q.setValueAtTime(2.5, now);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.28 * this.sfxVolume, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.veilFilter);
+
+    noise.start(now);
+    noise.stop(now + 0.3);
+  }
+
+  /**
+   * Tiếng tụ năng lượng bóng tối của Chỉ Huy Hiệp Sĩ Trùm Mũ (Powerup Charge)
+   */
+  public playKnightPowerup(): void {
+    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    this.resumeAudio();
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    const filter = this.ctx.createBiquadFilter();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(80, now);
+    osc.frequency.exponentialRampToValueAtTime(480, now + 1.2);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(200, now);
+    filter.frequency.linearRampToValueAtTime(900, now + 1.2);
+
+    gain.gain.setValueAtTime(0.05 * this.sfxVolume, now);
+    gain.gain.linearRampToValueAtTime(0.32 * this.sfxVolume, now + 0.9);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 1.3);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.veilFilter);
+
+    osc.start(now);
+    osc.stop(now + 1.35);
+  }
+
+  /**
+   * Tiếng giáp sắt đổ ầm xuống đất & tan vỡ khi Hiệp Sĩ ngã xuống (Knight Defeat)
+   */
+  public playKnightDefeat(): void {
+    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    this.resumeAudio();
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    const filter = this.ctx.createBiquadFilter();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(220, now);
+    osc.frequency.exponentialRampToValueAtTime(45, now + 0.8);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(450, now);
+    filter.frequency.linearRampToValueAtTime(90, now + 0.8);
+
+    gain.gain.setValueAtTime(0.35 * this.sfxVolume, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.85);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.veilFilter);
+
+    osc.start(now);
+    osc.stop(now + 0.9);
+
+    // Kèm tiếng rổn rảng kim loại vỡ vụn
+    const noiseBuffer = this.getOrCreateNoiseBuffer();
+    if (noiseBuffer) {
+      const metalCrash = this.ctx.createBufferSource();
+      metalCrash.buffer = noiseBuffer;
+
+      const metalFilter = this.ctx.createBiquadFilter();
+      metalFilter.type = 'bandpass';
+      metalFilter.frequency.setValueAtTime(1600, now + 0.1);
+      metalFilter.Q.setValueAtTime(3.0, now + 0.1);
+
+      const metalGain = this.ctx.createGain();
+      metalGain.gain.setValueAtTime(0.24 * this.sfxVolume, now + 0.1);
+      metalGain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+
+      metalCrash.connect(metalFilter);
+      metalFilter.connect(metalGain);
+      metalGain.connect(this.veilFilter);
+
+      metalCrash.start(now + 0.1);
+      metalCrash.stop(now + 0.75);
+    }
+  }
+
   public destroy(): void {
     this.stopAmbience(true);
     if (this.heartbeatTimer) {

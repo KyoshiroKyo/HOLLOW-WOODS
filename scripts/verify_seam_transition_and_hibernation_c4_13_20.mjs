@@ -43,7 +43,7 @@ assert(wbContent.includes('renderCrookedPathToMireTransition(2880)') &&
        wbContent.includes('renderVillageToForestTransition(1600)'),
   'renderZoneBoundaryTransitions covers Crooked Path -> Mire (2880), Mire -> Shrine (4000), Village -> Forest (1600)');
 
-assert(wbContent.includes('stoneList = [') && wbContent.includes('stonesGfx.setDepth(-88)'),
+assert(wbContent.includes('stoneList = [') && (wbContent.includes('stonesGfx.setDepth(-88)') || wbContent.includes('stonesGfx.setDepth(DEPTH_GROUND_STONES)')),
   'renderCrookedPathToMireTransition scatters natural pebbles and fieldstones along road edges');
 
 assert(wbContent.includes('this.createDenseBush(seamX - 35, 235)') &&

@@ -318,6 +318,51 @@
       "stackable": false,
       "maxStack": 1,
       "iconColor": "#9b59b6"
+    },
+    {
+      "id": "mat_skull_fang",
+      "name": "Nanh Xương Cổ",
+      "category": "material",
+      "description": "Chiếc nanh nhọn hoắt phát sáng lân tinh thu thập từ tro tàn Sói Xương, dùng làm nguyên liệu gia cố Giáo Gỗ Bịt Sắt hoặc chế tạo Bùa Hộ Mệnh tại bàn chế tạo / lò rèn Bram.",
+      "stackable": true,
+      "maxStack": 10,
+      "iconColor": "#ecf0f1"
+    },
+    {
+      "id": "mat_shadow_essence",
+      "name": "Mảnh Tinh Chất Bóng Tối",
+      "category": "material",
+      "description": "Mảnh bóng tối đặc quánh phát ra hơi lạnh thấu xương, rơi ra từ Trùm Bóng Tối Khổng Lồ khi bị đánh bại; dùng chế tác Bùa Trừ Tà Vực Thẳm.",
+      "stackable": true,
+      "maxStack": 5,
+      "iconColor": "#8e44ad"
+    },
+    {
+      "id": "quest_corrupted_crest",
+      "name": "Huy Hiệu Hiệp Sĩ Tha Hóa",
+      "category": "quest",
+      "description": "Chiếc huy hiệu sắt rèn cổ xưa của đội hiệp sĩ hộ vệ đã sa ngã vào sương mù hắc ám, thu giữ sau khi đánh bại Chỉ Huy Hiệp Sĩ Trùm Mũ. Có thể giao nộp cho Edda, Bram hoặc Hiệp Sĩ Canh Lửa để thanh tẩy.",
+      "stackable": false,
+      "maxStack": 1,
+      "iconColor": "#95a5a6"
+    },
+    {
+      "id": "quest_corrupted_knight_crest",
+      "name": "Huy Hiệu Hiệp Sĩ Tha Hóa",
+      "category": "quest",
+      "description": "Huy hiệu cổ ngữ của toán kỵ sĩ bị sương đen nuốt chửng, thu được sau khi hạ gục Hooded Knight Boss trong Rừng Sâu. Hãy mang về cho Hiệp Sĩ Canh Lửa.",
+      "stackable": false,
+      "maxStack": 1,
+      "iconColor": "#95a5a6"
+    },
+    {
+      "id": "item_knight_journal_page",
+      "name": "Mảnh Nhật Ký Kỵ Sĩ",
+      "category": "quest",
+      "description": "Trang giấy da cháy sém vương vết mực cổ ngữ của một kỵ sĩ canh lửa năm xưa, ghi lại hành trình cuối cùng tới Xưởng Chuông Bỏ Hoang.",
+      "stackable": false,
+      "maxStack": 1,
+      "iconColor": "#d4ac0d"
     }
   ],
   "recipes": [
@@ -473,6 +518,54 @@
         { "itemId": "res_dry_wood", "count": 1 },
         { "itemId": "res_tree_resin", "count": 2 },
         { "itemId": "res_flint", "count": 1 }
+      ]
+    },
+    {
+      "id": "craft_skull_fang_spear",
+      "resultItemId": "wpn_iron_spear",
+      "resultCount": 1,
+      "name": "Gia Cố Giáo Bịt Sắt",
+      "description": "Gắn Nanh Xương Cổ vào mũi giáo gỗ bịt sắt, tăng uy lực đẩy lùi và độ bền khi đối đầu quái vật.",
+      "ingredients": [
+        { "itemId": "mat_skull_fang", "count": 1 },
+        { "itemId": "res_dry_wood", "count": 2 },
+        { "itemId": "res_flint", "count": 1 }
+      ]
+    },
+    {
+      "id": "craft_skull_fang_charm",
+      "resultItemId": "charm_calming_bell",
+      "resultCount": 1,
+      "name": "Chế Tạo Bùa Hộ Mệnh Nanh Xương",
+      "description": "Bện Nanh Xương Cổ cùng Dây thừng rừng và Nhựa cây tạo Bùa hộ mệnh xoa dịu Bình Tâm và kháng kinh hoàng.",
+      "ingredients": [
+        { "itemId": "mat_skull_fang", "count": 1 },
+        { "itemId": "mat_forest_rope", "count": 1 },
+        { "itemId": "res_tree_resin", "count": 1 }
+      ]
+    },
+    {
+      "id": "craft_abyssal_ward_charm",
+      "resultItemId": "charm_calming_bell",
+      "resultCount": 1,
+      "name": "Thanh Tẩy Bùa Hộ Mệnh Vực Thẳm",
+      "description": "Kết hợp Mảnh Tinh Chất Bóng Tối với Bùa Chuông Đồng và Nhựa Thông Cổ, tạo lớp bảo vệ vững chắc chống hoảng loạn.",
+      "ingredients": [
+        { "itemId": "mat_shadow_essence", "count": 1 },
+        { "itemId": "quest_bronze_clapper", "count": 1 },
+        { "itemId": "res_tree_resin", "count": 2 }
+      ]
+    },
+    {
+      "id": "craft_purified_crest_ward",
+      "resultItemId": "equip_bell_charm",
+      "resultCount": 1,
+      "name": "Thanh Tẩy Huy Hiệu Tha Hóa",
+      "description": "Thanh tẩy Huy Hiệu Hiệp Sĩ Tha Hóa cùng Nhựa Thông Cổ và Thảo Dược, tôi rèn lại thành Bùa Chuông Đồng bảo hộ tâm trí.",
+      "ingredients": [
+        { "itemId": "quest_corrupted_crest", "count": 1 },
+        { "itemId": "res_tree_resin", "count": 2 },
+        { "itemId": "res_herbs", "count": 2 }
       ]
     }
   ]

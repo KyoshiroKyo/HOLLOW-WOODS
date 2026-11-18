@@ -50,7 +50,7 @@ export class EchoApparition extends TheEcho {
    * Trả về mảnh ký ức về ngày ngôi làng bị sương mù nuốt chửng
    */
   public getSwallowedVillageMemory(): string {
-    return this.spec.message || 'Mảnh ký ức thì thầm: “Ngày màn sương nuốt chửng Bellhollow... tiếng chuông tắt dần trong lòng đất...”';
+    return this.spec.message || 'Mảnh ký ức thì thầm: “Hỡi vị Chỉ Huy Hiệp Sĩ Đen... ngày màn sương nuốt chửng Bellhollow... tiếng chuông tắt dần trong lòng đất...”';
   }
 }
 

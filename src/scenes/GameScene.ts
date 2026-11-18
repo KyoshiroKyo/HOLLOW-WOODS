@@ -33,6 +33,7 @@ import { FarmingSystem } from '../systems/FarmingSystem';
 import { TimeSystem, lerpColor } from '../systems/TimeSystem';
 import { WeatherSystem } from '../systems/WeatherSystem';
 import { CampSystem } from '../systems/CampSystem';
+import { CampSanctuarySystem } from '../systems/CampSanctuarySystem';
 import { EquipmentSystem } from '../systems/EquipmentSystem';
 import { WildlifeSystem } from '../systems/WildlifeSystem';
 import { WorldEventSystem } from '../systems/WorldEventSystem';
@@ -112,6 +113,8 @@ export class GameScene extends Phaser.Scene {
 
   // C4-13-16: Thời điểm kích hoạt gần nhất dòng suy nghĩ kể chuyện ở rào chắn phía Tây (cooldown 6 giây)
   private lastWestBarrierThoughtTime: number = 0;
+  // V14-P8-13: Thời điểm kích hoạt suy nghĩ dẫn hướng khi lại gần Cầu Đá Bị Sập chặn lối thẳng
+  private lastCollapsedBridgeThoughtTime: number = 0;
 
   private keyQ!: Phaser.Input.Keyboard.Key;
   private key3!: Phaser.Input.Keyboard.Key;
@@ -203,6 +206,7 @@ export class GameScene extends Phaser.Scene {
     this.transitionCooldown = 0;
     this.lastTransitionId = null;
     this.lastWestBarrierThoughtTime = 0;
+    this.lastCollapsedBridgeThoughtTime = 0;
     this.lastZoneBannerTime = 0;
     this.lastBannerZoneId = '';
     this.cullingTimer = 0;
@@ -335,6 +339,7 @@ export class GameScene extends Phaser.Scene {
       if (this.uiScene) {
         this.uiScene.setDialogueActive(false);
       }
+      CampSanctuarySystem.getInstance().onDialogueEnd();
     };
     this.inventorySystem = new InventorySystem(this);
     this.endingSystem = new EndingSystem(this);
@@ -464,6 +469,75 @@ export class GameScene extends Phaser.Scene {
       this.playerState.observeCreature('crow');
       if (this.listenerMonster && this.listenerMonster.ai) {
         this.listenerMonster.ai.triggerSoundAlert(evt.x, evt.y, 0.75);
+      }
+    });
+
+    // V1.4 - P8-08: Lắng nghe sự kiện hạ gục Sói Xương (Skull Wolf)
+    this.events.on('skull_wolf_defeated', () => {
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('🦴 Sói Xương tan biến thành tro tàn! Nhận được Nanh Xương Cổ!');
+      }
+    });
+
+    // V1.4 - P8-09: Lắng nghe các sự kiện Quái Vật Bóng Tối (Shadow Monsters)
+    this.events.on('shadow_crow_alarm', () => {
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('⚠️ Tiếng Quạ Bóng Tối rít xé gió! Kẻ Lắng Nghe đang hướng về đây!');
+      }
+    });
+    this.events.on('shadow_crow_defeated', () => {
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('💀 Quạ Bóng Tối đã bị đánh rơi!');
+      }
+    });
+    this.events.on('shadow_eyes_drain', () => {
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('👁️ Cặp mắt trong sương rút cạn Bình Tâm! Bật Đèn Lồng [F] ngay!');
+      }
+    });
+    this.events.on('shadow_eyes_vanished', () => {
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('✨ Ánh sáng đèn lồng đã xua tan Bóng Mắt Sương Mù!');
+      }
+    });
+    this.events.on('behemoth_slam_warning', () => {
+      this.cameraSystem.shake(250, 0.015);
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('⚠️ MẶT ĐẤT CHẤN ĐỘNG! Trùm Bóng Tối đang chuẩn bị đập đất!');
+      }
+    });
+    this.events.on('shadow_behemoth_defeated', () => {
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('👑 TRÙM BÓNG TỐI ĐÃ BỊ HẠ GỤC! Nhận được Mảnh Tinh Chất Bóng Tối!');
+      }
+    });
+
+    // V1.4 - P8-10: Lắng nghe các sự kiện Nhóm Hiệp Sĩ Tà Ác (Evil Knights Faction)
+    this.events.on('fallen_knight_defeated', () => {
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('⚔ Hiệp Sĩ Sa Ngã đã gục ngã! Thu được Gỗ Khô!');
+      }
+    });
+    this.events.on('dread_horseman_defeated', () => {
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('🐎 Kỵ Binh Hắc Ám đã bị đánh bại! Thu được Đá Lửa!');
+      }
+    });
+    this.events.on('hooded_knight_powerup_start', () => {
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('⚠️ CHỈ HUY HIỆP SĨ ĐANG TỤ TÀ KHÍ! Áp sát rọi Đèn Lồng [F] để phá chiêu!');
+      }
+    });
+    this.events.on('hooded_knight_interrupted', () => {
+      this.cameraSystem.shake(180, 0.01);
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('⚡ ĐÃ PHÁ CHIÊU! Chỉ Huy Hiệp Sĩ bị Choáng Váng (Stagger), nhận x2 sát thương!');
+      }
+    });
+    this.events.on('hooded_knight_defeated', () => {
+      this.playerState.setFlag('boss_hooded_knight_defeated');
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('👑 CHỈ HUY HIỆP SĨ TRÙM MŨ ĐÃ BỊ HẠ GỤC! Thu được Huy Hiệu Hiệp Sĩ Tha Hóa!');
       }
     });
 
@@ -1006,7 +1080,18 @@ export class GameScene extends Phaser.Scene {
       patrolSpeed: 25
     });
 
-    this.npcs.push(garth, edda, neris, bram, finn);
+    // 6. Hiệp Sĩ Canh Lửa — Người Giữ Lửa Tàn (V14-P8-14B / V14-P8-14C): quỳ canh gác bên Lửa Trại Làng (x: 818, y: 270)
+    const campfireKnight = new NPCEntity(this, {
+      id: 'npc_campfire_knight',
+      name: 'Hiệp Sĩ Canh Lửa',
+      title: 'Người giữ lửa tàn',
+      x: 818,
+      y: 270,
+      dialogueKey: 'campfire_knight_intro'
+    });
+    CampSanctuarySystem.getInstance().registerKnightEntity(campfireKnight);
+
+    this.npcs.push(garth, edda, neris, bram, finn, campfireKnight);
 
     // C4-13-17 & C4-132-03: Thiết lập va chạm vật lý giữa SatyrPlayer và toàn bộ 5 NPC làng Bellhollow (hộp chân gọn 22x14 px)
     if (this.npcCollider) {
@@ -1544,6 +1629,163 @@ export class GameScene extends Phaser.Scene {
         campfirePos: campfirePos,
         camera: this.cameras.main
       });
+
+      // V14-P8-14B: Đẩy lùi quái vật nếu xâm nhập vòng bảo hộ của Sanctuary Camp
+      const campSanctuary = CampSanctuarySystem.getInstance();
+      const allMonsters: any[] = [
+        ...this.wildlifeSystem.getSkullWolves(),
+        ...this.wildlifeSystem.getShadowCrows(),
+        ...this.wildlifeSystem.getFallenKnights(),
+        ...this.wildlifeSystem.getDreadHorsemen()
+      ];
+      if (this.wildlifeSystem.getShadowBehemoth()) allMonsters.push(this.wildlifeSystem.getShadowBehemoth());
+      if (this.wildlifeSystem.getHoodedKnight()) allMonsters.push(this.wildlifeSystem.getHoodedKnight());
+      if (this.listenerMonster) allMonsters.push(this.listenerMonster);
+      campSanctuary.applySanctuaryRepulsion(allMonsters);
+
+      const isSanctuaryProtected = campSanctuary.isPlayerInSanctuary(this.player.x, this.player.y, this.currentZoneId);
+
+      // V1.4 - P8-08: Kiểm tra va chạm đòn vồ (Lunge) của Sói Xương với người chơi (Bảo vệ tuyệt đối khi trong Sanctuary Camp)
+      if (!this.isGameOverPending && !this.player.isDead() && !this.player.stats.isHiding && !isSanctuaryProtected) {
+        const wolves = this.wildlifeSystem.getSkullWolves();
+        for (const wolf of wolves) {
+          if (wolf.active && !wolf.isDefeated && wolf.wolfState === 'lunge' && !wolf.hasHitPlayerInCurrentLunge) {
+            const distToPlayer = Math.hypot(this.player.x - wolf.x, this.player.y - wolf.y);
+            if (distToPlayer <= 34 && !this.player.isHurt()) {
+              wolf.hasHitPlayerInCurrentLunge = true;
+              wolf.onLungeHitPlayer();
+
+              // Gây 15 sát thương HP và 15 sát thương Composure
+              this.playerState.stats.health = Math.max(0, this.playerState.stats.health - 15);
+              this.playerState.stats.composure = Math.max(5, this.playerState.stats.composure - 15);
+              this.cameraSystem.shake(220, 0.012);
+              this.cameraSystem.flash(180, 160, 20, 20);
+
+              if (this.playerState.stats.health <= 0) {
+                this.triggerPlayerDeath('Bị Sói Xương cắn xé trong bóng đêm...');
+                return;
+              }
+
+              if (this.uiScene) {
+                this.uiScene.showPopupMessage('⚠️ SÓI XƯƠNG VỒ TRÚNG! Bật Đèn Lồng [F] hoặc lại gần Lửa Trại để xua đuổi!');
+              }
+
+              const pushAngle = Math.atan2(this.player.y - wolf.y, this.player.x - wolf.x);
+              this.player.setPosition(this.player.x + Math.cos(pushAngle) * 45, this.player.y + Math.sin(pushAngle) * 45);
+              this.player.playHurt();
+            }
+          }
+        }
+
+        // V1.4 - P8-09: Kiểm tra đòn sà mổ (Dive Attack) của Quạ Bóng Tối
+        const shadowCrows = this.wildlifeSystem.getShadowCrows();
+        for (const crow of shadowCrows) {
+          if (crow.active && !crow.isDefeated && crow.crowState === 'dive_attack') {
+            const dist = Math.hypot(this.player.x - crow.x, this.player.y - crow.y);
+            if (dist <= 30 && !this.player.isHurt()) {
+              this.playerState.stats.health = Math.max(0, this.playerState.stats.health - 8);
+              this.playerState.stats.composure = Math.max(5, this.playerState.stats.composure - 10);
+              this.cameraSystem.shake(160, 0.008);
+              this.player.playHurt();
+              if (this.uiScene) {
+                this.uiScene.showPopupMessage('⚠️ Quạ Bóng Tối sà xuống cắn xé! Bật Đèn Lồng [F] ngay để xua đuổi!');
+              }
+              crow.takeDamage(0);
+            }
+          }
+        }
+
+        // V1.4 - P8-09: Kiểm tra đòn đập địa chấn (Combo Slam) của Trùm Bóng Tối Khổng Lồ
+        const behemoth = this.wildlifeSystem.getShadowBehemoth();
+        if (behemoth && behemoth.active && !behemoth.isDefeated && behemoth.bossState === 'combo_slam') {
+          const dist = Math.hypot(this.player.x - behemoth.x, this.player.y - behemoth.y);
+          if (dist <= 90 && !this.player.isHurt()) {
+            this.playerState.stats.health = Math.max(0, this.playerState.stats.health - 25);
+            this.playerState.stats.composure = Math.max(5, this.playerState.stats.composure - 20);
+            this.cameraSystem.shake(350, 0.02);
+            this.cameraSystem.flash(200, 160, 0, 40);
+            const pushAngle = Math.atan2(this.player.y - behemoth.y, this.player.x - behemoth.x);
+            this.player.setPosition(this.player.x + Math.cos(pushAngle) * 60, this.player.y + Math.sin(pushAngle) * 60);
+            this.player.playHurt();
+            if (this.playerState.stats.health <= 0) {
+              this.triggerPlayerDeath('Bị Trùm Bóng Tối Khổng Lồ nghiền nát trong màn đêm...');
+              return;
+            }
+            if (this.uiScene) {
+              this.uiScene.showPopupMessage('⚠️ CHẤN ĐỘNG ĐỊA CHẤN TỪ TRÙM BÓNG TỐI! Hãy lùi xa khi mặt đất chấn động!');
+            }
+          }
+        }
+
+        // V1.4 - P8-10: Kiểm tra đòn chém kiếm của Hiệp Sĩ Sa Ngã
+        const fallenKnights = this.wildlifeSystem.getFallenKnights();
+        for (const fk of fallenKnights) {
+          if (fk.active && !fk.isDefeated && fk.knightState === 'attack' && !fk.hasHitPlayerInCurrentAttack) {
+            const dist = Math.hypot(this.player.x - fk.x, this.player.y - fk.y);
+            if (dist <= 36 && !this.player.isHurt()) {
+              fk.hasHitPlayerInCurrentAttack = true;
+              this.playerState.stats.health = Math.max(0, this.playerState.stats.health - 14);
+              this.playerState.stats.composure = Math.max(5, this.playerState.stats.composure - 8);
+              this.cameraSystem.shake(200, 0.01);
+              this.player.playHurt();
+              if (this.playerState.stats.health <= 0) {
+                this.triggerPlayerDeath('Bị nhát kiếm của Hiệp Sĩ Sa Ngã kết liễu...');
+                return;
+              }
+              if (this.uiScene) {
+                this.uiScene.showPopupMessage('⚠️ Nhát chém của Hiệp Sĩ Sa Ngã! Hãy phản công khi hắn hồi sức!');
+              }
+            }
+          }
+        }
+
+        // V1.4 - P8-10: Kiểm tra cú húc càn quét của Kỵ Binh Hắc Ám
+        const dreadHorsemen = this.wildlifeSystem.getDreadHorsemen();
+        for (const dh of dreadHorsemen) {
+          if (dh.active && !dh.isDefeated && dh.horseState === 'charge' && !dh.hasHitPlayerInCurrentCharge) {
+            const dist = Math.hypot(this.player.x - dh.x, this.player.y - dh.y);
+            if (dist <= 44 && !this.player.isHurt()) {
+              dh.hasHitPlayerInCurrentCharge = true;
+              this.playerState.stats.health = Math.max(0, this.playerState.stats.health - 18);
+              this.playerState.stats.composure = Math.max(5, this.playerState.stats.composure - 12);
+              this.cameraSystem.shake(260, 0.015);
+              const pushX = dh.x < this.player.x ? 50 : -50;
+              this.player.setPosition(this.player.x + pushX, this.player.y);
+              this.player.playHurt();
+              if (this.playerState.stats.health <= 0) {
+                this.triggerPlayerDeath('Bị vó ngựa Kỵ Binh Hắc Ám nghiền nát trên đường mòn...');
+                return;
+              }
+              if (this.uiScene) {
+                this.uiScene.showPopupMessage('⚠️ Cú tông dữ dội của Kỵ Binh Hắc Ám! Hãy né sang hai bên bụi rậm!');
+              }
+            }
+          }
+        }
+
+        // V1.4 - P8-10: Kiểm tra nhát chém cuồng nộ của Chỉ Huy Hiệp Sĩ Trùm Mũ
+        const hoodedBoss = this.wildlifeSystem.getHoodedKnight();
+        if (hoodedBoss && hoodedBoss.active && !hoodedBoss.isDefeated && hoodedBoss.bossState === 'attack' && !hoodedBoss.hasHitPlayerInCurrentAttack) {
+          const dist = Math.hypot(this.player.x - hoodedBoss.x, this.player.y - hoodedBoss.y);
+          if (dist <= 75 && !this.player.isHurt()) {
+            hoodedBoss.hasHitPlayerInCurrentAttack = true;
+            this.playerState.stats.health = Math.max(0, this.playerState.stats.health - 26);
+            this.playerState.stats.composure = Math.max(5, this.playerState.stats.composure - 18);
+            this.cameraSystem.shake(320, 0.018);
+            this.cameraSystem.flash(180, 140, 20, 20);
+            const pushAngle = Math.atan2(this.player.y - hoodedBoss.y, this.player.x - hoodedBoss.x);
+            this.player.setPosition(this.player.x + Math.cos(pushAngle) * 55, this.player.y + Math.sin(pushAngle) * 55);
+            this.player.playHurt();
+            if (this.playerState.stats.health <= 0) {
+              this.triggerPlayerDeath('Gục ngã trước nhát chém cuồng bạo của Chỉ Huy Hiệp Sĩ...');
+              return;
+            }
+            if (this.uiScene) {
+              this.uiScene.showPopupMessage('⚠️ NHÁT CHÉM TÀ ÁC TỪ CHỈ HUY HIỆP SĨ! Rọi Đèn Lồng [F] ngắt chiêu của hắn!');
+            }
+          }
+        }
+      }
     }
 
     // Cập nhật logic truy đuổi Act 5 Climax
@@ -1576,10 +1818,11 @@ export class GameScene extends Phaser.Scene {
     // Phát hiện và xử lý phân khu
     this.handleZoneLogic();
 
-    // C4-13-02: Luôn bảo đảm thuộc tính visible và active của nhân vật được giữ bật khi không ẩn nấp
+    // C4-13-02 / V14-P8-11: Luôn bảo đảm thuộc tính visible và alpha của nhân vật được giữ bật khi không ẩn nấp
     if (this.player && !this.player.stats.isHiding) {
       if (!this.player.visible) this.player.setVisible(true);
       if (!this.player.active) this.player.setActive(true);
+      if (!this.player.isHurt() && this.player.alpha < 1) this.player.setAlpha(1);
     }
 
     // C4-13-02: Tự động giảm độ đậm (alpha = 0.35) của tán cây khi nhân vật đi bên dưới
@@ -1590,6 +1833,14 @@ export class GameScene extends Phaser.Scene {
       const foot = this.player.getFootPosition();
       if (foot.x <= 75 && foot.y >= 120 && foot.y <= 248) {
         this.triggerWestBarrierThought(false);
+      }
+    }
+
+    // V14-P8-13: Kiểm tra nếu nhân vật lại gần chướng ngại vật cầu đá sập chặn lối thẳng (crooked_path x ~ 1760, y ~ 280)
+    if (this.currentZoneId === 'crooked_path' && this.player) {
+      const foot = this.player.getFootPosition();
+      if (Math.hypot(foot.x - 1760, foot.y - 280) < 65) {
+        this.triggerCollapsedBridgeThought(false);
       }
     }
 
@@ -1834,6 +2085,137 @@ export class GameScene extends Phaser.Scene {
         }
       } else {
         this.mireWardenBoss.hearSound(hitbox.playerX, hitbox.playerY, false);
+      }
+    }
+
+    // 5. V1.4 - P8-08: Tác động lên Sói Xương (Skull Wolves) khi trong tầm chém
+    if (this.wildlifeSystem) {
+      const wolves = this.wildlifeSystem.getSkullWolves();
+      for (const wolf of wolves) {
+        if (wolf.active && !wolf.isDefeated && wolf.wolfState !== 'dissolve') {
+          const distToWolf = Math.hypot(wolf.x - hitbox.x, wolf.y - hitbox.y);
+          if (distToWolf <= hitbox.radius + 28) {
+            this.createHitSpark(hitbox.x, hitbox.y);
+            const dmg = weaponDef.damage || 1;
+            wolf.takeDamage(dmg, hitbox.playerX, hitbox.playerY);
+            if (this.uiScene) {
+              if (wolf.currentHp <= 0) {
+                this.uiScene.showPopupMessage('💀 Hạ gục Sói Xương! Thu thập được Nanh Xương Cổ!');
+              } else {
+                this.uiScene.showPopupMessage(`Đòn ${weaponDef.name} chém trúng Sói Xương! (-${dmg} HP)`);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // 6. V1.4 - P8-09: Tác động lên Quạ Bóng Tối (Shadow Crow) khi vung chém
+    if (this.wildlifeSystem) {
+      const shadowCrows = this.wildlifeSystem.getShadowCrows();
+      for (const crow of shadowCrows) {
+        if (crow.active && !crow.isDefeated && crow.crowState !== 'dissolve') {
+          const distToCrow = Math.hypot(crow.x - hitbox.x, crow.y - hitbox.y);
+          if (distToCrow <= hitbox.radius + 24) {
+            this.createHitSpark(hitbox.x, hitbox.y);
+            crow.takeDamage(weaponDef.damage || 1);
+            if (this.uiScene) {
+              this.uiScene.showPopupMessage('⚔ Đánh trúng Quạ Bóng Tối! Tiếng rít vang vọng màn sương!');
+            }
+          }
+        }
+      }
+    }
+
+    // 7. V1.4 - P8-09: Tác động lên Trùm Bóng Tối Khổng Lồ (Shadow Behemoth Boss)
+    if (this.wildlifeSystem) {
+      const behemoth = this.wildlifeSystem.getShadowBehemoth();
+      if (behemoth && behemoth.active && !behemoth.isDefeated && behemoth.bossState !== 'death') {
+        const distToBoss = Math.hypot(behemoth.x - hitbox.x, behemoth.y - hitbox.y);
+        if (distToBoss <= hitbox.radius + 45) {
+          this.createHitSpark(hitbox.x, hitbox.y);
+          const dmg = weaponDef.damage || 1;
+          behemoth.takeDamage(dmg);
+          if (this.uiScene) {
+            if (behemoth.isVulnerable) {
+              this.uiScene.showPopupMessage(`⚡ ĐÁNH VÀO ĐIỂM YẾU! Chí mạng x2 sát thương (-${dmg * 2} HP) lên Trùm Bóng Tối!`);
+            } else if (behemoth.currentHp <= 0) {
+              this.uiScene.showPopupMessage('👑 Trùm Bóng Tối Khổng Lồ đã bị tiêu diệt! Thu thập Mảnh Tinh Chất Bóng Tối!');
+            } else {
+              this.uiScene.showPopupMessage(`Đòn ${weaponDef.name} chém vào Trùm Bóng Tối! (-${dmg} HP)`);
+            }
+          }
+        }
+      }
+    }
+
+    // 8. V1.4 - P8-10: Tác động lên Hiệp Sĩ Sa Ngã (Fallen Knight) khi vung chém
+    if (this.wildlifeSystem) {
+      const fallenKnights = this.wildlifeSystem.getFallenKnights();
+      for (const fk of fallenKnights) {
+        if (fk.active && !fk.isDefeated && fk.knightState !== 'death') {
+          const distToFk = Math.hypot(fk.x - hitbox.x, fk.y - hitbox.y);
+          if (distToFk <= hitbox.radius + 26) {
+            this.createHitSpark(hitbox.x, hitbox.y);
+            const dmg = weaponDef.damage || 1;
+            fk.takeDamage(dmg, this.player.x, this.player.y);
+            if (this.uiScene) {
+              if (fk.isVulnerable) {
+                this.uiScene.showPopupMessage(`⚡ Đòn đánh trúng điểm sơ hở! Sát thương x2 (-${dmg * 2} HP) lên Hiệp Sĩ Sa Ngã!`);
+              } else if (fk.hp <= 0) {
+                this.uiScene.showPopupMessage('⚔ Đã tiêu diệt Hiệp Sĩ Sa Ngã!');
+              } else {
+                this.uiScene.showPopupMessage(`Đòn ${weaponDef.name} chém vào Hiệp Sĩ Sa Ngã! (-${dmg} HP)`);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // 9. V1.4 - P8-10: Tác động lên Kỵ Binh Hắc Ám (Dread Horseman) khi vung chém
+    if (this.wildlifeSystem) {
+      const dreadHorsemen = this.wildlifeSystem.getDreadHorsemen();
+      for (const dh of dreadHorsemen) {
+        if (dh.active && !dh.isDefeated && dh.horseState !== 'death') {
+          const distToDh = Math.hypot(dh.x - hitbox.x, dh.y - hitbox.y);
+          if (distToDh <= hitbox.radius + 34) {
+            this.createHitSpark(hitbox.x, hitbox.y);
+            const dmg = weaponDef.damage || 1;
+            dh.takeDamage(dmg, this.player.x, this.player.y);
+            if (this.uiScene) {
+              if (dh.isVulnerable) {
+                this.uiScene.showPopupMessage(`⚡ Đòn phản công sườn ngựa! Sát thương x2 (-${dmg * 2} HP) lên Kỵ Binh Hắc Ám!`);
+              } else if (dh.hp <= 0) {
+                this.uiScene.showPopupMessage('🐎 Kỵ Binh Hắc Ám đã bị tiêu diệt!');
+              } else {
+                this.uiScene.showPopupMessage(`Đòn ${weaponDef.name} đánh trúng Kỵ Binh Hắc Ám! (-${dmg} HP)`);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // 10. V1.4 - P8-10: Tác động lên Chỉ Huy Hiệp Sĩ Trùm Mũ (Hooded Knight Boss)
+    if (this.wildlifeSystem) {
+      const hoodedBoss = this.wildlifeSystem.getHoodedKnight();
+      if (hoodedBoss && hoodedBoss.active && !hoodedBoss.isDefeated && hoodedBoss.bossState !== 'death') {
+        const distToBoss = Math.hypot(hoodedBoss.x - hitbox.x, hoodedBoss.y - hitbox.y);
+        if (distToBoss <= hitbox.radius + 48) {
+          this.createHitSpark(hitbox.x, hitbox.y);
+          const dmg = weaponDef.damage || 1;
+          hoodedBoss.takeDamage(dmg);
+          if (this.uiScene) {
+            if (hoodedBoss.isVulnerable) {
+              this.uiScene.showPopupMessage(`⚡ ĐÒN PHẢN KÍCH CHOÁNG VÁNG! Sát thương x2 (-${dmg * 2} HP) lên Chỉ Huy Hiệp Sĩ!`);
+            } else if (hoodedBoss.currentHp <= 0) {
+              this.uiScene.showPopupMessage('👑 CHỈ HUY HIỆP SĨ TRÙM MŨ ĐÃ BỊ TIÊU DIỆT! Thu nhận Huy Hiệu Hiệp Sĩ Tha Hóa!');
+            } else {
+              this.uiScene.showPopupMessage(`Đòn ${weaponDef.name} chém vào Chỉ Huy Hiệp Sĩ! (-${dmg} HP)`);
+            }
+          }
+        }
       }
     }
   }
@@ -2386,10 +2768,13 @@ export class GameScene extends Phaser.Scene {
       this.applyCameraBoundsForZone(trans.toZone);
       this.worldBuilder.updateCameraCulling(this.cameras.main);
 
-      if (!this.player.stats.isHiding) {
-        this.player.setVisible(true);
-        this.player.setActive(true);
+      // V14-P8-11: Tự động thoát trạng thái ẩn nấp và tái xác nhận hiển thị nhân vật 100% khi chuyển sang phân khu mới
+      if (this.player.stats.isHiding) {
+        this.player.exitHiding();
       }
+      this.player.setVisible(true);
+      this.player.setActive(true);
+      this.player.setAlpha(1);
 
       this.currentZoneId = trans.toZone;
       this.previousZoneId = trans.toZone;
@@ -2419,6 +2804,15 @@ export class GameScene extends Phaser.Scene {
         this.time.delayedCall(800, () => {
           this.triggerMireWardenBossEncounter();
         });
+      }
+
+      // V14-P8-15A: Tự động nâng memoryAwakeningStage lên 1 khi khám phá Xưởng Chuông Bỏ Hoang
+      if (trans.toZone === 'sub_bell_workshop' && this.playerState.memoryAwakeningStage < 1) {
+        this.playerState.memoryAwakeningStage = 1;
+        this.playerState.unlockLore('lore_black_knight_chronicle');
+        if (this.uiScene) {
+          this.uiScene.showPopupMessage('🗡️ [THỨC TỈNH KÝ ỨC - GIAI ĐOẠN 1]: Khám phá Xưởng Chuông Bỏ Hoang gợi lại tàn ảnh về Hiệp Sĩ Đen!');
+        }
       }
 
       this.time.delayedCall(200, () => {
@@ -2462,11 +2856,13 @@ export class GameScene extends Phaser.Scene {
     // C4-12-29: Cập nhật culling ngay lập tức cho vùng đích mới
     this.worldBuilder.updateCameraCulling(this.cameras.main);
 
-    // C4-13-02: Bảo đảm thuộc tính visible và active của nhân vật luôn được giữ bật khi đi qua mọi ranh giới vùng
-    if (!this.player.stats.isHiding) {
-      this.player.setVisible(true);
-      this.player.setActive(true);
+    // C4-13-02 / V14-P8-11: Bảo đảm nhân vật thoát trạng thái ẩn nấp và luôn hiển thị rõ ràng khi qua ranh giới cổng dịch chuyển
+    if (this.player.stats.isHiding) {
+      this.player.exitHiding();
     }
+    this.player.setVisible(true);
+    this.player.setActive(true);
+    this.player.setAlpha(1);
 
     // Cập nhật âm thanh & phân khu
     this.currentZoneId = trans.toZone;
@@ -2498,6 +2894,15 @@ export class GameScene extends Phaser.Scene {
       this.time.delayedCall(800, () => {
         this.triggerMireWardenBossEncounter();
       });
+    }
+
+    // V14-P8-15A: Tự động nâng memoryAwakeningStage lên 1 khi khám phá Xưởng Chuông Bỏ Hoang
+    if (trans.toZone === 'sub_bell_workshop' && this.playerState.memoryAwakeningStage < 1) {
+      this.playerState.memoryAwakeningStage = 1;
+      this.playerState.unlockLore('lore_black_knight_chronicle');
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('🗡️ [THỨC TỈNH KÝ ỨC - GIAI ĐOẠN 1]: Khám phá Xưởng Chuông Bỏ Hoang gợi lại tàn ảnh về Hiệp Sĩ Đen!');
+      }
     }
 
     // Mở cờ trạng thái sau một nhịp ngắn
@@ -2755,6 +3160,8 @@ export class GameScene extends Phaser.Scene {
                 if (this.uiScene) {
                   this.uiScene.showPopupMessage('🎁 Garth đã tặng bạn: Ủng Đi Rừng (Trail Boots)! Giảm 30% tiếng ồn bước chân.');
                 }
+              } else if (this.playerState.memoryAwakeningStage >= 3) {
+                dKey = 'garth_black_knight_reverence';
               } else if (!this.playerState.hasFlag('talked_to_villagers')) {
                 dKey = 'garth_warning';
               } else if (!this.playerState.hasFlag('talked_to_edda')) {
@@ -2769,6 +3176,8 @@ export class GameScene extends Phaser.Scene {
                 dKey = 'edda_quest_bell_memory';
                 this.playerState.setFlag('edda_mold_rewarded');
                 this.playerState.completeQuestTask('SQ02_BELL_MEMORY', 't2');
+              } else if (this.playerState.memoryAwakeningStage >= 3) {
+                dKey = 'edda_black_knight_reverence';
               } else if (!this.playerState.hasFlag('talked_to_edda')) {
                 dKey = 'edda_intro';
               } else if (!this.playerState.isEastGateUnlocked()) {
@@ -2787,6 +3196,8 @@ export class GameScene extends Phaser.Scene {
                 dKey = 'neris_quest_cellar_tea';
                 this.playerState.setFlag('neris_tea_rewarded');
                 this.playerState.completeQuestTask('SQ03_CELLAR_TEA', 't3');
+              } else if (this.playerState.memoryAwakeningStage >= 3) {
+                dKey = 'neris_black_knight_reverence';
               } else if (!this.playerState.hasFlag('talked_to_neris')) {
                 dKey = 'neris_intro';
               } else if (!this.playerState.isEastGateUnlocked()) {
@@ -2799,12 +3210,88 @@ export class GameScene extends Phaser.Scene {
                 dKey = 'bram_quest_runed_iron';
                 this.playerState.setFlag('bram_iron_rewarded');
                 this.playerState.completeQuestTask('SQ01_RUNED_IRON', 't2');
+              } else if (this.playerState.memoryAwakeningStage >= 3) {
+                dKey = 'bram_black_knight_reverence';
               } else {
                 dKey = 'bram_chat';
               }
             } else if (npc.spec.id === 'npc_finn') {
-              dKey = 'finn_rumors';
+              if (this.playerState.memoryAwakeningStage >= 3) {
+                dKey = 'finn_black_knight_reverence';
+              } else {
+                dKey = 'finn_rumors';
+              }
               this.playerState.completeQuestTask('SQ05_FINN_INTEL', 't1');
+            } else if (npc.spec.id === 'npc_campfire_knight') {
+              CampSanctuarySystem.getInstance().onDialogueStart(this.player.x);
+              if (this.playerState.hasFlag('campfire_knight_q3_completed')) {
+                dKey = 'campfire_knight_idle_talk';
+              } else if (this.playerState.hasFlag('campfire_knight_q3_accepted')) {
+                const hasCorruptedCrest = (this.playerState.getItemCount('quest_corrupted_knight_crest') > 0 ||
+                                           this.playerState.getItemCount('quest_corrupted_crest') > 0 ||
+                                           this.playerState.hasFlag('boss_hooded_knight_defeated'));
+                if (hasCorruptedCrest) {
+                  dKey = 'campfire_knight_q3_complete';
+                  this.playerState.completeQuestTask('SQ08_PURIFY_FALLEN', 't1');
+                  this.playerState.completeQuestTask('SQ08_PURIFY_FALLEN', 't2');
+                  this.playerState.completeQuestTask('SQ08_PURIFY_FALLEN', 't3');
+                  this.playerState.setFlag('campfire_knight_q3_completed');
+
+                  // V14-P8-15B: Nâng tiến trình Thức Tỉnh Ký Ức lên Giai đoạn 3 (Chân tướng Hiệp Sĩ Đen)
+                  this.playerState.setMemoryAwakeningStage(3);
+                  this.events.emit('memory_awakening_stage_changed', 3);
+                  this.events.emit('memory_awakening_completed');
+                  if (this.uiScene) {
+                    this.uiScene.redrawStats();
+                    this.uiScene.showPopupMessage('⚔️ THỨC TỈNH KÝ ỨC: Bạn chính là Chỉ Huy Hiệp Sĩ Đen (The Black Knight)!');
+                  }
+                } else {
+                  dKey = 'campfire_knight_q3_reminder';
+                }
+              } else if (this.playerState.hasFlag('campfire_knight_q2_accepted')) {
+                const hasRunedIron = (this.playerState.getItemCount('mat_runed_iron') > 0 ||
+                                      this.playerState.getItemCount('item_knight_journal_page') > 0 ||
+                                      this.playerState.hasFlag('has_runed_iron_part') ||
+                                      this.playerState.hasFlag('workshop_visited'));
+                if (hasRunedIron) {
+                  dKey = 'campfire_knight_q2_complete';
+                  this.playerState.completeQuestTask('SQ07_LOST_COMRADES', 't1');
+                  this.playerState.completeQuestTask('SQ07_LOST_COMRADES', 't2');
+                  this.playerState.completeQuestTask('SQ07_LOST_COMRADES', 't3');
+                  this.playerState.setFlag('campfire_knight_q2_completed');
+                  if (this.uiScene) {
+                    this.uiScene.showPopupMessage('📜 Hiệp Sĩ Canh Lửa đã nhận lại kỷ vật đồng đội và mở khóa Nhiệm Vụ 3!');
+                  }
+                } else {
+                  dKey = 'campfire_knight_q2_reminder';
+                }
+              } else if (this.playerState.hasFlag('campfire_knight_q1_accepted')) {
+                const hasWoodAndResin = (this.playerState.getItemCount('res_dry_wood') >= 2 && this.playerState.getItemCount('res_tree_resin') >= 2) ||
+                                        (this.playerState.campfireLevel >= 2) ||
+                                        this.playerState.hasFlag('outer_woods_scouted');
+                if (hasWoodAndResin) {
+                  dKey = 'campfire_knight_q1_complete';
+                  this.playerState.completeQuestTask('SQ06_KEEP_FIRE', 't1');
+                  this.playerState.completeQuestTask('SQ06_KEEP_FIRE', 't2');
+                  this.playerState.completeQuestTask('SQ06_KEEP_FIRE', 't3');
+                  this.playerState.setFlag('campfire_knight_q1_completed');
+                  if (this.playerState.memoryAwakeningStage < 1) {
+                    this.playerState.memoryAwakeningStage = 1;
+                    this.playerState.unlockLore('lore_black_knight_chronicle');
+                  }
+                  if (this.playerState.campfireLevel < 2) {
+                    this.playerState.campfireLevel = 2;
+                  }
+                  if (this.uiScene) {
+                    this.uiScene.showPopupMessage('🔥 Hoàn thành: Giữ Lửa Trong Sương! Lửa Trại nâng lên Cấp 2.');
+                  }
+                } else {
+                  dKey = 'campfire_knight_q1_reminder';
+                }
+              } else {
+                dKey = 'campfire_knight_intro';
+                this.playerState.setFlag('talked_to_campfire_knight');
+              }
             }
             this.audioManager.playInteract();
             this.dialogueSystem.startDialogue(dKey);
@@ -3077,6 +3564,60 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
+    // V14-P8-13: Khảo sát chướng ngại vật Cầu Đá Cổ Bị Sập chặn lối thẳng tới Tháp Chuông
+    if (actionId === 'inspect_collapsed_bridge') {
+      this.triggerCollapsedBridgeThought(true);
+      return;
+    }
+
+    // V14-P8-13: Đọc Biển Chỉ Đường Tuyến Vòng (Winding Detour Sign)
+    if (actionId === 'read_detour_sign') {
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('📜 Biển Chỉ Đường: "◄ Hướng Bắc: Bìa Rừng Sâu & Xưởng Chuông | Lối Vòng Đầm Lầy & Tháp Chuông: Phía Đông Nam ►"');
+      }
+      return;
+    }
+
+    // V14-P8-13: Thu thập nguyên liệu sinh tồn dọc tuyến đường vòng (Gỗ Khô, Nhựa Thông, Thảo Dược)
+    if (actionId === 'gather_wood_ow_1' || actionId === 'gather_wood_cp_1') {
+      const flag = `gathered_${actionId}`;
+      if (this.playerState.hasFlag(flag)) {
+        this.uiScene?.showPopupMessage('Cành gỗ này đã được nhặt hết.');
+      } else {
+        this.playerState.setFlag(flag);
+        this.playerState.addItem('res_dry_wood', 2);
+        this.audioManager?.playInteract();
+        this.uiScene?.showPopupMessage('🪵 Thu nhặt được 2 Gỗ Khô từ cành cây ven đường vòng.');
+      }
+      return;
+    }
+
+    if (actionId === 'gather_resin_ow_1' || actionId === 'gather_resin_cp_1') {
+      const flag = `gathered_${actionId}`;
+      if (this.playerState.hasFlag(flag)) {
+        this.uiScene?.showPopupMessage('Vết nứt trên thân cây đã cạn nhựa.');
+      } else {
+        this.playerState.setFlag(flag);
+        this.playerState.addItem('res_tree_resin', 2);
+        this.audioManager?.playInteract();
+        this.uiScene?.showPopupMessage('🍯 Thu thập được 2 Nhựa Cây Dính từ thân cổ thụ.');
+      }
+      return;
+    }
+
+    if (actionId === 'gather_herbs_ow_1' || actionId === 'gather_herbs_cp_1') {
+      const flag = `gathered_${actionId}`;
+      if (this.playerState.hasFlag(flag)) {
+        this.uiScene?.showPopupMessage('Bụi thảo dược này đã được hái sạch.');
+      } else {
+        this.playerState.setFlag(flag);
+        this.playerState.addItem('res_herbs', 2);
+        this.audioManager?.playInteract();
+        this.uiScene?.showPopupMessage('🌿 Hái được 2 Thảo Dược Bạc tươi mát ven lối mòn.');
+      }
+      return;
+    }
+
     // C4-12-03 & C4-12-10 & C4-12-11: Tương tác kiểm tra Cổng Đông làng Bellhollow qua ZoneConnectionRegistry / WorldGatingSystem
     if (actionId === 'inspect_east_gate') {
       const evaluation = WorldGatingSystem.getInstance().evaluateTransition('bellhollow', 'crooked_path', this.playerState);
@@ -3087,7 +3628,7 @@ export class GameScene extends Phaser.Scene {
         }
       } else {
         if (this.uiScene) {
-          this.uiScene.showPopupMessage('✔ Cổng Đông đã mở! Đường Mòn Quanh Co (The Crooked Path) đang ở ngay phía trước.');
+          this.uiScene.showPopupMessage('✔ Cổng Đông đã mở! Cây cầu đá dẫn thẳng tới Tháp Chuông đã sập nát... Mình buộc phải tìm đường vòng qua Rừng Ngoài và Đường Mòn Quanh Co.');
         }
       }
       return;
@@ -3241,9 +3782,25 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
+    if (actionId === 'read_black_knight_stele') {
+      this.audioManager.playInteract();
+      this.playerState.unlockLore('lore_black_knight_chronicle');
+      if (this.playerState.memoryAwakeningStage < 1) {
+        this.playerState.memoryAwakeningStage = 1;
+      }
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('🗡️ [VĂN BIA CỔ - HIỆP SĨ ĐEN]: "Hiệp Sĩ Đen — vị chỉ huy duy nhất năm xưa dám tiến vào tâm điểm Mạch Rễ để phong ấn lời nguyền và đánh đổi toàn bộ ký ức của mình."');
+      }
+      return;
+    }
+
     if (actionId === 'read_blacksmith_journal') {
       this.audioManager.playInteract();
       this.playerState.unlockLore('lore_blacksmith_journal');
+      if (this.playerState.memoryAwakeningStage < 1) {
+        this.playerState.memoryAwakeningStage = 1;
+        this.playerState.unlockLore('lore_black_knight_chronicle');
+      }
       if (this.uiScene) {
         this.uiScene.showPopupMessage('📜 [NHẬT KÝ THỢ RÈN]: "Màn sương ngưng tụ từ rễ đại ngàn... Cần một hợp kim đặc biệt để tiếng chuông xuyên thủng The Veil."');
       }
@@ -3573,6 +4130,20 @@ export class GameScene extends Phaser.Scene {
     if (zoneId === 'broken_bell_shrine') {
       this.playerState.observeCreature('mire_warden');
     }
+    const currentPhase = this.timeSystem ? this.timeSystem.getCurrentPhase() : 'DAY';
+    if ((zoneId === 'crooked_path' || zoneId === 'deep_forest' || zoneId === 'silent_mire') && (currentPhase === 'DUSK' || currentPhase === 'NIGHT')) {
+      this.playerState.observeCreature('skull_wolf');
+    }
+    // V1.4 - P8-09: Tự động ghi chép Bestiary cho các Quái Vật Bóng Tối
+    if ((zoneId === 'outer_woods' || zoneId === 'deep_forest') && (currentPhase === 'DUSK' || currentPhase === 'NIGHT')) {
+      this.playerState.observeCreature('shadow_crow');
+    }
+    if ((zoneId === 'deep_forest' || zoneId === 'silent_mire') && (currentPhase === 'DUSK' || currentPhase === 'NIGHT')) {
+      this.playerState.observeCreature('shadow_eyes');
+    }
+    if (zoneId === 'silent_mire' || zoneId === 'broken_bell_shrine') {
+      this.playerState.observeCreature('shadow_behemoth');
+    }
   }
 
   /**
@@ -3587,6 +4158,22 @@ export class GameScene extends Phaser.Scene {
     this.lastWestBarrierThoughtTime = now;
     if (this.uiScene) {
       this.uiScene.showPopupMessage('Lối mòn phía sau đã bị sương mù đặc quánh nuốt chửng... Không thể quay lại được nữa. Chỉ còn cách tiến sâu vào Bellhollow.');
+    }
+    return true;
+  }
+
+  /**
+   * V14-P8-13: Dẫn hướng nhân vật khi lại gần lối tắt cầu đá bị sập hoặc nhấn [E] kiểm tra.
+   * Cooldown 6 giây (6000ms) để không spam popup khi người chơi đứng gần bờ vực.
+   */
+  public triggerCollapsedBridgeThought(isManualInspect: boolean = false): boolean {
+    const now = Date.now();
+    if (!isManualInspect && now - this.lastCollapsedBridgeThoughtTime < 6000) {
+      return false;
+    }
+    this.lastCollapsedBridgeThoughtTime = now;
+    if (this.uiScene) {
+      this.uiScene.showPopupMessage('Cây cầu đá dẫn thẳng tới Tháp Chuông đã sập nát... Mình buộc phải tìm đường vòng qua Rừng Ngoài và Đường Mòn Quanh Co.');
     }
     return true;
   }

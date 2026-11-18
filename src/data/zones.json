@@ -190,6 +190,14 @@
           "patrolMinX": 745,
           "patrolMaxX": 775,
           "patrolSpeed": 25
+        },
+        {
+          "id": "npc_campfire_knight",
+          "name": "Hiệp Sĩ Canh Lửa",
+          "title": "Người giữ lửa tàn",
+          "x": 818,
+          "y": 270,
+          "dialogueKey": "campfire_knight_intro"
         }
       ],
       "atmosphere": {
@@ -551,6 +559,16 @@
           "height": 32,
           "type": "rock",
           "isSolid": true
+        },
+        {
+          "id": "cp_collapsed_bridge_blocker",
+          "name": "Chướng Ngại Vật Cầu Sập Chặn Lối Thẳng",
+          "x": 1775,
+          "y": 240,
+          "width": 36,
+          "height": 84,
+          "type": "boundary",
+          "isSolid": true
         }
       ],
       "interactables": [
@@ -652,6 +670,72 @@
           "height": 24,
           "promptText": "[E] Kiểm Tra Bọc Hành Trang Cũ",
           "actionId": "inspect_cp_hunter_cache"
+        },
+        {
+          "id": "collapsed_shrine_bridge",
+          "name": "Cầu Đá Cổ Bị Sập",
+          "type": "clue",
+          "x": 1760,
+          "y": 280,
+          "width": 48,
+          "height": 48,
+          "promptText": "[E] Khảo sát Cầu Đá Bị Sập",
+          "actionId": "inspect_collapsed_bridge"
+        },
+        {
+          "id": "sign_detour_winding",
+          "name": "Biển Chỉ Đường Tuyến Vòng",
+          "type": "clue",
+          "x": 2060,
+          "y": 170,
+          "width": 28,
+          "height": 28,
+          "promptText": "[E] Đọc Biển Chỉ Đường Tuyến Vòng",
+          "actionId": "read_detour_sign"
+        },
+        {
+          "id": "gather_wood_cp_1",
+          "name": "Khúc Gỗ Sồi Mục",
+          "type": "gather",
+          "x": 2060,
+          "y": 210,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Nhặt Khúc Gỗ Sồi Mục",
+          "actionId": "gather_wood_cp_1"
+        },
+        {
+          "id": "gather_resin_cp_1",
+          "name": "Nhựa Thông Rừng",
+          "type": "gather",
+          "x": 2240,
+          "y": 150,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Thu Thập Nhựa Thông Rừng",
+          "actionId": "gather_resin_cp_1"
+        },
+        {
+          "id": "gather_herbs_cp_1",
+          "name": "Thảo Dược Đầm Lầy",
+          "type": "gather",
+          "x": 2640,
+          "y": 350,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Hái Thảo Dược Đầm Lầy",
+          "actionId": "gather_herbs_cp_1"
+        },
+        {
+          "id": "hide_tree_detour_bridge",
+          "name": "Thân Cây Rỗng Cầu Phụ",
+          "type": "hiding_spot",
+          "x": 2680,
+          "y": 390,
+          "width": 48,
+          "height": 36,
+          "promptText": "Nhấn [E] Nấp vào hốc cây cổ thụ",
+          "actionId": "hide_player"
         }
       ],
       "transitions": [
@@ -1688,6 +1772,50 @@
           "height": 30,
           "promptText": "[E] Quan Sát Cây Liễu Cổ Thụ",
           "actionId": "inspect_ow_willow"
+        },
+        {
+          "id": "gather_wood_ow_1",
+          "name": "Cành Gỗ Khô Rơi",
+          "type": "gather",
+          "x": 1240,
+          "y": 660,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Nhặt Cành Gỗ Khô Rơi",
+          "actionId": "gather_wood_ow_1"
+        },
+        {
+          "id": "gather_resin_ow_1",
+          "name": "Nhựa Cây Sồi Cổ",
+          "type": "gather",
+          "x": 1360,
+          "y": 630,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Thu Thập Nhựa Cây Sồi Cổ",
+          "actionId": "gather_resin_ow_1"
+        },
+        {
+          "id": "gather_herbs_ow_1",
+          "name": "Bụi Thảo Dược Ven Suối",
+          "type": "gather",
+          "x": 1480,
+          "y": 830,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Hái Bụi Thảo Dược Ven Suối",
+          "actionId": "gather_herbs_ow_1"
+        },
+        {
+          "id": "hide_bush_ow_s_curve",
+          "name": "Bụi Rậm Khúc Cua Chữ S",
+          "type": "hiding_spot",
+          "x": 1180,
+          "y": 650,
+          "width": 36,
+          "height": 36,
+          "promptText": "Nhấn [E] Ẩn nấp trong bụi rậm",
+          "actionId": "hide_player"
         }
       ],
       "transitions": [
@@ -2243,6 +2371,17 @@
           "height": 32,
           "promptText": "[E] Đọc Nhật Ký Thợ Rèn",
           "actionId": "read_blacksmith_journal"
+        },
+        {
+          "id": "inspect_black_knight_stele",
+          "name": "Văn Bia Cổ Hiệp Sĩ Đen",
+          "type": "clue",
+          "x": 1400,
+          "y": 1180,
+          "width": 36,
+          "height": 36,
+          "promptText": "[E] Đọc Văn Bia Cổ Hiệp Sĩ Đen",
+          "actionId": "read_black_knight_stele"
         }
       ],
       "transitions": [
@@ -2290,7 +2429,7 @@
       },
       "atmosphere": {
         "fogColor": 1186324,
-        "fogAlpha": 0.70,
+        "fogAlpha": 0.7,
         "ambientLight": 0.35,
         "ambientColor": 4482645,
         "titleVietnamese": "HẦM RỄ CỔ",
@@ -2463,7 +2602,7 @@
       },
       "atmosphere": {
         "fogColor": 1709352,
-        "fogAlpha": 0.80,
+        "fogAlpha": 0.8,
         "ambientLight": 0.35,
         "ambientColor": 5917306,
         "titleVietnamese": "KHOẢNG TRỐNG THÌ THẦM",

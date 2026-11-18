@@ -134,9 +134,26 @@ export const SPRITE_GARTH_WALK_SHEET = 'garth_walk_sheet';
 export const SPRITE_POTTER_WALK_SHEET = 'potter_walk_sheet';
 export const SPRITE_ERRAND_BOY_WALK_SHEET = 'errand_boy_walk_sheet';
 
+// Khóa Texture NPC Hiệp Sĩ Canh Lửa (Campfire Knight — V14-P8-14A)
+export const SPRITE_CAMPFIRE_KNIGHT_PRAY = 'campfire_knight_pray_sheet';
+export const SPRITE_CAMPFIRE_KNIGHT_IDLE = 'campfire_knight_idle_sheet';
+export const PORTRAIT_CAMPFIRE_KNIGHT = 'portrait_campfire_knight';
+
 // Khóa Texture Quái Vật & Bóng Ma (Monster & Echo Sprite Keys - PASS T10)
 export const SPRITE_THE_LISTENER = 'the_listener';
 export const SPRITE_THE_ECHO = 'the_echo';
+export const SPRITE_SKULL_WOLF = 'skull_wolf_sheet';
+export const PORTRAIT_SKULL_WOLF = 'portrait_skull_wolf';
+export const SPRITE_SHADOW_CROW = 'shadow_crow_sheet';
+export const SPRITE_SHADOW_EYES = 'shadow_eyes_sheet';
+export const SPRITE_SHADOW_BIG_BOSS = 'shadow_big_boss_sheet';
+export const PORTRAIT_SHADOW_BIG_BOSS = 'portrait_shadow_big_boss';
+export const SPRITE_FALLEN_KNIGHT = 'fallen_knight_sheet';
+export const PORTRAIT_FALLEN_KNIGHT = 'portrait_fallen_knight';
+export const SPRITE_DREAD_HORSEMAN = 'dread_horseman_sheet';
+export const PORTRAIT_DREAD_HORSEMAN = 'portrait_dread_horseman';
+export const SPRITE_HOODED_KNIGHT = 'hooded_knight_sheet';
+export const PORTRAIT_HOODED_KNIGHT = 'portrait_hooded_knight';
 export const SPRITE_FOG_SMOOTH = 'fog_smooth';
 
 // Khóa Texture Tài Nguyên Thu Thập (World Resource Sprite Keys - C4-02A)
@@ -144,5 +161,18 @@ export const SPRITE_RES_DRY_WOOD = 'res_dry_wood';
 export const SPRITE_RES_TREE_RESIN = 'res_tree_resin';
 export const SPRITE_RES_FLINT = 'res_flint';
 export const SPRITE_RES_HERBS = 'res_herbs';
+
+// Layer Depths (Chuẩn phân tầng độ sâu đồ họa 2D - Đảm bảo phân khu có tọa độ Y âm như Rừng Sâu không bị che khuất)
+export const DEPTH_GROUND_BASE = -10000;      // Nền đất baked cơ sở (Fog Crossing, Bellhollow, Deep Forest...)
+export const DEPTH_GROUND_FOOTING = -9500;   // Chân móng công trình, bờ đá
+export const DEPTH_GROUND_TURF = -9200;      // Đốm cỏ rêu, mảng đất phủ
+export const DEPTH_GROUND_STONES = -9100;    // Sỏi đá cuội trên mặt đất
+export const DEPTH_GROUND_FLORA = -9000;     // Hoa cỏ sát mặt sàn
+export const DEPTH_GROUND_WATER = -8900;     // Vũng nước, dòng suối sát đất
+export const DEPTH_GROUND_DECALS = -8500;    // Quầng sáng đèn sàn, nấm dạ quang sát sàn, hào quang bệ thờ
+export const DEPTH_GROUND_MIST = -8000;      // Sương mù ranh giới mặt đất (WorldBuilder boundary mist)
+export const DEPTH_VEIL_GROUND_FOG = -7000;  // Sương mù mặt đất của VeilSystem (dưới chân nhân vật)
+export const DEPTH_VEIL_PINK_DAWN = -6900;   // Sương mù bình minh hồng của VeilSystem
+
 
 
