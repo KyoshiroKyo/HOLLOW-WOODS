@@ -198,9 +198,14 @@ export class HitboxDebugInspector {
   public update(currentZoneId: ZoneId, delta?: number): void {
     const deltaMs = delta !== undefined ? delta : (this.scene.game.loop.delta || 16.6);
 
-    // Bắt phím F9: Bật / Tắt Profiler
+    // Bắt phím F9: Bật / Tắt Chế độ Debug Quản trị viên (Đồng bộ với GameScene & UIScene - V15-29)
     if (this.f9Key && Phaser.Input.Keyboard.JustDown(this.f9Key)) {
-      this.toggleDebug();
+      const gs = this.scene as any;
+      if (gs && typeof gs.toggleDebugInteractionBoxes === 'function') {
+        gs.toggleDebugInteractionBoxes();
+      } else {
+        this.toggleDebug();
+      }
     }
 
     // Bắt phím F10: Kích hoạt / Hủy Benchmark 10s (chỉ khi F9 đang bật)

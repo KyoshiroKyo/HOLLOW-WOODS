@@ -27,6 +27,7 @@ export class NPCEntity extends Phaser.GameObjects.Container {
   private questIndicatorBg!: Phaser.GameObjects.Graphics;
   private isPlayerNearby: boolean = false;
   private isShowingNamePlate: boolean = false;
+  private isNamePlateSuppressed: boolean = false;
   private currentDirection: NPCDirection = 'down';
   private baseId: string = 'garth';
 
@@ -458,8 +459,8 @@ export class NPCEntity extends Phaser.GameObjects.Container {
     this.questIndicatorText.setText(char);
     this.questIndicatorText.setColor(colorHex);
 
-    // Chỉ hiển thị biểu tượng nếu nhãn tên chưa mở
-    if (!this.isShowingNamePlate) {
+    // Chỉ hiển thị biểu tượng nếu nhãn tên chưa mở và không bị tạm ẩn do khung nhắc [E]
+    if (!this.isShowingNamePlate && !this.isNamePlateSuppressed) {
       this.questIndicator.setVisible(true);
     }
   }
@@ -529,11 +530,35 @@ export class NPCEntity extends Phaser.GameObjects.Container {
   }
 
   /**
+   * V15-29: Tạm ẩn bảng tên cố định khi khung nhắc tương tác [E] trên đầu NPC đang hiển thị
+   */
+  public setNamePlateSuppressed(suppressed: boolean): void {
+    if (this.isNamePlateSuppressed === suppressed) return;
+    this.isNamePlateSuppressed = suppressed;
+    if (suppressed) {
+      if (this.namePlateTween) {
+        this.namePlateTween.stop();
+        this.namePlateTween.remove();
+        this.namePlateTween = undefined;
+      }
+      this.isShowingNamePlate = false;
+      if (this.namePlate) {
+        this.namePlate.setAlpha(0);
+        this.namePlate.setVisible(false);
+      }
+      if (this.questIndicator) {
+        this.questIndicator.setVisible(false);
+      }
+    }
+  }
+
+  /**
    * V15-25: Cập nhật hiển thị nhãn tên mượt mà theo khoảng cách <= 95px cho đúng 1 NPC gần nhất
+   * V15-29: Tự động nhường chỗ cho khung nhắc [E] tương tác khi người chơi bước vào tầm hành động
    */
   public setNearby(nearby: boolean, playerX?: number, playerY?: number, distance?: number, isClosest: boolean = true): void {
     this.isPlayerNearby = nearby;
-    const shouldShowPlate = isClosest && distance !== undefined && distance <= 95;
+    const shouldShowPlate = isClosest && distance !== undefined && distance <= 95 && !this.isNamePlateSuppressed;
 
     if (shouldShowPlate !== this.isShowingNamePlate) {
       this.isShowingNamePlate = shouldShowPlate;
@@ -560,7 +585,7 @@ export class NPCEntity extends Phaser.GameObjects.Container {
           ease: 'Quad.easeIn',
           onComplete: () => {
             this.namePlate.setVisible(false);
-            if (this.questStatus !== 'none') {
+            if (this.questStatus !== 'none' && !this.isShowingNamePlate && !this.isNamePlateSuppressed) {
               this.questIndicator.setVisible(true);
             }
           }

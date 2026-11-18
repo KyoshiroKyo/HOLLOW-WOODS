@@ -79,6 +79,12 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   private moistureBadgeText!: Phaser.GameObjects.Text;
   private temperatureBadgeBg!: Phaser.GameObjects.Graphics;
   private temperatureBadgeText!: Phaser.GameObjects.Text;
+
+  // V15-29: Thông báo Debug góc màn hình
+  private debugToastContainer?: Phaser.GameObjects.Container;
+  private debugToastBg?: Phaser.GameObjects.Graphics;
+  private debugToastText?: Phaser.GameObjects.Text;
+  private debugToastTween?: Phaser.Tweens.Tween;
   private lastRenderedMoisture: number = -1;
   private lastRenderedTemperature: number = -1;
 
@@ -519,6 +525,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       if (this.questToggleZone) { this.questToggleZone.destroy(); this.questToggleZone = undefined as any; }
       if (this.emergencyCountBadge) { this.emergencyCountBadge.destroy(); this.emergencyCountBadge = undefined as any; }
       if (this.emergencyCountText) { this.emergencyCountText.destroy(); this.emergencyCountText = undefined as any; }
+      if (this.debugToastTween) { this.debugToastTween.stop(); this.debugToastTween = undefined; }
+      if (this.debugToastContainer) { this.debugToastContainer.destroy(); this.debugToastContainer = undefined; }
     });
 
     // C4-132-07: Lớp phủ chỉ dẫn bán trong suốt khi cửa sổ/iframe mất tiêu điểm (window.blur)
@@ -2189,6 +2197,74 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
           this.activePopup = undefined;
           this.activePopupTween = undefined;
         }
+      }
+    });
+  }
+
+  /**
+   * V15-29: Hiển thị thông báo nhỏ góc màn hình khi bật/tắt chế độ Debug Quản trị viên [F9]
+   */
+  public showDebugToast(msg: string): void {
+    if (this.debugToastTween) {
+      this.debugToastTween.stop();
+      this.debugToastTween = undefined;
+    }
+
+    const isOn = msg.includes('BẬT');
+    const toastW = 340;
+    const toastH = 32;
+    const posX = 1260 - toastW;
+    const posY = 18;
+
+    if (!this.debugToastContainer) {
+      this.debugToastContainer = this.add.container(posX, posY);
+      this.debugToastContainer.setScrollFactor(0);
+      this.debugToastContainer.setDepth(100005);
+
+      this.debugToastBg = this.add.graphics();
+      this.debugToastText = HDTextHelper.createText(this, toastW / 2, toastH / 2, '', {
+        fontFamily: 'Consolas, "Courier New", monospace',
+        fontSize: '12px',
+        fontStyle: 'bold',
+        color: isOn ? '#00ffcc' : '#ffaa44',
+        stroke: '#000000',
+        strokeThickness: 2
+      }).setOrigin(0.5, 0.5);
+
+      this.debugToastContainer.add([this.debugToastBg, this.debugToastText]);
+    }
+
+    if (this.debugToastBg && this.debugToastText) {
+      this.debugToastBg.clear();
+      // Nền đen bảng tối bán trong suốt
+      this.debugToastBg.fillStyle(0x0b1118, 0.92);
+      this.debugToastBg.fillRoundedRect(0, 0, toastW, toastH, 6);
+      // Viền sáng tương phản: Xanh ngọc neon (BẬT) hoặc Vàng cam hổ phách (TẮT)
+      const borderColor = isOn ? 0x00ffcc : 0xe67e22;
+      this.debugToastBg.lineStyle(1.5, borderColor, 0.95);
+      this.debugToastBg.strokeRoundedRect(0, 0, toastW, toastH, 6);
+      this.debugToastBg.lineStyle(1, 0x000000, 0.5);
+      this.debugToastBg.strokeRoundedRect(1, 1, toastW - 2, toastH - 2, 5);
+
+      this.debugToastText.setColor(isOn ? '#00ffcc' : '#f39c12');
+      this.debugToastText.setText(msg);
+    }
+
+    this.debugToastContainer.setPosition(posX, posY);
+    this.debugToastContainer.setAlpha(1);
+    this.debugToastContainer.setVisible(true);
+
+    this.debugToastTween = this.tweens.add({
+      targets: this.debugToastContainer,
+      alpha: 0,
+      duration: 2500,
+      ease: 'Power2',
+      delay: 1000,
+      onComplete: () => {
+        if (this.debugToastContainer) {
+          this.debugToastContainer.setVisible(false);
+        }
+        this.debugToastTween = undefined;
       }
     });
   }

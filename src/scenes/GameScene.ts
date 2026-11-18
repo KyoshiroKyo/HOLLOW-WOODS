@@ -188,6 +188,10 @@ export class GameScene extends Phaser.Scene {
   public worldEventSystem!: WorldEventSystem;
   private rainGfx!: Phaser.GameObjects.Graphics;
   private interactionOutlineGfx!: Phaser.GameObjects.Graphics;
+  private interactionGlowSprite!: Phaser.GameObjects.Sprite;
+  public isDebugBoxesVisible: boolean = false;
+  private f9Key!: Phaser.Input.Keyboard.Key;
+  private lastF9ToggleTime: number = 0;
   private lastCharmEchoVibrateTime: number = 0;
 
   // V1.4 - P6: Trận Chạm Trán Đấu Trùm Kẻ Nuốt Tiếng Chuông (Mire Warden Boss)
@@ -506,9 +510,14 @@ export class GameScene extends Phaser.Scene {
 
     // 11. Công cụ kiểm toán kỹ thuật F4 Debug (Graphics trên GameScene, Text trên UIScene Zoom 1.0)
     this.debugOverlay = new DebugOverlay(this, this.player, this.uiScene);
-    // V1.5 (BƯỚC V15-04): Chế độ Kiểm tra Kỹ thuật Hitbox & Performance Profiler (Phím F9)
+    // V1.5 (BƯỚC V15-04 / V15-29): Chế độ Kiểm tra Kỹ thuật Hitbox & Performance Profiler (Phím F9)
     // Tách biệt hoàn toàn khỏi giao diện người chơi thường, mặc định TẮT hoàn toàn (false)
     this.hitboxInspector = new HitboxDebugInspector(this, this.player, this.uiScene);
+    this.isDebugBoxesVisible = false;
+    if (this.input && this.input.keyboard) {
+      this.f9Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F9);
+      this.input.keyboard.addCapture([Phaser.Input.Keyboard.KeyCodes.F9]);
+    }
     if (this.physics && this.physics.world) {
       this.physics.world.drawDebug = false;
       if (this.physics.world.debugGraphic) {
@@ -561,6 +570,9 @@ export class GameScene extends Phaser.Scene {
     this.rainGfx.setDepth(5010);
     this.interactionOutlineGfx = this.add.graphics();
     this.interactionOutlineGfx.setDepth(999);
+    const defKey = this.textures.exists('satyr_spritesheet') ? 'satyr_spritesheet' : '__DEFAULT';
+    this.interactionGlowSprite = this.add.sprite(0, 0, defKey);
+    this.interactionGlowSprite.setVisible(false);
     this.wildlifeSystem = new WildlifeSystem(this);
     this.wildlifeSystem.switchZone(this.currentZoneId);
     this.triggerCreatureObservationsForZone(this.currentZoneId);
@@ -756,6 +768,15 @@ export class GameScene extends Phaser.Scene {
       }
       if (this.interactionOutlineGfx) {
         this.interactionOutlineGfx.destroy();
+        this.interactionOutlineGfx = undefined as any;
+      }
+      if (this.interactionGlowSprite) {
+        this.interactionGlowSprite.destroy();
+        this.interactionGlowSprite = undefined as any;
+      }
+      if (this.f9Key) {
+        this.input?.keyboard?.removeKey(Phaser.Input.Keyboard.KeyCodes.F9);
+        this.f9Key = undefined as any;
       }
       if (this.onHealthDepletedHandler) {
         this.playerState.off('player_health_depleted', this.onHealthDepletedHandler);
@@ -2269,6 +2290,29 @@ export class GameScene extends Phaser.Scene {
     // Cập nhật F4 & F9 Debug Overlays
     this.debugOverlay.update(this.currentZoneId);
     this.hitboxInspector.update(this.currentZoneId, delta);
+    // V15-29: Bắt phím tắt F9 cho Chế độ Debug Khung Tương Tác Quản Trị Viên
+    if (this.f9Key && Phaser.Input.Keyboard.JustDown(this.f9Key)) {
+      this.toggleDebugInteractionBoxes();
+    }
+  }
+
+  /**
+   * V15-29: Bật/Tắt Chế độ Debug Khung Tương Tác [F9] cho Quản trị viên
+   */
+  public toggleDebugInteractionBoxes(): void {
+    const now = Date.now();
+    if (now - this.lastF9ToggleTime < 200) return; // Debounce 200ms
+    this.lastF9ToggleTime = now;
+
+    this.isDebugBoxesVisible = !this.isDebugBoxesVisible;
+    if (this.hitboxInspector && this.hitboxInspector.isDebugEnabled() !== this.isDebugBoxesVisible) {
+      this.hitboxInspector.setDebugEnabled(this.isDebugBoxesVisible);
+    }
+    const statusText = this.isDebugBoxesVisible ? 'BẬT' : 'TẮT';
+    const msg = `Chế độ Debug Khung Tương Tác [F9]: ${statusText}`;
+    if (this.uiScene && typeof this.uiScene.showDebugToast === 'function') {
+      this.uiScene.showDebugToast(msg);
+    }
   }
 
   /**
@@ -3828,6 +3872,9 @@ export class GameScene extends Phaser.Scene {
       width?: number;
       height?: number;
       proximityAlpha: number;
+      targetRef?: any;
+      targetSprite?: Phaser.GameObjects.Sprite;
+      depth?: number;
       action: () => void;
     }
 
@@ -3871,6 +3918,9 @@ export class GameScene extends Phaser.Scene {
         width: 24,
         height: 34,
         proximityAlpha,
+        targetRef: npc,
+        targetSprite: npc.npcSprite,
+        depth: npc.depth,
         action: () => {
           this.player.playInteract();
           let dKey = npc.spec.dialogueKey;
@@ -4063,6 +4113,8 @@ export class GameScene extends Phaser.Scene {
         width: 22,
         height: 22,
         proximityAlpha,
+        targetRef: nearbyResource,
+        depth: nearbyResource.y,
         action: () => {
           const wasQ03T1Done =
             this.playerState.quests.get('Q03_PREPARE_RESOURCES')?.tasks.find(t => t.id === 't1')?.done ?? false;
@@ -4113,6 +4165,8 @@ export class GameScene extends Phaser.Scene {
           x: nearbyPlot.x,
           y: nearbyPlot.y,
           proximityAlpha: isWithinPlotRange ? 0.9 : 0.35,
+          targetRef: nearbyPlot,
+          depth: nearbyPlot.y,
           action: () => {
             this.player.playGather();
             this.farmingSystem.interactWithPlot(nearbyPlot.id, (feedbackMsg: string) => {
@@ -4157,6 +4211,8 @@ export class GameScene extends Phaser.Scene {
         width: propW,
         height: propH,
         proximityAlpha: isWithinActionRange ? 0.9 : 0.35,
+        targetRef: nearby,
+        depth: propCenterY,
         action: () => {
           this.executeMapInteraction(nearby.actionId, nearby.name);
         }
@@ -4177,6 +4233,8 @@ export class GameScene extends Phaser.Scene {
             width: 64,
             height: 64,
             proximityAlpha: distBoss <= 70 ? 1.0 : 0.5,
+            targetRef: this.mireWardenBoss,
+            depth: this.mireWardenBoss.y,
             action: () => {
               this.handleBossSealInteraction();
             }
@@ -4200,6 +4258,8 @@ export class GameScene extends Phaser.Scene {
                 width: 32,
                 height: 32,
                 proximityAlpha: distB <= 52 ? 1.0 : 0.5,
+                targetRef: b,
+                depth: b.y,
                 action: () => {
                   this.handleRelightBrazier(b);
                 }
@@ -4222,6 +4282,7 @@ export class GameScene extends Phaser.Scene {
               width: 80,
               height: 50,
               proximityAlpha: distAltar <= 70 ? 1.0 : 0.6,
+              depth: 250,
               action: () => {
                 this.handleBossFinalSeal();
               }
@@ -4237,17 +4298,37 @@ export class GameScene extends Phaser.Scene {
         this.uiScene.setInteractionPrompt(null);
       }
       this.clearInteractionOutline();
+      for (const npc of this.npcs) {
+        npc.setNamePlateSuppressed(false);
+      }
       return;
     }
 
     candidates.sort((a, b) => a.dist - b.dist);
     const best = candidates[0];
     const isWithinActionRange = best.dist <= best.triggerDist;
+    // V15-29: Bán kính tương tác viền sáng chuẩn hóa <= 52px
+    const isWithinOutlineRange = best.dist <= 52;
+
+    // V15-29: Tự động tạm ẩn bảng tên cố định của NPC khi hiện khung nhắc "[E] ..." để không bao giờ chồng 2 khung chữ
+    const activeNPC = (best.targetRef instanceof NPCEntity) ? best.targetRef : null;
+    for (const npc of this.npcs) {
+      if (npc === activeNPC && (isWithinOutlineRange || isWithinActionRange)) {
+        npc.setNamePlateSuppressed(true);
+      } else {
+        npc.setNamePlateSuppressed(false);
+      }
+    }
 
     if (this.uiScene) {
       this.uiScene.setInteractionPrompt(best.promptText, best.promptX ?? best.x, best.promptY ?? best.y, best.proximityAlpha);
     }
-    this.renderInteractionOutline(best);
+
+    if (isWithinOutlineRange) {
+      this.renderInteractionOutline(best);
+    } else {
+      this.clearInteractionOutline();
+    }
 
     if (isWithinActionRange && isEBuffered && !this.dialogueSystem.isActive) {
       this.lastEKeyPressTime = 0;
@@ -4255,23 +4336,95 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  public renderInteractionOutline(target: { x: number; y: number; width?: number; height?: number }): void {
+  public renderInteractionOutline(target: {
+    x: number;
+    y: number;
+    width?: number;
+    height?: number;
+    dist?: number;
+    triggerDist?: number;
+    targetRef?: any;
+    targetSprite?: Phaser.GameObjects.Sprite;
+    depth?: number;
+  }): void {
     if (!this.interactionOutlineGfx) return;
     this.interactionOutlineGfx.clear();
+
+    const time = this.time ? this.time.now : Date.now();
+    const pulseAlpha = 0.55 + 0.15 * Math.sin(time * 0.005);
+    const targetDepth = target.depth ?? target.y;
+
+    // V15-29: 1. Chế độ Chơi Bình Thường (Normal Gameplay): Viền Sáng Tương Tác tinh tế ôm sát sprite & vòng elip chân
+    if (!this.isDebugBoxesVisible) {
+      // Đặt depth ngay dưới vật thể để không bao giờ che mặt nhân vật
+      this.interactionOutlineGfx.setDepth(Math.max(1, targetDepth - 1));
+
+      // Vòng elip sáng mảnh dưới chân vật thể
+      const isNPC = target.targetRef instanceof NPCEntity;
+      const footX = target.x;
+      const footY = isNPC ? target.y - 2 : target.y + (target.height ? target.height / 2 : 10);
+      const rx = Math.max(16, (target.width || 32) * 0.55);
+      const ry = Math.max(7, rx * 0.42);
+
+      // Quầng sáng mờ mịn bên trong elip
+      this.interactionOutlineGfx.fillStyle(0xfde087, 0.18 * pulseAlpha);
+      this.interactionOutlineGfx.fillEllipse(footX, footY, rx * 2, ry * 2);
+
+      // Viền elip vàng hổ phách / trắng kem ấm thanh mảnh
+      this.interactionOutlineGfx.lineStyle(1.5, 0xfff0b3, 0.65 * pulseAlpha);
+      this.interactionOutlineGfx.strokeEllipse(footX, footY, rx * 2, ry * 2);
+
+      // Vòng hào quang mờ mở rộng nhẹ bên ngoài
+      this.interactionOutlineGfx.lineStyle(1.0, 0xd4af37, 0.28 * pulseAlpha);
+      this.interactionOutlineGfx.strokeEllipse(footX, footY, (rx + 3) * 2, (ry + 2) * 2);
+
+      // Lớp sprite phụ phóng nhẹ 1–2px có tint trắng kem / vàng hổ phách thở nhịp nhàng
+      if (target.targetSprite && this.interactionGlowSprite) {
+        const spr = target.targetSprite;
+        const parentContainer = spr.parentContainer;
+        const worldX = parentContainer ? parentContainer.x + spr.x : spr.x;
+        const worldY = parentContainer ? parentContainer.y + spr.y : spr.y;
+
+        this.interactionGlowSprite.setTexture(spr.texture.key, spr.frame.name);
+        this.interactionGlowSprite.setPosition(worldX, worldY);
+        this.interactionGlowSprite.setOrigin(spr.originX, spr.originY);
+        this.interactionGlowSprite.setFlipX(spr.flipX);
+        this.interactionGlowSprite.setFlipY(spr.flipY);
+        // Phóng nhẹ 1–2px (khoảng 1.06x)
+        const scaleX = (spr.scaleX || 1) * 1.06;
+        const scaleY = (spr.scaleY || 1) * 1.06;
+        this.interactionGlowSprite.setScale(scaleX, scaleY);
+        // Tint trắng kem / vàng hổ phách ấm (0xfff0b3)
+        this.interactionGlowSprite.setTint(0xfff0b3);
+        this.interactionGlowSprite.setAlpha(pulseAlpha);
+        // Ngay dưới depth của vật thể
+        this.interactionGlowSprite.setDepth(Math.max(1, targetDepth - 0.5));
+        this.interactionGlowSprite.setVisible(true);
+      } else if (this.interactionGlowSprite) {
+        this.interactionGlowSprite.setVisible(false);
+      }
+      return;
+    }
+
+    // V15-29: 2. Chế độ Debug Quản Trị Viên [F9] (Admin Debug Mode):
+    // Giữ nguyên đoạn code vẽ khung chữ nhật trắng kèm 4 góc vuông (debug bounding/interaction box)
+    if (this.interactionGlowSprite) {
+      this.interactionGlowSprite.setVisible(false);
+    }
+    this.interactionOutlineGfx.setDepth(999999);
+
     const w = target.width || 36;
     const h = target.height || 36;
     const left = target.x - w / 2;
     const top = target.y - h / 2;
-
-    const time = this.time ? this.time.now : Date.now();
-    const pulseAlpha = 0.75 + 0.18 * Math.sin(time * 0.005);
+    const debugPulseAlpha = 0.75 + 0.18 * Math.sin(time * 0.005);
 
     // Đường viền trắng kem cổ điển 0xfaf8ef nét mảnh 1.5px
-    this.interactionOutlineGfx.lineStyle(1.5, 0xfaf8ef, pulseAlpha);
+    this.interactionOutlineGfx.lineStyle(1.5, 0xfaf8ef, debugPulseAlpha);
     this.interactionOutlineGfx.strokeRoundedRect(left - 2, top - 2, w + 4, h + 4, 4);
 
     // Góc nhọn đính kèm
-    this.interactionOutlineGfx.lineStyle(2, 0xffffff, Math.min(1.0, pulseAlpha + 0.15));
+    this.interactionOutlineGfx.lineStyle(2, 0xffffff, Math.min(1.0, debugPulseAlpha + 0.15));
     const cornerSize = Math.min(6, Math.floor(w / 4));
     this.interactionOutlineGfx.lineBetween(left - 2, top - 2, left - 2 + cornerSize, top - 2);
     this.interactionOutlineGfx.lineBetween(left - 2, top - 2, left - 2, top - 2 + cornerSize);
@@ -4281,11 +4434,18 @@ export class GameScene extends Phaser.Scene {
     this.interactionOutlineGfx.lineBetween(left - 2, top + h + 2, left - 2 + cornerSize, top + h + 2);
     this.interactionOutlineGfx.lineBetween(left + w + 2 - cornerSize, top + h + 2, left + w + 2, top + h + 2);
     this.interactionOutlineGfx.lineBetween(left + w + 2, top + h + 2 - cornerSize, left + w + 2, top + h + 2);
+
+    // Hộp va chạm / tầm tương tác vòng tròn cyan trong chế độ Debug
+    this.interactionOutlineGfx.lineStyle(1, 0x00ffcc, 0.45);
+    this.interactionOutlineGfx.strokeCircle(target.x, target.y, target.triggerDist || 52);
   }
 
   public clearInteractionOutline(): void {
     if (this.interactionOutlineGfx) {
       this.interactionOutlineGfx.clear();
+    }
+    if (this.interactionGlowSprite) {
+      this.interactionGlowSprite.setVisible(false);
     }
   }
 

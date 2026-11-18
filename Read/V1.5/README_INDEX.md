@@ -79,6 +79,7 @@
 | 24 | `V15-26` | [06_Menu_And_HUD_UIUX.md#báo-cáo-kỹ-thuật-v15-26-đồng-bộ-hóa-thẩm-mỹ-cho-bảng-hành-trang--trang-bị-bàn-chế-tạo-rương-gỗ-và-sổ-tay-nhật-ký](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/06_Menu_And_HUD_UIUX.md) — Đồng bộ hóa thẩm mỹ cho Bảng Hành Trang & Trang Bị, Bàn Chế Tạo, Rương Gỗ và Sổ Tay Nhật Ký | Hoàn tất (Đã nghiệm thu) |
 | 25 | `V15-27` | [07_Performance_And_QA_Verification.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/07_Performance_And_QA_Verification.md) — Tối ưu hóa tốc độ khung hình 60 FPS, culling 160px, rà soát rò rỉ bộ nhớ và kiểm tra tương thích Save | Hoàn tất (Đã nghiệm thu) |
 | 26 | `V15-28` | [08_V15_Total_Overhaul_Final_Report.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/08_V15_Total_Overhaul_Final_Report.md) — Khóa sổ bản dựng phát hành Production Build và Báo Cáo Tổng Kết Nâng Cấp Toàn Diện HOLLOW WOODS V1.5 | Hoàn tất (Đã nghiệm thu) |
+| 27 | `V15-29` | [09_Admin_Debug_F9_And_Interaction_Outline.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/09_Admin_Debug_F9_And_Interaction_Outline.md) — Giữ lại khung chữ nhật trắng 4 góc cho chế độ Debug Admin [F9] và chuẩn hóa hiệu ứng Viền Sáng Tương Tác cho người chơi thường | Hoàn tất (Đã nghiệm thu) |
 
 ---
 
@@ -100,7 +101,10 @@ npm run preview
 ```bash
 node scripts/verify_v15_27_performance_and_save_compatibility.mjs
 # Xác nhận 49/49 bài kiểm tra kỹ thuật đạt PASS
+
+node scripts/verify_v15_29_debug_boxes_and_outline.mjs
+# Xác nhận 22/22 bài kiểm tra kỹ thuật đạt PASS
 ```
 
 ---
-*Tài liệu được cập nhật tự động và đóng dấu hoàn thành tại bước V15-28 — 19/11/2026.*
+*Tài liệu được cập nhật tự động và đóng dấu hoàn thành tại bước V15-29 — 19/11/2026.*
