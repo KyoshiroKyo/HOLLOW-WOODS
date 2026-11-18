@@ -106,7 +106,21 @@ import {
   SPRITE_DECAL_GLOWING_MUSHROOMS_V15,
   SPRITE_DECAL_AUTUMN_LEAVES_V15,
   SPRITE_DECAL_PEBBLES_STONES_V15,
-  SPRITE_DECAL_SWAMP_PUDDLE_V15
+  SPRITE_DECAL_SWAMP_PUDDLE_V15,
+  SPRITE_RES_DRY_WOOD,
+  SPRITE_RES_TREE_RESIN,
+  SPRITE_RES_FLINT,
+  SPRITE_RES_HERBS,
+  SPRITE_RES_RUNED_IRON,
+  SPRITE_CAMPFIRE_TIER1_V15,
+  SPRITE_CAMPFIRE_TIER2_V15,
+  SPRITE_CAMPFIRE_TIER3_V15,
+  SPRITE_CAMPFIRE_UNLIT_V15,
+  SPRITE_PROP_CHEST_BRONZE_V15,
+  SPRITE_PROP_CAULDRON_TRIPOD_V15,
+  SPRITE_PROP_WAYFARER_TENT_V15,
+  SPRITE_PROP_LANTERN_POST_V15,
+  SPRITE_PROP_SIGNPOST_WOOD_V15
 } from '../config/Constants';
 
 import { HUDIconGenerator } from '../utils/HUDIconGenerator';
@@ -257,6 +271,24 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image(SPRITE_DECAL_AUTUMN_LEAVES_V15, 'assets/environment/foliage/decal_autumn_leaves.png');
     this.load.image(SPRITE_DECAL_PEBBLES_STONES_V15, 'assets/environment/foliage/decal_pebbles_stones.png');
     this.load.image(SPRITE_DECAL_SWAMP_PUDDLE_V15, 'assets/environment/foliage/decal_swamp_puddle.png');
+
+    // V15-12: Nạp bộ Sprite Vật Phẩm Thu Thập Ngoài Thế Giới (World Pickups 24x24 px)
+    this.load.image(SPRITE_RES_DRY_WOOD, 'assets/environment/pickups/res_dry_wood.png');
+    this.load.image(SPRITE_RES_TREE_RESIN, 'assets/environment/pickups/res_tree_resin.png');
+    this.load.image(SPRITE_RES_FLINT, 'assets/environment/pickups/res_flint.png');
+    this.load.image(SPRITE_RES_HERBS, 'assets/environment/pickups/res_herbs.png');
+    this.load.image(SPRITE_RES_RUNED_IRON, 'assets/environment/pickups/res_runed_iron.png');
+
+    // V15-12: Nạp bộ Sprite Cụm Sanctuary Camp & Đạo Cụ Làng V1.5
+    this.load.image(SPRITE_CAMPFIRE_UNLIT_V15, 'assets/environment/props/campfire_unlit.png');
+    this.load.image(SPRITE_CAMPFIRE_TIER1_V15, 'assets/environment/props/campfire_tier1.png');
+    this.load.image(SPRITE_CAMPFIRE_TIER2_V15, 'assets/environment/props/campfire_tier2.png');
+    this.load.image(SPRITE_CAMPFIRE_TIER3_V15, 'assets/environment/props/campfire_tier3.png');
+    this.load.image(SPRITE_PROP_CHEST_BRONZE_V15, 'assets/environment/props/prop_chest_bronze.png');
+    this.load.image(SPRITE_PROP_CAULDRON_TRIPOD_V15, 'assets/environment/props/prop_cauldron_tripod.png');
+    this.load.image(SPRITE_PROP_WAYFARER_TENT_V15, 'assets/environment/props/prop_wayfarer_tent.png');
+    this.load.image(SPRITE_PROP_LANTERN_POST_V15, 'assets/environment/props/prop_lantern_post.png');
+    this.load.image(SPRITE_PROP_SIGNPOST_WOOD_V15, 'assets/environment/props/prop_signpost_wood.png');
 
     // 8.1 Nạp các tài nguyên môi trường V1.4 Mẫu & Mở Rộng Toàn Hệ Thống (HW-V14-EXP)
     if (CONFIG_USE_V14_PILOT_ENVIRONMENT || CONFIG_USE_V14_ENVIRONMENT) {

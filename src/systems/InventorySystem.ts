@@ -5,7 +5,8 @@ import {
   SPRITE_RES_DRY_WOOD,
   SPRITE_RES_TREE_RESIN,
   SPRITE_RES_FLINT,
-  SPRITE_RES_HERBS
+  SPRITE_RES_HERBS,
+  SPRITE_RES_RUNED_IRON
 } from '../config/Constants';
 
 export interface ResourceNodeSpec {
@@ -65,6 +66,9 @@ export class InventorySystem {
         return SPRITE_RES_FLINT;
       case 'res_herbs':
         return SPRITE_RES_HERBS;
+      case 'mat_runed_iron':
+      case 'res_runed_iron':
+        return SPRITE_RES_RUNED_IRON;
       default:
         return SPRITE_RES_DRY_WOOD;
     }
@@ -119,7 +123,9 @@ export class InventorySystem {
       { id: 'node_wood_sm_1', itemId: 'res_dry_wood', x: 3180, y: 310, count: 2 },
       { id: 'node_herb_5', itemId: 'res_herbs', x: 3350, y: 380, count: 2 },
       { id: 'node_resin_3', itemId: 'res_tree_resin', x: 3700, y: 180, count: 1 },
-      { id: 'node_flint_sm_1', itemId: 'res_flint', x: 3780, y: 320, count: 1 }
+      { id: 'node_flint_sm_1', itemId: 'res_flint', x: 3780, y: 320, count: 1 },
+      // V15-12: Phôi Sắt Cổ Ngữ thu thập tại Phế Tích Đầm Lầy
+      { id: 'node_iron_sm_1', itemId: 'mat_runed_iron', x: 3560, y: 390, count: 1 }
     ];
 
     for (const spec of defaultNodes) {
@@ -134,7 +140,7 @@ export class InventorySystem {
 
     const container = this.scene.add.container(spec.x, spec.y);
 
-    // C4-13-06: Bóng đổ mặt đất đen mờ mịn (alpha 0.25) ôm sát vật phẩm, loại bỏ vòng tròn xám to và viền màu
+    // C4-13-06 & V15-12: Bóng đổ mặt đất đen mờ mịn (alpha 0.25) ôm sát vật phẩm
     const baseGfx = this.scene.add.graphics();
     baseGfx.fillStyle(0x000000, 0.25);
     baseGfx.fillEllipse(0, 5, 12, 4);
@@ -144,7 +150,7 @@ export class InventorySystem {
     if (this.scene.textures && this.scene.textures.exists(spriteKey)) {
       const iconImg = this.scene.add.image(0, -1, spriteKey);
       iconImg.setOrigin(0.5, 0.5);
-      iconImg.setScale(1.25); // 20×20 world px (sắc nét, phân biệt rõ từng loại tài nguyên)
+      iconImg.setScale(1.0); // 24×24 world px sắc nét chuẩn V15-12
       container.add(iconImg);
       bobTarget = iconImg;
     } else {

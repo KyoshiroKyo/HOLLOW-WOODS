@@ -4,6 +4,7 @@ import { ZoneData, ZoneId, InteractableSpec, TransitionZone, Point2D } from '../
 import { PlayerState } from '../state/PlayerState';
 import { ZoneConnectionRegistry } from './ZoneConnectionRegistry';
 import { WorldGatingSystem } from './WorldGatingSystem';
+import { CampSystem } from '../systems/CampSystem';
 import {
   TILE_FOREST_GRASS,
   TILE_SWAMP_MUD,
@@ -36,6 +37,15 @@ import {
   SPRITE_DECAL_AUTUMN_LEAVES_V15,
   SPRITE_DECAL_PEBBLES_STONES_V15,
   SPRITE_DECAL_SWAMP_PUDDLE_V15,
+  SPRITE_CAMPFIRE_TIER1_V15,
+  SPRITE_CAMPFIRE_TIER2_V15,
+  SPRITE_CAMPFIRE_TIER3_V15,
+  SPRITE_CAMPFIRE_UNLIT_V15,
+  SPRITE_PROP_CHEST_BRONZE_V15,
+  SPRITE_PROP_CAULDRON_TRIPOD_V15,
+  SPRITE_PROP_WAYFARER_TENT_V15,
+  SPRITE_PROP_LANTERN_POST_V15,
+  SPRITE_PROP_SIGNPOST_WOOD_V15,
   SPRITE_PILLAR_MOON,
   SPRITE_PILLAR_ROOT,
   SPRITE_PILLAR_EYE,
@@ -2894,13 +2904,17 @@ export class WorldBuilder {
     this.registerCullable(bush, x, y, 40);
   }
 
+  /**
+   * V15-12: Biển Chỉ Đường Gỗ Khắc Mũi Tên Cổ Điển (prop_signpost_wood.png 36×48 px)
+   * Cọc gỗ sồi cắm đất, 2 thanh biển gỗ vát nhọn chỉ hướng có khắc ký hiệu cổ, chóp cọc phủ rêu xanh.
+   */
   private createStoneSign(x: number, y: number, _text?: string): void {
-    const sign = this.safeAddImage(x, y, SPRITE_SIGNPOST);
-    sign.setOrigin(0.5, 0.90);
+    const sign = this.safeAddImage(x, y, SPRITE_PROP_SIGNPOST_WOOD_V15, SPRITE_SIGNPOST);
+    sign.setOrigin(0.5, 0.92);
     sign.setDepth(y);
-    this.registerCullable(sign, x, y, 32);
+    this.registerCullable(sign, x, y, 36);
 
-    // C4-13-17: Hộp va chạm chân biển chỉ đường chuẩn xác chống đi xuyên
+    // C4-13-17 & V15-12: Hộp va chạm chân biển chỉ đường chuẩn xác chống đi xuyên
     this.createStaticBoxColliderCentered(x, y - 2, 14, 10, 'Biển Chỉ Dẫn');
   }
 
@@ -3212,43 +3226,49 @@ export class WorldBuilder {
   }
 
   /**
-   * Cột đèn lồng gỗ phát ánh sáng vàng ấm dọc theo đường làng và Quảng trường trung tâm (C4-13-06: Quầng sáng ấm chuyển sắc tự nhiên).
+   * V15-12: Cột đèn lồng gỗ treo đèn lồng đung đưa nhẹ & nguồn sáng ấm tự nhiên
+   * Thay thế hình khối đồ họa phẳng bằng sprite prop_lantern_post.png (32×64 px) pixel art sắc nét.
    */
   private createVillageLanternPost(x: number, y: number): void {
-    const g = this.scene.add.graphics();
-    // 1. Quầng sáng ấm 3 tầng chuyển sắc mịn màng, loại bỏ hoàn toàn viền cắt gắt
-    g.fillStyle(0xf39c12, 0.05);
-    g.fillCircle(x + 6, y - 16, 28);
-    g.fillStyle(0xf39c12, 0.09);
-    g.fillCircle(x + 6, y - 16, 18);
-    g.fillStyle(0xffe082, 0.16);
-    g.fillCircle(x + 6, y - 16, 9);
+    // 1. Quầng sáng ấm chuyển sắc tự nhiên ở đèn lồng (tâm x + 10, y - 38)
+    const halo = this.scene.add.graphics();
+    halo.fillStyle(0xf39c12, 0.05);
+    halo.fillCircle(x + 10, y - 38, 36);
+    halo.fillStyle(0xf39c12, 0.09);
+    halo.fillCircle(x + 10, y - 38, 24);
+    halo.fillStyle(0xffe082, 0.16);
+    halo.fillCircle(x + 10, y - 38, 12);
+    halo.setDepth(DEPTH_GROUND_DECALS);
+    this.registerCullable(halo, x + 10, y - 38, 48);
 
-    // 2. Bóng chân cột đen mờ mịn (alpha 0.25)
-    g.fillStyle(0x000000, 0.25);
-    g.fillEllipse(x, y + 2, 12, 4);
+    // 2. Sprite cột đèn lồng pixel art V1.5
+    const post = this.safeAddImage(x, y, SPRITE_PROP_LANTERN_POST_V15);
+    post.setOrigin(0.38, 0.95);
+    post.setDepth(y + 2);
+    this.registerCullable(post, x, y, 42);
 
-    // 3. Thân cột gỗ sồi & tay treo chữ L
-    g.fillStyle(0x24170f, 1);
-    g.fillRect(x - 2, y - 24, 4, 26);
-    g.fillStyle(0x3d281a, 1);
-    g.fillRect(x - 1, y - 23, 2, 24);
-    g.fillStyle(0x24170f, 1);
-    g.fillRect(x - 2, y - 24, 10, 3);
+    // 3. Hiệu ứng đèn lồng đung đưa nhẹ và quầng sáng nhấp nháy êm dịu
+    if (this.scene.tweens) {
+      this.scene.tweens.add({
+        targets: post,
+        angle: 1.2,
+        duration: 2600 + (Math.abs(Math.floor(x * 7)) % 1000),
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut'
+      });
+      this.scene.tweens.add({
+        targets: halo,
+        alpha: 0.82,
+        duration: 1500 + (Math.abs(Math.floor(y * 11)) % 800),
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut'
+      });
+    }
 
-    // 4. Đèn lồng treo phát sáng pixel art
-    g.fillStyle(0xd35400, 1);
-    g.fillRect(x + 4, y - 20, 5, 7);
-    g.fillStyle(0xf39c12, 1);
-    g.fillRect(x + 5, y - 19, 3, 5);
-    g.fillStyle(0xfef9e7, 1);
-    g.fillRect(x + 6, y - 18, 1, 3);
-
-    g.setDepth(y + 2);
-    this.registerCullable(g, x, y, 35);
-
-    // C4-13-17: Bổ sung hộp va chạm chân cột đèn lồng làng
-    this.createStaticBoxColliderCentered(x, y - 1, 8, 8, 'Cột Đèn Lồng');
+    // 4. Hitbox chân đế cột đèn lồng gọn gàng
+    this.createStaticBoxColliderCentered(x, y - 1, 10, 8, 'Cột Đèn Lồng');
   }
 
   /**
@@ -4957,206 +4977,216 @@ export class WorldBuilder {
   }
 
   /**
-   * V1.4: Lửa Trại Trung Tâm 3 Cấp (Central Campfire) tại làng Bellhollow
+   * V15-12: Lửa Trại Trung Tâm 3 Cấp (Central Campfire) tại làng Bellhollow
+   * Thay thế hình khối đồ họa thô sơ bằng bộ sprite pixel art (campfire_tier1..3, campfire_unlit 48×48 px)
+   * Tự động phản hồi theo cấp độ lửa trại và lượng nhiên liệu trong CampSystem.
    */
   private createCentralCampfire(x: number, y: number): void {
-    const g = this.scene.add.graphics();
-    // 1. Quầng sáng ấm chuyển sắc tự nhiên
-    g.fillStyle(0xf39c12, 0.08);
-    g.fillCircle(x + 18, y + 15, 52);
-    g.fillStyle(0xe67e22, 0.16);
-    g.fillCircle(x + 18, y + 15, 34);
-    g.fillStyle(0xffe082, 0.24);
-    g.fillCircle(x + 18, y + 15, 18);
+    const cx = x + 18;
+    const cy = y + 15;
+    const campSystem = CampSystem.getInstance();
+    const currentLevel = campSystem.getCampfireLevel();
+    const isLit = campSystem.isCampfireLit();
 
-    // 2. Vòng đá bao quanh bếp lửa (Hearth stones)
-    g.fillStyle(0x000000, 0.35);
-    g.fillEllipse(x + 18, y + 21, 32, 10);
-    g.fillStyle(0x4a4a4a, 1);
-    const stoneCount = 8;
-    for (let i = 0; i < stoneCount; i++) {
-      const angle = (i / stoneCount) * Math.PI * 2;
-      const sx = x + 18 + Math.cos(angle) * 16;
-      const sy = y + 16 + Math.sin(angle) * 9;
-      g.fillCircle(sx, sy, 3.5);
+    let initialKey = SPRITE_CAMPFIRE_TIER1_V15;
+    if (!isLit) {
+      initialKey = SPRITE_CAMPFIRE_UNLIT_V15;
+    } else if (currentLevel >= 3) {
+      initialKey = SPRITE_CAMPFIRE_TIER3_V15;
+    } else if (currentLevel === 2) {
+      initialKey = SPRITE_CAMPFIRE_TIER2_V15;
     }
 
-    // 3. Khúc củi chéo nhau
-    g.fillStyle(0x2a1a10, 1);
-    g.fillRect(x + 6, y + 11, 24, 7);
-    g.fillRect(x + 15, y + 3, 7, 24);
+    // 1. Quầng sáng ấm chuyển sắc tự nhiên ở mặt đất
+    const glow = this.scene.add.graphics();
+    const updateGlow = (lvl: number, lit: boolean) => {
+      glow.clear();
+      if (!lit) {
+        glow.fillStyle(0x8a2408, 0.08);
+        glow.fillCircle(cx, cy, 26);
+        return;
+      }
+      const r = lvl >= 3 ? 66 : lvl === 2 ? 48 : 36;
+      glow.fillStyle(0xf39c12, 0.07);
+      glow.fillCircle(cx, cy, r);
+      glow.fillStyle(0xe67e22, 0.14);
+      glow.fillCircle(cx, cy, r * 0.65);
+      glow.fillStyle(0xffe082, 0.22);
+      glow.fillCircle(cx, cy, r * 0.35);
+    };
+    updateGlow(currentLevel, isLit);
+    glow.setDepth(DEPTH_GROUND_DECALS);
+    this.registerCullable(glow, cx, cy, 80);
 
-    // 4. Ngọn lửa rực rỡ và than hồng
-    g.fillStyle(0xd35400, 1);
-    g.fillCircle(x + 18, y + 14, 10);
-    g.fillStyle(0xf39c12, 1);
-    g.fillCircle(x + 18, y + 13, 7);
-    g.fillStyle(0xfef9e7, 1);
-    g.fillCircle(x + 18, y + 11, 3);
+    // 2. Sprite lửa trại pixel art V1.5
+    const fireSprite = this.safeAddImage(cx, cy + 5, initialKey);
+    fireSprite.setOrigin(0.5, 0.85);
+    fireSprite.setDepth(cy + 4);
+    this.registerCullable(fireSprite, cx, cy, 50);
 
-    g.setDepth(y + 18);
-    this.registerCullable(g, x + 18, y + 15, 60);
+    // Lắng nghe cập nhật khi người chơi nạp củi / nâng cấp
+    const playerState = PlayerState.getInstance();
+    playerState.on('campfire_updated', (data: { level: number; fuel: number }) => {
+      const lit = data.fuel > 0;
+      let nextKey = SPRITE_CAMPFIRE_TIER1_V15;
+      if (!lit) {
+        nextKey = SPRITE_CAMPFIRE_UNLIT_V15;
+      } else if (data.level >= 3) {
+        nextKey = SPRITE_CAMPFIRE_TIER3_V15;
+      } else if (data.level === 2) {
+        nextKey = SPRITE_CAMPFIRE_TIER2_V15;
+      }
+      if (this.scene.textures && this.scene.textures.exists(nextKey)) {
+        fireSprite.setTexture(nextKey);
+      }
+      updateGlow(data.level, lit);
+    });
 
     if (this.scene.tweens) {
+      // Hiệu ứng bập bùng ngọn lửa
       this.scene.tweens.add({
-        targets: g,
-        alpha: 0.85,
-        duration: 850,
+        targets: fireSprite,
+        scaleY: 1.04,
+        scaleX: 0.98,
+        duration: 650,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut'
+      });
+      // Nhịp thở quầng sáng
+      this.scene.tweens.add({
+        targets: glow,
+        alpha: 0.82,
+        duration: 800,
         yoyo: true,
         repeat: -1,
         ease: 'Sine.easeInOut'
       });
     }
 
-    this.createStaticBoxColliderCentered(x + 18, y + 15, 24, 16, 'Lửa Trại Làng');
+    this.createStaticBoxColliderCentered(cx, cy, 24, 16, 'Lửa Trại Làng');
   }
 
   /**
-   * V1.4: Lều Trú Ẩn Sanctuary (Shelter Tent) tại Bellhollow
+   * V15-12: Lều Trú Ẩn Sanctuary của Lữ Khách (prop_wayfarer_tent.png 64×56 px)
+   * Khung cọc gỗ sồi chữ A, vải bạt da thú rêu sẫm, đệm rơm, đèn bão ấm áp.
    */
   private createShelterTent(x: number, y: number): void {
-    const g = this.scene.add.graphics();
-    // 1. Bóng đổ dưới lều
-    g.fillStyle(0x0a0e0c, 0.45);
-    g.fillRoundedRect(x - 6, y + 10, 48, 18, 5);
+    const cx = x + 18;
+    const cy = y + 6;
+    const tent = this.safeAddImage(cx, cy + 6, SPRITE_PROP_WAYFARER_TENT_V15);
+    tent.setOrigin(0.5, 0.90);
+    tent.setDepth(cy + 4);
+    this.registerCullable(tent, cx, cy, 65);
 
-    // 2. Đệm rơm và chăn cuộn
-    g.fillStyle(0xb58931, 0.85);
-    g.fillRect(x + 2, y + 6, 36, 12);
-    g.fillStyle(0x5c4033, 0.9);
-    g.fillRoundedRect(x + 6, y + 8, 12, 8, 2);
-
-    // 3. Khung cột gỗ chữ A
-    g.fillStyle(0x3e2723, 1);
-    g.fillRect(x - 2, y - 18, 4, 32);
-    g.fillRect(x + 38, y - 18, 4, 32);
-    g.fillRect(x - 2, y - 20, 44, 4);
-
-    // 4. Mái bạt che dốc nghiêng màu xanh rêu mộc
-    g.fillStyle(0x2d3a33, 1);
-    g.fillTriangle(x - 4, y + 8, x + 18, y - 22, x + 40, y + 8);
-    g.fillStyle(0x3e4e45, 1);
-    g.fillTriangle(x - 2, y + 6, x + 18, y - 20, x + 38, y + 6);
-
-    // 5. Đèn bão nhỏ treo ở đỉnh lều
-    g.fillStyle(0xf39c12, 0.2);
-    g.fillCircle(x + 18, y - 14, 12);
-    g.fillStyle(0xffe082, 0.9);
-    g.fillCircle(x + 18, y - 14, 2.5);
-
-    g.setDepth(y + 14);
-    this.registerCullable(g, x + 18, y, 50);
-
-    this.createStaticBoxColliderCentered(x + 18, y + 6, 36, 16, 'Lều Trú Ẩn');
-  }
-
-  /**
-   * V1.4: Nồi Thảo Dược Neris (Herbal Cauldron)
-   */
-  private createHerbalCauldron(x: number, y: number): void {
-    const g = this.scene.add.graphics();
-    // 1. Bóng đổ
-    g.fillStyle(0x0a0e0c, 0.4);
-    g.fillEllipse(x + 12, y + 14, 24, 8);
-
-    // 2. Chân kiềng sắt và bếp than hồng nhỏ
-    g.fillStyle(0x1a1a1a, 1);
-    g.fillRect(x + 2, y + 8, 3, 8);
-    g.fillRect(x + 19, y + 8, 3, 8);
-    g.fillStyle(0xd35400, 0.9);
-    g.fillCircle(x + 12, y + 12, 4);
-
-    // 3. Nồi gang đen tròn
-    g.fillStyle(0x2d3748, 1);
-    g.fillCircle(x + 12, y + 6, 11);
-    g.fillStyle(0x1a202c, 1);
-    g.fillCircle(x + 12, y + 6, 9.5);
-
-    // 4. Nước thuốc thảo dược đang sôi sủi tăm
-    g.fillStyle(0x27ae60, 0.85);
-    g.fillEllipse(x + 12, y + 4, 14, 6);
-    g.fillStyle(0x2ecc71, 0.9);
-    g.fillCircle(x + 10, y + 4, 1.5);
-    g.fillCircle(x + 14, y + 3, 1.5);
-
-    // 5. Quai nồi hai bên
-    g.fillStyle(0x4a5568, 1);
-    g.fillRect(x - 1, y + 3, 3, 4);
-    g.fillRect(x + 22, y + 3, 3, 4);
-
-    g.setDepth(y + 12);
-    this.registerCullable(g, x + 12, y + 6, 30);
-
-    this.createStaticBoxColliderCentered(x + 12, y + 6, 20, 14, 'Nồi Thảo Dược');
-  }
-
-  /**
-   * Tạo Rương Trú Ẩn Nông Trại (Storage Chest).
-   */
-  private createChestProp(x: number, y: number): void {
-    const g = this.scene.add.graphics();
-    // Bóng rương
-    g.fillStyle(0x0a0e0c, 0.5);
-    g.fillEllipse(x + 14, y + 16, 26, 8);
-
-    // Thân rương gỗ nẹp sắt
-    g.fillStyle(0x422d1b, 1);
-    g.fillRect(x, y, 28, 18);
-    g.fillStyle(0x5e4128, 1);
-    g.fillRect(x + 2, y + 2, 24, 14);
-
-    // Nắp rương và nẹp sắt đen
-    g.fillStyle(0x22272a, 1);
-    g.fillRect(x, y + 6, 28, 2);
-    g.fillRect(x + 4, y, 3, 18);
-    g.fillRect(x + 21, y, 3, 18);
-
-    // Ổ khóa đồng vàng
-    g.fillStyle(0xd4ac0d, 1);
-    g.fillRect(x + 12, y + 5, 4, 5);
-
-    g.setDepth(y + 18);
-    this.registerCullable(g, x + 14, y + 10, 30);
-
-    this.createStaticBoxColliderCentered(x + 14, y + 10, 22, 14, 'Rương Trú Ẩn');
-  }
-
-  /**
-   * Tạo bếp lửa trại thợ săn (Campfire) (C4-13-06: Quầng sáng ấm chuyển sắc tự nhiên, bóng đổ mềm mịn).
-   */
-  private createHunterCampfire(x: number, y: number): void {
-    const g = this.scene.add.graphics();
-    // 1. Quầng sáng ấm chuyển sắc tự nhiên 3 tầng, không có viền cắt gắt
-    g.fillStyle(0xf39c12, 0.06);
-    g.fillCircle(x + 18, y + 15, 38);
-    g.fillStyle(0xe67e22, 0.12);
-    g.fillCircle(x + 18, y + 15, 24);
-    g.fillStyle(0xffe082, 0.18);
-    g.fillCircle(x + 18, y + 15, 12);
-
-    // 2. Bóng mặt đất mềm mịn dưới đống lửa (alpha 0.25)
-    g.fillStyle(0x000000, 0.25);
-    g.fillEllipse(x + 18, y + 21, 24, 7);
-
-    // 3. Các khúc củi chéo nhau
-    g.fillStyle(0x2a1a10, 1);
-    g.fillRect(x + 8, y + 12, 20, 6);
-    g.fillRect(x + 15, y + 5, 6, 20);
-
-    // 4. Đốm lửa và than hồng
-    g.fillStyle(0xd35400, 1);
-    g.fillCircle(x + 18, y + 15, 8);
-    g.fillStyle(0xf39c12, 1);
-    g.fillCircle(x + 18, y + 14, 5);
-    g.fillStyle(0xfef9e7, 1);
-    g.fillCircle(x + 18, y + 13, 2);
-
-    g.setDepth(y + 18);
-    this.registerCullable(g, x + 18, y + 15, 40);
+    // Quầng sáng ấm nhẹ từ chiếc đèn bão treo đỉnh lều
+    const lampGlow = this.scene.add.graphics();
+    lampGlow.fillStyle(0xf39c12, 0.10);
+    lampGlow.fillCircle(cx, cy - 28, 20);
+    lampGlow.fillStyle(0xffe082, 0.20);
+    lampGlow.fillCircle(cx, cy - 28, 8);
+    lampGlow.setDepth(cy + 5);
+    this.registerCullable(lampGlow, cx, cy - 28, 30);
 
     if (this.scene.tweens) {
       this.scene.tweens.add({
-        targets: g,
+        targets: lampGlow,
+        alpha: 0.75,
+        duration: 1400,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut'
+      });
+    }
+
+    this.createStaticBoxColliderCentered(cx, cy + 2, 38, 16, 'Lều Trú Ẩn');
+  }
+
+  /**
+   * V15-12: Nồi Sắc Thảo Dược Treo Trên Kiềng 3 Chân (prop_cauldron_tripod.png 36×44 px)
+   * Kiềng sắt đen, xích treo nồi gang, than củi hồng rực, nước thuốc xanh ngọc bích sủi bọt.
+   */
+  private createHerbalCauldron(x: number, y: number): void {
+    const cx = x + 12;
+    const cy = y + 6;
+    const cauldron = this.safeAddImage(cx, cy + 10, SPRITE_PROP_CAULDRON_TRIPOD_V15);
+    cauldron.setOrigin(0.5, 0.90);
+    cauldron.setDepth(cy + 2);
+    this.registerCullable(cauldron, cx, cy, 40);
+
+    // Hơi nước thuốc thảo dược bốc lên mờ ảo
+    const steam = this.scene.add.graphics();
+    steam.fillStyle(0x80cbc4, 0.35);
+    steam.fillCircle(cx, cy - 18, 4);
+    steam.fillCircle(cx + 2, y - 24, 5);
+    steam.setDepth(cy + 3);
+    this.registerCullable(steam, cx, cy - 20, 20);
+
+    if (this.scene.tweens) {
+      this.scene.tweens.add({
+        targets: steam,
+        y: steam.y - 6,
+        alpha: 0.15,
+        duration: 1800,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut'
+      });
+    }
+
+    this.createStaticBoxColliderCentered(cx, cy + 2, 20, 14, 'Nồi Thảo Dược');
+  }
+
+  /**
+   * V15-12: Rương Gỗ Đai Đồng Trú Ẩn (prop_chest_bronze.png 40×32 px)
+   * Gỗ sồi nâu ấm bo góc, nẹp đai đồng cổ viền đinh tán vàng kim, ổ khóa đồng cổ điển.
+   */
+  private createChestProp(x: number, y: number): void {
+    const cx = x + 14;
+    const cy = y + 10;
+    const chest = this.safeAddImage(cx, cy + 6, SPRITE_PROP_CHEST_BRONZE_V15);
+    chest.setOrigin(0.5, 0.88);
+    chest.setDepth(cy + 2);
+    this.registerCullable(chest, cx, cy, 36);
+
+    this.createStaticBoxColliderCentered(cx, cy + 2, 26, 14, 'Rương Gỗ Đai Đồng');
+  }
+
+  /**
+   * V15-12: Tạo bếp lửa trại thợ săn (Campfire Tier 2)
+   */
+  private createHunterCampfire(x: number, y: number): void {
+    const cx = x + 18;
+    const cy = y + 15;
+    // 1. Quầng sáng ấm chuyển sắc tự nhiên
+    const glow = this.scene.add.graphics();
+    glow.fillStyle(0xf39c12, 0.07);
+    glow.fillCircle(cx, cy, 46);
+    glow.fillStyle(0xe67e22, 0.14);
+    glow.fillCircle(cx, cy, 30);
+    glow.fillStyle(0xffe082, 0.20);
+    glow.fillCircle(cx, cy, 15);
+    glow.setDepth(DEPTH_GROUND_DECALS);
+    this.registerCullable(glow, cx, cy, 55);
+
+    // 2. Sprite lửa trại thợ săn cấp 2
+    const fireSprite = this.safeAddImage(cx, cy + 5, SPRITE_CAMPFIRE_TIER2_V15);
+    fireSprite.setOrigin(0.5, 0.85);
+    fireSprite.setDepth(cy + 4);
+    this.registerCullable(fireSprite, cx, cy, 45);
+
+    if (this.scene.tweens) {
+      this.scene.tweens.add({
+        targets: fireSprite,
+        scaleY: 1.04,
+        scaleX: 0.98,
+        duration: 700,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut'
+      });
+      this.scene.tweens.add({
+        targets: glow,
         alpha: 0.82,
         duration: 900,
         yoyo: true,
@@ -5165,7 +5195,7 @@ export class WorldBuilder {
       });
     }
 
-    this.createStaticBoxColliderCentered(x + 18, y + 15, 24, 16, 'Lửa Trại Thợ Săn');
+    this.createStaticBoxColliderCentered(cx, cy, 24, 16, 'Lửa Trại Thợ Săn');
   }
 
   /**

@@ -261,3 +261,99 @@ Tất cả 10 asset thực vật mới được thiết kế, đổ bóng và t�
 | **Chuyển biên sân đá Feathered** | `drawCobbleCourtyard` áp dụng feathered pavers | Mép đá so le tự nhiên | **PASS** |
 | **Kiểm tra kiểu TypeScript** | `npx tsc --noEmit` đạt 0 lỗi | **0 lỗi** | **PASS** |
 | **Bản dựng Production** | `npm run build` | **Thành công (13.53s)** | **PASS** |
+
+---
+
+## BÁO CÁO KỸ THUẬT V15-12: CHUẨN HÓA ĐỒ HỌA VẬT PHẨM TRÊN MẶT ĐẤT, ĐẠO CỤ KHU TRẠI & NGUỒN SÁNG MÔI TRƯỜNG
+
+**Dự án:** HOLLOW WOODS: The Fog That Remembers  
+**Mã tài liệu:** `V15-12` / `04_Graphics_And_World_Layout.md`  
+**Phiên bản:** V1.5 (Visual & Gameplay Overhaul)  
+**Nhánh Git:** `feat/v1.5-visual-gameplay-overhaul`  
+**Ngày thực hiện:** 18/11/2026  
+**Trạng thái:** Hoàn tất xuất sắc (14/14 asset pixel art độ nét cao, tương tác động theo CampSystem, 0 lỗi TypeScript, bản dựng Vite thành công)  
+
+---
+
+### 1. MỤC TIÊU & HIỆN TRẠNG TRƯỚC V15-12
+
+Trước bước V15-12, các chi tiết vật thể tương tác trên mặt đất và đạo cụ khu trại bộc lộ nhiều điểm hạn chế thị giác:
+- **Vật phẩm thu thập (World Pickups) thô sơ:** Gỗ khô chỉ là hình chữ X đơn điệu; nhựa thông là cục vàng cam chói gắt; thảo dược và đá lửa là các chấm màu $16\times 16\text{ px}$ mờ nhạt, thiếu bóng đổ chân đế và không phản ánh đúng không khí u tịch của Rừng Sương.
+- **Đạo cụ khu trại vẽ tạm bằng hình khối:** Lửa Trại Trung Tâm, Lều Trú Ẩn, Nồi Thảo Dược, Rương Gỗ và Cột Đèn Đường trong làng Bellhollow được vẽ bằng các lệnh đồ họa hình học nguyên thủy `Phaser.GameObjects.Graphics` (`fillRect`, `fillCircle`, `fillTriangle`), thiếu độ sâu mỹ thuật, không phản ánh được tinh thần Medieval Dark-Fantasy.
+- **Lửa trại thiếu phản hồi trực quan:** Lửa trại chỉ có một hình vẽ tĩnh, chưa tự động thay đổi ngoại hình theo 3 cấp độ nhiên liệu (`Duy Trì`, `Cháy Đều`, `Rực Rỡ` và trạng thái `Tro Tàn`) của `CampSystem`.
+
+---
+
+### 2. QUY CHUẨN ĐỒ HỌA 14 ASSET PIXEL ART MỚI
+
+Toàn bộ 14 asset được tạo và xử lý trực tiếp bằng script đồ họa `scripts/generate_v15_pickups_and_camp_props.mjs`:
+
+#### 2.1. Bộ 5 Vật Phẩm Thu Thập Ngoài Thế Giới (World Pickups — $24 \times 24\text{ px}$)
+
+| Tên Asset Sprite | Kích Thước | Màu Sắc Chủ Đạo | Đặc Điểm Nghệ Thuật Pixel Art |
+| :--- | :---: | :--- | :--- |
+| `res_dry_wood.png` | **$24 \times 24\text{ px}$** | Nâu sồi `#5a3d24`, Rêu xanh `#6ea352` | Bó cành cây khô nhỏ gồm 2 cành xếp chéo tự nhiên trên cỏ, vỏ nứt nẻ có mắt cành, đốm rêu xanh phủ nhẹ, bóng đổ elip mờ ở đáy. |
+| `res_tree_resin.png` | **$24 \times 24\text{ px}$** | Hổ phách `#e68a00`, Vỏ thông `#382619` | Giọt nhựa hổ phách/mật ong óng ánh bám trên khúc vỏ thông xám sần sùi, điểm sáng highlight li ti dịu mắt, vệt nhựa rỉ xuống vỏ gỗ. |
+| `res_herbs.png` | **$24 \times 24\text{ px}$** | Xanh bạc `#4d856d`, Nụ sáng `#e0f7f1` | Thảo Dược Bạc thanh mảnh với các cặp lá xòe ngang, gân lá ánh bạc, nụ hoa thảo dược nở ở đỉnh tỏa ánh sáng mờ huyền ảo, bóng gốc mềm. |
+| `res_flint.png` | **$24 \times 24\text{ px}$** | Xám đá `#39464f`, Tia sáng `#ffcc00` | Cụm 2 hòn đá lửa xám đen sắc cạnh, mặt cắt phẳng nứt nẻ phản chiếu ánh sáng lạnh, hạt tia lửa nhỏ li ti le lói vừa gõ ra ở đỉnh. |
+| `res_runed_iron.png`| **$24 \times 24\text{ px}$** | Thép than `#262f36`, Cổ ngữ `#81e6d9` | Mảnh sắt rèn nặng nề màu thép nguội, mép vát rỉ sét đồng cam, trên mặt khắc chữ Cổ Ngữ phát sáng lam ngọc mờ mộng ảo, đinh tán cổ. |
+
+#### 2.2. Bộ Đạo Cụ Sanctuary Camp & Nguồn Sáng Làng Bellhollow
+
+| Tên Asset Sprite | Kích Thước | Chiều Sâu (Depth) | Hitbox Chân Đế | Mô Tả Thiết Kế Chi Tiết |
+| :--- | :---: | :---: | :---: | :--- |
+| `campfire_unlit.png` | **$48 \times 48\text{ px}$** | $y + 4$ | $24 \times 16\text{ px}$ | Vòng 10 viên đá cuội phủ rêu xếp tròn, củi gỗ sồi xếp chéo đã tàn lụi, lòng bếp tro than xám đen khi lửa tắt hoàn toàn. |
+| `campfire_tier1.png` | **$48 \times 48\text{ px}$** | $y + 4$ | $24 \times 16\text{ px}$ | Lửa Trại Cấp 1 (Duy Trì): Đống than hồng âm ỉ giữa các khúc củi, ngọn lửa nhỏ liu riu ấm cúng cao $10 - 12\text{px}$, quầng sáng dịu $36\text{px}$. |
+| `campfire_tier2.png` | **$48 \times 48\text{ px}$** | $y + 4$ | $24 \times 16\text{ px}$ | Lửa Trại Cấp 2 (Cháy Đều): Củi cháy đượm nứt nẻ, ngọn lửa bập bùng nhiều tầng vàng cam và lõi trắng cao $18 - 20\text{px}$, quầng sáng $48\text{px}$. |
+| `campfire_tier3.png` | **$48 \times 48\text{ px}$** | $y + 4$ | $24 \times 16\text{ px}$ | Lửa Trại Cấp 3 (Rực Rỡ): Cột lửa bốc cao $26 - 28\text{px}$ nhiều nhánh, than đỏ rực, các hạt tàn lửa (`sparks`) bay lên không trung, quầng sáng $66\text{px}$. |
+| `prop_chest_bronze.png` | **$40 \times 32\text{ px}$** | $y + 2$ | $26 \times 14\text{ px}$ | Rương gỗ sồi bo góc màu nâu trầm, 3 đai đồng cổ viền đinh tán vàng kim, ổ khóa đồng có lỗ tra chìa, quai xách hai bên hông. |
+| `prop_cauldron_tripod.png` | **$36 \times 44\text{ px}$** | $y + 2$ | $20 \times 14\text{ px}$ | Kiềng sắt đen 3 chân vững chãi, xích treo nồi gang đen tròn, than củi hồng rực bên dưới, nước thuốc thảo dược ngọc bích sủi bọt bốc hơi. |
+| `prop_wayfarer_tent.png` | **$64 \times 56\text{ px}$** | $y + 4$ | $38 \times 16\text{ px}$ | Khung cọc gỗ sồi chữ A, vải bạt da thú rêu sẫm chắp vá đường chỉ khâu thủ công, cửa hé lộ đệm rơm và chăn len cuộn, đèn bão ấm ở đỉnh. |
+| `prop_lantern_post.png` | **$32 \times 64\text{ px}$** | $y + 2$ | $10 \times 8\text{ px}$ | Cột gỗ sồi sần sùi bám rêu có ụ đá gia cố chân, tay đỡ chữ L giằng chéo treo đèn lồng sắt phát sáng hổ phách, đung đưa nhẹ theo gió. |
+| `prop_signpost_wood.png` | **$36 \times 48\text{ px}$** | $y$ | $14 \times 10\text{ px}$ | Cọc gỗ sồi cắm đất phủ rêu đỉnh, 2 thanh biển gỗ vát nhọn hình mũi tên chỉ 2 hướng có khắc ký hiệu cổ ngữ, đinh tán sắt rèn cổ. |
+
+---
+
+### 3. KIẾN TRÚC MÃ NGUỒN & HOẠT ẢNH TƯƠNG TÁC ĐỘNG
+
+1. **Lửa Trại Động Theo Hệ Thống Nhiên Liệu (`CampSystem`):**
+   - Lắng nghe sự kiện `playerState.on('campfire_updated', ...)` trong `createCentralCampfire()`.
+   - Khi người chơi nạp củi hoặc nhựa thông, texture tự động hoán đổi mượt mà giữa `campfire_unlit`, `campfire_tier1`, `campfire_tier2` và `campfire_tier3`.
+   - Quầng sáng ấm chuyển sắc ở mặt đất tự động co giãn bán kính từ $26\text{px}$ đến $66\text{px}$ tương ứng.
+   - Bổ sung hiệu ứng bập bùng ngọn lửa bằng tween co giãn tỷ lệ ($scaleY=1.04, scaleX=0.98$).
+
+2. **Cột Đèn Lồng Đung Đưa Trong Gió Lạnh:**
+   - Đặt điểm neo tại chân cột `origin(0.38, 0.95)` (đúng tim cột $x=12$ trên frame $32\text{px}$).
+   - Hoạt ảnh `Sine.easeInOut` đung đưa góc $\pm 1.2^\circ$ với chu kỳ tự nhiên $2600\text{ms} - 3600\text{ms}$ ngẫu nhiên theo tọa độ.
+   - Quầng sáng vàng hổ phách nhấp nháy êm dịu ở mặt đất tại độ sâu `DEPTH_GROUND_DECALS`.
+
+3. **Nồi Thảo Dược Sôi Sủi Bọt:**
+   - Thêm hiệu ứng hơi nước thuốc xanh ngọc bích nhấp nhô bốc lên (`y - 6`, alpha giảm dần) phía trên miệng nồi.
+
+4. **Hiển Thị Vật Phẩm 1:1 Pixel Art Sắc Nét Trong `InventorySystem`:**
+   - Thay thế việc phóng đại $1.25\times$ của sprite $16\text{px}$ cũ bằng tỷ lệ $1.0\times$ chuẩn xác cho asset $24\times 24\text{ px}$.
+   - Hỗ trợ thêm `mat_runed_iron` (Phôi Sắt Cổ Ngữ) với sprite `res_runed_iron.png` tại phế tích Đầm Lầy.
+
+---
+
+### 4. BẢNG TỔNG HỢP KIỂM THỬ TỰ ĐỘNG (`verify_v15_12_pickups_and_props.mjs`)
+
+| Hạng Mục Kiểm Thử | Yêu Cầu Kỹ Thuật | Kết Quả Thực Tế | Trạng Thái |
+| :--- | :--- | :---: | :---: |
+| **Kích thước Gỗ Khô** | $24 \times 24\text{ px}$ pixel art | $24 \times 24\text{ px}$ | **PASS** |
+| **Kích thước Nhựa Thông** | $24 \times 24\text{ px}$ pixel art | $24 \times 24\text{ px}$ | **PASS** |
+| **Kích thước Thảo Dược Bạc** | $24 \times 24\text{ px}$ pixel art | $24 \times 24\text{ px}$ | **PASS** |
+| **Kích thước Đá Lửa** | $24 \times 24\text{ px}$ pixel art | $24 \times 24\text{ px}$ | **PASS** |
+| **Kích thước Phôi Sắt Cổ** | $24 \times 24\text{ px}$ pixel art | $24 \times 24\text{ px}$ | **PASS** |
+| **Kích thước Lửa Trại 4 Trạng Thái** | $48 \times 48\text{ px}$ (Unlit, Tier 1, 2, 3) | 4/4 file đạt $48 \times 48\text{ px}$ | **PASS** |
+| **Kích thước Rương Gỗ Đai Đồng** | $40 \times 32\text{ px}$ pixel art | $40 \times 32\text{ px}$ | **PASS** |
+| **Kích thước Nồi Sắc Thảo Dược** | $36 \times 44\text{ px}$ pixel art | $36 \times 44\text{ px}$ | **PASS** |
+| **Kích thước Lều Vải Da Thú** | $64 \times 56\text{ px}$ pixel art | $64 \times 56\text{ px}$ | **PASS** |
+| **Kích thước Cột Đèn Lồng Gỗ** | $32 \times 64\text{ px}$ pixel art | $32 \times 64\text{ px}$ | **PASS** |
+| **Kích thước Biển Chỉ Đường Gỗ** | $36 \times 48\text{ px}$ pixel art | $36 \times 48\text{ px}$ | **PASS** |
+| **Hằng số Constants.ts** | 14/14 khóa hằng số khai báo đầy đủ | 14/14 có mặt | **PASS** |
+| **Tải Asset PreloadScene.ts** | 14/14 asset nạp trong `preload()` | 14/14 được nạp | **PASS** |
+| **Tích hợp WorldBuilder.ts** | Đạo cụ camp, cột đèn đung đưa, lửa trại 3 cấp | Tích hợp hoàn thiện | **PASS** |
+| **Tích hợp InventorySystem.ts**| Hỗ trợ 1:1 pixel scale & phôi sắt cổ ngữ | Tích hợp hoàn thiện | **PASS** |
+| **Kiểm tra kiểu TypeScript** | `npx tsc --noEmit` đạt 0 lỗi | **0 lỗi** | **PASS** |
+| **Bản dựng Production** | `npm run build` | **Thành công** | **PASS** |

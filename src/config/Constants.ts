@@ -181,11 +181,23 @@ export const SPRITE_WANDERING_SHADE = 'wandering_shade_sheet';
 export const SPRITE_GOBLIN_SCOUT = 'goblin_scout_dagger_sheet';
 export const SPRITE_FOG_SMOOTH = 'fog_smooth';
 
-// Khóa Texture Tài Nguyên Thu Thập (World Resource Sprite Keys - C4-02A)
+// Khóa Texture Tài Nguyên Thu Thập (World Resource Sprite Keys - C4-02A & V15-12)
 export const SPRITE_RES_DRY_WOOD = 'res_dry_wood';
 export const SPRITE_RES_TREE_RESIN = 'res_tree_resin';
 export const SPRITE_RES_FLINT = 'res_flint';
 export const SPRITE_RES_HERBS = 'res_herbs';
+export const SPRITE_RES_RUNED_IRON = 'res_runed_iron';
+
+// Khóa Texture Cụm Sanctuary Camp & Đạo Cụ Làng V1.5 (V15-12)
+export const SPRITE_CAMPFIRE_TIER1_V15 = 'campfire_tier1';
+export const SPRITE_CAMPFIRE_TIER2_V15 = 'campfire_tier2';
+export const SPRITE_CAMPFIRE_TIER3_V15 = 'campfire_tier3';
+export const SPRITE_CAMPFIRE_UNLIT_V15 = 'campfire_unlit';
+export const SPRITE_PROP_CHEST_BRONZE_V15 = 'prop_chest_bronze';
+export const SPRITE_PROP_CAULDRON_TRIPOD_V15 = 'prop_cauldron_tripod';
+export const SPRITE_PROP_WAYFARER_TENT_V15 = 'prop_wayfarer_tent';
+export const SPRITE_PROP_LANTERN_POST_V15 = 'prop_lantern_post';
+export const SPRITE_PROP_SIGNPOST_WOOD_V15 = 'prop_signpost_wood';
 
 // Layer Depths (Chuẩn phân tầng độ sâu đồ họa 2D - Đảm bảo phân khu có tọa độ Y âm như Rừng Sâu không bị che khuất)
 export const DEPTH_GROUND_BASE = -10000;      // Nền đất baked cơ sở (Fog Crossing, Bellhollow, Deep Forest...)
