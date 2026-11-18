@@ -16,13 +16,13 @@ export class SurvivalSystem {
   // C4-132-02: Danh sách các điểm nguồn nhiệt/lửa trại hợp lệ để hồi phục Sinh Lực và Bình Tâm (bán kính 110px)
   private warmSources: Array<{ x: number; y: number; radius: number; name: string }> = [
     { x: 1320, y: 720, radius: 110, name: 'Lửa Trại Thợ Săn' },
-    { x: 960, y: 360, radius: 110, name: 'Lò Rèn Xưởng Chế Tạo' },
-    { x: 780, y: 260, radius: 110, name: 'Lửa Trại Làng Bellhollow' }
+    { x: 1220, y: 370, radius: 110, name: 'Lò Rèn Xưởng Chế Tạo' },
+    { x: 860, y: 310, radius: 110, name: 'Lửa Trại Làng Bellhollow' }
   ];
 
-  // Giữ tọa độ và bán kính tương thích cho làng Bellhollow
-  public campfireX: number = 780;
-  public campfireY: number = 260;
+  // Giữ tọa độ và bán kính tương thích cho làng Bellhollow (V15-13)
+  public campfireX: number = 860;
+  public campfireY: number = 310;
   public campfireWarmthRadius: number = 110;
 
   // Bộ nhớ đệm kiểm tra thay đổi (Dirty Checking Cache)

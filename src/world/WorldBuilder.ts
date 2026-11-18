@@ -602,54 +602,51 @@ export class WorldBuilder {
         // =========================================================================
         // 3. MẠNG LƯỚI ĐƯỜNG MÒN KẾT NỐI TẤT CẢ CÁC KHU VỰC TRONG LÀNG BELLHOLLOW
         // =========================================================================
-        // 3.1. Đường Cổng Tây (nối liền mạch từ Fog Crossing tại x=480, y=232 qua vị trí Garth (530, 220) vào Quảng Trường Trung Tâm)
+        // 3.1. Đường Cổng Tây (nối liền mạch từ Fog Crossing tại x=480, y=232 qua vị trí Garth (490, 210) vào Ngã Ba Bảng Tin và Quảng Trường Trung Tâm)
         drawOrganicDirtPath([
           { x: 480, y: 232, r: 22 },
-          { x: 535, y: 238, r: 24 },
-          { x: 610, y: 262, r: 23 },
-          { x: 705, y: 288, r: 25 }
+          { x: 520, y: 235, r: 24 },
+          { x: 610, y: 255, r: 23 },
+          { x: 660, y: 265, r: 24 },
+          { x: 740, y: 285, r: 25 }
         ], true);
 
-        // 3.2. Nhánh đường Tây-Bắc dẫn lên Nhà Edda (650..762, 80..128) và bãi gỗ/nhựa cây (640..680, 185..220)
+        // 3.2. Nhánh đường dẫn lên Tháp Chuông Cổ Đại ở phía Bắc (x=900, y=130)
         drawOrganicDirtPath([
-          { x: 625, y: 260, r: 17 },
-          { x: 665, y: 205, r: 17 },
-          { x: 706, y: 145, r: 19 }
+          { x: 780, y: 270, r: 18 },
+          { x: 840, y: 200, r: 18 },
+          { x: 900, y: 155, r: 20 }
         ], true);
 
-        // 3.3. Nhánh đường Đông-Bắc dẫn lên Nhà Thảo Mộc của Neris (920..1032, 80..128), vị trí Neris (970, 130) & cụm thảo mộc (1040, 180)
+        // 3.3. Nhánh đường Đông-Bắc dẫn sang Nhà Bà Lão Edda (x=1160, y=130)
         drawOrganicDirtPath([
-          { x: 895, y: 272, r: 18 },
-          { x: 945, y: 205, r: 18 },
-          { x: 976, y: 145, r: 20 },
-          { x: 1038, y: 178, r: 15 }
+          { x: 900, y: 155, r: 18 },
+          { x: 1030, y: 165, r: 17 },
+          { x: 1140, y: 155, r: 20 }
         ], true);
 
-        // 3.4. Nhánh đường Tây-Nam dẫn xuống bãi đá lửa (620, 350), thảo mộc Nam (740, 440) và Lối Nam ra Nông Trại Trú Ẩn (650, 520)
+        // 3.4. Nhánh đường Tây-Nam dẫn xuống Nhà Thảo Mộc Neris (x=570, y=430) và Lối Nam ra Nông Trại Trú Ẩn (x=650, y=520)
         drawOrganicDirtPath([
-          { x: 715, y: 348, r: 16 },
-          { x: 645, y: 356, r: 15 },
-          { x: 735, y: 432, r: 15 },
-          { x: 675, y: 480, r: 16 },
+          { x: 710, y: 340, r: 18 },
+          { x: 640, y: 390, r: 18 },
+          { x: 580, y: 440, r: 19 },
           { x: 650, y: 520, r: 18 }
         ], false);
 
-        // 3.5. Nhánh đường Đông-Nam từ Quảng Trường qua Khu Chế Tạo (960..985, 360..375), Vườn Thảo Dược và Lối Đông Nam ra Rừng Ngoại Vi (1200, 510)
+        // 3.5. Nhánh đường Đông-Nam từ Quảng Trường qua Xưởng Rèn Bram (x=1270, y=360) và Lối Đông Nam ra Rừng Ngoại Vi (1210, 510)
         drawOrganicDirtPath([
-          { x: 905, y: 345, r: 19 },
-          { x: 975, y: 368, r: 22 },
-          { x: 1055, y: 392, r: 17 },
-          { x: 1125, y: 385, r: 15 },
-          { x: 1165, y: 450, r: 16 },
-          { x: 1200, y: 510, r: 18 }
+          { x: 930, y: 340, r: 19 },
+          { x: 1060, y: 360, r: 20 },
+          { x: 1190, y: 375, r: 22 },
+          { x: 1210, y: 510, r: 18 }
         ], true);
 
         // 3.6. Đường Rừng Phía Đông (từ Quảng Trường Trung Tâm x=935 uốn lượn qua Cổng Đông x=1490 tới ranh giới The Crooked Path x=1600, y=280)
         drawOrganicDirtPath([
-          { x: 925, y: 300, r: 23 },
-          { x: 1045, y: 288, r: 21 },
-          { x: 1185, y: 274, r: 20 },
-          { x: 1335, y: 286, r: 20 },
+          { x: 935, y: 300, r: 22 },
+          { x: 1060, y: 288, r: 21 },
+          { x: 1200, y: 275, r: 20 },
+          { x: 1340, y: 286, r: 20 },
           { x: 1475, y: 278, r: 21 },
           { x: 1600, y: 282, r: 22 }
         ], false);
@@ -781,11 +778,11 @@ export class WorldBuilder {
         // =========================================================================
         // 5. DỰNG QUẢNG TRƯỜNG TRUNG TÂM BELLHOLLOW & CÁC SÂN ĐÁ CÔNG TRÌNH
         // =========================================================================
-        // 5.1. Quảng Trường Trung Tâm (Central Village Square: wx = 695..925, wy = 245..395)
-        // Kết nối Tháp Chuông (820..900, 252..310), Bà Lão Edda (790, 330) và Giếng Làng (726, 376)
-        drawCobbleCourtyard(810, 322, 118, 74, 'rounded_rect');
+        // 5.1. Quảng Trường Trung Tâm (Central Village Square: wx = 665..955, wy = 235..405)
+        // Mở rộng không gian thông thoáng bao quanh Lửa Trại (860, 310), Hiệp Sĩ Canh Lửa (825, 310), Lều (760, 255), Rương (775, 295) và Giếng (730, 375)
+        drawCobbleCourtyard(810, 320, 145, 85, 'rounded_rect');
 
-        // Họa tiết vòng đá cổ đồng tâm tại tâm Quảng Trường Trung Tâm & quanh Giếng Làng
+        // Họa tiết vòng đá cổ đồng tâm tại tâm Lửa Trại Trung Tâm & quanh Giếng Làng
         const drawStoneRing = (wx: number, wy: number, rRing: number) => {
           const rcx = toLX(wx);
           const rcy = toLY(wy);
@@ -797,32 +794,31 @@ export class WorldBuilder {
             ctx.fillRect(px - 2, py - 2, 4, 3);
           }
         };
-        drawStoneRing(825, 322, 44);
-        drawStoneRing(726, 376, 26);
+        drawStoneRing(840, 320, 40);
+        drawStoneRing(730, 375, 24);
 
-        // 5.2. Sân hiên lát đá trước Nhà Edda (wx: 648..760, wy: 98..154)
-        drawCobbleCourtyard(704, 126, 54, 24, 'rounded_rect');
+        // 5.2. Sân đá bậc thềm Tháp Chuông Cổ Đại ở phía Bắc (wx: 850..950, wy: 116..164)
+        drawCobbleCourtyard(900, 140, 50, 24, 'rounded_rect');
 
-        // 5.3. Sân hiên lát đá rộng rãi trước Nhà Thảo Mộc Neris (wx: 914..1026, wy: 92..156)
-        // Đảm bảo NPC Neris tại (970, 130) đứng chính giữa sân đá thoáng đãng trước cửa nhà
-        drawCobbleCourtyard(970, 126, 56, 26, 'rounded_rect');
+        // 5.3. Sân hiên lát đá trước Nhà Bà Lão Edda ở Đông Bắc (wx: 1100..1220, wy: 118..172)
+        drawCobbleCourtyard(1160, 145, 60, 26, 'rounded_rect');
 
-        // 5.4. Sân đá Khu Chế Tạo & Lò Rèn (wx: 932..1022, wy: 342..394)
-        drawCobbleCourtyard(978, 368, 46, 26, 'rounded_rect');
+        // 5.4. Sân đá Khu Xưởng Rèn & Lò Lửa Bram ở Đông Nam (wx: 1180..1310, wy: 345..405)
+        drawCobbleCourtyard(1245, 375, 65, 30, 'rounded_rect');
 
-        // 5.5. Sân đá Trạm Gác Cổng Tây chỗ Garth (wx: 500..564, wy: 196..248)
-        drawCobbleCourtyard(530, 222, 34, 24, 'oval');
+        // 5.5. Sân đá Trạm Gác Cổng Tây chỗ Garth (wx: 474..546, wy: 191..239)
+        drawCobbleCourtyard(510, 215, 36, 24, 'oval');
 
-        // 5.6. Lối bậc đá dẫn từ Quảng Trường lên Tháp Chuông (wx: 825..895, wy: 245..328)
-        drawCobbleCourtyard(860, 295, 36, 30, 'rounded_rect');
+        // 5.6. Sân đá hiên Nhà Thảo Mộc Neris ở Tây Nam (wx: 514..626, wy: 419..471)
+        drawCobbleCourtyard(570, 445, 56, 26, 'rounded_rect');
 
-        // 5.7. Sân hiên trước Nhà Dân Làng Tây-Nam (wx: 520..616, wy: 418..454)
-        drawCobbleCourtyard(568, 434, 42, 18, 'rounded_rect');
+        // 5.7. Sân đá ngã ba Bảng Tin Dị Thường & Finn (wx: 621..689, wy: 245..285)
+        drawCobbleCourtyard(655, 265, 34, 20, 'oval');
 
         // =========================================================================
         // 6. CHI TIẾT THẢM THỰC VẬT MẶT ĐẤT (HOA DẠI, LÁ RỤNG, ÁNH ĐÈN ẤM TRÊN NỀN ĐÁ)
         // =========================================================================
-        // Ánh phản chiếu vàng ấm dịu trên mặt đá quanh Giếng Làng, Tháp Chuông và Bàn Chế Tạo
+        // Ánh phản chiếu vàng ấm dịu trên mặt đá quanh Giếng Làng, Lửa Trại, Tháp Chuông và các công trình
         const addWarmGroundPool = (wx: number, wy: number, radius: number, alpha: number) => {
           const lx = toLX(wx);
           const ly = toLY(wy);
@@ -833,13 +829,14 @@ export class WorldBuilder {
           ctx.fillStyle = g;
           ctx.fillRect(lx - radius, ly - radius, radius * 2, radius * 2);
         };
-        addWarmGroundPool(726, 376, 56, 0.22); // Quanh giếng làng
-        addWarmGroundPool(855, 326, 64, 0.20); // Trước cửa tháp chuông & Bà Lão Edda
-        addWarmGroundPool(978, 368, 54, 0.22); // Quanh bàn chế tạo & lò rèn
-        addWarmGroundPool(704, 122, 48, 0.18); // Trước hiên nhà Edda
-        addWarmGroundPool(970, 122, 50, 0.20); // Trước hiên nhà Neris
-        addWarmGroundPool(530, 218, 46, 0.18); // Trạm gác cổng Tây chỗ Garth
-        addWarmGroundPool(568, 430, 42, 0.16); // Trước hiên nhà Tây-Nam
+        addWarmGroundPool(730, 375, 50, 0.22); // Quanh giếng làng
+        addWarmGroundPool(850, 315, 68, 0.24); // Quanh Lửa Trại & Hiệp Sĩ Canh Lửa
+        addWarmGroundPool(900, 140, 52, 0.20); // Trước cửa tháp chuông
+        addWarmGroundPool(1160, 145, 50, 0.20); // Trước hiên nhà Edda
+        addWarmGroundPool(1240, 375, 56, 0.22); // Quanh bàn chế tạo & lò rèn Bram
+        addWarmGroundPool(505, 215, 46, 0.18); // Trạm gác cổng Tây chỗ Garth
+        addWarmGroundPool(570, 445, 52, 0.18); // Trước hiên nhà Neris & vườn dược
+        addWarmGroundPool(655, 255, 36, 0.16); // Ngã ba bảng tin dị thường & Finn
 
         // Hoa dại nhỏ & lá thu rụng ven lối mòn trong vùng hiển thị chính (wy: 40..520)
         const flowerColors = ['#d4ac0d', '#e67e22', '#c0392b', '#a9dfbf', '#d2b4de'];
@@ -849,7 +846,7 @@ export class WorldBuilder {
           const lx = toLX(wx);
           const ly = toLY(wy);
           // Tránh vẽ đè lên chính giữa tâm sân đá quảng trường
-          if (wx > 710 && wx < 910 && wy > 260 && wy < 380) continue;
+          if (wx > 680 && wx < 940 && wy > 240 && wy < 390) continue;
           ctx.fillStyle = '#1e3019';
           ctx.fillRect(lx - 1, ly, 3, 2);
           ctx.fillStyle = flowerColors[Math.floor(nextRand() * flowerColors.length)];
@@ -2442,68 +2439,65 @@ export class WorldBuilder {
       this.createStoneSign(240, 180, 'TẤM BIỂN MỤC');
     } else if (id === 'bellhollow') {
       // =========================================================================
-      // C4-12-18A (Mục 2B, 3 & 4): BỐ TRÍ NHÀ CỬA, CÔNG TRÌNH KIẾN TRÚC & PROP LÀNG BELLHOLLOW
-      // Đảm bảo khoảng trống thông thoáng cho 3 NPC: Garth (530,220), Edda (790,330), Neris (970,130)
-      // và giữ toàn bộ 7 mỏ tài nguyên + Bàn Chế Tạo (978,369) + Bệ Tháp Chuông (860,324) dễ tiếp cận.
+      // V15-13: QUY HOẠCH LẠI BỐ CỤC KHÔNG GIAN LÀNG BELLHOLLOW HÀI HÒA & THOÁNG ĐÃNG
+      // Tách biệt các khu vực chức năng, bảo đảm khoảng cách mọi cặp NPC >= 160px:
+      // - Cổng Tây: Chốt Canh Cổng + Garth (490, 210) bên cột đèn cổng làng
+      // - Ngã Ba: Bảng Tin Dị Thường (650, 240) + Finn (660, 265)
+      // - Quảng Trường Trung Tâm: Lửa Trại 3 cấp (860, 310) + Hiệp Sĩ Canh Lửa (825, 310), Lều (760, 255), Rương (775, 295), Giếng (730, 375)
+      // - Khu Đông Bắc: Nhà Bà Lão Edda (1160, 130) + Edda (1160, 160) hướng lối lên Tháp Chuông (900, 130)
+      // - Khu Đông Nam: Xưởng Rèn Bram (1270, 360) + Bram (1230, 390) với lò lửa, đe sắt và lối đi rộng
+      // - Khu Tây Nam: Nhà Thảo Mộc Neris (570, 430) + Neris (570, 460) cạnh Nồi Thảo Dược (630, 445) và Vườn Dược
       // =========================================================================
 
-      // 1. Nhà của Edda (Tây-Bắc Quảng Trường: tâm x=704, chân tường kết thúc ở y=110)
-      this.createBuilding(704, 110, 160, 144, 0x5a3d28, 0x8a6338, 'Nhà Edda – Người Giữ Chuông');
-      this.createChimneySmoke(658, -20);
-      this.createVillagePropCluster(620, 104, 'firewood');
-      this.createVillagePropCluster(780, 106, 'barrels');
-      this.createVillageLanternPost(630, 134);
+      // 1. Chốt Canh Cổng Tây của Garth (chân trạm gác y=175; Garth đứng tại 490, 210)
+      this.createWestWatchpost(510, 175);
+      this.createStoneSign(560, 194, 'LÀNG BELLHOLLOW');
+      this.createVillageLanternPost(482, 195);
 
-      // 2. Nhà Thảo Mộc của Neris (Đông-Bắc Quảng Trường: tâm x=970, chân tường kết thúc ở y=108)
-      // NPC Neris đứng tại (990, 145) trên sân đá hiên nhà, cách chân tường 37px hoàn toàn thông thoáng!
-      this.createBuilding(970, 108, 152, 136, 0x4a4335, 0x6e7845, 'Nhà Neris – Thảo Mộc');
-      this.createChimneySmoke(1016, -20);
-      this.createApothecaryTables(884, 110, 1052, 110);
-      this.createVillageLanternPost(896, 146);
+      // 2. Ngã Ba Bảng Tin Dị Thường (Finn đứng tại 660, 265, cách Garth > 175px và Hiệp Sĩ > 170px)
+      this.createAnomalyNoticeBoard(650, 240);
 
-      // 3. Tháp Chuông Làng Bellhollow (Bắc-Trung Tâm Quảng Trường: tâm x=870, chân tháp ở y=310)
-      // Bà Lão Edda đứng tại (785, 345) (depth 345 > 310), hoàn toàn tách biệt không bị đè hình hay kẹt tên!
-      this.createBellTower(870, 310, 160, 240);
-      this.createVillageLanternPost(756, 286);
+      // 3. Quảng Trường Lửa Trại Trung Tâm & Sanctuary Camp Hub
+      this.createSanctuaryCampHub(); // Lửa Trại (860, 310), Rương (775, 295), Lều (760, 255), Nồi Thảo Dược (630, 445)
+      this.createVillageWell(730, 375);
+      this.createVillageLanternPost(780, 250);
+      this.createVillageLanternPost(900, 335);
 
-      // V1.4: Cụm Trại Chuẩn Bị Sanctuary Camp Hub Thống Nhất trong Bellhollow
-      this.createSanctuaryCampHub();
+      // 4. Tháp Chuông Cổ Đại (Bắc Quảng Trường: tâm x=900, chân tháp y=130, đỉnh vươn cao qua tán rừng)
+      this.createBellTower(900, 130, 160, 240);
+      this.createVillageLanternPost(840, 145);
 
-      // V1.4 Blueprint: Bảng Tin Dị Thường (The Anomaly Notice Board - Landmark dẫn hướng tại 750, 270)
-      this.createAnomalyNoticeBoard(750, 270);
+      // 5. Nhà Bà Lão Edda (Đông-Bắc: tâm x=1160, chân móng y=130; Edda đứng hiên 1160, 160)
+      this.createBuilding(1160, 130, 160, 144, 0x5a3d28, 0x8a6338, 'Nhà Edda – Người Giữ Chuông');
+      this.createChimneySmoke(1114, 0);
+      this.createVillagePropCluster(1100, 126, 'firewood');
+      this.createVillagePropCluster(1230, 126, 'barrels');
+      this.createVillageLanternPost(1110, 150);
 
-      // 4. Giếng Nước Làng Có Mái Che tại Quảng Trường Trung Tâm (726, 376)
-      this.createVillageWell(726, 376);
+      // 6. Xưởng Rèn & Lò Lửa của Bram (Đông-Nam: tâm x=1270, chân móng y=360; Bram đứng tại 1230, 390)
+      this.createCraftingWorkshopPavilion(1270, 360);
+      this.createCraftingBench(1220, 370);
+      this.createVillageLanternPost(1185, 380);
+      this.createVillagePropCluster(1330, 380, 'firewood');
 
-      // 5. Xưởng Chế Tạo & Lò Rèn Có Mái Che (Đông-Nam Quảng Trường: tâm 1000, 352; tương tác tại 978, 369)
-      this.createCraftingWorkshopPavilion(1000, 352);
-      this.createCraftingBench(960, 360);
-      this.createVillageLanternPost(922, 372);
+      // 7. Nhà Thảo Mộc Neris & Vườn Dược Sanctuary (Tây-Nam: tâm x=570, chân móng y=430; Neris đứng tại 570, 460)
+      this.createBuilding(570, 430, 152, 136, 0x4a4335, 0x6e7845, 'Nhà Neris – Thảo Mộc');
+      this.createChimneySmoke(616, 302);
+      this.createApothecaryTables(500, 435, 645, 435);
+      this.createSanctuaryHerbGarden(655, 480);
+      this.createVillageLanternPost(525, 455);
+      this.createVillagePropCluster(510, 435, 'barrels');
 
-      // 6. Trạm Gác Cổng Tây (Phía Bắc vị trí Garth 520, 265; chân trạm gác kết thúc ở y=180)
-      this.createWestWatchpost(516, 180);
-      this.createStoneSign(580, 194, 'LÀNG BELLHOLLOW');
-      this.createVillageLanternPost(496, 202);
-
-      // 7. Nhà Dân Làng Tây-Nam (x=516, y=428, cân đối bố cục Tây-Nam, cách xa mỏ đá lửa)
-      this.createSouthWestCottage(516, 428);
-      this.createVillagePropCluster(632, 436, 'barrels');
-      this.createVillagePropCluster(632, 418, 'barrels');
-
-      // 8. Khu Vườn Thảo Dược & Nhà Kho Đông-Nam (x=1030, y=420, phía Nam mỏ gỗ 1120,380)
-      this.createSanctuaryHerbGarden(1030, 420);
-
-      // 9. Hệ thống Hàng Rào Gỗ Trung Cổ bao quanh làng và phân khu (chừa lối đi rộng rãi)
+      // 8. Hệ thống Hàng Rào Gỗ Trung Cổ bao quanh làng và phân khu (chừa lối đi rộng rãi)
       this.createVillageFence(bounds);
 
-      // 10. C4-12-18A (Mục 2E): Cổng Rừng Phía Đông (Outer Woods Entrance: "Rừng Ngoại Vi →")
-      // Dẫn thẳng tới điểm chuyển vùng thực tế to_crooked_path (x=1580, y=200..360)
+      // 9. Cổng Rừng Phía Đông (Outer Woods Entrance: "Rừng Ngoại Vi →" dẫn tới to_crooked_path)
       this.createEastForestEntrance(1485, 280);
 
-      // 11. C4-12-18A (Mục 2C): Quần thể cây cổ thụ đa kích thước, bụi rậm, cành khô & thảm thực vật tự nhiên
+      // 10. Quần thể cây cổ thụ đa kích thước, bụi rậm, cành khô & thảm thực vật tự nhiên
       this.createBellhollowVegetation();
 
-      // 12. C4-12-18A (Mục 2F): Sương mù khí quyển đa tầng ven bìa rừng & dày đặc dần về phía Cổng Đông
+      // 11. Sương mù khí quyển đa tầng ven bìa rừng & dày đặc dần về phía Cổng Đông
       this.createBellhollowBoundaryFog();
     } else if (id === 'sanctuary_farm') {
       this.renderSanctuaryFarmDecorations(zone);
@@ -3094,33 +3088,6 @@ export class WorldBuilder {
   }
 
   /**
-   * V15-10: Nhà dân làng phía Tây-Nam (tái sử dụng sprite kiến trúc chuẩn hóa V1.5).
-   */
-  private createSouthWestCottage(x: number, y: number): void {
-    const w = Math.round(160 * 0.88);
-    const h = Math.round(144 * 0.88);
-
-    // Chân móng nhà phụ Tây Nam
-    const cottageFooting = this.scene.add.graphics();
-    cottageFooting.fillStyle(0x060907, 0.48);
-    cottageFooting.fillRoundedRect(x - w / 2 - 4, y - 8, w + 8, 14, 5);
-    cottageFooting.setDepth(DEPTH_GROUND_FOOTING);
-    this.registerCullable(cottageFooting, x, y, Math.max(w, h));
-
-    const house = this.safeAddImage(x, y, SPRITE_HOUSE_ELDER_EDDA_V15, SPRITE_HOUSE_EDDA);
-    house.setOrigin(0.5, 1.0);
-    house.setScale(0.88, 0.88);
-    house.setTint(0xd0c8bc);
-    house.setDepth(y);
-    this.registerCullable(house, x, y - h / 2, Math.max(w, h));
-
-    // Hitbox chân đế nhà dân Tây-Nam
-    const colW = 110;
-    const colH = 28;
-    this.createStaticBoxCollider(x - colW / 2, y - colH, colW, colH, 'Nhà Dân Tây-Nam');
-  }
-
-  /**
    * Bàn bày thuốc & giá thảo dược hai bên hiên Nhà Thảo Mộc của Neris (không chắn lối vào gặp Neris tại 970,130).
    */
   private createApothecaryTables(leftX: number, leftY: number, rightX: number, rightY: number): void {
@@ -3321,13 +3288,13 @@ export class WorldBuilder {
     // V1.5: Gộp thành 1 thanh collider liền mạch duy nhất
     this.createStaticBoxColliderCentered(825, 88, 94, 12, 'Hàng Rào Bắc Làng');
 
-    // 3. Hàng rào gỗ bao quanh phía Bắc & Nam Khu Vườn Thảo Dược Đông-Nam (x: 1030..1130)
-    addFenceSegment(1030, 418);
-    addFenceSegment(1078, 418);
-    addFenceSegment(1030, 482);
-    addFenceSegment(1078, 482);
-    // V1.5: Gộp thành 1 thanh collider liền mạch duy nhất cho cạnh Nam vườn thuốc
-    this.createStaticBoxColliderCentered(1077, 478, 94, 12, 'Hàng Rào Vườn Dược');
+    // 3. V15-13: Hàng rào gỗ bao quanh Khu Vườn Thảo Dược Tây-Nam của Neris (x: 635..710, y: 472..514)
+    addFenceSegment(635, 472);
+    addFenceSegment(683, 472);
+    addFenceSegment(635, 514);
+    addFenceSegment(683, 514);
+    // Gộp thành 1 thanh collider liền mạch duy nhất cho cạnh vườn thuốc
+    this.createStaticBoxColliderCentered(660, 510, 94, 12, 'Hàng Rào Vườn Dược Tây Nam');
 
     // 4. Hàng rào gỗ dọc lối ra Cổng Đông (x: 1050..1240, phía Bắc đường rừng Đông ở y=236)
     addFenceSegment(1060, 236);
@@ -3877,24 +3844,24 @@ export class WorldBuilder {
       { x: 594, y: 144, v: 'oak3', s: 0.86, t: 0xdce8d4 },
       // Giữa sân Nhà Edda và Tháp Chuông
       { x: 782, y: 162, v: 'oak2', s: 0.88, t: 0xd4e2cc },
-      // Phía Đông Nhà Thảo Mộc Neris (phía Bắc đường Đông, cách xa mỏ thảo mộc 1040,180)
-      { x: 1106, y: 148, v: 'oak1', s: 0.98, t: 0xc8d8c2 },
-      { x: 1172, y: 186, v: 'oak3', s: 0.90, t: 0xd2e0ca },
-      { x: 1244, y: 152, v: 'hollow', s: 1.05, t: 0xc4d0be },
+      // Phía Tây-Bắc Nhà Bà Lão Edda (giữa Tháp Chuông và Nhà Edda)
+      { x: 1045, y: 135, v: 'oak1', s: 0.98, t: 0xc8d8c2 },
+      { x: 1240, y: 115, v: 'oak3', s: 0.90, t: 0xd2e0ca },
+      { x: 1264, y: 152, v: 'hollow', s: 1.05, t: 0xc4d0be },
       // Bìa rừng phía Bắc hành lang Cổng Đông (y <= 215, không chạm đường Đông y=250..315)
       { x: 1322, y: 192, v: 'oak2', s: 1.04, t: 0xb8ccb0 },
       { x: 1388, y: 168, v: 'oak1', s: 1.12, t: 0xaec2a6 },
       { x: 1442, y: 204, v: 'dead', s: 0.95, t: 0xbac2b8 },
       { x: 1538, y: 206, v: 'oak3', s: 1.02, t: 0xa4b89e },
 
-      // Khu vực Tây-Nam (quanh Nhà Tây-Nam, cách xa mỏ đá lửa 620,350 và mỏ thảo mộc 740,440)
+      // Khu vực Tây-Nam (cách xa Nhà Neris 570,430 và Vườn Thảo Dược 655,480)
       { x: 498, y: 342, v: 'oak3', s: 0.92, t: 0xcadac2 },
-      { x: 668, y: 472, v: 'oak2', s: 0.94, t: 0xcfdcc8 },
+      { x: 720, y: 460, v: 'oak2', s: 0.94, t: 0xcfdcc8 },
       { x: 842, y: 468, v: 'oak3', s: 0.88, t: 0xd4e0ce },
 
-      // Khu vực Đông-Nam & Nam hành lang Cổng Đông (y >= 355, cách xa mỏ gỗ 1120,380)
+      // Khu vực Đông-Nam & Nam hành lang Cổng Đông (chừa lối đi rộng thoáng trước xưởng rèn Bram)
       { x: 1184, y: 438, v: 'oak1', s: 1.04, t: 0xc2d4bc },
-      { x: 1252, y: 382, v: 'oak3', s: 0.92, t: 0xc8d8c0 },
+      { x: 1350, y: 345, v: 'oak3', s: 0.92, t: 0xc8d8c0 },
       { x: 1326, y: 424, v: 'oak2', s: 1.08, t: 0xb6caa8 },
       { x: 1392, y: 368, v: 'dead', s: 1.00, t: 0xb8c0b8 },
       { x: 1448, y: 406, v: 'hollow', s: 1.08, t: 0xb2c2aa },
@@ -4960,20 +4927,20 @@ export class WorldBuilder {
   }
 
   /**
-   * V1.4 (V14-P3-01): Xây dựng cụm Sanctuary Camp Hub thống nhất trong làng Bellhollow
+   * V1.4 (V14-P3-01) & V15-13: Xây dựng cụm Sanctuary Camp Hub thống nhất trong làng Bellhollow
    */
   private createSanctuaryCampHub(): void {
-    // 1. Lửa Trại Trung Tâm 3 Cấp tại Quảng Trường (780, 260)
-    this.createCentralCampfire(780, 260);
+    // 1. Lửa Trại Trung Tâm 3 Cấp tại Quảng Trường (860, 310)
+    this.createCentralCampfire(860, 310);
 
-    // 2. Rương Chứa Đồ 12 Ô (735, 255)
-    this.createChestProp(735, 255);
+    // 2. Rương Chứa Đồ 12 Ô (775, 295)
+    this.createChestProp(775, 295);
 
-    // 3. Lều Trú Ẩn Sanctuary (715, 220)
-    this.createShelterTent(715, 220);
+    // 3. Lều Trú Ẩn Sanctuary (760, 255)
+    this.createShelterTent(760, 255);
 
-    // 4. Nồi Thảo Dược Neris trên sân hiên nhà thuốc (935, 140)
-    this.createHerbalCauldron(935, 140);
+    // 4. Nồi Thảo Dược Neris trên sân hiên nhà thuốc Tây Nam (630, 445)
+    this.createHerbalCauldron(630, 445);
   }
 
   /**

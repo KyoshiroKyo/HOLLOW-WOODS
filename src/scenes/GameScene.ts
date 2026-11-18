@@ -1195,54 +1195,55 @@ export class GameScene extends Phaser.Scene {
     }
     this.npcs = [];
 
-    // 1. Garth — Người Canh Cổng: đứng tại cổng Tây làng Bellhollow (x: 520, y: 265), đi tuần ngắn qua lại
+    // 1. Garth — Người Canh Cổng: đứng tại Chốt Canh Cổng Tây (x: 490, y: 210) cạnh cột đèn cổng làng
     const garth = new NPCEntity(this, {
       id: 'npc_garth',
       name: 'Garth',
       title: 'Người Canh Cổng',
-      x: 520,
-      y: 265,
+      x: 490,
+      y: 210,
       dialogueKey: 'garth_warning',
       robeColor: 0x3e4a3d,
       hoodColor: 0x5a3e28,
-      patrolMinX: 505,
-      patrolMaxX: 535,
+      patrolMinX: 482,
+      patrolMaxX: 498,
       patrolSpeed: 15
     });
 
-    // 2. Bà Lão Edda — Người Giữ Chuông: đứng tại quảng trường thoáng trước Tháp Chuông (x: 785, y: 345)
-    // Cách Giếng Nước (726, 376) > 65px và Lửa Trại (780, 260) > 80px, không bị che khuất hay đè hitbox
+    // 2. Bà Lão Edda — Người Giữ Chuông: đứng trước hiên nhà Đông-Bắc (x: 1160, y: 160) hướng ra lối Tháp Chuông
+    // Cách Tháp Chuông > 260px và thợ rèn Bram > 240px, sân hiên rộng thoáng không bị che khuất
     const edda = new NPCEntity(this, {
       id: 'npc_edda',
       name: 'Bà Lão Edda',
       title: 'Bà lão giữ chuông',
-      x: 785,
-      y: 345,
+      x: 1160,
+      y: 160,
       dialogueKey: 'edda_intro',
       robeColor: 0x4a4f56,
       hoodColor: 0x8a7355
     });
 
-    // 3. Neris — Thầy Thuốc Thảo Mộc: đứng bên hiên nhà thuốc cạnh bàn phơi thảo mộc (x: 990, y: 145)
-    // Cách Nồi Thảo Dược (935, 140) 55px về bên phải, phân tách rạch ròi 2 vùng tương tác
+    // 3. Neris — Thầy Thuốc Thảo Mộc: đứng bên hiên Nhà Thảo Mộc Tây-Nam (x: 570, y: 460) cạnh Nồi Thảo Dược và Vườn Dược
+    // Cách xa Garth > 260px, Finn > 214px và Hiệp Sĩ > 295px, hoàn toàn thông thoáng
     const neris = new NPCEntity(this, {
       id: 'npc_neris',
       name: 'Neris',
       title: 'Người chữa thảo mộc',
-      x: 990,
-      y: 145,
+      x: 570,
+      y: 460,
       dialogueKey: 'neris_intro',
       robeColor: 0x27493a,
       hoodColor: 0x3d7055
     });
 
-    // 4. Bram — Thợ Rèn Làng (C4-13-21 & C4-132-06): đứng cạnh khu vực Lò Rèn & Bàn Chế Tạo (x: 1045, y: 365)
+    // 4. Bram — Thợ Rèn Làng: đứng trước hiên Xưởng Rèn & Lò Lửa Đông-Nam (x: 1230, y: 390)
+    // Có lối đi rộng rãi phía trước, cách xa Edda > 240px và Hiệp Sĩ Canh Lửa > 410px
     const bram = new NPCEntity(this, {
       id: 'npc_bram',
       name: 'Bram',
       title: 'Thợ rèn làng',
-      x: 1045,
-      y: 365,
+      x: 1230,
+      y: 390,
       dialogueKey: 'bram_chat'
     });
     const bramBody = bram.body as Phaser.Physics.Arcade.Body;
@@ -1251,27 +1252,28 @@ export class GameScene extends Phaser.Scene {
       bramBody.setOffset(-10, -6);
     }
 
-    // 5. Finn — Cậu Bé Đưa Tin: đi lại nhẹ trên lối đi vào quảng trường (x: 685, y: 295)
-    // Cách xa Rương Chứa Đồ (735, 255) > 60px và Lều Trú Ẩn (715, 220) > 75px, chấm dứt hoàn toàn hiện tượng đứng đè lên rương
+    // 5. Finn — Cậu Bé Đưa Tin: đứng tại ngã ba Bảng Tin Dị Thường đầu quảng trường (x: 660, y: 265)
+    // Cách xa Garth > 175px và Hiệp Sĩ Canh Lửa > 170px, đảm bảo khoảng cách >= 160px tuyệt đối không đè nhau
     const finn = new NPCEntity(this, {
       id: 'npc_finn',
       name: 'Finn',
       title: 'Cậu bé đưa tin',
-      x: 685,
-      y: 295,
+      x: 660,
+      y: 265,
       dialogueKey: 'finn_chat',
-      patrolMinX: 670,
-      patrolMaxX: 705,
-      patrolSpeed: 20
+      patrolMinX: 652,
+      patrolMaxX: 665,
+      patrolSpeed: 18
     });
 
-    // 6. Hiệp Sĩ Canh Lửa — Người Giữ Lửa Tàn (V14-P8-14B / V14-P8-14C): quỳ canh gác bên Lửa Trại Làng (x: 818, y: 270)
+    // 6. Hiệp Sĩ Canh Lửa — Người Giữ Lửa Tàn: quỳ chống kiếm trên nền đá phẳng bên trái bếp lửa (x: 825, y: 310)
+    // Bên cạnh Lửa Trại (860, 310) trên sân đá Quảng Trường Trung Tâm, không đè lên mái nhà hay miếu thờ
     const campfireKnight = new NPCEntity(this, {
       id: 'npc_campfire_knight',
       name: 'Hiệp Sĩ Canh Lửa',
       title: 'Người giữ lửa tàn',
-      x: 818,
-      y: 270,
+      x: 825,
+      y: 310,
       dialogueKey: 'campfire_knight_intro'
     });
     CampSanctuarySystem.getInstance().registerKnightEntity(campfireKnight);

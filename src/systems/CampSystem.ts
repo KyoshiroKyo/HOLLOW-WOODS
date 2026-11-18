@@ -33,9 +33,9 @@ export class CampSystem {
   private static instance: CampSystem | null = null;
   private playerState: PlayerState;
 
-  // Lửa trại trung tâm Bellhollow
-  public readonly campfireX: number = 780;
-  public readonly campfireY: number = 260;
+  // Lửa trại trung tâm Bellhollow (V15-13: Quy hoạch lại tâm Quảng Trường Lửa Trại 860, 310)
+  public readonly campfireX: number = 860;
+  public readonly campfireY: number = 310;
 
   // Giới hạn rương
   public readonly maxChestSlots: number = 12;

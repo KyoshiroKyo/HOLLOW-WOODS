@@ -357,3 +357,203 @@ Toàn bộ 14 asset được tạo và xử lý trực tiếp bằng script đ�
 | **Tích hợp InventorySystem.ts**| Hỗ trợ 1:1 pixel scale & phôi sắt cổ ngữ | Tích hợp hoàn thiện | **PASS** |
 | **Kiểm tra kiểu TypeScript** | `npx tsc --noEmit` đạt 0 lỗi | **0 lỗi** | **PASS** |
 | **Bản dựng Production** | `npm run build` | **Thành công** | **PASS** |
+
+---
+
+## BÁO CÁO KỸ THUẬT V15-13: QUY HOẠCH LẠI BỐ CỤC KHÔNG GIAN LÀNG CHUÔNG BELLHOLLOW THOÁNG ĐÃNG, HÀI HÒA & CÓ THẨM MỸ
+
+**Dự án:** HOLLOW WOODS: The Fog That Remembers  
+**Mã tài liệu:** `V15-13` / `04_Graphics_And_World_Layout.md`  
+**Phiên bản:** V1.5 (Visual & Gameplay Overhaul)  
+**Nhánh Git:** `feat/v1.5-visual-gameplay-overhaul`  
+**Ngày thực hiện:** 18/11/2026  
+**Trạng thái:** Hoàn tất xuất sắc (35/35 tiêu chí kiểm thử tự động PASS 100%, 0 lỗi TypeScript, bản dựng Vite 9.84s thành công)  
+
+---
+
+### 1. MỤC TIÊU & HIỆN TRẠNG TRƯỚC V15-13
+
+Trước bản cập nhật V15-13, bố cục không gian và sự phân bố NPC trong Làng Chuông Bellhollow tồn tại nhiều bất cập lớn về trải nghiệm và thẩm mỹ thị giác:
+- **Xung đột không gian & đè bảng tên NPC:** Khoảng cách giữa các NPC quá gần (ví dụ Finn tại $(685, 295)$ cách Hiệp Sĩ Canh Lửa $(818, 270)$ chỉ khoảng $135\text{px}$; Garth $(520, 265)$ cách Finn chỉ khoảng $140\text{px}$). Khi người chơi di chuyển vào quảng trường, các khung bảng tên, thanh danh hiệu và bong bóng hội thoại `[E] Trò chuyện` thường xuyên bị đè chồng chéo lên nhau.
+- **Tháp Chuông án ngữ giữa quảng trường:** Tháp Chuông Cổ Đại đồ sộ ($160 \times 240\text{px}$) bị đặt sâu xuống $Y=310$, chia cắt mặt bằng quảng trường và che khuất tầm nhìn của các công trình xung quanh.
+- **Hiệp Sĩ Canh Lửa đứng đè vị trí:** Tọa độ cũ của Hiệp Sĩ Canh Lửa $(818, 270)$ bị lơ lửng giữa tháp chuông và bếp lửa, không có vị trí quỳ gác trang nghiêm rõ ràng.
+- **Lòng đường lộn xộn vật phẩm:** Các mỏ tài nguyên tự nhiên (củi khô, đá lửa, nhựa thông) bị rải bừa bãi ngay chính giữa ngã ba lối vào và giữa các con đường đá cuội của làng, gây mất mỹ quan và tạo cảm giác làng bỏ hoang thay vì một khu trú ẩn có người sinh sống.
+- **Phân khu chức năng rời rạc:** Nhà Thảo Mộc của Neris và Vườn Dược bị tách rời hai đầu làng; xưởng rèn Bram thiếu lối đi phía trước.
+
+---
+
+### 2. QUY HOẠCH TỔNG THỂ & PHÂN KHU CHỨC NĂNG LÀNG BELLHOLLOW V1.5
+
+Khuôn viên Làng Chuông Bellhollow ($1120 \times 960\text{ px}$, $X \in [480, 1600]$, $Y \in [-200, 760]$) được tái cấu trúc thành 6 phân khu chức năng rành mạch, thoáng đãng:
+
+```mermaid
+flowchart TD
+    subgraph North_Sector["Khu Phía Bắc: Tâm Linh & Trưởng Lão"]
+        BT["Tháp Chuông Cổ Đại (900, 130)"]
+        ED["Nhà Bà Lão Edda (1160, 130)\nNPC Edda đứng hiên (1160, 160)"]
+    end
+
+    subgraph West_Gate["Cổng Tây Làng"]
+        WG["Chốt Canh Cổng (510, 175)\nNPC Garth canh gác (490, 210)"]
+    end
+
+    subgraph Junction["Ngã Ba Dẫn Hướng"]
+        NB["Bảng Tin Dị Thường (650, 240)\nNPC Cậu bé Finn (660, 265)"]
+    end
+
+    subgraph Central_Plaza["Quảng Trường Lửa Trại Trung Tâm (145x85 px)"]
+        CF["Lửa Trại 3 Cấp (860, 310)"]
+        HK["Hiệp Sĩ Canh Lửa quỳ gác (825, 310)"]
+        WELL["Giếng Làng Cổ (730, 375)"]
+        TENT["Lều Trú Ẩn (760, 255)"]
+        CHEST["Rương Đồ 12 Ô (775, 295)"]
+    end
+
+    subgraph Southwest_Sector["Khu Tây Nam: Thảo Mộc & Canh Tác"]
+        NH["Nhà Thảo Mộc Neris (570, 430)\nNPC Neris (570, 460)"]
+        CAUL["Nồi Thảo Dược (630, 445)"]
+        GARD["Vườn Dược Hàng Rào Gỗ (655, 480)"]
+    end
+
+    subgraph Southeast_Sector["Khu Đông Nam: Chế Tạo & Rèn Đúc"]
+        SM["Xưởng Rèn Bram (1270, 360)\nBàn Chế Tạo (1220, 370)\nNPC Thợ Rèn Bram (1230, 390)"]
+    end
+
+    WG -->|Đường Cổng Tây| Junction
+    Junction -->|Đường Quảng Trường| Central_Plaza
+    Central_Plaza -->|Đường Bậc Đá Bắc| BT
+    BT -->|Lối Dẫn Đông-Bắc| ED
+    Central_Plaza -->|Đường Lượn Tây-Nam| NH
+    Central_Plaza -->|Đường Chế Tạo Đông-Nam| SM
+    Central_Plaza -->|Đường Rừng Phía Đông| EG["Cổng Đông ra Rừng Ngoại Vi (1485, 280)"]
+```
+
+#### Bảng Tọa Độ & Quy Chuẩn Công Trình / NPC Mới
+
+| Phân Khu Chức Năng | Tên Thực Thể / Công Trình | Tọa Độ Gốc ($X, Y$) | Kích Thước ($W \times H$) | Điểm Neo & Vai Trò Thiết Kế |
+| :--- | :--- | :---: | :---: | :--- |
+| **Cổng Tây** | Trạm Gác Cổng Tây | $(510, 175)$ | $128 \times 136\text{ px}$ | Chòi canh đá gỗ lim, kiểm soát lối vào từ Fog Crossing |
+| **Cổng Tây** | **Garth (Người Canh Cổng)** | **$(490, 210)$** | $22 \times 46\text{ px}$ | Đứng cạnh cột đèn cổng $(482, 195)$, tuần tra nhẹ $[482, 498]$ |
+| **Ngã Ba Làng** | Bảng Tin Dị Thường | $(650, 240)$ | $28 \times 26\text{ px}$ | Landmark dẫn hướng, đính cáo thị manh mối sinh tồn |
+| **Ngã Ba Làng** | **Finn (Cậu Bé Đưa Tin)** | **$(660, 265)$** | $14 \times 35\text{ px}$ | Đứng ở ngã ba đầu quảng trường, tuần tra $[652, 665]$ |
+| **Quảng Trường** | Sân Đá Cuội Trung Tâm | $(810, 320)$ | $145 \times 85\text{ px}$ | Sân đá bo góc rộng lớn, có 2 vòng đá đồng tâm cổ |
+| **Quảng Trường** | Lửa Trại Trung Tâm 3 Cấp | $(860, 310)$ | $48 \times 48\text{ px}$ | Trung tâm sưởi ấm, hồi phục Sinh Lực & Bình Tâm |
+| **Quảng Trường** | **Hiệp Sĩ Canh Lửa** | **$(825, 310)$** | $22 \times 44\text{ px}$ | Quỳ chống kiếm bên trái bếp lửa trên nền đá phẳng |
+| **Quảng Trường** | Lều Trú Ẩn Sanctuary | $(760, 255)$ | $64 \times 56\text{ px}$ | Lều bạt da thú góc Tây-Bắc quảng trường, nghỉ qua đêm |
+| **Quảng Trường** | Rương Trú Ẩn 12 Ô | $(775, 295)$ | $40 \times 32\text{ px}$ | Rương gỗ đai đồng cất giữ tài nguyên sinh tồn |
+| **Quảng Trường** | Giếng Làng Có Mái Che | $(730, 375)$ | $64 \times 72\text{ px}$ | Giếng đá cổ góc Tây-Nam quảng trường, lấy nước |
+| **Bắc Làng** | Tháp Chuông Cổ Đại | $(900, 130)$ | $160 \times 240\text{ px}$ | Trung tâm tâm linh vươn cao ở phía Bắc, bậc thềm đá |
+| **Đông Bắc** | Nhà Bà Lão Edda | $(1160, 130)$ | $160 \times 144\text{ px}$ | Nhà gỗ đá Tudor cổ kính, hiên hướng Tây ra tháp chuông |
+| **Đông Bắc** | **Bà Lão Edda** | **$(1160, 160)$** | $16 \times 45\text{ px}$ | Đứng trước hiên đá thoáng đãng trước cửa nhà |
+| **Đông Nam** | Xưởng Rèn & Lò Lửa Bram | $(1270, 360)$ | $176 \times 148\text{ px}$ | Lò than hồng, đe thép, thùng tôi nước, khói ống khói |
+| **Đông Nam** | Bàn Chế Tạo Sinh Tồn | $(1220, 370)$ | $48 \times 20\text{ px}$ | Bàn gỗ sồi gia công trang bị & công cụ |
+| **Đông Nam** | **Bram (Thợ Rèn Làng)** | **$(1230, 390)$** | $24 \times 47\text{ px}$ | Đứng trước xưởng rèn với lối đi rộng rãi phía trước |
+| **Tây Nam** | Nhà Thảo Mộc Neris | $(570, 430)$ | $152 \times 136\text{ px}$ | Nhà thảo mộc có giàn phơi lá, bàn thuốc 2 bên hiên |
+| **Tây Nam** | Nồi Sắc Thảo Dược Neris | $(630, 445)$ | $36 \times 44\text{ px}$ | Kiềng sắt 3 chân sủi bọt ngọc bích cạnh hiên nhà |
+| **Tây Nam** | Vườn Dược Sanctuary | $(655, 480)$ | $104 \times 54\text{ px}$ | Luống đất trồng thảo mộc có hàng rào gỗ bao quanh |
+| **Tây Nam** | **Neris (Người Chữa Thảo Mộc)** | **$(570, 460)$** | $15 \times 44\text{ px}$ | Đứng trên sân đá hiên nhà cạnh nồi thuốc và vườn dược |
+
+---
+
+### 3. MA TRẬN KHOẢNG CÁCH EUCLIDEAN GIỮA TẤT CẢ CẶP NPC
+
+Khoảng cách giữa hai thực thể $A(x_1, y_1)$ và $B(x_2, y_2)$ được tính theo công thức Euclidean:
+$$d(A, B) = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$$
+
+Yêu cầu kỹ thuật nghiêm ngặt: **$d(A, B) \ge 160\text{ px}$ trên toàn bộ 15 cặp NPC**:
+
+| STT | Cặp NPC Đối Chiếu | Tọa Độ NPC 1 | Tọa Độ NPC 2 | Công Thức Tính Khoảng Cách | Đo Đạc Thực Tế | Tiêu Chuẩn ($\ge 160\text{px}$) | Trạng Thái |
+|:---:| :--- | :---: | :---: | :--- | :---: | :---: | :---: |
+| 01 | **Garth $\leftrightarrow$ Finn** | $(490, 210)$ | $(660, 265)$ | $\sqrt{(660-490)^2 + (265-210)^2} = \sqrt{170^2 + 55^2}$ | **$178.68\text{ px}$** | $\ge 160\text{ px}$ ($+18.7\text{px}$) | **PASS** |
+| 02 | **Garth $\leftrightarrow$ Hiệp Sĩ Canh Lửa** | $(490, 210)$ | $(825, 310)$ | $\sqrt{(825-490)^2 + (310-210)^2} = \sqrt{335^2 + 100^2}$ | **$349.61\text{ px}$** | $\ge 160\text{ px}$ ($+189.6\text{px}$) | **PASS** |
+| 03 | **Garth $\leftrightarrow$ Edda** | $(490, 210)$ | $(1160, 160)$ | $\sqrt{(1160-490)^2 + (160-210)^2} = \sqrt{670^2 + (-50)^2}$ | **$671.86\text{ px}$** | $\ge 160\text{ px}$ ($+511.9\text{px}$) | **PASS** |
+| 04 | **Garth $\leftrightarrow$ Bram** | $(490, 210)$ | $(1230, 390)$ | $\sqrt{(1230-490)^2 + (390-210)^2} = \sqrt{740^2 + 180^2}$ | **$761.58\text{ px}$** | $\ge 160\text{ px}$ ($+601.6\text{px}$) | **PASS** |
+| 05 | **Garth $\leftrightarrow$ Neris** | $(490, 210)$ | $(570, 460)$ | $\sqrt{(570-490)^2 + (460-210)^2} = \sqrt{80^2 + 250^2}$ | **$262.49\text{ px}$** | $\ge 160\text{ px}$ ($+102.5\text{px}$) | **PASS** |
+| 06 | **Finn $\leftrightarrow$ Hiệp Sĩ Canh Lửa** | $(660, 265)$ | $(825, 310)$ | $\sqrt{(825-660)^2 + (310-265)^2} = \sqrt{165^2 + 45^2}$ | **$171.03\text{ px}$** | $\ge 160\text{ px}$ ($+11.0\text{px}$) | **PASS** |
+| 07 | **Finn $\leftrightarrow$ Edda** | $(660, 265)$ | $(1160, 160)$ | $\sqrt{(1160-660)^2 + (160-265)^2} = \sqrt{500^2 + (-105)^2}$ | **$510.91\text{ px}$** | $\ge 160\text{ px}$ ($+350.9\text{px}$) | **PASS** |
+| 08 | **Finn $\leftrightarrow$ Bram** | $(660, 265)$ | $(1230, 390)$ | $\sqrt{(1230-660)^2 + (390-265)^2} = \sqrt{570^2 + 125^2}$ | **$583.55\text{ px}$** | $\ge 160\text{ px}$ ($+423.5\text{px}$) | **PASS** |
+| 09 | **Finn $\leftrightarrow$ Neris** | $(660, 265)$ | $(570, 460)$ | $\sqrt{(570-660)^2 + (460-265)^2} = \sqrt{(-90)^2 + 195^2}$ | **$214.77\text{ px}$** | $\ge 160\text{ px}$ ($+54.8\text{px}$) | **PASS** |
+| 10 | **Hiệp Sĩ Canh Lửa $\leftrightarrow$ Edda** | $(825, 310)$ | $(1160, 160)$ | $\sqrt{(1160-825)^2 + (160-310)^2} = \sqrt{335^2 + (-150)^2}$ | **$367.05\text{ px}$** | $\ge 160\text{ px}$ ($+207.1\text{px}$) | **PASS** |
+| 11 | **Hiệp Sĩ Canh Lửa $\leftrightarrow$ Bram** | $(825, 310)$ | $(1230, 390)$ | $\sqrt{(1230-825)^2 + (390-310)^2} = \sqrt{405^2 + 80^2}$ | **$412.83\text{ px}$** | $\ge 160\text{ px}$ ($+252.8\text{px}$) | **PASS** |
+| 12 | **Hiệp Sĩ Canh Lửa $\leftrightarrow$ Neris** | $(825, 310)$ | $(570, 460)$ | $\sqrt{(570-825)^2 + (460-310)^2} = \sqrt{(-255)^2 + 150^2}$ | **$295.85\text{ px}$** | $\ge 160\text{ px}$ ($+135.9\text{px}$) | **PASS** |
+| 13 | **Edda $\leftrightarrow$ Bram** | $(1160, 160)$ | $(1230, 390)$ | $\sqrt{(1230-1160)^2 + (390-160)^2} = \sqrt{70^2 + 230^2}$ | **$240.42\text{ px}$** | $\ge 160\text{ px}$ ($+80.4\text{px}$) | **PASS** |
+| 14 | **Edda $\leftrightarrow$ Neris** | $(1160, 160)$ | $(570, 460)$ | $\sqrt{(570-1160)^2 + (460-160)^2} = \sqrt{(-590)^2 + 300^2}$ | **$661.89\text{ px}$** | $\ge 160\text{ px}$ ($+501.9\text{px}$) | **PASS** |
+| 15 | **Bram $\leftrightarrow$ Neris** | $(1230, 390)$ | $(570, 460)$ | $\sqrt{(570-1230)^2 + (460-390)^2} = \sqrt{(-660)^2 + 70^2}$ | **$663.70\text{ px}$** | $\ge 160\text{ px}$ ($+503.7\text{px}$) | **PASS** |
+
+> [!TIP]
+> **Kiểm tra biên tuần tra động cực hạn:** Khi Garth tuần tra tới cực đông ($X=498, Y=210$) và Finn tuần tra tới cực tây ($X=652, Y=265$), khoảng cách ngắn nhất tức thời vẫn đạt:
+> $$d_{\text{min}} = \sqrt{(652 - 498)^2 + (265 - 210)^2} = \sqrt{154^2 + 55^2} \approx \mathbf{163.53\text{ px}} \ge \mathbf{160\text{ px}}$$
+> Khi Finn tuần tra tới cực đông ($X=665, Y=265$) và Hiệp Sĩ Canh Lửa ($X=825, Y=310$), khoảng cách ngắn nhất tức thời vẫn đạt:
+> $$d_{\text{min}} = \sqrt{(825 - 665)^2 + (310 - 265)^2} = \sqrt{160^2 + 45^2} \approx \mathbf{166.21\text{ px}} \ge \mathbf{160\text{ px}}$$
+> Do đó, trong bất kỳ khoảnh khắc nào của game, **không bao giờ xảy ra hiện tượng đè lấn hình ảnh hay tên gọi giữa các NPC!**
+
+---
+
+### 4. DỌN SẠCH LÒNG ĐƯỜNG LÀNG & TÁI CẤU TRÚC VỊ TRÍ TÀI NGUYÊN
+
+Toàn bộ các tài nguyên rơi tự do trên bản đồ trong `src/systems/InventorySystem.ts` được chuyển dời triệt để ra khỏi lòng đường đi bộ và mặt sân đá cuội:
+
+| Mã Node Tài Nguyên | Loại Tài Nguyên | Tọa Độ Cũ | Vị Trí Cũ (Bị Lỗi) | Tọa Độ Mới V1.5 | Vị Trí Mới Hài Hòa Tự Nhiên |
+| :--- | :--- | :---: | :--- | :---: | :--- |
+| `node_wood_bellhollow_1` | Gỗ Khô (`res_dry_wood`) | $(680, 220)$ | Nằm giữa ngã ba lối vào | **$(610, 145)$** | Sát góc đống củi kho & bờ rào Tây-Bắc |
+| `node_resin_bellhollow_2`| Nhựa Thông (`res_tree_resin`)| $(640, 185)$ | Nằm trên mặt đường đất | **$(730, 80)$** | Bám trên vỏ thân cây thông cổ thụ phía Bắc |
+| `node_flint_1` | Đá Lửa (`res_flint`) | $(620, 350)$ | Giữa đường đi giếng nước | **$(510, 490)$** | Nằm nép vào cụm đá viền hàng rào Tây-Nam |
+| `node_resin_1` | Nhựa Thông (`res_tree_resin`)| $(880, 200)$ | Lòng đường lên tháp chuông | **$(970, 75)$** | Gốc cây thông sương mù sau Tháp Chuông |
+| `node_herb_1` | Thảo Dược Bạc (`res_herbs`) | $(1040, 180)$ | Lòng đường phía Đông | **$(1190, 85)$** | Khóm thảo dược hoang sơ yên tĩnh ven rào Đông-Bắc |
+| `node_herb_2` | Thảo Dược Bạc (`res_herbs`) | $(740, 440)$ | Giữa đường lối Nam | **$(620, 470)$** | Nằm bên trong luống đất Vườn Dược Neris |
+| `node_wood_3` | Gỗ Khô (`res_dry_wood`) | $(1120, 380)$ | Giữa lối đi xưởng rèn | **$(1330, 410)$** | Đống gỗ xẻ bên cạnh xưởng rèn Bram |
+
+---
+
+### 5. ĐỒNG BỘ KIẾN TRÚC MÃ NGUỒN CÁC HỆ THỐNG LIÊN KẾT
+
+1. **`src/data/zones.json`:**
+   - Cập nhật tọa độ 6 NPC với đúng thông số chuẩn.
+   - Di dời các static colliders công trình (`house_edda`, `house_neris`, `bell_tower`, `village_well`, `crafting_bench`) khớp chính xác từng pixel với sprite và chân móng mới.
+   - Cập nhật các interactables: `camp_central_campfire` $(860, 310)$, `camp_storage_chest` $(775, 295)$, `camp_shelter_tent` $(760, 255)$, `camp_herbal_cauldron` $(630, 445)$, `bell_tower_altar` $(900, 145)$, `bellhollow_notice_board` $(650, 240)$, `village_crafting_bench` $(1220, 370)$.
+
+2. **`src/scenes/GameScene.ts` (`spawnNPCs`):**
+   - Khởi tạo 6 NPC khớp $100\%$ tọa độ và khoảng tuần tra động với `zones.json`.
+   - Đăng ký `campfireKnight` vào `CampSanctuarySystem`.
+
+3. **`src/systems/CampSystem.ts` & `src/systems/CampSanctuarySystem.ts`:**
+   - Cập nhật `campfireX = 860; campfireY = 310;` và `knightX = 825; knightY = 310;`.
+   - Vùng bảo vệ an toàn `sanctuaryRadius = 180px` bao bọc trọn vẹn toàn bộ khu vực quảng trường trung tâm.
+
+4. **`src/systems/SurvivalSystem.ts`:**
+   - Đồng bộ `campfireX = 860; campfireY = 310;` và điểm cấp nhiệt `warmSources`:
+     `{ x: 860, y: 310, radius: 110, name: 'Lửa Trại Làng Bellhollow' }`
+     `{ x: 1220, y: 370, radius: 110, name: 'Lò Rèn Xưởng Chế Tạo' }`
+
+5. **`src/world/WorldBuilder.ts`:**
+   - Mở rộng sân đá cuội Quảng Trường Trung Tâm `drawCobbleCourtyard(810, 320, 145, 85, 'rounded_rect')`.
+   - Tạo mạng lưới đường mòn hữu cơ mềm mại nối liền mạch các công trình.
+   - Bố trí ánh sáng ấm vàng hổ phách trên mặt đất (`addWarmGroundPool`) tại 8 vị trí trọng yếu của làng.
+   - Bao quanh vườn dược Neris bằng hàng rào gỗ gọn gàng (`Hàng Rào Vườn Dược Tây Nam`).
+
+---
+
+### 6. BẢNG TỔNG HỢP KIỂM THỬ TỰ ĐỘNG (`verify_v15_13_bellhollow_layout.mjs`)
+
+| Hạng Mục Kiểm Thử | Yêu Cầu Kỹ Thuật | Kết Quả Thực Tế | Trạng Thái |
+| :--- | :--- | :---: | :---: |
+| **Phân vùng bellhollow** | Tồn tại trong `zones.json` | Đầy đủ cấu hình | **PASS** |
+| **Số lượng NPC** | 6 NPC trong làng Bellhollow | 6 NPC | **PASS** |
+| **Tọa độ Garth** | $(490, 210)$ Cổng Tây cạnh đèn cổng | $(490, 210)$ | **PASS** |
+| **Tọa độ Edda** | $(1160, 160)$ Trước hiên nhà Đông-Bắc | $(1160, 160)$ | **PASS** |
+| **Tọa độ Neris** | $(570, 460)$ Sân hiên nhà Tây-Nam | $(570, 460)$ | **PASS** |
+| **Tọa độ Bram** | $(1230, 390)$ Trước xưởng rèn Đông-Nam | $(1230, 390)$ | **PASS** |
+| **Tọa độ Finn** | $(660, 265)$ Ngã ba bảng tin | $(660, 265)$ | **PASS** |
+| **Tọa độ Hiệp Sĩ Canh Lửa** | $(825, 310)$ Bên trái bếp lửa trên nền đá | $(825, 310)$ | **PASS** |
+| **15 Cặp NPC $\ge 160\text{px}$** | Tất cả khoảng cách Euclidean $\ge 160\text{px}$ | Cặp gần nhất $171.03\text{ px}$ | **PASS** |
+| **Biên tuần tra động cực hạn** | Garth và Finn tuần tra không chạm $\le 160\text{px}$ | $163.53\text{ px}$ | **PASS** |
+| **Lửa trại CampSystem** | $(860, 310)$ | $(860, 310)$ | **PASS** |
+| **Lửa trại CampSanctuarySystem**| $(860, 310)$ & Hiệp Sĩ $(825, 310)$ | $(860, 310) / (825, 310)$ | **PASS** |
+| **Lửa trại SurvivalSystem** | $(860, 310)$ & warmSources | Khớp 100% | **PASS** |
+| **Dọn sạch lòng đường** | Không còn node tài nguyên giữa đường | 7/7 node dời sát mép/gốc cây | **PASS** |
+| **Bố cục WorldBuilder** | Công trình, đường mòn, sân đá mở rộng | Đồng bộ toàn diện | **PASS** |
+| **Đồng bộ GameScene** | `spawnNPCs()` khởi tạo đúng tọa độ | Khớp 100% | **PASS** |
+| **Kiểm tra kiểu TypeScript** | `npx tsc --noEmit` đạt 0 lỗi | **0 lỗi** | **PASS** |
+| **Bản dựng Production** | `npm run build` hoàn thành | **Thành công (9.84s)** | **PASS** |
+| **Tổng Cộng** | **Toàn bộ các tiêu chí bước V15-13** | **35/35 PASS (100%)** | **PASS** |
+

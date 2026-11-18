@@ -15,13 +15,13 @@ import { NPCEntity } from '../entities/NPCEntity';
 export class CampSanctuarySystem {
   private static instance: CampSanctuarySystem | null = null;
 
-  // Tọa độ tâm Lửa Trại Sanctuary Làng Bellhollow
-  public readonly campfireX: number = 798;
-  public readonly campfireY: number = 275;
+  // Tọa độ tâm Lửa Trại Sanctuary Làng Bellhollow (V15-13)
+  public readonly campfireX: number = 860;
+  public readonly campfireY: number = 310;
 
-  // Tọa độ vị trí Hiệp Sĩ Canh Lửa quỳ gác bên bếp lửa
-  public readonly knightX: number = 818;
-  public readonly knightY: number = 270;
+  // Tọa độ vị trí Hiệp Sĩ Canh Lửa quỳ gác bên bếp lửa (V15-13: bên trái bếp lửa)
+  public readonly knightX: number = 825;
+  public readonly knightY: number = 310;
 
   // Bán kính vùng bảo vệ an toàn của Sanctuary Camp (~180px)
   public readonly sanctuaryRadius: number = 180;

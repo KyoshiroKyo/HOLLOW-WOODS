@@ -40,7 +40,8 @@
 | 10 | `V15-10` | [04_Graphics_And_World_Layout.md#báo-cáo-kỹ-thuật-v15-10-thiết-kế--đại-tu-bộ-công-trình-kiến-trúc-làng-bellhollow](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/04_Graphics_And_World_Layout.md) — Thiết kế & vẽ mới bộ công trình kiến trúc Làng Bellhollow sắc nét, đúng tỷ lệ Trung cổ u ám | Hoàn tất (Đã nghiệm thu) |
 | 11 | `V15-11` | [04_Graphics_And_World_Layout.md#báo-cáo-kỹ-thuật-v15-11-nâng-cấp-đồ-họa-cây-cối-thảm-thực-vật--kết-cấu-mặt-đất-liền-mạch](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/04_Graphics_And_World_Layout.md) — Nâng cấp đồ họa Cây cối, Thảm thực vật và Kết cấu mặt đất liền mạch | Hoàn tất (Đã nghiệm thu) |
 | 12 | `V15-12` | [04_Graphics_And_World_Layout.md#báo-cáo-kỹ-thuật-v15-12-chuẩn-hóa-đồ-họa-vật-phẩm-trên-mặt-đất-đạo-cụ-khu-trại--nguồn-sáng-môi-trường](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/04_Graphics_And_World_Layout.md) — Chuẩn hóa đồ họa Vật phẩm trên mặt đất, Đạo cụ khu trại và Nguồn sáng môi trường | Hoàn tất (Đã nghiệm thu) |
-| 13 | `V15-13` | *05_UI_Deduplication_And_HUD_Polishing.md* — Dọn dẹp trùng lặp và tối ưu hóa UIScene | Sắp tới |
+| 13 | `V15-13` | [04_Graphics_And_World_Layout.md#báo-cáo-kỹ-thuật-v15-13-quy-hoạch-lại-bố-cục-không-gian-làng-chuông-bellhollow-thoáng-đãng-hài-hòa--có-thẩm-mỹ](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/04_Graphics_And_World_Layout.md) — Quy hoạch lại bố cục không gian Làng Chuông Bellhollow thoáng đãng, hài hòa & có thẩm mỹ | Hoàn tất (Đã nghiệm thu) |
+| 14 | `V15-14` | *05_UI_Deduplication_And_HUD_Polishing.md* — Dọn dẹp trùng lặp và tối ưu hóa UIScene | Sắp tới |
 
 ---
 *Tài liệu được cập nhật tự động trong suốt quá trình phát triển HOLLOW WOODS V1.5.*

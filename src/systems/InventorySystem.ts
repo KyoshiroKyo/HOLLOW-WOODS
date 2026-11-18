@@ -81,14 +81,14 @@ export class InventorySystem {
       { id: 'node_wood_1', itemId: 'res_dry_wood', x: 220, y: 130, count: 1 },
       { id: 'node_wood_2', itemId: 'res_dry_wood', x: 380, y: 250, count: 1 },
 
-      // 2. Làng Bellhollow (Đảm bảo đủ nguồn nguyên liệu Q03 tiếp cận được trước Cổng Đông)
-      { id: 'node_wood_bellhollow_1', itemId: 'res_dry_wood', x: 680, y: 220, count: 1 },
-      { id: 'node_resin_bellhollow_2', itemId: 'res_tree_resin', x: 640, y: 185, count: 1 },
-      { id: 'node_flint_1', itemId: 'res_flint', x: 620, y: 350, count: 1 },
-      { id: 'node_resin_1', itemId: 'res_tree_resin', x: 880, y: 200, count: 1 },
-      { id: 'node_herb_1', itemId: 'res_herbs', x: 1040, y: 180, count: 2 },
-      { id: 'node_herb_2', itemId: 'res_herbs', x: 740, y: 440, count: 1 },
-      { id: 'node_wood_3', itemId: 'res_dry_wood', x: 1120, y: 380, count: 1 },
+      // 2. Làng Bellhollow (V15-13: Dọn sạch lòng đường, bố trí sát gốc cây, góc vườn & kho củi)
+      { id: 'node_wood_bellhollow_1', itemId: 'res_dry_wood', x: 610, y: 145, count: 1 },
+      { id: 'node_resin_bellhollow_2', itemId: 'res_tree_resin', x: 730, y: 80, count: 1 },
+      { id: 'node_flint_1', itemId: 'res_flint', x: 510, y: 490, count: 1 },
+      { id: 'node_resin_1', itemId: 'res_tree_resin', x: 970, y: 75, count: 1 },
+      { id: 'node_herb_1', itemId: 'res_herbs', x: 1190, y: 85, count: 2 },
+      { id: 'node_herb_2', itemId: 'res_herbs', x: 620, y: 470, count: 1 },
+      { id: 'node_wood_3', itemId: 'res_dry_wood', x: 1330, y: 410, count: 1 },
 
       // 2B. C4-12-20: Rừng Ngoại Vi (Outer Woods: x=1120..1600, y=560..1040 - Vùng tài nguyên tự do đầu game)
       { id: 'node_wood_ow_1', itemId: 'res_dry_wood', x: 1190, y: 650, count: 1 },
