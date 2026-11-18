@@ -437,3 +437,164 @@ Bước **V15-23** đã hoàn thành xuất sắc việc đại tu toàn bộ gi
 **Giai đoạn 5 (Nâng cấp UI/UX Màn hình chờ và Menu Chính) đã hoàn thành toàn diện 100%! Dự án đã sẵn sàng bước sang Giai đoạn 6.**
 
 
+---
+---
+
+# BÁO CÁO KỸ THUẬT V15-24: LÀM SẠCH THANH CÔNG CỤ ĐÁY MÀN HÌNH VÀ THIẾT KẾ LẠI TOÀN BỘ HUD CHÍNH TRONG UISCENE.TS
+
+**Dự án:** HOLLOW WOODS: The Fog That Remembers  
+**Mã tài liệu:** `V15-24` / `06_Menu_And_HUD_UIUX.md`  
+**Giai đoạn:** Giai đoạn 6 — Nâng cấp toàn diện UI/UX trong game HOLLOW WOODS  
+**Phiên bản:** V1.5 (Visual & Gameplay Overhaul)  
+**Nhánh Git:** `feat/v1.5-visual-gameplay-overhaul`  
+**Ngày thực hiện:** 19/11/2026  
+**Trạng thái:** Hoàn tất xuất sắc (23/23 assertions PASS 100%, 0 lỗi TypeScript, bản dựng Vite Production hoàn tất trong 9.27s)
+
+---
+
+### 1. HIỆN TRẠNG & NGUYÊN NHÂN LỖI TRƯỚC BƯỚC V15-24
+
+Trong các giai đoạn phát triển trước (từ V1.3 đến V1.4), nhiều tính năng mới được bổ sung phân tán vào `src/scenes/UIScene.ts` dẫn tới một số tồn đọng giao diện nghiêm trọng:
+1. **Lặp nút và rối loạn thanh đáy màn hình:**
+   - Trong `src/scenes/UIScene.ts`, phương thức `buildQuickSlots()` tạo ra 8 ô phím tắt đặt ở trung tâm $(640, 684)$ gồm cả `[I] Chế Tạo` và `[J] Sổ Tay`.
+   - Ngay sau đó, phương thức `buildQuickActionButtons()` lại tạo thêm 2 nút ở góc dưới bên trái màn hình là `🔨 [C] Chế Tạo` $(X=66)$ và `📖 [J] Sổ Tay` $(X=164)$.
+   - Hậu quả: Người chơi nhìn thấy trên cùng một màn hình có cả `[C] Chế Tạo` lẫn `[I] Chế Tạo`, và nút `[J] Sổ Tay` xuất hiện lặp lại 2 lần, gây rối mắt và lãng phí không gian điều khiển.
+2. **Cụm Chỉ Số Sinh Tồn góc trên bên trái bị chật chội và đè chữ:**
+   - Nhãn trạng thái đèn lồng `ĐÈN: TẮT [F]` bị ép ở tọa độ $(X=328, Y=67.5)$ ngay bên trong khung chính, ép 4 thanh chỉ số bị thu hẹp ngắn lại (chỉ còn $145\text{ px}$).
+   - 2 huy hiệu phụ `💧 Độ Ẩm` và `🔥 Thân Nhiệt` đặt ở $Y=107$ bị đè sát mép dưới khung, các số liệu text không được căn lề thẳng hàng mà bị lệch bậc thang.
+3. **Đồng hồ đỉnh và Khung nhiệm vụ che khuất tầm nhìn:**
+   - Khung nhiệm vụ cố định $340\times 78\text{ px}$ chiếm diện tích góc trên phải mà không có tùy chọn thu gọn, che khuất tầm nhìn khi người chơi khám phá khu vực rừng sâu phía Bắc.
+   - Đồng hồ tròn đặt quá gần trung tâm màn hình làm hẹp hành lang di chuyển phía Bắc của nhân vật.
+
+---
+
+### 2. KIẾN TRÚC TÁI THIẾT KẾ HUD CHÍNH (V15-24)
+
+```mermaid
+flowchart TD
+    subgraph UIScene["src/scenes/UIScene.ts (Chuẩn HD 1280×720)"]
+        subgraph TopLeft["GÓC TRÊN TRÁI: CỤM CHỈ SỐ SINH TỒN"]
+            A1["Khung Gỗ Sồi Viền Đồng 376×96 px (X: 14, Y: 10)<br/>- 4 Đinh tán đồng ở 4 góc<br/>- Danh hiệu: Hiệp Sĩ Đen / Mossbound Wayfarer"]
+            A2["4 Icon Pixel Art (26, 37/53/69/85)<br/>- Trái Tim Đỏ | Tia Sét Hoàng Kim<br/>- Đèn Lồng Cam | Mắt Tinh Thần Tím"]
+            A3["4 Thanh Đo 175px (X: 42, W: 175)<br/>- Sinh Lực (10px) - Đỏ chuyển màu cảnh báo<br/>- Thể Lực (9px) - Vàng chuyển màu mệt mỏi<br/>- Dầu Đèn (9px) - Cam chuyển màu cạn dầu<br/>- Bình Tâm (9px) - Tím chuyển đỏ hoảng loạn"]
+            A4["4 Nhãn Số Liệu Thẳng Hàng (X: 228)<br/>- Sinh Lực: cur/max | Thể Lực: cur/max<br/>- Dầu Đèn: cur/max | Bình Tâm: cur/max"]
+            A5["HÀNG PHỤ RIÊNG BIỆT (Y: 112, H: 22)<br/>- [F] Đèn Lồng: BẬT/TẮT (X: 14..110, W: 96)<br/>- 💧 Độ Ẩm: Khô/Ẩm/Ướt (X: 116..242, W: 126)<br/>- 🔥 Thân Nhiệt: Ấm/Lạnh/Cóng (X: 248..390, W: 142)<br/>=> Tổng chiều rộng 376px KHỚP 100% KHUNG CHÍNH"]
+            A1 --> A2 & A3 & A4
+            A1 -.-> A5
+        end
+
+        subgraph NorthCorridor["HÀNH LANG TRUNG TÂM PHÍA BẮC (X: 390..704, RỘNG 314 PX)"]
+            N1["HOÀN TOÀN THÔNG THOÁNG<br/>Không che khuất tầm nhìn nhân vật khi tiến lên phía Bắc"]
+        end
+
+        subgraph TopRight["GÓC TRÊN PHẢI: ĐỒNG HỒ & NHIỆM VỤ"]
+            B1["Đồng Hồ Tròn 3 Múi (X: 704, Y: 16, 208×78 px)<br/>- Múi Ban Ngày 180° | Hoàng Hôn 90° | Đêm 90°<br/>- Kim đồng hồ xoay mượt theo thời gian thực<br/>- Nhãn: Ngày X — Mùa Sương Lạnh & Đồng hồ đếm ngược"]
+            B2["Khung Nhiệm Vụ Thu Gọn/Mở Rộng (X: 920, Y: 16, W: 340)<br/>- Mở rộng (H=78): Tiêu đề [J] + Tên quest + Checklist nhiệm vụ<br/>- Thu gọn (H=30): Dòng tóm lược gọn gàng 1 dòng<br/>- Nút toggle ▲/▼ chuyển đổi nhẹ nhàng, chống che khuất"]
+        end
+
+        subgraph BottomToolbar["DẢI HUD ĐÁY DUY NHẤT (X: 640, Y: 684, W: 818 PX)"]
+            C1["Cụm Ô Vật Phẩm & Kỹ Năng Trung Tâm (5 Ô)<br/>[1] Thuốc Đắp | [2] Dầu Đèn | [3] Trà/Đuốc | [Q] Mồi Ném | [F] Đèn Lồng"]
+            C2["Vạch Ngăn Cách Kim Loại Đồng Xỉn (X: 102)<br/>Đính kèm chốt đinh tán đồng phân định 2 phân khu"]
+            C3["Cụm 3 Nút Công Cụ Tinh Gọn Bên Phải<br/>🔨 [C] Chế Tạo (Nhận cả C & I) | 📖 [J] Sổ Tay | ⚙️ [ESC] Tạm Dừng"]
+        end
+    end
+```
+
+---
+
+### 3. CHI TIẾT CÁC HẠNG MỤC NÂNG CẤP KỸ THUẬT
+
+#### 3.1. Dải HUD Đáy Tinh Gọn & Loại Bỏ Triệt Để Nút Trùng Lặp
+- **Xóa bỏ các nút thừa:**
+  + Dọn sạch nội dung tạo nút ở góc dưới bên trái trong `buildQuickActionButtons()`, giữ lại container rỗng an toàn tránh lỗi tham chiếu `null` từ các hệ thống khác.
+  + Loại bỏ nút `[E] Tương Tác` thừa trên thanh đáy (việc tương tác đã có hệ thống bám đối tượng thế giới `promptWorldTarget` lo liệu).
+  + Loại bỏ nút `[I] Chế Tạo` trùng lặp và nút `[J] Sổ Tay` thứ hai.
+- **Quy hoạch dải HUD đáy chuẩn $818\text{ px}$ căn giữa tại $(640, 684)$:**
+  + **5 Ô sinh tồn trung tâm:**
+    1. `[1] Thuốc Đắp` (`poultice`): Bấm chuột hoặc nhấn `[1]` để dùng thảo dược trị thương.
+    2. `[2] Dầu Đèn` (`oil`): Bấm chuột hoặc nhấn `[2]` để châm dầu đèn lồng.
+    3. `[3] Trà/Đuốc` (`emergency`): Bấm chuột hoặc nhấn `[3]` để kích hoạt vật phẩm khẩn cấp.
+    4. `[Q] Mồi Ném` (`lure`): Bấm chuột hoặc nhấn `[Q]` để ném mồi đánh lạc hướng quái vật.
+    5. `[F] Đèn Lồng` (`lantern`): Bấm chuột hoặc nhấn `[F]` để bật/tắt đèn lồng.
+  + **Vạch phân cách đồng xỉn:** Tại $X = 102$ (tọa độ cục bộ container), vẽ đường kẻ dọc $1.5\text{ px}$ màu đồng `0x8a6d3b` kèm đinh tán tròn `0xd4af37`.
+  + **3 Nút công cụ bên phải:**
+    6. `🔨 [C] Chế Tạo` (`craft`): Bấm chuột hoặc nhấn phím `[C]` hoặc `[I]` đều mở Bàn Chế Tạo.
+    7. `📖 [J] Sổ Tay` (`journal`): Bấm chuột hoặc nhấn phím `[J]` để mở Sổ Tay Khám Phá & Nhiệm Vụ.
+    8. `⚙️ [ESC] Tạm Dừng` (`pause`): Bấm chuột hoặc nhấn `[ESC]` để mở Pause Menu.
+
+#### 3.2. Cơ Chế Ô Số [3] Trà Thảo Dược An Thần / Đuốc Nhựa Thông Khẩn Cấp
+- **Thực thi trong `UIScene.ts` (`tryUseEmergencySurvivalItem`):**
+  + Kiểm tra số lượng `food_calming_tea` (Trà Thảo Dược An Thần) và `item_resin_flare` (Đuốc Nhựa Thông Khẩn Cấp).
+  + **Ưu tiên phục hồi tâm trí:** Nếu người chơi sở hữu Trà An Thần và Bình Tâm bị suy giảm ($< \text{maxComposure}$):
+    * Tiêu hao 1 bình trà, hồi phục $+40$ điểm Bình Tâm, tăng $+15^\circ$ Thân Nhiệt nếu đang bị nhiễm lạnh.
+    * Phát âm thanh sảng khoái và gọi `player.playUseItem()`.
+    * Hiển thị popup: *"🍵 Đã dùng Trà Thảo Dược (+40 Bình Tâm, +15° Thân Nhiệt)"*.
+  + **Cứu nạn khẩn cấp trong sương:** Nếu Bình Tâm đã ổn định hoặc người chơi chỉ sở hữu Đuốc Nhựa Thông:
+    * Kích hoạt cắm Đuốc Nhựa Thông xuống đất, tạo quầng sáng rực rỡ xua tan sương mù và đẩy lùi The Listener.
+- **Huy hiệu đếm số lượng khẩn cấp (`emergencyCountBadge` / `emergencyCountText`):**
+  + Tự động cập nhật tổng số lượng vật phẩm khẩn cấp trên ô số [3] với màu xanh dương nhạt dịu mắt `#3498db`.
+- **Hỗ trợ phím vật lý trên nhân vật (`SatyrPlayer.ts` & `GameScene.ts`):**
+  + Bổ sung `'emergency'` vào tập hợp `OneShotAction`.
+  + Phím `Digit3` kích hoạt action khẩn cấp.
+  + Trong vòng lặp `GameScene.update()`, tiếp nhận `player.isEmergencyRequested()` và gọi `uiScene.tryUseEmergencySurvivalItem()`.
+
+#### 3.3. Tái Thiết Kế Cụm Chỉ Số Sinh Tồn Góc Trên Trái
+- **Khung chính mở rộng sang trọng:** Tọa độ $(14, 10)$, kích thước $376\times 96\text{ px}$, viền kép gỗ tối và đồng xỉn với 4 đinh tán đồng ở 4 góc.
+- **Thanh bar chuẩn hóa $175\text{ px}$:**
+  + Tọa độ gốc $X = 42$, chiều rộng $175\text{ px}$ (tăng thêm $30\text{ px}$ so với kích thước $145\text{ px}$ chật chội trước đây).
+  + Căn chỉnh 4 icon Pixel Art sắc nét ở $X = 26$, tâm $Y \in \{37, 53, 69, 85\}$ thẳng hàng tăm tắp với 4 thanh đo.
+- **Hiệu ứng chuyển màu mượt mà theo trạng thái (Dynamic Color Shifts):**
+  + **Sinh Lực (Máu):** $> 50\%$ màu đỏ thẫm tươi; $25\% - 50\%$ chuyển sang cam hổ phách cảnh báo; $\le 25\%$ chuyển sang đỏ sẫm nguy kịch.
+  + **Thể Lực:** $> 30\%$ vàng hoàng kim rực rỡ; $\le 30\%$ chuyển vàng sẫm thể hiện kiệt sức.
+  + **Dầu Đèn:** $> 45\%$ cam hổ phách sáng; $20\% - 45\%$ cam sẫm; $\le 20\%$ cam cháy tối báo hiệu sắp cạn dầu.
+  + **Bình Tâm:** $> 50\%$ tím thạch anh; $20\% - 50\%$ tím than lo âu; $\le 20\%$ đỏ tím hoảng loạn cực độ.
+- **Nhãn số liệu căn lề hoàn hảo:**
+  + Đặt tại $X = 228$, $Y \in \{32, 48, 64, 80\}$, khoảng cách đều đặn $16\text{ px}$, chấm dứt hoàn toàn hiện tượng lệch bậc thang.
+
+#### 3.4. Hàng Phụ Độc Lập Bên Dưới Khung Chính (Y: 112, H: 22)
+- Di chuyển toàn bộ các nhãn trạng thái và huy hiệu xuống một hàng phụ độc lập ngay bên dưới khung chính $(Y=112, H=22)$:
+  1. **Huy hiệu Đèn Lồng `[F]`:** Tọa độ $(X=14, W=96)$.
+     - Khi BẬT: Nền `0x241808`, viền hổ phách `0xe5a93c`, chữ `🔥 [F] BẬT` màu `#ffdc73`.
+     - Khi TẮT: Nền `0x13110e`, viền đồng mờ `0x6e5832`, chữ `🕯️ [F] TẮT` màu `#8a8275`.
+     - Cho phép click chuột trực tiếp để bật/tắt đèn nhanh.
+  2. **Huy hiệu Độ Ẩm (`moistureBadge`):** Tọa độ $(X=116, W=126)$.
+     - Hiển thị `💧 Khô ráo (N%)` / `💧 Ẩm ướt (N%)` / `🌊 Ướt sũng (N%)`.
+  3. **Huy hiệu Thân Nhiệt (`temperatureBadge`):** Tọa độ $(X=248, W=142)$.
+     - Hiển thị `🔥 Ấm áp (N°)` / `🌡️ Se lạnh (N°)` / `❄️ Cóng lạnh (N°)`.
+- **Tổng chiều rộng hàng phụ:** $96 + 6\text{px (gap)} + 126 + 6\text{px (gap)} + 142 = 376\text{ px}$, khớp tuyệt đối với chiều rộng $376\text{ px}$ của khung chính bên trên, tạo thành khối bố cục hoàn chỉnh, không một chữ nào bị đè hay lấn sang khung cảnh game.
+
+#### 3.5. Đồng Hồ Tròn & Khung Nhiệm Vụ Thu Gọn/Mở Rộng
+- **Giải phóng hành lang di chuyển phía Bắc ($X = 390..704$):**
+  + Di dời Đồng Hồ Tròn 3 Múi Thời Gian sang tọa độ $(X=704, Y=16, W=208, H=78)$.
+  + Khoảng trống giữa mép phải khung chỉ số sinh tồn $(X=390)$ và mép trái đồng hồ $(X=704)$ rộng tới $314\text{ px}$, hoàn toàn giải phóng góc nhìn hướng Bắc khi nhân vật thám hiểm lên trên.
+- **Khung Nhiệm Vụ Bán Trong Suốt Thu Gọn / Mở Rộng:**
+  + Tọa độ $(X=920, Y=16, W=340)$.
+  + Nền gỗ đen bán trong suốt `0x0e1118` (alpha 0.85) viền đồng mờ dịu mắt, chống chói lóa trong đêm tối.
+  + **Chế độ Mở Rộng ($H=78\text{ px}$):** Hiển thị đầy đủ tiêu đề nhiệm vụ và danh sách mục tiêu chi tiết kèm nút `▲`.
+  + **Chế độ Thu Gọn ($H=30\text{ px}$):** Bấm vào thanh tiêu đề hoặc nút `▼` để thu gọn thành một dải mỏng $30\text{ px}$ với một dòng vắn tắt: `📜 [J] Tên Nhiệm Vụ`, mở rộng tối đa tầm quan sát cho người chơi.
+
+---
+
+### 4. BẢNG TỔNG HỢP KIỂM THỬ BƯỚC V15-24
+
+| STT | Nhóm Kiểm Tra | Tệp Kịch Bản / Công Cụ | Tiêu Chí Kiểm Tra | Kết Quả |
+|:---:|:---|:---|:---|:---:|
+| 1 | **Dải HUD Đáy & Loại Bỏ Nút Lặp** | `verify_v15_24_hud_redesign.mjs` | Chuẩn 8 ô, xóa [E] thừa, xóa lặp [C]/[I]/[J], vạch ngăn đồng, nhận cả C & I | **7 / 7 PASS** |
+| 2 | **Cơ Chế Ô [3] Trà/Đuốc Khẩn Cấp** | `verify_v15_24_hud_redesign.mjs` | `tryUseEmergencySurvivalItem`, kiểm tra cả trà và đuốc, phím Digit3, SatyrPlayer & GameScene | **6 / 6 PASS** |
+| 3 | **Cụm Chỉ Số Sinh Tồn & Hàng Phụ** | `verify_v15_24_hud_redesign.mjs` | Khung 376x96, bar 175px, nhãn căn lề 228px, chuyển màu mượt, hàng phụ 376px (14/116/248) | **6 / 6 PASS** |
+| 4 | **Đồng Hồ Tròn & Khung Nhiệm Vụ** | `verify_v15_24_hud_redesign.mjs` | Đồng hồ x:704 giải phóng hành lang Bắc, thu gọn H=30, mở rộng H=78, nút ▲/▼, setHUDVisible | **4 / 4 PASS** |
+| 5 | **Hồi Quy Nút Nhanh & Đồng Hồ V1.4** | `test_v14_p8_02.mjs` | Tương thích ngược container `quickActionButtonsContainer`, 3 múi màu đồng hồ tròn | **19 / 19 PASS** |
+| 6 | **Kiểm Tra Kiểu Dữ Liệu TypeScript** | `npx tsc --noEmit` | Kiểm tra nghiêm ngặt toàn bộ codebase với 0 lỗi kiểu dữ liệu | **0 LỖI (PASS)** |
+| 7 | **Đóng Gói Bản Dựng Production** | `npm run build` | Vite minify & Rollup chunking hoàn tất thành công trong 9.27s | **SUCCESS** |
+
+---
+
+### 5. KẾT LUẬN & ĐÁNH GIÁ BƯỚC V15-24
+
+Bước **V15-24** đã giải quyết triệt để và dứt điểm toàn bộ các vấn đề giao diện trong game của **HOLLOW WOODS**:
+1. Thanh công cụ đáy màn hình đã trở nên cân đối, sắc sảo, không còn bất kỳ nút bấm trùng lặp nào; hỗ trợ đầy đủ cả phím `C` và `I` cho chế tạo để giữ trọn vẹn thói quen điều khiển của người chơi.
+2. Ô số `[3]` trở thành cứu cánh sinh tồn chiến thuật với cơ chế tự động chuyển đổi thông minh giữa Trà An Thần và Đuốc Nhựa Thông.
+3. Cụm chỉ số sinh tồn góc trên trái đạt chuẩn thẩm mỹ cao cấp với 4 thanh đo chuyển màu động, số liệu căn lề ngay ngắn và hàng phụ bên dưới giải quyết triệt để vấn đề đè chữ.
+4. Bố cục đỉnh màn hình thông thoáng, giải phóng hành lang trung tâm phía Bắc rộng $314\text{ px}$ kết hợp tính năng thu gọn khung nhiệm vụ mang lại trải nghiệm khám phá vô cùng thoải mái.
+
+*Dự án đã sẵn sàng tiếp tục các bước tiếp theo của Giai đoạn 6.*

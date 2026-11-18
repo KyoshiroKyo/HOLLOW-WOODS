@@ -668,14 +668,14 @@ export class GameScene extends Phaser.Scene {
       if (this.isGameplayInputLocked()) return;
       this.player.toggleLantern();
       if (this.uiScene) {
-        this.uiScene.selectQuickSlot(3);
+        this.uiScene.selectQuickSlot(4); // this.uiScene.selectQuickSlot(3)
       }
     };
     const onUIThrowLure = () => {
       if (this.isGameplayInputLocked()) return;
       this.tryThrowNoiseLure();
       if (this.uiScene) {
-        this.uiScene.selectQuickSlot(2);
+        this.uiScene.selectQuickSlot(3); // this.uiScene.selectQuickSlot(2)
       }
     };
 
@@ -1661,6 +1661,11 @@ export class GameScene extends Phaser.Scene {
         }
         if (this.player.isOilRequested() && this.uiScene) {
           if (this.uiScene.tryConsumeLanternOil()) {
+            this.player.playUseItem();
+          }
+        }
+        if (this.player.isEmergencyRequested() && this.uiScene) {
+          if (this.uiScene.tryUseEmergencySurvivalItem()) {
             this.player.playUseItem();
           }
         }

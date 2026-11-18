@@ -43,7 +43,7 @@ export interface SaveData {
   timeOfDay?: number;         // Mặc định: 0 (giây trong chu kỳ 360s)
   equippedSlots?: EquippedSlotsData; // Mặc định: { body: null, feet: null, back: null, charm: null }
   storageChest?: [string, number][]; // Mặc định: []
-  storageChestInventory?: [string, number][] | Record<string, number>; // V14-P8-02: Trường Rương lưu trữ 12 ô
+  storageChestInventory?: [string, number][]; // V14-P8-02: Trường Rương lưu trữ 12 ô
   campfireLevel?: number;     // Cấp độ Lửa Trại Bellhollow (1, 2, 3)
   campfireFuel?: number;      // Nhiên liệu còn lại (giây)
   unlockedBestiary?: string[]; // V1.4 Mặc định: []

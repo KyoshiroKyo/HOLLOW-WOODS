@@ -30,6 +30,7 @@ export type OneShotAction =
   | 'pause'
   | 'poultice'
   | 'oil'
+  | 'emergency'
   | 'mute';
 
 export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
@@ -736,6 +737,8 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       this.pendingOneShotActions.add('poultice');
     } else if (code === 'Digit2') {
       this.pendingOneShotActions.add('oil');
+    } else if (code === 'Digit3') {
+      this.pendingOneShotActions.add('emergency');
     } else if (code === 'KeyM') {
       this.pendingOneShotActions.add('mute');
     }
@@ -836,6 +839,11 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   public isOilRequested(): boolean {
     if (this._isDead) return false;
     return this.consumeOneShotAction('oil');
+  }
+
+  public isEmergencyRequested(): boolean {
+    if (this._isDead) return false;
+    return this.consumeOneShotAction('emergency');
   }
 
   public isMuteRequested(): boolean {
