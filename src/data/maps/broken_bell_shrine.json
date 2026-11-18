@@ -7028,9 +7028,9 @@
           "name": "shrine_pillar_l",
           "type": "wall",
           "x": 4350,
-          "y": 200,
+          "y": 180,
           "width": 32,
-          "height": 12,
+          "height": 32,
           "visible": true,
           "properties": [
             {
@@ -7041,7 +7041,7 @@
             {
               "name": "footLevelRatio",
               "type": "float",
-              "value": 0.35
+              "value": 1
             },
             {
               "name": "originalHeight",
@@ -7055,9 +7055,9 @@
           "name": "shrine_pillar_r",
           "type": "wall",
           "x": 4650,
-          "y": 200,
+          "y": 180,
           "width": 32,
-          "height": 12,
+          "height": 32,
           "visible": true,
           "properties": [
             {
@@ -7068,7 +7068,7 @@
             {
               "name": "footLevelRatio",
               "type": "float",
-              "value": 0.35
+              "value": 1
             },
             {
               "name": "originalHeight",
@@ -7216,6 +7216,38 @@
               "value": "Interactive Micro-Event"
             }
           ]
+        },
+        {
+          "id": 12,
+          "name": "env_shrine_parchment_map",
+          "type": "clue",
+          "x": 4180,
+          "y": 260,
+          "width": 32,
+          "height": 32,
+          "visible": true,
+          "properties": [
+            {
+              "name": "displayName",
+              "type": "string",
+              "value": "Bản Đồ Da Cừu Mạch Rễ"
+            },
+            {
+              "name": "promptText",
+              "type": "string",
+              "value": "[E] Khảo Sát Bản Đồ Da Cừu"
+            },
+            {
+              "name": "actionId",
+              "type": "string",
+              "value": "inspect_shrine_parchment_map"
+            },
+            {
+              "name": "hookArchetype",
+              "type": "string",
+              "value": "Archaeological Clue"
+            }
+          ]
         }
       ],
       "opacity": 1,
@@ -7230,7 +7262,7 @@
       "name": "Objects_Portals",
       "objects": [
         {
-          "id": 12,
+          "id": 13,
           "name": "to_silent_mire_from_shrine",
           "type": "transition_portal",
           "x": 4000,
@@ -7290,7 +7322,7 @@
     }
   ],
   "nextlayerid": 7,
-  "nextobjectid": 13,
+  "nextobjectid": 14,
   "orientation": "orthogonal",
   "renderorder": "right-down",
   "tiledversion": "1.10.2",

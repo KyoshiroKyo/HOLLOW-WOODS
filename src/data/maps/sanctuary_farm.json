@@ -3815,9 +3815,9 @@
           "name": "farm_well",
           "type": "wall",
           "x": 920,
-          "y": 718,
+          "y": 700,
           "width": 36,
-          "height": 12,
+          "height": 30,
           "visible": true,
           "properties": [
             {
@@ -3828,7 +3828,7 @@
             {
               "name": "footLevelRatio",
               "type": "float",
-              "value": 0.35
+              "value": 1
             },
             {
               "name": "originalHeight",

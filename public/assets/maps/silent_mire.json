@@ -8804,9 +8804,9 @@
           "name": "sm_dead_titan_willow_col",
           "type": "tree_trunk",
           "x": 3540,
-          "y": 164,
+          "y": 150,
           "width": 44,
-          "height": 12,
+          "height": 26,
           "visible": true,
           "properties": [
             {
@@ -8817,7 +8817,7 @@
             {
               "name": "footLevelRatio",
               "type": "float",
-              "value": 0.35
+              "value": 1
             },
             {
               "name": "originalHeight",
@@ -9339,6 +9339,70 @@
               "value": "Archaeological Clue"
             }
           ]
+        },
+        {
+          "id": 31,
+          "name": "env_broken_sword_mire",
+          "type": "clue",
+          "x": 3120,
+          "y": 460,
+          "width": 32,
+          "height": 32,
+          "visible": true,
+          "properties": [
+            {
+              "name": "displayName",
+              "type": "string",
+              "value": "Thanh Kiếm Gãy Bên Bờ Đầm"
+            },
+            {
+              "name": "promptText",
+              "type": "string",
+              "value": "[E] Khảo sát Thanh Kiếm Gãy"
+            },
+            {
+              "name": "actionId",
+              "type": "string",
+              "value": "inspect_broken_sword_mire"
+            },
+            {
+              "name": "hookArchetype",
+              "type": "string",
+              "value": "Archaeological Clue"
+            }
+          ]
+        },
+        {
+          "id": 32,
+          "name": "env_echo_mire_path",
+          "type": "clue",
+          "x": 3420,
+          "y": 380,
+          "width": 32,
+          "height": 32,
+          "visible": true,
+          "properties": [
+            {
+              "name": "displayName",
+              "type": "string",
+              "value": "Tiếng Vọng Ký Ức (Đầm Lầy)"
+            },
+            {
+              "name": "promptText",
+              "type": "string",
+              "value": "[E] Lắng Nghe Tiếng Vọng Ký Ức"
+            },
+            {
+              "name": "actionId",
+              "type": "string",
+              "value": "inspect_echo_mire_path"
+            },
+            {
+              "name": "hookArchetype",
+              "type": "string",
+              "value": "Archaeological Clue"
+            }
+          ]
         }
       ],
       "opacity": 1,
@@ -9353,7 +9417,7 @@
       "name": "Objects_Portals",
       "objects": [
         {
-          "id": 31,
+          "id": 33,
           "name": "to_crooked_path_from_sm",
           "type": "transition_portal",
           "x": 2880,
@@ -9405,7 +9469,7 @@
           ]
         },
         {
-          "id": 32,
+          "id": 34,
           "name": "to_deep_forest_from_sm",
           "type": "transition_portal",
           "x": 2880,
@@ -9457,7 +9521,7 @@
           ]
         },
         {
-          "id": 33,
+          "id": 35,
           "name": "to_rune_puzzle",
           "type": "transition_portal",
           "x": 3350,
@@ -9509,7 +9573,7 @@
           ]
         },
         {
-          "id": 34,
+          "id": 36,
           "name": "to_shrine",
           "type": "transition_portal",
           "x": 3980,
@@ -9561,7 +9625,7 @@
           ]
         },
         {
-          "id": 35,
+          "id": 37,
           "name": "to_drowned_mire_depths",
           "type": "transition_portal",
           "x": 3340,
@@ -9613,7 +9677,7 @@
           ]
         },
         {
-          "id": 36,
+          "id": 38,
           "name": "to_outer_woods_via_shortcut",
           "type": "transition_portal",
           "x": 2880,
@@ -9673,7 +9737,7 @@
     }
   ],
   "nextlayerid": 7,
-  "nextobjectid": 37,
+  "nextobjectid": 39,
   "orientation": "orthogonal",
   "renderorder": "right-down",
   "tiledversion": "1.10.2",

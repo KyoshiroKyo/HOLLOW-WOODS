@@ -9734,9 +9734,9 @@
           "name": "hollow_tree_1",
           "type": "tree_trunk",
           "x": 1900,
-          "y": 192,
+          "y": 180,
           "width": 48,
-          "height": 12,
+          "height": 24,
           "visible": true,
           "properties": [
             {
@@ -9747,7 +9747,7 @@
             {
               "name": "footLevelRatio",
               "type": "float",
-              "value": 0.35
+              "value": 1
             },
             {
               "name": "originalHeight",
@@ -9761,9 +9761,9 @@
           "name": "hollow_tree_2",
           "type": "tree_trunk",
           "x": 2350,
-          "y": 432,
+          "y": 420,
           "width": 48,
-          "height": 12,
+          "height": 24,
           "visible": true,
           "properties": [
             {
@@ -9774,7 +9774,7 @@
             {
               "name": "footLevelRatio",
               "type": "float",
-              "value": 0.35
+              "value": 1
             },
             {
               "name": "originalHeight",
@@ -9788,36 +9788,9 @@
           "name": "ancient_rock_1",
           "type": "rock",
           "x": 2100,
-          "y": 300,
+          "y": 280,
           "width": 56,
-          "height": 12,
-          "visible": true,
-          "properties": [
-            {
-              "name": "isSolid",
-              "type": "bool",
-              "value": true
-            },
-            {
-              "name": "footLevelRatio",
-              "type": "float",
-              "value": 0.35
-            },
-            {
-              "name": "originalHeight",
-              "type": "int",
-              "value": 32
-            }
-          ]
-        },
-        {
-          "id": 7,
-          "name": "cp_collapsed_bridge_blocker",
-          "type": "boundary",
-          "x": 1775,
-          "y": 240,
-          "width": 36,
-          "height": 84,
+          "height": 32,
           "visible": true,
           "properties": [
             {
@@ -9829,6 +9802,33 @@
               "name": "footLevelRatio",
               "type": "float",
               "value": 1
+            },
+            {
+              "name": "originalHeight",
+              "type": "int",
+              "value": 32
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "name": "cp_collapsed_bridge_blocker",
+          "type": "ruins",
+          "x": 1775,
+          "y": 295,
+          "width": 36,
+          "height": 29,
+          "visible": true,
+          "properties": [
+            {
+              "name": "isSolid",
+              "type": "bool",
+              "value": true
+            },
+            {
+              "name": "footLevelRatio",
+              "type": "float",
+              "value": 0.35
             },
             {
               "name": "originalHeight",
@@ -10328,6 +10328,70 @@
               "value": "Environmental Trail"
             }
           ]
+        },
+        {
+          "id": 23,
+          "name": "env_elian_unsent_letter",
+          "type": "clue",
+          "x": 1980,
+          "y": 240,
+          "width": 32,
+          "height": 32,
+          "visible": true,
+          "properties": [
+            {
+              "name": "displayName",
+              "type": "string",
+              "value": "Hốc Cây Giấu Thư Của Elian"
+            },
+            {
+              "name": "promptText",
+              "type": "string",
+              "value": "[E] Đọc Bức Thư Của Elian"
+            },
+            {
+              "name": "actionId",
+              "type": "string",
+              "value": "inspect_elian_unsent_letter"
+            },
+            {
+              "name": "hookArchetype",
+              "type": "string",
+              "value": "Archaeological Clue"
+            }
+          ]
+        },
+        {
+          "id": 24,
+          "name": "env_stone_chessboard",
+          "type": "clue",
+          "x": 2340,
+          "y": 310,
+          "width": 36,
+          "height": 36,
+          "visible": true,
+          "properties": [
+            {
+              "name": "displayName",
+              "type": "string",
+              "value": "Bàn Cờ Đá Của Hai Kỵ Sĩ"
+            },
+            {
+              "name": "promptText",
+              "type": "string",
+              "value": "[E] Xem Bàn Cờ Đá Giữa Sương"
+            },
+            {
+              "name": "actionId",
+              "type": "string",
+              "value": "inspect_stone_chessboard"
+            },
+            {
+              "name": "hookArchetype",
+              "type": "string",
+              "value": "Archaeological Clue"
+            }
+          ]
         }
       ],
       "opacity": 1,
@@ -10342,7 +10406,7 @@
       "name": "Objects_Portals",
       "objects": [
         {
-          "id": 23,
+          "id": 25,
           "name": "to_bellhollow_from_cp",
           "type": "transition_portal",
           "x": 1600,
@@ -10394,7 +10458,7 @@
           ]
         },
         {
-          "id": 24,
+          "id": 26,
           "name": "to_outer_woods_from_cp",
           "type": "transition_portal",
           "x": 1600,
@@ -10446,7 +10510,7 @@
           ]
         },
         {
-          "id": 25,
+          "id": 27,
           "name": "to_deep_forest",
           "type": "transition_portal",
           "x": 2000,
@@ -10498,7 +10562,7 @@
           ]
         },
         {
-          "id": 26,
+          "id": 28,
           "name": "to_silent_mire",
           "type": "transition_portal",
           "x": 2860,
@@ -10558,7 +10622,7 @@
     }
   ],
   "nextlayerid": 7,
-  "nextobjectid": 27,
+  "nextobjectid": 29,
   "orientation": "orthogonal",
   "renderorder": "right-down",
   "tiledversion": "1.10.2",

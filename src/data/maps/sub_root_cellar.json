@@ -3462,6 +3462,38 @@
               "value": "Archaeological Clue"
             }
           ]
+        },
+        {
+          "id": 15,
+          "name": "env_root_cellar_alchemy",
+          "type": "clue",
+          "x": 780,
+          "y": 1220,
+          "width": 36,
+          "height": 36,
+          "visible": true,
+          "properties": [
+            {
+              "name": "displayName",
+              "type": "string",
+              "value": "Bàn Thảo Mộc Rêu Phong Hầm Rễ"
+            },
+            {
+              "name": "promptText",
+              "type": "string",
+              "value": "[E] Đọc Ghi Chép Thảo Mộc"
+            },
+            {
+              "name": "actionId",
+              "type": "string",
+              "value": "inspect_root_cellar_alchemy"
+            },
+            {
+              "name": "hookArchetype",
+              "type": "string",
+              "value": "Archaeological Clue"
+            }
+          ]
         }
       ],
       "opacity": 1,
@@ -3476,7 +3508,7 @@
       "name": "Objects_Portals",
       "objects": [
         {
-          "id": 15,
+          "id": 16,
           "name": "to_farm_from_cellar",
           "type": "transition_portal",
           "x": 780,
@@ -3528,7 +3560,7 @@
           ]
         },
         {
-          "id": 16,
+          "id": 17,
           "name": "to_veil_origin_cavern",
           "type": "transition_portal",
           "x": 760,
@@ -3588,7 +3620,7 @@
     }
   ],
   "nextlayerid": 7,
-  "nextobjectid": 17,
+  "nextobjectid": 18,
   "orientation": "orthogonal",
   "renderorder": "right-down",
   "tiledversion": "1.10.2",

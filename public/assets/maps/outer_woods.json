@@ -2861,9 +2861,9 @@
           "name": "ow_firepit_rock",
           "type": "wall",
           "x": 1320,
-          "y": 738,
+          "y": 720,
           "width": 36,
-          "height": 12,
+          "height": 30,
           "visible": true,
           "properties": [
             {
@@ -2874,7 +2874,7 @@
             {
               "name": "footLevelRatio",
               "type": "float",
-              "value": 0.35
+              "value": 1
             },
             {
               "name": "originalHeight",
@@ -2888,9 +2888,9 @@
           "name": "ow_lean_to_shelter",
           "type": "wall",
           "x": 1350,
-          "y": 698,
+          "y": 690,
           "width": 34,
-          "height": 12,
+          "height": 20,
           "visible": true,
           "properties": [
             {
@@ -2901,7 +2901,7 @@
             {
               "name": "footLevelRatio",
               "type": "float",
-              "value": 0.35
+              "value": 1
             },
             {
               "name": "originalHeight",
@@ -2915,9 +2915,9 @@
           "name": "ow_pelt_drying_rack",
           "type": "wall",
           "x": 1285,
-          "y": 732,
+          "y": 730,
           "width": 20,
-          "height": 12,
+          "height": 14,
           "visible": true,
           "properties": [
             {
@@ -2928,7 +2928,7 @@
             {
               "name": "footLevelRatio",
               "type": "float",
-              "value": 0.35
+              "value": 1
             },
             {
               "name": "originalHeight",
@@ -2942,9 +2942,9 @@
           "name": "ow_fallen_log_creek",
           "type": "wall",
           "x": 1475,
-          "y": 799,
+          "y": 795,
           "width": 44,
-          "height": 12,
+          "height": 16,
           "visible": true,
           "properties": [
             {
@@ -2955,7 +2955,7 @@
             {
               "name": "footLevelRatio",
               "type": "float",
-              "value": 0.35
+              "value": 1
             },
             {
               "name": "originalHeight",
@@ -2969,9 +2969,9 @@
           "name": "ow_willow_trunk",
           "type": "wall",
           "x": 1250,
-          "y": 898,
+          "y": 890,
           "width": 24,
-          "height": 12,
+          "height": 20,
           "visible": true,
           "properties": [
             {
@@ -2982,7 +2982,7 @@
             {
               "name": "footLevelRatio",
               "type": "float",
-              "value": 0.35
+              "value": 1
             },
             {
               "name": "originalHeight",
@@ -2996,9 +2996,9 @@
           "name": "ow_rock_creek",
           "type": "wall",
           "x": 1410,
-          "y": 758,
+          "y": 750,
           "width": 36,
-          "height": 12,
+          "height": 20,
           "visible": true,
           "properties": [
             {
@@ -3009,7 +3009,7 @@
             {
               "name": "footLevelRatio",
               "type": "float",
-              "value": 0.35
+              "value": 1
             },
             {
               "name": "originalHeight",
@@ -3023,9 +3023,9 @@
           "name": "ow_rock_south",
           "type": "wall",
           "x": 1450,
-          "y": 846,
+          "y": 840,
           "width": 30,
-          "height": 12,
+          "height": 18,
           "visible": true,
           "properties": [
             {
@@ -3036,7 +3036,7 @@
             {
               "name": "footLevelRatio",
               "type": "float",
-              "value": 0.35
+              "value": 1
             },
             {
               "name": "originalHeight",
@@ -3440,6 +3440,70 @@
               "value": "Archaeological Clue"
             }
           ]
+        },
+        {
+          "id": 24,
+          "name": "env_knights_memorial_stele",
+          "type": "clue",
+          "x": 1250,
+          "y": 720,
+          "width": 36,
+          "height": 36,
+          "visible": true,
+          "properties": [
+            {
+              "name": "displayName",
+              "type": "string",
+              "value": "Bia Đá Tưởng Niệm Kỵ Sĩ"
+            },
+            {
+              "name": "promptText",
+              "type": "string",
+              "value": "[E] Đọc Bia Đá Tưởng Niệm Kỵ Sĩ"
+            },
+            {
+              "name": "actionId",
+              "type": "string",
+              "value": "inspect_knights_memorial_stele"
+            },
+            {
+              "name": "hookArchetype",
+              "type": "string",
+              "value": "Archaeological Clue"
+            }
+          ]
+        },
+        {
+          "id": 25,
+          "name": "env_echo_ruins_prayer",
+          "type": "clue",
+          "x": 1480,
+          "y": 840,
+          "width": 32,
+          "height": 32,
+          "visible": true,
+          "properties": [
+            {
+              "name": "displayName",
+              "type": "string",
+              "value": "Tiếng Vọng Ký Ức (Tàn Tích)"
+            },
+            {
+              "name": "promptText",
+              "type": "string",
+              "value": "[E] Lắng Nghe Tiếng Vọng Ký Ức"
+            },
+            {
+              "name": "actionId",
+              "type": "string",
+              "value": "inspect_echo_ruins_prayer"
+            },
+            {
+              "name": "hookArchetype",
+              "type": "string",
+              "value": "Archaeological Clue"
+            }
+          ]
         }
       ],
       "opacity": 1,
@@ -3454,7 +3518,7 @@
       "name": "Objects_Portals",
       "objects": [
         {
-          "id": 24,
+          "id": 26,
           "name": "to_bellhollow_from_ow",
           "type": "transition_portal",
           "x": 1150,
@@ -3506,7 +3570,7 @@
           ]
         },
         {
-          "id": 25,
+          "id": 27,
           "name": "to_farm_from_ow",
           "type": "transition_portal",
           "x": 1120,
@@ -3558,7 +3622,7 @@
           ]
         },
         {
-          "id": 26,
+          "id": 28,
           "name": "to_crooked_path_from_ow",
           "type": "transition_portal",
           "x": 1560,
@@ -3610,7 +3674,7 @@
           ]
         },
         {
-          "id": 27,
+          "id": 29,
           "name": "to_bell_workshop",
           "type": "transition_portal",
           "x": 1320,
@@ -3662,7 +3726,7 @@
           ]
         },
         {
-          "id": 28,
+          "id": 30,
           "name": "to_silent_mire_via_shortcut",
           "type": "transition_portal",
           "x": 1560,
@@ -3722,7 +3786,7 @@
     }
   ],
   "nextlayerid": 7,
-  "nextobjectid": 29,
+  "nextobjectid": 31,
   "orientation": "orthogonal",
   "renderorder": "right-down",
   "tiledversion": "1.10.2",

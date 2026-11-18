@@ -9654,7 +9654,7 @@
           "type": "boundary",
           "x": 1600,
           "y": -640,
-          "width": 600,
+          "width": 610,
           "height": 30,
           "visible": true,
           "properties": [
@@ -9679,9 +9679,9 @@
           "id": 2,
           "name": "df_bound_top_right",
           "type": "boundary",
-          "x": 2280,
+          "x": 2270,
           "y": -640,
-          "width": 600,
+          "width": 610,
           "height": 30,
           "visible": true,
           "properties": [
@@ -9736,7 +9736,7 @@
           "x": 2850,
           "y": -640,
           "width": 30,
-          "height": 320,
+          "height": 330,
           "visible": true,
           "properties": [
             {
@@ -9752,7 +9752,7 @@
             {
               "name": "originalHeight",
               "type": "int",
-              "value": 320
+              "value": 330
             }
           ]
         },
@@ -9761,9 +9761,9 @@
           "name": "df_bound_right_bottom",
           "type": "boundary",
           "x": 2850,
-          "y": -200,
+          "y": -210,
           "width": 30,
-          "height": 200,
+          "height": 210,
           "visible": true,
           "properties": [
             {
@@ -9779,7 +9779,7 @@
             {
               "name": "originalHeight",
               "type": "int",
-              "value": 200
+              "value": 210
             }
           ]
         },
@@ -9789,7 +9789,7 @@
           "type": "boundary",
           "x": 1600,
           "y": -25,
-          "width": 200,
+          "width": 210,
           "height": 25,
           "visible": true,
           "properties": [
@@ -9814,9 +9814,9 @@
           "id": 7,
           "name": "df_bound_bottom_left_2",
           "type": "boundary",
-          "x": 1880,
+          "x": 1870,
           "y": -25,
-          "width": 120,
+          "width": 140,
           "height": 25,
           "visible": true,
           "properties": [
@@ -9841,9 +9841,9 @@
           "id": 8,
           "name": "df_bound_bottom_right",
           "type": "boundary",
-          "x": 2160,
+          "x": 2150,
           "y": -25,
-          "width": 720,
+          "width": 730,
           "height": 25,
           "visible": true,
           "properties": [

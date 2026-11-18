@@ -2658,6 +2658,38 @@
               "value": "Archaeological Clue"
             }
           ]
+        },
+        {
+          "id": 13,
+          "name": "env_bellmaker_dew_journal",
+          "type": "clue",
+          "x": 1420,
+          "y": 1200,
+          "width": 28,
+          "height": 28,
+          "visible": true,
+          "properties": [
+            {
+              "name": "displayName",
+              "type": "string",
+              "value": "Trang Nhật Ký Ướt Sương"
+            },
+            {
+              "name": "promptText",
+              "type": "string",
+              "value": "[E] Đọc Trang Nhật Ký Ướt Sương"
+            },
+            {
+              "name": "actionId",
+              "type": "string",
+              "value": "inspect_bellmaker_dew_journal"
+            },
+            {
+              "name": "hookArchetype",
+              "type": "string",
+              "value": "Archaeological Clue"
+            }
+          ]
         }
       ],
       "opacity": 1,
@@ -2672,7 +2704,7 @@
       "name": "Objects_Portals",
       "objects": [
         {
-          "id": 13,
+          "id": 14,
           "name": "to_outer_woods_from_bw",
           "type": "transition_portal",
           "x": 1320,
@@ -2732,7 +2764,7 @@
     }
   ],
   "nextlayerid": 7,
-  "nextobjectid": 14,
+  "nextobjectid": 15,
   "orientation": "orthogonal",
   "renderorder": "right-down",
   "tiledversion": "1.10.2",

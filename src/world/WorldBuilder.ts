@@ -219,13 +219,17 @@ export class WorldBuilder {
     // V1.5 - BƯỚC V15-19: Dựng các thực thể và đạo cụ Kể Chuyện Môi Trường (Environmental Storytelling)
     this.renderEnvironmentalStorytellingProps();
 
-    // C4-13-06: Đảm bảo toàn bộ vật thể va chạm trong colliderGroup vô hình tuyệt đối (alpha 0, visible false)
+    // C4-13-06: Đảm bảo toàn bộ vật thể va chạm trong colliderGroup vô hình tuyệt đối (alpha 0, visible false) và đồng bộ physics
     const children = this.colliderGroup.getChildren();
     for (let i = 0; i < children.length; i++) {
       const spr = children[i] as Phaser.Physics.Arcade.Sprite;
       spr.setVisible(false);
       spr.setAlpha(0);
+      if (spr.body && 'refreshBody' in spr) {
+        (spr as any).refreshBody();
+      }
     }
+    this.colliderGroup.refresh();
   }
 
   /**
@@ -2773,14 +2777,42 @@ export class WorldBuilder {
     return { x: actualX, y: actualY, width, height };
   }
 
+  public parseTiledObject(
+    obj: { x: number; y: number; width?: number; height?: number; gid?: number },
+    layerOffsetX: number = 0,
+    layerOffsetY: number = 0
+  ): { x: number; y: number; width: number; height: number; isTileObject: boolean; cleanGid?: number } {
+    const isTileObject = typeof obj.gid === 'number' && obj.gid > 0;
+    const width = obj.width ?? 16;
+    const height = obj.height ?? 16;
+    const coords = this.parseTiledObjectCoords(obj.x, obj.y, width, height, isTileObject, layerOffsetX, layerOffsetY);
+    const cleanGid = isTileObject ? this.getCleanTiledGid(obj.gid!) : undefined;
+    return { ...coords, isTileObject, cleanGid };
+  }
+
   public getCleanTiledGid(rawGid: number): number {
     return (rawGid >>> 0) & 0x1FFFFFFF;
   }
 
-  public applyScaleAndRefresh(sprite: Phaser.Physics.Arcade.Sprite, scaleX: number, scaleY?: number): void {
+  public isTiledFlipped(rawGid: number): { h: boolean; v: boolean; d: boolean } {
+    const uGid = rawGid >>> 0;
+    return {
+      h: (uGid & 0x80000000) !== 0,
+      v: (uGid & 0x40000000) !== 0,
+      d: (uGid & 0x20000000) !== 0
+    };
+  }
+
+  public applyScaleAndRefresh(sprite: Phaser.Physics.Arcade.Sprite | Phaser.Physics.Arcade.Image, scaleX: number, scaleY?: number): void {
     sprite.setScale(scaleX, scaleY ?? scaleX);
     if (sprite.body && 'refreshBody' in sprite) {
       (sprite as any).refreshBody();
+    }
+  }
+
+  public refreshColliderGroup(): void {
+    if (this.colliderGroup) {
+      this.colliderGroup.refresh();
     }
   }
 
@@ -3439,7 +3471,7 @@ export class WorldBuilder {
     markerNorth.setDepth(northPostY + 2);
 
     const markerSouth = this.scene.add.image(gateX + 62, southPostY - 2, SPRITE_STONE_ALTAR);
-    markerSouth.setScale(0.55);
+    markerSouth.setScale(0.55); // Image only (non-physics body, refreshBody handled on collider)
     markerSouth.setOrigin(0.5, 0.8);
     markerSouth.setDepth(southPostY - 2);
 
@@ -3449,6 +3481,9 @@ export class WorldBuilder {
     if (gateBody) {
       gateBody.enable = !this.isEastGateOpen;
       gateBody.checkCollision.none = this.isEastGateOpen;
+    }
+    if (this.eastGateColliderBody && 'refreshBody' in this.eastGateColliderBody) {
+      (this.eastGateColliderBody as any).refreshBody();
     }
 
     // 8. C4-12-03: Vẽ hình ảnh Cổng Đông (cổng đóng khóa xích vs cổng mở gập hai bên)

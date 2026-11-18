@@ -609,7 +609,7 @@
           "y": 240,
           "width": 36,
           "height": 84,
-          "type": "boundary",
+          "type": "ruins",
           "isSolid": true
         }
       ],
@@ -2254,16 +2254,16 @@
           "id": "df_bound_top_left",
           "x": 1600,
           "y": -640,
-          "width": 600,
+          "width": 610,
           "height": 30,
           "type": "boundary",
           "isSolid": true
         },
         {
           "id": "df_bound_top_right",
-          "x": 2280,
+          "x": 2270,
           "y": -640,
-          "width": 600,
+          "width": 610,
           "height": 30,
           "type": "boundary",
           "isSolid": true
@@ -2282,16 +2282,16 @@
           "x": 2850,
           "y": -640,
           "width": 30,
-          "height": 320,
+          "height": 330,
           "type": "boundary",
           "isSolid": true
         },
         {
           "id": "df_bound_right_bottom",
           "x": 2850,
-          "y": -200,
+          "y": -210,
           "width": 30,
-          "height": 200,
+          "height": 210,
           "type": "boundary",
           "isSolid": true
         },
@@ -2299,25 +2299,25 @@
           "id": "df_bound_bottom_left_1",
           "x": 1600,
           "y": -25,
-          "width": 200,
+          "width": 210,
           "height": 25,
           "type": "boundary",
           "isSolid": true
         },
         {
           "id": "df_bound_bottom_left_2",
-          "x": 1880,
+          "x": 1870,
           "y": -25,
-          "width": 120,
+          "width": 140,
           "height": 25,
           "type": "boundary",
           "isSolid": true
         },
         {
           "id": "df_bound_bottom_right",
-          "x": 2160,
+          "x": 2150,
           "y": -25,
-          "width": 720,
+          "width": 730,
           "height": 25,
           "type": "boundary",
           "isSolid": true

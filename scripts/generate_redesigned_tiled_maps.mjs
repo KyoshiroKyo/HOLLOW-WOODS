@@ -105,11 +105,12 @@ function buildCollisionObjects(zone, startObjId) {
   for (const c of colliders) {
     const isBuilding = c.type === 'building' || c.id?.includes('house') || c.id?.includes('tower');
     const isBoundary = c.type === 'boundary';
+    const isAlreadyFootLevel = c.height <= 36;
     
-    // Tỷ lệ chân đế 25% - 35% cho vật thể cao, 100% cho ranh giới biên (perimeter wall)
-    const footRatio = isBoundary ? 1.0 : (isBuilding ? 0.32 : 0.35);
-    const boxH = isBoundary ? c.height : Math.max(12, Math.round(c.height * footRatio));
-    const boxY = isBoundary ? c.y : (c.y + c.height - boxH);
+    // Tỷ lệ chân đế 25% - 35% cho vật thể cao, 100% cho ranh giới biên (perimeter wall) hoặc đã chuẩn hóa chân đế
+    const footRatio = (isBoundary || isAlreadyFootLevel) ? 1.0 : (isBuilding ? 0.32 : 0.35);
+    const boxH = (isBoundary || isAlreadyFootLevel) ? c.height : Math.max(12, Math.round(c.height * footRatio));
+    const boxY = (isBoundary || isAlreadyFootLevel) ? c.y : (c.y + c.height - boxH);
 
     objects.push({
       id: curId++,
