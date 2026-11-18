@@ -801,7 +801,14 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    // V14-P8-15B: Kích hoạt Giai đoạn 2 của Thức Tỉnh Ký Ức khi chạm trán Hooded Knight Boss
+    // Không hành động khi màn hình hội thoại đang hoạt động
+    const gameScene = this.scene as any;
+    if (gameScene.dialogueSystem?.isActive) {
+      this.setVelocity(0, 0);
+      return;
+    }
+
+    // V14-P8-15B & V15-18: Kích hoạt Giai đoạn 2 của Thức Tỉnh Ký Ức và đối thoại khi chạm trán Hooded Knight Boss
     if (distToPlayer <= 220 && !this.hasRecognizedCommander) {
       this.hasRecognizedCommander = true;
       const ps = PlayerState.getInstance();
@@ -813,6 +820,7 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
       // Tên trùm khựng lại trong bàng hoàng nhận diện thân phận Chỉ Huy
       this.bossState = 'stagger';
       this.stateTimer = 2200;
+      this.attackCooldown = 2500;
       this.setVelocity(0, 0);
       this.play('hooded_knight_stagger', true);
 
@@ -822,8 +830,9 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
         text: 'Không thể nào... Hơi thở bóng tối trên bộ giáp đen ấy... Ngài chính là Chỉ Huy Hiệp Sĩ Đen?! Sao ngài lại quay mũi kiếm về phía chúng tôi?'
       });
 
-      const gameScene = this.scene as any;
-      if (gameScene.uiScene?.showPopupMessage) {
+      if (gameScene.dialogueSystem?.startDialogue) {
+        gameScene.dialogueSystem.startDialogue('hooded_knight_encounter_intro');
+      } else if (gameScene.uiScene?.showPopupMessage) {
         gameScene.uiScene.showPopupMessage('⚔️ Hooded Knight bàng hoàng: “Hơi thở bóng tối ấy... Ngài chính là Chỉ Huy Hiệp Sĩ Đen?! Sao ngài lại quay kiếm về phía chúng tôi?!”');
       }
       return;
@@ -980,10 +989,20 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
     AudioManager.getInstance().playKnightDefeat();
     this.play('hooded_knight_stagger', true);
 
-    PlayerState.getInstance().observeCreature('hooded_knight');
+    const ps = PlayerState.getInstance();
+    ps.observeCreature('hooded_knight');
     // Rơi vật phẩm nhiệm vụ cốt truyện: Huy Hiệu Hiệp Sĩ Tha Hóa
-    PlayerState.getInstance().addItem('quest_corrupted_crest', 1);
-    PlayerState.getInstance().setFlag('boss_hooded_knight_defeated');
+    if (ps.getItemCount('quest_corrupted_crest') <= 0 &&
+        ps.getItemCount('quest_corrupted_knight_crest') <= 0) {
+      ps.addItem('quest_corrupted_crest', 1);
+    }
+    ps.setFlag('boss_hooded_knight_defeated');
+    ps.unlockLore('lore_wayfarer_inner_journal');
+
+    const gameScene = this.scene as any;
+    if (gameScene.dialogueSystem?.startDialogue) {
+      gameScene.dialogueSystem.startDialogue('hooded_knight_encounter_defeat');
+    }
 
     this.scene.events.emit('hooded_knight_defeated', {
       x: this.x,
@@ -992,14 +1011,25 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
       dropCount: 1
     });
 
-    this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+    const triggerFadeOut = () => {
+      if (!this.active) return;
       this.scene.tweens.add({
         targets: this,
         alpha: 0,
         duration: 900,
         onComplete: () => this.destroy()
       });
-    });
+    };
+
+    if (gameScene.dialogueSystem?.isActive) {
+      this.scene.events.once('dialogue_completed', () => {
+        triggerFadeOut();
+      });
+    } else {
+      this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+        triggerFadeOut();
+      });
+    }
   }
 
   public destroy(fromScene?: boolean): void {

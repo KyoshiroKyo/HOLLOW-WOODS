@@ -226,3 +226,94 @@ Nhằm mang lại chiều sâu nhân vật đậm chất Gothic / Dark Fantasy, 
 - **Kiểm thử hồi quy [verify_v15_16_story_and_dialogue.mjs](file:///g:/HOLLOW%20WOODS/scripts/verify_v15_16_story_and_dialogue.mjs):** Đạt **88 / 88** assertions PASS tuyệt đối.
 - **Biên dịch TypeScript (`npx tsc --noEmit`):** Đạt **0 lỗi** (Exit Code 0).
 - **Đóng gói Vite Production (`npm run build`):** Hoàn thành trong **8.81s** không có lỗi.
+
+---
+
+## 9. BƯỚC V15-18: BI KỊCH ĐOÀN KỴ SĨ CỔ XƯA & LỜI THỀ HIỆP SĨ CANH LỬA
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Player as Kẻ Lữ Hành (Chỉ Huy Hiệp Sĩ Đen)
+    participant Knight as Hiệp Sĩ Canh Lửa (Campfire Knight)
+    participant Boss as Hooded Knight Boss
+    participant Journal as Sổ Tay Ký Ức [J]
+
+    Player->>Knight: Hỏi về lời thề giữ lửa năm xưa (campfire_knight_intro)
+    Knight-->>Player: Kể lại đêm xuất chinh: Vị Chỉ Huy ra lệnh giữ lửa hậu phương (campfire_knight_comrade_bond)
+    Player->>Knight: Chọn thấu cảm / chia sẻ gánh nặng (choice_knight_empathy)
+    Note over Player,Journal: Mở khóa: NHẬT KÝ LỮ KHÁCH (lore_wayfarer_inner_journal)
+
+    Player->>Boss: Tiếp cận Rừng Sâu (dist <= 220px)
+    Boss-->>Player: Nhận diện vết chém chéo của Chỉ Huy & cảnh báo lùi lại (hooded_knight_encounter_intro)
+    Player->>Boss: Chiến đấu & Đánh bại Boss
+    Boss-->>Player: Khoảnh khắc tỉnh táo cuối cùng: giải thích lý do Chỉ Huy tự phong ấn ký ức (hooded_knight_encounter_defeat)
+    Boss-->>Player: Trao lại Huy Hiệu Chỉ Huy Tha Hóa (quest_corrupted_crest)
+    
+    Player->>Knight: Trở về Lửa Trại nộp Huy Hiệu đã thanh tẩy (campfire_knight_q3_complete)
+    Knight-->>Player: Quỳ gối thần phục: "Mừng ngài trở về, Tổng Chỉ Huy Hiệp Sĩ Đen!"
+    Player->>Knight: Khẳng định lời thề giải phóng Bellhollow (choice_black_knight_vow)
+```
+
+### 9.1. Mối Quan Hệ Chiến Hữu & Nỗi Dằn Vặt Của Người Ở Lại
+- **Kịch bản hội thoại mới (`campfire_knight_comrade_bond`):**
+  + Đêm trước ngày toàn đoàn kỵ sĩ xuất chinh vào Màn Sương The Veil, Hiệp Sĩ Canh Lửa đã quỳ xin được đi tiên phong cùng ngài ấy.
+  + Nhưng vị Tổng Chỉ Huy Hiệp Sĩ Đen đã đặt bàn tay thép lên vai ông và ra lệnh: *"Ngươi là người có ý chí kiên định nhất đoàn. Ngươi phải ở lại giữ chốt làng, bảo vệ ngọn lửa thiêng này! Nếu ngọn lửa hậu phương lụi tàn, Bellhollow sẽ sụp đổ trước khi chúng ta kịp phá vỡ màn sương trở về."*
+  + Người chiến hữu đã tuân lệnh và ở lại bảo vệ ngọn lửa suốt bao năm tháng, nhưng từng đêm nhìn đồng đội gục ngã ngoài sương lạnh, nỗi dằn vặt của kẻ ở lại đã gặm nhấm tâm can ông.
+- **Lựa chọn phản hồi thấu cảm:**
+  + `[Thấu cảm & Động viên]` (*"Ngươi đã hoàn thành xuất sắc mệnh lệnh. Nhờ ngọn lửa của ngươi mà Bellhollow vẫn còn trụ vững đến hôm nay."*): Tăng $+3$ Tin Cậy, gán cờ `choice_knight_empathy`.
+  + `[Trầm mặc thấu hiểu]` (*"Gánh nặng của người ở lại luôn đau đớn hơn kẻ ra đi... Ta hiểu nỗi dằn vặt đó."*): Tăng $+2$ Tin Cậy, gán cờ `choice_knight_silent_understanding`.
+- **Hoàn thành Nhiệm Vụ 3 (`campfire_knight_q3_complete`):**
+  + Bổ sung 2 nhánh lựa chọn tương tác khẳng định sứ mệnh: `choice_black_knight_vow` (lời thề giải phóng vĩnh hằng khi Đại Hồng Chung ngân vang) và `choice_black_knight_silent_bond` (đỡ người đồng đội đứng dậy trong im lặng kiêu hùng).
+
+---
+
+## 10. ĐỐI CHẤT & THỨC TỈNH TRƯỚC VÀ SAU TRẬN CHIẾN HOODED KNIGHT BOSS
+
+### 10.1. Đối Chất Trước Trận (`hooded_knight_encounter_intro`)
+- **Cơ chế kích hoạt:** Khi người chơi tiến vào phạm vi $220\text{px}$ của Hooded Knight Boss trong Rừng Sâu:
+  + Tên trùm khựng lại trong bàng hoàng (Stagger), nhận diện dáng đứng và vết chém chéo trên bao kiếm gỗ của vị Chỉ Huy năm xưa.
+  + Tà khí The Veil trỗi dậy siết chặt lấy tim hắn, buộc hắn phải cảnh báo Chỉ Huy mau lùi lại trước khi thanh kiếm năm xưa trao cho hắn bị cưỡng ép vung lên nhuốm máu người.
+- **Lựa chọn tương tác:**
+  + `[Quyết tâm]` (*"Hãy tha thứ cho ta, người anh em. Ta sẽ vung kiếm giải thoát cho linh hồn ngươi!"*): Cờ `choice_hooded_knight_resolve`, $+2$ Tin Cậy.
+  + `[Thức tỉnh]` (*"Kìm nén tà khí lại! Nhớ lại lời thề bảo vệ Bellhollow năm xưa!"*): Cờ `choice_hooded_knight_plea`, $+3$ Tin Cậy.
+
+### 10.2. Lời Trăn Trối Sau Trận Chiến (`hooded_knight_encounter_defeat`)
+- **Khoảnh khắc tỉnh táo trước khi tan biến:**
+  + Khi HP tên trùm tụt về 0, thanh kiếm đen gãy vụn và luồng tà khí bốc hơi để lộ ánh nhìn thanh thản trong làn sương sớm.
+  + Hiệp sĩ nhớ lại toàn bộ sự thật: Năm xưa, khi Màn Sương The Veil xâm lấn tâm trí cả đoàn quân, chính vị Chỉ Huy Hiệp Sĩ Đen đã quyết định tự phong ấn ký ức và linh hồn của mình vào Trái Tim Mạch Rễ bằng Cổ Ngữ Algiz.
+  + Lý do cốt lõi: *"Nếu ta bị tha hóa, ngôi làng sẽ diệt vong. Ta phải tự xóa ký ức của chính mình để tái sinh như một kẻ lữ hành bình thường, bắt đầu lại từ đầu khi thời cơ đến..."*
+  + Hiệp sĩ trao lại Huy Hiệu Chỉ Huy Tha Hóa (`quest_corrupted_crest`) cho người thủ lĩnh, thanh thản tan biến vào ánh sáng (`choice_hooded_knight_farewell`).
+- **Tích hợp sâu trong Entity và DialogueSystem:**
+  + Boss tự động đóng băng AI và vận tốc khi màn hình hội thoại đang hiển thị (`gameScene.dialogueSystem.isActive`).
+  + Boss kiên nhẫn chờ người chơi đọc hết lời trăn trối và chọn phản hồi mới phát hoạt ảnh tan biến nhẹ nhàng (`dialogue_completed`).
+  + Cơ chế ngăn chặn nhân đôi vật phẩm nhiệm vụ (`quest_corrupted_crest`) được kiểm soát chặt chẽ cả ở tầng thực thể lẫn tầng nhận thưởng hội thoại.
+
+---
+
+## 11. NHẬT KÝ LỮ KHÁCH: LỜI THỀ TRONG RÊU PHONG & GIAO DIỆN HOÀNG KIM
+
+### 11.1. Trang Ký Ức Đặc Biệt (`lore_wayfarer_inner_journal`)
+- **Tác giả:** Lữ Khách Rêu Phong (Chỉ Huy Hiệp Sĩ Đen).
+- **Hồi cốt truyện:** Hồi IV (Đại Thức Tỉnh).
+- **Nội dung:** Đoạn độc thoại nội tâm sâu sắc khi những mảnh ký ức rêu phong tan chảy, kết nối tình cảm và sự tận tụy của 5 dân làng (ngọn lửa của Hiệp Sĩ Canh Lửa, chén thuốc của Neris, sự tận tụy của Bram, lòng dũng cảm của Garth, đôi tai của Finn) đã dẫn lối ngài trở về với sứ mệnh hàn gắn Đại Hồng Chung.
+- **Điều kiện mở khóa tự động:**
+  + Chọn bất kỳ nhánh thấu cảm nào với Hiệp Sĩ Canh Lửa (`choice_knight_empathy`, `choice_knight_silent_understanding`, `choice_black_knight_vow`, `choice_black_knight_silent_bond`).
+  + Đánh bại Hooded Knight Boss hoặc chọn tiễn biệt (`choice_hooded_knight_farewell`, `boss_hooded_knight_defeated`).
+  + Đạt tiến trình Thức Tỉnh Ký Ức Giai đoạn 2 hoặc Giai đoạn 3.
+
+### 11.2. Nâng Cấp Giao Diện Sổ Tay Ký Ức [J] (`JournalModal.ts`)
+- Mảnh ký ức `lore_wayfarer_inner_journal` cùng với `lore_black_knight_chronicle` và các chương hồi ức chính được gán nhãn biểu tượng kiếm vàng kiêu hãnh (`⚔️ `).
+- Khung viền và tiêu đề hiển thị màu vàng kim hoàng gia `0xffc048` / `#d4af37`, tách biệt hoàn toàn với các mảnh truyền thuyết ghi chép thông thường.
+
+---
+
+## 12. BẢNG TỔNG HỢP KIỂM THỬ BƯỚC V15-18
+
+| Bộ Kiểm Thử | Tệp Kịch Bản | Số Lượng Assertions | Kết Quả |
+|:---|:---|:---:|:---:|
+| **Kiểm thử Bi Kịch Kỵ Sĩ & Thức Tỉnh Hiệp Sĩ Đen** | `verify_v15_18_knight_awakening.mjs` | **41 / 41** | **PASS 100%** |
+| **Kiểm thử Tuyến Truyện 5 Dân Làng (Hồi quy)** | `verify_v15_17_villager_stories.mjs` | **48 / 48** | **PASS 100%** |
+| **Kiểm thử Kiểm Toán Cốt Truyện & Choices (Hồi quy)** | `verify_v15_16_story_and_dialogue.mjs` | **89 / 89** | **PASS 100%** |
+| **Kiểm tra Kiểu Dữ Liệu TypeScript** | `npx tsc --noEmit` | **0 Lỗi** | **PASS** |
+| **Đóng gói Bản Dựng Production** | `npm run build` | **83 modules** | **SUCCESS (8.81s)** |

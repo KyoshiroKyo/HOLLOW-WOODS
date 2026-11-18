@@ -613,6 +613,18 @@ export class PlayerState extends Phaser.Events.EventEmitter {
         this.setCurrentQuest('Q06_RETRIEVE_CLAPPER');
       }
       this.unlockLore('lore_runestones');
+    } else if (
+      flag === 'choice_knight_empathy' ||
+      flag === 'choice_knight_silent_understanding' ||
+      flag === 'choice_black_knight_vow' ||
+      flag === 'choice_black_knight_silent_bond' ||
+      flag === 'choice_hooded_knight_resolve' ||
+      flag === 'choice_hooded_knight_plea' ||
+      flag === 'choice_hooded_knight_farewell' ||
+      flag === 'boss_hooded_knight_defeated' ||
+      flag === 'campfire_knight_q3_completed'
+    ) {
+      this.unlockLore('lore_wayfarer_inner_journal');
     }
   }
 
@@ -695,9 +707,11 @@ export class PlayerState extends Phaser.Events.EventEmitter {
     }
     if (clamped >= 2) {
       this.unlockLore('lore_memory_chapter_3');
+      this.unlockLore('lore_wayfarer_inner_journal');
     }
     if (clamped >= 3) {
       this.unlockLore('lore_memory_chapter_4');
+      this.unlockLore('lore_wayfarer_inner_journal');
     }
 
     this.emit('memory_awakening_changed', clamped);
@@ -711,6 +725,7 @@ export class PlayerState extends Phaser.Events.EventEmitter {
     this.unlockLore('lore_memory_chapter_2');
     this.unlockLore('lore_memory_chapter_3');
     this.unlockLore('lore_memory_chapter_4');
+    this.unlockLore('lore_wayfarer_inner_journal');
   }
 
   // --- V1.4: Sổ Tay Sinh Vật (Bestiary Ecosystem) ---

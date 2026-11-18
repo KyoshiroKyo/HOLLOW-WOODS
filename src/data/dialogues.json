@@ -622,6 +622,10 @@
           "setFlag": "lore_curious_black_knight"
         },
         {
+          "text": "[Hỏi về lời thề] \"Vì sao giữa màn sương đen này, chỉ có một mình ngươi ở lại giữ ngọn lửa trại?\"",
+          "nextDialogueKey": "campfire_knight_comrade_bond"
+        },
+        {
           "text": "[Trầm mặc] (Lặng lẽ ngồi xuống sưởi tay bên đốm lửa ấm, ngắm nhìn tàn than bay lên trời đêm)",
           "responseLine": "Sự tĩnh lặng của ngươi khiến ta thấy an tâm lạ kỳ. Hãy nghỉ ngơi lấy sức trước khi bước vào rừng sâu.",
           "trustDelta": 1,
@@ -630,6 +634,31 @@
       ],
       "onCompleteFlag": "campfire_knight_q1_accepted",
       "nextQuestId": "SQ06_KEEP_FIRE"
+    },
+    "campfire_knight_comrade_bond": {
+      "speaker": "Hiệp Sĩ Canh Lửa",
+      "portrait": "portrait_campfire_knight",
+      "lines": [
+        "(Hiệp Sĩ Canh Lửa ném một cành củi khô vào đống lửa, ánh mắt đỏ hoe ngấn lệ)...",
+        "Đêm trước ngày xuất chinh năm ấy, toàn đoàn kỵ sĩ giáp bạc đứng nghiêm trang trước quảng trường Bellhollow.",
+        "Ta đã quỳ xin được đi tiên phong cùng ngài ấy... Nhưng vị Chỉ Huy Hiệp Sĩ Đen đã đặt bàn tay thép lên vai ta, nghiêm giọng ra lệnh:",
+        "'Ngươi là người có ý chí kiên định nhất đoàn. Ngươi phải ở lại giữ chốt làng, bảo vệ ngọn lửa thiêng này! Nếu ngọn lửa hậu phương lụi tàn, Bellhollow sẽ sụp đổ trước khi chúng ta kịp phá vỡ màn sương trở về.'",
+        "Ta đã tuân lệnh ngài ấy... Ta đã ở lại! Nhưng từng đêm trôi qua, từng người đồng đội ngã xuống trong tiếng gầm rú ngoài sương lạnh... Nỗi đau của kẻ ở lại gặm nhấm tâm can ta từng nhịp thở!"
+      ],
+      "choices": [
+        {
+          "text": "[Thấu cảm & Động viên] \"Ngươi đã hoàn thành xuất sắc mệnh lệnh. Nhờ ngọn lửa của ngươi mà Bellhollow vẫn còn trụ vững đến hôm nay.\"",
+          "responseLine": "(Hiệp sĩ nghẹn ngào cúi đầu)... Tạ ơn người lữ khách! Lời nói của ngươi như tiếp thêm sinh mệnh cho thanh gươm già cỗi này.",
+          "trustDelta": 3,
+          "setFlag": "choice_knight_empathy"
+        },
+        {
+          "text": "[Trầm mặc thấu hiểu] \"Gánh nặng của người ở lại luôn đau đớn hơn kẻ ra đi... Ta hiểu nỗi dằn vặt đó.\"",
+          "responseLine": "Ánh mắt của ngươi... giống hệt ánh nhìn của vị chỉ huy đêm hôm ấy...",
+          "trustDelta": 2,
+          "setFlag": "choice_knight_silent_understanding"
+        }
+      ]
     },
     "campfire_knight_q1_reminder": {
       "speaker": "Hiệp Sĩ Canh Lửa",
@@ -694,10 +723,70 @@
         "Thần... xin kính cẩn bái kiến Ngài, Chỉ Huy Hiệp Sĩ Đen (The Black Knight)! Năm xưa chính ngài đã tự phong ấn ký ức để bảo vệ linh hồn khỏi lời nguyền The Veil... Giờ đây ngài đã thức tỉnh và trở về giải cứu chúng thần!",
         "Huy hiệu đã được thanh tẩy hoàn toàn thành Bùa Hộ Thân Hiệp Sĩ. Xin trao lại bảo vật này cho ngài, cùng danh hiệu chân chính vốn thuộc về ngài!"
       ],
+      "choices": [
+        {
+          "text": "[Tiếp nhận sứ mệnh] \"Đứng lên đi, người anh em. Lời thề của chúng ta sẽ được hoàn tất khi Đại Hồng Chung ngân vang!\"",
+          "responseLine": "(Hiệp Sĩ Canh Lửa đứng dậy, hai mắt sáng ngời ý chí kiên định)... Xin tuân lệnh Tổng Chỉ Huy! Thần sẽ bảo vệ ngọn lửa này đến hơi thở cuối cùng!",
+          "trustDelta": 3,
+          "setFlag": "choice_black_knight_vow"
+        },
+        {
+          "text": "[Trầm mặc thấu hiểu] (Đỡ người đồng đội đứng dậy, siết chặt chiếc bùa hộ thân trong lòng bàn tay)",
+          "responseLine": "Đại kỳ hiệp sĩ một lần nữa tung bay trong tim chúng thần!",
+          "trustDelta": 2,
+          "setFlag": "choice_black_knight_silent_bond"
+        }
+      ],
       "onCompleteFlag": "campfire_knight_q3_completed",
       "rewardItem": "eqp_bronze_bell_charm",
       "rewardCount": 1,
       "healPlayer": true
+    },
+    "hooded_knight_encounter_intro": {
+      "speaker": "Bóng Ma Hiệp Sĩ Trùm Mũ",
+      "portrait": "portrait_hooded_knight",
+      "lines": [
+        "(Thanh đại kiếm phủ tà khí cắm phập xuống nền đất rêu, đôi mắt đỏ rực dưới lớp mũ trùm khẽ rung lên khi nhìn vào bạn)...",
+        "Kẻ nào dám bước vào cấm địa tử linh... Khoan đã... Dáng đứng đó... Vết chém chéo trên bao kiếm gỗ...",
+        "Chỉ... Chỉ huy?! Có phải ngài không?!... KHÔNG! Màn sương đen... nó đang siết chặt tim ta!... Lưỡi kiếm này không nghe theo ta nữa!",
+        "Mau lùi lại, Chỉ huy! Đừng để thanh kiếm năm xưa ngài trao cho ta... phải nhuốm máu người!"
+      ],
+      "choices": [
+        {
+          "text": "[Quyết tâm] \"Hãy tha thứ cho ta, người anh em. Ta sẽ vung kiếm giải thoát cho linh hồn ngươi!\"",
+          "responseLine": "A a a... Giết ta đi... Giải thoát cho ta...",
+          "trustDelta": 2,
+          "setFlag": "choice_hooded_knight_resolve"
+        },
+        {
+          "text": "[Thức tỉnh] \"Kìm nén tà khí lại! Nhớ lại lời thề bảo vệ Bellhollow năm xưa!\"",
+          "responseLine": "Lời thề... Bellhollow... Quá muộn rồi... Ta không kiểm soát được nữa!",
+          "trustDelta": 3,
+          "setFlag": "choice_hooded_knight_plea"
+        }
+      ]
+    },
+    "hooded_knight_encounter_defeat": {
+      "speaker": "Bóng Ma Hiệp Sĩ Trùm Mũ",
+      "portrait": "portrait_hooded_knight",
+      "lines": [
+        "(Thanh kiếm đen gãy vụn, luồng tà khí bốc hơi để lộ ánh nhìn thanh thản trong làn sương sớm)...",
+        "Cảm ơn ngài... Chỉ huy... Cuối cùng ta cũng thoát khỏi sự giam cầm của bóng tối...",
+        "Ta nhớ ra rồi... Năm xưa, khi Màn Sương The Veil xâm lấn tâm trí cả đoàn quân, chính ngài đã quyết định tự phong ấn ký ức và linh hồn của mình vào Trái Tim Mạch Rễ...",
+        "Ngài đã nói: 'Nếu ta bị tha hóa, ngôi làng sẽ diệt vong. Ta phải phong ấn chính mình để tái sinh như một kẻ lữ hành bình thường, bắt đầu lại từ đầu khi thời cơ đến...'",
+        "Bảo vật Huy Hiệu Chỉ Huy... xin trao lại cho ngài... Hãy mang nó về bên ngọn lửa Bellhollow... và giải thoát cho toàn bộ khu rừng..."
+      ],
+      "choices": [
+        {
+          "text": "[Tiễn biệt] \"Hãy yên nghỉ trong ánh sáng, người chiến hữu kiên cường. Ta sẽ hoàn thành lời thề của chúng ta.\"",
+          "responseLine": "Vĩnh biệt... người thủ lĩnh vĩ đại của chúng tôi...",
+          "trustDelta": 3,
+          "setFlag": "choice_hooded_knight_farewell"
+        }
+      ],
+      "onCompleteFlag": "boss_hooded_knight_defeated",
+      "rewardItem": "quest_corrupted_crest",
+      "rewardCount": 1
     },
     "campfire_knight_idle_talk": {
       "speaker": "Hiệp Sĩ Canh Lửa",

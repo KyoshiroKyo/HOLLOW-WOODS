@@ -85,7 +85,7 @@ export class GameScene extends Phaser.Scene {
 
   private playerState!: PlayerState;
   private survivalSystem!: SurvivalSystem;
-  private dialogueSystem!: DialogueSystem;
+  public dialogueSystem!: DialogueSystem;
   private inventorySystem!: InventorySystem;
   private craftingModal!: CraftingModal;
   private journalModal!: JournalModal;
@@ -3856,6 +3856,7 @@ export class GameScene extends Phaser.Scene {
 
                   // V14-P8-15B: Nâng tiến trình Thức Tỉnh Ký Ức lên Giai đoạn 3 (Chân tướng Hiệp Sĩ Đen)
                   this.playerState.setMemoryAwakeningStage(3);
+                  this.playerState.unlockLore('lore_wayfarer_inner_journal');
                   this.events.emit('memory_awakening_stage_changed', 3);
                   this.events.emit('memory_awakening_completed');
                   if (this.uiScene) {

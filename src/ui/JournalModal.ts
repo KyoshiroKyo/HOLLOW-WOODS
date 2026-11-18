@@ -770,7 +770,7 @@ export class JournalModal {
     for (let i = startIdx; i < endIdx; i++) {
       const item = list[i];
       const isSel = i === this.currentLoreIndex;
-      const isMemoryChapter = item.id.startsWith('lore_memory_chapter_');
+      const isMemoryChapter = item.id.startsWith('lore_memory_chapter_') || item.id === 'lore_black_knight_chronicle' || item.id === 'lore_wayfarer_inner_journal';
       const cardW = mw / 2 - 50; // 370px
       const cardH = 46;
 
@@ -814,7 +814,7 @@ export class JournalModal {
 
     // --- TRANG PHẢI: CHI TIẾT NỘI DUNG MẢNH KÝ ỨC ĐƯỢC CHỌN ---
     const entry = list[this.currentLoreIndex];
-    const isEntryMemory = entry.id.startsWith('lore_memory_chapter_');
+    const isEntryMemory = entry.id.startsWith('lore_memory_chapter_') || entry.id === 'lore_black_knight_chronicle' || entry.id === 'lore_wayfarer_inner_journal';
     const rightX = mx + mw / 2 + 25;
     const rightW = mw / 2 - 45;
 

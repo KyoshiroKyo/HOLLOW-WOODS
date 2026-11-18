@@ -128,6 +128,8 @@ export class DialogueSystem {
       else if (this.currentPayload.speaker.includes('Neris')) portraitKey = 'portrait_neris';
       else if (this.currentPayload.speaker.includes('Bram') || this.currentPayload.speaker.includes('Thợ Rèn')) portraitKey = 'portrait_blacksmith';
       else if (this.currentPayload.speaker.includes('Finn')) portraitKey = 'portrait_finn';
+      else if (this.currentPayload.speaker.includes('Canh Lửa')) portraitKey = 'portrait_campfire_knight';
+      else if (this.currentPayload.speaker.includes('Trùm Mũ')) portraitKey = 'portrait_hooded_knight';
       else if (this.currentPayload.speaker.includes('Wayfarer') || this.currentPayload.speaker.includes('Lữ Khách')) portraitKey = 'wayfarer_portrait';
       else portraitKey = 'wayfarer_portrait';
     }
@@ -319,7 +321,11 @@ export class DialogueSystem {
 
     // 3. Trao thưởng vật phẩm
     if (payload.rewardItem) {
-      state.addItem(payload.rewardItem, payload.rewardCount || 1);
+      if (payload.rewardItem.startsWith('quest_') && state.getItemCount(payload.rewardItem) > 0) {
+        // Đã sở hữu vật phẩm nhiệm vụ duy nhất này, không thêm trùng lặp
+      } else {
+        state.addItem(payload.rewardItem, payload.rewardCount || 1);
+      }
     }
 
     // 4. Hồi phục máu/tâm lý nếu NPC chữa thương
@@ -350,6 +356,8 @@ export class DialogueSystem {
     if (this.onDialogueEnd) {
       this.onDialogueEnd();
     }
+
+    this.scene.events.emit('dialogue_completed', payload);
   }
 
   public destroy(): void {
