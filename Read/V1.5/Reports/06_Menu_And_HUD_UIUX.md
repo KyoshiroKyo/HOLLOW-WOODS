@@ -123,10 +123,151 @@ flowchart TD
 
 ---
 
-### 5. KẾT LUẬN
+### 5. KẾT LUẬN V15-21
 
 Bước **V15-21** đã hoàn thành trọn vẹn việc tái thiết kế Màn hình Chờ nghệ thuật cho **Hollow Woods**:
 - Giao diện đạt chuẩn điện ảnh Dark Woodland Folklore trên nền rừng sương thẫm `#0b0e14`.
 - Hiệu ứng đèn lồng đung đưa, tàn lửa bay và thanh tải hổ phách mang lại trải nghiệm thị giác sống động, chuyên nghiệp.
 - Mẹo sinh tồn xoay tua thông minh cung cấp kiến thức giá trị ngay từ giây phút đầu tiên.
 - Chuyển cảnh êm ái sang Menu Chính sẵn sàng cho các bước nâng cấp tiếp theo của Giai đoạn 5.
+
+---
+---
+
+# BÁO CÁO KỸ THUẬT V15-22: ĐẠI TU TOÀN DIỆN GIAO DIỆN MÀN HÌNH MENU CHÍNH (MAINMENUSCENE.TS)
+
+**Dự án:** HOLLOW WOODS: The Fog That Remembers  
+**Mã tài liệu:** `V15-22` / `06_Menu_And_HUD_UIUX.md`  
+**Giai đoạn:** Giai đoạn 5 — Nâng cấp UI/UX Màn hình Chờ và Menu Chính  
+**Phiên bản:** V1.5 (Visual & Gameplay Overhaul)  
+**Nhánh Git:** `feat/v1.5-visual-gameplay-overhaul`  
+**Ngày thực hiện:** 19/11/2026  
+**Trạng thái:** Hoàn tất xuất sắc (33/33 assertions PASS 100%, 0 lỗi TypeScript, bản dựng Vite Production thành công)
+
+---
+
+### 1. HIỆN TRẠNG & MỤC TIÊU CẢI TIẾN MENU CHÍNH
+
+Trước bản nâng cấp V1.5, giao diện Menu Chính trong `src/scenes/MainMenuScene.ts` tuy đã có bố cục 2 cột nhưng còn tồn tại các hạn chế về mặt mỹ thuật và trải nghiệm người dùng:
+- Cảnh nền tĩnh, thiếu sự sống động và chiều sâu không gian của khu rừng sương đêm huyền bí.
+- Góc phải nhân vật đứng trơ trọi, quầng sáng đèn lồng cũ có đường viền gắt, bóng đổ chưa tiếp xúc tự nhiên khiến nhân vật có cảm giác bay lơ lửng trên mặt đất.
+- Cụm tiêu đề Logo dùng font sans-serif phổ thông, chưa toát lên được nét uy nghiêm, cổ điển của thể loại Gothic Woodland Folklore.
+- Các nút menu có bề rộng hẹp ($440\text{ px}$), khi hiển thị thông tin bản lưu nhiều chữ có nguy cơ tràn sát mép viền, thiếu hiệu ứng tương tác sinh động và chưa có âm thanh phản hồi xúc giác gõ gỗ đặc thù.
+
+**Mục tiêu bước V15-22:**
+1. **Dựng cảnh nền nghệ thuật sống động (Animated Diorama Background):**
+   - 3 lớp chiều sâu rừng đêm sương mù chuyển động chậm: Bóng Tháp Chuông Cổ ẩn hiện mờ ảo phía xa, rặng thông sương mù ở lớp giữa trôi ngược chiều, và dải sương là là mặt đất ở tiền cảnh.
+   - Góc phải màn hình: Dựng một tiểu cảnh sinh tồn hoàn chỉnh gồm Bếp Lửa Trại 3 tầng bập bùng với quầng sáng tỏa mịn ấm áp (Multi-stop Radial Gradient không vòng tròn cắt cứng), bóng đổ tiếp xúc thực tế, và Nhân vật chính (The Mossbound Wayfarer) đứng vững chãi trên nền đất rêu, xóa bỏ hoàn toàn lỗi bay lơ lửng.
+2. **Thiết kế lại Cụm Tiêu Đề và Hệ thống Nút bấm sang trọng:**
+   - Cụm Logo "HOLLOW WOODS": Kiểu chữ serif cổ điển uy nghiêm (`Cinzel, Georgia, serif`) tông vàng đồng pha cam lửa trầm `#e5a93c`, đổ bóng sâu sắc nét, kèm phụ đề *"DỊ CẢNH RỪNG SƯƠNG — THE FOG THAT REMEMBERS"*.
+   - 4 nút điều hướng dạng thẻ gỗ khắc viền đồng cổ đồng nhất (chiều rộng $460\text{ px}$ đủ thoáng để dòng thông tin checkpoint bản lưu hiển thị gọn thành 2 dòng rõ ràng, không bao giờ tràn viền).
+   - Bổ sung hiệu ứng tương tác mượt mà (Hover & Click): Viền đồng sáng bừng sắc hổ phách, xuất hiện 2 mũi tên cổ ngữ `᛫ ᚱ ‹` và `› ᚱ ᛫` hai bên và phát âm thanh gõ gỗ trầm êm tai `playWoodTap()`.
+
+---
+
+### 2. KIẾN TRÚC THIẾT KẾ MENU CHÍNH V15-22
+
+```mermaid
+flowchart TD
+    subgraph MainMenuScene["src/scenes/MainMenuScene.ts (HD 1280×720)"]
+        subgraph Diorama["Animated Diorama Background (3 Lớp Chiều Sâu)"]
+            A1["Hậu Cảnh Xa:<br/>Bóng Tháp Chuông Cổ (Alpha 0.24..0.32, 9000ms)<br/>+ Tầng sương mù trôi chậm (fogBack, 48000ms)"]
+            A2["Trung Cảnh:<br/>Rặng thông sương mù xanh đen (tree_mist_pine)<br/>+ Tầng sương trôi ngược chiều (fogMid, 32000ms)"]
+            A3["Tiền Cảnh:<br/>Dải sương là là mặt đất (fogFront, 22000ms)<br/>+ Đom đóm & tàn lửa hổ phách bay lượn (32 hạt)"]
+        end
+
+        subgraph CampDiorama["Tiểu Cảnh Sinh Tồn Góc Phải (Showcase Center X=890, Y=485)"]
+            B1["Nền Đất Rêu Đa Tầng + Bóng Đổ Thật (78×18 px)"]
+            B2["Bếp Lửa Trại 3 Tầng + Ngọn Lửa Bập Bùng (180ms)"]
+            B3["Quầng Sáng Tỏa Mịn 6-Stop Radial Gradient<br/>(menu_campfire_glow_smooth_v15, không vòng tròn gắt)"]
+            B4["Tàn Lửa Trại Bay Lên (createCampfireEmbers, 12 hạt)"]
+            B5["Nhân Vật The Mossbound Wayfarer (Origin Y=0.90625)<br/>Bàn chân tiếp xúc khít khao tâm bóng đổ, triệt tiêu lỗi bay"]
+        end
+
+        subgraph MenuColumn["Cột Trái Menu (Tâm X = 390)"]
+            C1["Logo HOLLOW WOODS Serif Cổ Điển (#e5a93c)<br/>Đổ bóng sâu (#060402) + Phụ đề DỊ CẢNH RỪNG SƯƠNG"]
+            C2["Hoa Văn Phân Cách Đồng Cổ + Thoi Ngọc Hổ Phách"]
+            C3["Nút 1: ► BƯỚC VÀO MÀN SƯƠNG (New Game)"]
+            C4["Nút 2: ► TIẾP TỤC HÀNH TRÌNH (2 dòng: Checkpoint + Thời gian)"]
+            C5["Nút 3: ⚙ CÀI ĐẶT TRÒ CHƠI (Settings Modal)"]
+            C6["Nút 4: 📜 BIÊN NIÊN SỬ & HƯỚNG DẪN (Chronicle & Lore Modal)"]
+            C7["Hiệu Ứng Hover: Viền Hổ Phách + Mũi Tên Cổ Ngữ + Tiếng Gõ Gỗ playWoodTap()"]
+        end
+
+        subgraph BottomFooter["Đáy Màn Hình (Y = 576..660)"]
+            D1["Bảng Phím Tắt Điều Khiển Tinh Tế (920×84 px)"]
+            D2["Thông Tin Phiên Bản V1.5.0 Gothic Woodland"]
+        end
+    end
+```
+
+---
+
+### 3. CHI TIẾT CÁC HẠNG MỤC NÂNG CẤP
+
+#### 3.1. Animated Diorama Background (3 Lớp Chiều Sâu Rừng Đêm)
+- **Hậu cảnh xa (Deep Background):**
+  + Tích hợp hình bóng Tháp Chuông Cổ sừng sững `SPRITE_BELL_TOWER_GRAND_V15` (hoặc `SPRITE_BELL_TOWER`) tại $(X=680, Y=360)$, scale $0.72$, tint xanh đen sương mù `0x080f14`. Tween độ mờ nhấp nhô chậm $\text{alpha} \in [0.24, 0.32]$ chu kỳ $9000\text{ms}$ tạo ảo giác ánh trăng lạnh chiếu xuyên qua làn sương.
+  + Dải sương hậu cảnh `fogBack` trôi sang phải với chu kỳ $48,000\text{ms}$.
+- **Trung cảnh (Midground):**
+  + Rặng thông sương mù `SPRITE_TREE_MIST_PINE_V15` phân bổ tự nhiên ở hai bên rìa màn hình (trái: $X=80, 160$; phải: $X=1110, 1190$) với sắc xanh đen sương lạnh `0x091118` / `0x0c151f`.
+  + Tầng sương trung cảnh `fogMid` trôi ngược chiều sang trái với chu kỳ $32,000\text{ms}$.
+- **Tiền cảnh (Foreground):**
+  + Dải sương là là sát mặt đất `fogFront` trôi nhẹ nhàng với chu kỳ $22,000\text{ms}$ ở cao độ $Y=490..720$.
+  + 32 hạt đom đóm và tàn lửa hổ phách (`emberParticles`) trôi lượn hình sin với dao động ngang/dọc tự nhiên.
+
+#### 3.2. Tiểu Cảnh Sinh Tồn Hoàn Chỉnh (Survival Camp Diorama)
+- **Khắc phục triệt để lỗi bay lơ lửng và bóng đổ giả tạo:**
+  + Tạo nền đất rêu ẩm mềm mại với 3 tầng ellipse chuyển tiếp tự nhiên (`0x06090c`, `0x0f1813`, `0x16241c`).
+  + Bóng đổ tiếp xúc thực tế (Realistic Contact Shadows): Bàn chân nhân vật đặt tại $(X=940, Y=485)$ với origin chuẩn `WAYFARER_ORIGIN_X` ($0.5$) và `WAYFARER_ORIGIN_Y` ($0.90625$), bàn chân cắm chặt xuống tâm bóng đổ elip mềm mại `0x030507, alpha 0.85`, xóa bỏ hoàn toàn hiện tượng bay lơ lửng.
+  + Bóng đổ bếp lửa trại tại $(X=830, Y=486)$ kích thước $74\times 18\text{ px}$.
+- **Bếp Lửa Trại & Quầng Sáng Tỏa Mịn:**
+  + Bếp lửa trại chi tiết với vòng đá cuội rêu phong `0x353d38`, củi khô nứt `0x2d1a0e` và ngọn lửa 3 tầng sống động (lõi vàng chanh `0xfff176`, thân cam hổ phách `0xf39c12`, chóp than hồng `0xd35400`) nhấp nhô bập bùng với tween $180\text{ms}$.
+  + Quầng sáng `menu_campfire_glow_smooth_v15` ($440\times 440\text{ px}$) được nướng bằng 6 nấc dừng Radial Gradient mượt mà từ vàng ấm $0.58 \to$ hổ phách $0.40 \to$ cam lửa $0.22 \to$ khói ấm $0.10 \to$ viền mờ $0.035 \to$ trong suốt $0.0$, loại bỏ 100% các vòng tròn đồng tâm cắt cứng hay viền sắc gắt.
+  + 12 hạt tàn lửa trại (`campfireEmbers`) bốc lên trực tiếp từ ngọn lửa, bay cao $55 - 120\text{ px}$ rồi mờ dần về 0.
+
+#### 3.3. Cụm Logo & Tiêu Đề Sang Trọng
+- **Font chữ:** Chuyển sang phong cách cổ điển Gothic Serif (`Cinzel, Georgia, "Times New Roman", serif`).
+- **Phối màu:** Vàng đồng ánh kim kết hợp cam lửa trầm `#e5a93c`, viền nét dày `#1a0f07` kết hợp lớp bóng đổ sâu sắc nét `#060402` offset $(+3, +4)$ với độ mờ $0.85$.
+- **Phụ đề:** *"DỊ CẢNH RỪNG SƯƠNG — THE FOG THAT REMEMBERS"* màu kem sương ấm `#f5ebd7` cân xứng hoàn hảo dưới logo.
+- **Hoa văn ngăn cách:** Đường chỉ đồng cổ kéo dài $380\text{ px}$ với viên ngọc hổ phách hình thoi rực sáng tại tâm $X=390$.
+
+#### 3.4. Hệ Thống 4 Nút Điều Hướng & Hiệu Ứng Tương Tác
+- **Kích thước chuẩn hóa:** Mở rộng chiều rộng thẻ gỗ lên $btnW = 460\text{ px}$ (chiều cao $54\text{ px}$ cho nút 2 dòng, $46\text{ px}$ cho nút 1 dòng), tạo độ thoáng đãng tối ưu.
+- **Hiển thị thông tin bản lưu 2 dòng không tràn viền:**
+  + Dòng 1: `► TIẾP TỤC HÀNH TRÌNH` (vàng hổ phách `#e5a93c`, font 14px bold).
+  + Dòng 2: `Hồi 0 • Cổng Làng Bellhollow • Ngày 1` (kem sương `#baa892`, font 11px), căn giữa cân đối, chừa lề hai bên $40\text{ px}$ đảm bảo không bao giờ bị tràn hay đè viền.
+- **Hiệu ứng Hover & Click sinh động:**
+  + **Hover:** Thẻ gỗ chuyển sang sắc nâu sồi ấm `0x24180e`, viền ngoài sáng bừng vàng hổ phách `0xe5a93c`, viền trong rực rỡ `0xf1c40f`, 4 đinh tán đồng phát sáng.
+  + **Mũi tên cổ ngữ:** Xuất hiện đồng thời 2 biểu tượng cổ ngữ `᛫ ᚱ ‹` và `› ᚱ ᛫` màu hổ phách vàng kim ở hai đầu thẻ gỗ với tween trượt vào trong nhẹ nhàng.
+  + **Âm thanh gõ gỗ:** Bổ sung phương thức `AudioManager.getInstance().playWoodTap(0.45)`, tạo tiếng gõ gỗ trầm êm tai dễ chịu khi di chuột qua từng thẻ.
+  + **Click:** Thẻ co nhẹ ($0.985$) kèm âm thanh tactile `playInteract()` dứt khoát.
+
+#### 3.5. Hộp Thoại Biên Niên Sử & Hướng Dẫn Mới
+- Nút thứ 4 dẫn vào modal `showChronicleAndGuideModal()` kích thước $660\times 460\text{ px}$ viền đồng cổ nạm gỗ tối:
+  + Tóm lược bối cảnh làng Bellhollow bị giam cầm trong Màn Sương Ký Ức sau khi Đại Hồng Chung nứt đôi.
+  + Giới thiệu cơ chế sinh tồn: Đèn Lồng Hổ Phách, Kẻ Lắng Nghe (The Listener), Lửa Trại Sanctuary và Hệ thống 3 Kết Thúc Cốt Truyện.
+  + Bảng phím tắt điều khiển trực quan, chuẩn xác.
+
+---
+
+### 4. BẢNG TỔNG HỢP KIỂM THỬ BƯỚC V15-22
+
+| Bộ Kiểm Thử | Tệp Kịch Bản | Số Kiểm Tra | Trạng Thái |
+|:---|:---|:---:|:---:|
+| **Kiểm thử Đại Tu Menu Chính V15-22** | `verify_v15_22_main_menu.mjs` | **33 / 33** | **PASS 100%** |
+| **Kiểm thử Màn Hình Chờ V15-21 (Hồi quy)** | `verify_v15_21_loading_screen.mjs` | **32 / 32** | **PASS 100%** |
+| **Kiểm thử 3 Kết Thúc Cốt Truyện V15-20 (Hồi quy)** | `verify_v15_20_multiple_endings.mjs` | **46 / 46** | **PASS 100%** |
+| **Kiểm toán Collision Tiled Map Bước 2 (Hồi quy)** | `audit_tiled_json_collision.mjs` | **5 / 5 Hạng mục** | **0 LỖI (PASS)** |
+| **Kiểm tra Kiểu Dữ Liệu TypeScript** | `npx tsc --noEmit` | **0 Lỗi** | **PASS** |
+| **Đóng gói Bản Dựng Production** | `npm run build` | **83 modules** | **SUCCESS (9.22s)** |
+
+---
+
+### 5. KẾT LUẬN
+
+Bước **V15-22** đã hoàn thành xuất sắc việc đại tu Màn hình Menu Chính của **Hollow Woods**:
+- Cảnh nền Animated Diorama 3 lớp chiều sâu mang lại bầu không khí điện ảnh Dark Woodland Folklore sống động.
+- Tiểu cảnh sinh tồn góc phải với bếp lửa trại bập bùng, quầng sáng tỏa mịn ấm áp và nhân vật tiếp đất vững chãi đã khắc phục triệt để các hạn chế thị giác trước đây.
+- Cụm tiêu đề serif uy nghiêm kết hợp 4 nút thẻ gỗ viền đồng cổ, mũi tên cổ ngữ và âm thanh gõ gỗ tạo nên trải nghiệm tương tác sang trọng, đẳng cấp.
+

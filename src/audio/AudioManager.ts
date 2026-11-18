@@ -1697,6 +1697,35 @@ export class AudioManager {
   }
 
   /**
+   * V15-22: Phát âm thanh gõ gỗ trầm êm tai khi rê chuột / tương tác thẻ gỗ Menu
+   */
+  public playWoodTap(volume: number = 0.5): void {
+    if (!this.ctx || this.isMuted) return;
+    if (!this.checkCooldown('wood_tap', 70)) return;
+    this.resumeAudio();
+
+    if (this.playSampled('footstep_wood_1', volume * 0.7, 1.25, false)) {
+      return;
+    }
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(190, now);
+    osc.frequency.exponentialRampToValueAtTime(95, now + 0.05);
+
+    gain.gain.setValueAtTime(0.12 * volume * this.sfxVolume, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+
+    osc.connect(gain);
+    if (this.masterGain) gain.connect(this.masterGain);
+    osc.start(now);
+    osc.stop(now + 0.07);
+  }
+
+  /**
    * C4-133-02: Phát âm thanh chọn menu / hover UI
    */
   public playUISelect(): void {
