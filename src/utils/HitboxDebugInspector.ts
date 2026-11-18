@@ -108,6 +108,15 @@ export class HitboxDebugInspector {
     this.debugGfx.setDepth(999999);
     this.debugGfx.setVisible(false);
 
+    // V1.5 (BƯỚC V15-04): Đảm bảo Arcade Physics Debug luôn tắt khi khởi tạo
+    if (this.scene.physics && this.scene.physics.world) {
+      this.scene.physics.world.drawDebug = false;
+      if (this.scene.physics.world.debugGraphic) {
+        this.scene.physics.world.debugGraphic.clear();
+        this.scene.physics.world.debugGraphic.setVisible(false);
+      }
+    }
+
     if (this.scene.input && this.scene.input.keyboard) {
       this.f8Key = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F8);
       this.f9Key = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F9);
@@ -119,20 +128,22 @@ export class HitboxDebugInspector {
       ]);
     }
 
-    // Khởi tạo bảng hiển thị góc dưới thanh máu bên trái UIScene (X: 16, Y: 106)
-    this.uiContainer = this.uiScene.add.container(16, 106);
+    // V1.5 (BƯỚC V15-04): Khởi tạo bảng hiển thị ở góc dưới bên phải màn hình (X: 840, Y: 420),
+    // tuyệt đối không đặt đè lên cụm 4 thanh chỉ số ở góc trên bên trái (X: 12..374, Y: 8..100).
+    // Trạng thái mặc định luôn là TẮT hoàn toàn (false).
+    this.uiContainer = this.uiScene.add.container(840, 420);
     this.uiContainer.setScrollFactor(0);
     this.uiContainer.setDepth(100000);
     this.uiContainer.setVisible(false);
 
     this.uiBg = this.uiScene.add.graphics();
-    this.infoText = HDTextHelper.createText(this.uiScene, 12, 10, '', {
+    this.infoText = HDTextHelper.createText(this.uiScene, 10, 8, '', {
       fontFamily: 'Consolas, "Courier New", monospace',
-      fontSize: '11.5px',
+      fontSize: '11px',
       color: '#00ffcc',
       stroke: '#000000',
       strokeThickness: 2,
-      lineSpacing: 2
+      lineSpacing: 1.5
     });
 
     this.uiContainer.add([this.uiBg, this.infoText]);
@@ -161,19 +172,19 @@ export class HitboxDebugInspector {
       }
       this.uiScene = uiScene;
 
-      this.uiContainer = this.uiScene.add.container(16, 106);
+      this.uiContainer = this.uiScene.add.container(840, 420);
       this.uiContainer.setScrollFactor(0);
       this.uiContainer.setDepth(100000);
       this.uiContainer.setVisible(this.isEnabled);
 
       this.uiBg = this.uiScene.add.graphics();
-      this.infoText = HDTextHelper.createText(this.uiScene, 12, 10, '', {
+      this.infoText = HDTextHelper.createText(this.uiScene, 10, 8, '', {
         fontFamily: 'Consolas, "Courier New", monospace',
-        fontSize: '11.5px',
+        fontSize: '11px',
         color: '#00ffcc',
         stroke: '#000000',
         strokeThickness: 2,
-        lineSpacing: 2
+        lineSpacing: 1.5
       });
 
       this.uiContainer.add([this.uiBg, this.infoText]);
@@ -854,13 +865,31 @@ export class HitboxDebugInspector {
 
     this.infoText.setText(lines);
 
-    // Cập nhật khung nền
+    // V1.5 (BƯỚC V15-04): Neo bảng thông số F9 vào góc dưới bên phải màn hình (hoặc cạnh phải dưới khung Nhiệm vụ),
+    // kích thước box tự co giãn và cách mép phải 16px, mép đáy 16px. Tuyệt đối không đè lên cụm 4 thanh chỉ số góc trên trái.
     const bounds = this.infoText.getBounds();
+    const boxW = Math.max(370, bounds.width + 20);
+    const boxH = bounds.height + 16;
+    const posX = Math.max(16, 1264 - boxW);
+    const posY = Math.max(16, 704 - boxH);
+    this.uiContainer.setPosition(posX, posY);
+
+    // Cập nhật khung nền
     this.uiBg.clear();
     this.uiBg.fillStyle(0x0a0f16, 0.92);
-    this.uiBg.fillRoundedRect(0, 0, bounds.width + 24, bounds.height + 20, 6);
+    this.uiBg.fillRoundedRect(0, 0, boxW, boxH, 6);
     this.uiBg.lineStyle(1.5, this.isBenchmarking ? 0xf39c12 : 0x00ffcc, 0.95);
-    this.uiBg.strokeRoundedRect(0, 0, bounds.width + 24, bounds.height + 20, 6);
+    this.uiBg.strokeRoundedRect(0, 0, boxW, boxH, 6);
+  }
+
+  public isDebugEnabled(): boolean {
+    return this.isEnabled;
+  }
+
+  public setDebugEnabled(enabled: boolean): void {
+    if (this.isEnabled !== enabled) {
+      this.toggleDebug();
+    }
   }
 
   public destroy(): void {

@@ -503,8 +503,16 @@ export class GameScene extends Phaser.Scene {
 
     // 11. Công cụ kiểm toán kỹ thuật F4 Debug (Graphics trên GameScene, Text trên UIScene Zoom 1.0)
     this.debugOverlay = new DebugOverlay(this, this.player, this.uiScene);
-    // Bước 1: Chế độ Kiểm tra Kỹ thuật Hitbox & Visual Debug Inspector (Phím F9)
+    // V1.5 (BƯỚC V15-04): Chế độ Kiểm tra Kỹ thuật Hitbox & Performance Profiler (Phím F9)
+    // Tách biệt hoàn toàn khỏi giao diện người chơi thường, mặc định TẮT hoàn toàn (false)
     this.hitboxInspector = new HitboxDebugInspector(this, this.player, this.uiScene);
+    if (this.physics && this.physics.world) {
+      this.physics.world.drawDebug = false;
+      if (this.physics.world.debugGraphic) {
+        this.physics.world.debugGraphic.clear();
+        this.physics.world.debugGraphic.setVisible(false);
+      }
+    }
 
     // 12. Tạo lớp phủ Sương Mù Động (Dynamic Fog of War) & Đom Đóm Lập Lòe (PASS T17)
     this.setupFogOfWar();

@@ -31,9 +31,10 @@
 | 01 | `V15-01` | [01_System_And_Asset_Audit.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/01_System_And_Asset_Audit.md) — Rà soát toàn diện hệ thống di chuyển, va chạm, tỷ lệ asset và UI | Hoàn tất (Đã nghiệm thu) |
 | 02 | `V15-02` | [02_Movement_And_Physics_Fix.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/02_Movement_And_Physics_Fix.md) — Sửa triệt để lỗi điều khiển, chuẩn hóa vận tốc và chống đơ phím nhân vật | Hoàn tất (Đã nghiệm thu) |
 | 03 | `V15-03` | [03_Corner_Sliding_And_Map_Colliders.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/03_Corner_Sliding_And_Map_Colliders.md) — Cơ chế trượt góc mượt mà Corner Sliding và tối ưu hóa hộp va chạm bản đồ | Hoàn tất (Đã nghiệm thu) |
-| 04 | `V15-04` | *04_Visual_Scale_And_Sprite_Harmonization.md* — Chuẩn hóa tỷ lệ sprite nhân vật, NPC và công trình | Sắp tới |
-| 05 | `V15-05` | *05_Survival_Composure_And_Vision_Tuning.md* — Tinh chỉnh Bình Tâm và tầm nhìn sương mù | Sắp tới |
-| 06 | `V15-06` | *06_UI_Deduplication_And_HUD_Polishing.md* — Dọn dẹp trùng lặp và tối ưu hóa UIScene | Sắp tới |
+| 04 | `V15-04` | [04_F9_Debug_Separation.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/04_F9_Debug_Separation.md) — Tách bảng kiểm tra kỹ thuật [F9] khỏi giao diện người chơi và tắt mặc định | Hoàn tất (Đã nghiệm thu) |
+| 05 | `V15-05` | *05_Visual_Scale_And_Sprite_Harmonization.md* — Chuẩn hóa tỷ lệ sprite nhân vật, NPC và công trình (Giai đoạn 2) | Sắp tới |
+| 06 | `V15-06` | *06_Survival_Composure_And_Vision_Tuning.md* — Tinh chỉnh Bình Tâm và tầm nhìn sương mù | Sắp tới |
+| 07 | `V15-07` | *07_UI_Deduplication_And_HUD_Polishing.md* — Dọn dẹp trùng lặp và tối ưu hóa UIScene | Sắp tới |
 
 ---
 *Tài liệu được cập nhật tự động trong suốt quá trình phát triển HOLLOW WOODS V1.5.*
