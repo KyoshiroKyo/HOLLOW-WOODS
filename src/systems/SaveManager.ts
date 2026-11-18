@@ -1,5 +1,6 @@
 import { PlayerState } from '../state/PlayerState';
 import { HerbPlotStage, ZoneId } from '../types';
+import { saveGameNow, loadGameProgress, LOCAL_PREFIX } from '../services/CloudSaveService';
 
 export interface EquippedSlotsData {
   body: string | null;
@@ -77,7 +78,7 @@ export class SaveManager {
    */
   public static getRawSaveData(): string | null {
     try {
-      let raw = localStorage.getItem(SaveManager.SAVE_KEY);
+      let raw = localStorage.getItem(`${LOCAL_PREFIX}slot_1`) || localStorage.getItem(SaveManager.SAVE_KEY);
       if (!raw) {
         // Tương thích ngược: kiểm tra khóa lưu cũ v3
         const legacyRaw = localStorage.getItem(SaveManager.LEGACY_SAVE_KEY);
@@ -232,6 +233,12 @@ export class SaveManager {
             flags.push(qf.trim());
           }
         }
+      } else if (rawObj.questFlags && typeof rawObj.questFlags === 'object') {
+        for (const [k, v] of Object.entries(rawObj.questFlags)) {
+          if (v && typeof k === 'string' && k.trim().length > 0 && !flags.includes(k.trim())) {
+            flags.push(k.trim());
+          }
+        }
       }
 
       // 5. Nhiệm vụ hiện tại & Nhiệm vụ đang thực hiện (Quests)
@@ -270,9 +277,11 @@ export class SaveManager {
       let visitedZones: string[] = ['fog_crossing', 'bellhollow'];
       if (Array.isArray(rawObj.visitedZones) && rawObj.visitedZones.length > 0) {
         visitedZones = rawObj.visitedZones.filter((z: any) => typeof z === 'string');
-        if (!visitedZones.includes('fog_crossing')) visitedZones.push('fog_crossing');
-        if (!visitedZones.includes('bellhollow')) visitedZones.push('bellhollow');
+      } else if (rawObj.exploredZones && typeof rawObj.exploredZones === 'object') {
+        visitedZones = Object.keys(rawObj.exploredZones).filter(k => (rawObj.exploredZones as any)[k]);
       }
+      if (!visitedZones.includes('fog_crossing')) visitedZones.push('fog_crossing');
+      if (!visitedZones.includes('bellhollow')) visitedZones.push('bellhollow');
 
       let unlockedZones: string[] = ['fog_crossing', 'bellhollow', 'sanctuary_farm', 'outer_woods'];
       if (Array.isArray(rawObj.unlockedZones) && rawObj.unlockedZones.length > 0) {
@@ -371,7 +380,11 @@ export class SaveManager {
         stats,
         inventory,
         flags,
-        questFlags: rawObj.questFlags ? [...rawObj.questFlags] : [...flags],
+        questFlags: Array.isArray(rawObj.questFlags)
+          ? [...rawObj.questFlags]
+          : (rawObj.questFlags && typeof rawObj.questFlags === 'object'
+            ? Object.keys(rawObj.questFlags)
+            : [...flags]),
         currentQuestId,
         quests,
         unlockedLoreIds,
@@ -417,60 +430,66 @@ export class SaveManager {
   }
 
   /**
-   * Lưu game với bước kiểm tra tính hợp lệ trước khi ghi đè
+   * Tạo đối tượng SaveData từ trạng thái hiện tại của PlayerState
+   */
+  public static buildSaveData(checkpointName: string, zoneId: string, playerX: number, playerY: number): SaveData {
+    const state = PlayerState.getInstance();
+
+    const questData = Array.from(state.quests.values()).map(q => ({
+      id: q.id,
+      tasks: q.tasks.map(t => ({ id: t.id, done: t.done }))
+    }));
+
+    const statsSnapshot = {
+      health: state.stats.health,
+      stamina: state.stats.stamina,
+      lanternOil: state.stats.lanternOil,
+      composure: state.stats.composure,
+      isLanternOn: state.stats.isLanternOn,
+      isHiding: false,
+      isSprinting: false,
+      moisture: state.stats.moisture ?? 0,
+      temperature: state.stats.temperature ?? 80
+    };
+
+    return {
+      saveVersion: SaveManager.CURRENT_SCHEMA_VERSION,
+      saveSchemaVersion: SaveManager.CURRENT_SCHEMA_VERSION,
+      version: '1.4.0',
+      timestamp: Date.now(),
+      checkpointName,
+      zoneId,
+      playerPos: { x: playerX, y: playerY },
+      stats: statsSnapshot,
+      inventory: Array.from(state.inventory.entries()),
+      flags: Array.from(state.flags),
+      questFlags: Array.from(state.flags),
+      currentQuestId: state.currentQuestId,
+      quests: questData,
+      unlockedLoreIds: state.unlockedLore.map(l => l.id),
+      visitedZones: state.getVisitedZones(),
+      unlockedZones: state.getUnlockedZones(),
+      herbPlots: state.getHerbPlots().map(p => ({ id: p.id, stage: p.stage, plantedAt: p.plantedAt })),
+      dayCount: state.dayCount ?? 1,
+      timeOfDay: state.timeOfDay ?? 0,
+      equippedSlots: state.equippedSlots ?? { body: null, feet: null, back: null, charm: null },
+      storageChest: Array.from(state.storageChest.entries()),
+      storageChestInventory: Array.from(state.storageChest.entries()),
+      campfireLevel: state.campfireLevel ?? 1,
+      campfireFuel: state.campfireFuel ?? 180,
+      unlockedBestiary: Array.from(state.bestiary.values()).filter(b => b.observed).map(b => b.species),
+      observedCreatures: Array.from(state.bestiary.values()).filter(b => b.observed).map(b => b.species),
+      memoryAwakeningStage: state.memoryAwakeningStage ?? 0,
+      legacyExtraData: state.legacyExtraData ? { ...state.legacyExtraData } : undefined
+    };
+  }
+
+  /**
+   * Lưu game với bước kiểm tra tính hợp lệ trước khi ghi đè (Đồng bộ CloudSaveService)
    */
   public static saveGame(checkpointName: string, zoneId: string, playerX: number, playerY: number): boolean {
     try {
-      const state = PlayerState.getInstance();
-
-      const questData = Array.from(state.quests.values()).map(q => ({
-        id: q.id,
-        tasks: q.tasks.map(t => ({ id: t.id, done: t.done }))
-      }));
-
-      // Snapshot stats
-      const statsSnapshot = {
-        health: state.stats.health,
-        stamina: state.stats.stamina,
-        lanternOil: state.stats.lanternOil,
-        composure: state.stats.composure,
-        isLanternOn: state.stats.isLanternOn,
-        isHiding: false,
-        isSprinting: false,
-        moisture: state.stats.moisture ?? 0,
-        temperature: state.stats.temperature ?? 80
-      };
-
-      const candidateSaveData: SaveData = {
-        saveVersion: SaveManager.CURRENT_SCHEMA_VERSION,
-        saveSchemaVersion: SaveManager.CURRENT_SCHEMA_VERSION,
-        version: '1.4.0',
-        timestamp: Date.now(),
-        checkpointName,
-        zoneId,
-        playerPos: { x: playerX, y: playerY },
-        stats: statsSnapshot,
-        inventory: Array.from(state.inventory.entries()),
-        flags: Array.from(state.flags),
-        questFlags: Array.from(state.flags),
-        currentQuestId: state.currentQuestId,
-        quests: questData,
-        unlockedLoreIds: state.unlockedLore.map(l => l.id),
-        visitedZones: state.getVisitedZones(),
-        unlockedZones: state.getUnlockedZones(),
-        herbPlots: state.getHerbPlots().map(p => ({ id: p.id, stage: p.stage, plantedAt: p.plantedAt })),
-        dayCount: state.dayCount ?? 1,
-        timeOfDay: state.timeOfDay ?? 0,
-        equippedSlots: state.equippedSlots ?? { body: null, feet: null, back: null, charm: null },
-        storageChest: Array.from(state.storageChest.entries()),
-        storageChestInventory: Array.from(state.storageChest.entries()),
-        campfireLevel: state.campfireLevel ?? 1,
-        campfireFuel: state.campfireFuel ?? 180,
-        unlockedBestiary: Array.from(state.bestiary.values()).filter(b => b.observed).map(b => b.species),
-        observedCreatures: Array.from(state.bestiary.values()).filter(b => b.observed).map(b => b.species),
-        memoryAwakeningStage: state.memoryAwakeningStage ?? 0,
-        legacyExtraData: state.legacyExtraData ? { ...state.legacyExtraData } : undefined
-      };
+      const candidateSaveData = SaveManager.buildSaveData(checkpointName, zoneId, playerX, playerY);
 
       // BƯỚC VALIDATION TRƯỚC KHI GHI
       const validated = SaveManager.sanitizeAndMigrateSaveData(candidateSaveData);
@@ -485,7 +504,8 @@ export class SaveManager {
         SaveManager.backupV13Save(oldRaw);
       }
 
-      localStorage.setItem(SaveManager.SAVE_KEY, JSON.stringify(validated));
+      // Lưu qua CloudSaveService (Lưu kép: LocalStorage + p2.storage đám mây)
+      saveGameNow(validated);
       return true;
     } catch (e) {
       console.error('[SaveManager] Lỗi lưu game:', e);
@@ -494,7 +514,111 @@ export class SaveManager {
   }
 
   /**
-   * Tải game với quy trình chuyển đổi không phá hủy
+   * Phục hồi dữ liệu SaveData vào thực thể PlayerState
+   */
+  public static applySaveToState(data: SaveData): SaveData {
+    const state = PlayerState.getInstance();
+
+    // Phục hồi chỉ số
+    state.stats.health = data.stats.health;
+    state.stats.stamina = data.stats.stamina;
+    state.stats.lanternOil = data.stats.lanternOil;
+    state.stats.composure = data.stats.composure;
+    state.stats.isLanternOn = data.stats.isLanternOn;
+    state.stats.isHiding = false;
+    state.stats.isSprinting = false;
+    state.stats.moisture = data.stats.moisture ?? 0;
+    state.stats.temperature = data.stats.temperature ?? 80;
+
+    // Phục hồi túi đồ
+    state.inventory.clear();
+    for (const [id, count] of data.inventory) {
+      state.inventory.set(id, count);
+    }
+
+    // Phục hồi cờ
+    state.flags.clear();
+    for (const f of data.flags) {
+      state.flags.add(f);
+    }
+
+    // Phục hồi nhiệm vụ
+    state.currentQuestId = data.currentQuestId;
+    for (const qSave of data.quests) {
+      const qLive = state.quests.get(qSave.id);
+      if (qLive) {
+        for (const tSave of qSave.tasks) {
+          const tLive = qLive.tasks.find(t => t.id === tSave.id);
+          if (tLive) tLive.done = tSave.done;
+        }
+      }
+    }
+
+    // Phục hồi phân khu đã khám phá và vị trí
+    state.visitedZones.clear();
+    if (data.visitedZones && Array.isArray(data.visitedZones)) {
+      for (const z of data.visitedZones) {
+        state.visitedZones.add(z);
+      }
+    } else {
+      state.visitedZones.add('fog_crossing');
+      state.visitedZones.add('bellhollow');
+    }
+    if (data.zoneId) {
+      state.setCurrentZone(data.zoneId as ZoneId);
+    }
+
+    // Phục hồi nông trại thảo mộc Sanctuary Farm
+    if (data.herbPlots && Array.isArray(data.herbPlots)) {
+      for (const pSave of data.herbPlots) {
+        state.updateHerbPlot(pSave.id, pSave.stage, pSave.plantedAt);
+      }
+    }
+
+    // Phục hồi trạng thái mở khóa phân khu
+    state.restoreUnlockedZones(data.unlockedZones);
+
+    // Phục hồi các trường mới V1.4
+    state.dayCount = data.dayCount ?? 1;
+    state.timeOfDay = data.timeOfDay ?? 0;
+    if (data.equippedSlots) {
+      state.equippedSlots = { ...data.equippedSlots };
+    }
+    state.storageChest.clear();
+    const loadedChest = (data.storageChestInventory && Array.isArray(data.storageChestInventory))
+      ? data.storageChestInventory
+      : data.storageChest;
+    if (loadedChest && Array.isArray(loadedChest)) {
+      for (const [itemId, count] of loadedChest) {
+        state.storageChest.set(itemId, count);
+      }
+    } else if (loadedChest && typeof loadedChest === 'object') {
+      for (const [itemId, count] of Object.entries(loadedChest)) {
+        state.storageChest.set(itemId, Number(count));
+      }
+    }
+    state.campfireLevel = data.campfireLevel ?? 1;
+    state.campfireFuel = data.campfireFuel ?? 180;
+    state.memoryAwakeningStage = data.memoryAwakeningStage ?? 0;
+
+    // Phục hồi Sổ Tay Sinh Vật (Bestiary)
+    const bestiaryList = data.unlockedBestiary || data.observedCreatures;
+    if (bestiaryList && Array.isArray(bestiaryList)) {
+      for (const sp of bestiaryList) {
+        state.observeCreature(sp as any);
+      }
+    }
+
+    // V1.4 - P8-04: Phục hồi vùng lưu dự phòng an toàn legacyExtraData
+    state.legacyExtraData = data.legacyExtraData ? { ...data.legacyExtraData } : undefined;
+
+    state.emit('stats_changed', state.stats);
+    state.emit('inventory_changed', {});
+    return data;
+  }
+
+  /**
+   * Tải game đồng bộ với quy trình chuyển đổi không phá hủy
    */
   public static loadGame(): SaveData | null {
     try {
@@ -508,107 +632,29 @@ export class SaveManager {
       const data = SaveManager.sanitizeAndMigrateSaveData(parsed);
       if (!data) return null;
 
-      const state = PlayerState.getInstance();
-
-      // Phục hồi chỉ số
-      state.stats.health = data.stats.health;
-      state.stats.stamina = data.stats.stamina;
-      state.stats.lanternOil = data.stats.lanternOil;
-      state.stats.composure = data.stats.composure;
-      state.stats.isLanternOn = data.stats.isLanternOn;
-      state.stats.isHiding = false;
-      state.stats.isSprinting = false;
-      state.stats.moisture = data.stats.moisture ?? 0;
-      state.stats.temperature = data.stats.temperature ?? 80;
-
-      // Phục hồi túi đồ
-      state.inventory.clear();
-      for (const [id, count] of data.inventory) {
-        state.inventory.set(id, count);
-      }
-
-      // Phục hồi cờ
-      state.flags.clear();
-      for (const f of data.flags) {
-        state.flags.add(f);
-      }
-
-      // Phục hồi nhiệm vụ
-      state.currentQuestId = data.currentQuestId;
-      for (const qSave of data.quests) {
-        const qLive = state.quests.get(qSave.id);
-        if (qLive) {
-          for (const tSave of qSave.tasks) {
-            const tLive = qLive.tasks.find(t => t.id === tSave.id);
-            if (tLive) tLive.done = tSave.done;
-          }
-        }
-      }
-
-      // Phục hồi phân khu đã khám phá và vị trí
-      state.visitedZones.clear();
-      if (data.visitedZones && Array.isArray(data.visitedZones)) {
-        for (const z of data.visitedZones) {
-          state.visitedZones.add(z);
-        }
-      } else {
-        state.visitedZones.add('fog_crossing');
-        state.visitedZones.add('bellhollow');
-      }
-      if (data.zoneId) {
-        state.setCurrentZone(data.zoneId as ZoneId);
-      }
-
-      // Phục hồi nông trại thảo mộc Sanctuary Farm
-      if (data.herbPlots && Array.isArray(data.herbPlots)) {
-        for (const pSave of data.herbPlots) {
-          state.updateHerbPlot(pSave.id, pSave.stage, pSave.plantedAt);
-        }
-      }
-
-      // Phục hồi trạng thái mở khóa phân khu
-      state.restoreUnlockedZones(data.unlockedZones);
-
-      // Phục hồi các trường mới V1.4
-      state.dayCount = data.dayCount ?? 1;
-      state.timeOfDay = data.timeOfDay ?? 0;
-      if (data.equippedSlots) {
-        state.equippedSlots = { ...data.equippedSlots };
-      }
-      state.storageChest.clear();
-      const loadedChest = (data.storageChestInventory && Array.isArray(data.storageChestInventory))
-        ? data.storageChestInventory
-        : data.storageChest;
-      if (loadedChest && Array.isArray(loadedChest)) {
-        for (const [itemId, count] of loadedChest) {
-          state.storageChest.set(itemId, count);
-        }
-      } else if (loadedChest && typeof loadedChest === 'object') {
-        for (const [itemId, count] of Object.entries(loadedChest)) {
-          state.storageChest.set(itemId, Number(count));
-        }
-      }
-      state.campfireLevel = data.campfireLevel ?? 1;
-      state.campfireFuel = data.campfireFuel ?? 180;
-      state.memoryAwakeningStage = data.memoryAwakeningStage ?? 0;
-
-      // Phục hồi Sổ Tay Sinh Vật (Bestiary)
-      const bestiaryList = data.unlockedBestiary || data.observedCreatures;
-      if (bestiaryList && Array.isArray(bestiaryList)) {
-        for (const sp of bestiaryList) {
-          state.observeCreature(sp as any);
-        }
-      }
-
-      // V1.4 - P8-04: Phục hồi vùng lưu dự phòng an toàn legacyExtraData
-      state.legacyExtraData = data.legacyExtraData ? { ...data.legacyExtraData } : undefined;
-
-      state.emit('stats_changed', state.stats);
-      state.emit('inventory_changed', {});
-      return data;
+      return SaveManager.applySaveToState(data);
     } catch (e) {
       console.error('[SaveManager] Lỗi tải game:', e);
       return null;
+    }
+  }
+
+  /**
+   * Tải game bất đồng bộ kết hợp đối chiếu Cloud Save và Local Save
+   */
+  public static async loadGameAsync(): Promise<SaveData | null> {
+    try {
+      const cloudData = await loadGameProgress();
+      if (cloudData) {
+        const validated = SaveManager.sanitizeAndMigrateSaveData(cloudData);
+        if (validated) {
+          return SaveManager.applySaveToState(validated);
+        }
+      }
+      return SaveManager.loadGame();
+    } catch (e) {
+      console.warn('[SaveManager] Lỗi tải Cloud Save bất đồng bộ, dùng bản lưu cục bộ:', e);
+      return SaveManager.loadGame();
     }
   }
 
@@ -616,6 +662,11 @@ export class SaveManager {
     try {
       localStorage.removeItem(SaveManager.SAVE_KEY);
       localStorage.removeItem(SaveManager.LEGACY_SAVE_KEY);
+      localStorage.removeItem(`${LOCAL_PREFIX}slot_1`);
+      if (typeof window !== 'undefined' && (window as any).p2?.storage) {
+        (window as any).p2.storage.set('hw_save_slot_1', null).catch(() => {});
+        (window as any).p2.storage.set('hw_save_meta', null).catch(() => {});
+      }
     } catch {
       // Ignored
     }

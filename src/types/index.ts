@@ -25,7 +25,13 @@ export type ZoneId =
   // V1.4 - Sub-areas (Tiểu khu khám phá)
   | 'sub_bell_workshop'
   | 'sub_root_cellar'
-  | 'sub_whispering_clearing';
+  | 'sub_whispering_clearing'
+  // V1.4 - Expansion Zones (5 Phân Khu Mở Rộng Mới - HW-V14-EXP)
+  | 'abyssal_chasm'
+  | 'drowned_mire_depths'
+  | 'whispering_grove_sanctum'
+  | 'sunken_crypt_ruins'
+  | 'veil_origin_cavern';
 
 export type GatingConditionType = 
   | 'always_unlocked' 

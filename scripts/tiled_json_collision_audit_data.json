@@ -1,0 +1,189 @@
+{
+  "scanTimestamp": "2026-11-18T08:35:51.945Z",
+  "originIssues": [
+    {
+      "id": "house_edda",
+      "name": "Nhà Edda – Người Giữ Chuông",
+      "jsonCoords": "(648, 50, w=112, h=48)",
+      "spriteDimensions": "112x80",
+      "tiledBottomLeftConvention": "Nếu coi jsonY là Bottom-Left: Top-Left Y = -30",
+      "phaserRenderActual": "Sprite Y = [26 .. 106]",
+      "jsonColliderActual": "Collider Y = [50 .. 98]",
+      "verticalMismatch": "8px chênh lệch giữa chân sprite và chân collider JSON",
+      "consequence": "Nếu nạp trực tiếp tọa độ Tiled vào Phaser mà không trừ height, công trình bị tụt sâu xuống dưới. Nếu collider JSON dùng height=48 trong khi sprite cao 80px, chân nhà bị hổng 8px đến 24px khiến người chơi đi xuyên qua mặt tiền."
+    },
+    {
+      "id": "house_neris",
+      "name": "Nhà Neris – Thảo Mộc",
+      "jsonCoords": "(914, 44, w=112, h=48)",
+      "spriteDimensions": "112x80",
+      "tiledBottomLeftConvention": "Nếu coi jsonY là Bottom-Left: Top-Left Y = -36",
+      "phaserRenderActual": "Sprite Y = [20 .. 100]",
+      "jsonColliderActual": "Collider Y = [44 .. 92]",
+      "verticalMismatch": "8px chênh lệch giữa chân sprite và chân collider JSON",
+      "consequence": "Nếu nạp trực tiếp tọa độ Tiled vào Phaser mà không trừ height, công trình bị tụt sâu xuống dưới. Nếu collider JSON dùng height=48 trong khi sprite cao 80px, chân nhà bị hổng 8px đến 24px khiến người chơi đi xuyên qua mặt tiền."
+    },
+    {
+      "id": "bell_tower",
+      "name": "Tháp Chuông Làng",
+      "jsonCoords": "(820, 252, w=80, h=58)",
+      "spriteDimensions": "80x112",
+      "tiledBottomLeftConvention": "Nếu coi jsonY là Bottom-Left: Top-Left Y = 140",
+      "phaserRenderActual": "Sprite Y = [200 .. 312]",
+      "jsonColliderActual": "Collider Y = [252 .. 310]",
+      "verticalMismatch": "2px chênh lệch giữa chân sprite và chân collider JSON",
+      "consequence": "Nếu nạp trực tiếp tọa độ Tiled vào Phaser mà không trừ height, công trình bị tụt sâu xuống dưới. Nếu collider JSON dùng height=48 trong khi sprite cao 80px, chân nhà bị hổng 8px đến 24px khiến người chơi đi xuyên qua mặt tiền."
+    }
+  ],
+  "phantomColliders": [
+    {
+      "zone": "bellhollow",
+      "id": "house_edda_phantom_west",
+      "coords": "(632 .. 648, y=50 .. 98)",
+      "reason": "Do lỗi body.setOffset(-w/2, -h/2) trên Dummy Sprite 32x32, phát sinh dải tường vô hình rộng 16px ngoài sân hiên bên trái nhà"
+    },
+    {
+      "zone": "bellhollow",
+      "id": "house_neris_phantom_west",
+      "coords": "(898 .. 914, y=44 .. 92)",
+      "reason": "Do lỗi body.setOffset(-w/2, -h/2) trên Dummy Sprite 32x32, phát sinh dải tường vô hình rộng 16px ngoài sân hiên bên trái nhà"
+    },
+    {
+      "zone": "crooked_path",
+      "id": "cp_collapsed_bridge_blocker",
+      "name": "Chướng Ngại Vật Cầu Sập Chặn Lối Thẳng",
+      "coords": "(1775, 240, w=36, h=84)",
+      "reason": "Collider tàng hình chặn đường nhưng không có tile tường hiển thị tương ứng"
+    }
+  ],
+  "flipFlagReport": [
+    {
+      "layerIndex": 1,
+      "totalTiles": 1600,
+      "flippedCount": 0,
+      "sampleFlipped": []
+    },
+    {
+      "layerIndex": 2,
+      "totalTiles": 1600,
+      "flippedCount": 0,
+      "sampleFlipped": []
+    },
+    {
+      "layerIndex": 3,
+      "totalTiles": 1600,
+      "flippedCount": 0,
+      "sampleFlipped": []
+    },
+    {
+      "layerIndex": 4,
+      "totalTiles": 1600,
+      "flippedCount": 0,
+      "sampleFlipped": []
+    },
+    {
+      "layerIndex": 5,
+      "totalTiles": 1600,
+      "flippedCount": 0,
+      "sampleFlipped": []
+    },
+    {
+      "layerIndex": 6,
+      "totalTiles": 1600,
+      "flippedCount": 0,
+      "sampleFlipped": []
+    },
+    {
+      "layerIndex": 7,
+      "totalTiles": 1600,
+      "flippedCount": 0,
+      "sampleFlipped": []
+    }
+  ],
+  "scaleWithoutRefresh": [
+    {
+      "line": 3281,
+      "code": "markerSouth.setScale(0.55);"
+    }
+  ],
+  "tileSizeMismatches": [
+    {
+      "source": "Tiled Tileset Standard",
+      "standardGrid": "16x16 px",
+      "phaserRuntimeTextures": "castle_stone_floor.png (16x16), tile_stone_floor_v14.png (32x32), rock_large (32x30)",
+      "issue": "Trộn lẫn sprite 16px và 32px mà không chuẩn hóa hệ số scale sẽ gây co giãn sai lệch hitbox Arcade Physics"
+    }
+  ],
+  "perimeterGaps": [
+    {
+      "edge": "Biên Bắc (North Perimeter, Y = -640)",
+      "xRange": "[2200 .. 2210]",
+      "yRange": "[-640 .. -610]",
+      "width": "10 px",
+      "cause": "Khoảng hở giữa mép phải df_bound_top_left (x=2200) và mép trái to_abyssal_chasm (x=2210)"
+    },
+    {
+      "edge": "Biên Bắc (North Perimeter, Y = -640)",
+      "xRange": "[2270 .. 2280]",
+      "yRange": "[-640 .. -610]",
+      "width": "10 px",
+      "cause": "Khoảng hở giữa mép phải to_abyssal_chasm (x=2270) và mép trái df_bound_top_right (x=2280)"
+    },
+    {
+      "edge": "Biên Đông (East Perimeter, X = 2850..2880)",
+      "xRange": "[2850 .. 2880]",
+      "yRange": "[-320 .. -310]",
+      "width": "10 px (cao)",
+      "cause": "Khoảng hở giữa mép dưới df_bound_right_top (y=-320) và mép trên to_silent_mire_from_df (y=-310)"
+    },
+    {
+      "edge": "Biên Đông (East Perimeter, X = 2850..2880)",
+      "xRange": "[2850 .. 2880]",
+      "yRange": "[-210 .. -200]",
+      "width": "10 px (cao)",
+      "cause": "Khoảng hở giữa mép dưới to_silent_mire_from_df (y=-210) và mép trên df_bound_right_bottom (y=-200)"
+    },
+    {
+      "edge": "Biên Nam (South Perimeter, Y = -25..0)",
+      "xRange": "[1800 .. 1810]",
+      "yRange": "[-25 .. 0]",
+      "width": "10 px",
+      "cause": "Khoảng hở giữa mép phải df_bound_bottom_left_1 (x=1800) và mép trái to_whispering_clearing (x=1810)"
+    },
+    {
+      "edge": "Biên Nam (South Perimeter, Y = -25..0)",
+      "xRange": "[1870 .. 1880]",
+      "yRange": "[-25 .. 0]",
+      "width": "10 px",
+      "cause": "Khoảng hở giữa mép phải to_whispering_clearing (x=1870) và mép trái df_bound_bottom_left_2 (x=1880)"
+    },
+    {
+      "edge": "Biên Nam (South Perimeter, Y = -25..0)",
+      "xRange": "[2000 .. 2010]",
+      "yRange": "[-25 .. 0]",
+      "width": "10 px",
+      "cause": "Khoảng hở giữa mép phải df_bound_bottom_left_2 (x=2000) và mép trái to_crooked_path_from_df (x=2010)"
+    },
+    {
+      "edge": "Biên Nam (South Perimeter, Y = -25..0)",
+      "xRange": "[2150 .. 2160]",
+      "yRange": "[-25 .. 0]",
+      "width": "10 px",
+      "cause": "Khoảng hở giữa mép phải to_crooked_path_from_df (x=2150) và mép trái df_bound_bottom_right (x=2160)"
+    },
+    {
+      "edge": "Dãy cây cổ thụ viền Bắc (WorldBuilder renderDeepForestTerrain)",
+      "xRange": "[1640 .. 2840]",
+      "yRange": "[-590 .. -572]",
+      "width": "85 px giữa các thân cây",
+      "cause": "Dãy cây rải bước nhảy 105px (thân cây rộng 20px) tạo khoảng trống 85px cho phép người chơi lách vào vùng đệm 50px (y = -590..-640) sát biên bản đồ"
+    },
+    {
+      "edge": "Dãy cây cổ thụ viền Tây (WorldBuilder renderDeepForestTerrain)",
+      "xRange": "[1640 .. 1660]",
+      "yRange": "[-600 .. -40]",
+      "width": "83 px giữa các thân cây",
+      "cause": "Dãy cây rải bước nhảy 95px (thân cây cao 12px) tạo khoảng trống 83px cho phép người chơi lọt vào khoảng đệm 40px (x = 1600..1640)"
+    }
+  ]
+}

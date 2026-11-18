@@ -25,3 +25,8 @@ Pixel_Art/*.rar
 Sound_Effects/
 Sound_Effects/_extracted_dialogue/
 
+# V1.4 Backups & Staging
+_unused_assets_archive/
+backup_*/
+staging/
+

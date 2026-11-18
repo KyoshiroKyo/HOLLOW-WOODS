@@ -16,14 +16,17 @@ const canUseWebGL = (() => {
   }
 })();
 
-export const GameConfig: Phaser.Types.Core.GameConfig = {
+export const GameConfig: Phaser.Types.Core.GameConfig & { resolution?: number } = {
   type: canUseWebGL ? Phaser.WEBGL : Phaser.CANVAS,
+  autoFocus: false,
   parent: 'game-container',
   width: 1280,
   height: 720,
   pixelArt: true,
   antialias: false,
   roundPixels: true,
+  // V1.4: Khóa tỷ lệ điểm ảnh an toàn (DPR Cap <= 1.0) chống quá tải GPU fill-rate trên màn hình Retina / High-DPI
+  resolution: Math.min(typeof window !== 'undefined' ? (window.devicePixelRatio || 1) : 1, 1.0),
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,

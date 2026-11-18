@@ -65,16 +65,25 @@ export class AudioManager {
   // Cooldown / Debounce cho One-shot SFX (Tránh dội âm khi spam phím)
   private sfxCooldowns: Map<string, number> = new Map();
 
+  // V1.4: Biến thiên chống lặp ngẫu nhiên (No-Repeat Shuffle Cache) & Chặn chồng Jumpscare (3.0s Lockout)
+  private lastAmbushTriggerTime: number = 0;
+  private lastPlayedSamples: Map<string, string> = new Map();
+
+  // V1.4: Quản lý vòng lặp Drone áp lực khi Boss thức tỉnh (Boss Awakening Drone)
+  private bossDroneSource: AudioBufferSourceNode | null = null;
+  private bossDroneGain: GainNode | null = null;
+  private isBossAwakened: boolean = false;
+
   // V1.4 - P7: Hệ thống ưu tiên âm thanh & Dìm âm nền (Audio Priority & Ducking)
   private isDucked: boolean = false;
   private duckTimer: number | null = null;
   private currentDuckFactor: number = 1.0;
 
-  // Cấu hình âm lượng cân bằng chuẩn C4-13-08 (Ambience 0.38 giúp SFX & lời thoại nổi bật rõ nét)
+  // Cấu hình âm lượng phân tầng chuẩn V1.4 (Master 1.0 = 0dB; Ambience 0.25 = -12dB; SFX 0.85 = -1.4dB)
   public isMuted: boolean = false;
-  private masterVolume: number = 0.8;
+  private masterVolume: number = 1.0;
   private sfxVolume: number = 0.85;
-  private ambienceVolume: number = 0.38;
+  private ambienceVolume: number = 0.25;
 
   // Trạng thái mở khóa AudioContext
   private isUnlocked: boolean = false;
@@ -188,7 +197,38 @@ export class AudioManager {
       dialogue_bram: 'assets/audio/dialogue/dialogue_bram.wav',
       dialogue_finn: 'assets/audio/dialogue/dialogue_finn.wav',
       dialogue_text_blip: 'assets/audio/dialogue/dialogue_text_blip.wav',
-      dialogue_blip: 'assets/audio/dialogue/dialogue_text_blip.wav'
+      dialogue_blip: 'assets/audio/dialogue/dialogue_text_blip.wav',
+
+      // V1.4 Mở rộng âm thanh: Bề mặt di chuyển, Foley, Quái vật, Hù dọa & Boss
+      footstep_mud_1: 'assets/audio/sfx/v14/footstep_mud_1.wav',
+      footstep_mud_2: 'assets/audio/sfx/v14/footstep_mud_2.wav',
+      footstep_wood_1: 'assets/audio/sfx/v14/footstep_wood_1.wav',
+      footstep_wood_2: 'assets/audio/sfx/v14/footstep_wood_2.wav',
+      footstep_stone_1: 'assets/audio/sfx/v14/footstep_stone_1.wav',
+      footstep_stone_2: 'assets/audio/sfx/v14/footstep_stone_2.wav',
+      footstep_leaves_1: 'assets/audio/sfx/v14/footstep_leaves_1.mp3',
+      bat_flap: 'assets/audio/sfx/v14/bat_flap.wav',
+      bat_screech: 'assets/audio/sfx/v14/bat_screech.wav',
+      bat_bite: 'assets/audio/sfx/v14/bat_bite.wav',
+      ghost_moan: 'assets/audio/sfx/v14/ghost_moan.wav',
+      ghost_whisper: 'assets/audio/sfx/v14/ghost_whisper.wav',
+      ghost_scream: 'assets/audio/sfx/v14/ghost_scream.wav',
+      ghost_dissipate: 'assets/audio/sfx/v14/ghost_dissipate.wav',
+      jumpscare_stinger: 'assets/audio/sfx/v14/jumpscare_stinger.wav',
+      sanity_gasp: 'assets/audio/sfx/v14/sanity_gasp.wav',
+      scout_whistle: 'assets/audio/sfx/v14/scout_whistle.wav',
+      dagger_slash: 'assets/audio/sfx/v14/dagger_slash.wav',
+      skull_wolf_growl: 'assets/audio/sfx/v14/skull_wolf_growl.wav',
+      skull_wolf_snarl: 'assets/audio/sfx/v14/skull_wolf_snarl.wav',
+      behemoth_roar: 'assets/audio/sfx/v14/behemoth_roar.wav',
+      behemoth_thud: 'assets/audio/sfx/v14/behemoth_thud.wav',
+      void_stalker_drone: 'assets/audio/sfx/v14/void_stalker_drone.wav',
+      void_stalker_screech: 'assets/audio/sfx/v14/void_stalker_screech.wav',
+      boss_drone: 'assets/audio/sfx/v14/boss_drone.wav',
+      rune_shift: 'assets/audio/sfx/v14/rune_shift.wav',
+      bell_toll_low: 'assets/audio/sfx/v14/bell_toll_low.wav',
+      chest_creak: 'assets/audio/sfx/v14/chest_creak.wav',
+      journal_page: 'assets/audio/sfx/v14/journal_page.wav'
     };
 
     for (const [key, url] of Object.entries(audioManifest)) {
@@ -256,7 +296,14 @@ export class AudioManager {
       'monster_step', 'player_death', 'quest_update', 'resource_gather',
       'rune_error', 'rune_resonance', 'ui_select', 'ui_confirm', 'ui_cancel',
       'heal_poultice', 'oil_refill', 'dialogue_garth', 'dialogue_edda',
-      'dialogue_neris', 'dialogue_bram', 'dialogue_finn', 'dialogue_text_blip'
+      'dialogue_neris', 'dialogue_bram', 'dialogue_finn', 'dialogue_text_blip',
+      'footstep_mud_1', 'footstep_mud_2', 'footstep_wood_1', 'footstep_wood_2',
+      'footstep_stone_1', 'footstep_stone_2', 'footstep_leaves_1',
+      'bat_flap', 'bat_screech', 'bat_bite', 'ghost_moan', 'ghost_whisper',
+      'ghost_scream', 'ghost_dissipate', 'jumpscare_stinger', 'sanity_gasp',
+      'scout_whistle', 'dagger_slash', 'skull_wolf_growl', 'skull_wolf_snarl',
+      'behemoth_roar', 'behemoth_thud', 'void_stalker_drone', 'void_stalker_screech',
+      'boss_drone', 'rune_shift', 'bell_toll_low', 'chest_creak', 'journal_page'
     ];
     for (const key of audioKeys) {
       if (scene.cache.audio.has(key)) {
@@ -280,13 +327,41 @@ export class AudioManager {
   }
 
   /**
-   * Phát tệp âm thanh mẫu đã nạp trong bộ đệm (giới hạn tối đa 4 kênh trùng lặp, giải phóng sạch qua onended)
+   * V1.4: Thuật toán chống trùng liên tiếp (No-Repeat Shuffle)
    */
-  private playSampled(
+  public getNoRepeatSample(category: string, candidates: string[]): string {
+    if (candidates.length <= 1) return candidates[0];
+    const last = this.lastPlayedSamples.get(category);
+    const available = candidates.filter(c => c !== last);
+    const chosen = available[Math.floor(Math.random() * available.length)];
+    this.lastPlayedSamples.set(category, chosen);
+    return chosen;
+  }
+
+  /**
+   * V1.4: Biến thiên ngẫu nhiên (Pitch & Volume Jitter) loại bỏ cảm giác lặp máy móc
+   */
+  public applyJitter(
+    baseVolume: number,
+    volumeJitterPercent: number = 0.10, // ±10%
+    minPitch: number = 0.92,
+    maxPitch: number = 1.08
+  ): { volume: number; pitch: number } {
+    const volJitter = (Math.random() * 2 - 1) * volumeJitterPercent;
+    const volume = Math.max(0.01, baseVolume * (1 + volJitter));
+    const pitch = minPitch + Math.random() * (maxPitch - minPitch);
+    return { volume, pitch };
+  }
+
+  /**
+   * Phát tệp âm thanh mẫu đã nạp trong bộ đệm (giới hạn đa âm Polyphony linh hoạt theo từng loại, giải phóng sạch qua onended)
+   */
+  public playSampled(
     key: string,
     volume: number = 1.0,
     playbackRate: number = 1.0,
-    routeToVeil: boolean = true
+    routeToVeil: boolean = true,
+    maxPolyphony: number = 4
   ): boolean {
     if (!this.ctx || this.isMuted) return false;
     const buffer = this.audioBuffers.get(key);
@@ -295,9 +370,9 @@ export class AudioManager {
     try {
       this.resumeAudio();
 
-      // Giới hạn số lượng âm thanh SFX trùng lặp tối đa 4 kênh cùng lúc
+      // Giới hạn số lượng âm thanh SFX trùng lặp tối đa theo maxPolyphony (VD: 3 cho bước chân, 2 cho quái)
       const channels = this.activeSFXChannels.get(key) || [];
-      if (channels.length >= 4) {
+      while (channels.length >= maxPolyphony) {
         const oldest = channels.shift();
         if (oldest) {
           const t = this.ctx.currentTime;
@@ -510,13 +585,31 @@ export class AudioManager {
 
   public playFootstep(terrain: TerrainType = 'grass'): void {
     if (!this.ctx || this.isMuted || !this.veilFilter) return;
-    if (!this.checkCooldown('footstep', 130)) return;
+    // Quy chuẩn V1.4: Cooldown tối thiểu 120ms cho bước chân
+    if (!this.checkCooldown('footstep', 120)) return;
     this.resumeAudio();
 
-    if (terrain === 'grass') {
-      if (this.playSampled('footstep_grass', 0.5, 0.95 + Math.random() * 0.1, true)) {
-        return;
-      }
+    // Quy chuẩn V1.4: Phân tầng âm lượng bước chân 0.25 - 0.40 (-12 dB đến -8 dB)
+    // Biến thiên ngẫu nhiên (Pitch: 0.92 - 1.08; Volume: ±10%)
+    const baseVol = 0.32;
+    const { volume, pitch } = this.applyJitter(baseVol, 0.10, 0.92, 1.08);
+
+    // Thuật toán chống trùng liên tiếp (No-Repeat Shuffle) với tối đa 3 kênh phát đồng thời
+    let chosenKey: string | null = null;
+    if (terrain === 'mud') {
+      chosenKey = this.getNoRepeatSample('mud', ['footstep_mud_1', 'footstep_mud_2']);
+    } else if (terrain === 'wood') {
+      chosenKey = this.getNoRepeatSample('wood', ['footstep_wood_1', 'footstep_wood_2']);
+    } else if (terrain === 'stone') {
+      chosenKey = this.getNoRepeatSample('stone', ['footstep_stone_1', 'footstep_stone_2']);
+    } else if (terrain === 'grass') {
+      chosenKey = this.getNoRepeatSample('grass', ['footstep_grass', 'footstep_leaves_1']);
+    } else if (terrain === 'dirt') {
+      chosenKey = this.getNoRepeatSample('dirt', ['footstep_stone_1', 'footstep_leaves_1']);
+    }
+
+    if (chosenKey && this.playSampled(chosenKey, volume, pitch, true, 3)) {
+      return;
     }
 
     const now = this.ctx.currentTime;
@@ -527,10 +620,10 @@ export class AudioManager {
       case 'stone': {
         // Đá lát quảng trường Bellhollow: sắc nét, đanh, tần số cao lướt nhanh
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(280, now);
+        osc.frequency.setValueAtTime(280 * pitch, now);
         osc.frequency.exponentialRampToValueAtTime(70, now + 0.05);
 
-        gain.gain.setValueAtTime(0.12 * this.sfxVolume, now);
+        gain.gain.setValueAtTime(volume * 0.4 * this.sfxVolume, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
         osc.connect(gain);
         gain.connect(this.veilFilter);
@@ -542,10 +635,10 @@ export class AudioManager {
       case 'wood': {
         // Cầu gỗ, sàn nhà, ván gỗ đầm lầy: cộng hưởng trầm rỗng
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(170, now);
+        osc.frequency.setValueAtTime(170 * pitch, now);
         osc.frequency.exponentialRampToValueAtTime(55, now + 0.08);
 
-        gain.gain.setValueAtTime(0.16 * this.sfxVolume, now);
+        gain.gain.setValueAtTime(volume * 0.45 * this.sfxVolume, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
         osc.connect(gain);
         gain.connect(this.veilFilter);
@@ -557,10 +650,10 @@ export class AudioManager {
       case 'mud': {
         // Bùn lầy đầm lầy: ướt át, bì bõm
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(95, now);
+        osc.frequency.setValueAtTime(95 * pitch, now);
         osc.frequency.exponentialRampToValueAtTime(28, now + 0.12);
 
-        gain.gain.setValueAtTime(0.15 * this.sfxVolume, now);
+        gain.gain.setValueAtTime(volume * 0.45 * this.sfxVolume, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
         osc.connect(gain);
         gain.connect(this.veilFilter);
@@ -572,10 +665,10 @@ export class AudioManager {
       case 'dirt': {
         // Đường đất khô: nện cộm, trầm đục
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(120, now);
+        osc.frequency.setValueAtTime(120 * pitch, now);
         osc.frequency.exponentialRampToValueAtTime(45, now + 0.06);
 
-        gain.gain.setValueAtTime(0.11 * this.sfxVolume, now);
+        gain.gain.setValueAtTime(volume * 0.38 * this.sfxVolume, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
         osc.connect(gain);
         gain.connect(this.veilFilter);
@@ -588,10 +681,10 @@ export class AudioManager {
       default: {
         // Cỏ xanh xào xạc: nhẹ nhàng, êm ái
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(135, now);
+        osc.frequency.setValueAtTime(135 * pitch, now);
         osc.frequency.exponentialRampToValueAtTime(40, now + 0.07);
 
-        gain.gain.setValueAtTime(0.08 * this.sfxVolume, now);
+        gain.gain.setValueAtTime(volume * 0.3 * this.sfxVolume, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
         osc.connect(gain);
         gain.connect(this.veilFilter);
@@ -636,23 +729,34 @@ export class AudioManager {
   }
 
   /**
-   * Ánh xạ Zone ID của game sang 4 nhóm Ambience đặc thù
+   * Ánh xạ Zone ID của game sang 4 nhóm Ambience đặc thù (Hỗ trợ toàn bộ 17 phân khu V1.4)
    */
   public mapZoneToAmbience(zoneId: string): AmbienceZone {
-    if (zoneId === 'bellhollow' || zoneId === 'sanctuary_farm') {
+    if (zoneId === 'bellhollow' || zoneId === 'sanctuary_farm' || zoneId === 'sub_bell_workshop') {
       return 'village';
     }
-    if (zoneId === 'silent_mire' || zoneId === 'ancient_rune_puzzle' || zoneId === 'broken_bell_shrine') {
+    if (
+      zoneId === 'silent_mire' ||
+      zoneId === 'drowned_mire_depths' ||
+      zoneId === 'ancient_rune_puzzle' ||
+      zoneId === 'sunken_crypt_ruins' ||
+      zoneId === 'broken_bell_shrine'
+    ) {
       return 'mire';
     }
-    if (zoneId === 'fog_crossing') {
+    if (
+      zoneId === 'fog_crossing' ||
+      zoneId === 'abyssal_chasm' ||
+      zoneId === 'veil_origin_cavern' ||
+      zoneId === 'sub_root_cellar'
+    ) {
       return 'crossing';
     }
-    return 'forest'; // outer_woods, crooked_path, deep_forest, fallback
+    return 'forest'; // outer_woods, crooked_path, deep_forest, whispering_grove_sanctum, sub_whispering_clearing, fallback
   }
 
   /**
-   * C4-13-08: Dọn dẹp sạch sẽ toàn bộ các AudioNode và Timer của một kênh Ambience
+   * C4-13-08 & V1.4: Dọn dẹp sạch sẽ toàn bộ các AudioNode và Timer của một kênh Ambience
    * ngăn chặn rò rỉ bộ nhớ và dội âm lặp
    */
   private cleanupChannelNodes(channel: AmbienceChannel): void {
@@ -674,9 +778,9 @@ export class AudioManager {
   }
 
   /**
-   * Chuyển đổi nhạc nền sang vùng mới với hiệu ứng Crossfade mượt mà, chống tạo vòng lặp kép
+   * Chuyển đổi nhạc nền sang vùng mới với hiệu ứng Crossfade mượt mà (Quy chuẩn V1.4: 1.8s - 2.5s)
    */
-  public setAmbienceZone(zoneIdOrType: string, fadeDurationSec: number = 1.4): void {
+  public setAmbienceZone(zoneIdOrType: string, fadeDurationSec: number = 2.0): void {
     const targetZone: AmbienceZone =
       zoneIdOrType === 'village' || zoneIdOrType === 'forest' || zoneIdOrType === 'mire' || zoneIdOrType === 'crossing'
         ? zoneIdOrType
@@ -1082,7 +1186,7 @@ export class AudioManager {
   }
 
   /**
-   * Giải phóng sạch sẽ các vòng lặp âm thanh, timer và bộ đệm khi chuyển cảnh
+   * Giải phóng sạch sẽ các vòng lặp âm thanh, timer và bộ đệm khi chuyển cảnh (Zero Orphan Loop)
    */
   public cleanupAudioLoops(): void {
     if (this.duckTimer) {
@@ -1094,7 +1198,210 @@ export class AudioManager {
       this.heartbeatTimer = null;
       this.isHeartbeatActive = false;
     }
+    if (this.bossDroneSource) {
+      try { this.bossDroneSource.stop(); } catch {}
+      try { this.bossDroneSource.disconnect(); } catch {}
+      this.bossDroneSource = null;
+    }
+    if (this.bossDroneGain) {
+      try { this.bossDroneGain.disconnect(); } catch {}
+      this.bossDroneGain = null;
+    }
+    this.isBossAwakened = false;
     this.unduckAmbience(0.1);
+  }
+
+  // =========================================================================
+  // V1.4: HỆ THỐNG ÂM THANH MỞ RỘNG (JUMPSCARE, MONSTER TELEGRAPH & BOSS AWAKENING)
+  // =========================================================================
+
+  /**
+   * V1.4: Phát âm thanh hù dọa / phục kích bất ngờ (Bat / Ghost Ambush)
+   * - Quy chuẩn: Âm lượng 0.85 - 1.0 (-1.5 dB đến 0 dB)
+   * - Tự động Audio Ducking kênh Ambient xuống 50% trong 1.5 giây
+   * - Khóa chồng âm (Lockout) 3.0 giây chống spam jumpscare liên tục
+   */
+  public triggerJumpscare(type: 'bat' | 'ghost', customVolume?: number): boolean {
+    const now = Date.now();
+    if (now - this.lastAmbushTriggerTime < 3000) {
+      return false; // Chặn chồng tiếng hù dọa trong 3.0s
+    }
+    this.lastAmbushTriggerTime = now;
+    this.resumeAudio();
+
+    // 1. Dìm âm Ambient xuống 50% trong 1.5 giây
+    this.duckAmbience(0.5, 1500);
+
+    const stingerVol = Math.max(0.85, Math.min(1.0, customVolume ?? 0.95));
+
+    // 2. Phát âm thanh stinger giật mình
+    this.playSampled('jumpscare_stinger', stingerVol, 1.0, false, 2);
+
+    // 3. Phát âm thanh quái vật đặc thù với Pitch Jitter
+    if (type === 'bat') {
+      const { volume: flapVol, pitch: flapPitch } = this.applyJitter(stingerVol * 0.9, 0.10, 0.92, 1.08);
+      this.playSampled('bat_flap', flapVol, flapPitch, true, 2);
+      setTimeout(() => {
+        this.playSampled('bat_screech', stingerVol, 1.02, true, 2);
+        this.playSampled('bat_bite', stingerVol * 0.85, 0.98, true, 2);
+      }, 180);
+    } else if (type === 'ghost') {
+      const ghostSample = this.getNoRepeatSample('ghost_jumpscare', ['ghost_scream', 'ghost_moan']);
+      this.playSampled(ghostSample, stingerVol, 0.95, true, 2);
+      setTimeout(() => {
+        this.playSampled('ghost_whisper', stingerVol * 0.75, 0.92, true, 2);
+      }, 250);
+    }
+
+    // 4. Tiếng thở hắt kinh hoàng của nhân vật chính sau cú giật mình
+    setTimeout(() => {
+      this.playSampled('sanity_gasp', 0.85, 1.0, true, 1);
+    }, 320);
+
+    return true;
+  }
+
+  /**
+   * V1.4: Phát tín hiệu cảnh báo quái vật & Goblin Scout (Monster Telegraph)
+   * - Quy chuẩn: Âm lượng 0.65 - 0.80 (-4 dB đến -2 dB), ưu tiên độ rõ để nhận diện từ xa
+   * - Tối đa 2 kênh SFX quái vật cùng loại phát đồng thời
+   * - Hỗ trợ suy giảm âm thanh theo khoảng cách (Spatial Attenuation)
+   */
+  public playMonsterTelegraph(
+    type: 'scout_whistle' | 'dagger_slash' | 'wolf_growl' | 'wolf_snarl' | 'behemoth_roar' | 'behemoth_thud' | 'void_drone' | 'void_screech',
+    sourceX?: number,
+    sourceY?: number,
+    listenerX?: number,
+    listenerY?: number,
+    maxRadius: number = 550
+  ): boolean {
+    if (!this.checkCooldown(`telegraph_${type}`, 250)) return false;
+    const baseVol = 0.72; // Chuẩn 0.65 - 0.80
+    const keyMap: Record<string, string[]> = {
+      scout_whistle: ['scout_whistle'],
+      dagger_slash: ['dagger_slash'],
+      wolf_growl: ['skull_wolf_growl', 'skull_wolf_snarl'],
+      wolf_snarl: ['skull_wolf_snarl'],
+      behemoth_roar: ['behemoth_roar'],
+      behemoth_thud: ['behemoth_thud'],
+      void_drone: ['void_stalker_drone'],
+      void_screech: ['void_stalker_screech']
+    };
+    const candidates = keyMap[type] || ['scout_whistle'];
+    const chosen = this.getNoRepeatSample(type, candidates);
+
+    if (sourceX !== undefined && sourceY !== undefined && listenerX !== undefined && listenerY !== undefined) {
+      return this.playSpatialSFX(chosen, sourceX, sourceY, listenerX, listenerY, maxRadius, baseVol, 2);
+    } else {
+      const { volume, pitch } = this.applyJitter(baseVol, 0.08, 0.94, 1.06);
+      return this.playSampled(chosen, volume, pitch, true, 2);
+    }
+  }
+
+  /**
+   * V1.4: Suy giảm âm lượng tuyến tính theo khoảng cách không gian (Spatial Attenuation)
+   * - Giảm dần theo cự ly nguồn âm tới người chơi và tắt hẳn ngoài bán kính nghe
+   */
+  public playSpatialSFX(
+    key: string,
+    sourceX: number,
+    sourceY: number,
+    listenerX: number,
+    listenerY: number,
+    maxRadius: number = 500,
+    baseVolume: number = 0.72,
+    maxPolyphony: number = 2
+  ): boolean {
+    const dx = sourceX - listenerX;
+    const dy = sourceY - listenerY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist >= maxRadius) return false;
+    const factor = Math.max(0, 1 - dist / maxRadius);
+    const volume = Math.max(0.01, baseVolume * factor);
+    const pitch = 0.96 + Math.random() * 0.08;
+    return this.playSampled(key, volume, pitch, true, maxPolyphony);
+  }
+
+  /**
+   * V1.4: Trạng thái Boss Thức Tỉnh (Boss Awakening State)
+   * - Fade-in lớp âm thanh áp lực (drone/heartbeat) trong 1.0 giây
+   * - Fade-out trong 2.0 giây khi người chơi rời khỏi vùng ảnh hưởng
+   * - Tự động dìm kênh Ambient xuống 50% và kích hoạt nhịp tim dồn dập
+   */
+  public setBossAwakeningState(active: boolean): void {
+    if (this.isBossAwakened === active) return;
+    this.isBossAwakened = active;
+    if (!this.ctx) return;
+    this.resumeAudio();
+
+    const now = this.ctx.currentTime;
+
+    if (active) {
+      // 1. Dìm âm Ambient xuống 50%
+      this.duckAmbience(0.5, 999999);
+      // 2. Kích hoạt nhịp tim dồn dập (550ms)
+      this.setHeartbeatActive(true, 550);
+
+      // 3. Fade-in Drone trong 1.0 giây lên 0.90 (-1 dB)
+      const buffer = this.audioBuffers.get('boss_drone');
+      if (buffer) {
+        if (this.bossDroneSource) {
+          try { this.bossDroneSource.stop(); } catch {}
+          try { this.bossDroneSource.disconnect(); } catch {}
+        }
+        if (this.bossDroneGain) {
+          try { this.bossDroneGain.disconnect(); } catch {}
+        }
+
+        this.bossDroneSource = this.ctx.createBufferSource();
+        this.bossDroneSource.buffer = buffer;
+        this.bossDroneSource.loop = true;
+
+        this.bossDroneGain = this.ctx.createGain();
+        this.bossDroneGain.gain.setValueAtTime(0.0001, now);
+        this.bossDroneGain.gain.exponentialRampToValueAtTime(0.90 * this.masterVolume, now + 1.0);
+
+        this.bossDroneSource.connect(this.bossDroneGain);
+        this.bossDroneGain.connect(this.veilFilter ? this.veilFilter : this.masterGain!);
+        this.bossDroneSource.start(0);
+      }
+    } else {
+      // Fade-out Drone trong 2.0 giây
+      if (this.bossDroneGain) {
+        this.bossDroneGain.gain.cancelScheduledValues(now);
+        this.bossDroneGain.gain.setValueAtTime(Math.max(0.0001, this.bossDroneGain.gain.value), now);
+        this.bossDroneGain.gain.exponentialRampToValueAtTime(0.0001, now + 2.0);
+
+        const src = this.bossDroneSource;
+        const gn = this.bossDroneGain;
+        setTimeout(() => {
+          try { src?.stop(); } catch {}
+          try { src?.disconnect(); gn?.disconnect(); } catch {}
+        }, 2100);
+        this.bossDroneSource = null;
+        this.bossDroneGain = null;
+      }
+      this.setHeartbeatActive(false);
+      this.unduckAmbience(2.0);
+    }
+  }
+
+  /**
+   * V1.4: Tương tác vật thể thế giới mới (Rương cổ, Cổ thư, Cổ ngữ)
+   */
+  public playWorldInteractSFX(type: 'chest' | 'journal' | 'rune' | 'bell'): void {
+    if (!this.checkCooldown(`interact_${type}`, 180)) return;
+    const keyMap = {
+      chest: 'chest_creak',
+      journal: 'journal_page',
+      rune: 'rune_shift',
+      bell: 'bell_toll_low'
+    };
+    const key = keyMap[type];
+    if (key) {
+      const { volume, pitch } = this.applyJitter(0.75, 0.08, 0.95, 1.05);
+      this.playSampled(key, volume, pitch, true, 2);
+    }
   }
 
   private triggerHeartbeatBeat(): void {
@@ -1818,6 +2125,16 @@ export class AudioManager {
   public stopAll(): void {
     this.stopAmbience(true);
     this.setHeartbeatActive(false);
+    if (this.bossDroneSource) {
+      try { this.bossDroneSource.stop(); } catch {}
+      try { this.bossDroneSource.disconnect(); } catch {}
+      this.bossDroneSource = null;
+    }
+    if (this.bossDroneGain) {
+      try { this.bossDroneGain.disconnect(); } catch {}
+      this.bossDroneGain = null;
+    }
+    this.isBossAwakened = false;
     for (const channels of this.activeSFXChannels.values()) {
       for (const ch of channels) {
         try { ch.source.stop(); } catch {}

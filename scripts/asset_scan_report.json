@@ -1,0 +1,27 @@
+{
+  "totalCount": 271,
+  "usedCount": 254,
+  "unusedCount": 17,
+  "usedSize": 31825137,
+  "unusedSize": 1415314,
+  "unusedList": [
+    "assets/maps/abyssal_chasm.json",
+    "assets/maps/ancient_rune_puzzle.json",
+    "assets/maps/bellhollow.json",
+    "assets/maps/broken_bell_shrine.json",
+    "assets/maps/crooked_path.json",
+    "assets/maps/deep_forest.json",
+    "assets/maps/drowned_mire_depths.json",
+    "assets/maps/fog_crossing.json",
+    "assets/maps/outer_woods.json",
+    "assets/maps/sanctuary_farm.json",
+    "assets/maps/silent_mire.json",
+    "assets/maps/sub_bell_workshop.json",
+    "assets/maps/sub_root_cellar.json",
+    "assets/maps/sub_whispering_clearing.json",
+    "assets/maps/sunken_crypt_ruins.json",
+    "assets/maps/veil_origin_cavern.json",
+    "assets/maps/whispering_grove_sanctum.json"
+  ],
+  "oversizedList": []
+}

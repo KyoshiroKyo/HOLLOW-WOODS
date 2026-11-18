@@ -104,6 +104,10 @@ export class CampSystem {
     return this.getCampfireFuel() > 0;
   }
 
+  public getCampfirePosition(): { x: number; y: number } {
+    return { x: this.campfireX, y: this.campfireY };
+  }
+
   /**
    * Bán kính vùng ấm và ánh sáng an toàn theo cấp độ lửa trại:
    * Cấp 1: 120px (Lửa le lói)

@@ -148,6 +148,54 @@ export class WorldGatingSystem {
       lockedReasonVietnamese: 'Cánh cổng dẫn vào Miếu Chuông Phế Tích bị phong ấn cổ xưa niêm phong chặt chẽ!',
       hintVietnamese: 'Phải kích hoạt chuẩn xác thứ tự ba Cột Đá Cổ Ngữ (Mặt Trăng, Rễ Cây, Con Mắt) tại Đầm Lầy.'
     });
+
+    // =========================================================================
+    // V1.4 - CÁC PHÂN KHU MỞ RỘNG TẦNG 3 (FORBIDDEN EXPANSION)
+    // =========================================================================
+    this.registerRule({
+      zoneId: 'abyssal_chasm',
+      tier: 'LAYER_3_FORBIDDEN',
+      conditionType: 'flag_required',
+      requiredFlag: 'abyssal_gate_unlocked',
+      lockedReasonVietnamese: 'Cổng Cổ Ngữ Hư Không đang bị phong ấn bởi năng lượng bóng tối từ Khe Nứt!',
+      hintVietnamese: 'Cần giải phóng ngọn lửa chuông hoặc mang theo Bùa Hộ Mệnh Cổ Ngữ để tiến vào Vực Sâu.'
+    });
+
+    this.registerRule({
+      zoneId: 'drowned_mire_depths',
+      tier: 'LAYER_3_FORBIDDEN',
+      conditionType: 'flag_required',
+      requiredFlag: 'mire_drained',
+      lockedReasonVietnamese: 'Vùng Trũng Đầm Lầy ngập sâu trong bùn lầy nguy hiểm chưa thể tiếp cận!',
+      hintVietnamese: 'Hãy hoàn thành câu đố 3 cột đá để hạ mực nước đầm lầy.'
+    });
+
+    this.registerRule({
+      zoneId: 'whispering_grove_sanctum',
+      tier: 'LAYER_3_FORBIDDEN',
+      conditionType: 'quest_required',
+      requiredQuestId: 'Q04_ANCIENT_RUNES',
+      lockedReasonVietnamese: 'Thánh Địa Rừng Thì Thầm bị khóa bởi kết giới cành liễu cổ xưa!',
+      hintVietnamese: 'Lần theo âm vang tiếng thì thầm qua Khoảng Trống Thì Thầm.'
+    });
+
+    this.registerRule({
+      zoneId: 'sunken_crypt_ruins',
+      tier: 'LAYER_3_FORBIDDEN',
+      conditionType: 'flag_required',
+      requiredFlag: 'clapper_collected',
+      lockedReasonVietnamese: 'Cổng Hầm Mộ Chìm bị khóa chặt bởi bia mộ Hiệp Sĩ Đen!',
+      hintVietnamese: 'Khôi phục quả chuông tại Miếu Chuông để phá vỡ phong ấn hầm mộ.'
+    });
+
+    this.registerRule({
+      zoneId: 'veil_origin_cavern',
+      tier: 'LAYER_3_FORBIDDEN',
+      conditionType: 'flag_required',
+      requiredFlag: 'knight_commander_defeated',
+      lockedReasonVietnamese: 'Hang Cội Nguồn Màn Sương tỏa ra khí lạnh thấu xương, phong ấn cấm kỵ chưa mở!',
+      hintVietnamese: 'Vượt qua thử thách Vực Sâu Bóng Tối và đối đầu với Tàn Dư Hiệp Sĩ.'
+    });
   }
 
   public registerRule(rule: ZoneAccessRule): void {
@@ -244,6 +292,55 @@ export class WorldGatingSystem {
       );
     }
 
+    // V1.4: Phân khu Vực Sâu Bóng Tối (Abyssal Chasm)
+    if (zoneId === 'abyssal_chasm') {
+      const deepForestOpen = this.isZoneUnlocked('deep_forest', playerState);
+      if (!deepForestOpen) return false;
+      return (
+        playerState.hasFlag('abyssal_gate_unlocked') ||
+        playerState.hasFlag('abyssal_chasm_unlocked') ||
+        playerState.currentQuestId === 'Q06_RETRIEVE_CLAPPER' ||
+        playerState.hasFlag('clapper_collected') ||
+        playerState.hasFlag('mire_puzzle_solved')
+      );
+    }
+
+    // V1.4: Vùng Trũng Đầm Lầy (Drowned Mire Depths)
+    if (zoneId === 'drowned_mire_depths') {
+      return (
+        playerState.hasFlag('mire_drained') ||
+        playerState.hasFlag('mire_puzzle_solved') ||
+        playerState.currentQuestId === 'Q06_RETRIEVE_CLAPPER'
+      );
+    }
+
+    // V1.4: Thánh Địa Rừng Thì Thầm (Whispering Grove Sanctum)
+    if (zoneId === 'whispering_grove_sanctum') {
+      return (
+        this.isZoneUnlocked('sub_whispering_clearing', playerState) &&
+        (playerState.hasFlag('grove_sanctum_unlocked') ||
+         playerState.currentQuestId === 'Q04_ANCIENT_RUNES' ||
+         playerState.currentQuestId === 'Q05_SOLVE_MIRE' ||
+         playerState.currentQuestId === 'Q06_RETRIEVE_CLAPPER')
+      );
+    }
+
+    // V1.4: Hầm Mộ Chìm Phế Tích (Sunken Crypt Ruins)
+    if (zoneId === 'sunken_crypt_ruins') {
+      return (
+        playerState.hasFlag('clapper_collected') ||
+        playerState.hasFlag('crypt_unlocked')
+      );
+    }
+
+    // V1.4: Hang Cội Nguồn Màn Sương (Veil Origin Cavern)
+    if (zoneId === 'veil_origin_cavern') {
+      return (
+        playerState.hasFlag('knight_commander_defeated') ||
+        playerState.hasFlag('veil_origin_unlocked')
+      );
+    }
+
     // Kiểm tra quy tắc mở rộng theo điều kiện đăng ký (Fail-Closed nếu không khớp)
     switch (rule.conditionType) {
       case 'item_required': {
@@ -285,6 +382,13 @@ export class WorldGatingSystem {
       case 'gate_deep_forest':
         return this.isZoneUnlocked('deep_forest', playerState);
 
+      case 'abyssal_gate':
+      case 'abyssal_chasm_gate':
+      case 'gate_abyssal_chasm':
+        return this.isZoneUnlocked('abyssal_chasm', playerState);
+
+      case 'deep_forest_mire_barrier':
+      case 'df_mire_barrier':
       case 'mire_boundary':
       case 'mire_ward':
       case 'gate_silent_mire':

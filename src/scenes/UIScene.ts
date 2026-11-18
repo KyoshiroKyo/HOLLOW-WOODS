@@ -1,16 +1,19 @@
 import * as Phaser from 'phaser';
 import { PlayerState } from '../state/PlayerState';
-import { ZoneAtmosphere } from '../types';
+import { ZoneAtmosphere, ZoneData, TransitionZone } from '../types';
 import { HDTextHelper } from '../utils/HDTextHelper';
 import { IDialogueView } from '../systems/DialogueSystem';
 import { CraftingModal } from '../ui/CraftingModal';
 import { JournalModal } from '../ui/JournalModal';
 import { PauseModal } from '../ui/PauseModal';
 import { GameOverModal } from '../ui/GameOverModal';
+import { SubmitScoreParams } from '../services/LeaderboardService';
 import { StorageChestModal } from '../ui/StorageChestModal';
 import { CampfireModal } from '../ui/CampfireModal';
 import { CauldronModal } from '../ui/CauldronModal';
 import { EquipmentModal } from '../ui/EquipmentModal';
+import { MiniMapWidget } from '../ui/MiniMapWidget';
+import { ParchmentWorldMapModal } from '../ui/ParchmentWorldMapModal';
 import { AudioManager } from '../audio/AudioManager';
 import { HUDIconGenerator, HUD_ICON_HEALTH, HUD_ICON_STAMINA, HUD_ICON_OIL, HUD_ICON_COMPOSURE } from '../utils/HUDIconGenerator';
 import { TimePhase, TIME_CONFIG } from '../config/TimeConfig';
@@ -114,6 +117,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   public campfireModal!: CampfireModal;
   public cauldronModal!: CauldronModal;
   public equipmentModal!: EquipmentModal;
+  public miniMapWidget!: MiniMapWidget;
+  public parchmentWorldMapModal!: ParchmentWorldMapModal;
 
   // V1.4 - P6: Thanh Độ Ổn Định Phong Ấn (Boss Seal Bar)
   private bossSealContainer!: Phaser.GameObjects.Container;
@@ -156,6 +161,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
   // C4-13-18 & C4-132-07: Hiệu ứng viền tối/đỏ hoảng loạn khi cạn kiệt Bình Tâm
   private panicVignetteGraphics!: Phaser.GameObjects.Graphics;
+  private sanctuaryGlowGraphics?: Phaser.GameObjects.Graphics;
   private isPanicVignetteActive: boolean = false;
   private lastPanicWarningTime: number = 0;
   private lastDarknessWarningTime: number = 0;
@@ -179,6 +185,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.panicVignetteGraphics = this.add.graphics();
     this.panicVignetteGraphics.setDepth(900);
     this.panicVignetteGraphics.setScrollFactor(0);
+
+    // C4-14-B04: Viền hào quang vàng ấm áp khi trở về Sanctuary làng an toàn (depth: 895)
+    this.sanctuaryGlowGraphics = this.add.graphics();
+    this.sanctuaryGlowGraphics.setDepth(895);
+    this.sanctuaryGlowGraphics.setScrollFactor(0);
 
     // 1. Khung chứa 4 thanh chỉ số sinh tồn tinh gọn, gỗ tối viền đồng xỉn (V14-P8-12)
     this.statCardBg = this.add.graphics();
@@ -353,8 +364,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     this.updateTimeWidget(1, 0, 'DAY', 0);
 
-    // 4. Banner tên phân khu có nền gỗ tối viền đồng xỉn co giãn động (V14-P8-12, Tâm tại 640, 85)
-    this.zoneBannerContainer = this.add.container(640, 85);
+    // 4. Banner tên phân khu có nền gỗ tối viền đồng xỉn co giãn động (V14-P8-12, Tâm tại 640, 120 - tránh hoàn toàn đè HUD đỉnh)
+    this.zoneBannerContainer = this.add.container(640, 120);
     this.zoneBannerContainer.setDepth(8500);
     this.zoneBannerBg = this.add.graphics();
 
@@ -388,9 +399,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     // 5b. Dựng khung hộp thoại HD 1280×720 tại (640, 590) (GATE 1A)
     this.buildDialogueUI();
 
-    // 5c. Dựng Bàn Chế Tạo & Sổ Tay chuẩn HD 1280×720 tại UIScene Zoom 1.0 (GATE 1B)
+    // 5c. Dựng Bàn Chế Tạo & Sổ Tay & Mini-map & Bản Đồ Giấy Da chuẩn HD 1280×720 tại UIScene Zoom 1.0 (GATE 1B)
     this.getCraftingModal();
     this.getJournalModal();
+    this.getMiniMapWidget();
+    this.getParchmentWorldMapModal();
 
     // 6. Lời nhắc tương tác [E] chuẩn HD bán trong suốt (C4-13-07)
     this.promptContainer = this.add.container(640, 616);
@@ -444,29 +457,36 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         if (this.boundWindowBlur) window.removeEventListener('blur', this.boundWindowBlur);
         if (this.boundWindowFocus) window.removeEventListener('focus', this.boundWindowFocus);
       }
-      if (this.focusOverlayContainer) this.focusOverlayContainer.destroy();
-      if (this.craftingModal) this.craftingModal.destroy();
-      if (this.journalModal) this.journalModal.destroy();
-      if (this.pauseModal) this.pauseModal.destroy();
-      if (this.gameOverModal) this.gameOverModal.destroy();
-      if (this.storageChestModal) this.storageChestModal.destroy();
-      if (this.campfireModal) this.campfireModal.destroy();
-      if (this.cauldronModal) this.cauldronModal.destroy();
-      if (this.equipmentModal) this.equipmentModal.destroy();
-      if (this.pooledPopupText) this.pooledPopupText.destroy();
-      if (this.panicVignetteGraphics) this.panicVignetteGraphics.clear();
-      if (this.timeWidgetBg) this.timeWidgetBg.destroy();
-      if (this.timeClockGfx) this.timeClockGfx.destroy();
-      if (this.quickActionButtonsContainer) this.quickActionButtonsContainer.destroy();
-      if (this.timeProgressBar) this.timeProgressBar.destroy();
-      if (this.timeIconText) this.timeIconText.destroy();
-      if (this.timeDayText) this.timeDayText.destroy();
-      if (this.timePhaseText) this.timePhaseText.destroy();
-      if (this.timeTimerText) this.timeTimerText.destroy();
-      if (this.moistureBadgeBg) this.moistureBadgeBg.destroy();
-      if (this.moistureBadgeText) this.moistureBadgeText.destroy();
-      if (this.temperatureBadgeBg) this.temperatureBadgeBg.destroy();
-      if (this.temperatureBadgeText) this.temperatureBadgeText.destroy();
+      if (this.focusOverlayContainer) { this.focusOverlayContainer.destroy(); this.focusOverlayContainer = undefined as any; }
+      if (this.craftingModal) { this.craftingModal.destroy(); this.craftingModal = undefined as any; }
+      if (this.journalModal) { this.journalModal.destroy(); this.journalModal = undefined as any; }
+      if (this.pauseModal) { this.pauseModal.destroy(); this.pauseModal = undefined as any; }
+      if (this.gameOverModal) { this.gameOverModal.destroy(); this.gameOverModal = undefined as any; }
+      if (this.storageChestModal) { this.storageChestModal.destroy(); this.storageChestModal = undefined as any; }
+      if (this.campfireModal) { this.campfireModal.destroy(); this.campfireModal = undefined as any; }
+      if (this.cauldronModal) { this.cauldronModal.destroy(); this.cauldronModal = undefined as any; }
+      if (this.equipmentModal) { this.equipmentModal.destroy(); this.equipmentModal = undefined as any; }
+      if (this.miniMapWidget) { this.miniMapWidget.destroy(); this.miniMapWidget = undefined as any; }
+      if (this.parchmentWorldMapModal) { this.parchmentWorldMapModal.destroy(); this.parchmentWorldMapModal = undefined as any; }
+      if (this.pooledPopupText) { this.pooledPopupText.destroy(); this.pooledPopupText = undefined as any; }
+      if (this.panicVignetteGraphics) { this.panicVignetteGraphics.clear(); this.panicVignetteGraphics = undefined as any; }
+      if (this.timeWidgetBg) { this.timeWidgetBg.destroy(); this.timeWidgetBg = undefined as any; }
+      if (this.timeClockGfx) { this.timeClockGfx.destroy(); this.timeClockGfx = undefined as any; }
+      if (this.quickActionButtonsContainer) { this.quickActionButtonsContainer.destroy(); this.quickActionButtonsContainer = undefined as any; }
+      if (this.timeProgressBar) { this.timeProgressBar.destroy(); this.timeProgressBar = undefined as any; }
+      if (this.timeIconText) { this.timeIconText.destroy(); this.timeIconText = undefined as any; }
+      if (this.timeDayText) { this.timeDayText.destroy(); this.timeDayText = undefined as any; }
+      if (this.timePhaseText) { this.timePhaseText.destroy(); this.timePhaseText = undefined as any; }
+      if (this.timeTimerText) { this.timeTimerText.destroy(); this.timeTimerText = undefined as any; }
+      if (this.moistureBadgeBg) { this.moistureBadgeBg.destroy(); this.moistureBadgeBg = undefined as any; }
+      if (this.moistureBadgeText) { this.moistureBadgeText.destroy(); this.moistureBadgeText = undefined as any; }
+      if (this.temperatureBadgeBg) { this.temperatureBadgeBg.destroy(); this.temperatureBadgeBg = undefined as any; }
+      if (this.temperatureBadgeText) { this.temperatureBadgeText.destroy(); this.temperatureBadgeText = undefined as any; }
+      if (this.dialogueContainer) { this.dialogueContainer.destroy(); this.dialogueContainer = undefined as any; }
+      if (this.promptContainer) { this.promptContainer.destroy(); this.promptContainer = undefined as any; }
+      if (this.zoneBannerContainer) { this.zoneBannerContainer.destroy(); this.zoneBannerContainer = undefined as any; }
+      if (this.bossSealContainer) { this.bossSealContainer.destroy(); this.bossSealContainer = undefined as any; }
+      if (this.quickSlotContainer) { this.quickSlotContainer.destroy(); this.quickSlotContainer = undefined as any; }
     });
 
     // C4-132-07: Lớp phủ chỉ dẫn bán trong suốt khi cửa sổ/iframe mất tiêu điểm (window.blur)
@@ -565,6 +585,12 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.input.keyboard.on('keydown-B', () => {
         if (this.gameOverModal && this.gameOverModal.isOpen) return;
         this.toggleEquipment();
+      });
+      this.input.keyboard.on('keydown-N', () => {
+        this.toggleMiniMap();
+      });
+      this.input.keyboard.on('keydown-M', () => {
+        this.toggleWorldMap();
       });
     }
   }
@@ -1021,7 +1047,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   /**
-   * C4-13-18: Cập nhật hiệu ứng viền tối/rung nhấp nháy hoảng loạn khi Bình Tâm < 20 và chạm 0/100
+   * C4-14-B04: Cập nhật hiệu ứng viền tối/rung nhấp nháy hoảng loạn hữu cơ 5 tầng đồng bộ nhịp tim
    */
   private updatePanicVignette(time: number = 0): void {
     if (!this.panicVignetteGraphics || !this.playerState) return;
@@ -1035,11 +1061,12 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
       if (now - this.lastDarknessWarningTime > 8000) {
         this.lastDarknessWarningTime = now;
-        this.showPopupMessage('Bóng tối đang bào mòn tâm trí! Nhấn [F] để thắp sáng Đèn Lồng!');
+        this.showPopupMessage('⚠️ Bóng tối đang bào mòn tâm trí! Nhấn [F] để thắp sáng Đèn Lồng!');
       }
     }
 
-    if (composure >= 20 && (composure >= 40 || isLanternOn)) {
+    // Nếu Bình Tâm dồi dào (>= 50) và có đèn lồng hoặc đang hồi phục: xóa viền tối
+    if (composure >= 50 && (composure >= 60 || isLanternOn)) {
       if (this.isPanicVignetteActive) {
         this.panicVignetteGraphics.clear();
         this.isPanicVignetteActive = false;
@@ -1051,31 +1078,73 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.panicVignetteGraphics.clear();
 
     const isDepleted = composure <= 0;
-    const freq = isDepleted ? 0.007 : 0.0035;
-    const baseAlpha = isDepleted ? 0.38 : (composure < 20 ? 0.16 : 0.10);
-    const pulse = baseAlpha + (isDepleted ? 0.20 : 0.08) * Math.sin(time * freq);
+    const isCritical = composure < 25;
+    const freq = isDepleted ? 0.008 : (isCritical ? 0.005 : 0.003);
+    const pulseBase = isDepleted ? 0.40 : (isCritical ? 0.22 : 0.10);
+    const pulseAmp = isDepleted ? 0.18 : (isCritical ? 0.09 : 0.04);
+    const pulse = Math.max(0.04, pulseBase + pulseAmp * Math.sin(time * freq));
 
     const w = 1280;
     const h = 720;
-    const thick = isDepleted ? 52 : (composure < 20 ? 30 : 18);
+    // Đỏ thẫm khi 0 HP/Composure, Tím sẫm khi < 25, Đen tro khi < 50
+    const color = isDepleted ? 0x3d0b16 : (isCritical ? 0x240d24 : 0x120b18);
 
-    // Viền đen/tím/đỏ thẫm co giãn nhẹ ở 4 góc màn hình
-    const color = isDepleted ? 0x3d0b16 : (composure < 20 ? 0x24112e : 0x160b24);
-    this.panicVignetteGraphics.fillStyle(color, Math.max(0.06, pulse));
-    this.panicVignetteGraphics.fillRect(0, 0, w, thick);
-    this.panicVignetteGraphics.fillRect(0, h - thick, w, thick);
-    this.panicVignetteGraphics.fillRect(0, thick, thick, h - thick * 2);
-    this.panicVignetteGraphics.fillRect(w - thick, thick, thick, h - thick * 2);
+    // C4-14-B04: Viền mờ hữu cơ 5 tầng từ ngoài mép vào trong, tạo cảm giác bóng tối co bóp theo nhịp tim
+    const layers = [
+      { inset: 0, thick: 14, alphaMult: 1.4 },
+      { inset: 14, thick: 20, alphaMult: 1.0 },
+      { inset: 34, thick: 26, alphaMult: 0.65 },
+      { inset: 60, thick: 32, alphaMult: 0.35 },
+      { inset: 92, thick: 38, alphaMult: 0.15 }
+    ];
+
+    for (const l of layers) {
+      const alpha = Math.min(0.95, pulse * l.alphaMult);
+      this.panicVignetteGraphics.fillStyle(color, alpha);
+      // Top
+      this.panicVignetteGraphics.fillRect(l.inset, l.inset, w - l.inset * 2, l.thick);
+      // Bottom
+      this.panicVignetteGraphics.fillRect(l.inset, h - l.inset - l.thick, w - l.inset * 2, l.thick);
+      // Left
+      this.panicVignetteGraphics.fillRect(l.inset, l.inset + l.thick, l.thick, h - (l.inset + l.thick) * 2);
+      // Right
+      this.panicVignetteGraphics.fillRect(w - l.inset - l.thick, l.inset + l.thick, l.thick, h - (l.inset + l.thick) * 2);
+    }
 
     // Cảnh báo HUD khi chạm đáy 0/100 (định kỳ mỗi 8 giây)
     if (isDepleted) {
       const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
       if (now - this.lastPanicWarningTime > 8000) {
         this.lastPanicWarningTime = now;
-        // Hoảng loạn (Bình Tâm 0/100)! Hãy bật Đèn Lồng [F] hoặc tìm ánh lửa!
-        this.showPopupMessage('HOẢNG LOẠN! Hãy bật Đèn Lồng [F] hoặc tìm ánh lửa!');
+        this.showPopupMessage('⚡ HOẢNG LOẠN! Hãy bật Đèn Lồng [F] hoặc tìm nguồn sáng!');
       }
     }
+  }
+
+  /**
+   * C4-14-B04: Hiệu ứng viền vàng ấm áp khi trở về Sanctuary làng Bellhollow an toàn
+   */
+  public triggerSanctuaryReliefGlow(): void {
+    if (!this.sanctuaryGlowGraphics) return;
+    this.sanctuaryGlowGraphics.clear();
+    const w = 1280;
+    const h = 720;
+    this.sanctuaryGlowGraphics.lineStyle(18, 0xf39c12, 0.22);
+    this.sanctuaryGlowGraphics.strokeRect(9, 9, w - 18, h - 18);
+    this.sanctuaryGlowGraphics.lineStyle(8, 0xffe082, 0.35);
+    this.sanctuaryGlowGraphics.strokeRect(4, 4, w - 8, h - 8);
+
+    this.tweens.add({
+      targets: this.sanctuaryGlowGraphics,
+      alpha: { from: 1, to: 0 },
+      duration: 1600,
+      ease: 'Quad.easeOut',
+      onComplete: () => {
+        if (this.sanctuaryGlowGraphics) {
+          this.sanctuaryGlowGraphics.clear();
+        }
+      }
+    });
   }
 
   private updatePromptPosition(): void {
@@ -1565,13 +1634,14 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       (!!this.storageChestModal && this.storageChestModal.isOpen) ||
       (!!this.campfireModal && this.campfireModal.isOpen) ||
       (!!this.cauldronModal && this.cauldronModal.isOpen) ||
-      (!!this.equipmentModal && this.equipmentModal.isOpen);
+      (!!this.equipmentModal && this.equipmentModal.isOpen) ||
+      (!!this.parchmentWorldMapModal && this.parchmentWorldMapModal.isOpen);
   }
 
   /**
    * C4-13-03: Kích hoạt giao diện Game Over trên UIScene, ẩn toàn bộ prompt và đóng các modal khác
    */
-  public showGameOverModal(reason?: string): void {
+  public showGameOverModal(reason?: string, scoreParams?: SubmitScoreParams): void {
     if (this.craftingModal && this.craftingModal.isOpen) this.craftingModal.close();
     if (this.journalModal && this.journalModal.isOpen) this.journalModal.close();
     if (this.pauseModal && this.pauseModal.isOpen) this.pauseModal.close();
@@ -1583,7 +1653,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.handleModalOpened();
     this.setInteractionPrompt(null);
     if (this.gameOverModal) {
-      this.gameOverModal.open(reason);
+      this.gameOverModal.open(reason, scoreParams);
     }
   }
 
@@ -1846,6 +1916,69 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.gameOverModal && this.gameOverModal.isOpen) return;
     const modal = this.getEquipmentModal();
     modal.toggle();
+  }
+
+  public getMiniMapWidget(): MiniMapWidget {
+    if (!this.miniMapWidget) {
+      if (!this.playerState) {
+        this.playerState = PlayerState.getInstance();
+      }
+      this.miniMapWidget = new MiniMapWidget(this, this.playerState);
+    }
+    return this.miniMapWidget;
+  }
+
+  public getParchmentWorldMapModal(): ParchmentWorldMapModal {
+    if (!this.parchmentWorldMapModal) {
+      if (!this.playerState) {
+        this.playerState = PlayerState.getInstance();
+      }
+      this.parchmentWorldMapModal = new ParchmentWorldMapModal(this, this.playerState);
+      this.parchmentWorldMapModal.onOpen = () => this.handleModalOpened();
+      this.parchmentWorldMapModal.onClose = () => this.handleModalClosed();
+    }
+    return this.parchmentWorldMapModal;
+  }
+
+  public toggleMiniMap(): boolean {
+    const mm = this.getMiniMapWidget();
+    const vis = mm.toggle();
+    this.showPopupMessage(vis ? '🧭 Đã bật Mini-map góc màn hình [Phím N]' : '🧭 Đã tắt Mini-map góc màn hình [Phím N]');
+    return vis;
+  }
+
+  public toggleWorldMap(): boolean {
+    if (this.gameOverModal && this.gameOverModal.isOpen) return false;
+    if (this.pauseModal && this.pauseModal.isOpen) this.pauseModal.close();
+    if (this.craftingModal && this.craftingModal.isOpen) this.craftingModal.close();
+    if (this.journalModal && this.journalModal.isOpen) this.journalModal.close();
+    if (this.equipmentModal && this.equipmentModal.isOpen) this.equipmentModal.close();
+    if (this.storageChestModal && this.storageChestModal.isOpen) this.storageChestModal.close();
+    if (this.campfireModal && this.campfireModal.isOpen) this.campfireModal.close();
+    if (this.cauldronModal && this.cauldronModal.isOpen) this.cauldronModal.close();
+    const mapModal = this.getParchmentWorldMapModal();
+    return mapModal.toggle();
+  }
+
+  public updateMiniMapZone(
+    zone: ZoneData,
+    colliders?: { x: number; y: number; width: number; height: number }[],
+    transitions?: TransitionZone[]
+  ): void {
+    const mm = this.getMiniMapWidget();
+    mm.updateZoneTerrain(zone, colliders, transitions);
+  }
+
+  public updateMiniMap(
+    playerX: number,
+    playerY: number,
+    facing: string,
+    litLanterns: { x: number; y: number }[] = [],
+    campfires: { x: number; y: number }[] = []
+  ): void {
+    if (this.miniMapWidget) {
+      this.miniMapWidget.updateDynamicMarkers(playerX, playerY, facing, litLanterns, campfires);
+    }
   }
 
   public showPopupMessage(msg: string): void {

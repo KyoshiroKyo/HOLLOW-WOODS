@@ -4,6 +4,7 @@ import { WildlifeEntity } from '../entities/WildlifeEntity';
 import { SkullWolfEntity } from '../entities/SkullWolfEntity';
 import { ShadowCrowEntity, ShadowEyesEntity, ShadowBehemothBoss, ShadowContext } from '../entities/ShadowMonsters';
 import { FallenKnightEntity, DreadHorsemanEntity, HoodedKnightBoss, KnightContext } from '../entities/EvilKnights';
+import { MistBatAmbushEntity, WanderingShadeEntity, GoblinScoutEntity } from '../entities/AmbushMonsters';
 import { PlayerState } from '../state/PlayerState';
 
 export interface WildlifeUpdateContext {
@@ -31,6 +32,13 @@ export class WildlifeSystem {
   private fallenKnights: FallenKnightEntity[] = [];
   private dreadHorsemen: DreadHorsemanEntity[] = [];
   private hoodedKnight: HoodedKnightBoss | null = null;
+  private mistBats: MistBatAmbushEntity[] = [];
+  private wanderingShades: WanderingShadeEntity[] = [];
+  private goblinScouts: GoblinScoutEntity[] = [];
+  private lastBatAmbushTime: number = 0;
+  private lastShadeAmbushTime: number = 0;
+  private lastScoutSpawnTime: number = 0;
+  private lastAmbushHitTime: number = 0;
   private currentZoneId: string = '';
 
   // Giới hạn số lượng (Spawn Cap) để tối ưu WebGL 60 FPS
@@ -40,23 +48,26 @@ export class WildlifeSystem {
   public static readonly MAX_GLOBAL_ENTITIES = 28;
   public static readonly CULLING_DISTANCE = 560; // Bán kính ngủ đông (pixels)
 
-  // Danh mục tọa độ sinh cảnh chuẩn cho Sói Xương (Skull Wolf) - V1.4 P8-08
+  // Danh mục tọa độ sinh cảnh chuẩn cho Sói Xương (Skull Wolf) - V1.4 P8-08 & Bước 9
   private static readonly SKULL_WOLF_HABITATS: Record<string, Array<{ x: number; y: number }>> = {
     crooked_path: [{ x: 820, y: 310 }, { x: 1350, y: 260 }],
     deep_forest: [{ x: 650, y: 290 }, { x: 1180, y: 240 }],
-    silent_mire: [{ x: 500, y: 280 }],
+    silent_mire: [{ x: 500, y: 280 }, { x: 850, y: 290 }],
     outer_woods: [{ x: 920, y: 280 }]
   };
 
   // V1.4 - P8-09: Tọa độ sinh cảnh Quái Vật Bóng Tối (Shadow Crow, Shadow Eyes, Shadow Behemoth)
   private static readonly SHADOW_CROW_HABITATS: Record<string, Array<{ x: number; y: number }>> = {
     outer_woods: [{ x: 1350, y: 220 }],
+    crooked_path: [{ x: 1450, y: 240 }],
     deep_forest: [{ x: 880, y: 200 }]
   };
 
   private static readonly SHADOW_EYES_HABITATS: Record<string, Array<{ x: number; y: number }>> = {
+    fog_crossing: [{ x: 380, y: 220 }],
     deep_forest: [{ x: 740, y: 280 }],
-    silent_mire: [{ x: 450, y: 310 }, { x: 850, y: 330 }]
+    silent_mire: [{ x: 450, y: 310 }, { x: 850, y: 330 }],
+    sub_root_cellar: [{ x: 320, y: 240 }]
   };
 
   private static readonly SHADOW_BEHEMOTH_HABITATS: Record<string, { x: number; y: number }> = {
@@ -129,12 +140,54 @@ export class WildlifeSystem {
       { id: 'moth_df_02', species: 'lantern_moth', x: 860, y: 220, zoneId: 'deep_forest', contentId: 'HW-ANI-AMBIENT-000002', runtimeKey: 'ani_lantern_moth', perchType: 'herb_bush' },
       { id: 'moth_df_03', species: 'lantern_moth', x: 1020, y: 280, zoneId: 'deep_forest', contentId: 'HW-ANI-AMBIENT-000002', runtimeKey: 'ani_lantern_moth', perchType: 'herb_bush' },
       { id: 'moth_df_04', species: 'lantern_moth', x: 1260, y: 210, zoneId: 'deep_forest', contentId: 'HW-ANI-AMBIENT-000002', runtimeKey: 'ani_lantern_moth', perchType: 'herb_bush' },
+    ],
+    fog_crossing: [
+      { id: 'crow_fc_01', species: 'crow', x: 380, y: 160, zoneId: 'fog_crossing', contentId: 'HW-ANI-AMBIENT-000001', runtimeKey: 'ani_crow', perchType: 'fence' },
+      { id: 'moth_fc_01', species: 'lantern_moth', x: 260, y: 220, zoneId: 'fog_crossing', contentId: 'HW-ANI-AMBIENT-000002', runtimeKey: 'ani_lantern_moth', perchType: 'herb_bush' },
+      { id: 'moth_fc_02', species: 'lantern_moth', x: 490, y: 240, zoneId: 'fog_crossing', contentId: 'HW-ANI-AMBIENT-000002', runtimeKey: 'ani_lantern_moth', perchType: 'herb_bush' },
+    ],
+    silent_mire: [
+      { id: 'crow_sm_01', species: 'crow', x: 340, y: 170, zoneId: 'silent_mire', contentId: 'HW-ANI-AMBIENT-000001', runtimeKey: 'ani_crow', perchType: 'branch' },
+      { id: 'crow_sm_02', species: 'crow', x: 960, y: 210, zoneId: 'silent_mire', contentId: 'HW-ANI-AMBIENT-000001', runtimeKey: 'ani_crow', perchType: 'rock' },
+      { id: 'moth_sm_01', species: 'lantern_moth', x: 420, y: 260, zoneId: 'silent_mire', contentId: 'HW-ANI-AMBIENT-000002', runtimeKey: 'ani_lantern_moth', perchType: 'herb_bush' },
+      { id: 'moth_sm_02', species: 'lantern_moth', x: 780, y: 290, zoneId: 'silent_mire', contentId: 'HW-ANI-AMBIENT-000002', runtimeKey: 'ani_lantern_moth', perchType: 'herb_bush' },
+      { id: 'moth_sm_03', species: 'lantern_moth', x: 1120, y: 250, zoneId: 'silent_mire', contentId: 'HW-ANI-AMBIENT-000002', runtimeKey: 'ani_lantern_moth', perchType: 'herb_bush' },
+    ],
+    broken_bell_shrine: [
+      { id: 'crow_bbs_01', species: 'crow', x: 450, y: 160, zoneId: 'broken_bell_shrine', contentId: 'HW-ANI-AMBIENT-000001', runtimeKey: 'ani_crow', perchType: 'rock' },
+      { id: 'crow_bbs_02', species: 'crow', x: 880, y: 180, zoneId: 'broken_bell_shrine', contentId: 'HW-ANI-AMBIENT-000001', runtimeKey: 'ani_crow', perchType: 'fence' },
+      { id: 'moth_bbs_01', species: 'lantern_moth', x: 520, y: 280, zoneId: 'broken_bell_shrine', contentId: 'HW-ANI-AMBIENT-000002', runtimeKey: 'ani_lantern_moth', perchType: 'herb_bush' },
+      { id: 'moth_bbs_02', species: 'lantern_moth', x: 790, y: 260, zoneId: 'broken_bell_shrine', contentId: 'HW-ANI-AMBIENT-000002', runtimeKey: 'ani_lantern_moth', perchType: 'herb_bush' },
+    ],
+    sub_root_cellar: [
+      { id: 'moth_rc_01', species: 'lantern_moth', x: 280, y: 220, zoneId: 'sub_root_cellar', contentId: 'HW-ANI-AMBIENT-000002', runtimeKey: 'ani_lantern_moth', perchType: 'herb_bush' },
+      { id: 'moth_rc_02', species: 'lantern_moth', x: 480, y: 250, zoneId: 'sub_root_cellar', contentId: 'HW-ANI-AMBIENT-000002', runtimeKey: 'ani_lantern_moth', perchType: 'herb_bush' },
+    ],
+    sub_bell_workshop: [
+      { id: 'moth_bw_01', species: 'lantern_moth', x: 320, y: 230, zoneId: 'sub_bell_workshop', contentId: 'HW-ANI-AMBIENT-000002', runtimeKey: 'ani_lantern_moth', perchType: 'herb_bush' },
+      { id: 'moth_bw_02', species: 'lantern_moth', x: 560, y: 270, zoneId: 'sub_bell_workshop', contentId: 'HW-ANI-AMBIENT-000002', runtimeKey: 'ani_lantern_moth', perchType: 'herb_bush' },
     ]
   };
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
     WildlifeSystem.instance = this;
+
+    // Lắng nghe tín hiệu tiếng huýt sáo của Goblin Scout để kích động đàn Sói Xương
+    this.scene.events.on('scout_whistle', (data: { x: number; y: number; playerX: number; playerY: number }) => {
+      for (const wolf of this.skullWolves) {
+        if (wolf.active && !wolf.isDefeated) {
+          const moveX = data.playerX > wolf.x ? 95 : -95;
+          const moveY = data.playerY > wolf.y ? 35 : -35;
+          wolf.setVelocity(moveX, moveY);
+        }
+      }
+    });
+
+    // Lắng nghe va chạm phục kích để kích hoạt Grace Period 45s
+    this.scene.events.on('player_ambush_hit', () => {
+      this.lastAmbushHitTime = this.scene.time.now;
+    });
   }
 
   public static getInstance(scene?: Phaser.Scene): WildlifeSystem {
@@ -177,35 +230,69 @@ export class WildlifeSystem {
    * Vòng lặp cập nhật hàng frame kèm cơ chế culling kiểm soát hiệu năng WebGL
    */
   public update(time: number, delta: number, ctx: WildlifeUpdateContext): void {
-    if (this.entities.length === 0) return;
-
     const px = ctx.playerX;
     const py = ctx.playerY;
 
-    for (let i = 0; i < this.entities.length; i++) {
-      const ent = this.entities[i];
-      const dist = Math.hypot(ent.x - px, ent.y - py);
+    if (this.entities.length > 0) {
+      for (let i = 0; i < this.entities.length; i++) {
+        const ent = this.entities[i];
+        const dist = Math.hypot(ent.x - px, ent.y - py);
 
-      // Culling & Hibernation: Nếu ở ngoài tầm nhìn (> 560px), ngủ đông để giải phóng CPU/GPU
-      if (dist > WildlifeSystem.CULLING_DISTANCE) {
-        if (!ent.isHibernating) {
-          ent.setHibernating(true);
-        }
-      } else {
-        if (ent.isHibernating) {
-          ent.setHibernating(false);
-        }
+        // Culling & Hibernation: Nếu ở ngoài tầm nhìn (> 560px), ngủ đông để giải phóng CPU/GPU
+        if (dist > WildlifeSystem.CULLING_DISTANCE) {
+          if (!ent.isHibernating) {
+            ent.setHibernating(true);
+          }
+        } else {
+          if (ent.isHibernating) {
+            ent.setHibernating(false);
+          }
 
-        // Cơ chế mở khóa tự nhiên Sổ Tay Sinh Vật (Bestiary): Quan sát trong phạm vi nhìn thấy (<= 260px)
-        if (dist <= 260) {
-          if (ent.species === 'crow') {
-            PlayerState.getInstance().observeCreature('crow');
-          } else if (ent.species === 'lantern_moth') {
-            PlayerState.getInstance().observeCreature('lantern_moth');
+          // Cơ chế mở khóa tự nhiên Sổ Tay Sinh Vật (Bestiary): Quan sát trong phạm vi nhìn thấy (<= 260px)
+          if (dist <= 260) {
+            if (ent.species === 'crow') {
+              PlayerState.getInstance().observeCreature('crow');
+            } else if (ent.species === 'lantern_moth') {
+              PlayerState.getInstance().observeCreature('lantern_moth');
+            }
+          }
+
+          ent.update(time, delta, ctx);
+        }
+      }
+
+      // 5.1: Chuỗi phản ứng phân cấp sinh thái (Ecological Forewarning)
+      const highTierMonsters: Array<{ x: number; y: number }> = [];
+      for (const w of this.skullWolves) if (w.active && !w.isDefeated) highTierMonsters.push({ x: w.x, y: w.y });
+      for (const fk of this.fallenKnights) if (fk.active && !fk.isDefeated) highTierMonsters.push({ x: fk.x, y: fk.y });
+      for (const dh of this.dreadHorsemen) if (dh.active && !dh.isDefeated) highTierMonsters.push({ x: dh.x, y: dh.y });
+      if (this.hoodedKnight && this.hoodedKnight.active && !this.hoodedKnight.isDefeated) highTierMonsters.push({ x: this.hoodedKnight.x, y: this.hoodedKnight.y });
+      if (this.shadowBehemoth && this.shadowBehemoth.active && !this.shadowBehemoth.isDefeated) highTierMonsters.push({ x: this.shadowBehemoth.x, y: this.shadowBehemoth.y });
+      if (ctx.isListenerActive && ctx.listenerX !== undefined && ctx.listenerY !== undefined) {
+        highTierMonsters.push({ x: ctx.listenerX, y: ctx.listenerY });
+      }
+
+      const shadowAuras: Array<{ x: number; y: number }> = [];
+      for (const sh of this.wanderingShades) if (sh.active && !sh.isFinished) shadowAuras.push({ x: sh.x, y: sh.y });
+      for (const ey of this.shadowEyes) if (ey.active && !ey.isDissolving) shadowAuras.push({ x: ey.x, y: ey.y });
+
+      for (const ent of this.entities) {
+        if (ent.isHibernating) continue;
+        if (ent.species === 'crow' && ent.state !== 'spooked') {
+          for (const mon of highTierMonsters) {
+            if (Math.hypot(ent.x - mon.x, ent.y - mon.y) <= 250) {
+              ent.spook('listener_near');
+              break;
+            }
+          }
+        } else if (ent.species === 'lantern_moth') {
+          for (const aura of shadowAuras) {
+            if (Math.hypot(ent.x - aura.x, ent.y - aura.y) <= 180) {
+              ent.alpha = Math.max(0, ent.alpha - (delta / 1000) * 2.5);
+              break;
+            }
           }
         }
-
-        ent.update(time, delta, ctx);
       }
     }
 
@@ -402,12 +489,115 @@ export class WildlifeSystem {
       dh.updateAI(time, delta, knightCtx);
     }
 
-    // Cập nhật AI Chỉ Huy Hiệp Sĩ Trùm Mũ
+    // Cập nhật AI Chỉ Huy Hiệp Sĩ Trùm Mũ & Đội hình Hộ Vệ Tháp Tùng
     if (this.hoodedKnight && this.hoodedKnight.active) {
       this.hoodedKnight.updateAI(time, delta, knightCtx);
       if (!this.hoodedKnight.active) {
         this.hoodedKnight = null;
+      } else {
+        // Đội hình Hộ Vệ: Luôn có 2 Fallen Knight tháp tùng cách trùm ~110px
+        if (this.currentZoneId === 'deep_forest' && this.fallenKnights.length < 2) {
+          this.fallenKnights.push(new FallenKnightEntity(this.scene, this.hoodedKnight.x - 110, this.hoodedKnight.y + 15));
+          this.fallenKnights.push(new FallenKnightEntity(this.scene, this.hoodedKnight.x + 110, this.hoodedKnight.y + 15));
+        }
       }
+    }
+
+    // --- V1.4 - Bước 9: Sinh vật Phục Kích (Mist Bat, Wandering Shade) & Goblin Scout ---
+    const ambushCtx = {
+      playerX: px,
+      playerY: py,
+      isLanternLit: lightActive,
+      isPlayerInSafeZone: isSafeZone,
+      timePhase: ctx.timePhase,
+      isSprinting: ctx.isPlayerSprinting,
+      listenerMonster: (this.scene as any).listenerMonster
+    };
+
+    // Đội hình Quái Hộ Vệ Đầm Lầy: Mire Warden / Behemoth kéo theo 3 Dơi Sương Mù
+    const isBehemothOrWardenActive = (this.shadowBehemoth && this.shadowBehemoth.active && !this.shadowBehemoth.isDefeated && this.shadowBehemoth.bossState !== 'idle') ||
+      Boolean((this.scene as any).isBossFightActive);
+    if (isBehemothOrWardenActive && this.mistBats.length < 3 && (time - this.lastBatAmbushTime > 15000)) {
+      this.lastBatAmbushTime = time;
+      this.mistBats.push(new MistBatAmbushEntity(this.scene, px - 60, py - 90, px, py));
+      this.mistBats.push(new MistBatAmbushEntity(this.scene, px + 60, py - 90, px, py));
+      this.mistBats.push(new MistBatAmbushEntity(this.scene, px, py - 110, px, py));
+    }
+
+    // Ngưỡng an toàn sau phục kích (Grace Period 45s)
+    const isUnderGracePeriod = (time - this.lastAmbushHitTime < 45000);
+
+    // 1. Phục kích Dơi Sương Mù (Mist Bat) theo Ma Trận 5 Chiều
+    const batZones = ['fog_crossing', 'outer_woods', 'crooked_path', 'deep_forest', 'silent_mire', 'sub_bell_workshop'];
+    const batCooldown = this.currentZoneId === 'deep_forest' ? 30000 : (this.currentZoneId === 'silent_mire' ? 40000 : (this.currentZoneId === 'crooked_path' ? 45000 : 60000));
+    const maxBats = this.currentZoneId === 'deep_forest' ? 3 : (this.currentZoneId === 'crooked_path' ? 1 : 2);
+
+    if (isNocturnal && !isSafeZone && batZones.includes(this.currentZoneId) && !isUnderGracePeriod) {
+      if (this.mistBats.length < maxBats && (time - this.lastBatAmbushTime > batCooldown)) {
+        if (ctx.isPlayerSprinting || !lightActive) {
+          this.lastBatAmbushTime = time;
+          const startX = px + Phaser.Math.Between(-35, 35);
+          const startY = py - 70;
+          this.mistBats.push(new MistBatAmbushEntity(this.scene, startX, startY, px, py));
+        }
+      }
+    }
+
+    for (let b = this.mistBats.length - 1; b >= 0; b--) {
+      const bat = this.mistBats[b];
+      if (!bat.active || bat.isFinished) {
+        this.mistBats.splice(b, 1);
+        continue;
+      }
+      bat.updateAI(delta, ambushCtx);
+    }
+
+    // 2. Phục kích Hồn Ma Phiêu Bạt (Wandering Shade) theo Ma Trận 5 Chiều
+    const shadeZones = ['crooked_path', 'sub_root_cellar', 'silent_mire', 'sub_bell_workshop', 'deep_forest', 'broken_bell_shrine', 'ancient_rune_puzzle', 'sunken_crypt_ruins'];
+    const isUnderground = this.currentZoneId.startsWith('sub_') || this.currentZoneId === 'broken_bell_shrine';
+    const shadeCooldown = (this.currentZoneId === 'deep_forest' || this.currentZoneId === 'broken_bell_shrine') ? 30000 : (this.currentZoneId === 'sub_root_cellar' ? 75000 : 45000);
+    const maxShades = this.currentZoneId === 'broken_bell_shrine' ? 3 : (this.currentZoneId === 'crooked_path' || this.currentZoneId === 'silent_mire' ? 1 : 2);
+
+    if ((ctx.timePhase === 'NIGHT' || isUnderground) && !isSafeZone && shadeZones.includes(this.currentZoneId) && !isUnderGracePeriod) {
+      const playerComposure = PlayerState.getInstance().stats.composure;
+      if (this.wanderingShades.length < maxShades && (time - this.lastShadeAmbushTime > shadeCooldown)) {
+        if (playerComposure < 50 || isUnderground) {
+          this.lastShadeAmbushTime = time;
+          const angle = Math.random() * Math.PI * 2;
+          const spawnX = px + Math.cos(angle) * 110;
+          const spawnY = py + Math.sin(angle) * 110;
+          this.wanderingShades.push(new WanderingShadeEntity(this.scene, spawnX, spawnY));
+        }
+      }
+    }
+
+    for (let s = this.wanderingShades.length - 1; s >= 0; s--) {
+      const shade = this.wanderingShades[s];
+      if (!shade.active || shade.isFinished) {
+        this.wanderingShades.splice(s, 1);
+        continue;
+      }
+      shade.updateAI(delta, ambushCtx);
+    }
+
+    // 3. Goblin Scout (Kẻ Rình Mập Vô Diện / The Unseen Stalker)
+    const scoutZones = ['crooked_path', 'deep_forest', 'abyssal_chasm'];
+    if (!isSafeZone && scoutZones.includes(this.currentZoneId)) {
+      if (this.goblinScouts.length === 0 && (time - this.lastScoutSpawnTime > 60000)) {
+        this.lastScoutSpawnTime = time;
+        const spawnX = px + (Math.random() < 0.5 ? -140 : 140);
+        const spawnY = py + Phaser.Math.Between(-40, 40);
+        this.goblinScouts.push(new GoblinScoutEntity(this.scene, spawnX, spawnY));
+      }
+    }
+
+    for (let g = this.goblinScouts.length - 1; g >= 0; g--) {
+      const scout = this.goblinScouts[g];
+      if (!scout.active || scout.isFinished) {
+        this.goblinScouts.splice(g, 1);
+        continue;
+      }
+      scout.updateAI(delta, ambushCtx);
     }
   }
 
@@ -472,6 +662,31 @@ export class WildlifeSystem {
     return (this.hoodedKnight && this.hoodedKnight.active && !this.hoodedKnight.isDefeated) ? this.hoodedKnight : null;
   }
 
+  public getMistBats(): MistBatAmbushEntity[] {
+    return this.mistBats.filter(b => b.active && !b.isFinished);
+  }
+
+  public getWanderingShades(): WanderingShadeEntity[] {
+    return this.wanderingShades.filter(s => s.active && !s.isFinished);
+  }
+
+  public getGoblinScouts(): GoblinScoutEntity[] {
+    return this.goblinScouts.filter(g => g.active && !g.isFinished);
+  }
+
+  public isBossAwakened(): boolean {
+    if (this.shadowBehemoth && this.shadowBehemoth.active && !this.shadowBehemoth.isDefeated && this.shadowBehemoth.bossState !== 'idle') {
+      return true;
+    }
+    if (this.hoodedKnight && this.hoodedKnight.active && !this.hoodedKnight.isDefeated && this.hoodedKnight.bossState !== 'idle') {
+      return true;
+    }
+    if ((this.scene as any).isBossFightActive) {
+      return true;
+    }
+    return false;
+  }
+
   public clearEntities(): void {
     for (const ent of this.entities) {
       ent.destroy();
@@ -512,6 +727,21 @@ export class WildlifeSystem {
       this.hoodedKnight.destroy();
       this.hoodedKnight = null;
     }
+
+    for (const bat of this.mistBats) {
+      bat.destroy();
+    }
+    this.mistBats = [];
+
+    for (const shade of this.wanderingShades) {
+      shade.destroy();
+    }
+    this.wanderingShades = [];
+
+    for (const scout of this.goblinScouts) {
+      scout.destroy();
+    }
+    this.goblinScouts = [];
   }
 
   public destroy(): void {

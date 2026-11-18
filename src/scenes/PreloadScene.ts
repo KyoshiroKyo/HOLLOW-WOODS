@@ -26,32 +26,26 @@ import {
   WAYFARER_FRAME_HEIGHT,
   VIRTUAL_WIDTH,
   VIRTUAL_HEIGHT,
-  SPRITE_TREE_OAK_1,
-  SPRITE_TREE_OAK_2,
-  SPRITE_TREE_OAK_3,
-  SPRITE_BUSH_DENSE_1,
-  SPRITE_BUSH_DENSE_2,
-  SPRITE_HOLLOW_TREE,
-  SPRITE_TREE_DEAD,
-  SPRITE_HOUSE_EDDA,
-  SPRITE_HOUSE_NERIS,
-  SPRITE_BELL_TOWER,
-  SPRITE_BROKEN_SHRINE,
-  SPRITE_PILLAR_MOON,
-  SPRITE_PILLAR_ROOT,
-  SPRITE_PILLAR_EYE,
-  SPRITE_VILLAGE_WELL,
-  SPRITE_CRAFTING_BENCH,
-  SPRITE_STONE_ALTAR,
-  SPRITE_ROCK_LARGE,
-  SPRITE_ROCK_MEDIUM,
-  SPRITE_WOODEN_FENCE,
-  SPRITE_SIGNPOST,
   TILE_FOREST_GRASS,
   TILE_DIRT_TRAIL,
   TILE_SWAMP_MUD,
   TILE_COBBLE_ROAD,
   TILE_STONE_FLOOR,
+  CONFIG_USE_V14_PILOT_ENVIRONMENT,
+  CONFIG_USE_V14_ENVIRONMENT,
+  TILE_FOREST_GRASS_V14_A,
+  TILE_FOREST_GRASS_V14_B,
+  TILE_FOREST_GRASS_V14_C,
+  TILE_DIRT_TRAIL_V14_A,
+  TILE_DIRT_TRAIL_V14_B,
+  TILE_COBBLE_ROAD_V14,
+  TILE_STONE_FLOOR_V14,
+  TILE_SWAMP_MUD_V14_A,
+  TILE_SWAMP_MUD_V14_B,
+  TILE_ABYSSAL_SOIL_V14_A,
+  TILE_ABYSSAL_SOIL_V14_B,
+  TILE_TILLED_SOIL_V14,
+  TILE_WOOD_PLANK_WEATHERED_V14,
   SPRITE_NPC_GARTH,
   PORTRAIT_GARTH,
   SPRITE_NPC_EDDA,
@@ -93,15 +87,20 @@ import {
   PORTRAIT_DREAD_HORSEMAN,
   SPRITE_HOODED_KNIGHT,
   PORTRAIT_HOODED_KNIGHT,
-  SPRITE_FOG_SMOOTH,
-  SPRITE_RES_DRY_WOOD,
-  SPRITE_RES_TREE_RESIN,
-  SPRITE_RES_FLINT,
-  SPRITE_RES_HERBS
+  SPRITE_MIST_BAT,
+  SPRITE_WANDERING_SHADE,
+  SPRITE_GOBLIN_SCOUT,
+  SPRITE_FOG_SMOOTH
 } from '../config/Constants';
 
 import { HUDIconGenerator } from '../utils/HUDIconGenerator';
 import { AudioManager } from '../audio/AudioManager';
+import {
+  AtlasTextureResolver,
+  ATLAS_PROPS_KEY,
+  ATLAS_PROPS_PNG,
+  ATLAS_PROPS_JSON
+} from '../utils/AtlasTextureResolver';
 
 export class PreloadScene extends Phaser.Scene {
   constructor() {
@@ -209,32 +208,11 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image('tx_stone', 'assets/environment/tilesets/TX Tileset Stone Ground.png');
     this.load.image('tx_wall', 'assets/environment/tilesets/TX Tileset Wall.png');
 
-    // 5. Nạp các sprite cây cối & môi trường pixel art (PASS T04)
-    this.load.image(SPRITE_TREE_OAK_1, 'assets/environment/sprites/tree_oak_1.png');
-    this.load.image(SPRITE_TREE_OAK_2, 'assets/environment/sprites/tree_oak_2.png');
-    this.load.image(SPRITE_TREE_OAK_3, 'assets/environment/sprites/tree_oak_3.png');
-    this.load.image(SPRITE_BUSH_DENSE_1, 'assets/environment/sprites/bush_dense_1.png');
-    this.load.image(SPRITE_BUSH_DENSE_2, 'assets/environment/sprites/bush_dense_2.png');
-    this.load.image(SPRITE_HOLLOW_TREE, 'assets/environment/sprites/hollow_tree.png');
-    this.load.image(SPRITE_TREE_DEAD, 'assets/environment/sprites/tree_dead.png');
-
-    // 6. Nạp các công trình kiến trúc pixel art (PASS T05)
-    this.load.image(SPRITE_HOUSE_EDDA, 'assets/environment/sprites/house_edda.png');
-    this.load.image(SPRITE_HOUSE_NERIS, 'assets/environment/sprites/house_neris.png');
-    this.load.image(SPRITE_BELL_TOWER, 'assets/environment/sprites/bell_tower.png');
-    this.load.image(SPRITE_BROKEN_SHRINE, 'assets/environment/sprites/broken_shrine.png');
-
-    // 7. Nạp các vật thể & cột đá cổ ngữ pixel art (PASS T06)
-    this.load.image(SPRITE_PILLAR_MOON, 'assets/environment/sprites/pillar_moon.png');
-    this.load.image(SPRITE_PILLAR_ROOT, 'assets/environment/sprites/pillar_root.png');
-    this.load.image(SPRITE_PILLAR_EYE, 'assets/environment/sprites/pillar_eye.png');
-    this.load.image(SPRITE_VILLAGE_WELL, 'assets/environment/sprites/village_well.png');
-    this.load.image(SPRITE_CRAFTING_BENCH, 'assets/environment/sprites/crafting_bench.png');
-    this.load.image(SPRITE_STONE_ALTAR, 'assets/environment/sprites/stone_altar.png');
-    this.load.image(SPRITE_ROCK_LARGE, 'assets/environment/sprites/rock_large.png');
-    this.load.image(SPRITE_ROCK_MEDIUM, 'assets/environment/sprites/rock_medium.png');
-    this.load.image(SPRITE_WOODEN_FENCE, 'assets/environment/sprites/wooden_fence.png');
-    this.load.image(SPRITE_SIGNPOST, 'assets/environment/sprites/signpost.png');
+    // 5. Nạp Texture Atlas gộp toàn bộ Props, Cây cối, Nhà cửa, Đèn lồng & Vật phẩm (HW-V14-ATLAS)
+    // Toàn bộ 51 sprite vật thể đơn lẻ được gộp vào 1 Texture Atlas duy nhất (1024x512 <= 2048x2048)
+    // với padding 2px và extrude 1px chống lem pixel viền. Mọi truy xuất key cũ được AtlasTextureResolver tự động điều phối.
+    AtlasTextureResolver.install();
+    this.load.atlas(ATLAS_PROPS_KEY, ATLAS_PROPS_PNG, ATLAS_PROPS_JSON);
 
     // 8. Nạp các tile địa hình mặt đất (PASS T07)
     this.load.image(TILE_FOREST_GRASS, 'assets/environment/tiles/tile_forest_grass.png');
@@ -242,6 +220,23 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image(TILE_SWAMP_MUD, 'assets/environment/tiles/tile_swamp_mud.png');
     this.load.image(TILE_COBBLE_ROAD, 'assets/environment/tiles/tile_cobble_road.png');
     this.load.image(TILE_STONE_FLOOR, 'assets/environment/tiles/tile_stone_floor.png');
+
+    // 8.1 Nạp các tài nguyên môi trường V1.4 Mẫu & Mở Rộng Toàn Hệ Thống (HW-V14-EXP)
+    if (CONFIG_USE_V14_PILOT_ENVIRONMENT || CONFIG_USE_V14_ENVIRONMENT) {
+      this.load.image(TILE_FOREST_GRASS_V14_A, 'assets/environment/v14/tiles/tile_forest_grass_v14_a.png');
+      this.load.image(TILE_FOREST_GRASS_V14_B, 'assets/environment/v14/tiles/tile_forest_grass_v14_b.png');
+      this.load.image(TILE_FOREST_GRASS_V14_C, 'assets/environment/v14/tiles/tile_forest_grass_v14_c.png');
+      this.load.image(TILE_DIRT_TRAIL_V14_A, 'assets/environment/v14/tiles/tile_dirt_trail_v14_a.png');
+      this.load.image(TILE_DIRT_TRAIL_V14_B, 'assets/environment/v14/tiles/tile_dirt_trail_v14_b.png');
+      this.load.image(TILE_COBBLE_ROAD_V14, 'assets/environment/v14/tiles/tile_cobble_road_v14.png');
+      this.load.image(TILE_STONE_FLOOR_V14, 'assets/environment/v14/tiles/tile_stone_floor_v14.png');
+      this.load.image(TILE_SWAMP_MUD_V14_A, 'assets/environment/v14/tiles/tile_swamp_mud_v14_a.png');
+      this.load.image(TILE_SWAMP_MUD_V14_B, 'assets/environment/v14/tiles/tile_swamp_mud_v14_b.png');
+      this.load.image(TILE_ABYSSAL_SOIL_V14_A, 'assets/environment/v14/tiles/tile_abyssal_soil_v14_a.png');
+      this.load.image(TILE_ABYSSAL_SOIL_V14_B, 'assets/environment/v14/tiles/tile_abyssal_soil_v14_b.png');
+      this.load.image(TILE_TILLED_SOIL_V14, 'assets/environment/v14/tiles/tile_tilled_soil_v14.png');
+      this.load.image(TILE_WOOD_PLANK_WEATHERED_V14, 'assets/environment/v14/tiles/tile_wood_plank_weathered_v14.png');
+    }
 
     // 9. Nạp các sprite NPC & Chân dung hội thoại pixel art C4-12-08 / C4-13-21 / C4-132-06 (Garth, Edda, Neris, Bram, Finn, Blacksmith)
     this.load.image(PORTRAIT_GARTH, 'assets/characters/villagers/portrait_garth.png');
@@ -349,6 +344,20 @@ export class PreloadScene extends Phaser.Scene {
     });
     this.load.image(PORTRAIT_SHADOW_BIG_BOSS, 'assets/characters/bosses/portrait_shadow_big_boss.png');
 
+    // V1.4 - Bước 13: Sinh vật Phục kích N3XUS & Trinh sát Goblin Scout
+    this.load.spritesheet(SPRITE_MIST_BAT, 'assets/characters/monsters/bat_sheet.png', {
+      frameWidth: 32,
+      frameHeight: 32
+    });
+    this.load.spritesheet(SPRITE_WANDERING_SHADE, 'assets/characters/monsters/ghost_sheet.png', {
+      frameWidth: 32,
+      frameHeight: 32
+    });
+    this.load.spritesheet(SPRITE_GOBLIN_SCOUT, 'assets/characters/monsters/goblin_scout_dagger_sheet.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+
     // V1.4 - P8-10: Nhóm Hiệp Sĩ Tà Ác (Evil Knights Faction)
     this.load.spritesheet(SPRITE_FALLEN_KNIGHT, 'assets/characters/enemies/fallen_knight_sheet.png', {
       frameWidth: 64,
@@ -367,12 +376,6 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image(PORTRAIT_HOODED_KNIGHT, 'assets/characters/bosses/portrait_hooded_knight.png');
 
     this.load.image(SPRITE_FOG_SMOOTH, 'assets/environment/sprites/fog_smooth.png');
-
-    // 11. Nạp các sprite tài nguyên thu thập thế giới 16×16 px (C4-02A)
-    this.load.image(SPRITE_RES_DRY_WOOD, 'assets/environment/sprites/res_dry_wood.png');
-    this.load.image(SPRITE_RES_TREE_RESIN, 'assets/environment/sprites/res_tree_resin.png');
-    this.load.image(SPRITE_RES_FLINT, 'assets/environment/sprites/res_flint.png');
-    this.load.image(SPRITE_RES_HERBS, 'assets/environment/sprites/res_herbs.png');
 
     // 12. Nạp toàn bộ hiệu ứng âm thanh & âm thanh khí quyển mã nguồn mở (C4-133-02)
     // Nhạc nền khí quyển theo vùng (Ambience)
@@ -411,6 +414,37 @@ export class PreloadScene extends Phaser.Scene {
     this.load.audio('dialogue_bram', 'assets/audio/dialogue/dialogue_bram.wav');
     this.load.audio('dialogue_finn', 'assets/audio/dialogue/dialogue_finn.wav');
     this.load.audio('dialogue_text_blip', 'assets/audio/dialogue/dialogue_text_blip.wav');
+
+    // 13. V1.4 - Nạp toàn bộ tài nguyên âm thanh mở rộng V1.4 (Bề mặt di chuyển, Hù dọa, Quái vật, Boss)
+    this.load.audio('footstep_mud_1', 'assets/audio/sfx/v14/footstep_mud_1.wav');
+    this.load.audio('footstep_mud_2', 'assets/audio/sfx/v14/footstep_mud_2.wav');
+    this.load.audio('footstep_wood_1', 'assets/audio/sfx/v14/footstep_wood_1.wav');
+    this.load.audio('footstep_wood_2', 'assets/audio/sfx/v14/footstep_wood_2.wav');
+    this.load.audio('footstep_stone_1', 'assets/audio/sfx/v14/footstep_stone_1.wav');
+    this.load.audio('footstep_stone_2', 'assets/audio/sfx/v14/footstep_stone_2.wav');
+    this.load.audio('footstep_leaves_1', 'assets/audio/sfx/v14/footstep_leaves_1.mp3');
+    this.load.audio('bat_flap', 'assets/audio/sfx/v14/bat_flap.wav');
+    this.load.audio('bat_screech', 'assets/audio/sfx/v14/bat_screech.wav');
+    this.load.audio('bat_bite', 'assets/audio/sfx/v14/bat_bite.wav');
+    this.load.audio('ghost_moan', 'assets/audio/sfx/v14/ghost_moan.wav');
+    this.load.audio('ghost_whisper', 'assets/audio/sfx/v14/ghost_whisper.wav');
+    this.load.audio('ghost_scream', 'assets/audio/sfx/v14/ghost_scream.wav');
+    this.load.audio('ghost_dissipate', 'assets/audio/sfx/v14/ghost_dissipate.wav');
+    this.load.audio('jumpscare_stinger', 'assets/audio/sfx/v14/jumpscare_stinger.wav');
+    this.load.audio('sanity_gasp', 'assets/audio/sfx/v14/sanity_gasp.wav');
+    this.load.audio('scout_whistle', 'assets/audio/sfx/v14/scout_whistle.wav');
+    this.load.audio('dagger_slash', 'assets/audio/sfx/v14/dagger_slash.wav');
+    this.load.audio('skull_wolf_growl', 'assets/audio/sfx/v14/skull_wolf_growl.wav');
+    this.load.audio('skull_wolf_snarl', 'assets/audio/sfx/v14/skull_wolf_snarl.wav');
+    this.load.audio('behemoth_roar', 'assets/audio/sfx/v14/behemoth_roar.wav');
+    this.load.audio('behemoth_thud', 'assets/audio/sfx/v14/behemoth_thud.wav');
+    this.load.audio('void_stalker_drone', 'assets/audio/sfx/v14/void_stalker_drone.wav');
+    this.load.audio('void_stalker_screech', 'assets/audio/sfx/v14/void_stalker_screech.wav');
+    this.load.audio('boss_drone', 'assets/audio/sfx/v14/boss_drone.wav');
+    this.load.audio('rune_shift', 'assets/audio/sfx/v14/rune_shift.wav');
+    this.load.audio('bell_toll_low', 'assets/audio/sfx/v14/bell_toll_low.wav');
+    this.load.audio('chest_creak', 'assets/audio/sfx/v14/chest_creak.wav');
+    this.load.audio('journal_page', 'assets/audio/sfx/v14/journal_page.wav');
   }
 
   public create(): void {
@@ -423,6 +457,9 @@ export class PreloadScene extends Phaser.Scene {
 
     // C4-13-15: Nạp 4 Icon Pixel Art (16x16 px) sắc nét cho các thuộc tính sinh tồn HUD
     HUDIconGenerator.generateAllHUDIcons(this);
+
+    // HW-V14-ATLAS: Đồng bộ hóa Texture Atlas & thiết lập NEAREST Filter cho toàn bộ Tilemap & Atlas (chống lem viền pixel)
+    AtlasTextureResolver.syncTextures(this);
 
     // V14-P8-14B: Đăng ký 2 hoạt ảnh chuẩn của Hiệp Sĩ Canh Lửa (anim_campfire_knight_pray và anim_campfire_knight_idle)
     if (this.textures.exists(SPRITE_CAMPFIRE_KNIGHT_PRAY) && !this.anims.exists('anim_campfire_knight_pray')) {

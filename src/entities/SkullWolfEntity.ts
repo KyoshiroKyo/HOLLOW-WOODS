@@ -52,7 +52,7 @@ export class SkullWolfEntity extends Phaser.Physics.Arcade.Sprite {
 
     // Anchor at bottom-center (feet at y=58 in 64x64 frame -> 58/64 = 0.90625)
     this.setOrigin(0.5, 0.90625);
-    this.setDepth(3450);
+    this.setDepth(Math.floor(y));
 
     // Collider configuration: compact body for smooth woodland navigation
     const body = this.body as Phaser.Physics.Arcade.Body;
@@ -117,6 +117,15 @@ export class SkullWolfEntity extends Phaser.Physics.Arcade.Sprite {
     if (this.footShadowGfx) {
       this.footShadowGfx.setPosition(this.x, this.y);
       this.footShadowGfx.setVisible(this.visible && this.wolfState !== 'dissolve');
+    }
+
+    // C4-14-B03: Dynamic Depth Sorting theo trục Y chân đứng
+    const targetDepth = Math.floor(this.y);
+    if (this.depth !== targetDepth) {
+      this.setDepth(targetDepth);
+      if (this.footShadowGfx) {
+        this.footShadowGfx.setDepth(targetDepth - 1);
+      }
     }
 
     // Update internal cooldown timers

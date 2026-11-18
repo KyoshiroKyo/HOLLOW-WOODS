@@ -134,7 +134,7 @@ export class DebugOverlay {
     }
 
     this.textObject.setText([
-      '=== [F4] THÔNG SỐ KỸ THUẬT NHÂN VẬT SATYR — HOLLOW WOODS V1.3 ===',
+      '=== [F4] THÔNG SỐ KỸ THUẬT NHÂN VẬT SATYR — HOLLOW WOODS V1.4 ===',
       `Tọa độ gót chân: X = ${Math.round(px)}, Y = ${Math.round(py)}`,
       `Phân khu hiện tại: ${currentZoneId}`,
       `Vận tốc: ${speed} px/s  |  Hướng mặt: ${this.player.facing}  |  FlipX: ${flipStr}`,

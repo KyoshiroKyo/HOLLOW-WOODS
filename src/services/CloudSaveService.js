@@ -1,0 +1,491 @@
+/**
+ * HOLLOW WOODS V1.4 - CLOUD SAVE SERVICE (JAVASCRIPT)
+ * Tích hợp hệ thống lưu tiến trình đám mây window.p2.storage kết hợp sao lưu cục bộ localStorage.
+ * Tuân thủ nghiêm ngặt đặc tả P2Game SDK v1.1.
+ */
+
+export const SAVE_VERSION = "1.4";
+export const MAX_KEY_BYTES = 60 * 1024; // 61,440 bytes - Chừa khoảng an toàn dưới mức trần 64 KB
+export const LOCAL_PREFIX = "hollow_woods_backup_";
+export const SAVE_KEY_SLOT_1 = "hw_save_slot_1";
+export const SAVE_KEY_META = "hw_save_meta";
+export const SAVE_KEY_SETTINGS = "hw_settings";
+
+let saveDebounceTimer = null;
+let latestPendingState = null;
+
+/**
+ * Kiểm tra dung lượng byte thực tế của dữ liệu trước khi gửi lên p2.storage
+ */
+export function getByteSize(data) {
+  try {
+    return new TextEncoder().encode(typeof data === 'string' ? data : JSON.stringify(data)).length;
+  } catch {
+    return 0;
+  }
+}
+
+/**
+ * Chuẩn hóa & nâng cấp dữ liệu Save từ V1.3 lên V1.4 nếu gặp file cũ
+ */
+export function migrateSaveSchema(rawData) {
+  if (!rawData || typeof rawData !== 'object') return null;
+
+  // Trích xuất player thông qua cấu trúc mới (rawData.player) hoặc cấu trúc cũ (rawData.stats, rawData.playerPos)
+  const p = rawData.player || {};
+  const stats = rawData.stats || {};
+  const playerPos = rawData.playerPos || {};
+
+  const mapId = p.mapId || rawData.zoneId || "bellhollow";
+  const x = Number(p.x ?? playerPos.x ?? 800);
+  const y = Number(p.y ?? playerPos.y ?? 700);
+  const hp = Math.max(0, Math.min(100, Number(p.hp ?? stats.health ?? 100)));
+  const stamina = Math.max(0, Math.min(100, Number(p.stamina ?? stats.stamina ?? 100)));
+  const lanternOil = Math.max(0, Math.min(100, Number(p.lanternOil ?? stats.lanternOil ?? 100)));
+  const sanity = Math.max(0, Math.min(100, Number(p.sanity ?? stats.composure ?? 100)));
+  const isLanternOn = typeof p.isLanternOn === 'boolean' ? p.isLanternOn : (typeof stats.isLanternOn === 'boolean' ? stats.isLanternOn : true);
+  const moisture = Math.max(0, Math.min(100, Number(p.moisture ?? stats.moisture ?? 0)));
+  const temperature = Math.max(0, Math.min(100, Number(p.temperature ?? stats.temperature ?? 80)));
+  const daysSurvived = Math.max(1, Math.floor(Number(p.daysSurvived ?? rawData.dayCount ?? 1)));
+  const timeOfDay = Math.max(0, Math.min(360, Number(p.timeOfDay ?? rawData.timeOfDay ?? 0)));
+
+  // Inventory: đồng bộ mảng cặp [itemId, count]
+  let inventory = [];
+  if (Array.isArray(rawData.inventory)) {
+    for (const item of rawData.inventory) {
+      if (Array.isArray(item) && item.length >= 2 && typeof item[0] === 'string') {
+        const count = Number(item[1]);
+        if (!isNaN(count) && count > 0) {
+          inventory.push([item[0].trim(), Math.floor(count)]);
+        }
+      } else if (item && typeof item === 'object') {
+        const key = item.id || item.itemId;
+        const count = Number(item.count);
+        if (key && !isNaN(count) && count > 0) {
+          inventory.push([String(key).trim(), Math.floor(count)]);
+        }
+      }
+    }
+  }
+
+  // Cờ sự kiện & nhiệm vụ (questFlags / flags)
+  const questFlags = {};
+  if (rawData.questFlags && typeof rawData.questFlags === 'object' && !Array.isArray(rawData.questFlags)) {
+    for (const [k, v] of Object.entries(rawData.questFlags)) {
+      if (v) questFlags[k] = true;
+    }
+  } else if (Array.isArray(rawData.questFlags)) {
+    for (const f of rawData.questFlags) {
+      if (typeof f === 'string' && f.trim()) questFlags[f.trim()] = true;
+    }
+  }
+  if (Array.isArray(rawData.flags)) {
+    for (const f of rawData.flags) {
+      if (typeof f === 'string' && f.trim()) questFlags[f.trim()] = true;
+    }
+  }
+
+  // Dữ liệu Fog of War của Mini-map (exploredZones / visitedZones)
+  const exploredZones = {};
+  if (rawData.exploredZones && typeof rawData.exploredZones === 'object' && !Array.isArray(rawData.exploredZones)) {
+    for (const [k, v] of Object.entries(rawData.exploredZones)) {
+      if (v) exploredZones[k] = true;
+    }
+  } else if (Array.isArray(rawData.exploredZones)) {
+    for (const z of rawData.exploredZones) {
+      if (typeof z === 'string' && z.trim()) exploredZones[z.trim()] = true;
+    }
+  }
+  if (Array.isArray(rawData.visitedZones)) {
+    for (const z of rawData.visitedZones) {
+      if (typeof z === 'string' && z.trim()) exploredZones[z.trim()] = true;
+    }
+  }
+  if (Object.keys(exploredZones).length === 0) {
+    exploredZones['fog_crossing'] = true;
+    exploredZones['bellhollow'] = true;
+  }
+
+  // Tuyến đường tắt & phân khu đã khai mở (unlockedShortcuts / unlockedZones)
+  let unlockedShortcuts = [];
+  if (Array.isArray(rawData.unlockedShortcuts) && rawData.unlockedShortcuts.length > 0) {
+    unlockedShortcuts = rawData.unlockedShortcuts.filter((s) => typeof s === 'string' && s.trim());
+  } else if (Array.isArray(rawData.unlockedZones) && rawData.unlockedZones.length > 0) {
+    unlockedShortcuts = rawData.unlockedZones.filter((s) => typeof s === 'string' && s.trim());
+  } else {
+    unlockedShortcuts = ['fog_crossing', 'bellhollow', 'sanctuary_farm', 'outer_woods'];
+  }
+
+  // Khôi phục các hệ thống phụ trợ V1.4
+  const equippedSlots = (rawData.equippedSlots && typeof rawData.equippedSlots === 'object') ? rawData.equippedSlots : { body: null, feet: null, back: null, charm: null };
+  const storageChest = [];
+  const rawChest = rawData.storageChest ?? rawData.storageChestInventory;
+  if (Array.isArray(rawChest)) {
+    for (const item of rawChest) {
+      if (Array.isArray(item) && item.length >= 2 && typeof item[0] === 'string') {
+        const count = Number(item[1]);
+        if (!isNaN(count) && count > 0) {
+          storageChest.push([item[0].trim(), Math.floor(count)]);
+        }
+      }
+    }
+  }
+
+  const campfireLevel = typeof rawData.campfireLevel === 'number' ? Math.max(1, Math.min(3, Math.floor(rawData.campfireLevel))) : 1;
+  const campfireFuel = typeof rawData.campfireFuel === 'number' ? Math.max(0, rawData.campfireFuel) : 180;
+  const rawBestiary = rawData.observedCreatures ?? rawData.unlockedBestiary;
+  const observedCreatures = Array.isArray(rawBestiary) ? rawBestiary.filter((c) => typeof c === 'string' && c.trim()) : [];
+  const memoryAwakeningStage = typeof rawData.memoryAwakeningStage === 'number' ? Math.max(0, Math.min(3, Math.floor(rawData.memoryAwakeningStage))) : 0;
+  const quests = Array.isArray(rawData.quests) ? rawData.quests : [];
+  const currentQuestId = typeof rawData.currentQuestId === 'string' && rawData.currentQuestId ? rawData.currentQuestId : "Q01_MEET_EDDA";
+  const unlockedLoreIds = Array.isArray(rawData.unlockedLoreIds) ? rawData.unlockedLoreIds.filter((l) => typeof l === 'string') : [];
+  const herbPlots = Array.isArray(rawData.herbPlots) ? rawData.herbPlots : [];
+  const checkpointName = typeof rawData.checkpointName === 'string' && rawData.checkpointName ? rawData.checkpointName : "Điểm lưu Bellhollow";
+  const updatedAt = typeof rawData.updatedAt === 'number' && !isNaN(rawData.updatedAt) ? rawData.updatedAt : (typeof rawData.timestamp === 'number' ? rawData.timestamp : Date.now());
+
+  return {
+    version: SAVE_VERSION,
+    updatedAt,
+    checkpointName,
+    player: {
+      mapId,
+      x,
+      y,
+      hp,
+      stamina,
+      lanternOil,
+      sanity,
+      isLanternOn,
+      moisture,
+      temperature,
+      daysSurvived,
+      timeOfDay,
+    },
+    inventory,
+    questFlags,
+    exploredZones,
+    unlockedShortcuts,
+    // Đồng bộ ngược cho SaveManager / PlayerState
+    zoneId: mapId,
+    playerPos: { x, y },
+    stats: {
+      health: hp,
+      stamina,
+      lanternOil,
+      composure: sanity,
+      isLanternOn,
+      isHiding: false,
+      isSprinting: false,
+      moisture,
+      temperature,
+    },
+    flags: Object.keys(questFlags),
+    visitedZones: Object.keys(exploredZones),
+    unlockedZones: unlockedShortcuts,
+    currentQuestId,
+    quests,
+    unlockedLoreIds,
+    herbPlots,
+    dayCount: daysSurvived,
+    timeOfDay,
+    equippedSlots,
+    storageChest,
+    storageChestInventory: storageChest,
+    campfireLevel,
+    campfireFuel,
+    unlockedBestiary: observedCreatures,
+    observedCreatures,
+    memoryAwakeningStage,
+    timestamp: updatedAt,
+    legacyExtraData: rawData.legacyExtraData || {}
+  };
+}
+
+/**
+ * Lưu tiến trình ngay lập tức (dùng tại điểm Save, chuyển map, hoặc p2.onBeforeUnload)
+ */
+export async function saveGameNow(gameState) {
+  const p2 = typeof window !== 'undefined' ? window.p2 : undefined;
+  const payload = migrateSaveSchema({
+    ...gameState,
+    updatedAt: Date.now(),
+  });
+
+  if (!payload) {
+    return { ok: false, reason: 'INVALID_STATE' };
+  }
+
+  // 1. Luôn lưu bản sao cục bộ trước để đảm bảo không bao giờ mất dữ liệu
+  try {
+    const jsonStr = JSON.stringify(payload);
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(`${LOCAL_PREFIX}slot_1`, jsonStr);
+      // Giữ đồng bộ cả khóa lưu truyền thống của SaveManager
+      localStorage.setItem('hollow_woods_v1_savegame', jsonStr);
+    }
+  } catch (e) {
+    console.warn("[CloudSaveService] LocalStorage backup warning:", e);
+  }
+
+  if (!p2 || !p2.storage) {
+    return { ok: true, source: "local" };
+  }
+
+  // 2. Kiểm tra giới hạn 64 KB/key trước khi gọi SDK
+  const byteSize = getByteSize(payload);
+  if (byteSize > MAX_KEY_BYTES) {
+    console.error(`[CloudSaveService] Save payload quá lớn (${byteSize} bytes), vượt ngưỡng an toàn 60 KB.`);
+    return { ok: false, reason: "QUOTA_EXCEEDED" };
+  }
+
+  const metaPayload = {
+    version: SAVE_VERSION,
+    updatedAt: payload.updatedAt,
+    currentMap: payload.player.mapId,
+    daysSurvived: payload.player.daysSurvived,
+    sanity: payload.player.sanity,
+    hp: payload.player.hp,
+    checkpoint: payload.checkpointName,
+  };
+
+  try {
+    await Promise.all([
+      p2.storage.set(SAVE_KEY_SLOT_1, payload),
+      p2.storage.set(SAVE_KEY_META, metaPayload),
+    ]);
+    latestPendingState = null;
+    return { ok: true, source: "cloud" };
+  } catch (err) {
+    const code = err?.code || 'UNAVAILABLE';
+    switch (code) {
+      case "UNAUTHENTICATED":
+        // Khách chưa đăng nhập: giữ ở localStorage, sẽ tự đồng bộ khi họ đăng nhập
+        return { ok: true, source: "local_guest" };
+      case "RATE_LIMITED":
+        // Bị giới hạn tần suất: hẹn giờ lưu lại đúng theo retryAfterMs
+        scheduleDebouncedSave(payload, err?.retryAfterMs || 3000);
+        return { ok: false, reason: "RATE_LIMITED" };
+      case "QUOTA_EXCEEDED":
+        p2.ui?.toast?.("Dung lượng lưu đám mây đã đầy!", "warning");
+        return { ok: false, reason: "QUOTA_EXCEEDED" };
+      default:
+        console.warn("[CloudSaveService] Cloud save tạm thời gián đoạn, đã giữ bản lưu cục bộ:", err?.message || err);
+        return { ok: false, reason: "UNAVAILABLE" };
+    }
+  }
+}
+
+/**
+ * Lưu có độ trễ (Debounce) cho các sự kiện nhỏ (nhặt đồ, mở sương mù) để tránh spam API
+ */
+export function scheduleDebouncedSave(gameState, delayMs = 2500) {
+  latestPendingState = gameState;
+  if (saveDebounceTimer) clearTimeout(saveDebounceTimer);
+  saveDebounceTimer = setTimeout(() => {
+    if (latestPendingState) {
+      saveGameNow(latestPendingState);
+    }
+  }, delayMs);
+}
+
+/**
+ * Tải tiến trình: Tự động so sánh bản Cloud và bản Local, lấy bản mới nhất
+ */
+export async function loadGameProgress() {
+  const p2 = typeof window !== 'undefined' ? window.p2 : undefined;
+  let localSave = null;
+  let cloudSave = null;
+
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const rawLocal = localStorage.getItem(`${LOCAL_PREFIX}slot_1`) || localStorage.getItem("hollow_woods_v1_savegame");
+      if (rawLocal) localSave = migrateSaveSchema(JSON.parse(rawLocal));
+    }
+  } catch (e) {
+    console.warn("[CloudSaveService] Lỗi đọc local backup:", e);
+  }
+
+  if (p2 && p2.storage) {
+    try {
+      const rawCloud = await p2.storage.get(SAVE_KEY_SLOT_1);
+      if (rawCloud) cloudSave = migrateSaveSchema(rawCloud);
+    } catch (err) {
+      console.warn("[CloudSaveService] Không thể tải Cloud Save, dùng bản lưu cục bộ:", err?.message || err);
+    }
+  }
+
+  if (cloudSave && localSave) {
+    const chosen = (cloudSave.updatedAt || 0) >= (localSave.updatedAt || 0) ? cloudSave : localSave;
+    if (chosen === cloudSave && typeof localStorage !== 'undefined') {
+      try {
+        const jsonStr = JSON.stringify(cloudSave);
+        localStorage.setItem(`${LOCAL_PREFIX}slot_1`, jsonStr);
+        localStorage.setItem("hollow_woods_v1_savegame", jsonStr);
+      } catch {}
+    }
+    return chosen;
+  }
+  const result = cloudSave || localSave || null;
+  if (result && typeof localStorage !== 'undefined') {
+    try {
+      const jsonStr = JSON.stringify(result);
+      localStorage.setItem(`${LOCAL_PREFIX}slot_1`, jsonStr);
+      localStorage.setItem("hollow_woods_v1_savegame", jsonStr);
+    } catch {}
+  }
+  return result;
+}
+
+/**
+ * Đăng ký các sự kiện vòng đời SDK để chống mất dữ liệu khi đóng tab hoặc mới đăng nhập
+ */
+export function bindCloudSaveLifecycle(getCurrentGameStateFn) {
+  const p2 = typeof window !== 'undefined' ? window.p2 : undefined;
+  if (!p2) return () => {};
+
+  // 1. Cơ hội lưu cuối cùng khi người chơi đóng tab hoặc rời trang
+  let cleanupUnload = null;
+  if (typeof p2.onBeforeUnload === 'function') {
+    cleanupUnload = p2.onBeforeUnload(() => {
+      const state = (typeof getCurrentGameStateFn === 'function' ? getCurrentGameStateFn() : null) || latestPendingState;
+      if (state) {
+        saveGameNow(state);
+      }
+    });
+  }
+
+  // 2. Khi khách bấm đăng nhập giữa chừng, đẩy ngay tiến trình đang chơi lên đám mây
+  let cleanupAuth = null;
+  if (p2.auth && typeof p2.auth.onChange === 'function') {
+    cleanupAuth = p2.auth.onChange(async (player) => {
+      if (player) {
+        const currentState = getCurrentGameStateFn?.();
+        if (currentState) {
+          const res = await saveGameNow(currentState);
+          if (res.ok) {
+            p2.ui?.toast?.("Đã đồng bộ tiến trình lên đám mây!", "success");
+          }
+        }
+      }
+    });
+  }
+
+  return () => {
+    if (cleanupUnload) cleanupUnload();
+    if (cleanupAuth) cleanupAuth();
+  };
+}
+
+/**
+ * Lưu cấu hình người chơi vào key hw_settings
+ */
+export async function saveSettings(settings) {
+  const p2 = typeof window !== 'undefined' ? window.p2 : undefined;
+  const payload = {
+    updatedAt: Date.now(),
+    graphicsQuality: settings.graphicsQuality || (typeof localStorage !== 'undefined' ? localStorage.getItem('hw_graphics_quality') || 'HIGH' : 'HIGH'),
+    masterVolume: settings.masterVolume ?? 0.8,
+    musicVolume: settings.musicVolume ?? 0.7,
+    sfxVolume: settings.sfxVolume ?? 0.8,
+    isMuted: settings.isMuted ?? false,
+    ...settings
+  };
+
+  try {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(`${LOCAL_PREFIX}settings`, JSON.stringify(payload));
+    }
+  } catch (e) {
+    console.warn('[CloudSaveService] LocalStorage settings warning:', e);
+  }
+
+  if (!p2 || !p2.storage) {
+    return { ok: true, source: 'local' };
+  }
+
+  const byteSize = getByteSize(payload);
+  if (byteSize > MAX_KEY_BYTES) {
+    return { ok: false, reason: 'QUOTA_EXCEEDED' };
+  }
+
+  try {
+    await p2.storage.set(SAVE_KEY_SETTINGS, payload);
+    return { ok: true, source: 'cloud' };
+  } catch (err) {
+    const code = err?.code || 'UNAVAILABLE';
+    return { ok: false, reason: code };
+  }
+}
+
+/**
+ * Tải cấu hình người chơi từ Cloud / Local
+ */
+export async function loadSettings() {
+  const p2 = typeof window !== 'undefined' ? window.p2 : undefined;
+  let localSettings = null;
+  let cloudSettings = null;
+
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const raw = localStorage.getItem(`${LOCAL_PREFIX}settings`);
+      if (raw) localSettings = JSON.parse(raw);
+    }
+  } catch {}
+
+  if (p2 && p2.storage) {
+    try {
+      cloudSettings = await p2.storage.get(SAVE_KEY_SETTINGS);
+    } catch {}
+  }
+
+  if (cloudSettings && localSettings) {
+    return (cloudSettings.updatedAt || 0) >= (localSettings.updatedAt || 0) ? cloudSettings : localSettings;
+  }
+  return cloudSettings || localSettings || null;
+}
+
+/**
+ * Singleton service class
+ */
+export class CloudSaveService {
+  static instance = null;
+
+  static getInstance() {
+    if (!CloudSaveService.instance) {
+      CloudSaveService.instance = new CloudSaveService();
+    }
+    return CloudSaveService.instance;
+  }
+
+  getByteSize(data) {
+    return getByteSize(data);
+  }
+
+  migrateSaveSchema(rawData) {
+    return migrateSaveSchema(rawData);
+  }
+
+  async saveGameNow(gameState) {
+    return saveGameNow(gameState);
+  }
+
+  scheduleDebouncedSave(gameState, delayMs = 2500) {
+    scheduleDebouncedSave(gameState, delayMs);
+  }
+
+  async loadGameProgress() {
+    return loadGameProgress();
+  }
+
+  bindCloudSaveLifecycle(getCurrentGameStateFn) {
+    return bindCloudSaveLifecycle(getCurrentGameStateFn);
+  }
+
+  async saveSettings(settings) {
+    return saveSettings(settings);
+  }
+
+  async loadSettings() {
+    return loadSettings();
+  }
+}

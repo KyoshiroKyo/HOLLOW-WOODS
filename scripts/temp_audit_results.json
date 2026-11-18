@@ -1,0 +1,410 @@
+{
+  "zoneColliderReport": [
+    {
+      "id": "fog_crossing",
+      "name": "Fog Crossing",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 480,
+        "height": 360
+      },
+      "boundaryCount": 4,
+      "wallCount": 0,
+      "transitionCount": 1
+    },
+    {
+      "id": "bellhollow",
+      "name": "Bellhollow",
+      "bounds": {
+        "x": 480,
+        "y": -200,
+        "width": 1120,
+        "height": 960
+      },
+      "boundaryCount": 4,
+      "wallCount": 5,
+      "transitionCount": 4
+    },
+    {
+      "id": "crooked_path",
+      "name": "The Crooked Path",
+      "bounds": {
+        "x": 1600,
+        "y": 0,
+        "width": 1280,
+        "height": 640
+      },
+      "boundaryCount": 3,
+      "wallCount": 0,
+      "transitionCount": 4
+    },
+    {
+      "id": "silent_mire",
+      "name": "Silent Mire",
+      "bounds": {
+        "x": 2880,
+        "y": 100,
+        "width": 1120,
+        "height": 640
+      },
+      "boundaryCount": 6,
+      "wallCount": 0,
+      "transitionCount": 5
+    },
+    {
+      "id": "broken_bell_shrine",
+      "name": "The Broken Bell Shrine",
+      "bounds": {
+        "x": 4000,
+        "y": 0,
+        "width": 960,
+        "height": 600
+      },
+      "boundaryCount": 5,
+      "wallCount": 2,
+      "transitionCount": 1
+    },
+    {
+      "id": "sanctuary_farm",
+      "name": "Sanctuary Farm",
+      "bounds": {
+        "x": 480,
+        "y": 560,
+        "width": 640,
+        "height": 480
+      },
+      "boundaryCount": 4,
+      "wallCount": 2,
+      "transitionCount": 3
+    },
+    {
+      "id": "outer_woods",
+      "name": "Outer Woods",
+      "bounds": {
+        "x": 1120,
+        "y": 560,
+        "width": 480,
+        "height": 480
+      },
+      "boundaryCount": 2,
+      "wallCount": 7,
+      "transitionCount": 4
+    },
+    {
+      "id": "deep_forest",
+      "name": "Deep Forest",
+      "bounds": {
+        "x": 1600,
+        "y": -640,
+        "width": 1280,
+        "height": 640
+      },
+      "boundaryCount": 5,
+      "wallCount": 0,
+      "transitionCount": 4
+    },
+    {
+      "id": "ancient_rune_puzzle",
+      "name": "Ancient Rune Puzzle",
+      "bounds": {
+        "x": 3350,
+        "y": 150,
+        "width": 350,
+        "height": 280
+      },
+      "boundaryCount": 0,
+      "wallCount": 0,
+      "transitionCount": 2
+    },
+    {
+      "id": "sub_bell_workshop",
+      "name": "Abandoned Bell Workshop",
+      "bounds": {
+        "x": 1120,
+        "y": 1040,
+        "width": 480,
+        "height": 400
+      },
+      "boundaryCount": 4,
+      "wallCount": 1,
+      "transitionCount": 1
+    },
+    {
+      "id": "sub_root_cellar",
+      "name": "Root Cellar",
+      "bounds": {
+        "x": 480,
+        "y": 1040,
+        "width": 640,
+        "height": 400
+      },
+      "boundaryCount": 4,
+      "wallCount": 1,
+      "transitionCount": 2
+    },
+    {
+      "id": "sub_whispering_clearing",
+      "name": "Whispering Clearing",
+      "bounds": {
+        "x": 1600,
+        "y": -360,
+        "width": 480,
+        "height": 360
+      },
+      "boundaryCount": 4,
+      "wallCount": 0,
+      "transitionCount": 3
+    },
+    {
+      "id": "abyssal_chasm",
+      "name": "The Abyssal Chasm",
+      "bounds": {
+        "x": 1600,
+        "y": -1280,
+        "width": 1280,
+        "height": 640
+      },
+      "boundaryCount": 4,
+      "wallCount": 0,
+      "transitionCount": 1
+    },
+    {
+      "id": "drowned_mire_depths",
+      "name": "The Drowned Mire Depths",
+      "bounds": {
+        "x": 2880,
+        "y": 740,
+        "width": 1120,
+        "height": 640
+      },
+      "boundaryCount": 4,
+      "wallCount": 0,
+      "transitionCount": 1
+    },
+    {
+      "id": "whispering_grove_sanctum",
+      "name": "Sanctum of the Elder Grove",
+      "bounds": {
+        "x": 1120,
+        "y": -800,
+        "width": 960,
+        "height": 440
+      },
+      "boundaryCount": 4,
+      "wallCount": 0,
+      "transitionCount": 1
+    },
+    {
+      "id": "sunken_crypt_ruins",
+      "name": "The Sunken Crypt of Runes",
+      "bounds": {
+        "x": 3350,
+        "y": -640,
+        "width": 1130,
+        "height": 640
+      },
+      "boundaryCount": 4,
+      "wallCount": 0,
+      "transitionCount": 1
+    },
+    {
+      "id": "veil_origin_cavern",
+      "name": "The Veil's Heart Cavern",
+      "bounds": {
+        "x": 480,
+        "y": 1440,
+        "width": 1120,
+        "height": 640
+      },
+      "boundaryCount": 4,
+      "wallCount": 0,
+      "transitionCount": 1
+    }
+  ],
+  "deepForestGaps": [
+    {
+      "zone": "deep_forest",
+      "transitionId": "to_silent_mire_from_df",
+      "boundaryId": "df_bound_right",
+      "issue": "Boundary collider đè trực tiếp lên Trigger Transition hoặc chắn lối vào"
+    },
+    {
+      "zone": "deep_forest",
+      "transitionId": "to_whispering_clearing",
+      "boundaryId": "df_bound_bottom_left",
+      "issue": "Boundary collider đè trực tiếp lên Trigger Transition hoặc chắn lối vào"
+    },
+    {
+      "zone": "deep_forest",
+      "transitionId": "to_abyssal_chasm",
+      "boundaryId": "df_bound_top",
+      "issue": "Boundary collider đè trực tiếp lên Trigger Transition hoặc chắn lối vào"
+    }
+  ],
+  "bodyOffsetIssuesSample": [
+    {
+      "line": 3080,
+      "code": "(body.body as Phaser.Physics.Arcade.Body).setOffset(-colW / 2, -colH / 2);"
+    },
+    {
+      "line": 3107,
+      "code": "(body.body as Phaser.Physics.Arcade.Body).setOffset(-colW / 2, -colH / 2);"
+    },
+    {
+      "line": 3265,
+      "code": "(body.body as Phaser.Physics.Arcade.Body).setOffset(-colW / 2, -colH / 2);"
+    },
+    {
+      "line": 3983,
+      "code": "(body.body as Phaser.Physics.Arcade.Body).setOffset(-bw / 2, -bh / 2);"
+    },
+    {
+      "line": 4785,
+      "code": "b.setOffset(-spec.width / 2, -spec.height / 2);"
+    },
+    {
+      "line": 5779,
+      "code": "(body.body as Phaser.Physics.Arcade.Body).setOffset(-colW / 2, -colH / 2);"
+    }
+  ],
+  "totalBodyOffsetIssues": 6,
+  "missingRefreshBodySample": [
+    {
+      "line": 2993,
+      "code": "tree.setScale(scale);"
+    }
+  ],
+  "depthSortingIssuesSample": [
+    {
+      "line": 2851,
+      "code": "trunkGfx.setDepth(roadCenterY + 15);",
+      "depthVal": "roadCenterY + 15"
+    },
+    {
+      "line": 2890,
+      "code": "fenceGfx.setDepth(roadCenterY + 18);",
+      "depthVal": "roadCenterY + 18"
+    },
+    {
+      "line": 2923,
+      "code": "mist.setDepth(depth);",
+      "depthVal": "depth"
+    },
+    {
+      "line": 3300,
+      "code": "g.setDepth(leftY + 8);",
+      "depthVal": "leftY + 8"
+    },
+    {
+      "line": 3523,
+      "code": "northFence.setDepth(northPostY);",
+      "depthVal": "northPostY"
+    },
+    {
+      "line": 3532,
+      "code": "southFence.setDepth(southPostY);",
+      "depthVal": "southPostY"
+    },
+    {
+      "line": 3559,
+      "code": "northPillar.setDepth(northPostY);",
+      "depthVal": "northPostY"
+    },
+    {
+      "line": 3587,
+      "code": "southPillar.setDepth(southPostY);",
+      "depthVal": "southPostY"
+    },
+    {
+      "line": 3612,
+      "code": "overheadArch.setDepth(southPostY + 35);",
+      "depthVal": "southPostY + 35"
+    },
+    {
+      "line": 3623,
+      "code": "signLabel.setDepth(southPostY + 36);",
+      "depthVal": "southPostY + 36"
+    },
+    {
+      "line": 3629,
+      "code": "markerNorth.setDepth(northPostY + 2);",
+      "depthVal": "northPostY + 2"
+    },
+    {
+      "line": 3634,
+      "code": "markerSouth.setDepth(southPostY - 2);",
+      "depthVal": "southPostY - 2"
+    },
+    {
+      "line": 3795,
+      "code": "this.eastGateVisual.setDepth(roadY - 2);",
+      "depthVal": "roadY - 2"
+    },
+    {
+      "line": 4364,
+      "code": "beamGraphics.setDepth(650);",
+      "depthVal": "650"
+    },
+    {
+      "line": 4537,
+      "code": "this.centralAltarBeam.setDepth(600);",
+      "depthVal": "600"
+    },
+    {
+      "line": 5344,
+      "code": "gate.setDepth(-660);",
+      "depthVal": "-660"
+    },
+    {
+      "line": 5545,
+      "code": "altar.setDepth(-580);",
+      "depthVal": "-580"
+    },
+    {
+      "line": 5698,
+      "code": "gate.setDepth(1480);",
+      "depthVal": "1480"
+    },
+    {
+      "line": 5704,
+      "code": "heartAltar.setDepth(1860);",
+      "depthVal": "1860"
+    },
+    {
+      "line": 6556,
+      "code": "g.setDepth(roadY - 10);",
+      "depthVal": "roadY - 10"
+    }
+  ],
+  "entityAuditResults": [
+    {
+      "file": "AmbushMonsters.ts",
+      "line": 44,
+      "code": "this.setScale(1.2);",
+      "hasRefresh": false,
+      "hasSetSize": false
+    },
+    {
+      "file": "AmbushMonsters.ts",
+      "line": 131,
+      "code": "this.setScale(1.2);",
+      "hasRefresh": false,
+      "hasSetSize": false
+    },
+    {
+      "file": "AmbushMonsters.ts",
+      "line": 218,
+      "code": "this.setScale(1.0);",
+      "hasRefresh": false,
+      "hasSetSize": false
+    },
+    {
+      "file": "MireWardenBoss.ts",
+      "line": 386,
+      "code": "this.bodyGfx.setScale(1, breathScale);",
+      "hasRefresh": false,
+      "hasSetSize": false
+    }
+  ]
+}

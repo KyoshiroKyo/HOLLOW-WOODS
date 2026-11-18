@@ -47,7 +47,7 @@ export class WildlifeEntity extends Phaser.GameObjects.Container {
     this.gfx = scene.add.graphics();
     this.add(this.gfx);
 
-    this.setDepth(this.species === 'crow' ? 3500 : 5010);
+    this.setDepth(this.species === 'crow' ? Math.floor(spec.y) : 5010);
 
     if (this.species === 'crow') {
       this.drawCrowPerched(0);
@@ -176,9 +176,11 @@ export class WildlifeEntity extends Phaser.GameObjects.Container {
       onUpdate: () => {
         this.wingPhase += 0.45;
         this.drawCrowFlying(this.wingPhase);
+        this.setDepth(5020);
       },
       onComplete: () => {
         this.setVisible(false);
+        this.setDepth(Math.floor(this.spec.y));
         // Hồi sinh sau 20 - 30 giây khi yên tĩnh trở lại
         this.respawnTimer = 22000 + Math.random() * 8000;
       }

@@ -154,6 +154,9 @@ export const SPRITE_DREAD_HORSEMAN = 'dread_horseman_sheet';
 export const PORTRAIT_DREAD_HORSEMAN = 'portrait_dread_horseman';
 export const SPRITE_HOODED_KNIGHT = 'hooded_knight_sheet';
 export const PORTRAIT_HOODED_KNIGHT = 'portrait_hooded_knight';
+export const SPRITE_MIST_BAT = 'mist_bat_sheet';
+export const SPRITE_WANDERING_SHADE = 'wandering_shade_sheet';
+export const SPRITE_GOBLIN_SCOUT = 'goblin_scout_dagger_sheet';
 export const SPRITE_FOG_SMOOTH = 'fog_smooth';
 
 // Khóa Texture Tài Nguyên Thu Thập (World Resource Sprite Keys - C4-02A)
@@ -173,6 +176,66 @@ export const DEPTH_GROUND_DECALS = -8500;    // Quầng sáng đèn sàn, nấm 
 export const DEPTH_GROUND_MIST = -8000;      // Sương mù ranh giới mặt đất (WorldBuilder boundary mist)
 export const DEPTH_VEIL_GROUND_FOG = -7000;  // Sương mù mặt đất của VeilSystem (dưới chân nhân vật)
 export const DEPTH_VEIL_PINK_DAWN = -6900;   // Sương mù bình minh hồng của VeilSystem
+
+// =========================================================================
+// V1.4 MỞ RỘNG: KHÓA TEXTURE & CỜ THỬ NGHIỆM MÔI TRƯỜNG MẪU (PILOT ZONE)
+// =========================================================================
+export const CONFIG_USE_V14_PILOT_ENVIRONMENT = true;
+export const CONFIG_USE_V14_ENVIRONMENT = true;
+
+// Khóa Cây đại thụ V1.4
+export const SPRITE_TREE_OAK_MOSSY_V14 = 'tree_oak_mossy_v14';
+export const SPRITE_TREE_BIRCH_AMBER_V14 = 'tree_birch_amber_v14';
+export const SPRITE_TREE_MAPLE_CRIMSON_V14 = 'tree_maple_crimson_v14';
+export const SPRITE_TREE_HOLLOW_ANCIENT_V14 = 'tree_hollow_ancient_v14';
+export const SPRITE_TREE_OAK_ANCIENT_TITAN_V14 = 'tree_oak_ancient_titan_v14';
+export const SPRITE_TREE_DEAD_WITHERED_V14 = 'tree_dead_withered_v14';
+
+// Khóa Chướng ngại vật & Đạo cụ V1.4
+export const SPRITE_PROP_FALLEN_LOG_MOSSY_V14 = 'prop_fallen_log_mossy_v14';
+export const SPRITE_PROP_STUMP_MOSSY_LARGE_V14 = 'prop_stump_mossy_large_v14';
+export const SPRITE_ROCK_MOSSY_FOREST_01_V14 = 'rock_mossy_forest_01_v14';
+export const SPRITE_ROCK_MOSSY_FOREST_02_V14 = 'rock_mossy_forest_02_v14';
+export const SPRITE_ROCK_LARGE_MOSSY_V14 = 'rock_large_mossy_v14';
+export const SPRITE_CLIFF_FACE_WESTERN_V14 = 'cliff_face_western_v14';
+export const SPRITE_STRUCTURE_ABYSSAL_GATE_V14 = 'structure_abyssal_gate_v14';
+export const SPRITE_PROP_TANGLED_ROOTS_V14 = 'prop_tangled_roots_v14';
+export const SPRITE_PROP_SHROOM_GLOW_TEAL_V14 = 'prop_shroom_glow_teal_v14';
+export const SPRITE_PROP_ANCIENT_MONOLITH_V14 = 'prop_ancient_monolith_v14';
+export const SPRITE_PROP_SWAMP_CATTAILS_V14 = 'prop_swamp_cattails_v14';
+export const SPRITE_PROP_MUSHROOM_CLUSTER_V14 = 'prop_mushroom_cluster_v14';
+export const SPRITE_PROP_FERN_CLUSTER_V14 = 'prop_fern_cluster_v14';
+export const SPRITE_PROP_CHOPPED_WOOD_V14 = 'prop_chopped_wood_v14';
+export const SPRITE_PROP_BARREL_AGED_V14 = 'prop_barrel_aged_v14';
+export const SPRITE_PROP_CRATE_WEATHERED_V14 = 'prop_crate_weathered_v14';
+
+// Khóa Công trình Làng V1.4
+export const SPRITE_BUILDING_HOUSE_EDDA_V14 = 'building_house_edda_v14';
+export const SPRITE_BUILDING_HOUSE_NERIS_V14 = 'building_house_neris_v14';
+export const SPRITE_BUILDING_VILLAGE_WELL_V14 = 'building_village_well_v14';
+
+// Khóa Tile địa hình V1.4
+export const TILE_FOREST_GRASS_V14_A = 'tile_forest_grass_v14_a';
+export const TILE_FOREST_GRASS_V14_B = 'tile_forest_grass_v14_b';
+export const TILE_FOREST_GRASS_V14_C = 'tile_forest_grass_v14_c';
+export const TILE_DIRT_TRAIL_V14_A = 'tile_dirt_trail_v14_a';
+export const TILE_DIRT_TRAIL_V14_B = 'tile_dirt_trail_v14_b';
+export const TILE_COBBLE_ROAD_V14 = 'tile_cobble_road_v14';
+export const TILE_STONE_FLOOR_V14 = 'tile_stone_floor_v14';
+export const TILE_SWAMP_MUD_V14_A = 'tile_swamp_mud_v14_a';
+export const TILE_SWAMP_MUD_V14_B = 'tile_swamp_mud_v14_b';
+export const TILE_ABYSSAL_SOIL_V14_A = 'tile_abyssal_soil_v14_a';
+export const TILE_ABYSSAL_SOIL_V14_B = 'tile_abyssal_soil_v14_b';
+export const TILE_TILLED_SOIL_V14 = 'tile_tilled_soil_v14';
+export const TILE_WOOD_PLANK_WEATHERED_V14 = 'tile_wood_plank_weathered_v14';
+
+// Khóa 5 Phân khu Mở rộng Mới (New Expansion Zone IDs - HW-V14-EXP-06)
+export const ZONE_ABYSSAL_CHASM = 'abyssal_chasm';
+export const ZONE_DROWNED_MIRE_DEPTHS = 'drowned_mire_depths';
+export const ZONE_WHISPERING_GROVE_SANCTUM = 'whispering_grove_sanctum';
+export const ZONE_SUNKEN_CRYPT_RUINS = 'sunken_crypt_ruins';
+export const ZONE_VEIL_ORIGIN_CAVERN = 'veil_origin_cavern';
+
 
 
 

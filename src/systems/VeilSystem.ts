@@ -3,6 +3,7 @@ import { PlayerState } from '../state/PlayerState';
 import { SPRITE_FOG_SMOOTH, DEPTH_VEIL_GROUND_FOG, DEPTH_VEIL_PINK_DAWN } from '../config/Constants';
 import { HDTextHelper } from '../utils/HDTextHelper';
 import { TimeSystem } from './TimeSystem';
+import { GraphicsQualitySystem } from './GraphicsQualitySystem';
 
 export class VeilSystem {
   private scene: Phaser.Scene;
@@ -20,9 +21,7 @@ export class VeilSystem {
   // Biến tích lũy trôi dạt tự nhiên (Autonomous Drift)
   private driftGroundX: number = 0;
   private driftMidX: number = 0;
-  private driftHighX: number = 0;
   private driftPinkDawnX: number = 0;
-  private driftPinkGlowX: number = 0;
 
   // C4-13-20: Màn sương chuyển cảnh mượt mà khi bước qua ranh giới phân khu chính (Mist Fade Transition ~0.35s)
   private transitionMistOverlay: Phaser.GameObjects.Graphics;
@@ -31,6 +30,9 @@ export class VeilSystem {
   // V14-P7-01: Chỉ báo thị giác khi tiếng động bị mưa sương át (Rain Threat Visual Indicator)
   private rainAuraThreatOverlay: Phaser.GameObjects.Graphics;
   private hasThreatAuraDrawn: boolean = false;
+
+  // V1.4 - Bước 9: Biến đổi môi trường khi Boss thức tỉnh (Boss Awakening Environmental Shift)
+  private isBossAwakened: boolean = false;
   
   // Hiệu ứng nhận thức tâm lý (Psychological Horror)
   private whisperText: Phaser.GameObjects.Text;
@@ -136,34 +138,10 @@ export class VeilSystem {
     const camScrollX = cam ? cam.scrollX : 0;
     const camScrollY = cam ? cam.scrollY : 0;
 
-    // 1. Cập nhật tích lũy trôi dạt tự nhiên đa vận tốc
-    this.driftGroundX += 12 * dt;
-    this.driftMidX += 19 * dt;
-    this.driftHighX += 7 * dt;
-    this.driftPinkDawnX += 14 * dt;
-    this.driftPinkGlowX += 9 * dt;
+    const qSettings = GraphicsQualitySystem.getInstance().getSettings();
+    const bossDriftMult = this.isBossAwakened ? 2.2 : 1.0;
 
-    // Cuộn sương Parallax đồng bộ chuyển động Camera
-    this.fogLayerGround.tilePositionX = (camScrollX * 0.15) + this.driftGroundX;
-    this.fogLayerGround.tilePositionY = (camScrollY * 0.15) + 3 * Math.sin(time * 0.0009);
-
-    this.fogLayerMid.tilePositionX = (camScrollX * 0.35) + this.driftMidX;
-    this.fogLayerMid.tilePositionY = (camScrollY * 0.35) - 2 * Math.cos(time * 0.0007);
-
-    this.fogLayerHigh.tilePositionX = (camScrollX * 0.55) + this.driftHighX;
-    this.fogLayerHigh.tilePositionY = (camScrollY * 0.55) + 2 * Math.sin(time * 0.0005);
-
-    // Cuộn sương hồng Parallax
-    this.fogLayerPinkDawn.tilePositionX = (camScrollX * 0.20) + this.driftPinkDawnX;
-    this.fogLayerPinkDawn.tilePositionY = (camScrollY * 0.20) + 2.5 * Math.sin(time * 0.0008);
-
-    this.fogLayerPinkGlow.tilePositionX = (camScrollX * 0.40) + this.driftPinkGlowX;
-    this.fogLayerPinkGlow.tilePositionY = (camScrollY * 0.40) - 2.0 * Math.cos(time * 0.0006);
-
-    // Tính toán độ đậm nhạt & đổi màu của sương hồng theo phong cách "Con đường sương mù" Doraemon:
-    // Tại điểm xuất phát / cửa ngõ (x <= 160): sương mù phủ dày đặc (alpha: 0.48, tone hồng/tím sương mai 0xFF94B8 / 0xF472B6)
-    // Khi nhân vật tiến sâu dần về phía làng Bellhollow (x: 160 -> 560):
-    // Lớp sương tự động giảm độ đậm (alpha từ 0.48 xuống 0.05 rồi tan dần) và chuyển sắc sang tone sương đêm tự nhiên (0x1a2620)
+    // Tính toán pinkFactor theo vùng khởi đầu Fog Crossing
     let pinkFactor = 0;
     if (playerX !== undefined) {
       if (playerX <= 160) {
@@ -177,29 +155,64 @@ export class VeilSystem {
       pinkFactor = 1.0;
     }
 
-    // Đổi màu chuyển sắc từ tone hồng sương mai / tím khói sang tone sương đêm tự nhiên (0x1a2620)
-    const dawnR = Math.round(Phaser.Math.Linear(0x1a, 0xff, pinkFactor));
-    const dawnG = Math.round(Phaser.Math.Linear(0x26, 0x94, pinkFactor));
-    const dawnB = Math.round(Phaser.Math.Linear(0x20, 0xb8, pinkFactor));
-    this.fogLayerPinkDawn.setTint((dawnR << 16) | (dawnG << 8) | dawnB);
+    // TỐI ƯU HÓA: Kiểm soát ngân sách sương mù (Tối đa 2 lớp sương mù cuộn, 1 lớp trên Medium/Low)
+    if (!qSettings.enableParallaxDrift) {
+      // Chế độ LOW: Giữ 1 lớp sương mặt đất tĩnh nhẹ, tắt toàn bộ trôi dạt để đảm bảo 60 FPS
+      this.fogLayerGround.setVisible(true);
+      this.fogLayerGround.setAlpha(this.isBossAwakened ? 0.35 : 0.16);
+      this.fogLayerMid.setVisible(false);
+      this.fogLayerHigh.setVisible(false);
+      this.fogLayerPinkDawn.setVisible(false);
+      this.fogLayerPinkGlow.setVisible(false);
+    } else if (qSettings.maxFogLayers === 1) {
+      // Chế độ MEDIUM: Đúng 1 lớp sương mặt đất chính
+      this.driftGroundX += 12 * dt * bossDriftMult;
+      this.fogLayerGround.tilePositionX = (camScrollX * 0.15) + this.driftGroundX;
+      this.fogLayerGround.tilePositionY = (camScrollY * 0.15) + 3 * Math.sin(time * 0.0009);
+      this.fogLayerGround.setVisible(true);
 
-    const glowR = Math.round(Phaser.Math.Linear(0x18, 0xf4, pinkFactor));
-    const glowG = Math.round(Phaser.Math.Linear(0x24, 0x72, pinkFactor));
-    const glowB = Math.round(Phaser.Math.Linear(0x1d, 0xb6, pinkFactor));
-    this.fogLayerPinkGlow.setTint((glowR << 16) | (glowG << 8) | glowB);
+      this.fogLayerMid.setVisible(false);
+      this.fogLayerHigh.setVisible(false);
+      this.fogLayerPinkDawn.setVisible(false);
+      this.fogLayerPinkGlow.setVisible(false);
+    } else {
+      // Chế độ HIGH: Tối đa 2 lớp sương mù cuộn active đồng thời
+      this.driftGroundX += 12 * dt * bossDriftMult;
+      this.fogLayerGround.tilePositionX = (camScrollX * 0.15) + this.driftGroundX;
+      this.fogLayerGround.tilePositionY = (camScrollY * 0.15) + 3 * Math.sin(time * 0.0009);
+      this.fogLayerGround.setVisible(true);
 
-    // Alpha giảm mượt từ 0.48 xuống 0.05 theo pinkFactor
-    let targetPinkDawnAlpha = pinkFactor > 0 ? (0.05 + 0.43 * pinkFactor) : 0;
-    let targetPinkGlowAlpha = pinkFactor > 0 ? (0.03 + 0.31 * pinkFactor) : 0;
+      if (pinkFactor > 0.05) {
+        // Vùng sương hồng ban mai: Lớp 2 là Pink Dawn
+        this.driftPinkDawnX += 14 * dt * bossDriftMult;
+        this.fogLayerPinkDawn.tilePositionX = (camScrollX * 0.20) + this.driftPinkDawnX;
+        this.fogLayerPinkDawn.tilePositionY = (camScrollY * 0.20) + 2.5 * Math.sin(time * 0.0008);
+        this.fogLayerPinkDawn.setVisible(true);
 
-    // Khi bật Đèn Lồng [F]: ánh sáng đèn khoét thủng và làm sương tản bớt ra xung quanh
-    if (isLanternOn) {
-      targetPinkDawnAlpha *= 0.65;
-      targetPinkGlowAlpha *= 0.55;
+        const dawnR = Math.round(Phaser.Math.Linear(0x1a, 0xff, pinkFactor));
+        const dawnG = Math.round(Phaser.Math.Linear(0x26, 0x94, pinkFactor));
+        const dawnB = Math.round(Phaser.Math.Linear(0x20, 0xb8, pinkFactor));
+        this.fogLayerPinkDawn.setTint((dawnR << 16) | (dawnG << 8) | dawnB);
+
+        let targetPinkDawnAlpha = 0.05 + 0.43 * pinkFactor;
+        if (isLanternOn) targetPinkDawnAlpha *= 0.65;
+        this.fogLayerPinkDawn.alpha = Phaser.Math.Linear(this.fogLayerPinkDawn.alpha, targetPinkDawnAlpha, 0.05);
+
+        this.fogLayerMid.setVisible(false);
+        this.fogLayerHigh.setVisible(false);
+        this.fogLayerPinkGlow.setVisible(false);
+      } else {
+        // Vùng rừng sâu / làng: Lớp 2 là Mid Canopy
+        this.driftMidX += 19 * dt * bossDriftMult;
+        this.fogLayerMid.tilePositionX = (camScrollX * 0.35) + this.driftMidX;
+        this.fogLayerMid.tilePositionY = (camScrollY * 0.35) - 2 * Math.cos(time * 0.0007);
+        this.fogLayerMid.setVisible(true);
+
+        this.fogLayerPinkDawn.setVisible(false);
+        this.fogLayerPinkGlow.setVisible(false);
+        this.fogLayerHigh.setVisible(false);
+      }
     }
-
-    this.fogLayerPinkDawn.alpha = Phaser.Math.Linear(this.fogLayerPinkDawn.alpha, targetPinkDawnAlpha, 0.05);
-    this.fogLayerPinkGlow.alpha = Phaser.Math.Linear(this.fogLayerPinkGlow.alpha, targetPinkGlowAlpha, 0.05);
 
     // 2. C4-13-06: Phân tầng độ đậm nhạt chuyển tiếp tự nhiên theo vùng không gian
     let targetAlphaGround = 0.24;
@@ -248,6 +261,18 @@ export class VeilSystem {
       this.fogLayerHigh.setTint(fogTint);
     }
 
+    // V1.4 - Bước 9: Biến đổi môi trường khi Boss Thức Tỉnh (Boss Awakening Shift)
+    if (this.isBossAwakened) {
+      targetAlphaGround = Math.min(0.92, targetAlphaGround * 1.8);
+      targetAlphaMid = Math.min(0.85, targetAlphaMid * 1.8);
+      targetAlphaHigh = Math.min(0.75, targetAlphaHigh * 1.8);
+
+      const bossFogTint = 0x2a141e;
+      this.fogLayerGround.setTint(bossFogTint);
+      this.fogLayerMid.setTint(bossFogTint);
+      this.fogLayerHigh.setTint(bossFogTint);
+    }
+
     // Chuyển dịch alpha êm ái hơn với lerp factor 0.04 (chống giật nấc khi qua cổng chuyển vùng)
     this.fogLayerGround.alpha = Phaser.Math.Linear(this.fogLayerGround.alpha, targetAlphaGround, 0.04);
     this.fogLayerMid.alpha = Phaser.Math.Linear(this.fogLayerMid.alpha, targetAlphaMid, 0.04);
@@ -265,6 +290,17 @@ export class VeilSystem {
    */
   public getLanternDissipationFactor(): number {
     return this.playerState.stats.isLanternOn ? 0.65 : 1.0;
+  }
+
+  /**
+   * V1.4 - Bước 9: Thiết lập trạng thái biến đổi môi trường khi Boss Thức Tỉnh
+   */
+  public setBossAwakened(awakened: boolean): void {
+    this.isBossAwakened = awakened;
+  }
+
+  public getIsBossAwakened(): boolean {
+    return this.isBossAwakened;
   }
 
   private updatePsychologicalEffects(time: number, unstable: boolean, composure: number): void {

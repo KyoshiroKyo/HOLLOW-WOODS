@@ -100,6 +100,8 @@ export class SurvivalSystem {
       nearCampfire = Math.hypot(playerX - this.campfireX, playerY - this.campfireY) <= this.campfireWarmthRadius;
     }
 
+    const isBellhollowSafe = zoneId === 'bellhollow';
+
     if (nearCampfire) {
       const campSanctuary = CampSanctuarySystem.getInstance();
       const inSanctuary = campSanctuary.isPlayerInSanctuary(playerX, playerY, zoneId);
@@ -107,9 +109,12 @@ export class SurvivalSystem {
       // Hồi máu nhẹ (+4 HP/s) và hồi phục mạnh mẽ tinh thần (+8 Composure/s) khi nghỉ bên nguồn nhiệt/lửa trại
       stats.health = Math.min(stats.maxHealth, stats.health + 4 * dt);
       stats.composure = Math.min(stats.maxComposure, stats.composure + (8 * composureMult) * dt);
+    } else if (isBellhollowSafe) {
+      // C4-14-B04: Vùng an toàn Làng Bellhollow bảo vệ tuyệt đối tâm trí, hồi phục nhẹ (+2.0 Composure/s), không bị sụt giảm
+      stats.composure = Math.min(stats.maxComposure, stats.composure + 2.0 * dt);
     } else {
       if (!stats.isLanternOn) {
-        // Trong bóng tối: Composure sụt giảm dựa trên chu kỳ ngày/đêm V1.4 (hoặc fallback V1.3)
+        // Ngoài vùng an toàn & trong bóng tối: Composure sụt giảm dựa trên chu kỳ ngày/đêm V1.4 (hoặc fallback V1.3)
         let drain: number;
         if (timePhase && TIME_CONFIG.phases[timePhase]) {
           const phaseCfg = TIME_CONFIG.phases[timePhase];

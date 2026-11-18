@@ -380,6 +380,12 @@ export class MireWardenBoss extends Phaser.GameObjects.Container {
       return;
     }
 
+    // C4-14-B03: Dynamic Depth Sorting theo trục Y chân đứng
+    const targetDepth = Math.floor(this.y + 20);
+    if (this.depth !== targetDepth) {
+      this.setDepth(targetDepth);
+    }
+
     // Hiệu ứng thở tự nhiên
     this.breathTimer += delta * 0.003;
     const breathScale = 1 + Math.sin(this.breathTimer) * 0.03;

@@ -127,6 +127,10 @@ HOLLOW-WOODS/
 
 ## 🏆 Trạng Thái Dự Án
 
-- **Phiên bản:** HOLLOW WOODS V1.3 (1.3.0 - Tập 1: The First Toll).
-- **Trạng thái kiểm toán:** 🎉 **19/19 BỘ KIỂM THỬ HỒI QUY ĐẠT CHUẨN PHÁT HÀNH 100% (493/493 PASS)**.
+- **Phiên bản hiện tại:** HOLLOW WOODS V1.4 (`feat/v1.4-expansion` — Survival, Environment & World Expansion).
+- **Tài liệu & Báo cáo tổng hợp V1.4:**
+  - [Read/V1.4/README_INDEX.md](file:///G:/HOLLOW%20WOODS/Read/V1.4/README_INDEX.md): Sổ chỉ mục tra cứu toàn bộ 16 báo cáo tiến độ và nghiệm thu V1.4.
+  - [docs/v1.4/HOLLOW_WOODS_V1.4_MASTER_REPORT.md](file:///G:/HOLLOW%20WOODS/docs/v1.4/HOLLOW_WOODS_V1.4_MASTER_REPORT.md): **Báo cáo tổng kết tối hậu 10 mục chính thức của HOLLOW WOODS V1.4**.
+  - [Read/V1.4/Reports/11_V14_Final_Comprehensive_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.4/Reports/11_V14_Final_Comprehensive_Report.md): Báo cáo tổng hợp toàn diện đại tu môi trường 17 phân khu, kiểm định quái vật và mở rộng thế giới.
+- **Trạng thái kiểm toán:** 🎉 **100% BUILD PRODUCTION & KIỂM ĐỊNH TOÀN DIỆN THÀNH CÔNG (0 ERRORS)**.
 - **Tác quyền & Quản trị:** Dự án thực thi bởi Chief Software Architect cho `KyoshiroKyo/HOLLOW-WOODS`.

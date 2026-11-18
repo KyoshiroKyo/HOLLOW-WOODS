@@ -9,6 +9,7 @@ import { SCENE_MAIN_MENU } from '../config/Constants';
 import { SaveManager } from '../systems/SaveManager';
 import { HDTextHelper } from '../utils/HDTextHelper';
 import { AudioManager } from '../audio/AudioManager';
+import { GraphicsQualitySystem } from '../systems/GraphicsQualitySystem';
 
 export interface PauseModalCallbacks {
   onResume: () => void;
@@ -31,6 +32,12 @@ export class PauseModal {
   private muteBtnText!: Phaser.GameObjects.Text;
   private muteBtnBg!: Phaser.GameObjects.Graphics;
 
+  // Hiển thị chất lượng đồ họa & sương mù / ánh sáng
+  private graphicsQualityBtnText!: Phaser.GameObjects.Text;
+  private graphicsQualityBtnBg!: Phaser.GameObjects.Graphics;
+  private graphicsDescText!: Phaser.GameObjects.Text;
+  private unsubscribeQuality?: () => void;
+
   public onOpen?: () => void;
   public onClose?: () => void;
 
@@ -42,15 +49,19 @@ export class PauseModal {
     this.container.setScrollFactor(0);
     this.container.setDepth(9800);
 
+    this.unsubscribeQuality = GraphicsQualitySystem.getInstance().onQualityChange(() => {
+      this.updateGraphicsQualityText();
+    });
+
     this.buildUI();
     this.container.setVisible(false);
   }
 
   private buildUI(): void {
-    const modalW = 480;
-    const modalH = 370;
-    const modalX = (1280 - modalW) / 2; // 400
-    const modalY = (720 - modalH) / 2;  // 175
+    const modalW = 500;
+    const modalH = 460;
+    const modalX = (1280 - modalW) / 2; // 390
+    const modalY = (720 - modalH) / 2;  // 130
 
     // 1. Lớp phủ đen mờ toàn màn hình HD 1280×720 (ngăn chặn click xuyên thấu)
     const overlay = this.scene.add.graphics();
@@ -68,7 +79,7 @@ export class PauseModal {
     box.strokeRoundedRect(modalX + 4, modalY + 4, modalW - 8, modalH - 8, 6);
 
     // Tiêu đề
-    const title = HDTextHelper.createText(this.scene, 640, modalY + 24, 'TẠM DỪNG HÀNH TRÌNH [ESC]', {
+    const title = HDTextHelper.createText(this.scene, 640, modalY + 22, 'TẠM DỪNG HÀNH TRÌNH [ESC]', {
       fontSize: '20px',
       fontStyle: 'bold',
       color: '#e74c3c',
@@ -77,7 +88,7 @@ export class PauseModal {
     }).setOrigin(0.5, 0.5);
 
     // Nút đóng nhanh [✕]
-    const closeBtn = HDTextHelper.createText(this.scene, modalX + modalW - 25, modalY + 24, '✕', {
+    const closeBtn = HDTextHelper.createText(this.scene, modalX + modalW - 25, modalY + 22, '✕', {
       fontSize: '18px',
       fontStyle: 'bold',
       color: '#e74c3c'
@@ -87,21 +98,21 @@ export class PauseModal {
       this.callbacks.onResume();
     });
 
-    this.saveStatusText = HDTextHelper.createText(this.scene, 640, modalY + 46, '', {
+    this.saveStatusText = HDTextHelper.createText(this.scene, 640, modalY + 44, '', {
       fontSize: '12px',
       color: '#2ecc71'
     }).setOrigin(0.5, 0.5);
 
-    // 3. Các nút bấm chức năng chuẩn HD (Rộng 340px, cao 32px)
-    let btnY = modalY + 74;
+    // 3. Các nút bấm chức năng chuẩn HD (Rộng 360px, cao 28px)
+    let btnY = modalY + 68;
 
     // Nút 1: Tiếp tục
     const resumeBtn = this.createButton(640, btnY, '▶ TIẾP TỤC TRÒ CHƠI', '#2ecc71', () => {
       this.close();
       this.callbacks.onResume();
-    }, 340, 32);
+    }, 360, 28);
 
-    btnY += 36;
+    btnY += 34;
     // Nút 2: Lưu thủ công
     const saveBtn = this.createButton(640, btnY, '💾 LƯU GAME THỦ CÔNG', '#f39c12', () => {
       const success = this.callbacks.onSaveManual();
@@ -112,9 +123,9 @@ export class PauseModal {
         this.saveStatusText.setText('✖ Không thể lưu tiến trình!');
         this.saveStatusText.setColor('#e74c3c');
       }
-    }, 340, 32);
+    }, 360, 28);
 
-    btnY += 36;
+    btnY += 34;
     // Nút 3: Tải lại Checkpoint
     const reloadBtn = this.createButton(640, btnY, '↺ NẠP LẠI ĐIỂM LƯU GẦN NHẤT', '#3498db', () => {
       if (SaveManager.hasSave()) {
@@ -124,9 +135,9 @@ export class PauseModal {
         this.saveStatusText.setText('Không tìm thấy điểm lưu nào để nạp!');
         this.saveStatusText.setColor('#e74c3c');
       }
-    }, 340, 32);
+    }, 360, 28);
 
-    btnY += 36;
+    btnY += 34;
     // Nút 4: Quay về Menu
     const quitBtn = this.createButton(640, btnY, '🏠 QUAY VỀ MENU CHÍNH', '#95a5a6', () => {
       // Tự động lưu trước khi thoát
@@ -135,16 +146,16 @@ export class PauseModal {
       this.scene.scene.stop('GameScene');
       this.scene.scene.stop('UIScene');
       this.scene.scene.start(SCENE_MAIN_MENU);
-    }, 340, 32);
+    }, 360, 28);
 
-    // 4. Bảng điều chỉnh âm lượng đa kênh (C4-132-07)
-    const audioBox = this.scene.add.graphics();
-    audioBox.fillStyle(0x0a0e14, 0.85);
-    audioBox.fillRoundedRect(modalX + 20, modalY + 208, 440, 146, 6);
-    audioBox.lineStyle(1, 0x3d4852, 0.7);
-    audioBox.strokeRoundedRect(modalX + 20, modalY + 208, 440, 146, 6);
+    // 4. Bảng điều chỉnh cấu hình hệ thống & âm lượng đa kênh
+    const settingsBox = this.scene.add.graphics();
+    settingsBox.fillStyle(0x0a0e14, 0.88);
+    settingsBox.fillRoundedRect(modalX + 16, modalY + 204, modalW - 32, 238, 6);
+    settingsBox.lineStyle(1, 0x3d4852, 0.7);
+    settingsBox.strokeRoundedRect(modalX + 16, modalY + 204, modalW - 32, 238, 6);
 
-    const audioTitle = HDTextHelper.createText(this.scene, 640, modalY + 222, '🔊 ĐIỀU CHỈNH ÂM LƯỢNG', {
+    const settingsTitle = HDTextHelper.createText(this.scene, 640, modalY + 218, '⚙️ CẤU HÌNH ĐỒ HỌA & ÂM LƯỢNG', {
       fontSize: '11.5px',
       fontStyle: 'bold',
       color: '#f1c40f',
@@ -152,36 +163,71 @@ export class PauseModal {
       strokeThickness: 2
     }).setOrigin(0.5, 0.5);
 
-    const audio = AudioManager.getInstance();
-
-    // Hàng 1: Âm Lượng Tổng & Nút Bật/Tắt
-    const masterLabel = HDTextHelper.createText(this.scene, modalX + 35, modalY + 252, 'Âm Lượng Tổng:', {
+    // --- Mục Đồ Họa & Sương Mù ---
+    const graphicsLabel = HDTextHelper.createText(this.scene, modalX + 32, modalY + 244, '🖥️ Đồ Họa:', {
       fontSize: '11.5px',
       fontStyle: 'bold',
       color: '#cbd5e1'
     }).setOrigin(0, 0.5);
 
-    const decMasterBtn = this.createStepBtn(modalX + 175, modalY + 252, '[-]', () => {
+    const graphicsBtnContainer = this.scene.add.container(modalX + 310, modalY + 244);
+    this.graphicsQualityBtnBg = this.scene.add.graphics();
+    this.graphicsQualityBtnText = HDTextHelper.createText(this.scene, 0, 0, '🌟 CAO (HIGH)', {
+      fontSize: '11.5px',
+      fontStyle: 'bold',
+      color: '#f1c40f'
+    }).setOrigin(0.5, 0.5);
+    graphicsBtnContainer.add([this.graphicsQualityBtnBg, this.graphicsQualityBtnText]);
+    graphicsBtnContainer.setSize(240, 24);
+    graphicsBtnContainer.setInteractive(new Phaser.Geom.Rectangle(-120, -12, 240, 24), Phaser.Geom.Rectangle.Contains);
+    if (graphicsBtnContainer.input) graphicsBtnContainer.input.cursor = 'pointer';
+    graphicsBtnContainer.on('pointerdown', () => {
+      GraphicsQualitySystem.getInstance().cycleQuality();
+      this.updateGraphicsQualityText();
+    });
+
+    this.graphicsDescText = HDTextHelper.createText(this.scene, modalX + 32, modalY + 270, '', {
+      fontSize: '10px',
+      fontStyle: 'italic',
+      color: '#94a3b8'
+    }).setOrigin(0, 0.5);
+
+    // --- Phân cách mỏng ---
+    const divider = this.scene.add.graphics();
+    divider.lineStyle(1, 0x243142, 0.8);
+    divider.lineBetween(modalX + 30, modalY + 288, modalX + modalW - 30, modalY + 288);
+
+    // --- Mục Âm Lượng ---
+    const audio = AudioManager.getInstance();
+
+    // Hàng 1: Âm Lượng Tổng & Nút Bật/Tắt
+    const masterLabel = HDTextHelper.createText(this.scene, modalX + 32, modalY + 310, 'Âm Lượng Tổng:', {
+      fontSize: '11.5px',
+      fontStyle: 'bold',
+      color: '#cbd5e1'
+    }).setOrigin(0, 0.5);
+
+    const decMasterBtn = this.createStepBtn(modalX + 172, modalY + 310, '[-]', () => {
       audio.setMasterVolume(audio.getMasterVolume() - 0.1);
     });
 
-    this.masterValText = HDTextHelper.createText(this.scene, modalX + 207, modalY + 252, `${Math.round(audio.getMasterVolume() * 100)}%`, {
+    this.masterValText = HDTextHelper.createText(this.scene, modalX + 204, modalY + 310, `${Math.round(audio.getMasterVolume() * 100)}%`, {
       fontSize: '11.5px',
       fontStyle: 'bold',
       color: '#2ecc71'
     }).setOrigin(0.5, 0.5);
 
-    const incMasterBtn = this.createStepBtn(modalX + 239, modalY + 252, '[+]', () => {
+    const incMasterBtn = this.createStepBtn(modalX + 236, modalY + 310, '[+]', () => {
       audio.setMasterVolume(audio.getMasterVolume() + 0.1);
     });
 
-    const muteLabel = HDTextHelper.createText(this.scene, modalX + 300, modalY + 252, 'Bật/Tắt:', {
+    const muteLabel = HDTextHelper.createText(this.scene, modalX + 295, modalY + 310, 'Bật/Tắt:', {
       fontSize: '11.5px',
       fontStyle: 'bold',
       color: '#cbd5e1'
     }).setOrigin(0, 0.5);
 
-    const muteBtnContainer = this.scene.add.container(modalX + 380, modalY + 252);
+    const muteBtnContainer = this.scene.add.container(modalX + 380, modalY + 310);
     this.muteBtnBg = this.scene.add.graphics();
     this.muteBtnText = HDTextHelper.createText(this.scene, 0, 0, audio.isMuted ? '🔇 TẮT' : '🔊 BẬT', {
       fontSize: '11px',
@@ -198,48 +244,48 @@ export class PauseModal {
     });
 
     // Hàng 2: Nhạc Nền (BGM) & Hiệu Ứng (SFX)
-    const bgmLabel = HDTextHelper.createText(this.scene, modalX + 35, modalY + 288, 'Nhạc Nền:', {
+    const bgmLabel = HDTextHelper.createText(this.scene, modalX + 32, modalY + 346, 'Nhạc Nền:', {
       fontSize: '11.5px',
       fontStyle: 'bold',
       color: '#cbd5e1'
     }).setOrigin(0, 0.5);
 
-    const decBgmBtn = this.createStepBtn(modalX + 130, modalY + 288, '[-]', () => {
+    const decBgmBtn = this.createStepBtn(modalX + 128, modalY + 346, '[-]', () => {
       audio.setMusicVolume(audio.getMusicVolume() - 0.1);
     });
 
-    this.bgmValText = HDTextHelper.createText(this.scene, modalX + 158, modalY + 288, `${Math.round(audio.getMusicVolume() * 100)}%`, {
+    this.bgmValText = HDTextHelper.createText(this.scene, modalX + 156, modalY + 346, `${Math.round(audio.getMusicVolume() * 100)}%`, {
       fontSize: '11.5px',
       fontStyle: 'bold',
       color: '#3498db'
     }).setOrigin(0.5, 0.5);
 
-    const incBgmBtn = this.createStepBtn(modalX + 186, modalY + 288, '[+]', () => {
+    const incBgmBtn = this.createStepBtn(modalX + 184, modalY + 346, '[+]', () => {
       audio.setMusicVolume(audio.getMusicVolume() + 0.1);
     });
 
-    const sfxLabel = HDTextHelper.createText(this.scene, modalX + 245, modalY + 288, 'Hiệu Ứng:', {
+    const sfxLabel = HDTextHelper.createText(this.scene, modalX + 242, modalY + 346, 'Hiệu Ứng:', {
       fontSize: '11.5px',
       fontStyle: 'bold',
       color: '#cbd5e1'
     }).setOrigin(0, 0.5);
 
-    const decSfxBtn = this.createStepBtn(modalX + 340, modalY + 288, '[-]', () => {
+    const decSfxBtn = this.createStepBtn(modalX + 338, modalY + 346, '[-]', () => {
       audio.setSfxVolume(audio.getSfxVolume() - 0.1);
     });
 
-    this.sfxValText = HDTextHelper.createText(this.scene, modalX + 368, modalY + 288, `${Math.round(audio.getSfxVolume() * 100)}%`, {
+    this.sfxValText = HDTextHelper.createText(this.scene, modalX + 366, modalY + 346, `${Math.round(audio.getSfxVolume() * 100)}%`, {
       fontSize: '11.5px',
       fontStyle: 'bold',
       color: '#e67e22'
     }).setOrigin(0.5, 0.5);
 
-    const incSfxBtn = this.createStepBtn(modalX + 396, modalY + 288, '[+]', () => {
+    const incSfxBtn = this.createStepBtn(modalX + 394, modalY + 346, '[+]', () => {
       audio.setSfxVolume(audio.getSfxVolume() + 0.1);
     });
 
     // Hàng 3: Ghi chú phím tắt
-    const tipText = HDTextHelper.createText(this.scene, 640, modalY + 328, '💡 Bấm [-] [+] để chỉnh âm lượng • Phím [M]: Bật/Tắt tiếng nhanh', {
+    const tipText = HDTextHelper.createText(this.scene, 640, modalY + 395, '💡 Phím [F8]: Đổi Đồ Họa nhanh • [-] [+] Chỉnh âm lượng • [M]: Bật/Tắt tiếng', {
       fontSize: '10.5px',
       fontStyle: 'italic',
       color: '#7f8c8d'
@@ -248,7 +294,8 @@ export class PauseModal {
     this.container.add([
       overlay, box, title, closeBtn, this.saveStatusText,
       resumeBtn, saveBtn, reloadBtn, quitBtn,
-      audioBox, audioTitle,
+      settingsBox, settingsTitle,
+      graphicsLabel, graphicsBtnContainer, this.graphicsDescText, divider,
       masterLabel, decMasterBtn, this.masterValText, incMasterBtn,
       muteLabel, muteBtnContainer,
       bgmLabel, decBgmBtn, this.bgmValText, incBgmBtn,
@@ -257,6 +304,7 @@ export class PauseModal {
     ]);
 
     this.updateVolumeTexts();
+    this.updateGraphicsQualityText();
   }
 
   private createStepBtn(x: number, y: number, text: string, onClick: () => void): Phaser.GameObjects.Container {
@@ -297,6 +345,45 @@ export class PauseModal {
       bg.strokeRoundedRect(-12, -10, 24, 20, 4);
     });
     return btn;
+  }
+
+  private updateGraphicsQualityText(): void {
+    if (!this.graphicsQualityBtnText) return;
+    const gqs = GraphicsQualitySystem.getInstance();
+    const settings = gqs.getSettings();
+    let label = '';
+    let color = '#2ecc71';
+    let badgeColor = 0x14281f;
+    let strokeColor = 0x2ecc71;
+
+    if (settings.level === 'HIGH') {
+      label = '🌟 CAO (HIGH - 1.0x Buffer)';
+      color = '#f1c40f';
+      badgeColor = 0x2e2305;
+      strokeColor = 0xf1c40f;
+    } else if (settings.level === 'MEDIUM') {
+      label = '⚡ CÂN BẰNG (MEDIUM - 0.5x Buffer)';
+      color = '#3498db';
+      badgeColor = 0x0e243b;
+      strokeColor = 0x3498db;
+    } else {
+      label = '🍃 MƯỢT MÀ (LOW - 0.35x Buffer)';
+      color = '#2ecc71';
+      badgeColor = 0x0e2b1b;
+      strokeColor = 0x2ecc71;
+    }
+    this.graphicsQualityBtnText.setText(label);
+    this.graphicsQualityBtnText.setColor(color);
+    if (this.graphicsQualityBtnBg) {
+      this.graphicsQualityBtnBg.clear();
+      this.graphicsQualityBtnBg.fillStyle(badgeColor, 0.95);
+      this.graphicsQualityBtnBg.fillRoundedRect(-120, -12, 240, 24, 4);
+      this.graphicsQualityBtnBg.lineStyle(1.5, strokeColor, 0.9);
+      this.graphicsQualityBtnBg.strokeRoundedRect(-120, -12, 240, 24, 4);
+    }
+    if (this.graphicsDescText) {
+      this.graphicsDescText.setText(`Buffer: ${settings.lightingScale}x • Sương: ${settings.maxFogLayers} lớp • Đom đóm: ${settings.maxFireflies} • Frustum Culling: ON`);
+    }
   }
 
   private updateVolumeTexts(): void {
@@ -385,6 +472,7 @@ export class PauseModal {
     this.isOpen = true;
     this.container.setVisible(true);
     this.updateVolumeTexts();
+    this.updateGraphicsQualityText();
     const summary = SaveManager.getSaveSummary();
     if (summary) {
       this.saveStatusText.setText(`Điểm lưu hiện tại: ${summary.checkpoint} (${summary.date})`);
@@ -419,6 +507,10 @@ export class PauseModal {
    * C4-13-09: Dọn dẹp đối tượng hiển thị Modal tránh rò rỉ bộ nhớ
    */
   public destroy(): void {
+    if (this.unsubscribeQuality) {
+      this.unsubscribeQuality();
+      this.unsubscribeQuality = undefined;
+    }
     if (this.container) {
       this.container.removeAll(true);
       this.container.destroy();

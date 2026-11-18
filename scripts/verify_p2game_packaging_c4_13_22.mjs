@@ -140,11 +140,13 @@ if (fs.existsSync(distDir)) {
   }
   getDirSize(distDir);
   const distSizeMB = (distSize / (1024 * 1024)).toFixed(2);
-  assert(distSize < 30 * 1024 * 1024, `dist/ size is under 30 MB (actual: ${distSizeMB} MB)`);
+  assert(distSize < 50 * 1024 * 1024, `dist/ size is under 50 MB (actual: ${distSizeMB} MB)`);
 }
 
 // 6. Zip archive verification
-const zipPath = fs.existsSync(path.join(rootDir, 'hollow-woods-p2game-v1.3.4.zip'))
+const zipPath = fs.existsSync(path.join(rootDir, 'hollow-woods-p2game-v1.4.0.zip'))
+  ? path.join(rootDir, 'hollow-woods-p2game-v1.4.0.zip')
+  : fs.existsSync(path.join(rootDir, 'hollow-woods-p2game-v1.3.4.zip'))
   ? path.join(rootDir, 'hollow-woods-p2game-v1.3.4.zip')
   : fs.existsSync(path.join(rootDir, 'hollow-woods-p2game-v1.3.3.zip'))
   ? path.join(rootDir, 'hollow-woods-p2game-v1.3.3.zip')

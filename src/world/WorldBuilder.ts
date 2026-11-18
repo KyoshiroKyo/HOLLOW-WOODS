@@ -3,6 +3,7 @@ import zonesData from '../data/zones.json';
 import { ZoneData, ZoneId, InteractableSpec, TransitionZone, Point2D } from '../types';
 import { PlayerState } from '../state/PlayerState';
 import { ZoneConnectionRegistry } from './ZoneConnectionRegistry';
+import { WorldGatingSystem } from './WorldGatingSystem';
 import {
   TILE_FOREST_GRASS,
   TILE_SWAMP_MUD,
@@ -30,6 +31,8 @@ import {
   SPRITE_WOODEN_FENCE,
   SPRITE_SIGNPOST,
   SPRITE_FOG_SMOOTH,
+  SPRITE_STRUCTURE_ABYSSAL_GATE_V14,
+  SPRITE_PROP_ANCIENT_MONOLITH_V14,
   DEPTH_GROUND_BASE,
   DEPTH_GROUND_FOOTING,
   DEPTH_GROUND_TURF,
@@ -39,6 +42,11 @@ import {
   DEPTH_GROUND_DECALS,
   DEPTH_GROUND_MIST
 } from '../config/Constants';
+import { TILED_PIPELINE_CONFIG } from '../config/tiledPipelineConfig';
+import {
+  CullingOptimizationModule,
+  AutoPerimeterWallsModule
+} from './modules';
 
 export interface RunestoneVisualEntry {
   id: string;
@@ -86,6 +94,10 @@ export class WorldBuilder {
   private shrineWardColliderBody?: Phaser.Physics.Arcade.Sprite;
   private isShrineWardOpen: boolean = false;
 
+  // C4-14-B03: Quản lý trạng thái và rào cản Cổng Hư Không & Bụi Gai Đầm Lầy tại Rừng Sâu
+  public abyssalGateColliderBody?: Phaser.Physics.Arcade.Sprite;
+  public deepForestMireColliderBody?: Phaser.Physics.Arcade.Sprite;
+
   // C4-12-24: Quản lý hiệu ứng trực quan và trạng thái phát sáng của 3 Cột Đá Cổ Ngữ
   public runestoneVisuals: Map<string, RunestoneVisualEntry> = new Map();
   public centralAltarGlow?: Phaser.GameObjects.Graphics;
@@ -117,6 +129,12 @@ export class WorldBuilder {
     return this.zones.get(this.activeZoneId) || (zonesData.zones[0] as ZoneData);
   }
 
+  public setActiveZone(id: ZoneId): void {
+    if (this.zones.has(id)) {
+      this.activeZoneId = id;
+    }
+  }
+
   public getConnectionRegistry(): ZoneConnectionRegistry {
     return ZoneConnectionRegistry.getInstance();
   }
@@ -124,6 +142,30 @@ export class WorldBuilder {
   // C4-12-27: Truy vấn danh sách điểm chuyển tiếp và tìm theo ID
   public getTransitions(): TransitionZone[] {
     return this.transitions;
+  }
+
+  /**
+   * HW-V14-MINIMAP: Truy vấn các collider vật cản tĩnh thuộc phân khu để vẽ lên Mini-map
+   */
+  public getZoneColliders(zoneId: ZoneId): { x: number; y: number; width: number; height: number }[] {
+    const list: { x: number; y: number; width: number; height: number }[] = [];
+    if (!this.colliderGroup) return list;
+    const zone = this.getZone(zoneId);
+    if (!zone) return list;
+    const b = zone.bounds;
+    this.colliderGroup.getChildren().forEach((child: any) => {
+      const cx = child.x;
+      const cy = child.y;
+      if (cx >= b.x - 50 && cx <= b.x + b.width + 50 && cy >= b.y - 50 && cy <= b.y + b.height + 50) {
+        list.push({
+          x: cx - (child.displayWidth ? child.displayWidth / 2 : 12),
+          y: cy - (child.displayHeight ? child.displayHeight / 2 : 12),
+          width: child.displayWidth || 24,
+          height: child.displayHeight || 24
+        });
+      }
+    });
+    return list;
   }
 
   public getTransitionById(id: string): TransitionZone | undefined {
@@ -290,6 +332,16 @@ export class WorldBuilder {
           const py = Math.round(cy + offset);
           ctx.fillStyle = nextRand() > 0.45 ? '#463525' : '#877560';
           ctx.fillRect(px, py, 2 + Math.floor(nextRand() * 2), 2);
+        }
+
+        // C4-14-B04: Chuỗi dấu chân bùn và cỏ dập dẫn hướng từ điểm xuất phát (80, 180) về phía Đông
+        ctx.fillStyle = '#261910';
+        for (let fx = 95; fx < 450; fx += 24) {
+          const fy = Math.round(trailCenterY(fx)) + ((fx % 48 === 0) ? -4 : 4);
+          ctx.beginPath();
+          ctx.ellipse(fx, fy, 3, 2, 0.2, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillRect(fx + 2, fy - 1, 2, 2);
         }
 
         // Bậc đá cổ dẫn vào cổng Tây làng ở x = 452..515
@@ -2311,6 +2363,12 @@ export class WorldBuilder {
       // C4-13-16: Dựng cụm cảnh quan chặn đầu đường phía Tây (x: 0..90)
       this.createWestBarrierLandscape();
 
+      // C4-14-B04: Điểm hút 30-60 giây đầu: Mẩu nhật ký rách, cành cây gãy & đèn bão dẫn hướng
+      this.createTornJournalScrapProp(150, 195);
+      this.createFallenLog(220, 130, 42, 12);
+      this.createDenseBush(210, 120);
+      this.createVillageLanternPost(440, 150);
+
       // Vẽ cổng sương mù và bia đá dẫn lối
       this.createTree(160, 100, 'Cây Khô Sương Mù');
       this.createTree(300, 240, 'Cây Khô Sương Mù');
@@ -2343,6 +2401,9 @@ export class WorldBuilder {
 
       // V1.4: Cụm Trại Chuẩn Bị Sanctuary Camp Hub Thống Nhất trong Bellhollow
       this.createSanctuaryCampHub();
+
+      // V1.4 Blueprint: Bảng Tin Dị Thường (The Anomaly Notice Board - Landmark dẫn hướng tại 750, 270)
+      this.createAnomalyNoticeBoard(750, 270);
 
       // 4. Giếng Nước Làng Có Mái Che tại Quảng Trường Trung Tâm (726, 376)
       this.createVillageWell(726, 376);
@@ -2579,16 +2640,82 @@ export class WorldBuilder {
     }
 
     // 6. Vật thể va chạm vật lý chặn nhân vật trong colliderGroup
-    const barrierBody = this.colliderGroup.create(barrierX, roadCenterY, undefined) as Phaser.Physics.Arcade.Sprite;
-    barrierBody.setVisible(false);
-    const b = barrierBody.body as Phaser.Physics.Arcade.Body;
-    b.setSize(30, 120);
-    b.setOffset(-15, -60);
+    this.createStaticBoxColliderCentered(barrierX, roadCenterY, 30, 120, 'Rào Sương Mù Cổng Tây');
   }
 
   /**
    * C4-13-11: Khởi tạo hình ảnh an toàn tuyệt đối chống thiếu Texture Placeholder (magenta/green missing texture)
    */
+    /**
+   * C4-14-FIX: Tạo một static collider hình chữ nhật chuẩn xác tuyệt đối theo AABB thế giới: [minX, minY, width, height].
+   * Khắc phục triệt để lỗi lệch 16px của Phaser Arcade Physics khi dùng default texture 32x32.
+   */
+  public createStaticBoxCollider(
+    minX: number,
+    minY: number,
+    width: number,
+    height: number,
+    name?: string
+  ): Phaser.Physics.Arcade.Sprite {
+    const sprite = this.colliderGroup.create(minX, minY, undefined) as Phaser.Physics.Arcade.Sprite;
+    sprite.setOrigin(0, 0);
+    sprite.setVisible(false);
+    const body = sprite.body as Phaser.Physics.Arcade.StaticBody;
+    body.setSize(width, height, false);
+    body.reset(minX, minY);
+    if (name) {
+      sprite.setName(name);
+    }
+    return sprite;
+  }
+
+  /**
+   * C4-14-FIX: Tạo một static collider chuẩn tâm thế giới: [cx, cy, width, height]
+   */
+  public createStaticBoxColliderCentered(
+    cx: number,
+    cy: number,
+    width: number,
+    height: number,
+    name?: string
+  ): Phaser.Physics.Arcade.Sprite {
+    return this.createStaticBoxCollider(cx - width / 2, cy - height / 2, width, height, name);
+  }
+
+  /**
+   * V1.4 - TILED OBJECT & TILEMAP LOADER STANDARDIZATION:
+   * 1. Xử lý đúng gốc tọa độ (x, y) của Tiled Tile Object:
+   *    Trong Tiled, Tile Object có gốc (x, y) tại Bottom-Left, trừ height để chuyển sang Top-Left của Phaser.
+   *    Đồng thời cộng layerOffsetX / layerOffsetY nếu layer có offset.
+   * 2. Áp dụng bitmask (gid >>> 0) & 0x1FFFFFFF để loại bỏ các bit lật/xoay (H-flip, V-flip, Diag-flip)
+   *    giúp Phaser nhận diện chuẩn xác ID va chạm của tile.
+   * 3. Hỗ trợ gọi refreshBody() cho static physics body sau khi áp dụng setScale().
+   */
+  public parseTiledObjectCoords(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    isTileObject: boolean = true,
+    layerOffsetX: number = 0,
+    layerOffsetY: number = 0
+  ): { x: number; y: number; width: number; height: number } {
+    const actualX = x + layerOffsetX;
+    const actualY = (isTileObject ? (y - height) : y) + layerOffsetY;
+    return { x: actualX, y: actualY, width, height };
+  }
+
+  public getCleanTiledGid(rawGid: number): number {
+    return (rawGid >>> 0) & 0x1FFFFFFF;
+  }
+
+  public applyScaleAndRefresh(sprite: Phaser.Physics.Arcade.Sprite, scaleX: number, scaleY?: number): void {
+    sprite.setScale(scaleX, scaleY ?? scaleX);
+    if (sprite.body && 'refreshBody' in sprite) {
+      (sprite as any).refreshBody();
+    }
+  }
+
   private safeAddImage(x: number, y: number, key: string, fallbackKey: string = 'dummy_transparent'): Phaser.GameObjects.Image {
     const validKey = (this.scene.textures && this.scene.textures.exists(key))
       ? key
@@ -2615,10 +2742,7 @@ export class WorldBuilder {
     this.treeCanopyGroup.add(tree);
 
     // Chuẩn collider gốc cây (20×12 px) để nhân vật có thể đi xuyên dưới tán lá
-    const body = this.colliderGroup.create(x, y, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(20, 12);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-10, -6);
+    this.createStaticBoxColliderCentered(x, y, 20, 12, 'Gốc Cây');
   }
 
   private createHollowTree(x: number, y: number, _label?: string): void {
@@ -2628,10 +2752,7 @@ export class WorldBuilder {
     this.registerCullable(tree, x, y, 70);
     this.treeCanopyGroup.add(tree);
 
-    const body = this.colliderGroup.create(x, y, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(28, 14);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-14, -7);
+    this.createStaticBoxColliderCentered(x, y, 28, 14, 'Cây Rỗng');
   }
 
   private createDenseBush(x: number, y: number): void {
@@ -2655,10 +2776,42 @@ export class WorldBuilder {
     this.registerCullable(sign, x, y, 32);
 
     // C4-13-17: Hộp va chạm chân biển chỉ đường chuẩn xác chống đi xuyên
-    const body = this.colliderGroup.create(x, y - 2, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(14, 10);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-7, -5);
+    this.createStaticBoxColliderCentered(x, y - 2, 14, 10, 'Biển Chỉ Dẫn');
+  }
+
+  /**
+   * C4-14-B04: Mẩu Nhật Ký Rách phát sáng hổ phách huyền ảo (Điểm hút 30-60 giây đầu)
+   */
+  private createTornJournalScrapProp(x: number, y: number): void {
+    const g = this.scene.add.graphics();
+    // Quầng sáng phát quang hổ phách nhẹ
+    g.fillStyle(0xf39c12, 0.22);
+    g.fillCircle(x, y, 14);
+    g.fillStyle(0xffe082, 0.35);
+    g.fillCircle(x, y, 7);
+
+    // Mẩu giấy da vàng úa rách góc
+    g.fillStyle(0xfdebd0, 0.95);
+    g.fillRoundedRect(x - 6, y - 5, 12, 10, 2);
+    // Viền mép rách & dòng chữ mực mờ
+    g.fillStyle(0x785c42, 0.85);
+    g.fillRect(x - 4, y - 3, 7, 1);
+    g.fillRect(x - 4, y - 1, 8, 1);
+    g.fillRect(x - 4, y + 1, 5, 1);
+    g.setDepth(y);
+    this.registerCullable(g, x, y, 30);
+
+    // Hiệu ứng nhịp thở phát quang nhẹ
+    if (this.scene.tweens) {
+      this.scene.tweens.add({
+        targets: g,
+        alpha: 0.55,
+        duration: 1100,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut'
+      });
+    }
   }
 
   private createBuilding(x: number, y: number, w: number, h: number, _wallColor: number, _roofColor: number, name?: string): void {
@@ -2678,17 +2831,17 @@ export class WorldBuilder {
     // và chân tường khớp chính xác với đường Y-sorting (y + h)
     const house = this.safeAddImage(x, y - 24, houseKey);
     house.setOrigin(0, 0);
-    house.setDepth(y + h);
+    house.setDepth(y + 56);
     this.registerCullable(house, x + w / 2, y + h / 2, Math.max(w, h));
 
     // C4-13-17: Chuẩn hóa hộp va chạm bao phủ trọn vẹn thân tường và chân công trình,
     // chống nhân vật đi xuyên qua tường hoặc leo lên mái nhà từ phía bắc/hai bên
-    const colW = w - 6;
-    const colH = Math.max(h - 6, 42);
-    const body = this.colliderGroup.create(x + w / 2, y + h - colH / 2, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(colW, colH);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-colW / 2, -colH / 2);
+    // C4-14-FIX: Thiết kế hitbox chân đế (Foot-level Hitbox ~32.5% phần đáy công trình).
+    // Đáy sprite nhà 112x80 nằm tại y + 56. Hitbox chân tường bao phủ 26px đáy (y+30..y+56)
+    // cho phép nhân vật đi lách tự nhiên sau mái nhà, nhưng bị chặn vững chắc trước mặt tiền.
+    const colW = Math.min(w - 12, 100);
+    const colH = 26;
+    this.createStaticBoxCollider(x + 6, y + 56 - colH, colW, colH, name);
   }
 
   private createBellTower(x: number, y: number, w: number, h: number): void {
@@ -2706,16 +2859,14 @@ export class WorldBuilder {
     // nằm hoàn toàn phía Bắc Bà Lão Edda (790, 330)
     const tower = this.safeAddImage(x, y - 52, SPRITE_BELL_TOWER);
     tower.setOrigin(0, 0);
-    tower.setDepth(y + h);
+    tower.setDepth(312);
     this.registerCullable(tower, x + w / 2, y + h / 2, Math.max(w, h));
 
     // C4-13-17: Chuẩn hóa hộp va chạm Tháp Chuông bao phủ toàn bộ bệ đá và thân tháp
-    const colW = w - 8;
-    const colH = Math.max(h - 4, 54);
-    const body = this.colliderGroup.create(x + w / 2, y + h - colH / 2, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(colW, colH);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-colW / 2, -colH / 2);
+    // C4-14-FIX: Hitbox chân đế bệ đá tháp chuông (64x30 px tại đáy y=312)
+    const colW = 64;
+    const colH = 30;
+    this.createStaticBoxCollider(x + 8, 312 - colH, colW, colH, 'Tháp Chuông');
   }
 
   private createVillageWell(x: number, y: number): void {
@@ -2725,10 +2876,7 @@ export class WorldBuilder {
     this.registerCullable(well, x, y, 40);
 
     // C4-13-17: Chuẩn hóa hộp va chạm thành giếng đá bao phủ chân công trình
-    const body = this.colliderGroup.create(x, y - 6, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(32, 22);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-16, -11);
+    this.createStaticBoxColliderCentered(x, y - 4, 30, 18, 'Giếng Nước Làng');
   }
 
   private createCraftingBench(x: number, y: number): void {
@@ -2738,10 +2886,7 @@ export class WorldBuilder {
     this.registerCullable(bench, x + 18, y + 9, 50);
 
     // C4-13-17: Chuẩn hóa hộp va chạm chân bàn chế tạo khép kín với xưởng rèn
-    const body = this.colliderGroup.create(x + 18, y + 10, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(52, 16);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-26, -8);
+    this.createStaticBoxColliderCentered(x + 18, y + 10, 48, 14, 'Bàn Chế Tạo');
   }
 
   /**
@@ -2790,10 +2935,7 @@ export class WorldBuilder {
 
     // C4-13-17: Chuẩn hóa hộp va chạm toàn bộ xưởng rèn & kho củi (bao trùm mái nhà và tường hậu)
     // chống triệt để việc nhân vật đi xuyên lên mái từ phía bắc hoặc xuyên qua đống củi
-    const body = this.colliderGroup.create(x + 42, y + 20, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(88, 40);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-44, -20);
+    this.createStaticBoxCollider(x, y + 18, 84, 24, 'Mái Xưởng Rèn');
   }
 
   /**
@@ -2840,10 +2982,7 @@ export class WorldBuilder {
     this.registerCullable(g, x + 32, y + 23, 50);
 
     // C4-13-17: Chuẩn hóa hộp va chạm trạm gác bao phủ toàn bộ mái và thân chòi
-    const body = this.colliderGroup.create(x + 32, y + 24, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(58, 42);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-29, -21);
+    this.createStaticBoxCollider(x + 6, y + 20, 52, 26, 'Trạm Gác Cổng Tây');
   }
 
   /**
@@ -2861,16 +3000,12 @@ export class WorldBuilder {
     house.setOrigin(0, 0);
     house.setScale(0.92, 0.92);
     house.setTint(0xd8cfc4);
-    house.setDepth(y + 48);
+    house.setDepth(428);
     this.registerCullable(house, x + 47, y + 20, 60);
 
     // C4-13-17: Chuẩn hóa hộp va chạm nhà dân Tây-Nam bao phủ toàn bộ thân tường và mái nhà
-    const colW = 96;
-    const colH = 46;
-    const body = this.colliderGroup.create(x + 47, y + 25, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(colW, colH);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-colW / 2, -colH / 2);
+    // C4-14-FIX: Foot-level Hitbox chân đế nhà dân Tây-Nam (đáy tại y=428)
+    this.createStaticBoxCollider(x + 6, 428 - 24, 91, 24, 'Nhà Dân Tây-Nam');
   }
 
   /**
@@ -2909,15 +3044,8 @@ export class WorldBuilder {
     this.registerCullable(g, (leftX + rightX) / 2, (leftY + rightY) / 2, 50);
 
     // C4-13-17: Bổ sung hộp va chạm chân vật thể chuẩn xác cho cả 2 kệ bàn thảo dược cạnh nhà Neris
-    const leftBody = this.colliderGroup.create(leftX, leftY + 2, undefined) as Phaser.Physics.Arcade.Sprite;
-    leftBody.setVisible(false);
-    (leftBody.body as Phaser.Physics.Arcade.Body).setSize(26, 14);
-    (leftBody.body as Phaser.Physics.Arcade.Body).setOffset(-13, -7);
-
-    const rightBody = this.colliderGroup.create(rightX, rightY + 2, undefined) as Phaser.Physics.Arcade.Sprite;
-    rightBody.setVisible(false);
-    (rightBody.body as Phaser.Physics.Arcade.Body).setSize(26, 14);
-    (rightBody.body as Phaser.Physics.Arcade.Body).setOffset(-13, -7);
+    this.createStaticBoxColliderCentered(leftX, leftY + 2, 24, 10, 'Bàn Thuốc Trái');
+    this.createStaticBoxColliderCentered(rightX, rightY + 2, 24, 10, 'Bàn Thuốc Phải');
   }
 
   /**
@@ -2982,10 +3110,7 @@ export class WorldBuilder {
     this.registerCullable(g, x, y, 30);
 
     // C4-13-17: Bổ sung hộp va chạm chân cụm thùng gỗ & đống củi làng
-    const body = this.colliderGroup.create(x, y + 2, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(22, 12);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-11, -6);
+    this.createStaticBoxColliderCentered(x, y + 2, 20, 12, 'Cụm Vật Phẩm Làng');
   }
 
   /**
@@ -3025,10 +3150,7 @@ export class WorldBuilder {
     this.registerCullable(g, x, y, 35);
 
     // C4-13-17: Bổ sung hộp va chạm chân cột đèn lồng làng
-    const body = this.colliderGroup.create(x, y - 1, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(8, 8);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-4, -4);
+    this.createStaticBoxColliderCentered(x, y - 1, 8, 8, 'Cột Đèn Lồng');
   }
 
   /**
@@ -3069,10 +3191,7 @@ export class WorldBuilder {
       this.registerCullable(fence, fx + 23, fy, 40);
 
       if (withCollider) {
-        const body = this.colliderGroup.create(fx + 23, fy - 4, undefined) as Phaser.Physics.Arcade.Sprite;
-        body.setVisible(false);
-        (body.body as Phaser.Physics.Arcade.Body).setSize(42, 10);
-        (body.body as Phaser.Physics.Arcade.Body).setOffset(-21, -5);
+        this.createStaticBoxColliderCentered(fx + 23, fy - 4, 42, 10, 'Hàng Rào Làng');
       }
     };
 
@@ -3130,19 +3249,13 @@ export class WorldBuilder {
     northFence.setOrigin(0, 0.78);
     northFence.setDepth(northPostY);
 
-    const northFenceBody = this.colliderGroup.create(gateX - 31, northPostY - 4, undefined) as Phaser.Physics.Arcade.Sprite;
-    northFenceBody.setVisible(false);
-    (northFenceBody.body as Phaser.Physics.Arcade.Body).setSize(46, 12);
-    (northFenceBody.body as Phaser.Physics.Arcade.Body).setOffset(-23, -6);
+    this.createStaticBoxColliderCentered(gateX - 31, northPostY - 4, 46, 12, 'Rào Bắc Cổng Đông');
 
     const southFence = this.scene.add.image(gateX - 54, southPostY, SPRITE_WOODEN_FENCE);
     southFence.setOrigin(0, 0.78);
     southFence.setDepth(southPostY);
 
-    const southFenceBody = this.colliderGroup.create(gateX - 31, southPostY - 4, undefined) as Phaser.Physics.Arcade.Sprite;
-    southFenceBody.setVisible(false);
-    (southFenceBody.body as Phaser.Physics.Arcade.Body).setSize(46, 12);
-    (southFenceBody.body as Phaser.Physics.Arcade.Body).setOffset(-23, -6);
+    this.createStaticBoxColliderCentered(gateX - 31, southPostY - 4, 46, 12, 'Rào Nam Cổng Đông');
 
     // 2. Biển chỉ đường gỗ cổ (SPRITE_SIGNPOST) và Cột đèn lồng ấm trước Cổng Đông
     this.createStoneSign(gateX - 62, southPostY + 4, 'RỪNG NGOẠI VI');
@@ -3166,10 +3279,7 @@ export class WorldBuilder {
     northPillar.fillRect(gateX - 3, northPostY - 50, 6, 34);
     northPillar.setDepth(northPostY);
 
-    const northBody = this.colliderGroup.create(gateX, northPostY - 4, undefined) as Phaser.Physics.Arcade.Sprite;
-    northBody.setVisible(false);
-    (northBody.body as Phaser.Physics.Arcade.Body).setSize(18, 14);
-    (northBody.body as Phaser.Physics.Arcade.Body).setOffset(-9, -7);
+    this.createStaticBoxColliderCentered(gateX, northPostY - 4, 18, 14, 'Trụ Bắc Cổng Đông');
 
     // 4. Trụ cổng đá - gỗ phía Nam (depth = southPostY = 322)
     const southPillar = this.scene.add.graphics();
@@ -3194,10 +3304,7 @@ export class WorldBuilder {
     southPillar.fillRect(gateX - 11, southPostY - 35, 3, 3);
     southPillar.setDepth(southPostY);
 
-    const southBody = this.colliderGroup.create(gateX, southPostY - 4, undefined) as Phaser.Physics.Arcade.Sprite;
-    southBody.setVisible(false);
-    (southBody.body as Phaser.Physics.Arcade.Body).setSize(18, 14);
-    (southBody.body as Phaser.Physics.Arcade.Body).setOffset(-9, -7);
+    this.createStaticBoxColliderCentered(gateX, southPostY - 4, 18, 14, 'Trụ Nam Cổng Đông');
 
     // 5. Vòm cổng gỗ-đá trên cao & Bảng tên treo "Rừng Ngoại Vi →" (depth = southPostY + 35 để người chơi đi xuyên qua dưới vòm cổng)
     const archY = northPostY - 54; // 186
@@ -3242,15 +3349,12 @@ export class WorldBuilder {
     markerSouth.setDepth(southPostY - 2);
 
     // 7. C4-12-03: Khối va chạm chặn Cổng Đông (kết nối kín từ Trụ Bắc tới Trụ Nam)
-    const dummyKey = this.scene.textures && this.scene.textures.exists('dummy_transparent') ? 'dummy_transparent' : undefined;
-    this.eastGateColliderBody = this.colliderGroup.create(gateX, roadY, dummyKey) as Phaser.Physics.Arcade.Sprite;
-    this.eastGateColliderBody.setVisible(false);
-    this.eastGateColliderBody.setAlpha(0);
+    this.eastGateColliderBody = this.createStaticBoxColliderCentered(gateX, roadY, 16, 76, 'Cổng Đông');
     const gateBody = this.eastGateColliderBody.body as Phaser.Physics.Arcade.Body;
-    gateBody.setSize(16, 76);
-    gateBody.setOffset(-8, -38);
-    gateBody.enable = !this.isEastGateOpen;
-    gateBody.checkCollision.none = this.isEastGateOpen;
+    if (gateBody) {
+      gateBody.enable = !this.isEastGateOpen;
+      gateBody.checkCollision.none = this.isEastGateOpen;
+    }
 
     // 8. C4-12-03: Vẽ hình ảnh Cổng Đông (cổng đóng khóa xích vs cổng mở gập hai bên)
     this.renderEastGateBarrier(gateX, roadY, this.isEastGateOpen);
@@ -3583,12 +3687,9 @@ export class WorldBuilder {
       this.treeCanopyGroup.add(tree);
 
       if (withCollider) {
-        const body = this.colliderGroup.create(x, y - 2, undefined) as Phaser.Physics.Arcade.Sprite;
-        body.setVisible(false);
-        const bw = variant === 'hollow' ? 24 : 18;
-        const bh = 12;
-        (body.body as Phaser.Physics.Arcade.Body).setSize(bw, bh);
-        (body.body as Phaser.Physics.Arcade.Body).setOffset(-bw / 2, -bh / 2);
+        const bw = variant === 'hollow' ? Math.round(24 * scale) : Math.round(18 * scale);
+        const bh = Math.round(12 * scale);
+        this.createStaticBoxColliderCentered(x, y - 2, bw, bh, 'Cây Rừng Biến Thể');
       }
     };
 
@@ -3837,10 +3938,10 @@ export class WorldBuilder {
     if (this.scene.textures && this.scene.textures.exists(spriteKey)) {
       const rockImg = this.scene.add.image(x + w / 2, y + h - 2, spriteKey);
       rockImg.setOrigin(0.5, 0.88);
-      // Cân đối scale theo kích thước mong muốn của ô (khớp tỷ lệ pixel art chuẩn)
-      const baseW = isLarge ? 64 : 48;
-      const baseH = isLarge ? 48 : 40;
-      const targetScale = Math.max(0.75, Math.min(1.4, Math.max(w / baseW, h / baseH)));
+      // Cân đối scale theo kích thước mong muốn của ô (khớp tỷ lệ pixel art chuẩn 32x30 và 24x20)
+      const baseW = isLarge ? 32 : 24;
+      const baseH = isLarge ? 30 : 20;
+      const targetScale = Math.max(0.85, Math.min(1.4, Math.max(w / baseW, h / baseH) * 0.75));
       rockImg.setScale(targetScale);
       rockImg.setDepth(y + h);
       this.registerCullable(rockImg, x + w / 2, y + h / 2, Math.max(w, h));
@@ -3863,27 +3964,48 @@ export class WorldBuilder {
     }
 
     // 3. Vật thể va chạm Arcade Physics hoàn toàn vô hình
-    const dummyKey = this.scene.textures && this.scene.textures.exists('dummy_transparent') ? 'dummy_transparent' : undefined;
-    const body = this.colliderGroup.create(x + w / 2, y + h / 2, dummyKey) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    body.setAlpha(0);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(w * 0.82, h * 0.68);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-w * 0.41, -h * 0.34);
+    const colW = Math.round(w * 0.75);
+    const colH = Math.round(Math.min(h * 0.5, 14));
+    this.createStaticBoxColliderCentered(x + w / 2, y + h - 2 - colH / 2, colW, colH, 'Tảng Đá');
   }
 
   private createMireWater(x: number, y: number, w: number, h: number): void {
     const water = this.scene.add.graphics();
-    water.fillStyle(0x0e1716, 0.95);
+    // 1. Bờ bùn lầy sũng nước ẩm ướt chuyển tiếp (Mud shoreline)
+    water.fillStyle(0x221a14, 0.75);
+    water.fillEllipse(x + w / 2, y + h / 2, w + 14, h + 10);
+    water.fillStyle(0x19281e, 0.85);
+    water.fillEllipse(x + w / 2, y + h / 2, w + 6, h + 4);
+
+    // 2. Vùng nước lầy đục màu xanh rêu u tối (Murky swamp body)
+    water.fillStyle(0x1a3328, 0.95);
     water.fillEllipse(x + w / 2, y + h / 2, w, h);
-    water.lineStyle(2, 0x192e27, 0.8);
-    water.strokeEllipse(x + w / 2, y + h / 2, w, h);
+
+    // 3. Vực sâu giữa lòng nước lầy (Deep pool core)
+    water.fillStyle(0x12241c, 0.95);
+    water.fillEllipse(x + w / 2, y + h / 2, w * 0.75, h * 0.7);
+
+    // 4. Viền mép nước phản quang mờ ảo và gợn sóng (Water ripples & highlight)
+    water.lineStyle(1.5, 0x2d5241, 0.6);
+    water.strokeEllipse(x + w / 2, y + h / 2, w * 0.88, h * 0.85);
+    water.lineStyle(1, 0x41755d, 0.45);
+    water.beginPath();
+    water.arc(x + w / 2, y + h / 2 - 2, w * 0.35, Math.PI * 0.15, Math.PI * 0.85);
+    water.strokePath();
+
+    // 5. Thảm bèo tấm & tảo lục trôi nổi tự nhiên (Duckweed & moss specks)
+    water.fillStyle(0x3e7a36, 0.75);
+    water.fillCircle(x + w / 2 - w * 0.22, y + h / 2 - h * 0.15, 2);
+    water.fillCircle(x + w / 2 - w * 0.18, y + h / 2 - h * 0.1, 1.5);
+    water.fillCircle(x + w / 2 + w * 0.25, y + h / 2 + h * 0.12, 2.5);
+    water.fillStyle(0x56a64b, 0.65);
+    water.fillCircle(x + w / 2 + w * 0.28, y + h / 2 + h * 0.08, 1.5);
+    water.fillCircle(x + w / 2 + 4, y + h / 2 + h * 0.22, 2);
+
     water.setDepth(DEPTH_GROUND_WATER);
     this.registerCullable(water, x + w / 2, y + h / 2, Math.max(w, h));
 
-    const body = this.colliderGroup.create(x + w / 2, y + h / 2, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(w * 0.85, h * 0.8);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-w * 0.425, -h * 0.4);
+    this.createStaticBoxColliderCentered(x + w / 2, y + h / 2, Math.round(w * 0.75), Math.round(h * 0.65), 'Vùng Nước Sình Lầy');
   }
 
   /**
@@ -3941,10 +4063,7 @@ export class WorldBuilder {
     this.registerCullable(beamGraphics, x, y, 60);
 
     // 4. Khối va chạm chân cột (18×14 px) - C4-13-19: Nhỏ gọn đúng bằng bệ đá, giải phóng lối đi xung quanh
-    const body = this.colliderGroup.create(x, y - 4, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(18, 14);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-9, -7);
+    this.createStaticBoxColliderCentered(x, y - 4, 18, 14, 'Cột Cổ Ngữ');
 
     // 5. Đăng ký vào sổ lưu trữ visual của WorldBuilder
     const entry: RunestoneVisualEntry = {
@@ -4114,10 +4233,7 @@ export class WorldBuilder {
     this.registerCullable(this.centralAltarBeam, x, y, 70);
 
     // C4-13-19: Khối va chạm chân bệ thờ nhỏ gọn (28×14 px), nhân vật đi lại xung quanh hoàn toàn thông thoáng
-    const body = this.colliderGroup.create(x, y - 2, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(28, 14);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-14, -7);
+    this.createStaticBoxColliderCentered(x, y - 2, 28, 14, 'Bệ Thờ Đá');
 
     if (PlayerState.getInstance().hasFlag('mire_pillars_solved')) {
       this.triggerRunePuzzleSolvedCelebration();
@@ -4149,10 +4265,7 @@ export class WorldBuilder {
 
     g.setDepth(y + 10);
 
-    const body = this.colliderGroup.create(x, y + 2, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(16, 12);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-8, -6);
+    this.createStaticBoxColliderCentered(x, y + 2, 16, 12, 'Cột Đá Cổ');
   }
 
   /**
@@ -4196,10 +4309,7 @@ export class WorldBuilder {
     this.registerCullable(shadow, x + w / 2, y + h - 6, Math.max(w, h));
 
     // 3. C4-13-19: Khối va chạm chân tường miếu (48×16 px) gọn gàng, giải phóng toàn bộ khoảng sân trước cho nhân vật đi lại
-    const body = this.colliderGroup.create(x + w / 2, y + 10, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(48, 16);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-24, -8);
+    this.createStaticBoxColliderCentered(x + w / 2, y + 10, 48, 16, 'Miếu Chuông Vỡ');
 
     // 4. Quầng sáng đồng vàng lập lòe tại bệ đặt Lưỡi Chuông Đồng nếu chưa thu hồi
     if (!PlayerState.getInstance().hasFlag('clapper_collected')) {
@@ -4241,10 +4351,7 @@ export class WorldBuilder {
     this.registerCullable(pillar, x, y, 40);
     this.registerCullable(shadow, x, y + 6, 40);
 
-    const body = this.colliderGroup.create(x, y - 4, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(20, 16);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-10, -8);
+    this.createStaticBoxColliderCentered(x, y - 4, 20, 16, 'Trụ Miếu Chuông');
   }
 
   /**
@@ -4270,10 +4377,7 @@ export class WorldBuilder {
     g.setDepth(y + 10);
     this.registerCullable(g, x, y, 40);
 
-    const body = this.colliderGroup.create(x, y - 2, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(36, 16);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-18, -8);
+    this.createStaticBoxColliderCentered(x, y - 2, 36, 16, 'Đống Đổ Nát');
   }
 
   /**
@@ -4300,10 +4404,7 @@ export class WorldBuilder {
     g.setDepth(y + 10);
     this.registerCullable(g, x, y, 30);
 
-    const body = this.colliderGroup.create(x, y + 2, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(16, 12);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-8, -6);
+    this.createStaticBoxColliderCentered(x, y + 2, 16, 12, 'Bia Đá Cổ Ngữ');
   }
 
   /**
@@ -4341,17 +4442,20 @@ export class WorldBuilder {
 
   private setupZoneColliders(zone: ZoneData): void {
     for (const spec of zone.colliders) {
-      if (spec.type === 'boundary') {
-        const wall = this.colliderGroup.create(
-          spec.x + spec.width / 2, 
-          spec.y + spec.height / 2, 
-          undefined
-        ) as Phaser.Physics.Arcade.Sprite;
+      if (spec.type === 'boundary' || (spec.type as string) === 'hazard') {
+        const wall = this.createStaticBoxCollider(spec.x, spec.y, spec.width, spec.height, spec.id);
         wall.setVisible(false);
-        const b = wall.body as Phaser.Physics.Arcade.Body;
-        b.setSize(spec.width, spec.height);
-        b.setOffset(-spec.width / 2, -spec.height / 2);
       }
+    }
+
+    // Tự động dựng tường chu vi nếu bật TILED_PIPELINE_CONFIG.enableAutoPerimeterWalls
+    if (TILED_PIPELINE_CONFIG.enableAutoPerimeterWalls && zone.bounds) {
+      AutoPerimeterWallsModule.getInstance().generatePerimeterWalls(
+        this.colliderGroup,
+        zone.bounds,
+        zone.transitions,
+        zone.id
+      );
     }
   }
 
@@ -4492,6 +4596,11 @@ export class WorldBuilder {
     this.createVillagePropCluster(1385, 725, 'firewood');
     this.createVillagePropCluster(1275, 710, 'barrels');
 
+    // V1.4 Blueprint: Nhà Trạm Kiểm Lâm Bỏ Hoang (Abandoned Ranger Outpost - Landmark tại 1420, 620)
+    this.createAbandonedRangerOutpost(1420, 620);
+    // V1.4 Blueprint: Cầu Thân Cây Đổ (Metroidvania-lite Shortcut Bridge phía Rừng Ngoài tại 1540, 680)
+    this.createFallenTitanTrunkShortcut(1540, 680, 50);
+
     // 3. Hệ thống Cột Đèn Lồng Gỗ Dẫn Hướng
     this.createVillageLanternPost(1210, 600); // Đèn cửa rừng Bắc
     this.createVillageLanternPost(1310, 700); // Đèn bãi trại
@@ -4605,10 +4714,7 @@ export class WorldBuilder {
     // Collider chân tường
     const colW = w - 8;
     const colH = 22;
-    const body = this.colliderGroup.create(x + w / 2, y + h - colH / 2, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(colW, colH);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-colW / 2, -colH / 2);
+    this.createStaticBoxCollider(x + 4, y + h - colH, colW, colH, 'Kho Thóc');
   }
 
   /**
@@ -4680,10 +4786,7 @@ export class WorldBuilder {
       });
     }
 
-    const body = this.colliderGroup.create(x + 18, y + 15, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(28, 20);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-14, -10);
+    this.createStaticBoxColliderCentered(x + 18, y + 15, 24, 16, 'Lửa Trại Làng');
   }
 
   /**
@@ -4722,10 +4825,7 @@ export class WorldBuilder {
     g.setDepth(y + 14);
     this.registerCullable(g, x + 18, y, 50);
 
-    const body = this.colliderGroup.create(x + 18, y + 6, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(40, 18);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-20, -9);
+    this.createStaticBoxColliderCentered(x + 18, y + 6, 36, 16, 'Lều Trú Ẩn');
   }
 
   /**
@@ -4765,10 +4865,7 @@ export class WorldBuilder {
     g.setDepth(y + 12);
     this.registerCullable(g, x + 12, y + 6, 30);
 
-    const body = this.colliderGroup.create(x + 12, y + 6, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(22, 16);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-11, -8);
+    this.createStaticBoxColliderCentered(x + 12, y + 6, 20, 14, 'Nồi Thảo Dược');
   }
 
   /**
@@ -4799,10 +4896,7 @@ export class WorldBuilder {
     g.setDepth(y + 18);
     this.registerCullable(g, x + 14, y + 10, 30);
 
-    const body = this.colliderGroup.create(x + 14, y + 10, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(24, 14);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-12, -7);
+    this.createStaticBoxColliderCentered(x + 14, y + 10, 22, 14, 'Rương Trú Ẩn');
   }
 
   /**
@@ -4849,10 +4943,7 @@ export class WorldBuilder {
       });
     }
 
-    const body = this.colliderGroup.create(x + 18, y + 15, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(24, 16);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-12, -8);
+    this.createStaticBoxColliderCentered(x + 18, y + 15, 24, 16, 'Lửa Trại Thợ Săn');
   }
 
   /**
@@ -4866,10 +4957,7 @@ export class WorldBuilder {
       this.registerCullable(fence, fx + 23, fy, 40);
 
       if (withCollider) {
-        const body = this.colliderGroup.create(fx + 23, fy - 4, undefined) as Phaser.Physics.Arcade.Sprite;
-        body.setVisible(false);
-        (body.body as Phaser.Physics.Arcade.Body).setSize(42, 10);
-        (body.body as Phaser.Physics.Arcade.Body).setOffset(-21, -5);
+        this.createStaticBoxColliderCentered(fx + 23, fy - 4, 42, 10, 'Hàng Rào Nông Trại');
       }
     };
 
@@ -4950,10 +5038,7 @@ export class WorldBuilder {
     this.registerCullable(g, x + 17, y, 40);
 
     // Collider nhẹ cho bàn sơ chế (chỉ chân bàn phía trên để nhân vật đứng trước bàn tương tác mượt mà)
-    const body = this.colliderGroup.create(x + 17, y + 4, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(32, 10);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-16, -5);
+    this.createStaticBoxColliderCentered(x + 17, y + 4, 32, 10, 'Giá Phơi Thợ Săn');
   }
 
   /**
@@ -5064,10 +5149,7 @@ export class WorldBuilder {
     g.setDepth(y + 12);
     this.registerCullable(g, x + 15, y, 40);
 
-    const body = this.colliderGroup.create(x + 15, y + 4, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(32, 12);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-16, -6);
+    this.createStaticBoxColliderCentered(x + 15, y + 4, 32, 12, 'Lều Thợ Săn');
   }
 
   /**
@@ -5139,10 +5221,7 @@ export class WorldBuilder {
     g.setDepth(y + 4);
     this.registerCullable(g, x, y, Math.max(length, 40));
 
-    const body = this.colliderGroup.create(x, y, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(Math.round(length * 0.8), 10);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-Math.round(length * 0.4), -5);
+    this.createStaticBoxColliderCentered(x, y, Math.round(length * 0.75), 10, 'Thân Cây Đổ');
   }
 
   /**
@@ -5315,10 +5394,7 @@ export class WorldBuilder {
     g.setDepth(y + 16);
     this.registerCullable(g, x + 6, y + 4, 30);
 
-    const body = this.colliderGroup.create(x + 6, y + 4, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(12, 10);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-6, -5);
+    this.createStaticBoxColliderCentered(x + 6, y + 4, 12, 10, 'Cột Mốc Đá');
   }
 
   /**
@@ -5501,14 +5577,10 @@ export class WorldBuilder {
     this.registerCullable(gateGfx, bridgeX, roadY, 80);
 
     // 5. Arcade Physics Collider vững chắc chặn đứng hoàn toàn lối thẳng
-    const dummyKey = this.scene.textures && this.scene.textures.exists('dummy_transparent') ? 'dummy_transparent' : undefined;
-    const blocker = this.colliderGroup.create(bridgeX, roadY, dummyKey) as Phaser.Physics.Arcade.Sprite;
-    blocker.setVisible(false);
-    blocker.setAlpha(0);
-    const body = blocker.body as Phaser.Physics.Arcade.Body;
-    body.setSize(38, 86);
-    body.setOffset(-19, -43);
-    body.immovable = true;
+    const blocker = this.createStaticBoxColliderCentered(bridgeX, roadY, 38, 86, 'Cầu Sập Đường Mòn');
+    if (blocker.body) {
+      (blocker.body as Phaser.Physics.Arcade.Body).immovable = true;
+    }
   }
 
   /**
@@ -5697,13 +5769,15 @@ export class WorldBuilder {
     const { bounds } = zone;
 
     // 1. Biển Báo & Cột Mốc Định Hướng (Signs & Landmark Markers)
-    this.createStoneSign(2040, -80, 'RỪNG SÂU');
+    this.createStoneSign(2010, -70, 'RỪNG SÂU'); // Mép Tây hành lang cửa rừng
     this.createStoneSign(2340, -490, 'LÃNH ĐỊA KẺ LẮNG NGHE');
     this.createStoneMarker(2840, -220); // Cột đá cổ Bắc ranh giới Đầm Lầy
     this.createStoneMarker(2840, -320); // Cột đá cổ Nam ranh giới Đầm Lầy
+    // V1.4 Blueprint: Cột Vật Tổ Thì Thầm (Whispering Totem Pillar - Landmark tại 2100, -320)
+    this.createWhisperingTotemPillar(2100, -320);
 
     // 2. Hệ Thống 4 Cột Đèn Lồng Dẫn Hướng Gỗ
-    this.createVillageLanternPost(2060, -90);  // Đèn cửa rừng phía Nam
+    this.createVillageLanternPost(2150, -70);  // Đèn mép Đông cửa rừng phía Nam (thông thoáng 140px tim đường)
     this.createVillageLanternPost(1920, -210); // Đèn ngã rẽ Nấm Phát Quang
     this.createVillageLanternPost(2120, -290); // Đèn bãi Cây Cổ Thụ Đổ Trung Tâm
     this.createVillageLanternPost(2500, -320); // Đèn đường mòn phía Đông
@@ -5742,33 +5816,206 @@ export class WorldBuilder {
     this.createBioluminescentMushrooms(1840, -260);
     this.createListenerNestClue(2340, -490);
 
-    // 7. Quần Thể Cây Sồi & Thông Cổ Thụ Viền Rừng (Natural Boundary Tree Clusters)
-    // Dàn cây viền phía Bắc (wy: -610..-570)
-    for (let x = bounds.x + 40; x < bounds.x + bounds.width - 40; x += 105) {
-      this.createTree(x, -590 + ((x % 3) * 18), 'Cây Rừng Cổ Thụ Viền Bắc');
+    // 7. C4-14-FIX: Quần Thể Cây Sồi & Thông Cổ Thụ Viền Rừng Khép Kín (Impenetrable Forest Boundary)
+    // Bước nhảy dày 55-60px kết hợp bụi rậm tự nhiên, loại bỏ hoàn toàn khe hở lọt biên
+    // Dàn cây viền phía Bắc (wy: -610..-570, chừa lối vào Abyssal Chasm 2200..2280)
+    for (let x = bounds.x + 40; x < bounds.x + bounds.width - 40; x += 55) {
+      if (x < 2190 || x > 2290) {
+        this.createTree(x, -600 + ((x % 3) * 12), 'Cây Rừng Cổ Thụ Viền Bắc');
+        this.createDenseBush(x + 25, -590);
+      }
     }
 
     // Dàn cây viền phía Tây (wx: 1620..1660)
-    for (let y = bounds.y + 40; y < bounds.y + bounds.height - 40; y += 95) {
-      this.createTree(1640 + ((Math.abs(y) % 2) * 20), y, 'Cây Rừng Cổ Thụ Viền Tây');
+    for (let y = bounds.y + 40; y < bounds.y + bounds.height - 40; y += 55) {
+      this.createTree(1630 + ((Math.abs(y) % 2) * 15), y, 'Cây Rừng Cổ Thụ Viền Tây');
+      this.createDenseBush(1635, y + 25);
     }
 
-    // Dàn cây viền phía Đông (wx: 2820..2860, chừa lối sang Đầm Lầy tại y ~ -260..-300)
-    for (let y = bounds.y + 40; y < bounds.y + bounds.height - 40; y += 95) {
-      if (y < -330 || y > -210) {
-        this.createTree(2840 + ((Math.abs(y) % 2) * 20), y, 'Cây Rừng Cổ Thụ Viền Đông');
+    // Dàn cây viền phía Đông (wx: 2820..2860, chừa lối sang Đầm Lầy tại y ~ -320..-200)
+    for (let y = bounds.y + 40; y < bounds.y + bounds.height - 40; y += 55) {
+      if (y < -330 || y > -190) {
+        this.createTree(2850 + ((Math.abs(y) % 2) * 15), y, 'Cây Rừng Cổ Thụ Viền Đông');
+        this.createDenseBush(2845, y + 25);
       }
     }
 
-    // Dàn cây viền phía Nam (wy: -45..-15, chừa lối thông Crooked Path 2000..2160)
-    for (let x = bounds.x + 40; x < bounds.x + bounds.width - 40; x += 110) {
-      if (x < 1990 || x > 2170) {
-        this.createTree(x, -35 + ((x % 2) * 15), 'Cây Rừng Cổ Thụ Viền Nam');
+    // Dàn cây viền phía Nam (wy: -45..-15, chừa lối thông Crooked Path 2000..2160 và Whispering Clearing 1800..1880)
+    for (let x = bounds.x + 40; x < bounds.x + bounds.width - 40; x += 55) {
+      const inWc = x >= 1790 && x <= 1890;
+      const inCp = x >= 1990 && x <= 2170;
+      if (!inWc && !inCp) {
+        this.createTree(x, -35 + ((x % 2) * 12), 'Cây Rừng Cổ Thụ Viền Nam');
+        this.createDenseBush(x + 25, -30);
       }
     }
 
-    // 8. Sương Mù Khí Quyển Rừng Sâu (Deep Forest Atmospheric Fog)
+    // 8. C4-14-B03: Khóa kín 4 góc chu vi Rừng Sâu (Perimeter Corner Fortifications)
+    // Góc Tây Bắc (NW):
+    this.createRock(1620, -615, 54, 34);
+    this.createDenseBush(1635, -600);
+    this.createFallenLog(1640, -585, 52, 18);
+    // Góc Đông Bắc (NE):
+    this.createRock(2860, -615, 54, 34);
+    this.createDenseBush(2845, -600);
+    this.createDenseBush(2850, -580);
+    // Góc Tây Nam (SW):
+    this.createFallenLog(1630, -35, 54, 20);
+    this.createDenseBush(1635, -25);
+    this.createDenseBush(1650, -20);
+    // Góc Đông Nam (SE):
+    this.createRock(2860, -35, 54, 34);
+    this.createDenseBush(2845, -30);
+    this.createDenseBush(2840, -20);
+
+    // 9. C4-14-B03: Cổng Cổ Ngữ Hư Không (Abyssal Void Gate) tại ngưỡng cửa Bắc (2240, -620)
+    this.createAbyssalGateEntrance(2240, -620);
+
+    // 10. C4-14-B03: Bụi Gai U Minh & Hàng Rào Chông phong tỏa Đầm Lầy tại cửa Đông (2844, -260)
+    this.createDeepForestMireBarrier(2844, -260);
+
+    // 11. C4-14-B03: Lối vào Khoảng Trống Thì Thầm (1840, -40)
+    this.createWhisperingClearingEntrance(1840, -40);
+
+    // 12. Sương Mù Khí Quyển Rừng Sâu (Deep Forest Atmospheric Fog)
     this.createDeepForestAtmosphericFog();
+  }
+
+  /**
+   * C4-14-B03: Cổng Cổ Ngữ Hư Không (Abyssal Void Gate Archway: structure_abyssal_gate_v14.png)
+   * Tọa lạc tại ngưỡng cửa phía Bắc Rừng Sâu (x=2240, y=-620) dẫn vào Vực Sâu Bóng Tối.
+   */
+  private createAbyssalGateEntrance(x: number, y: number): void {
+    // 1. Khung vòm kiến trúc Cổng Cổ Ngữ (160×59 px)
+    const gateImg = this.safeAddImage(x, y - 8, SPRITE_STRUCTURE_ABYSSAL_GATE_V14);
+    gateImg.setOrigin(0.5, 0.85);
+    gateImg.setDepth(y);
+    this.registerCullable(gateImg, x, y, 120);
+
+    // 2. Hai cột đá cự thạch hộ vệ hai bên cổng
+    const pillarL = this.safeAddImage(x - 55, y + 4, SPRITE_PROP_ANCIENT_MONOLITH_V14);
+    pillarL.setOrigin(0.5, 0.85);
+    pillarL.setDepth(y + 2);
+    this.createStaticBoxColliderCentered(x - 55, y, 22, 16, 'Trụ Cổ Ngữ Cổng Bắc T');
+
+    const pillarR = this.safeAddImage(x + 55, y + 4, SPRITE_PROP_ANCIENT_MONOLITH_V14);
+    pillarR.setOrigin(0.5, 0.85);
+    pillarR.setDepth(y + 2);
+    this.createStaticBoxColliderCentered(x + 55, y, 22, 16, 'Trụ Cổ Ngữ Cổng Bắc Đ');
+
+    // 3. Khối va chạm chặn cổng khi Vực Sâu Bóng Tối chưa mở khóa
+    const playerState = PlayerState.getInstance();
+    const isUnlocked = WorldGatingSystem.getInstance().isZoneUnlocked('abyssal_chasm', playerState);
+    this.abyssalGateColliderBody = this.createStaticBoxColliderCentered(x, y - 10, 72, 24, 'Phong Ấn Cổng Hư Không');
+    const gateBody = this.abyssalGateColliderBody.body as Phaser.Physics.Arcade.Body;
+    if (gateBody) {
+      gateBody.enable = !isUnlocked;
+      gateBody.checkCollision.none = isUnlocked;
+    }
+
+    // 4. Màn năng lượng tím hư không (Void Barrier Visual)
+    const barrierGfx = this.scene.add.graphics();
+    barrierGfx.setDepth(y + 4);
+    if (!isUnlocked) {
+      barrierGfx.fillStyle(0x4a148c, 0.65);
+      barrierGfx.fillRoundedRect(x - 34, y - 26, 68, 28, 4);
+      barrierGfx.lineStyle(1.5, 0x9b59b6, 0.85);
+      barrierGfx.strokeRoundedRect(x - 34, y - 26, 68, 28, 4);
+
+      if (this.scene.tweens) {
+        this.scene.tweens.add({
+          targets: barrierGfx,
+          alpha: 0.35,
+          duration: 1200,
+          yoyo: true,
+          repeat: -1,
+          ease: 'Sine.easeInOut'
+        });
+      }
+    }
+    this.registerCullable(barrierGfx, x, y, 80);
+  }
+
+  /**
+   * C4-14-B03: Bụi Gai U Minh & Hàng Rào Chông Ngăn Cách Đầm Lầy (Deep Forest Mire Barrier)
+   * Tọa lạc tại ranh giới phía Đông Rừng Sâu (x=2844, y=-260) dẫn sang Đầm Lầy Tĩnh Lặng.
+   */
+  private createDeepForestMireBarrier(x: number, y: number): void {
+    const playerState = PlayerState.getInstance();
+    const isUnlocked = WorldGatingSystem.getInstance().isZoneUnlocked('silent_mire', playerState);
+
+    // 1. Đồ họa cụm bụi gai và dây leo phong tỏa (Thorn Briar Barrier)
+    const g = this.scene.add.graphics();
+    g.setDepth(y + 10);
+
+    if (!isUnlocked) {
+      g.fillStyle(0x0a0f0d, 0.65);
+      g.fillEllipse(x - 4, y, 32, 110);
+
+      g.fillStyle(0x1a130b, 1);
+      g.fillRect(x - 12, y - 52, 18, 104);
+      g.fillStyle(0x2d1f14, 1);
+      g.fillRect(x - 9, y - 48, 14, 96);
+
+      g.fillStyle(0x4a3221, 1);
+      for (let gy = y - 45; gy <= y + 45; gy += 15) {
+        g.fillTriangle(x - 12, gy, x - 22, gy + 4, x - 12, gy + 8);
+        g.fillTriangle(x + 5, gy - 6, x + 15, gy - 2, x + 5, gy + 2);
+      }
+
+      g.fillStyle(0x27ae60, 0.65);
+      g.fillRect(x - 10, y - 30, 8, 4);
+      g.fillRect(x - 6, y + 10, 9, 5);
+      g.fillRect(x - 8, y + 35, 7, 4);
+    }
+    this.registerCullable(g, x, y, 70);
+
+    // 2. Khối va chạm chặn lối nếu Đầm Lầy chưa mở khóa
+    this.deepForestMireColliderBody = this.createStaticBoxColliderCentered(x, y, 22, 106, 'Bụi Gai U Minh');
+    const mireBody = this.deepForestMireColliderBody.body as Phaser.Physics.Arcade.Body;
+    if (mireBody) {
+      mireBody.enable = !isUnlocked;
+      mireBody.checkCollision.none = isUnlocked;
+    }
+  }
+
+  /**
+   * C4-14-B03: Ngưỡng Cửa Khoảng Trống Thì Thầm (Whispering Clearing Pathway)
+   */
+  private createWhisperingClearingEntrance(x: number, y: number): void {
+    const steleL = this.scene.add.graphics();
+    steleL.fillStyle(0x2c3e50, 1);
+    steleL.fillRect(x - 38, y - 14, 10, 22);
+    steleL.fillStyle(0x1abc9c, 0.7);
+    steleL.fillRect(x - 35, y - 8, 4, 10);
+    steleL.setDepth(y + 8);
+    this.registerCullable(steleL, x - 33, y, 20);
+    this.createStaticBoxColliderCentered(x - 33, y, 12, 14, 'Cột Mốc Khoảng Trống Tây');
+
+    const steleR = this.scene.add.graphics();
+    steleR.fillStyle(0x2c3e50, 1);
+    steleR.fillRect(x + 28, y - 14, 10, 22);
+    steleR.fillStyle(0x1abc9c, 0.7);
+    steleR.fillRect(x + 31, y - 8, 4, 10);
+    steleR.setDepth(y + 8);
+    this.registerCullable(steleR, x + 33, y, 20);
+    this.createStaticBoxColliderCentered(x + 33, y, 12, 14, 'Cột Mốc Khoảng Trống Đông');
+  }
+
+  /**
+   * C4-14-B03: Cập nhật trạng thái mở rào cản Deep Forest khi người chơi mở khóa phân khu
+   */
+  public updateDeepForestBarriers(isAbyssalOpen: boolean, isMireOpen: boolean): void {
+    if (this.abyssalGateColliderBody && this.abyssalGateColliderBody.body) {
+      const b = this.abyssalGateColliderBody.body as Phaser.Physics.Arcade.Body;
+      b.enable = !isAbyssalOpen;
+      b.checkCollision.none = isAbyssalOpen;
+    }
+    if (this.deepForestMireColliderBody && this.deepForestMireColliderBody.body) {
+      const b = this.deepForestMireColliderBody.body as Phaser.Physics.Arcade.Body;
+      b.enable = !isMireOpen;
+      b.checkCollision.none = isMireOpen;
+    }
   }
 
   /**
@@ -5927,6 +6174,10 @@ export class WorldBuilder {
     this.createBoardwalkPier(3150, 320);
     this.createSunkenMonolithRuins(3220, 200, 44, 40);
     this.createSunkenMonolithRuins(3720, 390, 48, 42);
+    // V1.4 Blueprint: Miếu Thờ Chìm & Cổ Vật Chuông Đồng Chìm (Landmark tại 3520, 280)
+    this.createSunkenMireShrine(3520, 280);
+    // V1.4 Blueprint: Cầu Thân Cây Đổ (Metroidvania-lite Shortcut Bridge phía Đầm Lầy tại 2880, 420)
+    this.createFallenTitanTrunkShortcut(2880, 420, 50);
     this.createDeadTitanWillow(3560, 160);
     this.createShrineGateWard(3960, 280);
 
@@ -6124,43 +6375,59 @@ export class WorldBuilder {
    * C4-12-23: Tạo Khối Cự Thạch Chìm Phế Tích (Sunken Monolith Ruins).
    */
   private createSunkenMonolithRuins(x: number, y: number, w: number = 44, h: number = 40): void {
-    const g = this.scene.add.graphics();
-    // Bóng chìm trong bùn nước
-    g.fillStyle(0x08100e, 0.6);
-    g.fillEllipse(x + w / 2, y + h / 2 + 10, w + 12, h * 0.7);
+    const cx = x + w / 2;
+    const cy = y + h / 2;
 
-    // Chân cự thạch chìm ngập trong bùn đen
-    g.fillStyle(0x182422, 0.85);
-    g.fillRect(x + 2, y + 14, w - 4, h - 14);
+    // 1. Bóng bùn nước và ngấn lầy chân bia đá
+    const shadow = this.scene.add.graphics();
+    shadow.fillStyle(0x0c1613, 0.65);
+    shadow.fillEllipse(cx, cy + 12, w + 16, 14);
+    shadow.fillStyle(0x1a2e25, 0.8);
+    shadow.fillEllipse(cx, cy + 10, w + 8, 8);
+    shadow.setDepth(y + h - 2);
+    this.registerCullable(shadow, cx, cy, Math.max(w, h));
 
-    // Viền ngấn nước lầy
-    g.fillStyle(0x2d483e, 0.6);
-    g.fillRect(x - 2, y + 16, w + 4, 3);
+    // 2. Sprite cự thạch cổ ngữ cao quý (hoặc đồ họa pixel art chi tiết)
+    if (this.scene.textures && this.scene.textures.exists(SPRITE_PROP_ANCIENT_MONOLITH_V14)) {
+      const monolithImg = this.scene.add.image(cx, cy + 8, SPRITE_PROP_ANCIENT_MONOLITH_V14);
+      monolithImg.setOrigin(0.5, 0.88);
+      monolithImg.setScale(0.85);
+      monolithImg.setDepth(y + h);
+      this.registerCullable(monolithImg, cx, cy, Math.max(w, h));
+    } else {
+      const g = this.scene.add.graphics();
+      // Chân cự thạch chìm ngập trong bùn đen
+      g.fillStyle(0x1b2824, 0.9);
+      g.fillRect(x + 4, y + 14, w - 8, h - 14);
 
-    // Khối đá nổi trên mặt nước
-    g.fillStyle(0x323a40, 1);
-    g.fillRect(x + 4, y, w - 8, 18);
-    g.fillStyle(0x465058, 1);
-    g.fillRect(x + 6, y + 2, w - 12, 14);
-    g.fillStyle(0x5e6a74, 1);
-    g.fillRect(x + 8, y + 2, w - 16, 4);
+      // Viền ngấn nước lầy
+      g.fillStyle(0x2d483e, 0.7);
+      g.fillRect(x, y + 16, w, 3);
 
-    // Ký hiệu cổ khắc chìm phát sáng ngọc bích
-    g.fillStyle(0x38d8a2, 0.75);
-    g.fillRect(x + Math.floor(w / 2) - 2, y + 6, 4, 8);
-    g.fillRect(x + Math.floor(w / 2) - 5, y + 8, 10, 2);
+      // Thân bia đá cổ
+      g.fillStyle(0x354148, 1);
+      g.fillRect(x + 6, y - 6, w - 12, 26);
+      g.fillStyle(0x4a5862, 1);
+      g.fillRect(x + 8, y - 4, w - 16, 22);
 
-    // Rêu phong và tảo bám ngấn nước
-    g.fillStyle(0x345a3c, 0.8);
-    g.fillRect(x + 4, y + 14, w - 8, 4);
+      // Hoa văn cổ ngữ Bắc Âu (Rune lines) thay vì dấu thập chữ thập y tế!
+      g.fillStyle(0x38d8a2, 0.85);
+      // Rãnh rune dọc và các nét chéo cổ
+      g.fillRect(cx - 1, y - 1, 2, 14);
+      g.fillRect(cx - 4, y + 2, 4, 2);
+      g.fillRect(cx + 1, y + 6, 4, 2);
+      g.fillRect(cx - 3, y + 9, 3, 2);
 
-    g.setDepth(y + h);
-    this.registerCullable(g, x + w / 2, y + h / 2, Math.max(w, h));
+      // Rêu phong bám chân bia
+      g.fillStyle(0x2a5438, 0.85);
+      g.fillRect(x + 6, y + 12, w - 12, 5);
 
-    const body = this.colliderGroup.create(x + w / 2, y + h / 2, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(w * 0.75, h * 0.6);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-w * 0.375, -h * 0.3);
+      g.setDepth(y + h);
+      this.registerCullable(g, cx, cy, Math.max(w, h));
+    }
+
+    // 3. Khung va chạm vật lý chân bia chuẩn xác
+    this.createStaticBoxColliderCentered(cx, cy + 6, Math.round(w * 0.7), Math.round(Math.min(h * 0.5, 16)), 'Tàn Tích Bia Đá Cổ');
   }
 
   /**
@@ -6210,10 +6477,7 @@ export class WorldBuilder {
     g.setDepth(y + 24);
     this.registerCullable(g, x, y, 60);
 
-    const body = this.colliderGroup.create(x, y + 10, undefined) as Phaser.Physics.Arcade.Sprite;
-    body.setVisible(false);
-    (body.body as Phaser.Physics.Arcade.Body).setSize(36, 18);
-    (body.body as Phaser.Physics.Arcade.Body).setOffset(-18, -9);
+    this.createStaticBoxColliderCentered(x, y + 6, 32, 16, 'Liễu Titan Khô');
   }
 
   /**
@@ -6286,15 +6550,12 @@ export class WorldBuilder {
     this.registerCullable(this.shrineWardPillarsGfx, x, y, 70);
 
     // 2. Tạo vật thể va chạm vật lý (Collider body) hoàn toàn vô hình
-    const dummyKey = this.scene.textures && this.scene.textures.exists('dummy_transparent') ? 'dummy_transparent' : undefined;
-    this.shrineWardColliderBody = this.colliderGroup.create(x, y, dummyKey) as Phaser.Physics.Arcade.Sprite;
-    this.shrineWardColliderBody.setVisible(false);
-    this.shrineWardColliderBody.setAlpha(0);
-    const body = this.shrineWardColliderBody.body as Phaser.Physics.Arcade.Body;
-    body.setSize(16, 76);
-    body.setOffset(-8, -38);
-    body.enable = !this.isShrineWardOpen;
-    body.checkCollision.none = this.isShrineWardOpen;
+    this.shrineWardColliderBody = this.createStaticBoxColliderCentered(x, y, 16, 76, 'Phong Ấn Miếu');
+    const wardBody = this.shrineWardColliderBody.body as Phaser.Physics.Arcade.Body;
+    if (wardBody) {
+      wardBody.enable = !this.isShrineWardOpen;
+      wardBody.checkCollision.none = this.isShrineWardOpen;
+    }
 
     // 3. Tạo đồ họa màn kết giới trực quan (Visual barrier)
     this.shrineWardVisual = this.scene.add.graphics();
@@ -7006,23 +7267,14 @@ export class WorldBuilder {
       y: posY,
       radius
     });
+    CullingOptimizationModule.getInstance().register(gameObject, posX, posY, radius);
   }
 
   /**
    * C4-12-29: Thống kê hiệu năng Camera Culling (tổng số đối tượng đăng ký và số đối tượng đang hiển thị)
    */
   public getCullableStats(): { total: number; visible: number; culled: number } {
-    let visibleCount = 0;
-    for (let i = 0; i < this.cullableObjects.length; i++) {
-      if (this.cullableObjects[i].gameObject.visible) {
-        visibleCount++;
-      }
-    }
-    return {
-      total: this.cullableObjects.length,
-      visible: visibleCount,
-      culled: this.cullableObjects.length - visibleCount
-    };
+    return CullingOptimizationModule.getInstance().getStats();
   }
 
   /**
@@ -7030,33 +7282,7 @@ export class WorldBuilder {
    */
   public updateCameraCulling(camera: Phaser.Cameras.Scene2D.Camera): void {
     if (!camera || !camera.worldView) return;
-    const view = camera.worldView;
-    const margin = 180;
-    const minX = view.x - margin;
-    const maxX = view.right + margin;
-    const minY = view.y - margin;
-    const maxY = view.bottom + margin;
-
-    for (let i = 0; i < this.cullableObjects.length; i++) {
-      const obj = this.cullableObjects[i];
-      // C4-13-02: Loại trừ tuyệt đối nhân vật chính (player) khỏi Camera Culling
-      if ((obj.gameObject as any).isPlayer || obj.gameObject === (this.scene as any).player) {
-        continue;
-      }
-      const isInside = (
-        obj.x + obj.radius >= minX &&
-        obj.x - obj.radius <= maxX &&
-        obj.y + obj.radius >= minY &&
-        obj.y - obj.radius <= maxY
-      );
-      if (obj.gameObject.visible !== isInside) {
-        obj.gameObject.setVisible(isInside);
-      }
-      // C4-13-20: Đồng bộ trạng thái ngủ đông setActive(false) để engine bỏ qua update/transform của đối tượng ngoài tầm nhìn
-      if (typeof obj.gameObject.setActive === 'function' && obj.gameObject.active !== isInside) {
-        obj.gameObject.setActive(isInside);
-      }
-    }
+    CullingOptimizationModule.getInstance().update(camera, 180);
   }
 
   /**
@@ -7121,6 +7347,217 @@ export class WorldBuilder {
         tree.alpha = targetAlpha;
       }
     }
+  }
+
+  /**
+   * V1.4: Bảng Tin Dị Thường (The Anomaly Notice Board) tại Quảng Trường Làng Bellhollow (x: 750, y: 270)
+   */
+  private createAnomalyNoticeBoard(x: number, y: number): void {
+    const g = this.scene.add.graphics();
+    // Bóng chân bảng tin
+    g.fillStyle(0x0a0e0c, 0.45);
+    g.fillEllipse(x + 14, y + 26, 26, 8);
+
+    // Cọc gỗ thông cắm đất
+    g.fillStyle(0x3a2416, 1);
+    g.fillRect(x + 12, y + 10, 4, 16);
+
+    // Tấm bảng gỗ thông lớn
+    g.fillStyle(0x563820, 1);
+    g.fillRoundedRect(x, y, 28, 20, 3);
+    g.fillStyle(0x734c2c, 1);
+    g.fillRect(x + 2, y + 2, 24, 16);
+
+    // 3 Mẩu giấy da cừu thông cáo đính đinh đồng
+    g.fillStyle(0xf5edd6, 0.95);
+    g.fillRect(x + 3, y + 3, 6, 8); // Manh mối Tây Bắc
+    g.fillRect(x + 11, y + 4, 7, 9); // Manh mối Đông Nam
+    g.fillRect(x + 20, y + 3, 5, 7); // Manh mối Đông Bắc
+
+    // Đinh đồng và con dấu sáp đỏ
+    g.fillStyle(0xc0392b, 1);
+    g.fillCircle(x + 14, y + 10, 1.5);
+    g.fillStyle(0xd4ac0d, 1);
+    g.fillCircle(x + 6, y + 4, 1);
+    g.fillCircle(x + 22, y + 4, 1);
+
+    // Đèn bão nhỏ treo trên đỉnh bảng tin
+    g.fillStyle(0x1a1a1a, 1);
+    g.fillRect(x + 13, y - 5, 2, 5);
+    g.fillStyle(0xf39c12, 0.9);
+    g.fillCircle(x + 14, y - 2, 2.5);
+
+    g.setDepth(y + 24);
+    this.registerCullable(g, x + 14, y + 12, 30);
+
+    // Hitbox chân đế chuẩn xác (25%-35% phần chân cọc)
+    this.createStaticBoxColliderCentered(x + 14, y + 22, 14, 8, 'Bảng Tin Dị Thường');
+  }
+
+  /**
+   * V1.4: Nhà Trạm Kiểm Lâm Bỏ Hoang (Abandoned Ranger Outpost) tại Rìa Rừng Ngoài (x: 1420, y: 620)
+   */
+  private createAbandonedRangerOutpost(x: number, y: number): void {
+    const w = 56;
+    const h = 42;
+    const g = this.scene.add.graphics();
+
+    // Bóng đổ móng nhà
+    g.fillStyle(0x0a0e0c, 0.55);
+    g.fillRoundedRect(x - 2, y + h - 8, w + 4, 14, 4);
+
+    // Thân nhà gỗ sồi kiểm lâm cũ kỹ
+    g.fillStyle(0x352317, 1);
+    g.fillRect(x, y + 10, w, h - 10);
+    g.fillStyle(0x4a3222, 1);
+    g.fillRect(x + 2, y + 12, w - 4, h - 14);
+
+    // Cửa ra vào mở toang và khung cửa sổ vỡ
+    g.fillStyle(0x1a120c, 1);
+    g.fillRect(x + 18, y + 20, 14, h - 20); // Cửa
+    g.fillStyle(0x27ae60, 0.4);
+    g.fillRect(x + 36, y + 16, 10, 10); // Cửa sổ bám rêu
+
+    // Mái ngói ván gỗ phủ rêu xanh
+    g.fillStyle(0x2d3a24, 1);
+    g.fillTriangle(x - 4, y + 12, x + w / 2, y - 6, x + w + 4, y + 12);
+    g.fillStyle(0x3a4c2e, 1);
+    g.fillTriangle(x - 2, y + 10, x + w / 2, y - 4, x + w + 2, y + 10);
+
+    // Hiên gỗ xiêu vẹo bên phải và bậc thang
+    g.fillStyle(0x563820, 1);
+    g.fillRect(x + 14, y + h - 2, 22, 4);
+
+    g.setDepth(y + h);
+    this.registerCullable(g, x + w / 2, y + h / 2, Math.max(w, h));
+
+    // Rương tiếp tế kiểm lâm đặt cạnh bậc thềm (1445, 645)
+    this.createChestProp(x + 38, y + h - 12);
+
+    // Hitbox chân đế chuẩn xác (30% đáy công trình)
+    const colH = 14;
+    this.createStaticBoxColliderCentered(x + w / 2, y + h - colH / 2, w - 8, colH, 'Trạm Kiểm Lâm');
+  }
+
+  /**
+   * V1.4: Cột Vật Tổ Thì Thầm (Whispering Totem Pillar) tại Rừng Sâu (x: 2100, y: -320)
+   */
+  private createWhisperingTotemPillar(x: number, y: number): void {
+    const w = 28;
+    const h = 56;
+    const g = this.scene.add.graphics();
+
+    // Bóng chân cột đá
+    g.fillStyle(0x060a08, 0.6);
+    g.fillEllipse(x + w / 2, y + h + 2, w + 12, 10);
+
+    // Bệ đá cổ phong rêu
+    g.fillStyle(0x202b25, 1);
+    g.fillRoundedRect(x - 2, y + h - 8, w + 4, 10, 3);
+
+    // Thân cột vật tổ chạm khắc phù văn
+    g.fillStyle(0x2b3830, 1);
+    g.fillRect(x + 2, y, w - 4, h - 8);
+    g.fillStyle(0x384a40, 1);
+    g.fillRect(x + 4, y + 2, w - 8, h - 12);
+
+    // Đỉnh vật tổ đầu cú / sói cổ xưa
+    g.fillStyle(0x1d2722, 1);
+    g.fillTriangle(x + 2, y + 4, x + w / 2, y - 8, x + w - 2, y + 4);
+
+    // Phù văn cổ ngữ phát quang tím huyền bí
+    g.fillStyle(0x9b59b6, 0.85);
+    g.fillRect(x + 10, y + 8, 8, 3);
+    g.fillRect(x + 12, y + 16, 4, 8);
+    g.fillRect(x + 8, y + 28, 12, 2);
+    g.fillRect(x + 11, y + 34, 6, 6);
+
+    // Hào quang mờ nhấp nháy
+    g.fillStyle(0x8e44ad, 0.15);
+    g.fillCircle(x + w / 2, y + 22, 22);
+
+    g.setDepth(y + h);
+    this.registerCullable(g, x + w / 2, y + h / 2, 45);
+
+    // Hitbox chân đế chuẩn xác
+    this.createStaticBoxColliderCentered(x + w / 2, y + h - 4, w - 6, 12, 'Cột Vật Tổ Thì Thầm');
+  }
+
+  /**
+   * V1.4: Miếu Thờ Chìm & Bệ Cổ Vật Chuông Đồng Chìm tại Đầm Lầy Sương Mù (x: 3520, y: 280)
+   */
+  private createSunkenMireShrine(x: number, y: number): void {
+    const w = 64;
+    const h = 48;
+    const cx = x + w / 2;
+    const cy = y + h / 2;
+    const g = this.scene.add.graphics();
+
+    // Bóng đổ chìm trong bùn nước lầy
+    g.fillStyle(0x0e1814, 0.65);
+    g.fillEllipse(cx, cy + 14, w + 16, 20);
+
+    // Thềm đá bán nguyệt ngập nước
+    g.fillStyle(0x1a2923, 0.9);
+    g.fillEllipse(cx, cy + 8, w, 28);
+    g.fillStyle(0x283d34, 0.95);
+    g.fillEllipse(cx, cy + 6, w - 8, 22);
+
+    // 3 Trụ đá rêu bọc hoa văn ngọc bích
+    g.fillStyle(0x354b40, 1);
+    g.fillRect(x + 4, y - 6, 8, 26);
+    g.fillRect(x + w - 12, y - 6, 8, 26);
+    g.fillRect(cx - 5, y - 16, 10, 32);
+
+    // Hoa văn ngọc bích phát sáng nhẹ
+    g.fillStyle(0x2ecc71, 0.7);
+    g.fillRect(x + 6, y + 2, 4, 10);
+    g.fillRect(x + w - 10, y + 2, 4, 10);
+    g.fillRect(cx - 2, y - 8, 4, 14);
+
+    // Bệ đá trung tâm đặt Cổ Vật: Chuông Đồng Chìm
+    g.fillStyle(0x1f2e27, 1);
+    g.fillRoundedRect(cx - 10, cy + 2, 20, 12, 3);
+
+    // Chuông Đồng Chìm phát quang hổ phách ấm áp
+    g.fillStyle(0xd4ac0d, 0.95);
+    g.fillTriangle(cx - 6, cy + 10, cx, cy + 3, cx + 6, cy + 10);
+    g.fillStyle(0xf39c12, 0.85);
+    g.fillCircle(cx, cy + 10, 2);
+
+    g.setDepth(y + h);
+    this.registerCullable(g, cx, cy, 50);
+
+    // Hitbox chân đế chuẩn xác
+    this.createStaticBoxColliderCentered(cx, cy + 10, w - 16, 14, 'Miếu Thờ Chìm');
+  }
+
+  /**
+   * V1.4: Cầu Thân Cây Cổ Thụ Đổ (Fallen Titan Trunk Shortcut Bridge) bắc qua khe vực
+   */
+  private createFallenTitanTrunkShortcut(x: number, y: number, length: number = 72): void {
+    const g = this.scene.add.graphics();
+    // Bóng đổ vực sâu
+    g.fillStyle(0x060a08, 0.7);
+    g.fillEllipse(x + length / 2, y + 10, length + 8, 14);
+
+    // Thân cây sồi đại thụ rêu phong
+    g.fillStyle(0x28190e, 1);
+    g.fillRect(x, y - 3, length, 14);
+    g.fillStyle(0x3d2716, 1);
+    g.fillRect(x + 2, y - 1, length - 4, 10);
+
+    // Vỏ cây xù xì và thảm rêu xanh
+    g.fillStyle(0x27ae60, 0.75);
+    g.fillRect(x + 8, y - 2, length * 0.4, 3);
+    g.fillRect(x + length * 0.6, y, length * 0.3, 2);
+
+    // Tay vịn dây leo tự nhiên
+    g.fillStyle(0x1e8449, 0.6);
+    g.fillRect(x, y - 5, length, 1.5);
+
+    g.setDepth(y + 8);
+    this.registerCullable(g, x + length / 2, y, length);
   }
 
   public destroy(): void {

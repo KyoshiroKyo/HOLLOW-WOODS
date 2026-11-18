@@ -76,7 +76,7 @@ export class FallenKnightEntity extends Phaser.Physics.Arcade.Sprite {
 
     // Điểm tựa chân ở y=63 trong khung 64x64
     this.setOrigin(0.5, 0.95);
-    this.setDepth(3400);
+    this.setDepth(Math.floor(y));
 
     const body = this.body as Phaser.Physics.Arcade.Body;
     if (body) {
@@ -148,6 +148,15 @@ export class FallenKnightEntity extends Phaser.Physics.Arcade.Sprite {
 
   public updateAI(_time: number, delta: number, ctx: KnightContext): void {
     if (this.isDefeated || !this.active) return;
+
+    // C4-14-B03: Dynamic Depth Sorting theo trục Y chân đứng
+    const targetDepth = Math.floor(this.y);
+    if (this.depth !== targetDepth) {
+      this.setDepth(targetDepth);
+      if (this.footShadowGfx) {
+        this.footShadowGfx.setDepth(targetDepth - 1);
+      }
+    }
 
     if (this.footShadowGfx) {
       this.footShadowGfx.setPosition(this.x, this.y - 2);
@@ -342,7 +351,7 @@ export class DreadHorsemanEntity extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
 
     this.setOrigin(0.5, 0.95);
-    this.setDepth(3420);
+    this.setDepth(Math.floor(y));
 
     const body = this.body as Phaser.Physics.Arcade.Body;
     if (body) {
@@ -406,6 +415,15 @@ export class DreadHorsemanEntity extends Phaser.Physics.Arcade.Sprite {
 
   public updateAI(_time: number, delta: number, ctx: KnightContext): void {
     if (this.isDefeated || !this.active) return;
+
+    // C4-14-B03: Dynamic Depth Sorting theo trục Y chân đứng
+    const targetDepth = Math.floor(this.y);
+    if (this.depth !== targetDepth) {
+      this.setDepth(targetDepth);
+      if (this.footShadowGfx) {
+        this.footShadowGfx.setDepth(targetDepth - 1);
+      }
+    }
 
     if (this.footShadowGfx) {
       this.footShadowGfx.setPosition(this.x, this.y - 2);
@@ -590,7 +608,7 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
 
     // Điểm tựa chân ở y=140 trong khung 160x160 -> 140/160 = 0.875
     this.setOrigin(0.5, 0.875);
-    this.setDepth(3450);
+    this.setDepth(Math.floor(y));
 
     const body = this.body as Phaser.Physics.Arcade.Body;
     if (body) {
@@ -621,7 +639,7 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
     if (!anims.exists('hooded_knight_powerup')) {
       anims.create({
         key: 'hooded_knight_powerup',
-        frames: anims.generateFrameNumbers(SPRITE_HOODED_KNIGHT, { start: 19, end: 32 }),
+        frames: anims.generateFrameNumbers(SPRITE_HOODED_KNIGHT, { start: 12, end: 25 }),
         frameRate: 10,
         repeat: -1
       });
@@ -629,7 +647,7 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
     if (!anims.exists('hooded_knight_attack')) {
       anims.create({
         key: 'hooded_knight_attack',
-        frames: anims.generateFrameNumbers(SPRITE_HOODED_KNIGHT, { start: 38, end: 56 }),
+        frames: anims.generateFrameNumbers(SPRITE_HOODED_KNIGHT, { start: 26, end: 44 }),
         frameRate: 14,
         repeat: 0
       });
@@ -637,7 +655,7 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
     if (!anims.exists('hooded_knight_stagger')) {
       anims.create({
         key: 'hooded_knight_stagger',
-        frames: anims.generateFrameNumbers(SPRITE_HOODED_KNIGHT, { start: 57, end: 67 }),
+        frames: anims.generateFrameNumbers(SPRITE_HOODED_KNIGHT, { start: 45, end: 55 }),
         frameRate: 8,
         repeat: -1
       });
@@ -646,6 +664,15 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
 
   public updateAI(_time: number, delta: number, ctx: KnightContext): void {
     if (this.isDefeated || !this.active) return;
+
+    // C4-14-B03: Dynamic Depth Sorting theo trục Y chân đứng
+    const targetDepth = Math.floor(this.y);
+    if (this.depth !== targetDepth) {
+      this.setDepth(targetDepth);
+      if (this.footShadowGfx) {
+        this.footShadowGfx.setDepth(targetDepth - 1);
+      }
+    }
 
     if (this.footShadowGfx) {
       this.footShadowGfx.setPosition(this.x, this.y - 2);

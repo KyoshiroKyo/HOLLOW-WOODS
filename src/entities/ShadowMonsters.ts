@@ -50,7 +50,9 @@ export class ShadowCrowEntity extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    this.setDepth(600);
+    this.setOrigin(0.5, 0.90);
+    this.setDepth(Math.floor(y));
+    this.setScale(1.0);
     this.initAnims();
     this.play('shadow_crow_idle', true);
   }
@@ -109,6 +111,12 @@ export class ShadowCrowEntity extends Phaser.Physics.Arcade.Sprite {
 
   public updateAI(_time: number, delta: number, ctx: ShadowContext): void {
     if (this.isDefeated || this.crowState === 'dissolve') return;
+
+    // C4-14-B03: Dynamic Depth Sorting theo trục Y chân đứng
+    const targetDepth = Math.floor(this.y);
+    if (this.depth !== targetDepth) {
+      this.setDepth(targetDepth);
+    }
 
     if (this.alarmCooldown > 0) this.alarmCooldown -= delta;
     if (this.stateTimer > 0) this.stateTimer -= delta;
@@ -228,7 +236,9 @@ export class ShadowEyesEntity extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    this.setDepth(550);
+    this.setOrigin(0.5, 0.90);
+    this.setDepth(Math.floor(y));
+    this.setScale(1.0);
     this.initAnims();
     this.play('shadow_eyes_idle', true);
   }
@@ -266,6 +276,12 @@ export class ShadowEyesEntity extends Phaser.Physics.Arcade.Sprite {
 
     // Hiệu ứng nhấp nhô lơ lửng trong sương
     this.y = this.floatOriginY + Math.sin(time * 0.003) * 6;
+
+    // C4-14-B03: Dynamic Depth Sorting theo trục Y
+    const targetDepth = Math.floor(this.y);
+    if (this.depth !== targetDepth) {
+      this.setDepth(targetDepth);
+    }
 
     const distToPlayer = Phaser.Math.Distance.Between(this.x, this.y, ctx.playerX, ctx.playerY);
 
@@ -340,7 +356,9 @@ export class ShadowBehemothBoss extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    this.setDepth(700);
+    this.setOrigin(0.5, 0.92);
+    this.setDepth(Math.floor(y));
+    this.setScale(1.0);
     this.initAnims();
     this.play('behemoth_idle', true);
   }
@@ -415,6 +433,12 @@ export class ShadowBehemothBoss extends Phaser.Physics.Arcade.Sprite {
 
   public updateAI(_time: number, delta: number, ctx: ShadowContext): void {
     if (this.isDefeated || this.bossState === 'death') return;
+
+    // C4-14-B03: Dynamic Depth Sorting theo trục Y chân đứng
+    const targetDepth = Math.floor(this.y);
+    if (this.depth !== targetDepth) {
+      this.setDepth(targetDepth);
+    }
 
     if (this.attackCooldown > 0) this.attackCooldown -= delta;
     if (this.stateTimer > 0) this.stateTimer -= delta;
