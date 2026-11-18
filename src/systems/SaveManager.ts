@@ -70,6 +70,7 @@ export class SaveManager {
     // Các vật phẩm V1.4
     'mat_forest_rope', 'mat_charcoal', 'mat_runed_iron', 'item_runed_iron_part',
     'item_bell_mold', 'item_medicinal_roots', 'relic_heart_of_roots',
+    'item_broken_patrol_lantern', 'item_root_flower',
     'food_calming_tea', 'food_roasted_mushroom', 'food_root_soup', 'item_resin_flare',
     'wpn_walking_staff', 'wpn_iron_spear', 'wpn_hunting_hatchet',
     'eqp_moss_cloak', 'eqp_trail_boots', 'eqp_field_backpack', 'eqp_bell_ward_charm',

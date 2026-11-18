@@ -320,6 +320,24 @@
       "iconColor": "#9b59b6"
     },
     {
+      "id": "item_broken_patrol_lantern",
+      "name": "Đèn Tuần Tra Vỡ",
+      "category": "quest",
+      "description": "Chiếc đèn bão tuần tra vỡ nát tìm thấy ở bìa Rừng Ngoài, mặt đế khắc chữ 'Elian' – kỷ vật của người em trai thất lạc của Garth.",
+      "stackable": false,
+      "maxStack": 1,
+      "iconColor": "#d35400"
+    },
+    {
+      "id": "item_root_flower",
+      "name": "Hoa Mạch Rễ Cổ",
+      "category": "material",
+      "description": "Bông hoa phát sáng xanh dịu mọc trên thân rễ ngàn năm dưới Hầm Cổ, dược chất quý giúp giữ vững Bình Tâm và sắc Trà An Thần.",
+      "stackable": true,
+      "maxStack": 10,
+      "iconColor": "#2ecc71"
+    },
+    {
       "id": "mat_skull_fang",
       "name": "Nanh Xương Cổ",
       "category": "material",

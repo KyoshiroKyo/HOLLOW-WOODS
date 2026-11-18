@@ -53,6 +53,85 @@
       "lines": [
         "Cổng Đông đã mở! Con đường phía trước là Đường Mòn Quanh Co dẫn vào Rừng Sâu.",
         "Hãy cẩn thận từng bước chân, nhớ nấp vào thân cây rỗng nếu nghe thấy tiếng động lạ, và tìm lại Lưỡi Chuông Đồng cho làng!"
+      ],
+      "choices": [
+        {
+          "text": "[Cảnh giác] \"Ta sẽ cẩn trọng từng bước chân khi bước qua Cổng Đông.\"",
+          "responseLine": "Tốt lắm. Hãy luôn nhớ nấp vào các thân cây rỗng nếu nghe thấy tiếng động lạ.",
+          "trustDelta": 1
+        },
+        {
+          "text": "[Hỏi về em trai] \"Garth... vì sao mỗi lần nhìn về Rừng Ngoài, mắt ngươi lại trĩu nặng ưu tư?\"",
+          "nextDialogueKey": "garth_brother_story"
+        },
+        {
+          "text": "[Hỏi về Kỵ Binh Hắc Ám] \"Ngươi có lời khuyên nào để sống sót trước Kỵ Binh Hắc Ám tuần tra đêm?\"",
+          "nextDialogueKey": "garth_horseman_tactics"
+        }
+      ]
+    },
+    "garth_brother_story": {
+      "speaker": "Garth – Người Gác Cổng",
+      "portrait": "portrait_garth",
+      "lines": [
+        "(Garth siết chặt cán giáo, ánh mắt hướng về rặng cây khô mờ mịt phía chân trời)...",
+        "Ta có một người em trai tên là Elian... Năm xưa, khi sương đen The Veil bắt đầu tràn qua bìa rừng, Elian hăng hái khoác giáp bạc theo đoàn kỵ sĩ tiến sâu vào sương mù để tìm nguồn cơn tai họa.",
+        "Nó mang theo chiếc Đèn Tuần Tra của cha để lại, trên đế đèn có khắc tên Elian... Nhưng đoàn kỵ sĩ không bao giờ trở về nữa.",
+        "Ta nghe thợ rừng kể có thấy xác một cỗ xe kỵ sĩ bị quái vật xé nát ở bìa Rừng Ngoài, chiếc đèn tuần tra vỡ vương vãi trong bụi gai...",
+        "Hỡi lữ khách! Nếu ngươi bước qua Cổng Đông tới Rừng Ngoài, xin hãy để mắt tìm lại chiếc Đèn Tuần Tra Vỡ của Elian cho ta!"
+      ],
+      "choices": [
+        {
+          "text": "[Nhận lời] \"Ta sẽ để mắt tìm chiếc đèn kỷ vật của em trai ngươi giữa Rừng Ngoài.\"",
+          "responseLine": "Đa tạ người lữ khách nghĩa khí! Cầu mong ngọn đèn trong tay ngươi soi sáng qua bóng tối.",
+          "trustDelta": 3,
+          "setFlag": "choice_garth_promise_lantern"
+        },
+        {
+          "text": "[An ủi] \"Sương mù nuốt chửng nhiều sinh mạng, nhưng linh hồn kiên cường của kỵ sĩ sẽ không tan biến.\"",
+          "responseLine": "Cảm ơn lời an ủi của ngươi... Nó giúp lòng ta bớt thắt lại sau từng ấy năm tháng dài đằng đẵng.",
+          "trustDelta": 2
+        }
+      ],
+      "onCompleteFlag": "quest_garth_lantern_accepted",
+      "nextQuestId": "SQ09_BROKEN_LANTERN"
+    },
+    "garth_broken_lantern_complete": {
+      "speaker": "Garth – Người Gác Cổng",
+      "portrait": "portrait_garth",
+      "lines": [
+        "(Garth run rẩy đón lấy chiếc đèn vỡ, ngón tay thô ráp vuốt ve dòng chữ Elian khắc trên đế sắt hoen gỉ)...",
+        "Đúng là nó rồi... Chiếc đèn của Elian! Nước mắt ta tưởng đã khô cạn từ lâu, vậy mà hôm nay...",
+        "Tạ ơn ngài, lữ khách! Ân tình này Garth này khắc cốt ghi tâm.",
+        "Để đền đáp, ta xin truyền lại cho ngài kinh nghiệm sinh tử đối phó với Kỵ Binh Hắc Ám (Dread Horseman):",
+        "Chiến mã bóng tối rất nhạy cảm với ánh sáng chói. Khi thấy bóng kỵ binh phi nước đại trong sương, hãy giơ cao Đèn Lồng [F] hoặc ném Bó Đuốc làm lóa mắt khiến ngựa hý vang khựng lại!",
+        "Và nhớ kỹ: đừng bao giờ chạy thẳng trên đường mòn, hãy né gấp sang hai bên hông để tránh cú đâm kích tử thần!"
+      ],
+      "choices": [
+        {
+          "text": "[Ghi nhận chiến thuật] \"Cảm ơn lời chỉ dẫn quý báu. Ta sẽ ghi nhớ cách đối phó lũ kỵ binh.\"",
+          "responseLine": "Chúc ngài luôn bình an giữa đêm sương lạnh lẽo!",
+          "trustDelta": 3
+        }
+      ],
+      "onCompleteFlag": "garth_lantern_rewarded",
+      "rewardItem": "item_lantern_oil",
+      "rewardCount": 2
+    },
+    "garth_horseman_tactics": {
+      "speaker": "Garth – Người Gác Cổng",
+      "portrait": "portrait_garth",
+      "lines": [
+        "Kỵ Binh Hắc Ám (Dread Horseman) là nỗi khiếp sợ lớn nhất dọc các tuyến đường mòn ban đêm.",
+        "Chiến mã bóng tối chạy rất nhanh và có đòn đâm kích xuyên thấu cực kỳ nguy hiểm nếu ngươi chạy trên đường thẳng.",
+        "Nhược điểm của chúng là góc quay đầu rất rộng. Khi nghe tiếng vó ngựa dồn dập, hãy nhảy né sang hai bên sườn hoặc nấp sau thân cây cổ thụ để chúng lao hụt vào chướng ngại vật!",
+        "Đặc biệt, ngọn lửa của Đèn Lồng [F] và Bó Đuốc sẽ làm mù mắt chiến mã trong giây lát, tạo cơ hội cho ngươi vung gậy gỗ hoặc giáo sắt phản công!"
+      ],
+      "choices": [
+        {
+          "text": "[Ghi nhớ] \"Một lời khuyên sinh tử. Ta sẽ vận dụng ánh sáng đèn lồng khi đối mặt chúng.\"",
+          "trustDelta": 1
+        }
       ]
     },
     "edda_intro": {
@@ -105,7 +184,69 @@
       "lines": [
         "Cổng Đông đã mở rồi, hỡi Lữ Khách! Miếu Chuông Phế Tích nằm sâu sau Đầm Lầy Tĩnh Lặng.",
         "Kẻ Lắng Nghe đang rình rập trong sương mù. Hãy luôn giữ ngọn đèn hổ phách cháy sáng và tìm lại Lưỡi Chuông Đồng cho làng Bellhollow!"
+      ],
+      "choices": [
+        {
+          "text": "[Lên đường] \"Ta sẽ tiến sâu vào Đầm Lầy tìm lại Lưỡi Chuông Đồng cho làng.\"",
+          "responseLine": "Hãy đi đi, và nhớ luôn để ngọn đèn lồng dẫn lối.",
+          "trustDelta": 1
+        },
+        {
+          "text": "[Hỏi về đêm vỡ chuông] \"Thưa bà, điều gì thực sự đã xảy ra vào cái đêm Đại Hồng Chung nứt làm đôi?\"",
+          "nextDialogueKey": "edda_bell_shatter_secret"
+        },
+        {
+          "text": "[Hỏi về Cổ Ngữ Runes] \"Ý nghĩa của 3 Cột Đá Cổ Ngữ phong ấn ngoài Đầm Lầy là gì?\"",
+          "nextDialogueKey": "edda_rune_guide"
+        }
       ]
+    },
+    "edda_bell_shatter_secret": {
+      "speaker": "Edda – Người Giữ Chuông",
+      "portrait": "portrait_edda",
+      "lines": [
+        "(Bà lão Edda ngước nhìn đỉnh Tháp Chuông cổ kính, ánh mắt u hoài xa xăm)...",
+        "Đó là đêm kinh hoàng nhất trong lịch sử Bellhollow... Màn Sương The Veil đen đặc tràn qua hàng rào làng, và những nhánh Mạch Rễ khổng lồ bò ngoằn ngoèo trồi lên bóp nghẹt giếng nước trung tâm.",
+        "Dân làng gào khóc trong tuyệt vọng. Trước bờ vực diệt vong, vị Giữ Chuông tiền nhiệm đã trèo lên đỉnh tháp, gióng liên tiếp 7 hồi chuông cực đại vượt quá ngưỡng chịu đựng của khối đồng cổ.",
+        "Tiếng ngân vang rền trời đất tạo nên làn sóng xung kích xua tan sương mù và chấn động đẩy lùi Mạch Rễ... Nhưng cái giá phải trả quá đắt: Đại Hồng Chung nứt toác làm đôi, và Lưỡi Chuông Đồng rơi xuống bị dòng bùn đen cuốn sâu vào Đầm Lầy.",
+        "Không có Lưỡi Chuông, ngôi làng bị giam hãm trong vòng lặp Mùa Sương Lạnh vô tận. Chỉ khi ngươi gióng lên hồi chuông đầu tiên (The First Toll), vòng lặp mới được phá vỡ!"
+      ],
+      "choices": [
+        {
+          "text": "[Kính cẩn] \"Sự hy sinh của tiền nhân thật vĩ đại. Ta thề sẽ mang Lưỡi Chuông Đồng trở về.\"",
+          "responseLine": "Lời thề của ngươi làm ấm lại trái tim già nua này... Nguyện ánh sáng soi đường cho ngươi.",
+          "trustDelta": 3,
+          "setFlag": "choice_edda_sworn_bell"
+        },
+        {
+          "text": "[Hỏi về Mạch Rễ] \"Đại Mạch Rễ xuất phát từ đâu mà có sức mạnh tà ác đến vậy?\"",
+          "responseLine": "Nó là gốc rễ của khu rừng cổ xưa, bị oán niệm và bóng tối tha hóa sau khi ranh giới giữa hai thế giới bị phá vỡ.",
+          "trustDelta": 1
+        }
+      ]
+    },
+    "edda_rune_guide": {
+      "speaker": "Edda – Người Giữ Chuông",
+      "portrait": "portrait_edda",
+      "lines": [
+        "Ba Cột Đá Cổ Ngữ tại Đầm Lầy Tĩnh Lặng là phong ấn cổ xưa giam giữ Kẻ Nuốt Tiếng Chuông (Behemoth).",
+        "Mỗi cột đá mang một ký tự thiêng liêng:",
+        "ᚱ (Rad – Ánh Năng Cổ): Cột đá phía Đông Bắc, tượng trưng cho tia lửa mặt trời xua tan ảo giác.",
+        "ᛁ (Isa – Băng Tuyết Cổ): Cột đá phía Tây Bắc, tượng trưng cho hàn khí đóng băng sự tha hóa của Mạch Rễ.",
+        "ᛉ (Algiz – Thần Hộ Vệ): Cột đá Trung Tâm, kết nối hai nguồn năng lượng thành kết giới bảo bọc linh hồn.",
+        "Ngươi phải kích hoạt chúng bằng cách thắp sáng ngọn lửa theo thứ tự hài hòa.",
+        "Cầm lấy chiếc Bùa Chuông Cổ (Bell Ward Charm) này. Nó được đúc từ mảnh đồng vỡ của chuông thiêng, sẽ giúp giảm 25% tốc độ suy kiệt Bình Tâm khi ngươi bước vào vùng tối!"
+      ],
+      "choices": [
+        {
+          "text": "[Cảm tạ] \"Cảm ơn bà Edda! Chiếc bùa hộ mệnh này sẽ che chở cho tâm trí ta.\"",
+          "responseLine": "Hãy đeo nó cẩn thận bên mình [Phím E / Túi đồ], hỡi người hộ vệ của Bellhollow!",
+          "trustDelta": 3,
+          "setFlag": "edda_rune_charm_granted"
+        }
+      ],
+      "rewardItem": "eqp_bell_ward_charm",
+      "rewardCount": 1
     },
     "edda_reminder": {
       "speaker": "Edda – Người Giữ Chuông",
@@ -167,6 +308,89 @@
         "Để ta phục hồi thể lực và làm dịu tinh thần cho ngươi... Cổng Đông đã mở rồi, khu rừng ngoài kia rất lạnh lẽo và tăm tối.",
         "Đừng bao giờ để ngọn đèn lồng cạn dầu! Hãy mang theo Thuốc Đắp và Mồi Tiếng Động phòng thân nhé!"
       ],
+      "choices": [
+        {
+          "text": "[Cảm ơn] \"Cảm ơn chén thuốc đắp. Ta cảm thấy thể lực đã phục hồi.\"",
+          "responseLine": "Hãy luôn nhớ giữ bình dầu đèn đầy ắp nhé!",
+          "trustDelta": 1
+        },
+        {
+          "text": "[Hỏi về chứng nhiễm độc sương mù] \"Màn Sương The Veil hủy hoại tâm trí người nhiễm độc theo cách nào?\"",
+          "nextDialogueKey": "neris_fog_sickness_story"
+        },
+        {
+          "text": "[Hỏi về Hầm Rễ Cổ] \"Cô từng nhắc đến Hầm Rễ dưới Nông Trại Sanctuary... nơi đó có dược liệu gì?\"",
+          "nextDialogueKey": "neris_quest_root_flower"
+        }
+      ],
+      "healPlayer": true
+    },
+    "neris_fog_sickness_story": {
+      "speaker": "Neris – Người Chữa Thảo Mộc",
+      "portrait": "portrait_neris",
+      "lines": [
+        "(Neris khuấy nhẹ nồi thuốc đang bốc làn khói thảo mộc xanh dịu, đôi mắt đượm buồn)...",
+        "Căn bệnh do sương mù The Veil gây ra được dân làng gọi là 'Hội Chứng Trắng Não' (The White Delirium).",
+        "Giai đoạn đầu, nạn nhân cảm thấy ớn lạnh dọc sống lưng, mất ngủ và Bình Tâm bắt đầu tụt dần. Giai đoạn hai, họ nghe thấy những tiếng thì thầm gọi đúng họ tên mình giữa đêm tĩnh mịch.",
+        "Đến giai đoạn cuối, ánh mắt họ trở nên đờ đẫn, hoàn toàn mất đi ký ức và lý trí... Họ tự mở toang then cửa, bước chân vô định ra màn đêm sâu để trở thành mồi ngon cho The Listener.",
+        "Ta đã bất lực nhìn bao nhiêu người làng ra đi như thế... Đó là lý do ta luôn trăn trở tìm ra một phương thuốc giải độc triệt để!"
+      ],
+      "choices": [
+        {
+          "text": "[Chia sẻ] \"Sự tận tâm của cô là tia hy vọng lớn nhất của ngôi làng này.\"",
+          "responseLine": "Cảm ơn ngươi... Ta sẽ không bao giờ bỏ cuộc chừng nào nồi thảo dược này còn đỏ lửa.",
+          "trustDelta": 2
+        },
+        {
+          "text": "[Hỏi cách phòng tránh] \"Có cách nào nhận biết khi tâm trí mình bắt đầu bị sương mù xâm nhập không?\"",
+          "responseLine": "Khi tầm nhìn co hẹp lại và viền màn hình xuất hiện các xúc tu đen co bóp theo nhịp tim, đó là lúc ngươi phải lập tức tìm về lửa trại hoặc uống Trà An Thần!",
+          "trustDelta": 1
+        }
+      ]
+    },
+    "neris_quest_root_flower": {
+      "speaker": "Neris – Người Chữa Thảo Mộc",
+      "portrait": "portrait_neris",
+      "lines": [
+        "Dưới chòi nông cụ Nông Trại Trú Ẩn có một cửa sập dẫn xuống Hầm Rễ Cổ.",
+        "Nơi đó có rễ của cây đại thụ ngàn năm cắm sâu vào lòng đất. Cứ mỗi mùa sương lạnh, trên thân rễ lại nở ra những bông 'Hoa Mạch Rễ Cổ' phát sáng màu ngọc bích.",
+        "Dược tính của loài hoa này cực kỳ thanh khiết, có thể giải trừ hàn khí The Veil và giữ cho chỉ số Bình Tâm không bị bào mòn suốt đêm dài.",
+        "Ngươi có thể thắp sáng đèn lồng [F], tìm xuống Hầm Rễ Cổ hái về cho ta một đóa Hoa Mạch Rễ Cổ không?"
+      ],
+      "choices": [
+        {
+          "text": "[Đồng ý tìm] \"Ta sẽ xuống Hầm Rễ Cổ tìm Hoa Mạch Rễ mang về cho cô.\"",
+          "responseLine": "Tạ ơn ngươi! Hãy cẩn thận bước chân dưới lòng hầm ẩm ướt nhé.",
+          "trustDelta": 3,
+          "setFlag": "choice_neris_promise_flower"
+        },
+        {
+          "text": "[Hỏi thêm] \"Dưới hầm có cạm bẫy hay quái vật nguy hiểm nào không?\"",
+          "responseLine": "Không có quái thú lớn, nhưng bóng tối rất dày đặc. Nhớ giữ đèn lồng luôn sáng để không bị hoảng loạn!",
+          "trustDelta": 1
+        }
+      ],
+      "onCompleteFlag": "quest_neris_flower_accepted"
+    },
+    "neris_root_flower_complete": {
+      "speaker": "Neris – Người Chữa Thảo Mộc",
+      "portrait": "portrait_neris",
+      "lines": [
+        "(Neris nâng niu đóa hoa mạch rễ màu xanh ngọc trên tay, hương thơm dịu nhẹ lan tỏa khắp gian phòng)...",
+        "Tuyệt vời quá! Cánh hoa vẫn còn đọng sương mai tinh khiết. Với dược chất này, ta đã bào chế thành công Trà An Thần Thượng Hạng!",
+        "Uống chén trà này vào, tinh thần ngươi sẽ vững như bàn thạch, xua tan mọi ảo giác âm thanh giữa đêm sâu.",
+        "Cầm lấy hai phần Trà An Thần này phòng thân, và bất cứ lúc nào mệt mỏi, hãy ghé tiệm thuốc của ta nhé!"
+      ],
+      "choices": [
+        {
+          "text": "[Nhận trà an thần] \"Cảm ơn Neris. Phương thuốc này sẽ cứu mạng ta trong rừng sâu.\"",
+          "responseLine": "Nguyện cầu ánh sáng thảo mộc luôn chở che cho tâm hồn ngươi!",
+          "trustDelta": 3
+        }
+      ],
+      "onCompleteFlag": "neris_flower_rewarded",
+      "rewardItem": "food_calming_tea",
+      "rewardCount": 2,
       "healPlayer": true
     },
     "neris_heal": {
@@ -206,10 +430,52 @@
           "setFlag": "choice_bram_crafted"
         },
         {
-          "text": "[Hỏi về sắt rèn] \"Ngươi có thể rèn lại những thanh kiếm cổ vương lại trong phế tích rừng sâu không?\"",
-          "responseLine": "Chỉ cần ngươi mang được Phôi Sắt Cổ Ngữ từ Xưởng Chuông Cũ về, ta sẽ rèn cho ngươi ngọn giáo sắc bén nhất!",
-          "trustDelta": 1,
-          "setFlag": "lore_curious_smithing"
+          "text": "[Hỏi về nỗi tự trách] \"Bram... vì sao ông luôn nhìn vào đe rèn với ánh mắt nặng trĩu ưu phiền?\"",
+          "nextDialogueKey": "bram_guilt_story"
+        },
+        {
+          "text": "[Hỏi điểm yếu Hiệp Sĩ] \"Lũ Fallen Knight ngoài kia mặc giáp sắt rất dày, làm sao đánh bại chúng?\"",
+          "nextDialogueKey": "bram_knight_weakness_guide"
+        }
+      ]
+    },
+    "bram_guilt_story": {
+      "speaker": "Bram – Thợ Rèn Làng",
+      "portrait": "portrait_blacksmith",
+      "lines": [
+        "(Bram buông chiếc búa rèn nặng trịch xuống đe sắt, tiếng thở dài hòa vào tiếng than nổ lách tách)...",
+        "Ngươi có biết những thanh đại kiếm sắc bén và áo giáp vảy sắt mà lũ Hiệp Sĩ Tha Hóa (Fallen Knight) ngoài kia mang... từ đâu mà ra không?",
+        "Chính tay ta đã đúc nên chúng! Năm xưa, ta đã dồn hết tâm huyết, thức thâu đêm bên lò than sồi để rèn những lưỡi kiếm bén nhất cho Đội Hiệp Sĩ Canh Lửa ra trận.",
+        "Ta ngỡ vũ khí của mình sẽ bảo vệ được ngôi làng... Nhưng khi họ bị sương đen The Veil nuốt chửng, chính những lưỡi kiếm thép tôi đó nay lại quay ngược lại vung vào đồng bào mình!",
+        "Tội lỗi này đè nặng lên ngực ta suốt bao năm... Ta thề sẽ rèn nên những vũ khí hộ vệ mới để giải thoát cho linh hồn của họ!"
+      ],
+      "choices": [
+        {
+          "text": "[An ủi] \"Lỗi không ở thợ rèn, mà ở bóng tối tha hóa họ. Ta sẽ giúp ông giải thoát cho những thanh kiếm đó.\"",
+          "responseLine": "Cảm ơn ngươi... Nghe được những lời này, lòng ta như vơi đi một nửa gánh nặng ngàn cân.",
+          "trustDelta": 3,
+          "setFlag": "choice_bram_comforted"
+        },
+        {
+          "text": "[Hỏi về Xưởng Chuông] \"Xưởng Chuông Cũ ở phía Nam có phải nơi ông từng đúc vũ khí năm xưa?\"",
+          "responseLine": "Đúng thế. Nơi đó còn lưu giữ Khuôn Đúc Chuông và Phôi Sắt Cổ Ngữ quý giá vô cùng!",
+          "trustDelta": 2
+        }
+      ]
+    },
+    "bram_knight_weakness_guide": {
+      "speaker": "Bram – Thợ Rèn Làng",
+      "portrait": "portrait_blacksmith",
+      "lines": [
+        "Fallen Knight mặc giáp sắt rất dày, đòn chém thẳng vào thân giáp khó gây sát thương lớn.",
+        "Nhưng vì chính tay ta rèn giáp cho họ nên ta biết rõ nhược điểm: khớp gối và khe hở dưới nách là nơi yếu nhất!",
+        "Khi Fallen Knight giơ cao kiếm chuẩn bị chém xuống, đó là lúc trọng tâm họ dồn về phía trước. Hãy nhanh tay vung gậy gỗ hoặc đâm giáo [Phím F / Chuột trái] vào chân để phá trụ khiến chúng bị choáng váng (Stagger)!",
+        "Còn đối với Kỵ Binh Hắc Ám (Dread Horseman), đừng bao giờ đối đầu trực diện khi ngựa đang phi nước đại. Hãy né sang bên sườn rồi quét giáo vào chân sau của ngựa!"
+      ],
+      "choices": [
+        {
+          "text": "[Ghi nhận] \"Bí quyết phá trụ tuyệt vời! Ta sẽ áp dụng khi chạm trán chúng trong rừng sâu.\"",
+          "trustDelta": 2
         }
       ]
     },
@@ -229,10 +495,53 @@
           "setFlag": "choice_finn_warned"
         },
         {
-          "text": "[Lắng nghe] \"Em có nghe thấy tin tức hay lời đồn nào lạ về khu rừng gần đây không?\"",
-          "responseLine": "Có chứ ạ! Thợ rừng nói phía Nam rừng ngoài có phế tích xưởng đúc chuông bỏ hoang nhiều bí mật lắm!",
-          "trustDelta": 1,
-          "setFlag": "lore_finn_rumor_seeker"
+          "text": "[Hỏi về tiếng thì thầm đáy giếng] \"Finn, em bảo em nghe thấy những âm thanh lạ dưới giếng làng sao?\"",
+          "nextDialogueKey": "finn_whispers_well"
+        },
+        {
+          "text": "[Hỏi về kho báu bí mật] \"Em có biết nơi nào quanh làng cất giấu rương đồ hay lối đi bí mật không?\"",
+          "nextDialogueKey": "finn_secret_caches"
+        }
+      ]
+    },
+    "finn_whispers_well": {
+      "speaker": "Finn – Cậu Bé Đưa Tin",
+      "portrait": "portrait_finn",
+      "lines": [
+        "(Finn kéo tay bạn lại gần bờ giếng đá cuội trung tâm, nói thì thào bí mật)...",
+        "Anh cúi xuống lắng nghe xem! Dưới làn nước sâu thẳm có tiếng đập thình thịch... thình thịch...",
+        "Bà Edda bảo đó là nhịp thở của Trái Tim Mạch Rễ cắm sâu dưới lòng đất. Khi nào tiếng nước gợn sóng lục bục và lạnh buốt, đó là điềm báo quái vật The Listener đang áp sát hàng rào làng!",
+        "Còn những đêm trăng sương, giếng nước lại phát ra tiếng chuông ngân nhỏ như tiếng reo của bầy chim... Em nghĩ quả chuông thiêng đang gọi người đến cứu nó đấy anh ạ!"
+      ],
+      "choices": [
+        {
+          "text": "[Khen ngợi] \"Đôi tai của em tinh tường lắm. Cảm ơn thông tin quý giá này nhé Finn!\"",
+          "responseLine": "Hi hi! Có chuyện gì mới em sẽ kể tiếp cho anh nghe nha!",
+          "trustDelta": 2,
+          "setFlag": "choice_finn_well_praised"
+        },
+        {
+          "text": "[Cảnh giác] \"Mạch Rễ nguy hiểm lắm, đừng bao giờ cúi người quá sâu vào miệng giếng nhé!\"",
+          "responseLine": "Dạ vâng, em biết rồi ạ! Em chỉ dám đứng trên bệ đá nhìn xuống thôi.",
+          "trustDelta": 1
+        }
+      ]
+    },
+    "finn_secret_caches": {
+      "speaker": "Finn – Cậu Bé Đưa Tin",
+      "portrait": "portrait_finn",
+      "lines": [
+        "Suỵt! Em biết vài chỗ cất giấu bí mật hay ho lắm, chỉ kể cho một mình anh thôi đấy nhé!",
+        "Thứ nhất: Phía sau túp lều bỏ hoang cạnh bờ suối có một chiếc Rương Gỗ giấu Đá Lửa và Dầu Đèn do bác thợ rừng để lại.",
+        "Thứ hai: Cửa sập dưới đất cạnh kho nông cụ Nông Trại Sanctuary chính là lối xuống Hầm Rễ Cổ. Dưới đó có nhiều nấm phát sáng và rễ thuốc quý lắm!",
+        "Thứ ba: Ở Khoảng Trống Thì Thầm ngoài rừng, nếu anh nghe thấy tiếng bước chân chạy dồn dập mà mặt đất không rung lên, đó chỉ là ảo ảnh The Echo thôi! Cứ bình tĩnh đi tiếp, đừng sợ mà đâm đầu vào bụi rậm nhé!"
+      ],
+      "choices": [
+        {
+          "text": "[Cảm ơn] \"Những chỉ dẫn này sẽ giúp ta thu thập được nhiều tài nguyên sinh tồn!\"",
+          "responseLine": "Chúc anh lữ khách may mắn tìm được nhiều kho báu nha!",
+          "trustDelta": 2,
+          "setFlag": "choice_finn_caches_learned"
         }
       ]
     },

@@ -145,9 +145,84 @@ flowchart LR
 
 ---
 
-## 5. KẾT QUẢ KIỂM THỬ TỰ ĐỘNG
+## 5. KẾT QUẢ KIỂM THỬ TỰ ĐỘNG BƯỚC V15-16
 
 - **Script kiểm thử:** `scripts/verify_v15_16_story_and_dialogue.mjs`
 - **Số lượng bài test:** $90 / 90$ bài kiểm tra ĐẠT (PASS 100%).
 - **Kiểm tra biên dịch:** `npx tsc --noEmit` đạt 0 lỗi (Exit Code 0).
 - **Kiểm tra đóng gói:** `npm run build` tạo bundle Vite production thành công trong $9.72\text{s}$.
+
+---
+
+## 6. MỞ RỘNG TUYẾN CỐT TRUYỆN CÁ NHÂN & NHIỆM VỤ PHỤ 5 DÂN LÀNG (BƯỚC V15-17)
+
+Nhằm mang lại chiều sâu nhân vật đậm chất Gothic / Dark Fantasy, bước V15-17 đã làm giàu toàn diện hệ thống hội thoại phân tầng theo tiến độ Hồi truyện và các nhánh hỏi đáp đa chiều cho 5 cư dân Bellhollow:
+
+### 6.1. Garth (Người Canh Cổng) — Bi Kịch Kỷ Vật Người Em Trai
+- **Cốt truyện cá nhân:** Người em trai duy nhất của Garth - Elian, từng khoác giáp bạc theo đoàn kỵ sĩ canh lửa tiến sâu vào rừng tìm nguồn cơn Màn Sương The Veil và biệt tích.
+- **Nhiệm vụ phụ `SQ09_BROKEN_LANTERN` ("KỶ VẬT NGƯỜI CANH GÁC"):**
+  + Nhận nhiệm vụ từ nhánh thoại `garth_brother_story`.
+  + Tìm chiếc **Đèn Tuần Tra Vỡ (`item_broken_patrol_lantern`)** vương lại ven bìa Rừng Ngoài gần xác xe kỵ sĩ gãy.
+  + Mang kỷ vật về trao lại cho Garth qua đoạn thoại `garth_broken_lantern_complete`: Garth xúc động rơi lệ, trao thưởng 2 Bình Dầu Đèn và tăng $+3$ Điểm Tin Cậy Dân Làng.
+- **Chiến thuật đối phó Kỵ Binh Hắc Ám (`garth_horseman_tactics`):**
+  + Chiến mã bóng tối cực kỳ nhạy cảm với ánh lửa chói lòa: giơ cao Đèn Lồng [F] hoặc ném Bó Đuốc làm lóa mắt khiến ngựa hý vang khựng lại.
+  + Không bao giờ chạy thẳng theo đường mòn khi nghe tiếng vó dồn dập; luôn né gấp sang hai bên hông hoặc nấp sau gốc cây cổ thụ để tránh cú đâm kích tử thần.
+
+### 6.2. Bà lão Edda (Người Giữ Chuông) — Bí Mật Đêm Vỡ Chuông & Giải Mã Cổ Ngữ
+- **Bí mật đêm Đại Hồng Chung nứt làm đôi (`edda_bell_shatter_secret`):**
+  + Trong đêm sương đen tràn qua rào lũy và Mạch Rễ bóp nghẹt giếng làng, vị Giữ Chuông tiền nhiệm đã trèo lên đỉnh tháp gióng liên tiếp 7 hồi chuông cực đại vượt quá giới hạn chịu đựng của khối đồng cổ. Tiếng ngân cực đại đẩy lùi Mạch Rễ và xua tan bóng tối nhưng làm nứt đôi chuông thiêng, và Lưỡi Chuông Đồng rơi xuống bị dòng bùn đen cuốn sâu vào Đầm Lầy.
+- **Hướng dẫn giải mã Cổ Ngữ Runes & Trao Bùa Chuông Cổ (`edda_rune_guide`):**
+  + ᚱ (Rad – Ánh Năng Cổ): Cột đá Đông Bắc, tượng trưng tia lửa mặt trời xua tan ảo giác.
+  + ᛁ (Isa – Băng Tuyết Cổ): Cột đá Tây Bắc, hàn khí đóng băng dòng chảy tha hóa của Mạch Rễ.
+  + ᛉ (Algiz – Thần Hộ Vệ): Cột đá Trung Tâm, kết nối hai nguồn năng lượng thành kết giới bảo bọc linh hồn.
+  + Trao tặng **Bùa Chuông Cổ (`eqp_bell_ward_charm`)** giúp giảm 25% tốc độ tụt Bình Tâm trong bóng tối.
+
+### 6.3. Neris (Người Chữa Thảo Mộc) — Trăn Trở Hội Chứng Trắng Não & Hoa Mạch Rễ
+- **Nỗi trăn trở về bệnh dịch sương mù (`neris_fog_sickness_story`):**
+  + Hội chứng Trắng Não (The White Delirium): Nạn nhân ban đầu ớn lạnh mất ngủ, nghe tiếng thì thầm gọi tên mình, Bình Tâm tụt dốc, cuối cùng mất trí và tự bước chân ra ngoài bóng tối hiến mạng cho quái vật.
+- **Tuyến nhiệm vụ Hoa Mạch Rễ (`neris_quest_root_flower` & `neris_root_flower_complete`):**
+  + Xuống Hầm Rễ Cổ dưới chòi nông cụ Nông Trại Sanctuary, thu hái **Hoa Mạch Rễ Cổ (`item_root_flower`)** phát sáng xanh dịu mọc trên thân rễ ngàn năm.
+  + Trao cho Neris để sắc thành công **Trà An Thần Thượng Hạng (`food_calming_tea`)** giúp tâm trí kiên định suốt đêm sâu.
+
+### 6.4. Bram (Thợ Rèn Làng) — Nỗi Tự Trách & Điểm Yếu Của Kỵ Sĩ Tha Hóa
+- **Nỗi tự trách của người thợ rèn (`bram_guilt_story`):**
+  + Những thanh đại kiếm và áo giáp vảy sắt Bram dồn tâm huyết rèn cho đoàn kỵ sĩ năm xưa nay lại nằm trong tay Fallen Knight phục kích dân làng.
+  + Thôi thúc người chơi thu hồi Khuôn Đúc Chuông và Phôi Sắt Cổ Ngữ tại Xưởng Chuông Cũ để rèn nên vũ khí cứu rỗi.
+- **Chỉ dẫn phá thế thủ của Fallen Knight (`bram_knight_weakness_guide`):**
+  + Điểm yếu của giáp sắt là khớp gối và khe nách. Khi kỵ sĩ giơ kiếm thủ thế hoặc tụ kình hắc ám, vung gậy gỗ hoặc đâm giáo [Phím F / Chuột trái] vào chân để phá trụ gây choáng váng (Stagger).
+
+### 6.5. Cậu bé Finn (Đứa Trẻ Nghe Tiếng Vọng) — Lời Thì Thầm Đáy Giếng & Kho Báu Ẩn
+- **Tiếng thì thầm dưới Giếng Làng (`finn_whispers_well`):**
+  + Đôi tai nhạy bén của Finn nghe được tiếng đập thình thịch của Trái Tim Mạch Rễ dưới đáy giếng; nước sôi lục bục là lúc The Listener đang áp sát hàng rào làng.
+- **Chỉ dẫn kho báu và điểm bí mật (`finn_secret_caches`):**
+  + Vị trí Rương Gỗ giấu Đá Lửa và Dầu Đèn sau túp lều ven suối.
+  + Cửa sập gỗ dẫn xuống Hầm Rễ Cổ cạnh kho nông cụ.
+  + Cách nhận diện bước chân ảo ảnh The Echo tại Khoảng Trống Thì Thầm (mặt đất không rung chấn).
+
+---
+
+## 7. BẢNG TỔNG HỢP DIALOGUE KEYS MỚI BƯỚC V15-17
+
+| NPC | Dialogue Key Mới | Vai Trò & Nội Dung Cốt Truyện | Vật Phẩm / Cờ / Thưởng |
+|:---|:---|:---|:---|
+| **Garth** | `garth_brother_story` | Kể về người em trai Elian và đoàn kỵ sĩ mất tích | Kích hoạt `SQ09_BROKEN_LANTERN` |
+| **Garth** | `garth_broken_lantern_complete` | Nhận lại kỷ vật Đèn Tuần Tra Vỡ, chỉ dẫn chiến thuật | Thưởng 2 Dầu Đèn, $+3$ Tin Cậy |
+| **Garth** | `garth_horseman_tactics` | Chiến thuật dùng ánh sáng làm mù mắt ngựa hắc ám | Lời khuyên sinh tử |
+| **Edda** | `edda_bell_shatter_secret` | Kể về đêm Đại Hồng Chung nứt vỡ và 7 hồi chuông thiêng | `choice_edda_sworn_bell`, $+3$ Tin Cậy |
+| **Edda** | `edda_rune_guide` | Giải mã 3 Cổ Ngữ Rad, Isa, Algiz của ba cột đá đầm lầy | Trao tặng `eqp_bell_ward_charm` |
+| **Neris** | `neris_fog_sickness_story` | Nỗi trăn trở về Hội Chứng Trắng Não và cách phòng ngừa | Lời khuyên tâm lý, $+2$ Tin Cậy |
+| **Neris** | `neris_quest_root_flower` | Giao nhiệm vụ tìm Hoa Mạch Rễ dưới Hầm Rễ Cổ | Cờ `quest_neris_flower_accepted` |
+| **Neris** | `neris_root_flower_complete` | Nhận hoa mạch rễ, sắc thành công Trà An Thần | Thưởng 2 Trà An Thần, $+3$ Tin Cậy |
+| **Bram** | `bram_guilt_story` | Nỗi dằn vặt rèn kiếm cho kỵ sĩ bị sương đen tha hóa | `choice_bram_comforted`, $+3$ Tin Cậy |
+| **Bram** | `bram_knight_weakness_guide` | Hướng dẫn phá trụ làm choáng váng Fallen Knight | Lời khuyên cận chiến, $+2$ Tin Cậy |
+| **Finn** | `finn_whispers_well` | Giải mã tiếng đập nhịp tim Mạch Rễ dưới giếng làng | `choice_finn_well_praised`, $+2$ Tin Cậy |
+| **Finn** | `finn_secret_caches` | Chỉ dẫn rương đồ bí mật ven suối, Hầm Rễ và The Echo | `choice_finn_caches_learned`, $+2$ Tin Cậy |
+
+---
+
+## 8. KẾT QUẢ KIỂM THỬ TOÀN DIỆN BƯỚC V15-17
+
+- **Kiểm thử tự động [verify_v15_17_villager_stories.mjs](file:///g:/HOLLOW%20WOODS/scripts/verify_v15_17_villager_stories.mjs):** Đạt **48 / 48** assertions PASS tuyệt đối.
+- **Kiểm thử hồi quy [verify_v15_16_story_and_dialogue.mjs](file:///g:/HOLLOW%20WOODS/scripts/verify_v15_16_story_and_dialogue.mjs):** Đạt **88 / 88** assertions PASS tuyệt đối.
+- **Biên dịch TypeScript (`npx tsc --noEmit`):** Đạt **0 lỗi** (Exit Code 0).
+- **Đóng gói Vite Production (`npm run build`):** Hoàn thành trong **8.81s** không có lỗi.

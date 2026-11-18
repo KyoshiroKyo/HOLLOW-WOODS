@@ -399,6 +399,30 @@
           "done": false
         }
       ]
+    },
+    {
+      "id": "SQ09_BROKEN_LANTERN",
+      "act": 2,
+      "category": "side",
+      "title": "NHIỆM VỤ PHỤ: KỶ VẬT NGƯỜI CANH GÁC",
+      "description": "Tìm lại chiếc đèn tuần tra vỡ của Elian – người em trai thất lạc của Garth ở bìa Rừng Ngoài.",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Lắng nghe tâm sự của Garth về người em trai từng theo đoàn kỵ sĩ",
+          "done": false
+        },
+        {
+          "id": "t2",
+          "text": "Tìm chiếc Đèn Tuần Tra Vỡ ở bìa Rừng Ngoài gần xác xe ngựa",
+          "done": false
+        },
+        {
+          "id": "t3",
+          "text": "Trao lại kỷ vật cho Garth và nhận lời khuyên đối phó Kỵ Binh Hắc Ám",
+          "done": false
+        }
+      ]
     }
   ]
 }
