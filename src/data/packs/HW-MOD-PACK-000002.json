@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "packId": "HW-MOD-PACK-000002",
+  "name": "Survival Equipment Pack",
+  "nameVi": "Gói Trang Bị Sinh Tồn",
+  "version": "1.4.0",
+  "minGameVersion": "1.4.0",
+  "description": "Dữ liệu 4 ô trang bị cá nhân chuyên biệt và 3 vũ khí tự vệ 4 hướng không gắn độ bền.",
+  "author": "Official Antigravity Team",
+  "isBuiltIn": true,
+  "dependencies": [],
+  "contentEntries": [
+    {
+      "id": "HW-EQP-BODY-000001",
+      "type": "EQP",
+      "subType": "BODY",
+      "slug": "moss_cloak",
+      "nameVi": "Áo Choàng Rêu",
+      "nameEn": "Moss Cloak",
+      "runtimeKey": "eqp_moss_cloak",
+      "descriptionVi": "Áo choàng dệt từ rêu khô rừng sâu. Kháng ẩm +25%, giảm 10% tốc độ chạy khi ướt.",
+      "descriptionEn": "Cloak woven from dried forest moss. +25% moisture resistance, -10% sprint speed when wet.",
+      "tags": ["equipment", "body", "weather_resistance"],
+      "meta": {
+        "slot": "body",
+        "stats": {
+          "moistureResistance": 25,
+          "sprintSpeedPenaltyWet": -10,
+          "stealthBonus": 15
+        },
+        "description": "Kháng ẩm +25%, giảm 10% tốc độ chạy khi ướt."
+      }
+    },
+    {
+      "id": "HW-EQP-FEET-000001",
+      "type": "EQP",
+      "subType": "FEET",
+      "slug": "trail_boots",
+      "nameVi": "Ủng Đi Rừng",
+      "nameEn": "Trail Boots",
+      "runtimeKey": "eqp_trail_boots",
+      "descriptionVi": "Ủng da dày lót nhựa thông. Đi trên đầm lầy/bùn không bị trượt, thể lực hồi +15%, giảm 5% tốc độ tối đa trên đường mòn.",
+      "descriptionEn": "Heavy leather boots lined with resin. Immunity to mire slip, +15% stamina regen, -5% speed on roads.",
+      "tags": ["equipment", "feet", "mire_stability"],
+      "meta": {
+        "slot": "feet",
+        "stats": {
+          "mireSlipImmunity": true,
+          "staminaRegenBonus": 15,
+          "pathSpeedPenalty": -5
+        },
+        "description": "Không bị trượt trong bùn lầy, thể lực hồi +15%, giảm 5% tốc độ trên đường mòn."
+      }
+    },
+    {
+      "id": "HW-EQP-BACK-000001",
+      "type": "EQP",
+      "subType": "BACK",
+      "slug": "field_backpack",
+      "nameVi": "Túi Hành Trang",
+      "nameEn": "Field Backpack",
+      "runtimeKey": "eqp_field_backpack",
+      "descriptionVi": "Túi vải bố gia cố bằng khung gỗ nhẹ. Tăng sức chứa túi đồ, giảm 10% tốc độ lách qua bụi rậm.",
+      "descriptionEn": "Canvas pack with light wooden frame. Increases backpack capacity, -10% speed through dense brush.",
+      "tags": ["equipment", "back", "capacity_boost"],
+      "meta": {
+        "slot": "back",
+        "stats": {
+          "inventorySlotsBonus": 4,
+          "bushWalkSpeedPenalty": -10
+        },
+        "description": "Tăng sức chứa túi đồ thêm 4 ô, giảm 10% tốc độ khi đi qua bụi rậm."
+      }
+    },
+    {
+      "id": "HW-EQP-CHRM-000001",
+      "type": "EQP",
+      "subType": "CHRM",
+      "slug": "bell_ward_charm",
+      "nameVi": "Bùa Chuông Cổ",
+      "nameEn": "Bell Ward Charm",
+      "runtimeKey": "eqp_bell_ward_charm",
+      "descriptionVi": "Chuông đồng nhỏ phát ra rung động xua tan sương mù. Tăng 20% khả năng giữ vững định tâm trong sương mù.",
+      "descriptionEn": "Small bronze bell pulsing gentle warding vibrations. +20% composure loss resistance in fog.",
+      "tags": ["equipment", "charm", "composure_ward"],
+      "meta": {
+        "slot": "charm",
+        "stats": {
+          "composureLossReduction": 20,
+          "stealthPenaltyOnChime": -5
+        },
+        "description": "Tăng 20% khả năng giữ vững định tâm trong sương mù, thu hút sự chú ý nhẹ của quái vật nếu rung chuông."
+      }
+    },
+    {
+      "id": "HW-WPN-STAFF-000001",
+      "type": "WPN",
+      "subType": "STAFF",
+      "slug": "walking_staff",
+      "nameVi": "Gậy Gỗ",
+      "nameEn": "Walking Staff",
+      "runtimeKey": "wpn_walking_staff",
+      "descriptionVi": "Gậy đi rừng bền chắc, tầm đánh 42px, đẩy lùi 20px, làm choáng 0.5s, không có độ bền.",
+      "descriptionEn": "Sturdy walking staff. 42px reach, 20px knockback, 0.5s stun, durability-free.",
+      "tags": ["weapon", "blunt", "stagger"],
+      "meta": {
+        "range": 42,
+        "knockback": 20,
+        "stunDuration": 0.5,
+        "damage": 10,
+        "cooldown": 0.6,
+        "durability": null
+      }
+    },
+    {
+      "id": "HW-WPN-MEL-000001",
+      "type": "WPN",
+      "subType": "SPEAR",
+      "slug": "iron_tipped_spear",
+      "nameVi": "Giáo Gỗ Bịt Sắt",
+      "nameEn": "Iron-Tipped Spear",
+      "runtimeKey": "wpn_iron_spear",
+      "descriptionVi": "Giáo đâm thẳng tầm 72px, đẩy lùi mạnh 45px, sát thương 25 HP, không gắn độ bền.",
+      "descriptionEn": "Thrusting spear. 72px reach, 45px knockback, 25 HP damage, durability-free.",
+      "tags": ["weapon", "pierce", "defense"],
+      "meta": {
+        "range": 72,
+        "knockback": 45,
+        "damage": 25,
+        "cooldown": 0.9,
+        "durability": null
+      }
+    },
+    {
+      "id": "HW-WPN-HATCH-000001",
+      "type": "WPN",
+      "subType": "AXE",
+      "slug": "hunting_hatchet",
+      "nameVi": "Rìu Đi Rừng",
+      "nameEn": "Hunting Hatchet",
+      "runtimeKey": "wpn_hunting_hatchet",
+      "descriptionVi": "Rìu đa năng tầm đánh 36px, chặt gỗ nhanh gấp đôi, đẩy lùi 25px, sát thương 18 HP, không gắn độ bền.",
+      "descriptionEn": "Hunting hatchet. 36px reach, 2x woodcutting speed, 25px knockback, 18 HP damage, durability-free.",
+      "tags": ["weapon", "slash", "woodcutting"],
+      "meta": {
+        "range": 36,
+        "knockback": 25,
+        "woodcuttingSpeedMult": 2.0,
+        "damage": 18,
+        "cooldown": 0.7,
+        "durability": null
+      }
+    }
+  ]
+}

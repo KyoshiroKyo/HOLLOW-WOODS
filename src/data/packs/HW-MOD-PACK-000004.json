@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "packId": "HW-MOD-PACK-000004",
+  "name": "Ancient Relics & Boss Pack",
+  "nameVi": "Gói Cổ Vật & Đấu Trùm",
+  "version": "1.4.0",
+  "minGameVersion": "1.4.0",
+  "description": "Dữ liệu câu đố Cổ Ngữ, 3 tiểu khu và thông số trận Boss Mire Warden.",
+  "author": "Official Antigravity Team",
+  "isBuiltIn": true,
+  "dependencies": ["HW-MOD-PACK-000002"],
+  "contentEntries": [
+    {
+      "id": "HW-MON-BOSS-000001",
+      "type": "MON",
+      "subType": "BOSS",
+      "slug": "the_mire_warden",
+      "nameVi": "Kẻ Nuốt Tiếng Chuông",
+      "nameEn": "The Mire Warden",
+      "runtimeKey": "mon_mire_warden",
+      "descriptionVi": "Thực thể cổ xưa ngự trị tại Đầm Lầy Yên Lặng. Trận đấu trùm 2 pha giải đố chiến thuật dưới áp lực sương mù.",
+      "descriptionEn": "Ancient aberration ruling the Silent Mire. 2-phase tactical puzzle encounter.",
+      "tags": ["monster", "boss", "puzzle_encounter"],
+      "meta": {
+        "health": 500,
+        "phase1": {
+          "sealThreshold": 0.5,
+          "fogArmor": true,
+          "immuneToDirectAttack": true,
+          "weakness": ["noise_lure", "runed_fire_pillars"]
+        },
+        "phase2": {
+          "mudSludgeAura": true,
+          "mireChargeDamage": 35,
+          "clonesCount": 2,
+          "weakness": ["lantern_reveal", "shrine_bell_chime"]
+        }
+      }
+    },
+    {
+      "id": "HW-LOC-WORK-000001",
+      "type": "LOC",
+      "subType": "WORK",
+      "slug": "abandoned_bell_workshop",
+      "nameVi": "Xưởng Chuông Bỏ Hoang",
+      "nameEn": "Abandoned Bell Workshop",
+      "runtimeKey": "subzone_bell_workshop",
+      "descriptionVi": "Xưởng rèn cổ đổ nát ở rìa phía Đông Outer Woods, nơi chế tác chuông đồng và các linh kiện cổ ngữ.",
+      "descriptionEn": "Ruined workshop on the eastern verge of the Outer Woods.",
+      "tags": ["location", "subzone", "workshop"],
+      "meta": {
+        "parentZone": "outer_woods",
+        "boundary": { "x": 1380, "y": 280, "width": 320, "height": 260 },
+        "keyLoot": ["mat_runed_iron", "lore_workshop_diary"]
+      }
+    },
+    {
+      "id": "HW-LOC-CELLAR-000001",
+      "type": "LOC",
+      "subType": "CELLAR",
+      "slug": "root_cellar",
+      "nameVi": "Hầm Rễ Cổ",
+      "nameEn": "Ancient Root Cellar",
+      "runtimeKey": "subzone_root_cellar",
+      "descriptionVi": "Lối vào bí mật dưới nền đất Sanctuary Farm, nơi rễ đại thụ xuyên vách đá và nguồn nước ngầm thanh khiết.",
+      "descriptionEn": "Secret subterranean cellar beneath the Sanctuary Farm.",
+      "tags": ["location", "subzone", "cellar"],
+      "meta": {
+        "parentZone": "sanctuary_farm",
+        "boundary": { "x": 420, "y": 780, "width": 280, "height": 240 },
+        "keyLoot": ["item_medicinal_roots", "relic_heart_of_roots"]
+      }
+    },
+    {
+      "id": "HW-LOC-CLEAR-000001",
+      "type": "LOC",
+      "subType": "CLEAR",
+      "slug": "whispering_clearing",
+      "nameVi": "Khoảng Trống Thì Thầm",
+      "nameEn": "Whispering Clearing",
+      "runtimeKey": "subzone_whispering_clearing",
+      "descriptionVi": "Bãi đất trống hình tròn bao quanh bởi các thân cây cong dị thường sâu trong Deep Forest.",
+      "descriptionEn": "Circular anomaly clearing deep within the corrupted forest.",
+      "tags": ["location", "subzone", "clearing"],
+      "meta": {
+        "parentZone": "deep_forest",
+        "boundary": { "x": 950, "y": 1150, "width": 360, "height": 360 },
+        "keyLoot": ["item_bell_mold", "puz_whispering_echo"]
+      }
+    },
+    {
+      "id": "HW-PUZ-RUNE-000001",
+      "type": "PUZ",
+      "subType": "RUNE",
+      "slug": "three_runed_pillars",
+      "nameVi": "Câu Đố 3 Trụ Cổ Ngữ",
+      "nameEn": "Three Runed Pillars Puzzle",
+      "runtimeKey": "puz_runed_pillars",
+      "descriptionVi": "3 Cột đá cổ ngữ tại Đầm Lầy Yên Lặng. Cần kích hoạt bằng Đuốc Nhựa Thông hoặc Đèn Lồng để phá giáp Boss.",
+      "descriptionEn": "Three runic monoliths whose flame strips the Mire Warden of its fog armor.",
+      "tags": ["puzzle", "rune", "boss_mechanic"],
+      "meta": {
+        "pillarsCount": 3,
+        "activationMethod": "resin_flare_or_lantern",
+        "unlocksBossArena": true
+      }
+    },
+    {
+      "id": "HW-ITM-RELIC-000001",
+      "type": "ITM",
+      "subType": "RELIC",
+      "slug": "heart_of_roots",
+      "nameVi": "Trái Tim Mạch Rễ Cổ",
+      "nameEn": "Heart of Ancient Roots",
+      "runtimeKey": "relic_heart_of_roots",
+      "descriptionVi": "Khối rễ cổ phát quang xanh thẳm, giữ nhịp đập của khu rừng nguyên sinh.",
+      "descriptionEn": "Pulsing bioluminescent heart root carrying the forest's primeval rhythm.",
+      "tags": ["relic", "quest", "unique"]
+    },
+    {
+      "id": "HW-ITM-KEY-000003",
+      "type": "ITM",
+      "subType": "KEY",
+      "slug": "bell_mold",
+      "nameVi": "Khuôn Đúc Chuông Cũ",
+      "nameEn": "Ancient Bell Mold",
+      "runtimeKey": "item_bell_mold",
+      "descriptionVi": "Khuôn đất sét nung để đúc lại Đại Hồng Chung Bellhollow tại lò rèn thợ Bram.",
+      "descriptionEn": "Ancient ceramic mold used to cast the Great Bell at Bram's forge.",
+      "tags": ["quest", "key_item"]
+    },
+    {
+      "id": "HW-ITM-MAT-000005",
+      "type": "ITM",
+      "subType": "MAT",
+      "slug": "medicinal_roots",
+      "nameVi": "Rễ Thuốc Cổ Quý Hiếm",
+      "nameEn": "Rare Medicinal Roots",
+      "runtimeKey": "item_medicinal_roots",
+      "descriptionVi": "Rễ cây cổ thụ hấp thu linh khí sương sớm, nguyên liệu chính để nấu Súp Rễ Rừng.",
+      "descriptionEn": "Precious medicinal roots harvested in deep shaded soil.",
+      "tags": ["material", "alchemy"]
+    },
+    {
+      "id": "HW-ITM-MAT-000003",
+      "type": "ITM",
+      "subType": "MAT",
+      "slug": "runed_iron_part",
+      "nameVi": "Phụ Kiện Sắt Rèn Cổ Ngữ",
+      "nameEn": "Runed Iron Part",
+      "runtimeKey": "mat_runed_iron",
+      "aliases": ["item_runed_iron_part"],
+      "descriptionVi": "Phôi sắt khắc hoa văn cổ ngữ tìm thấy tại Xưởng Chuông Bỏ Hoang, dùng để sửa chuông và vũ khí sắt.",
+      "descriptionEn": "Heavy iron fitting etched with ancient runes from the abandoned workshop.",
+      "tags": ["material", "smithing"]
+    }
+  ]
+}

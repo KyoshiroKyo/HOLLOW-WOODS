@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "packId": "HW-MOD-PACK-000001",
+  "name": "Woodland Wildlife Pack",
+  "nameVi": "Gói Sinh Vật Rừng Hoang Dã",
+  "version": "1.4.0",
+  "minGameVersion": "1.4.0",
+  "description": "Cấu hình spawn, vùng hoạt động và âm thanh của Quạ Rừng và Bướm Đêm Hổ Phách.",
+  "author": "Official Antigravity Team",
+  "isBuiltIn": true,
+  "dependencies": [],
+  "contentEntries": [
+    {
+      "id": "HW-ANI-AMBIENT-000001",
+      "type": "ANI",
+      "subType": "AMBIENT",
+      "slug": "woodland_crow",
+      "nameVi": "Quạ Rừng",
+      "nameEn": "Woodland Crow",
+      "runtimeKey": "ani_crow",
+      "descriptionVi": "Loài quạ đen nhạy cảm với tiếng bước chân. Khi bị giật mình, chúng đập cánh kêu lớn báo động cho The Listener.",
+      "descriptionEn": "Forest crows sensitive to loud steps. When startled, they caw and alert The Listener.",
+      "tags": ["wildlife", "alarm", "ambient"],
+      "meta": {
+        "spawnConfig": {
+          "zones": ["outer_woods", "deep_forest"],
+          "maxActive": 6,
+          "respawnCooldown": 30,
+          "roostObjects": ["dead_oak_branch", "mossy_rock"]
+        },
+        "behavior": {
+          "fleeSpeed": 180,
+          "detectRadius": 80,
+          "scareDistance": 45,
+          "alertListener": true,
+          "alertRadius": 220
+        },
+        "audio": {
+          "alarmSfx": "sfx_crow_caw",
+          "flutterSfx": "sfx_wings_flap",
+          "volume": 0.75
+        }
+      }
+    },
+    {
+      "id": "HW-ANI-AMBIENT-000002",
+      "type": "ANI",
+      "subType": "AMBIENT",
+      "slug": "lantern_moth",
+      "nameVi": "Bướm Đêm Hổ Phách",
+      "nameEn": "Lantern Moth",
+      "runtimeKey": "ani_lantern_moth",
+      "descriptionVi": "Bướm đêm lấp lánh cánh vàng mờ, thường bị thu hút bởi ánh đèn lồng The Mossbound Wayfarer.",
+      "descriptionEn": "Glowing amber moths naturally attracted to lantern light in the deep woods.",
+      "tags": ["wildlife", "light_seeker", "ambient"],
+      "meta": {
+        "spawnConfig": {
+          "zones": ["outer_woods", "sanctuary_farm", "bellhollow"],
+          "maxActive": 10,
+          "respawnCooldown": 20
+        },
+        "behavior": {
+          "lightAttractRadius": 140,
+          "orbitSpeed": 45,
+          "fleeFromMonsters": true
+        },
+        "audio": {
+          "flutterSfx": "sfx_moth_flutter",
+          "volume": 0.4
+        }
+      }
+    }
+  ]
+}

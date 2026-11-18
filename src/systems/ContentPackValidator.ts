@@ -361,6 +361,16 @@ export class ContentPackValidator {
           tags: ['location', 'subzone', 'clearing']
         },
         {
+          id: 'HW-PUZ-RUNE-000001',
+          type: 'PUZ',
+          subType: 'RUNE',
+          slug: 'three_runed_pillars',
+          nameVi: 'Câu Đố 3 Trụ Cổ Ngữ',
+          nameEn: 'Three Runed Pillars Puzzle',
+          runtimeKey: 'puz_runed_pillars',
+          tags: ['puzzle', 'rune', 'boss_mechanic']
+        },
+        {
           id: 'HW-ITM-RELIC-000001',
           type: 'ITM',
           subType: 'RELIC',

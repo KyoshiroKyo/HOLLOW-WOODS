@@ -321,6 +321,27 @@ export class ContentPackLoader {
           nameEn: 'Rare Medicinal Roots',
           runtimeKey: 'item_medicinal_roots',
           tags: ['material', 'alchemy']
+        },
+        {
+          id: 'HW-PUZ-RUNE-000001',
+          type: 'PUZ',
+          subType: 'RUNE',
+          slug: 'three_runed_pillars',
+          nameVi: 'Câu Đố 3 Trụ Cổ Ngữ',
+          nameEn: 'Three Runed Pillars Puzzle',
+          runtimeKey: 'puz_runed_pillars',
+          tags: ['puzzle', 'rune', 'boss_mechanic']
+        },
+        {
+          id: 'HW-ITM-MAT-000003',
+          type: 'ITM',
+          subType: 'MAT',
+          slug: 'runed_iron_part',
+          nameVi: 'Phụ Kiện Sắt Rèn Cổ Ngữ',
+          nameEn: 'Runed Iron Part',
+          runtimeKey: 'mat_runed_iron',
+          aliases: ['item_runed_iron_part'],
+          tags: ['material', 'smithing']
         }
       ]
     };

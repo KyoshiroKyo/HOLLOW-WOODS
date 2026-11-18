@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "packId": "HW-MOD-PACK-000003",
+  "name": "Camp & Cooking Pack",
+  "nameVi": "Gói Khu Trại & Ẩm Thực",
+  "version": "1.4.0",
+  "minGameVersion": "1.4.0",
+  "description": "Công thức Nồi Thảo Dược, 3 cấp Lửa Trại, Rương 12 ô và Lều Trú Ẩn.",
+  "author": "Official Antigravity Team",
+  "isBuiltIn": true,
+  "dependencies": [],
+  "contentEntries": [
+    {
+      "id": "HW-BLD-CAMP-000001",
+      "type": "BLD",
+      "subType": "CAMP",
+      "slug": "campfire_bellhollow",
+      "nameVi": "Lửa Trại Làng Bellhollow",
+      "nameEn": "Bellhollow Central Campfire",
+      "runtimeKey": "bld_campfire_bellhollow",
+      "descriptionVi": "Lửa trại trung tâm có 3 cấp độ nâng cấp: Bếp dã chiến, Lửa đá xếp, và Đài lửa Cổ Ngữ.",
+      "descriptionEn": "Central campfire with 3 tiers of upgrades.",
+      "tags": ["building", "camp", "warmth"],
+      "meta": {
+        "levels": {
+          "1": {
+            "name": "Bếp Lửa Dã Chiến",
+            "warmthRadius": 120,
+            "fuelCapacity": 180,
+            "description": "Bán kính ấm 120px, sưởi ấm cơ bản, dung lượng 180 giây."
+          },
+          "2": {
+            "name": "Lửa Trại Đá Xếp",
+            "warmthRadius": 200,
+            "fogDispelRadius": 160,
+            "fuelCapacity": 360,
+            "description": "Bán kính ấm 200px, xua tan sương mù nhẹ, dung lượng 360 giây."
+          },
+          "3": {
+            "name": "Đài Lửa Cổ Ngữ",
+            "warmthRadius": 320,
+            "fogDispelRadius": 280,
+            "repelMonsters": true,
+            "fuelCapacity": 600,
+            "description": "Bán kính ấm 320px, ánh sáng thiêng đẩy lùi The Listener, dung lượng 600 giây."
+          }
+        }
+      }
+    },
+    {
+      "id": "HW-BLD-CHEST-000001",
+      "type": "BLD",
+      "subType": "CHEST",
+      "slug": "storage_chest",
+      "nameVi": "Rương Gỗ Lưu Trữ 12 Ô",
+      "nameEn": "Storage Chest 12-Slot",
+      "runtimeKey": "bld_storage_chest",
+      "descriptionVi": "Rương chứa gỗ dạng Split-View gồm 12 ô vuông lưu trữ đồ an toàn.",
+      "descriptionEn": "Split-view wooden storage chest with 12 item slots.",
+      "tags": ["building", "storage", "inventory"],
+      "meta": {
+        "capacity": 12,
+        "grid": [3, 4],
+        "splitView": true,
+        "saveKey": "storageChestInventory"
+      }
+    },
+    {
+      "id": "HW-BLD-CAULD-000001",
+      "type": "BLD",
+      "subType": "CAULD",
+      "slug": "herbal_cauldron",
+      "nameVi": "Nồi Nấu Thảo Dược",
+      "nameEn": "Herbal Cauldron",
+      "runtimeKey": "bld_herbal_cauldron",
+      "descriptionVi": "Nồi đồng nấu thảo dược chế biến trà an thần, nấm nướng than và súp rễ cây.",
+      "descriptionEn": "Herbal cauldron for brewing soothing teas and hearty forest soups.",
+      "tags": ["building", "brewing", "alchemy"],
+      "meta": {
+        "recipes": ["food_calming_tea", "food_roasted_mushroom", "food_root_soup"]
+      }
+    },
+    {
+      "id": "HW-BLD-SHELTER-000001",
+      "type": "BLD",
+      "subType": "SHELTER",
+      "slug": "survival_shelter",
+      "nameVi": "Lều Sinh Tồn",
+      "nameEn": "Survival Shelter",
+      "runtimeKey": "bld_survival_shelter",
+      "descriptionVi": "Lều dựng từ cành cây và bạt rêu. Nơi trú ẩn qua đêm, tránh mưa bão và quái vật.",
+      "descriptionEn": "Makeshift shelter for sleeping through the cold misty night.",
+      "tags": ["building", "shelter", "rest"],
+      "meta": {
+        "restBonus": 30,
+        "nightSkip": true,
+        "weatherProtection": 100
+      }
+    },
+    {
+      "id": "HW-ITM-FOOD-000001",
+      "type": "ITM",
+      "subType": "FOOD",
+      "slug": "calming_tea",
+      "nameVi": "Trà Thảo Dược An Thần",
+      "nameEn": "Calming Herbal Tea",
+      "runtimeKey": "food_calming_tea",
+      "descriptionVi": "Trà nấu từ thảo mộc tươi và nước ngầm. Hồi phục 30 điểm định tâm (composure), giảm hoảng loạn.",
+      "descriptionEn": "Brewed calming tea. Restores 30 composure and calms panic.",
+      "tags": ["consumable", "food", "composure"],
+      "meta": {
+        "recipe": { "res_herbs": 2, "mat_pure_water": 1 },
+        "effect": { "composure": 30, "panicReduction": 50 }
+      }
+    },
+    {
+      "id": "HW-ITM-FOOD-000002",
+      "type": "ITM",
+      "subType": "FOOD",
+      "slug": "roasted_mushroom",
+      "nameVi": "Nấm Rừng Nướng Than",
+      "nameEn": "Roasted Forest Mushroom",
+      "runtimeKey": "food_roasted_mushroom",
+      "descriptionVi": "Nấm rơm nướng trên than hồng. Hồi phục tức thì 40 thể lực.",
+      "descriptionEn": "Mushroom roasted over embers. Instantly restores 40 stamina.",
+      "tags": ["consumable", "food", "stamina"],
+      "meta": {
+        "recipe": { "res_forest_mushroom": 2, "mat_charcoal": 1 },
+        "effect": { "stamina": 40 }
+      }
+    },
+    {
+      "id": "HW-ITM-FOOD-000003",
+      "type": "ITM",
+      "subType": "FOOD",
+      "slug": "root_soup",
+      "nameVi": "Súp Rễ Rừng",
+      "nameEn": "Forest Root Soup",
+      "runtimeKey": "food_root_soup",
+      "descriptionVi": "Súp rễ cây đậm đà nóng hổi. Tăng 25 điểm thân nhiệt và 20 máu.",
+      "descriptionEn": "Warm hearty root soup. Adds 25 temperature warmth and 20 health.",
+      "tags": ["consumable", "food", "health", "warmth"],
+      "meta": {
+        "recipe": { "item_medicinal_roots": 1, "res_dry_wood": 1, "mat_pure_water": 1 },
+        "effect": { "temperature": 25, "health": 20 }
+      }
+    },
+    {
+      "id": "HW-ITM-CNS-000003",
+      "type": "ITM",
+      "subType": "CNS",
+      "slug": "resin_flare",
+      "nameVi": "Đuốc Nhựa Thông Khẩn Cấp",
+      "nameEn": "Emergency Resin Flare",
+      "runtimeKey": "item_resin_flare",
+      "descriptionVi": "Đuốc tẩm nhựa thông cắm xuống đất tạo vùng sáng 30 giây xua đuổi bóng tối.",
+      "descriptionEn": "Ground-plantable resin flare providing 30 seconds of bright illumination.",
+      "tags": ["consumable", "tactical", "light", "repel"],
+      "meta": {
+        "lightRadius": 110,
+        "durationSeconds": 30,
+        "plantable": true,
+        "repelBeasts": true
+      }
+    },
+    {
+      "id": "HW-ITM-MAT-000001",
+      "type": "ITM",
+      "subType": "MAT",
+      "slug": "forest_rope",
+      "nameVi": "Dây Thừng Rừng",
+      "nameEn": "Forest Rope",
+      "runtimeKey": "mat_forest_rope",
+      "descriptionVi": "Dây thừng bện từ vỏ cây dẻo, dùng để dựng lều và chế tạo bẫy.",
+      "descriptionEn": "Tough forest rope plaited from pliable bark.",
+      "tags": ["material", "crafting"]
+    },
+    {
+      "id": "HW-ITM-MAT-000002",
+      "type": "ITM",
+      "subType": "MAT",
+      "slug": "charcoal",
+      "nameVi": "Than Củi",
+      "nameEn": "Charcoal",
+      "runtimeKey": "mat_charcoal",
+      "descriptionVi": "Than củi đun từ gỗ khô, dùng làm chất đốt lò rèn và nướng thực phẩm.",
+      "descriptionEn": "High-heat charcoal for cooking and smithing.",
+      "tags": ["material", "fuel"]
+    }
+  ]
+}
