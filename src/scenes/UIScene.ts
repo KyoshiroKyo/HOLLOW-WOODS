@@ -1113,6 +1113,18 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.panicVignetteGraphics.fillRect(w - l.inset - l.thick, l.inset + l.thick, l.thick, h - (l.inset + l.thick) * 2);
     }
 
+    // V1.5 (BƯỚC V15-06): Lớp phủ viền tối co bóp theo nhịp tim (Dark Tendril Vignette) ở 4 góc màn hình khi Bình Tâm dưới 30%:
+    // Càng gần 0, viền đen tím càng ép sâu vào trung tâm màn hình làm giảm không gian quan sát xung quanh nhân vật.
+    if (composure < 30) {
+      const tendrilFactor = Math.max(0, (30 - composure) / 30); // 0 (tại 30) -> 1 (tại 0)
+      const cornerSize = Math.round(Phaser.Math.Linear(70, 240, tendrilFactor));
+      this.panicVignetteGraphics.fillStyle(0x0e0513, Math.min(0.92, 0.45 + pulse * 0.42 * tendrilFactor));
+      this.panicVignetteGraphics.fillTriangle(0, 0, cornerSize, 0, 0, cornerSize);
+      this.panicVignetteGraphics.fillTriangle(w, 0, w - cornerSize, 0, w, cornerSize);
+      this.panicVignetteGraphics.fillTriangle(0, h, cornerSize, h, 0, h - cornerSize);
+      this.panicVignetteGraphics.fillTriangle(w, h, w - cornerSize, h, w, h - cornerSize);
+    }
+
     // Cảnh báo HUD khi bước vào các ngưỡng nguy hiểm trong bóng tối ban đêm
     const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
     if (isDepleted) {
@@ -1128,6 +1140,15 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         this.showPopupMessage('⚠️ Bóng tối đang gặm nhấm sinh lực! Nhấn [F] để thắp sáng Đèn Lồng!');
       }
     }
+  }
+
+  /**
+   * V1.5 (BƯỚC V15-06): Tính toán hệ số tầm nhìn theo Bình Tâm (1.0 khi >= 50%, giảm dần về 0.45 khi chạm 0%)
+   */
+  public getComposureVisionFactor(): number {
+    const comp = this.playerState?.stats?.composure ?? 100;
+    if (comp >= 50) return 1.0;
+    return Phaser.Math.Linear(0.45, 1.0, Math.max(0, comp / 50));
   }
 
   /**

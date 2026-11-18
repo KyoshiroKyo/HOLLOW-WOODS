@@ -4972,14 +4972,32 @@ export class GameScene extends Phaser.Scene {
       fogAlpha = Math.max(fogAlpha, 0.85);
     }
 
+    // V1.5 (BƯỚC V15-06): Liên kết trực tiếp chỉ số Bình Tâm vào bán kính chiếu sáng và tầm nhìn
+    const composure = this.playerState.stats.composure;
+    const compScale = this.veilSystem
+      ? this.veilSystem.getComposureVisionScale(composure)
+      : (composure >= 50 ? 1.0 : Phaser.Math.Linear(0.45, 1.0, Math.max(0, composure / 50)));
+    targetBaseRadius *= compScale;
+
+    // Khi Bình Tâm < 50%, quầng sáng co nhỏ lại và chập chờn mạnh như sắp tắt
+    if (composure < 50) {
+      const panicFlickerSeverity = (50 - composure) / 50;
+      const compFlicker = (Math.sin(Date.now() * 0.016) * 0.07 + Math.cos(Date.now() * 0.029) * 0.05) * panicFlickerSeverity;
+      targetBaseRadius *= Math.max(0.65, 1.0 + compFlicker);
+    }
+
     // Hiệu ứng chao đảo ánh sáng khi dơi phục kích cắn trúng
     if (this.batLanternFlickerTimer > 0) {
       this.batLanternFlickerTimer -= 16.6;
       targetBaseRadius *= (0.55 + Math.sin(Date.now() * 0.04) * 0.45);
     }
 
-    // Chuyển đổi bán kính mượt mà (smooth lerp 0.18) chống giật nấc/nhấp nháy khi bấm [F] liên tục
-    this.currentLanternRadius = Phaser.Math.Linear(this.currentLanternRadius, targetBaseRadius, 0.18);
+    // V1.5 (BƯỚC V15-06): Đảm bảo chuyển tiếp êm dịu: Khi người chơi bật đèn, uống thuốc/trà
+    // hoặc bước vào vùng Lửa Trại làm Bình Tâm tăng trở lại (targetBaseRadius > currentLanternRadius),
+    // vùng nhìn mở rộng mượt mà trong 1.5 giây (lerp factor 0.045) thay vì giật cục.
+    const isExpanding = targetBaseRadius > this.currentLanternRadius;
+    const lerpFactor = isExpanding ? 0.045 : 0.14;
+    this.currentLanternRadius = Phaser.Math.Linear(this.currentLanternRadius, targetBaseRadius, lerpFactor);
     if (Math.abs(this.currentLanternRadius - targetBaseRadius) < 0.4) {
       this.currentLanternRadius = targetBaseRadius;
     }

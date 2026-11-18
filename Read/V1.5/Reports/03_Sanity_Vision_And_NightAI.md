@@ -2,11 +2,11 @@
 ## HỆ THỐNG TINH THẦN (BÌNH TÂM), RÚT MÁU LŨY TIẾN & KHU AN TOÀN
 
 **Dự án:** HOLLOW WOODS: The Fog That Remembers  
-**Mã tài liệu:** `V15-05` / `03_Sanity_Vision_And_NightAI.md`  
+**Mã tài liệu:** `V15-05` & `V15-06` / `03_Sanity_Vision_And_NightAI.md`  
 **Phiên bản:** V1.5 (Visual & Gameplay Overhaul)  
 **Nhánh Git:** `feat/v1.5-visual-gameplay-overhaul`  
 **Ngày thực hiện:** 18/11/2026  
-**Trạng thái:** Hoàn tất xuất sắc (19/19 bài kiểm tra tự động PASS, 0 lỗi TypeScript, bản dựng Vite thành công)  
+**Trạng thái:** Hoàn tất xuất sắc (35/35 bài kiểm tra tự động PASS [19/19 V15-05 + 16/16 V15-06], 0 lỗi TypeScript, bản dựng Vite thành công)  
 
 ---
 
@@ -72,3 +72,42 @@ Khi nhân vật ở ngoài vùng an toàn, vào ban đêm / hoàng hôn và khô
     19. Ngưỡng Bất An định kỳ phát tiếng thở nhẹ cảnh báo.
 - **Kiểm tra TypeScript (`npx tsc --noEmit`):** **0 lỗi biên dịch**.
 - **Kiểm tra đóng gói (`npm run build`):** Hoàn tất thành công trong **11.12s**.
+
+---
+
+### 5. BƯỚC V15-06: THU HẸP TẦM NHÌN ĐỘNG & HIỆU ỨNG THỊ GIÁC U ÁM
+
+#### 5.1. Liên kết Trực Tiếp Bình Tâm (Composure) Vào Bán Kính Chiếu Sáng
+Bình Tâm không chỉ tác động lên Sinh Lực mà còn chi phối trực tiếp tầm quan sát của nhân vật. Khi tâm trí bị sương mù xâm thực:
+- **Phương thức toán học (`VeilSystem.getComposureVisionScale`):**
+  $$\text{Scale}(C) = \begin{cases} 1.0 & \text{khi } C \ge 50 \\ \text{lerp}(0.45, 1.0, \frac{C}{50.0}) = 0.45 + 0.55 \times \frac{C}{50.0} & \text{khi } 0 \le C < 50 \end{cases}$$
+- **Hành vi cụ thể:**
+  - $C \ge 50\%$: Giữ nguyên $100\%$ ($1.0$) bán kính tầm nhìn cơ bản và quầng sáng đèn lồng.
+  - $C = 25\%$: Tầm nhìn co lại còn $72.5\%$ ($0.725$).
+  - $C = 0\%$: Thu hẹp cực đại xuống mức sàn $45\%$ ($0.45$) so với bình thường.
+  - Kể cả khi nhân vật đang bật đèn lồng, quầng sáng cũng bị bóp nhỏ và xuất hiện hiệu ứng chập chờn (`panicFlickerSeverity = (50 - C) / 50`) như ngọn lửa sắp lụi tàn trong sương mù.
+
+#### 5.2. Lớp Phủ Viền Tối Co Bóp Theo Nhịp Tim (Dark Tendril Vignette)
+Khi Bình Tâm rơi xuống dưới ngưỡng nguy kịch ($C < 30\%$):
+- Hệ thống kích hoạt hiệu ứng **Dark Tendril Vignette** ở 4 góc màn hình (`VeilSystem.ts` & `UIScene.ts`):
+  - **4 dải viền mở rộng:** Độ dày từ $36\text{px}$ tăng dần lên đến $140\text{px}$ khi $C \to 0$.
+  - **4 cụm tam giác tua bóng tối:** Phủ kín 4 góc màn hình với kích thước từ $80\text{px}$ vươn dài tới $260\text{px}$, co bóp nhịp nhàng theo nhịp tim hoảng loạn (`heartbeatPulse`).
+  - Màu sắc: Tím sẫm hắc ám (`0x120617`), alpha lũy tiến từ $0.2 \to 0.75$, tạo cảm giác bóng tối như những xúc tu sương mù đang siết chặt lấy tầm mắt người chơi.
+
+#### 5.3. Cơ Chế Chuyển Tiếp Tầm Nhìn Êm Dịu (Smooth Vision Transition)
+- Khi người chơi hồi phục Bình Tâm (bật đèn [F], uống Trà Rễ Thảo Dược, bước vào vùng Lửa Trại), bán kính mục tiêu `targetBaseRadius` lớn hơn bán kính hiện tại `currentLanternRadius`.
+- Thay vì nở to đột ngột gây chói mắt (flash) hoặc giật cục, `GameScene.ts` áp dụng hệ số nội suy:
+  $$\text{lerpFactor} = 0.045$$
+- Với $60\text{ FPS}$, sau 90 frames ($\approx 1.5\text{ giây}$), độ mở bán kính đạt $1 - (1 - 0.045)^{90} \approx 98.4\%$, chuyển tiếp từ tốn, mượt mà và tự nhiên theo chuẩn game sinh tồn phiêu lưu.
+
+---
+
+### 6. BẢNG TỔNG HỢP KIỂM THỬ V15-06 (`verify_v15_06_vision_and_dark_tendril.mjs`)
+
+| Nhóm Kiểm Thử | Nội Dung Kiểm Tra | Kết Quả |
+|:---|:---|:---:|
+| **VeilSystem.ts** | Phương thức `getComposureVisionScale`, ngưỡng $\ge 50\% \to 1.0$, thu hẹp về $0.45$ tại $0\%$, Dark Tendril $< 30\%$, 4 góc tam giác tua đen tím | **PASS** (5/5) |
+| **Toán học Thu Hẹp** | Kiểm tra chính xác các mốc $100\%$, $50\%$, $25\%$ ($0.725$) và $0\%$ ($0.45$) | **PASS** (4/4) |
+| **UIScene.ts** | Phương thức `getComposureVisionFactor`, đồng bộ viền tối 4 góc co bóp theo nhịp tim khi $< 30\%$ | **PASS** (2/2) |
+| **GameScene.ts** | Gọi `getComposureVisionScale`, nhân `compScale` vào `targetBaseRadius`, quầng sáng chập chờn khi $< 50\%$, phát hiện mở rộng tầm nhìn, `lerpFactor = 0.045` trong $\sim 1.5\text{s}$ | **PASS** (5/5) |
+| **Tổng Cộng** | **Tất cả các tiêu chí của V15-06** | **16/16 PASS (100%)** |
