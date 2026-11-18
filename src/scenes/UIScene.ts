@@ -107,6 +107,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   private dialogueContinuePrompt!: Phaser.GameObjects.Text;
   private dialoguePortraitSprite!: Phaser.GameObjects.Image;
   private dialogueAdvanceHandler?: () => void;
+  // V1.5 - V15-16: Hộp hiển thị Lựa Chọn Hội Thoại Tương Tác
+  private dialogueChoicesContainer?: Phaser.GameObjects.Container;
 
   // Quản lý Modal tập trung (GATE 1B & 1C - Screen Space at Zoom 1.0)
   public craftingModal!: CraftingModal;
@@ -483,6 +485,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       if (this.temperatureBadgeBg) { this.temperatureBadgeBg.destroy(); this.temperatureBadgeBg = undefined as any; }
       if (this.temperatureBadgeText) { this.temperatureBadgeText.destroy(); this.temperatureBadgeText = undefined as any; }
       if (this.dialogueContainer) { this.dialogueContainer.destroy(); this.dialogueContainer = undefined as any; }
+      if (this.dialogueChoicesContainer) { this.dialogueChoicesContainer.destroy(); this.dialogueChoicesContainer = undefined as any; }
       if (this.promptContainer) { this.promptContainer.destroy(); this.promptContainer = undefined as any; }
       if (this.zoneBannerContainer) { this.zoneBannerContainer.destroy(); this.zoneBannerContainer = undefined as any; }
       if (this.bossSealContainer) { this.bossSealContainer.destroy(); this.bossSealContainer = undefined as any; }
@@ -2206,7 +2209,83 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.dialogueContainer) {
       this.dialogueContainer.setVisible(false);
     }
+    this.hideChoices();
     this.setDialogueActive(false);
+  }
+
+  /**
+   * V1.5 - V15-16: Hiển thị các nút Lựa Chọn Hội Thoại (Interactive Dialogue Choices)
+   * Nổi trang nhã ngay phía trên hộp thoại chính, hỗ trợ click chuột hoặc phím số [1], [2], [3]
+   */
+  public showChoices(choices: Array<{ text: string; index: number }>, onSelect: (index: number) => void): void {
+    if (!this.dialogueChoicesContainer) {
+      this.dialogueChoicesContainer = this.add.container(640, 488);
+      this.dialogueChoicesContainer.setDepth(9100);
+    }
+
+    this.dialogueChoicesContainer.removeAll(true);
+    this.dialogueChoicesContainer.setVisible(true);
+
+    const btnWidth = 840;
+    const btnHeight = 36;
+    const spacing = 8;
+    const totalCount = choices.length;
+
+    choices.forEach((choice, i) => {
+      // Xếp từ dưới lên trên hướng về phía đỉnh hộp thoại
+      const yOffset = -((totalCount - 1 - i) * (btnHeight + spacing)) - 14;
+
+      const btnContainer = this.add.container(0, yOffset);
+
+      const bg = this.add.graphics();
+      const drawBtn = (isHover: boolean) => {
+        bg.clear();
+        bg.fillStyle(isHover ? 0x182433 : 0x0c1117, isHover ? 0.98 : 0.93);
+        bg.fillRoundedRect(-btnWidth / 2, -btnHeight / 2, btnWidth, btnHeight, 6);
+        bg.lineStyle(isHover ? 2 : 1, isHover ? 0xf1c40f : 0x8a7238, 1);
+        bg.strokeRoundedRect(-btnWidth / 2, -btnHeight / 2, btnWidth, btnHeight, 6);
+      };
+      drawBtn(false);
+
+      bg.setInteractive(
+        new Phaser.Geom.Rectangle(-btnWidth / 2, -btnHeight / 2, btnWidth, btnHeight),
+        Phaser.Geom.Rectangle.Contains
+      );
+      if (bg.input) {
+        bg.input.cursor = 'pointer';
+      }
+
+      bg.on('pointerover', () => drawBtn(true));
+      bg.on('pointerout', () => drawBtn(false));
+      bg.on('pointerdown', () => {
+        AudioManager.getInstance().playUISelect();
+        onSelect(choice.index);
+      });
+
+      const keyBadge = HDTextHelper.createText(this, -btnWidth / 2 + 18, 0, `[${choice.index + 1}]`, {
+        fontSize: '15px',
+        fontStyle: 'bold',
+        color: '#f39c12'
+      }).setOrigin(0, 0.5);
+
+      const choiceText = HDTextHelper.createText(this, -btnWidth / 2 + 56, 0, choice.text, {
+        fontSize: '15px',
+        color: '#ecf0f1'
+      }).setOrigin(0, 0.5);
+
+      btnContainer.add([bg, keyBadge, choiceText]);
+      this.dialogueChoicesContainer!.add(btnContainer);
+    });
+  }
+
+  /**
+   * V1.5 - V15-16: Ẩn và dọn dẹp các nút lựa chọn hội thoại
+   */
+  public hideChoices(): void {
+    if (this.dialogueChoicesContainer) {
+      this.dialogueChoicesContainer.removeAll(true);
+      this.dialogueChoicesContainer.setVisible(false);
+    }
   }
 
   public setAdvanceHandler(handler: () => void): void {

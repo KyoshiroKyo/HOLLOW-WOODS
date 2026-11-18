@@ -3,6 +3,15 @@ import dialoguesData from '../data/dialogues.json';
 import { PlayerState } from '../state/PlayerState';
 import { AudioManager } from '../audio/AudioManager';
 
+export interface DialogueChoice {
+  text: string;
+  actionId?: string;
+  nextDialogueKey?: string;
+  setFlag?: string;
+  trustDelta?: number;
+  responseLine?: string;
+}
+
 export interface DialoguePayload {
   speaker: string;
   portrait: string;
@@ -12,6 +21,7 @@ export interface DialoguePayload {
   rewardItem?: string;
   rewardCount?: number;
   healPlayer?: boolean;
+  choices?: DialogueChoice[];
 }
 
 export interface IDialogueView {
@@ -19,6 +29,8 @@ export interface IDialogueView {
   updateDialogueText(text: string): void;
   hideDialogue(): void;
   setAdvanceHandler?(handler: () => void): void;
+  showChoices?(choices: Array<{ text: string; index: number }>, onSelect: (index: number) => void): void;
+  hideChoices?(): void;
 }
 
 export class DialogueSystem {
@@ -32,6 +44,11 @@ export class DialogueSystem {
   private fullTargetText: string = '';
   private typewriterTimer: Phaser.Time.TimerEvent | null = null;
   private lastAdvanceTime: number = 0;
+
+  // V1.5 - V15-16: Quản lý trạng thái lựa chọn phản hồi tương tác
+  private isShowingChoices: boolean = false;
+  private isShowingResponseLine: boolean = false;
+  private pendingChoice: DialogueChoice | null = null;
 
   public isActive: boolean = false;
   public onDialogueStart?: () => void;
@@ -52,6 +69,14 @@ export class DialogueSystem {
       scene.input.keyboard.on('keydown-SPACE', () => this.handleAdvance());
       scene.input.keyboard.on('keydown-E', () => this.handleAdvance());
       scene.input.keyboard.on('keydown-ENTER', () => this.handleAdvance());
+
+      // Phím số chọn lựa chọn hội thoại 1, 2, 3
+      scene.input.keyboard.on('keydown-ONE', () => this.handleNumberKey(0));
+      scene.input.keyboard.on('keydown-TWO', () => this.handleNumberKey(1));
+      scene.input.keyboard.on('keydown-THREE', () => this.handleNumberKey(2));
+      scene.input.keyboard.on('keydown-NUMPAD_ONE', () => this.handleNumberKey(0));
+      scene.input.keyboard.on('keydown-NUMPAD_TWO', () => this.handleNumberKey(1));
+      scene.input.keyboard.on('keydown-NUMPAD_THREE', () => this.handleNumberKey(2));
     }
   }
 
@@ -75,6 +100,13 @@ export class DialogueSystem {
     this.currentPayload = rawData;
     this.currentLineIndex = 0;
     this.isActive = true;
+    this.isShowingChoices = false;
+    this.isShowingResponseLine = false;
+    this.pendingChoice = null;
+
+    if (this.view && this.view.hideChoices) {
+      this.view.hideChoices();
+    }
 
     // C4-13-11: Tự động đóng mọi modal đang mở để đảm bảo chỉ có duy nhất 1 cửa sổ/hội thoại hiển thị
     if (this.view) {
@@ -153,6 +185,38 @@ export class DialogueSystem {
     if (now - this.lastAdvanceTime < 260) return;
     this.lastAdvanceTime = now;
 
+    // Khi đang hiển thị lựa chọn: không cho phép bấm Space/E bỏ qua
+    if (this.isShowingChoices) {
+      return;
+    }
+
+    // Khi đang hiển thị câu phản hồi sau khi chọn lựa chọn
+    if (this.isShowingResponseLine) {
+      if (this.isTyping) {
+        if (this.typewriterTimer) {
+          this.typewriterTimer.remove();
+          this.typewriterTimer = null;
+        }
+        this.displayedText = this.fullTargetText;
+        if (this.view) {
+          this.view.updateDialogueText(this.fullTargetText);
+        }
+        this.isTyping = false;
+        return;
+      }
+
+      this.isShowingResponseLine = false;
+      const nextKey = this.pendingChoice?.nextDialogueKey;
+      this.pendingChoice = null;
+
+      if (nextKey) {
+        this.startDialogue(nextKey);
+      } else {
+        this.endDialogue();
+      }
+      return;
+    }
+
     if (this.isTyping) {
       // Bấm lần đầu: hiện ngay toàn bộ dòng chữ
       if (this.typewriterTimer) {
@@ -171,9 +235,70 @@ export class DialogueSystem {
     this.currentLineIndex++;
     if (this.currentLineIndex < this.currentPayload.lines.length) {
       this.showLine(this.currentPayload.lines[this.currentLineIndex]);
+    } else if (this.currentPayload.choices && this.currentPayload.choices.length > 0) {
+      // Khi đã đọc hết câu thoại chính: mở bảng Lựa Chọn Hội Thoại Tương Tác
+      this.isShowingChoices = true;
+      const choiceItems = this.currentPayload.choices.map((c, i) => ({ text: c.text, index: i }));
+      if (this.view && this.view.showChoices) {
+        this.view.showChoices(choiceItems, (idx) => this.selectChoice(idx));
+      }
     } else {
       this.endDialogue();
     }
+  }
+
+  /**
+   * V1.5 - V15-16: Xử lý phím tắt số [1], [2], [3]
+   */
+  public handleNumberKey(choiceIndex: number): void {
+    if (!this.isActive || !this.isShowingChoices || !this.currentPayload?.choices) return;
+    if (choiceIndex >= 0 && choiceIndex < this.currentPayload.choices.length) {
+      AudioManager.getInstance().playUISelect();
+      this.selectChoice(choiceIndex);
+    }
+  }
+
+  /**
+   * V1.5 - V15-16: Xử lý kích hoạt một Lựa Chọn Hội Thoại
+   */
+  public selectChoice(choiceIndex: number): void {
+    if (!this.isActive || !this.isShowingChoices || !this.currentPayload?.choices) return;
+    const choice = this.currentPayload.choices[choiceIndex];
+    if (!choice) return;
+
+    this.isShowingChoices = false;
+    if (this.view && this.view.hideChoices) {
+      this.view.hideChoices();
+    }
+
+    const state = PlayerState.getInstance();
+
+    // 1. Ghi nhận cờ cốt truyện tương tác (Story Flag)
+    if (choice.setFlag) {
+      state.setStoryFlag(choice.setFlag);
+    }
+
+    // 2. Tác động điểm tin cậy dân làng (Village Trust Score)
+    if (typeof choice.trustDelta === 'number' && choice.trustDelta !== 0) {
+      state.addVillageTrust(choice.trustDelta);
+    }
+
+    // 3. Nếu có câu phản hồi đặc thù của NPC
+    if (choice.responseLine) {
+      this.isShowingResponseLine = true;
+      this.pendingChoice = choice;
+      this.showLine(choice.responseLine);
+      return;
+    }
+
+    // 4. Nếu có nhánh hội thoại tiếp theo
+    if (choice.nextDialogueKey) {
+      this.startDialogue(choice.nextDialogueKey);
+      return;
+    }
+
+    // 5. Kết thúc hội thoại
+    this.endDialogue();
   }
 
   public endDialogue(): void {
@@ -209,10 +334,16 @@ export class DialogueSystem {
       this.typewriterTimer = null;
     }
 
+    this.isShowingChoices = false;
+    this.isShowingResponseLine = false;
+    this.pendingChoice = null;
     this.isActive = false;
     this.currentPayload = null;
 
     if (this.view) {
+      if (this.view.hideChoices) {
+        this.view.hideChoices();
+      }
       this.view.hideDialogue();
     }
 

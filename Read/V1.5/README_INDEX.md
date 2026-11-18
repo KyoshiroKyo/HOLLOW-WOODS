@@ -42,6 +42,7 @@
 | 12 | `V15-12` | [04_Graphics_And_World_Layout.md#báo-cáo-kỹ-thuật-v15-12-chuẩn-hóa-đồ-họa-vật-phẩm-trên-mặt-đất-đạo-cụ-khu-trại--nguồn-sáng-môi-trường](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/04_Graphics_And_World_Layout.md) — Chuẩn hóa đồ họa Vật phẩm trên mặt đất, Đạo cụ khu trại và Nguồn sáng môi trường | Hoàn tất (Đã nghiệm thu) |
 | 13 | `V15-13` | [04_Graphics_And_World_Layout.md#báo-cáo-kỹ-thuật-v15-13-quy-hoạch-lại-bố-cục-không-gian-làng-chuông-bellhollow-thoáng-đãng-hài-hòa--có-thẩm-mỹ](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/04_Graphics_And_World_Layout.md) — Quy hoạch lại bố cục không gian Làng Chuông Bellhollow thoáng đãng, hài hòa & có thẩm mỹ | Hoàn tất (Đã nghiệm thu) |
 | 14 | `V15-14` | *05_UI_Deduplication_And_HUD_Polishing.md* — Dọn dẹp trùng lặp và tối ưu hóa UIScene | Sắp tới |
+| 16 | `V15-16` | [05_Story_Expansion_Report.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/05_Story_Expansion_Report.md) — Kiểm toán tính nhất quán cốt truyện hiện tại và nâng cấp DialogueSystem hỗ trợ Lựa chọn Hội thoại tương tác | Hoàn tất (Đã nghiệm thu) |
 
 ---
 *Tài liệu được cập nhật tự động trong suốt quá trình phát triển HOLLOW WOODS V1.5.*

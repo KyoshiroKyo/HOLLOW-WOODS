@@ -70,6 +70,9 @@ export class PlayerState extends Phaser.Events.EventEmitter {
   public activeWeapon: string = 'wpn_walking_staff';
   // V1.4 - P8-15A: Tiến trình Thức Tỉnh Ký Ức (0: Kẻ Lữ Hành Mất Trí -> 1: Manh Mối Xưởng Chuông -> 2: Tàn Tích Hiệp Sĩ -> 3: Đại Thức Tỉnh)
   public memoryAwakeningStage: number = 0;
+  // V1.5 - V15-16: Điểm Tin Cậy Dân Làng (0 - 100, mặc định 50) & Cờ Quyết Định Cốt Truyện Tương Tác
+  public villageTrustScore: number = 50;
+  public storyFlags: Set<string> = new Set();
   // V1.4 - P8-04: Vùng lưu dự phòng an toàn cho các khóa dữ liệu mở rộng/lạ từ V1.3 hoặc Mod
   public legacyExtraData?: Record<string, any>;
 
@@ -151,6 +154,8 @@ export class PlayerState extends Phaser.Events.EventEmitter {
     this.equippedSlots = { body: null, feet: null, back: null, charm: null };
     this.storageChest.clear();
     this.memoryAwakeningStage = 0;
+    this.villageTrustScore = 50;
+    this.storyFlags.clear();
     this.legacyExtraData = undefined;
 
     this.inventory.clear();
@@ -386,6 +391,54 @@ export class PlayerState extends Phaser.Events.EventEmitter {
 
   public hasFlag(flag: string): boolean {
     return this.flags.has(flag);
+  }
+
+  // --- V1.5 - V15-16: QUẢN LÝ CỜ QUYẾT ĐỊNH CỐT TRUYỆN & ĐIỂM TIN CẬY DÂN LÀNG ---
+
+  public setStoryFlag(flag: string): void {
+    if (!this.storyFlags.has(flag)) {
+      this.storyFlags.add(flag);
+      // Đồng thời đồng bộ vào flags chung để tiện theo dõi
+      this.setFlag(flag);
+      this.emit('story_flag_set', flag);
+    }
+  }
+
+  public hasStoryFlag(flag: string): boolean {
+    return this.storyFlags.has(flag);
+  }
+
+  public getStoryFlags(): string[] {
+    return Array.from(this.storyFlags);
+  }
+
+  public restoreStoryFlags(flags?: string[]): void {
+    this.storyFlags.clear();
+    if (Array.isArray(flags)) {
+      for (const f of flags) {
+        if (typeof f === 'string' && f.trim().length > 0) {
+          this.storyFlags.add(f.trim());
+          this.flags.add(f.trim());
+        }
+      }
+    }
+  }
+
+  public getVillageTrustScore(): number {
+    return this.villageTrustScore;
+  }
+
+  public setVillageTrustScore(score: number): void {
+    const clamped = Math.max(0, Math.min(100, Math.round(score)));
+    if (this.villageTrustScore !== clamped) {
+      this.villageTrustScore = clamped;
+      this.emit('village_trust_changed', this.villageTrustScore);
+    }
+  }
+
+  public addVillageTrust(delta: number): number {
+    this.setVillageTrustScore(this.villageTrustScore + delta);
+    return this.villageTrustScore;
   }
 
   /**

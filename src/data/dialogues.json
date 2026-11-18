@@ -8,6 +8,26 @@
         "Ngươi... vạt áo ngươi còn vương hơi sương trắng! Ngươi vừa bước ra từ Màn Sương Quỷ dữ sao?!",
         "Khu rừng Hollow Woods không bao giờ trả lại thứ gì nguyên vẹn! Mau đi gặp bà Edda tại Tháp Chuông trước khi tai ương giáng xuống làng ta!"
       ],
+      "choices": [
+        {
+          "text": "[Gật đầu] \"Ta vừa thoát khỏi sương trắng. Ta sẽ tìm đến Tháp Chuông gặp bà lão.\"",
+          "responseLine": "Được! Ngươi còn tỉnh táo là phúc đức lắm rồi... Cầu mong tiếng chuông làng che chở cho ngươi.",
+          "trustDelta": 2,
+          "setFlag": "choice_garth_cooperative"
+        },
+        {
+          "text": "[Hỏi sâu] \"Màn Sương Quỷ dữ ngoài kia... đã cướp đi những ai của ngôi làng này?\"",
+          "responseLine": "(Garth run run siết chặt ngọn giáo)... Quá nhiều người. Cả đoàn kỵ sĩ canh lửa, thợ rừng, thậm chí cả những đứa trẻ tò mò...",
+          "trustDelta": 1,
+          "setFlag": "lore_curious_about_fog"
+        },
+        {
+          "text": "[Lặng thinh] (Siết chặt gậy gỗ, im lặng nhìn quanh cảnh giác rồi bước đi)",
+          "responseLine": "Cái nhìn lạnh lùng đó... Ngươi giống hệt những chiến binh canh lửa năm xưa. Cẩn thận đấy, lữ khách.",
+          "trustDelta": 0,
+          "setFlag": "wayfarer_silent_stoic"
+        }
+      ],
       "onCompleteFlag": "talked_to_villagers",
       "nextQuestId": "Q01_MEET_EDDA"
     },
@@ -48,6 +68,26 @@
         "Trái tim của ngôi làng là Quả Chuông Cổ, nhưng Lưỡi Chuông Đồng đã bị đánh cắp mang sâu vào Miếu Chuông Phế Tích.",
         "Nếu ngươi muốn tìm đường trở về thế giới của mình, hãy tìm lại Lưỡi Chuông Đồng cho ta!"
       ],
+      "choices": [
+        {
+          "text": "[Tiếp nhận] \"Ba Quy Tắc Bằng Máu... ta sẽ khắc ghi. Ta sẽ tìm lại Lưỡi Chuông Đồng cho làng.\"",
+          "responseLine": "Ánh mắt kiên định lắm... Nguyện cầu ngọn đèn hổ phách xua tan sương mù dẫn lối cho ngươi.",
+          "trustDelta": 3,
+          "setFlag": "choice_edda_promise_bell"
+        },
+        {
+          "text": "[Hỏi sâu] \"Tại sao tiếng chuông ngân lại ngăn được Màn Sương The Veil và Mạch Rễ tha hóa?\"",
+          "responseLine": "Đồng cổ được tôi luyện bằng lửa thiêng và ký ức của tiền nhân. Tần số ngân của chuông làm tê liệt Mạch Rễ đen và xua tan sương lạnh.",
+          "trustDelta": 1,
+          "setFlag": "lore_curious_bell_secret"
+        },
+        {
+          "text": "[Trầm ngâm] \"Ranh giới bên kia... dường như ta không còn nhớ mình là ai nữa.\"",
+          "responseLine": "Màn sương đã tước đoạt ký ức của ngươi... Nhưng đừng sợ, từng bước chân vào rừng sâu sẽ đánh thức lại con người thật của ngươi.",
+          "trustDelta": 2,
+          "setFlag": "wayfarer_lost_identity"
+        }
+      ],
       "onCompleteFlag": "talked_to_edda",
       "nextQuestId": "Q02_MEET_NERIS"
     },
@@ -56,7 +96,7 @@
       "portrait": "portrait_edda",
       "lines": [
         "Hãy nhớ kỹ Ba Quy Tắc Bằng Máu: Không trả lời tiếng gọi tên, Không theo chiếc đèn thứ hai, và Không rung chuông khi sương đã vào làng.",
-        "Mau đến tìm Neris ở tiệm thuốc phía Đông Bắc làng để chữa trị vết thương và học cách pha chế Dầu Đèn. Chỉ khi ngươi chuẩn bị đủ dầu đèn sinh tồn, Garth mới được phép mở Cổng Đông cho ngươi!"
+        "Mau đến tìm Neris ở tiệm thuốc phía Tây Nam làng để chữa trị vết thương và học cách pha chế Dầu Đèn. Chỉ khi ngươi chuẩn bị đủ dầu đèn sinh tồn, Garth mới được phép mở Cổng Đông cho ngươi!"
       ]
     },
     "edda_reminder_open": {
@@ -72,7 +112,7 @@
       "portrait": "portrait_edda",
       "lines": [
         "Hãy nhớ kỹ Ba Quy Tắc Bằng Máu: Không trả lời tiếng gọi tên, Không theo chiếc đèn thứ hai, và Không rung chuông khi sương đã vào làng.",
-        "Mau đến tìm Neris ở tiệm thuốc phía Đông Bắc làng để chữa trị vết thương và học cách pha chế Dầu Đèn. Garth sẽ mở Cổng Đông khi ngươi sẵn sàng!"
+        "Mau đến tìm Neris ở tiệm thuốc phía Tây Nam làng để chữa trị vết thương và học cách pha chế Dầu Đèn. Garth sẽ mở Cổng Đông khi ngươi sẵn sàng!"
       ]
     },
     "neris_intro": {
@@ -84,6 +124,26 @@
         "Khu rừng Hollow Woods chứa đầy thảo dược bạc và nhựa cây thông. Hãy thu thập chúng bên các bờ suối và thân cây cổ thụ.",
         "Dùng bàn chế tạo [Phím I]: Nhựa thông và Gỗ khô sẽ tạo ra Dầu Đèn. Hai nắm Thảo dược sẽ giã thành Thuốc Đắp. Còn Đá lửa ghép với Gỗ sẽ tạo thành Mồi Tiếng Động để ném đánh lạc hướng quái vật.",
         "Ta đã phục hồi sinh lực cho ngươi. Hãy giữ ngọn đèn luôn cháy sáng, hỡi Lữ Khách Rêu Phong!"
+      ],
+      "choices": [
+        {
+          "text": "[Cảm kích] \"Cảm ơn chén thuốc đắp. Ta sẽ châm đầy bình dầu để ngọn đèn không lụi tàn.\"",
+          "responseLine": "Tốt lắm. Hãy luôn giữ hơi ấm và nhớ rằng ngọn đèn là sinh mạng của ngươi giữa đêm sương.",
+          "trustDelta": 3,
+          "setFlag": "choice_neris_grateful"
+        },
+        {
+          "text": "[Hỏi thảo dược] \"Ngoài thuốc đắp, loài thảo mộc nào có thể làm dịu cơn hoảng loạn trong bóng tối?\"",
+          "responseLine": "Rễ cây cổ thụ dưới Hầm Rễ Cổ có thể nấu thành Trà An Thần. Sau này khi có dịp, ta sẽ hướng dẫn ngươi bào chế.",
+          "trustDelta": 1,
+          "setFlag": "lore_curious_calming_herbs"
+        },
+        {
+          "text": "[Thận trọng] \"Ta không quen nhận ơn huệ không công. Ta sẽ mang thảo dược mới về cho tiệm thuốc.\"",
+          "responseLine": "Hiệp nghĩa và sòng phẳng... Giống hệt phong thái của các kỵ sĩ canh gác năm xưa.",
+          "trustDelta": 2,
+          "setFlag": "wayfarer_honorable_debt"
+        }
       ],
       "onCompleteFlag": "talked_to_neris",
       "nextQuestId": "Q03_PREPARE_RESOURCES",
@@ -137,6 +197,20 @@
         "Màn sương lạnh ngoài Khu rừng Hollow Woods luôn chực chờ dập tắt mọi hơi ấm, nên ta phải giữ cho ngọn lửa lò rèn luôn rực cháy cả ngày lẫn đêm.",
         "Bàn Chế Tạo ngay bên cạnh luôn sẵn sàng: chỉ cần gom đủ Gỗ Khô, Đá Lửa và Nhựa Cây, ngươi có thể tự rèn Bó Đuốc và châm thêm Dầu Đèn để sống sót giữa đêm sương!",
         "Hãy luôn giữ ngọn lửa trong tim và kiểm tra bình dầu đèn trước khi bước qua Cổng Đông nhé!"
+      ],
+      "choices": [
+        {
+          "text": "[Ghi nhận] \"Ngọn lửa rèn rất ấm. Ta sẽ thu thập nguyên liệu và sử dụng bàn chế tạo rèn dụng cụ.\"",
+          "responseLine": "Tốt lắm! Thợ rèn Bram này luôn hoan nghênh những ai biết trân trọng giá trị của búa và đe rèn!",
+          "trustDelta": 2,
+          "setFlag": "choice_bram_crafted"
+        },
+        {
+          "text": "[Hỏi về sắt rèn] \"Ngươi có thể rèn lại những thanh kiếm cổ vương lại trong phế tích rừng sâu không?\"",
+          "responseLine": "Chỉ cần ngươi mang được Phôi Sắt Cổ Ngữ từ Xưởng Chuông Cũ về, ta sẽ rèn cho ngươi ngọn giáo sắc bén nhất!",
+          "trustDelta": 1,
+          "setFlag": "lore_curious_smithing"
+        }
       ]
     },
     "finn_chat": {
@@ -146,6 +220,20 @@
         "Chào anh Lữ Khách! Anh vừa từ trong sương mù bước ra thật sao?!",
         "Em là Finn, người chuyển tin tức và chạy việc quanh quảng trường làng Bellhollow.",
         "Bà lão Edda dặn đừng đi lang thang ra Cổng Đông khi trời tối, sương mù ngoài đó nuốt chửng mọi thanh âm đấy!"
+      ],
+      "choices": [
+        {
+          "text": "[Khuyên nhủ] \"Cảm ơn cậu bé. Đừng lảng vảng một mình gần Cổng Đông khi trời tối nhé.\"",
+          "responseLine": "Vâng ạ! Em chỉ chạy quanh giếng nước và đống lửa trại thôi, em không dại gì ra ngoài đâu!",
+          "trustDelta": 2,
+          "setFlag": "choice_finn_warned"
+        },
+        {
+          "text": "[Lắng nghe] \"Em có nghe thấy tin tức hay lời đồn nào lạ về khu rừng gần đây không?\"",
+          "responseLine": "Có chứ ạ! Thợ rừng nói phía Nam rừng ngoài có phế tích xưởng đúc chuông bỏ hoang nhiều bí mật lắm!",
+          "trustDelta": 1,
+          "setFlag": "lore_finn_rumor_seeker"
+        }
       ]
     },
     "bram_quest_runed_iron": {
@@ -210,6 +298,26 @@
         "Ta là kẻ canh gác cuối cùng còn sót lại của Đội Hiệp Sĩ Canh Lửa. Đoàn kỵ sĩ giáp bạc năm xưa đã tiến sâu vào rừng để bảo vệ làng, nhưng màn sương đen The Veil đã nuốt chửng tất cả...",
         "Giờ đây, ngọn lửa trại này là thành trì duy nhất giữ cho tâm trí của chúng ta không bị tà khí xâm chiếm.",
         "Nhưng than củi đang cạn dần. Ngươi có thể giúp ta gom 2 Gỗ Khô và 2 Nhựa Cây quanh bìa rừng để tiếp lửa nâng cấp Lửa Trại lên Cấp 2 không? Đồng thời hãy trinh sát bìa Rừng Ngoài xem lũ quái vật có động tĩnh gì không."
+      ],
+      "choices": [
+        {
+          "text": "[Đồng ý giúp] \"Ta sẽ tìm gỗ khô và nhựa cây tiếp lửa cho ngọn trại này.\"",
+          "responseLine": "Đa tạ người lữ khách hào hiệp! Ngọn lửa này bừng sáng sẽ bảo bọc cho toàn thể dân làng Bellhollow.",
+          "trustDelta": 3,
+          "setFlag": "choice_knight_pledge_fire"
+        },
+        {
+          "text": "[Hỏi về kỵ sĩ] \"Bộ giáp đen mà ngươi vừa nhắc tới... có phải thuộc về một vị chỉ huy năm xưa?\"",
+          "responseLine": "(Hiệp sĩ thở dài nghẹn ngào)... Đúng vậy. Vị Tổng Chỉ Huy huyền thoại đã một mình dẫn đầu đội tiên phong phá vòng vây sương mù, rồi biệt tích...",
+          "trustDelta": 2,
+          "setFlag": "lore_curious_black_knight"
+        },
+        {
+          "text": "[Trầm mặc] (Lặng lẽ ngồi xuống sưởi tay bên đốm lửa ấm, ngắm nhìn tàn than bay lên trời đêm)",
+          "responseLine": "Sự tĩnh lặng của ngươi khiến ta thấy an tâm lạ kỳ. Hãy nghỉ ngơi lấy sức trước khi bước vào rừng sâu.",
+          "trustDelta": 1,
+          "setFlag": "wayfarer_silent_fire_watcher"
+        }
       ],
       "onCompleteFlag": "campfire_knight_q1_accepted",
       "nextQuestId": "SQ06_KEEP_FIRE"

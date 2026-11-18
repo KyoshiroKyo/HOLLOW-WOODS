@@ -49,6 +49,9 @@ export interface SaveData {
   unlockedBestiary?: string[]; // V1.4 Mặc định: []
   observedCreatures?: string[]; // Danh sách sinh vật đã quan sát (Bestiary)
   memoryAwakeningStage?: number; // V1.4 - P8-15A: Giai đoạn Thức Tỉnh Ký Ức (0 -> 1 -> 2 -> 3)
+  // V1.5 - V15-16: Điểm Tin Cậy Dân Làng (0 - 100) & Cờ Quyết Định Cốt Truyện Tương Tác
+  villageTrustScore?: number;    // Mặc định: 50
+  storyFlags?: string[];         // Mặc định: []
   legacyExtraData?: Record<string, any>; // Lưu trữ an toàn các trường không xác định
 }
 
@@ -353,6 +356,21 @@ export class SaveManager {
         }
       }
 
+      // V1.5 - V15-16: Điểm Tin Cậy Dân Làng (villageTrustScore: 0 - 100, Mặc định: 50)
+      const villageTrustScore = typeof rawObj.villageTrustScore === 'number' && !isNaN(rawObj.villageTrustScore)
+        ? Math.max(0, Math.min(100, Math.round(rawObj.villageTrustScore)))
+        : 50;
+
+      // V1.5 - V15-16: Cờ Lựa Chọn Cốt Truyện (storyFlags) — Mặc định: []
+      const storyFlags: string[] = [];
+      if (Array.isArray(rawObj.storyFlags)) {
+        for (const sf of rawObj.storyFlags) {
+          if (typeof sf === 'string' && sf.trim().length > 0 && !storyFlags.includes(sf.trim())) {
+            storyFlags.push(sf.trim());
+          }
+        }
+      }
+
       // Giữ nguyên các trường không xác định vào legacyExtraData
       const knownKeys = new Set([
         'saveVersion', 'saveSchemaVersion', 'version', 'timestamp', 'checkpointName', 'zoneId',
@@ -360,7 +378,7 @@ export class SaveManager {
         'unlockedLoreIds', 'visitedZones', 'unlockedZones', 'herbPlots',
         'dayCount', 'timeOfDay', 'equippedSlots', 'storageChest', 'storageChestInventory',
         'campfireLevel', 'campfireFuel', 'observedCreatures', 'unlockedBestiary',
-        'memoryAwakeningStage', 'legacyExtraData'
+        'memoryAwakeningStage', 'villageTrustScore', 'storyFlags', 'legacyExtraData'
       ]);
       const legacyExtraData: Record<string, any> = rawObj.legacyExtraData ? { ...rawObj.legacyExtraData } : {};
       for (const [k, v] of Object.entries(rawObj)) {
@@ -401,6 +419,8 @@ export class SaveManager {
         unlockedBestiary: observedCreatures,
         observedCreatures,
         memoryAwakeningStage: typeof rawObj.memoryAwakeningStage === 'number' ? Math.max(0, Math.min(3, Math.floor(rawObj.memoryAwakeningStage))) : 0,
+        villageTrustScore,
+        storyFlags,
         legacyExtraData: Object.keys(legacyExtraData).length > 0 ? legacyExtraData : undefined
       };
     } catch (e) {
@@ -480,6 +500,8 @@ export class SaveManager {
       unlockedBestiary: Array.from(state.bestiary.values()).filter(b => b.observed).map(b => b.species),
       observedCreatures: Array.from(state.bestiary.values()).filter(b => b.observed).map(b => b.species),
       memoryAwakeningStage: state.memoryAwakeningStage ?? 0,
+      villageTrustScore: state.getVillageTrustScore(),
+      storyFlags: state.getStoryFlags(),
       legacyExtraData: state.legacyExtraData ? { ...state.legacyExtraData } : undefined
     };
   }
@@ -600,6 +622,10 @@ export class SaveManager {
     state.campfireLevel = data.campfireLevel ?? 1;
     state.campfireFuel = data.campfireFuel ?? 180;
     state.memoryAwakeningStage = data.memoryAwakeningStage ?? 0;
+
+    // V1.5 - V15-16: Phục hồi Điểm Tin Cậy Dân Làng & Cờ Quyết Định Cốt Truyện
+    state.setVillageTrustScore(data.villageTrustScore ?? 50);
+    state.restoreStoryFlags(data.storyFlags);
 
     // Phục hồi Sổ Tay Sinh Vật (Bestiary)
     const bestiaryList = data.unlockedBestiary || data.observedCreatures;
