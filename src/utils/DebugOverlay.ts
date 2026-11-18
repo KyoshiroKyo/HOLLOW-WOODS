@@ -145,4 +145,16 @@ export class DebugOverlay {
       `Độ phân giải: 1280×720 HD  |  Camera Zoom: 2.2×  |  FPS: ${Math.round(this.scene.game.loop.actualFps)}${cullingInfo}`
     ]);
   }
+
+  public destroy(): void {
+    if (this.f4Key) {
+      this.f4Key.removeAllListeners();
+    }
+    if (this.graphics) {
+      this.graphics.destroy();
+    }
+    if (this.textObject) {
+      this.textObject.destroy();
+    }
+  }
 }

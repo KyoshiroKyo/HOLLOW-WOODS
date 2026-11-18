@@ -163,6 +163,7 @@ export class GameScene extends Phaser.Scene {
 
   // C4-12-29: Quản lý tối ưu hóa hiệu năng (Throttled Camera Culling & Graphics Redraw guards)
   private cullingTimer: number = 0;
+  private onHealthDepletedHandler?: () => void;
   private isLanternGlowDrawn: boolean = false;
   private firefliesDrawnCount: number = 0;
   private lastMonsterStaggerTime: number = 0;
@@ -497,10 +498,11 @@ export class GameScene extends Phaser.Scene {
     };
     this.uiScene.gameOverModal = this.gameOverModal;
 
-    // C4-13-03: Lắng nghe sự kiện cạn kiệt sinh lực từ SurvivalSystem
-    this.playerState.on('player_health_depleted', () => {
+    // C4-13-03 / V15-27: Lắng nghe sự kiện cạn kiệt sinh lực từ SurvivalSystem (lưu handler để gỡ khi shutdown)
+    this.onHealthDepletedHandler = () => {
       this.triggerPlayerDeath('Sinh lực đã cạn kiệt trong màn sương mù u tối...');
-    });
+    };
+    this.playerState.on('player_health_depleted', this.onHealthDepletedHandler);
 
     // 11. Công cụ kiểm toán kỹ thuật F4 Debug (Graphics trên GameScene, Text trên UIScene Zoom 1.0)
     this.debugOverlay = new DebugOverlay(this, this.player, this.uiScene);
@@ -754,6 +756,18 @@ export class GameScene extends Phaser.Scene {
       }
       if (this.interactionOutlineGfx) {
         this.interactionOutlineGfx.destroy();
+      }
+      if (this.onHealthDepletedHandler) {
+        this.playerState.off('player_health_depleted', this.onHealthDepletedHandler);
+        this.onHealthDepletedHandler = undefined;
+      }
+      if (this.hitboxInspector) {
+        this.hitboxInspector.destroy();
+        this.hitboxInspector = undefined as any;
+      }
+      if (this.debugOverlay) {
+        this.debugOverlay.destroy();
+        this.debugOverlay = undefined as any;
       }
       this.tweens.killAll();
       this.time.removeAllEvents();
@@ -2196,11 +2210,12 @@ export class GameScene extends Phaser.Scene {
     // C4-12-27: Kiểm tra và ổn định các điểm chuyển vùng (Transition Triggers & Debounce)
     this.checkZoneTransitions(delta);
 
-    // C4-12-29: Throttled Camera Frustum Culling (chạy mỗi 75ms thay vì mỗi frame 16ms để tiết kiệm CPU)
+    // C4-12-29 / V15-27: Throttled Camera Frustum Culling (chạy mỗi 75ms thay vì mỗi frame 16ms để tiết kiệm CPU)
     this.cullingTimer += delta;
     if (this.cullingTimer >= 75) {
       this.cullingTimer = 0;
       this.worldBuilder.updateCameraCulling(this.cameras.main);
+      this.updateEntityCameraCulling();
     }
 
     // Phát hiện và xử lý phân khu
@@ -5431,6 +5446,70 @@ export class GameScene extends Phaser.Scene {
       if (this.isLanternGlowDrawn) {
         this.lanternGlowGfx.clear();
         this.isLanternGlowDrawn = false;
+      }
+    }
+  }
+
+  /**
+   * V1.5 (BƯỚC V15-27): Tối ưu hóa hiệu năng render bằng cơ chế Camera Frustum Culling
+   * Tự động tạm ẩn hiển thị cho NPC, Quái vật và Đuốc cắm nằm ngoài khung nhìn Camera (biên an toàn 160px)
+   * nhằm giữ tốc độ khung hình ổn định quanh mức 60 FPS.
+   */
+  private updateEntityCameraCulling(): void {
+    const cam = this.cameras.main;
+    if (!cam || !cam.worldView) return;
+
+    const margin = 160;
+    const viewLeft = cam.worldView.x - margin;
+    const viewRight = cam.worldView.right + margin;
+    const viewTop = cam.worldView.y - margin;
+    const viewBottom = cam.worldView.bottom + margin;
+
+    // 1. Tạm ẩn hiển thị NPC khi nằm ngoài khung nhìn camera (+160px)
+    if (this.npcs && this.npcs.length > 0) {
+      for (let i = 0; i < this.npcs.length; i++) {
+        const npc = this.npcs[i];
+        if (!npc) continue;
+        const isInside = (
+          npc.x >= viewLeft - 40 &&
+          npc.x <= viewRight + 40 &&
+          npc.y >= viewTop - 40 &&
+          npc.y <= viewBottom + 40
+        );
+        if (npc.visible !== isInside) {
+          npc.setVisible(isInside);
+        }
+      }
+    }
+
+    // 2. Tạm ẩn hiển thị The Listener nếu ở ngoài tầm nhìn và không trong trạng thái săn đuổi cận cảnh
+    if (this.listenerMonster && this.listenerMonster.active) {
+      const isChase = this.listenerMonster.ai?.state === 'CHASE';
+      const isInside = (
+        this.listenerMonster.x >= viewLeft - 60 &&
+        this.listenerMonster.x <= viewRight + 60 &&
+        this.listenerMonster.y >= viewTop - 60 &&
+        this.listenerMonster.y <= viewBottom + 60
+      );
+      const shouldBeVisible = isChase || isInside;
+      if (this.listenerMonster.visible !== shouldBeVisible) {
+        this.listenerMonster.setVisible(shouldBeVisible);
+      }
+    }
+
+    // 3. Tạm ẩn hiển thị đồ họa Đuốc Nhựa Thông cắm ngoài khung nhìn
+    if (this.plantedFlares && this.plantedFlares.length > 0) {
+      for (let i = 0; i < this.plantedFlares.length; i++) {
+        const flare = this.plantedFlares[i];
+        const isInside = (
+          flare.x + flare.radius >= viewLeft &&
+          flare.x - flare.radius <= viewRight &&
+          flare.y + flare.radius >= viewTop &&
+          flare.y - flare.radius <= viewBottom
+        );
+        if (flare.torchGfx && flare.torchGfx.visible !== isInside) flare.torchGfx.setVisible(isInside);
+        if (flare.flameGfx && flare.flameGfx.visible !== isInside) flare.flameGfx.setVisible(isInside);
+        if (flare.glowGfx && flare.glowGfx.visible !== isInside) flare.glowGfx.setVisible(isInside);
       }
     }
   }

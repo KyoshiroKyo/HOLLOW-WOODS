@@ -52,6 +52,7 @@ export interface SaveData {
   // V1.5 - V15-16: Điểm Tin Cậy Dân Làng (0 - 100) & Cờ Quyết Định Cốt Truyện Tương Tác
   villageTrustScore?: number;    // Mặc định: 50
   storyFlags?: string[];         // Mặc định: []
+  activeWeapon?: string;         // V1.5: Vũ khí tự vệ đang kích hoạt (Mặc định: 'wpn_walking_staff')
   legacyExtraData?: Record<string, any>; // Lưu trữ an toàn các trường không xác định
 }
 
@@ -164,7 +165,7 @@ export class SaveManager {
 
       const saveSchemaVersion = SaveManager.CURRENT_SCHEMA_VERSION;
       const saveVersion = SaveManager.CURRENT_SCHEMA_VERSION;
-      const version = isLegacy ? '1.4.0' : (typeof rawObj.version === 'string' ? rawObj.version : '1.4.0');
+      const version = isLegacy ? '1.4.0' : (typeof rawObj.version === 'string' ? rawObj.version : '1.5.0');
       const timestamp = typeof rawObj.timestamp === 'number' && !isNaN(rawObj.timestamp) ? rawObj.timestamp : Date.now();
       const checkpointName = typeof rawObj.checkpointName === 'string' && rawObj.checkpointName.trim().length > 0
         ? rawObj.checkpointName
@@ -372,6 +373,11 @@ export class SaveManager {
         }
       }
 
+      // V1.5 - BƯỚC V15-27: Vũ khí tự vệ kích hoạt (activeWeapon) — Mặc định: 'wpn_walking_staff'
+      const activeWeapon = typeof rawObj.activeWeapon === 'string' && rawObj.activeWeapon.trim().length > 0
+        ? rawObj.activeWeapon.trim()
+        : 'wpn_walking_staff';
+
       // Giữ nguyên các trường không xác định vào legacyExtraData
       const knownKeys = new Set([
         'saveVersion', 'saveSchemaVersion', 'version', 'timestamp', 'checkpointName', 'zoneId',
@@ -379,7 +385,7 @@ export class SaveManager {
         'unlockedLoreIds', 'visitedZones', 'unlockedZones', 'herbPlots',
         'dayCount', 'timeOfDay', 'equippedSlots', 'storageChest', 'storageChestInventory',
         'campfireLevel', 'campfireFuel', 'observedCreatures', 'unlockedBestiary',
-        'memoryAwakeningStage', 'villageTrustScore', 'storyFlags', 'legacyExtraData'
+        'memoryAwakeningStage', 'villageTrustScore', 'storyFlags', 'activeWeapon', 'legacyExtraData'
       ]);
       const legacyExtraData: Record<string, any> = rawObj.legacyExtraData ? { ...rawObj.legacyExtraData } : {};
       for (const [k, v] of Object.entries(rawObj)) {
@@ -422,6 +428,7 @@ export class SaveManager {
         memoryAwakeningStage: typeof rawObj.memoryAwakeningStage === 'number' ? Math.max(0, Math.min(3, Math.floor(rawObj.memoryAwakeningStage))) : 0,
         villageTrustScore,
         storyFlags,
+        activeWeapon,
         legacyExtraData: Object.keys(legacyExtraData).length > 0 ? legacyExtraData : undefined
       };
     } catch (e) {
@@ -476,7 +483,7 @@ export class SaveManager {
     return {
       saveVersion: SaveManager.CURRENT_SCHEMA_VERSION,
       saveSchemaVersion: SaveManager.CURRENT_SCHEMA_VERSION,
-      version: '1.4.0',
+      version: '1.5.0',
       timestamp: Date.now(),
       checkpointName,
       zoneId,
@@ -503,6 +510,7 @@ export class SaveManager {
       memoryAwakeningStage: state.memoryAwakeningStage ?? 0,
       villageTrustScore: state.getVillageTrustScore(),
       storyFlags: state.getStoryFlags(),
+      activeWeapon: state.getActiveWeapon(),
       legacyExtraData: state.legacyExtraData ? { ...state.legacyExtraData } : undefined
     };
   }
@@ -627,6 +635,11 @@ export class SaveManager {
     // V1.5 - V15-16: Phục hồi Điểm Tin Cậy Dân Làng & Cờ Quyết Định Cốt Truyện
     state.setVillageTrustScore(data.villageTrustScore ?? 50);
     state.restoreStoryFlags(data.storyFlags);
+
+    // V1.5 - BƯỚC V15-27: Phục hồi Vũ khí tự vệ kích hoạt
+    if (data.activeWeapon) {
+      state.setActiveWeapon(data.activeWeapon);
+    }
 
     // Phục hồi Sổ Tay Sinh Vật (Bestiary)
     const bestiaryList = data.unlockedBestiary || data.observedCreatures;

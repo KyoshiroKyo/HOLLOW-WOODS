@@ -68,8 +68,9 @@ export class CullingOptimizationModule {
 
   /**
    * Cập nhật culling theo khung nhìn camera (Camera Frustum Viewport)
+   * V1.5 (BƯỚC V15-27): Chuẩn hóa biên lề an toàn 160px giữ tốc độ 60 FPS
    */
-  public update(camera: Phaser.Cameras.Scene2D.Camera, margin: number = 180): { total: number; visible: number; culled: number } {
+  public update(camera: Phaser.Cameras.Scene2D.Camera, margin: number = 160): { total: number; visible: number; culled: number } {
     const total = this.cullableList.length;
 
     // Nếu công tắc Culling bị tắt, kích hoạt hiển thị 100% đối tượng và thoát sớm

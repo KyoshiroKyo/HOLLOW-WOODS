@@ -25,6 +25,9 @@ export class CauldronModal {
   private recipeListContainer!: Phaser.GameObjects.Container;
   private statusText!: Phaser.GameObjects.Text;
 
+  private onInventoryChangedHandler?: () => void;
+  private onEscKeyHandler?: () => void;
+
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
     this.campSystem = CampSystem.getInstance();
@@ -38,14 +41,16 @@ export class CauldronModal {
     this.container.setVisible(false);
 
     if (scene.input && scene.input.keyboard) {
-      scene.input.keyboard.on('keydown-ESC', () => {
+      this.onEscKeyHandler = () => {
         if (this.isOpen) this.close();
-      });
+      };
+      scene.input.keyboard.on('keydown-ESC', this.onEscKeyHandler);
     }
 
-    this.playerState.on('inventory_changed', () => {
+    this.onInventoryChangedHandler = () => {
       if (this.isOpen) this.refreshView();
-    });
+    };
+    this.playerState.on('inventory_changed', this.onInventoryChangedHandler);
   }
 
   private buildUI(): void {
@@ -267,6 +272,14 @@ export class CauldronModal {
   }
 
   public destroy(): void {
+    if (this.onInventoryChangedHandler) {
+      this.playerState.off('inventory_changed', this.onInventoryChangedHandler);
+      this.onInventoryChangedHandler = undefined;
+    }
+    if (this.onEscKeyHandler && this.scene.input && this.scene.input.keyboard) {
+      this.scene.input.keyboard.off('keydown-ESC', this.onEscKeyHandler);
+      this.onEscKeyHandler = undefined;
+    }
     if (this.container) {
       this.container.destroy();
     }

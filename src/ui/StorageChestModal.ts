@@ -39,6 +39,10 @@ export class StorageChestModal {
   private invPage: number = 0;
   private readonly itemsPerPage: number = 12;
 
+  private onChestUpdatedHandler?: () => void;
+  private onInventoryChangedHandler?: () => void;
+  private onEscKeyHandler?: () => void;
+
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
     this.campSystem = CampSystem.getInstance();
@@ -53,18 +57,21 @@ export class StorageChestModal {
 
     // Lắng nghe phím ESC để đóng
     if (scene.input && scene.input.keyboard) {
-      scene.input.keyboard.on('keydown-ESC', () => {
+      this.onEscKeyHandler = () => {
         if (this.isOpen) this.close();
-      });
+      };
+      scene.input.keyboard.on('keydown-ESC', this.onEscKeyHandler);
     }
 
-    // Lắng nghe cập nhật rương và túi đồ
-    this.playerState.on('chest_updated', () => {
+    // Lắng nghe cập nhật rương và túi đồ (V15-27: có handler để gỡ khi destroy)
+    this.onChestUpdatedHandler = () => {
       if (this.isOpen) this.refreshView();
-    });
-    this.playerState.on('inventory_changed', () => {
+    };
+    this.onInventoryChangedHandler = () => {
       if (this.isOpen) this.refreshView();
-    });
+    };
+    this.playerState.on('chest_updated', this.onChestUpdatedHandler);
+    this.playerState.on('inventory_changed', this.onInventoryChangedHandler);
   }
 
   private buildUI(): void {
@@ -593,6 +600,18 @@ export class StorageChestModal {
   }
 
   public destroy(): void {
+    if (this.onChestUpdatedHandler) {
+      this.playerState.off('chest_updated', this.onChestUpdatedHandler);
+      this.onChestUpdatedHandler = undefined;
+    }
+    if (this.onInventoryChangedHandler) {
+      this.playerState.off('inventory_changed', this.onInventoryChangedHandler);
+      this.onInventoryChangedHandler = undefined;
+    }
+    if (this.onEscKeyHandler && this.scene.input && this.scene.input.keyboard) {
+      this.scene.input.keyboard.off('keydown-ESC', this.onEscKeyHandler);
+      this.onEscKeyHandler = undefined;
+    }
     if (this.container) {
       this.container.destroy();
     }

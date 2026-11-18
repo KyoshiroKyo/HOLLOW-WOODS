@@ -79,6 +79,7 @@ export class JournalModal {
 
   public isOpen: boolean = false;
   private lastToggleTime: number = 0;
+  private keyHandlers: Array<{ key: string; fn: any }> = [];
 
   public onOpen?: () => void;
   public onClose?: () => void;
@@ -369,38 +370,43 @@ export class JournalModal {
     this.buildUI();
     this.container.setVisible(false);
 
-    // Lắng nghe phím bấm J, ESC và số 1, 2, 3 chuyển tab (tương thích UniKey/EVKey)
-    if (scene.input && scene.input.keyboard) {
-      scene.input.keyboard.on('keydown-J', () => this.toggle());
-      scene.input.keyboard.on('keydown-ESC', () => {
+    // Lắng nghe phím bấm J, ESC và số 1, 2, 3 chuyển tab (V15-27: quản lý keyHandlers gỡ khi destroy)
+    const kb = scene.input?.keyboard;
+    if (kb) {
+      const addKey = (key: string, fn: any) => {
+        kb.on(key, fn);
+        this.keyHandlers.push({ key, fn });
+      };
+      addKey('keydown-J', () => this.toggle());
+      addKey('keydown-ESC', () => {
         if (this.isOpen) this.close();
       });
-      scene.input.keyboard.on('keydown-ONE', () => {
+      addKey('keydown-ONE', () => {
         if (this.isOpen) {
           this.currentTab = 'quest';
           this.refresh();
         }
       });
-      scene.input.keyboard.on('keydown-TWO', () => {
+      addKey('keydown-TWO', () => {
         if (this.isOpen) {
           this.currentTab = 'lore';
           this.refresh();
         }
       });
-      scene.input.keyboard.on('keydown-THREE', () => {
+      addKey('keydown-THREE', () => {
         if (this.isOpen) {
           this.currentTab = 'bestiary';
           this.refresh();
         }
       });
-      scene.input.keyboard.on('keydown-FOUR', () => {
+      addKey('keydown-FOUR', () => {
         if (this.isOpen) {
           this.currentTab = 'map';
           this.selectedZoneId = this.playerState.getCurrentZone();
           this.refresh();
         }
       });
-      scene.input.keyboard.on('keydown-M', () => {
+      addKey('keydown-M', () => {
         if (this.isOpen) {
           this.currentTab = 'map';
           this.refresh();
@@ -1601,9 +1607,15 @@ export class JournalModal {
   }
 
   /**
-   * C4-13-09: Dọn dẹp đối tượng hiển thị Modal tránh rò rỉ bộ nhớ
+   * C4-13-09 / V15-27: Dọn dẹp đối tượng hiển thị Modal và gỡ bỏ toàn bộ keyboard listener tránh rò rỉ bộ nhớ
    */
   public destroy(): void {
+    if (this.scene.input && this.scene.input.keyboard) {
+      for (const kh of this.keyHandlers) {
+        this.scene.input.keyboard.off(kh.key, kh.fn);
+      }
+      this.keyHandlers = [];
+    }
     if (this.contentContainer) {
       this.contentContainer.removeAll(true);
       this.contentContainer.destroy();

@@ -102,6 +102,7 @@ export class WorldBuilder {
   private sortedZonesByArea: ZoneData[] = [];
   private cullableObjects: CullableObject[] = [];
   private activeZoneId: ZoneId = 'fog_crossing';
+  private campfireUpdateHandler?: (data: { level: number; fuel: number }) => void;
 
   public colliderGroup!: Phaser.Physics.Arcade.StaticGroup;
   public treeCanopyGroup!: Phaser.GameObjects.Group;
@@ -5250,9 +5251,12 @@ export class WorldBuilder {
     fireSprite.setDepth(cy + 4);
     this.registerCullable(fireSprite, cx, cy, 50);
 
-    // Lắng nghe cập nhật khi người chơi nạp củi / nâng cấp
+    // Lắng nghe cập nhật khi người chơi nạp củi / nâng cấp (gỡ handler cũ nếu có để tránh rò rỉ V15-27)
     const playerState = PlayerState.getInstance();
-    playerState.on('campfire_updated', (data: { level: number; fuel: number }) => {
+    if (this.campfireUpdateHandler) {
+      playerState.off('campfire_updated', this.campfireUpdateHandler);
+    }
+    this.campfireUpdateHandler = (data: { level: number; fuel: number }) => {
       const lit = data.fuel > 0;
       let nextKey = SPRITE_CAMPFIRE_TIER1_V15;
       if (!lit) {
@@ -5266,7 +5270,8 @@ export class WorldBuilder {
         fireSprite.setTexture(nextKey);
       }
       updateGlow(data.level, lit);
-    });
+    };
+    playerState.on('campfire_updated', this.campfireUpdateHandler);
 
     if (this.scene.tweens) {
       // Hiệu ứng bập bùng ngọn lửa
@@ -7845,11 +7850,11 @@ export class WorldBuilder {
   }
 
   /**
-   * C4-12-29: Cập nhật culling theo camera frustum với biên lề an toàn 180px
+   * C4-12-29 / V15-27: Cập nhật culling theo camera frustum với biên lề an toàn 160px giữ vững 60 FPS
    */
   public updateCameraCulling(camera: Phaser.Cameras.Scene2D.Camera): void {
     if (!camera || !camera.worldView) return;
-    CullingOptimizationModule.getInstance().update(camera, 180);
+    CullingOptimizationModule.getInstance().update(camera, 160);
   }
 
   /**
@@ -8128,6 +8133,11 @@ export class WorldBuilder {
   }
 
   public destroy(): void {
+    if (this.campfireUpdateHandler) {
+      PlayerState.getInstance().off('campfire_updated', this.campfireUpdateHandler);
+      this.campfireUpdateHandler = undefined;
+    }
+    CullingOptimizationModule.getInstance().clear();
     this.cullableObjects = [];
   }
 }

@@ -30,6 +30,10 @@ export class CampfireModal {
   private resinBtnText!: Phaser.GameObjects.Text;
   private statusText!: Phaser.GameObjects.Text;
 
+  private onCampfireUpdatedHandler?: () => void;
+  private onInventoryChangedHandler?: () => void;
+  private onEscKeyHandler?: () => void;
+
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
     this.campSystem = CampSystem.getInstance();
@@ -43,17 +47,20 @@ export class CampfireModal {
     this.container.setVisible(false);
 
     if (scene.input && scene.input.keyboard) {
-      scene.input.keyboard.on('keydown-ESC', () => {
+      this.onEscKeyHandler = () => {
         if (this.isOpen) this.close();
-      });
+      };
+      scene.input.keyboard.on('keydown-ESC', this.onEscKeyHandler);
     }
 
-    this.playerState.on('campfire_updated', () => {
+    this.onCampfireUpdatedHandler = () => {
       if (this.isOpen) this.refreshView();
-    });
-    this.playerState.on('inventory_changed', () => {
+    };
+    this.onInventoryChangedHandler = () => {
       if (this.isOpen) this.refreshView();
-    });
+    };
+    this.playerState.on('campfire_updated', this.onCampfireUpdatedHandler);
+    this.playerState.on('inventory_changed', this.onInventoryChangedHandler);
   }
 
   private buildUI(): void {
@@ -298,6 +305,18 @@ export class CampfireModal {
   }
 
   public destroy(): void {
+    if (this.onCampfireUpdatedHandler) {
+      this.playerState.off('campfire_updated', this.onCampfireUpdatedHandler);
+      this.onCampfireUpdatedHandler = undefined;
+    }
+    if (this.onInventoryChangedHandler) {
+      this.playerState.off('inventory_changed', this.onInventoryChangedHandler);
+      this.onInventoryChangedHandler = undefined;
+    }
+    if (this.onEscKeyHandler && this.scene.input && this.scene.input.keyboard) {
+      this.scene.input.keyboard.off('keydown-ESC', this.onEscKeyHandler);
+      this.onEscKeyHandler = undefined;
+    }
     if (this.container) {
       this.container.destroy();
     }

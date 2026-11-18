@@ -41,6 +41,12 @@ export class EquipmentModal {
   private selectedSlot: EquipmentSlot = 'body';
   private selectedInventoryItem: string | null = null;
 
+  private onEquipmentChangedHandler?: () => void;
+  private onInventoryChangedHandler?: () => void;
+  private onWeaponChangedHandler?: () => void;
+  private onEscKeyHandler?: () => void;
+  private onBKeyHandler?: () => void;
+
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
     this.equipSystem = EquipmentSystem.getInstance();
@@ -53,26 +59,31 @@ export class EquipmentModal {
     this.buildUI();
     this.container.setVisible(false);
 
-    // Lắng nghe phím ESC & B để đóng/mở
+    // Lắng nghe phím ESC & B để đóng/mở (V15-27: có handler để gỡ khi destroy)
     if (scene.input && scene.input.keyboard) {
-      scene.input.keyboard.on('keydown-ESC', () => {
+      this.onEscKeyHandler = () => {
         if (this.isOpen) this.close();
-      });
-      scene.input.keyboard.on('keydown-B', () => {
+      };
+      this.onBKeyHandler = () => {
         this.toggle();
-      });
+      };
+      scene.input.keyboard.on('keydown-ESC', this.onEscKeyHandler);
+      scene.input.keyboard.on('keydown-B', this.onBKeyHandler);
     }
 
-    // Lắng nghe sự kiện thay đổi trang bị hoặc túi đồ
-    this.playerState.on('equipment_changed', () => {
+    // Lắng nghe sự kiện thay đổi trang bị hoặc túi đồ (V15-27: có handler để gỡ khi destroy)
+    this.onEquipmentChangedHandler = () => {
       if (this.isOpen) this.refreshView();
-    });
-    this.playerState.on('inventory_changed', () => {
+    };
+    this.onInventoryChangedHandler = () => {
       if (this.isOpen) this.refreshView();
-    });
-    this.playerState.on('weapon_changed', () => {
+    };
+    this.onWeaponChangedHandler = () => {
       if (this.isOpen) this.refreshView();
-    });
+    };
+    this.playerState.on('equipment_changed', this.onEquipmentChangedHandler);
+    this.playerState.on('inventory_changed', this.onInventoryChangedHandler);
+    this.playerState.on('weapon_changed', this.onWeaponChangedHandler);
   }
 
   private buildUI(): void {
@@ -537,6 +548,28 @@ export class EquipmentModal {
   }
 
   public destroy(): void {
+    if (this.onEquipmentChangedHandler) {
+      this.playerState.off('equipment_changed', this.onEquipmentChangedHandler);
+      this.onEquipmentChangedHandler = undefined;
+    }
+    if (this.onInventoryChangedHandler) {
+      this.playerState.off('inventory_changed', this.onInventoryChangedHandler);
+      this.onInventoryChangedHandler = undefined;
+    }
+    if (this.onWeaponChangedHandler) {
+      this.playerState.off('weapon_changed', this.onWeaponChangedHandler);
+      this.onWeaponChangedHandler = undefined;
+    }
+    if (this.scene.input && this.scene.input.keyboard) {
+      if (this.onEscKeyHandler) {
+        this.scene.input.keyboard.off('keydown-ESC', this.onEscKeyHandler);
+        this.onEscKeyHandler = undefined;
+      }
+      if (this.onBKeyHandler) {
+        this.scene.input.keyboard.off('keydown-B', this.onBKeyHandler);
+        this.onBKeyHandler = undefined;
+      }
+    }
     if (this.container) {
       this.container.destroy();
     }
