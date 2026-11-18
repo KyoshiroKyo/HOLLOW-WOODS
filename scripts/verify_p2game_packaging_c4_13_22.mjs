@@ -42,7 +42,7 @@ if (fs.existsSync(manifestPath)) {
   assert(manifest.schemaVersion === 1, 'manifest.schemaVersion === 1');
   assert(manifest.id === 'hollow-woods', 'manifest.id === "hollow-woods"');
   assert(manifest.name === 'HOLLOW WOODS', 'manifest.name === "HOLLOW WOODS"');
-  assert(manifest.version === '1.3.4' || manifest.version === '1.3.3' || manifest.version === '1.3.2' || manifest.version === '1.3.1', 'manifest.version is "1.3.4" (or earlier valid version)');
+  assert(manifest.version === '1.4.0' || manifest.version === '1.3.4' || manifest.version === '1.3.3' || manifest.version === '1.3.2' || manifest.version === '1.3.1', 'manifest.version is "1.4.0" (or earlier valid version)');
   assert(manifest.entry === 'index.html', 'manifest.entry === "index.html"');
   assert(manifest.engine === 'webgl', 'manifest.engine === "webgl"');
   assert(manifest.orientation === 'landscape', 'manifest.orientation === "landscape"');
