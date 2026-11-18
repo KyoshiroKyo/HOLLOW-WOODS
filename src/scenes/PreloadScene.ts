@@ -96,7 +96,17 @@ import {
   SPRITE_SMITHY_WORKSHOP_BRAM_V15,
   SPRITE_GATEHOUSE_GARTH_V15,
   SPRITE_BELL_TOWER_GRAND_V15,
-  SPRITE_VILLAGE_WELL_DETAILED_V15
+  SPRITE_VILLAGE_WELL_DETAILED_V15,
+  SPRITE_TREE_MIST_PINE_V15,
+  SPRITE_TREE_MOSSY_OAK_GRAND_V15,
+  SPRITE_TREE_WEEPING_WILLOW_V15,
+  SPRITE_TREE_WITHERED_GNARLED_V15,
+  SPRITE_DECAL_WILD_GRASS_V15,
+  SPRITE_DECAL_FERN_CLUSTER_V15,
+  SPRITE_DECAL_GLOWING_MUSHROOMS_V15,
+  SPRITE_DECAL_AUTUMN_LEAVES_V15,
+  SPRITE_DECAL_PEBBLES_STONES_V15,
+  SPRITE_DECAL_SWAMP_PUDDLE_V15
 } from '../config/Constants';
 
 import { HUDIconGenerator } from '../utils/HUDIconGenerator';
@@ -234,6 +244,19 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image(SPRITE_GATEHOUSE_GARTH_V15, 'assets/buildings/gatehouse_garth.png');
     this.load.image(SPRITE_BELL_TOWER_GRAND_V15, 'assets/buildings/bell_tower_grand.png');
     this.load.image(SPRITE_VILLAGE_WELL_DETAILED_V15, 'assets/buildings/village_well_detailed.png');
+
+    // V15-11: Nạp bộ Sprite Cây Cổ Thụ & Lớp Phủ Mặt Đất Rừng Sương V1.5
+    this.load.image(SPRITE_TREE_MIST_PINE_V15, 'assets/environment/trees/tree_mist_pine.png');
+    this.load.image(SPRITE_TREE_MOSSY_OAK_GRAND_V15, 'assets/environment/trees/tree_mossy_oak_grand.png');
+    this.load.image(SPRITE_TREE_WEEPING_WILLOW_V15, 'assets/environment/trees/tree_weeping_willow.png');
+    this.load.image(SPRITE_TREE_WITHERED_GNARLED_V15, 'assets/environment/trees/tree_withered_gnarled.png');
+
+    this.load.image(SPRITE_DECAL_WILD_GRASS_V15, 'assets/environment/foliage/decal_wild_grass.png');
+    this.load.image(SPRITE_DECAL_FERN_CLUSTER_V15, 'assets/environment/foliage/decal_fern_cluster.png');
+    this.load.image(SPRITE_DECAL_GLOWING_MUSHROOMS_V15, 'assets/environment/foliage/decal_glowing_mushrooms.png');
+    this.load.image(SPRITE_DECAL_AUTUMN_LEAVES_V15, 'assets/environment/foliage/decal_autumn_leaves.png');
+    this.load.image(SPRITE_DECAL_PEBBLES_STONES_V15, 'assets/environment/foliage/decal_pebbles_stones.png');
+    this.load.image(SPRITE_DECAL_SWAMP_PUDDLE_V15, 'assets/environment/foliage/decal_swamp_puddle.png');
 
     // 8.1 Nạp các tài nguyên môi trường V1.4 Mẫu & Mở Rộng Toàn Hệ Thống (HW-V14-EXP)
     if (CONFIG_USE_V14_PILOT_ENVIRONMENT || CONFIG_USE_V14_ENVIRONMENT) {

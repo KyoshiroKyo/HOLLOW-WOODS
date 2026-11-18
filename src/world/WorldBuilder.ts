@@ -26,6 +26,16 @@ import {
   SPRITE_GATEHOUSE_GARTH_V15,
   SPRITE_BELL_TOWER_GRAND_V15,
   SPRITE_VILLAGE_WELL_DETAILED_V15,
+  SPRITE_TREE_MIST_PINE_V15,
+  SPRITE_TREE_MOSSY_OAK_GRAND_V15,
+  SPRITE_TREE_WEEPING_WILLOW_V15,
+  SPRITE_TREE_WITHERED_GNARLED_V15,
+  SPRITE_DECAL_WILD_GRASS_V15,
+  SPRITE_DECAL_FERN_CLUSTER_V15,
+  SPRITE_DECAL_GLOWING_MUSHROOMS_V15,
+  SPRITE_DECAL_AUTUMN_LEAVES_V15,
+  SPRITE_DECAL_PEBBLES_STONES_V15,
+  SPRITE_DECAL_SWAMP_PUDDLE_V15,
   SPRITE_PILLAR_MOON,
   SPRITE_PILLAR_ROOT,
   SPRITE_PILLAR_EYE,
@@ -501,24 +511,43 @@ export class WorldBuilder {
             }
           }
 
-          // Lớp 1: Viền đất ẩm & cỏ dập chuyển tiếp tự nhiên (Outer Transition)
-          ctx.fillStyle = '#383826';
-          for (const sp of samples) {
-            const rOut = sp.r + 6;
-            ctx.fillRect(sp.lx - rOut, sp.ly - Math.round(rOut * 0.82), rOut * 2, Math.round(rOut * 1.64));
+          // Lớp 1: V15-11 Viền chuyển tiếp tự nhiên (Feathered Edge Transition)
+          // Đan xen các đốm đất ẩm, rêu phong và ngọn cỏ dập xù xì, xóa sạch vệt cắt thẳng
+          for (let i = 0; i < samples.length; i += 2) {
+            const sp = samples[i];
+            const rBase = sp.r;
+            for (let k = 0; k < 6; k++) {
+              const ang = nextRand() * Math.PI * 2;
+              const dist = rBase + 1 + nextRand() * 7;
+              const fx = Math.round(sp.lx + Math.cos(ang) * dist);
+              const fy = Math.round(sp.ly + Math.sin(ang) * dist * 0.82);
+              const randVal = nextRand();
+              if (randVal < 0.35) {
+                ctx.fillStyle = '#2d4227'; // Moss green
+              } else if (randVal < 0.70) {
+                ctx.fillStyle = '#3c3a25'; // Damp loamy transition
+              } else {
+                ctx.fillStyle = '#4e3b29'; // Dark soil speck
+              }
+              ctx.fillRect(fx, fy, 2, 2);
+            }
           }
 
           // Lớp 2: Bờ đất nâu sẫm (Dark Earth Rim)
           ctx.fillStyle = '#4e3b29';
           for (const sp of samples) {
-            const rMid = sp.r + 3;
-            ctx.fillRect(sp.lx - rMid, sp.ly - Math.round(rMid * 0.82), rMid * 2, Math.round(rMid * 1.64));
+            const rMid = sp.r + 2;
+            ctx.beginPath();
+            ctx.ellipse(sp.lx, sp.ly, rMid, Math.round(rMid * 0.82), 0, 0, Math.PI * 2);
+            ctx.fill();
           }
 
           // Lớp 3: Lòng đường đất nâu ấm (Main Dirt Trail)
           ctx.fillStyle = '#684e37';
           for (const sp of samples) {
-            ctx.fillRect(sp.lx - sp.r, sp.ly - Math.round(sp.r * 0.8), sp.r * 2, Math.round(sp.r * 1.6));
+            ctx.beginPath();
+            ctx.ellipse(sp.lx, sp.ly, sp.r, Math.round(sp.r * 0.8), 0, 0, Math.PI * 2);
+            ctx.fill();
           }
 
           // Lớp 4: Vệt đất sỏi sáng nhẹ ở giữa lối đi (Worn Center Track)
@@ -526,7 +555,9 @@ export class WorldBuilder {
           for (let i = 0; i < samples.length; i += 2) {
             const sp = samples[i];
             const rIn = Math.max(4, Math.round(sp.r * 0.52));
-            ctx.fillRect(sp.lx - rIn, sp.ly - Math.round(rIn * 0.75), rIn * 2, Math.round(rIn * 1.5));
+            ctx.beginPath();
+            ctx.ellipse(sp.lx, sp.ly, rIn, Math.round(rIn * 0.75), 0, 0, Math.PI * 2);
+            ctx.fill();
           }
 
           // Lớp 5: Rải sỏi nhỏ, vết bánh xe và lá khô dọc hai bên mép đường
@@ -552,6 +583,8 @@ export class WorldBuilder {
               ctx.fillRect(sp.lx + oxStone - 5, sp.ly + oyStone - 4, 10, 7);
               ctx.fillStyle = '#687078';
               ctx.fillRect(sp.lx + oxStone - 4, sp.ly + oyStone - 3, 8, 5);
+              ctx.fillStyle = '#3a5433';
+              ctx.fillRect(sp.lx + oxStone - 5, sp.ly + oyStone + 2, 3, 2);
             }
           }
         };
@@ -639,12 +672,19 @@ export class WorldBuilder {
             return Math.pow(nx, 3.2) + Math.pow(ny, 3.2) <= 1.0;
           };
 
-          // 4.1. Viền đất/cỏ chuyển tiếp quanh sân đá
-          for (let dy = -ry - 8; dy <= ry + 8; dy += 2) {
-            for (let dx = -rx - 8; dx <= rx + 8; dx += 2) {
-              if (isInside(dx, dy, 6) && !isInside(dx, dy, -2)) {
-                ctx.fillStyle = (dx + dy) % 4 === 0 ? '#3a3728' : '#523f2c';
-                ctx.fillRect(cx + dx, cy + dy, 2, 2);
+          // 4.1. V15-11 Viền chuyển tiếp tự nhiên (Feathered Border)
+          // Đá lát xen kẽ cỏ mọc mềm mại, rêu xanh lan vào kẽ đá, xóa sạch vệt cắt thẳng
+          for (let dy = -ry - 9; dy <= ry + 9; dy += 2) {
+            for (let dx = -rx - 9; dx <= rx + 9; dx += 2) {
+              if (isInside(dx, dy, 7) && !isInside(dx, dy, -3)) {
+                const noise = Math.sin(dx * 0.35 + dy * 0.28) * Math.cos(dx * 0.17 - dy * 0.42);
+                if (noise > -0.25) {
+                  const rCol = nextRand();
+                  if (rCol < 0.4) ctx.fillStyle = '#2f442b'; // Rêu cỏ xen kẽ
+                  else if (rCol < 0.7) ctx.fillStyle = '#483c2e'; // Đất ẩm viền đá
+                  else ctx.fillStyle = '#4e5652'; // Vụn sỏi đá cuội
+                  ctx.fillRect(cx + dx, cy + dy, 2, 2);
+                }
               }
             }
           }
@@ -695,25 +735,36 @@ export class WorldBuilder {
             }
           }
 
-          // 4.4. Viền đá bó vỉa (Curb Stones) bao quanh mép sân đá
-          const steps = Math.max(48, Math.round((rx + ry) * 1.1));
+          // 4.4. V15-11: Đá lát chuyển biên tự nhiên (Feathered Perimeter Pavers)
+          // Thay thế vòng bó vỉa thẳng băng cứng nhắc bằng các phiến đá so le, đứt đoạn ngẫu nhiên
+          const steps = Math.max(36, Math.round((rx + ry) * 0.9));
           for (let s = 0; s < steps; s++) {
+            if (s % 5 === 0) continue;
+
             const ang = (s / steps) * Math.PI * 2;
-            let bx = Math.cos(ang) * (rx - 2);
-            let by = Math.sin(ang) * (ry - 2);
+            const edgeWobble = (Math.sin(ang * 8.3) + Math.cos(ang * 5.1)) * 1.8;
+            let bx = Math.cos(ang) * (rx - 2 + edgeWobble);
+            let by = Math.sin(ang) * (ry - 2 + edgeWobble);
             if (shape === 'rounded_rect') {
               const cosA = Math.cos(ang);
               const sinA = Math.sin(ang);
               const scale = Math.pow(Math.pow(Math.abs(cosA), 3.2) + Math.pow(Math.abs(sinA), 3.2), -1 / 3.2);
-              bx = cosA * (rx - 2) * scale;
-              by = sinA * (ry - 2) * scale;
+              bx = cosA * (rx - 2 + edgeWobble) * scale;
+              by = sinA * (ry - 2 + edgeWobble) * scale;
             }
             const px = Math.round(cx + bx);
             const py = Math.round(cy + by);
-            ctx.fillStyle = '#363c40';
-            ctx.fillRect(px - 3, py - 2, 6, 5);
-            ctx.fillStyle = '#6a7278';
-            ctx.fillRect(px - 2, py - 1, 4, 3);
+
+            ctx.fillStyle = nextRand() > 0.4 ? '#434b52' : '#373f44';
+            ctx.fillRect(px - 2, py - 2, 5, 4);
+            ctx.fillStyle = 'rgba(200, 215, 225, 0.22)';
+            ctx.fillRect(px - 1, py - 1, 3, 1);
+
+            // Mảng rêu nhỏ bám kẽ đá viền
+            if (s % 3 === 0) {
+              ctx.fillStyle = '#345233';
+              ctx.fillRect(px - 1, py + 1, 3, 2);
+            }
           }
         };
 
@@ -2730,28 +2781,93 @@ export class WorldBuilder {
     return this.scene.add.image(x, y, validKey);
   }
 
+  /**
+   * V15-11: Cây Cổ Thụ Pixel Art độ nét cao (112-160px) phân tầng tự nhiên
+   * Thay thế tán cây tròn đơn điệu bằng 4 biến thể: Thông sương mù, Sồi già rêu phủ, Liễu rủ đầm lầy, Cây khô trơ cành.
+   */
   private createTree(x: number, y: number, label?: string, withCollider: boolean = true): void {
-    let treeKey = SPRITE_TREE_OAK_1;
-    if (label?.includes('Khô')) {
-      treeKey = SPRITE_TREE_DEAD;
-    } else if (Math.floor(x / 100) % 3 === 1) {
-      treeKey = SPRITE_TREE_OAK_2;
-    } else if (Math.floor(x / 100) % 3 === 2) {
-      treeKey = SPRITE_TREE_OAK_3;
+    let treeKey = SPRITE_TREE_MOSSY_OAK_GRAND_V15;
+    let fallbackKey = SPRITE_TREE_OAK_1;
+    let originY = 0.92;
+
+    if (label?.includes('Thông') || label?.includes('Pine')) {
+      treeKey = SPRITE_TREE_MIST_PINE_V15;
+      fallbackKey = SPRITE_TREE_OAK_1;
+      originY = 0.92;
+    } else if (label?.includes('Liễu') || label?.includes('Willow') || label?.includes('Đầm Lầy') || label?.includes('Mire')) {
+      treeKey = SPRITE_TREE_WEEPING_WILLOW_V15;
+      fallbackKey = SPRITE_TREE_OAK_2;
+      originY = 0.92;
+    } else if (label?.includes('Khô') || label?.includes('Dead') || label?.includes('Withered')) {
+      treeKey = SPRITE_TREE_WITHERED_GNARLED_V15;
+      fallbackKey = SPRITE_TREE_DEAD;
+      originY = 0.90;
+    } else {
+      // Đa dạng hóa cảnh quan tự nhiên theo tọa độ giả ngẫu nhiên
+      const hash = Math.abs(Math.floor(x * 11 + y * 17)) % 4;
+      if (hash === 2) {
+        treeKey = SPRITE_TREE_MIST_PINE_V15;
+        fallbackKey = SPRITE_TREE_OAK_2;
+        originY = 0.92;
+      } else if (hash === 3) {
+        treeKey = SPRITE_TREE_WEEPING_WILLOW_V15;
+        fallbackKey = SPRITE_TREE_OAK_3;
+        originY = 0.92;
+      } else {
+        treeKey = SPRITE_TREE_MOSSY_OAK_GRAND_V15;
+        fallbackKey = SPRITE_TREE_OAK_1;
+        originY = 0.92;
+      }
     }
 
-    const tree = this.safeAddImage(x, y, treeKey);
-    const scale = treeKey === SPRITE_TREE_DEAD ? 1.05 : 1.0;
-    tree.setScale(scale);
-    tree.setOrigin(0.5, 0.88);
+    const tree = this.safeAddImage(x, y, treeKey, fallbackKey);
+    tree.setOrigin(0.5, originY);
     tree.setDepth(y);
-    this.registerCullable(tree, x, y, 90);
+    this.registerCullable(tree, x, y, 110);
     this.treeCanopyGroup.add(tree);
 
-    // V1.5 (BƯỚC V15-03): Chuẩn hitbox gốc cây ôm sát phần gỗ chạm đất (20×16 px)
+    // V1.5 (BƯỚC V15-03 & V15-11): Hitbox gốc cây gọn gàng 20x14 px ôm sát gốc chạm đất
     if (withCollider) {
-      this.createStaticBoxColliderCentered(x, y + 2, 20, 16, 'Gốc Cây');
+      this.createStaticBoxColliderCentered(x, y, 20, 14, 'Gốc Cây Cổ Thụ');
     }
+  }
+
+  /**
+   * V15-11: Rải các chi tiết lớp phủ mặt đất không va chạm (Ground Foliage / Decals)
+   * Phân tầng chiều sâu đúng chuẩn Constants (DEPTH_GROUND_STONES, DEPTH_GROUND_WATER, DEPTH_GROUND_DECALS, DEPTH_GROUND_FLORA).
+   */
+  public createGroundDecal(
+    x: number,
+    y: number,
+    decalKey: string,
+    scale: number = 1.0,
+    alpha: number = 1.0,
+    tint: number = 0xffffff,
+    depthOffset: number = 0
+  ): Phaser.GameObjects.Image {
+    const decal = this.safeAddImage(x, y, decalKey);
+    decal.setScale(scale);
+    decal.setOrigin(0.5, 0.7);
+    if (alpha < 1.0) {
+      decal.setAlpha(alpha);
+    }
+    if (tint !== 0xffffff) {
+      decal.setTint(tint);
+    }
+
+    let depth = DEPTH_GROUND_FLORA;
+    if (decalKey === SPRITE_DECAL_PEBBLES_STONES_V15) {
+      depth = DEPTH_GROUND_STONES;
+    } else if (decalKey === SPRITE_DECAL_SWAMP_PUDDLE_V15) {
+      depth = DEPTH_GROUND_WATER;
+    } else if (decalKey === SPRITE_DECAL_GLOWING_MUSHROOMS_V15) {
+      depth = DEPTH_GROUND_DECALS;
+    } else if (decalKey === SPRITE_DECAL_AUTUMN_LEAVES_V15) {
+      depth = DEPTH_GROUND_TURF;
+    }
+    decal.setDepth(depth + depthOffset);
+    this.registerCullable(decal, x, y, 40);
+    return decal;
   }
 
   private createHollowTree(x: number, y: number, _label?: string): void {
@@ -3650,32 +3766,48 @@ export class WorldBuilder {
     const placeVariantTree = (
       x: number,
       y: number,
-      variant: 'oak1' | 'oak2' | 'oak3' | 'dead' | 'hollow',
+      variant: 'oak1' | 'oak2' | 'oak3' | 'dead' | 'hollow' | 'pine' | 'oak' | 'willow',
       scale: number = 1.0,
       tint: number = 0xffffff,
       withCollider: boolean = true
     ) => {
-      let key = SPRITE_TREE_OAK_1;
-      if (variant === 'oak2') key = SPRITE_TREE_OAK_2;
-      else if (variant === 'oak3') key = SPRITE_TREE_OAK_3;
-      else if (variant === 'dead') key = SPRITE_TREE_DEAD;
-      else if (variant === 'hollow') key = SPRITE_HOLLOW_TREE;
+      let key = SPRITE_TREE_MOSSY_OAK_GRAND_V15;
+      let fallbackKey = SPRITE_TREE_OAK_1;
+      let originY = 0.92;
 
-      const tree = this.scene.add.image(x, y, key);
-      const finalScale = variant === 'dead' ? scale * 1.05 : scale;
+      if (variant === 'oak2' || variant === 'pine') {
+        key = SPRITE_TREE_MIST_PINE_V15;
+        fallbackKey = SPRITE_TREE_OAK_2;
+        originY = 0.92;
+      } else if (variant === 'oak3' || variant === 'willow') {
+        key = SPRITE_TREE_WEEPING_WILLOW_V15;
+        fallbackKey = SPRITE_TREE_OAK_3;
+        originY = 0.92;
+      } else if (variant === 'dead') {
+        key = SPRITE_TREE_WITHERED_GNARLED_V15;
+        fallbackKey = SPRITE_TREE_DEAD;
+        originY = 0.90;
+      } else if (variant === 'hollow') {
+        key = SPRITE_HOLLOW_TREE;
+        fallbackKey = SPRITE_HOLLOW_TREE;
+        originY = 0.85;
+      }
+
+      const tree = this.safeAddImage(x, y, key, fallbackKey);
+      const finalScale = variant === 'dead' ? scale * 1.02 : scale;
       tree.setScale(finalScale);
-      tree.setOrigin(0.5, 0.88);
+      tree.setOrigin(0.5, originY);
       if (tint !== 0xffffff) {
         tree.setTint(tint);
       }
       tree.setDepth(y);
-      this.registerCullable(tree, x, y, 80);
+      this.registerCullable(tree, x, y, 105);
       this.treeCanopyGroup.add(tree);
 
       if (withCollider) {
-        const bw = variant === 'hollow' ? Math.round(24 * scale) : Math.round(18 * scale);
-        const bh = Math.round(12 * scale);
-        this.createStaticBoxColliderCentered(x, y - 2, bw, bh, 'Cây Rừng Biến Thể');
+        const bw = variant === 'hollow' ? Math.round(24 * scale) : Math.round(20 * scale);
+        const bh = Math.round(14 * scale);
+        this.createStaticBoxColliderCentered(x, y, bw, bh, 'Gốc Cây Rừng V1.5');
       }
     };
 
@@ -3826,6 +3958,110 @@ export class WorldBuilder {
       floorFlora.fillRect(fb.x + 4, fb.y + 1, 6, 2);
     }
     floorFlora.setDepth(DEPTH_GROUND_FLORA);
+
+    // V15-11: Rải thảm decal mặt đất (sỏi đá, lá mùa thu, cỏ dại, dương xỉ, nấm phát sáng, vũng nước)
+    this.createBellhollowGroundDecals();
+  }
+
+  /**
+   * V15-11: Rải thảm thực vật nền và decal mặt đất tự nhiên cho Làng Bellhollow
+   * Không có va chạm, tô điểm cho đường đi, chân tường nhà và các góc cây.
+   */
+  private createBellhollowGroundDecals(): void {
+    // 1. Sỏi đá ven mép đường đá cuội và đường đất (DEPTH_GROUND_STONES)
+    const stones = [
+      { x: 535, y: 242, s: 0.9 },
+      { x: 610, y: 236, s: 1.0 },
+      { x: 745, y: 246, s: 1.0 },
+      { x: 825, y: 252, s: 0.95 },
+      { x: 940, y: 238, s: 1.0 },
+      { x: 1045, y: 258, s: 0.9 },
+      { x: 1140, y: 268, s: 1.05 },
+      { x: 1260, y: 278, s: 0.95 },
+      { x: 1390, y: 272, s: 1.0 },
+      { x: 710, y: 195, s: 0.85 }, // Lối rẽ vào nhà Edda
+      { x: 960, y: 185, s: 0.85 }, // Lối rẽ vào nhà Neris
+      { x: 1145, y: 340, s: 0.9 }  // Lối rẽ vào xưởng rèn Bram
+    ];
+    for (const st of stones) {
+      this.createGroundDecal(st.x, st.y, SPRITE_DECAL_PEBBLES_STONES_V15, st.s, 0.92);
+    }
+
+    // 2. Lá rụng mùa thu sương lạnh rải rác trên nền đất và rìa đường (DEPTH_GROUND_TURF)
+    const autumnLeaves = [
+      { x: 565, y: 228, s: 0.9 },
+      { x: 690, y: 255, s: 1.0 },
+      { x: 870, y: 238, s: 0.95 },
+      { x: 1005, y: 268, s: 1.0 },
+      { x: 1120, y: 252, s: 0.9 },
+      { x: 1240, y: 284, s: 0.95 },
+      { x: 1370, y: 265, s: 1.0 },
+      { x: 630, y: 140, s: 0.85 },
+      { x: 1060, y: 160, s: 0.85 },
+      { x: 1310, y: 350, s: 0.9 }
+    ];
+    for (const lf of autumnLeaves) {
+      this.createGroundDecal(lf.x, lf.y, SPRITE_DECAL_AUTUMN_LEAVES_V15, lf.s, 0.88);
+    }
+
+    // 3. Cụm cỏ dại ven bờ rào, chân tường và gốc cây (DEPTH_GROUND_FLORA)
+    const wildGrass = [
+      { x: 482, y: 196, s: 0.95 },
+      { x: 512, y: 278, s: 1.0 },
+      { x: 668, y: 362, s: 0.9 },
+      { x: 752, y: 368, s: 0.95 },
+      { x: 932, y: 162, s: 1.0 },
+      { x: 1018, y: 166, s: 0.9 },
+      { x: 1108, y: 396, s: 1.05 },
+      { x: 1222, y: 412, s: 0.95 },
+      { x: 792, y: 95, s: 1.0 },
+      { x: 1170, y: 88, s: 0.9 },
+      { x: 1440, y: 92, s: 1.0 }
+    ];
+    for (const wg of wildGrass) {
+      this.createGroundDecal(wg.x, wg.y, SPRITE_DECAL_WILD_GRASS_V15, wg.s, 0.95);
+    }
+
+    // 4. Cụm dương xỉ râm mát ven chân rừng Bắc & Nam (DEPTH_GROUND_FLORA)
+    const ferns = [
+      { x: 528, y: 96, s: 0.95 },
+      { x: 618, y: 88, s: 1.0 },
+      { x: 812, y: 78, s: 0.9 },
+      { x: 902, y: 82, s: 1.05 },
+      { x: 1098, y: 76, s: 0.9 },
+      { x: 1208, y: 92, s: 1.0 },
+      { x: 1332, y: 96, s: 0.95 },
+      { x: 1448, y: 86, s: 1.0 },
+      { x: 560, y: 504, s: 0.95 },
+      { x: 840, y: 508, s: 1.0 },
+      { x: 1150, y: 506, s: 0.95 },
+      { x: 1400, y: 502, s: 1.0 }
+    ];
+    for (const fn of ferns) {
+      this.createGroundDecal(fn.x, fn.y, SPRITE_DECAL_FERN_CLUSTER_V15, fn.s, 0.92);
+    }
+
+    // 5. Nấm phát sáng nhỏ ở góc ẩm thấp râm mát & cạnh giếng cổ (DEPTH_GROUND_DECALS)
+    const glowingMushrooms = [
+      { x: 612, y: 312, s: 0.9 },
+      { x: 816, y: 346, s: 0.85 },
+      { x: 982, y: 86, s: 0.95 },
+      { x: 1042, y: 362, s: 0.9 },
+      { x: 1282, y: 86, s: 0.85 },
+      { x: 712, y: 326, s: 0.9 } // Ven giếng cổ
+    ];
+    for (const gm of glowingMushrooms) {
+      this.createGroundDecal(gm.x, gm.y, SPRITE_DECAL_GLOWING_MUSHROOMS_V15, gm.s, 0.95);
+    }
+
+    // 6. Vũng nước đầm lầy / nước đọng sương ven giếng và rãnh thoát nước phía đông (DEPTH_GROUND_WATER)
+    const puddles = [
+      { x: 688, y: 318, s: 0.85, a: 0.8 },
+      { x: 1475, y: 325, s: 0.95, a: 0.85 }
+    ];
+    for (const pd of puddles) {
+      this.createGroundDecal(pd.x, pd.y, SPRITE_DECAL_SWAMP_PUDDLE_V15, pd.s, pd.a);
+    }
   }
 
   /**
@@ -5879,6 +6115,34 @@ export class WorldBuilder {
     // 11. C4-14-B03: Lối vào Khoảng Trống Thì Thầm (1840, -40)
     this.createWhisperingClearingEntrance(1840, -40);
 
+    // V15-11: Rải thảm lá mục, dương xỉ rừng già và nấm phát sáng Rừng Sâu
+    const deepForestLeaves = [
+      { x: 1980, y: -220, s: 1.0 },
+      { x: 2150, y: -340, s: 1.1 },
+      { x: 2320, y: -260, s: 1.05 },
+      { x: 2540, y: -380, s: 1.0 }
+    ];
+    for (const lf of deepForestLeaves) {
+      this.createGroundDecal(lf.x, lf.y, SPRITE_DECAL_AUTUMN_LEAVES_V15, lf.s, 0.9);
+    }
+    const deepForestFerns = [
+      { x: 1880, y: -180, s: 1.05 },
+      { x: 2080, y: -420, s: 1.0 },
+      { x: 2420, y: -450, s: 1.1 },
+      { x: 2650, y: -210, s: 0.95 }
+    ];
+    for (const fn of deepForestFerns) {
+      this.createGroundDecal(fn.x, fn.y, SPRITE_DECAL_FERN_CLUSTER_V15, fn.s, 0.95);
+    }
+    const deepForestMushrooms = [
+      { x: 1920, y: -310, s: 1.0 },
+      { x: 2280, y: -480, s: 1.1 },
+      { x: 2490, y: -290, s: 0.95 }
+    ];
+    for (const gm of deepForestMushrooms) {
+      this.createGroundDecal(gm.x, gm.y, SPRITE_DECAL_GLOWING_MUSHROOMS_V15, gm.s, 1.0);
+    }
+
     // 12. Sương Mù Khí Quyển Rừng Sâu (Deep Forest Atmospheric Fog)
     this.createDeepForestAtmosphericFog();
   }
@@ -6241,6 +6505,35 @@ export class WorldBuilder {
     this.createStaticBoxCollider(2895, 400, 35, bounds.y + bounds.height - 40 - 400, 'Rặng Cây Khô Viền Tây Nam Silent Mire');
     this.createStaticBoxCollider(3955, bounds.y + 40, 35, 235 - (bounds.y + 40), 'Rặng Cây Khô Viền Đông Bắc Silent Mire');
     this.createStaticBoxCollider(3955, 400, 35, bounds.y + bounds.height - 40 - 400, 'Rặng Cây Khô Viền Đông Nam Silent Mire');
+
+    // V15-11: Rải thảm thực vật đầm lầy & decal (vũng nước, nấm phát sáng, dương xỉ bùn)
+    const mirePuddles = [
+      { x: 3120, y: 320, s: 1.1 },
+      { x: 3360, y: 380, s: 1.2 },
+      { x: 3620, y: 310, s: 1.05 },
+      { x: 3820, y: 410, s: 1.15 }
+    ];
+    for (const p of mirePuddles) {
+      this.createGroundDecal(p.x, p.y, SPRITE_DECAL_SWAMP_PUDDLE_V15, p.s, 0.9);
+    }
+    const mireMushrooms = [
+      { x: 3060, y: 265, s: 1.0 },
+      { x: 3290, y: 240, s: 1.0 },
+      { x: 3690, y: 270, s: 1.05 },
+      { x: 3480, y: 430, s: 0.95 }
+    ];
+    for (const m of mireMushrooms) {
+      this.createGroundDecal(m.x, m.y, SPRITE_DECAL_GLOWING_MUSHROOMS_V15, m.s, 1.0);
+    }
+    const mireFerns = [
+      { x: 2980, y: 370, s: 1.0 },
+      { x: 3400, y: 190, s: 1.0 },
+      { x: 3700, y: 210, s: 1.0 },
+      { x: 3860, y: 350, s: 0.95 }
+    ];
+    for (const f of mireFerns) {
+      this.createGroundDecal(f.x, f.y, SPRITE_DECAL_FERN_CLUSTER_V15, f.s, 0.9);
+    }
 
     // 10. Sương Mù Khí Quyển Đầm Lầy (Silent Mire Atmospheric Fog)
     this.createSilentMireAtmosphericFog();

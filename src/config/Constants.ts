@@ -95,6 +95,20 @@ export const SPRITE_GATEHOUSE_GARTH_V15 = 'gatehouse_garth';
 export const SPRITE_BELL_TOWER_GRAND_V15 = 'bell_tower_grand';
 export const SPRITE_VILLAGE_WELL_DETAILED_V15 = 'village_well_detailed';
 
+// Khóa Texture Thực Vật & Cây Cổ Thụ Rừng Sương V1.5 (High-Fidelity Foliage)
+export const SPRITE_TREE_MIST_PINE_V15 = 'tree_mist_pine';
+export const SPRITE_TREE_MOSSY_OAK_GRAND_V15 = 'tree_mossy_oak_grand';
+export const SPRITE_TREE_WEEPING_WILLOW_V15 = 'tree_weeping_willow';
+export const SPRITE_TREE_WITHERED_GNARLED_V15 = 'tree_withered_gnarled';
+
+// Khóa Texture Lớp Phủ Mặt Đất V1.5 (Ground Details / Decals)
+export const SPRITE_DECAL_WILD_GRASS_V15 = 'decal_wild_grass';
+export const SPRITE_DECAL_FERN_CLUSTER_V15 = 'decal_fern_cluster';
+export const SPRITE_DECAL_GLOWING_MUSHROOMS_V15 = 'decal_glowing_mushrooms';
+export const SPRITE_DECAL_AUTUMN_LEAVES_V15 = 'decal_autumn_leaves';
+export const SPRITE_DECAL_PEBBLES_STONES_V15 = 'decal_pebbles_stones';
+export const SPRITE_DECAL_SWAMP_PUDDLE_V15 = 'decal_swamp_puddle';
+
 // Khóa Texture Vật Thể & Đạo Cụ (Props Sprite Keys - PASS T06)
 export const SPRITE_PILLAR_MOON = 'pillar_moon';
 export const SPRITE_PILLAR_ROOT = 'pillar_root';

@@ -174,3 +174,90 @@ Tất cả 6 công trình mới được thiết kế và xuất trực tiếp b
 - [x] **WorldBuilder:** 6/6 công trình được tích hợp với điểm neo `origin(0.5, 1.0)`, foot-level hitboxes và Y-sorting chuẩn xác.
 - [x] **TypeScript:** `npx tsc --noEmit` đạt **0 lỗi**.
 - [x] **Build:** `npm run build` hoàn thành trong **10.21s**, tạo bundle sạch không lỗi.
+
+---
+
+## BÁO CÁO KỸ THUẬT V15-11: NÂNG CẤP ĐỒ HỌA CÂY CỐI, THẢM THỰC VẬT & KẾT CẤU MẶT ĐẤT LIỀN MẠCH
+
+**Dự án:** HOLLOW WOODS: The Fog That Remembers  
+**Mã tài liệu:** `V15-11` / `04_Graphics_And_World_Layout.md`  
+**Phiên bản:** V1.5 (Visual & Gameplay Overhaul)  
+**Nhánh Git:** `feat/v1.5-visual-gameplay-overhaul`  
+**Ngày thực hiện:** 18/11/2026  
+**Trạng thái:** Hoàn tất xuất sắc (10/10 asset thực vật & decal pixel art độ nét cao, thuật toán Feathered Transition nền đất mượt mà, 0 lỗi TypeScript, bản dựng Vite thành công)  
+
+---
+
+### 1. MỤC TIÊU & HIỆN TRẠNG TRƯỚC V15-11
+
+Trước bước V15-11, môi trường tự nhiên và kết cấu nền đất tồn tại các vấn đề thị giác cần đại tu:
+- **Tán cây đơn điệu:** Các cây xanh trong làng Bellhollow và vùng rừng lân cận chủ yếu sử dụng các tán tròn đồng tâm hoặc hình khối phẳng đơn sơ lặp đi lặp lại (`tree_oak_1..3`), thiếu tính đa dạng sinh thái đặc trưng của một khu rừng sương mù phương Bắc.
+- **Thiếu lớp phủ nền đất (Ground Decals):** Mặt đất giữa các công trình và lối đi khá trơ trụi, thiếu các chi tiết thảm thực vật vi mô tự nhiên như cỏ dại ven tường, dương xỉ râm mát, lá mục mùa thu, sỏi đá ven đường, nấm dạ quang ẩm thấp và các vũng nước đọng.
+- **Đường đi cắt cạnh thô cứng (Stair-Stepping Borders):** Lòng đường đất (`drawOrganicDirtPath`) và sân đá cuội (`drawCobbleCourtyard`) có các mép chuyển tiếp cắt thẳng hoặc bậc thang thô ráp, tạo cảm giác hình học nhân tạo thay vì một vùng đất cổ xưa tự nhiên.
+
+---
+
+### 2. BỘ ASSET CÂY CỔ THỤ & THẢM THỰC VẬT PIXEL ART MỚI
+
+Tất cả 10 asset thực vật mới được thiết kế, đổ bóng và tạo trực tiếp bằng script xử lý đồ họa `pngjs` (`scripts/generate_v15_foliage_and_trees.mjs`), lưu tại `public/assets/environment/`:
+
+#### 2.1. Bộ 4 Biến Thể Cây Cổ Thụ Rừng Sương (Chiều cao $144\text{px} - 160\text{px}$)
+
+| Tệp Sprite Cây | Kích Thước ($W \times H$) | Điểm Neo (Origin) | Hitbox Chân Đế ($W \times H$) | Đặc Điểm Nghệ Thuật & Sinh Thái |
+| :--- | :---: | :---: | :---: | :--- |
+| `tree_mist_pine.png` | **$112 \times 160\text{ px}$** | `origin(0.5, 0.92)` | $20 \times 14\text{ px}$ | **Thông Sương Mù:** Thân cao vút vỏ sần sùi màu xám tro, tán lá kim xếp tầng hình tháp nhọn vươn qua màn sương, rễ bám đất vững chãi, bóng đổ mềm mại dưới gốc. |
+| `tree_mossy_oak_grand.png` | **$144 \times 160\text{ px}$** | `origin(0.5, 0.92)` | $20 \times 14\text{ px}$ | **Sồi Già Rêu Phủ:** Thân đại thụ gồ ghề nứt nẻ bám rêu xanh, tán lá xòe rộng phân tầng sáng tối mềm mại với các chùm lá rủ tự nhiên, rễ nổi gân guốc bám chặt mặt đất. |
+| `tree_weeping_willow.png` | **$128 \times 152\text{ px}$** | `origin(0.5, 0.92)` | $20 \times 14\text{ px}$ | **Liễu Rủ Đầm Lầy:** Thân gỗ uốn lượn cổ quái ngả về phía đầm lầy, các dải cành lá liễu mềm mại rủ dài thướt tha chạm mặt cỏ, sắc xanh ngọc u tịch hòa quyện hơi sương ẩm ướt. |
+| `tree_withered_gnarled.png` | **$112 \times 144\text{ px}$** | `origin(0.5, 0.90)` | $20 \times 14\text{ px}$ | **Cây Khô Trơ Cành:** Thân gỗ xoắn vặn nứt nẻ mục nát, cành khẳng khiu trơ trọi đâm tủa vào không trung lạnh lẽo, mốc xám bám trên các khớp cành, mang đậm không khí rùng rợn. |
+
+#### 2.2. Bộ Lớp Phủ Mặt Đất (Ground Decals / Foliage — Không Va Chạm)
+
+| Tệp Sprite Decal | Kích Thước ($W \times H$) | Độ Sâu Phân Tầng (Depth) | Ứng Dụng Trong Bản Đồ |
+| :--- | :---: | :---: | :--- |
+| `decal_wild_grass.png` | **$32 \times 24\text{ px}$** | `DEPTH_GROUND_FLORA` ($-9000$) | Cỏ dại xanh rêu mọc tự nhiên ven bờ rào, chân tường đá và quanh các gốc cây. |
+| `decal_fern_cluster.png` | **$36 \times 28\text{ px}$** | `DEPTH_GROUND_FLORA` ($-9000$) | Cụm dương xỉ râm mát xòe tròn ở các vùng đất ẩm dưới tán rừng và đầm lầy. |
+| `decal_glowing_mushrooms.png` | **$32 \times 24\text{ px}$** | `DEPTH_GROUND_DECALS` ($-8500$) | Cụm nấm mũ xanh ngọc dạ quang phát sáng ma mị ở các hốc cây tối và góc giếng cổ. |
+| `decal_autumn_leaves.png` | **$36 \times 24\text{ px}$** | `DEPTH_GROUND_TURF` ($-9200$) | Thảm lá rụng mùa thu sương lạnh màu vàng úa và nâu đỏ rải rác trên nền đất và rìa đường. |
+| `decal_pebbles_stones.png` | **$32 \times 20\text{ px}$** | `DEPTH_GROUND_STONES` ($-9100$) | Các viên sỏi cuội xám tro nhỏ rải rác ven mép đường đá cuội và đường đất. |
+| `decal_swamp_puddle.png` | **$48 \times 28\text{ px}$** | `DEPTH_GROUND_WATER` ($-8900$) | Vũng nước nông đọng rêu đục phản chiếu ánh sáng le lói qua sương, mép bùn êm dịu. |
+
+---
+
+### 3. THUẬT TOÁN KẾT CẤU MẶT ĐẤT & CHUYỂN BIÊN TỰ NHIÊN (FEATHERED TRANSITIONS)
+
+1. **Đường Đất Hữu Cơ Chuyển Biên Mềm (`drawOrganicDirtPath`):**
+   - Thay thế việc vẽ các ô chữ nhật thô cứng bằng giải thuật hình học `ctx.beginPath() + ctx.ellipse()`.
+   - Kết hợp sóng nhiễu điều hòa kép `Math.sin(ang * 6.2) + Math.cos(...)` tạo độ gợn mép tự nhiên.
+   - Rải các hạt đất ẩm (`#3c3a25`), đất sẫm (`#4e3b29`) và rêu xanh (`#2d4227`) chuyển màu êm dịu hòa quyện vào nền cỏ, triệt tiêu hoàn toàn đường viền răng cưa thẳng băng.
+
+2. **Sân Đá Cuội Chuyển Biên Tự Nhiên (`drawCobbleCourtyard`):**
+   - Viền chuyển tiếp tự nhiên (Feathered Border): Điểm rải rêu cỏ `#2f442b`, đất ẩm `#483c2e` và vụn sỏi `#4e5652` dọc theo chu vi sân đá theo nhiễu vi mô.
+   - Đá lát chuyển biên so le (Feathered Perimeter Pavers): Thay thế vòng bo vỉa thẳng băng cứng nhắc bằng các phiến đá so le, đứt đoạn ngẫu nhiên theo sóng dao động `edgeWobble`.
+
+3. **Cơ Chế Phân Tầng Decal Không Va Chạm (`createGroundDecal`):**
+   - Các decal mặt đất được tự động gán vào đúng hằng số chiều sâu trong `Constants.ts` (`DEPTH_GROUND_STONES`, `DEPTH_GROUND_WATER`, `DEPTH_GROUND_DECALS`, `DEPTH_GROUND_FLORA`, `DEPTH_GROUND_TURF`).
+   - Tuyệt đối không thêm body collider vật lý, đảm bảo người chơi và NPC có thể bước qua trơn tru mà không bị chặn lối.
+
+---
+
+### 4. BẢNG TỔNG HỢP KIỂM THỬ TỰ ĐỘNG (`verify_v15_11_foliage_and_terrain.mjs`)
+
+| Hạng Mục Kiểm Thử | Yêu Cầu Kỹ Thuật | Kết Quả Thực Tế | Trạng Thái |
+| :--- | :--- | :---: | :---: |
+| **Kích thước Cây Thông sương mù** | $112 \times 160\text{ px}$ pixel art | $112 \times 160\text{ px}$ | **PASS** |
+| **Kích thước Cây Sồi già rêu phủ** | $144 \times 160\text{ px}$ pixel art | $144 \times 160\text{ px}$ | **PASS** |
+| **Kích thước Cây Liễu rủ đầm lầy** | $128 \times 152\text{ px}$ pixel art | $128 \times 152\text{ px}$ | **PASS** |
+| **Kích thước Cây Khô trơ cành** | $112 \times 144\text{ px}$ pixel art | $112 \times 144\text{ px}$ | **PASS** |
+| **Kích thước Decal Bụi cỏ dại** | $32 \times 24\text{ px}$ pixel art | $32 \times 24\text{ px}$ | **PASS** |
+| **Kích thước Decal Cụm dương xỉ** | $36 \times 28\text{ px}$ pixel art | $36 \times 28\text{ px}$ | **PASS** |
+| **Kích thước Decal Nấm phát sáng** | $32 \times 24\text{ px}$ pixel art | $32 \times 24\text{ px}$ | **PASS** |
+| **Kích thước Decal Lá mùa thu** | $36 \times 24\text{ px}$ pixel art | $36 \times 24\text{ px}$ | **PASS** |
+| **Kích thước Decal Sỏi đá ven đường** | $32 \times 20\text{ px}$ pixel art | $32 \times 20\text{ px}$ | **PASS** |
+| **Kích thước Decal Vũng nước đầm lầy** | $48 \times 28\text{ px}$ pixel art | $48 \times 28\text{ px}$ | **PASS** |
+| **Hằng số Constants.ts** | 10 khóa `SPRITE_TREE_*` & `SPRITE_DECAL_*` | 10/10 có mặt | **PASS** |
+| **Nạp trong PreloadScene.ts** | 10/10 asset được đăng ký tải | 10/10 được tải | **PASS** |
+| **Tích hợp WorldBuilder.ts** | `createTree`, `createGroundDecal`, `createBellhollowGroundDecals` | Đầy đủ và hoàn thiện | **PASS** |
+| **Chuyển biên đường đi Feathered** | `drawOrganicDirtPath` áp dụng ellipse & noise | Mép đường mượt mà | **PASS** |
+| **Chuyển biên sân đá Feathered** | `drawCobbleCourtyard` áp dụng feathered pavers | Mép đá so le tự nhiên | **PASS** |
+| **Kiểm tra kiểu TypeScript** | `npx tsc --noEmit` đạt 0 lỗi | **0 lỗi** | **PASS** |
+| **Bản dựng Production** | `npm run build` | **Thành công (13.53s)** | **PASS** |
