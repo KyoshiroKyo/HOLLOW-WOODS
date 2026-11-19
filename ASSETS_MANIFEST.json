@@ -1,0 +1,1227 @@
+{
+  "totalFiles": 243,
+  "totalBytes": 70253064,
+  "categories": {
+    "audio": [
+      {
+        "path": "public/assets/audio/ambience/ambience_crossing.mp3",
+        "size": 507529,
+        "ext": ".mp3"
+      },
+      {
+        "path": "public/assets/audio/ambience/ambience_forest.mp3",
+        "size": 134574,
+        "ext": ".mp3"
+      },
+      {
+        "path": "public/assets/audio/ambience/ambience_mire.mp3",
+        "size": 303521,
+        "ext": ".mp3"
+      },
+      {
+        "path": "public/assets/audio/ambience/ambience_village.mp3",
+        "size": 35143,
+        "ext": ".mp3"
+      },
+      {
+        "path": "public/assets/audio/bgm/beyond_the_hills.mp3",
+        "size": 7449077,
+        "ext": ".mp3"
+      },
+      {
+        "path": "public/assets/audio/bgm/embervale.mp3",
+        "size": 7119934,
+        "ext": ".mp3"
+      },
+      {
+        "path": "public/assets/audio/bgm/evergrove.mp3",
+        "size": 8000783,
+        "ext": ".mp3"
+      },
+      {
+        "path": "public/assets/audio/bgm/forgotten_orchard.mp3",
+        "size": 7802253,
+        "ext": ".mp3"
+      },
+      {
+        "path": "public/assets/audio/bgm/knights_quiet_fire.mp3",
+        "size": 7764636,
+        "ext": ".mp3"
+      },
+      {
+        "path": "public/assets/audio/dialogue/dialogue_bram.wav",
+        "size": 113502,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/dialogue/dialogue_edda.wav",
+        "size": 117766,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/dialogue/dialogue_finn.wav",
+        "size": 134314,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/dialogue/dialogue_garth.wav",
+        "size": 109854,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/dialogue/dialogue_neris.wav",
+        "size": 113154,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/dialogue/dialogue_text_blip.wav",
+        "size": 119864,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/attack_swing.mp3",
+        "size": 23949,
+        "ext": ".mp3"
+      },
+      {
+        "path": "public/assets/audio/sfx/bell_low.mp3",
+        "size": 173492,
+        "ext": ".mp3"
+      },
+      {
+        "path": "public/assets/audio/sfx/bush_rustle.mp3",
+        "size": 69183,
+        "ext": ".mp3"
+      },
+      {
+        "path": "public/assets/audio/sfx/craft_success.wav",
+        "size": 117670,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/footstep_grass.mp3",
+        "size": 4667,
+        "ext": ".mp3"
+      },
+      {
+        "path": "public/assets/audio/sfx/heal_poultice.wav",
+        "size": 50336,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/herb_gather.wav",
+        "size": 147254,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/hurt.wav",
+        "size": 55574,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/interact.wav",
+        "size": 117670,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/lantern_toggle.mp3",
+        "size": 24637,
+        "ext": ".mp3"
+      },
+      {
+        "path": "public/assets/audio/sfx/listener_alert.mp3",
+        "size": 27640,
+        "ext": ".mp3"
+      },
+      {
+        "path": "public/assets/audio/sfx/monster_step.mp3",
+        "size": 25659,
+        "ext": ".mp3"
+      },
+      {
+        "path": "public/assets/audio/sfx/oil_refill.wav",
+        "size": 50462,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/player_death.wav",
+        "size": 66532,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/quest_update.wav",
+        "size": 147254,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/resource_gather.mp3",
+        "size": 20151,
+        "ext": ".mp3"
+      },
+      {
+        "path": "public/assets/audio/sfx/rune_error.mp3",
+        "size": 35853,
+        "ext": ".mp3"
+      },
+      {
+        "path": "public/assets/audio/sfx/rune_resonance.mp3",
+        "size": 64511,
+        "ext": ".mp3"
+      },
+      {
+        "path": "public/assets/audio/sfx/ui_cancel.wav",
+        "size": 117670,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/ui_confirm.wav",
+        "size": 117670,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/ui_select.wav",
+        "size": 117670,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/bat_bite.wav",
+        "size": 44440,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/bat_flap.wav",
+        "size": 61584,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/bat_screech.wav",
+        "size": 76332,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/behemoth_roar.wav",
+        "size": 371138,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/behemoth_thud.wav",
+        "size": 6848748,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/bell_toll_low.wav",
+        "size": 2154660,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/boss_drone.wav",
+        "size": 2327340,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/chest_creak.wav",
+        "size": 197792,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/dagger_slash.wav",
+        "size": 54808,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/footstep_leaves_1.mp3",
+        "size": 2771121,
+        "ext": ".mp3"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/footstep_mud_1.wav",
+        "size": 544604,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/footstep_mud_2.wav",
+        "size": 98456,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/footstep_stone_1.wav",
+        "size": 903488,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/footstep_stone_2.wav",
+        "size": 1096490,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/footstep_wood_1.wav",
+        "size": 264764,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/footstep_wood_2.wav",
+        "size": 1450644,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/ghost_dissipate.wav",
+        "size": 49692,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/ghost_moan.wav",
+        "size": 589868,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/ghost_scream.wav",
+        "size": 786476,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/ghost_whisper.wav",
+        "size": 477976,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/journal_page.wav",
+        "size": 162968,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/jumpscare_stinger.wav",
+        "size": 815920,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/rune_shift.wav",
+        "size": 1473352,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/sanity_gasp.wav",
+        "size": 179100,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/scout_whistle.wav",
+        "size": 1008016,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/skull_wolf_growl.wav",
+        "size": 179352,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/skull_wolf_snarl.wav",
+        "size": 320308,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/void_stalker_drone.wav",
+        "size": 100982,
+        "ext": ".wav"
+      },
+      {
+        "path": "public/assets/audio/sfx/v14/void_stalker_screech.wav",
+        "size": 307180,
+        "ext": ".wav"
+      }
+    ],
+    "maps": [
+      {
+        "path": "public/assets/maps/abyssal_chasm.json",
+        "size": 125344,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/maps/ancient_rune_puzzle.json",
+        "size": 21565,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/maps/bellhollow.json",
+        "size": 181136,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/maps/broken_bell_shrine.json",
+        "size": 95495,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/maps/crooked_path.json",
+        "size": 143778,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/maps/deep_forest.json",
+        "size": 140275,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/maps/drowned_mire_depths.json",
+        "size": 110123,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/maps/fog_crossing.json",
+        "size": 35460,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/maps/outer_woods.json",
+        "size": 61996,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/maps/sanctuary_farm.json",
+        "size": 59223,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/maps/silent_mire.json",
+        "size": 136992,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/maps/sub_bell_workshop.json",
+        "size": 41122,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/maps/sub_root_cellar.json",
+        "size": 52843,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/maps/sub_whispering_clearing.json",
+        "size": 43062,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/maps/sunken_crypt_ruins.json",
+        "size": 111052,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/maps/veil_origin_cavern.json",
+        "size": 110241,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/maps/whispering_grove_sanctum.json",
+        "size": 69843,
+        "ext": ".json"
+      }
+    ],
+    "characters": [
+      {
+        "path": "public/assets/characters/bosses/hooded_knight_sheet.png",
+        "size": 108059,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/bosses/portrait_hooded_knight.png",
+        "size": 2407,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/bosses/portrait_shadow_big_boss.png",
+        "size": 1357,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/bosses/shadow_big_boss_sheet.png",
+        "size": 45243,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/bosses/wetlands_boss/boss_wetlands_attack1.png",
+        "size": 8646,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/bosses/wetlands_boss/boss_wetlands_attack2.png",
+        "size": 4819,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/bosses/wetlands_boss/boss_wetlands_death.png",
+        "size": 10692,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/bosses/wetlands_boss/boss_wetlands_hit.png",
+        "size": 638,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/bosses/wetlands_boss/boss_wetlands_idle.png",
+        "size": 5343,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/bosses/wetlands_boss/boss_wetlands_walk.png",
+        "size": 6802,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/enemies/dread_horseman_sheet.png",
+        "size": 80311,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/enemies/fallen_knight_sheet.png",
+        "size": 53531,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/enemies/portrait_dread_horseman.png",
+        "size": 2344,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/enemies/portrait_fallen_knight.png",
+        "size": 2335,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/monsters/bat_sheet.png",
+        "size": 75068,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/monsters/ghost_sheet.png",
+        "size": 59183,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/monsters/goblin_scout_dagger_sheet.png",
+        "size": 33560,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/monsters/portrait_skull_wolf.png",
+        "size": 2377,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/monsters/shadow_crow_sheet.png",
+        "size": 10519,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/monsters/shadow_eyes_sheet.png",
+        "size": 3347,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/monsters/skull_wolf_sheet.png",
+        "size": 43410,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/mossbound_wayfarer/wayfarer_attack.png",
+        "size": 23847,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/mossbound_wayfarer/wayfarer_death.png",
+        "size": 17114,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/mossbound_wayfarer/wayfarer_gather.png",
+        "size": 12170,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/mossbound_wayfarer/wayfarer_hurt.png",
+        "size": 6549,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/mossbound_wayfarer/wayfarer_idle.png",
+        "size": 10992,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/mossbound_wayfarer/wayfarer_interact.png",
+        "size": 12338,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/mossbound_wayfarer/wayfarer_portrait.png",
+        "size": 4976,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/mossbound_wayfarer/wayfarer_run.png",
+        "size": 21120,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/mossbound_wayfarer/wayfarer_use_item.png",
+        "size": 12495,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/mossbound_wayfarer/wayfarer_walk.png",
+        "size": 21465,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/blacksmith_sheet.png",
+        "size": 22235,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/campfire_knight_idle_sheet.png",
+        "size": 10408,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/campfire_knight_pray_sheet.png",
+        "size": 14700,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/edda.png",
+        "size": 2744,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/edda_idle_sheet.png",
+        "size": 22626,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/errand_boy_walk_sheet.png",
+        "size": 49040,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/garth.png",
+        "size": 1022,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/garth_walk_sheet.png",
+        "size": 62113,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/neris.png",
+        "size": 1741,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/neris_idle_sheet.png",
+        "size": 8778,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/npc_blacksmith.png",
+        "size": 2819,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/npc_edda.png",
+        "size": 2139,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/npc_finn.png",
+        "size": 1377,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/npc_garth.png",
+        "size": 2478,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/npc_neris.png",
+        "size": 1744,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/portrait_blacksmith.png",
+        "size": 1957,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/portrait_campfire_knight.png",
+        "size": 1120,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/portrait_edda.png",
+        "size": 6375,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/portrait_finn.png",
+        "size": 1522,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/portrait_garth.png",
+        "size": 1409,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/portrait_neris.png",
+        "size": 2936,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/potter_walk_sheet.png",
+        "size": 61780,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/satyr/satyr_portrait.png",
+        "size": 2551,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/satyr/satyr_sheet.png",
+        "size": 15866,
+        "ext": ".png"
+      }
+    ],
+    "environment": [
+      {
+        "path": "public/assets/environment/foliage/decal_autumn_leaves.png",
+        "size": 480,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/foliage/decal_fern_cluster.png",
+        "size": 813,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/foliage/decal_glowing_mushrooms.png",
+        "size": 924,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/foliage/decal_pebbles_stones.png",
+        "size": 634,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/foliage/decal_swamp_puddle.png",
+        "size": 749,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/foliage/decal_wild_grass.png",
+        "size": 616,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/pickups/res_dry_wood.png",
+        "size": 606,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/pickups/res_flint.png",
+        "size": 367,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/pickups/res_herbs.png",
+        "size": 478,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/pickups/res_runed_iron.png",
+        "size": 368,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/pickups/res_tree_resin.png",
+        "size": 446,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/props/campfire_tier1.png",
+        "size": 1560,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/props/campfire_tier2.png",
+        "size": 1883,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/props/campfire_tier3.png",
+        "size": 1970,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/props/campfire_unlit.png",
+        "size": 1236,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/props/prop_cauldron_tripod.png",
+        "size": 998,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/props/prop_chest_bronze.png",
+        "size": 704,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/props/prop_lantern_post.png",
+        "size": 945,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/props/prop_signpost_wood.png",
+        "size": 732,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/props/prop_wayfarer_tent.png",
+        "size": 1625,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/bell_tower.png",
+        "size": 1475,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/broken_shrine.png",
+        "size": 1543,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/bush_dense_1.png",
+        "size": 2986,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/bush_dense_2.png",
+        "size": 2420,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/crafting_bench.png",
+        "size": 534,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/fog_smooth.png",
+        "size": 44219,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/hollow_tree.png",
+        "size": 1599,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/house_edda.png",
+        "size": 1724,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/house_neris.png",
+        "size": 1740,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/pillar_eye.png",
+        "size": 2194,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/pillar_moon.png",
+        "size": 1924,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/pillar_root.png",
+        "size": 2112,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/rock_large.png",
+        "size": 523,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/rock_medium.png",
+        "size": 317,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/signpost.png",
+        "size": 1189,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/stone_altar.png",
+        "size": 2654,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/tree_dead.png",
+        "size": 736,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/tree_oak_1.png",
+        "size": 19645,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/tree_oak_2.png",
+        "size": 15575,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/tree_oak_3.png",
+        "size": 11852,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/village_well.png",
+        "size": 522,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/sprites/wooden_fence.png",
+        "size": 399,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/tiles/tile_cobble_road.png",
+        "size": 186,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/tiles/tile_dirt_trail.png",
+        "size": 594,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/tiles/tile_forest_grass.png",
+        "size": 301,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/tiles/tile_stone_floor.png",
+        "size": 194,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/tiles/tile_swamp_mud.png",
+        "size": 684,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/tilesets/TX Tileset Grass.png",
+        "size": 11016,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/tilesets/TX Tileset Stone Ground.png",
+        "size": 8503,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/tilesets/TX Tileset Wall.png",
+        "size": 17283,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/trees/tree_mist_pine.png",
+        "size": 6708,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/trees/tree_mossy_oak_grand.png",
+        "size": 1126,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/trees/tree_pine_med_topdown.png",
+        "size": 6098,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/trees/tree_pine_slender_topdown.png",
+        "size": 3092,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/trees/tree_pine_small_topdown.png",
+        "size": 2756,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/trees/tree_pine_tall_topdown.png",
+        "size": 6708,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/trees/tree_weeping_willow.png",
+        "size": 1157,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/trees/tree_withered_gnarled.png",
+        "size": 840,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/buildings/building_house_edda_v14.png",
+        "size": 8253,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/buildings/building_house_neris_v14.png",
+        "size": 7582,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/buildings/building_village_well_v14.png",
+        "size": 2500,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/foliage/prop_fern_cluster_v14.png",
+        "size": 573,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/foliage/prop_mushroom_cluster_v14.png",
+        "size": 1241,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/foliage/prop_swamp_cattails_v14.png",
+        "size": 449,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/props/cliff_face_western_v14.png",
+        "size": 85,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/props/prop_ancient_monolith_v14.png",
+        "size": 1100,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/props/prop_fallen_log_mossy_v14.png",
+        "size": 1996,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/props/prop_shroom_glow_teal_v14.png",
+        "size": 401,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/props/prop_stump_mossy_large_v14.png",
+        "size": 2029,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/props/prop_tangled_roots_v14.png",
+        "size": 1933,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/props/rock_large_mossy_v14.png",
+        "size": 621,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/props/rock_mossy_forest_01_v14.png",
+        "size": 511,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/props/rock_mossy_forest_02_v14.png",
+        "size": 604,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/props/structure_abyssal_gate_v14.png",
+        "size": 3771,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/props/tree_hollow_ancient_v14.png",
+        "size": 1779,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/tiles/tile_abyssal_soil_v14_a.png",
+        "size": 130,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/tiles/tile_abyssal_soil_v14_b.png",
+        "size": 269,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/tiles/tile_cobble_road_v14.png",
+        "size": 368,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/tiles/tile_dirt_trail_v14_a.png",
+        "size": 470,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/tiles/tile_dirt_trail_v14_b.png",
+        "size": 281,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/tiles/tile_forest_grass_v14_a.png",
+        "size": 128,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/tiles/tile_forest_grass_v14_b.png",
+        "size": 260,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/tiles/tile_forest_grass_v14_c.png",
+        "size": 208,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/tiles/tile_stone_floor_v14.png",
+        "size": 892,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/tiles/tile_swamp_mud_v14_a.png",
+        "size": 289,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/tiles/tile_swamp_mud_v14_b.png",
+        "size": 205,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/tiles/tile_tilled_soil_v14.png",
+        "size": 564,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/tiles/tile_wood_plank_weathered_v14.png",
+        "size": 129,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/trees/tree_birch_amber_v14.png",
+        "size": 1157,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/trees/tree_dead_withered_v14.png",
+        "size": 840,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/trees/tree_maple_crimson_v14.png",
+        "size": 1166,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/trees/tree_oak_ancient_titan_v14.png",
+        "size": 19645,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/trees/tree_oak_mossy_v14.png",
+        "size": 1126,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/village/prop_barrel_aged_v14.png",
+        "size": 630,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/village/prop_chopped_wood_v14.png",
+        "size": 1245,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/environment/v14/village/prop_crate_weathered_v14.png",
+        "size": 395,
+        "ext": ".png"
+      }
+    ],
+    "monsters": [
+      {
+        "path": "public/assets/characters/monsters/bat_sheet.png",
+        "size": 75068,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/monsters/ghost_sheet.png",
+        "size": 59183,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/monsters/goblin_scout_dagger_sheet.png",
+        "size": 33560,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/monsters/portrait_skull_wolf.png",
+        "size": 2377,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/monsters/shadow_crow_sheet.png",
+        "size": 10519,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/monsters/shadow_eyes_sheet.png",
+        "size": 3347,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/monsters/skull_wolf_sheet.png",
+        "size": 43410,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/monsters/the_echo.png",
+        "size": 297,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/monsters/the_listener.png",
+        "size": 3288,
+        "ext": ".png"
+      }
+    ],
+    "ui": []
+  }
+}

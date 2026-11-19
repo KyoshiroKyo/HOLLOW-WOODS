@@ -595,36 +595,36 @@ export class PreloadScene extends Phaser.Scene {
       this.load.image(TILE_WOOD_PLANK_WEATHERED_V14, 'assets/environment/v14/tiles/tile_wood_plank_weathered_v14.png');
     }
 
-    // 9. Nạp các sprite NPC & Chân dung hội thoại pixel art C4-12-08 / C4-13-21 / C4-132-06 (Garth, Edda, Neris, Bram, Finn, Blacksmith)
-    this.load.image(PORTRAIT_GARTH, 'assets/characters/villagers/portrait_garth.png');
-    this.load.image(PORTRAIT_EDDA, 'assets/characters/villagers/portrait_edda.png');
-    this.load.image(PORTRAIT_NERIS, 'assets/characters/villagers/portrait_neris.png');
-    this.load.image(PORTRAIT_BRAM, 'assets/characters/villagers/portrait_blacksmith.png');
-    this.load.image(PORTRAIT_BLACKSMITH, 'assets/characters/villagers/portrait_blacksmith.png');
-    this.load.image(PORTRAIT_FINN, 'assets/characters/villagers/portrait_finn.png');
+    // 9. V15-FIX-05: Chuẩn hóa toàn bộ sprite & chân dung NPC về 1 nguồn duy nhất tại assets/characters/npcs/
+    this.load.image(PORTRAIT_GARTH, 'assets/characters/npcs/portrait_garth.png');
+    this.load.image(PORTRAIT_EDDA, 'assets/characters/npcs/portrait_edda.png');
+    this.load.image(PORTRAIT_NERIS, 'assets/characters/npcs/portrait_neris.png');
+    this.load.image(PORTRAIT_BRAM, 'assets/characters/npcs/portrait_blacksmith.png');
+    this.load.image(PORTRAIT_BLACKSMITH, 'assets/characters/npcs/portrait_blacksmith.png');
+    this.load.image(PORTRAIT_FINN, 'assets/characters/npcs/portrait_finn.png');
 
-    // Nạp các Spritesheet 64x64 px mới từ C4-12-08 và NPC Thợ Rèn Bram C4-13-21
-    this.load.spritesheet(SPRITE_EDDA_IDLE_SHEET, 'assets/characters/villagers/edda_idle_sheet.png', {
+    // Nạp các Spritesheet 64x64 px chuẩn hóa từ assets/characters/npcs/
+    this.load.spritesheet(SPRITE_EDDA_IDLE_SHEET, 'assets/characters/npcs/edda_idle_sheet.png', {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet(SPRITE_NERIS_IDLE_SHEET, 'assets/characters/villagers/neris_idle_sheet.png', {
+    this.load.spritesheet(SPRITE_NERIS_IDLE_SHEET, 'assets/characters/npcs/neris_idle_sheet.png', {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet(SPRITE_GARTH_WALK_SHEET, 'assets/characters/villagers/garth_walk_sheet.png', {
+    this.load.spritesheet(SPRITE_GARTH_WALK_SHEET, 'assets/characters/npcs/garth_walk_sheet.png', {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet(SPRITE_POTTER_WALK_SHEET, 'assets/characters/villagers/potter_walk_sheet.png', {
+    this.load.spritesheet(SPRITE_POTTER_WALK_SHEET, 'assets/characters/npcs/potter_walk_sheet.png', {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet(SPRITE_ERRAND_BOY_WALK_SHEET, 'assets/characters/villagers/errand_boy_walk_sheet.png', {
+    this.load.spritesheet(SPRITE_ERRAND_BOY_WALK_SHEET, 'assets/characters/npcs/errand_boy_walk_sheet.png', {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet(SPRITE_BLACKSMITH_SHEET, 'assets/characters/villagers/blacksmith_sheet.png', {
+    this.load.spritesheet(SPRITE_BLACKSMITH_SHEET, 'assets/characters/npcs/blacksmith_sheet.png', {
       frameWidth: 64,
       frameHeight: 64
     });
@@ -650,38 +650,38 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image('portrait_campfire_knight.png', 'assets/characters/npcs/portrait_campfire_knight.png');
 
     // Giữ tương thích các khóa nạp spritesheet cũ (garth_idle, garth_walk, edda_idle, edda_walk, neris_idle, neris_walk)
-    this.load.spritesheet(SPRITE_GARTH_IDLE, 'assets/characters/villagers/garth_walk_sheet.png', {
+    this.load.spritesheet(SPRITE_GARTH_IDLE, 'assets/characters/npcs/garth_walk_sheet.png', {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet(SPRITE_GARTH_WALK, 'assets/characters/villagers/garth_walk_sheet.png', {
+    this.load.spritesheet(SPRITE_GARTH_WALK, 'assets/characters/npcs/garth_walk_sheet.png', {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet(SPRITE_EDDA_IDLE, 'assets/characters/villagers/edda_idle_sheet.png', {
+    this.load.spritesheet(SPRITE_EDDA_IDLE, 'assets/characters/npcs/edda_idle_sheet.png', {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet(SPRITE_EDDA_WALK, 'assets/characters/villagers/edda_idle_sheet.png', {
+    this.load.spritesheet(SPRITE_EDDA_WALK, 'assets/characters/npcs/edda_idle_sheet.png', {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet(SPRITE_NERIS_IDLE, 'assets/characters/villagers/neris_idle_sheet.png', {
+    this.load.spritesheet(SPRITE_NERIS_IDLE, 'assets/characters/npcs/neris_idle_sheet.png', {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet(SPRITE_NERIS_WALK, 'assets/characters/villagers/neris_idle_sheet.png', {
+    this.load.spritesheet(SPRITE_NERIS_WALK, 'assets/characters/npcs/neris_idle_sheet.png', {
       frameWidth: 64,
       frameHeight: 64
     });
 
     // Giữ tương thích các khóa sprite ảnh tĩnh cũ (npc_garth, npc_edda, npc_neris, npc_bram, npc_finn, npc_blacksmith)
-    this.load.image(SPRITE_NPC_GARTH, 'assets/characters/villagers/npc_garth.png');
-    this.load.image(SPRITE_NPC_EDDA, 'assets/characters/villagers/npc_edda.png');
-    this.load.image(SPRITE_NPC_NERIS, 'assets/characters/villagers/npc_neris.png');
-    this.load.image(SPRITE_NPC_BRAM, 'assets/characters/villagers/npc_blacksmith.png');
-    this.load.image(SPRITE_NPC_BLACKSMITH, 'assets/characters/villagers/npc_blacksmith.png');
-    this.load.image(SPRITE_NPC_FINN, 'assets/characters/villagers/npc_finn.png');
+    this.load.image(SPRITE_NPC_GARTH, 'assets/characters/npcs/npc_garth.png');
+    this.load.image(SPRITE_NPC_EDDA, 'assets/characters/npcs/npc_edda.png');
+    this.load.image(SPRITE_NPC_NERIS, 'assets/characters/npcs/npc_neris.png');
+    this.load.image(SPRITE_NPC_BRAM, 'assets/characters/npcs/npc_blacksmith.png');
+    this.load.image(SPRITE_NPC_BLACKSMITH, 'assets/characters/npcs/npc_blacksmith.png');
+    this.load.image(SPRITE_NPC_FINN, 'assets/characters/npcs/npc_finn.png');
 
     // 10. Nạp các sprite quái vật bóng đêm & tàn ảnh (PASS T10, GATE 2B)
     this.load.spritesheet(SPRITE_THE_LISTENER, 'assets/monsters/the_listener.png', {
