@@ -23,6 +23,7 @@ import itemsData from '../data/items.json';
 import { EquipmentSystem } from '../systems/EquipmentSystem';
 import { EquipmentSlot } from '../types';
 import { ItemTooltipHelper } from '../ui/ItemTooltipHelper';
+import { QuickCraftSidebar } from '../ui/QuickCraftSidebar';
 
 export interface QuickSlotRef {
   id: string;
@@ -130,6 +131,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   private taskbarLanternIcon?: Phaser.GameObjects.Text;
   private taskbarTooltipContainer?: Phaser.GameObjects.Container;
   private bottomTooltipContainer?: Phaser.GameObjects.Container;
+  // V15-50A: Thanh Ghim Nhanh Dọc (Pinned Pages Quick Craft Sidebar)
+  public quickCraftSidebar?: QuickCraftSidebar;
 
   // Thu gọn / Mở rộng bảng nhiệm vụ góc trên phải (V15-24)
   public isQuestCollapsed: boolean = false;
@@ -466,6 +469,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.buildQuickSlots();
     // V15-50: Taskbar Biểu Tượng Dọc mép trái phong cách Don't Starve
     this.buildVerticalTaskbar();
+    // V15-50A: Thanh Ghim Nhanh Dọc (Quick Craft Pinned Pages Bar - DST Style)
+    this.quickCraftSidebar = new QuickCraftSidebar(this);
     // V14-P8-02: Cụm nút chức năng nhanh ở góc dưới bên trái HUD
     this.buildQuickActionButtons();
 
@@ -570,6 +575,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       if (this.bossSealContainer) { this.bossSealContainer.destroy(); this.bossSealContainer = undefined as any; }
       if (this.quickSlotContainer) { this.quickSlotContainer.destroy(); this.quickSlotContainer = undefined as any; }
       if (this.verticalTaskbarContainer) { this.verticalTaskbarContainer.destroy(); this.verticalTaskbarContainer = undefined as any; }
+      if (this.quickCraftSidebar) { this.quickCraftSidebar.destroy(); this.quickCraftSidebar = undefined; }
       if (this.taskbarTooltipContainer) { this.taskbarTooltipContainer.destroy(); this.taskbarTooltipContainer = undefined; }
       if (this.bottomTooltipContainer) { this.bottomTooltipContainer.destroy(); this.bottomTooltipContainer = undefined; }
       if (this.questToggleBtn) { this.questToggleBtn.destroy(); this.questToggleBtn = undefined as any; }
@@ -960,6 +966,12 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       g.lineStyle(1, 0x6e5233, 0.25);
       g.strokeRoundedRect(slotX - slotSize / 2 + 1, -slotSize / 2 + 1, slotSize - 2, slotSize - 2, 3);
 
+      // V15-50A: Nền giấy da sáng ấm bên trong (Warm Parchment Slot Style - Don't Starve Together)
+      g.fillStyle(0xdfd3b6, 0.95);
+      g.fillRoundedRect(slotX - slotSize / 2 + 2, -slotSize / 2 + 2, slotSize - 4, slotSize - 4, 3);
+      g.lineStyle(0.8, 0x8c7853, 0.4);
+      g.strokeRoundedRect(slotX - slotSize / 2 + 2, -slotSize / 2 + 2, slotSize - 4, slotSize - 4, 3);
+
       // Đinh tán góc nhỏ
       g.fillStyle(0x8c6d3b, 0.7);
       g.fillRect(slotX - slotSize / 2 + 1, -slotSize / 2 + 1, 1.5, 1.5);
@@ -1019,8 +1031,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         g.clear();
         g.fillStyle(0x281d13, 0.98);
         g.fillRoundedRect(slotX - slotSize / 2, -slotSize / 2, slotSize, slotSize, 4);
-        g.lineStyle(1.5, 0xf1c40f, 0.95);
+        g.lineStyle(1.8, 0xf1c40f, 0.98);
         g.strokeRoundedRect(slotX - slotSize / 2, -slotSize / 2, slotSize, slotSize, 4);
+        // Nền giấy sáng ấm rực rỡ khi chọn / hover
+        g.fillStyle(0xf7f0dd, 0.98);
+        g.fillRoundedRect(slotX - slotSize / 2 + 2, -slotSize / 2 + 2, slotSize - 4, slotSize - 4, 3);
 
         const curItem = this.inventorySlotData[i];
         if (curItem && curItem.itemId) {
@@ -1037,6 +1052,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         g.strokeRoundedRect(slotX - slotSize / 2, -slotSize / 2, slotSize, slotSize, 4);
         g.lineStyle(1, 0x6e5233, 0.25);
         g.strokeRoundedRect(slotX - slotSize / 2 + 1, -slotSize / 2 + 1, slotSize - 2, slotSize - 2, 3);
+        // Nền giấy da sáng ấm bên trong
+        g.fillStyle(0xdfd3b6, 0.95);
+        g.fillRoundedRect(slotX - slotSize / 2 + 2, -slotSize / 2 + 2, slotSize - 4, slotSize - 4, 3);
+        g.lineStyle(0.8, 0x8c7853, 0.4);
+        g.strokeRoundedRect(slotX - slotSize / 2 + 2, -slotSize / 2 + 2, slotSize - 4, slotSize - 4, 3);
         g.fillStyle(0x8c6d3b, 0.7);
         g.fillRect(slotX - slotSize / 2 + 1, -slotSize / 2 + 1, 1.5, 1.5);
         g.fillRect(slotX + slotSize / 2 - 2.5, -slotSize / 2 + 1, 1.5, 1.5);
@@ -1057,13 +1077,22 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.emergencyCountText = this.inventorySlotCounts[2];
     this.lureCountText = this.inventorySlotCounts[3];
 
-    // 2. Vạch ngăn cách đồng xỉn phân định giữa Cụm Túi Đồ và Cụm Trang Bị (tại x = 92)
+    // 2. V15-50A: Vách gỗ chạm khắc (Carved Wood Divider) nẹp đồng nạm đinh
     const sepGfx = this.add.graphics();
-    sepGfx.lineStyle(1.5, 0x8a6d3b, 0.8);
+    // Nền cột gỗ chạm khắc
+    sepGfx.fillStyle(0x2d1e12, 0.95);
+    sepGfx.fillRoundedRect(88, -20, 8, 40, 2);
+    sepGfx.lineStyle(1.2, 0x5c4224, 0.9);
+    sepGfx.strokeRoundedRect(88, -20, 8, 40, 2);
+    // Vạch ngăn cách đồng xỉn với đinh tán tròn phân cách cụm Túi Đồ và Trang Bị (tại x = 92)
+    sepGfx.lineStyle(1.5, 0x8a6d3b, 0.85);
     sepGfx.lineBetween(92, -18, 92, 18);
     sepGfx.lineBetween(102, -14, 102, 14); // Compatibility anchor
-    sepGfx.fillStyle(0xd4af37, 0.9);
+    sepGfx.fillStyle(0xd4af37, 0.95);
     sepGfx.fillCircle(92, 0, 2.5);
+    sepGfx.fillStyle(0xb89058, 0.9);
+    sepGfx.fillRect(90, -18, 4, 2);
+    sepGfx.fillRect(90, 16, 4, 2);
     this.quickSlotContainer.add(sepGfx);
 
     // 3. 4 Ô Trang Bị Cá Nhân bên phải (BODY, FEET, BACK, CHARM)
@@ -1951,6 +1980,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     // 3. Cập nhật trạng thái đèn lồng trên Taskbar dọc
     this.updateTaskbarLanternState();
 
+    // 4. V15-50A: Đồng bộ lại trạng thái công thức ghim và thẻ nổi
+    if (this.quickCraftSidebar) {
+      this.quickCraftSidebar.refresh();
+    }
+
     // Đồng bộ biến đếm backward compatibility
     this.lastPoulticeCount = poulticeCount;
     this.lastOilCount = oilCount;
@@ -2549,6 +2583,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.verticalTaskbarContainer) {
       this.verticalTaskbarContainer.setVisible(shouldShowHUD);
     }
+    if (this.quickCraftSidebar) {
+      this.quickCraftSidebar.setVisible(shouldShowHUD);
+    }
     if (this.quickActionButtonsContainer) {
       this.quickActionButtonsContainer.setVisible(shouldShowHUD);
     }
@@ -2648,6 +2685,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.questToggleBtn) this.questToggleBtn.setVisible(visible);
     if (this.quickSlotContainer) this.quickSlotContainer.setVisible(visible);
     if (this.verticalTaskbarContainer) this.verticalTaskbarContainer.setVisible(visible);
+    if (this.quickCraftSidebar) this.quickCraftSidebar.setVisible(visible);
     if (this.promptContainer) this.promptContainer.setVisible(visible);
     if (this.promptText) this.promptText.setVisible(visible);
     if (this.zoneBannerContainer) this.zoneBannerContainer.setVisible(visible);
@@ -2668,6 +2706,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   public handleModalOpened(): void {
+    if (this.quickCraftSidebar) this.quickCraftSidebar.hideFlyout();
     this.setHUDVisible(false);
     this.setDialogueActive(true);
   }
