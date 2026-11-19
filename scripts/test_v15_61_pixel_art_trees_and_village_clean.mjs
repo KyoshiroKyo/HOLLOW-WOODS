@@ -21,10 +21,6 @@ const requiredAssets = [
   'public/assets/environment/trees/tree_mossy_oak_grand.png',
   'public/assets/environment/trees/tree_weeping_willow.png',
   'public/assets/environment/trees/tree_withered_gnarled.png',
-  'public/assets/environment/sprites/tree_mist_pine.png',
-  'public/assets/environment/sprites/tree_mossy_oak_grand.png',
-  'public/assets/environment/sprites/tree_weeping_willow.png',
-  'public/assets/environment/sprites/tree_withered_gnarled.png',
   'public/assets/environment/sprites/tree_oak_1.png',
   'public/assets/environment/sprites/tree_oak_2.png',
   'public/assets/environment/sprites/tree_oak_3.png',
@@ -44,27 +40,38 @@ for (const relPath of requiredAssets) {
 }
 console.log('✓ PASS: All 15 required pixel art tree and prop assets exist and are valid PNG images.');
 
-// 2. Verify PreloadScene.ts
+// 2. Verify PreloadScene.ts & AtlasTextureResolver
 const preloadContent = fs.readFileSync('src/scenes/PreloadScene.ts', 'utf-8');
-const expectedPreloadKeys = [
+const atlasResolverContent = fs.readFileSync('src/utils/AtlasTextureResolver.ts', 'utf-8');
+const directPreloadKeys = [
   'SPRITE_TREE_MIST_PINE_V15',
   'SPRITE_TREE_MOSSY_OAK_GRAND_V15',
   'SPRITE_TREE_WEEPING_WILLOW_V15',
   'SPRITE_TREE_WITHERED_GNARLED_V15',
-  'SPRITE_TREE_OAK_1',
-  'SPRITE_TREE_OAK_2',
-  'SPRITE_TREE_OAK_3',
-  'SPRITE_TREE_DEAD',
-  'SPRITE_HOLLOW_TREE',
-  'SPRITE_BUSH_DENSE_1',
-  'SPRITE_BUSH_DENSE_2',
+  'tree_pine_tall_topdown',
+  'tree_pine_med_topdown',
+  'tree_pine_slender_topdown'
+];
+
+for (const key of directPreloadKeys) {
+  assert(preloadContent.includes(key), `PreloadScene missing key loading: ${key}`);
+}
+
+const atlasFrames = [
+  'tree_oak_1',
+  'tree_oak_2',
+  'tree_oak_3',
+  'tree_dead',
+  'hollow_tree',
+  'bush_dense_1',
+  'bush_dense_2',
   'prop_fallen_log_mossy_v14'
 ];
 
-for (const key of expectedPreloadKeys) {
-  assert(preloadContent.includes(key), `PreloadScene missing key loading: ${key}`);
+for (const frame of atlasFrames) {
+  assert(atlasResolverContent.includes(`'${frame}'`), `AtlasTextureResolver missing frame: ${frame}`);
 }
-console.log('✓ PASS: PreloadScene loads all real pixel art tree sprites and props.');
+console.log('✓ PASS: PreloadScene loads all real pixel art tree sprites and props via direct load and AtlasTextureResolver.');
 
 // 3. Verify WorldBuilder.ts: No graphics trees / logs
 const wbContent = fs.readFileSync('src/world/WorldBuilder.ts', 'utf-8');

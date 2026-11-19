@@ -402,9 +402,10 @@ export class GameScene extends Phaser.Scene {
 
     this.player = new SatyrPlayer(this, spawnX, spawnY);
     this.player.stats.isLanternOn = this.playerState.stats.isLanternOn;
-    // C4-13-01 & V15-34 & V15-48: Reset sạch toàn bộ cờ trạng thái hành động, ẩn nấp, hiển thị và mở khóa điều khiển
+    // C4-13-01 & V15-34 & V15-48 & V15-FIX-09: Reset sạch toàn bộ cờ trạng thái hành động, ẩn nấp, hiển thị và mở khóa điều khiển
     this.isGameOverPending = false;
     this.isDebugBoxesVisible = false;
+    this.playerState.stats.isHiding = false;
     this.player.resetAllActionAndMotionStates();
     this.player.lastSafePosition = { x: spawnX, y: spawnY };
 

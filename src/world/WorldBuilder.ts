@@ -8005,19 +8005,13 @@ export class WorldBuilder {
     const cx = b.x + zone.bounds.width / 2;
     const cy = b.y + zone.bounds.height / 2;
 
-    // Các thân cây cổ thụ uốn cong kỳ dị bao quanh bãi đất trống hình tròn
+    // V15-FIX-09: Sử dụng 100% Sprite Cây Pixel Art thật thay vì vẽ Ellipse bằng Graphics
     const treeAngles = [0, 0.7, 1.4, 2.2, 2.9, 3.6, 4.3, 5.1, 5.8];
-    const treeGfx = this.scene.add.graphics();
     for (const ang of treeAngles) {
       const tx = cx + Math.cos(ang) * 140;
       const ty = cy + Math.sin(ang) * 115;
-      treeGfx.fillStyle(0x231d2e, 1);
-      treeGfx.fillEllipse(tx, ty, 28, 36);
-      treeGfx.lineStyle(2, 0x4a3b5c, 0.8);
-      treeGfx.strokeEllipse(tx, ty, 28, 36);
+      this.createTree(tx, ty, 'Cây Cổ Thụ Thì Thầm', false);
     }
-    treeGfx.setDepth(b.y + 80);
-    this.registerCullable(treeGfx, cx, cy, 160);
 
     // 3 Cột đá vọng âm bố trí hình tam giác giao thoa tiếng chuông
     const pillarPositions = [

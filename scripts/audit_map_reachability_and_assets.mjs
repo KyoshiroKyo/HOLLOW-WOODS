@@ -84,23 +84,23 @@ vaelenAssets.forEach(a => {
   assert(r.ok, `${a.name}: ${a.path} [${r.width || 0}x${r.height || 0} px]`);
 });
 
-// 1.3. Dân làng Bellhollow: Garth, Edda, Neris, Bram, Finn
+// 1.3. Dân làng Bellhollow: Garth, Edda, Neris, Bram, Finn (Hợp nhất tại public/assets/characters/npcs/)
 const villagerAssets = [
-  { path: 'public/assets/characters/villagers/garth_walk_sheet.png', name: 'Garth Walk Sheet (8x4 frames)', w: 512, h: 256 },
-  { path: 'public/assets/characters/villagers/npc_garth.png', name: 'Garth Sprite (64x64)', w: 64, h: 64 },
-  { path: 'public/assets/characters/villagers/portrait_garth.png', name: 'Garth Portrait (64x64)', w: 64, h: 64 },
-  { path: 'public/assets/characters/villagers/edda_idle_sheet.png', name: 'Edda Idle Sheet (9 frames 64x64)', w: 576, h: 64 },
-  { path: 'public/assets/characters/villagers/npc_edda.png', name: 'Edda Sprite (64x64)', w: 64, h: 64 },
-  { path: 'public/assets/characters/villagers/portrait_edda.png', name: 'Edda Portrait (64x64)', w: 64, h: 64 },
-  { path: 'public/assets/characters/villagers/neris_idle_sheet.png', name: 'Neris Idle Sheet (6 frames 64x64)', w: 384, h: 64 },
-  { path: 'public/assets/characters/villagers/npc_neris.png', name: 'Neris Sprite (64x64)', w: 64, h: 64 },
-  { path: 'public/assets/characters/villagers/portrait_neris.png', name: 'Neris Portrait (64x64)', w: 64, h: 64 },
-  { path: 'public/assets/characters/villagers/blacksmith_sheet.png', name: 'Bram Blacksmith Sheet (6 frames 64x64)', w: 384, h: 64 },
-  { path: 'public/assets/characters/villagers/npc_blacksmith.png', name: 'Bram Sprite (64x64)', w: 64, h: 64 },
-  { path: 'public/assets/characters/villagers/portrait_blacksmith.png', name: 'Bram Portrait (64x64)', w: 64, h: 64 },
-  { path: 'public/assets/characters/villagers/errand_boy_walk_sheet.png', name: 'Finn Walk Sheet (8x4 frames)', w: 512, h: 256 },
-  { path: 'public/assets/characters/villagers/npc_finn.png', name: 'Finn Sprite (64x64)', w: 64, h: 64 },
-  { path: 'public/assets/characters/villagers/portrait_finn.png', name: 'Finn Portrait (64x64)', w: 64, h: 64 }
+  { path: 'public/assets/characters/npcs/garth_walk_sheet.png', name: 'Garth Walk Sheet (8x4 frames)', w: 512, h: 256 },
+  { path: 'public/assets/characters/npcs/npc_garth.png', name: 'Garth Sprite (64x64)', w: 64, h: 64 },
+  { path: 'public/assets/characters/npcs/portrait_garth.png', name: 'Garth Portrait (64x64)', w: 64, h: 64 },
+  { path: 'public/assets/characters/npcs/edda_idle_sheet.png', name: 'Edda Idle Sheet (9 frames 64x64)', w: 576, h: 64 },
+  { path: 'public/assets/characters/npcs/npc_edda.png', name: 'Edda Sprite (64x64)', w: 64, h: 64 },
+  { path: 'public/assets/characters/npcs/portrait_edda.png', name: 'Edda Portrait (64x64)', w: 64, h: 64 },
+  { path: 'public/assets/characters/npcs/neris_idle_sheet.png', name: 'Neris Idle Sheet (6 frames 64x64)', w: 384, h: 64 },
+  { path: 'public/assets/characters/npcs/npc_neris.png', name: 'Neris Sprite (64x64)', w: 64, h: 64 },
+  { path: 'public/assets/characters/npcs/portrait_neris.png', name: 'Neris Portrait (64x64)', w: 64, h: 64 },
+  { path: 'public/assets/characters/npcs/blacksmith_sheet.png', name: 'Bram Blacksmith Sheet (6 frames 64x64)', w: 384, h: 64 },
+  { path: 'public/assets/characters/npcs/npc_blacksmith.png', name: 'Bram Sprite (64x64)', w: 64, h: 64 },
+  { path: 'public/assets/characters/npcs/portrait_blacksmith.png', name: 'Bram Portrait (64x64)', w: 64, h: 64 },
+  { path: 'public/assets/characters/npcs/errand_boy_walk_sheet.png', name: 'Finn Walk Sheet (8x4 frames)', w: 512, h: 256 },
+  { path: 'public/assets/characters/npcs/npc_finn.png', name: 'Finn Sprite (64x64)', w: 64, h: 64 },
+  { path: 'public/assets/characters/npcs/portrait_finn.png', name: 'Finn Portrait (64x64)', w: 64, h: 64 }
 ];
 
 villagerAssets.forEach(a => {
