@@ -74,6 +74,22 @@ export class AutoPerimeterWallsModule {
       return [];
     }
 
+    // V15-40 & V15-43: Các phân khu rừng mở và quảng trường liên kết liền mạch:
+    // ancient_rune_puzzle, deep_forest, sub_whispering_clearing, crooked_path
+    // Tuyệt đối không sinh tường chu vi tự động để tránh cắt ngang lối đi sang Miếu Chuông,
+    // không chia đôi bản đồ tại ranh giới Y ~ 0 và không dựng tường dọc chắn lối đi X = 2080.
+    if (
+      zoneId === 'ancient_rune_puzzle' ||
+      zoneId === 'deep_forest' ||
+      zoneId === 'sub_whispering_clearing' ||
+      zoneId === 'crooked_path'
+    ) {
+      if (TILED_PIPELINE_CONFIG.debugDrawModuleLogs) {
+        console.log(`[TiledPipeline:PerimeterWalls] Skipped for zone '${zoneId}' (Open Forest & Seamless Transition)`);
+      }
+      return [];
+    }
+
     const createdWalls: Phaser.Physics.Arcade.Sprite[] = [];
     const minX = bounds.x;
     const maxX = bounds.x + bounds.width;

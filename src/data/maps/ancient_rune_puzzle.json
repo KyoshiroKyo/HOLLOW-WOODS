@@ -1327,10 +1327,10 @@
           "id": 3,
           "name": "to_silent_mire_from_puzzle",
           "type": "transition_portal",
-          "x": 3350,
-          "y": 250,
-          "width": 20,
-          "height": 60,
+          "x": 3310,
+          "y": 220,
+          "width": 25,
+          "height": 80,
           "visible": true,
           "properties": [
             {

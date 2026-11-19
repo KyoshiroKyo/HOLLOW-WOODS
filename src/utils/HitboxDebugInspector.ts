@@ -201,9 +201,7 @@ export class HitboxDebugInspector {
     // Bắt phím F9: Bật / Tắt Chế độ Debug Quản trị viên (Đồng bộ với GameScene & UIScene - V15-29)
     if (this.f9Key && Phaser.Input.Keyboard.JustDown(this.f9Key)) {
       const gs = this.scene as any;
-      if (gs && typeof gs.toggleDebugInteractionBoxes === 'function') {
-        gs.toggleDebugInteractionBoxes();
-      } else {
+      if (!gs || typeof gs.toggleDebugInteractionBoxes !== 'function') {
         this.toggleDebug();
       }
     }

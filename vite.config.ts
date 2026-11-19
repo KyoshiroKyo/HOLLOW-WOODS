@@ -5,7 +5,19 @@ export default defineConfig({
   server: {
     port: 3000,
     watch: {
-      ignored: ['**/Pixel_Art/**', '**/Read/**', '**/scripts/**', '**/reference/**', '**/dist/**', '**/Backups/**']
+      ignored: [
+        '**/Pixel_Art/**',
+        '**/Read/**',
+        '**/scripts/**',
+        '**/reference/**',
+        '**/dist/**',
+        '**/Backups/**',
+        '**/release/**',
+        '**/docs/**',
+        '**/_unused_assets_archive/**',
+        '**/staging/**',
+        '**/backup_*/**'
+      ]
     }
   },
   plugins: [

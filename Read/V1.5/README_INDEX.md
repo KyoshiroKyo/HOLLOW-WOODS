@@ -55,7 +55,7 @@
 |:---:|:---|:---|:---:|
 | 01 | `V15-01` | [01_System_And_Asset_Audit.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/01_System_And_Asset_Audit.md) — Rà soát toàn diện hệ thống di chuyển, va chạm, tỷ lệ asset và UI | Hoàn tất (Đã nghiệm thu) |
 | 02 | `V15-02` | [02_Movement_And_Physics_Fix.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/02_Movement_And_Physics_Fix.md) — Sửa triệt để lỗi điều khiển, chuẩn hóa vận tốc và chống đơ phím nhân vật | Hoàn tất (Đã nghiệm thu) |
-| 03 | `V15-03` | [03_Corner_Sliding_And_Map_Colliders.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/03_Corner_Sliding_And_Map_Colliders.md) — Cơ chế trượt góc mượt mà Corner Sliding và tối ưu hóa hộp va chạm bản đồ | Hoàn tất (Đã nghiệm thu) |
+| 03 | `V15-03` | [03_Pixel_Scale_And_Village_Overhaul.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/03_Pixel_Scale_And_Village_Overhaul.md) — Chuẩn hóa tỷ lệ Pixel Art, kiến trúc làng Bellhollow, sửa lỗi offset hitbox NPC & tinh gọn collider kèm Corner Sliding | Hoàn tất (Đã nghiệm thu) |
 | 04 | `V15-04` | [04_F9_Debug_Separation.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/04_F9_Debug_Separation.md) — Tách bảng kiểm tra kỹ thuật [F9] khỏi giao diện người chơi và tắt mặc định | Hoàn tất (Đã nghiệm thu) |
 | 05 | `V15-05` | [03_Sanity_Vision_And_NightAI.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/03_Sanity_Vision_And_NightAI.md) — Nâng cấp cơ chế Bình Tâm rút máu lũy tiến và sửa lỗi cảnh báo sai ban ngày | Hoàn tất (Đã nghiệm thu) |
 | 06 | `V15-06` | [03_Sanity_Vision_And_NightAI.md#5-bước-v15-06-thu-hẹp-tầm-nhìn-động--hiệu-ứng-thị-giác-u-ám](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/03_Sanity_Vision_And_NightAI.md) — Thu hẹp tầm nhìn động và hiệu ứng thị giác u ám khi Tinh thần xuống thấp | Hoàn tất (Đã nghiệm thu) |
@@ -83,6 +83,10 @@
 | 28 | `V15-30` | [10_Torn_Page_Modal_And_World_Parchment.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/10_Torn_Page_Modal_And_World_Parchment.md) — Thay thế thông báo nổi bằng Giao diện Trang Giấy Cổ Tương Tác (Torn Page Modal), lật trang, âm thanh sột soạt, tự đóng băng quái vật và đổi trạng thái prompt trên tường | Hoàn tất (Đã nghiệm thu) |
 | 29 | `V15-31` | [11_Sir_Vaelen_And_Bonfire_Outpost.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/11_Sir_Vaelen_And_Bonfire_Outpost.md) — Sửa lỗi nhầm asset Garth, gắn đúng sprite 2D_SL_Knight cho Sir Vaelen — Kỵ Sĩ Trầm Mặc và di dời ra Trạm Lửa Rừng Tĩnh Lặng ngoài Bellhollow | Hoàn tất (Đã nghiệm thu) |
 | 30 | `V15-32` | [12_Peaceful_Dialogue_And_Black_Knight_Signoff.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/12_Peaceful_Dialogue_And_Black_Knight_Signoff.md) — Lời thoại bình yên bên đốm lửa của Sir Vaelen, đồng bộ 3 nhiệm vụ tiến trình, đại thức tỉnh Hiệp Sĩ Đen và khóa sổ hoàn tất V1.5 | Hoàn tất (Đã nghiệm thu) |
+| 31 | `V15-33` | [13_Paper_Note_Modal_And_Signpost_Overhaul.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/13_Paper_Note_Modal_And_Signpost_Overhaul.md) — Chuyển đổi toàn bộ thông báo chữ xanh sang mở Mẩu Giấy Cổ tương tác giữa màn hình (4 Theme: Signpost, Notice, Stele, Parchment) | Hoàn tất (Đã nghiệm thu) |
+| 32 | `V15-34` | [14_Safe_Spawn_And_Unstuck_Resolver.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/14_Safe_Spawn_And_Unstuck_Resolver.md) — Hệ thống an toàn vị trí nạp Save (SafeSpawnResolver), khắc phục triệt để lỗi kẹt cổng sắt/vật cản lớn, reset sạch cờ ẩn nấp và nút Gỡ Kẹt khẩn cấp [F8] | Hoàn tất (Đã nghiệm thu) |
+| 33 | `V15-35` | [docs/FOLDER_STRUCTURE_RULES.md](file:///g:/HOLLOW%20WOODS/docs/FOLDER_STRUCTURE_RULES.md) — Quy hoạch, dọn dẹp và sắp xếp lại toàn bộ cây thư mục gốc theo chuẩn hóa (di chuyển toàn bộ file .md, .rar, .zip và thư mục backup vào docs/, release/, Backups/, cập nhật .gitignore) | Hoàn tất (Đã nghiệm thu) |
+| 34 | `V15-36` | [15_Final_V15_Release_Report.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/15_Final_V15_Release_Report.md) / [FINAL_V1.5_RELEASE_REPORT.md](file:///g:/HOLLOW%20WOODS/docs/reports/FINAL_V1.5_RELEASE_REPORT.md) — Đóng gói mã nguồn tinh gọn chuẩn AI-Readable cho Gemini (< 2 MB) và xuất bản bản chạy P2Game V1.5.0 chính thức | Hoàn tất (Đã nghiệm thu) |
 
 ---
 
@@ -107,7 +111,10 @@ node scripts/verify_v15_27_performance_and_save_compatibility.mjs
 
 node scripts/verify_v15_29_debug_boxes_and_outline.mjs
 # Xác nhận 22/22 bài kiểm tra kỹ thuật đạt PASS
+
+node scripts/test_v15_34_safe_spawn_and_unstuck.mjs
+# Xác nhận 5/5 bài kiểm tra kỹ thuật SafeSpawn và Unstuck đạt PASS 100%
 ```
 
 ---
-*Tài liệu được cập nhật tự động và đóng dấu hoàn thành tại bước V15-29 — 19/11/2026.*
+*Tài liệu được cập nhật tự động và đóng dấu hoàn thành trọn vẹn tại bước V15-36 — 19/11/2026.*

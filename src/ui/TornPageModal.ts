@@ -1,13 +1,18 @@
 /**
- * HOLLOW WOODS V1.5 - GIAO DIỆN TRANG GIẤY CỔ TƯƠNG TÁC (TORN PAGE MODAL)
- * Thiết kế trang giấy da dê cổ rách viền (Aged Torn Parchment) mở ra giữa màn hình
- * Hỗ trợ hiệu ứng lật trang, âm thanh sột soạt, đọc tương tác và cất vào Sổ Tay [J].
+ * HOLLOW WOODS V1.5 - GIAO DIỆN TRANG GIẤY CỔ & BIỂN BÁO TƯƠNG TÁC (TORN PAGE & PAPER NOTE MODAL)
+ * Hỗ trợ đa dạng chủ đề hình ảnh (Visual Variants):
+ * 1. parchment: Giấy da dê cổ rách viền (Aged Torn Parchment)
+ * 2. notice: Bản thông báo làng / Cáo thị có Dấu Sáp Đỏ (Red Wax Seal)
+ * 3. signpost: Bảng gỗ sồi phong hóa, 4 đinh tán kim loại góc, chữ khắc gỗ sáng màu
+ * 4. stele: Phiến đá cự thạch xám phủ rêu xanh, chữ khắc đá sáng màu
+ * 
+ * Hỗ trợ hiệu ứng lật trang, âm thanh trực quan, đọc tương tác và cất vào Sổ Tay [J].
  */
 
 import * as Phaser from 'phaser';
 import { AudioManager } from '../audio/AudioManager';
 import { HDTextHelper } from '../utils/HDTextHelper';
-import { TornPageEntry } from '../data/tornPagesData';
+import { TornPageEntry, NoteVisualVariant } from '../data/tornPagesData';
 import { PlayerState } from '../state/PlayerState';
 
 export class TornPageModal {
@@ -60,7 +65,7 @@ export class TornPageModal {
   }
 
   /**
-   * Dựng cấu trúc giao diện Trang Giấy Cổ Rách Viền
+   * Dựng cấu trúc giao diện Trang Giấy / Biển Báo Cổ
    */
   private buildUI(): void {
     // 1. Lớp phủ nền tối mờ tập trung ánh nhìn
@@ -72,7 +77,7 @@ export class TornPageModal {
       this.close();
     });
 
-    // 2. Đồ họa Trang Giấy Rách Viền (Torn Parchment Graphics)
+    // 2. Đồ họa nền tấm nền (Parchment / Signpost / Notice / Stele)
     this.parchmentBg = this.scene.add.graphics();
 
     // 3. Tiêu đề, Cổ Ngữ & Tác giả
@@ -131,7 +136,7 @@ export class TornPageModal {
 
     this.prevPageBtn.on('pointerdown', () => this.prevPage());
     this.prevPageBtn.on('pointerover', () => this.prevPageBtn.setColor('#e67e22'));
-    this.prevPageBtn.on('pointerout', () => this.prevPageBtn.setColor('#7f5a2b'));
+    this.prevPageBtn.on('pointerout', () => this.updateNavButtonColors());
 
     this.nextPageBtn = HDTextHelper.createText(this.scene, 910, 428, 'Trang Tiếp [D] ►', {
       fontFamily: 'sans-serif',
@@ -142,9 +147,9 @@ export class TornPageModal {
 
     this.nextPageBtn.on('pointerdown', () => this.nextPage());
     this.nextPageBtn.on('pointerover', () => this.nextPageBtn.setColor('#e67e22'));
-    this.nextPageBtn.on('pointerout', () => this.nextPageBtn.setColor('#7f5a2b'));
+    this.nextPageBtn.on('pointerout', () => this.updateNavButtonColors());
 
-    // 6. Nút Cất vào Sổ Tay & Đóng
+    // 6. Nút Cất vào Sổ Tay & Đóng / Đã Đọc & Đóng
     this.stowBtnContainer = this.scene.add.container(560, 485);
     this.stowBtnBg = this.scene.add.graphics();
     this.stowBtnText = HDTextHelper.createText(this.scene, 0, 0, '[E / Space] Cất vào Sổ Tay & Đóng', {
@@ -159,12 +164,14 @@ export class TornPageModal {
     this.stowBtnContainer.setInteractive(stowHitArea, Phaser.Geom.Rectangle.Contains);
     this.stowBtnContainer.on('pointerdown', () => this.stowAndClose());
     this.stowBtnContainer.on('pointerover', () => {
-      this.drawStowButton(true);
+      const variant = this.currentEntry?.variant || 'parchment';
+      this.drawStowButton(true, variant);
       this.stowBtnText.setColor('#ffe082');
     });
     this.stowBtnContainer.on('pointerout', () => {
-      this.drawStowButton(false);
-      this.stowBtnText.setColor('#fff0b3');
+      const variant = this.currentEntry?.variant || 'parchment';
+      this.drawStowButton(false, variant);
+      this.updateStowButtonTextColor(variant);
     });
 
     // 7. Nút [ESC] Đóng
@@ -176,7 +183,10 @@ export class TornPageModal {
 
     this.closeBtnText.on('pointerdown', () => this.close());
     this.closeBtnText.on('pointerover', () => this.closeBtnText.setColor('#f5f6fa'));
-    this.closeBtnText.on('pointerout', () => this.closeBtnText.setColor('#a08560'));
+    this.closeBtnText.on('pointerout', () => {
+      const variant = this.currentEntry?.variant || 'parchment';
+      this.updateCloseButtonTextColor(variant);
+    });
 
     this.container.add([
       this.overlayBg,
@@ -194,8 +204,12 @@ export class TornPageModal {
     ]);
   }
 
+  // =========================================================================
+  // THEME RENDERING METHODS
+  // =========================================================================
+
   /**
-   * Vẽ hình dáng trang giấy rách viền (Aged Torn Parchment) nghệ thuật
+   * 1. PARCHMENT: Trang giấy da dê rách viền cổ điển
    */
   private renderAgedParchmentGraphics(): void {
     this.parchmentBg.clear();
@@ -206,19 +220,19 @@ export class TornPageModal {
     const left = cx - w / 2;
     const top = cy - h / 2;
 
-    // 1. Lớp bóng đổ rìa giấy cháy sém
+    // Lớp bóng đổ rìa giấy cháy sém
     this.parchmentBg.fillStyle(0x1e140a, 0.65);
     this.parchmentBg.fillRoundedRect(left - 8, top - 6, w + 16, h + 14, 8);
 
-    // 2. Viền cháy loang màu nâu sẫm (Burnt sienna irregular edges)
+    // Viền cháy loang màu nâu sẫm
     this.parchmentBg.fillStyle(0x52381f, 0.95);
     this.parchmentBg.fillRoundedRect(left - 4, top - 3, w + 8, h + 7, 6);
 
-    // 3. Lớp giấy nền vàng cũ da dê (Warm Aged Parchment)
+    // Lớp giấy nền vàng cũ da dê
     this.parchmentBg.fillStyle(0xede0c4, 1.0);
     this.parchmentBg.fillRoundedRect(left, top, w, h, 4);
 
-    // 4. Vết ố loang màu nước trà & nếp gấp mờ (Tea stain & fold lines)
+    // Vết ố loang màu nước trà & nếp gấp mờ
     this.parchmentBg.fillStyle(0xdfcaa2, 0.35);
     this.parchmentBg.fillCircle(left + 75, top + 80, 55);
     this.parchmentBg.fillCircle(left + w - 90, top + h - 70, 70);
@@ -230,13 +244,13 @@ export class TornPageModal {
       this.parchmentBg.lineBetween(left + 20, y, left + w - 20, y);
     }
 
-    // 5. Viền chỉ trang trí nạm đồng xỉn bên trong
+    // Viền chỉ trang trí nạm đồng xỉn bên trong
     this.parchmentBg.lineStyle(1.5, 0x9b7a42, 0.65);
     this.parchmentBg.strokeRoundedRect(left + 14, top + 14, w - 28, h - 28, 4);
     this.parchmentBg.lineStyle(1, 0x6e5229, 0.35);
     this.parchmentBg.strokeRoundedRect(left + 18, top + 18, w - 36, h - 36, 3);
 
-    // 6. Rách góc tự nhiên ở mép giấy
+    // Rách góc tự nhiên ở mép giấy
     this.parchmentBg.fillStyle(0x3e2916, 0.8);
     this.parchmentBg.fillTriangle(left + w - 14, top, left + w, top + 14, left + w, top);
     this.parchmentBg.fillTriangle(left, top + h - 14, left + 14, top + h, left, top + h);
@@ -252,29 +266,337 @@ export class TornPageModal {
   }
 
   /**
-   * Vẽ nền nút Cất vào Sổ Tay
+   * 2. NOTICE: Giấy cáo thị / thông báo có Dấu Sáp Đỏ (Red Wax Seal)
    */
-  private drawStowButton(isHover: boolean = false): void {
+  private renderNoticeGraphics(): void {
+    this.parchmentBg.clear();
+    const cx = 640;
+    const cy = 320;
+    const w = 680;
+    const h = 420;
+    const left = cx - w / 2;
+    const top = cy - h / 2;
+
+    // Bóng đổ nền
+    this.parchmentBg.fillStyle(0x16120b, 0.7);
+    this.parchmentBg.fillRoundedRect(left - 6, top - 4, w + 12, h + 10, 6);
+
+    // Viền sờn cạnh
+    this.parchmentBg.fillStyle(0x6e5337, 0.9);
+    this.parchmentBg.fillRoundedRect(left - 2, top - 2, w + 4, h + 4, 4);
+
+    // Nền giấy vàng ngả sờn viền (Yellowed vellum parchment)
+    this.parchmentBg.fillStyle(0xf5ebd6, 1.0);
+    this.parchmentBg.fillRoundedRect(left, top, w, h, 3);
+
+    // Vết ố thời gian mờ
+    this.parchmentBg.fillStyle(0xe5d7bd, 0.35);
+    this.parchmentBg.fillCircle(left + 80, top + 75, 45);
+    this.parchmentBg.fillCircle(left + w - 120, top + h - 80, 55);
+
+    // Đinh ghim sắt ở giữa mép trên
+    this.parchmentBg.fillStyle(0x2a2a2a, 0.9);
+    this.parchmentBg.fillCircle(cx, top + 10, 6);
+    this.parchmentBg.fillStyle(0x666666, 0.9);
+    this.parchmentBg.fillCircle(cx, top + 9, 3);
+
+    // Dấu Sáp Đỏ tròn (Red Wax Seal) ở góc trên bên phải
+    const waxX = left + w - 52;
+    const waxY = top + 52;
+    this.parchmentBg.fillStyle(0x991818, 0.95);
+    this.parchmentBg.fillCircle(waxX, waxY, 21);
+    this.parchmentBg.fillStyle(0x7f1212, 0.95);
+    this.parchmentBg.fillCircle(waxX + 1, waxY + 1, 16);
+    // Vòng dập nổi vàng thau bên trong dấu sáp
+    this.parchmentBg.lineStyle(1.5, 0xd4af37, 0.9);
+    this.parchmentBg.strokeCircle(waxX, waxY, 12);
+    this.parchmentBg.fillStyle(0xd4af37, 0.95);
+    this.parchmentBg.fillCircle(waxX, waxY, 4);
+
+    // Viền khung chỉ trang trí đôi bên trong
+    this.parchmentBg.lineStyle(1.5, 0x8b5a2b, 0.6);
+    this.parchmentBg.strokeRoundedRect(left + 14, top + 14, w - 28, h - 28, 4);
+    this.parchmentBg.lineStyle(1, 0x9b1b1b, 0.4);
+    this.parchmentBg.strokeRoundedRect(left + 18, top + 18, w - 36, h - 36, 3);
+
+    // Đường gân chia phân tách tiêu đề phong cách Cáo Thị
+    this.dividerGfx.clear();
+    this.dividerGfx.lineStyle(1.5, 0x851414, 0.8);
+    this.dividerGfx.lineBetween(cx - 240, 214, cx + 240, 214);
+    this.dividerGfx.fillStyle(0x851414, 0.9);
+    this.dividerGfx.fillCircle(cx, 214, 4);
+    this.dividerGfx.lineStyle(1, 0x851414, 0.4);
+    this.dividerGfx.strokeCircle(cx, 214, 7);
+  }
+
+  /**
+   * 3. SIGNPOST: Khung bảng gỗ sồi phong hóa, 4 đinh tán kim loại góc
+   */
+  private renderSignpostGraphics(): void {
+    this.parchmentBg.clear();
+    const cx = 640;
+    const cy = 320;
+    const w = 680;
+    const h = 420;
+    const left = cx - w / 2;
+    const top = cy - h / 2;
+
+    // Lớp bóng đổ sâu đậm
+    this.parchmentBg.fillStyle(0x0c0805, 0.85);
+    this.parchmentBg.fillRoundedRect(left - 6, top - 4, w + 12, h + 10, 8);
+
+    // Viền khung gỗ sồi già sẫm màu
+    this.parchmentBg.fillStyle(0x1f1208, 0.98);
+    this.parchmentBg.fillRoundedRect(left - 3, top - 3, w + 6, h + 6, 6);
+
+    // Nền gỗ sồi phong hóa (Weathered Oak Planks)
+    this.parchmentBg.fillStyle(0x321e10, 1.0);
+    this.parchmentBg.fillRoundedRect(left, top, w, h, 4);
+
+    // Các rãnh ghép ván gỗ ngang (Horizontal timber seams)
+    for (let y = top + 70; y < top + h; y += 70) {
+      this.parchmentBg.lineStyle(2, 0x180d07, 0.95);
+      this.parchmentBg.lineBetween(left + 6, y, left + w - 6, y);
+      this.parchmentBg.lineStyle(1, 0x4a2e1a, 0.5);
+      this.parchmentBg.lineBetween(left + 6, y + 1, left + w - 6, y + 1);
+    }
+
+    // Vân gỗ tự nhiên mảnh
+    this.parchmentBg.lineStyle(1, 0x24150b, 0.4);
+    for (let y = top + 16; y < top + h - 10; y += 18) {
+      this.parchmentBg.lineBetween(left + 14, y, left + w - 14, y);
+    }
+
+    // Mắt gỗ sồi già
+    this.parchmentBg.fillStyle(0x221309, 0.5);
+    this.parchmentBg.fillCircle(left + 85, top + 115, 8);
+    this.parchmentBg.fillCircle(left + w - 105, top + 265, 10);
+
+    // Viền đồng xỉn chạm nổi bên trong
+    this.parchmentBg.lineStyle(1.5, 0x8a6d3b, 0.6);
+    this.parchmentBg.strokeRoundedRect(left + 12, top + 12, w - 24, h - 24, 4);
+
+    // 4 Đinh tán kim loại góc (Corner Iron Rivets with Brass Pin)
+    const studs = [
+      { x: left + 22, y: top + 22 },
+      { x: left + w - 22, y: top + 22 },
+      { x: left + 22, y: top + h - 22 },
+      { x: left + w - 22, y: top + h - 22 }
+    ];
+    for (const s of studs) {
+      this.parchmentBg.fillStyle(0x181818, 0.95);
+      this.parchmentBg.fillCircle(s.x, s.y, 7);
+      this.parchmentBg.lineStyle(1, 0x4a4a4a, 0.8);
+      this.parchmentBg.strokeCircle(s.x, s.y, 7);
+      this.parchmentBg.fillStyle(0xb8924b, 0.95);
+      this.parchmentBg.fillCircle(s.x, s.y, 3);
+    }
+
+    // Đường gân chia phân tách rãnh gỗ khắc chữ
+    this.dividerGfx.clear();
+    this.dividerGfx.lineStyle(2, 0x180d07, 0.95);
+    this.dividerGfx.lineBetween(cx - 240, 214, cx + 240, 214);
+    this.dividerGfx.lineStyle(1, 0x5a3921, 0.65);
+    this.dividerGfx.lineBetween(cx - 240, 215, cx + 240, 215);
+    this.dividerGfx.fillStyle(0xb8924b, 0.95);
+    this.dividerGfx.fillCircle(cx, 214, 4);
+    this.dividerGfx.lineStyle(1, 0xb8924b, 0.5);
+    this.dividerGfx.strokeCircle(cx, 214, 7);
+  }
+
+  /**
+   * 4. STELE: Phiến đá xám cự thạch phủ rêu xanh (Ancient Mossy Runestone Stele)
+   */
+  private renderSteleGraphics(): void {
+    this.parchmentBg.clear();
+    const cx = 640;
+    const cy = 320;
+    const w = 680;
+    const h = 420;
+    const left = cx - w / 2;
+    const top = cy - h / 2;
+
+    // Lớp bóng đổ sâu
+    this.parchmentBg.fillStyle(0x0e1115, 0.85);
+    this.parchmentBg.fillRoundedRect(left - 6, top - 4, w + 12, h + 10, 6);
+
+    // Viền đá góc cạnh gồ ghề
+    this.parchmentBg.fillStyle(0x14181f, 0.98);
+    this.parchmentBg.fillRoundedRect(left - 3, top - 3, w + 6, h + 6, 4);
+
+    // Khối cự thạch đá xám xanh (Ancient Slate Slab)
+    this.parchmentBg.fillStyle(0x28303b, 1.0);
+    this.parchmentBg.fillRoundedRect(left, top, w, h, 2);
+
+    // Rãnh nứt cổ xưa trên bề mặt đá
+    this.parchmentBg.lineStyle(1.5, 0x181e26, 0.7);
+    this.parchmentBg.lineBetween(left + 35, top + 35, left + 75, top + 85);
+    this.parchmentBg.lineBetween(left + w - 45, top + h - 85, left + w - 90, top + h - 30);
+    this.parchmentBg.lineBetween(cx - 60, top + 15, cx - 20, top + 45);
+
+    // Mảng rêu xanh rừng già (Wild Forest Moss Patches) bám ở các góc và mép đá
+    this.parchmentBg.fillStyle(0x274e38, 0.85);
+    this.parchmentBg.fillCircle(left + 45, top + 22, 16);
+    this.parchmentBg.fillCircle(left + 64, top + 18, 12);
+    this.parchmentBg.fillCircle(left + w - 70, top + 20, 18);
+    this.parchmentBg.fillCircle(left + w - 90, top + 25, 13);
+    this.parchmentBg.fillCircle(left + 38, top + h - 25, 20);
+    this.parchmentBg.fillCircle(left + 58, top + h - 20, 14);
+    this.parchmentBg.fillCircle(left + w - 50, top + h - 22, 16);
+
+    // Viền chạm khắc cổ ngữ ngọc bích mờ
+    this.parchmentBg.lineStyle(1.5, 0x48bb78, 0.4);
+    this.parchmentBg.strokeRoundedRect(left + 14, top + 14, w - 28, h - 28, 2);
+
+    // Đường gân chia phân tách đá cổ
+    this.dividerGfx.clear();
+    this.dividerGfx.lineStyle(1.5, 0x3d4f61, 0.9);
+    this.dividerGfx.lineBetween(cx - 240, 214, cx + 240, 214);
+    this.dividerGfx.fillStyle(0x48bb78, 0.95);
+    this.dividerGfx.fillCircle(cx, 214, 4);
+    this.dividerGfx.lineStyle(1, 0x48bb78, 0.5);
+    this.dividerGfx.strokeCircle(cx, 214, 7);
+  }
+
+  // =========================================================================
+  // TYPOGRAPHY & BUTTON STYLING
+  // =========================================================================
+
+  /**
+   * Áp dụng màu sắc chữ và font tương ứng với từng loại chủ đề
+   */
+  private applyTypographyTheme(variant: NoteVisualVariant): void {
+    if (variant === 'signpost') {
+      this.runeText.setColor('#f5be42');
+      this.titleText.setColor('#ffd166');
+      this.titleText.setStroke('#180d07', 2);
+      this.authorText.setColor('#d4be98');
+      this.bodyText.setColor('#fef9e7'); // Chữ khắc gỗ trắng ngà tương phản cao
+      this.pageIndicatorText.setColor('#d4be98');
+      this.prevPageBtn.setColor('#f5be42');
+      this.nextPageBtn.setColor('#f5be42');
+      this.closeBtnText.setColor('#c2a677');
+    } else if (variant === 'notice') {
+      this.runeText.setColor('#851414');
+      this.titleText.setColor('#3a0e0e');
+      this.titleText.setStroke('#f5ebd6', 1);
+      this.authorText.setColor('#6d4838');
+      this.bodyText.setColor('#1a120c'); // Chữ mực đen nâu sẫm
+      this.pageIndicatorText.setColor('#705342');
+      this.prevPageBtn.setColor('#854434');
+      this.nextPageBtn.setColor('#854434');
+      this.closeBtnText.setColor('#8d6a50');
+    } else if (variant === 'stele') {
+      this.runeText.setColor('#68d391');
+      this.titleText.setColor('#9ae6b4');
+      this.titleText.setStroke('#14181f', 2);
+      this.authorText.setColor('#a0aec0');
+      this.bodyText.setColor('#edf2f7'); // Chữ khắc đá sáng màu
+      this.pageIndicatorText.setColor('#a0aec0');
+      this.prevPageBtn.setColor('#68d391');
+      this.nextPageBtn.setColor('#68d391');
+      this.closeBtnText.setColor('#94a3b8');
+    } else {
+      // parchment
+      this.runeText.setColor('#8b6834');
+      this.titleText.setColor('#2a1a0c');
+      this.titleText.setStroke('', 0);
+      this.authorText.setColor('#5f4528');
+      this.bodyText.setColor('#1e130a');
+      this.pageIndicatorText.setColor('#6d5236');
+      this.prevPageBtn.setColor('#7f5a2b');
+      this.nextPageBtn.setColor('#7f5a2b');
+      this.closeBtnText.setColor('#a08560');
+    }
+  }
+
+  /**
+   * Cập nhật màu nút chuyển trang khi di chuột ra
+   */
+  private updateNavButtonColors(): void {
+    const variant = this.currentEntry?.variant || 'parchment';
+    if (variant === 'signpost') {
+      this.prevPageBtn.setColor('#f5be42');
+      this.nextPageBtn.setColor('#f5be42');
+    } else if (variant === 'notice') {
+      this.prevPageBtn.setColor('#854434');
+      this.nextPageBtn.setColor('#854434');
+    } else if (variant === 'stele') {
+      this.prevPageBtn.setColor('#68d391');
+      this.nextPageBtn.setColor('#68d391');
+    } else {
+      this.prevPageBtn.setColor('#7f5a2b');
+      this.nextPageBtn.setColor('#7f5a2b');
+    }
+  }
+
+  private updateStowButtonTextColor(variant: NoteVisualVariant): void {
+    if (variant === 'signpost') {
+      this.stowBtnText.setColor('#fff0b3');
+    } else if (variant === 'notice') {
+      this.stowBtnText.setColor('#ffe8d6');
+    } else if (variant === 'stele') {
+      this.stowBtnText.setColor('#e6fffa');
+    } else {
+      this.stowBtnText.setColor('#fff0b3');
+    }
+  }
+
+  private updateCloseButtonTextColor(variant: NoteVisualVariant): void {
+    if (variant === 'signpost') {
+      this.closeBtnText.setColor('#c2a677');
+    } else if (variant === 'notice') {
+      this.closeBtnText.setColor('#8d6a50');
+    } else if (variant === 'stele') {
+      this.closeBtnText.setColor('#94a3b8');
+    } else {
+      this.closeBtnText.setColor('#a08560');
+    }
+  }
+
+  /**
+   * Vẽ nền nút Cất vào Sổ Tay / Đã Đọc theo variant
+   */
+  private drawStowButton(isHover: boolean = false, variant: NoteVisualVariant = 'parchment'): void {
     this.stowBtnBg.clear();
     const btnW = 320;
     const btnH = 34;
     const left = -btnW / 2;
     const top = -btnH / 2;
 
-    const bgColor = isHover ? 0x2d1f11 : 0x1b140c;
-    const borderColor = isHover ? 0xd4af37 : 0x8a6d3b;
+    let bgColor = 0x1b140c;
+    let borderColor = 0x8a6d3b;
+
+    if (variant === 'signpost') {
+      bgColor = isHover ? 0x2e190b : 0x1a0f08;
+      borderColor = isHover ? 0xffd166 : 0xb8924b;
+    } else if (variant === 'notice') {
+      bgColor = isHover ? 0x361612 : 0x24110e;
+      borderColor = isHover ? 0xd4af37 : 0x991818;
+    } else if (variant === 'stele') {
+      bgColor = isHover ? 0x1a232c : 0x12171e;
+      borderColor = isHover ? 0x68d391 : 0x3d6e53;
+    } else {
+      bgColor = isHover ? 0x2d1f11 : 0x1b140c;
+      borderColor = isHover ? 0xd4af37 : 0x8a6d3b;
+    }
+
     const alpha = isHover ? 0.98 : 0.92;
 
     this.stowBtnBg.fillStyle(bgColor, alpha);
     this.stowBtnBg.fillRoundedRect(left, top, btnW, btnH, 5);
     this.stowBtnBg.lineStyle(1.5, borderColor, 0.95);
     this.stowBtnBg.strokeRoundedRect(left, top, btnW, btnH, 5);
-    this.stowBtnBg.lineStyle(1, 0x4a3a1f, 0.5);
+    this.stowBtnBg.lineStyle(1, borderColor, 0.35);
     this.stowBtnBg.strokeRoundedRect(left + 2, top + 2, btnW - 4, btnH - 4, 4);
   }
 
+  // =========================================================================
+  // INTERACTION LIFECYCLE
+  // =========================================================================
+
   /**
-   * Mở trang giấy nhật ký tương tác
+   * Mở trang giấy / biển báo / văn bia tương tác
    */
   public open(entry: TornPageEntry): void {
     if (this.isOpen) return;
@@ -286,26 +608,52 @@ export class TornPageModal {
       this.onOpen();
     }
 
-    // Kiểm tra xem đã thu thập chưa
-    this.isAlreadyCollected = this.playerState.hasFlag('collected_note_' + entry.id) ||
-                             this.playerState.unlockedLore.some(l => l.id === entry.loreId);
+    const variant: NoteVisualVariant = entry.variant || 'parchment';
 
-    // Cập nhật nội dung
-    this.runeText.setText(entry.ancientRune || 'ᚱ');
+    // Kiểm tra xem đã thu thập / đọc chưa
+    this.isAlreadyCollected = this.playerState.hasFlag('collected_note_' + entry.id) ||
+                             (Boolean(entry.loreId) && this.playerState.unlockedLore.some(l => l.id === entry.loreId));
+
+    // Cập nhật nội dung tiêu đề và tác giả
+    this.runeText.setText(entry.ancientRune || (variant === 'signpost' ? '🧭' : variant === 'notice' ? '📜' : variant === 'stele' ? 'ᛋ' : 'ᚱ'));
     this.titleText.setText(entry.title.toUpperCase());
     this.authorText.setText(entry.author || 'Mảnh Giấy Cổ Vô Danh');
 
-    this.renderAgedParchmentGraphics();
-    this.drawStowButton(false);
+    // Vẽ theme đồ họa tương ứng
+    if (variant === 'signpost') {
+      this.renderSignpostGraphics();
+    } else if (variant === 'notice') {
+      this.renderNoticeGraphics();
+    } else if (variant === 'stele') {
+      this.renderSteleGraphics();
+    } else {
+      this.renderAgedParchmentGraphics();
+    }
+
+    // Áp dụng màu typography và button
+    this.applyTypographyTheme(variant);
+    this.drawStowButton(false, variant);
     this.updatePageContent();
 
-    // Hiển thị nút cất hay đã cất
-    const stowLabel = this.isAlreadyCollected ? '[E / Space] Đã Cất Vào Sổ Tay • Đóng' : '[E / Space] Cất vào Sổ Tay & Đóng';
+    // Hiển thị nhãn nút hành động
+    let stowLabel = '';
+    if (entry.loreId) {
+      stowLabel = this.isAlreadyCollected ? '[E / Space] Đã Cất Vào Sổ Tay • Đóng' : '[E / Space] Cất vào Sổ Tay & Đóng';
+    } else {
+      stowLabel = this.isAlreadyCollected ? '[E / Space] Đã Đọc • Đóng' : '[E / Space] Đã Đọc & Đóng';
+    }
     this.stowBtnText.setText(stowLabel);
 
-    // Âm thanh mở giấy sột soạt
+    // Phát âm thanh phù hợp theo loại vật liệu
     try {
-      AudioManager.getInstance().playWorldInteractSFX('journal');
+      const audio = AudioManager.getInstance();
+      if (variant === 'signpost') {
+        audio.playInteract();
+      } else if (variant === 'stele') {
+        audio.playWorldInteractSFX('rune');
+      } else {
+        audio.playWorldInteractSFX('journal');
+      }
     } catch {
       // Ignored
     }
@@ -313,7 +661,7 @@ export class TornPageModal {
     // Đăng ký phím tắt bàn phím
     this.setupKeyboardListeners();
 
-    // Hiệu ứng mở giấy (scale nhẹ và fade-in)
+    // Hiệu ứng mở giấy / bảng gỗ (scale nhẹ và fade-in)
     this.container.setAlpha(0);
     this.container.setScale(0.94);
     this.container.setVisible(true);
@@ -362,7 +710,15 @@ export class TornPageModal {
     if (!this.currentEntry || this.currentPageIndex >= this.currentEntry.pages.length - 1) return;
     this.currentPageIndex++;
     try {
-      AudioManager.getInstance().playWorldInteractSFX('journal');
+      const audio = AudioManager.getInstance();
+      const variant = this.currentEntry.variant || 'parchment';
+      if (variant === 'signpost') {
+        audio.playInteract();
+      } else if (variant === 'stele') {
+        audio.playWorldInteractSFX('rune');
+      } else {
+        audio.playWorldInteractSFX('journal');
+      }
     } catch {
       // Ignored
     }
@@ -376,7 +732,15 @@ export class TornPageModal {
     if (!this.currentEntry || this.currentPageIndex <= 0) return;
     this.currentPageIndex--;
     try {
-      AudioManager.getInstance().playWorldInteractSFX('journal');
+      const audio = AudioManager.getInstance();
+      const variant = this.currentEntry.variant || 'parchment';
+      if (variant === 'signpost') {
+        audio.playInteract();
+      } else if (variant === 'stele') {
+        audio.playWorldInteractSFX('rune');
+      } else {
+        audio.playWorldInteractSFX('journal');
+      }
     } catch {
       // Ignored
     }
@@ -391,10 +755,12 @@ export class TornPageModal {
 
     const entry = this.currentEntry;
 
-    // 1. Mở khóa lore trong Sổ Tay [J]
-    this.playerState.unlockLore(entry.loreId);
+    // 1. Mở khóa lore trong Sổ Tay [J] nếu có loreId
+    if (entry.loreId) {
+      this.playerState.unlockLore(entry.loreId);
+    }
 
-    // 2. Ghi nhận cờ đã thu thập để đổi trạng thái prompt trên tường
+    // 2. Ghi nhận cờ đã thu thập / đọc để đổi trạng thái prompt trên bản đồ
     this.playerState.setFlag('collected_note_' + entry.id);
 
     // 3. Nếu là trang nhật ký cốt truyện thức tỉnh ký ức Hiệp Sĩ Đen
@@ -422,7 +788,7 @@ export class TornPageModal {
   }
 
   /**
-   * Đóng giao diện trang giấy
+   * Đóng giao diện trang giấy / biển báo
    */
   public close(): void {
     if (!this.isOpen) return;
@@ -513,3 +879,6 @@ export class TornPageModal {
     }
   }
 }
+
+// Xuất alias PaperNoteModal để dùng song song linh hoạt
+export { TornPageModal as PaperNoteModal };

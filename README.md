@@ -1,17 +1,19 @@
-# 🌲 HOLLOW WOODS V1.3 – THE FOG THAT REMEMBERS (SƯƠNG MÙ GHI NHỚ)
+# 🌲 HOLLOW WOODS V1.5 – THE FOG THAT REMEMBERS (SƯƠNG MÙ GHI NHỚ)
 
 > **Tập 1: The First Toll (Tiếng Chuông Đầu Tiên)**  
 > **Thể loại:** 2D Atmospheric Psychological Survival Horror  
-> **Độ phân giải:** Native Canvas HD 1280×720 | World Camera Zoom 2.2×  
+> **Độ phân giải:** Native Canvas HD 1280×720 | World Camera Zoom 2.2× | 60 FPS Target  
 > **Kho lưu trữ GitHub:** [https://github.com/KyoshiroKyo/HOLLOW-WOODS](https://github.com/KyoshiroKyo/HOLLOW-WOODS)
 
 ---
 
 ## 🛠️ Công Nghệ & Nền Tảng Kỹ Thuật
 
-- **Game Engine:** Phaser 4.2.1 / 3.80+ (Arcade Physics Engine)
-- **Ngôn ngữ:** TypeScript (Strict Type Checking `0 errors`)
+- **Game Engine:** Phaser 4.2.1 / 3.80+ (Arcade Physics Engine with Corner-Slide Assist)
+- **Ngôn ngữ:** TypeScript Strict Mode (`0 errors`, Clean type-checking)
 - **Bộ dựng (Bundler):** Vite 5.4+ (Fast HMR & Optimized Production Build)
+- **Hệ thống An Toàn:** `SafeSpawnResolver` tự động gỡ kẹt collider, reset sạch cờ ẩn nấp khi nạp Save
+- **Giao diện Cổ Điển:** Dark Woodland Parchment UI, Torn Page & Paper Note Modals tương tác giữa màn hình
 - **Hệ thống Âm thanh:** Web Audio API đa tầng (Lọc âm sương mù, tiếng bước chân động, nhịp tim sinh tồn)
 - **Giao diện & Chữ hiển thị:** Native 1280×720 HD Typography Helper (Linear Filtering, 2x Canvas Resolution)
 
@@ -58,11 +60,10 @@ Trình duyệt sẽ tự động mở tại địa chỉ `http://localhost:3000/
   ```
   *(Tạo gói tĩnh tối ưu hóa tại thư mục `dist/`)*
 
-- **Kiểm toán tự động bộ kiểm thử hồi quy V1.3:**
+- **Kiểm tra chạy thử gói phát hành (Preview):**
   ```bash
-  node scripts/run_v1_3_regression_suite.mjs
+  npm run preview
   ```
-  *(Đạt kết quả 19/19 kịch bản PASS 100% — 493/493 tests)*
 
 ---
 
@@ -73,64 +74,57 @@ Trình duyệt sẽ tự động mở tại địa chỉ `http://localhost:3000/
 | **`W / A / S / D`** hoặc **Mũi tên** | Di chuyển nhân vật qua lại trong khu rừng |
 | **`Shift`** | Chạy nhanh (tiêu hao Thể lực / Stamina) |
 | **`F`** | Bật / Tắt Đèn Lồng (tiêu hao Dầu đèn, duy trì Bình tâm / Composure) |
-| **`E`** | Tương tác nói chuyện NPC, Ẩn nấp thân cây rỗng, Thu thập tài nguyên, Rung chuông |
+| **`E`** | Tương tác nói chuyện NPC, Ẩn nấp thân cây rỗng/bụi rậm, Thu thập tài nguyên, Đọc biển báo/cổ thư, Rung chuông |
 | **`Q`** | Ném Mồi Tiếng Động (Noise Lure) đánh lạc hướng quái vật The Listener |
 | **`1`** | Sử dụng nhanh Thuốc Đắp Hồi Máu khẩn cấp |
 | **`I` / `C`** | Mở / Đóng Bàn Chế Tạo Dã Ngoại (Crafting Modal) |
-| **`J`** | Mở / Đóng Sổ Tay Nhiệm Vụ & Cổ Thư (Journal Modal) |
+| **`J`** | Mở / Đóng Sổ Tay Nhiệm Vụ & Cổ Thư (Journal Modal: Nhiệm Vụ, Ký Ức Hiệp Sĩ, Bestiary, Bản Đồ) |
 | **`M`** | Bật / Tắt toàn bộ âm thanh trò chơi (Mute / Unmute) |
 | **`ESC`** | Tạm dừng trò chơi & mở Bảng Tùy Chọn (Pause Menu) |
-| **`F4`** | Bật / Tắt Bảng Kỹ Thuật Debug Overlay (Khung va chạm chân 14×8, Origin 64×64) |
+| **`F8`** | **🛡️ Gỡ Kẹt Về Điểm An Toàn (Emergency Unstuck):** Thoát kẹt địa hình/cổng sắt và hồi phục về điểm an toàn |
+| **`F9`** | **⚙️ Chế độ Debug Khung Tương Tác Quản Trị Viên:** Bật/Tắt hiển thị hộp va chạm và tầm tương tác |
+| **`F4`** | Bật / Tắt Bảng Kỹ Thuật Debug Overlay (FPS, Tọa độ, Hitbox chân đế) |
 
 ---
 
-## 📂 Cấu Trúc Thư Mục Chuẩn Hóa
+## 📂 Cấu Trúc Thư Mục Chuẩn Hóa Dự Án
+
+Chi tiết toàn bộ quy định phân cấp thư mục được mô tả tại [docs/FOLDER_STRUCTURE_RULES.md](file:///G:/HOLLOW%20WOODS/docs/FOLDER_STRUCTURE_RULES.md).
 
 ```
 HOLLOW-WOODS/
-├── public/assets/                 ← Tài nguyên runtime trực tiếp phục vụ game
-│   ├── characters/satyr/          ← Spritesheet Dark Rogue (64×64) & chân dung portrait
-│   ├── characters/npcs/           ← Sprite nhân vật Garth, Edda, Neris
-│   ├── environment/sprites/       ← Cây cổ thụ, nhà ở, tháp chuông, 3 cột đá, giếng làng
-│   ├── environment/tilesets/      ← Tile địa hình cỏ, sỏi, bùn đầm lầy
-│   ├── monsters/                  ← Sprite The Listener & The Echo
-│   └── audio/                     ← Âm thanh khí quyển và hiệu ứng
-├── Pixel_Art/                     ← Kho asset gốc nguyên bản
-│   └── Dark Rogue/                ← Bảng sprite và reference của Dark Rogue
-├── Read/V1.3/                     ← 100% Tài liệu Markdown thiết kế & kiểm toán V1.3
-│   ├── README_INDEX.md            ← Sổ chỉ mục tra cứu tài liệu
-│   ├── Asset_Registry/            ← Sổ đăng ký giấy phép bản quyền
-│   └── Reports/                   ← Báo cáo GDD, luồng nhiệm vụ và nghiệm thu từng Pass
-├── scripts/                       ← Công cụ Node.js hỗ trợ cắt ảnh & kiểm toán QA
-│   ├── run_v1_3_regression_suite.mjs ← Script kiểm thử hồi quy 19 kịch bản tự động
-│   └── *.mjs                      ← Các script xử lý trích xuất asset
-├── src/                           ← Toàn bộ mã nguồn TypeScript của game
-│   ├── animation/                 ← Đăng ký hoạt ảnh SatyrAnimations.ts
-│   ├── audio/                     ← Hệ thống AudioManager.ts
-│   ├── config/                    ← GameConfig.ts (1280×720 HD), Constants.ts
-│   ├── data/                      ← Cơ sở dữ liệu JSON (items, lore, dialogues, puzzles)
-│   ├── entities/                  ← SatyrPlayer.ts, NPCEntity.ts, TheListener.ts
-│   ├── scenes/                    ← BootScene, PreloadScene, MainMenuScene, GameScene, UIScene
-│   ├── state/                     ← PlayerState.ts quản lý chỉ số và cốt truyện
-│   ├── systems/                   ← SurvivalSystem, DialogueSystem, VeilSystem, EndingSystem...
-│   ├── ui/                        ← HUDScene.ts, CraftingModal.ts, JournalModal.ts
-│   ├── utils/                     ← HDTextHelper.ts, DebugOverlay.ts
-│   └── world/                     ← WorldBuilder.ts (100% Sprite .png thật)
-├── .gitignore                     ← Quy chuẩn loại trừ file rác và dependencies
-├── index.html                     ← Canvas HTML gốc chuẩn HD
-├── package.json                   ← Cấu hình thư viện và script
-├── tsconfig.json                  ← Cấu hình biên dịch TypeScript
-└── vite.config.ts                 ← Cấu hình đóng gói Vite
+├── src/                           ← Toàn bộ mã nguồn TypeScript của game (scenes, entities, systems, ui, world...)
+├── public/assets/                 ← Tài nguyên runtime phục vụ trực tiếp cho game (audio, maps, characters, ui...)
+├── docs/                          ← Hệ thống tài liệu kỹ thuật, hướng dẫn & nhật ký
+│   ├── FOLDER_STRUCTURE_RULES.md  ← Quy chuẩn cây thư mục chi tiết cho nhóm và AI
+│   ├── guides/                    ← Hướng dẫn chạy game tại trường, khôi phục chat, hướng dẫn người dùng
+│   ├── reports/                   ← Báo cáo đánh giá & kiểm toán các phiên bản cũ
+│   ├── chat_and_commands/         ← Bản trích xuất câu lệnh & lịch sử chat phát triển
+│   └── v1.4/                      ← Toàn bộ báo cáo kỹ thuật & hồ sơ bản V1.4
+├── Read/                          ← Báo cáo chuyên sâu và sổ chỉ mục kiến trúc
+│   ├── V1.3/                      ← Hồ sơ thiết kế & kiểm toán chi tiết V1.3
+│   └── V1.5/                      ← Hồ sơ đại tu toàn diện V1.5 (Reports/, README_INDEX.md)
+├── release/                       ← Bản đóng gói phát hành (p2game/, school-dev/, archives/)
+├── Backups/                       ← Kho lưu trữ dự phòng (chat_history/, maps/, assets_archive/, steps/)
+├── Pixel_Art/                     ← Kho tài nguyên đồ họa pixel art gốc, mockups từ họa sĩ
+├── Sound_Effects/                 ← Kho âm thanh nguồn và sample hiệu ứng gốc
+├── scripts/                       ← Kịch bản kiểm thử tự động, build automation, kiểm toán QA
+├── tests/                         ← Bộ kiểm thử tự động (Unit Tests & Integration Tests)
+├── dist/                          ← Gói ứng dụng sau khi build (bị .gitignore)
+├── package.json                   ← Cấu hình thư viện và script npm
+├── tsconfig.json                  ← Cấu hình biên dịch TypeScript Strict Mode
+├── vite.config.ts                 ← Cấu hình máy chủ phát triển và đóng gói Vite
+└── README.md                      ← Tài liệu này
 ```
 
 ---
 
 ## 🏆 Trạng Thái Dự Án
 
-- **Phiên bản hiện tại:** HOLLOW WOODS V1.4 (`feat/v1.4-expansion` — Survival, Environment & World Expansion).
-- **Tài liệu & Báo cáo tổng hợp V1.4:**
-  - [Read/V1.4/README_INDEX.md](file:///G:/HOLLOW%20WOODS/Read/V1.4/README_INDEX.md): Sổ chỉ mục tra cứu toàn bộ 16 báo cáo tiến độ và nghiệm thu V1.4.
-  - [docs/v1.4/HOLLOW_WOODS_V1.4_MASTER_REPORT.md](file:///G:/HOLLOW%20WOODS/docs/v1.4/HOLLOW_WOODS_V1.4_MASTER_REPORT.md): **Báo cáo tổng kết tối hậu 10 mục chính thức của HOLLOW WOODS V1.4**.
-  - [Read/V1.4/Reports/11_V14_Final_Comprehensive_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.4/Reports/11_V14_Final_Comprehensive_Report.md): Báo cáo tổng hợp toàn diện đại tu môi trường 17 phân khu, kiểm định quái vật và mở rộng thế giới.
+- **Phiên bản hiện tại:** HOLLOW WOODS V1.5 (`feat/v1.5-visual-gameplay-overhaul`).
+- **Sổ Chỉ Mục & Tiến Độ 32 Bước V1.5:**
+  - [Read/V1.5/README_INDEX.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/README_INDEX.md): Danh mục chi tiết 32 bước nâng cấp toàn diện và 14 báo cáo kỹ thuật.
+  - [Read/V1.5/Reports/08_V15_Total_Overhaul_Final_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/08_V15_Total_Overhaul_Final_Report.md): Báo cáo tổng kết đại tu toàn diện HOLLOW WOODS V1.5.
+  - [Read/V1.5/Reports/14_Safe_Spawn_And_Unstuck_Resolver.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/14_Safe_Spawn_And_Unstuck_Resolver.md): Cơ chế an toàn vị trí nạp checkpoint và gỡ kẹt khẩn cấp `[F8]`.
 - **Trạng thái kiểm toán:** 🎉 **100% BUILD PRODUCTION & KIỂM ĐỊNH TOÀN DIỆN THÀNH CÔNG (0 ERRORS)**.
 - **Tác quyền & Quản trị:** Dự án thực thi bởi Chief Software Architect cho `KyoshiroKyo/HOLLOW-WOODS`.

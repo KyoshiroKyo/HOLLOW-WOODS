@@ -28,6 +28,7 @@ import { TheListener } from '../entities/TheListener';
 import { PuzzleSystem } from '../systems/PuzzleSystem';
 import { EndingSystem } from '../systems/EndingSystem';
 import { SaveManager, SaveData } from '../systems/SaveManager';
+import { SafeSpawnResolver } from '../systems/SafeSpawnResolver';
 import { bindCloudSaveLifecycle, scheduleDebouncedSave } from '../services/CloudSaveService';
 import { AudioManager, TerrainType } from '../audio/AudioManager';
 import { ZoneConnectionRegistry } from '../world/ZoneConnectionRegistry';
@@ -193,7 +194,10 @@ export class GameScene extends Phaser.Scene {
   public isDebugBoxesVisible: boolean = false;
   private f9Key!: Phaser.Input.Keyboard.Key;
   private lastF9ToggleTime: number = 0;
+  private f8Key!: Phaser.Input.Keyboard.Key;
+  private lastF8PressTime: number = 0;
   private lastCharmEchoVibrateTime: number = 0;
+  private lastBGMCheckTime: number = 0;
 
   // V1.4 - P6: Trận Chạm Trán Đấu Trùm Kẻ Nuốt Tiếng Chuông (Mire Warden Boss)
   public mireWardenBoss: MireWardenBoss | null = null;
@@ -202,6 +206,9 @@ export class GameScene extends Phaser.Scene {
   public brazierTargets: BrazierTarget[] = [];
   public bossArenaBarrier: Phaser.GameObjects.Graphics | null = null;
   public bossArenaEchoes: TheEcho[] = [];
+  // V15-47: Bộ đếm thời gian hiệu ứng chiến đấu Boss Kẻ Nuốt Tiếng Chuông
+  public bossResonanceTimer: number = 0;
+  public bossContactCooldownTimer: number = 0;
 
   // V1.4 - P8-03: Cơ chế Đuốc Nhựa Thông Cắm Đất (Resin Flare)
   public plantedFlares: PlantedResinFlare[] = [];
@@ -343,22 +350,44 @@ export class GameScene extends Phaser.Scene {
       this.playerState.setFlag('mire_unlocked');
       this.playerState.setFlag('shrine_unlocked');
     } else if (this.isContinueMode && this.continueSaveData) {
-      spawnX = this.continueSaveData.playerPos.x;
-      spawnY = this.continueSaveData.playerPos.y;
+      const rawX = this.continueSaveData.playerPos.x;
+      const rawY = this.continueSaveData.playerPos.y;
+      const initialZone = (this.continueSaveData.zoneId as ZoneId) || 'fog_crossing';
+
+      // V15-34: Tự động dò quét và giải quyết vị trí đứng an toàn khi nạp điểm lưu
+      const safeSpawn = SafeSpawnResolver.resolveSafeSpawn(this, rawX, rawY, initialZone);
+      spawnX = safeSpawn.x;
+      spawnY = safeSpawn.y;
+
       // C4-13-11: Xác định chính xác phân khu thực tế từ tọa độ và cập nhật ngay lập tức cho GameScene & Camera
-      const detectedZone = this.worldBuilder.detectCurrentZone({ x: spawnX, y: spawnY }) || (this.continueSaveData.zoneId as ZoneId) || 'fog_crossing';
+      const detectedZone = this.worldBuilder.detectCurrentZone({ x: spawnX, y: spawnY }) || initialZone;
       this.currentZoneId = detectedZone;
       this.previousZoneId = detectedZone;
       this.playerState.setCurrentZone(detectedZone);
+
+      if (safeSpawn.adjusted) {
+        this.time.delayedCall(450, () => {
+          if (this.uiScene) {
+            this.uiScene.showPopupMessage('🛡️ Đã điều chỉnh vị trí đứng an toàn sau cập nhật bản đồ.');
+          }
+        });
+      }
+    } else {
+      // V15-48: Trò chơi mới (New Game) tại Lối Mòn Xuyên Sương (fog_crossing)
+      // Đảm bảo vị trí xuất phát đặt tại lòng đường thoáng rộng (X: 120, Y: 195), không dính mép rào cản phía Tây
+      if (this.currentZoneId === 'fog_crossing' && spawnX < 110) {
+        spawnX = 120;
+        spawnY = 195;
+      }
     }
 
     this.player = new SatyrPlayer(this, spawnX, spawnY);
     this.player.stats.isLanternOn = this.playerState.stats.isLanternOn;
-    // C4-13-01: Luôn giải phóng trạng thái ẩn nấp, bật hiển thị và mở khóa điều khiển khi tạo mới/nạp nhân vật
-    this.player.stats.isHiding = false;
-    this.player.setVisible(true);
+    // C4-13-01 & V15-34 & V15-48: Reset sạch toàn bộ cờ trạng thái hành động, ẩn nấp, hiển thị và mở khóa điều khiển
+    this.isGameOverPending = false;
+    this.isDebugBoxesVisible = false;
+    this.player.resetAllActionAndMotionStates();
     this.player.lastSafePosition = { x: spawnX, y: spawnY };
-    this.player.resetAllInputState();
 
     // C4-132-01: Lắng nghe sự kiện vung gậy của nhân vật để xử lý âm thanh cảnh báo và quét va chạm thực thể
     this.player.on('player_attack', (hitbox: { x: number; y: number; radius: number; facing: string; playerX: number; playerY: number }) => {
@@ -467,7 +496,8 @@ export class GameScene extends Phaser.Scene {
     this.pauseModal = new PauseModal(this.uiScene, {
       onResume: () => {},
       onSaveManual: () => this.handleSaveManual(),
-      onReloadCheckpoint: () => this.handleReloadCheckpoint()
+      onReloadCheckpoint: () => this.handleReloadCheckpoint(),
+      onEmergencyUnstuck: () => this.emergencyUnstuckPlayer()
     });
     this.pauseModal.onOpen = () => {
       if (this.player) {
@@ -515,7 +545,12 @@ export class GameScene extends Phaser.Scene {
     // Tách biệt hoàn toàn khỏi giao diện người chơi thường, mặc định TẮT hoàn toàn (false)
     this.hitboxInspector = new HitboxDebugInspector(this, this.player, this.uiScene);
     this.isDebugBoxesVisible = false;
+    if (this.hitboxInspector) {
+      this.hitboxInspector.setDebugEnabled(false);
+    }
     if (this.input && this.input.keyboard) {
+      this.f8Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F8);
+      this.input.keyboard.addCapture([Phaser.Input.Keyboard.KeyCodes.F8]);
       this.f9Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F9);
       this.input.keyboard.addCapture([Phaser.Input.Keyboard.KeyCodes.F9]);
     }
@@ -775,6 +810,10 @@ export class GameScene extends Phaser.Scene {
         this.interactionGlowSprite.destroy();
         this.interactionGlowSprite = undefined as any;
       }
+      if (this.f8Key) {
+        this.input?.keyboard?.removeKey(Phaser.Input.Keyboard.KeyCodes.F8);
+        this.f8Key = undefined as any;
+      }
       if (this.f9Key) {
         this.input?.keyboard?.removeKey(Phaser.Input.Keyboard.KeyCodes.F9);
         this.f9Key = undefined as any;
@@ -877,16 +916,45 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
+    // V15-44: Ưu tiên đóng toàn bộ các modal giao diện đang mở trước khi mở Pause Menu
     if (this.craftingModal && this.craftingModal.isOpen) {
       this.craftingModal.close();
+      if (this.player) this.player.forceUnlockActionState();
       return;
     }
     if (this.journalModal && this.journalModal.isOpen) {
       this.journalModal.close();
+      if (this.player) this.player.forceUnlockActionState();
+      return;
+    }
+    if (this.uiScene && this.uiScene.tornPageModal && this.uiScene.tornPageModal.isOpen) {
+      this.uiScene.tornPageModal.close();
+      if (this.player) this.player.forceUnlockActionState();
       return;
     }
     if (this.uiScene && this.uiScene.parchmentWorldMapModal && this.uiScene.parchmentWorldMapModal.isOpen) {
       this.uiScene.parchmentWorldMapModal.close();
+      if (this.player) this.player.forceUnlockActionState();
+      return;
+    }
+    if (this.uiScene && this.uiScene.storageChestModal && this.uiScene.storageChestModal.isOpen) {
+      this.uiScene.storageChestModal.close();
+      if (this.player) this.player.forceUnlockActionState();
+      return;
+    }
+    if (this.uiScene && this.uiScene.campfireModal && this.uiScene.campfireModal.isOpen) {
+      this.uiScene.campfireModal.close();
+      if (this.player) this.player.forceUnlockActionState();
+      return;
+    }
+    if (this.uiScene && this.uiScene.cauldronModal && this.uiScene.cauldronModal.isOpen) {
+      this.uiScene.cauldronModal.close();
+      if (this.player) this.player.forceUnlockActionState();
+      return;
+    }
+    if (this.uiScene && this.uiScene.equipmentModal && this.uiScene.equipmentModal.isOpen) {
+      this.uiScene.equipmentModal.close();
+      if (this.player) this.player.forceUnlockActionState();
       return;
     }
     if (this.hitboxInspector && this.hitboxInspector.isBenchmarkModalOpen()) {
@@ -895,6 +963,7 @@ export class GameScene extends Phaser.Scene {
     }
     if (this.dialogueSystem && this.dialogueSystem.isActive) {
       this.dialogueSystem.endDialogue();
+      if (this.player) this.player.forceUnlockActionState();
       return;
     }
 
@@ -1064,10 +1133,23 @@ export class GameScene extends Phaser.Scene {
       if (data) {
         // Đảm bảo chỉ số sinh lực được khôi phục nếu dữ liệu lưu bị 0 hoặc quá thấp
         if (data.stats.health <= 0) {
-          data.stats.health = 50;
+          data.stats.health = 100;
         }
         if (data.stats.composure <= 0) {
-          data.stats.composure = 40;
+          data.stats.composure = 60;
+        }
+
+        // V15-42: Nếu tử trận trong phân khu Boss (broken_bell_shrine / ancient_ruins / ancient_rune_puzzle),
+        // đưa nhân vật hồi sinh an toàn về Trạm Lửa Rừng Tĩnh Lặng của Sir Vaelen thay vì spawn kẹt ngay trước mặt Boss
+        if (
+          data.zoneId === 'broken_bell_shrine' ||
+          data.zoneId === 'ancient_ruins' ||
+          (data.playerPos && data.playerPos.x >= 3200 && data.playerPos.x <= 4900 && data.playerPos.y >= 50 && data.playerPos.y <= 600)
+        ) {
+          data.playerPos = { x: 2360, y: 720 };
+          data.zoneId = 'outer_woods';
+          data.stats.health = 100;
+          data.stats.stamina = 100;
         }
 
         this.audioManager.stopAll();
@@ -1117,73 +1199,62 @@ export class GameScene extends Phaser.Scene {
   }
 
   /**
-   * C4-13-01: Tự động gỡ kẹt cho nhân vật nếu vị trí hiện tại bị đè lên bất kỳ collider nào của thế giới.
-   * Thử các vector dịch chuyển ngắn (nudge) sang các hướng thông thoáng gần nhất.
+   * C4-13-01 & V15-34: Tự động gỡ kẹt cho nhân vật bằng SafeSpawnResolver
+   * Quét xoắn ốc 16px - 160px theo 16 hướng phân bố đều, nếu không có ô trống thì fallback về Sanctuary Checkpoint.
    */
-  private unstuckPlayerFromColliders(): void {
-    if (!this.player || !this.player.body) return;
+  public unstuckPlayerFromColliders(): boolean {
+    if (!this.player || !this.player.body) return false;
 
-    const colliders = this.worldBuilder.colliderGroup.getChildren() as Phaser.Physics.Arcade.Sprite[];
-    const playerBody = this.player.body as Phaser.Physics.Arcade.Body;
-
-    const checkOverlap = (b1: Phaser.Physics.Arcade.Body, b2: Phaser.Physics.Arcade.Body): boolean => {
-      return (
-        b1.x < b2.x + b2.width &&
-        b1.x + b1.width > b2.x &&
-        b1.y < b2.y + b2.height &&
-        b1.y + b1.height > b2.y
-      );
-    };
-
-    let isStuck = false;
-    for (const col of colliders) {
-      if (!col.body || !(col.body as Phaser.Physics.Arcade.Body).enable) continue;
-      const colBody = col.body as Phaser.Physics.Arcade.Body;
-      if (checkOverlap(playerBody, colBody)) {
-        isStuck = true;
-        break;
+    if (SafeSpawnResolver.isPositionBlocked(this, this.player.x, this.player.y)) {
+      const result = SafeSpawnResolver.resolveSafeSpawn(this, this.player.x, this.player.y, this.currentZoneId);
+      if (result.adjusted) {
+        this.player.setPosition(result.x, result.y);
+        this.player.lastSafePosition = { x: result.x, y: result.y };
+        if (this.player.body) {
+          (this.player.body as Phaser.Physics.Arcade.Body).reset(result.x, result.y);
+        }
+        if (result.fallback && this.uiScene) {
+          this.uiScene.showPopupMessage('🛡️ Đã điều chỉnh vị trí đứng an toàn sau cập nhật bản đồ.');
+        }
+        return true;
       }
     }
+    return false;
+  }
 
-    if (isStuck) {
-      const startX = this.player.x;
-      const startY = this.player.y;
-      const testOffsets = [
-        { x: 0, y: 16 },
-        { x: 0, y: -16 },
-        { x: 16, y: 0 },
-        { x: -16, y: 0 },
-        { x: 16, y: 16 },
-        { x: -16, y: 16 },
-        { x: 16, y: -16 },
-        { x: -16, y: -16 },
-        { x: 0, y: 32 },
-        { x: 0, y: -32 },
-        { x: 32, y: 0 },
-        { x: -32, y: 0 }
-      ];
+  /**
+   * V15-34: Gỡ kẹt khẩn cấp về điểm an toàn [F8] hoặc từ PauseModal
+   */
+  public emergencyUnstuckPlayer(): void {
+    const now = Date.now();
+    if (now - this.lastF8PressTime < 800) return; // Debounce 800ms
+    this.lastF8PressTime = now;
 
-      for (const off of testOffsets) {
-        const testX = startX + off.x;
-        const testY = startY + off.y;
-        playerBody.reset(testX, testY);
+    if (!this.player) return;
 
-        let stillStuck = false;
-        for (const col of colliders) {
-          if (!col.body || !(col.body as Phaser.Physics.Arcade.Body).enable) continue;
-          const colBody = col.body as Phaser.Physics.Arcade.Body;
-          if (checkOverlap(playerBody, colBody)) {
-            stillStuck = true;
-            break;
-          }
-        }
+    // 1. Reset sạch toàn bộ cờ trạng thái hành động, ẩn nấp, hiển thị và khóa điều khiển
+    this.player.resetAllActionAndMotionStates();
 
-        if (!stillStuck) {
-          this.player.setPosition(testX, testY);
-          this.player.lastSafePosition = { x: testX, y: testY };
-          break;
-        }
-      }
+    // 2. Tìm điểm an toàn khẩn cấp của phân khu hiện tại
+    const safePos = SafeSpawnResolver.resolveEmergencySafePosition(this);
+    this.player.setPosition(safePos.x, safePos.y);
+    this.player.lastSafePosition = { x: safePos.x, y: safePos.y };
+    if (this.player.body) {
+      (this.player.body as Phaser.Physics.Arcade.Body).reset(safePos.x, safePos.y);
+    }
+
+    if (this.cameraSystem) {
+      this.cameraSystem.centerOn(safePos.x, safePos.y);
+    }
+
+    // 3. Đóng PauseModal nếu đang mở
+    if (this.pauseModal && this.pauseModal.isOpen) {
+      this.pauseModal.close();
+    }
+
+    if (this.uiScene) {
+      this.uiScene.setInteractionPrompt(null);
+      this.uiScene.showPopupMessage('🛡️ Đã gỡ kẹt thành công về điểm an toàn gần nhất!');
     }
   }
 
@@ -1466,6 +1537,20 @@ export class GameScene extends Phaser.Scene {
         this.player.setPosition(this.player.x + Math.cos(pushAngle) * 55, this.player.y + Math.sin(pushAngle) * 55);
         this.player.playHurt();
       }
+    });
+
+    // V15-48: Tự động ép tiêu điểm bàn phím cho Canvas khi khởi tạo cảnh chơi GameScene
+    const focusCanvas = () => {
+      try {
+        window.focus();
+        if (this.game && this.game.canvas) {
+          this.game.canvas.focus();
+        }
+      } catch {}
+    };
+    focusCanvas();
+    this.input.on('pointerdown', () => {
+      focusCanvas();
     });
   }
 
@@ -1804,7 +1889,13 @@ export class GameScene extends Phaser.Scene {
       if (this.player) {
         (this.player.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
         this.player.playIdle();
-        this.player.resetAllInputState();
+
+        // V15-44: Xử lý phím toggle giao diện TRƯỚC KHI reset state
+        const isPauseReq = this.player.isPauseRequested();
+        const isCraftReq = this.player.isCraftingRequested();
+        const isJournalReq = this.player.isJournalRequested();
+        const isInteractReq = this.player.isInteractRequested();
+        const isAttackReq = this.player.consumeAction('attack');
 
         // V15-30: Đảm bảo quái vật xung quanh tạm dừng chuyển động khi người chơi mở Modal đọc giấy hoặc UI
         if (this.listenerMonster && this.listenerMonster.body) {
@@ -1820,28 +1911,34 @@ export class GameScene extends Phaser.Scene {
 
         // Xử lý phím đóng UI / tiến trình hội thoại bằng phím vật lý khi UI đang mở
         if (this.dialogueSystem.isActive) {
-          if (this.player.isInteractRequested() || this.player.consumeAction('attack')) {
+          if (isInteractReq || isAttackReq) {
             this.dialogueSystem.handleAdvance();
           }
         }
-        if (this.craftingModal && this.craftingModal.isOpen) {
-          if (this.player.isCraftingRequested() || this.player.isPauseRequested()) {
+
+        if (isPauseReq) {
+          this.handleESCPress();
+        } else if (isCraftReq) {
+          if (this.craftingModal && this.craftingModal.isOpen) {
             this.craftingModal.close();
             this.player.forceUnlockActionState();
+          } else if (this.uiScene) {
+            if (this.journalModal && this.journalModal.isOpen) this.journalModal.close();
+            if (this.uiScene.tornPageModal && this.uiScene.tornPageModal.isOpen) this.uiScene.tornPageModal.close();
+            this.uiScene.toggleCrafting();
           }
-        }
-        if (this.journalModal && this.journalModal.isOpen) {
-          if (this.player.isJournalRequested() || this.player.isPauseRequested()) {
+        } else if (isJournalReq) {
+          if (this.journalModal && this.journalModal.isOpen) {
             this.journalModal.close();
             this.player.forceUnlockActionState();
+          } else if (this.uiScene) {
+            if (this.craftingModal && this.craftingModal.isOpen) this.craftingModal.close();
+            if (this.uiScene.tornPageModal && this.uiScene.tornPageModal.isOpen) this.uiScene.tornPageModal.close();
+            this.uiScene.toggleJournal();
           }
         }
-        if (this.uiScene && this.uiScene.parchmentWorldMapModal && this.uiScene.parchmentWorldMapModal.isOpen) {
-          if (this.player.isPauseRequested()) {
-            this.uiScene.parchmentWorldMapModal.close();
-            this.player.forceUnlockActionState();
-          }
-        }
+
+        this.player.resetAllInputState();
       }
     }
 
@@ -1942,11 +2039,28 @@ export class GameScene extends Phaser.Scene {
     const isDay = Boolean(this.timeSystem && this.timeSystem.getCurrentPhase() === 'DAY');
     const isSafeVillageZone = (this.currentZoneId === 'bellhollow' && this.player.x <= 1620) || this.currentZoneId === 'sanctuary_farm' || this.currentZoneId === 'fog_crossing';
     const isNearWarmth = Boolean(this.survivalSystem && this.survivalSystem.isNearWarmth(this.player.x, this.player.y));
-    const isComposureProtected = isDay || isSafeVillageZone || isNearWarmth || Boolean(this.player.stats.isLanternOn && this.player.stats.lanternOil > 0);
+    const isBossArena = this.isBossFightActive && this.currentZoneId === 'broken_bell_shrine';
+    const isComposureProtected = !isBossArena && (isDay || isSafeVillageZone || isNearWarmth || Boolean(this.player.stats.isLanternOn && this.player.stats.lanternOil > 0));
 
     const comp = this.playerState.stats.composure;
 
-    if (isComposureProtected || comp >= 40) {
+    if (isBossArena) {
+      if (comp >= 50) {
+        if (!this.isAct5ChaseActive) {
+          this.audioManager.setHeartbeatActive(false);
+        }
+        this.panicCameraShakeTimer = 0;
+      } else {
+        // V15-47: Trong trận Boss Miếu Chuông, khi Bình Tâm < 50, nhịp tim đập dồn dập
+        if (comp <= 0) {
+          this.audioManager.setHeartbeatActive(true, 380); // Cực nhanh khi tinh thần sụp đổ
+        } else if (comp < 25) {
+          this.audioManager.setHeartbeatActive(true, 480);
+        } else {
+          this.audioManager.setHeartbeatActive(true, 680);
+        }
+      }
+    } else if (isComposureProtected || comp >= 40) {
       // Khi an toàn hoặc Bình Tâm vượt lên trên ngưỡng nguy hiểm (>= 40): Tắt nhịp tim và reset timer
       if (!this.isAct5ChaseActive) {
         this.audioManager.setHeartbeatActive(false);
@@ -2307,10 +2421,92 @@ export class GameScene extends Phaser.Scene {
     // Cập nhật F4 & F9 Debug Overlays
     this.debugOverlay.update(this.currentZoneId);
     this.hitboxInspector.update(this.currentZoneId, delta);
+    // V15-34: Bắt phím tắt F8 Gỡ Kẹt Về Điểm An Toàn cho người chơi
+    if (this.f8Key && Phaser.Input.Keyboard.JustDown(this.f8Key)) {
+      this.emergencyUnstuckPlayer();
+    }
     // V15-29: Bắt phím tắt F9 cho Chế độ Debug Khung Tương Tác Quản Trị Viên
     if (this.f9Key && Phaser.Input.Keyboard.JustDown(this.f9Key)) {
       this.toggleDebugInteractionBoxes();
     }
+
+    // V15-39: Điều phối Nhạc Nền BGM nghệ thuật theo vùng và bối cảnh
+    this.updateBGMState(time, delta);
+  }
+
+  /**
+   * V15-39: Điều phối Nhạc Nền BGM tự động theo phân khu, bối cảnh và trạng thái hiểm nguy
+   */
+  private updateBGMState(time: number, _delta: number): void {
+    if (time - this.lastBGMCheckTime < 250) return;
+    this.lastBGMCheckTime = time;
+
+    if (!this.player || !this.audioManager) return;
+
+    // 1. Kiểm tra trạng thái hiểm nguy cao (Boss thức tỉnh, Đấu trùm, Quái truy đuổi sát nút, Act 5 Chase)
+    const isListenerChasing = Boolean(
+      this.listenerMonster &&
+      this.listenerMonster.ai &&
+      (this.listenerMonster.ai as any).state === 'CHASE'
+    );
+    const isBossAwakened = Boolean(this.wildlifeSystem && (this.wildlifeSystem as any).isBossAwakened && (this.wildlifeSystem as any).isBossAwakened());
+    const isHighDanger = Boolean(
+      this.isBossFightActive ||
+      isBossAwakened ||
+      this.isAct5ChaseActive ||
+      isListenerChasing
+    );
+
+    if (isHighDanger) {
+      this.audioManager.setBGMSuppressed(true, 0.8);
+      return;
+    } else {
+      this.audioManager.setBGMSuppressed(false, 1.5);
+    }
+
+    // 2. Khi người chơi đang mở đọc Trang Giấy Cổ / Mẩu Nhật Ký Cũ Bị Rách
+    const isReadingPaper = Boolean(
+      (this.uiScene && this.uiScene.tornPageModal && this.uiScene.tornPageModal.isOpen) ||
+      (this.uiScene && (this.uiScene as any).paperNoteModal && (this.uiScene as any).paperNoteModal.isOpen)
+    );
+    if (isReadingPaper) {
+      this.audioManager.playBGM('bgm_forgotten_orchard', 1.5, 0.65);
+      return;
+    }
+
+    // 3. Khu vực Bếp Lửa Nghỉ Ngơi của Sir Vaelen (x: 1435, y: 710) - Bán kính 180px
+    const distToVaelen = Math.hypot(this.player.x - 1435, this.player.y - 710);
+    const phase = this.timeSystem ? this.timeSystem.getCurrentPhase() : 'DAY';
+
+    if (distToVaelen <= 180) {
+      // Ban ngày hoặc hoàng hôn: The Knight's Quiet Fire (ấm áp, bình yên)
+      // Ban đêm (NIGHT): Embervale (hơi ấm tàn tro trong đêm sương u tịch)
+      const vaelenTrack = phase === 'NIGHT' ? 'bgm_embervale' : 'bgm_knights_quiet_fire';
+      this.audioManager.playBGM(vaelenTrack, 1.5, 0.8);
+      return;
+    }
+
+    // 4. Khám phá Xưởng Chuông Bỏ Hoang & Hầm Rễ Cổ
+    if (this.currentZoneId === 'sub_bell_workshop' || this.currentZoneId === 'sub_root_cellar') {
+      this.audioManager.playBGM('bgm_forgotten_orchard', 1.5, 0.7);
+      return;
+    }
+
+    // 5. Khám phá Khoảng Trống Thì Thầm (Whispering Clearing)
+    if (this.currentZoneId === 'sub_whispering_clearing') {
+      this.audioManager.playBGM('bgm_evergrove', 1.5, 0.75);
+      return;
+    }
+
+    // 6. Dạo bước ban ngày tại Rừng Ngoài (Outer Woods, khi không phải ban đêm)
+    if (this.currentZoneId === 'outer_woods' && phase !== 'NIGHT') {
+      this.audioManager.playBGM('bgm_beyond_the_hills', 1.5, 0.7);
+      return;
+    }
+
+    // 7. Các khu vực khác (Làng Bellhollow, Đầm lầy tĩnh lặng, Giao lộ sương, v.v.): Fade-out dừng BGM
+    // để nhường trọn vẹn không gian cho hệ thống Ambience đặc trưng từng vùng
+    this.audioManager.stopBGM(1.5);
   }
 
   /**
@@ -2571,15 +2767,70 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    // 4. V1.4 - P6: Tác động lên Kẻ Nuốt Tiếng Chuông (Mire Warden Boss) khi bị choáng
-    if (this.isBossFightActive && this.mireWardenBoss && this.mireWardenBoss.active) {
-      if (this.mireWardenBoss.isStaggered) {
-        const distToBoss = Math.hypot(this.mireWardenBoss.x - hitbox.x, this.mireWardenBoss.y - hitbox.y);
-        if (distToBoss <= hitbox.radius + 36) {
-          this.createHitSpark(hitbox.x, hitbox.y);
-          this.handleBossSealInteraction();
+    // V15-46: Tác động chém vũ khí trực tiếp vào 3 Trụ Phong Ấn Mạch Rễ
+    if (this.isBossFightActive && this.runePillarTargets && this.runePillarTargets.length > 0) {
+      for (const pillar of this.runePillarTargets) {
+        if (!pillar.isShattered) {
+          const distPillar = Math.hypot(pillar.x - hitbox.x, pillar.y - hitbox.y);
+          if (distPillar <= hitbox.radius + 40) {
+            this.createHitSpark(hitbox.x, hitbox.y);
+            this.audioManager.playInteract();
+            const dmg = weaponDef.damage || 12;
+            pillar.hp = Math.max(0, pillar.hp - dmg);
+
+            // Rung giật nhẹ trụ khi trúng đòn
+            if (pillar.graphics) {
+              this.tweens.add({
+                targets: pillar.graphics,
+                x: pillar.graphics.x + 4,
+                duration: 50,
+                yoyo: true
+              });
+            }
+
+            if (this.uiScene) {
+              if (pillar.hp <= 0) {
+                this.uiScene.showPopupMessage(`💥 Đòn ${weaponDef.name} đánh sập hoàn toàn ${pillar.name}!`);
+              } else {
+                this.uiScene.showPopupMessage(`Đòn ${weaponDef.name} đánh vào ${pillar.name}! (-${dmg} HP, còn ${pillar.hp}/${pillar.maxHp} HP)`);
+              }
+            }
+
+            if (pillar.hp <= 0) {
+              this.handleShatterRunePillar(pillar);
+            }
+          }
         }
-      } else {
+      }
+    }
+
+    // 4. V1.4 - P6 & V15-46: Tác động lên Kẻ Nuốt Tiếng Chuông (Mire Warden Boss)
+    if (this.isBossFightActive && this.mireWardenBoss && this.mireWardenBoss.active) {
+      const distToBoss = Math.hypot(this.mireWardenBoss.x - hitbox.x, this.mireWardenBoss.y - hitbox.y);
+      if (distToBoss <= hitbox.radius + 48) {
+        this.createHitSpark(hitbox.x, hitbox.y);
+        this.audioManager.playInteract();
+
+        const allPillarsShattered = this.runePillarTargets.length > 0 && this.runePillarTargets.every(p => p.isShattered);
+        if (this.mireWardenBoss.isShieldBroken || allPillarsShattered) {
+          // V15-46: Boss đã vỡ khiên: nhận sát thương thực tế từ vũ khí!
+          const dmg = weaponDef.damage || 15;
+          const hitOk = this.mireWardenBoss.takeDamage(dmg, hitbox.playerX, hitbox.playerY);
+          if (hitOk && this.uiScene) {
+            this.uiScene.showPopupMessage(`⚔️ Chém trúng Kẻ Nuốt Tiếng Chuông! (-${dmg} HP, Boss còn ${this.mireWardenBoss.bossHp}/100 HP)`);
+          }
+          if (this.mireWardenBoss.bossHp <= 0) {
+            this.finishMireWardenDefeat();
+          }
+        } else if (this.mireWardenBoss.isStaggered) {
+          this.handleBossSealInteraction();
+        } else {
+          // V15-45: Hiển thị chỉ dẫn "Bất khả xâm phạm!" trên đầu Boss và popup thông báo
+          this.mireWardenBoss.showInvulnerableWarning();
+          if (this.uiScene) {
+            this.uiScene.showPopupMessage('🛡️ Bất khả xâm phạm! Hãy phá hủy 3 Trụ Phong Ấn ở góc quảng trường trước.');
+          }
+        }
         this.mireWardenBoss.hearSound(hitbox.playerX, hitbox.playerY, false);
       }
     }
@@ -3434,8 +3685,21 @@ export class GameScene extends Phaser.Scene {
       'crooked_path:outer_woods',
       'crooked_path:silent_mire',
       'silent_mire:crooked_path',
+      'silent_mire:ancient_rune_puzzle',
+      'ancient_rune_puzzle:silent_mire',
+      'ancient_rune_puzzle:broken_bell_shrine',
+      'broken_bell_shrine:ancient_rune_puzzle',
       'silent_mire:broken_bell_shrine',
-      'broken_bell_shrine:silent_mire'
+      'broken_bell_shrine:silent_mire',
+      // V15-43: Kết nối liền mạch liên tục giữa Rừng Sâu và nửa dưới bản đồ
+      'crooked_path:deep_forest',
+      'deep_forest:crooked_path',
+      'deep_forest:sub_whispering_clearing',
+      'sub_whispering_clearing:deep_forest',
+      'crooked_path:sub_whispering_clearing',
+      'sub_whispering_clearing:crooked_path',
+      'deep_forest:silent_mire',
+      'silent_mire:deep_forest'
     ]);
     return seamlessPairs.has(`${fromZone}:${toZone}`);
   }
@@ -3496,8 +3760,12 @@ export class GameScene extends Phaser.Scene {
     if (!isUnlocked || trans.status === 'pending_construction') {
       this.transitionCooldown = 1200; // 1.2s cooldown chống spam
       this.transitionCooldownUntil = performance.now() + 1200;
-      const retPoint = trans.returnPoint || this.worldBuilder.getZone(trans.fromZone)?.defaultSpawn || { x: this.player.x, y: this.player.y };
-      this.player.setPosition(retPoint.x, retPoint.y);
+
+      // V15-41: Với các vùng liền kề (seamless), dừng di chuyển tự nhiên chứ không snapback về returnPoint xa xôi
+      if (!this.isSeamlessAdjacentTransition(trans.fromZone, trans.toZone)) {
+        const retPoint = trans.returnPoint || { x: this.player.x, y: this.player.y };
+        this.player.setPosition(retPoint.x, retPoint.y);
+      }
       this.player.setVelocity(0, 0);
 
       const reason = evaluation.reason || 'Khu vực này hiện đang bị phong ấn hoặc chưa hoàn thiện lối đi!';
@@ -3675,16 +3943,16 @@ export class GameScene extends Phaser.Scene {
     const footPos = this.player.getFootPosition();
     const detectedZone = this.worldBuilder.detectCurrentZone(footPos);
 
-    // C4-12-27: Kiểm tra an toàn khi di chuyển liên tục qua ranh giới thế giới mở
+    // C4-12-27 & V15-41: Kiểm tra an toàn khi di chuyển liên tục qua ranh giới thế giới mở
+    // TUYỆT ĐỐI KHÔNG tự động setPosition/snapback nhân vật về safeSpawn trong vòng lặp update() khi đi ngang ranh giới!
     if (detectedZone !== this.currentZoneId) {
       const isUnlocked = WorldGatingSystem.getInstance().isZoneUnlocked(detectedZone, this.playerState);
       if (!isUnlocked) {
         const evalResult = WorldGatingSystem.getInstance().evaluateTransition(this.currentZoneId, detectedZone, this.playerState);
-        const zoneData = this.worldBuilder.getZone(this.currentZoneId);
-        const safeSpawn = zoneData ? zoneData.defaultSpawn : { x: 560, y: 260 };
-        this.player.setPosition(safeSpawn.x, safeSpawn.y);
+        // V15-41: Dừng vận tốc và giữ nguyên vị trí chân nhân vật, tuyệt đối không teleport về trung tâm phân khu
         this.player.setVelocity(0, 0);
         this.transitionCooldown = 1200;
+        this.transitionCooldownUntil = performance.now() + 1200;
         if (this.uiScene) {
           this.uiScene.showPopupMessage(`🔒 ${evalResult.reason} ${evalResult.hint || ''}`);
         }
@@ -3854,10 +4122,25 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    // C4-13-01: Ưu tiên tối thượng cho trạng thái ẩn nấp (Hiding & Stealth Stance)
-    // Khi đang núp, người chơi bấm [E] hoặc phím di chuyển WASD/Mũi tên (sau 0.3s) sẽ thoát ra ngay lập tức
+    // C4-13-01 & V15-34: Ưu tiên tối thượng cho trạng thái ẩn nấp (Hiding & Stealth Stance)
+    // Khi đang núp, người chơi bấm [E] hoặc phím di chuyển WASD/Mũi tên (sau 150ms) sẽ thoát ra ngay lập tức
     if (this.player.stats.isHiding) {
       this.clearInteractionOutline();
+
+      // V15-34 Sanity Check: Nếu không đứng gần bất kỳ hiding spot nào trong bán kính 96px, tự động dọn dẹp trạng thái ẩn nấp bị kẹt
+      const isNearAnyHidingSpot = this.worldBuilder && this.worldBuilder.interactables && this.worldBuilder.interactables.some(
+        i => (i.actionId === 'hide_player' || i.type === 'hiding_spot') &&
+             Math.hypot(this.player.x - i.x, this.player.y - i.y) <= 96
+      );
+
+      if (!isNearAnyHidingSpot) {
+        this.player.resetAllActionAndMotionStates();
+        if (this.uiScene) {
+          this.uiScene.setInteractionPrompt(null);
+        }
+        return;
+      }
+
       if (this.uiScene) {
         this.uiScene.setInteractionPrompt('[E] / [WASD] Bước ra khỏi chỗ trốn', this.player.x, this.player.y - 36);
       }
@@ -3865,7 +4148,7 @@ export class GameScene extends Phaser.Scene {
         npc.setNearby(false);
       }
       const timeInHiding = Date.now() - this.player.hidingTimestamp;
-      const isExitRequested = this.player.isInteractRequested() || (timeInHiding >= 300 && this.player.hasMovementInput());
+      const isExitRequested = this.player.isInteractRequested() || (timeInHiding >= 150 && this.player.hasMovementInput());
       if (isExitRequested) {
         this.executeMapInteraction('hide_player', 'chỗ trốn');
       }
@@ -4210,13 +4493,13 @@ export class GameScene extends Phaser.Scene {
       const isWithinActionRange = dist <= worldTriggerDist;
       let rawPrompt = nearby.promptText;
 
-      // V15-30: Kiểm tra nếu là mẩu nhật ký / văn bia trong TORN_PAGES_REGISTRY
+      // V15-30 / V15-33: Kiểm tra nếu là mẩu nhật ký / biển báo / văn bia trong TORN_PAGES_REGISTRY
       const tornPageEntry = TORN_PAGES_REGISTRY[nearby.actionId];
       if (tornPageEntry) {
         const isCollected = this.playerState.hasFlag('collected_note_' + nearby.actionId) ||
-                            this.playerState.unlockedLore.some(l => l.id === tornPageEntry.loreId);
+                            (Boolean(tornPageEntry.loreId) && this.playerState.unlockedLore.some(l => l.id === tornPageEntry.loreId));
         if (isCollected) {
-          rawPrompt = 'Đã thu thập (Có thể nhấn [E] để xem lại)';
+          rawPrompt = 'Đã đọc (Xem lại)';
         }
       }
 
@@ -4255,6 +4538,33 @@ export class GameScene extends Phaser.Scene {
 
     // V1.4 - P6: Tương tác với Kẻ Nuốt Tiếng Chuông (Mire Warden Boss) trong trận đấu trùm
     if (this.isBossFightActive && this.mireWardenBoss) {
+      // V15-46: Tương tác [E] Phá Giải Phong Ấn Mạch Rễ khi chạy lại gần các Cột Đá ở các góc
+      if (this.runePillarTargets && this.runePillarTargets.length > 0) {
+        for (const pillar of this.runePillarTargets) {
+          if (!pillar.isShattered) {
+            const distPillar = Math.hypot(px - pillar.x, py - pillar.y);
+            if (distPillar <= 100) {
+              candidates.push({
+                dist: distPillar,
+                triggerDist: 75,
+                promptText: `[E] Phá Giải Phong Ấn Mạch Rễ (${pillar.name})`,
+                x: pillar.x,
+                y: pillar.y,
+                promptY: pillar.y - 48,
+                width: 56,
+                height: 56,
+                proximityAlpha: distPillar <= 75 ? 1.0 : 0.7,
+                targetRef: pillar,
+                depth: pillar.y + 10,
+                action: () => {
+                  this.handleShatterRunePillar(pillar);
+                }
+              });
+            }
+          }
+        }
+      }
+
       if (this.mireWardenBoss.isStaggered) {
         const distBoss = Math.hypot(px - this.mireWardenBoss.x, py - this.mireWardenBoss.y);
         if (distBoss <= 85) {
@@ -4700,17 +5010,16 @@ export class GameScene extends Phaser.Scene {
 
     // C4-14-B04: Điểm hút mở đầu - Mẩu Nhật Ký Rách #1 tại Fog Crossing
     if (actionId === 'inspect_fog_journal_1') {
-      this.playerState.unlockLore('lore_fog_journal_1');
-      if (this.uiScene) {
-        this.uiScene.showPopupMessage('📜 [NHẬT KÝ RÁCH]: "Màn sương nuốt chửng lối về. Hãy đi theo tiếng chuông và ánh đèn bão phía Đông. Đừng tắt đèn lồng quá lâu..."');
+      if (this.uiScene && TORN_PAGES_REGISTRY[actionId]) {
+        this.uiScene.openTornPage(TORN_PAGES_REGISTRY[actionId]);
       }
       return;
     }
 
     // V1.4 Blueprint: Bảng Tin Dị Thường (The Anomaly Notice Board) tại Bellhollow
     if (actionId === 'read_bellhollow_notice_board') {
-      if (this.uiScene) {
-        this.uiScene.showPopupMessage('📜 [BẢNG TIN DỊ THƯỜNG]:\n• Tây Bắc: Khói đen tắt tại Trạm Kiểm Lâm Rừng Ngoài. Dầu đèn dự trữ vẫn còn.\n• Đông Nam: Tiếng chuông chìm đáy Đầm Lầy Sương Mù. Cần người vượt cầu ván khảo sát.\n• Đông Bắc: Cột Vật Tổ Thì Thầm cảnh báo quái vật rình rập ở Rừng Sâu.');
+      if (this.uiScene && TORN_PAGES_REGISTRY[actionId]) {
+        this.uiScene.openTornPage(TORN_PAGES_REGISTRY[actionId]);
       }
       return;
     }
@@ -4736,6 +5045,24 @@ export class GameScene extends Phaser.Scene {
       } else {
         if (this.uiScene) {
           this.uiScene.showPopupMessage('📦 Rương trống không. Tài nguyên kiểm lâm đã được thu thập.');
+        }
+      }
+      return;
+    }
+
+    // V15-43: Rương Gỗ Rừng Sâu (x=1984, y=-80)
+    if (actionId === 'open_deep_forest_chest') {
+      if (!this.playerState.hasFlag('opened_deep_forest_chest')) {
+        this.playerState.setFlag('opened_deep_forest_chest');
+        this.playerState.addItem('dry_wood', 3);
+        this.playerState.addItem('res_herbs', 2);
+        this.playerState.stats.lanternOil = Math.min(this.playerState.stats.maxLanternOil, this.playerState.stats.lanternOil + 45);
+        if (this.uiScene) {
+          this.uiScene.showPopupMessage('🎁 Rương Gỗ Rừng Sâu: Nhận 3 Gỗ Khô, 2 Thảo Dược và Dầu Đèn (+45s)!');
+        }
+      } else {
+        if (this.uiScene) {
+          this.uiScene.showPopupMessage('📦 Rương trống không. Đồ tiếp tế đã được thu thập.');
         }
       }
       return;
@@ -4799,8 +5126,8 @@ export class GameScene extends Phaser.Scene {
     }
 
     if (actionId === 'read_fog_sign') {
-      if (this.uiScene) {
-        this.uiScene.showPopupMessage('📜 Biển Đá Mòn: "HƯỚNG ĐÔNG — Làng Chuông Bellhollow. Giữ ngọn đèn luôn cháy."');
+      if (this.uiScene && TORN_PAGES_REGISTRY[actionId]) {
+        this.uiScene.openTornPage(TORN_PAGES_REGISTRY[actionId]);
       }
       return;
     }
@@ -4817,10 +5144,10 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    // V14-P8-13: Đọc Biển Chỉ Đường Tuyến Vòng (Winding Detour Sign)
+    // V14-P8-13 / V15-33: Đọc Biển Chỉ Đường Tuyến Vòng (Winding Detour Sign)
     if (actionId === 'read_detour_sign') {
-      if (this.uiScene) {
-        this.uiScene.showPopupMessage('📜 Biển Chỉ Đường: "◄ Hướng Bắc: Bìa Rừng Sâu & Xưởng Chuông | Lối Vòng Đầm Lầy & Tháp Chuông: Phía Đông Nam ►"');
+      if (this.uiScene && TORN_PAGES_REGISTRY[actionId]) {
+        this.uiScene.openTornPage(TORN_PAGES_REGISTRY[actionId]);
       }
       return;
     }
@@ -4955,22 +5282,22 @@ export class GameScene extends Phaser.Scene {
     }
 
     if (actionId === 'read_farm_sign') {
-      if (this.uiScene) {
-        this.uiScene.showPopupMessage('📜 Biển Gỗ: "NÔNG TRẠI TRÚ ẨN — Vùng đất bình yên để gieo trồng thảo dược và dự trữ sinh tồn."');
+      if (this.uiScene && TORN_PAGES_REGISTRY[actionId]) {
+        this.uiScene.openTornPage(TORN_PAGES_REGISTRY[actionId]);
       }
       return;
     }
 
     if (actionId === 'read_herb_terrace_sign') {
-      if (this.uiScene) {
-        this.uiScene.showPopupMessage('🌿 Vườn Dược Sanctuary: "4 Ô đất màu mỡ trồng Thảo Dược Bạc. Nhấn [E] khi đứng gần ô đất để gieo hạt hoặc thu hoạch."');
+      if (this.uiScene && TORN_PAGES_REGISTRY[actionId]) {
+        this.uiScene.openTornPage(TORN_PAGES_REGISTRY[actionId]);
       }
       return;
     }
 
     if (actionId === 'read_ow_sign') {
-      if (this.uiScene) {
-        this.uiScene.showPopupMessage('📜 Biển Chỉ Dẫn: "HƯỚNG ĐÔNG NAM — Rừng Ngoại Vi. Thu thập củi khô & thảo mộc rừng."');
+      if (this.uiScene && TORN_PAGES_REGISTRY[actionId]) {
+        this.uiScene.openTornPage(TORN_PAGES_REGISTRY[actionId]);
       }
       return;
     }
@@ -5030,26 +5357,15 @@ export class GameScene extends Phaser.Scene {
     }
 
     if (actionId === 'read_black_knight_stele') {
-      this.audioManager.playInteract();
-      this.playerState.unlockLore('lore_black_knight_chronicle');
-      if (this.playerState.memoryAwakeningStage < 1) {
-        this.playerState.memoryAwakeningStage = 1;
-      }
-      if (this.uiScene) {
-        this.uiScene.showPopupMessage('🗡️ [VĂN BIA CỔ - HIỆP SĨ ĐEN]: "Hiệp Sĩ Đen — vị chỉ huy duy nhất năm xưa dám tiến vào tâm điểm Mạch Rễ để phong ấn lời nguyền và đánh đổi toàn bộ ký ức của mình."');
+      if (this.uiScene && TORN_PAGES_REGISTRY[actionId]) {
+        this.uiScene.openTornPage(TORN_PAGES_REGISTRY[actionId]);
       }
       return;
     }
 
     if (actionId === 'read_blacksmith_journal') {
-      this.audioManager.playInteract();
-      this.playerState.unlockLore('lore_blacksmith_journal');
-      if (this.playerState.memoryAwakeningStage < 1) {
-        this.playerState.memoryAwakeningStage = 1;
-        this.playerState.unlockLore('lore_black_knight_chronicle');
-      }
-      if (this.uiScene) {
-        this.uiScene.showPopupMessage('📜 [NHẬT KÝ THỢ RÈN]: "Màn sương ngưng tụ từ rễ đại ngàn... Cần một hợp kim đặc biệt để tiếng chuông xuyên thủng The Veil."');
+      if (this.uiScene && TORN_PAGES_REGISTRY[actionId]) {
+        this.uiScene.openTornPage(TORN_PAGES_REGISTRY[actionId]);
       }
       return;
     }
@@ -5128,10 +5444,8 @@ export class GameScene extends Phaser.Scene {
     }
 
     if (actionId === 'read_fog_origin_mural') {
-      this.audioManager.playInteract();
-      this.playerState.unlockLore('lore_fog_origin');
-      if (this.uiScene) {
-        this.uiScene.showPopupMessage('📜 [BÍCH HỌA CỔ]: "Màn sương The Veil không sinh ra từ bóng tối, mà là hơi thở của Rừng Rỗng khi quả chuông câm lặng..."');
+      if (this.uiScene && TORN_PAGES_REGISTRY[actionId]) {
+        this.uiScene.openTornPage(TORN_PAGES_REGISTRY[actionId]);
       }
       return;
     }
@@ -5150,8 +5464,8 @@ export class GameScene extends Phaser.Scene {
     }
 
     if (actionId === 'read_cp_frontier_sign') {
-      if (this.uiScene) {
-        this.uiScene.showPopupMessage('📜 Cột Mốc Tiền Tuyến: "LỐI MÒN QUANH CO — Đi theo vệt đèn lồng. Cẩn thận bước chân khi sương mù đặc lại."');
+      if (this.uiScene && TORN_PAGES_REGISTRY[actionId]) {
+        this.uiScene.openTornPage(TORN_PAGES_REGISTRY[actionId]);
       }
       return;
     }
@@ -5171,8 +5485,8 @@ export class GameScene extends Phaser.Scene {
     }
 
     if (actionId === 'inspect_df_entry_sign') {
-      if (this.uiScene) {
-        this.uiScene.showPopupMessage('📜 Biển Rừng Sâu: "CẢNH BÁO: Lãnh địa nguyên sinh nơi Kẻ Lắng Nghe săn mồi. Giữ ngọn đèn sáng, hạn chế chạy nhanh và nấp vào Thân Cây Rỗng khi nghe thấy tiếng động."');
+      if (this.uiScene && TORN_PAGES_REGISTRY[actionId]) {
+        this.uiScene.openTornPage(TORN_PAGES_REGISTRY[actionId]);
       }
       return;
     }
@@ -5206,8 +5520,8 @@ export class GameScene extends Phaser.Scene {
 
     // C4-12-23: Tương tác các điểm chỉ dẫn môi trường Đầm Lầy Tĩnh Lặng (Silent Mire)
     if (actionId === 'read_sm_entry_sign') {
-      if (this.uiScene) {
-        this.uiScene.showPopupMessage('📜 Biển Gỗ Đầm Lầy: "CẢNH BÁO: Vùng ngập nước sương độc ăn mòn tâm trí. Đi trên các gờ đất cao và cầu ván gỗ để tránh sụt bùn lầy. Ẩn nấp vào hốc cây cổ hoặc cụm lau sậy rậm rạp khi sương mù cuộn sóng."');
+      if (this.uiScene && TORN_PAGES_REGISTRY[actionId]) {
+        this.uiScene.openTornPage(TORN_PAGES_REGISTRY[actionId]);
       }
       return;
     }
@@ -5263,20 +5577,16 @@ export class GameScene extends Phaser.Scene {
 
     // Tương tác Bia Đá Cổ Thư Đầm Lầy (C4-12-24)
     if (actionId === 'read_rune_clue_stele') {
-      this.audioManager.playInteract();
-      this.playerState.unlockLore('lore_runestones');
-      if (this.uiScene) {
-        this.uiScene.showPopupMessage('📜 [CỔ THƯ ĐẦM LẦY]: "Khi Trăng Khuyết soi bóng đáy nước (1), Rễ Sâu thức giấc đâm xuyên bùn lầy (2), Con Mắt viễn cổ mở ra dẫn lối qua đầm (3)."');
+      if (this.uiScene && TORN_PAGES_REGISTRY[actionId]) {
+        this.uiScene.openTornPage(TORN_PAGES_REGISTRY[actionId]);
       }
       return;
     }
 
     // Tương tác Bia Đá Cổ Miếu Chuông (C4-12-25)
     if (actionId === 'read_shrine_stele') {
-      this.audioManager.playInteract();
-      this.playerState.unlockLore('lore_clapper_curse');
-      if (this.uiScene) {
-        this.uiScene.showPopupMessage('📜 [BIA ĐÁ MIẾU CHUÔNG]: "Khi tiếng chuông vỡ câm lặng, Màn Sương sẽ nhớ lại tất cả những gì rừng già đã chôn giấu... Chỉ có tiếng ngân đầu tiên của Lưỡi Chuông Đồng mới có thể triệu hồi lại vòng phong ấn che chở cho Bellhollow."');
+      if (this.uiScene && TORN_PAGES_REGISTRY[actionId]) {
+        this.uiScene.openTornPage(TORN_PAGES_REGISTRY[actionId]);
       }
       return;
     }
@@ -5351,8 +5661,10 @@ export class GameScene extends Phaser.Scene {
           this.uiScene.setInteractionPrompt('[E] / [WASD] Bước ra khỏi chỗ trốn', this.player.x, this.player.y - 36);
         }
       } else {
-        // C4-13-01: Thoát ẩn nấp — Trả nhân vật về vị trí an toàn ngoài rìa collider, bật hiển thị và mở khóa
-        this.player.exitHiding();
+        // C4-13-01 & V15-34: Thoát ẩn nấp — Tìm vector thoát an toàn hướng về mặt đường thông thoáng, tránh xa cổng sắt/tường đá
+        const moveDir = this.player.getMovementInputDirection();
+        const safeExitPos = SafeSpawnResolver.findSafeExitFromHiding(this, this.player.x, this.player.y, moveDir);
+        this.player.exitHiding(safeExitPos);
         this.unstuckPlayerFromColliders();
         if (this.uiScene) {
           this.uiScene.showPopupMessage('Đã bước ra khỏi chỗ trốn.');
@@ -5540,11 +5852,19 @@ export class GameScene extends Phaser.Scene {
       fogAlpha = Math.max(fogAlpha, 0.85);
     }
 
-    // V1.5 (BƯỚC V15-06): Liên kết trực tiếp chỉ số Bình Tâm vào bán kính chiếu sáng và tầm nhìn
+    // V1.5 (BƯỚC V15-06 & V15-47): Liên kết trực tiếp chỉ số Bình Tâm vào bán kính chiếu sáng và tầm nhìn
     const composure = this.playerState.stats.composure;
-    const compScale = this.veilSystem
+    let compScale = this.veilSystem
       ? this.veilSystem.getComposureVisionScale(composure)
       : (composure >= 50 ? 1.0 : Phaser.Math.Linear(0.45, 1.0, Math.max(0, composure / 50)));
+
+    // V15-47: Trong trận Boss Miếu Chuông Phế Tích, khi Bình Tâm < 50%, tầm nhìn thu hẹp sâu và sương mù ép sát
+    if (this.isBossFightActive && this.currentZoneId === 'broken_bell_shrine' && composure < 50) {
+      const bossPanicRatio = Math.max(0, composure / 50);
+      const bossVisionScale = Phaser.Math.Linear(0.35, 1.0, bossPanicRatio);
+      compScale *= bossVisionScale;
+      fogAlpha = Math.min(0.96, fogAlpha + (1 - bossPanicRatio) * 0.12);
+    }
     targetBaseRadius *= compScale;
 
     // Khi Bình Tâm < 50%, quầng sáng co nhỏ lại và chập chờn mạnh như sắp tắt
@@ -5796,13 +6116,27 @@ export class GameScene extends Phaser.Scene {
     this.playerState.observeCreature('mire_warden');
     BossEncounterSystem.getInstance().initArena(this, this.mireWardenBoss as BossMireWarden);
 
-    // 4. Khởi tạo 2 Trụ Cổ Ngữ Pha 1 (Tây Bắc & Đông Bắc)
+    // V15-47: Kích hoạt áp lực sinh tồn trận Boss và reset bộ đếm cộng hưởng
+    this.bossResonanceTimer = 0;
+    this.bossContactCooldownTimer = 0;
+    if (this.survivalSystem) {
+      this.survivalSystem.setBossFightActive(true);
+    }
+
+    // V15-45: Lắng nghe kích hoạt đòn gầm sóng âm (Sonic Roar) từ Boss
+    this.mireWardenBoss.removeAllListeners('boss_request_sonic_roar');
+    this.mireWardenBoss.on('boss_request_sonic_roar', () => {
+      this.handleBossSonicRoar();
+    });
+
+    // 4. V15-46: Khởi tạo 3 Trụ Cổ Ngữ Phong Ấn Mạch Rễ mở tự do cả 3 góc (Tây Bắc, Đông Bắc, Đông Nam)
     this.runePillarTargets.forEach(p => p.graphics?.destroy());
     this.runePillarTargets = [
-      { id: 'pillar_nw', x: 4350, y: 180, radius: 45, isLit: true, isShattered: false },
-      { id: 'pillar_ne', x: 4650, y: 180, radius: 45, isLit: false, isShattered: false }
+      { id: 'pillar_nw', name: 'Rãnh Vang Cổ', x: 4350, y: 180, radius: 45, isLit: true, isShattered: false, hp: 30, maxHp: 30 },
+      { id: 'pillar_ne', name: 'Đá Mạch Rễ', x: 4650, y: 180, radius: 45, isLit: true, isShattered: false, hp: 30, maxHp: 30 },
+      { id: 'pillar_se', name: 'Bảo Hộ Chuông', x: 4680, y: 380, radius: 45, isLit: true, isShattered: false, hp: 30, maxHp: 30 }
     ];
-    this.renderRunePillarGlow(this.runePillarTargets[0]);
+    this.runePillarTargets.forEach(p => this.renderRunePillarGlow(p));
 
     // 5. Hiển thị Thanh Độ Ổn Định Phong Ấn trên HUD
     if (this.uiScene) {
@@ -5815,7 +6149,7 @@ export class GameScene extends Phaser.Scene {
 
     this.time.delayedCall(1200, () => {
       if (this.uiScene) {
-        this.uiScene.showPopupMessage('⚠️ KẺ NUỐT TIẾNG CHUÔNG ĐÃ THỨC TỈNH! Dụ nó lao húc vào Trụ Cổ Ngữ đang phát sáng!');
+        this.uiScene.showPopupMessage('⚠️ KẺ NUỐT TIẾNG CHUÔNG ĐÃ THỨC TỈNH! Nhấn [E] hoặc chém vũ khí phá hủy 3 Trụ Phong Ấn ở các góc!');
       }
     });
   }
@@ -5828,6 +6162,10 @@ export class GameScene extends Phaser.Scene {
 
     this.mireWardenBoss.update(time, delta);
 
+    if (this.bossContactCooldownTimer > 0) {
+      this.bossContactCooldownTimer = Math.max(0, this.bossContactCooldownTimer - delta);
+    }
+
     // Người chơi chạy nước rút ồn ào sẽ thu hút Boss
     if (this.player) {
       const pSpeed = Math.hypot(
@@ -5838,6 +6176,30 @@ export class GameScene extends Phaser.Scene {
 
       if (pSpeed > 130 && distToBoss < 260) {
         this.mireWardenBoss.hearSound(this.player.x, this.player.y, false);
+      }
+
+      // V15-47: Vùng cộng hưởng bóng tối (Dark Resonance Aura) của Boss bào mòn Bình Tâm
+      if (this.mireWardenBoss.active && !this.mireWardenBoss.isStaggered && this.mireWardenBoss.currentState !== 'DEFEATED') {
+        if (distToBoss <= this.mireWardenBoss.darkResonanceRadius) {
+          this.bossResonanceTimer = (this.bossResonanceTimer || 0) + delta;
+          if (this.bossResonanceTimer >= 1800) {
+            this.bossResonanceTimer = 0;
+            const drainComp = 20;
+            this.playerState.stats.composure = Math.max(0, this.playerState.stats.composure - drainComp);
+            this.cameraSystem.shake(280, 0.014);
+            this.audioManager.playBronzeBellToll();
+            this.mireWardenBoss.triggerDarkResonancePulse();
+            this.player.setTint(0x9b59b6);
+            this.time.delayedCall(220, () => {
+              if (this.player) this.player.clearTint();
+            });
+            if (this.uiScene) {
+              this.uiScene.showPopupMessage('⚠️ VÙNG CỘNG HƯỞNG BÓNG TỐI! Kẻ Nuốt Tiếng Chuông bào mòn tinh thần (-20 Bình Tâm)!');
+            }
+          }
+        } else {
+          this.bossResonanceTimer = Math.max(0, (this.bossResonanceTimer || 0) - delta * 0.6);
+        }
       }
 
       // Ngăn người chơi trốn thoát qua cổng rào chắn rễ cây
@@ -5855,39 +6217,239 @@ export class GameScene extends Phaser.Scene {
         if (pillar.isLit && !pillar.isShattered) {
           const dist = Math.hypot(this.mireWardenBoss.x - pillar.x, this.mireWardenBoss.y - pillar.y);
           if (dist <= 65) {
-            // Boss húc trúng Trụ Cổ Ngữ đang phát sáng -> Bị CHOÁNG 3.5s!
-            pillar.isLit = false;
-            pillar.isShattered = true;
-            if (pillar.graphics) {
-              pillar.graphics.clear();
-            }
-
-            this.createHitSpark(pillar.x, pillar.y);
-            this.cameraSystem.shake(800, 0.025);
-            this.audioManager.playInteract();
-            this.mireWardenBoss.stagger();
-
-            if (this.uiScene) {
-              this.uiScene.showPopupMessage('💥 Boss bị CHOÁNG VÁNG trong 3.5s! Nhấn [E] hoặc dùng Giáo Gỗ phong ấn ngay!');
-            }
+            // V15-45: Boss húc vỡ Trụ Cổ Ngữ phát sáng -> phá giải trụ và làm choáng Boss
+            this.handleShatterRunePillar(pillar);
             break;
           }
         }
       }
 
-      // Va chạm trúng người chơi khi Boss lao húc -> Đẩy lùi và trừ máu
+      // V15-45 & V15-47: Va chạm trúng người chơi khi Boss lao húc -> Đẩy lùi, gây sát thương
       if (this.player) {
         const distP = Math.hypot(this.mireWardenBoss.x - this.player.x, this.mireWardenBoss.y - this.player.y);
-        if (distP <= 36 && !this.mireWardenBoss.isStaggered) {
-          this.playerState.stats.health = Math.max(0, this.playerState.stats.health - 15);
-          this.playerState.stats.stamina = Math.max(0, this.playerState.stats.stamina - 20);
-          this.cameraSystem.shake(300, 0.015);
+        if (distP <= 65 && !this.mireWardenBoss.isStaggered) {
+          const isCompZero = this.playerState.stats.composure <= 0;
+          if (isCompZero) {
+            // V15-47: Bình Tâm chạm 0 -> Lớp bảo vệ tinh thần sụp đổ hoàn toàn: Boss xé toạc Sinh Lực!
+            const dmg = 35;
+            this.playerState.stats.health = Math.max(0, this.playerState.stats.health - dmg);
+            this.playerState.stats.stamina = Math.max(0, this.playerState.stats.stamina - 30);
+            this.cameraSystem.shake(520, 0.032);
+            this.cameraSystem.flash(300, 255, 0, 0);
+            if (this.uiScene) {
+              this.uiScene.triggerRedDangerVignetteFlash();
+              this.uiScene.showPopupMessage('🚨 CẢNH BÁO: Tinh thần sụp đổ! Đòn đánh của Boss đang xé toạc Sinh Lực!');
+            }
+            this.audioManager.playHurt();
+            this.audioManager.playListenerAlert();
+            this.audioManager.setHeartbeatActive(true, 380);
+          } else {
+            // Bình Tâm > 0: Sát thương thường + trừ Bình Tâm
+            this.playerState.stats.health = Math.max(0, this.playerState.stats.health - 18);
+            this.playerState.stats.stamina = Math.max(0, this.playerState.stats.stamina - 20);
+            this.playerState.stats.composure = Math.max(0, this.playerState.stats.composure - 20);
+            this.cameraSystem.shake(360, 0.022);
+            this.cameraSystem.flash(200, 220, 0, 0); // Nháy đỏ toàn màn hình
+            this.audioManager.playHurt();
+            this.audioManager.playBronzeBellToll();
+            if (this.uiScene) {
+              this.uiScene.showPopupMessage('⚠️ CÚ TÔNG DỮ DỘI TỪ KẺ NUỐT TIẾNG CHUÔNG! (-18 HP, -20 Bình Tâm)');
+            }
+          }
+
+          // Nháy đỏ trên thân nhân vật người chơi
+          this.player.setTint(0xff3333);
+          this.time.delayedCall(220, () => {
+            if (this.player) this.player.clearTint();
+          });
+
+          // Đẩy lùi mạnh mẽ theo vật lý Arcade
           const angle = Math.atan2(this.player.y - this.mireWardenBoss.y, this.player.x - this.mireWardenBoss.x);
-          this.player.x += Math.cos(angle) * 35;
-          this.player.y += Math.sin(angle) * 35;
+          const pBody = this.player.body as Phaser.Physics.Arcade.Body;
+          if (pBody) {
+            pBody.setVelocity(Math.cos(angle) * 360, Math.sin(angle) * 360);
+          }
+          this.player.x += Math.cos(angle) * 40;
+          this.player.y += Math.sin(angle) * 40;
+
+          if (typeof (this.player as any).playHurt === 'function') {
+            (this.player as any).playHurt();
+          }
+
+          // V15-42: Kiểm tra tử trận tức thì trong phòng Boss khi Sinh Lực chạm 0/100
+          if (this.playerState.stats.health <= 0) {
+            this.triggerPlayerDeath('Gục ngã trước cú lao húc cuồng nộ của Kẻ Nuốt Tiếng Chuông...');
+            return;
+          }
         }
       }
     }
+
+    // V15-47: Va chạm trực tiếp với thân Boss khi không trong trạng thái lao húc (STALK / INVESTIGATING / ENSHROUDED)
+    if (this.player && this.mireWardenBoss.currentState !== 'CHARGING' && !this.mireWardenBoss.isStaggered && this.mireWardenBoss.currentState !== 'DEFEATED') {
+      const distContact = Math.hypot(this.mireWardenBoss.x - this.player.x, this.mireWardenBoss.y - this.player.y);
+      if (distContact <= 54 && (this.bossContactCooldownTimer || 0) <= 0) {
+        this.bossContactCooldownTimer = 1000;
+        const isCompZero = this.playerState.stats.composure <= 0;
+        if (isCompZero) {
+          const dmg = 30;
+          this.playerState.stats.health = Math.max(0, this.playerState.stats.health - dmg);
+          this.cameraSystem.shake(500, 0.03);
+          this.cameraSystem.flash(280, 255, 0, 0);
+          if (this.uiScene) {
+            this.uiScene.triggerRedDangerVignetteFlash();
+            this.uiScene.showPopupMessage('🚨 CẢNH BÁO: Tinh thần sụp đổ! Đòn đánh của Boss đang xé toạc Sinh Lực!');
+          }
+          this.audioManager.playHurt();
+          this.audioManager.playListenerAlert();
+          this.audioManager.setHeartbeatActive(true, 380);
+        } else {
+          this.playerState.stats.health = Math.max(0, this.playerState.stats.health - 8);
+          this.playerState.stats.composure = Math.max(0, this.playerState.stats.composure - 15);
+          this.cameraSystem.shake(220, 0.012);
+          this.audioManager.playHurt();
+          this.audioManager.playBronzeBellToll();
+          if (this.uiScene) {
+            this.uiScene.showPopupMessage('⚠️ Móng vuốt bóng tối của Boss sượt qua! (-8 HP, -15 Bình Tâm)');
+          }
+        }
+
+        const angle = Math.atan2(this.player.y - this.mireWardenBoss.y, this.player.x - this.mireWardenBoss.x);
+        const pBody = this.player.body as Phaser.Physics.Arcade.Body;
+        if (pBody) {
+          pBody.setVelocity(Math.cos(angle) * 320, Math.sin(angle) * 320);
+        }
+        this.player.x += Math.cos(angle) * 32;
+        this.player.y += Math.sin(angle) * 32;
+
+        this.player.setTint(0xff3333);
+        this.time.delayedCall(220, () => {
+          if (this.player) this.player.clearTint();
+        });
+
+        if (typeof (this.player as any).playHurt === 'function') {
+          (this.player as any).playHurt();
+        }
+
+        if (this.playerState.stats.health <= 0) {
+          this.triggerPlayerDeath('Gục ngã khi tinh thần sụp đổ trước móng vuốt của Kẻ Nuốt Tiếng Chuông...');
+          return;
+        }
+      }
+    }
+  }
+
+  /**
+   * V15-46: Xử lý phá giải Trụ Phong Ấn Mạch Rễ (phá tự do cả 3 trụ bằng phím [E], chém vũ khí hoặc Boss húc)
+   */
+  public handleShatterRunePillar(pillar: RunePillarTarget): void {
+    if (pillar.isShattered || !this.mireWardenBoss) return;
+
+    pillar.hp = 0;
+    pillar.isLit = false;
+    pillar.isShattered = true;
+    if (pillar.graphics) {
+      pillar.graphics.clear();
+      // Vẽ hiệu ứng mảnh vỡ nứt màu đá xám tro
+      pillar.graphics.fillStyle(0x1a252c, 0.85);
+      pillar.graphics.fillCircle(pillar.x, pillar.y, 24);
+      pillar.graphics.lineStyle(1.5, 0x5a6268, 0.7);
+      pillar.graphics.strokeCircle(pillar.x, pillar.y, 24);
+    }
+
+    this.createHitSpark(pillar.x, pillar.y);
+    this.cameraSystem.shake(700, 0.022);
+    this.audioManager.playBronzeBellToll();
+
+    // Làm choáng Boss ngay lập tức 3.5s
+    this.mireWardenBoss.stagger();
+
+    // Đếm số trụ đã bị phá hủy
+    const shatteredCount = this.runePillarTargets.filter(p => p.isShattered).length;
+    if (this.uiScene) {
+      this.uiScene.updateBossSealBar(shatteredCount, 3);
+    }
+
+    if (shatteredCount < 3) {
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage(`💥 ĐÃ PHÁ HỦY ${pillar.name} (${shatteredCount}/3)! Kẻ Nuốt Tiếng Chuông bị CHOÁNG 3.5s!`);
+      }
+    } else {
+      // V15-46: Cả 3 trụ đã bị phá hủy hoàn toàn -> Làm khiên Boss vỡ tan vĩnh viễn!
+      this.mireWardenBoss.breakShield();
+      this.cameraSystem.shake(1200, 0.025);
+      this.cameraSystem.flash(800, 0, 210, 211);
+      this.audioManager.playBronzeBellToll();
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('⚡ Phong ấn đã vỡ! Hãy tấn công kết liễu Boss hoặc khảo sát Chuông Cổ!');
+      }
+    }
+  }
+
+  /**
+   * V15-45: Xử lý đòn gầm sóng âm (Sonic Roar) từ Boss
+   */
+  private handleBossSonicRoar(): void {
+    if (!this.mireWardenBoss || !this.isBossFightActive) return;
+
+    this.audioManager.playBehemothRoar();
+    this.cameraSystem.shake(500, 0.015);
+
+    this.mireWardenBoss.triggerSonicRoar(() => {
+      if (!this.player || !this.mireWardenBoss) return;
+      const dist = Math.hypot(this.player.x - this.mireWardenBoss.x, this.player.y - this.mireWardenBoss.y);
+      if (dist <= 155) {
+        const isRolling = (this.player as any).isRolling || false;
+        if (!isRolling) {
+          const isCompZero = this.playerState.stats.composure <= 0;
+          if (isCompZero) {
+            // V15-47: Bình Tâm chạm 0 -> Đòn sóng âm xé toạc Sinh Lực!
+            const dmg = 32;
+            this.playerState.stats.health = Math.max(0, this.playerState.stats.health - dmg);
+            this.cameraSystem.shake(520, 0.032);
+            this.cameraSystem.flash(300, 255, 0, 0);
+            if (this.uiScene) {
+              this.uiScene.triggerRedDangerVignetteFlash();
+              this.uiScene.showPopupMessage('🚨 CẢNH BÁO: Tinh thần sụp đổ! Đòn đánh của Boss đang xé toạc Sinh Lực!');
+            }
+            this.audioManager.playHurt();
+            this.audioManager.playListenerAlert();
+            this.audioManager.setHeartbeatActive(true, 380);
+          } else {
+            // V15-47: Sóng Chuông Trầm (Sonic Dread Pulse) trừ trực tiếp 20 Bình Tâm và 12 Sinh Lực
+            this.playerState.stats.health = Math.max(0, this.playerState.stats.health - 12);
+            this.playerState.stats.composure = Math.max(0, this.playerState.stats.composure - 20);
+            this.cameraSystem.shake(450, 0.018);
+            this.cameraSystem.flash(200, 180, 0, 50);
+            this.audioManager.playBronzeBellToll();
+            this.audioManager.playHurt();
+            if (this.uiScene) {
+              this.uiScene.showPopupMessage('⚠️ SÓNG CHUÔNG TRẦM TỪ KẺ NUỐT TIẾNG CHUÔNG! (-20 Bình Tâm, -12 HP) [SPACE] Lăn né!');
+            }
+          }
+
+          this.player.setTint(0xff3333);
+          this.time.delayedCall(220, () => {
+            if (this.player) this.player.clearTint();
+          });
+
+          // Đẩy lùi nhẹ người chơi ra xa tâm sóng âm
+          const angle = Math.atan2(this.player.y - this.mireWardenBoss.y, this.player.x - this.mireWardenBoss.x);
+          const pBody = this.player.body as Phaser.Physics.Arcade.Body;
+          if (pBody) {
+            pBody.setVelocity(Math.cos(angle) * 260, Math.sin(angle) * 260);
+          }
+
+          if (typeof (this.player as any).playHurt === 'function') {
+            (this.player as any).playHurt();
+          }
+
+          if (this.playerState.stats.health <= 0) {
+            this.triggerPlayerDeath('Gục ngã trước làn sóng âm rền vang chấn động của Kẻ Nuốt Tiếng Chuông...');
+          }
+        }
+      }
+    });
   }
 
   /**
@@ -5901,12 +6463,12 @@ export class GameScene extends Phaser.Scene {
     pillar.graphics.clear();
     if (!pillar.isLit || pillar.isShattered) return;
 
-    pillar.graphics.fillStyle(0x00d2d3, 0.22);
-    pillar.graphics.fillCircle(pillar.x, pillar.y, 45);
-    pillar.graphics.lineStyle(2, 0x00d2d3, 0.85);
-    pillar.graphics.strokeCircle(pillar.x, pillar.y, 45);
-    pillar.graphics.lineStyle(1.5, 0xd4af37, 0.95);
-    pillar.graphics.strokeCircle(pillar.x, pillar.y, 25);
+    pillar.graphics.fillStyle(0x00d2d3, 0.24);
+    pillar.graphics.fillCircle(pillar.x, pillar.y, 54);
+    pillar.graphics.lineStyle(2.5, 0x00d2d3, 0.95);
+    pillar.graphics.strokeCircle(pillar.x, pillar.y, 54);
+    pillar.graphics.lineStyle(1.8, 0xd4af37, 1);
+    pillar.graphics.strokeCircle(pillar.x, pillar.y, 30);
   }
 
   /**
@@ -5935,7 +6497,14 @@ export class GameScene extends Phaser.Scene {
         this.uiScene.showPopupMessage('✨ ĐÃ PHONG ẤN NẤC 1 [ᚱ ANH NĂNG CỔ]! Trụ Cổ Ngữ Đông Bắc đã bừng sáng!');
       }
     } else if (newProgress === 2) {
+      const sPillar = this.runePillarTargets.find(p => p.id === 'pillar_s');
+      if (sPillar) {
+        sPillar.isLit = true;
+        this.renderRunePillarGlow(sPillar);
+      }
       this.startMireWardenPhase2();
+    } else if (newProgress >= 3) {
+      this.finishMireWardenDefeat();
     }
   }
 
@@ -6080,6 +6649,10 @@ export class GameScene extends Phaser.Scene {
     }
     this.isBossFightActive = false;
     this.audioManager.setBossAwakeningState(false);
+    this.audioManager.setHeartbeatActive(false);
+    if (this.survivalSystem) {
+      this.survivalSystem.setBossFightActive(false);
+    }
 
     // Dọn dẹp rào chắn và các đối tượng tạm thời
     if (this.bossArenaBarrier) {

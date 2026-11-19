@@ -68,10 +68,19 @@ export class CraftingModal {
     this.buildUI();
     this.container.setVisible(false);
 
-    // Lắng nghe phím bấm C, I, TAB và ESC
+    // Lắng nghe phím bấm C, I, J, TAB và ESC (V15-44)
     if (scene.input && scene.input.keyboard) {
       scene.input.keyboard.on('keydown-C', () => this.toggle());
       scene.input.keyboard.on('keydown-I', () => this.toggle());
+      scene.input.keyboard.on('keydown-J', () => {
+        if (this.isOpen) {
+          this.close();
+          const ui = this.scene as any;
+          if (ui && typeof ui.toggleJournal === 'function') {
+            ui.toggleJournal();
+          }
+        }
+      });
       scene.input.keyboard.on('keydown-TAB', (e: KeyboardEvent) => {
         e.preventDefault();
         this.toggle();
@@ -176,27 +185,27 @@ export class CraftingModal {
       color: '#a0aec0'
     });
 
-    // Nút đóng thống nhất [✕ ESC] viền đồng sang trọng (V15-26)
-    const closeBtnContainer = this.scene.add.container(panelX + panelW - 54, panelY + 22);
+    // Nút đóng thống nhất [✕ I / ESC] viền đồng sang trọng (V15-44)
+    const closeBtnContainer = this.scene.add.container(panelX + panelW - 58, panelY + 22);
     const closeBtnBg = this.scene.add.graphics();
     const drawCloseBtn = (isHover: boolean) => {
       closeBtnBg.clear();
       closeBtnBg.fillStyle(isHover ? 0x2e1810 : 0x140e0a, 0.95);
-      closeBtnBg.fillRoundedRect(-32, -12, 64, 24, 4);
+      closeBtnBg.fillRoundedRect(-44, -12, 88, 24, 4);
       closeBtnBg.lineStyle(1.5, isHover ? 0xf1c40f : 0x7a5e35, 1);
-      closeBtnBg.strokeRoundedRect(-32, -12, 64, 24, 4);
+      closeBtnBg.strokeRoundedRect(-44, -12, 88, 24, 4);
     };
     drawCloseBtn(false);
 
-    const closeBtnText = HDTextHelper.createText(this.scene, 0, 0, '✕ ESC', {
-      fontSize: '11.5px',
+    const closeBtnText = HDTextHelper.createText(this.scene, 0, 0, '✕ [I / ESC] Đóng', {
+      fontSize: '11px',
       fontStyle: 'bold',
       color: '#e2d4b7'
     }).setOrigin(0.5, 0.5);
 
     closeBtnContainer.add([closeBtnBg, closeBtnText]);
-    closeBtnContainer.setSize(64, 24);
-    closeBtnContainer.setInteractive({ useHandCursor: true });
+    closeBtnContainer.setSize(88, 24);
+    closeBtnContainer.setInteractive(new Phaser.Geom.Rectangle(-44, -12, 88, 24), Phaser.Geom.Rectangle.Contains);
     closeBtnContainer.on('pointerover', () => {
       drawCloseBtn(true);
       closeBtnText.setColor('#f39c12');
@@ -510,6 +519,10 @@ export class CraftingModal {
     this.container.setVisible(false);
     if (this.onClose) {
       this.onClose();
+    }
+    const gameScene = this.scene.scene.get('GameScene') as any;
+    if (gameScene && gameScene.player && typeof gameScene.player.forceUnlockActionState === 'function') {
+      gameScene.player.forceUnlockActionState();
     }
   }
 

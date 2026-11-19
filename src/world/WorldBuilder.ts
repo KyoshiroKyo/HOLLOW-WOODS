@@ -2730,6 +2730,25 @@ export class WorldBuilder {
     height: number,
     name?: string
   ): Phaser.Physics.Arcade.Sprite {
+    // V15-40: Chống trùng lặp Collider (Deduplication) - Tái sử dụng collider tĩnh nếu đã tồn tại vị trí và kích cỡ tương đương
+    const children = this.colliderGroup.getChildren();
+    for (let i = 0; i < children.length; i++) {
+      const existing = children[i] as Phaser.Physics.Arcade.Sprite;
+      const body = existing.body as Phaser.Physics.Arcade.StaticBody;
+      if (
+        body &&
+        Math.abs(body.x - minX) <= 6 &&
+        Math.abs(body.y - minY) <= 6 &&
+        Math.abs(body.width - width) <= 12 &&
+        Math.abs(body.height - height) <= 12
+      ) {
+        if (name && !existing.name) {
+          existing.setName(name);
+        }
+        return existing;
+      }
+    }
+
     const sprite = this.colliderGroup.create(minX, minY, undefined) as Phaser.Physics.Arcade.Sprite;
     sprite.setOrigin(0, 0);
     sprite.setVisible(false);
@@ -2869,9 +2888,9 @@ export class WorldBuilder {
     this.registerCullable(tree, x, y, 110);
     this.treeCanopyGroup.add(tree);
 
-    // V1.5 (BƯỚC V15-03 & V15-11): Hitbox gốc cây gọn gàng 20x14 px ôm sát gốc chạm đất
+    // V1.5 (BƯỚC V15-03 & V15-11): Hitbox gốc cây gọn gàng 20x16 px ôm sát gốc chạm đất
     if (withCollider) {
-      this.createStaticBoxColliderCentered(x, y, 20, 14, 'Gốc Cây Cổ Thụ');
+      this.createStaticBoxColliderCentered(x, y + 2, 20, 16, 'Gốc Cây Cổ Thụ');
     }
   }
 
@@ -4313,8 +4332,8 @@ export class WorldBuilder {
     this.registerCullable(glowGraphics, x, y, 60);
     this.registerCullable(beamGraphics, x, y, 60);
 
-    // 4. Khối va chạm chân cột (18×14 px) - C4-13-19: Nhỏ gọn đúng bằng bệ đá, giải phóng lối đi xung quanh
-    this.createStaticBoxColliderCentered(x, y - 4, 18, 14, 'Cột Cổ Ngữ');
+    // 4. Khối va chạm chân cột (16×12 px) - V15-40: Thu gọn hitbox sát đáy tiếp xúc chân đế, giải phóng lối đi lách góc
+    this.createStaticBoxColliderCentered(x, y - 2, 16, 12, 'Cột Cổ Ngữ');
 
     // 5. Đăng ký vào sổ lưu trữ visual của WorldBuilder
     const entry: RunestoneVisualEntry = {
@@ -4483,8 +4502,8 @@ export class WorldBuilder {
     this.registerCullable(this.centralAltarGlow, x, y, 70);
     this.registerCullable(this.centralAltarBeam, x, y, 70);
 
-    // C4-13-19: Khối va chạm chân bệ thờ nhỏ gọn (28×14 px), nhân vật đi lại xung quanh hoàn toàn thông thoáng
-    this.createStaticBoxColliderCentered(x, y - 2, 28, 14, 'Bệ Thờ Đá');
+    // V15-40: Khối va chạm chân bệ thờ nhỏ gọn (26×12 px), nhân vật đi lại xung quanh hoàn toàn thông thoáng
+    this.createStaticBoxColliderCentered(x, y - 2, 26, 12, 'Bệ Thờ Đá');
 
     if (PlayerState.getInstance().hasFlag('mire_pillars_solved')) {
       this.triggerRunePuzzleSolvedCelebration();
@@ -4516,7 +4535,8 @@ export class WorldBuilder {
 
     g.setDepth(y + 10);
 
-    this.createStaticBoxColliderCentered(x, y + 2, 16, 12, 'Cột Đá Cổ');
+    // V15-40: Khối va chạm chân bia đá nhỏ gọn (14×12 px) sát mặt đất
+    this.createStaticBoxColliderCentered(x, y + 4, 14, 12, 'Bia Đá Cổ Thư');
   }
 
   /**
@@ -4539,6 +4559,9 @@ export class WorldBuilder {
     g.fillCircle(x, y - 15, 2);
 
     g.setDepth(y + 4);
+
+    // V15-40: Khối va chạm chân đế đèn đá nghi thức (12×10 px)
+    this.createStaticBoxColliderCentered(x, y + 2, 12, 10, 'Đèn Đá Nghi Thức');
   }
 
   /**
@@ -4692,6 +4715,12 @@ export class WorldBuilder {
   }
 
   private setupZoneColliders(zone: ZoneData): void {
+    // V15-40: ancient_rune_puzzle là phân khu quảng trường mở cổ ngữ nằm trọn vẹn trong silent_mire,
+    // tuyệt đối không sinh tường ranh giới hay tường chu vi để bảo toàn lối đi sang Miếu Chuông và hướng Nam.
+    if (zone.id === 'ancient_rune_puzzle') {
+      return;
+    }
+
     for (const spec of zone.colliders) {
       if (spec.type === 'boundary' || (spec.type as string) === 'hazard') {
         const wall = this.createStaticBoxCollider(spec.x, spec.y, spec.width, spec.height, spec.id);
@@ -5387,6 +5416,22 @@ export class WorldBuilder {
   }
 
   /**
+   * V15-43: Rương Gỗ Đai Đồng với Hitbox siêu gọn chỉ ở đáy rương (chiều cao 8px)
+   * Giúp nhân vật di chuyển quanh rương mượt mà, triệt tiêu hoàn toàn hốc chữ L bẫy góc
+   */
+  private createChestPropWithBaseHitbox(x: number, y: number): void {
+    const cx = x + 14;
+    const cy = y + 10;
+    const chest = this.safeAddImage(cx, cy + 6, SPRITE_PROP_CHEST_BRONZE_V15);
+    chest.setOrigin(0.5, 0.88);
+    chest.setDepth(cy + 2);
+    this.registerCullable(chest, cx, cy, 36);
+
+    // Hitbox chân đế rương chỉ 20×8px sát đáy
+    this.createStaticBoxColliderCentered(cx, cy + 8, 20, 8, 'Rương Gỗ Rừng Sâu');
+  }
+
+  /**
    * V15-12: Tạo bếp lửa trại thợ săn (Campfire Tier 2)
    */
   private createHunterCampfire(x: number, y: number): void {
@@ -5929,9 +5974,9 @@ export class WorldBuilder {
       }
     }
 
-    // V1.5 (BƯỚC V15-03): Gộp rặng cây viền Bắc/Nam thành các thanh collider liền mạch, xóa bỏ 19 ô vuông rời rạc
-    this.createStaticBoxCollider(bounds.x + 40, 90, 2010 - (bounds.x + 40), 30, 'Rặng Cây Viền Bắc Tây');
-    this.createStaticBoxCollider(2130, 90, bounds.x + bounds.width - 40 - 2130, 30, 'Rặng Cây Viền Bắc Đông');
+    // V1.5 (BƯỚC V15-03 & V15-43): Mở rộng hành lang thông lên Rừng Sâu đạt 180px (1980..2160)
+    this.createStaticBoxCollider(bounds.x + 40, 90, 1980 - (bounds.x + 40), 30, 'Rặng Cây Viền Bắc Tây');
+    this.createStaticBoxCollider(2160, 90, bounds.x + bounds.width - 40 - 2160, 30, 'Rặng Cây Viền Bắc Đông');
     this.createStaticBoxCollider(1660, 500, 2690 - 1660, 30, 'Rặng Cây Viền Nam');
     this.createStaticBoxCollider(2810, 500, bounds.x + bounds.width - 40 - 2810, 30, 'Rặng Cây Viền Nam Đông');
 
@@ -6343,7 +6388,9 @@ export class WorldBuilder {
     const { bounds } = zone;
 
     // 1. Biển Báo & Cột Mốc Định Hướng (Signs & Landmark Markers)
-    this.createStoneSign(2010, -70, 'RỪNG SÂU'); // Mép Tây hành lang cửa rừng
+    // V15-43: Dời biển báo Rừng Sâu và Rương gỗ lùi sang trái 36px (từ 2010 về 1974, y=-70) vào khoảng đất trống
+    this.createStoneSign(1974, -70, 'RỪNG SÂU'); // Mép Tây hành lang cửa rừng
+    this.createChestPropWithBaseHitbox(1984, -80); // Rương gỗ lùi sang trái 36px với hitbox gọn đáy
     this.createStoneSign(2340, -490, 'LÃNH ĐỊA KẺ LẮNG NGHE');
     this.createStoneMarker(2840, -220); // Cột đá cổ Bắc ranh giới Đầm Lầy
     this.createStoneMarker(2840, -320); // Cột đá cổ Nam ranh giới Đầm Lầy
@@ -6424,15 +6471,14 @@ export class WorldBuilder {
       }
     }
 
-    // V1.5 (BƯỚC V15-03): Gộp rặng cây viền Deep Forest thành các thanh collider liền mạch, xóa bỏ hơn 50 collider thừa
+    // V1.5 (BƯỚC V15-03 & V15-43): Giữ các thanh collider viền ngoài khép kín biên thế giới,
+    // và tháo dỡ triệt để các thanh collider cũ tại Y = -45 cắt ngang mặt đường ranh giới phía Nam.
+    // Dàn cây viền tự nhiên (wy: -35..-15) đã có sẵn hitbox chân riêng, bảo đảm thông thoáng 100% giữa hai nửa bản đồ.
     this.createStaticBoxCollider(bounds.x + 40, -610, 2190 - (bounds.x + 40), 36, 'Rặng Cây Viền Bắc Tây Deep Forest');
     this.createStaticBoxCollider(2290, -610, bounds.x + bounds.width - 40 - 2290, 36, 'Rặng Cây Viền Bắc Đông Deep Forest');
     this.createStaticBoxCollider(1620, -600, 35, 560, 'Rặng Cây Viền Tây Deep Forest');
     this.createStaticBoxCollider(2845, -600, 35, 270, 'Rặng Cây Viền Đông Bắc Deep Forest');
     this.createStaticBoxCollider(2845, -190, 35, 150, 'Rặng Cây Viền Đông Nam Deep Forest');
-    this.createStaticBoxCollider(bounds.x + 40, -45, 1790 - (bounds.x + 40), 35, 'Rặng Cây Viền Nam Tây Deep Forest');
-    this.createStaticBoxCollider(1890, -45, 100, 35, 'Rặng Cây Viền Nam Giữa Deep Forest');
-    this.createStaticBoxCollider(2170, -45, bounds.x + bounds.width - 40 - 2170, 35, 'Rặng Cây Viền Nam Đông Deep Forest');
 
     // 8. C4-14-B03: Khóa kín 4 góc chu vi Rừng Sâu (Perimeter Corner Fortifications)
     // Góc Tây Bắc (NW):
@@ -6777,7 +6823,7 @@ export class WorldBuilder {
     // (renderAncientRunePuzzleDecorations) đảm bảo tính mô-đun và chống trùng lặp thực thể.
 
     // 4. Vùng Nước Lầy Sâu & Vực Nước Đen (Murky Deep Water Pools with Colliders)
-    this.createMireWater(3200, 250, 180, 90);   // Hố bùn trung tâm
+    // V15-40: Đã gỡ bỏ createMireWater(3200, 250, 180, 90) vì đè trực tiếp lên mặt Cầu Ván Gỗ (Boardwalk Pier) phía Tây quảng trường cổ ngữ.
     this.createMireWater(3020, 380, 220, 110);  // Vũng lầy Tây Nam
     this.createMireWater(3180, 140, 200, 85);   // Vũng sụt Bắc
     this.createMireWater(3600, 430, 240, 120);  // Hồ lầy Đông Nam
@@ -6786,8 +6832,7 @@ export class WorldBuilder {
     this.createBoardwalkPier(3150, 320);
     this.createSunkenMonolithRuins(3220, 200, 44, 40);
     this.createSunkenMonolithRuins(3720, 390, 48, 42);
-    // V1.4 Blueprint: Miếu Thờ Chìm & Cổ Vật Chuông Đồng Chìm (Landmark tại 3520, 280)
-    this.createSunkenMireShrine(3520, 280);
+    // V15-40: Đã gỡ bỏ createSunkenMireShrine(3520, 280) vì trùng lặp đè lên Bệ Thờ Trung Tâm (createStoneAltar).
     // V1.4 Blueprint: Cầu Thân Cây Đổ (Metroidvania-lite Shortcut Bridge phía Đầm Lầy tại 2880, 420)
     this.createFallenTitanTrunkShortcut(2880, 420, 50);
     this.createDeadTitanWillow(3560, 160);
@@ -7822,11 +7867,12 @@ export class WorldBuilder {
   public detectCurrentZone(pos: Point2D): ZoneId {
     // C4-13-19 & C4-132-03: Cơ chế vùng đệm trễ vị trí (Hysteresis Margin 80px) chống dao động phân khu lặp lại
     // Đặc biệt bảo vệ ranh giới giữa Đầm Lầy Tĩnh Lặng, Câu Đố Cổ Ngữ và Miếu Chuông Phế Tích
+    // V15-41: Margin ranh giới chính xác (12px) cho ancient_rune_puzzle, giải phóng lối đi Tây (X < 3340) ra Đầm Lầy Tĩnh Lặng
     if (this.activeZoneId === 'ancient_rune_puzzle') {
       const activeZone = this.zones.get('ancient_rune_puzzle');
       if (activeZone) {
         const b = activeZone.bounds;
-        const margin = 80;
+        const margin = 12;
         if (
           pos.x >= b.x - margin &&
           pos.x <= b.x + b.width + margin &&
@@ -8142,8 +8188,9 @@ export class WorldBuilder {
 
   /**
    * V1.4: Miếu Thờ Chìm & Bệ Cổ Vật Chuông Đồng Chìm tại Đầm Lầy Sương Mù (x: 3520, y: 280)
+   * (V15-40: Đã tách khỏi Silent Mire để tránh trùng lặp với Bệ Thờ Trung Tâm Trận Địa Cổ Ngữ)
    */
-  private createSunkenMireShrine(x: number, y: number): void {
+  public createSunkenMireShrine(x: number, y: number): void {
     const w = 64;
     const h = 48;
     const cx = x + w / 2;

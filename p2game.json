@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "hollow-woods",
   "name": "HOLLOW WOODS",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "sdk": {
     "version": "1.1",
     "cloudSave": true
@@ -45,7 +45,7 @@
     "vi"
   ],
   "controls": {
-    "keyboard": "WASD / Mũi tên: Di chuyển | Giữ Shift: Chạy nhanh | [E]: Tương tác, nấp bụi | [F]: Đèn | Chuột trái / Space: Đánh | [1] Thuốc | [2] Dầu | [Q] Ném mồi | [I] Chế tạo | [J] Nhiệm vụ | [ESC] Tạm dừng"
+    "keyboard": "WASD / Mũi tên: Di chuyển | Giữ Shift: Chạy nhanh | [E]: Tương tác, đọc giấy, nấp bụi | [F]: Đèn | Chuột trái / Space: Đánh | [1] Thuốc | [2] Dầu | [Q] Ném mồi | [I]/[C] Chế tạo | [J] Sổ tay | [ESC] Tạm dừng | [F8] Gỡ kẹt | [F9] Debug"
   },
   "assets": {
     "icon": "store/icon.png",

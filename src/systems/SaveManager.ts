@@ -1,6 +1,10 @@
 import { PlayerState } from '../state/PlayerState';
 import { HerbPlotStage, ZoneId } from '../types';
 import { saveGameNow, loadGameProgress, LOCAL_PREFIX } from '../services/CloudSaveService';
+import { SafeSpawnResolver } from './SafeSpawnResolver';
+import type { SafeSpawnResult } from './SafeSpawnResolver';
+export { SafeSpawnResolver };
+export type { SafeSpawnResult };
 
 export interface EquippedSlotsData {
   body: string | null;

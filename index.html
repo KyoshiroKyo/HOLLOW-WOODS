@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HOLLOW WOODS V1.4 – The Fog That Remembers</title>
+    <title>HOLLOW WOODS V1.5 – The Fog That Remembers</title>
     <!-- P2Game Platform SDK -->
     <script src="https://games.p2game.io/sdk/p2game-sdk.v1.js"></script>
     <style>
@@ -34,12 +34,14 @@
       canvas {
         display: block;
         image-rendering: auto;
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
       }
     </style>
   </head>
   <body>
     <div id="game-container">
-      <canvas id="game-canvas"></canvas>
+      <canvas id="game-canvas" tabindex="0"></canvas>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>

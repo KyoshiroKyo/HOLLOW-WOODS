@@ -23,6 +23,7 @@ export interface PauseModalCallbacks {
   onResume: () => void;
   onSaveManual: () => boolean;
   onReloadCheckpoint: () => void;
+  onEmergencyUnstuck?: () => void;
 }
 
 export class PauseModal {
@@ -80,9 +81,9 @@ export class PauseModal {
 
   private buildUI(): void {
     const modalW = 540;
-    const modalH = 550;
+    const modalH = 580;
     const modalX = (1280 - modalW) / 2; // 370
-    const modalY = (720 - modalH) / 2;  // 85
+    const modalY = (720 - modalH) / 2;  // 70
 
     // 1. Lớp phủ đen mờ toàn màn hình HD 1280×720 (ngăn chặn click xuyên thấu)
     const overlay = this.scene.add.graphics();
@@ -133,7 +134,7 @@ export class PauseModal {
       this.callbacks.onResume();
     }, 380, 26);
 
-    btnY += 31;
+    btnY += 30;
     // Nút 2: Lưu thủ công
     const saveBtn = this.createButton(640, btnY, '💾 LƯU GAME THỦ CÔNG', '#f39c12', () => {
       const success = this.callbacks.onSaveManual();
@@ -146,7 +147,7 @@ export class PauseModal {
       }
     }, 380, 26);
 
-    btnY += 31;
+    btnY += 30;
     // Nút 3: Tải lại Checkpoint
     const reloadBtn = this.createButton(640, btnY, '↺ NẠP LẠI ĐIỂM LƯU GẦN NHẤT', '#3498db', () => {
       if (SaveManager.hasSave()) {
@@ -158,14 +159,23 @@ export class PauseModal {
       }
     }, 380, 26);
 
-    btnY += 31;
-    // Nút 4: Hướng dẫn phím bấm trực quan (Keycaps)
+    btnY += 30;
+    // Nút 4: Gỡ Kẹt Về Điểm An Toàn [F8] (V15-34)
+    const unstuckBtn = this.createButton(640, btnY, '🛡️ GỠ KẸT VỀ ĐIỂM AN TOÀN [F8]', '#e67e22', () => {
+      this.close();
+      if (this.callbacks.onEmergencyUnstuck) {
+        this.callbacks.onEmergencyUnstuck();
+      }
+    }, 380, 26);
+
+    btnY += 30;
+    // Nút 5: Hướng dẫn phím bấm trực quan (Keycaps)
     const guideBtn = this.createButton(640, btnY, '📜 BẢNG PHÍM ĐIỀU KHIỂN & HƯỚNG DẪN [H]', '#b8860b', () => {
       this.toggleGuideOverlay();
     }, 380, 26);
 
-    btnY += 31;
-    // Nút 5: Quay về Menu
+    btnY += 30;
+    // Nút 6: Quay về Menu
     const quitBtn = this.createButton(640, btnY, '🏠 QUAY VỀ MENU CHÍNH', '#95a5a6', () => {
       this.callbacks.onSaveManual();
       this.close();
@@ -176,8 +186,8 @@ export class PauseModal {
 
     // 4. Bảng điều chỉnh cấu hình hệ thống & âm lượng đa kênh
     const settingsBox = this.scene.add.graphics();
-    const sBoxY = modalY + 224;
-    const sBoxH = modalH - 238;
+    const sBoxY = modalY + 252;
+    const sBoxH = modalH - 266;
     settingsBox.fillStyle(0x0a0e14, 0.92);
     settingsBox.fillRoundedRect(modalX + 14, sBoxY, modalW - 28, sBoxH, 6);
     settingsBox.lineStyle(1, 0x3d4852, 0.7);
@@ -321,7 +331,7 @@ export class PauseModal {
     );
 
     // Ghi chú phím tắt
-    const tipText = HDTextHelper.createText(this.scene, 640, sBoxY + 276, '💡 Phím [F8]: Đổi Đồ Họa • [H]: Xem Hướng Dẫn Phím • [ESC]: Tiếp Tục', {
+    const tipText = HDTextHelper.createText(this.scene, 640, sBoxY + 276, '💡 Phím [F8]: Gỡ Kẹt Khẩn Cấp • [H]: Xem Hướng Dẫn Phím • [ESC]: Tiếp Tục', {
       fontSize: '10.5px',
       fontStyle: 'italic',
       color: '#7f8c8d'
@@ -329,7 +339,7 @@ export class PauseModal {
 
     this.container.add([
       overlay, box, title, closeBtn, this.saveStatusText,
-      resumeBtn, saveBtn, reloadBtn, guideBtn, quitBtn,
+      resumeBtn, saveBtn, reloadBtn, unstuckBtn, guideBtn, quitBtn,
       settingsBox, settingsTitle,
       graphicsLabel, graphicsBtnContainer, this.graphicsDescText,
       this.shakeToggleControl.container,

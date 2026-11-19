@@ -20,7 +20,9 @@ console.log('================================================================\n'
 
 // 1. Kiểm tra sao lưu
 console.log('--- 1. KIỂM TRA BẢN SAO LƯU TRƯỚC THIẾT KẾ (BACKUP PRE-REDESIGN) ---');
-const backupDir = path.join(rootDir, 'backup_maps_pre_redesign');
+const backupDir = fs.existsSync(path.join(rootDir, 'Backups', 'maps', 'backup_maps_pre_redesign'))
+  ? path.join(rootDir, 'Backups', 'maps', 'backup_maps_pre_redesign')
+  : path.join(rootDir, 'backup_maps_pre_redesign');
 assert(fs.existsSync(backupDir), 'Thư mục backup_maps_pre_redesign tồn tại');
 const backupZones = path.join(backupDir, 'zones.json');
 assert(fs.existsSync(backupZones), 'File zones.json đã được sao lưu an toàn trong backup_maps_pre_redesign/');

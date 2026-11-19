@@ -19,6 +19,14 @@
 export type TerrainType = 'grass' | 'dirt' | 'stone' | 'wood' | 'mud';
 export type AmbienceZone = 'village' | 'forest' | 'mire' | 'crossing';
 
+// V15-39: Định nghĩa 5 bản nhạc nền nghệ thuật (The Knight's Quiet Fire & Environmental Tracks)
+export type BGMTrack =
+  | 'bgm_knights_quiet_fire'
+  | 'bgm_embervale'
+  | 'bgm_beyond_the_hills'
+  | 'bgm_evergrove'
+  | 'bgm_forgotten_orchard';
+
 interface AmbienceChannel {
   zone: AmbienceZone;
   gainNode: GainNode;
@@ -28,6 +36,15 @@ interface AmbienceChannel {
 export class AudioManager {
   private static instance: AudioManager | null = null;
   private ctx: AudioContext | null = null;
+
+  // V15-39: Quản lý kênh Nhạc Nền BGM với Crossfade tự động
+  private currentBGMTrack: BGMTrack | null = null;
+  private currentBGMSource: AudioBufferSourceNode | null = null;
+  private currentBGMGain: GainNode | null = null;
+  private bgmVolume: number = 0.55;
+  private isBGMSuppressed: boolean = false;
+  private pendingBGMTrack: { track: BGMTrack; fadeDuration: number; volumeScale: number } | null = null;
+  private fadingBGMSources: { source: AudioBufferSourceNode; gain: GainNode; timerId: number }[] = [];
 
   // Master Gain, Master Limiter & The Veil BiquadFilter (Low-pass filter bóp nghẹt âm thanh trong sương)
   private masterGain: GainNode | null = null;
@@ -228,7 +245,14 @@ export class AudioManager {
       rune_shift: 'assets/audio/sfx/v14/rune_shift.wav',
       bell_toll_low: 'assets/audio/sfx/v14/bell_toll_low.wav',
       chest_creak: 'assets/audio/sfx/v14/chest_creak.wav',
-      journal_page: 'assets/audio/sfx/v14/journal_page.wav'
+      journal_page: 'assets/audio/sfx/v14/journal_page.wav',
+
+      // V15-39: Nhạc nền BGM môi trường & Kỵ Sĩ Trầm Mặc
+      bgm_knights_quiet_fire: 'assets/audio/bgm/knights_quiet_fire.mp3',
+      bgm_embervale: 'assets/audio/bgm/embervale.mp3',
+      bgm_beyond_the_hills: 'assets/audio/bgm/beyond_the_hills.mp3',
+      bgm_evergrove: 'assets/audio/bgm/evergrove.mp3',
+      bgm_forgotten_orchard: 'assets/audio/bgm/forgotten_orchard.mp3'
     };
 
     for (const [key, url] of Object.entries(audioManifest)) {
@@ -246,7 +270,7 @@ export class AudioManager {
         })
         .then(decodedBuffer => {
           if (decodedBuffer) {
-            if (key.startsWith('ambience_')) {
+            if (key.startsWith('ambience_') || key.startsWith('bgm_')) {
               this.smoothAudioBufferLoopEdges(decodedBuffer);
             }
             this.audioBuffers.set(key, decodedBuffer);
@@ -303,13 +327,14 @@ export class AudioManager {
       'ghost_scream', 'ghost_dissipate', 'jumpscare_stinger', 'sanity_gasp',
       'scout_whistle', 'dagger_slash', 'skull_wolf_growl', 'skull_wolf_snarl',
       'behemoth_roar', 'behemoth_thud', 'void_stalker_drone', 'void_stalker_screech',
-      'boss_drone', 'rune_shift', 'bell_toll_low', 'chest_creak', 'journal_page'
+      'boss_drone', 'rune_shift', 'bell_toll_low', 'chest_creak', 'journal_page',
+      'bgm_knights_quiet_fire', 'bgm_embervale', 'bgm_beyond_the_hills', 'bgm_evergrove', 'bgm_forgotten_orchard'
     ];
     for (const key of audioKeys) {
       if (scene.cache.audio.has(key)) {
         const audioData = scene.cache.audio.get(key);
         if (audioData && typeof audioData.getChannelData === 'function') {
-          if (key.startsWith('ambience_')) {
+          if (key.startsWith('ambience_') || key.startsWith('bgm_')) {
             this.smoothAudioBufferLoopEdges(audioData);
           }
           this.audioBuffers.set(key, audioData);
@@ -438,6 +463,11 @@ export class AudioManager {
           this.pendingAmbienceZone = null;
           this.setAmbienceZone(zone, 1.2);
         }
+        if (this.pendingBGMTrack) {
+          const bgm = this.pendingBGMTrack;
+          this.pendingBGMTrack = null;
+          this.playBGM(bgm.track, bgm.fadeDuration, bgm.volumeScale);
+        }
       }
     };
 
@@ -462,6 +492,11 @@ export class AudioManager {
           this.pendingAmbienceZone = null;
           this.setAmbienceZone(zone, 1.2);
         }
+        if (this.pendingBGMTrack) {
+          const bgm = this.pendingBGMTrack;
+          this.pendingBGMTrack = null;
+          this.playBGM(bgm.track, bgm.fadeDuration, bgm.volumeScale);
+        }
       }).catch(() => {});
     } else if (this.ctx && this.ctx.state === 'running') {
       this.isUnlocked = true;
@@ -469,6 +504,11 @@ export class AudioManager {
         const zone = this.pendingAmbienceZone;
         this.pendingAmbienceZone = null;
         this.setAmbienceZone(zone, 1.2);
+      }
+      if (this.pendingBGMTrack) {
+        const bgm = this.pendingBGMTrack;
+        this.pendingBGMTrack = null;
+        this.playBGM(bgm.track, bgm.fadeDuration, bgm.volumeScale);
       }
     }
   }
@@ -526,6 +566,22 @@ export class AudioManager {
       this.activeAmbience.gainNode.gain.cancelScheduledValues(now);
       this.activeAmbience.gainNode.gain.setValueAtTime(this.activeAmbience.gainNode.gain.value, now);
       this.activeAmbience.gainNode.gain.linearRampToValueAtTime(this.ambienceVolume, now + 0.05);
+    }
+  }
+
+  // V15-39: Điều chỉnh âm lượng Nhạc Nền BGM
+  public getBGMVolume(): number {
+    return this.bgmVolume;
+  }
+
+  public setBGMVolume(val: number): void {
+    this.resumeAudio();
+    this.bgmVolume = Math.max(0, Math.min(1, Math.round(val * 100) / 100));
+    if (this.currentBGMGain && this.ctx && !this.isBGMSuppressed) {
+      const now = this.ctx.currentTime;
+      this.currentBGMGain.gain.cancelScheduledValues(now);
+      this.currentBGMGain.gain.setValueAtTime(this.currentBGMGain.gain.value, now);
+      this.currentBGMGain.gain.linearRampToValueAtTime(this.bgmVolume, now + 0.08);
     }
   }
 
@@ -1076,6 +1132,138 @@ export class AudioManager {
     } else {
       this.currentAmbienceZone = null;
     }
+  }
+
+  // =========================================================================
+  // 5B. HỆ THỐNG NHẠC NỀN NGHỆ THUẬT (BGM SYSTEM WITH CROSSFADE - V15-39)
+  // =========================================================================
+
+  /**
+   * V15-39: Phát nhạc nền nghệ thuật với hiệu ứng Crossfade mượt mà
+   * @param track Tên bản nhạc BGM cần phát
+   * @param fadeDuration Thời gian chuyển đổi hòa quyện âm thanh (giây, mặc định 1.5s)
+   * @param volumeScale Tỷ lệ âm lượng tương đối cho bản nhạc (mặc định 1.0)
+   */
+  public playBGM(track: BGMTrack, fadeDuration: number = 1.5, volumeScale: number = 1.0): void {
+    if (!this.ctx || this.ctx.state === 'suspended') {
+      this.pendingBGMTrack = { track, fadeDuration, volumeScale };
+      this.resumeAudio();
+      return;
+    }
+
+    // Nếu đang phát đúng track này và source vẫn hoạt động
+    if (this.currentBGMTrack === track && this.currentBGMSource) {
+      if (this.currentBGMGain && !this.isBGMSuppressed) {
+        const now = this.ctx.currentTime;
+        const targetVol = this.bgmVolume * volumeScale;
+        this.currentBGMGain.gain.cancelScheduledValues(now);
+        this.currentBGMGain.gain.setValueAtTime(this.currentBGMGain.gain.value, now);
+        this.currentBGMGain.gain.linearRampToValueAtTime(targetVol, now + 0.3);
+      }
+      return;
+    }
+
+    const buffer = this.audioBuffers.get(track);
+    if (!buffer) {
+      // Nếu bộ đệm chưa sẵn sàng, ghi nhớ track để phát ngay khi nạp xong
+      this.currentBGMTrack = track;
+      this.pendingBGMTrack = { track, fadeDuration, volumeScale };
+      return;
+    }
+
+    const now = this.ctx.currentTime;
+
+    // 1. Fade-out kênh BGM cũ (nếu có)
+    if (this.currentBGMSource && this.currentBGMGain) {
+      const oldSource = this.currentBGMSource;
+      const oldGain = this.currentBGMGain;
+      oldGain.gain.cancelScheduledValues(now);
+      oldGain.gain.setValueAtTime(oldGain.gain.value, now);
+      oldGain.gain.linearRampToValueAtTime(0.0001, now + fadeDuration);
+
+      const timerId = window.setTimeout(() => {
+        try { oldSource.stop(); } catch {}
+        try { oldSource.disconnect(); oldGain.disconnect(); } catch {}
+        this.fadingBGMSources = this.fadingBGMSources.filter(f => f.source !== oldSource);
+      }, (fadeDuration + 0.1) * 1000);
+
+      this.fadingBGMSources.push({ source: oldSource, gain: oldGain, timerId });
+      this.currentBGMSource = null;
+      this.currentBGMGain = null;
+    }
+
+    this.currentBGMTrack = track;
+    this.pendingBGMTrack = null;
+
+    // 2. Tạo kênh BGM mới với đường dẫn qua BiquadFilter sương mù
+    const newGain = this.ctx.createGain();
+    const targetVol = this.isBGMSuppressed ? 0.0001 : (this.bgmVolume * volumeScale);
+    newGain.gain.setValueAtTime(0.0001, now);
+    newGain.gain.linearRampToValueAtTime(targetVol, now + fadeDuration);
+
+    const bgmDest = this.ambienceFilter || this.veilFilter || this.masterGain!;
+    newGain.connect(bgmDest);
+
+    const newSource = this.ctx.createBufferSource();
+    newSource.buffer = buffer;
+    newSource.loop = true;
+    newSource.connect(newGain);
+    newSource.start(now);
+
+    this.currentBGMSource = newSource;
+    this.currentBGMGain = newGain;
+  }
+
+  /**
+   * V15-39: Dừng phát nhạc nền với hiệu ứng Fade-out êm dịu
+   */
+  public stopBGM(fadeDuration: number = 0.8): void {
+    this.pendingBGMTrack = null;
+    this.currentBGMTrack = null;
+
+    if (!this.ctx || !this.currentBGMSource || !this.currentBGMGain) {
+      return;
+    }
+
+    const now = this.ctx.currentTime;
+    const oldSource = this.currentBGMSource;
+    const oldGain = this.currentBGMGain;
+    this.currentBGMSource = null;
+    this.currentBGMGain = null;
+
+    oldGain.gain.cancelScheduledValues(now);
+    oldGain.gain.setValueAtTime(oldGain.gain.value, now);
+    oldGain.gain.linearRampToValueAtTime(0.0001, now + fadeDuration);
+
+    const timerId = window.setTimeout(() => {
+      try { oldSource.stop(); } catch {}
+      try { oldSource.disconnect(); oldGain.disconnect(); } catch {}
+      this.fadingBGMSources = this.fadingBGMSources.filter(f => f.source !== oldSource);
+    }, (fadeDuration + 0.1) * 1000);
+
+    this.fadingBGMSources.push({ source: oldSource, gain: oldGain, timerId });
+  }
+
+  /**
+   * V15-39: Tạm thời bóp nghẹt / tắt nhạc nền khi vào trạng thái nguy hiểm cao (Boss fight, Quái truy đuổi sát nút)
+   */
+  public setBGMSuppressed(suppressed: boolean, fadeDuration: number = 0.8): void {
+    if (this.isBGMSuppressed === suppressed) return;
+    this.isBGMSuppressed = suppressed;
+
+    if (!this.ctx || !this.currentBGMGain) return;
+    const now = this.ctx.currentTime;
+    const targetGain = suppressed ? 0.0001 : this.bgmVolume;
+    this.currentBGMGain.gain.cancelScheduledValues(now);
+    this.currentBGMGain.gain.setValueAtTime(this.currentBGMGain.gain.value, now);
+    this.currentBGMGain.gain.linearRampToValueAtTime(targetGain, now + fadeDuration);
+  }
+
+  /**
+   * Lấy mã track BGM hiện đang hoạt động
+   */
+  public getCurrentBGM(): BGMTrack | null {
+    return this.currentBGMTrack;
   }
 
   // =========================================================================
@@ -2251,6 +2439,13 @@ export class AudioManager {
    */
   public stopAll(): void {
     this.stopAmbience(true);
+    this.stopBGM(0.1);
+    for (const fb of this.fadingBGMSources) {
+      clearTimeout(fb.timerId);
+      try { fb.source.stop(); } catch {}
+      try { fb.source.disconnect(); fb.gain.disconnect(); } catch {}
+    }
+    this.fadingBGMSources = [];
     this.setHeartbeatActive(false);
     if (this.bossDroneSource) {
       try { this.bossDroneSource.stop(); } catch {}
@@ -3242,6 +3437,13 @@ export class AudioManager {
 
   public destroy(): void {
     this.stopAmbience(true);
+    this.stopBGM(0.1);
+    for (const fb of this.fadingBGMSources) {
+      clearTimeout(fb.timerId);
+      try { fb.source.stop(); } catch {}
+      try { fb.source.disconnect(); fb.gain.disconnect(); } catch {}
+    }
+    this.fadingBGMSources = [];
     if (this.heartbeatTimer) {
       clearInterval(this.heartbeatTimer);
       this.heartbeatTimer = null;

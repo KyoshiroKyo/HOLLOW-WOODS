@@ -191,6 +191,14 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   private boundWindowBlur?: () => void;
   private boundWindowFocus?: () => void;
 
+  // V15-44: Chống debounce kích hoạt đúp cho Mini-map & World Map
+  private lastMiniMapToggleTime: number = 0;
+  private lastWorldMapToggleTime: number = 0;
+
+  public get paperNoteModal(): TornPageModal | null {
+    return this.tornPageModal;
+  }
+
   constructor() {
     super({ key: 'UIScene' });
   }
@@ -360,8 +368,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     this.redrawQuestBox();
 
-    // 3B. V1.4 - P8: Widget Đồng Hồ Tròn 3 Múi Thời Gian (DAY-NIGHT CIRCULAR CLOCK)
-    const timeBoxX = 704;
+    // 3B. V1.4 - P8 & V15-48: Widget Đồng Hồ Tròn 3 Múi Thời Gian (DAY-NIGHT CIRCULAR CLOCK)
+    // Dời timeBoxX sang 668px để mép phải giữ 912px (cách Quest box 8px, chứa trọn nhãn Ngày 1 — Mùa Sương Lạnh)
+    const timeBoxX = 668;
     const timeBoxY = 16;
 
     this.timeWidgetBg = this.add.graphics();
@@ -378,7 +387,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       fontStyle: 'bold',
       color: '#f6ad55',
       stroke: '#000000',
-      strokeThickness: 2
+      strokeThickness: 2,
+      wordWrap: { width: 162 }
     }).setDepth(8002);
 
     this.timePhaseText = HDTextHelper.createText(this, timeBoxX + 74, timeBoxY + 31, '☀️ BAN NGÀY', {
@@ -607,23 +617,46 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         this.selectQuickSlot(4);
         this.events.emit('ui_toggle_lantern');
       });
+      // V15-44: Xử lý phím tắt toggle giao diện không bị chặn bởi isAnyModalOpen
       this.input.keyboard.on('keydown-C', () => {
-        if (this.isAnyModalOpen) return;
+        if (this.craftingModal && this.craftingModal.isOpen) {
+          this.craftingModal.close();
+          return;
+        }
+        if (this.journalModal && this.journalModal.isOpen) this.journalModal.close();
+        if (this.tornPageModal && this.tornPageModal.isOpen) this.tornPageModal.close();
         this.selectQuickSlot(5);
         this.toggleCrafting();
       });
       this.input.keyboard.on('keydown-I', () => {
-        if (this.isAnyModalOpen) return;
+        if (this.craftingModal && this.craftingModal.isOpen) {
+          this.craftingModal.close();
+          return;
+        }
+        if (this.journalModal && this.journalModal.isOpen) this.journalModal.close();
+        if (this.tornPageModal && this.tornPageModal.isOpen) this.tornPageModal.close();
         this.selectQuickSlot(5);
         this.toggleCrafting();
       });
       this.input.keyboard.on('keydown-J', () => {
-        if (this.isAnyModalOpen) return;
+        if (this.journalModal && this.journalModal.isOpen) {
+          this.journalModal.close();
+          return;
+        }
+        if (this.craftingModal && this.craftingModal.isOpen) this.craftingModal.close();
+        if (this.tornPageModal && this.tornPageModal.isOpen) this.tornPageModal.close();
         this.selectQuickSlot(6);
         this.toggleJournal();
       });
       this.input.keyboard.on('keydown-ESC', () => {
-        if (this.isAnyModalOpen) return;
+        if (this.craftingModal && this.craftingModal.isOpen) { this.craftingModal.close(); return; }
+        if (this.journalModal && this.journalModal.isOpen) { this.journalModal.close(); return; }
+        if (this.tornPageModal && this.tornPageModal.isOpen) { this.tornPageModal.close(); return; }
+        if (this.equipmentModal && this.equipmentModal.isOpen) { this.equipmentModal.close(); return; }
+        if (this.storageChestModal && this.storageChestModal.isOpen) { this.storageChestModal.close(); return; }
+        if (this.campfireModal && this.campfireModal.isOpen) { this.campfireModal.close(); return; }
+        if (this.cauldronModal && this.cauldronModal.isOpen) { this.cauldronModal.close(); return; }
+        if (this.parchmentWorldMapModal && this.parchmentWorldMapModal.isOpen) { this.parchmentWorldMapModal.close(); return; }
         this.selectQuickSlot(7);
         this.togglePause();
       });
@@ -859,7 +892,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       { key: '[3] Trà/Đuốc', id: 'emergency' },
       { key: '[Q] Mồi Ném', id: 'lure' },
       { key: '[F] Đèn Lồng', id: 'lantern' },
-      { key: '🔨 [C] Chế Tạo', id: 'craft' },
+      { key: '🔨 [I] Chế Tạo', id: 'craft' },
       { key: '📖 [J] Sổ Tay', id: 'journal' },
       { key: '⚙️ [ESC] Tạm Dừng', id: 'pause' }
     ];
@@ -1097,14 +1130,27 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       : false;
     const isProtectedZone = isDaytime || isSafeVillage || isNearWarmth;
 
-    // Khi ở BAN NGÀY, trong VÙNG AN TOÀN, có ĐÈN LỒNG thắp sáng hoặc Bình Tâm đã vượt lên trên 40/100:
-    // Tự động tắt hoàn toàn biểu ngữ cảnh báo và xóa sạch viền vignette co bóp
-    if (isProtectedZone || isLanternOn || composure >= 40) {
-      if (this.isPanicVignetteActive) {
-        this.panicVignetteGraphics.clear();
-        this.isPanicVignetteActive = false;
+    // V15-47: Kiểm tra điều kiện trong trận Boss Miếu Chuông Phế Tích
+    const isBossFight = gameScene?.isBossFightActive && gameScene?.currentZoneId === 'broken_bell_shrine';
+
+    if (isBossFight) {
+      if (composure >= 50) {
+        if (this.isPanicVignetteActive) {
+          this.panicVignetteGraphics.clear();
+          this.isPanicVignetteActive = false;
+        }
+        return;
       }
-      return;
+    } else {
+      // Khi ở BAN NGÀY, trong VÙNG AN TOÀN, có ĐÈN LỒNG thắp sáng hoặc Bình Tâm đã vượt lên trên 40/100:
+      // Tự động tắt hoàn toàn biểu ngữ cảnh báo và xóa sạch viền vignette co bóp
+      if (isProtectedZone || isLanternOn || composure >= 40) {
+        if (this.isPanicVignetteActive) {
+          this.panicVignetteGraphics.clear();
+          this.isPanicVignetteActive = false;
+        }
+        return;
+      }
     }
 
     this.isPanicVignetteActive = true;
@@ -1120,7 +1166,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     const w = 1280;
     const h = 720;
     // Đỏ thẫm khi Hoảng Loạn Cực Độ (<10), Tím sẫm khi Sợ Hãi (<25), Đen tro khi Bất An (<40)
-    const color = isDepleted ? 0x3d0b16 : (isCritical ? 0x240d24 : 0x120b18);
+    const color = isDepleted ? (composure <= 0 ? 0x6e0813 : 0x3d0b16) : (isCritical ? 0x240d24 : 0x120b18);
 
     // C4-14-B04: Viền mờ hữu cơ 5 tầng từ ngoài mép vào trong, tạo cảm giác bóng tối co bóp theo nhịp tim
     const layers = [
@@ -1180,6 +1226,45 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     const comp = this.playerState?.stats?.composure ?? 100;
     if (comp >= 50) return 1.0;
     return Phaser.Math.Linear(0.45, 1.0, Math.max(0, comp / 50));
+  }
+
+  /**
+   * V15-47: Kích hoạt viền nháy đỏ cảnh báo nguy hiểm toàn màn hình (Red Danger Vignette Flash)
+   * khi Bình Tâm = 0 và bị Boss đánh trúng
+   */
+  public triggerRedDangerVignetteFlash(): void {
+    if (!this.panicVignetteGraphics) return;
+    const g = this.panicVignetteGraphics;
+    const w = 1280;
+    const h = 720;
+
+    let elapsed = 0;
+    const flashTimer = this.time.addEvent({
+      delay: 35,
+      repeat: 8,
+      callback: () => {
+        elapsed += 35;
+        const alpha = Math.max(0, 0.88 - (elapsed / 280) * 0.88);
+        g.clear();
+        g.fillStyle(0xcc1122, alpha);
+        // Viền đỏ rực bao quanh 4 mép màn hình
+        g.fillRect(0, 0, w, 48);
+        g.fillRect(0, h - 48, w, 48);
+        g.fillRect(0, 48, 48, h - 96);
+        g.fillRect(w - 48, 48, 48, h - 96);
+
+        // 4 góc tam giác nhọn đè sâu vào màn hình
+        g.fillTriangle(0, 0, 190, 0, 0, 190);
+        g.fillTriangle(w, 0, w - 190, 0, w, 190);
+        g.fillTriangle(0, h, 190, h, 0, h - 190);
+        g.fillTriangle(w, h, w - 190, h, w, h - 190);
+
+        if (elapsed >= 280) {
+          g.clear();
+          flashTimer.remove();
+        }
+      }
+    });
   }
 
   /**
@@ -1480,9 +1565,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.lastRenderedPhase = phase;
     this.lastRenderedTimeSec = timeSec;
 
-    const timeBoxW = 208;
+    // V15-48: Nới rộng timeBoxW từ 208 lên 244px, timeBoxX dời sang 668px để mép phải giữ 912px (cách Quest box 8px)
+    const timeBoxW = 244;
     const timeBoxH = 78;
-    const timeBoxX = 704;
+    const timeBoxX = 668;
     const timeBoxY = 16;
 
     const cfg = TIME_CONFIG.phases[phase] || TIME_CONFIG.phases.DAY;
@@ -1799,7 +1885,20 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.redrawStats();
       this.updateQuestTracker();
       this.updateQuickSlotCounts();
+      this.focusGameCanvas();
     }
+  }
+
+  /**
+   * V15-48: Trả lại tiêu điểm cho canvas game khi người chơi đóng modal hoặc hội thoại
+   */
+  public focusGameCanvas(): void {
+    try {
+      window.focus();
+      if (this.game && this.game.canvas) {
+        this.game.canvas.focus();
+      }
+    } catch {}
   }
 
   public get isDialogueActive(): boolean {
@@ -1908,6 +2007,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       if (gameScene && gameScene.player && typeof gameScene.player.resetAllInputState === 'function') {
         gameScene.player.resetAllInputState();
       }
+      this.focusGameCanvas();
     }
   }
 
@@ -1922,6 +2022,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     }
     if (this.journalModal && this.journalModal.isOpen) {
       this.journalModal.close();
+    }
+    if (this.tornPageModal && this.tornPageModal.isOpen) {
+      this.tornPageModal.close();
     }
     const modal = this.getCraftingModal();
     modal.toggle();
@@ -1938,6 +2041,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     }
     if (this.journalModal && this.journalModal.isOpen) {
       this.journalModal.close();
+    }
+    if (this.tornPageModal && this.tornPageModal.isOpen) {
+      this.tornPageModal.close();
     }
     const modal = this.getCraftingModal();
     if (!modal.isOpen) {
@@ -1956,6 +2062,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     }
     if (this.craftingModal && this.craftingModal.isOpen) {
       this.craftingModal.close();
+    }
+    if (this.tornPageModal && this.tornPageModal.isOpen) {
+      this.tornPageModal.close();
     }
     if (this.journalModal) {
       this.journalModal.toggle();
@@ -2175,13 +2284,24 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     const modal = this.getTornPageModal();
     modal.onStow = (stowedEntry) => {
-      this.showPopupMessage(`📜 Đã cất vào Sổ Tay [J]: "${stowedEntry.title}"`);
+      if (stowedEntry.loreId) {
+        this.showPopupMessage(`📜 Đã cất vào Sổ Tay [J]: "${stowedEntry.title}"`);
+      }
       if (onStowCallback) onStowCallback();
     };
     modal.open(entry);
   }
 
+  public openPaperNote(entry: TornPageEntry, onStowCallback?: () => void): void {
+    this.openTornPage(entry, onStowCallback);
+  }
+
   public toggleMiniMap(): boolean {
+    const now = performance.now();
+    if (now - this.lastMiniMapToggleTime < 250) {
+      return this.miniMapWidget ? this.miniMapWidget.isVisible : false;
+    }
+    this.lastMiniMapToggleTime = now;
     const mm = this.getMiniMapWidget();
     const vis = mm.toggle();
     this.showPopupMessage(vis ? '🧭 Đã bật Mini-map góc màn hình [Phím N]' : '🧭 Đã tắt Mini-map góc màn hình [Phím N]');
@@ -2189,6 +2309,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   public toggleWorldMap(): boolean {
+    const now = performance.now();
+    if (now - this.lastWorldMapToggleTime < 250) {
+      return this.parchmentWorldMapModal ? this.parchmentWorldMapModal.isOpen : false;
+    }
+    this.lastWorldMapToggleTime = now;
     if (this.gameOverModal && this.gameOverModal.isOpen) return false;
     if (this.pauseModal && this.pauseModal.isOpen) this.pauseModal.close();
     if (this.craftingModal && this.craftingModal.isOpen) this.craftingModal.close();

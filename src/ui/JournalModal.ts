@@ -378,6 +378,24 @@ export class JournalModal {
         this.keyHandlers.push({ key, fn });
       };
       addKey('keydown-J', () => this.toggle());
+      addKey('keydown-I', () => {
+        if (this.isOpen) {
+          this.close();
+          const ui = this.scene as any;
+          if (ui && typeof ui.toggleCrafting === 'function') {
+            ui.toggleCrafting();
+          }
+        }
+      });
+      addKey('keydown-C', () => {
+        if (this.isOpen) {
+          this.close();
+          const ui = this.scene as any;
+          if (ui && typeof ui.toggleCrafting === 'function') {
+            ui.toggleCrafting();
+          }
+        }
+      });
       addKey('keydown-ESC', () => {
         if (this.isOpen) this.close();
       });
@@ -449,36 +467,38 @@ export class JournalModal {
     }
 
     // Tiêu đề chính
-    const title = HDTextHelper.createText(this.scene, modalX + 18, modalY + 20, '📖 SỔ TAY LỮ KHÁCH', {
-      fontSize: '15px',
+    // V15-48: Tiêu đề Sổ Tay Lữ Khách [J] gọn gàng, cách xa các thẻ Tab điều hướng
+    const title = HDTextHelper.createText(this.scene, modalX + 20, modalY + 20, '📖 SỔ TAY LỮ KHÁCH [J]', {
+      fontSize: '13.5px',
       fontStyle: 'bold',
       color: '#d4af37',
       stroke: '#000000',
       strokeThickness: 3
     });
 
-    // Nút đóng thống nhất [✕ ESC] viền đồng nẹp góc trên bên phải
-    const closeBtnX = modalX + modalW - 54;
+    // Nút đóng thống nhất [✕ J / ESC] viền đồng nẹp góc trên bên phải (V15-44)
+    const closeBtnX = modalX + modalW - 58;
     const closeBtnY = modalY + 22;
     const closeBtnContainer = this.scene.add.container(closeBtnX, closeBtnY);
     const closeBg = this.scene.add.graphics();
     const drawCloseBg = (hover: boolean) => {
       closeBg.clear();
       closeBg.fillStyle(hover ? 0x2e1810 : 0x140e0a, 0.95);
-      closeBg.fillRoundedRect(-32, -12, 64, 24, 4);
+      closeBg.fillRoundedRect(-44, -12, 88, 24, 4);
       closeBg.lineStyle(1.2, hover ? 0xf1c40f : 0x7a5e35, 0.9);
-      closeBg.strokeRoundedRect(-32, -12, 64, 24, 4);
+      closeBg.strokeRoundedRect(-44, -12, 88, 24, 4);
     };
     drawCloseBg(false);
 
-    const closeTxt = HDTextHelper.createText(this.scene, 0, 0, '✕ ESC', {
-      fontSize: '11.5px',
+    const closeTxt = HDTextHelper.createText(this.scene, 0, 0, '✕ [J / ESC] Đóng', {
+      fontSize: '11px',
       fontStyle: 'bold',
       color: '#e2d4b7'
     }).setOrigin(0.5, 0.5);
 
     closeBtnContainer.add([closeBg, closeTxt]);
-    closeBtnContainer.setInteractive(new Phaser.Geom.Rectangle(-32, -12, 64, 24), Phaser.Geom.Rectangle.Contains);
+    closeBtnContainer.setSize(88, 24);
+    closeBtnContainer.setInteractive(new Phaser.Geom.Rectangle(-44, -12, 88, 24), Phaser.Geom.Rectangle.Contains);
     closeBtnContainer.on('pointerover', () => {
       drawCloseBg(true);
       closeTxt.setColor('#f39c12');
@@ -492,8 +512,9 @@ export class JournalModal {
       this.close();
     });
 
-    // 3. Bốn Tab điều hướng chuẩn HD: [1. NHIỆM VỤ], [2. KÝ ỨC HIỆP SĨ ĐEN], [3. SỔ TAY SINH VẬT], [4. SƠ ĐỒ BELLHOLLOW]
-    this.tabQuestBtn = HDTextHelper.createText(this.scene, modalX + 195, modalY + 22, '[1. NHIỆM VỤ]', {
+    // 3. V15-48: Bốn Tab điều hướng chuẩn HD: [1. NHIỆM VỤ], [2. MẢNH KÝ ỨC], [3. SINH VẬT RỪNG], [4. BẢN ĐỒ THẾ GIỚI]
+    // Căn khoảng cách đều đặn, không đè lên tiêu đề góc trái hay nút đóng góc phải
+    this.tabQuestBtn = HDTextHelper.createText(this.scene, modalX + 220, modalY + 22, '[1. NHIỆM VỤ]', {
       fontSize: '12px',
       fontStyle: 'bold',
       color: '#f39c12'
@@ -504,7 +525,7 @@ export class JournalModal {
       this.refresh();
     });
 
-    this.tabLoreBtn = HDTextHelper.createText(this.scene, modalX + 315, modalY + 22, '[2. KÝ ỨC HIỆP SĨ ĐEN]', {
+    this.tabLoreBtn = HDTextHelper.createText(this.scene, modalX + 330, modalY + 22, '[2. MẢNH KÝ ỨC]', {
       fontSize: '12px',
       fontStyle: 'bold',
       color: '#7f8c8d'
@@ -515,7 +536,7 @@ export class JournalModal {
       this.refresh();
     });
 
-    this.tabBestiaryBtn = HDTextHelper.createText(this.scene, modalX + 490, modalY + 22, '[3. SỔ TAY SINH VẬT]', {
+    this.tabBestiaryBtn = HDTextHelper.createText(this.scene, modalX + 455, modalY + 22, '[3. SINH VẬT RỪNG]', {
       fontSize: '12px',
       fontStyle: 'bold',
       color: '#7f8c8d'
@@ -526,7 +547,7 @@ export class JournalModal {
       this.refresh();
     });
 
-    this.tabMapBtn = HDTextHelper.createText(this.scene, modalX + 650, modalY + 22, '[4. SƠ ĐỒ BELLHOLLOW]', {
+    this.tabMapBtn = HDTextHelper.createText(this.scene, modalX + 590, modalY + 22, '[4. BẢN ĐỒ THẾ GIỚI]', {
       fontSize: '12px',
       fontStyle: 'bold',
       color: '#7f8c8d'
@@ -600,6 +621,10 @@ export class JournalModal {
     this.container.setVisible(false);
     if (this.onClose) {
       this.onClose();
+    }
+    const gameScene = this.scene.scene.get('GameScene') as any;
+    if (gameScene && gameScene.player && typeof gameScene.player.forceUnlockActionState === 'function') {
+      gameScene.player.forceUnlockActionState();
     }
   }
 

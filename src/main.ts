@@ -29,17 +29,49 @@ window.addEventListener('DOMContentLoaded', async () => {
   })();
 
   const existingCanvas = document.getElementById('game-canvas') as HTMLCanvasElement | null;
+  if (existingCanvas) {
+    existingCanvas.tabIndex = 0;
+    existingCanvas.style.outline = 'none';
+  }
+
   const game = new Phaser.Game({
     ...GameConfig,
-    autoFocus: false,
+    autoFocus: true,
     type: canUseWebGL ? Phaser.WEBGL : Phaser.CANVAS,
     ...(existingCanvas ? { canvas: existingCanvas } : {})
   });
 
+  const focusGameCanvas = () => {
+    try {
+      window.focus();
+      const cv = game.canvas || existingCanvas;
+      if (cv && typeof cv.focus === 'function') {
+        cv.focus();
+      }
+    } catch {}
+  };
+
   // Gắn tham chiếu game vào window phục vụ kiểm thử QA & Automation
   if (typeof window !== 'undefined') {
     (window as any).__PHASER_GAME__ = game;
+    (window as any).__FOCUS_GAME__ = focusGameCanvas;
   }
+
+  // Tự động nhận tiêu điểm bàn phím khi người chơi click/chạm vào màn hình Web / iframe
+  window.addEventListener('pointerdown', () => focusGameCanvas(), { passive: true });
+  window.addEventListener('click', () => focusGameCanvas(), { passive: true });
+
+  // V15-48: Chặn trình duyệt / iframe cuộn trang ngoài ý muốn khi nhấn phím điều hướng & phím Space
+  window.addEventListener('keydown', (e: KeyboardEvent) => {
+    const tag = (e.target as HTMLElement)?.tagName?.toLowerCase();
+    if (tag === 'input' || tag === 'textarea') return;
+    if (
+      ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code) ||
+      ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)
+    ) {
+      e.preventDefault();
+    }
+  }, { passive: false });
 
   // 2. Đăng ký vòng đời p2.onPause và p2.onResume cho Phaser Game Loop
   try {
@@ -61,10 +93,13 @@ window.addEventListener('DOMContentLoaded', async () => {
     console.warn('[P2Game SDK] Lỗi khi đăng ký sự kiện vòng đời:', lifecycleErr);
   }
 
-  // Áp dụng pixelated rendering cho canvas khi canvas sẵn sàng
+  // Áp dụng pixelated rendering cho canvas khi canvas sẵn sàng và nhận tiêu điểm
   game.events.once(Phaser.Core.Events.READY, () => {
     if (game.canvas) {
+      game.canvas.tabIndex = 0;
+      game.canvas.style.outline = 'none';
       ScaleManager.applyPixelatedCanvas(game.canvas);
+      focusGameCanvas();
     }
   });
 

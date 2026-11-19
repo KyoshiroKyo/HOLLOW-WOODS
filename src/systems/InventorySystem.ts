@@ -110,8 +110,9 @@ export class InventorySystem {
       { id: 'node_herb_3', itemId: 'res_herbs', x: 2450, y: 260, count: 2 },
       { id: 'node_herb_cp_2', itemId: 'res_herbs', x: 2700, y: 340, count: 2 },
 
-      // 3B. C4-12-22: Deep Forest (Frontier Wilderness: x=1600..2880, y=-640..0)
-      { id: 'node_wood_df_1', itemId: 'res_dry_wood', x: 2030, y: -90, count: 2 },
+      // 3B. C4-12-22 & V15-43: Deep Forest (Frontier Wilderness: x=1600..2880, y=-640..0)
+      // Dời node gỗ khô lùi sang trái 36px (từ 2030 về 1994, y=-90) giải phóng lối thông
+      { id: 'node_wood_df_1', itemId: 'res_dry_wood', x: 1994, y: -90, count: 2 },
       { id: 'node_herb_df_1', itemId: 'res_herbs', x: 1780, y: -210, count: 2 },
       { id: 'node_resin_df_1', itemId: 'res_tree_resin', x: 1860, y: -250, count: 1 },
       { id: 'node_flint_df_1', itemId: 'res_flint', x: 2140, y: -350, count: 2 },

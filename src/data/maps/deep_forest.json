@@ -9782,87 +9782,6 @@
               "value": 210
             }
           ]
-        },
-        {
-          "id": 6,
-          "name": "df_bound_bottom_left_1",
-          "type": "boundary",
-          "x": 1600,
-          "y": -25,
-          "width": 210,
-          "height": 25,
-          "visible": true,
-          "properties": [
-            {
-              "name": "isSolid",
-              "type": "bool",
-              "value": true
-            },
-            {
-              "name": "footLevelRatio",
-              "type": "float",
-              "value": 1
-            },
-            {
-              "name": "originalHeight",
-              "type": "int",
-              "value": 25
-            }
-          ]
-        },
-        {
-          "id": 7,
-          "name": "df_bound_bottom_left_2",
-          "type": "boundary",
-          "x": 1870,
-          "y": -25,
-          "width": 140,
-          "height": 25,
-          "visible": true,
-          "properties": [
-            {
-              "name": "isSolid",
-              "type": "bool",
-              "value": true
-            },
-            {
-              "name": "footLevelRatio",
-              "type": "float",
-              "value": 1
-            },
-            {
-              "name": "originalHeight",
-              "type": "int",
-              "value": 25
-            }
-          ]
-        },
-        {
-          "id": 8,
-          "name": "df_bound_bottom_right",
-          "type": "boundary",
-          "x": 2150,
-          "y": -25,
-          "width": 730,
-          "height": 25,
-          "visible": true,
-          "properties": [
-            {
-              "name": "isSolid",
-              "type": "bool",
-              "value": true
-            },
-            {
-              "name": "footLevelRatio",
-              "type": "float",
-              "value": 1
-            },
-            {
-              "name": "originalHeight",
-              "type": "int",
-              "value": 25
-            }
-          ]
         }
       ],
       "opacity": 1,
@@ -9880,7 +9799,7 @@
           "id": 9,
           "name": "df_entry_sign",
           "type": "clue",
-          "x": 2010,
+          "x": 1974,
           "y": -70,
           "width": 32,
           "height": 32,
@@ -10257,6 +10176,32 @@
               "name": "hookArchetype",
               "type": "string",
               "value": "Archaeological Clue"
+            }
+          ]
+        },
+        {
+          "id": 26,
+          "name": "df_chest_entry",
+          "type": "chest",
+          "x": 1984,
+          "y": -80,
+          "width": 28,
+          "height": 20,
+          "properties": [
+            {
+              "name": "displayName",
+              "type": "string",
+              "value": "Rương Gỗ Rừng Sâu"
+            },
+            {
+              "name": "promptText",
+              "type": "string",
+              "value": "[E] Mở Rương Gỗ Rừng Sâu"
+            },
+            {
+              "name": "actionId",
+              "type": "string",
+              "value": "open_deep_forest_chest"
             }
           ]
         }

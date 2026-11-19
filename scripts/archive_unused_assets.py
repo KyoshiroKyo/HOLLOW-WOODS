@@ -3,7 +3,7 @@ import shutil
 import json
 
 ROOT_DIR = os.getcwd()
-ARCHIVE_DIR = os.path.join(ROOT_DIR, '_unused_assets_archive')
+ARCHIVE_DIR = os.path.join(ROOT_DIR, 'Backups', 'assets_archive', '_unused_assets_archive')
 PUBLIC_ASSETS = os.path.join(ROOT_DIR, 'public', 'assets')
 
 # Load scan results

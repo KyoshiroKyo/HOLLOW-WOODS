@@ -55,7 +55,7 @@ export const WAYFARER_ORIGIN_Y = 1.0; // V1.5-09: Chuẩn hóa điểm neo chân
 export const WAYFARER_BODY_WIDTH = 18;
 export const WAYFARER_BODY_HEIGHT = 12;
 export const WAYFARER_BODY_OFFSET_X = 23;
-export const WAYFARER_BODY_OFFSET_Y = 52; // 64 - 12 = 52 (nằm gọn tại bàn chân sát đáy frame)
+export const WAYFARER_BODY_OFFSET_Y = 46; // V1.5-03: Sát đáy bàn chân: 58 - 12 = 46
 
 // Điểm neo chân (Foot anchor) và va chạm gót chân (Tương thích ngược)
 export const SATYR_ORIGIN_X = 0.5;
@@ -269,6 +269,15 @@ export const ZONE_DROWNED_MIRE_DEPTHS = 'drowned_mire_depths';
 export const ZONE_WHISPERING_GROVE_SANCTUM = 'whispering_grove_sanctum';
 export const ZONE_SUNKEN_CRYPT_RUINS = 'sunken_crypt_ruins';
 export const ZONE_VEIL_ORIGIN_CAVERN = 'veil_origin_cavern';
+
+// V15-42: Bộ Sprite Boss Kẻ Nuốt Tiếng Chuông (SHADOW Series - The Shadowed Wetlands Boss v1.1)
+export const SPRITE_BOSS_WETLANDS_IDLE = 'boss_wetlands_idle';
+export const SPRITE_BOSS_WETLANDS_WALK = 'boss_wetlands_walk';
+export const SPRITE_BOSS_WETLANDS_ATTACK1 = 'boss_wetlands_attack1';
+export const SPRITE_BOSS_WETLANDS_ATTACK2 = 'boss_wetlands_attack2';
+export const SPRITE_BOSS_WETLANDS_HIT = 'boss_wetlands_hit';
+export const SPRITE_BOSS_WETLANDS_DEATH = 'boss_wetlands_death';
+
 
 
 

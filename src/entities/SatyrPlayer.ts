@@ -1090,10 +1090,21 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     const body = this.body as Phaser.Physics.Arcade.Body;
     if (moveX !== 0 || moveY !== 0) {
       if (moveX !== 0 && moveY !== 0) {
-        // V1.5: Đi chéo đồng thời 2 phím (W+D, S+A, v.v.):
-        // Chuẩn hóa bằng hệ số chia căn bậc 2 (Math.SQRT1_2 = 1 / Math.SQRT2 ≈ 0.70710678)
-        // để độ lớn vận tốc vector đi chéo bằng đúng tốc độ đi thẳng, triệt tiêu hiện tượng vọt lố vào vật cản
-        body.setVelocity(moveX * Math.SQRT1_2 * currentSpeed, moveY * Math.SQRT1_2 * currentSpeed);
+        // V15-03: Cơ chế Trượt Tiếp Tuyến (Tangent Corner Slide):
+        // Khi đi chéo mà 1 trục bị chặn bởi tường/vật cản vuông góc (blocked hoặc touching),
+        // tự động chuyển hướng và truyền 100% vận tốc sang trục còn lại thay vì khựng cứng tại chỗ
+        const isXBlocked = (moveX < 0 && (body.blocked.left || body.touching.left)) || (moveX > 0 && (body.blocked.right || body.touching.right));
+        const isYBlocked = (moveY < 0 && (body.blocked.up || body.touching.up)) || (moveY > 0 && (body.blocked.down || body.touching.down));
+
+        if (isXBlocked && !isYBlocked) {
+          body.setVelocity(0, moveY * currentSpeed);
+        } else if (isYBlocked && !isXBlocked) {
+          body.setVelocity(moveX * currentSpeed, 0);
+        } else {
+          // Chuẩn hóa bằng hệ số chia căn bậc 2 (Math.SQRT1_2 = 1 / Math.SQRT2 ≈ 0.70710678)
+          // để độ lớn vận tốc vector đi chéo bằng đúng tốc độ đi thẳng, triệt tiêu hiện tượng vọt lố vào vật cản
+          body.setVelocity(moveX * Math.SQRT1_2 * currentSpeed, moveY * Math.SQRT1_2 * currentSpeed);
+        }
       } else {
         // Đi thẳng 1 hướng duy nhất:
         body.setVelocity(moveX * currentSpeed, moveY * currentSpeed);
@@ -1326,9 +1337,9 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   }
 
   /**
-   * V1.5 (BƯỚC V15-03): THUẬT TOÁN TRƯỢT GÓC (CORNER ASSIST / EDGE SLIDING)
-   * Khi nhân vật đi thẳng hoặc đi chéo chạm nhẹ vào rìa góc của hộp va chạm tĩnh (sai số lệch tâm dưới 10px),
-   * tự động đẩy nhẹ nhân vật trượt vòng qua góc vật cản thay vì kẹt đứng im tại chỗ.
+   * V1.5 (BƯỚC V15-03 & V15-43): THUẬT TOÁN TRƯỢT GÓC (CORNER SLIDING / EDGE SLIP ASSIST)
+   * Khi nhân vật đi sượt qua góc của một collider (chỉ chạm nhẹ < 8px ở rìa hộp va chạm chân),
+   * tự động đẩy trượt nhẹ sang bên cạnh theo hướng di chuyển thay vì khựng cứng lại tại chỗ.
    */
   public applyCornerAssistWith(obstacle: Phaser.Physics.Arcade.Sprite): void {
     if (!obstacle || !obstacle.body || !this.body || this._isDead) return;
@@ -1336,8 +1347,8 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     const pBody = this.body as Phaser.Physics.Arcade.Body;
     const oBody = obstacle.body as Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody;
 
-    const CORNER_THRESHOLD = 10; // Ngưỡng lệch tâm tối đa 10px để kích hoạt trượt góc
-    const SLIDE_NUDGE = 2.0;     // Tốc độ lướt trượt qua góc (px mỗi khung hình)
+    const CORNER_THRESHOLD = 10; // Ngưỡng sai số góc lệch tâm CORNER_THRESHOLD = 10px
+    const SLIDE_NUDGE = 2.0;    // Lực trượt SLIDE_NUDGE = 2.0px/frame
 
     const pLeft = pBody.x;
     const pRight = pBody.right;
@@ -1352,10 +1363,10 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     let nudgeX = 0;
     let nudgeY = 0;
 
-    // 1. Trượt góc khi bị chặn hướng LÊN (Blocked UP): Chạm đáy vật cản
-    if (pBody.blocked.up || Math.abs(pTop - oBottom) <= 3) {
-      const overlapLeft = oRight - pLeft;   // Mép phải vật cản quẹt vào mép trái nhân vật
-      const overlapRight = pRight - oLeft;  // Mép trái vật cản quẹt vào mép phải nhân vật
+    // 1. Trượt góc khi bị chặn hướng LÊN (Blocked/Touching UP): Chạm đáy vật cản
+    if (pBody.blocked.up || pBody.touching.up || Math.abs(pTop - oBottom) <= 4) {
+      const overlapLeft = oRight - pLeft;   // Mép phải vật cản quẹt vào mép trái chân nhân vật
+      const overlapRight = pRight - oLeft;  // Mép trái vật cản quẹt vào mép phải chân nhân vật
 
       if (overlapLeft > 0 && overlapLeft <= CORNER_THRESHOLD) {
         // Chỉ quẹt nhẹ mép trái: Lướt sang PHẢI để vòng qua góc
@@ -1366,8 +1377,8 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       }
     }
 
-    // 2. Trượt góc khi bị chặn hướng XUỐNG (Blocked DOWN): Chạm đỉnh vật cản
-    if (pBody.blocked.down || Math.abs(pBottom - oTop) <= 3) {
+    // 2. Trượt góc khi bị chặn hướng XUỐNG (Blocked/Touching DOWN): Chạm đỉnh vật cản
+    if (pBody.blocked.down || pBody.touching.down || Math.abs(pBottom - oTop) <= 4) {
       const overlapLeft = oRight - pLeft;
       const overlapRight = pRight - oLeft;
 
@@ -1378,10 +1389,10 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       }
     }
 
-    // 3. Trượt góc khi bị chặn hướng TRÁI (Blocked LEFT): Chạm sườn phải vật cản
-    if (pBody.blocked.left || Math.abs(pLeft - oRight) <= 3) {
-      const overlapTop = oBottom - pTop;    // Mép đáy vật cản quẹt vào mép trên nhân vật
-      const overlapBottom = pBottom - oTop; // Mép đỉnh vật cản quẹt vào mép dưới nhân vật
+    // 3. Trượt góc khi bị chặn hướng TRÁI (Blocked/Touching LEFT): Chạm sườn phải vật cản
+    if (pBody.blocked.left || pBody.touching.left || Math.abs(pLeft - oRight) <= 4) {
+      const overlapTop = oBottom - pTop;    // Mép đáy vật cản quẹt vào mép trên chân nhân vật
+      const overlapBottom = pBottom - oTop; // Mép đỉnh vật cản quẹt vào mép dưới chân nhân vật
 
       if (overlapTop > 0 && overlapTop <= CORNER_THRESHOLD) {
         // Chỉ quẹt nhẹ mép trên: Lướt XUỐNG để vòng qua góc
@@ -1392,8 +1403,8 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       }
     }
 
-    // 4. Trượt góc khi bị chặn hướng PHẢI (Blocked RIGHT): Chạm sườn trái vật cản
-    if (pBody.blocked.right || Math.abs(pRight - oLeft) <= 3) {
+    // 4. Trượt góc khi bị chặn hướng PHẢI (Blocked/Touching RIGHT): Chạm sườn trái vật cản
+    if (pBody.blocked.right || pBody.touching.right || Math.abs(pRight - oLeft) <= 4) {
       const overlapTop = oBottom - pTop;
       const overlapBottom = pBottom - oTop;
 
@@ -1404,14 +1415,16 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       }
     }
 
-    // Áp dụng trượt mượt mà
+    // Áp dụng trượt mượt mà kèm gia tốc quán tính để lướt vòng qua góc
     if (nudgeX !== 0) {
       this.x += nudgeX;
       pBody.x += nudgeX;
+      pBody.velocity.x += nudgeX * 35;
     }
     if (nudgeY !== 0) {
       this.y += nudgeY;
       pBody.y += nudgeY;
+      pBody.velocity.y += nudgeY * 35;
     }
   }
 
@@ -2064,6 +2077,46 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   }
 
   /**
+   * V15-34: Lấy vector hướng phím di chuyển người chơi đang ấn để xác định hướng bước ra an toàn
+   */
+  public getMovementInputDirection(): { x: number; y: number } {
+    let dx = 0;
+    let dy = 0;
+    if (this.isPhysicalCodeDown('KeyA') || this.isPhysicalCodeDown('ArrowLeft') || Boolean(this.keyA && this.keyA.isDown) || Boolean(this.cursors && this.cursors.left && this.cursors.left.isDown)) {
+      dx -= 1;
+    }
+    if (this.isPhysicalCodeDown('KeyD') || this.isPhysicalCodeDown('ArrowRight') || Boolean(this.keyD && this.keyD.isDown) || Boolean(this.cursors && this.cursors.right && this.cursors.right.isDown)) {
+      dx += 1;
+    }
+    if (this.isPhysicalCodeDown('KeyW') || this.isPhysicalCodeDown('ArrowUp') || Boolean(this.keyW && this.keyW.isDown) || Boolean(this.cursors && this.cursors.up && this.cursors.up.isDown)) {
+      dy -= 1;
+    }
+    if (this.isPhysicalCodeDown('KeyS') || this.isPhysicalCodeDown('ArrowDown') || Boolean(this.keyS && this.keyS.isDown) || Boolean(this.cursors && this.cursors.down && this.cursors.down.isDown)) {
+      dy += 1;
+    }
+    return { x: dx, y: dy };
+  }
+
+  /**
+   * V15-34: Reset sạch toàn bộ cờ trạng thái, khóa hành động và chuyển động khi nạp Save / Gỡ kẹt.
+   * Đảm bảo sprite luôn hiển thị visible=true, alpha=1, body.enable=true và không dính trạng thái ẩn nấp.
+   */
+  public resetAllActionAndMotionStates(): void {
+    this.stats.isHiding = false;
+    this.hidingTimestamp = 0;
+    this.setVisible(true);
+    this.setAlpha(1);
+    if (this.body) {
+      const b = this.body as Phaser.Physics.Arcade.Body;
+      b.enable = true;
+      b.setVelocity(0, 0);
+    }
+    this.forceUnlockActionState();
+    this.resetAllInputState();
+    this.playIdleAnim();
+  }
+
+  /**
    * C4-13-01: Kích hoạt trạng thái ẩn nấp và lưu lại tọa độ đứng an toàn trước khi vào chỗ trốn
    */
   public enterHiding(safePos?: { x: number; y: number }): void {
@@ -2076,25 +2129,44 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
     }
     // C4-13-08: Phát tiếng lá xào xạc khi bước vào bụi rậm
-    AudioManager.getInstance().playBushRustle(true);
+    try {
+      AudioManager.getInstance().playBushRustle(true);
+    } catch {
+      // Ignored
+    }
   }
 
   /**
-   * C4-13-01: Thoát khỏi trạng thái ẩn nấp, trả nhân vật về vị trí an toàn ngoài rìa collider, bật hiển thị và mở khóa điều khiển
+   * C4-13-01 / V15-34: Thoát khỏi trạng thái ẩn nấp, đưa nhân vật về vị trí an toàn ngoài rìa collider, bật hiển thị và mở khóa điều khiển
    */
-  public exitHiding(): void {
+  public exitHiding(targetExitPos?: { x: number; y: number }): void {
     this.stats.isHiding = false;
+    this.hidingTimestamp = 0;
     this.setVisible(true);
     this.setAlpha(1);
-    if (this.lastSafePosition.x !== 0 || this.lastSafePosition.y !== 0) {
-      this.setPosition(this.lastSafePosition.x, this.lastSafePosition.y);
-      if (this.body) {
-        (this.body as Phaser.Physics.Arcade.Body).reset(this.lastSafePosition.x, this.lastSafePosition.y);
-      }
+    if (this.body) {
+      (this.body as Phaser.Physics.Arcade.Body).enable = true;
     }
-    this.playIdleAnim();
+    const exitX = targetExitPos ? targetExitPos.x : (this.lastSafePosition.x !== 0 ? this.lastSafePosition.x : this.x);
+    const exitY = targetExitPos ? targetExitPos.y : (this.lastSafePosition.y !== 0 ? this.lastSafePosition.y : this.y);
+    this.setPosition(exitX, exitY);
+    if (this.body) {
+      (this.body as Phaser.Physics.Arcade.Body).reset(exitX, exitY);
+      (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
+    }
+    this.lastSafePosition = { x: exitX, y: exitY };
+    this.forceUnlockActionState();
     this.resetAllInputState();
+    this.playIdleAnim();
     // C4-13-08: Phát tiếng lá xào xạc khi bước ra khỏi bụi rậm
-    AudioManager.getInstance().playBushRustle(false);
+    try {
+      AudioManager.getInstance().playBushRustle(false);
+    } catch {
+      // Ignored
+    }
   }
 }
+
+// V15-43: Alias xuất chuẩn WayfarerPlayer (The Mossbound Wayfarer)
+export const WayfarerPlayer = SatyrPlayer;
+export type WayfarerPlayer = SatyrPlayer;

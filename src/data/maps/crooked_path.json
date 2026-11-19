@@ -9649,60 +9649,6 @@
       "name": "Objects_Collision",
       "objects": [
         {
-          "id": 1,
-          "name": "cp_bound_top_left",
-          "type": "boundary",
-          "x": 1600,
-          "y": 0,
-          "width": 400,
-          "height": 30,
-          "visible": true,
-          "properties": [
-            {
-              "name": "isSolid",
-              "type": "bool",
-              "value": true
-            },
-            {
-              "name": "footLevelRatio",
-              "type": "float",
-              "value": 1
-            },
-            {
-              "name": "originalHeight",
-              "type": "int",
-              "value": 30
-            }
-          ]
-        },
-        {
-          "id": 2,
-          "name": "cp_bound_top_right",
-          "type": "boundary",
-          "x": 2160,
-          "y": 0,
-          "width": 720,
-          "height": 30,
-          "visible": true,
-          "properties": [
-            {
-              "name": "isSolid",
-              "type": "bool",
-              "value": true
-            },
-            {
-              "name": "footLevelRatio",
-              "type": "float",
-              "value": 1
-            },
-            {
-              "name": "originalHeight",
-              "type": "int",
-              "value": 30
-            }
-          ]
-        },
-        {
           "id": 3,
           "name": "cp_bound_bottom",
           "type": "boundary",

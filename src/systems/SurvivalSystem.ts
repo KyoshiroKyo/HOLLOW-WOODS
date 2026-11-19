@@ -39,6 +39,13 @@ export class SurvivalSystem {
   // C4-13-18: Thời gian hoãn hồi phục thể lực sau khi chạy nhanh (1.0 giây)
   private sprintCooldownTimer: number = 0;
 
+  // V15-47: Cờ trạng thái trận đấu trùm Miếu Chuông Phế Tích
+  public isBossFightActive: boolean = false;
+
+  public setBossFightActive(active: boolean): void {
+    this.isBossFightActive = active;
+  }
+
   constructor() {
     this.playerState = PlayerState.getInstance();
   }
@@ -114,9 +121,10 @@ export class SurvivalSystem {
       }
     }
 
+    const isBossArena = (zoneId === 'broken_bell_shrine') && this.isBossFightActive;
     const isBellhollowSafe = zoneId === 'bellhollow';
     const isDaytime = timePhase === 'DAY';
-    const isProtected = isDaytime || isBellhollowSafe;
+    const isProtected = !isBossArena && (isDaytime || isBellhollowSafe);
 
     if (nearCampfire) {
       const campSanctuary = CampSanctuarySystem.getInstance();
@@ -142,8 +150,8 @@ export class SurvivalSystem {
 
         const composureDrainMod = equipSys.getComposureDrainMultiplier();
         stats.composure = Math.max(0, stats.composure - drain * composureDrainMod * dt);
-      } else {
-        // Có ánh đèn lồng: Composure hồi phục dần theo pha
+      } else if (!isBossArena) {
+        // Có ánh đèn lồng: Composure hồi phục dần theo pha (trong phòng Boss, đèn lồng không thể tự hồi phục Bình Tâm mà cần dùng Trà An Thần)
         let recoveryRate = COMPOSURE_RECOVERY_NEAR_LIGHT;
         if (timePhase && TIME_CONFIG.phases[timePhase]) {
           recoveryRate = TIME_CONFIG.phases[timePhase].composureRecoveryLit;
@@ -152,9 +160,15 @@ export class SurvivalSystem {
       }
     }
 
-    // V1.5 (BƯỚC V15-05): Thiết lập cơ chế rút Sinh Lực (HP) mạnh dần khi Tinh thần suy sụp ngoài vùng tối
-    // Khi không ở gần lửa trại, không phải ban ngày / vùng an toàn, và không bật đèn lồng:
-    if (!nearCampfire && !isProtected && !stats.isLanternOn) {
+    // V15-47: Thiết lập cơ chế rút Sinh Lực (HP) mạnh dần khi Tinh thần suy sụp
+    if (isBossArena) {
+      if (stats.composure < 50) {
+        // V15-47: Trong phòng Boss Miếu Chuông, khi Bình Tâm < 50/100, tốc độ tụt Sinh Lực do hoảng loạn tăng nhanh:
+        // Rút 3.5 HP mỗi 1.5 giây (~2.333 HP/s) để tạo áp lực sinh tồn buộc người chơi phải phá 3 Trụ Phong Ấn hoặc dùng Trà An Thần
+        const drainHp = (3.5 / 1.5) * dt;
+        stats.health = Math.max(0, stats.health - drainHp);
+      }
+    } else if (!nearCampfire && !isProtected && !stats.isLanternOn) {
       if (stats.composure < 10) {
         // Ngưỡng Hoảng Loạn Cực Độ (dưới 10/100 và chạm 0/100): Rút Sinh Lực -3.5 HP mỗi 1.5 giây (-2.333 HP/s)
         const drainHp = (3.5 / 1.5) * dt;

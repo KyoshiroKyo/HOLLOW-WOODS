@@ -79,6 +79,12 @@ import {
   SPRITE_SHADOW_EYES,
   SPRITE_SHADOW_BIG_BOSS,
   PORTRAIT_SHADOW_BIG_BOSS,
+  SPRITE_BOSS_WETLANDS_IDLE,
+  SPRITE_BOSS_WETLANDS_WALK,
+  SPRITE_BOSS_WETLANDS_ATTACK1,
+  SPRITE_BOSS_WETLANDS_ATTACK2,
+  SPRITE_BOSS_WETLANDS_HIT,
+  SPRITE_BOSS_WETLANDS_DEATH,
   SPRITE_FALLEN_KNIGHT,
   PORTRAIT_FALLEN_KNIGHT,
   SPRITE_DREAD_HORSEMAN,
@@ -448,6 +454,11 @@ export class PreloadScene extends Phaser.Scene {
       assetStatusText.setText(`Đang nạp: ${displayName}`);
     });
 
+    // V15-39: Bắt lỗi nạp an toàn chống sập tiến trình nạp
+    this.load.on('loaderror', (file: Phaser.Loader.File) => {
+      console.warn(`[PreloadScene] Cảnh báo nạp tài nguyên: ${file.key} (${file.src || file.url}) - Bỏ qua an toàn.`);
+    });
+
     this.load.on('complete', () => {
       tipTimerEvent.destroy();
       percentText.setText('100%');
@@ -699,6 +710,32 @@ export class PreloadScene extends Phaser.Scene {
     });
     this.load.image(PORTRAIT_SHADOW_BIG_BOSS, 'assets/characters/bosses/portrait_shadow_big_boss.png');
 
+    // V15-42: Bộ Sprite Boss Kẻ Nuốt Tiếng Chuông (SHADOW Series - The Shadowed Wetlands Boss v1.1)
+    this.load.spritesheet(SPRITE_BOSS_WETLANDS_IDLE, 'assets/characters/bosses/wetlands_boss/boss_wetlands_idle.png', {
+      frameWidth: 247,
+      frameHeight: 87
+    });
+    this.load.spritesheet(SPRITE_BOSS_WETLANDS_WALK, 'assets/characters/bosses/wetlands_boss/boss_wetlands_walk.png', {
+      frameWidth: 247,
+      frameHeight: 87
+    });
+    this.load.spritesheet(SPRITE_BOSS_WETLANDS_ATTACK1, 'assets/characters/bosses/wetlands_boss/boss_wetlands_attack1.png', {
+      frameWidth: 247,
+      frameHeight: 87
+    });
+    this.load.spritesheet(SPRITE_BOSS_WETLANDS_ATTACK2, 'assets/characters/bosses/wetlands_boss/boss_wetlands_attack2.png', {
+      frameWidth: 247,
+      frameHeight: 87
+    });
+    this.load.spritesheet(SPRITE_BOSS_WETLANDS_HIT, 'assets/characters/bosses/wetlands_boss/boss_wetlands_hit.png', {
+      frameWidth: 247,
+      frameHeight: 87
+    });
+    this.load.spritesheet(SPRITE_BOSS_WETLANDS_DEATH, 'assets/characters/bosses/wetlands_boss/boss_wetlands_death.png', {
+      frameWidth: 247,
+      frameHeight: 87
+    });
+
     // V1.4 - Bước 13: Sinh vật Phục kích N3XUS & Trinh sát Goblin Scout
     this.load.spritesheet(SPRITE_MIST_BAT, 'assets/characters/monsters/bat_sheet.png', {
       frameWidth: 32,
@@ -800,6 +837,13 @@ export class PreloadScene extends Phaser.Scene {
     this.load.audio('bell_toll_low', 'assets/audio/sfx/v14/bell_toll_low.wav');
     this.load.audio('chest_creak', 'assets/audio/sfx/v14/chest_creak.wav');
     this.load.audio('journal_page', 'assets/audio/sfx/v14/journal_page.wav');
+
+    // V15-39: Nạp 5 bản nhạc nền nghệ thuật (The Knight's Quiet Fire & Environmental BGM)
+    this.load.audio('bgm_knights_quiet_fire', 'assets/audio/bgm/knights_quiet_fire.mp3');
+    this.load.audio('bgm_embervale', 'assets/audio/bgm/embervale.mp3');
+    this.load.audio('bgm_beyond_the_hills', 'assets/audio/bgm/beyond_the_hills.mp3');
+    this.load.audio('bgm_evergrove', 'assets/audio/bgm/evergrove.mp3');
+    this.load.audio('bgm_forgotten_orchard', 'assets/audio/bgm/forgotten_orchard.mp3');
   }
 
   public create(): void {
@@ -831,6 +875,56 @@ export class PreloadScene extends Phaser.Scene {
         frames: this.anims.generateFrameNumbers(SPRITE_CAMPFIRE_KNIGHT_IDLE, { start: 0, end: 7 }),
         frameRate: 6,
         repeat: -1
+      });
+    }
+
+    // V15-42: Đăng ký toàn bộ hoạt ảnh của Boss Kẻ Nuốt Tiếng Chuông (SHADOW Series)
+    if (this.textures.exists(SPRITE_BOSS_WETLANDS_IDLE) && !this.anims.exists('anim_boss_wetlands_idle')) {
+      this.anims.create({
+        key: 'anim_boss_wetlands_idle',
+        frames: this.anims.generateFrameNumbers(SPRITE_BOSS_WETLANDS_IDLE, { start: 0, end: 13 }),
+        frameRate: 10,
+        repeat: -1
+      });
+    }
+    if (this.textures.exists(SPRITE_BOSS_WETLANDS_WALK) && !this.anims.exists('anim_boss_wetlands_walk')) {
+      this.anims.create({
+        key: 'anim_boss_wetlands_walk',
+        frames: this.anims.generateFrameNumbers(SPRITE_BOSS_WETLANDS_WALK, { start: 0, end: 13 }),
+        frameRate: 12,
+        repeat: -1
+      });
+    }
+    if (this.textures.exists(SPRITE_BOSS_WETLANDS_ATTACK1) && !this.anims.exists('anim_boss_wetlands_attack1')) {
+      this.anims.create({
+        key: 'anim_boss_wetlands_attack1',
+        frames: this.anims.generateFrameNumbers(SPRITE_BOSS_WETLANDS_ATTACK1, { start: 0, end: 9 }),
+        frameRate: 12,
+        repeat: 0
+      });
+    }
+    if (this.textures.exists(SPRITE_BOSS_WETLANDS_ATTACK2) && !this.anims.exists('anim_boss_wetlands_attack2')) {
+      this.anims.create({
+        key: 'anim_boss_wetlands_attack2',
+        frames: this.anims.generateFrameNumbers(SPRITE_BOSS_WETLANDS_ATTACK2, { start: 0, end: 8 }),
+        frameRate: 12,
+        repeat: 0
+      });
+    }
+    if (this.textures.exists(SPRITE_BOSS_WETLANDS_HIT) && !this.anims.exists('anim_boss_wetlands_hit')) {
+      this.anims.create({
+        key: 'anim_boss_wetlands_hit',
+        frames: this.anims.generateFrameNumbers(SPRITE_BOSS_WETLANDS_HIT, { start: 0, end: 0 }),
+        frameRate: 8,
+        repeat: 0
+      });
+    }
+    if (this.textures.exists(SPRITE_BOSS_WETLANDS_DEATH) && !this.anims.exists('anim_boss_wetlands_death')) {
+      this.anims.create({
+        key: 'anim_boss_wetlands_death',
+        frames: this.anims.generateFrameNumbers(SPRITE_BOSS_WETLANDS_DEATH, { start: 0, end: 32 }),
+        frameRate: 12,
+        repeat: 0
       });
     }
 
