@@ -226,9 +226,14 @@ export class QuickCraftSidebar {
   }
 
   /**
-   * Vẽ nền ô công thức ghim
+   * Vẽ nền ô công thức ghim (V15-FIX-08: Tối ưu bộ đệm trạng thái chống vẽ lặp vô ích)
    */
   private drawSlotBg(g: Phaser.GameObjects.Graphics, hover: boolean, canCraft: boolean): void {
+    const stateKey = `${hover}_${canCraft}`;
+    if ((g as any)._cachedSlotState === stateKey) {
+      return;
+    }
+    (g as any)._cachedSlotState = stateKey;
     const size = QuickCraftSidebar.SLOT_SIZE;
     g.clear();
 

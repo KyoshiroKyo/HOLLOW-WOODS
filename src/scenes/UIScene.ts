@@ -710,6 +710,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   private drawPixelIcons(): void {
     // C4-13-15: Đảm bảo các texture Pixel Art 16×16 px chuẩn Nearest-Neighbor đã được tạo
     HUDIconGenerator.generateAllHUDIcons(this);
+    // V15-FIX-08: Pre-bake toàn bộ texture khung ô UI cho QuickCraft & CraftingModal
+    HUDIconGenerator.generateUIFrameTextures(this);
 
     // V15-56: Triệt tiêu hoàn toàn lỗi vẽ trùng 2 lớp icon (double-draw), giải phóng statIconsGraphics
     this.statIconsGraphics.clear();

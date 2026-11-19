@@ -5,6 +5,16 @@ export const HUD_ICON_STAMINA = 'hud_icon_stamina';
 export const HUD_ICON_OIL = 'hud_icon_oil';
 export const HUD_ICON_COMPOSURE = 'hud_icon_composure';
 
+// UI Frame Caching Keys (V15-FIX-08)
+export const UI_TEX_QC_SLOT_HOVER = 'ui_tex_qc_slot_hover';
+export const UI_TEX_QC_SLOT_READY = 'ui_tex_qc_slot_ready';
+export const UI_TEX_QC_SLOT_IDLE = 'ui_tex_qc_slot_idle';
+
+export const UI_TEX_CRAFT_TILE_SELECTED = 'ui_tex_craft_tile_selected';
+export const UI_TEX_CRAFT_TILE_READY = 'ui_tex_craft_tile_ready';
+export const UI_TEX_CRAFT_TILE_LOCKED = 'ui_tex_craft_tile_locked';
+export const UI_TEX_CRAFT_TILE_IDLE = 'ui_tex_craft_tile_idle';
+
 /**
  * HOLLOW WOODS V1.3 — BỘ SINH BIỂU TƯỢNG THUỘC TÍNH HUD CHUẨN PIXEL ART (16×16 PX)
  * C4-13-15: Thay thế các khối chữ nhật/chữ thập thô sơ bằng 4 icon sắc nét:
@@ -202,6 +212,119 @@ export class HUDIconGenerator {
             g.fillRect(startX + x, cfg.y + y, 1, 1);
           }
         }
+      }
+    }
+  }
+
+  /**
+   * Tạo sẵn và lưu vào Texture Cache các khung ô UI cho QuickCraftSidebar & CraftingModal (V15-FIX-08)
+   * Giúp tránh việc vẽ lại (redraw) bằng Graphics mỗi frame hoặc mỗi khi hover/scroll.
+   */
+  public static generateUIFrameTextures(scene: Phaser.Scene): void {
+    // 1. QuickCraftSidebar Slots (36x36)
+    const qcSize = 36;
+    if (!scene.textures.exists(UI_TEX_QC_SLOT_HOVER)) {
+      const g = scene.make.graphics({ x: 0, y: 0 });
+      g.fillStyle(0x2d1f14, 0.98);
+      g.fillRoundedRect(0, 0, qcSize, qcSize, 4);
+      g.lineStyle(1.8, 0xf39c12, 1.0);
+      g.strokeRoundedRect(0, 0, qcSize, qcSize, 4);
+      g.fillStyle(0xf7f0dd, 0.98);
+      g.fillRoundedRect(2, 2, qcSize - 4, qcSize - 4, 3);
+      g.generateTexture(UI_TEX_QC_SLOT_HOVER, qcSize, qcSize);
+      g.destroy();
+      if (scene.textures.exists(UI_TEX_QC_SLOT_HOVER)) {
+        scene.textures.get(UI_TEX_QC_SLOT_HOVER).setFilter(Phaser.Textures.FilterMode.NEAREST);
+      }
+    }
+
+    if (!scene.textures.exists(UI_TEX_QC_SLOT_READY)) {
+      const g = scene.make.graphics({ x: 0, y: 0 });
+      g.fillStyle(0x18110b, 0.92);
+      g.fillRoundedRect(0, 0, qcSize, qcSize, 4);
+      g.lineStyle(1.2, 0x2ecc71, 0.9);
+      g.strokeRoundedRect(0, 0, qcSize, qcSize, 4);
+      g.fillStyle(0xeadecc, 0.92);
+      g.fillRoundedRect(2, 2, qcSize - 4, qcSize - 4, 3);
+      g.lineStyle(0.8, 0x8c7853, 0.35);
+      g.strokeRoundedRect(2, 2, qcSize - 4, qcSize - 4, 3);
+      g.generateTexture(UI_TEX_QC_SLOT_READY, qcSize, qcSize);
+      g.destroy();
+      if (scene.textures.exists(UI_TEX_QC_SLOT_READY)) {
+        scene.textures.get(UI_TEX_QC_SLOT_READY).setFilter(Phaser.Textures.FilterMode.NEAREST);
+      }
+    }
+
+    if (!scene.textures.exists(UI_TEX_QC_SLOT_IDLE)) {
+      const g = scene.make.graphics({ x: 0, y: 0 });
+      g.fillStyle(0x18110b, 0.92);
+      g.fillRoundedRect(0, 0, qcSize, qcSize, 4);
+      g.lineStyle(1.2, 0x5c4224, 0.85);
+      g.strokeRoundedRect(0, 0, qcSize, qcSize, 4);
+      g.fillStyle(0xdfd3b6, 0.92);
+      g.fillRoundedRect(2, 2, qcSize - 4, qcSize - 4, 3);
+      g.lineStyle(0.8, 0x8c7853, 0.35);
+      g.strokeRoundedRect(2, 2, qcSize - 4, qcSize - 4, 3);
+      g.generateTexture(UI_TEX_QC_SLOT_IDLE, qcSize, qcSize);
+      g.destroy();
+      if (scene.textures.exists(UI_TEX_QC_SLOT_IDLE)) {
+        scene.textures.get(UI_TEX_QC_SLOT_IDLE).setFilter(Phaser.Textures.FilterMode.NEAREST);
+      }
+    }
+
+    // 2. CraftingModal Grid Tiles (44x44)
+    const ctSize = 44;
+    if (!scene.textures.exists(UI_TEX_CRAFT_TILE_SELECTED)) {
+      const g = scene.make.graphics({ x: 0, y: 0 });
+      g.fillStyle(0xfbf5e6, 0.98);
+      g.fillRoundedRect(0, 0, ctSize, ctSize, 4);
+      g.lineStyle(2, 0xf1c40f, 1.0);
+      g.strokeRoundedRect(0, 0, ctSize, ctSize, 4);
+      g.generateTexture(UI_TEX_CRAFT_TILE_SELECTED, ctSize, ctSize);
+      g.destroy();
+      if (scene.textures.exists(UI_TEX_CRAFT_TILE_SELECTED)) {
+        scene.textures.get(UI_TEX_CRAFT_TILE_SELECTED).setFilter(Phaser.Textures.FilterMode.NEAREST);
+      }
+    }
+
+    if (!scene.textures.exists(UI_TEX_CRAFT_TILE_READY)) {
+      const g = scene.make.graphics({ x: 0, y: 0 });
+      g.fillStyle(0xdfd3b6, 0.95);
+      g.fillRoundedRect(0, 0, ctSize, ctSize, 4);
+      g.lineStyle(1.2, 0xd4af37, 0.9);
+      g.strokeRoundedRect(0, 0, ctSize, ctSize, 4);
+      g.fillStyle(0x2ecc71, 1.0);
+      g.fillCircle(ctSize - 4, 4, 2.5);
+      g.generateTexture(UI_TEX_CRAFT_TILE_READY, ctSize, ctSize);
+      g.destroy();
+      if (scene.textures.exists(UI_TEX_CRAFT_TILE_READY)) {
+        scene.textures.get(UI_TEX_CRAFT_TILE_READY).setFilter(Phaser.Textures.FilterMode.NEAREST);
+      }
+    }
+
+    if (!scene.textures.exists(UI_TEX_CRAFT_TILE_LOCKED)) {
+      const g = scene.make.graphics({ x: 0, y: 0 });
+      g.fillStyle(0x140e09, 0.95);
+      g.fillRoundedRect(0, 0, ctSize, ctSize, 4);
+      g.lineStyle(1.2, 0x3d2b1a, 0.85);
+      g.strokeRoundedRect(0, 0, ctSize, ctSize, 4);
+      g.generateTexture(UI_TEX_CRAFT_TILE_LOCKED, ctSize, ctSize);
+      g.destroy();
+      if (scene.textures.exists(UI_TEX_CRAFT_TILE_LOCKED)) {
+        scene.textures.get(UI_TEX_CRAFT_TILE_LOCKED).setFilter(Phaser.Textures.FilterMode.NEAREST);
+      }
+    }
+
+    if (!scene.textures.exists(UI_TEX_CRAFT_TILE_IDLE)) {
+      const g = scene.make.graphics({ x: 0, y: 0 });
+      g.fillStyle(0x26190f, 0.92);
+      g.fillRoundedRect(0, 0, ctSize, ctSize, 4);
+      g.lineStyle(1, 0x523b26, 0.85);
+      g.strokeRoundedRect(0, 0, ctSize, ctSize, 4);
+      g.generateTexture(UI_TEX_CRAFT_TILE_IDLE, ctSize, ctSize);
+      g.destroy();
+      if (scene.textures.exists(UI_TEX_CRAFT_TILE_IDLE)) {
+        scene.textures.get(UI_TEX_CRAFT_TILE_IDLE).setFilter(Phaser.Textures.FilterMode.NEAREST);
       }
     }
   }

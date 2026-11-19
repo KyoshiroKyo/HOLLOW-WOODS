@@ -850,9 +850,14 @@ export class CraftingModal {
   }
 
   /**
-   * Vẽ nền ô công thức trên lưới
+   * Vẽ nền ô công thức trên lưới (V15-FIX-08: Tối ưu bộ đệm trạng thái chống vẽ lặp vô ích)
    */
   private drawTileBg(g: Phaser.GameObjects.Graphics, x: number, y: number, size: number, selected: boolean, locked: boolean, canCraft: boolean): void {
+    const stateKey = `${x}_${y}_${size}_${selected}_${locked}_${canCraft}`;
+    if ((g as any)._cachedTileState === stateKey) {
+      return;
+    }
+    (g as any)._cachedTileState = stateKey;
     g.clear();
 
     if (selected) {
@@ -1317,6 +1322,7 @@ export class CraftingModal {
     if (this.sidePanelContainer) {
       this.sidePanelContainer.setAlpha(0);
       this.sidePanelContainer.setScale(0.96);
+      this.scene.tweens.killTweensOf(this.sidePanelContainer);
       this.scene.tweens.add({
         targets: this.sidePanelContainer,
         alpha: 1,
@@ -1333,6 +1339,9 @@ export class CraftingModal {
   }
 
   public close(): void {
+    if (this.sidePanelContainer) {
+      this.scene.tweens.killTweensOf(this.sidePanelContainer);
+    }
     ItemTooltipHelper.getInstance().hide();
     this.isOpen = false;
     this.container.setVisible(false);

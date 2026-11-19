@@ -12,6 +12,7 @@ import * as Phaser from 'phaser';
 import { PlayerState } from '../state/PlayerState';
 import { HDTextHelper } from '../utils/HDTextHelper';
 import { AudioManager } from '../audio/AudioManager';
+import { QuestSystem } from '../systems/QuestSystem';
 
 export interface ParchmentMapNode {
   id: string;
@@ -40,6 +41,7 @@ export class ParchmentWorldMapModal {
   private backdrop!: Phaser.GameObjects.Graphics;
   private parchmentBg!: Phaser.GameObjects.Graphics;
   private contentContainer!: Phaser.GameObjects.Container;
+  private subTitleText!: Phaser.GameObjects.Text;
   private pulseTween?: Phaser.Tweens.Tween;
 
   public onOpen?: () => void;
@@ -234,18 +236,18 @@ export class ParchmentWorldMapModal {
     }
 
     // Tiêu đề cổ điển & Hoa văn La bàn trên đầu bản đồ
-    const titleText = HDTextHelper.createText(this.scene, 640, py + 20, '📜 BẢN ĐỒ THẾ GIỚI — KHU RỪNG RỖNG (THE HOLLOW WOODS)', {
-      fontSize: '18px',
+    const titleText = HDTextHelper.createText(this.scene, 640, py + 18, '📜 BẢN ĐỒ THẾ GIỚI — KHU RỪNG RỖNG (THE HOLLOW WOODS)', {
+      fontSize: '17px',
       fontStyle: 'bold',
       color: '#2a1a0d',
       stroke: '#d9c29e',
       strokeThickness: 1
     }).setOrigin(0.5, 0);
 
-    const subTitleText = HDTextHelper.createText(this.scene, 640, py + 44, 'Sơ Đồ Kết Nối Địa Hình Làng Bellhollow & Vùng Đất Sương Mù • [M] hoặc [ESC] để Gấp Bản Đồ', {
-      fontSize: '11px',
-      fontStyle: 'italic',
-      color: '#5c4028'
+    this.subTitleText = HDTextHelper.createText(this.scene, 640, py + 42, 'Sơ Đồ Tuyến Đường 7 Chặng A -> E -> B -> D -> F -> E -> C • [M] hoặc [ESC] để Gấp Bản Đồ', {
+      fontSize: '10.5px',
+      fontStyle: 'bold',
+      color: '#8a4b12'
     }).setOrigin(0.5, 0);
 
     // Nút đóng góc trên phải [X]
@@ -261,7 +263,7 @@ export class ParchmentWorldMapModal {
 
     this.contentContainer = this.scene.add.container(0, 0);
 
-    this.container.add([this.backdrop, this.parchmentBg, titleText, subTitleText, closeBtn, this.contentContainer]);
+    this.container.add([this.backdrop, this.parchmentBg, titleText, this.subTitleText, closeBtn, this.contentContainer]);
   }
 
   /**
@@ -322,11 +324,32 @@ export class ParchmentWorldMapModal {
    * Dựng nội dung bản đồ: Tuyến đường mòn, Các khu vực, Sương mù Fog of War và Điểm đứng
    */
   private renderWorldMapContent(): void {
+    if (this.pulseTween) {
+      this.pulseTween.stop();
+      this.pulseTween = undefined;
+    }
     this.contentContainer.removeAll(true);
 
     const activeZoneId = this.playerState.getCurrentZone() || 'bellhollow';
     const visitedZones = this.playerState.getVisitedZones();
     const discoveredCount = this.nodes.filter(n => visitedZones.includes(n.id)).length;
+
+    // Lấy thông tin chặng nhiệm vụ chính tuyến V1.5 (A -> E -> B -> D -> F -> E -> C)
+    const currentStage = QuestSystem.getInstance().getCurrentStageInfo(this.playerState);
+    const bridgeSeal = QuestSystem.getInstance().getBridgeSealState(this.playerState);
+
+    // Cập nhật tiêu đề chặng & hướng đi chi tiết
+    if (this.subTitleText) {
+      this.subTitleText.setText(
+        `🎯 [CHẶNG ${currentStage.stageNumber}/7] ${currentStage.title} (${currentStage.route}) • Hướng đi: ${currentStage.directionHint}`
+      );
+    }
+
+    // Xác định phân khu mục tiêu tiếp theo trên bản đồ
+    let targetNodeId = currentStage.targetZone;
+    if (targetNodeId === 'sub_bell_workshop' || targetNodeId === 'sub_root_cellar') {
+      targetNodeId = 'outer_woods';
+    }
 
     // 1. Thống kê khám phá & Chú thích phía đáy bản đồ
     const statsText = HDTextHelper.createText(this.scene, 180, 620, `🧭 Đã khai mở: ${discoveredCount}/10 Khu Vực`, {
@@ -335,10 +358,16 @@ export class ParchmentWorldMapModal {
       color: '#2a1a0d'
     });
 
-    const legendText = HDTextHelper.createText(this.scene, 1100, 620, '🟡 Vị trí của bạn   ✨ Vùng đã mở   🌫️ Sương mù chưa khám phá', {
-      fontSize: '11px',
-      color: '#5c4028'
-    }).setOrigin(1, 0);
+    const legendText = HDTextHelper.createText(
+      this.scene,
+      1100,
+      620,
+      '🟡 Vị trí hiện tại   🎯 Mục tiêu kế tiếp   🔒 Phong ấn   ✨ Vùng đã mở   🌫️ Sương mù',
+      {
+        fontSize: '10.5px',
+        color: '#5c4028'
+      }
+    ).setOrigin(1, 0);
 
     this.contentContainer.add([statsText, legendText]);
 
@@ -376,12 +405,44 @@ export class ParchmentWorldMapModal {
     }
     this.contentContainer.add(roadGfx);
 
-    // 3. Vẽ từng Node Khu Vực & Xử lý Cơ Chế Sương Mù Khám Phá (Fog of War)
+    // 3. Vẽ chốt chặn Phong Ấn Rễ Cổ / Cầu Cây nối Đầm Lầy (E) -> Miếu Chuông (C)
+    const bridgeX = 790;
+    const bridgeY = 370;
+    const bridgeGfx = this.scene.add.graphics();
+    const isBridgeUnlocked = bridgeSeal.isBroken;
+
+    bridgeGfx.fillStyle(isBridgeUnlocked ? 0x0c2d18 : 0x2d0c10, 0.95);
+    bridgeGfx.fillRoundedRect(bridgeX - 60, bridgeY - 17, 120, 34, 5);
+    bridgeGfx.lineStyle(1.8, isBridgeUnlocked ? 0x2ecc71 : 0xe74c3c, 1.0);
+    bridgeGfx.strokeRoundedRect(bridgeX - 60, bridgeY - 17, 120, 34, 5);
+
+    const sealTitle = isBridgeUnlocked ? '🔓 CẦU CÂY ĐÃ HẠ' : '🔒 PHONG ẤN RỄ CỔ';
+    const sealDesc = isBridgeUnlocked ? 'Lối thông Miếu Chuông' : 'Cần Chìa Khóa Thanh Tẩy';
+
+    const sealTitleText = HDTextHelper.createText(this.scene, bridgeX, bridgeY - 6, sealTitle, {
+      fontSize: '9px',
+      fontStyle: 'bold',
+      color: isBridgeUnlocked ? '#2ecc71' : '#ff7675',
+      stroke: '#000000',
+      strokeThickness: 2
+    }).setOrigin(0.5, 0.5);
+
+    const sealDescText = HDTextHelper.createText(this.scene, bridgeX, bridgeY + 7, sealDesc, {
+      fontSize: '7.5px',
+      fontStyle: 'italic',
+      color: isBridgeUnlocked ? '#a3e4d7' : '#f5b7b1'
+    }).setOrigin(0.5, 0.5);
+
+    this.contentContainer.add([bridgeGfx, sealTitleText, sealDescText]);
+
+    // 4. Vẽ từng Node Khu Vực & Xử lý Cơ Chế Sương Mù Khám Phá (Fog of War)
     const beaconPoints: { x: number; y: number }[] = [];
+    const pulsingObjects: Phaser.GameObjects.GameObject[] = [];
 
     for (const node of this.nodes) {
       const isVisited = this.playerState.hasVisitedZone(node.id);
       const isCurrentZone = (node.id === activeZoneId);
+      const isTargetZone = (node.id === targetNodeId);
 
       const nodeGfx = this.scene.add.graphics();
 
@@ -389,17 +450,21 @@ export class ParchmentWorldMapModal {
         // ==========================================
         // VÙNG ĐÃ KHÁM PHÁ (VÉN SƯƠNG RÕ NÉT)
         // ==========================================
-        // Nền vùng đất giấy da tô màu mực mộc mạc
         nodeGfx.fillStyle(node.color, 0.9);
         nodeGfx.fillRoundedRect(node.canvasX, node.canvasY, node.width, node.height, 6);
-        nodeGfx.lineStyle(2, node.borderColor, 0.95);
+        nodeGfx.lineStyle(isTargetZone ? 2.5 : 2, isTargetZone ? 0xf1c40f : node.borderColor, 0.95);
         nodeGfx.strokeRoundedRect(node.canvasX, node.canvasY, node.width, node.height, 6);
+
+        if (isTargetZone) {
+          nodeGfx.lineStyle(1.5, 0xffeaa7, 0.8);
+          nodeGfx.strokeRoundedRect(node.canvasX - 3, node.canvasY - 3, node.width + 6, node.height + 6, 8);
+        }
 
         // Tên phân khu
         const nameText = HDTextHelper.createText(this.scene, node.canvasX + node.width / 2, node.canvasY + 8, node.name, {
           fontSize: '11.5px',
           fontStyle: 'bold',
-          color: '#f5eedc',
+          color: isTargetZone ? '#f9e79f' : '#f5eedc',
           stroke: '#1a1006',
           strokeThickness: 2
         }).setOrigin(0.5, 0);
@@ -407,7 +472,7 @@ export class ParchmentWorldMapModal {
         // Phụ đề phân khu
         const subText = HDTextHelper.createText(this.scene, node.canvasX + node.width / 2, node.canvasY + 25, node.subTitle, {
           fontSize: '9px',
-          color: '#d4af37',
+          color: isTargetZone ? '#f39c12' : '#d4af37',
           stroke: '#1a1006',
           strokeThickness: 1.5
         }).setOrigin(0.5, 0);
@@ -430,10 +495,9 @@ export class ParchmentWorldMapModal {
         // ==========================================
         // VÙNG CHƯA KHÁM PHÁ (FOG OF WAR - PHỦ MỰC SƯƠNG)
         // ==========================================
-        // Nền tối sương mù mực dày đặc
         nodeGfx.fillStyle(0x231a12, 0.94);
         nodeGfx.fillRoundedRect(node.canvasX, node.canvasY, node.width, node.height, 6);
-        nodeGfx.lineStyle(1.5, 0x4d3722, 0.6);
+        nodeGfx.lineStyle(isTargetZone ? 2.5 : 1.5, isTargetZone ? 0xf1c40f : 0x4d3722, isTargetZone ? 1.0 : 0.6);
         nodeGfx.strokeRoundedRect(node.canvasX, node.canvasY, node.width, node.height, 6);
 
         // Hoa văn sương mù mực chéo mờ
@@ -447,21 +511,43 @@ export class ParchmentWorldMapModal {
           );
         }
 
-        const fogIcon = HDTextHelper.createText(this.scene, node.canvasX + node.width / 2, node.canvasY + 16, '🌫️', {
+        const fogIcon = HDTextHelper.createText(this.scene, node.canvasX + node.width / 2, node.canvasY + 16, isTargetZone ? '🎯' : '🌫️', {
           fontSize: '16px'
         }).setOrigin(0.5, 0);
 
-        const fogTitle = HDTextHelper.createText(this.scene, node.canvasX + node.width / 2, node.canvasY + 42, 'Chưa Khám Phá', {
+        const fogTitle = HDTextHelper.createText(this.scene, node.canvasX + node.width / 2, node.canvasY + 42, isTargetZone ? node.name : 'Chưa Khám Phá', {
           fontSize: '10px',
           fontStyle: 'italic',
-          color: '#8a6e52'
+          color: isTargetZone ? '#f1c40f' : '#8a6e52'
         }).setOrigin(0.5, 0);
 
         this.contentContainer.add([nodeGfx, fogIcon, fogTitle]);
       }
+
+      // Đánh dấu nổi bật phân khu mục tiêu tiếp theo (nhấp nháy nhẹ kèm nhãn tên chặng mục tiêu)
+      if (isTargetZone) {
+        const targetBadge = HDTextHelper.createText(
+          this.scene,
+          node.canvasX + node.width / 2,
+          node.canvasY - 12,
+          `🎯 MỤC TIÊU [CHẶNG ${currentStage.stageNumber}]`,
+          {
+            fontSize: '9px',
+            fontStyle: 'bold',
+            color: '#f1c40f',
+            backgroundColor: '#1b1208ee',
+            padding: { x: 5, y: 2 },
+            stroke: '#000000',
+            strokeThickness: 2
+          }
+        ).setOrigin(0.5, 0.5);
+
+        this.contentContainer.add(targetBadge);
+        pulsingObjects.push(targetBadge);
+      }
     }
 
-    // 4. Con trỏ định vị vị trí hiện tại của người chơi (Glowing Amber Beacon)
+    // 5. Con trỏ định vị vị trí hiện tại của người chơi (Glowing Amber Beacon)
     if (beaconPoints.length > 0) {
       const pt = beaconPoints[0];
       const beaconGfx = this.scene.add.graphics();
@@ -470,8 +556,8 @@ export class ParchmentWorldMapModal {
       beaconGfx.lineStyle(2, 0xffffff, 1);
       beaconGfx.strokeCircle(pt.x, pt.y, 6);
 
-      const beaconLabel = HDTextHelper.createText(this.scene, pt.x, pt.y - 16, '📍 VỊ TRÍ HIỆN TẠI', {
-        fontSize: '10px',
+      const beaconLabel = HDTextHelper.createText(this.scene, pt.x, pt.y - 16, '📍 BẠN ĐANG Ở ĐÂY', {
+        fontSize: '9.5px',
         fontStyle: 'bold',
         color: '#f1c40f',
         backgroundColor: '#1a1006dd',
@@ -480,19 +566,20 @@ export class ParchmentWorldMapModal {
         strokeThickness: 2
       }).setOrigin(0.5, 1);
 
-      // Hiệu ứng nhấp nháy phát sáng (Pulsing Animation)
+      this.contentContainer.add([beaconGfx, beaconLabel]);
+      pulsingObjects.push(beaconGfx);
+    }
+
+    // Hiệu ứng nhấp nháy phát sáng (Pulsing Animation) cho beacon và target badge
+    if (pulsingObjects.length > 0) {
       this.pulseTween = this.scene.tweens.add({
-        targets: beaconGfx,
-        alpha: 0.4,
-        scaleX: 1.3,
-        scaleY: 1.3,
+        targets: pulsingObjects,
+        alpha: 0.5,
         duration: 750,
         yoyo: true,
         repeat: -1,
         ease: 'Sine.easeInOut'
       });
-
-      this.contentContainer.add([beaconGfx, beaconLabel]);
     }
   }
 
