@@ -634,6 +634,9 @@ export class GameScene extends Phaser.Scene {
     this.wildlifeSystem = new WildlifeSystem(this);
     this.wildlifeSystem.switchZone(this.currentZoneId);
     this.triggerCreatureObservationsForZone(this.currentZoneId);
+    if (this.audioManager) {
+      this.audioManager.preloadZoneAudio(this.currentZoneId);
+    }
     this.worldEventSystem = new WorldEventSystem(this);
 
     // Lắng nghe sự kiện đàn quạ giật mình bay lên đánh động The Listener
@@ -2535,11 +2538,12 @@ export class GameScene extends Phaser.Scene {
     // 3. V15-37: Khu vực Trạm Lửa Rừng Tĩnh Lặng của Sir Vaelen (bán kính 180px quanh đốm lửa 1470, 710 & Sir Vaelen 1435, 705)
     const distToHearth = Math.hypot(this.player.x - 1470, this.player.y - 710);
     const distToVaelen = Math.hypot(this.player.x - 1435, this.player.y - 705);
-    const isNearVaelenBonfire = Math.min(distToHearth, distToVaelen) <= 180;
+    const isNearVaelenBonfire = Math.min(distToHearth, distToVaelen) <= 180 || distToVaelen <= 180;
 
     if (isNearVaelenBonfire) {
-      // Tự động chuyển êm (crossfade) sang bản nhạc bgm_knights_quiet_fire (The Knight's Quiet Fire)
-      this.audioManager.playBGM('bgm_knights_quiet_fire', 1.5, 0.85);
+      // Tự động chuyển êm (crossfade) sang bản nhạc bgm_knights_quiet_fire (ngày) & bgm_embervale (đêm) bên bếp lửa
+      const vaelenBgm = phase === 'NIGHT' ? 'bgm_embervale' : 'bgm_knights_quiet_fire';
+      this.audioManager.playBGM(vaelenBgm, 1.5, 0.85);
       return;
     }
 
@@ -4132,6 +4136,7 @@ export class GameScene extends Phaser.Scene {
       this.triggerCreatureObservationsForZone(this.currentZoneId);
       this.playerState.setCurrentZone(trans.toZone);
       this.audioManager.setAmbienceZone(trans.toZone);
+      this.audioManager.preloadZoneAudio(trans.toZone);
 
       const targetZoneData = this.worldBuilder.getZone(trans.toZone);
       const currentTime = performance.now();
@@ -4221,6 +4226,7 @@ export class GameScene extends Phaser.Scene {
     this.triggerCreatureObservationsForZone(this.currentZoneId);
     this.playerState.setCurrentZone(trans.toZone);
     this.audioManager.setAmbienceZone(trans.toZone);
+    this.audioManager.preloadZoneAudio(trans.toZone);
 
     // Hiển thị banner khu vực mới
     const targetZoneData = this.worldBuilder.getZone(trans.toZone);
@@ -4356,6 +4362,7 @@ export class GameScene extends Phaser.Scene {
 
       // C4-12-15: Chuyển đổi nhạc nền êm ái theo vùng mới (Crossfade không chồng lặp)
       this.audioManager.setAmbienceZone(this.currentZoneId);
+      this.audioManager.preloadZoneAudio(this.currentZoneId);
       // C4-12-10: Ghi nhận phân khu đã khám phá vào PlayerState
       this.playerState.markZoneVisited(this.currentZoneId);
 

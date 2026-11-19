@@ -838,12 +838,12 @@ export class PreloadScene extends Phaser.Scene {
     this.load.audio('chest_creak', 'assets/audio/sfx/v14/chest_creak.wav');
     this.load.audio('journal_page', 'assets/audio/sfx/v14/journal_page.wav');
 
-    // V15-39: Nạp 5 bản nhạc nền nghệ thuật (The Knight's Quiet Fire & Environmental BGM)
-    this.load.audio('bgm_knights_quiet_fire', 'assets/audio/bgm/knights_quiet_fire.mp3');
-    this.load.audio('bgm_embervale', 'assets/audio/bgm/embervale.mp3');
-    this.load.audio('bgm_beyond_the_hills', 'assets/audio/bgm/beyond_the_hills.mp3');
-    this.load.audio('bgm_evergrove', 'assets/audio/bgm/evergrove.mp3');
-    this.load.audio('bgm_forgotten_orchard', 'assets/audio/bgm/forgotten_orchard.mp3');
+    // V15-39 & V15-FIX-04: 5 bản nhạc nền BGM chuyển sang Streaming Audio qua HTMLAudioElement trong AudioManager (giảm 500MB RAM decode PCM)
+    // - bgm_knights_quiet_fire: 'assets/audio/bgm/knights_quiet_fire.mp3'
+    // - bgm_embervale: 'assets/audio/bgm/embervale.mp3'
+    // - bgm_beyond_the_hills: 'assets/audio/bgm/beyond_the_hills.mp3'
+    // - bgm_evergrove: 'assets/audio/bgm/evergrove.mp3'
+    // - bgm_forgotten_orchard: 'assets/audio/bgm/forgotten_orchard.mp3'
   }
 
   public create(): void {
