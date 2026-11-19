@@ -1,6 +1,6 @@
 {
-  "totalFiles": 243,
-  "totalBytes": 70253064,
+  "totalFiles": 226,
+  "totalBytes": 68713514,
   "categories": {
     "audio": [
       {
@@ -329,93 +329,7 @@
         "ext": ".wav"
       }
     ],
-    "maps": [
-      {
-        "path": "public/assets/maps/abyssal_chasm.json",
-        "size": 125344,
-        "ext": ".json"
-      },
-      {
-        "path": "public/assets/maps/ancient_rune_puzzle.json",
-        "size": 21565,
-        "ext": ".json"
-      },
-      {
-        "path": "public/assets/maps/bellhollow.json",
-        "size": 181136,
-        "ext": ".json"
-      },
-      {
-        "path": "public/assets/maps/broken_bell_shrine.json",
-        "size": 95495,
-        "ext": ".json"
-      },
-      {
-        "path": "public/assets/maps/crooked_path.json",
-        "size": 143778,
-        "ext": ".json"
-      },
-      {
-        "path": "public/assets/maps/deep_forest.json",
-        "size": 140275,
-        "ext": ".json"
-      },
-      {
-        "path": "public/assets/maps/drowned_mire_depths.json",
-        "size": 110123,
-        "ext": ".json"
-      },
-      {
-        "path": "public/assets/maps/fog_crossing.json",
-        "size": 35460,
-        "ext": ".json"
-      },
-      {
-        "path": "public/assets/maps/outer_woods.json",
-        "size": 61996,
-        "ext": ".json"
-      },
-      {
-        "path": "public/assets/maps/sanctuary_farm.json",
-        "size": 59223,
-        "ext": ".json"
-      },
-      {
-        "path": "public/assets/maps/silent_mire.json",
-        "size": 136992,
-        "ext": ".json"
-      },
-      {
-        "path": "public/assets/maps/sub_bell_workshop.json",
-        "size": 41122,
-        "ext": ".json"
-      },
-      {
-        "path": "public/assets/maps/sub_root_cellar.json",
-        "size": 52843,
-        "ext": ".json"
-      },
-      {
-        "path": "public/assets/maps/sub_whispering_clearing.json",
-        "size": 43062,
-        "ext": ".json"
-      },
-      {
-        "path": "public/assets/maps/sunken_crypt_ruins.json",
-        "size": 111052,
-        "ext": ".json"
-      },
-      {
-        "path": "public/assets/maps/veil_origin_cavern.json",
-        "size": 110241,
-        "ext": ".json"
-      },
-      {
-        "path": "public/assets/maps/whispering_grove_sanctum.json",
-        "size": 69843,
-        "ext": ".json"
-      }
-    ],
+    "maps": [],
     "characters": [
       {
         "path": "public/assets/characters/bosses/hooded_knight_sheet.png",

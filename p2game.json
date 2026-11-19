@@ -21,7 +21,7 @@
   "shortDescription": "Game sinh tồn kinh dị & giải đố 2D Pixel Art V1.5. Vòng sáng [F] tốn Thể Lực, quản lý Tinh Thần, bẫy ảo giác, chế tác DST và giải mã Miếu Chuông Phế Tích.",
   "entry": "index.html",
   "engine": "webgl",
-  "engineInfo": "Phaser 3.80.1",
+  "engineInfo": "Phaser 4.2.1",
   "orientation": "landscape",
   "minViewport": {
     "width": 960,

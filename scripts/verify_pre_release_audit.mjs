@@ -170,10 +170,12 @@ while ((match = loadRegex.exec(preloadContent)) !== null) {
 assert(missingAssets.length === 0, `Toàn bộ ${checkedAssetsCount} tài nguyên trong PreloadScene tồn tại trên đĩa`, missingAssets.join('\n'));
 
 // 3.2 Kiểm tra 17 file Tiled Map .json
-const mapsDir = path.join(PUBLIC_DIR, 'assets', 'maps');
-assert(fs.existsSync(mapsDir), 'Thư mục public/assets/maps/ tồn tại');
-const mapFiles = fs.readdirSync(mapsDir).filter(f => f.endsWith('.json'));
-assert(mapFiles.length === 17, `Đủ 17 file Tiled Map .json trong public/assets/maps/ (hiện có: ${mapFiles.length})`);
+const mapsDir = fs.existsSync(path.join(ROOT_DIR, 'src', 'data', 'maps'))
+  ? path.join(ROOT_DIR, 'src', 'data', 'maps')
+  : path.join(PUBLIC_DIR, 'assets', 'maps');
+assert(fs.existsSync(mapsDir), 'Thư mục bản đồ Tiled Map tồn tại');
+const mapFiles = fs.readdirSync(mapsDir).filter(f => f.endsWith('.json') && !f.includes('.bak'));
+assert(mapFiles.length === 17, `Đủ 17 file Tiled Map .json (hiện có: ${mapFiles.length})`);
 
 // Kiểm tra tính toàn vẹn của từng file JSON map
 let invalidMaps = [];

@@ -760,14 +760,13 @@ async function generateMediaAssets() {
     task: 'Pha giai 3 Tru Phong An truoc khi danh Boss'
   });
 
-  // Lưu toàn bộ 6 file hình ảnh ra các thư mục chỉ định (kèm bí danh screen_03_crafting_journal.png)
+  // Lưu toàn bộ 6 file hình ảnh chuẩn hóa theo manifest p2game.json
   const files = [
     { name: 'avatar_512x512.png', png: av },
     { name: 'cover_banner_1280x720.png', png: cov },
     { name: 'screen_01_bellhollow_v15.png', png: sc1 },
     { name: 'screen_02_sir_vaelen_fire.png', png: sc2 },
     { name: 'screen_03_crafting_ui.png', png: sc3 },
-    { name: 'screen_03_crafting_journal.png', png: sc3 },
     { name: 'screen_04_boss_shadow.png', png: sc4 }
   ];
 
@@ -883,7 +882,7 @@ function generateP2GameJson() {
     shortDescription: "Game sinh tồn kinh dị & giải đố 2D Pixel Art V1.5. Vòng sáng [F] tốn Thể Lực, quản lý Tinh Thần, bẫy ảo giác, chế tác DST và giải mã Miếu Chuông Phế Tích.",
     entry: "index.html",
     engine: "webgl",
-    engineInfo: "Phaser 3.80.1",
+    engineInfo: "Phaser 4.2.1",
     orientation: "landscape",
     minViewport: {
       width: 960,
@@ -1006,13 +1005,15 @@ zip_path = r'''${p2gameZipOut}'''
 
 with zipfile.ZipFile(zip_path, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
     for root, dirs, files in os.walk(dist_dir):
+        # V15-FIX-06: Loại bỏ thư mục thừa không cần cho runtime web release
+        dirs[:] = [d for d in dirs if d not in ('maps', 'store')]
         dirs.sort()
         files.sort()
         for file in files:
             full = os.path.join(root, file)
             arc = os.path.relpath(full, dist_dir).replace('\\\\', '/')
-            # Loại bỏ các file rác nếu có
-            if arc.endswith('.bak') or arc.endswith('.tmp'):
+            # Loại bỏ các file rác, file backup và media trùng lặp
+            if arc.endswith('.bak') or arc.endswith('.tmp') or arc.startswith('store/') or 'screen_03_crafting_journal' in arc:
                 continue
             zf.write(full, arc)
 
