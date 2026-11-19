@@ -79,7 +79,7 @@ export class SaveManager {
     'food_calming_tea', 'food_roasted_mushroom', 'food_root_soup', 'item_resin_flare',
     'wpn_walking_staff', 'wpn_iron_spear', 'wpn_hunting_hatchet',
     'eqp_moss_cloak', 'eqp_trail_boots', 'eqp_field_backpack', 'eqp_bell_ward_charm',
-    'quest_corrupted_crest', 'quest_corrupted_knight_crest', 'item_knight_journal_page'
+    'quest_corrupted_crest', 'item_knight_journal_page'
   ]);
 
   /**
@@ -213,7 +213,10 @@ export class SaveManager {
       if (Array.isArray(rawObj.inventory)) {
         for (const item of rawObj.inventory) {
           if (Array.isArray(item) && item.length >= 2 && typeof item[0] === 'string') {
-            const key = item[0].trim();
+            let key = item[0].trim();
+            if (key === 'quest_corrupted_knight_crest') {
+              key = 'quest_corrupted_crest';
+            }
             const count = Number(item[1]);
             if (key.length > 0 && !isNaN(count) && count > 0) {
               inventory.push([key, Math.floor(count)]);
@@ -337,7 +340,10 @@ export class SaveManager {
       if (Array.isArray(rawChest)) {
         for (const item of rawChest) {
           if (Array.isArray(item) && item.length >= 2 && typeof item[0] === 'string') {
-            const key = item[0].trim();
+            let key = item[0].trim();
+            if (key === 'quest_corrupted_knight_crest') {
+              key = 'quest_corrupted_crest';
+            }
             const count = Number(item[1]);
             if (key.length > 0 && !isNaN(count) && count > 0) {
               storageChest.push([key, Math.floor(count)]);

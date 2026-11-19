@@ -8,6 +8,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "check": "tsc --noEmit",
+    "verify:data": "node scripts/verify_data_integrity.mjs",
     "release:p2game": "npm run build && node scripts/build_p2game_release.mjs",
     "release:standalone": "node scripts/build_standalone_release.mjs"
   },

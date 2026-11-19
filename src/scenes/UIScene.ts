@@ -2135,7 +2135,6 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       wpn_hunting_hatchet: '🪓',
       quest_bronze_clapper: '🔔',
       quest_corrupted_crest: '👑',
-      quest_corrupted_knight_crest: '👑',
       lore_satyr_journal: '📜',
       item_knight_journal_page: '📜',
       relic_heart_of_roots: '💎'

@@ -769,7 +769,7 @@
         }
       ],
       "onCompleteFlag": "campfire_knight_q3_completed",
-      "rewardItem": "eqp_bronze_bell_charm",
+      "rewardItem": "eqp_bell_ward_charm",
       "rewardCount": 1,
       "healPlayer": true
     },

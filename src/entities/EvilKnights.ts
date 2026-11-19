@@ -995,8 +995,7 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
     const ps = PlayerState.getInstance();
     ps.observeCreature('hooded_knight');
     // Rơi vật phẩm nhiệm vụ cốt truyện: Huy Hiệu Hiệp Sĩ Tha Hóa
-    if (ps.getItemCount('quest_corrupted_crest') <= 0 &&
-        ps.getItemCount('quest_corrupted_knight_crest') <= 0) {
+    if (ps.getItemCount('quest_corrupted_crest') <= 0) {
       ps.addItem('quest_corrupted_crest', 1);
     }
     ps.setFlag('boss_hooded_knight_defeated');

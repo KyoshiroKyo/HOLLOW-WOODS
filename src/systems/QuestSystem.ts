@@ -105,7 +105,6 @@ export class QuestSystem {
 
     // Chặng 3: Đã tìm thấy Huy Hiệu Kỵ Sĩ Sa Ngã ở Đầm Lầy (E), đang tới gặp Sir Vaelen (B)
     const hasCrest = ps.getItemCount('quest_corrupted_crest') > 0 ||
-                     ps.getItemCount('quest_corrupted_knight_crest') > 0 ||
                      ps.hasFlag('corrupted_crest_obtained') ||
                      ps.hasFlag('mire_root_seal_inspected');
     if (hasCrest) {

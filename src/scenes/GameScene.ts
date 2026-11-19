@@ -1496,8 +1496,7 @@ export class GameScene extends Phaser.Scene {
 
     if (npcId === 'npc_campfire_knight') {
       if (this.playerState.hasFlag('campfire_knight_q3_accepted') && !this.playerState.hasFlag('campfire_knight_q3_completed')) {
-        const hasCorruptedCrest = (this.playerState.getItemCount('quest_corrupted_knight_crest') > 0 ||
-                                   this.playerState.getItemCount('quest_corrupted_crest') > 0 ||
+        const hasCorruptedCrest = (this.playerState.getItemCount('quest_corrupted_crest') > 0 ||
                                    this.playerState.hasFlag('boss_hooded_knight_defeated'));
         if (hasCorruptedCrest) return 'complete';
       } else if (this.playerState.hasFlag('campfire_knight_q2_accepted') && !this.playerState.hasFlag('campfire_knight_q2_completed')) {
@@ -4666,7 +4665,6 @@ export class GameScene extends Phaser.Scene {
               const hasMold = this.playerState.getItemCount('item_bell_mold') > 0 || this.playerState.hasFlag('has_bell_mold');
               const hasRune = this.playerState.getItemCount('quest_rune_fragment') > 0 || this.playerState.hasFlag('has_rune_fragment');
               const hasCrest = this.playerState.getItemCount('quest_corrupted_crest') > 0 ||
-                               this.playerState.getItemCount('quest_corrupted_knight_crest') > 0 ||
                                this.playerState.hasFlag('corrupted_crest_obtained');
 
               if (hasPurificationKey) {
@@ -4691,8 +4689,7 @@ export class GameScene extends Phaser.Scene {
               } else if (this.playerState.hasFlag('campfire_knight_q3_completed')) {
                 dKey = 'campfire_knight_idle_talk';
               } else if (this.playerState.hasFlag('campfire_knight_q3_accepted')) {
-                const hasCorruptedCrest = (this.playerState.getItemCount('quest_corrupted_knight_crest') > 0 ||
-                                           this.playerState.getItemCount('quest_corrupted_crest') > 0 ||
+                const hasCorruptedCrest = (this.playerState.getItemCount('quest_corrupted_crest') > 0 ||
                                            this.playerState.hasFlag('boss_hooded_knight_defeated'));
                 if (hasCorruptedCrest) {
                   dKey = 'campfire_knight_q3_complete';
@@ -5987,7 +5984,6 @@ export class GameScene extends Phaser.Scene {
 
       // Chưa có Chìa Khóa Thanh Tẩy
       const hasCrest = this.playerState.getItemCount('quest_corrupted_crest') > 0 ||
-                       this.playerState.getItemCount('quest_corrupted_knight_crest') > 0 ||
                        this.playerState.hasFlag('corrupted_crest_obtained');
 
       if (!hasCrest) {

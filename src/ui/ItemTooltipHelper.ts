@@ -64,8 +64,7 @@ export class ItemTooltipHelper {
     item_root_flower: 'Hái tại vùng trũng đầm lầy cạnh vòm rễ cổ thụ Silent Mire',
     mat_skull_fang: 'Rơi ra sau khi đẩy lùi Chó Săn Sọ (Skull Wolf) trong rừng sâu',
     mat_shadow_essence: 'Thu thập từ tàn tích của quái vật bóng tối bị ánh sáng thiêu đốt',
-    quest_corrupted_crest: 'Chiến lợi phẩm đoạt được khi đánh bại Kỵ Sĩ Hắc Ám (Boss Hooded Knight)',
-    quest_corrupted_knight_crest: 'Chiến lợi phẩm đoạt được khi đánh bại Kỵ Sĩ Hắc Ám (Boss Hooded Knight)',
+    quest_corrupted_crest: 'Chiến lợi phẩm đoạt được khi đánh bại Kỵ Sĩ Hắc Ám (Boss Hooded Knight) hoặc khảo sát Đầm Lầy',
     item_knight_journal_page: 'Trang nhật ký ướt sương cất giấu trong gốc cây cổ thụ Rừng Ngoài'
   };
 
