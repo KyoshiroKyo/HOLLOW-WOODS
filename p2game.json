@@ -2,7 +2,12 @@
   "schemaVersion": 1,
   "id": "hollow-woods",
   "name": "HOLLOW WOODS",
+  "title": "HOLLOW WOODS: The Fog That Remembers",
   "version": "1.5.0",
+  "studio": "Kyoshiro",
+  "developer": "Kyoshiro",
+  "author": "Kyoshiro",
+  "updatedAt": "2026-11-19",
   "sdk": {
     "version": "1.1",
     "cloudSave": true
@@ -17,12 +22,16 @@
       "minSessionSeconds": 30
     }
   ],
-  "description": "HOLLOW WOODS: The Fog That Remembers là tựa game sinh tồn kinh dị kết hợp giải đố 2D Pixel Art, đưa bạn vào không khí u ám của ngôi làng cổ Bellhollow — nơi từng được che chở bởi Tiếng Chuông Thanh Tẩy nhưng nay đang bị màn sương mù ký ức nuốt chửng.\n\nBối cảnh & Cốt truyện\nTrong vai lữ hành The Mossbound Wayfarer, bạn tỉnh dậy trên con đường độc đạo dẫn vào Bellhollow khi lối về phía sau đã bị sương đặc khóa chặt. Để tìm đường thoát, bạn phải gặp gỡ những cư dân cuối cùng (Garth, bà Edda, y sư Neris, thợ rèn Bram) nhằm khám phá lời nguyền quả chuông cổ và tiến vào đầm lầy sâu thẳm.\n\nCơ chế Gameplay & Sinh tồn\n- Quản lý 4 chỉ số: Cân bằng liên tục giữa Sinh Lực, Thể Lực (rơi vào Kiệt Sức nếu chạy cạn về 0), Dầu Đèn và Bình Tâm.\n- Ánh sáng & Tâm lý: Khi tắt đèn hoặc vào rừng sâu, Bình Tâm sẽ giảm dần. Nếu chạm đáy, bạn sẽ rơi vào Hoảng Loạn khiến tầm nhìn tối sầm, bước chân nặng nề và mất máu liên tục cho đến khi tìm lại ánh lửa.\n- Thu thập & Chế tạo: Khám phá Làng Bellhollow, Bìa Rừng, Đường Mòn và Đầm Lầy để nhặt Gỗ Khô, Đá Lửa, Thảo Dược Bạc, Nhựa Thông; chế tạo Thuốc Đắp, Dầu Đèn và Mồi Tạo Tiếng Động tại lò rèn.\n- Đấu trí với The Listener: Thực thể mù săn mồi bằng thính giác. Tiếng chạy hay vung gậy sẽ khiến nó chuyển từ Tuần Tra sang Cảnh Giác, Truy Đuổi và Tìm Kiếm. Hãy ẩn nấp trong bụi rậm [E] hoặc ném mồi [Q] để đánh lạc hướng.\n- Giải mã Cổ Ngữ: Lần theo ký hiệu trên thân cây cổ thụ, kích hoạt đúng thứ tự các cột đá Cổ Ngữ để gióng lên Tiếng Chuông Thanh Tẩy.\n\nPhím điều khiển\n- WASD / Mũi tên: Di chuyển | Giữ Shift: Chạy nhanh\n- [E]: Thu thập, trò chuyện, nấp bụi | [F]: Bật/Tắt đèn\n- Chuột trái / Space: Đánh | [1] Thuốc | [2] Dầu | [Q] Ném mồi\n- [I] Chế tạo | [J] Nhiệm vụ | [ESC] Tạm dừng",
-  "shortDescription": "Game sinh tồn kinh dị & giải đố 2D Pixel Art. Giữ sáng đèn lồng, ẩn nấp trước thực thể mù The Listener và giải mã Cổ Ngữ cứu lấy ngôi làng cổ Bellhollow.",
+  "description": "HOLLOW WOODS: The Fog That Remembers (Bản Cập Nhật V1.5 Production Release) là tựa game sinh tồn kinh dị 2D Pixel Art đỉnh cao kết hợp giải đố môi trường, đưa bạn vào hành trình cứu rỗi ngôi làng cổ Bellhollow khi Màn Sương Ký Ức trỗi dậy nuốt chửng vạn vật.\n\nBối Cảnh & Cốt Truyện V1.5\nTrong vai lữ hành The Mossbound Wayfarer, bạn thức tỉnh trên con đường độc đạo dẫn vào Bellhollow. Cùng với cư dân làng (Trưởng thôn Morwen, Bà lão Edda, Thợ săn Kael, Y sư Neris, Thợ rèn Orin) và Kỵ Sĩ Trầm Mặc Sir Vaelen tại Trạm Lửa Rừng Tĩnh Lặng, bạn sẽ vén màn bi kịch Đoàn Kỵ Sĩ Cổ Xưa và đối mặt với Kẻ Nuốt Tiếng Chuông (SHADOW Series) tại Miếu Chuông Phế Tích.\n\nCơ Chế Gameplay & Sinh Tồn Don't Starve Together Style\n- Quản lý 4 chỉ số sinh tồn: Sinh Lực (HP), Thể Lực (Stamina), Dầu Đèn (Lantern Oil) và Bình Tâm (Composure).\n- Áp lực bóng đêm & Bào mòn Tinh thần: Khi tắt đèn hoặc dấn thân vào rừng sâu, Bình Tâm suy kiệt sẽ thu hẹp tầm nhìn động, làm dồn dập nhịp tim và rút máu liên tục.\n- Giao diện Túi Đồ & Chế Tạo Don't Starve: Thanh 8 ô túi đồ nền giấy da sáng ấm + 4 ô trang bị cá nhân ở đáy màn hình, thanh ghim nhanh dọc cạnh trái và Bảng Chế Tạo 4 tầng mở rộng [I]/[C] tiện lợi.\n- Đấu trí thính giác với The Listener và Boss SHADOW Series: Ẩn nấp trong bụi rậm, ném mồi đánh lạc hướng và giải mã 3 Trụ Phong Ấn Mạch Rễ để hạ gục Boss.",
+  "shortDescription": "Game sinh tồn kinh dị & giải đố 2D Pixel Art V1.5. Giữ sáng đèn lồng, quản lý Bình Tâm, chế tác trang bị phong cách Don't Starve và giải mã Miếu Chuông Phế Tích.",
   "entry": "index.html",
   "engine": "webgl",
   "engineInfo": "Phaser 3.80.1",
   "orientation": "landscape",
+  "resolution": {
+    "width": 1280,
+    "height": 720
+  },
   "minViewport": {
     "width": 960,
     "height": 540
@@ -45,15 +54,18 @@
     "vi"
   ],
   "controls": {
-    "keyboard": "WASD / Mũi tên: Di chuyển | Giữ Shift: Chạy nhanh | [E]: Tương tác, đọc giấy, nấp bụi | [F]: Đèn | Chuột trái / Space: Đánh | [1] Thuốc | [2] Dầu | [Q] Ném mồi | [I]/[C] Chế tạo | [J] Sổ tay | [ESC] Tạm dừng | [F8] Gỡ kẹt | [F9] Debug"
+    "keyboard": "WASD / Mũi tên: Di chuyển | Giữ Shift: Chạy nhanh | [E]: Tương tác, thu thập, nấp bụi | [F]: Đèn lồng | Chuột trái / Space: Tấn công | [1]..[8]: Túi đồ nhanh | [Q]: Ném mồi | [I]/[C]: Bảng Chế Tạo DST | [J]: Sổ Tay Lữ Khách | [N]: La Bàn | [ESC]: Tạm dừng | [F8]: Gỡ kẹt | [F9]: Debug"
   },
   "assets": {
-    "icon": "store/icon.png",
-    "cover": "store/cover.png",
+    "avatar": "media/avatar_512x512.png",
+    "icon": "media/avatar_512x512.png",
+    "cover": "media/cover_banner_1280x720.png",
+    "background": "media/cover_banner_1280x720.png",
     "screenshots": [
-      "store/screenshot1.png",
-      "store/screenshot2.png",
-      "store/screenshot3.png"
+      "media/screen_01_bellhollow_v15.png",
+      "media/screen_02_sir_vaelen_fire.png",
+      "media/screen_03_crafting_ui.png",
+      "media/screen_04_boss_shadow.png"
     ]
   },
   "permissions": [
