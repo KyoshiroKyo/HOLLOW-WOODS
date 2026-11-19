@@ -385,13 +385,30 @@ export class QuickCraftSidebar {
     const cardW = QuickCraftSidebar.FLYOUT_WIDTH;
     const cardH = QuickCraftSidebar.FLYOUT_HEIGHT;
 
-    // 1. Nền thẻ giấy da cổ Don't Starve (Warm Parchment with dark carved wood border)
+    // 1. Mũi tên tam giác chạm khắc trỏ sang trái (Connecting Bracket Pointer - Don't Starve Style)
+    // Nối trực tiếp từ mép trái thẻ vào ô công thức đang chọn trên thanh dọc
+    const pointer = this.scene.add.graphics();
+    pointer.fillStyle(0x1a120b, 0.98);
+    pointer.fillTriangle(0, -9, -11, 0, 0, 9);
+    pointer.lineStyle(1.8, 0x5c4224, 0.95);
+    pointer.strokeTriangle(0, -9, -11, 0, 0, 9);
+    pointer.fillStyle(0xede4d1, 0.98);
+    pointer.fillTriangle(1, -6, -8, 0, 1, 6);
+    this.flyoutContainer.add(pointer);
+
+    // 2. Nền thẻ giấy da cổ Don't Starve (Warm Parchment with dark carved wood border)
     const cardBg = this.scene.add.graphics();
     // Khung gỗ viền ngoài
     cardBg.fillStyle(0x1a120b, 0.96);
     cardBg.fillRoundedRect(0, -cardH / 2, cardW, cardH, 6);
     cardBg.lineStyle(1.8, 0x5c4224, 0.95);
     cardBg.strokeRoundedRect(0, -cardH / 2, cardW, cardH, 6);
+
+    // Họa tiết chạm khắc vòm đỉnh (Ornate Top Crest Notch)
+    cardBg.fillStyle(0x28190e, 0.98);
+    cardBg.fillRoundedRect(cardW / 2 - 34, -cardH / 2 - 4, 68, 7, 3);
+    cardBg.lineStyle(1.5, 0x5c4224, 0.95);
+    cardBg.strokeRoundedRect(cardW / 2 - 34, -cardH / 2 - 4, 68, 7, 3);
 
     // Nền giấy da sáng ấm bên trong
     cardBg.fillStyle(0xede4d1, 0.98);
@@ -407,22 +424,17 @@ export class QuickCraftSidebar {
     cardBg.fillRect(cardW - 7, cardH / 2 - 7, 2, 2);
     this.flyoutContainer.add(cardBg);
 
-    // 2. Tiêu đề món đồ & Icon thành phẩm
-    const iconChar = this.getRecipeIconChar(recipe);
-    const titleIcon = HDTextHelper.createText(this.scene, 14, -cardH / 2 + 10, iconChar, {
-      fontSize: '18px'
-    });
-
-    const titleText = HDTextHelper.createText(this.scene, 40, -cardH / 2 + 11, recipe.name, {
+    // 3. Tiêu đề món đồ căn giữa (Centered Title - Don't Starve Gothic Serif Style)
+    const titleText = HDTextHelper.createText(this.scene, cardW / 2, -cardH / 2 + 10, recipe.name, {
       fontSize: '12.5px',
       fontStyle: 'bold',
       color: '#2d1e12',
-      stroke: '#ffffff',
-      strokeThickness: 1.5
-    });
+      stroke: '#f5eedc',
+      strokeThickness: 1
+    }).setOrigin(0.5, 0);
 
     // Huy hiệu số lượng tạo ra (+1 hoặc +2)
-    const yieldBadge = HDTextHelper.createText(this.scene, cardW - 14, -cardH / 2 + 12, `x${recipe.resultCount}`, {
+    const yieldBadge = HDTextHelper.createText(this.scene, cardW - 14, -cardH / 2 + 11, `x${recipe.resultCount}`, {
       fontSize: '10px',
       fontStyle: 'bold',
       color: '#7f5539'
@@ -430,74 +442,84 @@ export class QuickCraftSidebar {
 
     // Đường gạch chỉ ngăn cách nhẹ
     const divLine = this.scene.add.graphics();
-    divLine.lineStyle(1, 0xb89058, 0.5);
-    divLine.lineBetween(12, -cardH / 2 + 34, cardW - 12, -cardH / 2 + 34);
+    divLine.lineStyle(1, 0xb89058, 0.45);
+    divLine.lineBetween(14, -cardH / 2 + 27, cardW - 14, -cardH / 2 + 27);
 
-    // Mô tả tác dụng ngắn gọn
-    const descText = HDTextHelper.createText(this.scene, 14, -cardH / 2 + 38, recipe.description || 'Chế tạo vật phẩm sinh tồn.', {
-      fontSize: '10px',
-      fontStyle: 'italic',
-      color: '#5c4734',
-      wordWrap: { width: cardW - 28 }
-    });
+    this.flyoutContainer.add([titleText, yieldBadge, divLine]);
 
-    this.flyoutContainer.add([titleIcon, titleText, yieldBadge, divLine, descText]);
-
-    // 3. Dàn hàng ngang các ô nguyên liệu cần thiết (Ingredient Badges)
+    // 4. Dãy các ô nguyên liệu hình vuông căn giữa (Centered Square Ingredient Boxes)
     const ingredients = recipe.ingredients || [];
-    const ingY = -cardH / 2 + 74;
-    const badgeW = Math.min(68, (cardW - 28 - (ingredients.length - 1) * 6) / Math.max(1, ingredients.length));
-    const badgeH = 32;
+    const badgeSize = 36;
+    const badgeGap = 8;
+    const totalBadgeW = ingredients.length * badgeSize + Math.max(0, ingredients.length - 1) * badgeGap;
+    const startBadgeX = Math.max(12, (cardW - totalBadgeW) / 2);
+    const ingY = -cardH / 2 + 31;
 
     for (let k = 0; k < ingredients.length; k++) {
       const ing = ingredients[k];
       const hasCount = this.playerState.getItemCount(ing.itemId);
       const isEnough = (hasCount >= ing.count);
-      const badgeX = 14 + k * (badgeW + 6);
+      const badgeX = startBadgeX + k * (badgeSize + badgeGap);
 
       const badgeGfx = this.scene.add.graphics();
       if (isEnough) {
-        // Nền xanh thảo mộc khi đủ nguyên liệu
+        // Nền giấy da sáng ấm pha ánh xanh thảo mộc khi đủ nguyên liệu (2/2)
         badgeGfx.fillStyle(0x27ae60, 0.9);
-        badgeGfx.fillRoundedRect(badgeX, ingY, badgeW, badgeH, 3);
+        badgeGfx.fillRoundedRect(badgeX, ingY, badgeSize, badgeSize, 4);
         badgeGfx.lineStyle(1.2, 0x2ecc71, 0.95);
-        badgeGfx.strokeRoundedRect(badgeX, ingY, badgeW, badgeH, 3);
+        badgeGfx.strokeRoundedRect(badgeX, ingY, badgeSize, badgeSize, 4);
+        // Lõi giấy sáng bên trong
+        badgeGfx.fillStyle(0xede4d1, 0.94);
+        badgeGfx.fillRoundedRect(badgeX + 2, ingY + 2, badgeSize - 4, badgeSize - 4, 3);
+        badgeGfx.lineStyle(0.8, 0x8c7853, 0.3);
+        badgeGfx.strokeRoundedRect(badgeX + 2, ingY + 2, badgeSize - 4, badgeSize - 4, 3);
       } else {
-        // Nền đỏ mềm khi thiếu nguyên liệu (0/2)
+        // Nền đỏ sẫm cảnh báo khi thiếu nguyên liệu (0/2) giống hệt ảnh DST 1
         badgeGfx.fillStyle(0x78281f, 0.92);
-        badgeGfx.fillRoundedRect(badgeX, ingY, badgeW, badgeH, 3);
+        badgeGfx.fillRoundedRect(badgeX, ingY, badgeSize, badgeSize, 4);
         badgeGfx.lineStyle(1.2, 0xc0392b, 0.95);
-        badgeGfx.strokeRoundedRect(badgeX, ingY, badgeW, badgeH, 3);
+        badgeGfx.strokeRoundedRect(badgeX, ingY, badgeSize, badgeSize, 4);
       }
 
       const ingInfo = this.getIngredientInfo(ing.itemId);
-      // Icon + Tên ngắn
-      const ingNameTxt = HDTextHelper.createText(this.scene, badgeX + badgeW / 2, ingY + 4, `${ingInfo.icon} ${ingInfo.shortName}`, {
-        fontSize: '9px',
-        fontStyle: 'bold',
-        color: '#ffffff',
-        stroke: '#000000',
-        strokeThickness: 1
-      }).setOrigin(0.5, 0);
+      // Icon nguyên liệu lớn ở giữa ô kèm tham chiếu tên ngắn ingInfo.shortName
+      const iconTxt = HDTextHelper.createText(this.scene, badgeX + badgeSize / 2, ingY + 12, ingInfo.icon, {
+        fontSize: '15px'
+      }).setOrigin(0.5, 0.5);
 
-      // Số lượng: has/need
-      const ingCountTxt = HDTextHelper.createText(this.scene, badgeX + badgeW / 2, ingY + 17, `${hasCount}/${ing.count}`, {
+      // Tên ngắn nguyên liệu hiển thị tinh tế (ingInfo.shortName)
+      const ingShortName = ingInfo.shortName;
+      void ingShortName;
+
+      // Số lượng: has/need ở đáy ô (ví dụ 2/2 hoặc 0/8)
+      const ingCountTxt = HDTextHelper.createText(this.scene, badgeX + badgeSize / 2, ingY + badgeSize - 3, `${hasCount}/${ing.count}`, {
         fontSize: '9.5px',
         fontStyle: 'bold',
-        color: isEnough ? '#ffffff' : '#ffd2d2',
-        stroke: '#000000',
-        strokeThickness: 1.2
-      }).setOrigin(0.5, 0);
+        color: isEnough ? '#2d1e12' : '#ffffff',
+        stroke: isEnough ? '#ede4d1' : '#57130e',
+        strokeThickness: 1
+      }).setOrigin(0.5, 1);
 
-      this.flyoutContainer.add([badgeGfx, ingNameTxt, ingCountTxt]);
+      this.flyoutContainer.add([badgeGfx, iconTxt, ingCountTxt]);
     }
 
-    // 4. Nút [Chế Tạo] trực tiếp (Direct Craft Button)
+    // 5. Mô tả tác dụng ngắn gọn căn giữa bên dưới hàng ô nguyên liệu
+    const descY = ingY + badgeSize + 5;
+    const descText = HDTextHelper.createText(this.scene, cardW / 2, descY, recipe.description || 'Chế tạo vật phẩm sinh tồn.', {
+      fontSize: '9.5px',
+      fontStyle: 'italic',
+      color: '#5c4734',
+      align: 'center',
+      wordWrap: { width: cardW - 24 }
+    }).setOrigin(0.5, 0);
+    this.flyoutContainer.add(descText);
+
+    // 6. Nút [Chế Tạo] trực tiếp căn giữa dưới cùng (Centered Prototype / Build Button)
     const canCraft = this.craftingSystem.canCraft(recipe);
-    const btnW = 104;
+    const btnW = 116;
     const btnH = 26;
-    const btnX = cardW - btnW - 14;
-    const btnY = cardH / 2 - btnH - 10;
+    const btnX = (cardW - btnW) / 2;
+    const btnY = cardH / 2 - btnH - 8;
 
     const craftBtnBg = this.scene.add.graphics();
     const drawCraftBtn = (hover: boolean) => {
@@ -542,7 +564,7 @@ export class QuickCraftSidebar {
 
     this.flyoutContainer.add([craftBtnBg, craftBtnText, craftZone]);
 
-    // 5. Vùng theo dõi chuột trên toàn Thẻ Nổi (chống đóng khi di chuột từ ô ghim sang thẻ)
+    // 7. Vùng theo dõi chuột trên toàn Thẻ Nổi (chống đóng khi di chuột từ ô ghim sang thẻ)
     const cardZone = this.scene.add.zone(cardW / 2, 0, cardW, cardH).setInteractive();
     cardZone.on('pointerover', () => {
       this.isMouseOverFlyout = true;

@@ -198,6 +198,24 @@ flowchart LR
     * Biên dịch sạch sẽ Vite Production Build 0 lỗi (`npm run build`).
     * Cập nhật gói Web Release `release/p2game/hollow-woods-p2game-v1.5.0.zip` (51.53 MB) và gói `release/gemini_review/hollow-woods-v1.5-source-for-gemini.zip` (1.36 MB).
 
+### Giai đoạn 17: Dựng Trạm Lửa Rừng Tĩnh Lặng, NPC Sir Vaelen & Kết Nối Nhạc Nền Bếp Lửa (V15-37)
+- **V15-37:** Dựng Trạm Lửa Rừng Tĩnh Lặng tại rìa đường mòn nối Rừng Ngoài sang Rừng Sâu (X = 1470, Y = 710):
+  + **Bếp Lửa Hồng Đá Cổ & Sanctuary Aura 4 tầng:** Quầng sáng ấm áp đa sắc phát quang mịn (bán kính 180px, 105px, 60px, 28px) xua đuổi quái vật, sưởi ấm thân nhiệt, hong khô độ ẩm và hồi phục Tinh Thần.
+  + **Bộ trang bị hành quân cổ:** Dựng phiến đá ngồi nghỉ phong hóa (1504, 718), rương quân nhu sồi bọc sắt (1498, 690), khiên tròn kỵ sĩ & gươm cắm đất (1444, 690), bó củi khô xếp gọn (1484, 736) và ấm đồng đun nước trên than hồng (1460, 718).
+  + **NPC Sir Vaelen — Kỵ Sĩ Trầm Mặc:** Sprite hiệp sĩ thật từ gói `2D_SL_Knight`, dáng quỳ cầu nguyện canh lửa (`anim_campfire_knight_pray` 12 frames) và đứng đối thoại (`anim_campfire_knight_idle` 8 frames), hitbox chân đế chuẩn dương `(22×14px, offset: 21, 50)`.
+  + **Kết nối BGM "The Knight's Quiet Fire":** Tự động crossfade (1.5s) sang bản nhạc `bgm_knights_quiet_fire` khi người chơi bước vào bán kính $\le 180\text{px}$ quanh bếp lửa hoặc Sir Vaelen, và trả lại âm thanh rừng khi rời đi.
+
+### Giai đoạn 18: Tương Tác Ngồi Nghỉ Ngơi Bên Đốm Lửa, Lời Chúc Sir Vaelen & Hiệu Ứng Hồi Phục Tinh Thần (V15-38)
+- **V15-38:** Bổ sung tương tác nghỉ ngơi bên đốm lửa và đoạn thoại lời chúc sâu lắng của Sir Vaelen:
+  + **Lựa chọn tương tác:** Bổ sung tùy chọn `[Đặt vũ khí xuống & Nghỉ ngơi bên đốm lửa]` trong toàn bộ các phân nhánh hội thoại của Sir Vaelen (`campfire_knight_intro`, `q1_reminder`, `q2_reminder`, `q3_reminder`, `idle_talk`).
+  + **Lời chúc phân tầng theo ký ức & Châm ngôn "Audentes Fortuna Iuvat":**
+    * *Stage 0–2 (Lữ khách):* Sir Vaelen chúc phúc cho lữ khách vững tâm trước sương lạnh: *"Nghỉ ngơi đi, người lữ khách... Audentes Fortuna Iuvat — Vận may luôn mỉm cười với kẻ quả cảm."*
+    * *Stage 3 (Hiệp Sĩ Đen):* Chuyển lời chúc sang vị chỉ huy đồng đội: *"Nghỉ ngơi đi, người anh em. Ngày mai, chúng ta lại đứng dậy... Audentes Fortuna Iuvat — Vận may luôn mỉm cười với kẻ quả cảm."* Đồng thời tự động ghi nhận câu châm ngôn vào trang kỷ niệm của Sir Vaelen trong Sổ Tay Lữ Khách [J] (`lore_campfire_knight_vow`).
+  + **Cơ chế hồi phục Tinh Thần & Bùa chú kiên định:**
+    * Sau khi nghe xong lời chúc (hồi chiêu 1 lần mỗi chu kỳ ngày/đêm): Hồi phục nhanh **+35 điểm Tinh Thần (Sanity)**, hong khô hoàn toàn Độ Ẩm (`moisture = 0`).
+    * Ban hiệu ứng **"Lời Chúc Bên Đốm Lửa" (Campfire Blessing):** Giảm **20% tốc độ tụt Tinh Thần** trong **120 giây** tiếp theo khi bước sâu vào rừng hoang sương giá.
+  + **Kiểm toán toàn diện:** 12/12 unit test bước V15-38 đạt 100%, 73/73 bài kiểm toán bản đồ BFS thông suốt và biên dịch Production Build thành công 100% trong 10.45s.
+
 ---
 
 ## 3. DANH MỤC CÁC BẢN ĐÓNG GÓI PHÁT HÀNH CHÍNH THỨC V1.5

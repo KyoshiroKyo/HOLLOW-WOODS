@@ -29,6 +29,7 @@ import { ZoneId, WorldTier } from '../types';
 import { WorldGatingSystem } from '../world/WorldGatingSystem';
 import { ZoneConnectionRegistry } from '../world/ZoneConnectionRegistry';
 import { AudioManager } from '../audio/AudioManager';
+import { QuestSystem } from '../systems/QuestSystem';
 import { ItemTooltipHelper } from './ItemTooltipHelper';
 import {
   PORTRAIT_SKULL_WOLF,
@@ -675,8 +676,13 @@ export class JournalModal {
       return;
     }
 
+    const questSystem = QuestSystem.getInstance();
+    const stageInfo = questSystem.getCurrentStageInfo(this.playerState);
+
     const isSide = currentQ.category === 'side';
-    const tagText = isSide ? '[NHIỆM VỤ PHỤ]' : '[NHIỆM VỤ CHÍNH]';
+    const tagText = isSide
+      ? '[NHIỆM VỤ PHỤ]'
+      : `[NHIỆM VỤ CHÍNH — LỘ TRÌNH 7 CHẶNG: CHẶNG ${stageInfo.stageNumber}/7]`;
     const tagColor = isSide ? '#00d2d3' : '#f39c12';
 
     const qTag = HDTextHelper.createText(this.scene, mx + 30, my + 66, tagText, {
@@ -686,8 +692,9 @@ export class JournalModal {
     });
 
     // Cột bên trái: Chi tiết nhiệm vụ chính/phụ hiện tại
-    const qTitle = HDTextHelper.createText(this.scene, mx + 30, my + 84, currentQ.title, {
-      fontSize: '17px',
+    const displayTitle = isSide ? currentQ.title : stageInfo.title;
+    const qTitle = HDTextHelper.createText(this.scene, mx + 30, my + 84, displayTitle, {
+      fontSize: '16px',
       fontStyle: 'bold',
       color: '#e67e22',
       stroke: '#000000',
@@ -695,11 +702,21 @@ export class JournalModal {
       wordWrap: { width: mw / 2 - 50 }
     });
 
-    const qDesc = HDTextHelper.createText(this.scene, mx + 30, my + 118, currentQ.description, {
-      fontSize: '12.5px',
+    const destinationGuide = isSide
+      ? ''
+      : `🧭 Mục tiêu: ${stageInfo.targetZoneName} (Hướng ${stageInfo.directionHint})`;
+    const qGuide = HDTextHelper.createText(this.scene, mx + 30, my + 108, destinationGuide, {
+      fontSize: '12px',
+      fontStyle: 'bold',
+      color: '#3498db'
+    });
+
+    const displayDesc = isSide ? currentQ.description : stageInfo.description;
+    const qDesc = HDTextHelper.createText(this.scene, mx + 30, my + 130, displayDesc, {
+      fontSize: '12px',
       color: '#bdc3c7',
       wordWrap: { width: mw / 2 - 50 },
-      lineSpacing: 5
+      lineSpacing: 4
     });
 
     const taskTitle = HDTextHelper.createText(this.scene, mx + 30, my + 185, 'MỤC TIÊU CẦN LÀM:', {
@@ -708,8 +725,11 @@ export class JournalModal {
       color: '#f1c40f'
     });
 
+    this.contentContainer.add([qTag, qTitle, qGuide, qDesc, taskTitle]);
+
     let taskY = my + 210;
-    for (const task of currentQ.tasks) {
+    const tasksToDisplay = isSide ? currentQ.tasks : stageInfo.tasks;
+    for (const task of tasksToDisplay) {
       const mark = task.done ? '☑' : '☐';
       const color = task.done ? '#2ecc71' : '#f8f9fa';
       const t = HDTextHelper.createText(this.scene, mx + 30, taskY, `${mark} ${task.text}`, {

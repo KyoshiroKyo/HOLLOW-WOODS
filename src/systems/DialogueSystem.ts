@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import dialoguesData from '../data/dialogues.json';
 import { PlayerState } from '../state/PlayerState';
 import { AudioManager } from '../audio/AudioManager';
+import { CampSanctuarySystem } from './CampSanctuarySystem';
 
 export interface DialogueChoice {
   text: string;
@@ -90,6 +91,24 @@ export class DialogueSystem {
   public startDialogue(dialogueKey: string): void {
     // C4-132-02: Khóa cứng sự kiện tua thoại trong 260ms đầu tiên để cú nhấn [E] mở thoại không bao giờ nuốt mất câu số 1
     this.lastAdvanceTime = Date.now();
+
+    // V15-38: Điều hướng lựa chọn Nghỉ ngơi bên đốm lửa của Sir Vaelen theo tiến trình ký ức & hồi chiêu
+    if (dialogueKey === 'campfire_knight_rest_blessing') {
+      const audioMgr = (this.scene as any).audioManager as AudioManager;
+      if (audioMgr && typeof audioMgr.playBGM === 'function') {
+        audioMgr.playBGM('bgm_knights_quiet_fire', 1.5, 0.95);
+      }
+
+      const campSys = CampSanctuarySystem.getInstance();
+      const currentDay = (this.scene as any).timeSystem ? (this.scene as any).timeSystem.dayCount : PlayerState.getInstance().dayCount;
+      if (!campSys.canReceiveBlessing(currentDay)) {
+        dialogueKey = 'campfire_knight_rest_cooldown';
+      } else {
+        const stage = PlayerState.getInstance().memoryAwakeningStage;
+        const isStage3 = stage >= 3 || PlayerState.getInstance().hasFlag('campfire_knight_q3_completed');
+        dialogueKey = isStage3 ? 'campfire_knight_rest_blessing_stage3' : 'campfire_knight_rest_blessing_stage0_2';
+      }
+    }
 
     const rawData = (dialoguesData.dialogues as Record<string, DialoguePayload>)[dialogueKey];
     if (!rawData) {
@@ -333,6 +352,34 @@ export class DialogueSystem {
       state.stats.health = state.stats.maxHealth;
       state.stats.composure = state.stats.maxComposure;
       state.emit('stats_changed', state.stats);
+    }
+
+    // 5. V15-38: Kích hoạt hiệu ứng sau khi nghe lời chúc nghỉ ngơi của Sir Vaelen
+    if (
+      payload.onCompleteFlag === 'vaelen_blessing_stage0_2_received' ||
+      payload.onCompleteFlag === 'vaelen_blessing_stage3_received'
+    ) {
+      const campSys = CampSanctuarySystem.getInstance();
+      const currentDay = (this.scene as any).timeSystem ? (this.scene as any).timeSystem.dayCount : state.dayCount;
+      campSys.recordBlessingReceived(currentDay);
+      campSys.applyCampfireBlessing(120);
+
+      // Hồi phục nhanh 35 điểm Tinh Thần & hong khô hoàn toàn Độ Ẩm
+      state.stats.composure = Math.min(state.stats.maxComposure, state.stats.composure + 35);
+      state.stats.moisture = 0;
+      state.emit('stats_changed', state.stats);
+
+      if (payload.onCompleteFlag === 'vaelen_blessing_stage3_received') {
+        state.unlockLore('lore_campfire_knight_vow');
+      }
+
+      const uiScene = (this.scene as any).uiScene;
+      if (uiScene && typeof uiScene.showPopupMessage === 'function') {
+        uiScene.showPopupMessage('🔥 [LỜI CHÚC BÊN ĐỐM LỬA]: +35 Tinh Thần, Hong khô hoàn toàn Độ Ẩm! Nhận bùa chú kiên định (-20% tụt Tinh Thần trong 120s).');
+        if (payload.onCompleteFlag === 'vaelen_blessing_stage3_received') {
+          uiScene.showPopupMessage('📖 SỔ TAY LỮ KHÁCH [J]: Đã ghi nhận câu châm ngôn "Audentes Fortuna Iuvat" vào Trang Kỷ Niệm của Sir Vaelen!');
+        }
+      }
     }
 
     if (this.typewriterTimer) {

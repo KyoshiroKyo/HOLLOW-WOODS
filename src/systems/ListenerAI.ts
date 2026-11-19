@@ -171,7 +171,15 @@ export class ListenerAI {
     return x <= ListenerAI.SAFE_ZONE_BORDER_X;
   }
 
-  public update(delta: number, playerX: number, playerY: number, isPlayerHiding: boolean, isPlayerDead: boolean = false, timePhase?: TimePhase): void {
+  public update(
+    delta: number, 
+    playerX: number, 
+    playerY: number, 
+    isPlayerHiding: boolean, 
+    isPlayerDead: boolean = false, 
+    timePhase?: TimePhase,
+    isLanternLit: boolean = false
+  ): void {
     if (timePhase && timePhase !== this.currentPhase) {
       this.setTimePhase(timePhase);
     }
@@ -203,13 +211,13 @@ export class ListenerAI {
 
     switch (this.state) {
       case 'PATROL':
-        this.updatePatrol(delta, playerX, playerY, isPlayerHiding, shouldUpdatePath);
+        this.updatePatrol(delta, playerX, playerY, isPlayerHiding, shouldUpdatePath, isLanternLit);
         break;
 
       case 'ALERT':
       case 'ALERT_TELEGRAPH':
       case 'INVESTIGATE_SOUND':
-        this.updateAlert(delta, playerX, playerY, isPlayerHiding, shouldUpdatePath);
+        this.updateAlert(delta, playerX, playerY, isPlayerHiding, shouldUpdatePath, isLanternLit);
         break;
 
       case 'CHASE':
@@ -266,7 +274,7 @@ export class ListenerAI {
   /**
    * TRẠNG THÁI 1: PATROL (Tuần tra tự nhiên trong khu vực rừng)
    */
-  private updatePatrol(delta: number, playerX: number, playerY: number, isPlayerHiding: boolean, shouldUpdatePath: boolean): void {
+  private updatePatrol(delta: number, playerX: number, playerY: number, isPlayerHiding: boolean, shouldUpdatePath: boolean, isLanternLit: boolean = false): void {
     if (this.waypoints.length === 0) return;
 
     // 1. Kiểm tra tầm nhìn phát hiện người chơi (Line of Sight Check)
@@ -274,7 +282,9 @@ export class ListenerAI {
       // Nếu người chơi ở ngoài làng Bellhollow
       if (!this.isInsideSafeZone(playerX)) {
         const distToPlayer = Math.hypot(this.listener.x - playerX, this.listener.y - playerY);
-        if (distToPlayer <= 130) {
+        // V15-58B: Nghịch lý ánh sáng [F] - Khi bật đèn lồng: tăng +30% tầm phát hiện thị giác (130 -> 169px)
+        const detectRange = isLanternLit ? Math.round(130 * 1.3) : 130;
+        if (distToPlayer <= detectRange) {
           this.forceChase();
           return;
         }
@@ -308,7 +318,7 @@ export class ListenerAI {
   /**
    * TRẠNG THÁI 2: ALERT (Phát hiện nghi vấn — Hiện dấu [?] vàng & đi tới nguồn âm thanh)
    */
-  private updateAlert(delta: number, playerX: number, playerY: number, isPlayerHiding: boolean, shouldUpdatePath: boolean): void {
+  private updateAlert(delta: number, playerX: number, playerY: number, isPlayerHiding: boolean, shouldUpdatePath: boolean, isLanternLit: boolean = false): void {
     // 1. Pha Telegraph dừng lại lắng nghe (V1.4 - P8-03: nghi ngờ nghe ngóng, xoay đầu về hướng âm thanh)
     if (this.alertTimer > 0) {
       this.alertTimer -= delta;
@@ -326,7 +336,9 @@ export class ListenerAI {
     // 2. Kiểm tra nếu thấy người chơi trên đường đi tới nguồn âm thanh
     if (!isPlayerHiding && this.detectionCooldown <= 0 && !this.isInsideSafeZone(playerX)) {
       const distToPlayer = Math.hypot(this.listener.x - playerX, this.listener.y - playerY);
-      if (distToPlayer <= 125) {
+      // V15-58B: Nghịch lý ánh sáng [F] - Khi bật đèn lồng: tăng +30% tầm phát hiện thị giác (125 -> 163px)
+      const detectRange = isLanternLit ? Math.round(125 * 1.3) : 125;
+      if (distToPlayer <= detectRange) {
         this.forceChase();
         return;
       }

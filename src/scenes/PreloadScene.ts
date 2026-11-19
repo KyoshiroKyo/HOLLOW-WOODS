@@ -105,6 +105,13 @@ import {
   SPRITE_TREE_MOSSY_OAK_GRAND_V15,
   SPRITE_TREE_WEEPING_WILLOW_V15,
   SPRITE_TREE_WITHERED_GNARLED_V15,
+  SPRITE_TREE_OAK_1,
+  SPRITE_TREE_OAK_2,
+  SPRITE_TREE_OAK_3,
+  SPRITE_TREE_DEAD,
+  SPRITE_HOLLOW_TREE,
+  SPRITE_BUSH_DENSE_1,
+  SPRITE_BUSH_DENSE_2,
   SPRITE_DECAL_WILD_GRASS_V15,
   SPRITE_DECAL_FERN_CLUSTER_V15,
   SPRITE_DECAL_GLOWING_MUSHROOMS_V15,
@@ -552,6 +559,24 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image(SPRITE_TREE_MOSSY_OAK_GRAND_V15, 'assets/environment/trees/tree_mossy_oak_grand.png');
     this.load.image(SPRITE_TREE_WEEPING_WILLOW_V15, 'assets/environment/trees/tree_weeping_willow.png');
     this.load.image(SPRITE_TREE_WITHERED_GNARLED_V15, 'assets/environment/trees/tree_withered_gnarled.png');
+
+    // V15-61: Nạp đầy đủ bộ Sprite Cây Cối & Bụi Rậm Pixel Art Thật
+    this.load.image(SPRITE_TREE_OAK_1, 'assets/environment/sprites/tree_oak_1.png');
+    this.load.image(SPRITE_TREE_OAK_2, 'assets/environment/sprites/tree_oak_2.png');
+    this.load.image(SPRITE_TREE_OAK_3, 'assets/environment/sprites/tree_oak_3.png');
+    this.load.image(SPRITE_TREE_DEAD, 'assets/environment/sprites/tree_dead.png');
+    this.load.image(SPRITE_HOLLOW_TREE, 'assets/environment/sprites/hollow_tree.png');
+    this.load.image(SPRITE_BUSH_DENSE_1, 'assets/environment/sprites/bush_dense_1.png');
+    this.load.image(SPRITE_BUSH_DENSE_2, 'assets/environment/sprites/bush_dense_2.png');
+    this.load.image('tree_birch_amber_v14', 'assets/environment/v14/trees/tree_birch_amber_v14.png');
+    this.load.image('tree_maple_crimson_v14', 'assets/environment/v14/trees/tree_maple_crimson_v14.png');
+    this.load.image('tree_oak_mossy_v14', 'assets/environment/v14/trees/tree_oak_mossy_v14.png');
+    this.load.image('tree_dead_withered_v14', 'assets/environment/v14/trees/tree_dead_withered_v14.png');
+    this.load.image('prop_fallen_log_mossy_v14', 'assets/environment/v14/props/prop_fallen_log_mossy_v14.png');
+    this.load.image('tree_hollow_ancient_v14', 'assets/environment/v14/props/tree_hollow_ancient_v14.png');
+    this.load.image('tree_pine_tall_topdown', 'assets/environment/trees/tree_pine_tall_topdown.png');
+    this.load.image('tree_pine_med_topdown', 'assets/environment/trees/tree_pine_med_topdown.png');
+    this.load.image('tree_pine_slender_topdown', 'assets/environment/trees/tree_pine_slender_topdown.png');
 
     this.load.image(SPRITE_DECAL_WILD_GRASS_V15, 'assets/environment/foliage/decal_wild_grass.png');
     this.load.image(SPRITE_DECAL_FERN_CLUSTER_V15, 'assets/environment/foliage/decal_fern_cluster.png');

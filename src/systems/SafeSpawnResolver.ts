@@ -153,34 +153,65 @@ export class SafeSpawnResolver {
   }
 
   /**
-   * Điểm hồi phục an toàn chuẩn theo từng phân khu (Sanctuary Checkpoints)
+   * Điểm hồi phục an toàn chuẩn theo từng phân khu (Sanctuary Checkpoints - V15-57)
+   * Tọa độ trung tâm trục đường mòn thông thoáng, cách xa mọi collider và mép vực.
    */
   public static getSanctuaryFallback(zoneId?: string): { x: number; y: number } {
     switch (zoneId) {
-      case 'outer_woods':
-        // Trạm Lửa Rừng Tĩnh Lặng của Sir Vaelen (khu đất thưa an toàn)
-        return { x: 2360, y: 720 };
-      case 'sanctuary_farm':
-        // Sân Nông Trại Trú Ẩn trước giếng nước
-        return { x: 640, y: 1480 };
-      case 'deep_forest':
-      case 'sub_whispering_clearing':
-      case 'whispering_grove_sanctum':
-        // Cửa ngõ an toàn lối vào Rừng Sâu
-        return { x: 2000, y: 150 };
-      case 'silent_mire':
-      case 'broken_bell_shrine':
-      case 'ancient_ruins':
-        // Bến cầu ván gỗ Đầm Lầy Tĩnh Lặng
-        return { x: 3100, y: 360 };
-      case 'crooked_path':
-        // Lối Mòn Quanh Co trước cột mốc tiền tuyến (vùng đường thoáng đãng)
-        return { x: 1600, y: 340 };
-      case 'bellhollow':
       case 'fog_crossing':
+        // Cửa Ải Sương Mù (bờ hồ nước thanh tịnh)
+        return { x: 240, y: 180 };
+      case 'bellhollow':
+        // Làng Bellhollow (sân trung tâm trước lò rèn Bram & Bếp lửa làng)
+        return { x: 750, y: 260 };
+      case 'sanctuary_farm':
+        // Nông Trại Trú Ẩn (đường mòn trước nông trang & cối xay)
+        return { x: 800, y: 750 };
+      case 'sub_root_cellar':
+        // Hầm Rễ Cổ (lòng hầm trú ẩn bằng phẳng)
+        return { x: 800, y: 1150 };
+      case 'veil_origin_cavern':
+        // Hang Nguồn Cội Của Sương Mù (lòng hang râm mát trung tâm)
+        return { x: 800, y: 1520 };
+      case 'outer_woods':
+        // Rừng Ngoài (trục đường mòn chính trước Trạm Lửa Sir Vaelen)
+        return { x: 1360, y: 620 };
+      case 'sub_bell_workshop':
+        // Xưởng Chuông Bỏ Hoang (sân thợ đúc chuông cổ)
+        return { x: 1360, y: 1150 };
+      case 'crooked_path':
+        // Đường Mòn Quanh Co (trục đường chính thông thoáng)
+        return { x: 2140, y: 200 };
+      case 'sub_whispering_clearing':
+        // Khoảng Trống Thì Thầm (khu đất thưa giữa rừng rậm)
+        return { x: 1840, y: -80 };
+      case 'deep_forest':
+        // Rừng Sâu (trục đường mòn an toàn Hồi 3)
+        return { x: 2080, y: -80 };
+      case 'whispering_grove_sanctum':
+        // Thánh Điạ Rừng Thì Thầm Cổ Thụ
+        return { x: 1600, y: -580 };
+      case 'abyssal_chasm':
+        // Vực Sâu Thăm Thẳm (mặt cầu đá vững chãi trước miệng vực)
+        return { x: 2240, y: -720 };
+      case 'silent_mire':
+        // Đầm Lầy Tĩnh Lặng (đường ván gỗ bắc qua đầm)
+        return { x: 3000, y: 260 };
+      case 'drowned_mire_depths':
+        // Đầm Lầy Chìm Sâu (cồn đất cao ráo)
+        return { x: 3380, y: 840 };
+      case 'ancient_rune_puzzle':
+        // Quảng Trường Cổ Ngữ (trục đường trung tâm câu đố)
+        return { x: 3520, y: 260 };
+      case 'sunken_crypt_ruins':
+        // Phế Tích Hầm Mộ Cổ Ngữ Chìm
+        return { x: 3600, y: -200 };
+      case 'broken_bell_shrine':
+        // Miếu Chuông Phế Tích (sân tế lễ trước tháp chuông rạn nứt)
+        return { x: 4200, y: 280 };
       default:
-        // Cổng Làng Bellhollow / trước Bếp Lửa Làng
-        return { x: 1280, y: 380 };
+        // Cổng Làng Bellhollow mặc định
+        return { x: 750, y: 260 };
     }
   }
 

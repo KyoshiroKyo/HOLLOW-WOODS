@@ -626,6 +626,10 @@
           "nextDialogueKey": "campfire_knight_comrade_bond"
         },
         {
+          "text": "[Đặt vũ khí xuống & Nghỉ ngơi bên đốm lửa]",
+          "nextDialogueKey": "campfire_knight_rest_blessing"
+        },
+        {
           "text": "[Trầm mặc] (Lặng lẽ ngồi xuống sưởi tay bên đốm lửa ấm, ngắm nhìn tàn than bay lên trời đêm)",
           "responseLine": "Sự tĩnh lặng của ngươi khiến ta thấy an tâm lạ kỳ. Hãy nghỉ ngơi lấy sức trước khi bước vào rừng sâu.",
           "trustDelta": 1,
@@ -666,6 +670,15 @@
       "lines": [
         "Gió rừng đang thổi mạnh, ngọn lửa này cần thêm Gỗ Khô và Nhựa Cây để bùng cháy rực rỡ lên Cấp 2.",
         "Hãy cẩn thận khi bước ra bìa Rừng Ngoài. Bật đèn lồng [F] và luôn nhớ nấp vào bụi rậm nếu nghe thấy tiếng quạ kêu báo động nhé!"
+      ],
+      "choices": [
+        {
+          "text": "[Đặt vũ khí xuống & Nghỉ ngơi bên đốm lửa]",
+          "nextDialogueKey": "campfire_knight_rest_blessing"
+        },
+        {
+          "text": "[Lên đường] \"Ta sẽ đi tìm Gỗ Khô và Nhựa Cây quanh bìa rừng.\""
+        }
       ]
     },
     "campfire_knight_q1_complete": {
@@ -688,6 +701,15 @@
       "lines": [
         "Con đường dẫn thẳng tới Tháp Chuông đã sập nhịp cầu đá cổ. Ngươi buộc phải đi theo đường vòng chữ S qua Rừng Ngoài và Đường Mòn Quanh Co để tiếp cận Xưởng Chuông Bỏ Hoang ở phía Nam.",
         "Hãy chú ý tìm Phôi Sắt Cổ Ngữ và những trang nhật ký kỵ sĩ vương lại trong tàn tích hoang phế."
+      ],
+      "choices": [
+        {
+          "text": "[Đặt vũ khí xuống & Nghỉ ngơi bên đốm lửa]",
+          "nextDialogueKey": "campfire_knight_rest_blessing"
+        },
+        {
+          "text": "[Lên đường] \"Ta sẽ men theo đường vòng tới Xưởng Chuông Bỏ Hoang.\""
+        }
       ]
     },
     "campfire_knight_q2_complete": {
@@ -710,6 +732,15 @@
       "lines": [
         "Chỉ Huy Hiệp Sĩ Trùm Mũ mang sức mạnh hắc ám khủng khiếp. Khi ngài ấy tụ năng lượng tà khí màu xanh thẫm, hãy nhanh tay vung gậy gỗ [Phím F / Chuột trái] để ngắt chiêu khiến ngài bị choáng váng!",
         "Hãy cẩn trọng từng nhịp thở, và mang Huy Hiệu Hiệp Sĩ Tha Hóa trở về an toàn nhé!"
+      ],
+      "choices": [
+        {
+          "text": "[Đặt vũ khí xuống & Nghỉ ngơi bên đốm lửa]",
+          "nextDialogueKey": "campfire_knight_rest_blessing"
+        },
+        {
+          "text": "[Lên đường] \"Ta sẽ tiến vào Rừng Sâu để giải thoát cho vị Chỉ Huy.\""
+        }
       ]
     },
     "campfire_knight_q3_complete": {
@@ -795,7 +826,39 @@
         "Kính chào Chỉ Huy Hiệp Sĩ Đen! Thanh gươm của thần và ngọn lửa Trạm Lửa Rừng Tĩnh Lặng này sẽ mãi mãi phục vụ theo mệnh lệnh của ngài.",
         "Xin ngài hãy mở Sổ Tay [J] mục Ký Ức để xem lại toàn bộ 4 Chương Hồi Ức đã được phục hồi trọn vẹn!"
       ],
+      "choices": [
+        {
+          "text": "[Đặt vũ khí xuống & Nghỉ ngơi bên đốm lửa]",
+          "nextDialogueKey": "campfire_knight_rest_blessing"
+        },
+        {
+          "text": "[Trầm mặc ngắm lửa] \"Cảm ơn người anh em, hãy cùng ta canh giữ ngọn lửa này.\""
+        }
+      ],
       "healPlayer": true
+    },
+    "campfire_knight_rest_blessing_stage0_2": {
+      "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
+      "portrait": "portrait_campfire_knight",
+      "lines": [
+        "Hỡi kỵ sĩ, hãy đặt thanh kiếm của ngươi xuống bên đốm lửa. Cầu mong ánh sáng che chở trái tim ngươi đêm nay, thứ tha cho những lầm lỡ đã qua, giữ vững niềm tin và soi lối con đường phía trước. Đừng sợ hãi chặng đường gian nan vẫn còn chờ đợi — hãy bước đi với lòng quả cảm, bởi ngươi không hề đơn độc. Nghỉ ngơi đi, người lữ khách... Audentes Fortuna Iuvat — Vận may luôn mỉm cười với kẻ quả cảm."
+      ],
+      "onCompleteFlag": "vaelen_blessing_stage0_2_received"
+    },
+    "campfire_knight_rest_blessing_stage3": {
+      "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
+      "portrait": "portrait_campfire_knight",
+      "lines": [
+        "Hỡi kỵ sĩ, hãy đặt thanh kiếm của ngươi xuống bên đốm lửa. Cầu mong ánh sáng che chở trái tim ngươi đêm nay, thứ tha cho những lầm lỡ đã qua, giữ vững niềm tin và soi lối con đường phía trước. Đừng sợ hãi chặng đường gian nan vẫn còn chờ đợi — hãy bước đi với lòng quả cảm, bởi ngươi không hề đơn độc. Nghỉ ngơi đi, người anh em. Ngày mai, chúng ta lại đứng dậy... Audentes Fortuna Iuvat — Vận may luôn mỉm cười với kẻ quả cảm."
+      ],
+      "onCompleteFlag": "vaelen_blessing_stage3_received"
+    },
+    "campfire_knight_rest_cooldown": {
+      "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
+      "portrait": "portrait_campfire_knight",
+      "lines": [
+        "Ngọn lửa vẫn còn lưu giữ hơi ấm lời chúc trong tâm trí ngươi hôm nay rồi. Hãy giữ vững ngọn đèn và tiến bước, chặng đường phía trước đang chờ đợi ngươi!"
+      ]
     },
     "garth_black_knight_reverence": {
       "speaker": "Garth – Người Gác Cổng",
@@ -836,6 +899,74 @@
         "Oa! Anh Wayfarer... không phải, ngài chính là Ngài Hiệp Sĩ Đen trong truyền thuyết mà chú Garth hay kể sao?! Tuyệt vời quá đi mất!",
         "Sau này lớn lên, em nhất định cũng sẽ rèn luyện thật giỏi và gia nhập đoàn hiệp sĩ để cùng ngài bảo vệ tháp chuông làng Bellhollow!"
       ]
+    },
+    "garth_guide_to_mire": {
+      "speaker": "Garth – Người Gác Cổng",
+      "portrait": "portrait_garth",
+      "lines": [
+        "Cổng Đông đã mở rộng! Con đường phía trước dẫn qua Đường Mòn Quanh Co hướng thẳng về Đầm Lầy Tĩnh Lặng (E).",
+        "Hãy thận trọng: Đầm lầy phía Đông nước độc ngập sâu và có Kẻ Lắng Nghe lởn vởn. Hãy lần theo dấu tích Lưỡi Chuông bị đánh cắp!"
+      ]
+    },
+    "edda_guide_to_mire": {
+      "speaker": "Bà Edda – Người Giữ Chuông",
+      "portrait": "portrait_edda",
+      "lines": [
+        "Lữ khách hãy hướng về phía Đông, tiến vào Đầm Lầy Tĩnh Lặng (E).",
+        "Tiếng vọng của quả chuông cổ đang hướng về phía đầm lầy u tối. Hãy tìm kiếm dấu vết của Lưỡi Chuông Đồng bị cướp đoạt!"
+      ]
+    },
+    "vaelen_examine_crest_and_seek_mold": {
+      "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
+      "portrait": "portrait_campfire_knight",
+      "lines": [
+        "(Sir Vaelen đón lấy chiếc Huy Hiệu Kỵ Sĩ Sa Ngã, tay run rẩy chạm vào vết nứt đen)... Huy hiệu này... ngươi tìm thấy nó ở bờ Đầm Lầy Tĩnh Lặng (E) ư?!",
+        "Đây chính là ấn chương của Đội Kỵ Sĩ Hộ Vệ năm xưa. Phong Ấn Rễ Cổ ở đầm lầy chính là kết giới mà chúng ta từng dựng lên để ngăn tà khí tràn vào Miếu Chuông.",
+        "Để phá vỡ phong ấn ấy và hạ thân cây làm cầu thông sang Miếu Chuông (C), ngươi cần 'Chìa Khóa Thanh Tẩy'. Nhưng chiếc chìa khóa gốc đã thất lạc khi xưởng rèn sụp đổ.",
+        "Hãy tiến về hướng Nam vào Xưởng Chuông Bỏ Hoang & Hầm Rễ Cổ (D). Ở đó có cất giữ 'Khuôn Đúc Đồng Cổ'. Sau khi tìm thấy khuôn đúc, hãy tiến lên Rừng Sâu tìm Mảnh Cổ Ngữ rồi mang về đây, ta sẽ luyện thành Chìa Khóa Thanh Tẩy cho ngươi!"
+      ],
+      "onCompleteFlag": "vaelen_mold_quest_assigned"
+    },
+    "vaelen_mold_reminder": {
+      "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
+      "portrait": "portrait_campfire_knight",
+      "lines": [
+        "Hãy tìm 'Khuôn Đúc Đồng Cổ' tại Xưởng Chuông Bỏ Hoang (D) ở rìa Nam Rừng Ngoài, sau đó tiến sâu lên Rừng Sâu (F) để tìm 'Mảnh Cổ Ngữ Khai Mở'.",
+        "Khi thu thập đủ cả 2 cổ vật, hãy mang về đây bên đốm lửa ấm này để ta hợp nhất thành Chìa Khóa Thanh Tẩy cho ngươi!"
+      ]
+    },
+    "vaelen_forge_purification_key": {
+      "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
+      "portrait": "portrait_campfire_knight",
+      "lines": [
+        "Tuyệt vời lắm, người lữ khách! Ngươi đã mang về cả 'Khuôn Đúc Đồng Cổ' từ Xưởng Chuông (D) lẫn 'Mảnh Cổ Ngữ Khai Mở' từ Rừng Sâu (F)!",
+        "(Sir Vaelen đặt khuôn đúc và mảnh cổ ngữ vào giữa ngọn lửa trại rực hồng, rút thanh gươm đọc vang lời thề hiệp sĩ cổ xưa)...",
+        "Ngọn lửa thanh tẩy đã tôi luyện nên 'Chìa Khóa Thanh Tẩy'! Hãy đón nhận lấy bảo vật này.",
+        "Bây giờ, hãy quay lại bờ Đông Đầm Lầy Tĩnh Lặng (E). Tiến lại gần gốc cây bị trói buộc bởi Phong Ấn Rễ Cổ và nhấn [E] để tra chìa khóa vào. Thân cây cổ thụ sẽ hạ xuống làm cầu nối thông sang Miếu Chuông Phế Tích (C)!"
+      ],
+      "rewardItem": "quest_purification_key",
+      "rewardCount": 1,
+      "onCompleteFlag": "purification_key_received"
+    },
+    "vaelen_reminder_use_purification_key": {
+      "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
+      "portrait": "portrait_campfire_knight",
+      "lines": [
+        "Ngươi đã có 'Chìa Khóa Thanh Tẩy' trong tay rồi! Hãy mau quay lại Đầm Lầy Tĩnh Lặng (E) về phía Đông.",
+        "Cắm chìa khóa vào Phong Ấn Rễ Cổ để hạ thân cây làm cầu bước sang Miếu Chuông Phế Tích (C). Trận chiến cuối cùng đang chờ đợi ngươi ở đó!"
+      ]
+    },
+    "bram_help_forge_purification_key": {
+      "speaker": "Bram – Thợ Rèn Làng",
+      "portrait": "portrait_blacksmith",
+      "lines": [
+        "Khuôn Đúc Đồng Cổ và Mảnh Cổ Ngữ Khai Mở sao?! Đưa cho tôi nào! Lò rèn này thừa sức nung chảy và đúc ra Chìa Khóa Thanh Tẩy cho ngài!",
+        "(Bram quai búa rền vang trên đe thép, ngọn lửa lò rèn bùng lên ánh vàng rực rỡ)...",
+        "Xong rồi! 'Chìa Khóa Thanh Tẩy' đây! Mau mang nó tới Đầm Lầy Tĩnh Lặng (E) để mở đường sang Miếu Chuông!"
+      ],
+      "rewardItem": "quest_purification_key",
+      "rewardCount": 1,
+      "onCompleteFlag": "purification_key_received"
     }
   }
 }

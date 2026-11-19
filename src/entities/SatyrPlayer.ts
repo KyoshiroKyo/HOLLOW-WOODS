@@ -1316,6 +1316,14 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     return this._isAttacking;
   }
 
+  public isMoving(): boolean {
+    if (this.body) {
+      const b = this.body as Phaser.Physics.Arcade.Body;
+      return Math.hypot(b.velocity.x, b.velocity.y) > 10;
+    }
+    return false;
+  }
+
   public isHurt(): boolean {
     return this._isHurt;
   }

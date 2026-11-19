@@ -4,6 +4,7 @@ import { SPRITE_FOG_SMOOTH, DEPTH_VEIL_GROUND_FOG, DEPTH_VEIL_PINK_DAWN } from '
 import { HDTextHelper } from '../utils/HDTextHelper';
 import { TimeSystem } from './TimeSystem';
 import { GraphicsQualitySystem } from './GraphicsQualitySystem';
+import { AudioManager } from '../audio/AudioManager';
 
 export class VeilSystem {
   private scene: Phaser.Scene;
@@ -48,6 +49,10 @@ export class VeilSystem {
   ];
   private hasDistortionDrawn: boolean = false;
   private activeWhisperTween?: Phaser.Tweens.Tween;
+  // V15-58A: Handler dọn dẹp sự kiện bóng lướt rìa màn sương
+  private onShadowFlickerHandler?: (data: { playerX: number; playerY: number }) => void;
+  // V15-56: Cờ đồng bộ tức thì độ mờ sương mù khi chuyển phân khu
+  private shouldSnapFog: boolean = false;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -128,6 +133,12 @@ export class VeilSystem {
     this.rainAuraThreatOverlay.setScrollFactor(0);
     this.rainAuraThreatOverlay.setDepth(3200);
     this.rainAuraThreatOverlay.setAlpha(0);
+
+    // V15-58A: Lắng nghe sự kiện bóng ma lướt rìa tầm nhìn (Peripheral Shadow Flicker)
+    this.onShadowFlickerHandler = (data: { playerX: number; playerY: number }) => {
+      this.triggerPeripheralShadowFlicker(data.playerX, data.playerY);
+    };
+    this.playerState.on('hallucination_shadow_flicker', this.onShadowFlickerHandler);
   }
 
   public update(time: number, delta: number, inDeepFogZone: boolean, zoneId?: string, playerX?: number, timeSystem?: TimeSystem): void {
@@ -261,6 +272,16 @@ export class VeilSystem {
       this.fogLayerHigh.setTint(fogTint);
     }
 
+    // V15-15: Nâng cao độ tương phản thị giác giữa sương mù xanh xám rừng sâu và ánh sáng ấm làng
+    const isCoolZone = inDeepFogZone || zoneId === 'deep_forest' || zoneId === 'silent_mire' || zoneId === 'broken_bell_shrine' || zoneId === 'crooked_path';
+    if (!this.isBossAwakened && isCoolZone) {
+      // Sắc sương rừng sâu chuyển xanh xám lạnh buốt (Cool Slate Teal 0x6e8a9c) tương phản cao với ánh lửa vàng cam
+      const coolFogTint = 0x6e8a9c;
+      this.fogLayerGround.setTint(coolFogTint);
+      this.fogLayerMid.setTint(coolFogTint);
+      this.fogLayerHigh.setTint(coolFogTint);
+    }
+
     // V1.4 - Bước 9: Biến đổi môi trường khi Boss Thức Tỉnh (Boss Awakening Shift)
     if (this.isBossAwakened) {
       targetAlphaGround = Math.min(0.92, targetAlphaGround * 1.8);
@@ -273,10 +294,18 @@ export class VeilSystem {
       this.fogLayerHigh.setTint(bossFogTint);
     }
 
-    // Chuyển dịch alpha êm ái hơn với lerp factor 0.04 (chống giật nấc khi qua cổng chuyển vùng)
-    this.fogLayerGround.alpha = Phaser.Math.Linear(this.fogLayerGround.alpha, targetAlphaGround, 0.04);
-    this.fogLayerMid.alpha = Phaser.Math.Linear(this.fogLayerMid.alpha, targetAlphaMid, 0.04);
-    this.fogLayerHigh.alpha = Phaser.Math.Linear(this.fogLayerHigh.alpha, targetAlphaHigh, 0.04);
+    // V15-56: Đồng bộ ngay lập tức alpha sương mù khi vừa chuyển phân khu (xóa bỏ độ trễ 2s)
+    if (this.shouldSnapFog) {
+      this.fogLayerGround.alpha = targetAlphaGround;
+      this.fogLayerMid.alpha = targetAlphaMid;
+      this.fogLayerHigh.alpha = targetAlphaHigh;
+      this.shouldSnapFog = false;
+    } else {
+      // Chuyển dịch alpha êm ái hơn với lerp factor 0.04 (chống giật nấc khi qua cổng chuyển vùng)
+      this.fogLayerGround.alpha = Phaser.Math.Linear(this.fogLayerGround.alpha, targetAlphaGround, 0.04);
+      this.fogLayerMid.alpha = Phaser.Math.Linear(this.fogLayerMid.alpha, targetAlphaMid, 0.04);
+      this.fogLayerHigh.alpha = Phaser.Math.Linear(this.fogLayerHigh.alpha, targetAlphaHigh, 0.04);
+    }
 
     // 3. Xử lý hiệu ứng Tâm Lý Kinh Dị khi Composure < 50 hoặc ở vùng sương sâu mà tắt đèn
     const isMindUnstable = composure < 50 || (inDeepFogZone && !isLanternOn);
@@ -313,6 +342,15 @@ export class VeilSystem {
     if (composure >= 50) return 1.0;
     const factor = Math.max(0, composure / 50);
     return Phaser.Math.Linear(0.45, 1.0, factor);
+  }
+
+  /**
+   * V15-58B: Nghịch lý ánh sáng [F] — Light-vs-Stealth Dilemma
+   * Khi vòng sáng [F] bật: tăng +30% hệ số nhạy cảm/phát hiện của quái vật bóng tối (1.3x)
+   * Khi vòng sáng [F] tắt: giữ nguyên mức tiêu chuẩn (1.0x) cho phép người chơi lách qua bóng tối
+   */
+  public getLanternThreatMultiplier(): number {
+    return this.playerState.stats.isLanternOn ? 1.3 : 1.0;
   }
 
   private updatePsychologicalEffects(time: number, unstable: boolean, composure: number): void {
@@ -423,6 +461,8 @@ export class VeilSystem {
             console.warn('[VeilSystem] onMidpoint error:', e);
           }
         }
+        // V15-56: Đồng bộ ngay độ mờ sương mù tại mốc giữa chuyển cảnh
+        this.snapFogToTarget();
         this.scene.tweens.add({
           targets: this.transitionMistOverlay,
           alpha: 0,
@@ -487,9 +527,80 @@ export class VeilSystem {
     this.whisperText.setAlpha(0);
     this.transitionMistOverlay.setAlpha(0);
     this.isTransitioningMist = false;
+    this.snapFogToTarget();
+  }
+
+  /**
+   * V15-56: Đồng bộ ngay lập tức độ mờ sương mù khi chuyển phân khu, loại bỏ độ trễ 2 giây
+   */
+  public snapFogToTarget(): void {
+    this.shouldSnapFog = true;
+  }
+
+  /**
+   * V15-58A: Sinh các vệt bóng đen lướt nhanh qua rìa màn sương (Peripheral Shadow Flicker)
+   * Xuất hiện tại rìa tầm nhìn (180–240px), lướt nhanh qua trong 0.6 giây (600ms) rồi biến mất
+   */
+  public triggerPeripheralShadowFlicker(playerX?: number, playerY?: number): void {
+    if (!this.scene || !this.scene.add) return;
+
+    let px = playerX;
+    let py = playerY;
+    if (px === undefined || py === undefined) {
+      const p = (this.scene as any).player;
+      if (p) {
+        px = p.x;
+        py = p.y;
+      }
+    }
+    if (px === undefined || py === undefined) return;
+
+    const angle = Math.random() * Math.PI * 2;
+    const dist = Phaser.Math.Between(180, 240);
+    const startX = px + Math.cos(angle) * dist;
+    const startY = py + Math.sin(angle) * dist;
+
+    // Hướng lướt chéo qua rìa tầm nhìn
+    const moveAngle = angle + (Math.random() > 0.5 ? Math.PI * 0.45 : -Math.PI * 0.45) + (Math.random() - 0.5) * 0.3;
+    const travelDist = Phaser.Math.Between(70, 110);
+    const targetX = startX + Math.cos(moveAngle) * travelDist;
+    const targetY = startY + Math.sin(moveAngle) * travelDist;
+
+    const shadowGfx = this.scene.add.graphics();
+    shadowGfx.setDepth(Math.floor(startY) + 40);
+    shadowGfx.fillStyle(0x0c0614, 0.75);
+    // Silhouette hình giọt nước/bóng ma kéo dài
+    shadowGfx.fillEllipse(0, 0, 38, 16);
+    shadowGfx.fillCircle(-6, -8, 8);
+    shadowGfx.setPosition(startX, startY);
+    shadowGfx.setRotation(moveAngle);
+    shadowGfx.setAlpha(0.78);
+
+    // Lướt nhanh và tan biến trong 0.6 giây (600ms)
+    this.scene.tweens.add({
+      targets: shadowGfx,
+      x: targetX,
+      y: targetY,
+      alpha: 0,
+      scaleX: 1.45,
+      scaleY: 0.55,
+      duration: 600,
+      ease: 'Cubic.easeOut',
+      onComplete: () => {
+        shadowGfx.destroy();
+      }
+    });
+
+    try {
+      AudioManager.getInstance().playSampled('ghost_dissipate', 0.22, 1.4, true, 2);
+    } catch (_e) {}
   }
 
   public destroy(): void {
+    if (this.onShadowFlickerHandler) {
+      this.playerState.off('hallucination_shadow_flicker', this.onShadowFlickerHandler);
+      this.onShadowFlickerHandler = undefined;
+    }
     this.cleanupTransitionVFX();
     this.rainAuraThreatOverlay.destroy();
     this.transitionMistOverlay.destroy();

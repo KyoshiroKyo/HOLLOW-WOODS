@@ -8,6 +8,7 @@ import {
   COMPOSURE_RECOVERY_NEAR_LIGHT
 } from '../config/Constants';
 import { TimePhase, TIME_CONFIG } from '../config/TimeConfig';
+import { AudioManager } from '../audio/AudioManager';
 
 export class SurvivalSystem {
   private playerState: PlayerState;
@@ -41,6 +42,13 @@ export class SurvivalSystem {
   // V15-47: Cờ trạng thái trận đấu trùm Miếu Chuông Phế Tích
   public isBossFightActive: boolean = false;
 
+  // V15-58A: Quản lý hiện tượng Ảo Giác Tinh Thần khi Tinh Thần < 55 ngoài Làng Bellhollow
+  private nextHallucinationTimer: number = 18.0; // Khoảng cách ngẫu nhiên 14–22s
+  private hallucinationCooldown: number = 0; // Cooldown chống dồn dập (10–14s)
+  private pendingFalseFootsteps: boolean = false;
+  private wasPlayerMoving: boolean = false;
+  private falseFootstepDelayTimer: number = 0;
+
   public setBossFightActive(active: boolean): void {
     this.isBossFightActive = active;
   }
@@ -56,8 +64,12 @@ export class SurvivalSystem {
     inDeepFog: boolean, 
     timePhase?: TimePhase,
     isRaining?: boolean,
-    zoneId?: string
+    zoneId?: string,
+    isPlayerMoving?: boolean
   ): void {
+    // V15-38: Cập nhật thời gian hiệu lực của Lời Chúc Bên Đốm Lửa
+    CampSanctuarySystem.getInstance().update(dt);
+
     const stats = this.playerState.stats;
 
     // 1. Quản lý Thể lực (Stamina) - C4-132-01: Tụt mượt mà về đúng 0/100, hoãn hồi phục 1.0s sau khi dừng chạy
@@ -148,7 +160,8 @@ export class SurvivalSystem {
           drain = inDeepFog ? COMPOSURE_DRAIN_IN_DARK * 2.2 : COMPOSURE_DRAIN_IN_DARK;
         }
 
-        const composureDrainMod = equipSys.getComposureDrainMultiplier();
+        const blessingDrainMod = CampSanctuarySystem.getInstance().getBlessingDrainMultiplier();
+        const composureDrainMod = equipSys.getComposureDrainMultiplier() * blessingDrainMod;
         stats.composure = Math.max(0, stats.composure - drain * composureDrainMod * dt);
       } else if (!isBossArena) {
         // Có ánh sáng vòng hộ tâm: Tinh Thần hồi phục dần theo pha
@@ -259,6 +272,94 @@ export class SurvivalSystem {
       this.lastTemperature = stats.temperature || 80;
       this.playerState.emit('stats_changed', stats);
     }
+
+    // 5. V15-58A: Tầng Ảo Giác Thính Giác & Bóng Lướt Rìa Tầm Nhìn
+    // Khi Tinh Thần (Sanity) giảm xuống dưới 55/100 ở ngoài Làng Bellhollow:
+    const isBellhollow = zoneId === 'bellhollow';
+    if (stats.composure < 55 && !isBellhollow) {
+      if (this.hallucinationCooldown > 0) {
+        this.hallucinationCooldown -= dt;
+      }
+
+      // Xử lý sự kiện bước chân giả sau lưng: kích hoạt mỗi khi người chơi vừa dừng bước
+      if (this.pendingFalseFootsteps) {
+        const justStopped = this.wasPlayerMoving && !isPlayerMoving;
+        if (justStopped) {
+          this.falseFootstepDelayTimer = 0.25; // Trễ nhẹ 250ms sau khi đứng yên
+        }
+
+        if (this.falseFootstepDelayTimer > 0) {
+          this.falseFootstepDelayTimer -= dt;
+          if (this.falseFootstepDelayTimer <= 0) {
+            AudioManager.getInstance().playFalseFootsteps();
+            this.pendingFalseFootsteps = false;
+            this.hallucinationCooldown = 12.0;
+            this.playerState.emit('hallucination_false_footsteps');
+          }
+        }
+      }
+
+      this.nextHallucinationTimer -= dt;
+      if (this.nextHallucinationTimer <= 0 && this.hallucinationCooldown <= 0) {
+        // Bộ đếm ngẫu nhiên: mỗi 14–22 giây kích hoạt 1 hiện tượng
+        this.nextHallucinationTimer = 14 + Math.random() * 8;
+        this.hallucinationCooldown = 10.0; // Cooldown chống dồn dập
+
+        const roll = Math.floor(Math.random() * 3);
+        if (roll === 0) {
+          // Hiện tượng 1: Tiếng bước chân giả vang lên ngay phía sau lưng nhân vật khi vừa dừng bước
+          this.pendingFalseFootsteps = true;
+          if (!isPlayerMoving) {
+            this.falseFootstepDelayTimer = 0.35;
+          }
+        } else if (roll === 1) {
+          // Hiện tượng 2: Phát tiếng chuông đồng méo mó hoặc tiếng thì thầm trầm đục vọng lại từ hướng rừng sâu
+          const subRoll = Math.random();
+          if (subRoll < 0.5) {
+            AudioManager.getInstance().playCrackedBellToll();
+          } else {
+            AudioManager.getInstance().playSampled('ghost_whisper', 0.65, 0.85, true, 2);
+          }
+          this.playerState.emit('hallucination_audio', { type: subRoll < 0.5 ? 'cracked_bell' : 'deep_whisper' });
+        } else {
+          // Hiện tượng 3: Sinh các vệt bóng đen lướt nhanh qua rìa màn sương (peripheral shadow flicker) trong 0.6 giây
+          this.playerState.emit('hallucination_shadow_flicker', { playerX, playerY });
+        }
+      }
+    } else {
+      // Khi Tinh Thần >= 55 hoặc đứng an toàn trong Làng Bellhollow: Reset bộ đếm và hủy bước chân giả
+      this.pendingFalseFootsteps = false;
+      this.falseFootstepDelayTimer = 0;
+      this.nextHallucinationTimer = 16.0;
+    }
+
+    this.wasPlayerMoving = Boolean(isPlayerMoving);
+  }
+
+  public getNextHallucinationTimer(): number {
+    return this.nextHallucinationTimer;
+  }
+
+  public getHallucinationCooldown(): number {
+    return this.hallucinationCooldown;
+  }
+
+  public getPendingFalseFootsteps(): boolean {
+    return this.pendingFalseFootsteps;
+  }
+
+  public triggerHallucinationTest(type: number, playerX: number, playerY: number, isPlayerMoving: boolean): void {
+    if (type === 0) {
+      this.pendingFalseFootsteps = true;
+      if (!isPlayerMoving) {
+        this.falseFootstepDelayTimer = 0.05;
+      }
+    } else if (type === 1) {
+      AudioManager.getInstance().playCrackedBellToll();
+      this.playerState.emit('hallucination_audio', { type: 'cracked_bell' });
+    } else {
+      this.playerState.emit('hallucination_shadow_flicker', { playerX, playerY });
+    }
   }
 
   public healFull(): void {
@@ -291,6 +392,15 @@ export class SurvivalSystem {
     if (t <= 34) return 'FREEZING';
     if (t < 70) return 'CHILLY';
     return 'WARM';
+  }
+
+  // V15-58C: Kiểm tra trạng thái bất an / hoảng loạn của Tinh Thần
+  public isSanityPanic(): boolean {
+    return (this.playerState.stats.composure ?? 100) < 45;
+  }
+
+  public isSanityCritical(): boolean {
+    return (this.playerState.stats.composure ?? 100) < 15;
   }
 }
 

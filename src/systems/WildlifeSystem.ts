@@ -771,6 +771,25 @@ export class WildlifeSystem {
     this.goblinScouts = [];
   }
 
+  public isMonsterNear(x: number, y: number, radius: number = 220): boolean {
+    for (const w of this.skullWolves) {
+      if (w.active && !w.isDefeated && Math.hypot(w.x - x, w.y - y) <= radius) return true;
+    }
+    for (const fk of this.fallenKnights) {
+      if (fk.active && !fk.isDefeated && Math.hypot(fk.x - x, fk.y - y) <= radius) return true;
+    }
+    for (const dh of this.dreadHorsemen) {
+      if (dh.active && !dh.isDefeated && Math.hypot(dh.x - x, dh.y - y) <= radius) return true;
+    }
+    if (this.hoodedKnight && this.hoodedKnight.active && !this.hoodedKnight.isDefeated && Math.hypot(this.hoodedKnight.x - x, this.hoodedKnight.y - y) <= radius) {
+      return true;
+    }
+    if (this.shadowBehemoth && this.shadowBehemoth.active && !this.shadowBehemoth.isDefeated && Math.hypot(this.shadowBehemoth.x - x, this.shadowBehemoth.y - y) <= radius) {
+      return true;
+    }
+    return false;
+  }
+
   public destroy(): void {
     this.clearEntities();
     WildlifeSystem.instance = null;

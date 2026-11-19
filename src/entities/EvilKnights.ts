@@ -223,9 +223,9 @@ export class FallenKnightEntity extends Phaser.Physics.Arcade.Sprite {
 
     switch (this.knightState) {
       case 'pray': {
-        // V1.5 - BƯỚC V15-08: Tăng tần suất và phạm vi phát hiện ban đêm
+        // V1.5 - BƯỚC V15-08 & V15-58B: Nghịch lý ánh sáng [F] - Khi vòng sáng BẬT: tăng +30% bán kính phát hiện
         const baseDetect = isNight ? 180 : 130;
-        const detectRange = ctx.isLanternLit ? (isNight ? 270 : 220) : baseDetect;
+        const detectRange = ctx.isLanternLit ? Math.round(baseDetect * 1.6) : baseDetect;
         if (distToPlayer <= detectRange) {
           this.knightState = 'chase';
           AudioManager.getInstance().playArmorClank();
@@ -515,7 +515,10 @@ export class DreadHorsemanEntity extends Phaser.Physics.Arcade.Sprite {
 
     switch (this.horseState) {
       case 'patrol': {
-        const canSpot = distToPlayer <= 220 && Math.abs(ctx.playerY - this.y) <= 55;
+        // V15-58B: Nghịch lý ánh sáng [F] - Khi vòng sáng BẬT: tăng +30% bán kính phát hiện (220 -> 286px, 55 -> 72px)
+        const spotDist = ctx.isLanternLit ? Math.round(220 * 1.3) : 220;
+        const spotY = ctx.isLanternLit ? Math.round(55 * 1.3) : 55;
+        const canSpot = distToPlayer <= spotDist && Math.abs(ctx.playerY - this.y) <= spotY;
         if (canSpot && this.chargeCooldown <= 0) {
           // Bắt đầu giương vó báo hiệu cú phóng
           this.horseState = 'rear_prep';

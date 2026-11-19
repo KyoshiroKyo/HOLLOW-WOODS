@@ -54,15 +54,16 @@ export class EndingSystem {
   private timeRiftGraphics!: Phaser.GameObjects.Graphics;
   private endingTextContainer!: Phaser.GameObjects.Container;
   private returnBtn?: Phaser.GameObjects.Text;
+  private newJourneyBtn?: Phaser.GameObjects.Text;
   private returnHint?: Phaser.GameObjects.Text;
   private onCompleteCallback?: () => void;
 
-  // Định nghĩa cấu hình 3 kết thúc cốt truyện V1.5
+  // Định nghĩa cấu hình 3 kết thúc cốt truyện V1.5 & V15-59
   public static readonly ENDING_CONFIGS: Record<EndingType, EndingConfig> = {
     true_ending: {
       type: 'true_ending',
-      badgeTag: '❖ KẾT THÚC I: BÌNH MINH CỦA TIẾNG CHUÔNG (TRUE ENDING) ❖',
-      title: 'BÌNH MINH CỦA TIẾNG CHUÔNG',
+      badgeTag: '❖ KẾT THÚC ÁNH SÁNG: TIẾNG CHUÔNG THANH TẨY (BÌNH MINH CỦA TIẾNG CHUÔNG) ❖',
+      title: 'TIẾNG CHUÔNG THANH TẨY — Lời Nguyền Bellhollow Hóa Giải',
       subtitle: 'Đại Hồng Chung ngân vang — Màn sương vĩnh cửu sụp đổ — Bellhollow hồi sinh',
       loreId: 'lore_ending_true',
       storyFlag: 'ending_true_achieved',
@@ -80,8 +81,8 @@ export class EndingSystem {
     },
     sacrifice_ending: {
       type: 'sacrifice_ending',
-      badgeTag: '❖ KẾT THÚC II: NGƯỜI CANH GÁC VĨNH HẰNG (BITTERSWEET ENDING) ❖',
-      title: 'NGƯỜI CANH GÁC VĨNH HẰNG',
+      badgeTag: '❖ KẾT THÚC U ÁM: DƯ ÂM TRONG SƯƠNG (NGƯỜI CANH GÁC VĨNH HẰNG) ❖',
+      title: 'DƯ ÂM TRONG SƯƠNG — Hiệp Sĩ Ở Lại Canh Giữ Rừng Sâu',
       subtitle: 'Linh hồn hiến dâng — Mạch Rễ hóa thạch — Người bảo hộ cô độc nơi rừng sâu',
       loreId: 'lore_ending_sacrifice',
       storyFlag: 'ending_sacrifice_achieved',
@@ -99,8 +100,8 @@ export class EndingSystem {
     },
     fog_loop_ending: {
       type: 'fog_loop_ending',
-      badgeTag: '❖ KẾT THÚC III: VÒNG LẶP CỦA SƯƠNG MÙ (FOG LOOP ENDING) ❖',
-      title: 'VÒNG LẶP CỦA SƯƠNG MÙ',
+      badgeTag: '❖ KẾT THÚC U ÁM: VÒNG LẶP CỦA SƯƠNG MÙ (FOG LOOP ENDING) ❖',
+      title: 'DƯ ÂM TRONG SƯƠNG — Vòng Lặp Của Sương Mù',
       subtitle: 'Nghi thức vội vã — Chuông rạn nứt — Màn sương lạnh cuộn trào trở lại',
       loreId: 'lore_ending_fog_loop',
       storyFlag: 'ending_fog_loop_achieved',
@@ -159,12 +160,20 @@ export class EndingSystem {
     return this.returnBtn;
   }
 
+  public getNewJourneyBtn(): Phaser.GameObjects.Text | undefined {
+    return this.newJourneyBtn;
+  }
+
   public getReturnHint(): Phaser.GameObjects.Text | undefined {
     return this.returnHint;
   }
 
   public canReturnToMenu(): boolean {
     return this.isEndingActive && !!this.returnBtn && this.returnBtn.visible;
+  }
+
+  public canStartNewJourney(): boolean {
+    return this.isEndingActive && !!this.newJourneyBtn && this.newJourneyBtn.visible;
   }
 
   private setupEndingUI(): void {
@@ -187,23 +196,26 @@ export class EndingSystem {
   }
 
   /**
-   * Phân nhánh kết thúc cốt truyện dựa trên tiến trình thức tỉnh ký ức và mức độ gắn kết dân làng
+   * V15-59: Phân nhánh kết thúc cốt truyện dựa trên chỉ số Tinh Thần và Mảnh Ký Ức
+   * - Kết Thúc Ánh Sáng: Nếu Tinh Thần >= 50 và thu thập đủ Mảnh Ký Ức (stage >= 3 & trust >= 65)
+   * - Kết Thúc U Ám: Nếu Tinh Thần < 50 hoặc thiếu Mảnh Ký Ức (stage >= 2 -> sacrifice, stage < 2 -> fog loop)
    */
   public determineEndingType(): EndingType {
+    const comp = this.playerState.stats.composure ?? 100;
     const stage = this.playerState.memoryAwakeningStage;
     const trust = this.playerState.villageTrustScore;
 
-    // Kết thúc 1: Thức tỉnh hoàn toàn Hiệp Sĩ Đen (cấp 3) VÀ Niềm tin dân làng cao (>= 65)
-    if (stage >= 3 && trust >= 65) {
+    // Kết Thúc Ánh Sáng: Tinh Thần >= 50 và thức tỉnh hoàn toàn Mảnh Ký Ức
+    if (comp >= 50 && stage >= 3 && trust >= 65) {
       return 'true_ending';
     }
 
-    // Kết thúc 2: Đã thức tỉnh ký ức Hiệp Sĩ Đen (cấp 2 trở lên) nhưng niềm tin dân làng còn thấp
+    // Kết Thúc U Ám: Tinh Thần < 50 hoặc thiếu Mảnh Ký Ức
     if (stage >= 2) {
       return 'sacrifice_ending';
     }
 
-    // Kết thúc 3: Vội vã kết thúc khi chưa tìm lại ký ức thực sự (cấp < 2)
+    // Vòng lặp sương mù khi ký ức chưa hoàn thiện
     return 'fog_loop_ending';
   }
 
@@ -220,18 +232,52 @@ export class EndingSystem {
       (this.uiScene as any).setHUDVisible(false);
     }
 
-    // 2. Dừng chuyển động nhân vật Wayfarer/Satyr và quái vật
+    // 2. V15-59: Tạm dừng hoàn toàn chuyển động của nhân vật, quái vật, sương mù & âm thanh dồn dập
     const gameScene = this.scene as any;
     if (gameScene.player) {
       gameScene.player.setVelocity(0, 0);
       gameScene.player.playIdle();
+      if (typeof gameScene.player.resetAllInputState === 'function') {
+        gameScene.player.resetAllInputState();
+      }
     }
     if (gameScene.listenerMonster) {
       gameScene.listenerMonster.setVelocity(0, 0);
+      if (typeof gameScene.listenerMonster.clearTarget === 'function') {
+        gameScene.listenerMonster.clearTarget();
+      }
     }
-    if (gameScene.audioManager) {
-      gameScene.audioManager.setHeartbeatActive(false);
+    if (gameScene.wildlifeSystem && typeof gameScene.wildlifeSystem.clearEntities === 'function') {
+      gameScene.wildlifeSystem.clearEntities();
     }
+    if (gameScene.mireWardenBoss) {
+      if (typeof gameScene.mireWardenBoss.setVelocity === 'function') {
+        gameScene.mireWardenBoss.setVelocity(0, 0);
+      }
+      if (typeof gameScene.mireWardenBoss.setActive === 'function') {
+        gameScene.mireWardenBoss.setActive(false);
+      }
+    }
+    gameScene.isBossFightActive = false;
+    gameScene.isAct5ChaseActive = false;
+
+    if (gameScene.veilSystem) {
+      if (typeof gameScene.veilSystem.setMistActive === 'function') {
+        gameScene.veilSystem.setMistActive(false);
+      }
+      if (typeof gameScene.veilSystem.resetTransitionMist === 'function') {
+        gameScene.veilSystem.resetTransitionMist();
+      }
+    }
+    if (gameScene.weatherSystem && typeof gameScene.weatherSystem.stopWeatherEffects === 'function') {
+      gameScene.weatherSystem.stopWeatherEffects();
+    }
+
+    // Tắt âm thanh dồn dập (nhịp tim, thở dốc) và chuyển sang nhạc nền trang trọng, yên bình
+    AudioManager.getInstance().setHeartbeatActive(false);
+    AudioManager.getInstance().setSanityDucking(false);
+    AudioManager.getInstance().setBossAwakeningState(false);
+    AudioManager.getInstance().playBGM('bgm_knights_quiet_fire', 1.2, 0.7);
 
     const cam = this.scene.cameras.main;
 
@@ -241,10 +287,10 @@ export class EndingSystem {
     const endingConfig = EndingSystem.ENDING_CONFIGS[endingType];
 
     // GIAI ĐOẠN 1: TIẾNG CHUÔNG ĐỒNG ĐẦU TIÊN (THE FIRST TOLL)
-    cam.shake(1500, 0.025);
-    cam.flash(1800, 255, 255, 255);
+    cam.shake(1200, 0.02);
+    cam.flash(1200, 255, 255, 255);
     if (this.uiScene) {
-      this.uiScene.cameras.main.flash(1800, 255, 255, 255);
+      this.uiScene.cameras.main.flash(1200, 255, 255, 255);
     }
 
     // Phát âm thanh chuông tương ứng với kết thúc
@@ -269,10 +315,37 @@ export class EndingSystem {
     const playerY = gameScene.player ? gameScene.player.y : 350;
     SaveManager.saveGame('KẾT THÚC: TIẾNG CHUÔNG ĐẦU TIÊN (HOÀN THÀNH)', 'bellhollow', playerX, playerY);
 
-    // GIAI ĐOẠN 2 & 3: CHUYỂN TIẾP TRÌNH CHIẾU MÀN HÌNH KẾT THÚC ĐA PHÂN NHÁNH TRANG TRỌNG
+    // GIAI ĐOẠN 2 & 3: V15-59 Khắc phục triệt để lỗi màn hình đen bằng resetFX + fadeIn và Fail-safe Timer
     const target = this.getTargetScene();
-    target.time.delayedCall(1600, () => {
+    let presentationStarted = false;
+
+    const executePresentation = () => {
+      if (presentationStarted) return;
+      presentationStarted = true;
+
+      // Reset camera FX và fadeIn đảm bảo màn hình không bao giờ bị đen kẹt lại
+      cam.resetFX();
+      cam.fadeIn(600, 0, 0, 0);
+      if (this.uiScene) {
+        this.uiScene.cameras.main.resetFX();
+        this.uiScene.cameras.main.fadeIn(600, 0, 0, 0);
+      }
+
       this.playEndingPresentation(endingType);
+    };
+
+    // Camera fadeOut 600ms, khi progress = 1 thì lập tức fadeIn và bật Ending
+    cam.fadeOut(600, 0, 0, 0, (_c: any, progress: number) => {
+      if (progress === 1) {
+        executePresentation();
+      }
+    });
+
+    // Fail-safe Timer 1500ms: nếu camera fadeOut bị gián đoạn thì cưỡng bức fadeIn và hiện Ending
+    target.time.delayedCall(1500, () => {
+      if (!presentationStarted) {
+        executePresentation();
+      }
     });
   }
 
@@ -305,11 +378,11 @@ export class EndingSystem {
     target.tweens.add({
       targets: bgGraphics,
       alpha: 1,
-      duration: 1000
+      duration: 500
     });
 
-    // 2. Banner Tiêu đề Hồi Kết (Y = 32 -> 76)
-    target.time.delayedCall(600, () => {
+    // 2. Banner Tiêu đề Hồi Kết (Y = 32 -> 82)
+    target.time.delayedCall(200, () => {
       const badgeText = HDTextHelper.createText(target, 640, 32, config.badgeTag, {
         fontSize: '13px',
         fontStyle: 'bold',
@@ -342,12 +415,12 @@ export class EndingSystem {
       target.tweens.add({
         targets: [badgeText, titleText, subtitleText],
         alpha: 1,
-        duration: 800
+        duration: 500
       });
     });
 
-    // 3. Khung tranh Pixel Art Minh Họa Đồ Họa Độc Quyền (Width: 720, Height: 155, Center: 640, Y: 180)
-    target.time.delayedCall(1200, () => {
+    // 3. Khung tranh Pixel Art Minh Họa Đồ Họa Độc Quyền (Width: 720, Height: 155, Center: 640, Y: 100)
+    target.time.delayedCall(400, () => {
       const artGraphics = target.add.graphics();
       const fx = 280;
       const fy = 100;
@@ -368,19 +441,19 @@ export class EndingSystem {
       target.tweens.add({
         targets: artGraphics,
         alpha: 1,
-        duration: 900
+        duration: 600
       });
     });
 
-    // 4. Các dòng văn tự sự cảm xúc (Narrative Lines: Y = 270 -> 345)
-    let textDelay = 1800;
-    const startY = 270;
-    const stepY = 24;
+    // 4. Các dòng văn tự sự cảm xúc (Narrative Lines: Y = 268 -> 336)
+    let textDelay = 600;
+    const startY = 268;
+    const stepY = 23;
 
     config.narrativeLines.forEach((line, idx) => {
       target.time.delayedCall(textDelay, () => {
         const lineObj = HDTextHelper.createText(target, 640, startY + (idx * stepY), line, {
-          fontSize: '14px',
+          fontSize: '13.5px',
           fontStyle: idx === config.narrativeLines.length - 1 ? 'italic' : 'normal',
           color: idx === config.narrativeLines.length - 1 ? config.accentColorHex : '#ecf0f1',
           align: 'center',
@@ -393,19 +466,19 @@ export class EndingSystem {
         target.tweens.add({
           targets: lineObj,
           alpha: 1,
-          duration: 700
+          duration: 400
         });
       });
-      textDelay += 800;
+      textDelay += 200;
     });
 
-    // 5. Bảng Thống Kê Hành Trình Sinh Tồn (Survival Chronicle: Y = 380 -> 525)
-    target.time.delayedCall(textDelay + 400, () => {
+    // 5. Bảng Thống Kê Hành Trình Sinh Tồn (Survival Chronicle: Y = 360 -> 510)
+    target.time.delayedCall(textDelay + 150, () => {
       this.renderSurvivalChronicle(target, config);
     });
 
-    // 6. Nút "QUAY VỀ MENU CHÍNH" chuẩn HD (Y = 580 cố định theo quy chuẩn kiểm thử)
-    target.time.delayedCall(textDelay + 1400, () => {
+    // 6. Nút "CHƠI HÀNH TRÌNH MỚI" & "QUAY VỀ MENU CHÍNH" chuẩn HD (Y = 580)
+    target.time.delayedCall(textDelay + 350, () => {
       this.renderReturnControls(target, config);
     });
   }
@@ -634,27 +707,27 @@ export class EndingSystem {
    */
   private renderSurvivalChronicle(target: Phaser.Scene, config: EndingConfig): void {
     const cardBg = target.add.graphics();
-    const cx = 220;
-    const cy = 370;
-    const cw = 840;
-    const ch = 145;
+    const cx = 180;
+    const cy = 360;
+    const cw = 920;
+    const ch = 150;
 
     // Nền hộp thông tin sinh tồn bo góc mờ sang trọng
-    cardBg.fillStyle(0x0a0e17, 0.88);
+    cardBg.fillStyle(0x0a0e17, 0.92);
     cardBg.fillRoundedRect(cx, cy, cw, ch, 8);
     cardBg.lineStyle(2, config.borderTint, 0.65);
     cardBg.strokeRoundedRect(cx, cy, cw, ch, 8);
 
-    // Dải phân cách mờ
+    // Dải phân cách mờ giữa 3 cột
     cardBg.lineStyle(1, 0x34495e, 0.5);
-    cardBg.lineBetween(cx + 280, cy + 30, cx + 280, cy + ch - 12);
-    cardBg.lineBetween(cx + 560, cy + 30, cx + 560, cy + ch - 12);
+    cardBg.lineBetween(cx + 300, cy + 30, cx + 300, cy + ch - 12);
+    cardBg.lineBetween(cx + 610, cy + 30, cx + 610, cy + ch - 12);
 
     this.endingTextContainer.add(cardBg);
     cardBg.setAlpha(0);
 
     // Tiêu đề bảng thống kê
-    const headerTitle = HDTextHelper.createText(target, 640, cy + 16, '❖ BIÊN NIÊN SỬ SINH TỒN (SURVIVAL CHRONICLE) ❖', {
+    const headerTitle = HDTextHelper.createText(target, 640, cy + 15, '❖ BIÊN NIÊN SỬ SINH TỒN (SURVIVAL CHRONICLE) ❖', {
       fontSize: '13px',
       fontStyle: 'bold',
       color: config.accentColorHex,
@@ -668,8 +741,8 @@ export class EndingSystem {
     const timeCycle = (this.playerState.timeOfDay < 180) ? 'Ban Ngày' : 'Ban Đêm';
     const hp = Math.round(this.playerState.stats.health);
     const maxHp = Math.round(this.playerState.stats.maxHealth);
-    const comp = Math.round(this.playerState.stats.composure);
-    const oil = Math.round(this.playerState.stats.lanternOil);
+    const comp = Math.round(this.playerState.stats.composure ?? 100);
+    const oil = Math.round(this.playerState.stats.lanternOil ?? 100);
 
     const trustScore = this.playerState.villageTrustScore;
     let trustLabel = 'Xa Cách';
@@ -688,32 +761,42 @@ export class EndingSystem {
     const bestiaryCount = this.playerState.bestiary.size;
     const visitedCount = this.playerState.visitedZones.size;
 
-    // CỘT 1: SINH TỒN & THỜI GIAN (X: cx + 18)
+    let endingStateLabel = 'Ánh Sáng (Lời Nguyền Hóa Giải)';
+    if (config.type === 'sacrifice_ending') {
+      endingStateLabel = 'U Ám (Hiệp Sĩ Canh Giữ Rừng Sâu)';
+    } else if (config.type === 'fog_loop_ending') {
+      endingStateLabel = 'U Ám (Vòng Lặp Sương Mù)';
+    }
+
+    // CỘT 1: SINH TỒN & TRẠNG THÁI (X: cx + 18)
     const col1Texts = [
       `⏱️ Thời Gian: Ngày ${day} (${timeCycle})`,
-      `❤️ Sinh Lực: ${hp}/${maxHp} HP`,
-      `🧠 Bình Tâm: ${comp}% | 🕯️ Dầu: ${oil}%`
+      `❤️ Sinh Lực: ${hp}/${maxHp} HP | 🕯️ Dầu: ${oil}%`,
+      `🧠 Tinh Thần Còn Lại: ${comp}/100 [Bình Tâm]`,
+      `🌟 Trạng Thái: ${endingStateLabel}`
     ];
 
-    // CỘT 2: TIẾN TRÌNH NHÂN VẬT & LÀNG (X: cx + 298)
+    // CỘT 2: TIẾN TRÌNH NHÂN VẬT & LÀNG (X: cx + 318)
     const col2Texts = [
       `🤝 Tin Cậy Dân Làng: ${trustScore}/100 [${trustLabel}]`,
       `⚔️ Thức Tỉnh Ký Ức: Cấp ${stage}/3`,
-      `🛡️ Danh Xưng: ${stageTitle}`
+      `🛡️ Danh Xưng: ${stageTitle}`,
+      `🔔 Chuông Đồng Cổ: Đã Ngân Vang`
     ];
 
-    // CỘT 3: KHÁM PHÁ & BẢN ĐỒ (X: cx + 578)
+    // CỘT 3: KHÁM PHÁ & BẢN ĐỒ (X: cx + 628)
     const col3Texts = [
       `📜 Ký Ức Đã Mở: ${unlockedLoreCount}/${totalLoreCount} Mảnh Lore`,
       `🐾 Bestiary Ghi Nhận: ${bestiaryCount} Sinh Vật`,
-      `🗺️ Bản Đồ Khám Phá: ${visitedCount}/9 Phân Khu`
+      `🗺️ Bản Đồ Khám Phá: ${visitedCount}/9 Phân Khu`,
+      `🌿 Lời Nguyền: ${config.type === 'true_ending' ? 'Đã Thanh Tẩy' : 'Tạm Khóa'}`
     ];
 
     const textElements: Phaser.GameObjects.Text[] = [headerTitle];
 
     const renderColumn = (texts: string[], startColX: number) => {
       texts.forEach((txt, idx) => {
-        const textObj = HDTextHelper.createText(target, startColX, cy + 44 + (idx * 28), txt, {
+        const textObj = HDTextHelper.createText(target, startColX, cy + 38 + (idx * 26), txt, {
           fontSize: '12px',
           color: '#ecf0f1',
           stroke: '#000000',
@@ -723,35 +806,48 @@ export class EndingSystem {
       });
     };
 
-    renderColumn(col1Texts, cx + 24);
-    renderColumn(col2Texts, cx + 304);
-    renderColumn(col3Texts, cx + 584);
+    renderColumn(col1Texts, cx + 18);
+    renderColumn(col2Texts, cx + 318);
+    renderColumn(col3Texts, cx + 628);
 
     this.endingTextContainer.add(textElements);
 
     target.tweens.add({
       targets: [cardBg, ...textElements],
       alpha: 1,
-      duration: 800
+      duration: 600
     });
   }
 
   /**
-   * NÚT QUAY VỀ MENU CHÍNH VÀ ĐIỀU HƯỚNG BÀN PHÍM
+   * NÚT ĐIỀU HƯỚNG V15-59: CHƠI HÀNH TRÌNH MỚI & QUAY VỀ MENU CHÍNH
+   * Cung cấp 2 nút bấm đối xứng tại Y = 580 và bộ lắng nghe phím ENTER / ESC / SPACE
    */
   private renderReturnControls(target: Phaser.Scene, config: EndingConfig): void {
-    // Nút quay về Menu Chính chuẩn HD 1280×720 tại Y = 580 (Zoom 1.0 cố định theo bài test gate 3c)
-    const returnBtn = HDTextHelper.createText(target, 640, 580, '▶ QUAY VỀ MENU CHÍNH', {
-      fontSize: '18px',
+    // Nút 1: [⚔ CHƠI HÀNH TRÌNH MỚI] đặt tại X = 470, Y = 580
+    const newJourneyBtn = HDTextHelper.createText(target, 470, 580, '⚔ CHƠI HÀNH TRÌNH MỚI', {
+      fontSize: '16px',
+      fontStyle: 'bold',
+      color: '#2ecc71',
+      backgroundColor: '#111620',
+      padding: { x: 24, y: 11 },
+      stroke: '#2ecc71',
+      strokeThickness: 1
+    }).setOrigin(0.5, 0.5).setInteractive({ useHandCursor: true });
+
+    // Nút 2: [▶ QUAY VỀ MENU CHÍNH] đặt tại X = 810, Y = 580 (giữ nguyên tương thích test Y=580)
+    const returnBtn = HDTextHelper.createText(target, 810, 580, '▶ QUAY VỀ MENU CHÍNH', {
+      fontSize: '16px',
       fontStyle: 'bold',
       color: config.accentColorHex,
       backgroundColor: '#111620',
-      padding: { x: 32, y: 12 },
+      padding: { x: 24, y: 11 },
       stroke: config.accentColorHex,
       strokeThickness: 1
     }).setOrigin(0.5, 0.5).setInteractive({ useHandCursor: true });
 
-    const returnHint = HDTextHelper.createText(target, 640, 625, '[Nhấp chuột hoặc nhấn ENTER / SPACE / ESC để về Menu]', {
+    // Dòng nhắc nhở phím nóng tại Y = 626
+    const returnHint = HDTextHelper.createText(target, 640, 626, '[Nhấn ENTER: Chơi Hành Trình Mới  |  Nhấn ESC / SPACE: Về Menu Chính  |  Hỗ trợ nhấp chuột]', {
       fontSize: '13px',
       color: '#95a5a6',
       fontStyle: 'italic',
@@ -759,9 +855,20 @@ export class EndingSystem {
       strokeThickness: 2
     }).setOrigin(0.5, 0.5);
 
+    this.newJourneyBtn = newJourneyBtn;
     this.returnBtn = returnBtn;
     this.returnHint = returnHint;
 
+    // Hover & Click events cho newJourneyBtn
+    newJourneyBtn.on('pointerover', () => {
+      newJourneyBtn.setStyle({ color: '#ffffff', backgroundColor: '#27ae60' });
+    });
+    newJourneyBtn.on('pointerout', () => {
+      newJourneyBtn.setStyle({ color: '#2ecc71', backgroundColor: '#111620' });
+    });
+    newJourneyBtn.on('pointerdown', () => this.startNewJourney());
+
+    // Hover & Click events cho returnBtn
     returnBtn.on('pointerover', () => {
       returnBtn.setStyle({ color: '#ffffff', backgroundColor: '#d35400' });
     });
@@ -770,22 +877,84 @@ export class EndingSystem {
     });
     returnBtn.on('pointerdown', () => this.returnToMainMenu());
 
-    // Hỗ trợ phím cứng ENTER, SPACE và ESC trên UIScene
+    // Hỗ trợ phím cứng ENTER (chơi mới) và ESC / SPACE (về menu) trên target scene
     if (target.input && target.input.keyboard) {
-      target.input.keyboard.once('keydown-ENTER', () => this.returnToMainMenu());
-      target.input.keyboard.once('keydown-SPACE', () => this.returnToMainMenu());
-      target.input.keyboard.once('keydown-ESC', () => this.returnToMainMenu());
+      target.input.keyboard.on('keydown-ENTER', () => {
+        if (this.canStartNewJourney()) {
+          this.startNewJourney();
+        }
+      });
+      target.input.keyboard.on('keydown-SPACE', () => {
+        if (this.canReturnToMenu()) {
+          this.returnToMainMenu();
+        }
+      });
+      target.input.keyboard.on('keydown-ESC', () => {
+        if (this.canReturnToMenu()) {
+          this.returnToMainMenu();
+        }
+      });
     }
 
-    this.endingTextContainer.add([returnBtn, returnHint]);
+    // Bổ sung listener trên GameScene nếu target là UIScene để luôn nhận được phím bấm
+    if (this.scene && this.scene !== target && this.scene.input && this.scene.input.keyboard) {
+      this.scene.input.keyboard.on('keydown-ENTER', () => {
+        if (this.canStartNewJourney()) {
+          this.startNewJourney();
+        }
+      });
+      this.scene.input.keyboard.on('keydown-SPACE', () => {
+        if (this.canReturnToMenu()) {
+          this.returnToMainMenu();
+        }
+      });
+      this.scene.input.keyboard.on('keydown-ESC', () => {
+        if (this.canReturnToMenu()) {
+          this.returnToMainMenu();
+        }
+      });
+    }
 
+    this.endingTextContainer.add([newJourneyBtn, returnBtn, returnHint]);
+
+    newJourneyBtn.setAlpha(0);
     returnBtn.setAlpha(0);
     returnHint.setAlpha(0);
     target.tweens.add({
-      targets: [returnBtn, returnHint],
+      targets: [newJourneyBtn, returnBtn, returnHint],
       alpha: 1,
-      duration: 800
+      duration: 600
     });
+  }
+
+  /**
+   * Bắt đầu một hành trình sinh tồn mới từ đầu, xóa sạch dữ liệu cũ và restart GameScene
+   */
+  public startNewJourney(): void {
+    this.isEndingActive = false;
+
+    // 1. Xóa toàn bộ dữ liệu lưu trên local và cloud
+    SaveManager.clearSave();
+
+    // 2. Reset PlayerState về trạng thái ban đầu
+    PlayerState.getInstance().reset();
+
+    // 3. Dừng GameScene và UIScene
+    if (this.scene) {
+      this.scene.scene.stop('GameScene');
+    }
+    if (this.uiScene) {
+      this.uiScene.scene.stop('UIScene');
+    }
+
+    // 4. Khởi động GameScene mới tinh
+    const targetScene = this.getTargetScene();
+    targetScene.scene.start('GameScene', { isContinue: false });
+
+    if (this.onCompleteCallback) {
+      this.onCompleteCallback();
+      this.onCompleteCallback = undefined;
+    }
   }
 
   /**
