@@ -431,6 +431,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     // 6. Khởi tạo hệ thống Camera (Chuẩn HD 1280×720 & Zoom 2.2x cho thế giới pixel art, triệt tiêu rách khe tile)
+    this.cameras.main.resetFX();
     this.cameras.main.setRoundPixels(true);
     this.cameras.main.setZoom(2.2);
     if (!this.cameraSystem) {
@@ -927,6 +928,10 @@ export class GameScene extends Phaser.Scene {
     this.worldBuilder.updateCameraCulling(this.cameras.main);
 
     // 14. Xử lý mở đầu Act 0 hoặc hiển thị tiếp tục
+    // V152-00: Đảm bảo camera chính luôn được resetFX và fadeIn rõ ràng sau khi khởi tạo xong, không bao giờ kẹt lớp phủ đen
+    this.cameras.main.resetFX();
+    this.cameras.main.fadeIn(450, 0, 0, 0);
+
     if (this.isAct0IntroPending) {
       this.startAct0Intro();
     } else {
@@ -1301,7 +1306,9 @@ export class GameScene extends Phaser.Scene {
 
   private startAct0Intro(): void {
     // Mở đầu u ám: làm mờ sương và tiếng chuông đồng vọng lại
-    this.cameras.main.fadeIn(2000, 0, 0, 0);
+    if (!this.cameras.main.fadeEffect.isRunning) {
+      this.cameras.main.fadeIn(600, 0, 0, 0);
+    }
 
     // Dựng hình bóng The Echo mờ ảo dẫn đường tại X: 350, Y: 220
     this.act0EchoGfx = this.add.graphics();

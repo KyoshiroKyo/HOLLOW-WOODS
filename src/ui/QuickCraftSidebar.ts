@@ -13,6 +13,7 @@
  *    - Nút [Chế Tạo] trực tiếp 1-click mà không cần mở toàn bộ bảng chế tạo lớn.
  */
 
+import * as Phaser from 'phaser';
 import { CraftingSystem, CraftingRecipe } from '../systems/CraftingSystem';
 import { PlayerState } from '../state/PlayerState';
 import { AudioManager } from '../audio/AudioManager';

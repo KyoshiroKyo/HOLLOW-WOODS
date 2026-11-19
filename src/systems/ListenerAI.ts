@@ -1,3 +1,4 @@
+import * as Phaser from 'phaser';
 import { MonsterState } from '../entities/monsters/Monster';
 import { TheListener } from '../entities/TheListener';
 import { PlayerState } from '../state/PlayerState';
