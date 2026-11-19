@@ -363,12 +363,12 @@ export class MainMenuScene extends Phaser.Scene {
     KeycapBadgeHelper.createKeycap(this, 1000, gBoxY + 50, 'H', { highlight: true, fontSize: '10px' });
     HDTextHelper.createText(this, 1018, gBoxY + 50, 'Chi Tiết', { fontSize: '10.5px', color: '#f39c12' }).setOrigin(0, 0.5);
 
-    // Phiên bản V1.5 hiển thị ở góc dưới phải
+    // Phiên bản V1.5.1 hiển thị ở góc dưới phải
     HDTextHelper.createText(
       this,
       1265,
       706,
-      'V1.5.0 (Visual & Gameplay Overhaul) | Phaser 4 + TypeScript | 1280×720 HD',
+      'V1.5.1 (Production Release) | Phaser 4 + TypeScript | 1280×720 HD',
       {
         fontSize: '11px',
         color: '#6e5e4d'

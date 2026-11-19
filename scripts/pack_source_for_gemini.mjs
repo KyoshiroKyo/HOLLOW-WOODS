@@ -293,10 +293,10 @@ mdStream.on('finish', () => {
   console.log(`✅ Đã xuất File Markdown Gộp: ${mdOutPath}`);
   console.log(`📄 Dung lượng Markdown: ${(mdStat.size / (1024 * 1024)).toFixed(2)} MB (${mdStat.size.toLocaleString()} bytes)`);
 
-  // 5. ĐÓNG GÓI BẢN CHẠY P2GAME V1.5.0 RELEASE ZIP
-  console.log('\n--- 5. Đóng gói bản chạy phát hành release/p2game/hollow-woods-p2game-v1.5.0.zip ---');
+  // 5. ĐÓNG GÓI BẢN CHẠY P2GAME V1.5 RELEASE ZIP
+  console.log('\n--- 5. Đóng gói bản chạy phát hành release/p2game/hollow-woods-p2game-v1.5.1.zip ---');
   const distDir = path.join(ROOT_DIR, 'dist');
-  const p2gameZipOut = path.join(P2GAME_RELEASE_DIR, 'hollow-woods-p2game-v1.5.0.zip');
+  const p2gameZipOut = path.join(P2GAME_RELEASE_DIR, 'hollow-woods-p2game-v1.5.1.zip');
 
   if (fs.existsSync(p2gameZipOut)) fs.unlinkSync(p2gameZipOut);
 
@@ -330,6 +330,11 @@ print('P2GAME_ZIP_OK: ' + zip_path)
   const p2gameZipStat = fs.statSync(p2gameZipOut);
   console.log(`✅ Đã xuất gói P2Game: ${p2gameZipOut}`);
   console.log(`📦 Dung lượng P2Game ZIP: ${(p2gameZipStat.size / (1024 * 1024)).toFixed(2)} MB (${p2gameZipStat.size.toLocaleString()} bytes)`);
+
+  // Đồng thời sao chép sang alias v1.5.0
+  const legacyP2GameZip = path.join(P2GAME_RELEASE_DIR, 'hollow-woods-p2game-v1.5.0.zip');
+  fs.copyFileSync(p2gameZipOut, legacyP2GameZip);
+  console.log(`  ✔ [ALIAS] Đã đồng bộ sang: ${legacyP2GameZip}`);
 
   console.log('\n🎉 HOÀN TẤT ĐÓNG GÓI TOÀN BỘ CÁC GÓI MÃ NGUỒN VÀ BẢN PHÁT HÀNH V1.5!');
 });

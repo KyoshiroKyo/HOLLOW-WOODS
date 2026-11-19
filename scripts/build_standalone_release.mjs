@@ -367,6 +367,11 @@ const zipStat = fs.statSync(STANDALONE_ZIP);
 console.log(`✅ Đã xuất gói chơi thử độc lập: ${STANDALONE_ZIP}`);
 console.log(`📦 Dung lượng Standalone ZIP: ${(zipStat.size / (1024 * 1024)).toFixed(2)} MB (${zipStat.size.toLocaleString()} bytes)`);
 
+// Tạo thêm alias với version v1.5.1
+const v151Zip = path.join(RELEASE_DIR, 'HOLLOW_WOODS_V1.5.1_STANDALONE.zip');
+fs.copyFileSync(STANDALONE_ZIP, v151Zip);
+console.log(`  ✔ [ALIAS V1.5.1] Đã xuất: ${v151Zip}`);
+
 console.log('========================================================================');
 console.log('🎉 ĐÃ HOÀN TẤT ĐÓNG GÓI BẢN CHƠI THỬ ĐỘC LẬP CHO ĐỒNG ĐỘI!');
 console.log('========================================================================\n');
