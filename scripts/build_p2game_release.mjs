@@ -760,13 +760,14 @@ async function generateMediaAssets() {
     task: 'Pha giai 3 Tru Phong An truoc khi danh Boss'
   });
 
-  // Lưu toàn bộ 6 file hình ảnh ra các thư mục chỉ định
+  // Lưu toàn bộ 6 file hình ảnh ra các thư mục chỉ định (kèm bí danh screen_03_crafting_journal.png)
   const files = [
     { name: 'avatar_512x512.png', png: av },
     { name: 'cover_banner_1280x720.png', png: cov },
     { name: 'screen_01_bellhollow_v15.png', png: sc1 },
     { name: 'screen_02_sir_vaelen_fire.png', png: sc2 },
     { name: 'screen_03_crafting_ui.png', png: sc3 },
+    { name: 'screen_03_crafting_journal.png', png: sc3 },
     { name: 'screen_04_boss_shadow.png', png: sc4 }
   ];
 
@@ -782,6 +783,66 @@ async function generateMediaAssets() {
     }
     console.log(`  ✔ [SAVED] ${name} (${(buf.length / 1024).toFixed(1)} KB)`);
   }
+
+  // Xuất file thông tin giới thiệu P2GAME_STORE_INFO_V1.5.txt
+  const storeInfoText = `========================================================================
+HOLLOW WOODS V1.5 – THE FOG THAT REMEMBERS (P2GAME STORE METADATA)
+========================================================================
+
+[THÔNG TIN TỔNG QUAN]
+- Tựa game: HOLLOW WOODS: The Fog That Remembers
+- Phiên bản: V1.5.0 Production Release
+- Thể loại: 2D Atmospheric Psychological Survival Horror (Kinh Dị Sinh Tồn Tâm Lý & Giải Đố)
+- Nhà phát triển: Kyoshiro
+- Nền tảng: Web / P2Game.io (Phaser 3.80+ Native Canvas HD 1280x720, 60 FPS)
+
+[GIỚI THIỆU TRÒ CHƠI]
+Bước vào thế giới u tịch của HOLLOW WOODS: The Fog That Remembers, bạn thức tỉnh trong hình tượng Hiệp Sĩ The Mossbound Wayfarer trên con đường độc đạo dẫn tới ngôi làng cổ Bellhollow – nơi Màn Sương Ký Ức đang dần nuốt chửng mọi thanh âm.
+
+Cùng với những cư dân còn bám trụ (Người gác cổng Garth, Bà lão Edda, Thợ rèn Bram, Y sư Neris, Cậu bé đưa tin Finn) và Kỵ Sĩ Trầm Mặc Sir Vaelen bên đốm lửa ấm tại Trạm Lửa Rừng Tĩnh Lặng, bạn sẽ dấn thân vào hành trình khám phá đa nhánh: thu hồi Huy Hiệu Gãy, tìm Khuôn Đúc Cổ tại Xưởng Chuông Bỏ Hoang, đoạt Mảnh Cổ Ngữ tại Quảng Trường Cổ Ngữ, tôi luyện Chìa Khóa Thanh Tẩy, hóa giải Phong Ấn Rễ Cổ tại Đầm Lầy Tĩnh Lặng và đối mặt với Kẻ Nuốt Tiếng Chuông (SHADOW Series) tại Miếu Chuông Phế Tích.
+
+[TÍNH NĂNG ĐỘT PHÁ PHIÊN BẢN V1.5]
+1. VÒNG SÁNG HỘ TÂM [F] & NGHỊCH LÝ ÁNH SÁNG:
+   - Loại bỏ đèn lồng cầm tay; thay bằng hào quang ấm áp tỏa ra từ linh hồn tiêu hao Thể Lực để bảo vệ Tinh Thần.
+   - Khi bật sáng: xua tan bóng tối nhưng quái vật bóng tối phát hiện bạn xa hơn +30%. Khi tắt sáng: lén lút dễ hơn nhưng Tinh Thần bị bóng đêm gặm nhấm liên tục.
+
+2. CHIỀU SÂU KINH DỊ TÂM LÝ:
+   - Ảo giác thính giác & bóng ma lướt rìa tầm nhìn khi Tinh Thần < 55/100.
+   - Ảo ảnh Hiệp Sĩ Sa Ngã u uất đứng trong sương (< 30/100 Tinh Thần), tan biến thành khói đen khi bị rọi sáng hoặc chém trúng.
+   - Bẫy "Tiếng Gọi Trong Sương" (Quy Tắc Máu số 1): Đốm sáng mồi nhử mời gọi lữ khách rời đường mòn; tương tác sẽ giật tối màn hình, trừ 15 Tinh Thần và kéo quái vật ùa tới.
+   - Nhịp tim Web Audio động (75..135 BPM) dồn dập, tự động hạ nhỏ BGM (Ducking 0.45x) và Viền Ám Ảnh (Horror Vignette) co bóp 4 góc màn hình theo nhịp hoảng loạn.
+
+3. MẠCH NHIỆM VỤ PHI TUYẾN TÍNH & 3 KẾT THÚC:
+   - Chuỗi 7 chặng liên hoàn: Làng Bellhollow -> Đầm Lầy Tĩnh Lặng -> Trạm Lửa Sir Vaelen -> Xưởng Chuông Bỏ Hoang -> Quảng Trường Cổ Ngữ -> Mở Phong Ấn Đầm Lầy -> Miếu Chuông Phế Tích.
+   - Màn Hình Kết Thúc chuyên biệt chống kẹt màn hình đen, fail-safe 1.5s và 3 nhánh kết thúc: True Ending Bình Minh Của Tiếng Chuông, Sacrifice Ending Hiệp Sĩ Ở Lại và Bad Ending Vòng Lặp Sương Mù.
+
+4. GIAO DIỆN TÚI ĐỒ & CHẾ TẠO DON'T STARVE TOGETHER:
+   - Thanh Hotbar đáy 8 ô túi đồ + 4 ô Trang Bị cá nhân (Body, Feet, Back, Charm) nền giấy da nẹp đồng.
+   - Thanh Ghim Nhanh Dọc (QuickCraftSidebar) bên trái với mũi tên chạm khắc nối liền.
+   - Bảng Chế Tạo 2 tầng mở rộng [I/C] có tai sách Bookmark Tabs, hộp tìm kiếm Everything, thanh cuộn hình thoi và khung xem trước cổ điển.
+
+5. ĐỒ HỌA PIXEL ART 100% & THẾ GIỚI THÔNG THOÁNG:
+   - 100% Sprite Pixel Art thật từ Updated-Trees và TopDown Fantasy Forest.
+   - Dọn sạch cây cối che khuất mặt tiền Làng Bellhollow, lò rèn Bram và giải phóng tim đường Fog Crossing.
+
+[BẢNG PHÍM ĐIỀU KHIỂN]
+- WASD / Phím Mũi Tên: Di chuyển nhân vật (hỗ trợ trượt góc Corner-Slide 45°)
+- Giữ Shift: Chạy nhanh (tiêu hao Thể Lực)
+- [F]: Bật / Tắt Vòng Sáng Hộ Tâm (tiêu hao Thể Lực)
+- Chuột Trái / Space: Vung kiếm tấn công cận chiến
+- [E]: Tương tác, nói chuyện NPC, ẩn nấp thân cây rỗng/bụi rậm, nhặt đồ, đẩy cầu cây
+- [Q]: Ném Mồi Tiếng Động (Noise Lure) đánh lạc hướng The Listener
+- [1] .. [8]: Sử dụng nhanh vật phẩm trên Thanh Túi Đồ
+- [I] / [C]: Mở / Đóng Bảng Chế Tạo Dã Ngoại DST 2 tầng
+- [J]: Mở / Đóng Sổ Tay Lữ Khách (Nhiệm vụ 7 chặng, Ký ức, Bestiary)
+- [N]: Bật / Tắt La Bàn Mở Rộng / Bản Đồ Mini
+- [M]: Bật / Tắt âm thanh (Mute/Unmute)
+- [ESC]: Tạm dừng trò chơi & mở Bảng Tùy Chọn
+- [F8]: Gỡ Kẹt Khẩn Cấp (Emergency Unstuck) về điểm an toàn
+========================================================================
+`;
+  fs.writeFileSync(path.join(RELEASE_MEDIA_DIR, 'P2GAME_STORE_INFO_V1.5.txt'), storeInfoText, 'utf8');
+  console.log(`  ✔ [SAVED] P2GAME_STORE_INFO_V1.5.txt`);
 
   console.log('✔ Hoàn tất kết xuất và lưu trữ 6 tài nguyên hình ảnh Pixel Art V1.5!');
 }
