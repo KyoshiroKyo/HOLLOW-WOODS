@@ -1,24 +1,24 @@
 {
   "colliders": {
-    "zoneCollidersCount": 125,
-    "autoPerimeterCount": 107,
+    "zoneCollidersCount": 118,
+    "autoPerimeterCount": 106,
     "treeLoopColliders": 131,
-    "discreteCalls": 58,
+    "discreteCalls": 85,
     "discreteHollowTrees": 12,
-    "grandTotalColliders": 433,
+    "grandTotalColliders": 452,
     "collidersByZone": {
       "fog_crossing": 6,
       "bellhollow": 9,
-      "crooked_path": 7,
-      "silent_mire": 16,
+      "crooked_path": 5,
+      "silent_mire": 17,
       "broken_bell_shrine": 7,
       "sanctuary_farm": 7,
       "outer_woods": 11,
-      "deep_forest": 8,
+      "deep_forest": 5,
       "ancient_rune_puzzle": 0,
       "sub_bell_workshop": 7,
       "sub_root_cellar": 9,
-      "sub_whispering_clearing": 13,
+      "sub_whispering_clearing": 10,
       "abyssal_chasm": 6,
       "drowned_mire_depths": 5,
       "whispering_grove_sanctum": 5,
@@ -34,7 +34,7 @@
       "sanctuary_farm": 7,
       "outer_woods": 10,
       "deep_forest": 8,
-      "ancient_rune_puzzle": 6,
+      "ancient_rune_puzzle": 5,
       "sub_bell_workshop": 5,
       "sub_root_cellar": 6,
       "sub_whispering_clearing": 7,
@@ -237,6 +237,66 @@
       "totalFrames": 128
     },
     {
+      "key": "SPRITE_BOSS_WETLANDS_IDLE",
+      "relPath": "assets/characters/bosses/wetlands_boss/boss_wetlands_idle.png",
+      "fullPath": "public\\assets\\characters\\bosses\\wetlands_boss\\boss_wetlands_idle.png",
+      "frameWidth": 247,
+      "frameHeight": 87,
+      "pngWidth": 3458,
+      "pngHeight": 87,
+      "totalFrames": 14
+    },
+    {
+      "key": "SPRITE_BOSS_WETLANDS_WALK",
+      "relPath": "assets/characters/bosses/wetlands_boss/boss_wetlands_walk.png",
+      "fullPath": "public\\assets\\characters\\bosses\\wetlands_boss\\boss_wetlands_walk.png",
+      "frameWidth": 247,
+      "frameHeight": 87,
+      "pngWidth": 3458,
+      "pngHeight": 87,
+      "totalFrames": 14
+    },
+    {
+      "key": "SPRITE_BOSS_WETLANDS_ATTACK1",
+      "relPath": "assets/characters/bosses/wetlands_boss/boss_wetlands_attack1.png",
+      "fullPath": "public\\assets\\characters\\bosses\\wetlands_boss\\boss_wetlands_attack1.png",
+      "frameWidth": 247,
+      "frameHeight": 87,
+      "pngWidth": 2470,
+      "pngHeight": 87,
+      "totalFrames": 10
+    },
+    {
+      "key": "SPRITE_BOSS_WETLANDS_ATTACK2",
+      "relPath": "assets/characters/bosses/wetlands_boss/boss_wetlands_attack2.png",
+      "fullPath": "public\\assets\\characters\\bosses\\wetlands_boss\\boss_wetlands_attack2.png",
+      "frameWidth": 247,
+      "frameHeight": 87,
+      "pngWidth": 2223,
+      "pngHeight": 87,
+      "totalFrames": 9
+    },
+    {
+      "key": "SPRITE_BOSS_WETLANDS_HIT",
+      "relPath": "assets/characters/bosses/wetlands_boss/boss_wetlands_hit.png",
+      "fullPath": "public\\assets\\characters\\bosses\\wetlands_boss\\boss_wetlands_hit.png",
+      "frameWidth": 247,
+      "frameHeight": 87,
+      "pngWidth": 247,
+      "pngHeight": 87,
+      "totalFrames": 1
+    },
+    {
+      "key": "SPRITE_BOSS_WETLANDS_DEATH",
+      "relPath": "assets/characters/bosses/wetlands_boss/boss_wetlands_death.png",
+      "fullPath": "public\\assets\\characters\\bosses\\wetlands_boss\\boss_wetlands_death.png",
+      "frameWidth": 247,
+      "frameHeight": 87,
+      "pngWidth": 8151,
+      "pngHeight": 87,
+      "totalFrames": 33
+    },
+    {
       "key": "SPRITE_MIST_BAT",
       "relPath": "assets/characters/monsters/bat_sheet.png",
       "fullPath": "public\\assets\\characters\\monsters\\bat_sheet.png",
@@ -357,6 +417,282 @@
       "relPath": "assets/environment/tiles/tile_stone_floor.png",
       "pngWidth": 16,
       "pngHeight": 16
+    },
+    {
+      "key": "SPRITE_HOUSE_ELDER_EDDA_V15",
+      "relPath": "assets/buildings/house_elder_edda.png",
+      "pngWidth": 160,
+      "pngHeight": 144
+    },
+    {
+      "key": "SPRITE_HOUSE_HERBALIST_NERIS_V15",
+      "relPath": "assets/buildings/house_herbalist_neris.png",
+      "pngWidth": 152,
+      "pngHeight": 136
+    },
+    {
+      "key": "SPRITE_SMITHY_WORKSHOP_BRAM_V15",
+      "relPath": "assets/buildings/smithy_workshop_bram.png",
+      "pngWidth": 176,
+      "pngHeight": 148
+    },
+    {
+      "key": "SPRITE_GATEHOUSE_GARTH_V15",
+      "relPath": "assets/buildings/gatehouse_garth.png",
+      "pngWidth": 128,
+      "pngHeight": 136
+    },
+    {
+      "key": "SPRITE_BELL_TOWER_GRAND_V15",
+      "relPath": "assets/buildings/bell_tower_grand.png",
+      "pngWidth": 160,
+      "pngHeight": 240
+    },
+    {
+      "key": "SPRITE_VILLAGE_WELL_DETAILED_V15",
+      "relPath": "assets/buildings/village_well_detailed.png",
+      "pngWidth": 64,
+      "pngHeight": 72
+    },
+    {
+      "key": "SPRITE_TREE_MIST_PINE_V15",
+      "relPath": "assets/environment/trees/tree_mist_pine.png",
+      "pngWidth": 70,
+      "pngHeight": 98
+    },
+    {
+      "key": "SPRITE_TREE_MOSSY_OAK_GRAND_V15",
+      "relPath": "assets/environment/trees/tree_mossy_oak_grand.png",
+      "pngWidth": 80,
+      "pngHeight": 95
+    },
+    {
+      "key": "SPRITE_TREE_WEEPING_WILLOW_V15",
+      "relPath": "assets/environment/trees/tree_weeping_willow.png",
+      "pngWidth": 80,
+      "pngHeight": 95
+    },
+    {
+      "key": "SPRITE_TREE_WITHERED_GNARLED_V15",
+      "relPath": "assets/environment/trees/tree_withered_gnarled.png",
+      "pngWidth": 32,
+      "pngHeight": 48
+    },
+    {
+      "key": "SPRITE_TREE_OAK_1",
+      "relPath": "assets/environment/sprites/tree_oak_1.png",
+      "pngWidth": 113,
+      "pngHeight": 139
+    },
+    {
+      "key": "SPRITE_TREE_OAK_2",
+      "relPath": "assets/environment/sprites/tree_oak_2.png",
+      "pngWidth": 95,
+      "pngHeight": 136
+    },
+    {
+      "key": "SPRITE_TREE_OAK_3",
+      "relPath": "assets/environment/sprites/tree_oak_3.png",
+      "pngWidth": 83,
+      "pngHeight": 120
+    },
+    {
+      "key": "SPRITE_TREE_DEAD",
+      "relPath": "assets/environment/sprites/tree_dead.png",
+      "pngWidth": 24,
+      "pngHeight": 27
+    },
+    {
+      "key": "SPRITE_HOLLOW_TREE",
+      "relPath": "assets/environment/sprites/hollow_tree.png",
+      "pngWidth": 40,
+      "pngHeight": 32
+    },
+    {
+      "key": "SPRITE_BUSH_DENSE_1",
+      "relPath": "assets/environment/sprites/bush_dense_1.png",
+      "pngWidth": 50,
+      "pngHeight": 44
+    },
+    {
+      "key": "SPRITE_BUSH_DENSE_2",
+      "relPath": "assets/environment/sprites/bush_dense_2.png",
+      "pngWidth": 41,
+      "pngHeight": 47
+    },
+    {
+      "key": "tree_birch_amber_v14",
+      "relPath": "assets/environment/v14/trees/tree_birch_amber_v14.png",
+      "pngWidth": 80,
+      "pngHeight": 95
+    },
+    {
+      "key": "tree_maple_crimson_v14",
+      "relPath": "assets/environment/v14/trees/tree_maple_crimson_v14.png",
+      "pngWidth": 80,
+      "pngHeight": 95
+    },
+    {
+      "key": "tree_oak_mossy_v14",
+      "relPath": "assets/environment/v14/trees/tree_oak_mossy_v14.png",
+      "pngWidth": 80,
+      "pngHeight": 95
+    },
+    {
+      "key": "tree_dead_withered_v14",
+      "relPath": "assets/environment/v14/trees/tree_dead_withered_v14.png",
+      "pngWidth": 32,
+      "pngHeight": 48
+    },
+    {
+      "key": "prop_fallen_log_mossy_v14",
+      "relPath": "assets/environment/v14/props/prop_fallen_log_mossy_v14.png",
+      "pngWidth": 46,
+      "pngHeight": 61
+    },
+    {
+      "key": "tree_hollow_ancient_v14",
+      "relPath": "assets/environment/v14/props/tree_hollow_ancient_v14.png",
+      "pngWidth": 43,
+      "pngHeight": 61
+    },
+    {
+      "key": "tree_pine_tall_topdown",
+      "relPath": "assets/environment/trees/tree_pine_tall_topdown.png",
+      "pngWidth": 70,
+      "pngHeight": 98
+    },
+    {
+      "key": "tree_pine_med_topdown",
+      "relPath": "assets/environment/trees/tree_pine_med_topdown.png",
+      "pngWidth": 70,
+      "pngHeight": 94
+    },
+    {
+      "key": "tree_pine_slender_topdown",
+      "relPath": "assets/environment/trees/tree_pine_slender_topdown.png",
+      "pngWidth": 38,
+      "pngHeight": 74
+    },
+    {
+      "key": "SPRITE_DECAL_WILD_GRASS_V15",
+      "relPath": "assets/environment/foliage/decal_wild_grass.png",
+      "pngWidth": 32,
+      "pngHeight": 24
+    },
+    {
+      "key": "SPRITE_DECAL_FERN_CLUSTER_V15",
+      "relPath": "assets/environment/foliage/decal_fern_cluster.png",
+      "pngWidth": 36,
+      "pngHeight": 28
+    },
+    {
+      "key": "SPRITE_DECAL_GLOWING_MUSHROOMS_V15",
+      "relPath": "assets/environment/foliage/decal_glowing_mushrooms.png",
+      "pngWidth": 32,
+      "pngHeight": 24
+    },
+    {
+      "key": "SPRITE_DECAL_AUTUMN_LEAVES_V15",
+      "relPath": "assets/environment/foliage/decal_autumn_leaves.png",
+      "pngWidth": 36,
+      "pngHeight": 24
+    },
+    {
+      "key": "SPRITE_DECAL_PEBBLES_STONES_V15",
+      "relPath": "assets/environment/foliage/decal_pebbles_stones.png",
+      "pngWidth": 32,
+      "pngHeight": 20
+    },
+    {
+      "key": "SPRITE_DECAL_SWAMP_PUDDLE_V15",
+      "relPath": "assets/environment/foliage/decal_swamp_puddle.png",
+      "pngWidth": 48,
+      "pngHeight": 28
+    },
+    {
+      "key": "SPRITE_RES_DRY_WOOD",
+      "relPath": "assets/environment/pickups/res_dry_wood.png",
+      "pngWidth": 24,
+      "pngHeight": 24
+    },
+    {
+      "key": "SPRITE_RES_TREE_RESIN",
+      "relPath": "assets/environment/pickups/res_tree_resin.png",
+      "pngWidth": 24,
+      "pngHeight": 24
+    },
+    {
+      "key": "SPRITE_RES_FLINT",
+      "relPath": "assets/environment/pickups/res_flint.png",
+      "pngWidth": 24,
+      "pngHeight": 24
+    },
+    {
+      "key": "SPRITE_RES_HERBS",
+      "relPath": "assets/environment/pickups/res_herbs.png",
+      "pngWidth": 24,
+      "pngHeight": 24
+    },
+    {
+      "key": "SPRITE_RES_RUNED_IRON",
+      "relPath": "assets/environment/pickups/res_runed_iron.png",
+      "pngWidth": 24,
+      "pngHeight": 24
+    },
+    {
+      "key": "SPRITE_CAMPFIRE_UNLIT_V15",
+      "relPath": "assets/environment/props/campfire_unlit.png",
+      "pngWidth": 48,
+      "pngHeight": 48
+    },
+    {
+      "key": "SPRITE_CAMPFIRE_TIER1_V15",
+      "relPath": "assets/environment/props/campfire_tier1.png",
+      "pngWidth": 48,
+      "pngHeight": 48
+    },
+    {
+      "key": "SPRITE_CAMPFIRE_TIER2_V15",
+      "relPath": "assets/environment/props/campfire_tier2.png",
+      "pngWidth": 48,
+      "pngHeight": 48
+    },
+    {
+      "key": "SPRITE_CAMPFIRE_TIER3_V15",
+      "relPath": "assets/environment/props/campfire_tier3.png",
+      "pngWidth": 48,
+      "pngHeight": 48
+    },
+    {
+      "key": "SPRITE_PROP_CHEST_BRONZE_V15",
+      "relPath": "assets/environment/props/prop_chest_bronze.png",
+      "pngWidth": 40,
+      "pngHeight": 32
+    },
+    {
+      "key": "SPRITE_PROP_CAULDRON_TRIPOD_V15",
+      "relPath": "assets/environment/props/prop_cauldron_tripod.png",
+      "pngWidth": 36,
+      "pngHeight": 44
+    },
+    {
+      "key": "SPRITE_PROP_WAYFARER_TENT_V15",
+      "relPath": "assets/environment/props/prop_wayfarer_tent.png",
+      "pngWidth": 64,
+      "pngHeight": 56
+    },
+    {
+      "key": "SPRITE_PROP_LANTERN_POST_V15",
+      "relPath": "assets/environment/props/prop_lantern_post.png",
+      "pngWidth": 32,
+      "pngHeight": 64
+    },
+    {
+      "key": "SPRITE_PROP_SIGNPOST_WOOD_V15",
+      "relPath": "assets/environment/props/prop_signpost_wood.png",
+      "pngWidth": 36,
+      "pngHeight": 48
     },
     {
       "key": "TILE_FOREST_GRASS_V14_A",
@@ -560,127 +896,157 @@
   "scaleUsages": [
     {
       "file": "src/world/WorldBuilder.ts",
-      "line": 2613,
+      "line": 2553,
+      "code": "trunkLog.setScale(1.6, 1.2);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 2624,
       "code": "mist.setScale(scaleX, scaleY);"
     },
     {
       "file": "src/world/WorldBuilder.ts",
-      "line": 2713,
+      "line": 2765,
       "code": "sprite.setScale(scaleX, scaleY ?? scaleX);"
     },
     {
       "file": "src/world/WorldBuilder.ts",
-      "line": 2738,
-      "code": "tree.setScale(scale);"
+      "line": 2843,
+      "code": "decal.setScale(scale);"
     },
     {
       "file": "src/world/WorldBuilder.ts",
-      "line": 3001,
-      "code": "house.setScale(0.92, 0.92);"
-    },
-    {
-      "file": "src/world/WorldBuilder.ts",
-      "line": 3342,
+      "line": 3525,
       "code": "markerNorth.setScale(0.55);"
     },
     {
       "file": "src/world/WorldBuilder.ts",
-      "line": 3347,
-      "code": "markerSouth.setScale(0.55);"
+      "line": 3530,
+      "code": "markerSouth.setScale(0.55); // Image only (non-physics body, refreshBody handled on collider)"
     },
     {
       "file": "src/world/WorldBuilder.ts",
-      "line": 3680,
+      "line": 3877,
       "code": "tree.setScale(finalScale);"
     },
     {
       "file": "src/world/WorldBuilder.ts",
-      "line": 3699,
+      "line": 3895,
       "code": "bush.setScale(scale);"
     },
     {
       "file": "src/world/WorldBuilder.ts",
-      "line": 3866,
+      "line": 4136,
       "code": "mist.setScale(scaleX, scaleY);"
     },
     {
       "file": "src/world/WorldBuilder.ts",
-      "line": 3945,
+      "line": 4215,
       "code": "rockImg.setScale(targetScale);"
     },
     {
       "file": "src/world/WorldBuilder.ts",
-      "line": 4425,
+      "line": 4699,
       "code": "fog.setScale(p.scale);"
     },
     {
       "file": "src/world/WorldBuilder.ts",
-      "line": 5247,
+      "line": 4971,
+      "code": "echoRuins.setScale(0.85);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 4988,
+      "code": "echoMire.setScale(0.85);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 5004,
+      "code": "chessboard.setScale(0.9);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 5885,
+      "code": "log.setScale(length / 46, 1.0);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 5915,
       "code": "mist.setScale(scaleX, scaleY);"
     },
     {
       "file": "src/world/WorldBuilder.ts",
-      "line": 5729,
+      "line": 6218,
+      "code": "trunkLog.setScale(1.8, 1.2);"
+    },
+    {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 6442,
       "code": "mist.setScale(scaleX, scaleY);"
     },
     {
       "file": "src/world/WorldBuilder.ts",
-      "line": 6112,
+      "line": 6917,
       "code": "mist.setScale(scaleX, scaleY);"
     },
     {
       "file": "src/world/WorldBuilder.ts",
-      "line": 6394,
+      "line": 7290,
       "code": "monolithImg.setScale(0.85);"
     },
     {
       "file": "src/world/WorldBuilder.ts",
-      "line": 6597,
+      "line": 7493,
       "code": "mist.setScale(scaleX, scaleY);"
     },
     {
       "file": "src/world/WorldBuilder.ts",
-      "line": 6801,
+      "line": 7697,
       "code": "mist.setScale(1.2, 0.85);"
     },
     {
       "file": "src/world/WorldBuilder.ts",
-      "line": 6866,
+      "line": 7762,
       "code": "mist.setScale(1.25, 0.85);"
     },
     {
       "file": "src/world/WorldBuilder.ts",
-      "line": 6916,
+      "line": 7812,
       "code": "mist.setScale(1.2, 0.8);"
     },
     {
+      "file": "src/world/WorldBuilder.ts",
+      "line": 8439,
+      "code": "titanLog.setScale(length / 46, 1.2);"
+    },
+    {
       "file": "src/entities/AmbushMonsters.ts",
-      "line": 46,
+      "line": 48,
       "code": "this.setScale(1.0);"
     },
     {
       "file": "src/entities/AmbushMonsters.ts",
-      "line": 159,
+      "line": 164,
       "code": "this.setScale(1.0);"
     },
     {
       "file": "src/entities/AmbushMonsters.ts",
-      "line": 257,
+      "line": 263,
       "code": "this.setScale(1.0);"
     },
     {
       "file": "src/entities/ShadowMonsters.ts",
-      "line": 55,
+      "line": 59,
       "code": "this.setScale(1.0);"
     },
     {
       "file": "src/entities/ShadowMonsters.ts",
-      "line": 241,
+      "line": 283,
       "code": "this.setScale(1.0);"
     },
     {
       "file": "src/entities/ShadowMonsters.ts",
-      "line": 361,
+      "line": 408,
       "code": "this.setScale(1.0);"
     }
   ]

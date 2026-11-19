@@ -1,9 +1,37 @@
 # 🌲 HOLLOW WOODS V1.5 – THE FOG THAT REMEMBERS (SƯƠNG MÙ GHI NHỚ)
 
-> **Tập 1: The First Toll (Tiếng Chuông Đầu Tiên)**  
-> **Thể loại:** 2D Atmospheric Psychological Survival Horror  
-> **Độ phân giải:** Native Canvas HD 1280×720 | World Camera Zoom 2.2× | 60 FPS Target  
-> **Kho lưu trữ GitHub:** [https://github.com/KyoshiroKyo/HOLLOW-WOODS](https://github.com/KyoshiroKyo/HOLLOW-WOODS)
+> **Tập 1: The First Toll (Tiếng Chuông Đầu Tiên) — Bản Phát Hành Chính Thức V1.5 Production**  
+> **Thể loại:** 2D Atmospheric Psychological Survival Horror (Kinh Dị Sinh Tồn Tâm Lý & Giải Đố)  
+> **Độ phân giải:** Native Canvas HD 1280×720 | World Camera Zoom 2.2× | Target 60 FPS  
+> **Kho lưu trữ GitHub:** [https://github.com/KyoshiroKyo/HOLLOW-WOODS](https://github.com/KyoshiroKyo/HOLLOW-WOODS)  
+
+---
+
+## 🌟 Điểm Nhấn Đột Phá Trên Phiên Bản V1.5
+
+1. **Hiệp Sĩ The Mossbound Wayfarer & Cơ Chế Vòng Sáng Hộ Tâm [F]:**
+   - Chuyển đổi nhân vật chính sang hình tượng Hiệp Sĩ 4 hướng với chuyển động bước chân mượt mà, chém kiếm cận chiến dứt khoát và công nghệ **Tangent Corner Slide 45°** chống kẹt góc tuyệt đối.
+   - Bỏ đèn lồng cầm tay, thay bằng **Vòng Sáng Hộ Tâm [F]** tỏa ra từ chính linh hồn: tiêu tốn 10 Thể Lực khi bật, rút nhẹ 1.2 Thể Lực/giây để duy trì.
+   - **Nghịch lý ánh sáng [F] (Quy Tắc Máu số 2):** Khi bật sáng bảo vệ Tinh Thần, bán kính phát hiện của quái vật bóng tối tăng thêm $+30\%$; khi tắt sáng, bóng tối gặm nhấm Tinh Thần buộc người chơi phải bật/tắt luân phiên đầy chiến thuật.
+
+2. **Chiều Sâu Kinh Dị Tâm Lý & Nhận Thức Bị Bóp Méo:**
+   - **Ảo giác thính giác & Bóng lướt rìa (< 55/100 Tinh Thần):** Tiếng bước chân giả sau lưng, tiếng thì thầm rùng rợn và vệt bóng ma lướt qua rìa màn hình sương.
+   - **Bóng Ma Hiệp Sĩ Sa Ngã (< 30/100 Tinh Thần):** Ảo ảnh hiệp sĩ cổ xưa đứng u uất trong sương mù, tan biến thành khói đen khi bị rọi sáng hoặc chém trúng.
+   - **Bẫy "Tiếng Gọi Trong Sương" (Quy Tắc Máu số 1):** Đốm sáng lập lòe mồi nhử kêu gọi lữ khách rời đường mòn; tương tác sẽ làm giật tối màn hình, trừ 15 Tinh Thần và kéo quái vật ùa tới.
+   - **Nhịp tim Web Audio động (75..135 BPM) & Viền Ám Ảnh (Horror Vignette):** Âm thanh nhịp tim *lub-dub* dồn dập, tự động hạ nhỏ nhạc nền BGM và 4 góc màn hình co bóp theo mức độ hoảng loạn.
+
+3. **Cốt Truyện Phi Tuyến Tính 7 Chặng & Màn Hình Kết Thúc Đa Phân Nhánh:**
+   - Mạch nhiệm vụ chính tái cấu trúc theo chuỗi 7 chặng liên hoàn: $A \to E \to B \to D \to F \to E \to C$. Người chơi khám phá Xưởng Chuông Bỏ Hoang, Quảng Trường Cổ Ngữ, gặp gỡ Kỵ Sĩ Trầm Mặc Sir Vaelen tại Trạm Lửa để đúc Chìa Khóa Thanh Tẩy, mở Phong Ấn Rễ Cổ tại Đầm Lầy Tĩnh Lặng và hạ cầu cây vượt vực.
+   - **Màn Hình Kết Thúc An Toàn:** Cơ chế fadeOut -> resetFX -> fadeIn chống triệt để lỗi kẹt màn hình đen, bộ đếm an toàn Fail-safe 1.5s, phân nhánh 3 kết thúc (True Ending Bình Minh, Sacrifice Ending, Bad Ending Vòng Lặp) kèm bảng thống kê hành trình sinh tồn.
+
+4. **Đại Tu Giao Diện Người Dùng Phong Cách Don't Starve Together:**
+   - Thanh Hotbar đáy 8 ô túi đồ + 4 ô Trang Bị cá nhân (`BODY`, `FEET`, `BACK`, `CHARM`) nền giấy da sáng ấm nẹp khung gỗ tối.
+   - Thanh Ghim Nhanh Dọc (QuickCraftSidebar) bên trái với mũi tên chạm khắc nối liền (Connecting Bracket Pointer) và ô nguyên liệu đỏ sẫm khi thiếu.
+   - Bảng Chế Tạo 2 tầng mở rộng [I/C] chuẩn DST: tai sách Bookmark Tabs mép phải, hộp tìm kiếm giấy da, thanh cuộn hình thoi và khung xem trước cổ điển.
+
+5. **Đồ Họa Pixel Art Thật 100% & Bố Cục Thông Thoáng:**
+   - Xóa bỏ 100% cây vẽ bằng code hình học; thay thế bằng Sprite Pixel Art chính thức từ Updated-Trees và TopDown Fantasy Forest.
+   - Quy hoạch mặt tiền Làng Bellhollow thoáng đãng, dọn sạch cây che lò rèn Bram và nhà dân; thông suốt tim đường mòn Lối Mòn Xuyên Sương (Fog Crossing).
 
 ---
 
@@ -19,50 +47,49 @@
 
 ---
 
-## 🚀 Hướng Dẫn Cài Đặt & Khởi Chạy Cho Đồng Đội
-
-Để tải mã nguồn và tiếp tục phát triển hoặc trải nghiệm trò chơi, các thành viên thực hiện tuần tự 4 bước sau:
+## 🚀 Hướng Dẫn Cài Đặt & Khởi Chạy
 
 ### Bước 1: Tải mã nguồn về máy
 ```bash
 git clone https://github.com/KyoshiroKyo/HOLLOW-WOODS.git
-```
-
-### Bước 2: Di chuyển vào thư mục dự án
-```bash
 cd HOLLOW-WOODS
 ```
 
-### Bước 3: Cài đặt các gói thư viện phụ thuộc
+### Bước 2: Cài đặt các gói thư viện phụ thuộc
 ```bash
 npm install
 ```
 
-### Bước 4: Khởi chạy máy chủ phát triển
+### Bước 3: Khởi chạy máy chủ phát triển
 ```bash
 npm run dev
 ```
-Trình duyệt sẽ tự động mở tại địa chỉ `http://localhost:3000/`.
+Trình duyệt sẽ tự động mở tại địa chỉ `http://localhost:3000/` (hoặc `http://localhost:8080/`).
 
 ---
 
-## 🔍 Lệnh Kiểm Tra Lỗi & Đóng Gói Sản Phẩm
+## 🔍 Lệnh Kiểm Tra & Đóng Gói Sản Phẩm
 
 - **Kiểm tra cú pháp & kiểu dữ liệu TypeScript (Strict Mode):**
   ```bash
   npx tsc --noEmit
   ```
-  *(Yêu cầu bắt buộc: Đạt 0 errors)*
+  *(Đạt 0 lỗi)*
 
 - **Đóng gói phiên bản phát hành chính thức (Production Bundle):**
   ```bash
   npm run build
   ```
-  *(Tạo gói tĩnh tối ưu hóa tại thư mục `dist/`)*
 
-- **Kiểm tra chạy thử gói phát hành (Preview):**
+- **Đóng gói bản phát hành Web P2Game:**
   ```bash
-  npm run preview
+  npm run release:p2game
+  ```
+  *(Tự động tạo `release/p2game/hollow-woods-p2game-v1.5.0.zip` kèm `p2game.json` và bộ media)*
+
+- **Đóng gói mã nguồn tinh gọn cho AI Review:**
+  ```bash
+  node scripts/pack_source_for_gemini.mjs
   ```
 
 ---
@@ -71,14 +98,16 @@ Trình duyệt sẽ tự động mở tại địa chỉ `http://localhost:3000/
 
 | Phím bấm | Chức năng chi tiết |
 |:---:|---|
-| **`W / A / S / D`** hoặc **Mũi tên** | Di chuyển nhân vật qua lại trong khu rừng |
+| **`W / A / S / D`** hoặc **Mũi tên** | Di chuyển nhân vật qua lại trong khu rừng (hỗ trợ trượt góc Corner-Slide 45°) |
 | **`Shift`** | Chạy nhanh (tiêu hao Thể lực / Stamina) |
-| **`F`** | Bật / Tắt Hào Quang Hộ Tâm (tiêu hao 10 Thể Lực khi bật, 1.2 Thể Lực/giây duy trì, bảo vệ Tinh Thần / Sanity) |
+| **`F`** | **✨ Bật / Tắt Vòng Sáng Hộ Tâm:** Tiêu hao 10 Thể Lực khi nhóm, 1.2 Thể Lực/giây duy trì. Bảo vệ Tinh Thần khỏi bóng tối (quái vật phát hiện xa hơn +30%) |
+| **`Chuột trái` / `Space`** | Vung kiếm tấn công cận chiến (tiêu hao nhẹ Thể Lực) |
 | **`E`** | Tương tác nói chuyện NPC, Ẩn nấp thân cây rỗng/bụi rậm, Thu thập tài nguyên, Đọc biển báo/cổ thư, Rung chuông |
 | **`Q`** | Ném Mồi Tiếng Động (Noise Lure) đánh lạc hướng quái vật The Listener |
-| **`1`** | Sử dụng nhanh Thuốc Đắp Hồi Máu khẩn cấp |
-| **`I` / `C`** | Mở / Đóng Bàn Chế Tạo Dã Ngoại (Crafting Modal) |
-| **`J`** | Mở / Đóng Sổ Tay Nhiệm Vụ & Cổ Thư (Journal Modal: Nhiệm Vụ, Ký Ức Hiệp Sĩ, Bestiary, Bản Đồ) |
+| **`1` .. `8`** | Sử dụng nhanh vật phẩm trên Thanh Túi Đồ đáy màn hình |
+| **`I` / `C`** | Mở / Đóng Bảng Chế Tạo Dã Ngoại DST (Crafting Modal 2 tầng có tìm kiếm & bookmark tabs) |
+| **`J`** | Mở / Đóng Sổ Tay Lữ Khách (Nhiệm Vụ 7 Chặng, Ký Ức Hiệp Sĩ, Bestiary, Bản Đồ) |
+| **`N`** | Bật / Tắt La Bàn Mở Rộng / Bản Đồ Mini |
 | **`M`** | Bật / Tắt toàn bộ âm thanh trò chơi (Mute / Unmute) |
 | **`ESC`** | Tạm dừng trò chơi & mở Bảng Tùy Chọn (Pause Menu) |
 | **`F8`** | **🛡️ Gỡ Kẹt Về Điểm An Toàn (Emergency Unstuck):** Thoát kẹt địa hình/cổng sắt và hồi phục về điểm an toàn |
@@ -87,30 +116,23 @@ Trình duyệt sẽ tự động mở tại địa chỉ `http://localhost:3000/
 
 ---
 
-## 📂 Cấu Trúc Thư Mục Chuẩn Hóa Dự Án
-
-Chi tiết toàn bộ quy định phân cấp thư mục được mô tả tại [docs/FOLDER_STRUCTURE_RULES.md](file:///G:/HOLLOW%20WOODS/docs/FOLDER_STRUCTURE_RULES.md).
+## 📂 Cấu Trúc Thư Mục Dự Án
 
 ```
 HOLLOW-WOODS/
 ├── src/                           ← Toàn bộ mã nguồn TypeScript của game (scenes, entities, systems, ui, world...)
 ├── public/assets/                 ← Tài nguyên runtime phục vụ trực tiếp cho game (audio, maps, characters, ui...)
 ├── docs/                          ← Hệ thống tài liệu kỹ thuật, hướng dẫn & nhật ký
-│   ├── FOLDER_STRUCTURE_RULES.md  ← Quy chuẩn cây thư mục chi tiết cho nhóm và AI
-│   ├── guides/                    ← Hướng dẫn chạy game tại trường, khôi phục chat, hướng dẫn người dùng
-│   ├── reports/                   ← Báo cáo đánh giá & kiểm toán các phiên bản cũ
-│   ├── chat_and_commands/         ← Bản trích xuất câu lệnh & lịch sử chat phát triển
-│   └── v1.4/                      ← Toàn bộ báo cáo kỹ thuật & hồ sơ bản V1.4
+│   ├── reports/                   ← Báo cáo đánh giá & kiểm toán toàn diện V1.5
+│   └── guides/                    ← Hướng dẫn chạy game và vận hành
 ├── Read/                          ← Báo cáo chuyên sâu và sổ chỉ mục kiến trúc
-│   ├── V1.3/                      ← Hồ sơ thiết kế & kiểm toán chi tiết V1.3
 │   └── V1.5/                      ← Hồ sơ đại tu toàn diện V1.5 (Reports/, README_INDEX.md)
-├── release/                       ← Bản đóng gói phát hành (p2game/, school-dev/, archives/)
-├── Backups/                       ← Kho lưu trữ dự phòng (chat_history/, maps/, assets_archive/, steps/)
-├── Pixel_Art/                     ← Kho tài nguyên đồ họa pixel art gốc, mockups từ họa sĩ
+├── release/                       ← Bản đóng gói phát hành (p2game/, gemini_review/)
+├── Backups/                       ← Kho lưu trữ dự phòng
+├── Pixel_Art/                     ← Kho tài nguyên đồ họa pixel art gốc từ họa sĩ
 ├── Sound_Effects/                 ← Kho âm thanh nguồn và sample hiệu ứng gốc
-├── scripts/                       ← Kịch bản kiểm thử tự động, build automation, kiểm toán QA
-├── tests/                         ← Bộ kiểm thử tự động (Unit Tests & Integration Tests)
-├── dist/                          ← Gói ứng dụng sau khi build (bị .gitignore)
+├── scripts/                       ← Kịch bản kiểm thử tự động, build automation, đóng gói p2game
+├── dist/                          ← Gói ứng dụng web sau khi build (Vite production bundle)
 ├── package.json                   ← Cấu hình thư viện và script npm
 ├── tsconfig.json                  ← Cấu hình biên dịch TypeScript Strict Mode
 ├── vite.config.ts                 ← Cấu hình máy chủ phát triển và đóng gói Vite
@@ -119,12 +141,8 @@ HOLLOW-WOODS/
 
 ---
 
-## 🏆 Trạng Thái Dự Án
+## 🏆 Trạng Thái Dự Án & Bản Quyền
 
-- **Phiên bản hiện tại:** HOLLOW WOODS V1.5 (`feat/v1.5-visual-gameplay-overhaul`).
-- **Sổ Chỉ Mục & Tiến Độ 32 Bước V1.5:**
-  - [Read/V1.5/README_INDEX.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/README_INDEX.md): Danh mục chi tiết 32 bước nâng cấp toàn diện và 14 báo cáo kỹ thuật.
-  - [Read/V1.5/Reports/08_V15_Total_Overhaul_Final_Report.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/08_V15_Total_Overhaul_Final_Report.md): Báo cáo tổng kết đại tu toàn diện HOLLOW WOODS V1.5.
-  - [Read/V1.5/Reports/14_Safe_Spawn_And_Unstuck_Resolver.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/14_Safe_Spawn_And_Unstuck_Resolver.md): Cơ chế an toàn vị trí nạp checkpoint và gỡ kẹt khẩn cấp `[F8]`.
-- **Trạng thái kiểm toán:** 🎉 **100% BUILD PRODUCTION & KIỂM ĐỊNH TOÀN DIỆN THÀNH CÔNG (0 ERRORS)**.
+- **Phiên bản hiện tại:** HOLLOW WOODS V1.5.0 (`v1.5.0-final`).
+- **Trạng thái nghiệm thu:** 🎉 **100% BUILD PRODUCTION & KIỂM ĐỊNH TOÀN DIỆN THÀNH CÔNG (0 LỖI)**.
 - **Tác quyền & Quản trị:** Dự án thực thi bởi Chief Software Architect cho `KyoshiroKyo/HOLLOW-WOODS`.

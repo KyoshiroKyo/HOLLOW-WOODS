@@ -162,8 +162,10 @@ export class ShadowCrowEntity extends Phaser.Physics.Arcade.Sprite {
       PlayerState.getInstance().observeCreature('shadow_crow');
     }
 
-    // V1.5 - BƯỚC V15-08: Ban đêm tầm phát hiện người chơi tăng 35% (200px -> 270px; dive: 190px -> 256px)
-    const alertDetectRadius = isNight ? Math.round(200 * 1.35) : 200;
+    // V1.5 - BƯỚC V15-08 & V15-58B: Nghịch lý ánh sáng [F] - Khi bật đèn lồng, quạ bóng tối phát hiện xa hơn +30%
+    const lanternMod = ctx.isLanternLit ? 1.3 : 1.0;
+    const baseAlertRadius = isNight ? Math.round(200 * 1.35) : 200;
+    const alertDetectRadius = Math.round(baseAlertRadius * lanternMod);
     const diveDetectRadius = isNight ? Math.round(190 * 1.35) : 190;
 
     // 1. Kiểm tra báo động The Listener khi người chơi chạy ồn gần quạ

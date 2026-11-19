@@ -78,6 +78,11 @@ export class AudioManager {
   // Nhịp tim hoảng loạn (Heartbeat Loop)
   private heartbeatTimer: number | null = null;
   private isHeartbeatActive: boolean = false;
+  // V15-58C: Hệ thống nhịp tim Web Audio động & dìm âm tâm lý (Dynamic Heartbeat & Sanity Ducking)
+  private currentHeartbeatBpm: number = 75;
+  private currentHeartbeatIntervalMs: number = 800;
+  private currentHeartbeatGain: number = 0.28;
+  private isSanityDucked: boolean = false;
 
   // Cooldown / Debounce cho One-shot SFX (Tránh dội âm khi spam phím)
   private sfxCooldowns: Map<string, number> = new Map();
@@ -1267,26 +1272,143 @@ export class AudioManager {
   }
 
   // =========================================================================
-  // 6. TIẾNG NHỊP TIM ĐẬP DỒN DẬP (HEARTBEAT SFX)
+  // 6. TIẾNG NHỊP TIM ĐẬP DỒN DẬP (HEARTBEAT SFX) & DÌM ÂM TÂM LÝ (V15-58C)
   // =========================================================================
 
   public setHeartbeatActive(active: boolean, intervalMs: number = 800): void {
-    if (this.isHeartbeatActive === active) return;
-    this.isHeartbeatActive = active;
-
-    if (active) {
-      this.duckAmbience(0.5, 999999);
-      this.triggerHeartbeatBeat();
-      this.heartbeatTimer = window.setInterval(() => {
-        this.triggerHeartbeatBeat();
-      }, intervalMs);
-    } else {
+    if (!active) {
       if (this.heartbeatTimer) {
         clearInterval(this.heartbeatTimer);
         this.heartbeatTimer = null;
       }
+      this.isHeartbeatActive = false;
+      this.currentHeartbeatBpm = 75;
+      this.currentHeartbeatIntervalMs = 800;
+      this.unduckAmbience(0.5);
+      if (this.isSanityDucked) {
+        this.setSanityDucking(false);
+      }
+      return;
+    }
+
+    this.isHeartbeatActive = true;
+    this.currentHeartbeatIntervalMs = intervalMs;
+    this.currentHeartbeatBpm = Math.round(60000 / Math.max(100, intervalMs));
+
+    if (this.heartbeatTimer) {
+      clearInterval(this.heartbeatTimer);
+      this.heartbeatTimer = null;
+    }
+    this.isHeartbeatActive = false;
+    this.isSanityDucked = false;
+
+    this.duckAmbience(0.5, 999999);
+    this.triggerHeartbeatBeat();
+    this.heartbeatTimer = window.setInterval(() => {
+      this.triggerHeartbeatBeat();
+    }, intervalMs);
+  }
+
+  /**
+   * V15-58C: Cập nhật nhịp tim Web Audio động theo mức Tinh Thần & khoảng cách quái vật
+   * - Khi Tinh Thần < 45/100 HOẶC có quái vật săn đuổi trong bán kính 220px:
+   *   Nhịp tim tự động vang lên trầm ấm.
+   *   Nhịp độ (BPM) và âm lượng tăng dần tỷ lệ nghịch với lượng Tinh Thần còn lại (từ 75 BPM tại 45 lên 135 BPM khi < 15).
+   * - Khi Tinh Thần < 20/100: Giảm nhẹ âm lượng nhạc nền môi trường (BGM Ducking 0.45) để làm nổi bật tiếng nhịp tim và tiếng thở gấp (uneasyBreathing).
+   * - Khi Tinh Thần >= 45 (và không có quái vật săn đuổi) hoặc đứng trong vùng an toàn / Lửa trại:
+   *   Tự động tắt nhịp tim và hồi phục âm lượng nhạc nền bình thường.
+   */
+  public updateDynamicHeartbeat(composure: number, isMonsterNear: boolean = false, isSafeZoneOrCampfire: boolean = false): void {
+    if (isSafeZoneOrCampfire || (composure >= 45 && !isMonsterNear)) {
+      if (this.isHeartbeatActive) {
+        this.setHeartbeatActive(false);
+      }
+      if (this.isSanityDucked) {
+        this.setSanityDucking(false);
+      }
+      return;
+    }
+
+    // Quái vật săn đuổi gây hoảng sợ tương đương Tinh Thần xuống mức nguy hiểm (<= 30)
+    let effectiveComp = composure;
+    if (isMonsterNear) {
+      effectiveComp = Math.min(effectiveComp, 30);
+    }
+    effectiveComp = Math.max(0, Math.min(45, effectiveComp));
+
+    // Tính tỷ lệ t từ 0 (tại 45) -> 1 (tại <= 15)
+    const t = Math.max(0, Math.min(1, (45 - effectiveComp) / 30));
+    const targetBpm = Math.round(75 + t * (135 - 75)); // 75 -> 135 BPM
+    const intervalMs = Math.round(60000 / targetBpm);   // 800ms -> 444ms
+
+    this.currentHeartbeatBpm = targetBpm;
+    this.currentHeartbeatGain = 0.24 + t * 0.38;
+
+    if (!this.isHeartbeatActive) {
+      this.isHeartbeatActive = true;
+      this.currentHeartbeatIntervalMs = intervalMs;
+      this.duckAmbience(0.55, 999999);
+      this.triggerHeartbeatBeat();
+      this.heartbeatTimer = window.setInterval(() => {
+        this.triggerHeartbeatBeat();
+      }, intervalMs);
+    } else if (Math.abs(intervalMs - this.currentHeartbeatIntervalMs) >= 20) {
+      this.currentHeartbeatIntervalMs = intervalMs;
+      if (this.heartbeatTimer) clearInterval(this.heartbeatTimer);
+      this.heartbeatTimer = window.setInterval(() => {
+        this.triggerHeartbeatBeat();
+      }, intervalMs);
+    }
+
+    // Khi Tinh Thần < 20/100: Kích hoạt BGM Ducking và phát tiếng thở gấp ngắt quãng
+    if (effectiveComp < 20) {
+      if (!this.isSanityDucked) {
+        this.setSanityDucking(true);
+      }
+      this.playUneasyBreathing();
+    } else {
+      if (this.isSanityDucked) {
+        this.setSanityDucking(false);
+      }
+    }
+  }
+
+  /**
+   * V15-58C: Dìm âm nhạc nền (BGM Ducking) khi Tinh Thần sụt giảm dưới ngưỡng nguy kịch (< 20/100)
+   */
+  public setSanityDucking(duck: boolean, fadeDuration: number = 0.5): void {
+    if (this.isSanityDucked === duck) return;
+    this.isSanityDucked = duck;
+
+    if (!this.ctx || !this.currentBGMGain || this.isBGMSuppressed) return;
+
+    const now = this.ctx.currentTime;
+    const targetGain = duck ? (this.bgmVolume * 0.45) : this.bgmVolume;
+    this.currentBGMGain.gain.cancelScheduledValues(now);
+    this.currentBGMGain.gain.setValueAtTime(this.currentBGMGain.gain.value, now);
+    this.currentBGMGain.gain.linearRampToValueAtTime(targetGain, now + fadeDuration);
+
+    if (duck) {
+      this.duckAmbience(0.4, 999999);
+    } else {
       this.unduckAmbience(0.5);
     }
+  }
+
+  public getHeartbeatBpm(): number {
+    return this.currentHeartbeatBpm;
+  }
+
+  public getCurrentHeartbeatGain(): number {
+    return this.currentHeartbeatGain;
+  }
+
+  public getIsHeartbeatActive(): boolean {
+    return this.isHeartbeatActive;
+  }
+
+  public getIsSanityDucked(): boolean {
+    return this.isSanityDucked;
   }
 
   // =========================================================================
@@ -1596,29 +1718,43 @@ export class AudioManager {
     if (!this.ctx || this.isMuted || !this.veilFilter) return;
 
     const now = this.ctx.currentTime;
-    // Nhịp tim đôi (Thump-Thump)
-    this.playHeartSubBeat(now, 58, 0.28);
-    this.playHeartSubBeat(now + 0.14, 46, 0.2);
+    // Tỷ lệ t tương ứng BPM 75..135
+    const t = Math.max(0, Math.min(1, (this.currentHeartbeatBpm - 75) / 60));
+
+    // Lub (nhịp 1): trầm ấm, tăng tần số & âm lượng khi hoảng loạn
+    const freq1 = 56 + t * 14; // 56Hz -> 70Hz
+    const gain1 = this.currentHeartbeatGain * this.sfxVolume;
+    this.playHeartSubBeat(now, freq1, gain1);
+
+    // Dub (nhịp 2): theo sau nhịp 1, khoảng cách thu hẹp khi tim đập nhanh
+    const dubDelay = 0.14 - t * 0.03; // 140ms -> 110ms
+    const freq2 = 44 + t * 12; // 44Hz -> 56Hz
+    const gain2 = this.currentHeartbeatGain * 0.75 * this.sfxVolume;
+    this.playHeartSubBeat(now + dubDelay, freq2, gain2);
   }
 
   private playHeartSubBeat(startTime: number, freq: number, gainLevel: number): void {
     if (!this.ctx || !this.veilFilter) return;
 
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
+    try {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
 
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(freq, startTime);
-    osc.frequency.exponentialRampToValueAtTime(25, startTime + 0.1);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, startTime);
+      osc.frequency.exponentialRampToValueAtTime(24, startTime + 0.1);
 
-    gain.gain.setValueAtTime(gainLevel * this.sfxVolume, startTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.1);
+      gain.gain.setValueAtTime(gainLevel, startTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.1);
 
-    osc.connect(gain);
-    gain.connect(this.veilFilter);
+      osc.connect(gain);
+      gain.connect(this.veilFilter);
 
-    osc.start(startTime);
-    osc.stop(startTime + 0.12);
+      osc.start(startTime);
+      osc.stop(startTime + 0.12);
+    } catch {
+      // AudioContext có thể bị tạm dừng hoặc gián đoạn
+    }
   }
 
   // =========================================================================
@@ -3448,6 +3584,8 @@ export class AudioManager {
       clearInterval(this.heartbeatTimer);
       this.heartbeatTimer = null;
     }
+    this.isHeartbeatActive = false;
+    this.isSanityDucked = false;
     if (this.ctx && this.ctx.state !== 'closed') {
       this.ctx.close().catch(() => {});
     }

@@ -143,10 +143,10 @@ export class WorldGatingSystem {
       zoneId: 'broken_bell_shrine',
       tier: 'LAYER_3_FORBIDDEN',
       conditionType: 'flag_required',
-      requiredFlag: 'mire_puzzle_solved',
+      requiredFlag: 'mire_root_seal_broken',
       requiredQuestId: 'Q05_SOLVE_MIRE',
-      lockedReasonVietnamese: 'Cánh cổng dẫn vào Miếu Chuông Phế Tích bị phong ấn cổ xưa niêm phong chặt chẽ!',
-      hintVietnamese: 'Phải kích hoạt chuẩn xác thứ tự ba Cột Đá Cổ Ngữ (Mặt Trăng, Rễ Cây, Con Mắt) tại Đầm Lầy.'
+      lockedReasonVietnamese: 'Cây cầu bị khóa bởi Phong Ấn Rễ Cổ.',
+      hintVietnamese: 'Hãy tìm Sir Vaelen tại Trạm Lửa Rừng Tĩnh Lặng để tìm cách hóa giải.'
     });
 
     // =========================================================================
@@ -284,6 +284,8 @@ export class WorldGatingSystem {
     // Tầng 3 (Forbidden): Miếu Chuông Phế Tích (The Broken Bell Shrine)
     if (zoneId === 'broken_bell_shrine') {
       return (
+        playerState.hasFlag('mire_root_seal_broken') ||
+        playerState.hasFlag('shrine_bridge_lowered') ||
         playerState.hasFlag('mire_puzzle_solved') ||
         playerState.hasFlag('mire_pillars_solved') ||
         playerState.hasFlag('mire_drained') ||

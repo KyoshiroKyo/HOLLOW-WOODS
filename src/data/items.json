@@ -381,6 +381,24 @@
       "stackable": false,
       "maxStack": 1,
       "iconColor": "#d4ac0d"
+    },
+    {
+      "id": "quest_rune_fragment",
+      "name": "Mảnh Cổ Ngữ Khai Mở",
+      "category": "quest",
+      "description": "Phiến đá khắc cổ ngữ khai mở thu thập từ Rừng Sâu & Trận Địa Cổ Ngữ, mang năng lượng khai thông kết giới rễ ngàn năm.",
+      "stackable": false,
+      "maxStack": 1,
+      "iconColor": "#3498db"
+    },
+    {
+      "id": "quest_purification_key",
+      "name": "Chìa Khóa Thanh Tẩy",
+      "category": "quest",
+      "description": "Chìa khóa đúc bằng đồng thiêng từ Khuôn Đúc Cổ và Mảnh Cổ Ngữ Khai Mở qua bàn tay Sir Vaelen. Dùng để giải trừ Phong Ấn Rễ Cổ tại Đầm Lầy Tĩnh Lặng.",
+      "stackable": false,
+      "maxStack": 1,
+      "iconColor": "#f1c40f"
     }
   ],
   "recipes": [

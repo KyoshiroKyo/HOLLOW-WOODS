@@ -338,8 +338,9 @@ export class GoblinScoutEntity extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    // Nếu người chơi tiếp cận quá gần hoặc chiếu đèn trực tiếp -> Goblin Scout ném bom khói và tàng hình lẩn mất
-    if (dist < 70 || (ctx.isLanternLit && dist < 150)) {
+    // V15-58B: Nghịch lý ánh sáng [F] - Khi bật đèn lồng, khoảng cách bị rọi sáng phát hiện tăng +30% (150 -> 195px)
+    const lanternDetectRange = ctx.isLanternLit ? Math.round(150 * 1.3) : 70;
+    if (dist < 70 || (ctx.isLanternLit && dist < lanternDetectRange)) {
       const escapeAngle = Phaser.Math.Angle.Between(ctx.playerX, ctx.playerY, this.x, this.y);
       this.retreat(escapeAngle);
       return;

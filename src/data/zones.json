@@ -713,8 +713,8 @@
           "id": "gather_wood_cp_1",
           "name": "Khúc Gỗ Sồi Mục",
           "type": "gather",
-          "x": 2060,
-          "y": 210,
+          "x": 1740,
+          "y": 355,
           "width": 32,
           "height": 32,
           "promptText": "[E] Nhặt Khúc Gỗ Sồi Mục",
@@ -774,6 +774,50 @@
           "height": 36,
           "promptText": "[E] Xem Bàn Cờ Đá Giữa Sương",
           "actionId": "inspect_stone_chessboard"
+        },
+        {
+          "id": "gather_iron_cp_1",
+          "name": "Phôi Sắt Cổ Cầu Đá",
+          "type": "gather",
+          "x": 1805,
+          "y": 295,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Nhặt Phôi Sắt Cổ Cổ Ngữ",
+          "actionId": "gather_iron_cp_1"
+        },
+        {
+          "id": "gather_mushroom_cp_1",
+          "name": "Nấm Rừng Vực Rễ",
+          "type": "gather",
+          "x": 2280,
+          "y": 390,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Hái Nấm Rừng Vực Rễ",
+          "actionId": "gather_mushroom_cp_1"
+        },
+        {
+          "id": "hide_bush_cp_entrance",
+          "name": "Bụi Rậm Cửa Lối Mòn",
+          "type": "hiding_spot",
+          "x": 1710,
+          "y": 390,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Ẩn Nấp Vào Bụi Rậm",
+          "actionId": "hide_bush_cp_entrance"
+        },
+        {
+          "id": "hide_bush_cp_sentinel",
+          "name": "Bụi Rậm Đá Canh Gác",
+          "type": "hiding_spot",
+          "x": 2040,
+          "y": 280,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Ẩn Nấp Vào Bụi Rậm",
+          "actionId": "hide_bush_cp_sentinel"
         }
       ],
       "transitions": [
@@ -943,11 +987,20 @@
           "isSolid": true
         },
         {
-          "id": "sm_bound_left_bottom",
+          "id": "sm_bound_left_bridge_top",
           "x": 2880,
           "y": 400,
           "width": 30,
-          "height": 310,
+          "height": 10,
+          "type": "boundary",
+          "isSolid": true
+        },
+        {
+          "id": "sm_bound_left_bottom",
+          "x": 2880,
+          "y": 460,
+          "width": 30,
+          "height": 250,
           "type": "boundary",
           "isSolid": true
         },
@@ -1218,6 +1271,83 @@
           "height": 32,
           "promptText": "[E] Lắng Nghe Tiếng Vọng Ký Ức",
           "actionId": "inspect_echo_mire_path"
+        },
+        {
+          "id": "gather_resin_sm_1",
+          "name": "Nhựa Thông Đầm Lầy",
+          "type": "gather",
+          "x": 3920,
+          "y": 230,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Thu Thập Nhựa Thông Đầm Lầy",
+          "actionId": "gather_resin_sm_1"
+        },
+        {
+          "id": "gather_herbs_sm_1",
+          "name": "Thảo Dược Ven Nước",
+          "type": "gather",
+          "x": 3060,
+          "y": 330,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Hái Thảo Dược Ven Nước",
+          "actionId": "gather_herbs_sm_1"
+        },
+        {
+          "id": "gather_wood_sm_1",
+          "name": "Cành Gỗ Khô Đầm Lầy",
+          "type": "gather",
+          "x": 3720,
+          "y": 360,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Nhặt Cành Gỗ Khô Đầm Lầy",
+          "actionId": "gather_wood_sm_1"
+        },
+        {
+          "id": "gather_iron_sm_1",
+          "name": "Phôi Sắt Cổ Cự Thạch",
+          "type": "gather",
+          "x": 3230,
+          "y": 210,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Nhặt Phôi Sắt Cổ Cổ Ngữ",
+          "actionId": "gather_iron_sm_1"
+        },
+        {
+          "id": "gather_mushroom_sm_1",
+          "name": "Nấm Mục Đầm Lầy",
+          "type": "gather",
+          "x": 3050,
+          "y": 245,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Hái Nấm Mục Đầm Lầy",
+          "actionId": "gather_mushroom_sm_1"
+        },
+        {
+          "id": "sm_hide_bush_north",
+          "name": "Bụi Rậm Gò Bắc",
+          "type": "hiding_spot",
+          "x": 3480,
+          "y": 190,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Ẩn Nấp Vào Bụi Rậm",
+          "actionId": "sm_hide_bush_north"
+        },
+        {
+          "id": "sm_hide_tree_titan",
+          "name": "Gốc Cổ Thụ Liễu Héo Tàn",
+          "type": "hiding_spot",
+          "x": 3560,
+          "y": 175,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Ẩn Nấp Vào Gốc Liễu Mục",
+          "actionId": "sm_hide_tree_titan"
         }
       ],
       "transitions": [
@@ -1849,7 +1979,7 @@
           "x": 1580,
           "y": 560,
           "width": 20,
-          "height": 160,
+          "height": 100,
           "type": "boundary",
           "isSolid": true
         },
@@ -1982,8 +2112,8 @@
           "id": "gather_wood_ow_1",
           "name": "Cành Gỗ Khô Rơi",
           "type": "gather",
-          "x": 1240,
-          "y": 660,
+          "x": 1190,
+          "y": 675,
           "width": 32,
           "height": 32,
           "promptText": "[E] Nhặt Cành Gỗ Khô Rơi",
@@ -1991,13 +2121,13 @@
         },
         {
           "id": "gather_resin_ow_1",
-          "name": "Nhựa Cây Sồi Cổ",
+          "name": "Nhựa Thông Rừng Già",
           "type": "gather",
-          "x": 1360,
+          "x": 1170,
           "y": 630,
           "width": 32,
           "height": 32,
-          "promptText": "[E] Thu Thập Nhựa Cây Sồi Cổ",
+          "promptText": "[E] Thu Thập Nhựa Thông Rừng Già",
           "actionId": "gather_resin_ow_1"
         },
         {
@@ -2098,6 +2228,72 @@
           "height": 30,
           "promptText": "[E] Sưởi Ấm Bên Lửa Cổ",
           "actionId": "warm_quiet_bonfire"
+        },
+        {
+          "id": "gather_iron_ow_1",
+          "name": "Phôi Sắt Cổ Trạm Kiểm Lâm",
+          "type": "gather",
+          "x": 1435,
+          "y": 635,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Nhặt Phôi Sắt Cổ Cổ Ngữ",
+          "actionId": "gather_iron_ow_1"
+        },
+        {
+          "id": "gather_mushroom_ow_1",
+          "name": "Nấm Rừng Thân Gỗ Mục",
+          "type": "gather",
+          "x": 1475,
+          "y": 805,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Hái Nấm Rừng Thơm Ngát",
+          "actionId": "gather_mushroom_ow_1"
+        },
+        {
+          "id": "hide_tree_ow_north",
+          "name": "Cây Rỗng Rừng Ven",
+          "type": "hiding_spot",
+          "x": 1360,
+          "y": 620,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Ẩn Nấp Vào Cây Rỗng",
+          "actionId": "hide_tree_ow_north"
+        },
+        {
+          "id": "hide_bush_ow_clearing",
+          "name": "Bụi Rậm Bãi Rừng Thưa",
+          "type": "hiding_spot",
+          "x": 1260,
+          "y": 800,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Ẩn Nấp Vào Bụi Rậm",
+          "actionId": "hide_bush_ow_clearing"
+        },
+        {
+          "id": "hide_bush_ow_bonfire",
+          "name": "Bụi Rậm Trạm Lửa Sir Vaelen",
+          "type": "hiding_spot",
+          "x": 1460,
+          "y": 730,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Ẩn Nấp Vào Bụi Rậm",
+          "actionId": "hide_bush_ow_bonfire"
+        },
+        {
+          "id": "hide_tree_ow_willow",
+          "name": "Cây Rỗng Bãi Liễu",
+          "type": "hiding_spot",
+          "x": 1320,
+          "y": 910,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Ẩn Nấp Vào Cây Rỗng",
+          "actionId": "hide_tree_ow_willow"
         }
       ],
       "transitions": [
@@ -2434,6 +2630,61 @@
           "height": 20,
           "promptText": "[E] Mở Rương Gỗ Rừng Sâu",
           "actionId": "open_deep_forest_chest"
+        },
+        {
+          "id": "gather_resin_df_1",
+          "name": "Nhựa Thông Cổ Thụ",
+          "type": "gather",
+          "x": 2120,
+          "y": -180,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Thu Thập Nhựa Thông Cổ Thụ",
+          "actionId": "gather_resin_df_1"
+        },
+        {
+          "id": "gather_herbs_df_1",
+          "name": "Thảo Dược Búi Rễ",
+          "type": "gather",
+          "x": 1980,
+          "y": -170,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Hái Thảo Dược Búi Rễ",
+          "actionId": "gather_herbs_df_1"
+        },
+        {
+          "id": "gather_wood_df_1",
+          "name": "Cành Gỗ Khô Rừng Sâu",
+          "type": "gather",
+          "x": 1880,
+          "y": -195,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Nhặt Cành Gỗ Khô Rừng Sâu",
+          "actionId": "gather_wood_df_1"
+        },
+        {
+          "id": "gather_iron_df_1",
+          "name": "Phôi Sắt Cổ Cột Vật Tổ",
+          "type": "gather",
+          "x": 2110,
+          "y": -330,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Nhặt Phôi Sắt Cổ Cổ Ngữ",
+          "actionId": "gather_iron_df_1"
+        },
+        {
+          "id": "gather_mushroom_df_1",
+          "name": "Nấm Dạ Quang Thân Đại Thụ",
+          "type": "gather",
+          "x": 2130,
+          "y": -350,
+          "width": 32,
+          "height": 32,
+          "promptText": "[E] Hái Nấm Dạ Quang Rừng Sâu",
+          "actionId": "gather_mushroom_df_1"
         }
       ],
       "transitions": [
@@ -3233,7 +3484,7 @@
           },
           "returnPoint": {
             "x": 1840,
-            "y": -120
+            "y": -80
           },
           "displayLabel": "Về Đường Mòn Quanh Co",
           "description": "Lối ra Đường Mòn Quanh Co"

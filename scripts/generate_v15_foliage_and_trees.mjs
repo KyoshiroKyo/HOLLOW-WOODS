@@ -210,360 +210,42 @@ class PixelCanvas {
 }
 
 // =========================================================================
-// 1. GENERATE MIST PINE (112 x 160 px)
+// 1. REAL PIXEL ART TREES (V15-61: Đồng bộ 100% Sprite Pixel Art Thật)
 // =========================================================================
 async function generateMistPine() {
-  const c = new PixelCanvas(112, 160);
-  const cx = 56;
-
-  // Base shadow
-  c.drawTreeShadow(cx, 153, 34, 7);
-
-  // Pine Trunk (from y=50 to 153, tapering from 14px to 6px)
-  for (let y = 50; y <= 153; y++) {
-    const progress = (y - 50) / (153 - 50);
-    const halfW = 3 + Math.round(4 * progress);
-    for (let x = cx - halfW; x <= cx + halfW; x++) {
-      const xRatio = (x - cx) / halfW;
-      let col = '#3a271c';
-      if (xRatio < -0.4) col = '#22160f'; // Dark shadow
-      else if (xRatio > 0.4) col = '#573c2c'; // Light bark
-      else col = '#422c1e';
-
-      // Bark texture noise
-      if (Math.sin(x * 12.3 + y * 7.1) > 0.5) col = '#291b13';
-      c.setPixel(x, y, col);
-    }
+  const src = path.resolve('public/assets/environment/trees/tree_pine_tall_topdown.png');
+  const buffer = fs.readFileSync(src);
+  for (const f of [path.join(TREE_DIR, 'tree_mist_pine.png'), path.join(SPRITE_DIR, 'tree_mist_pine.png')]) {
+    fs.writeFileSync(f, buffer);
   }
-
-  // Buttress root flares at base
-  c.drawLine(cx - 6, 144, cx - 18, 154, '#241810');
-  c.drawLine(cx - 5, 146, cx - 16, 154, '#382518');
-  c.drawLine(cx + 6, 144, cx + 18, 154, '#241810');
-  c.drawLine(cx + 5, 146, cx + 16, 154, '#473020');
-
-  // Layered Pine Boughs (5 tiers from top to bottom)
-  const tiers = [
-    { topY: 8, bottomY: 42, width: 28 },
-    { topY: 30, bottomY: 66, width: 48 },
-    { topY: 52, bottomY: 92, width: 68 },
-    { topY: 76, bottomY: 118, width: 88 },
-    { topY: 100, bottomY: 142, width: 104 }
-  ];
-
-  for (const tier of tiers) {
-    const tierH = tier.bottomY - tier.topY;
-    for (let y = tier.topY; y <= tier.bottomY; y++) {
-      const p = (y - tier.topY) / tierH;
-      // Conical needle profile with jagged scalloped boughs
-      const maxW = Math.round((tier.width / 2) * Math.pow(p, 0.75));
-
-      for (let dx = -maxW; dx <= maxW; dx++) {
-        const px = cx + dx;
-        const normDx = Math.abs(dx) / (maxW || 1);
-        const arcSag = Math.floor(Math.pow(normDx, 1.8) * 3);
-        const py = y + arcSag;
-
-        if (py >= 160) continue;
-
-        // Needle color shading: bottom of tier is darkest, top edge catches frosty mist
-        const isBottomEdge = (y >= tier.bottomY - 4);
-        const isTopEdge = (y <= tier.topY + 3);
-
-        let col = '#223c31';
-        if (isBottomEdge) col = '#15251f';
-        else if (isTopEdge || normDx > 0.85) col = '#52826e';
-        else if (normDx > 0.5) col = '#38604f';
-        else col = '#2c4d3f';
-
-        // Frost / mist tips on outer needle ends
-        if (normDx > 0.88 && Math.sin(px * 13.7 + py * 19.3) > 0.2) {
-          col = '#84b5a0';
-        }
-
-        c.setPixel(px, py, col);
-      }
-    }
-
-    // Drooping jagged branch tips
-    const branchCount = 6;
-    for (let b = 0; b <= branchCount; b++) {
-      const bx = Math.round(cx - tier.width / 2 + (tier.width / branchCount) * b);
-      const by = tier.bottomY + Math.floor(Math.abs(bx - cx) / (tier.width / 2) * 2.5);
-      c.setPixel(bx, by, '#162820');
-      c.setPixel(bx, by + 1, '#111e18');
-      c.setPixel(bx, by - 1, '#457360');
-    }
-  }
-
-  // Pine top needle tip
-  c.setPixel(cx, 6, '#84b5a0');
-  c.setPixel(cx, 7, '#52826e');
-
-  const outFiles = [
-    path.join(TREE_DIR, 'tree_mist_pine.png'),
-    path.join(SPRITE_DIR, 'tree_mist_pine.png')
-  ];
-  await c.save(outFiles);
-  console.log(`[V15-11] Generated: tree_mist_pine.png (112x160)`);
+  console.log(`[V15-61] Preserved real pixel art: tree_mist_pine.png`);
 }
 
-// =========================================================================
-// 2. GENERATE ANCIENT MOSSY OAK (144 x 160 px)
-// =========================================================================
 async function generateAncientMossyOak() {
-  const c = new PixelCanvas(144, 160);
-  const cx = 72;
-
-  // Broad soft shadow
-  c.drawTreeShadow(cx, 154, 46, 8);
-
-  // Massive Gnarled Oak Trunk (from y=65 to 154)
-  for (let y = 65; y <= 154; y++) {
-    const p = (y - 65) / (154 - 65);
-    // Trunk expands near base and splits near top
-    const halfW = Math.round(7 + 9 * Math.pow(p, 1.6));
-    const trunkShift = Math.round(Math.sin(y * 0.08) * 3);
-
-    for (let x = cx - halfW + trunkShift; x <= cx + halfW + trunkShift; x++) {
-      const normX = (x - (cx + trunkShift)) / halfW;
-      let col = '#3e2d21';
-      if (normX < -0.45) col = '#22170f';
-      else if (normX > 0.45) col = '#574132';
-      else col = '#483526';
-
-      // Oak bark vertical furrow texture
-      if (Math.sin(x * 9.2 + y * 4.3) > 0.45) col = '#281c13';
-
-      // Moss creep on the left/humid side of trunk
-      if (normX < -0.2 && Math.sin(x * 7.1 + y * 8.3) > 0.35) {
-        col = '#3b5434';
-      }
-
-      c.setPixel(x, y, col);
-    }
+  const src = path.resolve('Pixel_Art/extracted/Updated-Trees/Oak.png');
+  const buffer = fs.readFileSync(src);
+  for (const f of [path.join(TREE_DIR, 'tree_mossy_oak_grand.png'), path.join(SPRITE_DIR, 'tree_mossy_oak_grand.png')]) {
+    fs.writeFileSync(f, buffer);
   }
-
-  // Massive Buttress Roots gripping the ground
-  c.drawLine(cx - 8, 142, cx - 28, 155, '#241810');
-  c.drawLine(cx - 7, 145, cx - 24, 155, '#3b291a');
-  c.drawLine(cx - 20, 150, cx - 35, 156, '#241810');
-
-  c.drawLine(cx + 8, 142, cx + 28, 155, '#241810');
-  c.drawLine(cx + 7, 145, cx + 24, 155, '#4a3524');
-  c.drawLine(cx + 20, 150, cx + 35, 156, '#241810');
-
-  // Spreading Oak Boughs / Limbs
-  c.drawLine(cx - 6, 85, cx - 42, 60, '#2b1d14');
-  c.drawLine(cx - 5, 87, cx - 38, 62, '#3e2d21');
-  c.drawLine(cx + 6, 85, cx + 44, 58, '#2b1d14');
-  c.drawLine(cx + 5, 87, cx + 40, 60, '#4a3728');
-  c.drawLine(cx, 75, cx - 18, 40, '#3e2d21');
-  c.drawLine(cx, 75, cx + 20, 38, '#3e2d21');
-
-  // 7 Organic Foliage Canopy Clouds (Vòm lá bồng bềnh phân tầng)
-  const foliageClouds = [
-    { x: cx - 36, y: 50, rx: 28, ry: 22 },
-    { x: cx + 36, y: 48, rx: 28, ry: 22 },
-    { x: cx - 20, y: 32, rx: 26, ry: 20 },
-    { x: cx + 20, y: 30, rx: 26, ry: 20 },
-    { x: cx, y: 18, rx: 24, ry: 18 },
-    { x: cx - 48, y: 68, rx: 20, ry: 16 },
-    { x: cx + 48, y: 66, rx: 20, ry: 16 }
-  ];
-
-  // Draw foliage clouds with organic stippling, depth shading & moss
-  for (const fc of foliageClouds) {
-    for (let dy = -fc.ry; dy <= fc.ry; dy++) {
-      for (let dx = -fc.rx; dx <= fc.rx; dx++) {
-        const dist = (dx * dx) / (fc.rx * fc.rx) + (dy * dy) / (fc.ry * fc.ry);
-        if (dist <= 1.0) {
-          const px = fc.x + dx;
-          const py = fc.y + dy;
-          const normY = dy / fc.ry;
-          const noise = Math.sin(px * 11.3 + py * 17.1);
-
-          let col = '#2e4c32';
-          if (normY > 0.4) col = '#1a2e1d'; // Deep under-canopy shadow
-          else if (normY < -0.35) col = '#5a8a5f'; // Sunlit leaf crown
-          else if (noise > 0.3) col = '#416e47';
-          else col = '#315436';
-
-          // Mossy yellowish-green flecks
-          if (noise > 0.65 && normY < 0.2) col = '#779952';
-
-          c.setPixel(px, py, col);
-        }
-      }
-    }
-  }
-
-  // Hanging Spanish Moss / Lichen Streamers from boughs
-  const mossStreams = [
-    { x: cx - 44, y: 68, len: 14 },
-    { x: cx - 28, y: 72, len: 18 },
-    { x: cx - 12, y: 76, len: 12 },
-    { x: cx + 16, y: 74, len: 16 },
-    { x: cx + 38, y: 70, len: 15 },
-    { x: cx + 52, y: 64, len: 11 }
-  ];
-  for (const ms of mossStreams) {
-    for (let my = 0; my < ms.len; my++) {
-      const wave = Math.round(Math.sin((ms.y + my) * 0.7) * 1.5);
-      c.setPixel(ms.x + wave, ms.y + my, '#446648');
-      if (my % 2 === 0) c.setPixel(ms.x + wave + 1, ms.y + my, '#608564');
-    }
-  }
-
-  const outFiles = [
-    path.join(TREE_DIR, 'tree_mossy_oak_grand.png'),
-    path.join(SPRITE_DIR, 'tree_mossy_oak_grand.png')
-  ];
-  await c.save(outFiles);
-  console.log(`[V15-11] Generated: tree_mossy_oak_grand.png (144x160)`);
+  console.log(`[V15-61] Preserved real pixel art: tree_mossy_oak_grand.png`);
 }
 
-// =========================================================================
-// 3. GENERATE SWAMP WEEPING WILLOW (128 x 152 px)
-// =========================================================================
 async function generateWeepingWillow() {
-  const c = new PixelCanvas(128, 152);
-  const cx = 64;
-
-  // Murky swamp ground shadow
-  c.drawTreeShadow(cx, 146, 40, 7);
-
-  // Twisted Asymmetrical Swamp Trunk (from y=55 to 146)
-  for (let y = 55; y <= 146; y++) {
-    const p = (y - 55) / (146 - 55);
-    const halfW = Math.round(6 + 8 * p);
-    // Graceful organic lean
-    const lean = Math.round(Math.sin((y - 55) * 0.05) * 6 - 3);
-
-    for (let x = cx - halfW + lean; x <= cx + halfW + lean; x++) {
-      const normX = (x - (cx + lean)) / halfW;
-      let col = '#36302a';
-      if (normX < -0.4) col = '#1d1916';
-      else if (normX > 0.4) col = '#4c443b';
-      else col = '#3d362f';
-
-      // Bark grain & wet swamp lichen
-      if (Math.sin(x * 8.3 + y * 6.7) > 0.4) col = '#2b4034';
-      c.setPixel(x, y, col);
-    }
+  const src = path.resolve('Pixel_Art/extracted/Updated-Trees/Birch.png');
+  const buffer = fs.readFileSync(src);
+  for (const f of [path.join(TREE_DIR, 'tree_weeping_willow.png'), path.join(SPRITE_DIR, 'tree_weeping_willow.png')]) {
+    fs.writeFileSync(f, buffer);
   }
-
-  // Swamp Mud Roots
-  c.drawLine(cx - 10, 136, cx - 26, 147, '#1d1916');
-  c.drawLine(cx - 8, 138, cx - 22, 147, '#332c25');
-  c.drawLine(cx + 6, 136, cx + 24, 147, '#1d1916');
-  c.drawLine(cx + 5, 138, cx + 20, 147, '#3f372e');
-
-  // Canopy Crest (Vòm đỉnh liễu: y=12..55)
-  c.fillEllipse(cx - 4, 34, 38, 24, '#243b2c');
-  c.fillEllipse(cx - 2, 30, 32, 20, '#365440');
-  c.fillEllipse(cx - 2, 26, 26, 15, '#4a6e54');
-
-  // Weeping Cascades (Hàng trăm dải lá liễu rủ dài xuống đất)
-  const strandCount = 28;
-  for (let s = 0; s < strandCount; s++) {
-    const strandX = 14 + s * 3.6;
-    const startY = 24 + Math.round(Math.abs(strandX - cx) * 0.4);
-    const endY = 100 + Math.round(Math.sin(s * 1.7) * 22);
-
-    for (let y = startY; y <= endY; y++) {
-      const sway = Math.round(Math.sin(y * 0.12 + s * 0.8) * 2);
-      const px = Math.round(strandX + sway);
-      const p = (y - startY) / (endY - startY);
-
-      let col = '#35543e';
-      if (p > 0.8) col = '#527a5d'; // Fine delicate tip
-      else if (p < 0.25) col = '#223829'; // Dark upper root of strand
-      else if (s % 3 === 0) col = '#669473';
-
-      c.setPixel(px, y, col);
-      if (s % 2 === 0 && y % 3 === 0) {
-        c.setPixel(px + 1, y, '#42694e');
-      }
-    }
-  }
-
-  const outFiles = [
-    path.join(TREE_DIR, 'tree_weeping_willow.png'),
-    path.join(SPRITE_DIR, 'tree_weeping_willow.png')
-  ];
-  await c.save(outFiles);
-  console.log(`[V15-11] Generated: tree_weeping_willow.png (128x152)`);
+  console.log(`[V15-61] Preserved real pixel art: tree_weeping_willow.png`);
 }
 
-// =========================================================================
-// 4. GENERATE WITHERED GNARLED DEAD TREE (112 x 144 px)
-// =========================================================================
 async function generateWitheredDeadTree() {
-  const c = new PixelCanvas(112, 144);
-  const cx = 56;
-
-  // Base shadow
-  c.drawTreeShadow(cx, 138, 30, 6);
-
-  // Gnarled Hollow Trunk (from y=50 to 138)
-  for (let y = 50; y <= 138; y++) {
-    const p = (y - 50) / (138 - 50);
-    const halfW = Math.round(5 + 8 * p);
-    const wobble = Math.round(Math.sin(y * 0.09) * 3);
-
-    for (let x = cx - halfW + wobble; x <= cx + halfW + wobble; x++) {
-      const normX = (x - (cx + wobble)) / halfW;
-      let col = '#38322b';
-      if (normX < -0.4) col = '#1b1714';
-      else if (normX > 0.4) col = '#4f473e';
-      else col = '#3e372f';
-
-      // Weathered wood cracks
-      if (Math.sin(x * 14.1 + y * 7.3) > 0.6) col = '#161311';
-      c.setPixel(x, y, col);
-    }
+  const src = path.resolve('public/assets/environment/v14/trees/tree_dead_withered_v14.png');
+  const buffer = fs.readFileSync(src);
+  for (const f of [path.join(TREE_DIR, 'tree_withered_gnarled.png'), path.join(SPRITE_DIR, 'tree_withered_gnarled.png')]) {
+    fs.writeFileSync(f, buffer);
   }
-
-  // Hollow Void in center of trunk (Hốc cây mục đen thẫm)
-  c.fillEllipse(cx, 98, 4, 10, '#100e0c');
-  c.drawHLine(cx - 3, cx + 3, 98, '#080706');
-
-  // Claw-like roots digging into rock
-  c.drawLine(cx - 6, 128, cx - 22, 139, '#1a1613');
-  c.drawLine(cx - 5, 130, cx - 18, 139, '#302923');
-  c.drawLine(cx - 15, 134, cx - 28, 140, '#1a1613');
-
-  c.drawLine(cx + 6, 128, cx + 22, 139, '#1a1613');
-  c.drawLine(cx + 5, 130, cx + 18, 139, '#3a322b');
-  c.drawLine(cx + 15, 134, cx + 28, 140, '#1a1613');
-
-  // Jagged Bare Dead Limbs branching out in creepy silhouettes
-  // Left primary limb
-  c.drawLine(cx - 4, 60, cx - 28, 38, '#2a241f');
-  c.drawLine(cx - 5, 62, cx - 26, 40, '#38312a');
-  c.drawLine(cx - 28, 38, cx - 44, 22, '#221d19');
-  c.drawLine(cx - 28, 38, cx - 36, 14, '#1b1714');
-  c.drawLine(cx - 20, 48, cx - 38, 52, '#221d19');
-
-  // Right primary limb
-  c.drawLine(cx + 4, 58, cx + 30, 36, '#2a241f');
-  c.drawLine(cx + 3, 60, cx + 28, 38, '#423a32');
-  c.drawLine(cx + 30, 36, cx + 46, 18, '#221d19');
-  c.drawLine(cx + 30, 36, cx + 34, 10, '#1b1714');
-  c.drawLine(cx + 22, 46, cx + 42, 48, '#221d19');
-
-  // Center twisted spire limb
-  c.drawLine(cx, 50, cx - 6, 26, '#2d2721');
-  c.drawLine(cx - 6, 26, cx + 4, 8, '#1d1915');
-  c.drawLine(cx - 6, 26, cx - 18, 12, '#1a1613');
-
-  const outFiles = [
-    path.join(TREE_DIR, 'tree_withered_gnarled.png'),
-    path.join(SPRITE_DIR, 'tree_withered_gnarled.png')
-  ];
-  await c.save(outFiles);
-  console.log(`[V15-11] Generated: tree_withered_gnarled.png (112x144)`);
+  console.log(`[V15-61] Preserved real pixel art: tree_withered_gnarled.png`);
 }
 
 // =========================================================================

@@ -557,3 +557,218 @@ Toàn bộ các tài nguyên rơi tự do trên bản đồ trong `src/systems/I
 | **Bản dựng Production** | `npm run build` hoàn thành | **Thành công (9.84s)** | **PASS** |
 | **Tổng Cộng** | **Toàn bộ các tiêu chí bước V15-13** | **35/35 PASS (100%)** | **PASS** |
 
+
+
+---
+
+## BƯỚC V15-14: QUY HOẠCH LẠI BỐ CỤC SINH THÁI RỪNG NGOÀI, ĐƯỜNG MÒN QUANH CO, RỪNG SÂU VÀ ĐẦM LẦY TĨNH LẶNG (ORGANIC CLUSTERING & ECOLOGICAL HARVEST NODES)
+
+### 1. BỐI CẢNH & NGUYÊN TẮC THIẾT KẾ CẢNH QUAN
+Trong các phiên bản trước, cây cối ở một số ranh giới và phân khu được rải bằng các vòng lặp bước nhảy cơ học (`for (let x ... += 110)`), khiến cây mọc thẳng hàng tăm tắp thiếu tính tự nhiên của rừng hoang sơ. Đồng thời, một số tài nguyên sinh tồn được đặt rời rạc chưa tuân theo quy luật sinh thái môi trường.
+
+Bước **V15-14** thực hiện tái quy hoạch toàn diện cảnh quan 4 phân khu mở rộng:
+1. **Rừng Ngoại Vi (`outer_woods`)**
+2. **Đường Mòn Quanh Co (`crooked_path`)**
+3. **Rừng Sâu (`deep_forest`)**
+4. **Đầm Lầy Tĩnh Lặng (`silent_mire`)**
+
+theo 4 nguyên tắc cốt lõi:
+- **Cụm Tự Nhiên (Organic Clustering):** Thay thế việc đặt cây đơn lẻ bằng phương thức `createOrganicTreeCluster()`. Mỗi cụm rừng gồm 1 cây cổ thụ trung tâm, 1–2 cây phụ hoặc thấp hơn ở sườn (lệch tầng dx, dy), 1–2 bụi dương xỉ/bụi rậm rậm rạp ôm chân gốc và đá rêu phong tạo độ sâu thị giác đa tầng.
+- **Lòng Đường Thông Suốt (Path Clearance >= 140px):** Tuyệt đối không để cây cối hay khối đá chắn ngang lòng đường di chuyển chính. Toàn bộ chướng ngại vật được đặt bám theo sườn gò, bờ suối hoặc rặng viền tự nhiên.
+- **Khoảng Đất Trống Nhỏ (Forest Clearings) & Điểm Ẩn Nấp Nhịp Điệu (Stealth Hiding Spots):** Bố trí 4 khoảng đất trống đặc thù tại các khúc quanh co của mỗi phân khu, xen kẽ các điểm ẩn nấp (thân cây rỗng `createHollowTree`, bụi rậm rậm rạp `createDenseBush`) với khoảng cách đều đặn (120px - 180px) nhằm tạo nhịp điệu rượt đuổi - ẩn nấp căng thẳng và công bằng khi đối đầu *The Listener* hoặc *Kỵ Binh Hắc Ám*.
+- **Quy Luật Sinh Thái Chuẩn Xác (Ecological Harvesting Rules):**
+  * **Nhựa Thông (`res_tree_resin`):** Chỉ xuất hiện sát gốc cây thông già / thông cổ thụ.
+  * **Thảo Dược Bạc (`res_herbs`):** Chỉ mọc ven bờ suối ẩm, vũng nước ngập hoặc gốc liễu cổ thụ.
+  * **Phôi Sắt Cổ (`mat_runed_iron`):** Chỉ nằm cạnh xe kéo hỏng, tàn tích trạm kiểm lâm, cầu đá sập, cột vật tổ hoặc khối cự thạch cổ ngữ.
+  * **Nấm Rừng (`res_forest_mushroom`):** Mọc bám cạnh các thân cây mục đổ (`createFallenLog`).
+  * **Gỗ Khô (`res_dry_wood`):** Cành mục gãy rơi ven các lối rẽ hoặc thân cây đổ.
+
+---
+
+### 2. CHI TIẾT QUY HOẠCH 4 PHÂN KHU
+
+#### 2.1. Rừng Ngoại Vi (`outer_woods` — Tọa độ: X: 1100..1600, Y: 550..1050)
+- **4 Khoảng Đất Trống (Forest Clearings):**
+  1. *Cửa Rừng Bắc* (1220, 640): Điểm tiếp giáp Bellhollow với biển chỉ dẫn mộc mạc và cành gỗ khô rơi ven lối rẽ.
+  2. *Bãi Trại Thợ Săn* (1330, 710): Không gian mở quanh bếp lửa trại, lều tạm thời và giá phơi da thú.
+  3. *Trạm Lửa Rừng Tĩnh Lặng & Bến Suối* (1470, 740): Điểm dừng chân an toàn của Hiệp Sĩ Sir Vaelen bên ngọn lửa ấm.
+  4. *Bãi Liễu Cổ Thụ Phía Nam* (1260, 890): Vạt rừng thưa với cây liễu đại ngàn rủ bóng xuống thảm rêu.
+- **5 Điểm Ẩn Nấp (Hiding Spots):**
+  * (1180, 650): Bụi Rậm Khúc Cua Chữ S
+  * (1360, 620): Thân Cây Rỗng Rừng Ven
+  * (1260, 800): Bụi Rậm Bãi Rừng Thưa
+  * (1460, 730): Bụi Rậm Trạm Lửa Sir Vaelen
+  * (1320, 910): Thân Cây Rỗng Bãi Liễu
+- **5 Điểm Thu Thập Sinh Thái (Ecological Harvest Nodes):**
+  * (1170, 630) — `gather_resin_ow_1`: Nhựa Thông sát gốc Cây Thông Già ven làng.
+  * (1480, 830) — `gather_herbs_ow_1`: Thảo Dược Bạc ven bờ suối ẩm.
+  * (1190, 675) — `gather_wood_ow_1`: Gỗ Khô cành rơi cạnh thân cây mục (1190, 670).
+  * (1435, 635) — `gather_iron_ow_1`: Phôi Sắt Cổ cạnh Nhà Trạm Kiểm Lâm Bỏ Hoang (1420, 620).
+  * (1475, 805) — `gather_mushroom_ow_1`: Nấm Rừng bám sát thân cây cổ thụ đổ ven suối (1475, 795).
+
+#### 2.2. Đường Mòn Quanh Co (`crooked_path` — Tọa độ: X: 1600..2800, Y: 50..550)
+- **4 Khoảng Đất Trống (Forest Clearings):**
+  1. *Ngã Ba Cửa Rừng* (1680, 310): Điểm nút giao giữa Outer Woods và tuyến đường chính.
+  2. *Bãi Đá Canh Gác* (2100, 280): Khoảng rừng thưa bao quanh Khối Đá Canh Gác Cổ Đại (*Great Sentinel Rock*).
+  3. *Ngã Rẽ Bìa Rừng Sâu* (2060, 170): Điểm phân luồng có biển cảnh báo hướng lên Rừng Sâu và lối vòng về phía Nam.
+  4. *Vực Rễ Cây & Lối Cầu Phụ* (2700, 370): Khu đất trước lối lên Cầu Gỗ Phụ Xuyên Sương dẫn sang Đầm Lầy.
+- **7 Điểm Ẩn Nấp (Hiding Spots):**
+  * (1710, 390): Bụi Rậm Cửa Lối Mòn
+  * (1820, 260): Bụi Rậm Cầu Đá Sập
+  * (1900, 180): Thân Cây Rỗng Ngã Ba
+  * (2040, 280): Bụi Rậm Đá Canh Gác
+  * (2180, 200): Bụi Rậm Đặc Khối Đá
+  * (2350, 420): Thân Cây Rỗng Vực Rễ
+  * (2680, 390): Thân Cây Rỗng Cầu Phụ
+- **5 Điểm Thu Thập Sinh Thái (Ecological Harvest Nodes):**
+  * (2240, 150) — `gather_resin_cp_1`: Nhựa Thông sát gốc thông già ngã rẽ Rừng Sâu.
+  * (2640, 350) — `gather_herbs_cp_1`: Thảo Dược Đầm Lầy ven bờ trũng sình lầy.
+  * (1740, 355) — `gather_wood_cp_1`: Khúc Gỗ Sồi Mục gần thân cây mục bên lối rẽ (1740, 350).
+  * (1805, 295) — `gather_iron_cp_1`: Phôi Sắt Cổ cạnh Chướng Ngại Vật Cầu Đá Cổ Bị Sập (1790, 280).
+  * (2280, 390) — `gather_mushroom_cp_1`: Nấm Rừng ven thân sồi mục bắc qua vực rễ (2280, 380).
+
+#### 2.3. Rừng Sâu (`deep_forest` — Tọa độ: X: 1600..2800, Y: -650..-50)
+- **4 Khoảng Đất Trống (Forest Clearings):**
+  1. *Khoảng Trống Thì Thầm* (1800, -220): Vùng đất nấm phát quang tĩnh mịch phía Tây.
+  2. *Bãi Cây Đổ Khổng Lồ* (2120, -340): Khoảng rừng quanh thân sồi đại thụ đổ (*Colossal Fallen Titan Oak*).
+  3. *Ổ Kẻ Lắng Nghe* (2340, -490): Vùng trũng hiểm trở chứa dấu vết lẩn khuất của *The Listener*.
+  4. *Lối Mòn Sang Đầm Lầy* (2580, -300): Đoạn chuyển tiếp sương mù phía Đông hướng về Đầm Lầy Tĩnh Lặng.
+- **6 Điểm Ẩn Nấp (Hiding Spots):**
+  * (1820, -240): Cổ Thụ Thân Rỗng Nấm Phát Quang
+  * (2020, -360): Bụi Rậm Rừng Sâu Trung Tâm
+  * (2180, -300): Cổ Thụ Đổ Thân Rỗng Trung Tâm
+  * (2240, -520): Bụi Rậm Vực Đá Phía Bắc
+  * (2450, -470): Cổ Thụ Thân Rỗng Vực Thẳm
+  * (2600, -300): Bụi Rậm Đầm Lầy Phía Đông
+- **5 Điểm Thu Thập Sinh Thái (Ecological Harvest Nodes):**
+  * (2120, -180) — `gather_resin_df_1`: Nhựa Thông sát gốc thông cổ thụ Rừng Sâu.
+  * (1980, -170) — `gather_herbs_df_1`: Thảo Dược Búi Rễ ven vũng ẩm búi rễ cây xoắn (1960, -180).
+  * (2110, -330) — `gather_iron_df_1`: Phôi Sắt Cổ cạnh Cột Vật Tổ Thì Thầm (2100, -320).
+  * (2130, -350) — `gather_mushroom_df_1`: Nấm Dạ Quang bám sát Thân Cây Cổ Thụ Đổ Khổng Lồ (2120, -340).
+  * (1880, -195) — `gather_wood_df_1`: Cành Gỗ Khô gãy đổ cạnh thân cây mục (1880, -200).
+
+#### 2.4. Đầm Lầy Tĩnh Lặng (`silent_mire` — Tọa độ: X: 2800..4000, Y: 100..700)
+- **4 Khoảng Đất Trống / Gò Nổi (Mire Clearings):**
+  1. *Gò Cửa Ngõ Tây* (2960, 300): Gò đất khô ráo đầu tiên khi bước qua cầu ván gỗ.
+  2. *Bãi Cầu Ván Gỗ & Cự Thạch* (3150, 320): Không gian kết nối giữa cầu ván gỗ và tàn tích cự thạch chìm.
+  3. *Đảo Cổ Ngữ* (3500, 280): Gò đất trung tâm đặt Trận Địa 3 Cột Đá Cổ Ngữ và bệ thờ.
+  4. *Bờ Đông Kết Giới Miếu Chuông* (3920, 290): Vùng đất bằng phẳng dẫn tới Cổng Kết Giới Miếu Chuông Phế Tích.
+- **5 Điểm Ẩn Nấp (Hiding Spots):**
+  * (3080, 260): Hốc Cây Liễu Mục Đầm Lầy
+  * (3320, 340): Cụm Lau Sậy Dày Đầm Lầy
+  * (3480, 190): Bụi Rậm Gò Bắc
+  * (3560, 175): Gốc Cổ Thụ Liễu Héo Tàn
+  * (3760, 320): Bụi Cỏ Lác Rậm Rạp Phía Đông
+- **5 Điểm Thu Thập Sinh Thái (Ecological Harvest Nodes):**
+  * (3920, 230) — `gather_resin_sm_1`: Nhựa Thông Đầm Lầy sát gốc thông viền Đông (3920, 230).
+  * (3060, 330) — `gather_herbs_sm_1`: Thảo Dược Ven Nước mọc ở bờ vũng lầy ẩm gò Tây (3020, 380).
+  * (3230, 210) — `gather_iron_sm_1`: Phôi Sắt Cổ Cổ Ngữ dưới chân Khối Cự Thạch Chìm (3220, 200).
+  * (3050, 245) — `gather_mushroom_sm_1`: Nấm Mục Đầm Lầy bám thân cây mục gò Tây (3040, 240).
+  * (3720, 360) — `gather_wood_sm_1`: Cành Gỗ Khô Đầm Lầy trôi dạt cạnh thân cây mục phía Đông (3720, 350).
+
+---
+
+### 3. KIẾN TRÚC MÃ NGUỒN & HỆ THỐNG MỚI
+
+1. **`WorldBuilder.ts` — Phương thức `createOrganicTreeCluster`:**
+   - Hỗ trợ tùy biến linh hoạt các giống cây: `'pine' | 'willow' | 'oak' | 'withered'`.
+   - Tự động tích hợp cây phụ lệch tầng, bụi rậm dương xỉ ở chân gốc và khối đá rêu phong.
+   - Tham số `withColliders` cho phép bật hitbox chân cây gọn gàng (20 x 16 px) đối với cụm rừng tự do, hoặc tắt đối với cụm viền ngoài để nhường quyền xử lý va chạm cho thanh static box collider dài liền mạch (loại bỏ góc nhọn kẹt xe và chống trùng lặp collider).
+
+2. **`WorldBuilder.ts` — Mở rộng `createGatheringNodeProp`:**
+   - Bổ sung định dạng pixel art đặc thù cho `type: 'iron'`: vẽ khối phôi sắt cổ đa tầng màu xám sẫm `#2a2826`, vệt gỉ sét nâu đồng `#8b4513`, vệt phong hóa `#5c5042` và đốm kim loại sáng cổ ngữ `#b0a898`.
+   - Bổ sung định dạng pixel art đặc thù cho `type: 'mushroom'`: vẽ các cuống nấm trắng ngà `#dcd3b8`, mũ nấm dạ quang tím huyền bí `#3e1f57`, `#8e44ad` và đốm phát sáng xanh ngọc lam `#5dade2`.
+
+3. **`GameScene.ts` — Xử lý tương tác thu thập [E] thông minh:**
+   - Thay thế việc so sánh chuỗi cứng `actionId === 'gather_wood_ow_1'` bằng tiền tố linh hoạt:
+     * `actionId.startsWith('gather_wood_')` -> Nhặt 2 Gỗ Khô (`res_dry_wood`).
+     * `actionId.startsWith('gather_resin_')` -> Thu thập 2 Nhựa Thông (`res_tree_resin`).
+     * `actionId.startsWith('gather_herbs_')` -> Hái 2 Thảo Dược Bạc (`res_herbs`).
+     * `actionId.startsWith('gather_iron_')` -> Nhặt 1 Phôi Sắt Cổ Cổ Ngữ (`mat_runed_iron`).
+     * `actionId.startsWith('gather_mushroom_')` -> Hái 2 Nấm Rừng (`res_forest_mushroom`).
+   - Đảm bảo cơ chế cờ `gathered_${actionId}` lưu trạng thái chống nhặt vô hạn trong 1 phiên chơi.
+
+4. **`zones.json` — Đăng ký 100% Interactables Mới:**
+   - Khai báo đầy đủ các điểm thu thập và chỗ ẩn nấp mới trong 4 phân khu với bán kính tương tác 32 x 32 px và câu gợi ý `promptText` trực quan.
+
+---
+
+### 4. KẾT QUẢ KIỂM TOÁN TỰ ĐỘNG (AUTOMATED AUDIT & BFS VERIFICATION)
+
+Chạy kiểm toán bằng script `scripts/audit_map_reachability_and_assets.mjs`:
+- **Asset Integrity:** 100% Spritesheet nhân vật, NPC (Garth, Edda, Neris, Bram, Finn, Sir Vaelen) và Boss (Mire Warden) khớp kích thước pixel art thực tế.
+- **Collider Deduplication:** Thu thập thành công **347 Static Colliders** từ WorldBuilder; phát hiện **0** trường hợp trùng lặp tọa độ hoặc kích thước (**100% Unique**).
+- **NPC Clear Space:** 6/6 NPC có khoảng trống mặt trước >= 48px, không bị collider nào đè lên người.
+- **BFS Map Reachability (Grid 16 x 16 px):**
+  * Tổng số ô: **56,340** ô.
+  * Ô tự do đi lại (Walkable): **48,075** ô.
+  * Ô liên thông quét được từ Bellhollow (750, 260): **35,313** ô.
+  * **100% 18 Điểm Chốt Trọng Yếu Đạt Chuẩn Thông Suốt:**
+    - Bellhollow (Cổng Tây, Nhà Edda, Nhà Neris, Xưởng Bram, Ngã Ba Finn, Tháp Chuông): **PASS**
+    - Sanctuary Farm (Lửa Trại Nông Trại Trú Ẩn): **PASS**
+    - Outer Woods & Trạm Lửa Sir Vaelen: **PASS**
+    - Crooked Path & Cầu Gỗ Phụ: **PASS**
+    - Deep Forest (Ngõ Nối Nam & Vùng Mở Rộng Bắc): **PASS**
+    - Silent Mire (Lối Vào & Cầu Ván Gỗ Trung Tâm): **PASS**
+    - Miếu Chuông Phế Tích (Quảng Trường Cổ Ngữ, Đường Dẫn & Phòng Boss): **PASS**
+  * **Tổng kết bài kiểm tra:** **73/73 PASS (100%)**.
+
+---
+
+### 5. KIỂM THỬ BIÊN DỊCH
+- **TypeScript:** `npx tsc --noEmit` -> **0 lỗi (Clean)**.
+- **Vite Production Build:** `npm run build` -> **Thành công (11.28s)**.
+
+---
+
+## BƯỚC V15-15: HOÀN THIỆN ÁNH SÁNG MÔI TRƯỜNG ẤM - LẠNH TƯƠNG PHẢN, SƯƠNG MÙ ĐA LỚP VÀ KIỂM TRA Y-SORTING TOÀN BẢN ĐỒ
+
+**Mã phân đoạn:** `V15-15`  
+**Ngày thực hiện:** 19/11/2026  
+**Nhánh Git:** `feat/v1.5-visual-gameplay-overhaul`  
+**Tập tin cập nhật:**
+- `src/systems/VeilSystem.ts`
+- `src/scenes/GameScene.ts`
+- `src/world/WorldBuilder.ts`
+- `scripts/test_v15_15_lighting_fog_and_ysorting.mjs`
+
+### 1. Nâng Cấp Tương Phản Màu Sắc Thị Giác (Warm/Cool Lighting Contrast)
+1. **Sương mù rừng sâu sắc xanh xám lạnh lẽo:**
+   - Trong `VeilSystem.ts` và `GameScene.ts` (`updateFogOfWar`):
+     * Khi người chơi bước vào các phân khu rừng sâu (`deep_forest`, `silent_mire`, `broken_bell_shrine`, `crooked_path`), sương mù chuyển dần sang sắc xanh xám lạnh buốt (Cool Slate Teal `0x6e8a9c` cho lớp sương cuộn và `0x111c24` cho FOW layer).
+     * Tạo sự tương phản thị giác ngoạn mục với ánh sáng vàng cam ấm áp của lửa trại, đèn lồng và các công trình làng.
+2. **Quầng sáng ấm áp hắt ra từ các công trình làng (Village Warm Ambient Glow):**
+   - **Cửa sổ nhà dân (Nhà Edda, Nhà Neris):** Quầng sáng vàng hổ phách khuếch tán 3 tầng (`0xf39c12`, `0xffe082`) le lói qua khung kính, đặt depth chuẩn `y - 1` để luôn nằm dưới chân nhân vật khi đi ngang hiên nhà.
+   - **Lò rèn Bram (Bram's Forge Hearth Glow):** Quầng sáng đỏ cam than hồng (`0xff4400`, `0xff7711`, `0xffaa22`, `0xffe066`) bập bùng nhịp thở (tween 850ms) như than đang được thổi bể lò.
+   - **Trạm gác Cổng Tây của Garth:** Đèn lồng treo chòi canh phát ánh sáng ấm dịu (`0xf39c12`, `0xffe082`).
+
+### 2. Bổ Sung Hạt Không Khí Tinh Tế (Ambient Atmospheric Particles) với Object Pooling
+Hệ thống hạt khí quyển trong `GameScene.ts` được mở rộng với cơ chế Object Pooling cố định (`MAX_FIREFLY_POOL = 65`) và Frustum Culling tự động bỏ qua tính toán khi nằm ngoài camera:
+1. **Tàn lửa bay nhẹ quanh bếp lửa & lò rèn (Embers):**
+   - Vị trí: Lửa trại Bellhollow `(860, 310)`, Lò rèn Bram `(1210, 360)`, Trạm Lửa Sir Vaelen `(1470, 710)`, Bếp Lửa Sanctuary Farm `(800, 750)`.
+   - Màu sắc: `0xff4400`, `0xff7700`, `0xffaa00`, `0xffd700`.
+   - Chuyển động: Lơ lửng bay dần lên trên theo trục Y, lắc lư hình sin theo trục X và tan biến rồi tái sinh ở đáy ngọn lửa.
+2. **Bào tử sương trôi lững lờ trong Rừng Sâu (Deep Forest Drift Spores):**
+   - Vị trí: Rừng Sâu Nam `(2080, -80)`, Rừng Sâu Bắc `(2240, -300)`, Crooked Path `(2140, 150)`, Cầu Gỗ Phụ `(2740, 390)`, Đầm Lầy `(3100, 380)`.
+   - Màu sắc: Xanh ngọc mờ và lục rêu nguyên sinh (`0x76d7c4`, `0x58d68d`, `0x82e0aa`).
+   - Chuyển động: Trôi dạt chậm rãi với bán kính rộng `45 - 60px`, tạo độ sâu rừng rậm kỳ bí.
+3. **Đom đóm xanh nhạt ở khu Cổ Ngữ (Ancient Rune Mystic Fireflies):**
+   - Vị trí: Cột Trăng `(3400, 220)`, Cột Rễ `(3520, 360)`, Cột Con Mắt `(3640, 220)`, Đường Dẫn Miếu Chuông `(3800, 270)`, Điện Thờ `(4400, 300)`.
+   - Màu sắc: Xanh ngọc nhạt, lam ngọc phát quang, ánh trăng bạc (`0x48c9b0`, `0x5dade2`, `0xaed6f1`).
+   - Chuyển động: Lượn vòng cung mềm mại, lõi sáng rực rỡ và quầng hào quang mờ ảo.
+
+### 3. Kiểm Tra Toàn Bộ Công Thức Y-Sorting Toàn Bản Đồ
+- **Nguyên tắc đồng nhất:** `depth = groundBaseY` áp dụng trên 100% thực thể:
+  - Công trình nhà cửa, tháp chuông, xưởng rèn, trạm gác: `setOrigin(0.5, 1.0)`, `setDepth(y)`.
+  - Cây cối (thông, sồi, liễu, cây khô): `setOrigin(0.5, originY)`, `setDepth(y)`.
+  - Hàng rào gỗ: `setOrigin(0, 0.78)`, `setDepth(fy)`.
+  - NPC (Garth, Edda, Neris, Bram, Finn, Sir Vaelen): `setDepth(this.y)`.
+  - Nhân vật chính (SatyrPlayer): `setDepth(Math.floor(this.y))`.
+  - Bóng đổ mặt đất: `setDepth(this.depth - 1)`.
+- Thứ tự che khuất trước-sau chuẩn xác 100% ở mọi góc đi lại của người chơi quanh các gốc cây và chân tường.
+
+### 4. Kết Quả Kiểm Thử & Kiểm Toán Tự Động
+- **Unit Test V15-15 (`scripts/test_v15_15_lighting_fog_and_ysorting.mjs`):** **10/10 bài kiểm tra ĐẠT (100%)**.
+- **Audit Bản Đồ & BFS (`scripts/audit_map_reachability_and_assets.mjs`):** **73/73 bài kiểm tra ĐẠT (100%)**, 347 static colliders nguyên vẹn, 0 collider trùng lặp.
+- **Biên dịch TypeScript (`npx tsc --noEmit`):** **0 lỗi (Clean)**.
+- **Vite Production Build (`npm run build`):** Thành công trong 10.49s.

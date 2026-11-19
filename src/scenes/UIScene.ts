@@ -24,6 +24,8 @@ import { EquipmentSystem } from '../systems/EquipmentSystem';
 import { EquipmentSlot } from '../types';
 import { ItemTooltipHelper } from '../ui/ItemTooltipHelper';
 import { QuickCraftSidebar } from '../ui/QuickCraftSidebar';
+import { CampSanctuarySystem } from '../systems/CampSanctuarySystem';
+import { QuestSystem } from '../systems/QuestSystem';
 
 export interface QuickSlotRef {
   id: string;
@@ -435,8 +437,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     this.updateTimeWidget(1, 0, 'DAY', 0);
 
-    // 4. Banner tên phân khu có nền gỗ tối viền đồng xỉn co giãn động (V14-P8-12, Tâm tại 640, 120 - tránh hoàn toàn đè HUD đỉnh)
-    this.zoneBannerContainer = this.add.container(640, 120);
+    // 4. Banner tên phân khu có nền gỗ tối viền đồng xỉn co giãn động (V15-56: Tâm tại 640, 80 - tuyệt đối không đè popup toast 640, 175)
+    this.zoneBannerContainer = this.add.container(640, 80);
     this.zoneBannerContainer.setDepth(8500);
     this.zoneBannerBg = this.add.graphics();
 
@@ -532,8 +534,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       // C4-13-09: Dọn dẹp triệt để tweens, timer events và keyboard listeners khi tắt/chuyển scene
       this.tweens.killAll();
       this.time.removeAllEvents();
-      if (this.input && this.input.keyboard) {
-        this.input.keyboard.removeAllListeners();
+      if (this.input) {
+        if (this.input.keyboard) this.input.keyboard.removeAllListeners();
+        this.input.removeAllListeners();
       }
       if (typeof window !== 'undefined') {
         if (this.boundWindowBlur) window.removeEventListener('blur', this.boundWindowBlur);
@@ -708,8 +711,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     // C4-13-15: Đảm bảo các texture Pixel Art 16×16 px chuẩn Nearest-Neighbor đã được tạo
     HUDIconGenerator.generateAllHUDIcons(this);
 
-    // V15-54: Vẽ trực tiếp 3 biểu tượng Pixel Art sắc nét: Máu (y=29), Thể Lực (y=45), Tinh Thần (y=61)
-    HUDIconGenerator.drawIconsToGraphics(this.statIconsGraphics, 18, [29, 45, 61]);
+    // V15-56: Triệt tiêu hoàn toàn lỗi vẽ trùng 2 lớp icon (double-draw), giải phóng statIconsGraphics
+    this.statIconsGraphics.clear();
 
     // Khởi tạo/cập nhật 3 Sprite Image độc lập từ các Texture Pixel Art 16×16 px
     if (this.statIconImages.length === 0) {
@@ -1583,75 +1586,70 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   /**
-   * C4-14-B04 & V1.5 (BƯỚC V15-05): Cập nhật hiệu ứng viền tối hoảng loạn đồng bộ nhịp tim
-   * Sửa dứt điểm lỗi cảnh báo sai ban ngày và tự động tắt khi Bình Tâm vượt lên trên ngưỡng nguy hiểm.
+   * V15-58C: Cập nhật Viền Ám Ảnh (Horror Vignette Overlay) đồng bộ nhịp tim Web Audio
+   * - Tối sẫm pha sắc đỏ thẫm mờ ở 4 góc màn hình
+   * - Độ đậm và nhịp co bóp đồng bộ trực tiếp với nhịp đập của tim (BPM)
+   * - Tự động dịu dần và biến mất hoàn toàn khi Tinh Thần > 45 hoặc đứng trong vùng lửa trại của Sir Vaelen / Làng Bellhollow
    */
   private updatePanicVignette(time: number = 0): void {
     if (!this.panicVignetteGraphics || !this.playerState) return;
 
     const stats = this.playerState.stats;
     const composure = stats.composure;
-    const isLanternOn = stats.isLanternOn;
 
-    // V1.5 (BƯỚC V15-05): Kiểm tra điều kiện Ban Ngày, Làng An Toàn hoặc Gần Lửa Trại
+    // V15-58C: Kiểm tra điều kiện An toàn: Ban ngày, Làng an toàn, hoặc Gần nguồn nhiệt / Lửa trại Sir Vaelen
     const gameScene = this.scene.get('GameScene') as any;
-    const isDaytime = gameScene?.timeSystem?.getCurrentPhase() === 'DAY';
     const isSafeVillage = gameScene?.currentZoneId === 'bellhollow' || gameScene?.currentZoneId === 'sanctuary_farm';
+    const playerX = gameScene?.player?.x ?? 0;
+    const playerY = gameScene?.player?.y ?? 0;
+    const currentZone = gameScene?.currentZoneId;
+
     const isNearWarmth = gameScene?.survivalSystem?.isNearWarmth
-      ? gameScene.survivalSystem.isNearWarmth(gameScene.player?.x ?? 0, gameScene.player?.y ?? 0)
+      ? gameScene.survivalSystem.isNearWarmth(playerX, playerY, currentZone)
       : false;
-    const isProtectedZone = isDaytime || isSafeVillage || isNearWarmth;
+    const isSanctuaryCamp = CampSanctuarySystem.getInstance().isPlayerInSanctuary(playerX, playerY, currentZone);
+    const isProtectedZone = isSafeVillage || isNearWarmth || isSanctuaryCamp;
 
-    // V15-47: Kiểm tra điều kiện trong trận Boss Miếu Chuông Phế Tích
-    const isBossFight = gameScene?.isBossFightActive && gameScene?.currentZoneId === 'broken_bell_shrine';
+    // Kiểm tra điều kiện trong trận Boss Miếu Chuông Phế Tích
+    const isBossFight = gameScene?.isBossFightActive && currentZone === 'broken_bell_shrine';
+    const isSafeState = isBossFight ? (composure >= 50) : (isProtectedZone || composure > 45);
 
-    if (isBossFight) {
-      if (composure >= 50) {
-        if (this.isPanicVignetteActive) {
-          this.panicVignetteGraphics.clear();
-          this.isPanicVignetteActive = false;
-        }
-        return;
+    if (isSafeState) {
+      if (this.isPanicVignetteActive) {
+        this.panicVignetteGraphics.clear();
+        this.isPanicVignetteActive = false;
       }
-    } else {
-      // Khi ở BAN NGÀY, trong VÙNG AN TOÀN, có ĐÈN LỒNG thắp sáng hoặc Bình Tâm đã vượt lên trên 40/100:
-      // Tự động tắt hoàn toàn biểu ngữ cảnh báo và xóa sạch viền vignette co bóp
-      if (isProtectedZone || isLanternOn || composure >= 40) {
-        if (this.isPanicVignetteActive) {
-          this.panicVignetteGraphics.clear();
-          this.isPanicVignetteActive = false;
-        }
-        return;
-      }
+      return;
     }
 
     this.isPanicVignetteActive = true;
     this.panicVignetteGraphics.clear();
 
-    const isDepleted = composure < 10;
-    const isCritical = composure < 25;
-    const freq = isDepleted ? 0.008 : (isCritical ? 0.005 : 0.003);
-    const pulseBase = isDepleted ? 0.40 : (isCritical ? 0.22 : 0.10);
-    const pulseAmp = isDepleted ? 0.18 : (isCritical ? 0.09 : 0.04);
-    const pulse = Math.max(0.04, pulseBase + pulseAmp * Math.sin(time * freq));
+    // Nhịp co bóp đồng bộ với nhịp tim Web Audio
+    const bpm = AudioManager.getInstance().getHeartbeatBpm() || 75;
+    const omega = (bpm * 2 * Math.PI) / 60000;
+    const pulseFactor = Math.pow(Math.max(0, Math.sin(time * omega)), 1.8);
 
+    // Hệ số hoảng loạn t: từ 0 (tại 45) -> 1 (tại <= 15) và tiếp tục tăng nhẹ tới 1.35 khi Tinh Thần = 0
+    const t = Math.max(0, (45 - composure) / 30);
     const w = 1280;
     const h = 720;
-    // Đỏ thẫm khi Hoảng Loạn Cực Độ (<10), Tím sẫm khi Sợ Hãi (<25), Đen tro khi Bất An (<40)
-    const color = isDepleted ? (composure <= 0 ? 0x6e0813 : 0x3d0b16) : (isCritical ? 0x240d24 : 0x120b18);
 
-    // C4-14-B04: Viền mờ hữu cơ 5 tầng từ ngoài mép vào trong, tạo cảm giác bóng tối co bóp theo nhịp tim
-    const layers = [
-      { inset: 0, thick: 14, alphaMult: 1.4 },
-      { inset: 14, thick: 20, alphaMult: 1.0 },
-      { inset: 34, thick: 26, alphaMult: 0.65 },
-      { inset: 60, thick: 32, alphaMult: 0.35 },
-      { inset: 92, thick: 38, alphaMult: 0.15 }
+    // Viền mép ngoài mờ hữu cơ (Outer Edge Vignette)
+    const basePulse = 0.08 + t * 0.18;
+    const pulseAlpha = Math.min(0.92, basePulse + pulseFactor * (0.06 + t * 0.12));
+    const edgeColor = composure < 15 ? 0x2e0610 : (composure < 30 ? 0x1c0612 : 0x0f040d);
+
+    const edgeLayers = [
+      { inset: 0, thick: Math.round(16 + t * 10), alphaMult: 1.25 },
+      { inset: Math.round(16 + t * 10), thick: Math.round(20 + t * 12), alphaMult: 0.85 },
+      { inset: Math.round(36 + t * 22), thick: Math.round(24 + t * 14), alphaMult: 0.50 },
+      { inset: Math.round(60 + t * 36), thick: Math.round(28 + t * 16), alphaMult: 0.22 }
     ];
 
-    for (const l of layers) {
-      const alpha = Math.min(0.95, pulse * l.alphaMult);
-      this.panicVignetteGraphics.fillStyle(color, alpha);
+    for (const l of edgeLayers) {
+      const alpha = Math.min(0.95, pulseAlpha * l.alphaMult);
+      this.panicVignetteGraphics.fillStyle(edgeColor, alpha);
       // Top
       this.panicVignetteGraphics.fillRect(l.inset, l.inset, w - l.inset * 2, l.thick);
       // Bottom
@@ -1662,31 +1660,49 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.panicVignetteGraphics.fillRect(w - l.inset - l.thick, l.inset + l.thick, l.thick, h - (l.inset + l.thick) * 2);
     }
 
-    // V1.5 (BƯỚC V15-06): Lớp phủ viền tối co bóp theo nhịp tim (Dark Tendril Vignette) ở 4 góc màn hình khi Bình Tâm dưới 30%:
-    // Càng gần 0, viền đen tím càng ép sâu vào trung tâm màn hình làm giảm không gian quan sát xung quanh nhân vật.
-    if (composure < 30) {
-      const tendrilFactor = Math.max(0, (30 - composure) / 30); // 0 (tại 30) -> 1 (tại 0)
-      const cornerSize = Math.round(Phaser.Math.Linear(70, 240, tendrilFactor));
-      this.panicVignetteGraphics.fillStyle(0x0e0513, Math.min(0.92, 0.45 + pulse * 0.42 * tendrilFactor));
-      this.panicVignetteGraphics.fillTriangle(0, 0, cornerSize, 0, 0, cornerSize);
-      this.panicVignetteGraphics.fillTriangle(w, 0, w - cornerSize, 0, w, cornerSize);
-      this.panicVignetteGraphics.fillTriangle(0, h, cornerSize, h, 0, h - cornerSize);
-      this.panicVignetteGraphics.fillTriangle(w, h, w - cornerSize, h, w, h - cornerSize);
-    }
+    // Viền Ám Ảnh 4 góc màn hình (4 Corner Horror Tendril Vignette)
+    const baseCornerSize = Math.round(75 + t * 130);
+    const dynamicCorner = Math.round(baseCornerSize + pulseFactor * (20 + t * 25));
 
-    // Cảnh báo HUD khi bước vào các ngưỡng nguy hiểm trong bóng tối ban đêm
+    // Lớp 1: Quầng đỏ thẫm ngoài rìa (Outer Crimson Glow)
+    const haloAlpha = Math.min(0.85, 0.18 + t * 0.32 + pulseFactor * 0.14 * t);
+    this.panicVignetteGraphics.fillStyle(0x280712, haloAlpha);
+    this.panicVignetteGraphics.fillTriangle(0, 0, dynamicCorner, 0, 0, dynamicCorner);
+    this.panicVignetteGraphics.fillTriangle(w, 0, w - dynamicCorner, 0, w, dynamicCorner);
+    this.panicVignetteGraphics.fillTriangle(0, h, dynamicCorner, h, 0, h - dynamicCorner);
+    this.panicVignetteGraphics.fillTriangle(w, h, w - dynamicCorner, h, w, h - dynamicCorner);
+
+    // Lớp 2: Khối bóng tối thẫm (Mid Crimson-Black)
+    const midCorner = Math.round(dynamicCorner * 0.72);
+    const midAlpha = Math.min(0.92, 0.30 + t * 0.40 + pulseFactor * 0.18 * t);
+    this.panicVignetteGraphics.fillStyle(0x18030b, midAlpha);
+    this.panicVignetteGraphics.fillTriangle(0, 0, midCorner, 0, 0, midCorner);
+    this.panicVignetteGraphics.fillTriangle(w, 0, w - midCorner, 0, w, midCorner);
+    this.panicVignetteGraphics.fillTriangle(0, h, midCorner, h, 0, h - midCorner);
+    this.panicVignetteGraphics.fillTriangle(w, h, w - midCorner, h, w, h - midCorner);
+
+    // Lớp 3: Tâm điểm đen sâu thẳm ở 4 góc (Deep Corner Void)
+    const coreCorner = Math.round(dynamicCorner * 0.45);
+    const coreAlpha = Math.min(0.96, 0.45 + t * 0.45);
+    this.panicVignetteGraphics.fillStyle(0x0a0105, coreAlpha);
+    this.panicVignetteGraphics.fillTriangle(0, 0, coreCorner, 0, 0, coreCorner);
+    this.panicVignetteGraphics.fillTriangle(w, 0, w - coreCorner, 0, w, coreCorner);
+    this.panicVignetteGraphics.fillTriangle(0, h, coreCorner, h, 0, h - coreCorner);
+    this.panicVignetteGraphics.fillTriangle(w, h, w - coreCorner, h, w, h - coreCorner);
+
+    // Cảnh báo HUD khi bước vào các ngưỡng nguy hiểm
     const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
-    if (isDepleted) {
-      // Ngưỡng Hoảng Loạn Cực Độ (<10/100)
-      if (now - this.lastPanicWarningTime > 6000) {
+    if (composure < 15) {
+      // Ngưỡng Hoảng Loạn Nguy Kịch (<15/100): Cảnh báo tâm trí rạn nứt
+      if (now - this.lastPanicWarningTime > 16000) {
         this.lastPanicWarningTime = now;
-        this.showPopupMessage('⚡ HOẢNG LOẠN! Hãy lập tức bật Đèn Lồng [F] hoặc chạy về nguồn lửa!');
+        this.showPopupMessage('⚠️ Tâm trí đang rạn nứt... Hãy tìm ánh lửa ngay!');
       }
-    } else if (isCritical) {
-      // Ngưỡng Sợ Hãi (10..24/100)
-      if (now - this.lastDarknessWarningTime > 8000) {
+    } else if (composure < 35) {
+      // Ngưỡng Bất An & Sợ Hãi (15..34/100)
+      if (now - this.lastDarknessWarningTime > 18000) {
         this.lastDarknessWarningTime = now;
-        this.showPopupMessage('⚠️ Bóng tối đang gặm nhấm sinh lực! Nhấn [F] để thắp sáng Đèn Lồng!');
+        this.showPopupMessage('⚠️ Bóng tối đang gặm nhấm Tinh Thần! Hãy bật Vòng Sáng [F] hoặc tìm nguồn lửa!');
       }
     }
   }
@@ -2148,7 +2164,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   public redrawQuestBox(): void {
     if (!this.questBg) return;
     const questBoxW = 340;
-    const questBoxH = this.isQuestCollapsed ? 30 : 78;
+    const questBoxH = this.isQuestCollapsed ? 30 : 86;
     const questBoxX = 1260 - questBoxW; // 920
     const questBoxY = 16;
 
@@ -2170,17 +2186,19 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.questToggleBtn.setColor(this.isQuestCollapsed ? '#f1c40f' : '#baa892');
     }
 
+    const questSystem = QuestSystem.getInstance();
+    const stageInfo = questSystem.getCurrentStageInfo(this.playerState);
+
     if (this.isQuestCollapsed) {
       if (this.questTitleText) this.questTitleText.setVisible(false);
       if (this.questTrackerText) this.questTrackerText.setVisible(false);
       if (this.questHeaderText) {
-        const q = this.playerState ? this.playerState.getCurrentQuest() : null;
-        this.questHeaderText.setText(`📜 [J] ${q ? q.title : 'Nhiệm Vụ Hiện Tại'}`);
+        this.questHeaderText.setText(`📜 [J] Chặng ${stageInfo.stageNumber}/7: ${stageInfo.targetZoneName}`);
         this.questHeaderText.setPosition(questBoxX + 12, questBoxY + 8);
       }
     } else {
       if (this.questHeaderText) {
-        this.questHeaderText.setText('📜 NHIỆM VỤ HIỆN TẠI [J]:');
+        this.questHeaderText.setText(`📜 NHIỆM VỤ HIỆN TẠI [J] — CHẶNG ${stageInfo.stageNumber}/7:`);
         this.questHeaderText.setPosition(questBoxX + 12, questBoxY + 8);
       }
       if (this.questTitleText) this.questTitleText.setVisible(true);
@@ -2189,39 +2207,37 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   public updateQuestTracker(): void {
-    const q = this.playerState.getCurrentQuest();
+    const questSystem = QuestSystem.getInstance();
+    const stageInfo = questSystem.getCurrentStageInfo(this.playerState);
+
     if (this.isQuestCollapsed) {
       if (this.questHeaderText) {
-        this.questHeaderText.setText(`📜 [J] ${q ? q.title : 'Nhiệm Vụ Hiện Tại'}`);
+        this.questHeaderText.setText(`📜 [J] Chặng ${stageInfo.stageNumber}/7: ${stageInfo.targetZoneName}`);
       }
       return;
     }
-    if (q) {
-      if (this.questTitleText && this.lastQuestTitle !== q.title) {
-        this.lastQuestTitle = q.title;
-        this.questTitleText.setText(q.title);
+
+    if (this.questHeaderText) {
+      this.questHeaderText.setText(`📜 NHIỆM VỤ HIỆN TẠI [J] — CHẶNG ${stageInfo.stageNumber}/7:`);
+    }
+
+    if (this.questTitleText) {
+      const fullTitle = `${stageInfo.title}`;
+      if (this.lastQuestTitle !== fullTitle) {
+        this.lastQuestTitle = fullTitle;
+        this.questTitleText.setText(fullTitle);
       }
-      const activeTask = q.tasks.find(t => !t.done);
-      if (this.questTrackerText) {
-        let taskText = activeTask ? `☐ ${activeTask.text}` : '✔ Phân đoạn đã xong. Mở Sổ Tay [J].';
-        // V14-P8-12: Sửa lỗi chính tả "Bụi Rậm Đắc" -> "Bụi Rậm Đặc"
-        taskText = taskText.replace(/Bụi Rậm Đắc/g, 'Bụi Rậm Đặc').replace(/bụi rậm đắc/g, 'bụi rậm đặc');
-        const taskColor = activeTask ? '#d8cfbe' : '#2ecc71';
-        if (this.lastQuestTaskText !== taskText) {
-          this.lastQuestTaskText = taskText;
-          this.questTrackerText.setText(taskText);
-          this.questTrackerText.setColor(taskColor);
-        }
-      }
-    } else {
-      if (this.questTitleText && this.lastQuestTitle !== 'Chưa có nhiệm vụ mới') {
-        this.lastQuestTitle = 'Chưa có nhiệm vụ mới';
-        this.questTitleText.setText('Chưa có nhiệm vụ mới');
-      }
-      if (this.questTrackerText && this.lastQuestTaskText !== 'Tự do khám phá vùng Bellhollow...') {
-        this.lastQuestTaskText = 'Tự do khám phá vùng Bellhollow...';
-        this.questTrackerText.setText('Tự do khám phá vùng Bellhollow...');
-        this.questTrackerText.setColor('#ecf0f1');
+    }
+
+    if (this.questTrackerText) {
+      const taskLine = `☐ ${stageInfo.hudHint}`;
+      const dirLine = `🧭 Đến: ${stageInfo.targetZoneName} (Hướng ${stageInfo.directionHint})`;
+      const fullTaskText = `${taskLine}\n${dirLine}`;
+
+      if (this.lastQuestTaskText !== fullTaskText) {
+        this.lastQuestTaskText = fullTaskText;
+        this.questTrackerText.setText(fullTaskText);
+        this.questTrackerText.setColor('#d8cfbe');
       }
     }
   }
@@ -3045,9 +3061,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.activePopupTween = undefined;
     }
 
-    // C4-13-09: Tái sử dụng Text pooled duy nhất thay vì cấp phát mới và hủy liên tục
+    // V15-56: Tái sử dụng Text pooled đặt tại Y=175 trôi nhẹ lên Y=145, hoàn toàn tách biệt khỏi Zone Banner (Y=80)
     if (!this.pooledPopupText) {
-      this.pooledPopupText = HDTextHelper.createText(this, 640, 140, '', {
+      this.pooledPopupText = HDTextHelper.createText(this, 640, 175, '', {
         fontSize: '15px',
         fontStyle: 'bold',
         color: '#2ecc71',
@@ -3060,7 +3076,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     const popup = this.pooledPopupText;
     popup.setText(msg);
-    popup.setPosition(640, 140);
+    popup.setPosition(640, 175);
     popup.setAlpha(1);
     popup.setVisible(true);
 
@@ -3068,7 +3084,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     this.activePopupTween = this.tweens.add({
       targets: popup,
-      y: 110,
+      y: 145,
       alpha: 0,
       duration: 2200,
       ease: 'Power2',

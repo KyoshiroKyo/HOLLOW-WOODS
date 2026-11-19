@@ -120,5 +120,14 @@
   23. `[PASS]` Vùng Outer Woods chứa interactable `quiet_forest_bonfire`.
   24. `[PASS]` Hội thoại `campfire_knight_intro` mang đúng tên người nói Sir Vaelen và chân dung kỵ sĩ.
 
-### 3.3. Đóng gói Production Build (`npm run build`)
-- **Kết quả:** Build thành công 100% trong 10.70s (`dist/index.html` và `dist/assets/`).
+### 3.3. Kết Nối Âm Nhạc Bếp Lửa BGM (V15-37)
+- **Tập tin âm thanh:** `public/assets/audio/bgm/knights_quiet_fire.mp3`.
+- **Cơ chế:** Khi lữ khách bước vào bán kính $\le 180\text{px}$ quanh tâm bếp lửa $(1470, 710)$ hoặc Sir Vaelen $(1435, 705)$, BGM tự động chuyển êm (crossfade trong 1.5s) sang giai điệu `bgm_knights_quiet_fire` ấm áp, và tự động phục hồi BGM rừng ngoài khi rời xa.
+
+### 3.4. Kiểm Toán Bản Đồ BFS & Toàn Bộ Assets (V15-49)
+- **73/73 Bài Kiểm Tra Đạt (PASS 100%):**
+  - Sir Vaelen tại $(1435, 705)$: Điểm đứng Walkable, thông suốt BFS từ Bellhollow, không collider đè, khoảng trống tiếp cận $\ge 48\text{px}$.
+  - Trạm Lửa Rừng Tĩnh Lặng $(1470, 710)$: Đầy đủ trang bị dã chiến (phiến đá ngồi nghỉ, rương quân nhu sồi, khiên kỵ sĩ & gươm cắm đất, bó củi khô, ấm đồng dã chiến) và quầng sáng Sanctuary Aura 4 tầng.
+
+### 3.5. Đóng gói Production Build (`npm run build`)
+- **Kết quả:** Build thành công 100% trong 9.74s (`dist/index.html` và `dist/assets/`).

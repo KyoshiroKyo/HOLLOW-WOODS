@@ -207,10 +207,12 @@ export class TheListener extends Monster {
     this.ai.triggerAttackCooldown(ms);
   }
 
-  public hearSound(x: number, y: number, volume: number = 1.0, originX?: number, originY?: number): void {
+  public hearSound(x: number, y: number, volume: number = 1.0, originX?: number, originY?: number, isLanternLit: boolean = false): void {
     const dist = Math.hypot(this.x - x, this.y - y);
-    if (dist <= this.hearingRadius * volume) {
-      this.ai.triggerSoundAlert(x, y, volume, originX, originY);
+    // V15-58B: Nghịch lý ánh sáng [F] - Khi bật đèn lồng: tăng +30% độ nhạy cảm nhận thính giác
+    const lanternMod = isLanternLit ? 1.3 : 1.0;
+    if (dist <= this.hearingRadius * volume * lanternMod) {
+      this.ai.triggerSoundAlert(x, y, volume * lanternMod, originX, originY);
     }
   }
 
@@ -234,8 +236,8 @@ export class TheListener extends Monster {
     this.ai.resetToPatrol(initialX, initialY);
   }
 
-  public update(delta: number, playerX: number, playerY: number, isPlayerHiding: boolean, isPlayerDead: boolean = false, timePhase?: TimePhase): void {
-    this.ai.update(delta, playerX, playerY, isPlayerHiding, isPlayerDead, timePhase);
+  public update(delta: number, playerX: number, playerY: number, isPlayerHiding: boolean, isPlayerDead: boolean = false, timePhase?: TimePhase, isLanternLit: boolean = false): void {
+    this.ai.update(delta, playerX, playerY, isPlayerHiding, isPlayerDead, timePhase, isLanternLit);
 
     // Cập nhật hướng mặt theo vận tốc di chuyển
     if (this.body && Math.abs(this.body.velocity.x) > 5) {

@@ -1,0 +1,214 @@
+{
+  "mainRoute": "A -> E -> B -> D -> F -> E -> C",
+  "zoneCodeMap": {
+    "A": "Làng Bellhollow (bellhollow)",
+    "B": "Trạm Lửa Rừng Tĩnh Lặng (Sir Vaelen - outer_woods)",
+    "C": "Miếu Chuông Phế Tích (broken_bell_shrine)",
+    "D": "Xưởng Chuông Bỏ Hoang & Hầm Rễ Cổ (sub_bell_workshop)",
+    "E": "Đầm Lầy Tĩnh Lặng (silent_mire)",
+    "F": "Rừng Sâu & Trận Địa Cổ Ngữ (deep_forest / ancient_rune_puzzle)"
+  },
+  "stages": [
+    {
+      "stageNumber": 1,
+      "stageId": "stage_1_a_to_e",
+      "questId": "Q_STAGE_1_A_TO_E",
+      "legacyQuestId": "Q04_ANCIENT_RUNES",
+      "title": "Chặng 1: Điều Tra Đầm Lầy Tĩnh Lặng (A -> E)",
+      "route": "A -> E",
+      "fromZone": "bellhollow",
+      "targetZone": "silent_mire",
+      "targetZoneName": "Đầm Lầy Tĩnh Lặng (Silent Mire)",
+      "directionHint": "Đông / Đông Nam",
+      "giver": "Garth & Bà Edda (Làng Bellhollow)",
+      "description": "Tại Làng Bellhollow, Garth và bà Edda giao nhiệm vụ tiến về hướng Đông vào Đầm Lầy Tĩnh Lặng để lần theo tung tích Lưỡi Chuông Đồng Cổ.",
+      "hudHint": "Tiến về phía Đông băng qua Đường Mòn Quanh Co vào Đầm Lầy Tĩnh Lặng (E).",
+      "requiredItem": null,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Nhận chỉ dẫn từ bà Edda và Garth tại Làng Bellhollow (A)",
+          "done": true
+        },
+        {
+          "id": "t2",
+          "text": "Băng qua Đường Mòn Quanh Co hướng về phía Đông để vào Đầm Lầy Tĩnh Lặng (E)",
+          "done": false
+        }
+      ]
+    },
+    {
+      "stageNumber": 2,
+      "stageId": "stage_2_e_to_b",
+      "questId": "Q_STAGE_2_E_TO_B",
+      "legacyQuestId": "Q05_SOLVE_MIRE",
+      "title": "Chặng 2: Phong Ấn Rễ Cổ & Huy Hiệu Sa Ngã (E -> B)",
+      "route": "E -> B",
+      "fromZone": "silent_mire",
+      "targetZone": "outer_woods",
+      "targetZoneName": "Trạm Lửa Rừng Tĩnh Lặng (Outer Woods)",
+      "directionHint": "Tây (Rìa Rừng Ngoài)",
+      "giver": "Phong Ấn Rễ Cổ (Đầm Lầy)",
+      "description": "Lối cầu dẫn sang Miếu Chuông bị khóa bởi Phong Ấn Rễ Cổ. Thu giữ Huy Hiệu Kỵ Sĩ Sa Ngã tại đầm lầy và mang về phía Tây hỏi Sir Vaelen tại Trạm Lửa Rừng Tĩnh Lặng.",
+      "hudHint": "Mang Huy Hiệu Kỵ Sĩ Sa Ngã quay lại hướng Tây gặp Sir Vaelen tại Trạm Lửa Rừng Tĩnh Lặng (B).",
+      "requiredItem": "quest_corrupted_crest",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Khảo sát Cầu Phong Ấn Rễ Cổ tại mép Đông Đầm Lầy Tĩnh Lặng (E)",
+          "done": false
+        },
+        {
+          "id": "t2",
+          "text": "Thu thập Huy Hiệu Kỵ Sĩ Sa Ngã và mang về hỏi Sir Vaelen ở Trạm Lửa (B)",
+          "done": false
+        }
+      ]
+    },
+    {
+      "stageNumber": 3,
+      "stageId": "stage_3_b_to_d",
+      "questId": "Q_STAGE_3_B_TO_D",
+      "legacyQuestId": "SQ01_RUNED_IRON",
+      "title": "Chặng 3: Giải Mã Huy Hiệu & Khuôn Đúc Cổ (B -> D)",
+      "route": "B -> D",
+      "fromZone": "outer_woods",
+      "targetZone": "sub_bell_workshop",
+      "targetZoneName": "Xưởng Chuông Bỏ Hoang & Hầm Rễ Cổ",
+      "directionHint": "Nam (Rìa Nam Rừng Ngoài)",
+      "giver": "Sir Vaelen (Trạm Lửa)",
+      "description": "Sir Vaelen giải mã huy hiệu và chỉ dẫn người chơi tới Xưởng Chuông Bỏ Hoang & Hầm Rễ Cổ (D) ở rìa Nam Rừng Ngoài để tìm Khuôn Đúc Đồng Cổ.",
+      "hudHint": "Tiến về hướng Nam Rừng Ngoài vào Xưởng Chuông Bỏ Hoang (D) tìm Khuôn Đúc Đồng Cổ.",
+      "requiredItem": "item_bell_mold",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Trò chuyện với Sir Vaelen bên đốm lửa để giải mã bí mật đoàn kỵ sĩ",
+          "done": false
+        },
+        {
+          "id": "t2",
+          "text": "Tìm kiếm trên bàn thợ tại Xưởng Chuông Bỏ Hoang (D) để nhặt Khuôn Đúc Đồng Cổ",
+          "done": false
+        }
+      ]
+    },
+    {
+      "stageNumber": 4,
+      "stageId": "stage_4_d_to_f",
+      "questId": "Q_STAGE_4_D_TO_F",
+      "legacyQuestId": "Q04_ANCIENT_RUNES",
+      "title": "Chặng 4: Mảnh Cổ Ngữ Khai Mở (D -> F)",
+      "route": "D -> F",
+      "fromZone": "sub_bell_workshop",
+      "targetZone": "deep_forest",
+      "targetZoneName": "Rừng Sâu & Khu Cổ Ngữ (Deep Forest)",
+      "directionHint": "Bắc / Đông Bắc (Rừng Sâu)",
+      "giver": "Ghi chú Xưởng Chuông",
+      "description": "Sau khi lấy được Khuôn Đúc tại (D), manh mối dẫn người chơi tiến sâu vào Rừng Sâu & Khu Cổ Ngữ (F) để thu thập Mảnh Cổ Ngữ Khai Mở.",
+      "hudHint": "Tiến lên hướng Bắc vào Rừng Sâu (F) để thu thập Mảnh Cổ Ngữ Khai Mở.",
+      "requiredItem": "quest_rune_fragment",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Tiến vào Rừng Sâu (F) theo hướng Bắc, tránh né Kẻ Lắng Nghe",
+          "done": false
+        },
+        {
+          "id": "t2",
+          "text": "Thu thập Mảnh Cổ Ngữ Khai Mở tại Trận Địa Cổ Ngữ ngàn năm",
+          "done": false
+        }
+      ]
+    },
+    {
+      "stageNumber": 5,
+      "stageId": "stage_5_f_to_b",
+      "questId": "Q_STAGE_5_F_TO_B",
+      "legacyQuestId": "SQ06_KEEP_FIRE",
+      "title": "Chặng 5: Đúc Chìa Khóa Thanh Tẩy (F -> B/A)",
+      "route": "F -> B/A",
+      "fromZone": "deep_forest",
+      "targetZone": "outer_woods",
+      "targetZoneName": "Trạm Lửa Sir Vaelen (B) hoặc Lò Rèn Bram (A)",
+      "directionHint": "Tây Nam (Trạm Lửa B / Làng A)",
+      "giver": "Sir Vaelen & Bram",
+      "description": "Người chơi mang đủ 2 vật phẩm nhiệm vụ (Khuôn Đúc + Mảnh Cổ Ngữ) về gặp Sir Vaelen (hoặc lò rèn Bram) để ghép thành Chìa Khóa Thanh Tẩy.",
+      "hudHint": "Mang đủ 2 vật phẩm về gặp Sir Vaelen tại Trạm Lửa (B) để ghép Chìa Khóa Thanh Tẩy.",
+      "requiredItem": "quest_purification_key",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Mang đủ 2 cổ vật về gặp Sir Vaelen tại Trạm Lửa hoặc Bram tại Làng",
+          "done": false
+        },
+        {
+          "id": "t2",
+          "text": "Đón nhận Chìa Khóa Thanh Tẩy từ ngọn lửa thiêng của Sir Vaelen",
+          "done": false
+        }
+      ]
+    },
+    {
+      "stageNumber": 6,
+      "stageId": "stage_6_back_to_e",
+      "questId": "Q_STAGE_6_BACK_TO_E",
+      "legacyQuestId": "Q05_SOLVE_MIRE",
+      "title": "Chặng 6: Phá Bỏ Phong Ấn Rễ Cổ & Hạ Cầu (E -> Mở C)",
+      "route": "Quay lại E -> Mở C",
+      "fromZone": "outer_woods",
+      "targetZone": "silent_mire",
+      "targetZoneName": "Đầm Lầy Tĩnh Lặng — Cầu Phong Ấn (Silent Mire)",
+      "directionHint": "Đông (Quay lại Đầm Lầy)",
+      "giver": "Sir Vaelen",
+      "description": "Quay trở lại Đầm Lầy Tĩnh Lặng (E), dùng Chìa Khóa Thanh Tẩy tương tác [E] để phá bỏ Phong Ấn Rễ Cổ và hạ thân cây làm cầu thông sang Miếu Chuông Phế Tích (C).",
+      "hudHint": "Quay lại phía Đông Đầm Lầy Tĩnh Lặng (E), nhấn [E] dùng Chìa Khóa Thanh Tẩy hạ cầu cây sang Miếu Chuông (C).",
+      "requiredItem": "quest_purification_key",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Quay lại vị trí Cầu Cây Phong Ấn ở bờ Đông Đầm Lầy Tĩnh Lặng (E)",
+          "done": false
+        },
+        {
+          "id": "t2",
+          "text": "Nhấn [E] dùng Chìa Khóa Thanh Tẩy để phá bỏ Phong Ấn Rễ Cổ và hạ thân cây làm cầu",
+          "done": false
+        }
+      ]
+    },
+    {
+      "stageNumber": 7,
+      "stageId": "stage_7_at_c",
+      "questId": "Q_STAGE_7_AT_C",
+      "legacyQuestId": "Q06_RETRIEVE_CLAPPER",
+      "title": "Chặng 7: Miếu Chuông Phế Tích & Hồi Kết (Tại C)",
+      "route": "Tại C",
+      "fromZone": "silent_mire",
+      "targetZone": "broken_bell_shrine",
+      "targetZoneName": "Miếu Chuông Phế Tích (The Broken Bell Shrine)",
+      "directionHint": "Đông Bắc (Qua Cầu Cây)",
+      "giver": "Đại Hồng Chung",
+      "description": "Tiến vào Miếu Chuông Phế Tích (C), phá 3 Trụ Phong Ấn, hạ gục Kẻ Nuốt Tiếng Chuông và rung chuông kích hoạt Ending.",
+      "hudHint": "Tiến qua cầu vào Miếu Chuông (C), tiêu diệt Trùm Kẻ Nuốt Tiếng Chuông và rung chuông!",
+      "requiredItem": "quest_bronze_clapper",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Tiến vào Miếu Chuông Phế Tích và phá vỡ 3 Trụ Mạch Rễ",
+          "done": false
+        },
+        {
+          "id": "t2",
+          "text": "Hạ gục Kẻ Nuốt Tiếng Chuông (Mire Warden Boss) và thu hồi Lưỡi Chuông",
+          "done": false
+        },
+        {
+          "id": "t3",
+          "text": "Rung chuông đồng làng Bellhollow kích hoạt Hồi Kết",
+          "done": false
+        }
+      ]
+    }
+  ]
+}

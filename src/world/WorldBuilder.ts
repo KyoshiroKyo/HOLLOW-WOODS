@@ -2443,9 +2443,9 @@ export class WorldBuilder {
       this.createFallenLog(220, 130, 42, 12);
       this.createDenseBush(210, 120);
 
-      // Vẽ cổng sương mù và bia đá dẫn lối
-      this.createTree(160, 100, 'Cây Khô Sương Mù');
-      this.createTree(300, 240, 'Cây Khô Sương Mù');
+      // V15-61: Lối mòn xuyên sương y=190..250 tuyệt đối thông suốt, di dời cây sang rìa Bắc và rìa Nam
+      this.createTree(160, 65, 'Cây Khô Sương Mù', false);
+      this.createTree(300, 310, 'Cây Khô Sương Mù', false);
       this.createStoneSign(240, 180, 'TẤM BIỂN MỤC');
     } else if (id === 'bellhollow') {
       // =========================================================================
@@ -2547,70 +2547,13 @@ export class WorldBuilder {
     this.createHollowTree(32, 135, 'Cây Khô Rìa Tây Bắc');
     this.createHollowTree(28, 235, 'Cây Khô Rìa Tây Nam');
 
-    // 2. Thân cây cổ thụ đổ chắn ngang đường (y: 138..232)
-    const trunkGfx = this.scene.add.graphics();
-    trunkGfx.save();
-    trunkGfx.translateCanvas(barrierX, roadCenterY);
-
-    // Bóng đổ sâu thẳm dưới thân cây
-    trunkGfx.fillStyle(0x0a0e0c, 0.65);
-    trunkGfx.fillEllipse(-4, 0, 36, 102);
-
-    // Rễ cây xoắn xít vươn về hướng Tây (x < barrierX)
-    trunkGfx.fillStyle(0x28180d, 1);
-    trunkGfx.fillRect(-24, -30, 16, 8);
-    trunkGfx.fillRect(-28, -6, 20, 10);
-    trunkGfx.fillRect(-22, 22, 14, 8);
-    trunkGfx.fillRect(-18, 38, 12, 7);
-
-    // Lõi và vỏ thân cây đại thụ đổ ngang
-    trunkGfx.fillStyle(0x2d1a0e, 1);
-    trunkGfx.fillRoundedRect(-12, -48, 22, 96, 5);
-
-    // Thớ gỗ sẫm màu bên trong
-    trunkGfx.fillStyle(0x3e2615, 1);
-    trunkGfx.fillRoundedRect(-9, -45, 16, 90, 4);
-
-    // Các vết nứt toác, thớ gỗ mục gãy
-    trunkGfx.fillStyle(0x1a0f08, 1);
-    trunkGfx.fillRect(-6, -35, 4, 18);
-    trunkGfx.fillRect(-3, 5, 5, 22);
-    trunkGfx.fillRect(-7, 28, 4, 12);
-
-    // Điểm nhấn vỏ cây sáng nhẹ phản chiếu ánh sương
-    trunkGfx.fillStyle(0x523924, 0.85);
-    trunkGfx.fillRect(3, -42, 3, 30);
-    trunkGfx.fillRect(4, 8, 3, 32);
-
-    // Mảng rêu nhung xanh sẫm bám dọc sống thân cây
-    trunkGfx.fillStyle(0x2e6b30, 0.95);
-    trunkGfx.fillRoundedRect(-8, -42, 7, 36, 2);
-    trunkGfx.fillRoundedRect(-7, 10, 8, 32, 2);
-
-    trunkGfx.fillStyle(0x438a45, 0.9);
-    trunkGfx.fillRect(-6, -38, 4, 26);
-    trunkGfx.fillRect(-5, 14, 5, 22);
-
-    trunkGfx.fillStyle(0x66bb6a, 0.8);
-    trunkGfx.fillRect(-4, -32, 2, 14);
-    trunkGfx.fillRect(-3, 20, 2, 12);
-
-    // Cụm nấm sò / nấm mộc nhĩ rừng mọc bên sườn cây
-    trunkGfx.fillStyle(0xd35400, 1);
-    trunkGfx.fillRect(7, -20, 5, 4);
-    trunkGfx.fillRect(8, -12, 6, 4);
-    trunkGfx.fillRect(7, 18, 5, 4);
-    trunkGfx.fillRect(8, 28, 6, 4);
-
-    trunkGfx.fillStyle(0xf39c12, 1);
-    trunkGfx.fillRect(8, -19, 3, 2);
-    trunkGfx.fillRect(9, -11, 4, 2);
-    trunkGfx.fillRect(8, 19, 3, 2);
-    trunkGfx.fillRect(9, 29, 4, 2);
-
-    trunkGfx.restore();
-    trunkGfx.setDepth(roadCenterY + 15);
-    this.registerCullable(trunkGfx, barrierX, roadCenterY, 70);
+    // 2. V15-61: Thân cây cổ thụ đổ chắn ngang đường dùng Sprite Pixel Art Thật (y: 138..232)
+    const trunkLog = this.safeAddImage(barrierX, roadCenterY, 'prop_fallen_log_mossy_v14', SPRITE_HOLLOW_TREE);
+    trunkLog.setOrigin(0.5, 0.5);
+    trunkLog.setScale(1.6, 1.2);
+    trunkLog.setAngle(90);
+    trunkLog.setDepth(roadCenterY + 15);
+    this.registerCullable(trunkLog, barrierX, roadCenterY, 70);
 
     // 3. Hàng rào gỗ gãy nát (Broken Fence)
     const fenceGfx = this.scene.add.graphics();
@@ -2839,53 +2782,47 @@ export class WorldBuilder {
   }
 
   /**
-   * V15-11: Cây Cổ Thụ Pixel Art độ nét cao (112-160px) phân tầng tự nhiên
-   * Thay thế tán cây tròn đơn điệu bằng 4 biến thể: Thông sương mù, Sồi già rêu phủ, Liễu rủ đầm lầy, Cây khô trơ cành.
+   * V15-61: Cây Cổ Thụ Pixel Art Thật 100% (TopDown Fantasy Pine & Updated-Trees Oak/Birch/Dead)
+   * Đồng bộ tỉ lệ pixel grid, neo chân gốc chuẩn (0.5, 1.0) và tính depth = groundBaseY chính xác.
    */
   private createTree(x: number, y: number, label?: string, withCollider: boolean = true): void {
     let treeKey = SPRITE_TREE_MOSSY_OAK_GRAND_V15;
     let fallbackKey = SPRITE_TREE_OAK_1;
-    let originY = 0.92;
 
     if (label?.includes('Thông') || label?.includes('Pine')) {
       treeKey = SPRITE_TREE_MIST_PINE_V15;
       fallbackKey = SPRITE_TREE_OAK_1;
-      originY = 0.92;
     } else if (label?.includes('Liễu') || label?.includes('Willow') || label?.includes('Đầm Lầy') || label?.includes('Mire')) {
       treeKey = SPRITE_TREE_WEEPING_WILLOW_V15;
       fallbackKey = SPRITE_TREE_OAK_2;
-      originY = 0.92;
     } else if (label?.includes('Khô') || label?.includes('Dead') || label?.includes('Withered')) {
       treeKey = SPRITE_TREE_WITHERED_GNARLED_V15;
       fallbackKey = SPRITE_TREE_DEAD;
-      originY = 0.90;
     } else {
       // Đa dạng hóa cảnh quan tự nhiên theo tọa độ giả ngẫu nhiên
       const hash = Math.abs(Math.floor(x * 11 + y * 17)) % 4;
       if (hash === 2) {
         treeKey = SPRITE_TREE_MIST_PINE_V15;
         fallbackKey = SPRITE_TREE_OAK_2;
-        originY = 0.92;
       } else if (hash === 3) {
         treeKey = SPRITE_TREE_WEEPING_WILLOW_V15;
         fallbackKey = SPRITE_TREE_OAK_3;
-        originY = 0.92;
       } else {
         treeKey = SPRITE_TREE_MOSSY_OAK_GRAND_V15;
         fallbackKey = SPRITE_TREE_OAK_1;
-        originY = 0.92;
       }
     }
 
     const tree = this.safeAddImage(x, y, treeKey, fallbackKey);
-    tree.setOrigin(0.5, originY);
+    // V15-61: Neo gốc chuẩn (0.5, 1.0) tại chân gốc chạm đất
+    tree.setOrigin(0.5, 1.0);
     tree.setDepth(y);
     this.registerCullable(tree, x, y, 110);
     this.treeCanopyGroup.add(tree);
 
-    // V1.5 (BƯỚC V15-03 & V15-11): Hitbox gốc cây gọn gàng 20x16 px ôm sát gốc chạm đất
+    // V15-61: Hitbox gọn gàng 18x10 px ôm sát gốc chạm đất
     if (withCollider) {
-      this.createStaticBoxColliderCentered(x, y + 2, 20, 16, 'Gốc Cây Cổ Thụ');
+      this.createStaticBoxColliderCentered(x, y - 4, 18, 10, 'Gốc Cây Pixel Art');
     }
   }
 
@@ -2929,12 +2866,12 @@ export class WorldBuilder {
 
   private createHollowTree(x: number, y: number, _label?: string): void {
     const tree = this.safeAddImage(x, y, SPRITE_HOLLOW_TREE);
-    tree.setOrigin(0.5, 0.85);
+    tree.setOrigin(0.5, 1.0);
     tree.setDepth(y);
     this.registerCullable(tree, x, y, 70);
     this.treeCanopyGroup.add(tree);
 
-    this.createStaticBoxColliderCentered(x, y, 28, 14, 'Cây Rỗng');
+    this.createStaticBoxColliderCentered(x, y - 4, 20, 10, 'Cây Rỗng');
   }
 
   private createDenseBush(x: number, y: number): void {
@@ -2946,9 +2883,67 @@ export class WorldBuilder {
 
     const bushKey = (Math.floor(x) % 2 === 0) ? SPRITE_BUSH_DENSE_1 : SPRITE_BUSH_DENSE_2;
     const bush = this.safeAddImage(x, y, bushKey);
-    bush.setOrigin(0.5, 0.85);
+    bush.setOrigin(0.5, 1.0);
     bush.setDepth(y);
     this.registerCullable(bush, x, y, 40);
+  }
+
+  /**
+   * V15-14: Tạo Cụm Rừng Tự Nhiên (Organic Clustering)
+   * Gom cây cổ thụ thành từng rặng rừng tự nhiên kết hợp cây cao, cây thấp, bụi dương xỉ và đá rêu ở chân cây để tạo độ sâu thị giác.
+   * Giữ lòng đường đi luôn thông suốt (lòng đường >= 140px), không để cây chắn lổn nhổn giữa lối mòn.
+   */
+  private createOrganicTreeCluster(
+    centerX: number,
+    centerY: number,
+    options?: {
+      primaryType?: 'pine' | 'willow' | 'oak' | 'withered';
+      subTrees?: Array<{ dx: number; dy: number; type?: 'pine' | 'willow' | 'oak' | 'withered' }>;
+      bushes?: Array<{ dx: number; dy: number }>;
+      rocks?: Array<{ dx: number; dy: number; w?: number; h?: number }>;
+      label?: string;
+      withColliders?: boolean;
+    }
+  ): void {
+    const withColliders = options?.withColliders ?? true;
+    const primaryLabel = options?.label || (
+      options?.primaryType === 'pine' ? 'Cụm Cây Thông Cổ Thụ'
+      : options?.primaryType === 'willow' ? 'Cụm Cây Liễu Đầm Lầy'
+      : options?.primaryType === 'withered' ? 'Cụm Cây Khô Cổ Thụ'
+      : 'Cụm Cây Sồi Cổ Thụ'
+    );
+
+    // 1. Cây đại thụ trung tâm
+    this.createTree(centerX, centerY, primaryLabel, withColliders);
+
+    // 2. Cây phụ hoặc thấp hơn ở sườn
+    const subTrees = options?.subTrees ?? [
+      { dx: 30, dy: -14, type: options?.primaryType },
+      { dx: -28, dy: 16, type: options?.primaryType }
+    ];
+    for (const sub of subTrees) {
+      const subLabel = sub.type === 'pine' ? 'Cây Thông Phụ'
+        : sub.type === 'willow' ? 'Cây Liễu Phụ'
+        : sub.type === 'withered' ? 'Cây Khô Phụ'
+        : 'Cây Sồi Phụ';
+      this.createTree(centerX + sub.dx, centerY + sub.dy, subLabel, withColliders);
+    }
+
+    // 3. Bụi rậm / bụi dương xỉ ôm sát gốc cây (trang trí / che giấu, không collider)
+    const bushes = options?.bushes ?? [
+      { dx: -16, dy: 12 },
+      { dx: 22, dy: 14 }
+    ];
+    for (const b of bushes) {
+      this.createDenseBush(centerX + b.dx, centerY + b.dy);
+    }
+
+    // 4. Khối đá rêu phong ở chân cụm cây (nếu cấu hình)
+    if (options?.rocks) {
+      for (const r of options.rocks) {
+        this.createRock(centerX + r.dx, centerY + r.dy, r.w ?? 22, r.h ?? 14);
+      }
+    }
   }
 
   /**
@@ -3019,6 +3014,19 @@ export class WorldBuilder {
     house.setOrigin(0.5, 1.0);
     house.setDepth(y);
     this.registerCullable(house, x, y - h / 2, Math.max(w, h));
+
+    // V15-15: Ánh sáng vàng hổ phách ấm áp le lói qua khung cửa sổ nhà dân (Window Ambient Warm Glow)
+    const windowGlow = this.scene.add.graphics();
+    const winY = y - Math.round(h * 0.42);
+    const winX = isEdda ? x + 24 : x - 20;
+    windowGlow.fillStyle(0xf39c12, 0.05);
+    windowGlow.fillCircle(winX, winY, 46);
+    windowGlow.fillStyle(0xf39c12, 0.12);
+    windowGlow.fillCircle(winX, winY, 26);
+    windowGlow.fillStyle(0xffe082, 0.25);
+    windowGlow.fillCircle(winX, winY, 12);
+    windowGlow.setDepth(y - 1);
+    this.registerCullable(windowGlow, winX, winY, 52);
 
     // V15-10: Căn chỉnh hộp va chạm vật lý chân đế (Foot-level Hitbox ~22-26% phần đáy công trình).
     // Đáy sprite nằm tại y. Hitbox chân tường bao phủ 30-32px đáy, chừa toàn bộ mái và thân trên
@@ -3102,6 +3110,35 @@ export class WorldBuilder {
     smithy.setDepth(y);
     this.registerCullable(smithy, x, y - h / 2, Math.max(w, h));
 
+    // V15-15: Quầng sáng than hồng rực ấm áp từ lò nung của Bram (Bram's Forge Hearth Glow)
+    const forgeGlow = this.scene.add.graphics();
+    const forgeX = x - 32;
+    const forgeY = y - 46;
+    forgeGlow.fillStyle(0xff4400, 0.06);
+    forgeGlow.fillCircle(forgeX, forgeY, 70);
+    forgeGlow.fillStyle(0xff7711, 0.15);
+    forgeGlow.fillCircle(forgeX, forgeY, 44);
+    forgeGlow.fillStyle(0xffaa22, 0.25);
+    forgeGlow.fillCircle(forgeX, forgeY, 24);
+    forgeGlow.fillStyle(0xffe066, 0.40);
+    forgeGlow.fillCircle(forgeX, forgeY, 10);
+    forgeGlow.setDepth(y - 1);
+    this.registerCullable(forgeGlow, forgeX, forgeY, 75);
+
+    // Hiệu ứng nhấp nháy bập bùng nhẹ như bể lò than đang thổi
+    if (this.scene.tweens) {
+      this.scene.tweens.add({
+        targets: forgeGlow,
+        alpha: 0.75,
+        scaleX: 1.05,
+        scaleY: 1.05,
+        duration: 850,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut'
+      });
+    }
+
     // Khói bốc lên từ ống khói đá lò rèn (x - 48, y - h + 4)
     this.createChimneySmoke(x - 48, y - h + 4);
 
@@ -3133,6 +3170,17 @@ export class WorldBuilder {
     gatehouse.setOrigin(0.5, 1.0);
     gatehouse.setDepth(y);
     this.registerCullable(gatehouse, x, y - h / 2, Math.max(w, h));
+
+    // V15-15: Ánh đèn lồng trạm gác cổng Tây của Garth
+    const watchGlow = this.scene.add.graphics();
+    const lampX = x - 26;
+    const lampY = y - Math.round(h * 0.45);
+    watchGlow.fillStyle(0xf39c12, 0.08);
+    watchGlow.fillCircle(lampX, lampY, 42);
+    watchGlow.fillStyle(0xffe082, 0.22);
+    watchGlow.fillCircle(lampX, lampY, 16);
+    watchGlow.setDepth(y - 1);
+    this.registerCullable(watchGlow, lampX, lampY, 48);
 
     // V15-10: Hitbox chân đế (~23% phần đáy công trình: 96x32 px)
     const colW = 96;
@@ -3809,30 +3857,26 @@ export class WorldBuilder {
     ) => {
       let key = SPRITE_TREE_MOSSY_OAK_GRAND_V15;
       let fallbackKey = SPRITE_TREE_OAK_1;
-      let originY = 0.92;
 
       if (variant === 'oak2' || variant === 'pine') {
         key = SPRITE_TREE_MIST_PINE_V15;
         fallbackKey = SPRITE_TREE_OAK_2;
-        originY = 0.92;
       } else if (variant === 'oak3' || variant === 'willow') {
         key = SPRITE_TREE_WEEPING_WILLOW_V15;
         fallbackKey = SPRITE_TREE_OAK_3;
-        originY = 0.92;
       } else if (variant === 'dead') {
         key = SPRITE_TREE_WITHERED_GNARLED_V15;
         fallbackKey = SPRITE_TREE_DEAD;
-        originY = 0.90;
       } else if (variant === 'hollow') {
         key = SPRITE_HOLLOW_TREE;
         fallbackKey = SPRITE_HOLLOW_TREE;
-        originY = 0.85;
       }
 
       const tree = this.safeAddImage(x, y, key, fallbackKey);
       const finalScale = variant === 'dead' ? scale * 1.02 : scale;
       tree.setScale(finalScale);
-      tree.setOrigin(0.5, originY);
+      // V15-61: Neo chuẩn (0.5, 1.0) tại chân gốc chạm đất
+      tree.setOrigin(0.5, 1.0);
       if (tint !== 0xffffff) {
         tree.setTint(tint);
       }
@@ -3841,9 +3885,7 @@ export class WorldBuilder {
       this.treeCanopyGroup.add(tree);
 
       if (withCollider) {
-        const bw = variant === 'hollow' ? Math.round(24 * scale) : Math.round(20 * scale);
-        const bh = Math.round(14 * scale);
-        this.createStaticBoxColliderCentered(x, y, bw, bh, 'Gốc Cây Rừng V1.5');
+        this.createStaticBoxColliderCentered(x, y - 4, 18, 10, 'Gốc Cây Rừng V1.5');
       }
     };
 
@@ -3851,7 +3893,7 @@ export class WorldBuilder {
       const bushKey = Math.floor(x + y) % 2 === 0 ? SPRITE_BUSH_DENSE_1 : SPRITE_BUSH_DENSE_2;
       const bush = this.scene.add.image(x, y, bushKey);
       bush.setScale(scale);
-      bush.setOrigin(0.5, 0.85);
+      bush.setOrigin(0.5, 1.0);
       if (tint !== 0xffffff) {
         bush.setTint(tint);
       }
@@ -3860,91 +3902,63 @@ export class WorldBuilder {
     };
 
     // =========================================================================
-    // 1. DẢI RỪNG BIÊN GIỚI PHÍA BẮC (North Woodland Rim: y = 30..78)
+    // 1. DẢI RỪNG BIÊN GIỚI PHÍA BẮC (North Woodland Rim: y <= 36, sau tường rào, không che nhà)
     // =========================================================================
     const northRimTrees: Array<{ x: number; y: number; v: 'oak1' | 'oak2' | 'oak3' | 'dead' | 'hollow'; s: number; t: number; c: boolean }> = [
-      { x: 504, y: 64, v: 'oak2', s: 1.08, t: 0xc8d6c2, c: true },
-      { x: 556, y: 44, v: 'oak1', s: 1.15, t: 0xb8ccb2, c: false },
-      { x: 604, y: 68, v: 'oak3', s: 0.94, t: 0xd4e2ce, c: true },
-      // Cụm cây cổ thụ xen giữa Nhà Edda (648..760) và Nhà Neris (914..1026)
-      { x: 794, y: 54, v: 'oak1', s: 1.12, t: 0xc2d4bc, c: true },
-      { x: 846, y: 38, v: 'oak3', s: 0.96, t: 0xb0c4aa, c: false },
-      { x: 886, y: 64, v: 'oak2', s: 0.92, t: 0xd0dec8, c: true },
-      // Cụm rừng rậm phía Đông-Bắc sau Nhà Neris kéo dài tới Cổng Đông
-      { x: 1068, y: 58, v: 'oak2', s: 1.05, t: 0xc8d8c0, c: true },
-      { x: 1126, y: 42, v: 'oak1', s: 1.18, t: 0xb4c8ae, c: false },
-      { x: 1184, y: 72, v: 'oak3', s: 0.95, t: 0xcadac4, c: true },
-      { x: 1246, y: 48, v: 'oak1', s: 1.14, t: 0xaec2a8, c: false },
-      { x: 1308, y: 74, v: 'dead', s: 1.05, t: 0xb8c0b8, c: true },
-      { x: 1364, y: 52, v: 'oak2', s: 1.16, t: 0xa8bc9e, c: false },
-      { x: 1424, y: 76, v: 'oak3', s: 1.02, t: 0xb8ccb0, c: true },
-      { x: 1492, y: 50, v: 'oak1', s: 1.20, t: 0x9eb296, c: false },
-      { x: 1554, y: 72, v: 'oak2', s: 1.10, t: 0xa4b89c, c: false }
+      { x: 504, y: 34, v: 'oak2', s: 1.08, t: 0xc8d6c2, c: false },
+      { x: 556, y: 24, v: 'oak1', s: 1.15, t: 0xb8ccb2, c: false },
+      { x: 604, y: 36, v: 'oak3', s: 0.94, t: 0xd4e2ce, c: false },
+      { x: 794, y: 30, v: 'oak1', s: 1.12, t: 0xc2d4bc, c: false },
+      { x: 846, y: 22, v: 'oak3', s: 0.96, t: 0xb0c4aa, c: false },
+      { x: 886, y: 34, v: 'oak2', s: 0.92, t: 0xd0dec8, c: false },
+      { x: 1068, y: 32, v: 'oak2', s: 1.05, t: 0xc8d8c0, c: false },
+      { x: 1126, y: 22, v: 'oak1', s: 1.18, t: 0xb4c8ae, c: false },
+      { x: 1184, y: 36, v: 'oak3', s: 0.95, t: 0xcadac4, c: false },
+      { x: 1246, y: 26, v: 'oak1', s: 1.14, t: 0xaec2a8, c: false },
+      { x: 1308, y: 36, v: 'dead', s: 1.05, t: 0xb8c0b8, c: false },
+      { x: 1364, y: 28, v: 'oak2', s: 1.16, t: 0xa8bc9e, c: false },
+      { x: 1424, y: 36, v: 'oak3', s: 1.02, t: 0xb8ccb0, c: false },
+      { x: 1492, y: 25, v: 'oak1', s: 1.20, t: 0x9eb296, c: false },
+      { x: 1554, y: 35, v: 'oak2', s: 1.10, t: 0xa4b89c, c: false }
     ];
     for (const tr of northRimTrees) {
       placeVariantTree(tr.x, tr.y, tr.v, tr.s, tr.t, tr.c);
     }
 
     // =========================================================================
-    // 2. CỤM CÂY CẢNH QUAN QUANH NHÀ & VEN QUẢNG TRƯỜNG (Tránh hoàn toàn đường đi & mỏ tài nguyên)
+    // 2. V15-61: DỌN SẠCH 100% CÂY BÊN TRONG KHU DÂN CƯ & QUẢNG TRƯỜNG LÀNG BELLHOLLOW
+    // Tuyệt đối không để cây che trước cửa nhà dân, lò rèn Bram, nhà Neris, tháp chuông hay đè lên NPC
     // =========================================================================
-    const villageInteriorTrees: Array<{ x: number; y: number; v: 'oak1' | 'oak2' | 'oak3' | 'dead' | 'hollow'; s: number; t: number }> = [
-      // Giữa Trạm Gác Cổng Tây và Nhà Edda (phía Bắc đường Tây, cách xa mỏ nhựa cây 640,185)
-      { x: 594, y: 144, v: 'oak3', s: 0.86, t: 0xdce8d4 },
-      // Giữa sân Nhà Edda và Tháp Chuông
-      { x: 782, y: 162, v: 'oak2', s: 0.88, t: 0xd4e2cc },
-      // Phía Tây-Bắc Nhà Bà Lão Edda (giữa Tháp Chuông và Nhà Edda)
-      { x: 1045, y: 135, v: 'oak1', s: 0.98, t: 0xc8d8c2 },
-      { x: 1240, y: 115, v: 'oak3', s: 0.90, t: 0xd2e0ca },
-      { x: 1264, y: 152, v: 'hollow', s: 1.05, t: 0xc4d0be },
-      // Bìa rừng phía Bắc hành lang Cổng Đông (y <= 215, không chạm đường Đông y=250..315)
-      { x: 1322, y: 192, v: 'oak2', s: 1.04, t: 0xb8ccb0 },
-      { x: 1388, y: 168, v: 'oak1', s: 1.12, t: 0xaec2a6 },
-      { x: 1442, y: 204, v: 'dead', s: 0.95, t: 0xbac2b8 },
-      { x: 1538, y: 206, v: 'oak3', s: 1.02, t: 0xa4b89e },
-
-      // Khu vực Tây-Nam (cách xa Nhà Neris 570,430 và Vườn Thảo Dược 655,480)
-      { x: 498, y: 342, v: 'oak3', s: 0.92, t: 0xcadac2 },
-      { x: 720, y: 460, v: 'oak2', s: 0.94, t: 0xcfdcc8 },
-      { x: 842, y: 468, v: 'oak3', s: 0.88, t: 0xd4e0ce },
-
-      // Khu vực Đông-Nam & Nam hành lang Cổng Đông (chừa lối đi rộng thoáng trước xưởng rèn Bram)
-      { x: 1184, y: 438, v: 'oak1', s: 1.04, t: 0xc2d4bc },
-      { x: 1350, y: 345, v: 'oak3', s: 0.92, t: 0xc8d8c0 },
-      { x: 1326, y: 424, v: 'oak2', s: 1.08, t: 0xb6caa8 },
-      { x: 1392, y: 368, v: 'dead', s: 1.00, t: 0xb8c0b8 },
-      { x: 1448, y: 406, v: 'hollow', s: 1.08, t: 0xb2c2aa },
-      { x: 1534, y: 374, v: 'oak1', s: 1.08, t: 0xa2b69a }
-    ];
+    const villageInteriorTrees: Array<{ x: number; y: number; v: 'oak1' | 'oak2' | 'oak3' | 'dead' | 'hollow'; s: number; t: number }> = [];
     for (const tr of villageInteriorTrees) {
       placeVariantTree(tr.x, tr.y, tr.v, tr.s, tr.t, true);
     }
 
     // =========================================================================
-    // 3. DẢI RỪNG BIÊN GIỚI PHÍA NAM (South Woodland Rim: y = 504..542)
+    // 3. DẢI RỪNG BIÊN GIỚI PHÍA NAM (South Woodland Rim: y >= 540, sau hàng rào Nam)
     // =========================================================================
     const southRimTrees: Array<{ x: number; y: number; v: 'oak1' | 'oak2' | 'oak3' | 'dead'; s: number; t: number }> = [
-      { x: 518, y: 514, v: 'oak1', s: 1.12, t: 0xb4c8ae },
-      { x: 586, y: 528, v: 'oak3', s: 0.98, t: 0xc2d4bc },
-      { x: 654, y: 512, v: 'oak2', s: 1.08, t: 0xb8ccb0 },
-      { x: 728, y: 526, v: 'oak1', s: 1.14, t: 0xaec2a8 },
-      { x: 804, y: 514, v: 'oak3', s: 0.96, t: 0xc4d6be },
-      { x: 882, y: 528, v: 'oak2', s: 1.10, t: 0xb6caa8 },
-      { x: 958, y: 510, v: 'oak1', s: 1.12, t: 0xb0c4aa },
-      { x: 1038, y: 526, v: 'oak3', s: 1.00, t: 0xbcccb4 },
-      { x: 1118, y: 514, v: 'oak2', s: 1.08, t: 0xb2c6ac },
-      { x: 1198, y: 528, v: 'dead', s: 1.10, t: 0xb4bcb4 },
-      { x: 1276, y: 512, v: 'oak1', s: 1.16, t: 0xa6ba9e },
-      { x: 1358, y: 526, v: 'oak2', s: 1.10, t: 0xa2b69a },
-      { x: 1436, y: 510, v: 'oak3', s: 1.04, t: 0x9eb296 },
-      { x: 1512, y: 524, v: 'oak1', s: 1.18, t: 0x96aa90 }
+      { x: 518, y: 544, v: 'oak1', s: 1.12, t: 0xb4c8ae },
+      { x: 586, y: 552, v: 'oak3', s: 0.98, t: 0xc2d4bc },
+      { x: 654, y: 542, v: 'oak2', s: 1.08, t: 0xb8ccb0 },
+      { x: 728, y: 556, v: 'oak1', s: 1.14, t: 0xaec2a8 },
+      { x: 804, y: 544, v: 'oak3', s: 0.96, t: 0xc4d6be },
+      { x: 882, y: 558, v: 'oak2', s: 1.10, t: 0xb6caa8 },
+      { x: 958, y: 540, v: 'oak1', s: 1.12, t: 0xb0c4aa },
+      { x: 1038, y: 556, v: 'oak3', s: 1.00, t: 0xbcccb4 },
+      { x: 1118, y: 544, v: 'oak2', s: 1.08, t: 0xb2c6ac },
+      { x: 1198, y: 558, v: 'dead', s: 1.10, t: 0xb4bcb4 },
+      { x: 1276, y: 542, v: 'oak1', s: 1.16, t: 0xa6ba9e },
+      { x: 1358, y: 556, v: 'oak2', s: 1.10, t: 0xa2b69a },
+      { x: 1436, y: 540, v: 'oak3', s: 1.04, t: 0x9eb296 },
+      { x: 1512, y: 554, v: 'oak1', s: 1.18, t: 0x96aa90 }
     ];
     for (const tr of southRimTrees) {
       placeVariantTree(tr.x, tr.y, tr.v, tr.s, tr.t, false);
     }
 
     // =========================================================================
-    // 4. BỤI RẬM, CÀNH CÂY KHÔ, DƯƠNG XỈ & HOA RỪNG TỰ NHIÊN QUANH LÀNG
+    // 4. BỤI RẬM TỰ NHIÊN QUANH LÀNG (Đã dọn sạch các bụi đè lên lò rèn Bram & nồi Neris)
     // =========================================================================
     const bushPlacements: Array<{ x: number; y: number; s: number; t: number }> = [
       { x: 496, y: 178, s: 0.85, t: 0xc8dac2 },
@@ -3958,11 +3972,9 @@ export class WorldBuilder {
       { x: 1418, y: 222, s: 0.88, t: 0xa8bc9e },
       { x: 1518, y: 224, s: 0.92, t: 0x9eb296 },
       { x: 510, y: 312, s: 0.84, t: 0xcadac4 },
-      { x: 638, y: 444, s: 0.88, t: 0xc8dac2 },
       { x: 878, y: 452, s: 0.84, t: 0xcfdcc8 },
       { x: 1018, y: 468, s: 0.82, t: 0xc8dac2 },
       { x: 1152, y: 466, s: 0.90, t: 0xc2d4bc },
-      { x: 1288, y: 356, s: 0.88, t: 0xb8ccb0 },
       { x: 1416, y: 348, s: 0.94, t: 0xaec2a6 },
       { x: 1516, y: 344, s: 0.96, t: 0x9eb296 }
     ];
@@ -5089,39 +5101,63 @@ export class WorldBuilder {
     this.createFallenLog(1475, 795, 54, -20); // Ven suối rừng
     this.createFallenLog(1220, 955, 62, 8);   // Bãi Liễu cổ thụ phía Nam
 
-    // 5. Cây Rỗng Rừng Ven (Hollow Trees)
+    // 5. Nơi Ẩn Nấp & Thân Cây Cổ Thụ Rỗng (Stealth Hiding Spots vs. Dark Horseman / The Listener)
+    this.createDenseBush(1180, 650); // Bụi Rậm Khúc Cua Chữ S
     this.createHollowTree(1360, 620, 'Cây Rỗng Rừng Ven');
+    this.createDenseBush(1260, 800); // Bụi Rậm Bãi Rừng Thưa
+    this.createDenseBush(1460, 730); // Bụi Rậm Trạm Lửa Sir Vaelen
     this.createHollowTree(1320, 910, 'Cây Rỗng Bãi Liễu');
 
-    // 6. Quần thể Cây Sồi & Thông Cổ Thụ bao quanh viền tự nhiên
-    // Phía Bắc (giáp Bellhollow): chừa lối đi 1150..1270
-    this.createTree(1140, 585, 'Cây Bìa Bắc Rừng Ven');
-    this.createTree(1280, 585, 'Cây Bìa Bắc Rừng Ven');
-    this.createTree(1170, 630, 'Cây Thông Ven Làng');
-    this.createTree(1450, 650, 'Cây Cổ Thụ Rừng Ven');
+    // 6. V15-14: Quần thể Cụm Rừng Tự Nhiên (Organic Clusters) & Viền Rừng Ngoại Vi
+    // Cụm 1: Cụm Thông Cổ Thụ Ven Làng (Bìa Bắc - Tây Bắc)
+    this.createOrganicTreeCluster(1145, 595, {
+      primaryType: 'pine',
+      subTrees: [{ dx: 25, dy: -10, type: 'pine' }],
+      bushes: [{ dx: -12, dy: 14 }],
+      rocks: [{ dx: 18, dy: 15, w: 22, h: 14 }]
+    });
+    this.createTree(1280, 585, 'Cây Bìa Bắc Rừng Ven', true);
 
-    // Phía Tây (giáp Sanctuary Farm): chừa lối mòn 1120, 680..820
-    this.createTree(1130, 620, 'Cây Bìa Tây Rừng Ven');
-    this.createTree(1135, 870, 'Cây Bìa Tây Rừng Ven');
+    // Cụm 2: Cụm Cổ Thụ Bìa Tây Rừng Ven (giáp Sanctuary Farm)
+    this.createOrganicTreeCluster(1130, 865, {
+      primaryType: 'oak',
+      subTrees: [{ dx: 12, dy: 25, type: 'oak' }],
+      bushes: [{ dx: 14, dy: 10 }]
+    });
 
-    // Bãi Liễu Cổ Thụ phía Nam (1260, 890)
-    this.createTree(1260, 890, 'Cây Liễu Đại Ngàn Phía Nam');
-    this.createTree(1200, 985, 'Cây Cổ Thụ Viền Nam');
-    this.createTree(1340, 990, 'Cây Cổ Thụ Viền Nam');
-    this.createTree(1460, 985, 'Cây Cổ Thụ Viền Nam');
-    this.createTree(1540, 980, 'Cây Cổ Thụ Viền Nam');
+    // Cụm 3: Cụm Sồi Đại Thụ Bãi Trại Thợ Săn
+    this.createOrganicTreeCluster(1375, 855, {
+      primaryType: 'oak',
+      subTrees: [{ dx: -26, dy: 18, type: 'oak' }],
+      bushes: [{ dx: 16, dy: 12 }],
+      rocks: [{ dx: 22, dy: 16, w: 22, h: 14 }]
+    });
 
-    // Phía Đông (giáp biên giới Đường Mòn Quanh Co)
-    this.createTree(1530, 630, 'Cây Cổ Thụ Viền Đông');
-    this.createTree(1540, 730, 'Cây Cổ Thụ Viền Đông');
-    this.createTree(1550, 850, 'Cây Cổ Thụ Viền Đông');
+    // Cụm 4: Cụm Liễu Đại Ngàn Ven Suối Phía Nam (1260, 890..950)
+    this.createOrganicTreeCluster(1255, 935, {
+      primaryType: 'willow',
+      subTrees: [{ dx: 30, dy: -15, type: 'willow' }],
+      bushes: [{ dx: -14, dy: 10 }]
+    });
 
-    // Cây bóng mát giữa các khoảng rừng thưa
-    this.createTree(1230, 830, 'Cây Sồi Ven Rừng');
-    this.createTree(1370, 860, 'Cây Sồi Rừng Ven');
-    this.createTree(1490, 880, 'Cây Sồi Ven Suối');
+    // Cụm 5: Cụm Cổ Thụ Viền Đông
+    this.createOrganicTreeCluster(1540, 845, {
+      primaryType: 'oak',
+      subTrees: [{ dx: -15, dy: -35, type: 'pine' }],
+      bushes: [{ dx: -12, dy: 12 }]
+    });
 
-    // 7. Bụi Rậm & Đá Tảng Bờ Suối
+    // Cây viền chu vi đảm bảo cảnh quan khép kín
+    this.createTree(1450, 650, 'Cây Cổ Thụ Rừng Ven', true);
+    this.createTree(1200, 985, 'Cây Cổ Thụ Viền Nam', true);
+    this.createTree(1340, 990, 'Cây Cổ Thụ Viền Nam', true);
+    this.createTree(1460, 985, 'Cây Cổ Thụ Viền Nam', true);
+    this.createTree(1540, 980, 'Cây Cổ Thụ Viền Nam', true);
+    this.createTree(1530, 630, 'Cây Cổ Thụ Viền Đông', true);
+    this.createTree(1540, 730, 'Cây Cổ Thụ Viền Đông', true);
+    this.createTree(1490, 880, 'Cây Sồi Ven Suối', true);
+
+    // 7. Bụi Rậm & Đá Tảng Bờ Suối Cảnh Quan
     this.createDenseBush(1180, 760);
     this.createDenseBush(1235, 780);
     this.createDenseBush(1350, 780);
@@ -5134,11 +5170,17 @@ export class WorldBuilder {
     this.createRock(1450, 840, 32, 18);
     this.createRock(1490, 920, 30, 16);
 
-    // V14-P8-13: Bụi Rậm Khúc Cua Chữ S & Điểm Thu Thập Nguyên Liệu Tuyến Đường Vòng
-    this.createDenseBush(1180, 650); // Bụi Rậm Khúc Cua Chữ S
-    this.createGatheringNodeProp(1240, 660, 'wood', 'Cành Gỗ Khô Rơi');
-    this.createGatheringNodeProp(1360, 630, 'resin', 'Nhựa Cây Sồi Cổ');
+    // V15-14: Bố trí 5 Node Thu Thập Nguyên Liệu theo đúng Quy Luật Sinh Thái
+    // 1. Nhựa Thông: Sát gốc cây thông già ven làng
+    this.createGatheringNodeProp(1170, 630, 'resin', 'Nhựa Thông Rừng Già');
+    // 2. Thảo Dược Bạc: Mọc gần bờ suối nước ẩm
     this.createGatheringNodeProp(1480, 830, 'herbs', 'Bụi Thảo Dược Ven Suối');
+    // 3. Gỗ Khô: Cành cây mục rơi ven lối rẽ
+    this.createGatheringNodeProp(1190, 675, 'wood', 'Cành Gỗ Khô Rơi');
+    // 4. Phôi Sắt Cổ: Mảnh kim loại tàn tích cạnh Nhà Trạm Kiểm Lâm Bỏ Hoang
+    this.createGatheringNodeProp(1435, 635, 'iron', 'Phôi Sắt Cổ Trạm Kiểm Lâm');
+    // 5. Nấm Rừng: Mọc cạnh thân cây cổ thụ đổ ven suối
+    this.createGatheringNodeProp(1475, 805, 'mushroom', 'Nấm Rừng Thân Gỗ Mục');
 
     // 8. Sương Mù Ranh Giới Nhẹ Nhàng (Boundary Mist)
     this.createOuterWoodsBoundaryFog();
@@ -5454,29 +5496,36 @@ export class WorldBuilder {
   }
 
   /**
-   * V15-31: Trạm Lửa Rừng Tĩnh Lặng (Quiet Forest Bonfire Outpost) của Sir Vaelen
-   * Nằm tại khoảng đất trống yên bình giữa Rừng Ngoài (Outer Woods) và Đường Mòn Quanh Co (The Crooked Path)
+   * V15-31 & V15-37: Trạm Lửa Rừng Tĩnh Lặng (Quiet Forest Bonfire Outpost) của Sir Vaelen
+   * Khu cắm trại yên bình tại rìa đường mòn nối Rừng Ngoài (Outer Woods) và Đường Mòn Quanh Co (The Crooked Path)
+   * với đốm lửa trại bập bùng ánh sáng vàng cam ấm áp, phiến đá ngồi nghỉ, các vật dụng hành quân cổ và vùng bảo hộ Sanctuary Aura 180px.
    */
   private createQuietForestBonfireOutpost(x: number, y: number): void {
-    const cx = x + 18;
-    const cy = y + 15;
+    const cx = x;
+    const cy = y;
 
-    // 1. Quầng sáng ấm áp nhiều lớp màu hổ phách/vàng ấm tỏa mịn (Warm Ambient Hearth Glow)
+    // 1. Quầng sáng ấm áp nhiều lớp màu hổ phách/vàng ấm tỏa mịn (Warm Ambient Hearth Glow & Sanctuary Aura)
     const glow = this.scene.add.graphics();
-    glow.fillStyle(0xf39c12, 0.08);
-    glow.fillCircle(cx, cy, 75);
-    glow.fillStyle(0xe67e22, 0.16);
-    glow.fillCircle(cx, cy, 48);
-    glow.fillStyle(0xffe082, 0.24);
-    glow.fillCircle(cx, cy, 24);
+    // Vòng bảo hộ ngoài cùng (Sanctuary Guard Aura Radius: 180px)
+    glow.fillStyle(0xf39c12, 0.04);
+    glow.fillCircle(cx, cy, 180);
+    // Vòng ánh sáng khuếch tán trung bình (105px)
+    glow.fillStyle(0xf39c12, 0.09);
+    glow.fillCircle(cx, cy, 105);
+    // Vòng hơi ấm bếp lửa hồng (60px)
+    glow.fillStyle(0xe67e22, 0.18);
+    glow.fillCircle(cx, cy, 60);
+    // Lõi lửa sáng vàng ấm (28px)
+    glow.fillStyle(0xffe082, 0.28);
+    glow.fillCircle(cx, cy, 28);
     glow.setDepth(DEPTH_GROUND_DECALS);
-    this.registerCullable(glow, cx, cy, 80);
+    this.registerCullable(glow, cx, cy, 190);
 
     // 2. Viền đá cổ tròn bao quanh bếp lửa (Ancient Stone Fire Ring)
     const stoneRing = this.scene.add.graphics();
-    stoneRing.fillStyle(0x3e3a35, 0.7);
+    stoneRing.fillStyle(0x3e3a35, 0.75);
     stoneRing.fillEllipse(cx, cy + 4, 34, 18);
-    stoneRing.fillStyle(0x272421, 0.85);
+    stoneRing.fillStyle(0x272421, 0.9);
     stoneRing.fillEllipse(cx, cy + 5, 26, 12);
     stoneRing.setDepth(cy - 2);
     this.registerCullable(stoneRing, cx, cy, 40);
@@ -5499,7 +5548,7 @@ export class WorldBuilder {
       });
       this.scene.tweens.add({
         targets: glow,
-        alpha: 0.82,
+        alpha: 0.85,
         duration: 850,
         yoyo: true,
         repeat: -1,
@@ -5507,19 +5556,74 @@ export class WorldBuilder {
       });
     }
 
-    // 4. Khúc gỗ ngồi nghỉ cho người lữ khách (Rustic Resting Log Bench)
-    const logGfx = this.scene.add.graphics();
-    logGfx.fillStyle(0x4a2e18, 0.9);
-    logGfx.fillRoundedRect(cx - 36, cy + 18, 28, 8, 3);
-    logGfx.lineStyle(1, 0x2d1b0d, 0.9);
-    logGfx.strokeRoundedRect(cx - 36, cy + 18, 28, 8, 3);
-    logGfx.setDepth(cy + 18);
-    this.registerCullable(logGfx, cx - 22, cy + 22, 30);
+    // 4. Phiến đá ngồi nghỉ phong hóa cho người lữ khách (Weathered Resting Stone Slab)
+    const stoneBench = this.scene.add.graphics();
+    // Bóng đổ phiến đá
+    stoneBench.fillStyle(0x0e1114, 0.45);
+    stoneBench.fillEllipse(cx + 34, cy + 12, 32, 12);
+    // Thân phiến đá ngồi phẳng
+    stoneBench.fillStyle(0x3a3d40, 0.95);
+    stoneBench.fillRoundedRect(cx + 20, cy + 2, 28, 12, 4);
+    stoneBench.fillStyle(0x52575c, 1);
+    stoneBench.fillRoundedRect(cx + 22, cy + 3, 24, 7, 3);
+    // Rêu phong phủ bề mặt phiến đá
+    stoneBench.fillStyle(0x2d4a2d, 0.85);
+    stoneBench.fillRect(cx + 24, cy + 3, 8, 3);
+    stoneBench.fillRect(cx + 36, cy + 4, 6, 2);
+    stoneBench.setDepth(cy + 8);
+    this.registerCullable(stoneBench, cx + 34, cy + 8, 36);
 
-    // 5. Hộp va chạm nhỏ chống bước đè lên tâm ngọn lửa
+    // 5. Vật Dụng Hành Quân Cổ Của Kỵ Sĩ (Knight's Expedition Equipment)
+    const gear = this.scene.add.graphics();
+    // Rương quân nhu gỗ sồi bọc sắt cổ
+    gear.fillStyle(0x0e1114, 0.4);
+    gear.fillEllipse(cx + 28, cy - 14, 24, 8);
+    gear.fillStyle(0x3e2723, 1);
+    gear.fillRoundedRect(cx + 18, cy - 26, 20, 14, 2);
+    gear.fillStyle(0x546e7a, 1);
+    gear.fillRect(cx + 22, cy - 26, 3, 14);
+    gear.fillRect(cx + 31, cy - 26, 3, 14);
+    gear.fillStyle(0xd4ac0d, 0.9);
+    gear.fillRect(cx + 26, cy - 20, 4, 4); // Khóa đồng
+
+    // Khiên kỵ sĩ tựa đá & Thanh gươm kỵ sĩ cắm đất
+    gear.fillStyle(0x0e1114, 0.4);
+    gear.fillEllipse(cx - 24, cy - 14, 22, 8);
+    gear.fillStyle(0x455a64, 1);
+    gear.fillCircle(cx - 24, cy - 22, 9); // Khiên tròn kỵ sĩ
+    gear.fillStyle(0x263238, 1);
+    gear.fillCircle(cx - 24, cy - 22, 6);
+    gear.fillStyle(0xd4ac0d, 0.85);
+    gear.fillRect(cx - 25, cy - 24, 2, 4); // Hoa văn khiên
+    // Chuôi gươm cắm xuống đất
+    gear.fillStyle(0xb0bec5, 1);
+    gear.fillRect(cx - 16, cy - 26, 2, 16); // Lưỡi thép
+    gear.fillStyle(0xd4ac0d, 1);
+    gear.fillRect(cx - 19, cy - 24, 8, 2); // Chuôi ngang
+    gear.fillCircle(cx - 15, cy - 27, 2); // Núm chuôi
+
+    // Bó củi sồi khô xếp gọn
+    gear.fillStyle(0x5d4037, 1);
+    gear.fillRoundedRect(cx + 8, cy + 22, 16, 5, 2);
+    gear.fillRoundedRect(cx + 10, cy + 20, 14, 4, 2);
+    gear.fillStyle(0x8d6e63, 1);
+    gear.fillRect(cx + 9, cy + 23, 14, 2);
+    gear.fillStyle(0xd7ccc8, 0.8);
+    gear.fillRect(cx + 14, cy + 20, 2, 7); // Dây thừng buộc
+
+    // Ấm đồng dã chiến đun nước trên than hồng
+    gear.fillStyle(0xb87333, 1);
+    gear.fillCircle(cx - 10, cy + 8, 4);
+    gear.fillStyle(0x8d5524, 1);
+    gear.fillRect(cx - 12, cy + 4, 4, 3);
+    gear.fillStyle(0xd4ac0d, 0.9);
+    gear.fillRect(cx - 11, cy + 3, 2, 2); // Nắp ấm
+
+    gear.setDepth(cy - 10);
+    this.registerCullable(gear, cx, cy - 10, 48);
+
+    // 6. Hộp va chạm nhỏ chống bước đè lên tâm ngọn lửa
     this.createStaticBoxColliderCentered(cx, cy, 24, 16, 'Bếp Lửa Hồng Đá Cổ');
-
-    // 6. Đăng ký nguồn nhiệt và vùng bảo hộ (bán kính 180px do CampSanctuarySystem và SurvivalSystem đảm nhiệm)
 
     // 7. Điểm tương tác kiểm tra và sưởi ấm bếp lửa
     this.interactables.push({
@@ -5773,44 +5877,19 @@ export class WorldBuilder {
   }
 
   /**
-   * C4-12-20: Tạo Thân Cây Cổ Thụ Đổ (Fallen Log) phủ rêu và nấm rừng.
+   * V15-61: Thân Cây Cổ Thụ Đổ (Fallen Log) dùng Sprite Pixel Art Thật (prop_fallen_log_mossy_v14)
    */
   private createFallenLog(x: number, y: number, length: number = 50, angleDeg: number = 0): void {
-    const g = this.scene.add.graphics();
-    g.save();
-    g.translateCanvas(x, y);
+    const log = this.safeAddImage(x, y, 'prop_fallen_log_mossy_v14', SPRITE_HOLLOW_TREE);
+    log.setOrigin(0.5, 0.5);
+    log.setScale(length / 46, 1.0);
     if (angleDeg !== 0) {
-      g.rotateCanvas((angleDeg * Math.PI) / 180);
+      log.setAngle(angleDeg);
     }
+    log.setDepth(y + 4);
+    this.registerCullable(log, x, y, Math.max(length, 40));
 
-    // Bóng đổ của thân cây
-    g.fillStyle(0x0a0e0c, 0.45);
-    g.fillRoundedRect(-length / 2, 4, length, 12, 4);
-
-    // Vỏ thân cây gỗ sẫm màu
-    g.fillStyle(0x382415, 1);
-    g.fillRoundedRect(-length / 2, -5, length, 11, 3);
-    g.fillStyle(0x4a3220, 1);
-    g.fillRect(-length / 2 + 3, -4, length - 6, 5);
-
-    // Lớp rêu nhung xanh mướt trên lưng thân cây
-    g.fillStyle(0x388e3c, 0.9);
-    g.fillRect(-length / 2 + 5, -6, length * 0.45, 3);
-    g.fillStyle(0x66bb6a, 0.85);
-    g.fillRect(-length / 2 + 8, -5, length * 0.35, 2);
-
-    // Cụm nấm sò / nấm mộc nhĩ vàng cam mọc bên sườn cây
-    g.fillStyle(0xffb74d, 1);
-    g.fillRect(-length / 2 + 18, 3, 5, 3);
-    g.fillRect(-length / 2 + 25, 4, 6, 3);
-    g.fillStyle(0xfff3e0, 1);
-    g.fillRect(-length / 2 + 19, 3, 3, 1);
-
-    g.restore();
-    g.setDepth(y + 4);
-    this.registerCullable(g, x, y, Math.max(length, 40));
-
-    this.createStaticBoxColliderCentered(x, y, Math.round(length * 0.75), 10, 'Thân Cây Đổ');
+    this.createStaticBoxColliderCentered(x, y, Math.round(length * 0.6), 10, 'Thân Cây Đổ');
   }
 
   /**
@@ -5920,27 +5999,64 @@ export class WorldBuilder {
     // V14-P8-13: Biển Chỉ Dẫn Tuyến Đường Vòng Tại Ngã Rẽ Bìa Rừng Sâu
     this.createStoneSign(2060, 170, 'LỐI VÒNG THÁP CHUÔNG');
 
-    // V14-P8-13: Nơi Ẩn Nấp & Điểm Thu Thập Nguyên Liệu Dọc Tuyến Đường Vòng
-    this.createDenseBush(2520, 330);
-    this.createHollowTree(2680, 390, 'Thân Cây Rỗng Cầu Phụ');
-    this.createGatheringNodeProp(2060, 210, 'wood', 'Khúc Gỗ Sồi Mục');
+    // V14-P8-13 & V15-14: Bố trí 5 Node Thu Thập Nguyên Liệu theo đúng Quy Luật Sinh Thái
+    // 1. Nhựa Thông: Sát gốc thông già ngã rẽ Rừng Sâu
     this.createGatheringNodeProp(2240, 150, 'resin', 'Nhựa Thông Rừng');
+    // 2. Thảo Dược Bạc: Ven bờ trũng sình lầy
     this.createGatheringNodeProp(2640, 350, 'herbs', 'Thảo Dược Đầm Lầy');
+    // 3. Gỗ Khô: Gần thân cây mục bên lối rẽ
+    this.createGatheringNodeProp(1740, 355, 'wood', 'Khúc Gỗ Sồi Mục');
+    // 4. Phôi Sắt Cổ: Mảnh kim loại tàn tích cạnh Cầu Đá Cổ Bị Sập
+    this.createGatheringNodeProp(1805, 295, 'iron', 'Phôi Sắt Cổ Cầu Đá');
+    // 5. Nấm Rừng: Mọc ven thân sồi mục bắc qua vực rễ
+    this.createGatheringNodeProp(2280, 390, 'mushroom', 'Nấm Rừng Vực Rễ');
 
-    // 7. Quần Thể Cây Sồi & Thông Cổ Thụ Dày Đặc Dọc Viền Bắc/Nam (Natural Boundary Framing)
-    // Dàn cây viền phía Bắc (chừa nhánh rẽ Rừng Sâu 2020..2120, y < 50)
-    for (let x = bounds.x + 40; x < bounds.x + bounds.width - 40; x += 110) {
-      if (x < 2010 || x > 2130) {
-        this.createTree(x, 100 + ((x % 3) * 20), 'Cây Rừng Cổ Thụ Viền Bắc', false);
-      }
-    }
+    // 7. V15-14: Quần Thể Cụm Cây Tự Nhiên Dọc Viền Bắc/Nam (Natural Boundary Framing)
+    // Cụm viền Bắc:
+    this.createOrganicTreeCluster(1760, 100, {
+      primaryType: 'oak',
+      subTrees: [{ dx: 45, dy: 15, type: 'pine' }, { dx: -40, dy: 10, type: 'oak' }],
+      bushes: [{ dx: 15, dy: 25 }],
+      withColliders: false
+    });
+    this.createOrganicTreeCluster(1920, 95, {
+      primaryType: 'pine',
+      subTrees: [{ dx: -35, dy: 12, type: 'pine' }],
+      bushes: [{ dx: 20, dy: 20 }],
+      withColliders: false
+    });
+    this.createOrganicTreeCluster(2240, 95, {
+      primaryType: 'pine',
+      subTrees: [{ dx: 45, dy: 14, type: 'oak' }],
+      bushes: [{ dx: -15, dy: 22 }],
+      withColliders: false
+    });
+    this.createOrganicTreeCluster(2500, 100, {
+      primaryType: 'oak',
+      subTrees: [{ dx: 50, dy: 12, type: 'pine' }, { dx: -45, dy: 8, type: 'oak' }],
+      bushes: [{ dx: 12, dy: 25 }],
+      withColliders: false
+    });
 
-    // Dàn cây viền phía Nam (chừa lối mòn kết nối Outer Woods 1600..1660 và Cầu Gỗ Phụ 2700..2800)
-    for (let x = bounds.x + 40; x < bounds.x + bounds.width - 40; x += 115) {
-      if (x > 1660 && (x < 2690 || x > 2810)) {
-        this.createTree(x, 500 + ((x % 2) * 25), 'Cây Rừng Cổ Thụ Viền Nam', false);
-      }
-    }
+    // Cụm viền Nam:
+    this.createOrganicTreeCluster(1820, 510, {
+      primaryType: 'oak',
+      subTrees: [{ dx: 45, dy: -12, type: 'oak' }, { dx: -50, dy: -10, type: 'pine' }],
+      bushes: [{ dx: -10, dy: -25 }],
+      withColliders: false
+    });
+    this.createOrganicTreeCluster(2150, 515, {
+      primaryType: 'pine',
+      subTrees: [{ dx: 55, dy: -15, type: 'pine' }, { dx: -45, dy: -10, type: 'oak' }],
+      bushes: [{ dx: 15, dy: -24 }],
+      withColliders: false
+    });
+    this.createOrganicTreeCluster(2480, 510, {
+      primaryType: 'oak',
+      subTrees: [{ dx: 50, dy: -12, type: 'oak' }, { dx: -45, dy: -8, type: 'willow' }],
+      bushes: [{ dx: 12, dy: -25 }],
+      withColliders: false
+    });
 
     // V1.5 (BƯỚC V15-03 & V15-43): Mở rộng hành lang thông lên Rừng Sâu đạt 180px (1980..2160)
     this.createStaticBoxCollider(bounds.x + 40, 90, 1980 - (bounds.x + 40), 30, 'Rặng Cây Viền Bắc Tây');
@@ -6096,30 +6212,12 @@ export class WorldBuilder {
     g.fillStyle(0x2d4829, 0.9);
     g.fillRect(bridgeX + 34, roadY - 18, 6, 22);
 
-    // 3. Thân cây đại thụ đổ chắn ngang toàn bộ bề rộng lối đi (Massive Fallen Tree Trunk)
-    const trunkGfx = this.scene.add.graphics();
-    trunkGfx.setDepth(roadY + 12);
-    trunkGfx.fillStyle(0x06080a, 0.6);
-    trunkGfx.fillRoundedRect(bridgeX - 42, roadY - 16, 84, 22, 6);
-    trunkGfx.fillStyle(0x281a10, 1);
-    trunkGfx.fillRoundedRect(bridgeX - 40, roadY - 22, 80, 20, 5);
-    trunkGfx.fillStyle(0x3e2819, 1);
-    trunkGfx.fillRect(bridgeX - 38, roadY - 20, 76, 16);
-    trunkGfx.fillStyle(0x563823, 1);
-    trunkGfx.fillRect(bridgeX - 36, roadY - 18, 72, 10);
-    trunkGfx.fillStyle(0x2e5c30, 0.95);
-    trunkGfx.fillRect(bridgeX - 32, roadY - 24, 34, 4);
-    trunkGfx.fillRect(bridgeX + 8, roadY - 24, 28, 4);
-    trunkGfx.fillStyle(0x438a46, 0.85);
-    trunkGfx.fillRect(bridgeX - 28, roadY - 23, 24, 2);
-    // Cụm nấm mộc nhĩ / nấm cam
-    trunkGfx.fillStyle(0xd35400, 1);
-    trunkGfx.fillCircle(bridgeX - 16, roadY - 14, 4);
-    trunkGfx.fillCircle(bridgeX - 10, roadY - 12, 3);
-    trunkGfx.fillCircle(bridgeX + 18, roadY - 13, 4);
-    trunkGfx.fillStyle(0xf39c12, 1);
-    trunkGfx.fillCircle(bridgeX - 16, roadY - 14, 2);
-    trunkGfx.fillCircle(bridgeX + 18, roadY - 13, 2);
+    // 3. V15-61: Thân cây đại thụ đổ chắn ngang dùng Sprite Pixel Art Thật (prop_fallen_log_mossy_v14)
+    const trunkLog = this.safeAddImage(bridgeX, roadY - 14, 'prop_fallen_log_mossy_v14', SPRITE_HOLLOW_TREE);
+    trunkLog.setOrigin(0.5, 0.5);
+    trunkLog.setScale(1.8, 1.2);
+    trunkLog.setDepth(roadY + 12);
+    this.registerCullable(trunkLog, bridgeX, roadY, 80);
 
     // 4. Cổng sắt rỉ sét khóa chặt (Rusted Iron Gate with Heavy Chains)
     const gateGfx = this.scene.add.graphics();
@@ -6160,7 +6258,7 @@ export class WorldBuilder {
     gateGfx.strokeCircle(bridgeX, roadY - 25, 4);
 
     this.registerCullable(g, bridgeX, roadY, 80);
-    this.registerCullable(trunkGfx, bridgeX, roadY, 80);
+    this.registerCullable(trunkLog, bridgeX, roadY, 80);
     this.registerCullable(gateGfx, bridgeX, roadY, 80);
 
     // 5. Arcade Physics Collider vững chắc chặn đứng hoàn toàn lối thẳng
@@ -6251,9 +6349,10 @@ export class WorldBuilder {
   }
 
   /**
-   * V14-P8-13: Tạo điểm thu thập nguyên liệu sinh tồn (Gỗ Khô, Nhựa Thông, Thảo Dược) dọc tuyến đường vòng
+   * V14-P8-13 & V15-14: Tạo điểm thu thập nguyên liệu sinh tồn theo quy luật sinh thái
+   * (Gỗ Khô, Nhựa Thông, Thảo Dược Bạc, Phôi Sắt Cổ, Nấm Rừng)
    */
-  private createGatheringNodeProp(x: number, y: number, type: 'wood' | 'resin' | 'herbs', _label: string): void {
+  private createGatheringNodeProp(x: number, y: number, type: 'wood' | 'resin' | 'herbs' | 'iron' | 'mushroom', _label: string): void {
     const g = this.scene.add.graphics();
     g.setDepth(y - 1);
 
@@ -6288,6 +6387,33 @@ export class WorldBuilder {
       g.fillCircle(x, y - 6, 4);
       g.fillStyle(0xa8e6cf, 1);
       g.fillRect(x - 1, y - 7, 2, 2);
+    } else if (type === 'iron') {
+      // V15-14: Phôi sắt cổ gỉ sét nằm cạnh tàn tích / xe kéo hỏng
+      g.fillStyle(0x2a2826, 1);
+      g.fillRect(x - 7, y - 5, 14, 8);
+      g.fillStyle(0x8b4513, 0.95);
+      g.fillRect(x - 5, y - 4, 10, 6);
+      g.fillStyle(0x5c5042, 1);
+      g.fillRect(x - 6, y - 3, 4, 3);
+      g.fillStyle(0xb0a898, 0.9);
+      g.fillRect(x - 2, y - 3, 2, 2);
+      g.fillStyle(0x6e2c00, 0.8);
+      g.fillRect(x + 2, y - 2, 3, 2);
+    } else if (type === 'mushroom') {
+      // V15-14: Chùm nấm rừng dạ quang mọc cạnh thân gỗ mục
+      g.fillStyle(0xdcd3b8, 1);
+      g.fillRect(x - 4, y - 3, 3, 6);
+      g.fillRect(x + 2, y - 2, 3, 5);
+      g.fillStyle(0x3e1f57, 1);
+      g.fillCircle(x - 3, y - 5, 5);
+      g.fillStyle(0x6c3483, 1);
+      g.fillCircle(x - 3, y - 6, 4);
+      g.fillStyle(0x8e44ad, 1);
+      g.fillCircle(x + 3, y - 4, 4);
+      g.fillStyle(0x5dade2, 0.9);
+      g.fillCircle(x - 2, y - 7, 2);
+      g.fillStyle(0xa569bd, 0.9);
+      g.fillRect(x + 2, y - 5, 2, 2);
     }
 
     this.registerCullable(g, x, y, 32);
@@ -6399,39 +6525,98 @@ export class WorldBuilder {
     this.createBioluminescentMushrooms(1840, -260);
     this.createListenerNestClue(2340, -490);
 
-    // 7. C4-14-FIX: Quần Thể Cây Sồi & Thông Cổ Thụ Viền Rừng Khép Kín (Impenetrable Forest Boundary)
-    // Bước nhảy dày 55-60px kết hợp bụi rậm tự nhiên, loại bỏ hoàn toàn khe hở lọt biên
-    // Dàn cây viền phía Bắc (wy: -610..-570, chừa lối vào Abyssal Chasm 2200..2280)
-    for (let x = bounds.x + 40; x < bounds.x + bounds.width - 40; x += 55) {
-      if (x < 2190 || x > 2290) {
-        this.createTree(x, -600 + ((x % 3) * 12), 'Cây Rừng Cổ Thụ Viền Bắc', false);
-        this.createDenseBush(x + 25, -590);
-      }
-    }
+    // V15-14: Bố trí 5 Node Thu Thập Nguyên Liệu theo đúng Quy Luật Sinh Thái
+    // 1. Nhựa Thông: Sát gốc thông cổ thụ Rừng Sâu
+    this.createGatheringNodeProp(2120, -180, 'resin', 'Nhựa Thông Cổ Thụ');
+    // 2. Thảo Dược Bạc: Ven búi rễ cây ẩm ướt
+    this.createGatheringNodeProp(1980, -170, 'herbs', 'Thảo Dược Búi Rễ');
+    // 3. Gỗ Khô: Cành sồi mục rơi cạnh thân đổ
+    this.createGatheringNodeProp(1880, -195, 'wood', 'Cành Gỗ Khô Rừng Sâu');
+    // 4. Phôi Sắt Cổ: Mảnh kim loại tàn tích cạnh Cột Vật Tổ Thì Thầm
+    this.createGatheringNodeProp(2110, -330, 'iron', 'Phôi Sắt Cổ Cột Vật Tổ');
+    // 5. Nấm Rừng (Dạ Quang): Bám sát Thân Cây Cổ Thụ Đổ Khổng Lồ
+    this.createGatheringNodeProp(2130, -350, 'mushroom', 'Nấm Dạ Quang Thân Đại Thụ');
 
-    // Dàn cây viền phía Tây (wx: 1620..1660)
-    for (let y = bounds.y + 40; y < bounds.y + bounds.height - 40; y += 55) {
-      this.createTree(1630 + ((Math.abs(y) % 2) * 15), y, 'Cây Rừng Cổ Thụ Viền Tây', false);
-      this.createDenseBush(1635, y + 25);
-    }
+    // 7. V15-14: Quần Thể Cụm Cây Rừng Tự Nhiên Viền Rừng Khép Kín (Natural Organic Framing)
+    // Cụm viền Bắc (wy ~ -600, chừa lối vào Abyssal Chasm 2200..2280):
+    this.createOrganicTreeCluster(1840, -600, {
+      primaryType: 'withered',
+      subTrees: [{ dx: 50, dy: 10, type: 'pine' }, { dx: -45, dy: 8, type: 'withered' }],
+      bushes: [{ dx: 20, dy: 20 }],
+      withColliders: false
+    });
+    this.createOrganicTreeCluster(2060, -595, {
+      primaryType: 'pine',
+      subTrees: [{ dx: -45, dy: 10, type: 'withered' }],
+      bushes: [{ dx: 15, dy: 22 }],
+      withColliders: false
+    });
+    this.createOrganicTreeCluster(2460, -595, {
+      primaryType: 'withered',
+      subTrees: [{ dx: 45, dy: 12, type: 'pine' }],
+      bushes: [{ dx: -15, dy: 20 }],
+      withColliders: false
+    });
+    this.createOrganicTreeCluster(2700, -600, {
+      primaryType: 'pine',
+      subTrees: [{ dx: 50, dy: 12, type: 'oak' }, { dx: -45, dy: 8, type: 'withered' }],
+      bushes: [{ dx: 12, dy: 25 }],
+      withColliders: false
+    });
 
-    // Dàn cây viền phía Đông (wx: 2820..2860, chừa lối sang Đầm Lầy tại y ~ -320..-200)
-    for (let y = bounds.y + 40; y < bounds.y + bounds.height - 40; y += 55) {
-      if (y < -330 || y > -190) {
-        this.createTree(2850 + ((Math.abs(y) % 2) * 15), y, 'Cây Rừng Cổ Thụ Viền Đông', false);
-        this.createDenseBush(2845, y + 25);
-      }
-    }
+    // Cụm viền Tây (wx: 1620..1660):
+    this.createOrganicTreeCluster(1630, -450, {
+      primaryType: 'oak',
+      subTrees: [{ dx: 12, dy: 45, type: 'withered' }, { dx: 8, dy: -45, type: 'pine' }],
+      bushes: [{ dx: 18, dy: 10 }],
+      withColliders: false
+    });
+    this.createOrganicTreeCluster(1630, -280, {
+      primaryType: 'pine',
+      subTrees: [{ dx: 10, dy: 45, type: 'withered' }, { dx: 12, dy: -40, type: 'oak' }],
+      bushes: [{ dx: 16, dy: 15 }],
+      withColliders: false
+    });
 
-    // Dàn cây viền phía Nam (wy: -45..-15, chừa lối thông Crooked Path 2000..2160 và Whispering Clearing 1800..1880)
-    for (let x = bounds.x + 40; x < bounds.x + bounds.width - 40; x += 55) {
-      const inWc = x >= 1790 && x <= 1890;
-      const inCp = x >= 1990 && x <= 2170;
-      if (!inWc && !inCp) {
-        this.createTree(x, -35 + ((x % 2) * 12), 'Cây Rừng Cổ Thụ Viền Nam', false);
-        this.createDenseBush(x + 25, -30);
-      }
-    }
+    // Cụm viền Đông (wx: 2820..2860, chừa lối sang Đầm Lầy tại y ~ -320..-200):
+    this.createOrganicTreeCluster(2850, -500, {
+      primaryType: 'pine',
+      subTrees: [{ dx: -12, dy: 45, type: 'withered' }, { dx: -8, dy: -45, type: 'oak' }],
+      bushes: [{ dx: -15, dy: 15 }],
+      withColliders: false
+    });
+    this.createOrganicTreeCluster(2850, -120, {
+      primaryType: 'oak',
+      subTrees: [{ dx: -10, dy: 35, type: 'withered' }, { dx: -12, dy: -35, type: 'pine' }],
+      bushes: [{ dx: -14, dy: 12 }],
+      withColliders: false
+    });
+
+    // Cụm viền Nam (wy ~ -35, chừa lối thông Crooked Path 1990..2170 và Whispering Clearing 1790..1890):
+    this.createOrganicTreeCluster(1720, -35, {
+      primaryType: 'oak',
+      subTrees: [{ dx: -35, dy: 10, type: 'pine' }],
+      bushes: [{ dx: 15, dy: 15 }],
+      withColliders: false
+    });
+    this.createOrganicTreeCluster(1940, -35, {
+      primaryType: 'pine',
+      subTrees: [{ dx: 25, dy: 8, type: 'withered' }],
+      bushes: [{ dx: -12, dy: 14 }],
+      withColliders: false
+    });
+    this.createOrganicTreeCluster(2350, -35, {
+      primaryType: 'oak',
+      subTrees: [{ dx: 45, dy: 10, type: 'pine' }, { dx: -40, dy: 8, type: 'withered' }],
+      bushes: [{ dx: 15, dy: 15 }],
+      withColliders: false
+    });
+    this.createOrganicTreeCluster(2650, -35, {
+      primaryType: 'pine',
+      subTrees: [{ dx: 45, dy: 10, type: 'oak' }],
+      bushes: [{ dx: -15, dy: 14 }],
+      withColliders: false
+    });
 
     // V1.5 (BƯỚC V15-03 & V15-43): Giữ các thanh collider viền ngoài khép kín biên thế giới,
     // và tháo dỡ triệt để các thanh collider cũ tại Y = -45 cắt ngang mặt đường ranh giới phía Nam.
@@ -6802,9 +6987,11 @@ export class WorldBuilder {
     this.createCattailsCluster(3680, 390);
     this.createCattailsCluster(3850, 320);
 
-    // 7. Nơi Ẩn Nấp & Bụi Rậm Đầm Lầy (Stealth Hiding Spots)
+    // 7. Nơi Ẩn Nấp & Bụi Rậm Đầm Lầy (Stealth Hiding Spots vs. Wetlands Boss / Dark Horseman)
     this.createHollowTree(3080, 260, 'Hốc Cây Liễu Mục (Chỗ trốn)');
     this.createDenseBush(3320, 340); // Cụm lau sậy dày đầm lầy
+    this.createDenseBush(3480, 190); // Bụi rậm gò Bắc
+    this.createHollowTree(3560, 175, 'Gốc Cổ Thụ Liễu Héo Tàn');
     this.createDenseBush(3760, 320); // Bụi cỏ lác rậm rạp phía Đông
 
     // Bụi rậm cảnh quan đầm lầy
@@ -6819,30 +7006,86 @@ export class WorldBuilder {
     this.createTangledRoots(3300, 230);
     this.createTangledRoots(3700, 260);
 
-    // 9. Quần Thể Cây Liễu Khô & Cây Khẳng Khiu Viền Đầm Lầy (Boundary Trees)
-    // Dàn cây viền phía Bắc (wy: 120..150)
-    for (let x = bounds.x + 40; x < bounds.x + bounds.width - 40; x += 110) {
-      this.createTree(x, 130 + ((x % 3) * 16), 'Cây Khô Đầm Lầy Viền Bắc', false);
-    }
+    // V15-14: Bố trí 5 Node Thu Thập Nguyên Liệu theo đúng Quy Luật Sinh Thái
+    // 1. Nhựa Thông: Sát gốc thông đầm lầy viền Đông
+    this.createGatheringNodeProp(3920, 230, 'resin', 'Nhựa Thông Đầm Lầy');
+    // 2. Thảo Dược Bạc: Ven bờ vũng lầy ẩm gò Tây
+    this.createGatheringNodeProp(3060, 330, 'herbs', 'Thảo Dược Ven Nước');
+    // 3. Phôi Sắt Cổ: Mảnh kim loại tàn tích dưới chân Cự Thạch Chìm
+    this.createGatheringNodeProp(3230, 210, 'iron', 'Phôi Sắt Cổ Cự Thạch');
+    // 4. Nấm Đầm Lầy: Bám sát thân cây gỗ mục gò Tây
+    this.createGatheringNodeProp(3050, 245, 'mushroom', 'Nấm Mục Đầm Lầy');
+    // 5. Gỗ Khô: Cành gỗ mục trôi dạt cạnh thân cây mục phía Đông
+    this.createGatheringNodeProp(3720, 360, 'wood', 'Cành Gỗ Khô Đầm Lầy');
 
-    // Dàn cây viền phía Nam (wy: 660..700)
-    for (let x = bounds.x + 40; x < bounds.x + bounds.width - 40; x += 115) {
-      this.createTree(x, 670 + ((x % 2) * 18), 'Cây Khô Đầm Lầy Viền Nam', false);
-    }
+    // 9. V15-14: Quần Thể Cụm Cây Liễu Khô Tự Nhiên Viền Đầm Lầy (Natural Organic Mire Framing)
+    // Cụm viền Bắc (wy ~ 130..140):
+    this.createOrganicTreeCluster(3050, 130, {
+      primaryType: 'willow',
+      subTrees: [{ dx: 55, dy: 10, type: 'withered' }, { dx: -45, dy: 8, type: 'willow' }],
+      bushes: [{ dx: 20, dy: 20 }],
+      withColliders: false
+    });
+    this.createOrganicTreeCluster(3350, 130, {
+      primaryType: 'withered',
+      subTrees: [{ dx: 50, dy: 12, type: 'willow' }, { dx: -45, dy: 10, type: 'withered' }],
+      bushes: [{ dx: -15, dy: 20 }],
+      withColliders: false
+    });
+    this.createOrganicTreeCluster(3750, 130, {
+      primaryType: 'willow',
+      subTrees: [{ dx: 55, dy: 10, type: 'withered' }, { dx: -50, dy: 8, type: 'willow' }],
+      bushes: [{ dx: 15, dy: 22 }],
+      withColliders: false
+    });
 
-    // Dàn cây viền phía Tây (chừa lối vào Crooked Path y: 260..400 và lối Rừng Sâu y: 160..240)
-    for (let y = bounds.y + 40; y < bounds.y + bounds.height - 40; y += 95) {
-      if (y < 150 || (y > 235 && y < 265) || y > 400) {
-        this.createTree(2900 + ((Math.abs(y) % 2) * 18), y, 'Cây Khô Viền Tây', false);
-      }
-    }
+    // Cụm viền Nam (wy ~ 670..680):
+    this.createOrganicTreeCluster(3050, 675, {
+      primaryType: 'willow',
+      subTrees: [{ dx: 55, dy: -12, type: 'withered' }, { dx: -50, dy: -8, type: 'willow' }],
+      bushes: [{ dx: 15, dy: -22 }],
+      withColliders: false
+    });
+    this.createOrganicTreeCluster(3400, 675, {
+      primaryType: 'withered',
+      subTrees: [{ dx: 60, dy: -10, type: 'willow' }, { dx: -55, dy: -12, type: 'withered' }],
+      bushes: [{ dx: -18, dy: -24 }],
+      withColliders: false
+    });
+    this.createOrganicTreeCluster(3800, 675, {
+      primaryType: 'willow',
+      subTrees: [{ dx: 50, dy: -10, type: 'withered' }, { dx: -50, dy: -8, type: 'willow' }],
+      bushes: [{ dx: 15, dy: -22 }],
+      withColliders: false
+    });
 
-    // Dàn cây viền phía Đông (chừa lối sang Miếu Chuông y: 240..400)
-    for (let y = bounds.y + 40; y < bounds.y + bounds.height - 40; y += 95) {
-      if (y < 235 || y > 400) {
-        this.createTree(3960 + ((Math.abs(y) % 2) * 18), y, 'Cây Khô Viền Đông', false);
-      }
-    }
+    // Cụm viền Tây (chừa lối vào Crooked Path y: 260..400 và lối Rừng Sâu y: 160..240):
+    this.createOrganicTreeCluster(2900, 130, {
+      primaryType: 'withered',
+      subTrees: [{ dx: 10, dy: 35, type: 'willow' }],
+      bushes: [{ dx: 15, dy: 15 }],
+      withColliders: false
+    });
+    this.createOrganicTreeCluster(2900, 480, {
+      primaryType: 'willow',
+      subTrees: [{ dx: 12, dy: 45, type: 'withered' }, { dx: 10, dy: -40, type: 'willow' }],
+      bushes: [{ dx: 16, dy: 15 }],
+      withColliders: false
+    });
+
+    // Cụm viền Đông (chừa lối sang Miếu Chuông y: 240..400):
+    this.createOrganicTreeCluster(3960, 170, {
+      primaryType: 'pine',
+      subTrees: [{ dx: -12, dy: 35, type: 'willow' }],
+      bushes: [{ dx: -15, dy: 15 }],
+      withColliders: false
+    });
+    this.createOrganicTreeCluster(3960, 480, {
+      primaryType: 'willow',
+      subTrees: [{ dx: -12, dy: 45, type: 'withered' }, { dx: -10, dy: -40, type: 'willow' }],
+      bushes: [{ dx: -16, dy: 15 }],
+      withColliders: false
+    });
 
     // V1.5 (BƯỚC V15-03): Gộp rặng cây viền Silent Mire thành các thanh collider liền mạch, xóa bỏ 28 ô vuông rời rạc
     this.createStaticBoxCollider(bounds.x + 40, 125, bounds.width - 80, 35, 'Rặng Cây Khô Viền Bắc Silent Mire');
@@ -8188,31 +8431,14 @@ export class WorldBuilder {
   }
 
   /**
-   * V1.4: Cầu Thân Cây Cổ Thụ Đổ (Fallen Titan Trunk Shortcut Bridge) bắc qua khe vực
+   * V15-61: Cầu Thân Cây Cổ Thụ Đổ (Fallen Titan Trunk Shortcut Bridge) dùng Sprite Pixel Art Thật
    */
   private createFallenTitanTrunkShortcut(x: number, y: number, length: number = 72): void {
-    const g = this.scene.add.graphics();
-    // Bóng đổ vực sâu
-    g.fillStyle(0x060a08, 0.7);
-    g.fillEllipse(x + length / 2, y + 10, length + 8, 14);
-
-    // Thân cây sồi đại thụ rêu phong
-    g.fillStyle(0x28190e, 1);
-    g.fillRect(x, y - 3, length, 14);
-    g.fillStyle(0x3d2716, 1);
-    g.fillRect(x + 2, y - 1, length - 4, 10);
-
-    // Vỏ cây xù xì và thảm rêu xanh
-    g.fillStyle(0x27ae60, 0.75);
-    g.fillRect(x + 8, y - 2, length * 0.4, 3);
-    g.fillRect(x + length * 0.6, y, length * 0.3, 2);
-
-    // Tay vịn dây leo tự nhiên
-    g.fillStyle(0x1e8449, 0.6);
-    g.fillRect(x, y - 5, length, 1.5);
-
-    g.setDepth(y + 8);
-    this.registerCullable(g, x + length / 2, y, length);
+    const titanLog = this.safeAddImage(x + length / 2, y, 'prop_fallen_log_mossy_v14', SPRITE_HOLLOW_TREE);
+    titanLog.setOrigin(0.5, 0.5);
+    titanLog.setScale(length / 46, 1.2);
+    titanLog.setDepth(y + 8);
+    this.registerCullable(titanLog, x + length / 2, y, length);
   }
 
   public destroy(): void {

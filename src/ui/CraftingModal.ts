@@ -51,6 +51,7 @@ export class CraftingModal {
   private scene: Phaser.Scene;
   private craftingSystem: CraftingSystem;
   private playerState: PlayerState;
+  private keyHandlers: Array<{ event: string; fn: any }> = [];
 
   public container: Phaser.GameObjects.Container;
   public sidePanelContainer!: Phaser.GameObjects.Container;
@@ -101,6 +102,9 @@ export class CraftingModal {
   private detailCraftBtnText!: Phaser.GameObjects.Text;
   private detailCraftZone!: Phaser.GameObjects.Zone;
 
+  // Các tai sách bookmark mép phải phong cách Don't Starve Together (Right Edge Bookmark Tabs)
+  private rightBookmarkTabGfx: Map<CraftingCategory, { bg: Phaser.GameObjects.Graphics; label: Phaser.GameObjects.Text; x: number; y: number; w: number; h: number }> = new Map();
+
   public onOpen?: () => void;
   public onClose?: () => void;
 
@@ -139,9 +143,15 @@ export class CraftingModal {
   private setupKeyboardListeners(): void {
     if (!this.scene.input || !this.scene.input.keyboard) return;
 
-    this.scene.input.keyboard.on('keydown-C', () => this.toggle());
-    this.scene.input.keyboard.on('keydown-I', () => this.toggle());
-    this.scene.input.keyboard.on('keydown-J', () => {
+    const kb = this.scene.input.keyboard;
+    const addKey = (event: string, fn: any) => {
+      kb.on(event, fn);
+      this.keyHandlers.push({ event, fn });
+    };
+
+    addKey('keydown-C', () => this.toggle());
+    addKey('keydown-I', () => this.toggle());
+    addKey('keydown-J', () => {
       if (this.isOpen) {
         this.close();
         const ui = this.scene as any;
@@ -150,11 +160,11 @@ export class CraftingModal {
         }
       }
     });
-    this.scene.input.keyboard.on('keydown-TAB', (e: KeyboardEvent) => {
+    addKey('keydown-TAB', (e: KeyboardEvent) => {
       e.preventDefault();
       this.toggle();
     });
-    this.scene.input.keyboard.on('keydown-ESC', () => {
+    addKey('keydown-ESC', () => {
       if (this.isOpen) {
         if (this.searchQuery.length > 0) {
           this.searchQuery = '';
@@ -167,7 +177,7 @@ export class CraftingModal {
     });
 
     // Lắng nghe gõ ký tự tìm kiếm khi bảng chế tạo đang mở
-    this.scene.input.keyboard.on('keydown', (event: KeyboardEvent) => {
+    addKey('keydown', (event: KeyboardEvent) => {
       if (!this.isOpen) return;
 
       // Không chặn các phím điều hướng hệ thống
@@ -377,6 +387,11 @@ export class CraftingModal {
     // =========================================================================
     this.buildTier4DetailFrame(panelX, panelY + 258, panelW);
 
+    // =========================================================================
+    // TAI SÁCH / THẺ BOOKMARK DỌC MÉP PHẢI (DST BOOKMARK TABS)
+    // =========================================================================
+    this.buildRightEdgeBookmarkTabs(panelX, panelY, panelW, panelH);
+
     // Khởi tạo các mảng kiểm thử hồi quy cho Gate 1B & V1.3
     this.initLegacyRefs();
   }
@@ -429,7 +444,7 @@ export class CraftingModal {
 
     this.sidePanelContainer.add([this.favoriteBtnBg, this.favoriteBtnText, favZone]);
 
-    // 2. Hộp tìm kiếm / Lọc nhanh theo tên vật phẩm (Search Bar)
+    // 2. Hộp tìm kiếm / Lọc nhanh theo tên vật phẩm (Search Bar - Don't Starve Together "Everything" Style)
     const searchX = x + 124;
     const searchW = 280;
     const searchH = 26;
@@ -439,6 +454,11 @@ export class CraftingModal {
     searchBg.fillRoundedRect(searchX, topBarY, searchW, searchH, 4);
     searchBg.lineStyle(1.2, 0x5c4224, 0.9);
     searchBg.strokeRoundedRect(searchX, topBarY, searchW, searchH, 4);
+    // Nền giấy da sáng ấm bên trong chuẩn DST "Everything"
+    searchBg.fillStyle(0xede4d1, 0.98);
+    searchBg.fillRoundedRect(searchX + 2, topBarY + 2, searchW - 4, searchH - 4, 3);
+    searchBg.lineStyle(0.8, 0x8c6d3b, 0.45);
+    searchBg.strokeRoundedRect(searchX + 2, topBarY + 2, searchW - 4, searchH - 4, 3);
 
     this.searchInputText = HDTextHelper.createText(this.scene, searchX + 10, topBarY + 6, '🔍 Nhập tên tìm kiếm...', {
       fontSize: '11px',
@@ -582,6 +602,29 @@ export class CraftingModal {
     gridBg.strokeRoundedRect(innerX, 0, gridW, gridH, 4);
     this.gridContainer.add(gridBg);
 
+    // Thanh cuộn trang trí Don't Starve Together (Diamond Scrollbar) ở mép phải lưới
+    const scrollbarGfx = this.scene.add.graphics();
+    const scrollX = innerX + gridW - 14;
+    // Rãnh cuộn
+    scrollbarGfx.fillStyle(0x18110b, 0.85);
+    scrollbarGfx.fillRect(scrollX - 2, 8, 4, gridH - 16);
+    // Nút mũi tên lên ▲
+    scrollbarGfx.fillStyle(0x5c4224, 0.9);
+    scrollbarGfx.fillTriangle(scrollX, 10, scrollX - 4, 18, scrollX + 4, 18);
+    // Con trượt kim cương hình thoi (Diamond Thumb)
+    scrollbarGfx.fillStyle(0xb89058, 0.95);
+    scrollbarGfx.beginPath();
+    scrollbarGfx.moveTo(scrollX, gridH / 2 - 8);
+    scrollbarGfx.lineTo(scrollX + 5, gridH / 2);
+    scrollbarGfx.lineTo(scrollX, gridH / 2 + 8);
+    scrollbarGfx.lineTo(scrollX - 5, gridH / 2);
+    scrollbarGfx.closePath();
+    scrollbarGfx.fillPath();
+    // Nút mũi tên xuống ▼
+    scrollbarGfx.fillStyle(0x5c4224, 0.9);
+    scrollbarGfx.fillTriangle(scrollX, gridH - 10, scrollX - 4, gridH - 18, scrollX + 4, gridH - 18);
+    this.gridContainer.add(scrollbarGfx);
+
     this.refreshGrid();
   }
 
@@ -669,16 +712,22 @@ export class CraftingModal {
     // --- NỬA PHẢI: XEM TRƯỚC PHÓNG TO, NGUYÊN LIỆU & NÚT CHẾ TẠO ---
     const rightX = innerX + 328;
 
-    // 1. Khung preview icon phóng to
+    // 1. Khung preview icon phóng to kèm nhãn "Classic" và mũi tên kiểu dáng DST Image 2
     const prevBg = this.scene.add.graphics();
     prevBg.fillStyle(0x130e09, 0.95);
-    prevBg.fillRoundedRect(rightX, 10, 48, 48, 4);
+    prevBg.fillRoundedRect(rightX, 8, 50, 50, 4);
     prevBg.lineStyle(1.2, 0x5c4224, 0.9);
-    prevBg.strokeRoundedRect(rightX, 10, 48, 48, 4);
-    this.detailPreviewIcon = HDTextHelper.createText(this.scene, rightX + 24, 34, '🪔', {
-      fontSize: '26px'
+    prevBg.strokeRoundedRect(rightX, 8, 50, 50, 4);
+    this.detailPreviewIcon = HDTextHelper.createText(this.scene, rightX + 25, 30, '🪔', {
+      fontSize: '24px'
     }).setOrigin(0.5, 0.5);
-    this.detailContainer.add([prevBg, this.detailPreviewIcon]);
+
+    // Nhãn "Cổ Điển" (Classic) và mũi tên chuyển biến thể phong cách Don't Starve Together
+    const skinLabel = HDTextHelper.createText(this.scene, rightX + 25, 48, '◀ Cổ Điển ▶', {
+      fontSize: '7.5px',
+      color: '#8c7853'
+    }).setOrigin(0.5, 0.5);
+    this.detailContainer.add([prevBg, this.detailPreviewIcon, skinLabel]);
 
     // 2. Dãy các ô nguyên liệu yêu cầu
     this.detailIngredientsContainer = this.scene.add.container(rightX + 56, 10);
@@ -1009,6 +1058,7 @@ export class CraftingModal {
     this.activeCategory = cat;
     this.isFavoriteFilterActive = false;
     this.redrawTabs();
+    this.redrawRightBookmarkTabs();
     this.refreshGrid();
   }
 
@@ -1033,6 +1083,75 @@ export class CraftingModal {
         tab.bg.lineStyle(1, 0x4d3826, 0.8);
         tab.bg.strokeRoundedRect(tab.x, tab.y, tab.w, tab.h, 4);
         tab.label.setColor('#baa892');
+      }
+    }
+  }
+
+  /**
+   * Tạo các tai sách / thẻ bookmark dọc nhô ra mép phải khung bảng (Right Edge Bookmark Tabs - DST Style)
+   */
+  private buildRightEdgeBookmarkTabs(x: number, y: number, w: number, _h: number): void {
+    const categories: { id: CraftingCategory; icon: string; tooltip: string }[] = [
+      { id: 'all', icon: '🌐', tooltip: 'Tất Cả' },
+      { id: 'light', icon: '🔥', tooltip: 'Ánh Sáng' },
+      { id: 'survival', icon: '🌿', tooltip: 'Sinh Tồn' },
+      { id: 'combat', icon: '⚔️', tooltip: 'Chiến Đấu' },
+      { id: 'equipment', icon: '🛡️', tooltip: 'Trang Bị' },
+      { id: 'structures', icon: '🏛️', tooltip: 'Chế Tác' }
+    ];
+
+    const tabW = 24;
+    const tabH = 38;
+    const startY = y + 54;
+    const gap = 8;
+    const tabX = x + w - 2;
+
+    for (let i = 0; i < categories.length; i++) {
+      const cat = categories[i];
+      const curY = startY + i * (tabH + gap);
+
+      const tabGfx = this.scene.add.graphics();
+      const tabLabel = HDTextHelper.createText(this.scene, tabX + tabW / 2 + 2, curY + tabH / 2, cat.icon, {
+        fontSize: '13px'
+      }).setOrigin(0.5, 0.5);
+
+      this.sidePanelContainer.add([tabGfx, tabLabel]);
+
+      const hitZone = this.scene.add.zone(tabX + tabW / 2 + 3, curY + tabH / 2, tabW + 8, tabH).setInteractive({ useHandCursor: true });
+      hitZone.on('pointerdown', () => {
+        AudioManager.getInstance().playInteract();
+        this.setCategory(cat.id);
+      });
+
+      this.sidePanelContainer.add(hitZone);
+      this.rightBookmarkTabGfx.set(cat.id, { bg: tabGfx, label: tabLabel, x: tabX, y: curY, w: tabW, h: tabH });
+    }
+
+    this.redrawRightBookmarkTabs();
+  }
+
+  /**
+   * Vẽ lại trạng thái các tai sách bookmark mép phải
+   */
+  private redrawRightBookmarkTabs(): void {
+    for (const [id, tab] of this.rightBookmarkTabGfx.entries()) {
+      const isActive = !this.isFavoriteFilterActive && id === this.activeCategory;
+      tab.bg.clear();
+      const ext = isActive ? 6 : 0;
+      if (isActive) {
+        // Nền giấy da sáng ấm viền vàng kim hổ phách
+        tab.bg.fillStyle(0xdfd3b6, 0.98);
+        tab.bg.fillRoundedRect(tab.x, tab.y, tab.w + ext, tab.h, 4);
+        tab.bg.lineStyle(1.8, 0xf1c40f, 1);
+        tab.bg.strokeRoundedRect(tab.x, tab.y, tab.w + ext, tab.h, 4);
+        tab.label.setPosition(tab.x + tab.w / 2 + 4, tab.y + tab.h / 2);
+      } else {
+        // Nền gỗ tối viền đồng xỉn nẹp góc
+        tab.bg.fillStyle(0x1d140d, 0.92);
+        tab.bg.fillRoundedRect(tab.x, tab.y, tab.w, tab.h, 4);
+        tab.bg.lineStyle(1.2, 0x5c4224, 0.85);
+        tab.bg.strokeRoundedRect(tab.x, tab.y, tab.w, tab.h, 4);
+        tab.label.setPosition(tab.x + tab.w / 2 + 1, tab.y + tab.h / 2);
       }
     }
   }
@@ -1261,6 +1380,12 @@ export class CraftingModal {
    * Giải phóng tài nguyên dọn dẹp bộ nhớ
    */
   public destroy(): void {
+    if (this.scene && this.scene.input && this.scene.input.keyboard) {
+      for (const h of this.keyHandlers) {
+        this.scene.input.keyboard.off(h.event, h.fn);
+      }
+    }
+    this.keyHandlers = [];
     if (this.container) {
       this.container.removeAll(true);
       this.container.destroy();

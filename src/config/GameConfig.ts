@@ -3,8 +3,8 @@ import { BootScene } from '../scenes/BootScene';
 import { PreloadScene } from '../scenes/PreloadScene';
 import { MainMenuScene } from '../scenes/MainMenuScene';
 import { GameScene } from '../scenes/GameScene';
-import { HUDScene } from '../ui/HUDScene';
 import { UIScene } from '../scenes/UIScene';
+import { EndingScene } from '../scenes/EndingScene';
 
 const canUseWebGL = (() => {
   try {
@@ -45,8 +45,8 @@ export const GameConfig: Phaser.Types.Core.GameConfig & { resolution?: number } 
     PreloadScene,
     MainMenuScene,
     GameScene,
-    HUDScene,
-    UIScene
+    UIScene,
+    EndingScene
   ],
   backgroundColor: '#0b0c10'
 };
