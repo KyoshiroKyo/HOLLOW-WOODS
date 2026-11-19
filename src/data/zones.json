@@ -188,7 +188,7 @@
           "name": "Bram",
           "title": "Thợ rèn làng",
           "x": 1230,
-          "y": 390,
+          "y": 405,
           "dialogueKey": "bram_chat"
         },
         {
@@ -196,7 +196,7 @@
           "name": "Finn",
           "title": "Cậu bé đưa tin",
           "x": 660,
-          "y": 265,
+          "y": 280,
           "dialogueKey": "finn_chat",
           "patrolMinX": 652,
           "patrolMaxX": 665,

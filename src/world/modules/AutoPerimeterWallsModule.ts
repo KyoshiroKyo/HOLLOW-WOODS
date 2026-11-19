@@ -46,6 +46,25 @@ export class AutoPerimeterWallsModule {
     height: number,
     name: string
   ): Phaser.Physics.Arcade.Sprite {
+    // V15-49: Deduplication chống sinh 2 lớp tường chu vi đè nhau tại đường ranh tiếp giáp giữa 2 phân khu liền kề
+    const children = colliderGroup.getChildren();
+    for (let i = 0; i < children.length; i++) {
+      const existing = children[i] as Phaser.Physics.Arcade.Sprite;
+      const body = existing.body as Phaser.Physics.Arcade.StaticBody;
+      if (
+        body &&
+        Math.abs(body.x - minX) <= 6 &&
+        Math.abs(body.y - minY) <= 6 &&
+        Math.abs(body.width - width) <= 12 &&
+        Math.abs(body.height - height) <= 12
+      ) {
+        if (name && (!existing.name || existing.name.startsWith('auto_'))) {
+          existing.setName(`${existing.name || ''}+${name}`);
+        }
+        return existing;
+      }
+    }
+
     const wall = colliderGroup.create(minX, minY, undefined) as Phaser.Physics.Arcade.Sprite;
     wall.setOrigin(0, 0);
     wall.setVisible(false);
@@ -74,15 +93,22 @@ export class AutoPerimeterWallsModule {
       return [];
     }
 
-    // V15-40 & V15-43: Các phân khu rừng mở và quảng trường liên kết liền mạch:
-    // ancient_rune_puzzle, deep_forest, sub_whispering_clearing, crooked_path
+    // V15-40: ancient_rune_puzzle là phân khu quảng trường mở cổ ngữ
+    if (zoneId === 'ancient_rune_puzzle') {
+      return [];
+    }
+
+    // V15-43 & V15-49: Các phân khu rừng mở và quảng trường liên kết liền mạch:
+    // deep_forest, sub_whispering_clearing, crooked_path, bellhollow
     // Tuyệt đối không sinh tường chu vi tự động để tránh cắt ngang lối đi sang Miếu Chuông,
     // không chia đôi bản đồ tại ranh giới Y ~ 0 và không dựng tường dọc chắn lối đi X = 2080.
+    // Làng Bellhollow đã có hàng rào gỗ hand-crafted hoàn chỉnh, không dựng tường chu vi tự động
+    // để giữ thông thoáng lối ra Outer Woods và Trạm Lửa của Sir Vaelen (x: 1435, y: 705).
     if (
-      zoneId === 'ancient_rune_puzzle' ||
       zoneId === 'deep_forest' ||
       zoneId === 'sub_whispering_clearing' ||
-      zoneId === 'crooked_path'
+      zoneId === 'crooked_path' ||
+      zoneId === 'bellhollow'
     ) {
       if (TILED_PIPELINE_CONFIG.debugDrawModuleLogs) {
         console.log(`[TiledPipeline:PerimeterWalls] Skipped for zone '${zoneId}' (Open Forest & Seamless Transition)`);

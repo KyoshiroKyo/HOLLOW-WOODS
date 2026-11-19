@@ -1343,44 +1343,39 @@ export class GameScene extends Phaser.Scene {
       hoodColor: 0x3d7055
     });
 
-    // 4. Bram — Thợ Rèn Làng: đứng trước hiên Xưởng Rèn & Lò Lửa Đông-Nam (x: 1230, y: 390)
+    // 4. Bram — Thợ Rèn Làng: đứng trước hiên Xưởng Rèn & Lò Lửa Đông-Nam (x: 1230, y: 405)
     // Có lối đi rộng rãi phía trước, cách xa Edda > 240px và Hiệp Sĩ Canh Lửa > 410px
     const bram = new NPCEntity(this, {
       id: 'npc_bram',
       name: 'Bram',
       title: 'Thợ rèn làng',
       x: 1230,
-      y: 390,
+      y: 405,
       dialogueKey: 'bram_chat'
     });
-    const bramBody = bram.body as Phaser.Physics.Arcade.Body;
-    if (bramBody) {
-      bramBody.setSize(20, 12);
-      bramBody.setOffset(-10, -6);
-    }
 
-    // 5. Finn — Cậu Bé Đưa Tin: đứng tại ngã ba Bảng Tin Dị Thường đầu quảng trường (x: 660, y: 265)
-    // Cách xa Garth > 175px và Hiệp Sĩ Canh Lửa > 170px, đảm bảo khoảng cách >= 160px tuyệt đối không đè nhau
+    // 5. Finn — Cậu Bé Đưa Tin: đứng tại ngã ba Bảng Tin Dị Thường đầu quảng trường (x: 660, y: 280)
+    // Đứng trên sân đá thoáng trước Bảng Tin Dị Thường (không đè lên collider bảng tin y: 258..266)
     const finn = new NPCEntity(this, {
       id: 'npc_finn',
       name: 'Finn',
       title: 'Cậu bé đưa tin',
       x: 660,
-      y: 265,
+      y: 280,
       dialogueKey: 'finn_chat',
       patrolMinX: 652,
       patrolMaxX: 665,
       patrolSpeed: 18
     });
 
-    // 6. Sir Vaelen — Kỵ Sĩ Trầm Mặc: quỳ chống kiếm bên cạnh Bếp Lửa Hồng đá cổ tại Trạm Lửa Rừng Tĩnh Lặng (x: 1435, y: 710)
+    // 6. Sir Vaelen — Kỵ Sĩ Trầm Mặc: quỳ chống kiếm bên cạnh Bếp Lửa Hồng đá cổ tại Trạm Lửa Rừng Tĩnh Lặng (x: 1435, y: 705)
     // Nằm ở khoảng đất trống yên bình BÊN NGOÀI làng Bellhollow (điểm giao giữa Rừng Ngoài và Đường Mòn Quanh Co)
     const campfireKnight = new NPCEntity(this, {
       id: 'npc_campfire_knight',
       name: 'Sir Vaelen — Kỵ Sĩ Trầm Mặc',
       title: 'Lưỡi gươm chọn sự bình yên',
       x: 1435,
-      y: 710,
+      y: 705,
       dialogueKey: 'campfire_knight_intro'
     });
     CampSanctuarySystem.getInstance().registerKnightEntity(campfireKnight);
@@ -2474,8 +2469,8 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    // 3. Khu vực Bếp Lửa Nghỉ Ngơi của Sir Vaelen (x: 1435, y: 710) - Bán kính 180px
-    const distToVaelen = Math.hypot(this.player.x - 1435, this.player.y - 710);
+    // 3. Khu vực Bếp Lửa Nghỉ Ngơi của Sir Vaelen (x: 1435, y: 705) - Bán kính 180px
+    const distToVaelen = Math.hypot(this.player.x - 1435, this.player.y - 705);
     const phase = this.timeSystem ? this.timeSystem.getCurrentPhase() : 'DAY';
 
     if (distToVaelen <= 180) {

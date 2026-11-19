@@ -87,6 +87,7 @@
 | 32 | `V15-34` | [14_Safe_Spawn_And_Unstuck_Resolver.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/14_Safe_Spawn_And_Unstuck_Resolver.md) — Hệ thống an toàn vị trí nạp Save (SafeSpawnResolver), khắc phục triệt để lỗi kẹt cổng sắt/vật cản lớn, reset sạch cờ ẩn nấp và nút Gỡ Kẹt khẩn cấp [F8] | Hoàn tất (Đã nghiệm thu) |
 | 33 | `V15-35` | [docs/FOLDER_STRUCTURE_RULES.md](file:///g:/HOLLOW%20WOODS/docs/FOLDER_STRUCTURE_RULES.md) — Quy hoạch, dọn dẹp và sắp xếp lại toàn bộ cây thư mục gốc theo chuẩn hóa (di chuyển toàn bộ file .md, .rar, .zip và thư mục backup vào docs/, release/, Backups/, cập nhật .gitignore) | Hoàn tất (Đã nghiệm thu) |
 | 34 | `V15-36` | [15_Final_V15_Release_Report.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/15_Final_V15_Release_Report.md) / [FINAL_V1.5_RELEASE_REPORT.md](file:///g:/HOLLOW%20WOODS/docs/reports/FINAL_V1.5_RELEASE_REPORT.md) — Đóng gói mã nguồn tinh gọn chuẩn AI-Readable cho Gemini (< 2 MB) và xuất bản bản chạy P2Game V1.5.0 chính thức | Hoàn tất (Đã nghiệm thu) |
+| 35 | `V15-49` | [49_Map_Reachability_BFS_And_Asset_Audit.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/49_Map_Reachability_BFS_And_Asset_Audit.md) — Kiểm toán tự động khả năng di chuyển toàn bộ bản đồ bằng thuật toán BFS Navigation Grid, tối ưu hóa Static Colliders và rà soát 100% asset thực thể | Hoàn tất (Đã nghiệm thu) |
 
 ---
 
