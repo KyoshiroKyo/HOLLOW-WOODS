@@ -90,6 +90,7 @@
 | 35 | `V15-49` | [49_Map_Reachability_BFS_And_Asset_Audit.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/49_Map_Reachability_BFS_And_Asset_Audit.md) — Kiểm toán tự động khả năng di chuyển toàn bộ bản đồ bằng thuật toán BFS Navigation Grid, tối ưu hóa Static Colliders và rà soát 100% asset thực thể | Hoàn tất (Đã nghiệm thu) |
 | 36 | `V15-50` | [50_Bottom_Bar_And_Vertical_Taskbar_Redesign.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/50_Bottom_Bar_And_Vertical_Taskbar_Redesign.md) — Tái thiết kế toàn bộ thanh Túi Đồ & Trang Bị đáy và Taskbar biểu tượng dọc theo phong cách Don't Starve | Hoàn tất (Đã nghiệm thu) |
 | 37 | `V15-50A` | [50A_Parchment_Hotbar_And_Quick_Craft_Sidebar.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/50A_Parchment_Hotbar_And_Quick_Craft_Sidebar.md) — Thanh Túi Đồ 8 ô nền giấy da sáng ấm + 4 ô Trang Bị và Thanh Ghim Nhanh Dọc theo phong cách Don't Starve Together | Hoàn tất (Đã nghiệm thu) |
+| 38 | `V15-50B` | [50B_DST_Crafting_Modal_Redesign.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/50B_DST_Crafting_Modal_Redesign.md) — Tái thiết kế Bảng Chế Tạo Mở Rộng [I] / [C] bố cục 4 tầng Don't Starve Together (Lưới danh mục, Lưới công thức có ổ khóa, Khung xem trước nguyên liệu) | Hoàn tất (Đã nghiệm thu) |
 
 ---
 
