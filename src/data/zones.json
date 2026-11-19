@@ -201,14 +201,6 @@
           "patrolMinX": 652,
           "patrolMaxX": 665,
           "patrolSpeed": 18
-        },
-        {
-          "id": "npc_campfire_knight",
-          "name": "Hiệp Sĩ Canh Lửa",
-          "title": "Người giữ lửa tàn",
-          "x": 825,
-          "y": 310,
-          "dialogueKey": "campfire_knight_intro"
         }
       ],
       "atmosphere": {
@@ -1833,6 +1825,16 @@
         "x": 1210,
         "y": 620
       },
+      "npcs": [
+        {
+          "id": "npc_campfire_knight",
+          "name": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
+          "title": "Lưỡi gươm chọn sự bình yên",
+          "x": 1435,
+          "y": 710,
+          "dialogueKey": "campfire_knight_intro"
+        }
+      ],
       "atmosphere": {
         "fogColor": 1644830,
         "fogAlpha": 0.35,
@@ -2103,6 +2105,17 @@
           "height": 32,
           "promptText": "[E] Lắng Nghe Tiếng Vọng Ký Ức",
           "actionId": "inspect_echo_ruins_prayer"
+        },
+        {
+          "id": "quiet_forest_bonfire",
+          "name": "Bếp Lửa Hồng Rừng Tĩnh Lặng",
+          "type": "clue",
+          "x": 1470,
+          "y": 710,
+          "width": 36,
+          "height": 30,
+          "promptText": "[E] Sưởi Ấm Bên Lửa Cổ",
+          "actionId": "warm_quiet_bonfire"
         }
       ],
       "transitions": [

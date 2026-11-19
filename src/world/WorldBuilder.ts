@@ -5070,6 +5070,9 @@ export class WorldBuilder {
     // V1.4 Blueprint: Cầu Thân Cây Đổ (Metroidvania-lite Shortcut Bridge phía Rừng Ngoài tại 1540, 680)
     this.createFallenTitanTrunkShortcut(1540, 680, 50);
 
+    // V15-31: Trạm Lửa Rừng Tĩnh Lặng (Quiet Forest Bonfire Outpost) của Sir Vaelen tại điểm giao Rừng Ngoài & Đường Mòn Quanh Co (1470, 710)
+    this.createQuietForestBonfireOutpost(1470, 710);
+
     // 3. Hệ thống Cột Đèn Lồng Gỗ Dẫn Hướng
     this.createVillageLanternPost(1210, 600); // Đèn cửa rừng Bắc
     this.createVillageLanternPost(1310, 700); // Đèn bãi trại
@@ -5427,6 +5430,88 @@ export class WorldBuilder {
     }
 
     this.createStaticBoxColliderCentered(cx, cy, 24, 16, 'Lửa Trại Thợ Săn');
+  }
+
+  /**
+   * V15-31: Trạm Lửa Rừng Tĩnh Lặng (Quiet Forest Bonfire Outpost) của Sir Vaelen
+   * Nằm tại khoảng đất trống yên bình giữa Rừng Ngoài (Outer Woods) và Đường Mòn Quanh Co (The Crooked Path)
+   */
+  private createQuietForestBonfireOutpost(x: number, y: number): void {
+    const cx = x + 18;
+    const cy = y + 15;
+
+    // 1. Quầng sáng ấm áp nhiều lớp màu hổ phách/vàng ấm tỏa mịn (Warm Ambient Hearth Glow)
+    const glow = this.scene.add.graphics();
+    glow.fillStyle(0xf39c12, 0.08);
+    glow.fillCircle(cx, cy, 75);
+    glow.fillStyle(0xe67e22, 0.16);
+    glow.fillCircle(cx, cy, 48);
+    glow.fillStyle(0xffe082, 0.24);
+    glow.fillCircle(cx, cy, 24);
+    glow.setDepth(DEPTH_GROUND_DECALS);
+    this.registerCullable(glow, cx, cy, 80);
+
+    // 2. Viền đá cổ tròn bao quanh bếp lửa (Ancient Stone Fire Ring)
+    const stoneRing = this.scene.add.graphics();
+    stoneRing.fillStyle(0x3e3a35, 0.7);
+    stoneRing.fillEllipse(cx, cy + 4, 34, 18);
+    stoneRing.fillStyle(0x272421, 0.85);
+    stoneRing.fillEllipse(cx, cy + 5, 26, 12);
+    stoneRing.setDepth(cy - 2);
+    this.registerCullable(stoneRing, cx, cy, 40);
+
+    // 3. Sprite bếp lửa hồng đá cổ đang cháy rực (Campfire Tier 2 Pixel Art)
+    const fireSprite = this.safeAddImage(cx, cy + 5, SPRITE_CAMPFIRE_TIER2_V15);
+    fireSprite.setOrigin(0.5, 0.85);
+    fireSprite.setDepth(cy + 4);
+    this.registerCullable(fireSprite, cx, cy, 50);
+
+    if (this.scene.tweens) {
+      this.scene.tweens.add({
+        targets: fireSprite,
+        scaleY: 1.05,
+        scaleX: 0.97,
+        duration: 650,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut'
+      });
+      this.scene.tweens.add({
+        targets: glow,
+        alpha: 0.82,
+        duration: 850,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Quad.easeInOut'
+      });
+    }
+
+    // 4. Khúc gỗ ngồi nghỉ cho người lữ khách (Rustic Resting Log Bench)
+    const logGfx = this.scene.add.graphics();
+    logGfx.fillStyle(0x4a2e18, 0.9);
+    logGfx.fillRoundedRect(cx - 36, cy + 18, 28, 8, 3);
+    logGfx.lineStyle(1, 0x2d1b0d, 0.9);
+    logGfx.strokeRoundedRect(cx - 36, cy + 18, 28, 8, 3);
+    logGfx.setDepth(cy + 18);
+    this.registerCullable(logGfx, cx - 22, cy + 22, 30);
+
+    // 5. Hộp va chạm nhỏ chống bước đè lên tâm ngọn lửa
+    this.createStaticBoxColliderCentered(cx, cy, 24, 16, 'Bếp Lửa Hồng Đá Cổ');
+
+    // 6. Đăng ký nguồn nhiệt và vùng bảo hộ (bán kính 180px do CampSanctuarySystem và SurvivalSystem đảm nhiệm)
+
+    // 7. Điểm tương tác kiểm tra và sưởi ấm bếp lửa
+    this.interactables.push({
+      id: 'quiet_forest_bonfire',
+      type: 'clue',
+      x: cx - 18,
+      y: cy - 12,
+      width: 36,
+      height: 28,
+      name: 'Bếp Lửa Hồng Rừng Tĩnh Lặng',
+      promptText: '[E] Sưởi Ấm Bên Lửa Cổ',
+      actionId: 'warm_quiet_bonfire'
+    });
   }
 
   /**

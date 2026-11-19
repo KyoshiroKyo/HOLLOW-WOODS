@@ -71,6 +71,10 @@ export class NPCEntity extends Phaser.GameObjects.Container {
       this.baseId = 'bram';
     } else if (lowerId.includes('finn') || lowerName.includes('finn') || lowerId.includes('errand')) {
       this.baseId = 'finn';
+    } else if (lowerId.includes('knight') || lowerId.includes('vaelen') || lowerName.includes('vaelen') || lowerName.includes('knight') || lowerName.includes('kỵ sĩ')) {
+      this.baseId = 'campfire_knight';
+    } else if (lowerId.includes('garth') || lowerName.includes('garth')) {
+      this.baseId = 'garth';
     } else {
       this.baseId = 'garth';
     }
@@ -79,6 +83,8 @@ export class NPCEntity extends Phaser.GameObjects.Container {
       this.headOffsetY = 42;
     } else if (this.baseId === 'bram') {
       this.headOffsetY = 56;
+    } else if (this.baseId === 'campfire_knight') {
+      this.headOffsetY = 46;
     } else {
       this.headOffsetY = 52;
     }
@@ -112,7 +118,16 @@ export class NPCEntity extends Phaser.GameObjects.Container {
     } else if (this.baseId === 'finn') {
       initialSheet = 'errand_boy_walk_sheet';
     } else if (this.baseId === 'campfire_knight') {
-      initialSheet = scene.textures.exists('campfire_knight_pray_sheet') ? 'campfire_knight_pray_sheet' : 'campfire_knight_idle_sheet';
+      // V15-31: Bắt buộc dùng texture riêng biệt từ gói 2D_SL_Knight_v1.0_3, tuyệt đối không fallback về Garth
+      if (scene.textures.exists('campfire_knight_pray_sheet')) {
+        initialSheet = 'campfire_knight_pray_sheet';
+      } else if (scene.textures.exists('campfire_knight_pray_sheet.png')) {
+        initialSheet = 'campfire_knight_pray_sheet.png';
+      } else if (scene.textures.exists('campfire_knight_idle_sheet')) {
+        initialSheet = 'campfire_knight_idle_sheet';
+      } else {
+        initialSheet = 'campfire_knight_idle_sheet.png';
+      }
     } else {
       initialSheet = scene.textures.exists('garth_walk_sheet') ? 'garth_walk_sheet' : 'garth_walk';
     }
@@ -352,7 +367,10 @@ export class NPCEntity extends Phaser.GameObjects.Container {
     container.setAlpha(0);
     container.setVisible(false);
 
-    const badgeW = 100;
+    // Dòng 1: Tên NPC (vàng kim đậm sắc nét)
+    const cleanName = spec.name.replace(/\s*\(.*\)/, '').trim();
+    // V15-31: Căn độ rộng huy hiệu động theo chiều dài tên NPC (đặc biệt cho Sir Vaelen — Kỵ Sĩ Trầm Mặc)
+    const badgeW = Math.max(100, Math.round(cleanName.length * 6.8 + 24));
     const badgeH = 32;
 
     const bg = scene.add.graphics();
@@ -373,8 +391,6 @@ export class NPCEntity extends Phaser.GameObjects.Container {
     else if (this.baseId === 'finn') icon = '📜';
     else if (this.baseId === 'campfire_knight') icon = '🔥';
 
-    // Dòng 1: Tên NPC (vàng kim đậm sắc nét)
-    const cleanName = spec.name.replace(/\s*\(.*\)/, '').trim();
     const nameText = HDTextHelper.createText(scene, 0, -6, `${icon} ${cleanName}`, {
       fontSize: '9.5px',
       fontStyle: 'bold',

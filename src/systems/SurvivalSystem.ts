@@ -17,7 +17,8 @@ export class SurvivalSystem {
   private warmSources: Array<{ x: number; y: number; radius: number; name: string }> = [
     { x: 1320, y: 720, radius: 110, name: 'Lửa Trại Thợ Săn' },
     { x: 1220, y: 370, radius: 110, name: 'Lò Rèn Xưởng Chế Tạo' },
-    { x: 860, y: 310, radius: 110, name: 'Lửa Trại Làng Bellhollow' }
+    { x: 860, y: 310, radius: 110, name: 'Lửa Trại Làng Bellhollow' },
+    { x: 1470, y: 710, radius: 180, name: 'Trạm Lửa Rừng Tĩnh Lặng' }
   ];
 
   // Giữ tọa độ và bán kính tương thích cho làng Bellhollow (V15-13)
@@ -105,6 +106,12 @@ export class SurvivalSystem {
     }
     if (!nearCampfire) {
       nearCampfire = Math.hypot(playerX - this.campfireX, playerY - this.campfireY) <= this.campfireWarmthRadius;
+    }
+    if (!nearCampfire) {
+      const campSanctuary = CampSanctuarySystem.getInstance();
+      if (campSanctuary.isPlayerInSanctuary(playerX, playerY, zoneId)) {
+        nearCampfire = true;
+      }
     }
 
     const isBellhollowSafe = zoneId === 'bellhollow';
@@ -250,9 +257,10 @@ export class SurvivalSystem {
   }
 
   // C4-132-02: Kiểm tra người chơi có đang đứng trong bán kính nguồn nhiệt ấm áp hay không
-  public isNearWarmth(playerX: number, playerY: number): boolean {
+  public isNearWarmth(playerX: number, playerY: number, zoneId?: string): boolean {
     return this.warmSources.some(s => Math.hypot(playerX - s.x, playerY - s.y) <= s.radius) ||
-      Math.hypot(playerX - this.campfireX, playerY - this.campfireY) <= this.campfireWarmthRadius;
+      Math.hypot(playerX - this.campfireX, playerY - this.campfireY) <= this.campfireWarmthRadius ||
+      CampSanctuarySystem.getInstance().isPlayerInSanctuary(playerX, playerY, zoneId);
   }
 
   // V1.4: Phân cấp Độ Ẩm (DRY: 0-29%, DAMP: 30-69%, SOAKED: 70-100%)

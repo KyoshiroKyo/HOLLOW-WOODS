@@ -599,25 +599,25 @@
       "onCompleteFlag": "talked_to_finn_rumors"
     },
     "campfire_knight_intro": {
-      "speaker": "Hiệp Sĩ Canh Lửa",
+      "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
       "portrait": "portrait_campfire_knight",
       "lines": [
-        "Chào người lữ khách bước ra từ Màn Sương... Hãy ngồi xuống đây, bên cạnh hơi ấm này.",
+        "Chào mừng, lữ khách. Hãy dừng chân nghỉ ngơi bên đốm lửa này một lát... Bạn đang ở một nơi an toàn rồi. Không ai phán xét một kẻ lữ hành mệt mỏi cần chút hơi ấm giữa khu rừng sương lạnh này đâu.",
         "Khoan đã... Bộ giáp đen đó... và cách ngươi giữ ngọn đèn... ta ngỡ người đó đã tan biến trong màn sương từ lâu rồi... Không, có lẽ ta nhìn nhầm trong ánh lửa chập chờn.",
-        "Ta là kẻ canh gác cuối cùng còn sót lại của Đội Hiệp Sĩ Canh Lửa. Đoàn kỵ sĩ giáp bạc năm xưa đã tiến sâu vào rừng để bảo vệ làng, nhưng màn sương đen The Veil đã nuốt chửng tất cả...",
-        "Giờ đây, ngọn lửa trại này là thành trì duy nhất giữ cho tâm trí của chúng ta không bị tà khí xâm chiếm.",
-        "Nhưng than củi đang cạn dần. Ngươi có thể giúp ta gom 2 Gỗ Khô và 2 Nhựa Cây quanh bìa rừng để tiếp lửa nâng cấp Lửa Trại lên Cấp 2 không? Đồng thời hãy trinh sát bìa Rừng Ngoài xem lũ quái vật có động tĩnh gì không."
+        "Ta là Sir Vaelen — Kỵ Sĩ Trầm Mặc, người canh giữ Trạm Lửa Rừng Tĩnh Lặng này. Đoàn kỵ sĩ giáp bạc năm xưa đã tiến sâu vào rừng để bảo vệ làng, nhưng màn sương đen The Veil đã nuốt chửng tất cả...",
+        "Giờ đây, ngọn lửa này là thành trì duy nhất giữ cho tâm trí của chúng ta không bị tà khí xâm chiếm.",
+        "Nhưng than củi đang cạn dần. Bạn có thể giúp ta gom 2 Gỗ Khô và 2 Nhựa Cây quanh bìa rừng để tiếp lửa nâng cấp Bếp Lửa Hồng lên Cấp 2 không? Đồng thời hãy trinh sát bìa Rừng Ngoài xem lũ quái vật có động tĩnh gì không."
       ],
       "choices": [
         {
-          "text": "[Đồng ý giúp] \"Ta sẽ tìm gỗ khô và nhựa cây tiếp lửa cho ngọn trại này.\"",
-          "responseLine": "Đa tạ người lữ khách hào hiệp! Ngọn lửa này bừng sáng sẽ bảo bọc cho toàn thể dân làng Bellhollow.",
+          "text": "[Đồng ý giúp] \"Ta sẽ tìm gỗ khô và nhựa cây tiếp lửa cho ngọn lửa này.\"",
+          "responseLine": "Đa tạ người lữ khách hào hiệp! Ngọn lửa này bừng sáng sẽ bảo bọc cho người qua đường và toàn thể dân làng Bellhollow.",
           "trustDelta": 3,
           "setFlag": "choice_knight_pledge_fire"
         },
         {
           "text": "[Hỏi về kỵ sĩ] \"Bộ giáp đen mà ngươi vừa nhắc tới... có phải thuộc về một vị chỉ huy năm xưa?\"",
-          "responseLine": "(Hiệp sĩ thở dài nghẹn ngào)... Đúng vậy. Vị Tổng Chỉ Huy huyền thoại đã một mình dẫn đầu đội tiên phong phá vòng vây sương mù, rồi biệt tích...",
+          "responseLine": "(Sir Vaelen thở dài nghẹn ngào)... Đúng vậy. Vị Tổng Chỉ Huy huyền thoại đã một mình dẫn đầu đội tiên phong phá vòng vây sương mù, rồi biệt tích...",
           "trustDelta": 2,
           "setFlag": "lore_curious_black_knight"
         },
@@ -636,10 +636,10 @@
       "nextQuestId": "SQ06_KEEP_FIRE"
     },
     "campfire_knight_comrade_bond": {
-      "speaker": "Hiệp Sĩ Canh Lửa",
+      "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
       "portrait": "portrait_campfire_knight",
       "lines": [
-        "(Hiệp Sĩ Canh Lửa ném một cành củi khô vào đống lửa, ánh mắt đỏ hoe ngấn lệ)...",
+        "(Sir Vaelen ném một cành củi khô vào đống lửa, ánh mắt đỏ hoe ngấn lệ)...",
         "Đêm trước ngày xuất chinh năm ấy, toàn đoàn kỵ sĩ giáp bạc đứng nghiêm trang trước quảng trường Bellhollow.",
         "Ta đã quỳ xin được đi tiên phong cùng ngài ấy... Nhưng vị Chỉ Huy Hiệp Sĩ Đen đã đặt bàn tay thép lên vai ta, nghiêm giọng ra lệnh:",
         "'Ngươi là người có ý chí kiên định nhất đoàn. Ngươi phải ở lại giữ chốt làng, bảo vệ ngọn lửa thiêng này! Nếu ngọn lửa hậu phương lụi tàn, Bellhollow sẽ sụp đổ trước khi chúng ta kịp phá vỡ màn sương trở về.'",
@@ -647,8 +647,8 @@
       ],
       "choices": [
         {
-          "text": "[Thấu cảm & Động viên] \"Ngươi đã hoàn thành xuất sắc mệnh lệnh. Nhờ ngọn lửa của ngươi mà Bellhollow vẫn còn trụ vững đến hôm nay.\"",
-          "responseLine": "(Hiệp sĩ nghẹn ngào cúi đầu)... Tạ ơn người lữ khách! Lời nói của ngươi như tiếp thêm sinh mệnh cho thanh gươm già cỗi này.",
+          "text": "[Thấu cảm & Động viên] \"Ngươi đã hoàn thành xuất sắc mệnh lệnh. Nhờ ngọn lửa của ngươi mà lối mòn ven rừng vẫn còn hơi ấm đến hôm nay.\"",
+          "responseLine": "(Sir Vaelen nghẹn ngào cúi đầu)... Tạ ơn người lữ khách! Lời nói của ngươi như tiếp thêm sinh mệnh cho thanh gươm già cỗi này.",
           "trustDelta": 3,
           "setFlag": "choice_knight_empathy"
         },
@@ -661,7 +661,7 @@
       ]
     },
     "campfire_knight_q1_reminder": {
-      "speaker": "Hiệp Sĩ Canh Lửa",
+      "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
       "portrait": "portrait_campfire_knight",
       "lines": [
         "Gió rừng đang thổi mạnh, ngọn lửa này cần thêm Gỗ Khô và Nhựa Cây để bùng cháy rực rỡ lên Cấp 2.",
@@ -669,7 +669,7 @@
       ]
     },
     "campfire_knight_q1_complete": {
-      "speaker": "Hiệp Sĩ Canh Lửa",
+      "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
       "portrait": "portrait_campfire_knight",
       "lines": [
         "Ánh lửa bùng lên ấm áp rồi! Tạ ơn người lữ khách dũng cảm, ngọn lửa Cấp 2 này sẽ xua tan hàn khí và phục hồi tinh thần nhanh hơn rất nhiều.",
@@ -683,7 +683,7 @@
       "rewardCount": 1
     },
     "campfire_knight_q2_reminder": {
-      "speaker": "Hiệp Sĩ Canh Lửa",
+      "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
       "portrait": "portrait_campfire_knight",
       "lines": [
         "Con đường dẫn thẳng tới Tháp Chuông đã sập nhịp cầu đá cổ. Ngươi buộc phải đi theo đường vòng chữ S qua Rừng Ngoài và Đường Mòn Quanh Co để tiếp cận Xưởng Chuông Bỏ Hoang ở phía Nam.",
@@ -691,7 +691,7 @@
       ]
     },
     "campfire_knight_q2_complete": {
-      "speaker": "Hiệp Sĩ Canh Lửa",
+      "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
       "portrait": "portrait_campfire_knight",
       "lines": [
         "Phôi Sắt Cổ Ngữ này... và cả nét chữ trên mảnh nhật ký cháy sém này nữa! Đúng là nét bút của trung úy kỵ sĩ rồi!",
@@ -705,7 +705,7 @@
       "rewardCount": 2
     },
     "campfire_knight_q3_reminder": {
-      "speaker": "Hiệp Sĩ Canh Lửa",
+      "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
       "portrait": "portrait_campfire_knight",
       "lines": [
         "Chỉ Huy Hiệp Sĩ Trùm Mũ mang sức mạnh hắc ám khủng khiếp. Khi ngài ấy tụ năng lượng tà khí màu xanh thẫm, hãy nhanh tay vung gậy gỗ [Phím F / Chuột trái] để ngắt chiêu khiến ngài bị choáng váng!",
@@ -713,20 +713,20 @@
       ]
     },
     "campfire_knight_q3_complete": {
-      "speaker": "Hiệp Sĩ Canh Lửa",
+      "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
       "portrait": "portrait_campfire_knight",
       "lines": [
-        "Chiếc huy hiệu này... tà khí đen ngòm đang bốc hơi khi tiếp xúc với ánh lửa thiêng Sanctuary Camp!",
-        "(Hiệp Sĩ Canh Lửa chăm chú nhìn vết khắc biểu tượng trên mặt huy hiệu, rồi ngẩng đầu bàng hoàng nhìn sâu vào mắt bạn)...",
+        "Chiếc huy hiệu này... tà khí đen ngòm đang bốc hơi khi tiếp xúc với ánh lửa thiêng Trạm Lửa Rừng Tĩnh Lặng!",
+        "(Sir Vaelen chăm chú nhìn vết khắc biểu tượng trên mặt huy hiệu, rồi ngẩng đầu bàng hoàng nhìn sâu vào mắt bạn)...",
         "Không thể nào... Đây là Quân Huy Tổng Chỉ Huy! Vết chém chéo đặc trưng và phong ấn bóng tối này... Người đứng trước mặt ta bấy lâu nay...",
-        "(Hiệp Sĩ Canh Lửa buông gươm, quỳ một gối phủ phục xuống nền đất trước mặt bạn với sự tôn kính tột cùng)...",
+        "(Sir Vaelen buông gươm, quỳ một gối phủ phục xuống nền đất trước mặt bạn với sự tôn kính tột cùng)...",
         "Thần... xin kính cẩn bái kiến Ngài, Chỉ Huy Hiệp Sĩ Đen (The Black Knight)! Năm xưa chính ngài đã tự phong ấn ký ức để bảo vệ linh hồn khỏi lời nguyền The Veil... Giờ đây ngài đã thức tỉnh và trở về giải cứu chúng thần!",
         "Huy hiệu đã được thanh tẩy hoàn toàn thành Bùa Hộ Thân Hiệp Sĩ. Xin trao lại bảo vật này cho ngài, cùng danh hiệu chân chính vốn thuộc về ngài!"
       ],
       "choices": [
         {
           "text": "[Tiếp nhận sứ mệnh] \"Đứng lên đi, người anh em. Lời thề của chúng ta sẽ được hoàn tất khi Đại Hồng Chung ngân vang!\"",
-          "responseLine": "(Hiệp Sĩ Canh Lửa đứng dậy, hai mắt sáng ngời ý chí kiên định)... Xin tuân lệnh Tổng Chỉ Huy! Thần sẽ bảo vệ ngọn lửa này đến hơi thở cuối cùng!",
+          "responseLine": "(Sir Vaelen đứng dậy, hai mắt sáng ngời ý chí kiên định)... Xin tuân lệnh Tổng Chỉ Huy! Thần sẽ bảo vệ ngọn lửa này đến hơi thở cuối cùng!",
           "trustDelta": 3,
           "setFlag": "choice_black_knight_vow"
         },
@@ -789,10 +789,10 @@
       "rewardCount": 1
     },
     "campfire_knight_idle_talk": {
-      "speaker": "Hiệp Sĩ Canh Lửa",
+      "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
       "portrait": "portrait_campfire_knight",
       "lines": [
-        "Kính chào Chỉ Huy Hiệp Sĩ Đen! Thanh gươm của thần và ngọn lửa Sanctuary Camp này sẽ mãi mãi phục vụ theo mệnh lệnh của ngài.",
+        "Kính chào Chỉ Huy Hiệp Sĩ Đen! Thanh gươm của thần và ngọn lửa Trạm Lửa Rừng Tĩnh Lặng này sẽ mãi mãi phục vụ theo mệnh lệnh của ngài.",
         "Xin ngài hãy mở Sổ Tay [J] mục Ký Ức để xem lại toàn bộ 4 Chương Hồi Ức đã được phục hồi trọn vẹn!"
       ],
       "healPlayer": true

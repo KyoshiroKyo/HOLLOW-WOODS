@@ -47,6 +47,7 @@ import { ZoneId, TransitionZone, FacingDirection, WeaponDef, WildlifeSpookEvent 
 import { TILED_PIPELINE_CONFIG } from '../config/tiledPipelineConfig';
 import { YSortingModule } from '../world/modules/YSortingModule';
 import { GraphicsQualitySystem, GraphicsQualitySettings } from '../systems/GraphicsQualitySystem';
+import { TORN_PAGES_REGISTRY } from '../data/tornPagesData';
 
 export interface PlantedResinFlare {
   id: string;
@@ -1301,14 +1302,14 @@ export class GameScene extends Phaser.Scene {
       patrolSpeed: 18
     });
 
-    // 6. Hiệp Sĩ Canh Lửa — Người Giữ Lửa Tàn: quỳ chống kiếm trên nền đá phẳng bên trái bếp lửa (x: 825, y: 310)
-    // Bên cạnh Lửa Trại (860, 310) trên sân đá Quảng Trường Trung Tâm, không đè lên mái nhà hay miếu thờ
+    // 6. Sir Vaelen — Kỵ Sĩ Trầm Mặc: quỳ chống kiếm bên cạnh Bếp Lửa Hồng đá cổ tại Trạm Lửa Rừng Tĩnh Lặng (x: 1435, y: 710)
+    // Nằm ở khoảng đất trống yên bình BÊN NGOÀI làng Bellhollow (điểm giao giữa Rừng Ngoài và Đường Mòn Quanh Co)
     const campfireKnight = new NPCEntity(this, {
       id: 'npc_campfire_knight',
-      name: 'Hiệp Sĩ Canh Lửa',
-      title: 'Người giữ lửa tàn',
-      x: 825,
-      y: 310,
+      name: 'Sir Vaelen — Kỵ Sĩ Trầm Mặc',
+      title: 'Lưỡi gươm chọn sự bình yên',
+      x: 1435,
+      y: 710,
       dialogueKey: 'campfire_knight_intro'
     });
     CampSanctuarySystem.getInstance().registerKnightEntity(campfireKnight);
@@ -1805,6 +1806,18 @@ export class GameScene extends Phaser.Scene {
         this.player.playIdle();
         this.player.resetAllInputState();
 
+        // V15-30: Đảm bảo quái vật xung quanh tạm dừng chuyển động khi người chơi mở Modal đọc giấy hoặc UI
+        if (this.listenerMonster && this.listenerMonster.body) {
+          (this.listenerMonster.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
+        }
+        if (this.wildlifeSystem) {
+          for (const creature of this.wildlifeSystem.getEntities() as any[]) {
+            if (creature && creature.body && typeof creature.setVelocity === 'function') {
+              creature.setVelocity(0, 0);
+            }
+          }
+        }
+
         // Xử lý phím đóng UI / tiến trình hội thoại bằng phím vật lý khi UI đang mở
         if (this.dialogueSystem.isActive) {
           if (this.player.isInteractRequested() || this.player.consumeAction('attack')) {
@@ -2014,7 +2027,11 @@ export class GameScene extends Phaser.Scene {
     this.updateAct0Progression();
 
     // Cập nhật AI của The Listener (PASS G3 & G4 Chase)
-    this.updateTheListenerAI(delta);
+    if (!isUIBusy) {
+      this.updateTheListenerAI(delta);
+    } else if (this.listenerMonster && this.listenerMonster.body) {
+      (this.listenerMonster.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
+    }
 
     // V1.4: Cập nhật hệ sinh thái sinh vật hoang dã (Quạ Rừng & Bướm Đêm Hổ Phách)
     if (!isUIBusy && this.wildlifeSystem) {
@@ -2365,7 +2382,10 @@ export class GameScene extends Phaser.Scene {
       }
       return;
     }
-    if ((this.endingSystem && this.endingSystem.isEndingActive) || this.isGameOverPending || (this.player && this.player.isDead())) {
+    const isUIBusy = (this.uiScene && this.uiScene.isAnyModalOpen) ||
+                     (this.endingSystem && this.endingSystem.isEndingActive) ||
+                     (this.dialogueSystem && this.dialogueSystem.isActive);
+    if (isUIBusy || (this.endingSystem && this.endingSystem.isEndingActive) || this.isGameOverPending || (this.player && this.player.isDead())) {
       this.listenerMonster.setVelocity(0, 0);
       this.listenerMonster.ai.resetToPatrol();
       if (this.veilSystem) {
@@ -3905,7 +3925,10 @@ export class GameScene extends Phaser.Scene {
       const triggerDist = 52;
       const isWithinInteractRange = dist <= triggerDist;
       const proximityAlpha = isWithinInteractRange ? 0.9 : 0.35;
-      const baseName = `Trò chuyện với ${npc.spec.name} (${npc.spec.title})`;
+      let baseName = `Trò chuyện với ${npc.spec.name} (${npc.spec.title})`;
+      if (npc.spec.id === 'npc_campfire_knight') {
+        baseName = 'Trò chuyện với Kỵ Sĩ Vaelen';
+      }
       const promptText = isWithinInteractRange ? `[E] ${baseName}` : baseName;
       candidates.push({
         dist,
@@ -4054,7 +4077,7 @@ export class GameScene extends Phaser.Scene {
                   this.playerState.completeQuestTask('SQ07_LOST_COMRADES', 't3');
                   this.playerState.setFlag('campfire_knight_q2_completed');
                   if (this.uiScene) {
-                    this.uiScene.showPopupMessage('📜 Hiệp Sĩ Canh Lửa đã nhận lại kỷ vật đồng đội và mở khóa Nhiệm Vụ 3!');
+                    this.uiScene.showPopupMessage('📜 Sir Vaelen — Kỵ Sĩ Trầm Mặc đã nhận lại kỷ vật đồng đội và mở khóa Nhiệm Vụ 3!');
                   }
                 } else {
                   dKey = 'campfire_knight_q2_reminder';
@@ -4077,7 +4100,7 @@ export class GameScene extends Phaser.Scene {
                     this.playerState.campfireLevel = 2;
                   }
                   if (this.uiScene) {
-                    this.uiScene.showPopupMessage('🔥 Hoàn thành: Giữ Lửa Trong Sương! Lửa Trại nâng lên Cấp 2.');
+                    this.uiScene.showPopupMessage('🔥 Hoàn thành: Giữ Lửa Trong Sương! Bếp Lửa Hồng nâng lên Cấp 2.');
                   }
                 } else {
                   dKey = 'campfire_knight_q1_reminder';
@@ -4185,7 +4208,18 @@ export class GameScene extends Phaser.Scene {
       const { item: nearby, dist } = nearbyProximity;
       const worldTriggerDist = 52;
       const isWithinActionRange = dist <= worldTriggerDist;
-      const rawPrompt = nearby.promptText;
+      let rawPrompt = nearby.promptText;
+
+      // V15-30: Kiểm tra nếu là mẩu nhật ký / văn bia trong TORN_PAGES_REGISTRY
+      const tornPageEntry = TORN_PAGES_REGISTRY[nearby.actionId];
+      if (tornPageEntry) {
+        const isCollected = this.playerState.hasFlag('collected_note_' + nearby.actionId) ||
+                            this.playerState.unlockedLore.some(l => l.id === tornPageEntry.loreId);
+        if (isCollected) {
+          rawPrompt = 'Đã thu thập (Có thể nhấn [E] để xem lại)';
+        }
+      }
+
       // V14-P8-01: Loại bỏ triệt để tiền tố lặp từ như "[E] Nhấn [E] ..." thành chuẩn gọn "[E] <Hành động>"
       const baseWorldName = rawPrompt
         .replace(/^(nhấn\s+)?\[e\]\s*/i, '')
@@ -4473,8 +4507,50 @@ export class GameScene extends Phaser.Scene {
     this.createResourcePopEffect(this.player.x, this.player.y, burstColor, 6);
 
     // =========================================================================
+    // V15-30: MỞ TRANG GIẤY CỔ TƯƠNG TÁC (TORN PAGE MODAL) CHO MẨU NHẬT KÝ & CỔ THƯ
+    // =========================================================================
+    if (TORN_PAGES_REGISTRY[actionId]) {
+      const tornEntry = TORN_PAGES_REGISTRY[actionId];
+      if (this.uiScene) {
+        this.uiScene.openTornPage(tornEntry, () => {
+          if (actionId === 'inspect_knights_memorial_stele') {
+            this.playerState.setFlag('inspected_knights_memorial_stele');
+          } else if (actionId === 'inspect_bellmaker_dew_journal') {
+            this.playerState.setFlag('inspected_bellmaker_dew_journal');
+          } else if (actionId === 'inspect_elian_unsent_letter') {
+            this.playerState.setFlag('inspected_elian_unsent_letter');
+            this.playerState.setFlag('lore_elian_letter_found');
+          } else if (actionId === 'inspect_root_cellar_alchemy') {
+            this.playerState.setFlag('inspected_root_cellar_alchemy');
+          } else if (actionId === 'inspect_shrine_parchment_map') {
+            if (!this.playerState.hasFlag('inspected_shrine_parchment_map')) {
+              this.playerState.setFlag('inspected_shrine_parchment_map');
+              this.playerState.stats.lanternOil = Math.min(this.playerState.stats.maxLanternOil, this.playerState.stats.lanternOil + 90);
+            }
+          }
+        });
+      }
+      return;
+    }
+
+    // =========================================================================
     // V1.5 - BƯỚC V15-19: 10 ĐIỂM TƯƠNG TÁC KỂ CHUYỆN MÔI TRƯỜNG (ENVIRONMENTAL STORYTELLING)
     // =========================================================================
+    if (actionId === 'warm_quiet_bonfire') {
+      this.audioManager.playInteract();
+      this.playerState.modifyComposure(15);
+      if (typeof this.playerState.stats.moisture === 'number') {
+        this.playerState.stats.moisture = Math.max(0, this.playerState.stats.moisture - 20);
+      }
+      if (typeof this.playerState.stats.temperature === 'number') {
+        this.playerState.stats.temperature = Math.min(100, this.playerState.stats.temperature + 15);
+      }
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('🔥 [TRẠM LỬA RỪNG TĨNH LẶNG]: Ngọn lửa hồng đá cổ xua tan giá buốt và tà khí The Veil. Bạn được sưởi ấm và bình tâm lại bên Kỵ Sĩ Vaelen (+15 Bình Tâm).');
+      }
+      return;
+    }
+
     if (actionId === 'inspect_knights_memorial_stele') {
       this.audioManager.playInteract();
       this.playerState.unlockLore('lore_knights_memorial_stele');
@@ -4600,7 +4676,7 @@ export class GameScene extends Phaser.Scene {
         this.playerState.setFlag('inspected_stone_chessboard');
         this.playerState.addItem('res_dry_wood', 2);
         this.playerState.modifyComposure(15);
-        this.uiScene?.showPopupMessage('♟️ [BÀN CỜ ĐÁ CỦA HAI KỴ SĨ]: Kỷ vật tình bạn giữa Hiệp Sĩ Canh Lửa và Hooded Knight. Nhặt 2 Gỗ Khô (+15 Bình Tâm)!');
+        this.uiScene?.showPopupMessage('♟️ [BÀN CỜ ĐÁ CỦA HAI KỴ SĨ]: Kỷ vật tình bạn giữa Sir Vaelen và Hooded Knight. Nhặt 2 Gỗ Khô (+15 Bình Tâm)!');
       } else {
         this.uiScene?.showPopupMessage('♟️ [BÀN CỜ ĐÁ]: Ván cờ thứ 142 dang dở của hai người đồng đội trước giờ xuất chinh.');
       }

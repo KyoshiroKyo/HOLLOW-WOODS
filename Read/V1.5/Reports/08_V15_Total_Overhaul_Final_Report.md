@@ -19,8 +19,9 @@
 5. [Giai Đoạn 4: Phân Nhánh Cốt Truyện, Thức Tỉnh Ký Ức & 3 Kết Thúc Hoàn Chỉnh](#5-giai-đoạn-4-phân-nhánh-cốt-truyện-thức-tỉnh-ký-ức--3-kết-thúc-hoàn-chỉnh)
 6. [Giai Đoạn 5 & 6: Đại Tu Giao Diện Người Dùng (UI/UX) Từ Menu Đến HUD & Modals](#6-giai-đoạn-5--6-đại-tu-giao-diện-người-dùng-uiux-từ-menu-đến-hud--modals)
 7. [Giai Đoạn 7: Tối Ưu Hóa Hiệu Năng 60 FPS, Culling 160px & Tương Thích Save 3 Thế Hệ](#7-giai-đoạn-7-tối-ưu-hóa-hiệu-năng-60-fps-culling-160px--tương-thích-save-3-thế-hệ)
-8. [Bảng Ma Trận Nghiệm Thu & Kiểm Thử Toàn Diện](#8-bảng-ma-trận-nghiệm-thu--kiểm-thử-toàn-diện)
-9. [Kết Luận & Hướng Dẫn Phát Hành Bản Dựng](#9-kết-luận--hướng-dẫn-phát-hành-bản-dựng)
+8. [Giai Đoạn Hoàn Thiện Chuyên Sâu (V15-29 Đến V15-32: Debug F9, Trang Giấy Cổ, Sir Vaelen & Khóa Sổ Phát Hành)](#8-giai-đoạn-hoàn-thiện-chuyên-sâu-v15-29-đến-v15-32-debug-f9-trang-giấy-cổ-sir-vaelen--khóa-sổ-phát-hành)
+9. [Bảng Ma Trận Nghiệm Thu & Kiểm Thử Toàn Diện](#9-bảng-ma-trận-nghiệm-thu--kiểm-thử-toàn-diện)
+10. [Kết Luận & Hướng Dẫn Phát Hành Bản Dựng](#10-kết-luận--hướng-dẫn-phát-hành-bản-dựng)
 
 ---
 
@@ -215,7 +216,35 @@ flowchart TD
 
 ---
 
-## 8. BẢNG MA TRẬN NGHIỆM THU & KIỂM THỬ TOÀN DIỆN
+## 8. GIAI ĐOẠN HOÀN THIỆN CHUYÊN SÂU (POLISH & FINISHING TOUCHES: V15-29 ĐẾN V15-32)
+
+### 8.1. Chế Độ Debug Quản Trị Viên [F9] & Viền Sáng Tương Tác (V15-29)
+- **Tách bạch chế độ kiểm tra:** Giữ lại khung chữ nhật trắng 4 góc kỹ thuật cho Quản trị viên/Dev dưới phím tắt `[F9]`, mặc định tắt khi vào game (`isDebugBoxesVisible = false`).
+- **Viền sáng tương tác tinh tế cho người chơi:** Thay thế khung hộp trắng cắt cứng bằng hiệu ứng viền sáng phát quang nhẹ (soft interaction glow / corner accent) đồng điệu với thẩm mỹ rêu phong cổ kính.
+- **Chi tiết báo cáo:** [09_Admin_Debug_F9_And_Interaction_Outline.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/09_Admin_Debug_F9_And_Interaction_Outline.md).
+
+### 8.2. Giao Diện Trang Giấy Cổ Tương Tác & Cổ Thư Thế Giới (V15-30)
+- **Modal Trang Giấy Rách Cổ Điển (`TornPageModal.ts`):** Xóa bỏ dòng thông báo chữ nổi trên tường khi người chơi tương tác với các mẩu nhật ký rách hay văn bia; mở ra trang giấy da dê cổ rách viền (aged torn parchment) ở giữa màn hình.
+- **Tính năng lật trang & âm thanh giấy cũ:** Hỗ trợ điều hướng nhiều trang bằng chuột hoặc phím `[A]`/`[D]`, tự động đóng băng chuyển động của quái vật xung quanh (The Listener, quạ, sói) khi đọc.
+- **Đổi trạng thái thông minh:** Đổi prompt trên tường sang `"Đã thu thập (Có thể nhấn [E] để xem lại)"` sau lần đọc đầu tiên và tự động lưu vào Sổ Tay `[J]`.
+- **Chi tiết báo cáo:** [10_Torn_Page_Modal_And_World_Parchment.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/10_Torn_Page_Modal_And_World_Parchment.md).
+
+### 8.3. Chuẩn Hóa Asset & Trạm Lửa Rừng Tĩnh Lặng Của Sir Vaelen (V15-31)
+- **Sửa lỗi gán nhầm sprite:** Khôi phục bộ sprite áo choàng tím/xám cho Người Giữ Làng Garth tại cổng Bellhollow; gán đúng bộ sprite giáp bạc chuẩn hóa `2D_SL_Knight_v1.0_3` cho Sir Vaelen gồm tư thế quỳ cầu nguyện (`campfire_knight_pray_sheet.png`) và tư thế đứng đối thoại (`campfire_knight_idle_sheet.png`).
+- **Trạm Lửa Rừng Tĩnh Lặng (Quiet Forest Bonfire Outpost):** Di dời Sir Vaelen và bếp lửa hồng ra khỏi quảng trường Bellhollow, thiết lập trạm nghỉ chân an bình giữa Outer Woods và The Crooked Path (`x: 1470, y: 710`, Sir Vaelen tại `x: 1435, y: 710`).
+- **Vùng bảo hộ an toàn giữa đường (Mid-Journey Safe Rest Zone 180px):** Đẩy lùi mọi quái vật, hồi phục sinh lực $+4\text{ HP/s}$, gia tốc hồi Bình Tâm $+20\%$ và hong khô $+20\%$ Độ Ẩm kèm tương tác nhanh `[E] Sưởi Ấm Bên Lửa Cổ` (+15 Bình Tâm, -20 Độ Ẩm, +15 Thân Nhiệt).
+- **Chi tiết báo cáo:** [11_Sir_Vaelen_And_Bonfire_Outpost.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/11_Sir_Vaelen_And_Bonfire_Outpost.md).
+
+### 8.4. Lời Thoại Bình Yên, Chuỗi Nhiệm Vụ & Đại Thức Tỉnh Hiệp Sĩ Đen (V15-32)
+- **Lời chào mang cảm giác bình yên:** Sir Vaelen mở đầu cuộc trò chuyện bằng câu từ ấm áp, vỗ về tâm can người lữ hành:
+  > *"Chào mừng, lữ khách. Hãy dừng chân nghỉ ngơi bên đốm lửa này một lát... Bạn đang ở một nơi an toàn rồi. Không ai phán xét một kẻ lữ hành mệt mỏi cần chút hơi ấm giữa khu rừng sương lạnh này đâu."*
+- **Đồng bộ chuỗi 3 nhiệm vụ tiến trình:** Chuẩn hóa danh xưng `"Sir Vaelen — Kỵ Sĩ Trầm Mặc"` (Lưỡi gươm chọn sự bình yên) trong `SQ06_KEEP_FIRE` (Giữ Lửa Trong Sương), `SQ07_LOST_COMRADES` (Dấu Vết Đồng Đội Cũ), `SQ08_PURIFY_FALLEN` (Giải Thoát Cho Những Kẻ Tha Hóa), vật phẩm nhiệm vụ (`quest_corrupted_crest`) và toàn bộ bảng Sổ Tay `[J]`.
+- **Đại thức tỉnh bản thể Hiệp Sĩ Đen (Black Knight Awakening):** Đồng bộ hóa trọn vẹn 4 Chương Hồi Ức, lời thề kỵ sĩ rêu phong và phản ứng kính cẩn bái kiến từ toàn thể 5 dân làng cùng Sir Vaelen khi thân phận thật của Kẻ Lữ Hành được hé lộ.
+- **Hoạt ảnh & Vận động:** Tinh chỉnh trọn vẹn 16 hoạt ảnh 4 hướng của Black Knight, sửa chạy nước rút `[Shift]` êm ái, nhạy bén và không trôi trượt.
+
+---
+
+## 9. BẢNG MA TRẬN NGHIỆM THU & KIỂM THỬ TOÀN DIỆN
 
 | Giai Đoạn | Mã Bước | Tệp Kịch Bản Kiểm Thử | Số Lượng Test | Kết Quả | Đánh Giá Nghiệm Thu |
 |:---|:---:|:---|:---:|:---:|:---:|
@@ -243,13 +272,17 @@ flowchart TD
 | **GĐ 6** | `V15-25` | `verify_v15_25_npc_labels_and_dialogue.mjs` | 25 | **PASS** | Smart nameplates 95px, chân dung pixel art 64px |
 | **GĐ 6** | `V15-26` | `verify_v15_26_modals_and_tooltips.mjs` | 29 | **PASS** | Dark Woodland Parchment modals, Tooltip nổi |
 | **GĐ 7** | `V15-27` | `verify_v15_27_performance_and_save_compatibility.mjs` | 49 | **PASS** | Culling 160px, lifecycle cleanup, save V1.3/V1.4/V1.5 |
+| **Polish** | `V15-29` | `verify_v15_29_debug_boxes_and_outline.mjs` | 15 | **PASS** | Toggle F9 Admin, outline viền sáng tương tác |
+| **Polish** | `V15-30` | `test_v15_30_torn_page_modal.mjs` | 39 | **PASS** | Torn page modal, lật trang, đóng băng quái vật |
+| **Polish** | `V15-31` | `test_v15_31_vaelen_bonfire_outpost.mjs` | 24 | **PASS** | Sprite 2D_SL_Knight, Trạm Lửa Rừng Tĩnh Lặng |
+| **Polish** | `V15-32` | `test_v15_32_peaceful_dialogue_and_knight_quests.mjs` | 25 | **PASS** | Lời thoại bình yên, chuỗi 3 quest Sir Vaelen |
 | **Hồi Quy** | `V1.4 Save`| `verify_v1_4_save_migration.mjs` | 88 | **PASS** | Di trú an toàn không phá hủy, idempotent |
 | **Type Check**| `Core` | `npx tsc --noEmit` | Codebase | **0 LỖI** | Toàn bộ TypeScript kiểm tra nghiêm ngặt |
-| **Build** | `Dist` | `npm run build` | Bundle | **SUCCESS** | Vite + Rollup minify thành công trong ~9s |
+| **Build** | `Dist` | `npm run build` | Bundle | **SUCCESS** | Vite + Rollup minify sạch sẽ trong 10.33s |
 
 ---
 
-## 9. KẾT LUẬN & HƯỚNG DẪN PHÁT HÀNH BẢN DỰNG
+## 10. KẾT LUẬN & HƯỚNG DẪN PHÁT HÀNH BẢN DỰNG
 
 Phiên bản **HOLLOW WOODS V1.5** đã chính thức hoàn tất và khóa sổ thành công mỹ mãn. Toàn bộ mã nguồn, dữ liệu cốt truyện, đồ họa Pixel Art và hệ thống giao diện đã đạt tiêu chuẩn chất lượng cao nhất của một tựa game Dark Woodland Folklore Survival chất lượng cao.
 

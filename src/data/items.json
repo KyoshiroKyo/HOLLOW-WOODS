@@ -359,7 +359,7 @@
       "id": "quest_corrupted_crest",
       "name": "Huy Hiệu Hiệp Sĩ Tha Hóa",
       "category": "quest",
-      "description": "Chiếc huy hiệu sắt rèn cổ xưa của đội hiệp sĩ hộ vệ đã sa ngã vào sương mù hắc ám, thu giữ sau khi đánh bại Chỉ Huy Hiệp Sĩ Trùm Mũ. Có thể giao nộp cho Edda, Bram hoặc Hiệp Sĩ Canh Lửa để thanh tẩy.",
+      "description": "Chiếc huy hiệu sắt rèn cổ xưa của đội hiệp sĩ hộ vệ đã sa ngã vào sương mù hắc ám, thu giữ sau khi đánh bại Chỉ Huy Hiệp Sĩ Trùm Mũ. Có thể giao nộp cho Edda, Bram hoặc Sir Vaelen — Kỵ Sĩ Trầm Mặc để thanh tẩy.",
       "stackable": false,
       "maxStack": 1,
       "iconColor": "#95a5a6"
@@ -368,7 +368,7 @@
       "id": "quest_corrupted_knight_crest",
       "name": "Huy Hiệu Hiệp Sĩ Tha Hóa",
       "category": "quest",
-      "description": "Huy hiệu cổ ngữ của toán kỵ sĩ bị sương đen nuốt chửng, thu được sau khi hạ gục Hooded Knight Boss trong Rừng Sâu. Hãy mang về cho Hiệp Sĩ Canh Lửa.",
+      "description": "Huy hiệu cổ ngữ của toán kỵ sĩ bị sương đen nuốt chửng, thu được sau khi hạ gục Hooded Knight Boss trong Rừng Sâu. Hãy mang về cho Sir Vaelen — Kỵ Sĩ Trầm Mặc.",
       "stackable": false,
       "maxStack": 1,
       "iconColor": "#95a5a6"

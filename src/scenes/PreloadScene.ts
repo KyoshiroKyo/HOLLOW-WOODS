@@ -618,8 +618,12 @@ export class PreloadScene extends Phaser.Scene {
       frameHeight: 64
     });
 
-    // V14-P8-14A: Nạp sprite NPC Hiệp Sĩ Canh Lửa (Campfire Knight)
+    // V14-P8-14A & V15-31: Nạp sprite NPC Sir Vaelen — Kỵ Sĩ Trầm Mặc (2D_SL_Knight_v1.0_3)
     this.load.spritesheet(SPRITE_CAMPFIRE_KNIGHT_PRAY, 'assets/characters/npcs/campfire_knight_pray_sheet.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet('campfire_knight_pray_sheet.png', 'assets/characters/npcs/campfire_knight_pray_sheet.png', {
       frameWidth: 64,
       frameHeight: 64
     });
@@ -627,7 +631,12 @@ export class PreloadScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64
     });
+    this.load.spritesheet('campfire_knight_idle_sheet.png', 'assets/characters/npcs/campfire_knight_idle_sheet.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
     this.load.image(PORTRAIT_CAMPFIRE_KNIGHT, 'assets/characters/npcs/portrait_campfire_knight.png');
+    this.load.image('portrait_campfire_knight.png', 'assets/characters/npcs/portrait_campfire_knight.png');
 
     // Giữ tương thích các khóa nạp spritesheet cũ (garth_idle, garth_walk, edda_idle, edda_walk, neris_idle, neris_walk)
     this.load.spritesheet(SPRITE_GARTH_IDLE, 'assets/characters/villagers/garth_walk_sheet.png', {

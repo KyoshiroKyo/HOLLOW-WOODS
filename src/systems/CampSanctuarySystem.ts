@@ -15,13 +15,13 @@ import { NPCEntity } from '../entities/NPCEntity';
 export class CampSanctuarySystem {
   private static instance: CampSanctuarySystem | null = null;
 
-  // Tọa độ tâm Lửa Trại Sanctuary Làng Bellhollow (V15-13)
-  public readonly campfireX: number = 860;
-  public readonly campfireY: number = 310;
+  // Tọa độ tâm Bếp Lửa Hồng Trạm Lửa Rừng Tĩnh Lặng (Quiet Forest Bonfire Outpost) của Sir Vaelen (V15-31)
+  public readonly campfireX: number = 1470;
+  public readonly campfireY: number = 710;
 
-  // Tọa độ vị trí Hiệp Sĩ Canh Lửa quỳ gác bên bếp lửa (V15-13: bên trái bếp lửa)
-  public readonly knightX: number = 825;
-  public readonly knightY: number = 310;
+  // Tọa độ vị trí Sir Vaelen — Kỵ Sĩ Trầm Mặc quỳ gác bên bếp lửa (bên trái ngọn lửa)
+  public readonly knightX: number = 1435;
+  public readonly knightY: number = 710;
 
   // Bán kính vùng bảo vệ an toàn của Sanctuary Camp (~180px)
   public readonly sanctuaryRadius: number = 180;
@@ -55,13 +55,13 @@ export class CampSanctuarySystem {
 
   /**
    * Kiểm tra người chơi có đang đứng trong vòng ánh lửa Sanctuary Camp có Hiệp Sĩ canh giữ hay không
+   * V15-31: Bảo hộ tại Trạm Lửa Rừng Tĩnh Lặng giữa Rừng Ngoài và Đường Mòn Quanh Co
    */
   public isPlayerInSanctuary(playerX: number, playerY: number, zoneId?: string): boolean {
-    if (zoneId && zoneId !== 'bellhollow') return false;
+    if (zoneId && zoneId !== 'outer_woods' && zoneId !== 'crooked_path') return false;
     const distToHearth = Math.hypot(playerX - this.campfireX, playerY - this.campfireY);
     const distToKnight = Math.hypot(playerX - this.knightX, playerY - this.knightY);
-    const distToBase = Math.hypot(playerX - 780, playerY - 260);
-    return Math.min(distToHearth, distToKnight, distToBase) <= this.sanctuaryRadius;
+    return Math.min(distToHearth, distToKnight) <= this.sanctuaryRadius;
   }
 
   /**

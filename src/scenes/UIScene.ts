@@ -14,6 +14,8 @@ import { CauldronModal } from '../ui/CauldronModal';
 import { EquipmentModal } from '../ui/EquipmentModal';
 import { MiniMapWidget } from '../ui/MiniMapWidget';
 import { ParchmentWorldMapModal } from '../ui/ParchmentWorldMapModal';
+import { TornPageModal } from '../ui/TornPageModal';
+import { TornPageEntry } from '../data/tornPagesData';
 import { AudioManager } from '../audio/AudioManager';
 import { HUDIconGenerator, HUD_ICON_HEALTH, HUD_ICON_STAMINA, HUD_ICON_OIL, HUD_ICON_COMPOSURE } from '../utils/HUDIconGenerator';
 import { TimePhase, TIME_CONFIG } from '../config/TimeConfig';
@@ -136,6 +138,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   public equipmentModal!: EquipmentModal;
   public miniMapWidget!: MiniMapWidget;
   public parchmentWorldMapModal!: ParchmentWorldMapModal;
+  public tornPageModal!: TornPageModal;
 
   // V1.4 - P6: Thanh Độ Ổn Định Phong Ấn (Boss Seal Bar)
   private bossSealContainer!: Phaser.GameObjects.Container;
@@ -432,11 +435,12 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     // 5b. Dựng khung hộp thoại HD 1280×720 tại (640, 590) (GATE 1A)
     this.buildDialogueUI();
 
-    // 5c. Dựng Bàn Chế Tạo & Sổ Tay & Mini-map & Bản Đồ Giấy Da chuẩn HD 1280×720 tại UIScene Zoom 1.0 (GATE 1B)
+    // 5c. Dựng Bàn Chế Tạo & Sổ Tay & Mini-map & Bản Đồ Giấy Da & Trang Giấy Cổ chuẩn HD 1280×720 tại UIScene Zoom 1.0 (GATE 1B)
     this.getCraftingModal();
     this.getJournalModal();
     this.getMiniMapWidget();
     this.getParchmentWorldMapModal();
+    this.getTornPageModal();
 
     // 6. Lời nhắc tương tác [E] chuẩn HD bán trong suốt (C4-13-07)
     this.promptContainer = this.add.container(640, 616);
@@ -501,6 +505,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       if (this.equipmentModal) { this.equipmentModal.destroy(); this.equipmentModal = undefined as any; }
       if (this.miniMapWidget) { this.miniMapWidget.destroy(); this.miniMapWidget = undefined as any; }
       if (this.parchmentWorldMapModal) { this.parchmentWorldMapModal.destroy(); this.parchmentWorldMapModal = undefined as any; }
+      if (this.tornPageModal) { this.tornPageModal.destroy(); this.tornPageModal = undefined as any; }
       if (this.pooledPopupText) { this.pooledPopupText.destroy(); this.pooledPopupText = undefined as any; }
       if (this.panicVignetteGraphics) { this.panicVignetteGraphics.clear(); this.panicVignetteGraphics = undefined as any; }
       if (this.timeWidgetBg) { this.timeWidgetBg.destroy(); this.timeWidgetBg = undefined as any; }
@@ -1811,7 +1816,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       (!!this.campfireModal && this.campfireModal.isOpen) ||
       (!!this.cauldronModal && this.cauldronModal.isOpen) ||
       (!!this.equipmentModal && this.equipmentModal.isOpen) ||
-      (!!this.parchmentWorldMapModal && this.parchmentWorldMapModal.isOpen);
+      (!!this.parchmentWorldMapModal && this.parchmentWorldMapModal.isOpen) ||
+      (!!this.tornPageModal && this.tornPageModal.isOpen);
   }
 
   /**
@@ -1825,6 +1831,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.campfireModal && this.campfireModal.isOpen) this.campfireModal.close();
     if (this.cauldronModal && this.cauldronModal.isOpen) this.cauldronModal.close();
     if (this.equipmentModal && this.equipmentModal.isOpen) this.equipmentModal.close();
+    if (this.parchmentWorldMapModal && this.parchmentWorldMapModal.isOpen) this.parchmentWorldMapModal.close();
+    if (this.tornPageModal && this.tornPageModal.isOpen) this.tornPageModal.close();
     this.hideDialogue();
     this.handleModalOpened();
     this.setInteractionPrompt(null);
@@ -1984,6 +1992,30 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.journalModal.close();
       return;
     }
+    if (this.equipmentModal && this.equipmentModal.isOpen) {
+      this.equipmentModal.close();
+      return;
+    }
+    if (this.storageChestModal && this.storageChestModal.isOpen) {
+      this.storageChestModal.close();
+      return;
+    }
+    if (this.campfireModal && this.campfireModal.isOpen) {
+      this.campfireModal.close();
+      return;
+    }
+    if (this.cauldronModal && this.cauldronModal.isOpen) {
+      this.cauldronModal.close();
+      return;
+    }
+    if (this.parchmentWorldMapModal && this.parchmentWorldMapModal.isOpen) {
+      this.parchmentWorldMapModal.close();
+      return;
+    }
+    if (this.tornPageModal && this.tornPageModal.isOpen) {
+      this.tornPageModal.close();
+      return;
+    }
     if (this.pauseModal) {
       this.pauseModal.toggle();
     }
@@ -2117,6 +2149,38 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     return this.parchmentWorldMapModal;
   }
 
+  public getTornPageModal(): TornPageModal {
+    if (!this.tornPageModal) {
+      this.tornPageModal = new TornPageModal(this);
+      this.tornPageModal.onOpen = () => this.handleModalOpened();
+      this.tornPageModal.onClose = () => this.handleModalClosed();
+    }
+    return this.tornPageModal;
+  }
+
+  public openTornPage(entry: TornPageEntry, onStowCallback?: () => void): void {
+    if (this.gameOverModal && this.gameOverModal.isOpen) return;
+    if (this.isDialogueActive) this.hideDialogue();
+    if (this.pauseModal && this.pauseModal.isOpen) this.pauseModal.close();
+    if (this.craftingModal && this.craftingModal.isOpen) this.craftingModal.close();
+    if (this.journalModal && this.journalModal.isOpen) this.journalModal.close();
+    if (this.equipmentModal && this.equipmentModal.isOpen) this.equipmentModal.close();
+    if (this.storageChestModal && this.storageChestModal.isOpen) this.storageChestModal.close();
+    if (this.campfireModal && this.campfireModal.isOpen) this.campfireModal.close();
+    if (this.cauldronModal && this.cauldronModal.isOpen) this.cauldronModal.close();
+    if (this.parchmentWorldMapModal && this.parchmentWorldMapModal.isOpen) this.parchmentWorldMapModal.close();
+
+    this.handleModalOpened();
+    this.setInteractionPrompt(null);
+
+    const modal = this.getTornPageModal();
+    modal.onStow = (stowedEntry) => {
+      this.showPopupMessage(`📜 Đã cất vào Sổ Tay [J]: "${stowedEntry.title}"`);
+      if (onStowCallback) onStowCallback();
+    };
+    modal.open(entry);
+  }
+
   public toggleMiniMap(): boolean {
     const mm = this.getMiniMapWidget();
     const vis = mm.toggle();
@@ -2133,6 +2197,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.storageChestModal && this.storageChestModal.isOpen) this.storageChestModal.close();
     if (this.campfireModal && this.campfireModal.isOpen) this.campfireModal.close();
     if (this.cauldronModal && this.cauldronModal.isOpen) this.cauldronModal.close();
+    if (this.tornPageModal && this.tornPageModal.isOpen) this.tornPageModal.close();
     const mapModal = this.getParchmentWorldMapModal();
     return mapModal.toggle();
   }

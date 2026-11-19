@@ -38,9 +38,9 @@
     {
       "id": "lore_campfire_knight_vow",
       "act": 2,
-      "title": "LỜI THỀ CỦA ĐOÀN HIỆP SĨ CANH LỬA",
-      "author": "Hiệp Sĩ Canh Lửa",
-      "content": "Khi Màn Sương The Veil dâng cao và tiếng chuông làng câm bặt, đoàn kỵ sĩ giáp bạc chúng ta đã tuyên thệ: Cho dù bóng tối nuốt trọn bầu trời, chừng nào đống tro tàn này còn le lói một đốm than hồng, thanh gươm này sẽ không bao giờ hạ xuống.\n\nNgọn lửa trại không chỉ xua tan giá buốt, mà là bức tường thành vô hình bảo hộ Bình Tâm của những kẻ lữ hành còn muốn giữ lấy nhân tính giữa rừng hoang."
+      "title": "LỜI THỀ CỦA SIR VAELEN — KỴ SĨ TRẦM MẶC",
+      "author": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
+      "content": "Khi Màn Sương The Veil dâng cao và tiếng chuông làng câm bặt, đoàn kỵ sĩ giáp bạc chúng ta đã tuyên thệ: Cho dù bóng tối nuốt trọn bầu trời, chừng nào đốm than hồng nơi Trạm Lửa Rừng Tĩnh Lặng này còn le lói, thanh gươm này sẽ không bao giờ hạ xuống.\n\nNgọn lửa này không chỉ xua tan giá buốt, mà là bức tường thành vô hình bảo hộ Bình Tâm của những kẻ lữ hành còn muốn giữ lấy nhân tính giữa rừng hoang."
     },
     {
       "id": "lore_memory_chapter_1",
@@ -54,7 +54,7 @@
       "act": 2,
       "title": "HỒI ỨC II: MANH MỐI XƯỞNG CHUÔNG & VĂN BIA CỔ",
       "author": "Tàn Dư Ký Ức Bản Thể",
-      "content": "Lần theo lời chỉ dẫn của Hiệp Sĩ Canh Lửa tới Xưởng Chuông Cũ bị lãng quên, ta chạm tay vào những phiến bia đá rêu phong khắc họa cuộc đại chiến năm xưa. Bia đá ghi lại hình bóng một vị Chỉ Huy Hiệp Sĩ Đen đã dẫn đầu đoàn hiệp sĩ tiến sâu vào lòng rễ ngàn năm để phong ấn khe nứt The Veil. Nhìn thanh gươm và những vết chém quen thuộc trên vách đá, một cảm giác nhức nhối quen thuộc bùng lên nơi đáy mắt... Phải chăng ta không chỉ là một kẻ lữ hành tình cờ ghé qua?"
+      "content": "Lần theo lời chỉ dẫn của Sir Vaelen — Kỵ Sĩ Trầm Mặc tới Xưởng Chuông Cũ bị lãng quên, ta chạm tay vào những phiến bia đá rêu phong khắc họa cuộc đại chiến năm xưa. Bia đá ghi lại hình bóng một vị Chỉ Huy Hiệp Sĩ Đen đã dẫn đầu đoàn hiệp sĩ tiến sâu vào lòng rễ ngàn năm để phong ấn khe nứt The Veil. Nhìn thanh gươm và những vết chém quen thuộc trên vách đá, một cảm giác nhức nhối quen thuộc bùng lên nơi đáy mắt... Phải chăng ta không chỉ là một kẻ lữ hành tình cờ ghé qua?"
     },
     {
       "id": "lore_memory_chapter_3",
@@ -68,14 +68,14 @@
       "act": 4,
       "title": "HỒI ỨC IV: ĐẠI THỨC TỈNH — CHÂN TƯỚNG HIỆP SĨ ĐEN",
       "author": "Hiệp Sĩ Đen (Black Knight)",
-      "content": "Khi cầm trên tay Huy Hiệu Hiệp Sĩ Tha Hóa và đứng trước ngọn lửa ấm Sanctuary Camp, Hiệp Sĩ Canh Lửa đã quỳ gối phủ phục trước ta: 'Mừng ngài trở về, thưa Chỉ Huy Hiệp Sĩ Đen!'. Ký Ức cuối cùng bừng sáng: Ta chính là vị Chỉ Huy huyền thoại đã tự tay xóa đi ký ức của chính mình để tránh bị tâm ma The Veil làm tha hóa, chấp nhận trở thành Kẻ Lữ Hành vô danh để một ngày nào đó quay lại nhổ tận gốc rễ lời nguyền. Giờ đây, thanh gươm bóng tối đã tìm lại chủ nhân chân chính. Ngọn đèn trên tay ta không còn chỉ để soi đường, mà là ngọn lửa dẫn lối giải thoát toàn bộ Khu Rừng Rỗng."
+      "content": "Khi cầm trên tay Huy Hiệu Hiệp Sĩ Tha Hóa và đứng trước ngọn lửa ấm Trạm Lửa Rừng Tĩnh Lặng, Sir Vaelen — Kỵ Sĩ Trầm Mặc đã quỳ gối phủ phục trước ta: 'Mừng ngài trở về, thưa Chỉ Huy Hiệp Sĩ Đen!'. Ký Ức cuối cùng bừng sáng: Ta chính là vị Chỉ Huy huyền thoại đã tự tay xóa đi ký ức của chính mình để tránh bị tâm ma The Veil làm tha hóa, chấp nhận trở thành Kẻ Lữ Hành vô danh để một ngày nào đó quay lại nhổ tận gốc rễ lời nguyền. Giờ đây, thanh gươm bóng tối đã tìm lại chủ nhân chân chính. Ngọn đèn trên tay ta không còn chỉ để soi đường, mà là ngọn lửa dẫn lối giải thoát toàn bộ Khu Rừng Rỗng."
     },
     {
       "id": "lore_wayfarer_inner_journal",
       "act": 4,
       "title": "NHẬT KÝ LỮ KHÁCH: LỜI THỀ TRONG RÊU PHONG",
       "author": "Lữ Khách Rêu Phong (Chỉ Huy Hiệp Sĩ Đen)",
-      "content": "Từng mảnh ký ức như dòng nước ấm chảy qua lớp băng giá của thời gian...\n\nTa nhớ lại rồi. Đêm hôm đó, trước khi The Veil nuốt chửng lý trí của ta, ta đã quỳ gối trước Mạch Rễ cổ thụ, dùng Cổ Ngữ Algiz phong ấn toàn bộ ký ức của chính mình. Ta không thể để một Chỉ Huy bị biến chất quay lại tàn sát những sinh linh mà ta đã thề bảo vệ.\n\nTa đã chọn quên đi tất cả, chấp nhận thức giấc giữa sương mù rêu phong như một kẻ vô danh. Nhưng ngọn lửa của Hiệp Sĩ Canh Lửa, chén thuốc thảo mộc của Neris, sự tận tụy của Bram, lòng dũng cảm của Garth và đôi tai của bé Finn... tất cả đã thắp sáng lại con đường mà ta từng đi.\n\nLời thề bảo vệ Bellhollow chưa bao giờ tắt. Ta sẽ đưa Lưỡi Chuông Đồng trở về đỉnh tháp, hàn gắn Đại Hồng Chung và gióng lên hồi chuông giải phóng vĩnh hằng!"
+      "content": "Từng mảnh ký ức như dòng nước ấm chảy qua lớp băng giá của thời gian...\n\nTa nhớ lại rồi. Đêm hôm đó, trước khi The Veil nuốt chửng lý trí của ta, ta đã quỳ gối trước Mạch Rễ cổ thụ, dùng Cổ Ngữ Algiz phong ấn toàn bộ ký ức của chính mình. Ta không thể để một Chỉ Huy bị biến chất quay lại tàn sát những sinh linh mà ta đã thề bảo vệ.\n\nTa đã chọn quên đi tất cả, chấp nhận thức giấc giữa sương mù rêu phong như một kẻ vô danh. Nhưng ngọn lửa của Sir Vaelen — Kỵ Sĩ Trầm Mặc, chén thuốc thảo mộc của Neris, sự tận tụy của Bram, lòng dũng cảm của Garth và đôi tai của bé Finn... tất cả đã thắp sáng lại con đường mà ta từng đi.\n\nLời thề bảo vệ Bellhollow chưa bao giờ tắt. Ta sẽ đưa Lưỡi Chuông Đồng trở về đỉnh tháp, hàn gắn Đại Hồng Chung và gióng lên hồi chuông giải phóng vĩnh hằng!"
     },
     {
       "id": "lore_knights_memorial_stele",
@@ -431,7 +431,7 @@
       "act": 2,
       "category": "side",
       "title": "NHIỆM VỤ TIẾN TRÌNH: GIỮ LỬA TRONG SƯƠNG",
-      "description": "Hiệp Sĩ Canh Lửa nhờ thu thập Gỗ Khô và Nhựa Thông để tiếp lửa nâng cấp Lửa Trại Trung Tâm làng Bellhollow lên Cấp 2, đồng thời trinh sát bìa Rừng Ngoài (Outer Woods).",
+      "description": "Sir Vaelen — Kỵ Sĩ Trầm Mặc nhờ thu thập Gỗ Khô và Nhựa Cây để tiếp lửa nâng cấp Bếp Lửa Hồng tại Trạm Lửa Rừng Tĩnh Lặng (Outer Woods) lên Cấp 2, đồng thời trinh sát bìa Rừng Ngoài.",
       "tasks": [
         {
           "id": "t1",
@@ -440,12 +440,12 @@
         },
         {
           "id": "t2",
-          "text": "Tiếp nhiên liệu nâng cấp Lửa Trại Trung Tâm lên Cấp 2",
+          "text": "Tiếp nhiên liệu nâng cấp Bếp Lửa Hồng lên Cấp 2",
           "done": false
         },
         {
           "id": "t3",
-          "text": "Trinh sát bìa Rừng Ngoài và báo cáo với Hiệp Sĩ Canh Lửa",
+          "text": "Trinh sát bìa Rừng Ngoài và báo cáo với Sir Vaelen — Kỵ Sĩ Trầm Mặc",
           "done": false
         }
       ]
@@ -455,7 +455,7 @@
       "act": 3,
       "category": "side",
       "title": "NHIỆM VỤ TIẾN TRÌNH: DẤU VẾT ĐỒNG ĐỘI CŨ",
-      "description": "Men theo con đường vòng uốn lượn tới Xưởng Chuông Bỏ Hoang ở phía Nam để thu hồi Phôi Sắt Cổ Ngữ và Mảnh Nhật Ký còn sót lại của đoàn kỵ sĩ.",
+      "description": "Men theo con đường vòng uốn lượn tới Xưởng Chuông Bỏ Hoang ở phía Nam để thu hồi Phôi Sắt Cổ Ngữ và Mảnh Nhật Ký còn sót lại của đoàn kỵ sĩ trao cho Sir Vaelen — Kỵ Sĩ Trầm Mặc.",
       "tasks": [
         {
           "id": "t1",
@@ -469,7 +469,7 @@
         },
         {
           "id": "t3",
-          "text": "Mang kỷ vật trở về bên ánh lửa trao cho Hiệp Sĩ Canh Lửa",
+          "text": "Mang kỷ vật trở về Trạm Lửa Rừng Tĩnh Lặng trao cho Sir Vaelen — Kỵ Sĩ Trầm Mặc",
           "done": false
         }
       ]
@@ -479,7 +479,7 @@
       "act": 4,
       "category": "side",
       "title": "NHIỆM VỤ TIẾN TRÌNH: GIẢI THOÁT CHO NHỮNG KẺ THA HÓA",
-      "description": "Tiến sâu vào Rừng Sâu, đánh bại Chỉ Huy Hiệp Sĩ Trùm Mũ (Hooded Knight Boss) bị bóng tối điều khiển và mang Huy Hiệu Hiệp Sĩ Tha Hóa trở về bên bếp lửa để thanh tẩy.",
+      "description": "Tiến sâu vào Rừng Sâu, đánh bại Chỉ Huy Hiệp Sĩ Trùm Mũ (Hooded Knight Boss) bị bóng tối điều khiển và mang Huy Hiệu Hiệp Sĩ Tha Hóa trở về bên bếp lửa cho Sir Vaelen — Kỵ Sĩ Trầm Mặc để thanh tẩy.",
       "tasks": [
         {
           "id": "t1",
@@ -493,7 +493,7 @@
         },
         {
           "id": "t3",
-          "text": "Mang Huy Hiệu Hiệp Sĩ Tha Hóa về bên Lửa Trại để hiệp sĩ niệm chú thanh tẩy",
+          "text": "Mang Huy Hiệu Hiệp Sĩ Tha Hóa về Trạm Lửa Rừng Tĩnh Lặng để Sir Vaelen thanh tẩy",
           "done": false
         }
       ]
