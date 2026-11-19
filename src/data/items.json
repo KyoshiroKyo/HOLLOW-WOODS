@@ -359,16 +359,7 @@
       "id": "quest_corrupted_crest",
       "name": "Huy Hiệu Hiệp Sĩ Tha Hóa",
       "category": "quest",
-      "description": "Chiếc huy hiệu sắt rèn cổ xưa của đội hiệp sĩ hộ vệ đã sa ngã vào sương mù hắc ám, thu giữ sau khi đánh bại Chỉ Huy Hiệp Sĩ Trùm Mũ. Có thể giao nộp cho Edda, Bram hoặc Sir Vaelen — Kỵ Sĩ Trầm Mặc để thanh tẩy.",
-      "stackable": false,
-      "maxStack": 1,
-      "iconColor": "#95a5a6"
-    },
-    {
-      "id": "quest_corrupted_knight_crest",
-      "name": "Huy Hiệu Hiệp Sĩ Tha Hóa",
-      "category": "quest",
-      "description": "Huy hiệu cổ ngữ của toán kỵ sĩ bị sương đen nuốt chửng, thu được sau khi hạ gục Hooded Knight Boss trong Rừng Sâu. Hãy mang về cho Sir Vaelen — Kỵ Sĩ Trầm Mặc.",
+      "description": "Chiếc huy hiệu sắt rèn cổ xưa của đội hiệp sĩ hộ vệ đã sa ngã vào sương mù hắc ám, thu giữ sau khi đánh bại Chỉ Huy Hiệp Sĩ Trùm Mũ hoặc khảo sát Phong Ấn Rễ Cổ tại Đầm Lầy. Có thể mang về cho Sir Vaelen — Kỵ Sĩ Trầm Mặc tại Trạm Lửa để giải mã và thanh tẩy.",
       "stackable": false,
       "maxStack": 1,
       "iconColor": "#95a5a6"
@@ -570,7 +561,7 @@
     },
     {
       "id": "craft_skull_fang_charm",
-      "resultItemId": "charm_calming_bell",
+      "resultItemId": "eqp_bell_ward_charm",
       "resultCount": 1,
       "name": "Chế Tạo Bùa Hộ Mệnh Nanh Xương",
       "description": "Bện Nanh Xương Cổ cùng Dây thừng rừng và Nhựa cây tạo Bùa hộ mệnh xoa dịu Tinh Thần và kháng kinh hoàng.",
@@ -582,7 +573,7 @@
     },
     {
       "id": "craft_abyssal_ward_charm",
-      "resultItemId": "charm_calming_bell",
+      "resultItemId": "eqp_bell_ward_charm",
       "resultCount": 1,
       "name": "Thanh Tẩy Bùa Hộ Mệnh Vực Thẳm",
       "description": "Kết hợp Mảnh Tinh Chất Bóng Tối với Bùa Chuông Đồng và Nhựa Thông Cổ, tạo lớp bảo vệ vững chắc chống hoảng loạn.",
@@ -594,7 +585,7 @@
     },
     {
       "id": "craft_purified_crest_ward",
-      "resultItemId": "equip_bell_charm",
+      "resultItemId": "eqp_bell_ward_charm",
       "resultCount": 1,
       "name": "Thanh Tẩy Huy Hiệu Tha Hóa",
       "description": "Thanh tẩy Huy Hiệu Hiệp Sĩ Tha Hóa cùng Nhựa Thông Cổ và Thảo Dược, tôi rèn lại thành Bùa Chuông Đồng bảo hộ tâm trí.",
