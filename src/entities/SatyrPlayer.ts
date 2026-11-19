@@ -1816,14 +1816,23 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     }
 
     const state = PlayerState.getInstance();
-    if (this.stats.lanternOil <= 0) {
+    
+    // V15-54: Chi phí cân bằng bật sáng [F]:
+    // - Mỗi khi nhấn [F] kích hoạt vòng sáng tiêu tốn ngay 10 điểm Thể Lực (Stamina) để nhóm lửa hộ tâm.
+    // - Nếu Thể Lực < 10, không thể bật và hiện thông báo nhắc nhở.
+    if (!this.stats.isLanternOn) {
+      if (this.stats.stamina < 10) {
+        (this.scene as any).uiScene?.showPopupMessage?.('⚠️ Không đủ Thể Lực để nhóm lửa hộ tâm! (Cần 10 Thể Lực)');
+        return;
+      }
+      this.stats.stamina = Math.max(0, this.stats.stamina - 10);
+      this.stats.isLanternOn = true;
+      (this.scene as any).audioManager?.playSfx?.('lantern_ignite');
+    } else {
       this.stats.isLanternOn = false;
-      state.emit('stats_changed', this.stats);
-      state.emit('lantern_empty');
-      this.updateLanternVisual();
-      return;
+      (this.scene as any).audioManager?.playSfx?.('lantern_extinguish');
     }
-    this.stats.isLanternOn = !this.stats.isLanternOn;
+
     state.emit('stats_changed', this.stats);
     this.updateLanternVisual();
 
@@ -1967,59 +1976,34 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   public updateLanternVisual(): void {
     if (!this.lanternOverlayGfx) return;
 
-    const lanternPos = this.getLanternWorldPosition();
-    if (!lanternPos.isVisible) {
+    // V15-54: Tự động tắt và xóa quầng sáng nếu không bật, Thể Lực < 5, nhân vật đã chết hoặc đang ẩn nấp
+    if (!this.stats.isLanternOn || this.stats.stamina < 5 || this._isDead || this.stats.isHiding) {
       this.lanternOverlayGfx.clear();
       return;
     }
 
-    const hasOil = this.stats.lanternOil > 0;
-    const isLit = this.stats.isLanternOn && hasOil;
+    const lx = Math.round(this.x);
+    const ly = Math.round(this.y - 10);
 
-    if (!isLit) {
-      // C4-13-04: Xóa bỏ hoàn toàn khối hộp vuông màu nâu tách rời.
-      // Khi đèn tắt, texture nhân vật đã có sẵn cây gậy gỗ pixel-art tự nhiên.
-      this.lanternOverlayGfx.clear();
-      return;
-    }
-
-    const lx = lanternPos.x;
-    const ly = lanternPos.y;
-
-    // Chiếu độ sâu đồ họa phù hợp theo từng hướng nhìn:
-    // - Hướng UP: gậy và đèn bị thân người phía sau che khuất -> depth - 1
-    // - Hướng DOWN, LEFT, RIGHT: gậy và đèn ở phía trước cơ thể -> depth + 1
-    const lanternDepth = this.facing === 'up' ? this.depth - 1 : this.depth + 1;
-    if (this.lanternOverlayGfx.depth !== lanternDepth) {
-      this.lanternOverlayGfx.setDepth(lanternDepth);
-    }
+    // V15-54: Xóa bỏ hoàn toàn sprite đèn lồng cầm tay và khối hình tròn đặc đè lên người nhân vật.
+    // Thay thế bằng Vòng Sáng Ấm Dịu (Soft Radial Warm Aura) — tán sáng mờ dần đều, không viền cứng.
     this.lanternOverlayGfx.clear();
+    this.lanternOverlayGfx.setDepth(this.depth - 1); // Đặt dịu nhẹ phía dưới / quanh người
 
-    const time = this.scene.time.now;
-    const flicker = Math.sin(time * 0.009) * 0.08 + Math.cos(time * 0.017) * 0.05;
+    const time = this.scene.time ? this.scene.time.now : performance.now();
+    const flicker = Math.sin(time * 0.005) * 0.015;
 
-    // 1. Quầng sáng dịu nhẹ bao quanh lồng đèn (Soft Ambient Micro-Glow)
-    this.lanternOverlayGfx.fillStyle(0xf39c12, Math.max(0.06, 0.12 + flicker));
-    this.lanternOverlayGfx.fillCircle(lx, ly + 0.5, 9);
+    // Lớp 1: Tán sáng ngoài cùng (bán kính 64px, alpha 0.02)
+    this.lanternOverlayGfx.fillStyle(0xf39c12, Math.max(0.01, 0.02 + flicker));
+    this.lanternOverlayGfx.fillCircle(lx, ly, 64);
 
-    this.lanternOverlayGfx.fillStyle(0xf1c40f, Math.max(0.12, 0.22 + flicker));
-    this.lanternOverlayGfx.fillCircle(lx, ly + 0.5, 5);
+    // Lớp 2: Quầng sáng trung gian (bán kính 44px, alpha 0.038)
+    this.lanternOverlayGfx.fillStyle(0xf1c40f, Math.max(0.015, 0.038 + flicker));
+    this.lanternOverlayGfx.fillCircle(lx, ly, 44);
 
-    this.lanternOverlayGfx.fillStyle(0xfff7db, Math.max(0.25, 0.40 + flicker));
-    this.lanternOverlayGfx.fillCircle(lx, ly + 0.5, 2.5);
-
-    // 2. Điểm xuyết ngọn lửa và tim đèn sống động (Living Core Flame)
-    this.lanternOverlayGfx.fillStyle(0xfefae0, 0.95);
-    this.lanternOverlayGfx.fillRect(lx, ly, 1, 1);
-
-    const flameTipOffsetY = Math.sin(time * 0.02) > 0 ? -1 : 0;
-    this.lanternOverlayGfx.fillStyle(0xffd166, 0.85);
-    this.lanternOverlayGfx.fillRect(lx, ly + flameTipOffsetY, 1, 1);
-
-    // Vệt sáng thủy tinh màu hổ phách
-    this.lanternOverlayGfx.fillStyle(0xf39c12, 0.45);
-    this.lanternOverlayGfx.fillRect(lx - 1, ly - 1, 1, 1);
-    this.lanternOverlayGfx.fillRect(lx + 1, ly + 1, 1, 1);
+    // Lớp 3: Hào quang ấm áp cốt lõi (bán kính 26px, alpha 0.065)
+    this.lanternOverlayGfx.fillStyle(0xffe082, Math.max(0.025, 0.065 + flicker));
+    this.lanternOverlayGfx.fillCircle(lx, ly, 26);
   }
 
   public destroy(fromScene?: boolean): void {

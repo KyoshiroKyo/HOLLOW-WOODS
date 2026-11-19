@@ -114,7 +114,7 @@ export class ItemTooltipHelper {
       }
       if (equipDef.composureDrainMod !== undefined) {
         const val = Math.round((1 - equipDef.composureDrainMod) * 100);
-        statEffects.push(`• Giảm ${val}% tốc độ tụt Bình Tâm trong bóng tối`);
+        statEffects.push(`• Giảm ${val}% tốc độ tụt Tinh Thần trong bóng tối`);
       }
       if (equipDef.detectEchoProximity) {
         statEffects.push(`• Rung chuông cảnh báo khi lại gần Tiếng Vọng Ký Ức`);
@@ -185,8 +185,7 @@ export class ItemTooltipHelper {
       const effects = (raw as any)?.effects;
       if (effects) {
         if (effects.health) statEffects.push(`• Hồi phục: +${effects.health} Sinh Lực (Máu)`);
-        if (effects.composure) statEffects.push(`• Trấn an: +${effects.composure} Bình Tâm`);
-        if (effects.lanternOil) statEffects.push(`• Nhiên liệu: +${effects.lanternOil}% Dầu Đèn Lồng`);
+        if (effects.composure) statEffects.push(`• Trấn an: +${effects.composure} Tinh Thần`);
         if (effects.stamina) statEffects.push(`• Hồi phục: +${effects.stamina} Thể Lực`);
       }
     } else if (cat === 'resource') {

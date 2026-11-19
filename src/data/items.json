@@ -47,21 +47,21 @@
     },
     {
       "id": "item_lantern_oil",
-      "name": "Bình Dầu Đèn",
+      "name": "Hương Trầm Tinh Thần",
       "category": "consumable",
-      "description": "Nhiên liệu tinh chế nạp lại 50% dung tích ngọn đèn lồng.",
+      "description": "Hương trầm thảo mộc tinh chế, khi thắp giúp xoa dịu thần kinh, hồi phục ngay +25 Tinh Thần.",
       "stackable": true,
       "maxStack": 10,
-      "iconColor": "#ff9800",
+      "iconColor": "#a29bfe",
       "effects": {
-        "lanternOil": 50
+        "composure": 25
       }
     },
     {
       "id": "item_herbal_poultice",
       "name": "Thuốc Đắp Thảo Mộc",
       "category": "consumable",
-      "description": "Hỗn hợp lá thuốc nghiền nát thơm mùi đất ẩm. Hồi phục 40 Máu và xoa dịu 25 Bình Tâm.",
+      "description": "Hỗn hợp lá thuốc nghiền nát thơm mùi đất ẩm. Hồi phục 40 Máu và xoa dịu 25 Tinh Thần.",
       "stackable": true,
       "maxStack": 10,
       "iconColor": "#4caf50",
@@ -128,7 +128,7 @@
       "id": "food_calming_tea",
       "name": "Trà Thảo Dược An Thần",
       "category": "consumable",
-      "description": "Trà thảo mộc ấm nấu tại Nồi Thảo Dược, hồi 40 Bình Tâm và làm ấm Thân Nhiệt (+15°).",
+      "description": "Trà thảo mộc ấm nấu tại Nồi Thảo Dược, hồi 40 Tinh Thần và làm ấm Thân Nhiệt (+15°).",
       "stackable": true,
       "maxStack": 10,
       "iconColor": "#48bb78",
@@ -251,7 +251,7 @@
       "name": "Bùa Chuông Cổ",
       "category": "equipment",
       "slot": "charm",
-      "description": "Bùa hộ mệnh chuông đồng ban tặng bởi Edda, giảm 25% tốc độ tụt Bình Tâm trong bóng tối và rung báo hiệu khi gần Ký Ức.",
+      "description": "Bùa hộ mệnh chuông đồng ban tặng bởi Edda, giảm 25% tốc độ tụt Tinh Thần trong bóng tối và rung báo hiệu khi gần Ký Ức.",
       "stackable": false,
       "maxStack": 1,
       "iconColor": "#f1c40f"
@@ -305,7 +305,7 @@
       "id": "item_medicinal_roots",
       "name": "Rễ Thuốc Cổ Quý Hiếm",
       "category": "material",
-      "description": "Rễ cây thảo dược cổ thụ mọc ngầm dưới lòng đất Hầm Rễ Cổ, dùng sắc Trà An Thần thượng hạng xoa dịu Bình Tâm.",
+      "description": "Rễ cây thảo dược cổ thụ mọc ngầm dưới lòng đất Hầm Rễ Cổ, dùng sắc Trà An Thần thượng hạng xoa dịu Tinh Thần.",
       "stackable": true,
       "maxStack": 10,
       "iconColor": "#795548"
@@ -332,7 +332,7 @@
       "id": "item_root_flower",
       "name": "Hoa Mạch Rễ Cổ",
       "category": "material",
-      "description": "Bông hoa phát sáng xanh dịu mọc trên thân rễ ngàn năm dưới Hầm Cổ, dược chất quý giúp giữ vững Bình Tâm và sắc Trà An Thần.",
+      "description": "Bông hoa phát sáng xanh dịu mọc trên thân rễ ngàn năm dưới Hầm Cổ, dược chất quý giúp giữ vững Tinh Thần và sắc Trà An Thần.",
       "stackable": true,
       "maxStack": 10,
       "iconColor": "#2ecc71"
@@ -388,8 +388,8 @@
       "id": "craft_lantern_oil",
       "resultItemId": "item_lantern_oil",
       "resultCount": 1,
-      "name": "Chế Tạo Dầu Đèn",
-      "description": "Chưng cất nhựa cây thông cùng gỗ khô để tạo dầu thắp sáng.",
+      "name": "Luyện Hương Trầm Tinh Thần",
+      "description": "Nghiền nhựa thông cổ cùng gỗ khô tạo thành hương trầm xua tan kinh hoàng và hồi phục Tinh Thần.",
       "ingredients": [
         { "itemId": "res_tree_resin", "count": 1 },
         { "itemId": "res_dry_wood", "count": 1 }
@@ -555,7 +555,7 @@
       "resultItemId": "charm_calming_bell",
       "resultCount": 1,
       "name": "Chế Tạo Bùa Hộ Mệnh Nanh Xương",
-      "description": "Bện Nanh Xương Cổ cùng Dây thừng rừng và Nhựa cây tạo Bùa hộ mệnh xoa dịu Bình Tâm và kháng kinh hoàng.",
+      "description": "Bện Nanh Xương Cổ cùng Dây thừng rừng và Nhựa cây tạo Bùa hộ mệnh xoa dịu Tinh Thần và kháng kinh hoàng.",
       "ingredients": [
         { "itemId": "mat_skull_fang", "count": 1 },
         { "itemId": "mat_forest_rope", "count": 1 },

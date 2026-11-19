@@ -4,7 +4,6 @@ import { CampSanctuarySystem } from './CampSanctuarySystem';
 import { 
   STAMINA_DRAIN_RATE, 
   STAMINA_RECOVERY_RATE, 
-  LANTERN_OIL_DRAIN_RATE,
   COMPOSURE_DRAIN_IN_DARK,
   COMPOSURE_RECOVERY_NEAR_LIGHT
 } from '../config/Constants';
@@ -84,7 +83,7 @@ export class SurvivalSystem {
         const isSoaked = stats.moisture !== undefined && stats.moisture >= 70;
         let recoveryRate = isSoaked ? STAMINA_RECOVERY_RATE * 0.75 : STAMINA_RECOVERY_RATE;
 
-        // V1.5 (BƯỚC V15-05): Ngưỡng Bất An (Bình Tâm từ 25 đến 40/100) và các ngưỡng thấp hơn:
+        // V1.5 (BƯỚC V15-05): Ngưỡng Bất An (Tinh Thần từ 25 đến 40/100) và các ngưỡng thấp hơn:
         // Tốc độ hồi Thể Lực giảm 15% do áp lực tâm lý
         if (stats.composure <= 40) {
           recoveryRate *= 0.85;
@@ -94,16 +93,17 @@ export class SurvivalSystem {
       }
     }
 
-    // 2. Quản lý Dầu đèn lồng (Lantern Oil)
+    // 2. V15-54: Vòng sáng ấm dịu [F] tiêu hao nhẹ 1.2 Thể Lực / giây trong lúc duy trì sáng
     if (stats.isLanternOn) {
-      stats.lanternOil = Math.max(0, stats.lanternOil - LANTERN_OIL_DRAIN_RATE * dt);
-      if (stats.lanternOil <= 0) {
+      stats.stamina = Math.max(0, stats.stamina - 1.2 * dt);
+      if (stats.stamina < 5) {
         stats.isLanternOn = false;
-        this.playerState.emit('lantern_empty');
+        this.playerState.emit('lantern_exhausted');
+        this.playerState.emit('stats_changed', stats);
       }
     }
 
-    // 3. Quản lý Bình tâm (Composure) & Máu (Health) theo vùng nguồn nhiệt ấm áp (C4-132-02)
+    // 3. Quản lý Tinh Thần (Composure) & Máu (Health) theo vùng nguồn nhiệt ấm áp (C4-132-02)
     let nearCampfire = false;
     for (const source of this.warmSources) {
       if (Math.hypot(playerX - source.x, playerY - source.y) <= source.radius) {
@@ -130,16 +130,16 @@ export class SurvivalSystem {
       const campSanctuary = CampSanctuarySystem.getInstance();
       const inSanctuary = campSanctuary.isPlayerInSanctuary(playerX, playerY, zoneId);
       const composureMult = inSanctuary ? campSanctuary.getComposureRecoveryMultiplier() : 1.0;
-      // V1.5 (BƯỚC V15-05): Hồi máu nhẹ (+4 HP/s) và hồi phục Bình Tâm (+4.0/s) khi đứng cạnh nguồn nhiệt / lửa trại đang cháy
+      // V1.5 (BƯỚC V15-05): Hồi máu nhẹ (+4 HP/s) và hồi phục Tinh Thần (+4.0/s) khi đứng cạnh nguồn nhiệt / lửa trại đang cháy
       stats.health = Math.min(stats.maxHealth, stats.health + 4 * dt);
       stats.composure = Math.min(stats.maxComposure, stats.composure + (4.0 * composureMult) * dt);
     } else if (isProtected) {
       // V1.5 (BƯỚC V15-05): Khi là BAN NGÀY (DAY) hoặc đứng trong vùng an toàn Làng Bellhollow:
-      // Bình Tâm không tự tụt mà được hồi phục chậm tự nhiên (+1.5 mỗi giây)
+      // Tinh Thần không tự tụt mà được hồi phục chậm tự nhiên (+1.5 mỗi giây)
       stats.composure = Math.min(stats.maxComposure, stats.composure + 1.5 * dt);
     } else {
       if (!stats.isLanternOn) {
-        // Ngoài vùng an toàn, vào ban đêm/hoàng hôn & trong bóng tối: Composure sụt giảm dựa trên chu kỳ ngày/đêm V1.4
+        // Ngoài vùng an toàn, vào ban đêm/hoàng hôn & trong bóng tối: Tinh Thần sụt giảm dựa trên chu kỳ ngày/đêm V1.4
         let drain: number;
         if (timePhase && TIME_CONFIG.phases[timePhase]) {
           const phaseCfg = TIME_CONFIG.phases[timePhase];
@@ -151,7 +151,7 @@ export class SurvivalSystem {
         const composureDrainMod = equipSys.getComposureDrainMultiplier();
         stats.composure = Math.max(0, stats.composure - drain * composureDrainMod * dt);
       } else if (!isBossArena) {
-        // Có ánh đèn lồng: Composure hồi phục dần theo pha (trong phòng Boss, đèn lồng không thể tự hồi phục Bình Tâm mà cần dùng Trà An Thần)
+        // Có ánh sáng vòng hộ tâm: Tinh Thần hồi phục dần theo pha
         let recoveryRate = COMPOSURE_RECOVERY_NEAR_LIGHT;
         if (timePhase && TIME_CONFIG.phases[timePhase]) {
           recoveryRate = TIME_CONFIG.phases[timePhase].composureRecoveryLit;
@@ -163,7 +163,7 @@ export class SurvivalSystem {
     // V15-47: Thiết lập cơ chế rút Sinh Lực (HP) mạnh dần khi Tinh thần suy sụp
     if (isBossArena) {
       if (stats.composure < 50) {
-        // V15-47: Trong phòng Boss Miếu Chuông, khi Bình Tâm < 50/100, tốc độ tụt Sinh Lực do hoảng loạn tăng nhanh:
+        // V15-47: Trong phòng Boss Miếu Chuông, khi Tinh Thần < 50/100, tốc độ tụt Sinh Lực do hoảng loạn tăng nhanh:
         // Rút 3.5 HP mỗi 1.5 giây (~2.333 HP/s) để tạo áp lực sinh tồn buộc người chơi phải phá 3 Trụ Phong Ấn hoặc dùng Trà An Thần
         const drainHp = (3.5 / 1.5) * dt;
         stats.health = Math.max(0, stats.health - drainHp);

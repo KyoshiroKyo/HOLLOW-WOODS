@@ -139,7 +139,7 @@ export class GameOverModal {
       strokeThickness: 3
     }).setOrigin(0.5, 0.5);
 
-    this.scoreDetailText = HDTextHelper.createText(this.scene, leftCenterX, modalY + 152, 'Sống sót: Ngày 1 • Bình tâm: 100% • Khám phá: 0', {
+    this.scoreDetailText = HDTextHelper.createText(this.scene, leftCenterX, modalY + 152, 'Sống sót: Ngày 1 • Tinh thần: 100% • Khám phá: 0', {
       fontSize: '11px',
       color: '#ecf0f1',
       stroke: '#000000',
@@ -428,7 +428,7 @@ export class GameOverModal {
       this.scoreTitleText.setText(`ĐIỂM SINH TỒN: ${score.toLocaleString()} ĐIỂM`);
       const secrets = (scoreParams.unlockedLoreCount || 0) + (scoreParams.relicsCount || 0);
       this.scoreDetailText.setText(
-        `Sống sót: Ngày ${scoreParams.dayCount} • Bình tâm: ${Math.round(scoreParams.composure)}% • Bí mật: ${secrets}`
+        `Sống sót: Ngày ${scoreParams.dayCount} • Tinh thần: ${Math.round(scoreParams.composure)}% • Bí mật: ${secrets}`
       );
     } else {
       this.scoreTitleText.setText('ĐIỂM SINH TỒN: ĐANG CẬP NHẬT');

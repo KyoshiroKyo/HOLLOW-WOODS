@@ -202,7 +202,7 @@ export class KeycapBadgeHelper {
     container.add(h2);
     curY += 22;
 
-    const r3 = this.createActionRow(scene, 0, curY, ['F'], 'Đèn Lồng Hổ Phách', 'Bật / Tắt nguồn sáng thiêng liêng — giữ Bình Tâm & xua tan Sương', contentWidth);
+    const r3 = this.createActionRow(scene, 0, curY, ['F'], 'Hào Quang Hộ Tâm', 'Bật / Tắt nguồn sáng ấm áp — giữ Tinh Thần & xua tan Sương (tiêu hao Thể Lực)', contentWidth);
     container.add(r3);
     curY += 34;
 

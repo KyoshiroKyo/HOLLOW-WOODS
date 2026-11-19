@@ -363,8 +363,8 @@ export class PlayerState extends Phaser.Events.EventEmitter {
       this.stats.composure = Math.min(this.stats.maxComposure, this.stats.composure + itemMeta.effects.composure);
       applied = true;
     }
-    if (itemMeta.effects.lanternOil !== undefined && this.stats.lanternOil < this.stats.maxLanternOil) {
-      this.stats.lanternOil = Math.min(this.stats.maxLanternOil, this.stats.lanternOil + itemMeta.effects.lanternOil);
+    if ((itemMeta.effects as any)?.lanternOil !== undefined && this.stats.lanternOil < this.stats.maxLanternOil) {
+      this.stats.lanternOil = Math.min(this.stats.maxLanternOil, this.stats.lanternOil + (itemMeta.effects as any).lanternOil);
       applied = true;
     }
 

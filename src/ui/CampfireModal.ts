@@ -134,7 +134,7 @@ export class CampfireModal {
       fontSize: '13px',
       color: '#cbd5e0'
     });
-    this.composureText = HDTextHelper.createText(this.scene, cx - 220, cy - h / 2 + 172, '• Tốc độ hồi Bình Tâm: +0.5/giây | Hong khô Độ Ẩm cực nhanh', {
+    this.composureText = HDTextHelper.createText(this.scene, cx - 220, cy - h / 2 + 172, '• Tốc độ hồi Tinh Thần: +0.5/giây | Hong khô Độ Ẩm cực nhanh', {
       fontSize: '13px',
       color: '#cbd5e0'
     });
@@ -295,7 +295,7 @@ export class CampfireModal {
     this.fuelText.setText(`Thời gian cháy còn lại: ${minutes}m ${seconds}s (${fuel} giây)`);
 
     this.radiusText.setText(`• Bán kính sưởi ấm & ánh sáng: ${radius} px`);
-    this.composureText.setText(`• Tốc độ hồi Bình Tâm: +${compBonus}/giây | Hong khô Độ Ẩm cực nhanh`);
+    this.composureText.setText(`• Tốc độ hồi Tinh Thần: +${compBonus}/giây | Hong khô Độ Ẩm cực nhanh`);
 
     const woodCount = this.playerState.getItemCount('res_dry_wood');
     const resinCount = this.playerState.getItemCount('res_tree_resin');

@@ -642,12 +642,12 @@ export class GameScene extends Phaser.Scene {
     });
     this.events.on('shadow_eyes_drain', () => {
       if (this.uiScene) {
-        this.uiScene.showPopupMessage('👁️ Cặp mắt trong sương rút cạn Bình Tâm! Bật Đèn Lồng [F] ngay!');
+        this.uiScene.showPopupMessage('👁️ Cặp mắt trong sương rút cạn Tinh Thần! Bật Hào Quang [F] ngay!');
       }
     });
     this.events.on('shadow_eyes_vanished', () => {
       if (this.uiScene) {
-        this.uiScene.showPopupMessage('✨ Ánh sáng đèn lồng đã xua tan Bóng Mắt Sương Mù!');
+        this.uiScene.showPopupMessage('✨ Hào quang sáng đã xua tan Bóng Mắt Sương Mù!');
       }
     });
     this.events.on('behemoth_slam_warning', () => {
@@ -711,7 +711,12 @@ export class GameScene extends Phaser.Scene {
     };
     const onLanternEmpty = () => {
       if (this.uiScene) {
-        this.uiScene.showPopupMessage('⚠️ Đèn lồng đã cạn sạch dầu! Nhấn [2] để nạp Bình Dầu Đèn.');
+        this.uiScene.showPopupMessage('Thể lực cạn kiệt, hào quang ấm áp vụt tắt!');
+      }
+    };
+    const onLanternExhausted = () => {
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('Thể lực cạn kiệt, hào quang ấm áp vụt tắt!');
       }
     };
     const onUIToggleLantern = () => {
@@ -731,6 +736,7 @@ export class GameScene extends Phaser.Scene {
 
     this.playerState.on('q03_resources_ready', onQ03ResourcesReady);
     this.playerState.on('lantern_empty', onLanternEmpty);
+    this.playerState.on('lantern_exhausted', onLanternExhausted);
     this.uiScene.events.on('ui_toggle_lantern', onUIToggleLantern);
     this.uiScene.events.on('ui_throw_lure', onUIThrowLure);
 
@@ -834,6 +840,7 @@ export class GameScene extends Phaser.Scene {
       this.time.removeAllEvents();
       this.playerState.off('q03_resources_ready', onQ03ResourcesReady);
       this.playerState.off('lantern_empty', onLanternEmpty);
+      this.playerState.off('lantern_exhausted', onLanternExhausted);
       if (this.keyESC) this.keyESC.removeAllListeners();
       if (this.keyM) this.keyM.removeAllListeners();
       if (this.keyN) this.keyN.removeAllListeners();
@@ -3185,12 +3192,12 @@ export class GameScene extends Phaser.Scene {
       this.wasInSanctuary = true;
       if (this.uiScene) {
         this.uiScene.triggerSanctuaryReliefGlow();
-        this.uiScene.showPopupMessage('🕊️ Bạn đã bước vào vùng an toàn của Làng Chuông. Bình Tâm đang hồi phục.');
+        this.uiScene.showPopupMessage('🕊️ Bạn đã bước vào vùng an toàn của Làng Chuông. Tinh Thần đang hồi phục.');
       }
     } else if (!isInSanctuary && this.wasInSanctuary) {
       this.wasInSanctuary = false;
       if (this.uiScene) {
-        this.uiScene.showPopupMessage('🌫️ Bạn đã rời khỏi ranh giới an toàn. Hãy giữ ngọn Đèn Lồng [F] sáng để bảo vệ Bình Tâm!');
+        this.uiScene.showPopupMessage('🌫️ Bạn đã rời khỏi ranh giới an toàn. Hãy bật Hào Quang [F] để bảo vệ Tinh Thần!');
       }
     }
 
@@ -6580,7 +6587,7 @@ export class GameScene extends Phaser.Scene {
     if (brazier.isLit) return;
     if (!this.playerState.stats.isLanternOn) {
       if (this.uiScene) {
-        this.uiScene.showPopupMessage('⚠️ Cần bật Đèn Lồng [F] hoặc dùng Đuốc Nhựa Thông để thắp sáng đài lửa!');
+        this.uiScene.showPopupMessage('⚠️ Cần bật Hào Quang Sáng [F] hoặc dùng Đuốc Nhựa Thông để thắp sáng đài lửa!');
       }
       return;
     }

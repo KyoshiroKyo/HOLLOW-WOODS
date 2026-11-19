@@ -43,8 +43,8 @@
       "speaker": "Garth – Người Gác Cổng",
       "portrait": "portrait_garth",
       "lines": [
-        "Bà Edda đã dặn rồi: Rừng ngoài kia nguy hiểm khôn lường. Muốn ta mở Cổng Đông, ngươi phải tới gặp Neris ở tiệm thuốc để chữa thương và chuẩn bị ít nhất 1 Bình Dầu Đèn dự phòng!",
-        "Không có dầu đèn giữ sáng, ngươi sẽ mất trí trong sương mù chỉ sau vài bước chân!"
+        "Bà Edda đã dặn rồi: Rừng ngoài kia nguy hiểm khôn lường. Muốn ta mở Cổng Đông, ngươi phải tới gặp Neris ở tiệm thuốc để chữa thương và chuẩn bị ít nhất 1 phần Hương Trầm Tinh Thần dự phòng!",
+        "Không có hào quang giữ vững Tinh Thần, ngươi sẽ mất trí trong sương mù chỉ sau vài bước chân!"
       ]
     },
     "garth_east_gate_open": {
@@ -175,7 +175,7 @@
       "portrait": "portrait_edda",
       "lines": [
         "Hãy nhớ kỹ Ba Quy Tắc Bằng Máu: Không trả lời tiếng gọi tên, Không theo chiếc đèn thứ hai, và Không rung chuông khi sương đã vào làng.",
-        "Mau đến tìm Neris ở tiệm thuốc phía Tây Nam làng để chữa trị vết thương và học cách pha chế Dầu Đèn. Chỉ khi ngươi chuẩn bị đủ dầu đèn sinh tồn, Garth mới được phép mở Cổng Đông cho ngươi!"
+        "Mau đến tìm Neris ở tiệm thuốc phía Tây Nam làng để chữa trị vết thương và học cách luyện Hương Trầm Tinh Thần. Chỉ khi ngươi chuẩn bị đủ hương trầm sinh tồn, Garth mới được phép mở Cổng Đông cho ngươi!"
       ]
     },
     "edda_reminder_open": {
@@ -235,7 +235,7 @@
         "ᛁ (Isa – Băng Tuyết Cổ): Cột đá phía Tây Bắc, tượng trưng cho hàn khí đóng băng sự tha hóa của Mạch Rễ.",
         "ᛉ (Algiz – Thần Hộ Vệ): Cột đá Trung Tâm, kết nối hai nguồn năng lượng thành kết giới bảo bọc linh hồn.",
         "Ngươi phải kích hoạt chúng bằng cách thắp sáng ngọn lửa theo thứ tự hài hòa.",
-        "Cầm lấy chiếc Bùa Chuông Cổ (Bell Ward Charm) này. Nó được đúc từ mảnh đồng vỡ của chuông thiêng, sẽ giúp giảm 25% tốc độ suy kiệt Bình Tâm khi ngươi bước vào vùng tối!"
+        "Cầm lấy chiếc Bùa Chuông Cổ (Bell Ward Charm) này. Nó được đúc từ mảnh đồng vỡ của chuông thiêng, sẽ giúp giảm 25% tốc độ suy kiệt Tinh Thần khi ngươi bước vào vùng tối!"
       ],
       "choices": [
         {
@@ -253,7 +253,7 @@
       "portrait": "portrait_edda",
       "lines": [
         "Hãy nhớ kỹ Ba Quy Tắc Bằng Máu: Không trả lời tiếng gọi tên, Không theo chiếc đèn thứ hai, và Không rung chuông khi sương đã vào làng.",
-        "Mau đến tìm Neris ở tiệm thuốc phía Tây Nam làng để chữa trị vết thương và học cách pha chế Dầu Đèn. Garth sẽ mở Cổng Đông khi ngươi sẵn sàng!"
+        "Mau đến tìm Neris ở tiệm thuốc phía Tây Nam làng để chữa trị vết thương và học cách luyện Hương Trầm Tinh Thần. Garth sẽ mở Cổng Đông khi ngươi sẵn sàng!"
       ]
     },
     "neris_intro": {
@@ -263,13 +263,13 @@
         "Ngươi thở dốc, mắt lờ đờ và mạch đập nhanh quá mức... Màn sương đã ngấm vào tâm trí ngươi rồi.",
         "Cầm lấy nắm Thuốc Đắp Thảo Mộc này. Nó sẽ giúp vết thương khép miệng và xoa dịu nỗi sợ hãi trong đầu ngươi.",
         "Khu rừng Hollow Woods chứa đầy thảo dược bạc và nhựa cây thông. Hãy thu thập chúng bên các bờ suối và thân cây cổ thụ.",
-        "Dùng bàn chế tạo [Phím I]: Nhựa thông và Gỗ khô sẽ tạo ra Dầu Đèn. Hai nắm Thảo dược sẽ giã thành Thuốc Đắp. Còn Đá lửa ghép với Gỗ sẽ tạo thành Mồi Tiếng Động để ném đánh lạc hướng quái vật.",
-        "Ta đã phục hồi sinh lực cho ngươi. Hãy giữ ngọn đèn luôn cháy sáng, hỡi Lữ Khách Rêu Phong!"
+        "Dùng bàn chế tạo [Phím I]: Nhựa thông và Gỗ khô sẽ luyện ra Hương Trầm Tinh Thần. Hai nắm Thảo dược sẽ giã thành Thuốc Đắp. Còn Đá lửa ghép với Gỗ sẽ tạo thành Mồi Tiếng Động để ném đánh lạc hướng quái vật.",
+        "Ta đã phục hồi sinh lực cho ngươi. Hãy giữ vững ngọn lửa tinh thần luôn cháy sáng, hỡi Lữ Khách Rêu Phong!"
       ],
       "choices": [
         {
-          "text": "[Cảm kích] \"Cảm ơn chén thuốc đắp. Ta sẽ châm đầy bình dầu để ngọn đèn không lụi tàn.\"",
-          "responseLine": "Tốt lắm. Hãy luôn giữ hơi ấm và nhớ rằng ngọn đèn là sinh mạng của ngươi giữa đêm sương.",
+          "text": "[Cảm kích] \"Cảm ơn chén thuốc đắp. Ta sẽ chuẩn bị đầy đủ hương trầm để tâm trí không lụi tàn.\"",
+          "responseLine": "Tốt lắm. Hãy luôn giữ hơi ấm và nhớ rằng Tinh Thần là sinh mạng của ngươi giữa đêm sương.",
           "trustDelta": 3,
           "setFlag": "choice_neris_grateful"
         },
@@ -297,7 +297,7 @@
       "portrait": "portrait_neris",
       "lines": [
         "Để ta băng lại vết trầy xước cho ngươi... Hương thảo dược này sẽ giữ cho tâm trí ngươi không bị Màn Sương nuốt chửng.",
-        "Nếu chưa đủ Dầu Đèn, hãy nhặt Nhựa Cây và Cành Gỗ quanh làng rồi mở túi chế tạo [Phím I] để pha chế. Khi có dầu đèn, Garth sẽ mở Cổng Đông cho ngươi."
+        "Nếu chưa đủ Hương Trầm Tinh Thần, hãy nhặt Nhựa Cây và Cành Gỗ quanh làng rồi mở túi chế tạo [Phím I] để luyện chế. Khi có hương trầm hộ tâm, Garth sẽ mở Cổng Đông cho ngươi."
       ],
       "healPlayer": true
     },
@@ -306,12 +306,12 @@
       "portrait": "portrait_neris",
       "lines": [
         "Để ta phục hồi thể lực và làm dịu tinh thần cho ngươi... Cổng Đông đã mở rồi, khu rừng ngoài kia rất lạnh lẽo và tăm tối.",
-        "Đừng bao giờ để ngọn đèn lồng cạn dầu! Hãy mang theo Thuốc Đắp và Mồi Tiếng Động phòng thân nhé!"
+        "Đừng bao giờ để cạn kiệt Tinh Thần! Hãy mang theo Thuốc Đắp và Mồi Tiếng Động phòng thân nhé!"
       ],
       "choices": [
         {
           "text": "[Cảm ơn] \"Cảm ơn chén thuốc đắp. Ta cảm thấy thể lực đã phục hồi.\"",
-          "responseLine": "Hãy luôn nhớ giữ bình dầu đèn đầy ắp nhé!",
+          "responseLine": "Hãy luôn nhớ giữ vững Tinh Thần và mang theo hương trầm bên mình nhé!",
           "trustDelta": 1
         },
         {
@@ -331,7 +331,7 @@
       "lines": [
         "(Neris khuấy nhẹ nồi thuốc đang bốc làn khói thảo mộc xanh dịu, đôi mắt đượm buồn)...",
         "Căn bệnh do sương mù The Veil gây ra được dân làng gọi là 'Hội Chứng Trắng Não' (The White Delirium).",
-        "Giai đoạn đầu, nạn nhân cảm thấy ớn lạnh dọc sống lưng, mất ngủ và Bình Tâm bắt đầu tụt dần. Giai đoạn hai, họ nghe thấy những tiếng thì thầm gọi đúng họ tên mình giữa đêm tĩnh mịch.",
+        "Giai đoạn đầu, nạn nhân cảm thấy ớn lạnh dọc sống lưng, mất ngủ và Tinh Thần bắt đầu tụt dần. Giai đoạn hai, họ nghe thấy những tiếng thì thầm gọi đúng họ tên mình giữa đêm tĩnh mịch.",
         "Đến giai đoạn cuối, ánh mắt họ trở nên đờ đẫn, hoàn toàn mất đi ký ức và lý trí... Họ tự mở toang then cửa, bước chân vô định ra màn đêm sâu để trở thành mồi ngon cho The Listener.",
         "Ta đã bất lực nhìn bao nhiêu người làng ra đi như thế... Đó là lý do ta luôn trăn trở tìm ra một phương thuốc giải độc triệt để!"
       ],
@@ -354,8 +354,8 @@
       "lines": [
         "Dưới chòi nông cụ Nông Trại Trú Ẩn có một cửa sập dẫn xuống Hầm Rễ Cổ.",
         "Nơi đó có rễ của cây đại thụ ngàn năm cắm sâu vào lòng đất. Cứ mỗi mùa sương lạnh, trên thân rễ lại nở ra những bông 'Hoa Mạch Rễ Cổ' phát sáng màu ngọc bích.",
-        "Dược tính của loài hoa này cực kỳ thanh khiết, có thể giải trừ hàn khí The Veil và giữ cho chỉ số Bình Tâm không bị bào mòn suốt đêm dài.",
-        "Ngươi có thể thắp sáng đèn lồng [F], tìm xuống Hầm Rễ Cổ hái về cho ta một đóa Hoa Mạch Rễ Cổ không?"
+        "Dược tính của loài hoa này cực kỳ thanh khiết, có thể giải trừ hàn khí The Veil và giữ cho chỉ số Tinh Thần không bị bào mòn suốt đêm dài.",
+        "Ngươi có thể bật hào quang ấm áp [F], tìm xuống Hầm Rễ Cổ hái về cho ta một đóa Hoa Mạch Rễ Cổ không?"
       ],
       "choices": [
         {
@@ -366,7 +366,7 @@
         },
         {
           "text": "[Hỏi thêm] \"Dưới hầm có cạm bẫy hay quái vật nguy hiểm nào không?\"",
-          "responseLine": "Không có quái thú lớn, nhưng bóng tối rất dày đặc. Nhớ giữ đèn lồng luôn sáng để không bị hoảng loạn!",
+          "responseLine": "Không có quái thú lớn, nhưng bóng tối rất dày đặc. Nhớ bật hào quang ấm áp [F] để không bị hoảng loạn!",
           "trustDelta": 1
         }
       ],
@@ -419,8 +419,8 @@
       "lines": [
         "Keng! Keng!... Chào người lữ khách! Ta là Bram, thợ rèn của ngôi làng Bellhollow này.",
         "Màn sương lạnh ngoài Khu rừng Hollow Woods luôn chực chờ dập tắt mọi hơi ấm, nên ta phải giữ cho ngọn lửa lò rèn luôn rực cháy cả ngày lẫn đêm.",
-        "Bàn Chế Tạo ngay bên cạnh luôn sẵn sàng: chỉ cần gom đủ Gỗ Khô, Đá Lửa và Nhựa Cây, ngươi có thể tự rèn Bó Đuốc và châm thêm Dầu Đèn để sống sót giữa đêm sương!",
-        "Hãy luôn giữ ngọn lửa trong tim và kiểm tra bình dầu đèn trước khi bước qua Cổng Đông nhé!"
+        "Bàn Chế Tạo ngay bên cạnh luôn sẵn sàng: chỉ cần gom đủ Gỗ Khô, Đá Lửa và Nhựa Cây, ngươi có thể tự rèn Bó Đuốc và luyện Hương Trầm Tinh Thần để sống sót giữa đêm sương!",
+        "Hãy luôn giữ ngọn lửa trong tim và giữ vững Tinh Thần trước khi bước qua Cổng Đông nhé!"
       ],
       "choices": [
         {
@@ -532,7 +532,7 @@
       "portrait": "portrait_finn",
       "lines": [
         "Suỵt! Em biết vài chỗ cất giấu bí mật hay ho lắm, chỉ kể cho một mình anh thôi đấy nhé!",
-        "Thứ nhất: Phía sau túp lều bỏ hoang cạnh bờ suối có một chiếc Rương Gỗ giấu Đá Lửa và Dầu Đèn do bác thợ rừng để lại.",
+        "Thứ nhất: Phía sau túp lều bỏ hoang cạnh bờ suối có một chiếc Rương Gỗ giấu Đá Lửa và Hương Trầm do bác thợ rừng để lại.",
         "Thứ hai: Cửa sập dưới đất cạnh kho nông cụ Nông Trại Sanctuary chính là lối xuống Hầm Rễ Cổ. Dưới đó có nhiều nấm phát sáng và rễ thuốc quý lắm!",
         "Thứ ba: Ở Khoảng Trống Thì Thầm ngoài rừng, nếu anh nghe thấy tiếng bước chân chạy dồn dập mà mặt đất không rung lên, đó chỉ là ảo ảnh The Echo thôi! Cứ bình tĩnh đi tiếp, đừng sợ mà đâm đầu vào bụi rậm nhé!"
       ],
@@ -562,7 +562,7 @@
         "Khuôn Đúc Chuông Cũ ư?! Ôi trời ơi, nó vẫn còn nguyên vẹn trong tàn tích Xưởng Chuông sao?!",
         "Khuôn đúc này chứa các ký tự cổ ghi lại bí mật tạo nên tiếng ngân thanh tịnh xua tan màn sương The Veil...",
         "Quả chuông lớn của làng không tự nhiên mà vỡ; nó bị rạn nứt khi một lữ khách năm xưa cố rung chuông trong hoảng loạn.",
-        "Nhờ khuôn đúc này, ta đã hiểu được tần số cộng hưởng của chuông. Hãy giữ vững ngọn đèn, định mệnh làng nằm trong tay ngươi!"
+        "Nhờ khuôn đúc này, ta đã hiểu được tần số cộng hưởng của chuông. Hãy giữ vững tinh thần, định mệnh làng nằm trong tay ngươi!"
       ],
       "onCompleteFlag": "quest_edda_memory_completed"
     },
@@ -570,9 +570,9 @@
       "speaker": "Neris – Người Chữa Thảo Mộc",
       "portrait": "portrait_neris",
       "lines": [
-        "Bình Tâm của ngươi đang dao động... Sương mù rừng già luôn tìm cách len lỏi vào tâm trí kẻ lữ hành.",
+        "Tinh Thần của ngươi đang dao động... Sương mù rừng già luôn tìm cách len lỏi vào tâm trí kẻ lữ hành.",
         "Ngay dưới chòi nông cụ Nông Trại Trú Ẩn có một lối xuống Hầm Rễ Cổ. Nơi đó rễ đại thụ ngàn năm tiết ra dược chất quý hiếm.",
-        "Hãy thắp sáng đèn lồng [F], tìm xuống hầm thu hoạch Rễ Thuốc Cổ và mang về Nồi Thảo Dược, ta sẽ chỉ ngươi cách nấu Trà An Thần xoa dịu tâm trí!"
+        "Hãy bật hào quang ấm áp [F], tìm xuống hầm thu hoạch Rễ Thuốc Cổ và mang về Nồi Thảo Dược, ta sẽ chỉ ngươi cách nấu Trà An Thần xoa dịu tâm trí!"
       ],
       "onCompleteFlag": "quest_neris_tea_accepted"
     },

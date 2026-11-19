@@ -17,7 +17,7 @@ import { ParchmentWorldMapModal } from '../ui/ParchmentWorldMapModal';
 import { TornPageModal } from '../ui/TornPageModal';
 import { TornPageEntry } from '../data/tornPagesData';
 import { AudioManager } from '../audio/AudioManager';
-import { HUDIconGenerator, HUD_ICON_HEALTH, HUD_ICON_STAMINA, HUD_ICON_OIL, HUD_ICON_COMPOSURE } from '../utils/HUDIconGenerator';
+import { HUDIconGenerator, HUD_ICON_HEALTH, HUD_ICON_STAMINA, HUD_ICON_COMPOSURE } from '../utils/HUDIconGenerator';
 import { TimePhase, TIME_CONFIG } from '../config/TimeConfig';
 import itemsData from '../data/items.json';
 import { EquipmentSystem } from '../systems/EquipmentSystem';
@@ -177,7 +177,6 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   // Bộ nhớ đệm đồ họa chỉ số (Dirty Checking Cache - GATE 3B)
   private lastHealthW: number = -1;
   private lastStaminaW: number = -1;
-  private lastOilW: number = -1;
   private lastComposureW: number = -1;
   private lastLanternState: boolean | null = null;
 
@@ -186,8 +185,6 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   private lastMaxH: number = -1;
   private lastCurS: number = -1;
   private lastMaxS: number = -1;
-  private lastCurO: number = -1;
-  private lastMaxO: number = -1;
   private lastCurC: number = -1;
   private lastMaxC: number = -1;
   private lastQuestTitle: string = '';
@@ -247,21 +244,21 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.sanctuaryGlowGraphics.setDepth(895);
     this.sanctuaryGlowGraphics.setScrollFactor(0);
 
-    // 1. Khung chứa 4 thanh chỉ số sinh tồn tinh gọn, gỗ tối viền đồng xỉn (V15-24)
+    // 1. Khung chứa 3 thanh chỉ số sinh tồn tinh gọn chuẩn V15-54, gỗ tối viền đồng xỉn
     this.statCardBg = this.add.graphics();
     this.statCardBg.fillStyle(0x140f0c, 0.88);
-    this.statCardBg.fillRoundedRect(14, 10, 376, 96, 6);
+    this.statCardBg.fillRoundedRect(14, 10, 376, 80, 6);
     this.statCardBg.lineStyle(1.5, 0x6e5228, 0.85);
-    this.statCardBg.strokeRoundedRect(14, 10, 376, 96, 6);
+    this.statCardBg.strokeRoundedRect(14, 10, 376, 80, 6);
     this.statCardBg.lineStyle(1, 0x8c6d3b, 0.35);
-    this.statCardBg.strokeRoundedRect(16, 12, 372, 92, 5);
+    this.statCardBg.strokeRoundedRect(16, 12, 372, 76, 5);
 
     // 4 đinh tán đồng ở góc khung chính
     this.statCardBg.fillStyle(0xb89058, 0.85);
     this.statCardBg.fillRect(17, 13, 2, 2);
     this.statCardBg.fillRect(387, 13, 2, 2);
-    this.statCardBg.fillRect(17, 103, 2, 2);
-    this.statCardBg.fillRect(387, 103, 2, 2);
+    this.statCardBg.fillRect(17, 87, 2, 2);
+    this.statCardBg.fillRect(387, 87, 2, 2);
 
     // Tên nhân vật chính hiển thị góc trên trái (V14-P8-15B: Đồng bộ theo memoryAwakeningStage)
     const isAwakened = (this.playerState.memoryAwakeningStage >= 3);
@@ -276,10 +273,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.statBarsGraphics = this.add.graphics();
     this.statIconsGraphics = this.add.graphics();
 
-    // 1b. Dựng 4 icon pixel cho 4 chỉ số (Góc trên trái chuẩn HD 1280×720)
+    // 1b. Dựng 3 icon pixel cho 3 chỉ số (Góc trên trái chuẩn HD 1280×720)
     this.drawPixelIcons();
 
-    // 1c. Bổ sung các nhãn số liệu rõ nét cho 4 thanh chỉ số sinh tồn (Căn lề chuẩn x: 228)
+    // 1c. Bổ sung các nhãn số liệu rõ nét cho 3 thanh chỉ số sinh tồn (Căn lề chuẩn x: 228)
     this.healthValText = HDTextHelper.createText(this, 228, 32, 'Sinh Lực: 100/100', {
       fontSize: '10px',
       fontStyle: 'bold',
@@ -296,15 +293,15 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       strokeThickness: 2
     });
 
-    this.oilValText = HDTextHelper.createText(this, 228, 64, 'Dầu Đèn: 60/60', {
+    this.oilValText = HDTextHelper.createText(this, -999, -999, '', {
       fontSize: '10px',
       fontStyle: 'bold',
       color: '#ff9f43',
       stroke: '#000000',
       strokeThickness: 2
-    });
+    }).setVisible(false);
 
-    this.composureValText = HDTextHelper.createText(this, 228, 80, 'Bình Tâm: 40/40', {
+    this.composureValText = HDTextHelper.createText(this, 228, 64, 'Tinh Thần: 100/100', {
       fontSize: '10px',
       fontStyle: 'bold',
       color: '#a29bfe',
@@ -312,9 +309,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       strokeThickness: 2
     });
 
-    // 2. Hàng phụ bên dưới khung chính (y: 112, h: 22): Đèn lồng [F] + Độ Ẩm + Thân Nhiệt (V15-24)
+    // 2. Hàng phụ bên dưới khung chính (y: 98, h: 22): Hào quang [F] + Độ Ẩm + Thân Nhiệt (V15-54)
     this.lanternStatusBg = this.add.graphics();
-    this.lanternStatusText = HDTextHelper.createText(this, 14 + 48, 112 + 11, '🕯️ [F] TẮT', {
+    this.lanternStatusText = HDTextHelper.createText(this, 14 + 48, 98 + 11, '🌑 [F] SÁNG: TẮT', {
       fontSize: '10px',
       fontStyle: 'bold',
       color: '#8a8275',
@@ -322,15 +319,15 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       strokeThickness: 2
     }).setOrigin(0.5, 0.5);
 
-    // Vùng bấm chuột cho nút Đèn lồng [F] tại hàng phụ
-    const lanternHit = this.add.zone(14 + 48, 112 + 11, 96, 22).setInteractive({ useHandCursor: true });
+    // Vùng bấm chuột cho nút Hào quang [F] tại hàng phụ
+    const lanternHit = this.add.zone(14 + 48, 98 + 11, 96, 22).setInteractive({ useHandCursor: true });
     lanternHit.on('pointerdown', () => {
       this.selectQuickSlot(4);
       this.events.emit('ui_toggle_lantern');
     });
 
     this.moistureBadgeBg = this.add.graphics();
-    this.moistureBadgeText = HDTextHelper.createText(this, 116 + 63, 112 + 11, '💧 Khô ráo (0%)', {
+    this.moistureBadgeText = HDTextHelper.createText(this, 116 + 63, 98 + 11, '💧 Khô ráo (0%)', {
       fontSize: '10px',
       fontStyle: 'bold',
       color: '#1abc9c',
@@ -339,7 +336,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     }).setOrigin(0.5, 0.5);
 
     this.temperatureBadgeBg = this.add.graphics();
-    this.temperatureBadgeText = HDTextHelper.createText(this, 248 + 71, 112 + 11, '🔥 Ấm áp (80°)', {
+    this.temperatureBadgeText = HDTextHelper.createText(this, 248 + 71, 98 + 11, '🔥 Ấm áp (80°)', {
       fontSize: '10px',
       fontStyle: 'bold',
       color: '#f39c12',
@@ -708,20 +705,19 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   private drawPixelIcons(): void {
-    // C4-13-15: Đảm bảo 4 texture Pixel Art 16×16 px chuẩn Nearest-Neighbor đã được tạo
+    // C4-13-15: Đảm bảo các texture Pixel Art 16×16 px chuẩn Nearest-Neighbor đã được tạo
     HUDIconGenerator.generateAllHUDIcons(this);
 
-    // Vẽ trực tiếp 4 biểu tượng Pixel Art sắc nét có viền tối và điểm sáng phản quang lên Graphics
-    HUDIconGenerator.drawIconsToGraphics(this.statIconsGraphics, 18, [29, 45, 61, 77]);
+    // V15-54: Vẽ trực tiếp 3 biểu tượng Pixel Art sắc nét: Máu (y=29), Thể Lực (y=45), Tinh Thần (y=61)
+    HUDIconGenerator.drawIconsToGraphics(this.statIconsGraphics, 18, [29, 45, 61]);
 
-    // Khởi tạo/cập nhật 4 Sprite Image độc lập từ các Texture Pixel Art 16×16 px
+    // Khởi tạo/cập nhật 3 Sprite Image độc lập từ các Texture Pixel Art 16×16 px
     if (this.statIconImages.length === 0) {
       const heartIcon = this.add.image(26, 37, HUD_ICON_HEALTH).setDisplaySize(16, 16).setOrigin(0.5, 0.5);
       const staminaIcon = this.add.image(26, 53, HUD_ICON_STAMINA).setDisplaySize(16, 16).setOrigin(0.5, 0.5);
-      const oilIcon = this.add.image(26, 69, HUD_ICON_OIL).setDisplaySize(16, 16).setOrigin(0.5, 0.5);
-      const composureIcon = this.add.image(26, 85, HUD_ICON_COMPOSURE).setDisplaySize(16, 16).setOrigin(0.5, 0.5);
+      const composureIcon = this.add.image(26, 69, HUD_ICON_COMPOSURE).setDisplaySize(16, 16).setOrigin(0.5, 0.5);
 
-      this.statIconImages = [heartIcon, staminaIcon, oilIcon, composureIcon];
+      this.statIconImages = [heartIcon, staminaIcon, composureIcon];
     }
   }
 
@@ -732,19 +728,16 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     const healthW = Math.round(Math.max(0, Math.min(barWidth, (stats.health / stats.maxHealth) * barWidth)));
     const staminaW = Math.round(Math.max(0, Math.min(barWidth, (stats.stamina / stats.maxStamina) * barWidth)));
-    const oilW = Math.round(Math.max(0, Math.min(barWidth, (stats.lanternOil / stats.maxLanternOil) * barWidth)));
     const composureW = Math.round(Math.max(0, Math.min(barWidth, (stats.composure / stats.maxComposure) * barWidth)));
 
     const isBarsDirty =
       healthW !== this.lastHealthW ||
       staminaW !== this.lastStaminaW ||
-      oilW !== this.lastOilW ||
       composureW !== this.lastComposureW;
 
     if (isBarsDirty) {
       this.lastHealthW = healthW;
       this.lastStaminaW = staminaW;
-      this.lastOilW = oilW;
       this.lastComposureW = composureW;
 
       const g = this.statBarsGraphics;
@@ -773,31 +766,18 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       }
       this.drawThickBar(g, barX, 48, barWidth, 9, stats.stamina, stats.maxStamina, sDark, sLight);
 
-      // 3. Thanh Dầu Đèn (Cam Hổ Phách 3D, Cao 9px)
-      const oRatio = stats.lanternOil / stats.maxLanternOil;
-      let oDark = 0xa04000;
-      let oLight = 0xe67e22;
-      if (oRatio <= 0.2) {
-        oDark = 0x4e2004;
-        oLight = 0xba4a00;
-      } else if (oRatio <= 0.45) {
-        oDark = 0x873600;
-        oLight = 0xd35400;
-      }
-      this.drawThickBar(g, barX, 64, barWidth, 9, stats.lanternOil, stats.maxLanternOil, oDark, oLight);
-
-      // 4. Thanh Bình Tâm (Tím Thạch Anh 3D, Cao 9px)
+      // 3. Thanh Tinh Thần (Tím Thạch Anh / Tím Xanh 3D, Cao 9px - V15-54)
       const cRatio = stats.composure / stats.maxComposure;
-      let cDark = 0x5b2c6f;
+      let cDark = 0x4a235a;
       let cLight = 0x9b59b6;
       if (cRatio <= 0.2) {
         cDark = 0x2c1038;
         cLight = 0xe74c3c;
       } else if (cRatio <= 0.5) {
-        cDark = 0x4a235a;
+        cDark = 0x3d1c4b;
         cLight = 0x8e44ad;
       }
-      this.drawThickBar(g, barX, 80, barWidth, 9, stats.composure, stats.maxComposure, cDark, cLight);
+      this.drawThickBar(g, barX, 64, barWidth, 9, stats.composure, stats.maxComposure, cDark, cLight);
     }
 
     // C4-13-09: Tối ưu Dirty-Checking cho các chỉ số HUD - chỉ set text và màu khi giá trị số thay đổi
@@ -820,50 +800,39 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.staminaValText.setPosition(228, 48);
     }
 
-    const curO = Math.round(stats.lanternOil);
-    const maxO = Math.round(stats.maxLanternOil);
-    if (this.oilValText && (this.lastCurO !== curO || this.lastMaxO !== maxO)) {
-      this.lastCurO = curO;
-      this.lastMaxO = maxO;
-      this.oilValText.setText(`Dầu Đèn: ${curO}/${maxO}`);
-      this.oilValText.setColor(curO <= maxO * 0.2 ? '#e74c3c' : '#ff9f43');
-      this.oilValText.setPosition(228, 64);
-    }
-
     const curC = Math.round(stats.composure);
     const maxC = Math.round(stats.maxComposure);
     if (this.composureValText && (this.lastCurC !== curC || this.lastMaxC !== maxC)) {
       this.lastCurC = curC;
       this.lastMaxC = maxC;
-      this.composureValText.setText(`Bình Tâm: ${curC}/${maxC}`);
+      this.composureValText.setText(`Tinh Thần: ${curC}/${maxC}`);
       this.composureValText.setColor(curC <= 0 ? '#ff3838' : curC <= maxC * 0.3 ? '#fd79a8' : '#a29bfe');
-      this.composureValText.setPosition(228, 80);
+      this.composureValText.setPosition(228, 64);
     }
 
-    // Cập nhật trạng thái đèn lồng tại Hàng phụ dưới khung chính (x: 14, y: 112, w: 96, h: 22)
-    if (this.lastLanternState !== stats.isLanternOn) {
-      this.lastLanternState = stats.isLanternOn;
+    // Cập nhật trạng thái hào quang sáng tại Hàng phụ dưới khung chính (x: 14, y: 98, w: 96, h: 22)
+    const isLit = Boolean(stats.isLanternOn && stats.stamina >= 5);
+    if (this.lastLanternState !== isLit) {
+      this.lastLanternState = isLit;
       if (this.lanternStatusBg && this.lanternStatusText) {
         this.lanternStatusBg.clear();
         const badgeX = 14;
-        const badgeY = 112;
+        const badgeY = 98;
         const badgeW = 96;
         const badgeH = 22;
-        if (stats.isLanternOn) {
+        if (isLit) {
           this.lanternStatusBg.fillStyle(0x241808, 0.94);
           this.lanternStatusBg.fillRoundedRect(badgeX, badgeY, badgeW, badgeH, 4);
           this.lanternStatusBg.lineStyle(1.5, 0xe5a93c, 0.95);
           this.lanternStatusBg.strokeRoundedRect(badgeX, badgeY, badgeW, badgeH, 4);
-          // ĐÈN: BẬT [F]
-          this.lanternStatusText.setText('🔥 [F] BẬT');
+          this.lanternStatusText.setText('✨ [F] SÁNG: BẬT');
           this.lanternStatusText.setColor('#ffdc73');
         } else {
           this.lanternStatusBg.fillStyle(0x13110e, 0.85);
           this.lanternStatusBg.fillRoundedRect(badgeX, badgeY, badgeW, badgeH, 4);
           this.lanternStatusBg.lineStyle(1, 0x6e5832, 0.75);
           this.lanternStatusBg.strokeRoundedRect(badgeX, badgeY, badgeW, badgeH, 4);
-          // ĐÈN: TẮT [F]
-          this.lanternStatusText.setText('🕯️ [F] TẮT');
+          this.lanternStatusText.setText('🌑 [F] SÁNG: TẮT');
           this.lanternStatusText.setColor('#8a8275');
         }
         this.lanternStatusText.setPosition(badgeX + badgeW / 2, badgeY + badgeH / 2);
@@ -1229,7 +1198,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         key: 'I',
         title: '🔨 [I] Chế Tạo',
         shortcut: '[I] / [C]',
-        desc: 'Bàn Chế Tạo: giã thảo dược, chế dầu đèn, mồi ném và trang bị.',
+        desc: 'Bàn Chế Tạo: giã thảo dược, luyện hương trầm, mồi ném và trang bị.',
         action: () => this.toggleCrafting()
       },
       {
@@ -1243,11 +1212,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       },
       {
         id: 'lantern',
-        icon: '🏮',
+        icon: '✨',
         key: 'F',
-        title: '🏮 Đèn Lồng Sương Mù',
+        title: '✨ Hào Quang Hộ Tâm',
         shortcut: '[F]',
-        desc: 'Bật/Tắt đèn lồng để xua tan bóng tối và bảo vệ Bình Tâm.',
+        desc: 'Bật/Tắt quầng sáng ấm áp để xua tan bóng tối và bảo vệ Tinh Thần (Tiêu hao Thể Lực).',
         action: () => this.events.emit('ui_toggle_lantern')
       },
       {
@@ -1823,17 +1792,17 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.showPopupMessage('⚠️ Chưa có Thuốc Đắp Thảo Mộc! Hãy giã thêm bằng [Phím I].');
       return false;
     }
-    // C4-12-04: Kiểm tra nếu Máu và Bình Tâm đã đầy 100% thì không tiêu hao lãng phí
+    // C4-12-04: Kiểm tra nếu Máu và Tinh Thần đã đầy 100% thì không tiêu hao lãng phí
     if (
       this.playerState.stats.health >= this.playerState.stats.maxHealth &&
       this.playerState.stats.composure >= this.playerState.stats.maxComposure
     ) {
-      this.showPopupMessage('💚 Máu và Bình Tâm đã đầy (100%), không cần dùng Thuốc Đắp!');
+      this.showPopupMessage('💚 Máu và Tinh Thần đã đầy (100%), không cần dùng Thuốc Đắp!');
       return false;
     }
     if (this.playerState.useItem('item_herbal_poultice')) {
       AudioManager.getInstance().playPoulticeHeal();
-      this.showPopupMessage('✔ Đã dùng Thuốc Đắp (+40 Máu, +25 Bình Tâm)');
+      this.showPopupMessage('✔ Đã dùng Thuốc Đắp (+40 Máu, +25 Tinh Thần)');
       const gameScene = this.scene.get('GameScene') as any;
       if (gameScene && gameScene.player && typeof gameScene.player.playUseItem === 'function') {
         gameScene.player.playUseItem();
@@ -1849,18 +1818,24 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.lastOilTime = now;
 
     if (this.playerState.getItemCount('item_lantern_oil') <= 0) {
-      this.showPopupMessage('⚠️ Chưa có Bình Dầu Đèn! Hãy chế tạo bằng [Phím I] hoặc tại Bàn Chế Tạo.');
+      this.showPopupMessage('⚠️ Chưa có Hương Trầm Tinh Thần! Hãy chế tạo bằng [Phím I] hoặc tại Bàn Chế Tạo.');
       return false;
     }
-    // C4-12-04: Kiểm tra nếu Dầu Đèn đã đầy 100% thì không tiêu hao lãng phí
-    if (this.playerState.stats.lanternOil >= this.playerState.stats.maxLanternOil) {
-      this.showPopupMessage('🔥 Bình dầu đèn đã đầy (100%), không cần nạp thêm!');
+    // V15-54: Kiểm tra nếu Tinh Thần đã đầy 100% thì không tiêu hao lãng phí
+    if (this.playerState.stats.composure >= this.playerState.stats.maxComposure) {
+      this.showPopupMessage('✨ Tinh Thần đã đạt mức tối đa (100%), không cần dùng thêm!');
       return false;
     }
     if (this.playerState.useItem('item_lantern_oil')) {
       AudioManager.getInstance().playOilRefill();
-      const nowOil = Math.round(this.playerState.stats.lanternOil);
-      this.showPopupMessage(`✔ Đã nạp Bình Dầu Đèn (+50 Dầu • Hiện tại: ${nowOil}%)`);
+      this.playerState.stats.composure = Math.min(
+        this.playerState.stats.maxComposure,
+        this.playerState.stats.composure + 25
+      );
+      this.playerState.emit('stats_changed');
+      const nowC = Math.round(this.playerState.stats.composure);
+      this.showPopupMessage(`✔ Đã thắp Hương Trầm Tinh Thần (+25 Tinh Thần • Hiện tại: ${nowC})`);
+      this.updateQuickSlotCounts();
       const gameScene = this.scene.get('GameScene') as any;
       if (gameScene && gameScene.player && typeof gameScene.player.playUseItem === 'function') {
         gameScene.player.playUseItem();
@@ -1894,10 +1869,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       return false;
     }
 
-    // Nếu có Trà An Thần và người chơi cần hồi phục Bình Tâm (hoặc không có Đuốc)
+    // Nếu có Trà An Thần và người chơi cần hồi phục Tinh Thần (hoặc không có Đuốc)
     if (teaCount > 0 && (this.playerState.stats.composure < this.playerState.stats.maxComposure || flareCount <= 0)) {
       if (this.playerState.stats.composure >= this.playerState.stats.maxComposure) {
-        this.showPopupMessage('🍵 Bình Tâm đã đầy (100%), không cần uống Trà!');
+        this.showPopupMessage('🍵 Tinh Thần đã đầy (100%), không cần uống Trà!');
         return false;
       }
       if (this.playerState.useItem('food_calming_tea')) {
@@ -1905,7 +1880,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         if (this.playerState.stats.temperature !== undefined) {
           this.playerState.stats.temperature = Math.min(100, (this.playerState.stats.temperature || 80) + 15);
         }
-        this.showPopupMessage('🍵 Đã dùng Trà Thảo Dược (+40 Bình Tâm, +15° Thân Nhiệt)');
+        this.showPopupMessage('🍵 Đã dùng Trà Thảo Dược (+40 Tinh Thần, +15° Thân Nhiệt)');
         const gameScene = this.scene.get('GameScene') as any;
         if (gameScene && gameScene.player && typeof gameScene.player.playUseItem === 'function') {
           gameScene.player.playUseItem();
@@ -2023,7 +1998,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     slots.push({ itemId: 'item_herbal_poultice', count: poulticeCount });
     assignedIds.add('item_herbal_poultice');
 
-    // Ô 1: Dầu Đèn Lồng (luôn hiện diện ở ô [2])
+    // Ô 1: Hương Trầm Tinh Thần (luôn hiện diện ở ô [2])
     const oilCount = this.playerState.getItemCount('item_lantern_oil');
     slots.push({ itemId: 'item_lantern_oil', count: oilCount });
     assignedIds.add('item_lantern_oil');
@@ -2393,11 +2368,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.lastRenderedMoisture = m;
     this.lastRenderedTemperature = t;
 
-    // 1. Huy hiệu Độ Ẩm (Moisture) tại Hàng phụ dưới khung chính (V15-24: x: 116, y: 112, w: 126, h: 22)
+    // 1. Huy hiệu Độ Ẩm (Moisture) tại Hàng phụ dưới khung chính (V15-54: x: 116, y: 98, w: 126, h: 22)
     // 0–29%: DRY (Khô ráo), 30–69%: DAMP (Ẩm ướt), 70–100%: SOAKED (Ướt sũng)
     this.moistureBadgeBg.clear();
     const bX = 116;
-    const bY = 112;
+    const bY = 98;
     const bW = 126;
     const bH = 22;
 
@@ -2430,11 +2405,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.moistureBadgeText.setOrigin(0.5, 0.5);
     }
 
-    // 2. Huy hiệu Thân Nhiệt (Temperature) tại Hàng phụ dưới khung chính (V15-24: x: 248, y: 112, w: 142, h: 22)
+    // 2. Huy hiệu Thân Nhiệt (Temperature) tại Hàng phụ dưới khung chính (V15-54: x: 248, y: 98, w: 142, h: 22)
     // >= 70: WARM (Ấm áp), 35–69: CHILLY (Se lạnh), <= 34: FREEZING (Lạnh cóng)
     this.temperatureBadgeBg.clear();
     const tX = 248;
-    const tY = 112;
+    const tY = 98;
     const tW = 142;
     const tH = 22;
 

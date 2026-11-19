@@ -97,7 +97,7 @@ export class WorldEventSystem {
       case 'event_bell_echo': {
         audio.playBronzeBellToll();
         playerState.modifyComposure(5);
-        message = '🔔 Tiếng chuông trầm ngân vang từ tàn tích miếu cổ xa xa... Bình Tâm được xoa dịu (+5).';
+        message = '🔔 Tiếng chuông trầm ngân vang từ tàn tích miếu cổ xa xa... Tinh Thần được xoa dịu (+5).';
         break;
       }
 

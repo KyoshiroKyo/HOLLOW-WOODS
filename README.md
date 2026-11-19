@@ -73,7 +73,7 @@ Trình duyệt sẽ tự động mở tại địa chỉ `http://localhost:3000/
 |:---:|---|
 | **`W / A / S / D`** hoặc **Mũi tên** | Di chuyển nhân vật qua lại trong khu rừng |
 | **`Shift`** | Chạy nhanh (tiêu hao Thể lực / Stamina) |
-| **`F`** | Bật / Tắt Đèn Lồng (tiêu hao Dầu đèn, duy trì Bình tâm / Composure) |
+| **`F`** | Bật / Tắt Hào Quang Hộ Tâm (tiêu hao 10 Thể Lực khi bật, 1.2 Thể Lực/giây duy trì, bảo vệ Tinh Thần / Sanity) |
 | **`E`** | Tương tác nói chuyện NPC, Ẩn nấp thân cây rỗng/bụi rậm, Thu thập tài nguyên, Đọc biển báo/cổ thư, Rung chuông |
 | **`Q`** | Ném Mồi Tiếng Động (Noise Lure) đánh lạc hướng quái vật The Listener |
 | **`1`** | Sử dụng nhanh Thuốc Đắp Hồi Máu khẩn cấp |

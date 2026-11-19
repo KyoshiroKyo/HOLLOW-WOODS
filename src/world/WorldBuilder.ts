@@ -2438,11 +2438,10 @@ export class WorldBuilder {
       // C4-13-16: Dựng cụm cảnh quan chặn đầu đường phía Tây (x: 0..90)
       this.createWestBarrierLandscape();
 
-      // C4-14-B04: Điểm hút 30-60 giây đầu: Mẩu nhật ký rách, cành cây gãy & đèn bão dẫn hướng
+      // C4-14-B04: Điểm hút 30-60 giây đầu: Mẩu nhật ký rách, cành cây gãy & bia đá dẫn lối
       this.createTornJournalScrapProp(150, 195);
       this.createFallenLog(220, 130, 42, 12);
       this.createDenseBush(210, 120);
-      this.createVillageLanternPost(440, 150);
 
       // Vẽ cổng sương mù và bia đá dẫn lối
       this.createTree(160, 100, 'Cây Khô Sương Mù');
@@ -2476,19 +2475,16 @@ export class WorldBuilder {
 
       // 4. Tháp Chuông Cổ Đại (Bắc Quảng Trường: tâm x=900, chân tháp y=130, đỉnh vươn cao qua tán rừng)
       this.createBellTower(900, 130, 160, 240);
-      this.createVillageLanternPost(840, 145);
 
       // 5. Nhà Bà Lão Edda (Đông-Bắc: tâm x=1160, chân móng y=130; Edda đứng hiên 1160, 160)
       this.createBuilding(1160, 130, 160, 144, 0x5a3d28, 0x8a6338, 'Nhà Edda – Người Giữ Chuông');
       this.createChimneySmoke(1114, 0);
       this.createVillagePropCluster(1100, 126, 'firewood');
       this.createVillagePropCluster(1230, 126, 'barrels');
-      this.createVillageLanternPost(1110, 150);
 
       // 6. Xưởng Rèn & Lò Lửa của Bram (Đông-Nam: tâm x=1270, chân móng y=360; Bram đứng tại 1230, 390)
       this.createCraftingWorkshopPavilion(1270, 360);
       this.createCraftingBench(1220, 370);
-      this.createVillageLanternPost(1185, 380);
       this.createVillagePropCluster(1330, 380, 'firewood');
 
       // 7. Nhà Thảo Mộc Neris & Vườn Dược Sanctuary (Tây-Nam: tâm x=570, chân móng y=430; Neris đứng tại 570, 460)
@@ -2496,7 +2492,6 @@ export class WorldBuilder {
       this.createChimneySmoke(616, 302);
       this.createApothecaryTables(500, 435, 645, 435);
       this.createSanctuaryHerbGarden(655, 480);
-      this.createVillageLanternPost(525, 455);
       this.createVillagePropCluster(510, 435, 'barrels');
 
       // 8. Hệ thống Hàng Rào Gỗ Trung Cổ bao quanh làng và phân khu (chừa lối đi rộng rãi)
@@ -3255,16 +3250,16 @@ export class WorldBuilder {
    * Thay thế hình khối đồ họa phẳng bằng sprite prop_lantern_post.png (32×64 px) pixel art sắc nét.
    */
   private createVillageLanternPost(x: number, y: number): void {
-    // 1. Quầng sáng ấm chuyển sắc tự nhiên ở đèn lồng (tâm x + 10, y - 38)
+    // 1. Quầng sáng ấm chuyển sắc tự nhiên ở đèn lồng (V15-54: Giảm 45% bán kính & alpha tạo áp lực bóng tối)
     const halo = this.scene.add.graphics();
-    halo.fillStyle(0xf39c12, 0.05);
-    halo.fillCircle(x + 10, y - 38, 36);
-    halo.fillStyle(0xf39c12, 0.09);
-    halo.fillCircle(x + 10, y - 38, 24);
-    halo.fillStyle(0xffe082, 0.16);
-    halo.fillCircle(x + 10, y - 38, 12);
+    halo.fillStyle(0xf39c12, 0.028);
+    halo.fillCircle(x + 10, y - 38, 20);
+    halo.fillStyle(0xf39c12, 0.050);
+    halo.fillCircle(x + 10, y - 38, 13);
+    halo.fillStyle(0xffe082, 0.088);
+    halo.fillCircle(x + 10, y - 38, 7);
     halo.setDepth(DEPTH_GROUND_DECALS);
-    this.registerCullable(halo, x + 10, y - 38, 48);
+    this.registerCullable(halo, x + 10, y - 38, 26);
 
     // 2. Sprite cột đèn lồng pixel art V1.5
     const post = this.safeAddImage(x, y, SPRITE_PROP_LANTERN_POST_V15);
@@ -3371,12 +3366,6 @@ export class WorldBuilder {
         addFenceSegment(fx, 532);
       }
     }
-
-    // Cổng gỗ & trụ đèn dẫn hướng tại 2 lối ra Vùng Lõi
-    this.createVillageLanternPost(606, 532);
-    this.createVillageLanternPost(714, 532);
-    this.createVillageLanternPost(1146, 532);
-    this.createVillageLanternPost(1274, 532);
   }
 
   /**
@@ -3404,9 +3393,8 @@ export class WorldBuilder {
 
     this.createStaticBoxColliderCentered(gateX - 31, southPostY - 4, 46, 12, 'Rào Nam Cổng Đông');
 
-    // 2. Biển chỉ đường gỗ cổ (SPRITE_SIGNPOST) và Cột đèn lồng ấm trước Cổng Đông
+    // 2. Biển chỉ đường gỗ cổ (SPRITE_SIGNPOST) trước Cổng Đông
     this.createStoneSign(gateX - 62, southPostY + 4, 'RỪNG NGOẠI VI');
-    this.createVillageLanternPost(gateX - 36, northPostY - 2);
 
     // 3. Trụ cổng đá - gỗ phía Bắc (depth = northPostY = 240)
     const northPillar = this.scene.add.graphics();
@@ -5049,12 +5037,6 @@ export class WorldBuilder {
     this.createVillagePropCluster(650, 715, 'firewood');
     this.createFarmWheelbarrow(615, 710);
 
-    // 8. Hệ thống cột đèn lồng gỗ dẫn hướng ấm áp
-    this.createVillageLanternPost(650, 600);
-    this.createVillageLanternPost(650, 745);
-    this.createVillageLanternPost(740, 715);
-    this.createVillageLanternPost(1090, 745);
-
     // 9. Cây ăn trái & rặng cây xanh tự nhiên bao quanh (chừa trống hoàn toàn 4 ô đất 760..840, 640..690)
     this.createTree(760, 595, 'Cây Ăn Trái Nông Trại');
     this.createTree(850, 595, 'Cây Ăn Trái Nông Trại');
@@ -5101,12 +5083,6 @@ export class WorldBuilder {
 
     // V15-31: Trạm Lửa Rừng Tĩnh Lặng (Quiet Forest Bonfire Outpost) của Sir Vaelen tại điểm giao Rừng Ngoài & Đường Mòn Quanh Co (1470, 710)
     this.createQuietForestBonfireOutpost(1470, 710);
-
-    // 3. Hệ thống Cột Đèn Lồng Gỗ Dẫn Hướng
-    this.createVillageLanternPost(1210, 600); // Đèn cửa rừng Bắc
-    this.createVillageLanternPost(1310, 700); // Đèn bãi trại
-    this.createVillageLanternPost(1390, 755); // Đèn ngã rẽ suối rừng
-    this.createVillageLanternPost(1270, 825); // Đèn lối rẽ Bãi Liễu
 
     // 4. Thân Cây Cổ Thụ Đổ (Fallen Logs)
     this.createFallenLog(1190, 670, 48, 12);  // Gần bãi cửa rừng
@@ -5904,14 +5880,6 @@ export class WorldBuilder {
     this.createStoneMarker(2760, 240); // Cột đá cổ Bắc ngưỡng cửa Đầm Lầy
     this.createStoneMarker(2760, 360); // Cột đá cổ Nam ngưỡng cửa Đầm Lầy
 
-    // 2. Hệ Thống 6 Cột Đèn Lồng Dẫn Hướng Gỗ
-    this.createVillageLanternPost(1680, 310); // Đèn ngã ba lối rẽ Outer Woods
-    this.createVillageLanternPost(1860, 250); // Đèn bãi cây rỗng 1
-    this.createVillageLanternPost(2030, 230); // Đèn ngã rẽ Rừng Sâu
-    this.createVillageLanternPost(2170, 260); // Đèn khối đá canh gác
-    this.createVillageLanternPost(2330, 360); // Đèn vực rễ cây
-    this.createVillageLanternPost(2680, 310); // Đèn ngưỡng cửa đầm lầy
-
     // 3. Thân Cây Đổ, Rễ Cây Xoắn & Gỗ Mục (Fallen Timber & Tangled Roots)
     this.createFallenLog(1740, 350, 56, 15);   // Thân cây mục bên lối rẽ Outer Woods
     this.createFallenLog(2280, 380, 64, -18);  // Thân sồi bắc qua vực rễ
@@ -6397,12 +6365,6 @@ export class WorldBuilder {
     // V1.4 Blueprint: Cột Vật Tổ Thì Thầm (Whispering Totem Pillar - Landmark tại 2100, -320)
     this.createWhisperingTotemPillar(2100, -320);
 
-    // 2. Hệ Thống 4 Cột Đèn Lồng Dẫn Hướng Gỗ
-    this.createVillageLanternPost(2150, -70);  // Đèn mép Đông cửa rừng phía Nam (thông thoáng 140px tim đường)
-    this.createVillageLanternPost(1920, -210); // Đèn ngã rẽ Nấm Phát Quang
-    this.createVillageLanternPost(2120, -290); // Đèn bãi Cây Cổ Thụ Đổ Trung Tâm
-    this.createVillageLanternPost(2500, -320); // Đèn đường mòn phía Đông
-
     // 3. Thân Cây Cổ Thụ Đổ, Rễ Cây Xoắn & Gỗ Mục (Fallen Timber & Tangled Roots)
     this.createFallenLog(2120, -340, 72, 10);  // Colossal Fallen Titan Oak
     this.createFallenLog(1880, -200, 50, -25); // Thân cây mục ven bãi nấm
@@ -6813,12 +6775,6 @@ export class WorldBuilder {
     this.createStoneMarker(3960, 230); // Cột đá mốc Đông Bắc
     this.createStoneMarker(3960, 370); // Cột đá mốc Đông Nam
 
-    // 2. Hệ Thống 4 Cột Đèn Lồng Dẫn Hướng Gỗ
-    this.createVillageLanternPost(2940, 290);  // Đèn cửa ngõ phía Tây
-    this.createVillageLanternPost(3120, 310);  // Đèn đầu cầu ván gỗ
-    this.createVillageLanternPost(3520, 260);  // Đèn tâm bệ đá Cổ Ngữ
-    this.createVillageLanternPost(3920, 290);  // Đèn cửa ngõ sang Miếu Chuông
-
     // 3. Trận Địa 3 Cột Đá Cổ Ngữ & Bệ Thờ Cổ được khởi tạo chi tiết trong phân khu ancient_rune_puzzle
     // (renderAncientRunePuzzleDecorations) đảm bảo tính mô-đun và chống trùng lặp thực thể.
 
@@ -6982,11 +6938,6 @@ export class WorldBuilder {
 
     // 5. Đạo Cụ Kể Chuyện Qua Môi Trường (Environmental Storytelling)
     this.createShrineInscribedStele(4280, 270); // Bia Đá Cổ Miếu Chuông
-
-    // 6. Hệ Thống 3 Cột Đèn Lồng Dẫn Hướng Gỗ / Đá
-    this.createVillageLanternPost(4060, 270); // Đèn cửa ngõ ranh giới phía Tây
-    this.createVillageLanternPost(4380, 230); // Đèn thềm đá sân miếu Bắc
-    this.createVillageLanternPost(4620, 290); // Đèn thềm đá sân miếu Nam
 
     // 7. Thân Cây Đổ & Búi Rễ Xoắn Cổ Miếu
     this.createFallenLog(4220, 330, 48, -12);
