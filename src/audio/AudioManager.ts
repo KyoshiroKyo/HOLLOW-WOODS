@@ -68,6 +68,7 @@ export class AudioManager {
   private pendingAmbienceZone: AmbienceZone | null = null;
   private windGain: GainNode | null = null; // Tương thích ngược với setWindIntensity
   private rainGain: GainNode | null = null; // V1.4: Kênh âm thanh mưa sương
+  private rainSource: AudioBufferSourceNode | null = null; // V15-FIX-02: Tham chiếu nguồn phát tiếng mưa chống rò rỉ loop
   private lastRainTargetGain: number = -1;
 
   // Tránh spam lập lịch AudioParam gây xung đột / bùng nổ bộ lọc số IIR
@@ -279,6 +280,16 @@ export class AudioManager {
               this.smoothAudioBufferLoopEdges(decodedBuffer);
             }
             this.audioBuffers.set(key, decodedBuffer);
+            // V15-FIX-02: Đồng bộ alias an toàn cho các key gọi sói
+            if (key === 'skull_wolf_growl') this.audioBuffers.set('wolf_growl', decodedBuffer);
+            if (key === 'skull_wolf_snarl') this.audioBuffers.set('wolf_lunge', decodedBuffer);
+
+            // V15-FIX-02: Khắc phục lỗi tắt tiếng BGM khi giải mã xong sau khi đã gọi playBGM
+            if (this.pendingBGMTrack && this.pendingBGMTrack.track === key && this.ctx && this.ctx.state === 'running') {
+              const pending = this.pendingBGMTrack;
+              this.pendingBGMTrack = null;
+              this.playBGM(pending.track, pending.fadeDuration, pending.volumeScale);
+            }
           }
         })
         .catch(() => {
@@ -351,6 +362,14 @@ export class AudioManager {
           if (key === 'lantern_toggle') this.audioBuffers.set('lantern', audioData);
           if (key === 'player_death') this.audioBuffers.set('death', audioData);
           if (key === 'dialogue_text_blip') this.audioBuffers.set('dialogue_blip', audioData);
+          if (key === 'skull_wolf_growl') this.audioBuffers.set('wolf_growl', audioData);
+          if (key === 'skull_wolf_snarl') this.audioBuffers.set('wolf_lunge', audioData);
+
+          if (this.pendingBGMTrack && this.pendingBGMTrack.track === key && this.ctx && this.ctx.state === 'running') {
+            const pending = this.pendingBGMTrack;
+            this.pendingBGMTrack = null;
+            this.playBGM(pending.track, pending.fadeDuration, pending.volumeScale);
+          }
         }
       }
     }
@@ -1091,6 +1110,7 @@ export class AudioManager {
           src.loop = true;
           src.connect(this.rainGain);
           src.start(0);
+          this.rainSource = src;
         }
       } catch (e) {
         console.warn('[AudioManager] setRainIntensity init error:', e);
@@ -1122,6 +1142,16 @@ export class AudioManager {
         this.cleanupChannelNodes(channel);
         this.activeAmbience = null;
         this.currentAmbienceZone = null;
+        if (this.rainSource) {
+          try { this.rainSource.stop(); } catch {}
+          try { this.rainSource.disconnect(); } catch {}
+          this.rainSource = null;
+        }
+        if (this.rainGain) {
+          try { this.rainGain.disconnect(); } catch {}
+          this.rainGain = null;
+        }
+        this.lastRainTargetGain = -1;
       } else {
         channel.gainNode.gain.cancelScheduledValues(now);
         channel.gainNode.gain.setValueAtTime(channel.gainNode.gain.value, now);
@@ -1299,8 +1329,6 @@ export class AudioManager {
       clearInterval(this.heartbeatTimer);
       this.heartbeatTimer = null;
     }
-    this.isHeartbeatActive = false;
-    this.isSanityDucked = false;
 
     this.duckAmbience(0.5, 999999);
     this.triggerHeartbeatBeat();
@@ -1517,6 +1545,16 @@ export class AudioManager {
       try { this.bossDroneGain.disconnect(); } catch {}
       this.bossDroneGain = null;
     }
+    if (this.rainSource) {
+      try { this.rainSource.stop(); } catch {}
+      try { this.rainSource.disconnect(); } catch {}
+      this.rainSource = null;
+    }
+    if (this.rainGain) {
+      try { this.rainGain.disconnect(); } catch {}
+      this.rainGain = null;
+    }
+    this.lastRainTargetGain = -1;
     this.isBossAwakened = false;
     this.unduckAmbience(0.1);
   }
@@ -2592,6 +2630,16 @@ export class AudioManager {
       try { this.bossDroneGain.disconnect(); } catch {}
       this.bossDroneGain = null;
     }
+    if (this.rainSource) {
+      try { this.rainSource.stop(); } catch {}
+      try { this.rainSource.disconnect(); } catch {}
+      this.rainSource = null;
+    }
+    if (this.rainGain) {
+      try { this.rainGain.disconnect(); } catch {}
+      this.rainGain = null;
+    }
+    this.lastRainTargetGain = -1;
     this.isBossAwakened = false;
     for (const channels of this.activeSFXChannels.values()) {
       for (const ch of channels) {
@@ -2701,10 +2749,7 @@ export class AudioManager {
     this.resumeAudio();
     this.duckAmbience(0.55, 1300);
 
-    if (this.playSampled('crow_caw', 0.85, 0.95 + Math.random() * 0.1, true)) {
-      return;
-    }
-
+    // V15-FIX-02: Tổng hợp âm thanh bằng Web Audio procedural synth sạch sẽ, không gọi vào key không tồn tại
     const now = this.ctx.currentTime;
 
     // 2 nhịp kêu "Quạ... Quạ!" khàn đục u ám
@@ -2904,7 +2949,9 @@ export class AudioManager {
     this.resumeAudio();
     this.duckAmbience(0.7, 1200);
 
-    if (this.playSampled('wolf_growl', 0.85, 0.95 + Math.random() * 0.1, true)) {
+    // V15-FIX-02: Đồng bộ key 'skull_wolf_growl' & 'skull_wolf_snarl' với no-repeat shuffle
+    const wolfSample = this.getNoRepeatSample('wolf_vocal', ['skull_wolf_growl', 'skull_wolf_snarl']);
+    if (this.playSampled(wolfSample, 0.85, 0.95 + Math.random() * 0.1, true)) {
       return;
     }
 
@@ -2952,10 +2999,7 @@ export class AudioManager {
     if (!this.checkCooldown('bone_rattle', 1400)) return;
     this.resumeAudio();
 
-    if (this.playSampled('bone_rattle', 0.75, 1.0, true)) {
-      return;
-    }
-
+    // V15-FIX-02: Tổng hợp âm thanh bằng Web Audio procedural synth sạch sẽ, không gọi vào key không tồn tại
     const now = this.ctx.currentTime;
     const noiseBuffer = this.getOrCreateNoiseBuffer();
     if (!noiseBuffer) return;
@@ -2993,7 +3037,8 @@ export class AudioManager {
     if (!this.checkCooldown('wolf_lunge', 800)) return;
     this.resumeAudio();
 
-    if (this.playSampled('wolf_lunge', 0.85, 1.0, true)) {
+    // V15-FIX-02: Đồng bộ key sang 'skull_wolf_snarl' có sẵn trong audioManifest
+    if (this.playSampled('skull_wolf_snarl', 0.85, 1.0, true)) {
       return;
     }
 
@@ -3580,6 +3625,16 @@ export class AudioManager {
       try { fb.source.disconnect(); fb.gain.disconnect(); } catch {}
     }
     this.fadingBGMSources = [];
+    if (this.rainSource) {
+      try { this.rainSource.stop(); } catch {}
+      try { this.rainSource.disconnect(); } catch {}
+      this.rainSource = null;
+    }
+    if (this.rainGain) {
+      try { this.rainGain.disconnect(); } catch {}
+      this.rainGain = null;
+    }
+    this.lastRainTargetGain = -1;
     if (this.heartbeatTimer) {
       clearInterval(this.heartbeatTimer);
       this.heartbeatTimer = null;
