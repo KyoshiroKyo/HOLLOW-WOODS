@@ -105,23 +105,12 @@ import {
   SPRITE_TREE_MOSSY_OAK_GRAND_V15,
   SPRITE_TREE_WEEPING_WILLOW_V15,
   SPRITE_TREE_WITHERED_GNARLED_V15,
-  SPRITE_TREE_OAK_1,
-  SPRITE_TREE_OAK_2,
-  SPRITE_TREE_OAK_3,
-  SPRITE_TREE_DEAD,
-  SPRITE_HOLLOW_TREE,
-  SPRITE_BUSH_DENSE_1,
-  SPRITE_BUSH_DENSE_2,
   SPRITE_DECAL_WILD_GRASS_V15,
   SPRITE_DECAL_FERN_CLUSTER_V15,
   SPRITE_DECAL_GLOWING_MUSHROOMS_V15,
   SPRITE_DECAL_AUTUMN_LEAVES_V15,
   SPRITE_DECAL_PEBBLES_STONES_V15,
   SPRITE_DECAL_SWAMP_PUDDLE_V15,
-  SPRITE_RES_DRY_WOOD,
-  SPRITE_RES_TREE_RESIN,
-  SPRITE_RES_FLINT,
-  SPRITE_RES_HERBS,
   SPRITE_RES_RUNED_IRON,
   SPRITE_CAMPFIRE_TIER1_V15,
   SPRITE_CAMPFIRE_TIER2_V15,
@@ -560,20 +549,10 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image(SPRITE_TREE_WEEPING_WILLOW_V15, 'assets/environment/trees/tree_weeping_willow.png');
     this.load.image(SPRITE_TREE_WITHERED_GNARLED_V15, 'assets/environment/trees/tree_withered_gnarled.png');
 
-    // V15-61: Nạp đầy đủ bộ Sprite Cây Cối & Bụi Rậm Pixel Art Thật
-    this.load.image(SPRITE_TREE_OAK_1, 'assets/environment/sprites/tree_oak_1.png');
-    this.load.image(SPRITE_TREE_OAK_2, 'assets/environment/sprites/tree_oak_2.png');
-    this.load.image(SPRITE_TREE_OAK_3, 'assets/environment/sprites/tree_oak_3.png');
-    this.load.image(SPRITE_TREE_DEAD, 'assets/environment/sprites/tree_dead.png');
-    this.load.image(SPRITE_HOLLOW_TREE, 'assets/environment/sprites/hollow_tree.png');
-    this.load.image(SPRITE_BUSH_DENSE_1, 'assets/environment/sprites/bush_dense_1.png');
-    this.load.image(SPRITE_BUSH_DENSE_2, 'assets/environment/sprites/bush_dense_2.png');
-    this.load.image('tree_birch_amber_v14', 'assets/environment/v14/trees/tree_birch_amber_v14.png');
-    this.load.image('tree_maple_crimson_v14', 'assets/environment/v14/trees/tree_maple_crimson_v14.png');
-    this.load.image('tree_oak_mossy_v14', 'assets/environment/v14/trees/tree_oak_mossy_v14.png');
-    this.load.image('tree_dead_withered_v14', 'assets/environment/v14/trees/tree_dead_withered_v14.png');
-    this.load.image('prop_fallen_log_mossy_v14', 'assets/environment/v14/props/prop_fallen_log_mossy_v14.png');
-    this.load.image('tree_hollow_ancient_v14', 'assets/environment/v14/props/tree_hollow_ancient_v14.png');
+    // V15-61: Nạp bộ Sprite Cây Cối Pixel Art Bổ Sung (Không nằm trong Atlas Props)
+    // Lưu ý: Các sprite cây sồi, cây khô, cây rỗng, bụi rậm, bạch dương, phong đỏ, gỗ mục và vật phẩm tài nguyên
+    // (res_dry_wood, res_tree_resin, res_flint, res_herbs) đã được đóng gói tối ưu trong Atlas Props (hollow_props_atlas)
+    // và được AtlasTextureResolver tự động điều phối, tuyệt đối không nạp lặp để tránh cảnh báo Texture key in use.
     this.load.image('tree_pine_tall_topdown', 'assets/environment/trees/tree_pine_tall_topdown.png');
     this.load.image('tree_pine_med_topdown', 'assets/environment/trees/tree_pine_med_topdown.png');
     this.load.image('tree_pine_slender_topdown', 'assets/environment/trees/tree_pine_slender_topdown.png');
@@ -585,11 +564,7 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image(SPRITE_DECAL_PEBBLES_STONES_V15, 'assets/environment/foliage/decal_pebbles_stones.png');
     this.load.image(SPRITE_DECAL_SWAMP_PUDDLE_V15, 'assets/environment/foliage/decal_swamp_puddle.png');
 
-    // V15-12: Nạp bộ Sprite Vật Phẩm Thu Thập Ngoài Thế Giới (World Pickups 24x24 px)
-    this.load.image(SPRITE_RES_DRY_WOOD, 'assets/environment/pickups/res_dry_wood.png');
-    this.load.image(SPRITE_RES_TREE_RESIN, 'assets/environment/pickups/res_tree_resin.png');
-    this.load.image(SPRITE_RES_FLINT, 'assets/environment/pickups/res_flint.png');
-    this.load.image(SPRITE_RES_HERBS, 'assets/environment/pickups/res_herbs.png');
+    // V15-12: Nạp bộ Sprite Vật Phẩm Thu Thập Bổ Sung Ngoài Thế Giới (Không nằm trong Atlas)
     this.load.image(SPRITE_RES_RUNED_IRON, 'assets/environment/pickups/res_runed_iron.png');
 
     // V15-12: Nạp bộ Sprite Cụm Sanctuary Camp & Đạo Cụ Làng V1.5

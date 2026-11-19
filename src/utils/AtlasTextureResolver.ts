@@ -20,7 +20,6 @@ export const HOLLOW_PROPS_FRAME_KEYS = new Set<string>([
   'bush_dense_2',
   'cliff_face_western_v14',
   'crafting_bench',
-  'fog_smooth',
   'hollow_tree',
   'house_edda',
   'house_neris',
@@ -217,6 +216,19 @@ export class AtlasTextureResolver {
         return origExists.call(this, ATLAS_PROPS_KEY);
       }
       return false;
+    };
+
+    // 7b. Hook TextureManager.checkKey để không coi atlas virtual frame là trùng lặp texture độc lập
+    Phaser.Textures.TextureManager.prototype.checkKey = function (key: string) {
+      if (!key || typeof key !== 'string') return false;
+      // Chỉ từ chối nếu texture độc lập ĐÃ THẬT SỰ TỒN TẠI trong danh sách textures độc lập
+      if (origExists.call(this, key)) {
+        if (!(this as any).silentWarnings) {
+          console.warn('[TextureManager] Texture key already in use (suppressed error): ' + key);
+        }
+        return false;
+      }
+      return true;
     };
 
     // 8. Hook TextureManager.getFrame

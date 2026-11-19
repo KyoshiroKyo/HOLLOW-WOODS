@@ -967,7 +967,11 @@ function generateP2GameJson() {
 // ----------------------------------------------------------------------
 
 function packageZipRelease() {
-  console.log('\n--- 3. Đóng gói file release/p2game/hollow-woods-p2game-v1.5.0.zip ---');
+  const pkgPath = path.join(ROOT_DIR, 'package.json');
+  const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+  const version = pkg.version || '1.5.1';
+
+  console.log(`\n--- 3. Đóng gói file release/p2game/hollow-woods-p2game-v${version}.zip ---`);
 
   if (!fs.existsSync(DIST_DIR)) {
     console.log('Thư mục dist/ chưa tồn tại. Đang tiến hành build tự động...');
@@ -987,7 +991,7 @@ function packageZipRelease() {
     fs.copyFileSync(pubP2Game, distP2Game);
   }
 
-  const p2gameZipOut = path.join(RELEASE_P2GAME_DIR, 'hollow-woods-p2game-v1.5.0.zip');
+  const p2gameZipOut = path.join(RELEASE_P2GAME_DIR, `hollow-woods-p2game-v${version}.zip`);
   if (fs.existsSync(p2gameZipOut)) {
     fs.unlinkSync(p2gameZipOut);
   }
@@ -1037,6 +1041,11 @@ with zipfile.ZipFile(zip_path, 'r') as zf:
   const zipStat = fs.statSync(p2gameZipOut);
   console.log(`✅ Đã xuất gói P2Game: ${p2gameZipOut}`);
   console.log(`📦 Dung lượng P2Game ZIP: ${(zipStat.size / (1024 * 1024)).toFixed(2)} MB (${zipStat.size.toLocaleString()} bytes)`);
+
+  // Đồng thời sao chép sang alias v1.5.0 để tương thích mọi link cũ
+  const legacyZip = path.join(RELEASE_P2GAME_DIR, 'hollow-woods-p2game-v1.5.0.zip');
+  fs.copyFileSync(p2gameZipOut, legacyZip);
+  console.log(`  ✔ [ALIAS] Đã đồng bộ sang: ${legacyZip}`);
 
   console.log('\n' + '='.repeat(72));
   console.log('🎉 QUY TRÌNH POST-BUILD P2GAME HOÀN TẤT THÀNH CÔNG VƯỢT TRỘI!');
