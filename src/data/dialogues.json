@@ -83,7 +83,7 @@
       "choices": [
         {
           "text": "[Nhận lời] \"Ta sẽ để mắt tìm chiếc đèn kỷ vật của em trai ngươi giữa Rừng Ngoài.\"",
-          "responseLine": "Đa tạ người lữ khách nghĩa khí! Cầu mong ngọn đèn trong tay ngươi soi sáng qua bóng tối.",
+          "responseLine": "Đa tạ người lữ khách nghĩa khí! Cầu mong Vòng Sáng Hộ Tâm của ngươi luôn soi sáng qua bóng tối.",
           "trustDelta": 3,
           "setFlag": "choice_garth_promise_lantern"
         },
@@ -104,7 +104,7 @@
         "Đúng là nó rồi... Chiếc đèn của Elian! Nước mắt ta tưởng đã khô cạn từ lâu, vậy mà hôm nay...",
         "Tạ ơn ngài, lữ khách! Ân tình này Garth này khắc cốt ghi tâm.",
         "Để đền đáp, ta xin truyền lại cho ngài kinh nghiệm sinh tử đối phó với Kỵ Binh Hắc Ám (Dread Horseman):",
-        "Chiến mã bóng tối rất nhạy cảm với ánh sáng chói. Khi thấy bóng kỵ binh phi nước đại trong sương, hãy giơ cao Đèn Lồng [F] hoặc ném Bó Đuốc làm lóa mắt khiến ngựa hý vang khựng lại!",
+        "Chiến mã bóng tối rất nhạy cảm với ánh sáng chói. Khi thấy bóng kỵ binh phi nước đại trong sương, hãy kích hoạt Vòng Sáng Hộ Tâm [F] hoặc ném Bó Đuốc làm lóa mắt khiến ngựa hý vang khựng lại!",
         "Và nhớ kỹ: đừng bao giờ chạy thẳng trên đường mòn, hãy né gấp sang hai bên hông để tránh cú đâm kích tử thần!"
       ],
       "choices": [
@@ -125,11 +125,11 @@
         "Kỵ Binh Hắc Ám (Dread Horseman) là nỗi khiếp sợ lớn nhất dọc các tuyến đường mòn ban đêm.",
         "Chiến mã bóng tối chạy rất nhanh và có đòn đâm kích xuyên thấu cực kỳ nguy hiểm nếu ngươi chạy trên đường thẳng.",
         "Nhược điểm của chúng là góc quay đầu rất rộng. Khi nghe tiếng vó ngựa dồn dập, hãy nhảy né sang hai bên sườn hoặc nấp sau thân cây cổ thụ để chúng lao hụt vào chướng ngại vật!",
-        "Đặc biệt, ngọn lửa của Đèn Lồng [F] và Bó Đuốc sẽ làm mù mắt chiến mã trong giây lát, tạo cơ hội cho ngươi vung gậy gỗ hoặc giáo sắt phản công!"
+        "Đặc biệt, hào quang của Vòng Sáng Hộ Tâm [F] và Bó Đuốc sẽ làm mù mắt chiến mã trong giây lát, tạo cơ hội cho ngươi vung gậy gỗ hoặc giáo sắt phản công!"
       ],
       "choices": [
         {
-          "text": "[Ghi nhớ] \"Một lời khuyên sinh tử. Ta sẽ vận dụng ánh sáng đèn lồng khi đối mặt chúng.\"",
+          "text": "[Ghi nhớ] \"Một lời khuyên sinh tử. Ta sẽ vận dụng ánh sáng Vòng Sáng Hộ Tâm khi đối mặt chúng.\"",
           "trustDelta": 1
         }
       ]
@@ -150,7 +150,7 @@
       "choices": [
         {
           "text": "[Tiếp nhận] \"Ba Quy Tắc Bằng Máu... ta sẽ khắc ghi. Ta sẽ tìm lại Lưỡi Chuông Đồng cho làng.\"",
-          "responseLine": "Ánh mắt kiên định lắm... Nguyện cầu ngọn đèn hổ phách xua tan sương mù dẫn lối cho ngươi.",
+          "responseLine": "Ánh mắt kiên định lắm... Nguyện cầu Vòng Sáng Hộ Tâm xua tan sương mù dẫn lối cho ngươi.",
           "trustDelta": 3,
           "setFlag": "choice_edda_promise_bell"
         },
@@ -183,12 +183,12 @@
       "portrait": "portrait_edda",
       "lines": [
         "Cổng Đông đã mở rồi, hỡi Lữ Khách! Miếu Chuông Phế Tích nằm sâu sau Đầm Lầy Tĩnh Lặng.",
-        "Kẻ Lắng Nghe đang rình rập trong sương mù. Hãy luôn giữ ngọn đèn hổ phách cháy sáng và tìm lại Lưỡi Chuông Đồng cho làng Bellhollow!"
+        "Kẻ Lắng Nghe đang rình rập trong sương mù. Hãy luôn duy trì Vòng Sáng Hộ Tâm vững vàng, bảo vệ Tinh Thần và tìm lại Lưỡi Chuông Đồng cho làng Bellhollow!"
       ],
       "choices": [
         {
           "text": "[Lên đường] \"Ta sẽ tiến sâu vào Đầm Lầy tìm lại Lưỡi Chuông Đồng cho làng.\"",
-          "responseLine": "Hãy đi đi, và nhớ luôn để ngọn đèn lồng dẫn lối.",
+          "responseLine": "Hãy đi đi, và nhớ luôn để Vòng Sáng Hộ Tâm dẫn lối.",
           "trustDelta": 1
         },
         {
@@ -229,12 +229,12 @@
       "speaker": "Edda – Người Giữ Chuông",
       "portrait": "portrait_edda",
       "lines": [
-        "Ba Cột Đá Cổ Ngữ tại Đầm Lầy Tĩnh Lặng là phong ấn cổ xưa giam giữ Kẻ Nuốt Tiếng Chuông (Behemoth).",
-        "Mỗi cột đá mang một ký tự thiêng liêng:",
-        "ᚱ (Rad – Ánh Năng Cổ): Cột đá phía Đông Bắc, tượng trưng cho tia lửa mặt trời xua tan ảo giác.",
-        "ᛁ (Isa – Băng Tuyết Cổ): Cột đá phía Tây Bắc, tượng trưng cho hàn khí đóng băng sự tha hóa của Mạch Rễ.",
-        "ᛉ (Algiz – Thần Hộ Vệ): Cột đá Trung Tâm, kết nối hai nguồn năng lượng thành kết giới bảo bọc linh hồn.",
-        "Ngươi phải kích hoạt chúng bằng cách thắp sáng ngọn lửa theo thứ tự hài hòa.",
+        "Ba Cột Đá Cổ Ngữ tại Đầm Lầy Tĩnh Lặng là phong ấn cổ xưa phong tỏa đầm lầy và giam giữ Kẻ Nuốt Tiếng Chuông (Behemoth).",
+        "Mỗi cột đá mang một biểu tượng thiêng liêng của vùng đất cổ:",
+        "🌙 Cột Trăng Khuyết (Mặt Trăng): Tượng trưng cho ánh sáng huyền bí trên cao soi thấu ảo giác sương đêm.",
+        "🌿 Cột Rễ Rừng: Tượng trưng cho mạch sống cổ xưa ăn sâu dưới lòng đất, neo giữ sinh khí.",
+        "👁️ Cột Con Mắt: Tượng trưng cho sự tỉnh thức, đối diện trực diện với ánh nhìn của Kẻ Săn Mồi.",
+        "Quy tắc giải mã bất biến: Ngươi phải kích hoạt lần lượt từ trên cao xuống lòng đất rồi ra trước mắt — 'Trăng Khuyết -> Rễ Rừng -> Con Mắt'.",
         "Cầm lấy chiếc Bùa Chuông Cổ (Bell Ward Charm) này. Nó được đúc từ mảnh đồng vỡ của chuông thiêng, sẽ giúp giảm 25% tốc độ suy kiệt Tinh Thần khi ngươi bước vào vùng tối!"
       ],
       "choices": [
@@ -398,7 +398,7 @@
       "portrait": "portrait_neris",
       "lines": [
         "Để ta băng lại vết trầy xước cho ngươi... Hương thảo dược này sẽ giữ cho tâm trí ngươi không bị Màn Sương nuốt chửng.",
-        "Nếu ngọn đèn lồng cạn dầu, tâm lý ngươi sẽ suy sụp rất nhanh trong bóng tối. Đừng bao giờ để đèn tắt!"
+        "Nếu để bóng tối bao phủ quá lâu, Tinh Thần của ngươi sẽ suy sụp rất nhanh. Hãy luôn duy trì Vòng Sáng Hộ Tâm [F] và dùng Hương Trầm khi tâm trí hoảng loạn!"
       ],
       "healPlayer": true
     },
@@ -469,7 +469,7 @@
       "lines": [
         "Fallen Knight mặc giáp sắt rất dày, đòn chém thẳng vào thân giáp khó gây sát thương lớn.",
         "Nhưng vì chính tay ta rèn giáp cho họ nên ta biết rõ nhược điểm: khớp gối và khe hở dưới nách là nơi yếu nhất!",
-        "Khi Fallen Knight giơ cao kiếm chuẩn bị chém xuống, đó là lúc trọng tâm họ dồn về phía trước. Hãy nhanh tay vung gậy gỗ hoặc đâm giáo [Phím F / Chuột trái] vào chân để phá trụ khiến chúng bị choáng váng (Stagger)!",
+        "Khi Fallen Knight giơ cao kiếm chuẩn bị chém xuống, đó là lúc trọng tâm họ dồn về phía trước. Hãy nhanh tay vung gậy gỗ hoặc đâm giáo [Chuột trái / Phím Space] vào chân để phá trụ khiến chúng bị choáng váng (Stagger)!",
         "Còn đối với Kỵ Binh Hắc Ám (Dread Horseman), đừng bao giờ đối đầu trực diện khi ngựa đang phi nước đại. Hãy né sang bên sườn rồi quét giáo vào chân sau của ngựa!"
       ],
       "choices": [
@@ -603,7 +603,7 @@
       "portrait": "portrait_campfire_knight",
       "lines": [
         "Chào mừng, lữ khách. Hãy dừng chân nghỉ ngơi bên đốm lửa này một lát... Bạn đang ở một nơi an toàn rồi. Không ai phán xét một kẻ lữ hành mệt mỏi cần chút hơi ấm giữa khu rừng sương lạnh này đâu.",
-        "Khoan đã... Bộ giáp đen đó... và cách ngươi giữ ngọn đèn... ta ngỡ người đó đã tan biến trong màn sương từ lâu rồi... Không, có lẽ ta nhìn nhầm trong ánh lửa chập chờn.",
+        "Khoan đã... Bộ giáp đen đó... và cách ngươi tỏa ra vòng sáng ấm dịu... ta ngỡ người đó đã tan biến trong màn sương từ lâu rồi... Không, có lẽ ta nhìn nhầm trong ánh lửa chập chờn.",
         "Ta là Sir Vaelen — Kỵ Sĩ Trầm Mặc, người canh giữ Trạm Lửa Rừng Tĩnh Lặng này. Đoàn kỵ sĩ giáp bạc năm xưa đã tiến sâu vào rừng để bảo vệ làng, nhưng màn sương đen The Veil đã nuốt chửng tất cả...",
         "Giờ đây, ngọn lửa này là thành trì duy nhất giữ cho tâm trí của chúng ta không bị tà khí xâm chiếm.",
         "Nhưng than củi đang cạn dần. Bạn có thể giúp ta gom 2 Gỗ Khô và 2 Nhựa Cây quanh bìa rừng để tiếp lửa nâng cấp Bếp Lửa Hồng lên Cấp 2 không? Đồng thời hãy trinh sát bìa Rừng Ngoài xem lũ quái vật có động tĩnh gì không."
@@ -669,7 +669,7 @@
       "portrait": "portrait_campfire_knight",
       "lines": [
         "Gió rừng đang thổi mạnh, ngọn lửa này cần thêm Gỗ Khô và Nhựa Cây để bùng cháy rực rỡ lên Cấp 2.",
-        "Hãy cẩn thận khi bước ra bìa Rừng Ngoài. Bật đèn lồng [F] và luôn nhớ nấp vào bụi rậm nếu nghe thấy tiếng quạ kêu báo động nhé!"
+        "Hãy cẩn thận khi bước ra bìa Rừng Ngoài. Kích hoạt Vòng Sáng Hộ Tâm [F] và luôn nhớ nấp vào bụi rậm nếu nghe thấy tiếng quạ kêu báo động nhé!"
       ],
       "choices": [
         {
@@ -730,7 +730,7 @@
       "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
       "portrait": "portrait_campfire_knight",
       "lines": [
-        "Chỉ Huy Hiệp Sĩ Trùm Mũ mang sức mạnh hắc ám khủng khiếp. Khi ngài ấy tụ năng lượng tà khí màu xanh thẫm, hãy nhanh tay vung gậy gỗ [Phím F / Chuột trái] để ngắt chiêu khiến ngài bị choáng váng!",
+        "Chỉ Huy Hiệp Sĩ Trùm Mũ mang sức mạnh hắc ám khủng khiếp. Khi ngài ấy tụ năng lượng tà khí màu xanh thẫm, hãy nhanh tay vung gậy gỗ hoặc đâm giáo [Chuột trái / Phím Space] để ngắt chiêu khiến ngài bị choáng váng!",
         "Hãy cẩn trọng từng nhịp thở, và mang Huy Hiệu Hiệp Sĩ Tha Hóa trở về an toàn nhé!"
       ],
       "choices": [
@@ -837,6 +837,14 @@
       ],
       "healPlayer": true
     },
+    "campfire_knight_rest_blessing": {
+      "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
+      "portrait": "portrait_campfire_knight",
+      "lines": [
+        "Hỡi kỵ sĩ, hãy đặt thanh kiếm của ngươi xuống bên đốm lửa. Cầu mong ánh sáng che chở trái tim ngươi đêm nay, thứ tha cho những lầm lỡ đã qua, giữ vững niềm tin và soi lối con đường phía trước. Đừng sợ hãi chặng đường gian nan vẫn còn chờ đợi — hãy bước đi với lòng quả cảm, bởi ngươi không hề đơn độc. Nghỉ ngơi đi, người lữ khách... Audentes Fortuna Iuvat — Vận may luôn mỉm cười với kẻ quả cảm."
+      ],
+      "onCompleteFlag": "vaelen_blessing_stage0_2_received"
+    },
     "campfire_knight_rest_blessing_stage0_2": {
       "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
       "portrait": "portrait_campfire_knight",
@@ -857,7 +865,7 @@
       "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
       "portrait": "portrait_campfire_knight",
       "lines": [
-        "Ngọn lửa vẫn còn lưu giữ hơi ấm lời chúc trong tâm trí ngươi hôm nay rồi. Hãy giữ vững ngọn đèn và tiến bước, chặng đường phía trước đang chờ đợi ngươi!"
+        "Ngọn lửa vẫn còn lưu giữ hơi ấm lời chúc trong tâm trí ngươi hôm nay rồi. Hãy giữ vững Vòng Sáng Hộ Tâm và tiến bước, chặng đường phía trước đang chờ đợi ngươi!"
       ]
     },
     "garth_black_knight_reverence": {
@@ -873,7 +881,7 @@
       "portrait": "portrait_edda",
       "lines": [
         "Ta đã cảm nhận được điều này ngay từ khi ngài mang chiếc lưỡi chuông đồng trở về... Khí phách kiên định không hề khuất phục trước bóng tối.",
-        "Hỡi vị Hiệp Sĩ Đen của Bellhollow, lời nguyền trăm năm đang dần tan biến dưới từng nhát kiếm và ngọn đèn dẫn lối của ngài. Thần linh và linh hồn tổ tiên sẽ luôn che chở cho ngài!"
+        "Hỡi vị Hiệp Sĩ Đen của Bellhollow, lời nguyền trăm năm đang dần tan biến dưới từng nhát kiếm và Vòng Sáng Hộ Tâm dẫn lối của ngài. Thần linh và linh hồn tổ tiên sẽ luôn che chở cho ngài!"
       ]
     },
     "neris_black_knight_reverence": {

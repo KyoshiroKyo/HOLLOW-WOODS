@@ -119,7 +119,7 @@
       "id": "mat_runed_iron",
       "name": "Phụ Kiện Sắt Rèn Cổ Ngữ",
       "category": "material",
-      "description": "Mảnh sắt cổ khắc cổ ngữ thu được từ tàn tích hoặc Thợ Rèn Bram; dùng nâng cấp Đèn Lồng và sửa cơ cấu chuông.",
+      "description": "Mảnh sắt cổ khắc cổ ngữ thu được từ tàn tích hoặc Thợ Rèn Bram; dùng cường hóa Vòng Sáng Hộ Tâm và sửa cơ cấu chuông.",
       "stackable": true,
       "maxStack": 10,
       "iconColor": "#718096"

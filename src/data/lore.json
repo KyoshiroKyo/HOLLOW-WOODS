@@ -12,14 +12,14 @@
       "act": 2,
       "title": "GHI CHÉP THẢO DƯỢC & MÀN SƯƠNG",
       "author": "Neris – Người Chữa Thảo Mộc",
-      "content": "The Veil không chỉ là hơi sương đơn thuần, nó là một thực thể sống có trí nhớ. Khi ở lâu trong sương mà thiếu ánh sáng, tâm trí (Composure) sẽ bị bào mòn nhanh chóng, sinh ra ảo thính và ảo giác.\n\nThảo dược bạc ven bờ suối có thể giã thành Thuốc Đắp giúp hồi phục máu và trấn an tinh thần. Nhựa cây cổ thụ kết hợp với cành khô là nguồn nhiên liệu duy nhất giữ cho ngọn đèn lồng không bao giờ lụi tàn."
+      "content": "The Veil không chỉ là hơi sương đơn thuần, nó là một thực thể sống có trí nhớ. Khi ở lâu trong sương mà thiếu ánh sáng, Tinh Thần sẽ bị bào mòn nhanh chóng, sinh ra ảo thính và ảo giác. Hãy kích hoạt Vòng Sáng Hộ Tâm [F] để xua tan bóng tối và bảo vệ tâm trí.\n\nThảo dược bạc ven bờ suối có thể giã thành Thuốc Đắp giúp hồi phục máu và trấn an tinh thần. Nhựa cây cổ thụ kết hợp với cành khô là nguyên liệu quý giá để luyện Hương Trầm Tinh Thần, giúp xoa dịu thần kinh và phục hồi Tinh Thần tức thì."
     },
     {
       "id": "lore_runestones",
       "act": 3,
       "title": "BÍ MẬT BA CỘT ĐÁ TẠI ĐẦM LẦY TĨNH LẶNG",
       "author": "Túi Lữ Khách Bỏ Lại",
-      "content": "Tại Đầm Lầy Tĩnh Lặng có ba cột đá cổ ngữ phong ấn dòng nước độc: Mặt Trăng, Rễ Rừng và Con Mắt.\n\nMuốn rút nước để mở lối vào Miếu Chuông, người hành hương phải kích hoạt theo chu kỳ tự nhiên: 'Trước tiên ngắm nhìn Trăng Khuyết trên cao, kế đó chạm vào Rễ Rừng dưới lòng đất, và cuối cùng đối diện Con Mắt Kẻ Săn.' Kích hoạt sai thứ tự sẽ đánh thức tiếng gầm từ đáy bùn sâu."
+      "content": "Tại Đầm Lầy Tĩnh Lặng có ba cột đá cổ ngữ phong ấn dòng nước độc: Mặt Trăng, Rễ Rừng và Con Mắt.\n\nMuốn rút nước để mở lối vào Miếu Chuông, người hành hương phải kích hoạt theo thứ tự tự nhiên bất biến: 'Trước tiên ngắm nhìn Trăng Khuyết trên cao, kế đó chạm vào Rễ Rừng dưới lòng đất, và cuối cùng đối diện Con Mắt Kẻ Săn.' Kích hoạt sai thứ tự sẽ đánh thức tiếng gầm phẫn nộ từ đáy bùn sâu."
     },
     {
       "id": "lore_clapper_curse",
@@ -47,7 +47,7 @@
       "act": 1,
       "title": "HỒI ỨC I: KẺ LỮ HÀNH MẤT TRÍ TRONG SƯƠNG",
       "author": "Tàn Dư Ký Ức Bản Thể",
-      "content": "Ta tỉnh dậy nơi bìa rừng Bellhollow ẩm ướt với chiếc đèn lồng le lói trên tay và bộ giáp sắt bám đầy rêu phong. Tâm trí ta hoàn toàn trống rỗng, không nhớ nổi tên mình hay lý do vì sao lại lạc bước vào vùng đất bị nguyền rủa này. Dân làng gọi ta là 'The Mossbound Wayfarer' — kẻ lữ hành phủ rêu cô độc. Nhưng mỗi khi bước đi trong sương mù, từng nhịp đập trong lồng ngực luôn thôi thúc ta phải tiến về phía ngọn lửa và tìm kiếm sự thật đã bị chôn vùi dưới lớp sương đen."
+      "content": "Ta tỉnh dậy nơi bìa rừng Bellhollow ẩm ướt với vầng hào quang hộ tâm le lói quanh mình và bộ giáp sắt bám đầy rêu phong. Tâm trí ta hoàn toàn trống rỗng, không nhớ nổi tên mình hay lý do vì sao lại lạc bước vào vùng đất bị nguyền rủa này. Dân làng gọi ta là 'The Mossbound Wayfarer' — kẻ lữ hành phủ rêu cô độc. Nhưng mỗi khi bước đi trong sương mù, từng nhịp đập trong lồng ngực luôn thôi thúc ta phải tiến về phía ngọn lửa và tìm kiếm sự thật đã bị chôn vùi dưới lớp sương đen."
     },
     {
       "id": "lore_memory_chapter_2",
@@ -68,7 +68,7 @@
       "act": 4,
       "title": "HỒI ỨC IV: ĐẠI THỨC TỈNH — CHÂN TƯỚNG HIỆP SĨ ĐEN",
       "author": "Hiệp Sĩ Đen (Black Knight)",
-      "content": "Khi cầm trên tay Huy Hiệu Hiệp Sĩ Tha Hóa và đứng trước ngọn lửa ấm Trạm Lửa Rừng Tĩnh Lặng, Sir Vaelen — Kỵ Sĩ Trầm Mặc đã quỳ gối phủ phục trước ta: 'Mừng ngài trở về, thưa Chỉ Huy Hiệp Sĩ Đen!'. Ký Ức cuối cùng bừng sáng: Ta chính là vị Chỉ Huy huyền thoại đã tự tay xóa đi ký ức của chính mình để tránh bị tâm ma The Veil làm tha hóa, chấp nhận trở thành Kẻ Lữ Hành vô danh để một ngày nào đó quay lại nhổ tận gốc rễ lời nguyền. Giờ đây, thanh gươm bóng tối đã tìm lại chủ nhân chân chính. Ngọn đèn trên tay ta không còn chỉ để soi đường, mà là ngọn lửa dẫn lối giải thoát toàn bộ Khu Rừng Rỗng."
+      "content": "Khi cầm trên tay Huy Hiệu Hiệp Sĩ Tha Hóa và đứng trước ngọn lửa ấm Trạm Lửa Rừng Tĩnh Lặng, Sir Vaelen — Kỵ Sĩ Trầm Mặc đã quỳ gối phủ phục trước ta: 'Mừng ngài trở về, thưa Chỉ Huy Hiệp Sĩ Đen!'. Ký Ức cuối cùng bừng sáng: Ta chính là vị Chỉ Huy huyền thoại đã tự tay xóa đi ký ức của chính mình để tránh bị tâm ma The Veil làm tha hóa, chấp nhận trở thành Kẻ Lữ Hành vô danh để một ngày nào đó quay lại nhổ tận gốc rễ lời nguyền. Giờ đây, thanh gươm bóng tối đã tìm lại chủ nhân chân chính. Vòng Sáng Hộ Tâm quanh ta không còn chỉ để soi đường, mà là ngọn lửa dẫn lối giải thoát toàn bộ Khu Rừng Rỗng."
     },
     {
       "id": "lore_wayfarer_inner_journal",
@@ -131,7 +131,7 @@
       "act": 3,
       "title": "TIẾNG VỌNG KÝ ỨC: BƯỚC CHÂN ĐẦM LẦY",
       "author": "The Echo – Vọng Âm Quá Khứ",
-      "content": "Ánh sáng huỳnh quang tái hiện lại cuộc tháo chạy nghẹt thở năm xưa: Ba hiệp sĩ cầm đuốc rọi thẳng vào màn sương, vừa đẩy lùi móng vuốt của Kẻ Lắng Nghe vừa hô lớn:\n\n'Kích hoạt Cột Nước Rad trước để hạ mực nước! Kế đó chạm vào Cột Băng Isa để đóng băng lớp bùn, cuối cùng thắp sáng Cột Mộc Algiz để dựng lại hàng rào thánh!' Tiếng bước chân dồn dập vang lên rồi chìm vào đáy nước tĩnh lặng."
+      "content": "Ánh sáng huỳnh quang tái hiện lại cuộc tháo chạy nghẹt thở năm xưa: Ba hiệp sĩ cầm đuốc rọi thẳng vào màn sương, vừa đẩy lùi móng vuốt của Kẻ Lắng Nghe vừa hô lớn:\n\n'Nhớ quy tắc Ba Cột Đá Đầm Lầy: Chạm vào Cột Trăng Khuyết trước để xua tan ảo giác! Kế đó chạm vào Cột Rễ Rừng để đánh thức mạch đất, và cuối cùng thắp sáng Cột Con Mắt để khóa chặt ánh nhìn của Kẻ Săn Mồi!' Tiếng bước chân dồn dập vang lên rồi chìm vào đáy nước tĩnh lặng."
     },
     {
       "id": "lore_stone_chessboard",
@@ -145,7 +145,7 @@
       "act": 5,
       "title": "BẢN ĐỒ DA CỪU: HỘI TỤ MẠCH RỄ",
       "author": "Bản Đồ Chiến Lược Cổ",
-      "content": "Tấm bản đồ da cừu cào xước đặt trong ống da cạnh bậc thềm đổ nát của Miếu Chuông:\n\nBản vẽ chi tiết mạng lưới rễ ngầm của thung lũng Hollow Woods. Mọi mạch rễ độc đều bắt nguồn từ Tâm Điểm The Veil và tỏa ra như mạng nhện. Nhưng tại đỉnh Tháp Chuông, một vòng tròn cổ ngữ ghi rõ: 'Tần số cộng hưởng của Đại Hồng Chung khi được gióng lên đủ 7 hồi sẽ kích hoạt sự sụp đổ của toàn bộ mạng rễ tha hóa, vĩnh viễn trục xuất màn sương khỏi thế giới thực.' Cạnh bản đồ có một bình gốm nhỏ chứa dầu đèn lồng tinh khiết."
+      "content": "Tấm bản đồ da cừu cào xước đặt trong ống da cạnh bậc thềm đổ nát của Miếu Chuông:\n\nBản vẽ chi tiết mạng lưới rễ ngầm của thung lũng Hollow Woods. Mọi mạch rễ độc đều bắt nguồn từ Tâm Điểm The Veil và tỏa ra như mạng nhện. Nhưng tại đỉnh Tháp Chuông, một vòng tròn cổ ngữ ghi rõ: 'Tần số cộng hưởng của Đại Hồng Chung khi được gióng lên đủ 7 hồi sẽ kích hoạt sự sụp đổ của toàn bộ mạng rễ tha hóa, vĩnh viễn trục xuất màn sương khỏi thế giới thực.' Cạnh bản đồ có một hộp gỗ nhỏ chứa Hương Trầm Tinh Thần tinh khiết."
     },
     {
       "id": "lore_ending_true",
@@ -159,7 +159,7 @@
       "act": 6,
       "title": "KẾT THÚC II: NGƯỜI CANH GÁC VĨNH HẰNG (BITTERSWEET ENDING)",
       "author": "Lời Nguyện Cầu Khắc Trên Đá",
-      "content": "Nhớ lại danh xưng và trách nhiệm năm xưa của Chỉ Huy Hiệp Sĩ Đen, nhưng giữa sự xa cách và thiếu vắng niềm tin trọn vẹn từ dân làng, người lữ hành hiểu rằng không thể cùng lúc giữ lấy cả sinh mạng lẫn sự an toàn cho ngôi làng...\n\nChàng hiệp sĩ bước vào tâm chấn Mạch Rễ, cắm thanh kiếm và đặt ngọn đèn lồng rực sáng vào khe nứt thời đại, dùng chính thân xác và linh hồn mình để phong tỏa hoàn toàn lối thoát của The Veil. Màn sương ngoài thung lũng tan đi, làng Bellhollow được cứu thoát; nhưng sâu trong rừng cấm vĩnh viễn lưu lại một pho tượng hiệp sĩ phủ đầy rêu phong, lặng lẽ canh giữ cõi vĩnh hằng."
+      "content": "Nhớ lại danh xưng và trách nhiệm năm xưa của Chỉ Huy Hiệp Sĩ Đen, nhưng giữa sự xa cách và thiếu vắng niềm tin trọn vẹn từ dân làng, người lữ hành hiểu rằng không thể cùng lúc giữ lấy cả sinh mạng lẫn sự an toàn cho ngôi làng...\n\nChàng hiệp sĩ bước vào tâm chấn Mạch Rễ, cắm thanh kiếm và phóng thích toàn bộ hào quang Vòng Sáng Hộ Tâm rực sáng vào khe nứt thời đại, dùng chính thân xác và linh hồn mình để phong tỏa hoàn toàn lối thoát của The Veil. Màn sương ngoài thung lũng tan đi, làng Bellhollow được cứu thoát; nhưng sâu trong rừng cấm vĩnh viễn lưu lại một pho tượng hiệp sĩ phủ đầy rêu phong, lặng lẽ canh giữ cõi vĩnh hằng."
     },
     {
       "id": "lore_ending_fog_loop",
@@ -244,7 +244,7 @@
         },
         {
           "id": "t2",
-          "text": "Mở túi chế tạo [Phím C / I] để pha chế Dầu Đèn",
+          "text": "Mở túi chế tạo [Phím C / I] để luyện Hương Trầm Tinh Thần",
           "done": false
         }
       ]
@@ -329,7 +329,7 @@
       "act": 2,
       "title": "VĂN BIA CỔ: HIỆP SĨ ĐEN VÀ PHONG ẤN ĐẠI MẠCH RỄ",
       "author": "Văn Bia Cổ Xưởng Chuông",
-      "content": "Những dòng chữ khắc sâu trên phiến đá cổ kể lại: Khi thảm họa Màn Sương The Veil bùng phát từ lòng đất, 'Hiệp Sĩ Đen (Black Knight)' — vị chỉ huy duy nhất năm xưa dám tiến vào tâm điểm Mạch Rễ để phong ấn lời nguyền và đánh đổi toàn bộ ký ức của mình. Ngài đã biến mất vào sương sâu trong bộ giáp đen rêu phong, chỉ để lại thanh kiếm và ngọn đèn dẫn lối cho người kế tục..."
+      "content": "Những dòng chữ khắc sâu trên phiến đá cổ kể lại: Khi thảm họa Màn Sương The Veil bùng phát từ lòng đất, 'Hiệp Sĩ Đen (Black Knight)' — vị chỉ huy duy nhất năm xưa dám tiến vào tâm điểm Mạch Rễ để phong ấn lời nguyền và đánh đổi toàn bộ ký ức của mình. Ngài đã biến mất vào sương sâu trong bộ giáp đen rêu phong, chỉ để lại thanh kiếm và Vòng Sáng Hộ Tâm dẫn lối cho người kế tục..."
     }
   ],
   "sideQuestLog": [

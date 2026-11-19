@@ -81,7 +81,7 @@ export class PuzzleSystem {
     if (!playerHasLanternOn) {
       return {
         success: false,
-        msg: 'Ký hiệu trên thân cây bị sương mù làm nhòe! Hãy bật Đèn Lồng [F] để soi sáng.'
+        msg: 'Ký hiệu trên thân cây bị sương mù làm nhòe! Hãy kích hoạt Vòng Sáng Hộ Tâm [F] để soi sáng.'
       };
     }
 

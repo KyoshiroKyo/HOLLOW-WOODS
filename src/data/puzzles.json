@@ -5,7 +5,7 @@
       "zoneId": "crooked_path",
       "name": "Chiếc Đèn Thứ Hai Trong Sương",
       "ruleRef": "Quy Tắc 2: Đừng đi theo chiếc đèn thứ hai xuất hiện trong sương",
-      "clue": "Đèn ma trôi nổi giữa sương mù là mồi nhử của ảo giác. Hãy soi sáng ngọn đèn lồng thật [Phím F] và giải mã 3 ký hiệu ranh giới trên thân cây cổ thụ.",
+      "clue": "Đèn ma trôi nổi giữa sương mù là mồi nhử của ảo giác. Hãy kích hoạt Vòng Sáng Hộ Tâm [Phím F] và giải mã 3 ký hiệu ranh giới trên thân cây cổ thụ.",
       "requiredTreeSymbols": ["symbol_owl", "symbol_deer", "symbol_wolf"],
       "fakeLanternPos": { "x": 2200, "y": 140 },
       "solvedFlag": "crooked_path_solved"

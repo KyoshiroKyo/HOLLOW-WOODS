@@ -92,21 +92,26 @@ export class DialogueSystem {
     // C4-132-02: Khóa cứng sự kiện tua thoại trong 260ms đầu tiên để cú nhấn [E] mở thoại không bao giờ nuốt mất câu số 1
     this.lastAdvanceTime = Date.now();
 
-    // V15-38: Điều hướng lựa chọn Nghỉ ngơi bên đốm lửa của Sir Vaelen theo tiến trình ký ức & hồi chiêu
+    // V15-38 & V15-FIX-03: Điều hướng an toàn lựa chọn Nghỉ ngơi bên đốm lửa của Sir Vaelen theo tiến trình ký ức & hồi chiêu
     if (dialogueKey === 'campfire_knight_rest_blessing') {
-      const audioMgr = (this.scene as any).audioManager as AudioManager;
-      if (audioMgr && typeof audioMgr.playBGM === 'function') {
-        audioMgr.playBGM('bgm_knights_quiet_fire', 1.5, 0.95);
-      }
+      try {
+        const audioMgr = (this.scene as any).audioManager as AudioManager;
+        if (audioMgr && typeof audioMgr.playBGM === 'function') {
+          audioMgr.playBGM('bgm_knights_quiet_fire', 1.5, 0.95);
+        }
 
-      const campSys = CampSanctuarySystem.getInstance();
-      const currentDay = (this.scene as any).timeSystem ? (this.scene as any).timeSystem.dayCount : PlayerState.getInstance().dayCount;
-      if (!campSys.canReceiveBlessing(currentDay)) {
-        dialogueKey = 'campfire_knight_rest_cooldown';
-      } else {
-        const stage = PlayerState.getInstance().memoryAwakeningStage;
-        const isStage3 = stage >= 3 || PlayerState.getInstance().hasFlag('campfire_knight_q3_completed');
-        dialogueKey = isStage3 ? 'campfire_knight_rest_blessing_stage3' : 'campfire_knight_rest_blessing_stage0_2';
+        const campSys = CampSanctuarySystem.getInstance();
+        const currentDay = (this.scene as any).timeSystem ? (this.scene as any).timeSystem.dayCount : PlayerState.getInstance().dayCount;
+        if (!campSys.canReceiveBlessing(currentDay)) {
+          dialogueKey = 'campfire_knight_rest_cooldown';
+        } else {
+          const stage = PlayerState.getInstance().memoryAwakeningStage;
+          const isStage3 = stage >= 3 || PlayerState.getInstance().hasFlag('campfire_knight_q3_completed');
+          dialogueKey = isStage3 ? 'campfire_knight_rest_blessing_stage3' : 'campfire_knight_rest_blessing_stage0_2';
+        }
+      } catch (err) {
+        console.warn('[DialogueSystem] Error routing campfire_knight_rest_blessing, fallback to stage0_2:', err);
+        dialogueKey = 'campfire_knight_rest_blessing_stage0_2';
       }
     }
 
