@@ -88,6 +88,7 @@
 | 33 | `V15-35` | [docs/FOLDER_STRUCTURE_RULES.md](file:///g:/HOLLOW%20WOODS/docs/FOLDER_STRUCTURE_RULES.md) — Quy hoạch, dọn dẹp và sắp xếp lại toàn bộ cây thư mục gốc theo chuẩn hóa (di chuyển toàn bộ file .md, .rar, .zip và thư mục backup vào docs/, release/, Backups/, cập nhật .gitignore) | Hoàn tất (Đã nghiệm thu) |
 | 34 | `V15-36` | [15_Final_V15_Release_Report.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/15_Final_V15_Release_Report.md) / [FINAL_V1.5_RELEASE_REPORT.md](file:///g:/HOLLOW%20WOODS/docs/reports/FINAL_V1.5_RELEASE_REPORT.md) — Đóng gói mã nguồn tinh gọn chuẩn AI-Readable cho Gemini (< 2 MB) và xuất bản bản chạy P2Game V1.5.0 chính thức | Hoàn tất (Đã nghiệm thu) |
 | 35 | `V15-49` | [49_Map_Reachability_BFS_And_Asset_Audit.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/49_Map_Reachability_BFS_And_Asset_Audit.md) — Kiểm toán tự động khả năng di chuyển toàn bộ bản đồ bằng thuật toán BFS Navigation Grid, tối ưu hóa Static Colliders và rà soát 100% asset thực thể | Hoàn tất (Đã nghiệm thu) |
+| 36 | `V15-50` | [50_Bottom_Bar_And_Vertical_Taskbar_Redesign.md](file:///g:/HOLLOW%20WOODS/Read/V1.5/Reports/50_Bottom_Bar_And_Vertical_Taskbar_Redesign.md) — Tái thiết kế toàn bộ thanh Túi Đồ & Trang Bị đáy và Taskbar biểu tượng dọc theo phong cách Don't Starve | Hoàn tất (Đã nghiệm thu) |
 
 ---
 

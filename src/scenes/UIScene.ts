@@ -19,6 +19,10 @@ import { TornPageEntry } from '../data/tornPagesData';
 import { AudioManager } from '../audio/AudioManager';
 import { HUDIconGenerator, HUD_ICON_HEALTH, HUD_ICON_STAMINA, HUD_ICON_OIL, HUD_ICON_COMPOSURE } from '../utils/HUDIconGenerator';
 import { TimePhase, TIME_CONFIG } from '../config/TimeConfig';
+import itemsData from '../data/items.json';
+import { EquipmentSystem } from '../systems/EquipmentSystem';
+import { EquipmentSlot } from '../types';
+import { ItemTooltipHelper } from '../ui/ItemTooltipHelper';
 
 export interface QuickSlotRef {
   id: string;
@@ -95,16 +99,37 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   private quickSlotRefs: QuickSlotRef[] = [];
   public selectedQuickSlotIndex: number = 0;
   private slotHighlightGraphics!: Phaser.GameObjects.Graphics;
-  private poulticeCountBadge?: Phaser.GameObjects.Graphics;
-  private poulticeCountText!: Phaser.GameObjects.Text;
-  private oilCountBadge?: Phaser.GameObjects.Graphics;
-  private oilCountText!: Phaser.GameObjects.Text;
-  private lureCountBadge?: Phaser.GameObjects.Graphics;
-  private lureCountText!: Phaser.GameObjects.Text;
-  private emergencyCountBadge?: Phaser.GameObjects.Graphics;
-  private emergencyCountText!: Phaser.GameObjects.Text;
-  private lastEmergencyCount: number = -1;
-  private lastEmergencyTime: number = 0;
+  public poulticeCountBadge?: Phaser.GameObjects.Graphics;
+  public poulticeCountText?: Phaser.GameObjects.Text;
+  public oilCountBadge?: Phaser.GameObjects.Graphics;
+  public oilCountText?: Phaser.GameObjects.Text;
+  public lureCountBadge?: Phaser.GameObjects.Graphics;
+  public lureCountText?: Phaser.GameObjects.Text;
+  public emergencyCountBadge?: Phaser.GameObjects.Graphics;
+  public emergencyCountText?: Phaser.GameObjects.Text;
+  public lastEmergencyCount: number = -1;
+  public lastEmergencyTime: number = 0;
+
+  // V15-50: Quản lý 8 ô Túi Đồ & 4 ô Trang Bị ở đáy màn hình (Don't Starve Style)
+  private inventorySlotData: Array<{ itemId: string | null; count: number }> = [];
+  private inventorySlotGfx: Phaser.GameObjects.Graphics[] = [];
+  private inventorySlotIcons: Phaser.GameObjects.Text[] = [];
+  private inventorySlotCounts: Phaser.GameObjects.Text[] = [];
+  private inventorySlotKeyTexts: Phaser.GameObjects.Text[] = [];
+  private inventorySlotZones: Phaser.GameObjects.Zone[] = [];
+
+  private equipmentSlotGfx: Record<string, Phaser.GameObjects.Graphics> = {};
+  private equipmentSlotIcons: Record<string, Phaser.GameObjects.Text> = {};
+  private equipmentSlotZones: Record<string, Phaser.GameObjects.Zone> = {};
+
+  // V15-50: Taskbar Biểu Tượng Dọc mép trái màn hình
+  public verticalTaskbarContainer!: Phaser.GameObjects.Container;
+  private verticalTaskbarBg!: Phaser.GameObjects.Graphics;
+  private taskbarButtonGfx: Phaser.GameObjects.Graphics[] = [];
+  private taskbarLanternGlow?: Phaser.GameObjects.Graphics;
+  private taskbarLanternIcon?: Phaser.GameObjects.Text;
+  private taskbarTooltipContainer?: Phaser.GameObjects.Container;
+  private bottomTooltipContainer?: Phaser.GameObjects.Container;
 
   // Thu gọn / Mở rộng bảng nhiệm vụ góc trên phải (V15-24)
   public isQuestCollapsed: boolean = false;
@@ -164,9 +189,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   private lastMaxC: number = -1;
   private lastQuestTitle: string = '';
   private lastQuestTaskText: string = '';
-  private lastPoulticeCount: number = -1;
-  private lastOilCount: number = -1;
-  private lastLureCount: number = -1;
+  public lastPoulticeCount: number = -1;
+  public lastOilCount: number = -1;
+  public lastLureCount: number = -1;
 
   // C4-13-09: Bộ nhớ đệm kiểm tra thay đổi lời nhắc tương tác (Interaction Prompt Dirty Checking)
   private lastPromptText: string | null = null;
@@ -437,8 +462,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     // V1.4 - P6: Dựng Thanh Độ Ổn Định Phong Ấn tại đỉnh màn hình (640, 42)
     this.buildBossSealBar();
 
-    // 5. Thanh vật phẩm nhanh dưới đáy màn hình đặt tại (640, 684)
+    // 5. Thanh vật phẩm nhanh dưới đáy màn hình đặt tại (640, 688)
     this.buildQuickSlots();
+    // V15-50: Taskbar Biểu Tượng Dọc mép trái phong cách Don't Starve
+    this.buildVerticalTaskbar();
     // V14-P8-02: Cụm nút chức năng nhanh ở góc dưới bên trái HUD
     this.buildQuickActionButtons();
 
@@ -470,7 +497,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.promptContainer.add(this.promptText);
 
     // 7. Lắng nghe sự kiện từ PlayerState (dọn dẹp listener khi tắt scene để chống rò rỉ)
-    const onStatsChanged = () => this.redrawStats();
+    const onStatsChanged = () => {
+      this.redrawStats();
+      this.updateTaskbarLanternState();
+    };
     const onQuestChanged = () => {
       this.updateQuestTracker();
       AudioManager.getInstance().playQuestUpdate();
@@ -480,12 +510,14 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       AudioManager.getInstance().playQuestUpdate();
     };
     const onInventoryChanged = () => this.updateQuickSlotCounts();
+    const onEquipmentChanged = () => this.updateBottomBarEquipment();
     const onMemoryAwakened = () => this.redrawStats();
 
     this.playerState.on('stats_changed', onStatsChanged);
     this.playerState.on('quest_changed', onQuestChanged);
     this.playerState.on('quest_updated', onQuestUpdated);
     this.playerState.on('inventory_changed', onInventoryChanged);
+    this.playerState.on('equipment_changed', onEquipmentChanged);
     this.playerState.on('memory_awakening_changed', onMemoryAwakened);
 
     this.events.once('shutdown', () => {
@@ -493,6 +525,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.playerState.off('quest_changed', onQuestChanged);
       this.playerState.off('quest_updated', onQuestUpdated);
       this.playerState.off('inventory_changed', onInventoryChanged);
+      this.playerState.off('equipment_changed', onEquipmentChanged);
       this.playerState.off('memory_awakening_changed', onMemoryAwakened);
       // C4-13-09: Dọn dẹp triệt để tweens, timer events và keyboard listeners khi tắt/chuyển scene
       this.tweens.killAll();
@@ -536,6 +569,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       if (this.zoneBannerContainer) { this.zoneBannerContainer.destroy(); this.zoneBannerContainer = undefined as any; }
       if (this.bossSealContainer) { this.bossSealContainer.destroy(); this.bossSealContainer = undefined as any; }
       if (this.quickSlotContainer) { this.quickSlotContainer.destroy(); this.quickSlotContainer = undefined as any; }
+      if (this.verticalTaskbarContainer) { this.verticalTaskbarContainer.destroy(); this.verticalTaskbarContainer = undefined as any; }
+      if (this.taskbarTooltipContainer) { this.taskbarTooltipContainer.destroy(); this.taskbarTooltipContainer = undefined; }
+      if (this.bottomTooltipContainer) { this.bottomTooltipContainer.destroy(); this.bottomTooltipContainer = undefined; }
       if (this.questToggleBtn) { this.questToggleBtn.destroy(); this.questToggleBtn = undefined as any; }
       if (this.questToggleZone) { this.questToggleZone.destroy(); this.questToggleZone = undefined as any; }
       if (this.emergencyCountBadge) { this.emergencyCountBadge.destroy(); this.emergencyCountBadge = undefined as any; }
@@ -590,23 +626,15 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.updateQuestTracker();
     this.updateQuickSlotCounts();
 
-    // Lắng nghe phím số [1]..[3], [Q], [F], [C], [I], [J], [ESC] để chọn ô và thực thi nhanh (V15-24)
+    // Lắng nghe phím số [1]..[8], [Q], [F], [C], [I], [J], [ESC] để chọn ô và thực thi nhanh (V15-50)
     if (this.input.keyboard) {
-      this.input.keyboard.on('keydown-ONE', () => {
-        if (this.isAnyModalOpen) return;
-        this.selectQuickSlot(0);
-        this.tryConsumePoultice();
-      });
-      this.input.keyboard.on('keydown-TWO', () => {
-        if (this.isAnyModalOpen) return;
-        this.selectQuickSlot(1);
-        this.tryConsumeLanternOil();
-      });
-      this.input.keyboard.on('keydown-THREE', () => {
-        if (this.isAnyModalOpen) return;
-        this.selectQuickSlot(2);
-        this.tryUseEmergencySurvivalItem();
-      });
+      const numKeyNames = ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT'];
+      for (let i = 0; i < 8; i++) {
+        this.input.keyboard.on(`keydown-${numKeyNames[i]}`, () => {
+          if (this.isAnyModalOpen) return;
+          this.useOrSelectSlot(i);
+        });
+      }
       this.input.keyboard.on('keydown-Q', () => {
         if (this.isAnyModalOpen) return;
         this.selectQuickSlot(3);
@@ -879,178 +907,624 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   private buildQuickSlots(): void {
-    // Đặt Thanh Phím Tắt Đáy tại (x: 640, y: 684) cân đối chuẩn HD 1280×720 với depth 8000
-    this.quickSlotContainer = this.add.container(640, 684);
+    // V15-50: Đặt Thanh Túi Đồ & Trang Bị Đáy tại (x: 640, y: 688) cân đối chuẩn HD 1280×720 với depth 8000
+    this.quickSlotContainer = this.add.container(640, 688);
     this.quickSlotContainer.setDepth(8000);
+
+    const totalW = 574;
+    const totalH = 52;
+
+    // 1. Nền khung gỗ tối viền đồng cổ bao trọn toàn bộ thanh đáy (Don't Starve Pixel Art)
+    const frameBg = this.add.graphics();
+    frameBg.fillStyle(0x140e09, 0.94);
+    frameBg.fillRoundedRect(-totalW / 2, -totalH / 2, totalW, totalH, 6);
+    frameBg.lineStyle(1.5, 0x5c4224, 0.9);
+    frameBg.strokeRoundedRect(-totalW / 2, -totalH / 2, totalW, totalH, 6);
+    frameBg.lineStyle(1, 0x8c6d3b, 0.35);
+    frameBg.strokeRoundedRect(-totalW / 2 + 1.5, -totalH / 2 + 1.5, totalW - 3, totalH - 3, 5);
+
+    // 4 đinh tán đồng ở 4 góc khung chính
+    frameBg.fillStyle(0xb89058, 0.9);
+    frameBg.fillRect(-totalW / 2 + 3, -totalH / 2 + 3, 2, 2);
+    frameBg.fillRect(totalW / 2 - 5, -totalH / 2 + 3, 2, 2);
+    frameBg.fillRect(-totalW / 2 + 3, totalH / 2 - 5, 2, 2);
+    frameBg.fillRect(totalW / 2 - 5, totalH / 2 - 5, 2, 2);
+
+    this.quickSlotContainer.add(frameBg);
+
+    // Graphics cho hiệu ứng chọn ô (Amber Gold Highlight)
     this.slotHighlightGraphics = this.add.graphics();
     this.quickSlotContainer.add(this.slotHighlightGraphics);
 
-    // V15-24: Dải HUD đáy tinh gọn, gồm 5 ô vật phẩm/kỹ năng trung tâm + vạch ngăn + 3 nút công cụ bên phải
-    const slotNames = [
-      { key: '[1] Thuốc Đắp', id: 'poultice' },
-      { key: '[2] Dầu Đèn', id: 'oil' },
-      { key: '[3] Trà/Đuốc', id: 'emergency' },
-      { key: '[Q] Mồi Ném', id: 'lure' },
-      { key: '[F] Đèn Lồng', id: 'lantern' },
-      { key: '🔨 [I] Chế Tạo', id: 'craft' },
-      { key: '📖 [J] Sổ Tay', id: 'journal' },
-      { key: '⚙️ [ESC] Tạm Dừng', id: 'pause' }
-    ];
-
-    const btnW = 96;
-    const btnH = 36;
-    const gap = 6;
-    const sepW = 14; // khoảng cách cho vạch phân cách giữa slot 4 và 5
-    // 5 ô bên trái: 5 * 96 + 4 * 6 = 504px. Vạch phân cách: 14px. 3 ô bên phải: 3 * 96 + 2 * 6 = 300px.
-    // Tổng chiều rộng = 504 + 14 + 300 = 818px
-    const totalW = 818;
-    const leftStartX = -totalW / 2 + btnW / 2; // -409 + 48 = -361
-
     this.quickSlotRefs = [];
+    this.inventorySlotGfx = [];
+    this.inventorySlotIcons = [];
+    this.inventorySlotCounts = [];
+    this.inventorySlotKeyTexts = [];
+    this.inventorySlotZones = [];
 
-    for (let i = 0; i < slotNames.length; i++) {
-      const slot = slotNames[i];
-      let slotX = leftStartX + i * (btnW + gap);
-      if (i >= 5) {
-        slotX += (sepW - gap); // bù thêm khoảng cách sau vạch phân chia
-      }
+    const slotSize = 42;
+    const gap = 4;
+    const invStartX = -258;
+
+    // Khởi tạo 8 ô Túi Đồ bên trái
+    for (let i = 0; i < 8; i++) {
+      const slotX = invStartX + i * (slotSize + gap);
 
       const g = this.add.graphics();
-      // Ngôn ngữ gỗ tối, da cũ và đồng xỉn
-      g.fillStyle(0x18110b, 0.88);
-      g.fillRoundedRect(slotX - btnW / 2, -btnH / 2, btnW, btnH, 5);
+      // Nền ô gỗ tối
+      g.fillStyle(0x18110b, 0.9);
+      g.fillRoundedRect(slotX - slotSize / 2, -slotSize / 2, slotSize, slotSize, 4);
+      g.lineStyle(1.2, 0x4a3722, 0.85);
+      g.strokeRoundedRect(slotX - slotSize / 2, -slotSize / 2, slotSize, slotSize, 4);
+      g.lineStyle(1, 0x6e5233, 0.25);
+      g.strokeRoundedRect(slotX - slotSize / 2 + 1, -slotSize / 2 + 1, slotSize - 2, slotSize - 2, 3);
 
-      // Viền kim loại đồng xỉn mộc mạc
-      g.lineStyle(1.5, 0x6e5233, 0.85);
-      g.strokeRoundedRect(slotX - btnW / 2, -btnH / 2, btnW, btnH, 5);
+      // Đinh tán góc nhỏ
+      g.fillStyle(0x8c6d3b, 0.7);
+      g.fillRect(slotX - slotSize / 2 + 1, -slotSize / 2 + 1, 1.5, 1.5);
+      g.fillRect(slotX + slotSize / 2 - 2.5, -slotSize / 2 + 1, 1.5, 1.5);
+      g.fillRect(slotX - slotSize / 2 + 1, slotSize / 2 - 2.5, 1.5, 1.5);
+      g.fillRect(slotX + slotSize / 2 - 2.5, slotSize / 2 - 2.5, 1.5, 1.5);
 
-      // Vạch bóng kim loại trong
-      g.lineStyle(1, 0x9c774b, 0.35);
-      g.strokeRoundedRect(slotX - btnW / 2 + 1, -btnH / 2 + 1, btnW - 2, btnH - 2, 4);
+      this.quickSlotContainer.add(g);
+      this.inventorySlotGfx.push(g);
 
-      // 4 đinh tán đồng ở góc
-      g.fillStyle(0xb89058, 0.9);
-      g.fillRect(slotX - btnW / 2 + 2, -btnH / 2 + 2, 2, 2);
-      g.fillRect(slotX + btnW / 2 - 4, -btnH / 2 + 2, 2, 2);
-      g.fillRect(slotX - btnW / 2 + 2, btnH / 2 - 4, 2, 2);
-      g.fillRect(slotX + btnW / 2 - 4, btnH / 2 - 4, 2, 2);
-
-      const label = HDTextHelper.createText(this, slotX, 0, slot.key, {
-        fontSize: '11px',
+      // Nhãn phím tắt góc trên trái [1]..[8]
+      const keyLabel = `[${i + 1}]`;
+      const keyText = HDTextHelper.createText(this, slotX - slotSize / 2 + 2, -slotSize / 2 + 2, keyLabel, {
+        fontSize: '9px',
         fontStyle: 'bold',
-        color: '#f5eedc',
-        stroke: '#0c0805',
-        strokeThickness: 2
+        color: '#baa892',
+        stroke: '#000000',
+        strokeThickness: 1.5
+      });
+      this.quickSlotContainer.add(keyText);
+      this.inventorySlotKeyTexts.push(keyText);
+
+      // Icon vật phẩm ở tâm
+      const iconText = HDTextHelper.createText(this, slotX, 0, '', {
+        fontSize: '18px'
       }).setOrigin(0.5, 0.5);
+      this.quickSlotContainer.add(iconText);
+      this.inventorySlotIcons.push(iconText);
 
-      this.quickSlotContainer.add([g, label]);
+      // Số lượng xếp chồng ở góc dưới phải (x2, x10)
+      const countText = HDTextHelper.createText(this, slotX + slotSize / 2 - 2, slotSize / 2 - 2, '', {
+        fontSize: '10.5px',
+        fontStyle: 'bold',
+        color: '#2ecc71',
+        stroke: '#000000',
+        strokeThickness: 2
+      }).setOrigin(1, 1);
+      this.quickSlotContainer.add(countText);
+      this.inventorySlotCounts.push(countText);
 
-      const slotRef: QuickSlotRef = {
-        id: slot.id,
-        key: slot.key,
+      // Lưu tham chiếu slot cho quickSlotRefs
+      const slotId = i === 0 ? 'poultice' : (i === 1 ? 'oil' : (i === 2 ? 'emergency' : (i === 3 ? 'lure' : `slot_${i + 1}`)));
+      this.quickSlotRefs.push({
+        id: slotId,
+        key: `[${i + 1}]`,
         bg: g,
-        label,
+        label: keyText,
         x: slotX
-      };
-      this.quickSlotRefs.push(slotRef);
+      });
 
-      // Vùng bấm chuột cho từng nút phím tắt
-      const hitZone = this.add.zone(slotX, 0, btnW, btnH).setInteractive({ useHandCursor: true });
+      // Vùng tương tác chuột Zone
+      const hitZone = this.add.zone(slotX, 0, slotSize, slotSize).setInteractive({ useHandCursor: true });
       hitZone.on('pointerdown', () => {
-        this.selectQuickSlot(i);
-        if (slot.id === 'craft') {
-          this.toggleCrafting();
-        } else if (slot.id === 'journal') {
-          this.toggleJournal();
-        } else if (slot.id === 'pause') {
-          this.togglePause();
-        } else if (slot.id === 'poultice') {
-          this.tryConsumePoultice();
-        } else if (slot.id === 'oil') {
-          this.tryConsumeLanternOil();
-        } else if (slot.id === 'emergency') {
-          this.tryUseEmergencySurvivalItem();
-        } else if (slot.id === 'lantern') {
-          this.events.emit('ui_toggle_lantern');
-        } else if (slot.id === 'lure') {
-          this.events.emit('ui_throw_lure');
-        }
+        this.useOrSelectSlot(i);
       });
       hitZone.on('pointerover', () => {
         g.clear();
         g.fillStyle(0x281d13, 0.98);
-        g.fillRoundedRect(slotX - btnW / 2, -btnH / 2, btnW, btnH, 5);
+        g.fillRoundedRect(slotX - slotSize / 2, -slotSize / 2, slotSize, slotSize, 4);
         g.lineStyle(1.5, 0xf1c40f, 0.95);
-        g.strokeRoundedRect(slotX - btnW / 2, -btnH / 2, btnW, btnH, 5);
+        g.strokeRoundedRect(slotX - slotSize / 2, -slotSize / 2, slotSize, slotSize, 4);
+
+        const curItem = this.inventorySlotData[i];
+        if (curItem && curItem.itemId) {
+          ItemTooltipHelper.getInstance().show(this, 640 + slotX, 688 - 140, curItem.itemId);
+        } else {
+          this.showCompactBottomTooltip(640 + slotX, 688 - 60, `Ô Túi Đồ [${i + 1}]`, 'Ô đang trống', '#a0aec0');
+        }
+      });
+      hitZone.on('pointerout', () => {
+        g.clear();
+        g.fillStyle(0x18110b, 0.9);
+        g.fillRoundedRect(slotX - slotSize / 2, -slotSize / 2, slotSize, slotSize, 4);
+        g.lineStyle(1.2, 0x4a3722, 0.85);
+        g.strokeRoundedRect(slotX - slotSize / 2, -slotSize / 2, slotSize, slotSize, 4);
+        g.lineStyle(1, 0x6e5233, 0.25);
+        g.strokeRoundedRect(slotX - slotSize / 2 + 1, -slotSize / 2 + 1, slotSize - 2, slotSize - 2, 3);
+        g.fillStyle(0x8c6d3b, 0.7);
+        g.fillRect(slotX - slotSize / 2 + 1, -slotSize / 2 + 1, 1.5, 1.5);
+        g.fillRect(slotX + slotSize / 2 - 2.5, -slotSize / 2 + 1, 1.5, 1.5);
+        g.fillRect(slotX - slotSize / 2 + 1, slotSize / 2 - 2.5, 1.5, 1.5);
+        g.fillRect(slotX + slotSize / 2 - 2.5, slotSize / 2 - 2.5, 1.5, 1.5);
+
+        ItemTooltipHelper.getInstance().hide();
+        this.hideCompactBottomTooltip();
+      });
+
+      this.quickSlotContainer.add(hitZone);
+      this.inventorySlotZones.push(hitZone);
+    }
+
+    // Gán biến tham chiếu backward compatibility
+    this.poulticeCountText = this.inventorySlotCounts[0];
+    this.oilCountText = this.inventorySlotCounts[1];
+    this.emergencyCountText = this.inventorySlotCounts[2];
+    this.lureCountText = this.inventorySlotCounts[3];
+
+    // 2. Vạch ngăn cách đồng xỉn phân định giữa Cụm Túi Đồ và Cụm Trang Bị (tại x = 92)
+    const sepGfx = this.add.graphics();
+    sepGfx.lineStyle(1.5, 0x8a6d3b, 0.8);
+    sepGfx.lineBetween(92, -18, 92, 18);
+    sepGfx.lineBetween(102, -14, 102, 14); // Compatibility anchor
+    sepGfx.fillStyle(0xd4af37, 0.9);
+    sepGfx.fillCircle(92, 0, 2.5);
+    this.quickSlotContainer.add(sepGfx);
+
+    // 3. 4 Ô Trang Bị Cá Nhân bên phải (BODY, FEET, BACK, CHARM)
+    const equipSlots: Array<{ slot: EquipmentSlot; label: string; defaultIcon: string }> = [
+      { slot: 'body', label: 'BODY', defaultIcon: '🧥' },
+      { slot: 'feet', label: 'FEET', defaultIcon: '👢' },
+      { slot: 'back', label: 'BACK', defaultIcon: '🎒' },
+      { slot: 'charm', label: 'CHARM', defaultIcon: '🔔' }
+    ];
+
+    const equipStartX = 120;
+    this.equipmentSlotGfx = {};
+    this.equipmentSlotIcons = {};
+    this.equipmentSlotZones = {};
+
+    for (let i = 0; i < equipSlots.length; i++) {
+      const eq = equipSlots[i];
+      const slotX = equipStartX + i * (slotSize + gap);
+
+      const g = this.add.graphics();
+      // Nền ô trang bị tím đen cổ
+      g.fillStyle(0x141018, 0.9);
+      g.fillRoundedRect(slotX - slotSize / 2, -slotSize / 2, slotSize, slotSize, 4);
+      g.lineStyle(1.2, 0x524336, 0.85);
+      g.strokeRoundedRect(slotX - slotSize / 2, -slotSize / 2, slotSize, slotSize, 4);
+
+      this.quickSlotContainer.add(g);
+      this.equipmentSlotGfx[eq.slot] = g;
+
+      // Nhãn loại trang bị mờ ở đỉnh ô
+      const labelText = HDTextHelper.createText(this, slotX, -slotSize / 2 + 5, eq.label, {
+        fontSize: '7.5px',
+        fontStyle: 'bold',
+        color: '#7a6855'
+      }).setOrigin(0.5, 0);
+      this.quickSlotContainer.add(labelText);
+
+      // Icon trang bị ở giữa
+      const iconText = HDTextHelper.createText(this, slotX, 3, eq.defaultIcon, {
+        fontSize: '17px'
+      }).setOrigin(0.5, 0.5);
+      iconText.setAlpha(0.35);
+      this.quickSlotContainer.add(iconText);
+      this.equipmentSlotIcons[eq.slot] = iconText;
+
+      // Lưu tham chiếu slot
+      this.quickSlotRefs.push({
+        id: `equip_${eq.slot}`,
+        key: eq.label,
+        bg: g,
+        label: labelText,
+        x: slotX
+      });
+
+      // Vùng tương tác chuột
+      const hitZone = this.add.zone(slotX, 0, slotSize, slotSize).setInteractive({ useHandCursor: true });
+      hitZone.on('pointerdown', () => {
+        AudioManager.getInstance().playInteract();
+        this.toggleEquipment();
+      });
+      hitZone.on('pointerover', () => {
+        g.clear();
+        g.fillStyle(0x241d28, 0.98);
+        g.fillRoundedRect(slotX - slotSize / 2, -slotSize / 2, slotSize, slotSize, 4);
+        g.lineStyle(1.5, 0xf1c40f, 0.95);
+        g.strokeRoundedRect(slotX - slotSize / 2, -slotSize / 2, slotSize, slotSize, 4);
+
+        const equippedId = EquipmentSystem.getInstance().getEquipped(eq.slot);
+        if (equippedId) {
+          ItemTooltipHelper.getInstance().show(this, 640 + slotX, 688 - 140, equippedId);
+        } else {
+          this.showCompactBottomTooltip(
+            640 + slotX,
+            688 - 60,
+            `Ô Trang Bị [${eq.label}]`,
+            'Đang trống. Nhấp để mở Bảng Trang Bị [B]',
+            '#baa892'
+          );
+        }
+      });
+      hitZone.on('pointerout', () => {
+        this.updateBottomBarEquipment();
+        ItemTooltipHelper.getInstance().hide();
+        this.hideCompactBottomTooltip();
+      });
+
+      this.quickSlotContainer.add(hitZone);
+      this.equipmentSlotZones[eq.slot] = hitZone;
+    }
+
+    this.redrawQuickSlotHighlights();
+  }
+
+  /**
+   * V15-50: Taskbar Biểu Tượng Dọc mép trái màn hình (phong cách Don't Starve)
+   * 6 ô biểu tượng vuông kết nối với nhau:
+   * 1. [I / C] Chế Tạo (Icon búa & rìu)
+   * 2. [J] Sổ Tay Lữ Khách (Icon cuốn sổ da)
+   * 3. [F] Bật/Tắt Đèn Lồng (Icon đèn lồng phát sáng khi bật)
+   * 4. [N] Mở Rộng La Bàn / Bản Đồ (Icon la bàn)
+   * 5. [F8] Thoát Kẹt An Toàn (Icon đôi giày/mũi tên)
+   * 6. [ESC] Hệ Thống & Tạm Dừng (Icon bánh răng)
+   */
+  private buildVerticalTaskbar(): void {
+    this.verticalTaskbarContainer = this.add.container(37, 266);
+    this.verticalTaskbarContainer.setDepth(8000);
+
+    const barW = 42;
+    const barH = 256;
+
+    // Nền cột gỗ tối nối liền 6 ô
+    this.verticalTaskbarBg = this.add.graphics();
+    this.verticalTaskbarBg.fillStyle(0x140e09, 0.94);
+    this.verticalTaskbarBg.fillRoundedRect(-barW / 2, -barH / 2, barW, barH, 6);
+    this.verticalTaskbarBg.lineStyle(1.5, 0x5c4224, 0.9);
+    this.verticalTaskbarBg.strokeRoundedRect(-barW / 2, -barH / 2, barW, barH, 6);
+    this.verticalTaskbarBg.lineStyle(1, 0x8c6d3b, 0.35);
+    this.verticalTaskbarBg.strokeRoundedRect(-barW / 2 + 1.5, -barH / 2 + 1.5, barW - 3, barH - 3, 5);
+
+    // 4 đinh tán đồng ở góc
+    this.verticalTaskbarBg.fillStyle(0xb89058, 0.9);
+    this.verticalTaskbarBg.fillRect(-barW / 2 + 3, -barH / 2 + 3, 2, 2);
+    this.verticalTaskbarBg.fillRect(barW / 2 - 5, -barH / 2 + 3, 2, 2);
+    this.verticalTaskbarBg.fillRect(-barW / 2 + 3, barH / 2 - 5, 2, 2);
+    this.verticalTaskbarBg.fillRect(barW / 2 - 5, barH / 2 - 5, 2, 2);
+
+    this.verticalTaskbarContainer.add(this.verticalTaskbarBg);
+
+    // 6 nút chức năng chuẩn xác
+    const taskbarButtons = [
+      {
+        id: 'craft',
+        icon: '⚒️',
+        key: 'I',
+        title: '🔨 [I] Chế Tạo',
+        shortcut: '[I] / [C]',
+        desc: 'Bàn Chế Tạo: giã thảo dược, chế dầu đèn, mồi ném và trang bị.',
+        action: () => this.toggleCrafting()
+      },
+      {
+        id: 'journal',
+        icon: '📖',
+        key: 'J',
+        title: '📖 Sổ Tay Lữ Khách',
+        shortcut: '[J]',
+        desc: 'Theo dõi nhiệm vụ, mảnh ký ức thức tỉnh, sinh vật rừng và bản đồ.',
+        action: () => this.toggleJournal()
+      },
+      {
+        id: 'lantern',
+        icon: '🏮',
+        key: 'F',
+        title: '🏮 Đèn Lồng Sương Mù',
+        shortcut: '[F]',
+        desc: 'Bật/Tắt đèn lồng để xua tan bóng tối và bảo vệ Bình Tâm.',
+        action: () => this.events.emit('ui_toggle_lantern')
+      },
+      {
+        id: 'map',
+        icon: '🧭',
+        key: 'N',
+        title: '🧭 La Bàn & Bản Đồ',
+        shortcut: '[N] / [M]',
+        desc: 'Mở rộng la bàn định vị hoặc bản đồ giấy da thế giới.',
+        action: () => this.toggleMiniMap()
+      },
+      {
+        id: 'unstuck',
+        icon: '🥾',
+        key: 'F8',
+        title: '🥾 Thoát Kẹt An Toàn',
+        shortcut: '[F8]',
+        desc: 'Dịch chuyển khẩn cấp về vị trí an toàn gần nhất nếu bị kẹt vào vật cản.',
+        action: () => {
+          const gameScene = this.scene.get('GameScene') as any;
+          if (gameScene && typeof gameScene.emergencyUnstuckPlayer === 'function') {
+            gameScene.emergencyUnstuckPlayer();
+          } else {
+            this.showPopupMessage('Đang kiểm tra gỡ kẹt an toàn...');
+          }
+        }
+      },
+      {
+        id: 'pause',
+        icon: '⚙️',
+        key: 'ESC',
+        title: '⚙️ Hệ Thống & Tạm Dừng',
+        shortcut: '[ESC]',
+        desc: 'Tạm dừng cuộc chơi, lưu dữ liệu, điều chỉnh âm lượng và đồ họa.',
+        action: () => this.togglePause()
+      }
+    ];
+
+    const btnSize = 36;
+    const gap = 5;
+    const startY = -barH / 2 + 6 + btnSize / 2;
+
+    this.taskbarButtonGfx = [];
+
+    for (let i = 0; i < taskbarButtons.length; i++) {
+      const btn = taskbarButtons[i];
+      const btnY = startY + i * (btnSize + gap);
+
+      const g = this.add.graphics();
+      // Nền ô nút
+      g.fillStyle(0x18110b, 0.88);
+      g.fillRoundedRect(-btnSize / 2, btnY - btnSize / 2, btnSize, btnSize, 4);
+      g.lineStyle(1.2, 0x5c4224, 0.85);
+      g.strokeRoundedRect(-btnSize / 2, btnY - btnSize / 2, btnSize, btnSize, 4);
+
+      this.verticalTaskbarContainer.add(g);
+      this.taskbarButtonGfx.push(g);
+
+      if (btn.id === 'lantern') {
+        this.taskbarLanternGlow = this.add.graphics();
+        this.verticalTaskbarContainer.add(this.taskbarLanternGlow);
+      }
+
+      // Icon ở giữa
+      const icon = HDTextHelper.createText(this, 0, btnY, btn.icon, {
+        fontSize: '16px'
+      }).setOrigin(0.5, 0.5);
+      this.verticalTaskbarContainer.add(icon);
+
+      if (btn.id === 'lantern') {
+        this.taskbarLanternIcon = icon;
+      }
+
+      // Nhãn phím tắt góc trên phải
+      const keyLabel = HDTextHelper.createText(this, btnSize / 2 - 2, btnY - btnSize / 2 + 1, btn.key, {
+        fontSize: '7.5px',
+        fontStyle: 'bold',
+        color: '#e5a93c',
+        stroke: '#000000',
+        strokeThickness: 1.5
+      }).setOrigin(1, 0);
+      this.verticalTaskbarContainer.add(keyLabel);
+
+      // Khớp nối kim loại giữa các nút
+      if (i < taskbarButtons.length - 1) {
+        const linkY = btnY + btnSize / 2 + gap / 2;
+        const linkGfx = this.add.graphics();
+        linkGfx.fillStyle(0x4a351f, 0.9);
+        linkGfx.fillRect(-3, linkY - 1.5, 6, 3);
+        linkGfx.fillStyle(0xb89058, 0.9);
+        linkGfx.fillCircle(0, linkY, 1.2);
+        this.verticalTaskbarContainer.add(linkGfx);
+      }
+
+      // Vùng click & hover
+      const hitZone = this.add.zone(0, btnY, btnSize, btnSize).setInteractive({ useHandCursor: true });
+      hitZone.on('pointerdown', () => {
+        AudioManager.getInstance().playInteract();
+        btn.action();
+      });
+      hitZone.on('pointerover', () => {
+        g.clear();
+        g.fillStyle(0x281d13, 0.98);
+        g.fillRoundedRect(-btnSize / 2, btnY - btnSize / 2, btnSize, btnSize, 4);
+        g.lineStyle(1.5, 0xf1c40f, 0.95);
+        g.strokeRoundedRect(-btnSize / 2, btnY - btnSize / 2, btnSize, btnSize, 4);
+
+        this.showTaskbarTooltip(62, 266 + btnY - 25, btn.title, btn.shortcut, btn.desc);
       });
       hitZone.on('pointerout', () => {
         g.clear();
         g.fillStyle(0x18110b, 0.88);
-        g.fillRoundedRect(slotX - btnW / 2, -btnH / 2, btnW, btnH, 5);
-        g.lineStyle(1.5, 0x6e5233, 0.85);
-        g.strokeRoundedRect(slotX - btnW / 2, -btnH / 2, btnW, btnH, 5);
-        g.lineStyle(1, 0x9c774b, 0.35);
-        g.strokeRoundedRect(slotX - btnW / 2 + 1, -btnH / 2 + 1, btnW - 2, btnH - 2, 4);
-        g.fillStyle(0xb89058, 0.9);
-        g.fillRect(slotX - btnW / 2 + 2, -btnH / 2 + 2, 2, 2);
-        g.fillRect(slotX + btnW / 2 - 4, -btnH / 2 + 2, 2, 2);
-        g.fillRect(slotX - btnW / 2 + 2, btnH / 2 - 4, 2, 2);
-        g.fillRect(slotX + btnW / 2 - 4, btnH / 2 - 4, 2, 2);
-      });
-      this.quickSlotContainer.add(hitZone);
+        g.fillRoundedRect(-btnSize / 2, btnY - btnSize / 2, btnSize, btnSize, 4);
+        g.lineStyle(1.2, 0x5c4224, 0.85);
+        g.strokeRoundedRect(-btnSize / 2, btnY - btnSize / 2, btnSize, btnSize, 4);
 
-      if (slot.id === 'poultice') {
-        this.poulticeCountBadge = this.add.graphics();
-        this.poulticeCountText = HDTextHelper.createText(this, slotX + btnW / 2 - 6, -btnH / 2 + 3, 'x0', {
-          fontSize: '11px',
-          fontStyle: 'bold',
-          color: '#2ecc71',
-          stroke: '#000000',
-          strokeThickness: 2
-        }).setOrigin(1, 0);
-        this.quickSlotContainer.add([this.poulticeCountBadge, this.poulticeCountText]);
-      } else if (slot.id === 'oil') {
-        this.oilCountBadge = this.add.graphics();
-        this.oilCountText = HDTextHelper.createText(this, slotX + btnW / 2 - 6, -btnH / 2 + 3, 'x0', {
-          fontSize: '11px',
-          fontStyle: 'bold',
-          color: '#f39c12',
-          stroke: '#000000',
-          strokeThickness: 2
-        }).setOrigin(1, 0);
-        this.quickSlotContainer.add([this.oilCountBadge, this.oilCountText]);
-      } else if (slot.id === 'emergency') {
-        this.emergencyCountBadge = this.add.graphics();
-        this.emergencyCountText = HDTextHelper.createText(this, slotX + btnW / 2 - 6, -btnH / 2 + 3, 'x0', {
-          fontSize: '11px',
-          fontStyle: 'bold',
-          color: '#3498db',
-          stroke: '#000000',
-          strokeThickness: 2
-        }).setOrigin(1, 0);
-        this.quickSlotContainer.add([this.emergencyCountBadge, this.emergencyCountText]);
-      } else if (slot.id === 'lure') {
-        this.lureCountBadge = this.add.graphics();
-        this.lureCountText = HDTextHelper.createText(this, slotX + btnW / 2 - 6, -btnH / 2 + 3, 'x0', {
-          fontSize: '11px',
-          fontStyle: 'bold',
-          color: '#e67e22',
-          stroke: '#000000',
-          strokeThickness: 2
-        }).setOrigin(1, 0);
-        this.quickSlotContainer.add([this.lureCountBadge, this.lureCountText]);
-      }
+        this.hideTaskbarTooltip();
+      });
+
+      this.verticalTaskbarContainer.add(hitZone);
     }
 
-    // Vạch ngăn cách đồng xỉn phân định giữa Cụm Sinh Tồn và Cụm Công Cụ (tại x = 102)
-    const sepGfx = this.add.graphics();
-    sepGfx.lineStyle(1.5, 0x8a6d3b, 0.7);
-    sepGfx.lineBetween(102, -14, 102, 14);
-    sepGfx.fillStyle(0xd4af37, 0.9);
-    sepGfx.fillCircle(102, 0, 2.5);
-    this.quickSlotContainer.add(sepGfx);
+    this.updateTaskbarLanternState();
+  }
 
-    this.redrawQuickSlotHighlights();
+  /**
+   * Cập nhật hào quang phát sáng của Đèn Lồng [F] trên Taskbar dọc khi bật/tắt
+   */
+  public updateTaskbarLanternState(): void {
+    if (!this.taskbarLanternGlow || !this.playerState) return;
+    const isLanternOn = !!this.playerState.stats.isLanternOn;
+    this.taskbarLanternGlow.clear();
+
+    const btnSize = 36;
+    const barH = 256;
+    const startY = -barH / 2 + 6 + btnSize / 2;
+    const lanternY = startY + 2 * (btnSize + 5);
+
+    if (isLanternOn) {
+      this.taskbarLanternGlow.fillStyle(0xf39c12, 0.35);
+      this.taskbarLanternGlow.fillRoundedRect(-btnSize / 2, lanternY - btnSize / 2, btnSize, btnSize, 4);
+      this.taskbarLanternGlow.lineStyle(1.5, 0xf39c12, 0.95);
+      this.taskbarLanternGlow.strokeRoundedRect(-btnSize / 2, lanternY - btnSize / 2, btnSize, btnSize, 4);
+      if (this.taskbarLanternIcon) this.taskbarLanternIcon.setAlpha(1.0);
+    } else {
+      if (this.taskbarLanternIcon) this.taskbarLanternIcon.setAlpha(0.6);
+    }
+  }
+
+  /**
+   * Hiển thị Tooltip thẻ gỗ nẹp đồng cho nút Taskbar dọc mép trái
+   */
+  public showTaskbarTooltip(x: number, y: number, title: string, shortcut: string, desc: string): void {
+    this.hideTaskbarTooltip();
+    const tooltipW = 230;
+    const pad = 10;
+
+    this.taskbarTooltipContainer = this.add.container(x, y);
+    this.taskbarTooltipContainer.setScrollFactor(0);
+    this.taskbarTooltipContainer.setDepth(9999);
+
+    const titleText = HDTextHelper.createText(this, pad, pad, title, {
+      fontSize: '12px',
+      fontStyle: 'bold',
+      color: '#f1c40f',
+      stroke: '#000000',
+      strokeThickness: 2
+    });
+
+    const keyText = HDTextHelper.createText(this, tooltipW - pad, pad, shortcut, {
+      fontSize: '10px',
+      fontStyle: 'bold',
+      color: '#e67e22',
+      stroke: '#000000',
+      strokeThickness: 1.5
+    }).setOrigin(1, 0);
+
+    const descText = HDTextHelper.createText(this, pad, pad + 20, desc, {
+      fontSize: '10.5px',
+      color: '#d8cfbe',
+      wordWrap: { width: tooltipW - pad * 2 },
+      lineSpacing: 2
+    });
+
+    const tooltipH = pad + 20 + descText.height + pad;
+
+    const bg = this.add.graphics();
+    bg.fillStyle(0x100c08, 0.96);
+    bg.fillRoundedRect(0, 0, tooltipW, tooltipH, 5);
+    bg.lineStyle(1.5, 0x8c6d3b, 0.95);
+    bg.strokeRoundedRect(0, 0, tooltipW, tooltipH, 5);
+    bg.lineStyle(0.5, 0xd4af37, 0.4);
+    bg.strokeRoundedRect(2, 2, tooltipW - 4, tooltipH - 4, 4);
+
+    bg.fillStyle(0xb89058, 0.85);
+    bg.fillRect(3, 3, 2, 2);
+    bg.fillRect(tooltipW - 5, 3, 2, 2);
+    bg.fillRect(3, tooltipH - 5, 2, 2);
+    bg.fillRect(tooltipW - 5, tooltipH - 5, 2, 2);
+
+    this.taskbarTooltipContainer.add([bg, titleText, keyText, descText]);
+  }
+
+  public hideTaskbarTooltip(): void {
+    if (this.taskbarTooltipContainer) {
+      this.taskbarTooltipContainer.destroy();
+      this.taskbarTooltipContainer = undefined;
+    }
+  }
+
+  /**
+   * Hiển thị Tooltip thu gọn cho ô đáy màn hình khi ô trống
+   */
+  public showCompactBottomTooltip(screenX: number, screenY: number, title: string, subtitle: string, color: string = '#2ecc71'): void {
+    this.hideCompactBottomTooltip();
+    const tooltipW = 200;
+    const pad = 8;
+
+    this.bottomTooltipContainer = this.add.container(screenX - tooltipW / 2, screenY);
+    this.bottomTooltipContainer.setScrollFactor(0);
+    this.bottomTooltipContainer.setDepth(9999);
+
+    const titleText = HDTextHelper.createText(this, tooltipW / 2, pad, title, {
+      fontSize: '11.5px',
+      fontStyle: 'bold',
+      color: '#f1c40f',
+      stroke: '#000000',
+      strokeThickness: 2
+    }).setOrigin(0.5, 0);
+
+    const subText = HDTextHelper.createText(this, tooltipW / 2, pad + 18, subtitle, {
+      fontSize: '10px',
+      color: color,
+      stroke: '#000000',
+      strokeThickness: 1.5,
+      wordWrap: { width: tooltipW - pad * 2 },
+      align: 'center'
+    }).setOrigin(0.5, 0);
+
+    const tooltipH = pad + 18 + subText.height + pad;
+
+    const bg = this.add.graphics();
+    bg.fillStyle(0x100c08, 0.95);
+    bg.fillRoundedRect(0, 0, tooltipW, tooltipH, 5);
+    bg.lineStyle(1.2, 0x8c6d3b, 0.9);
+    bg.strokeRoundedRect(0, 0, tooltipW, tooltipH, 5);
+
+    this.bottomTooltipContainer.add([bg, titleText, subText]);
+  }
+
+  public hideCompactBottomTooltip(): void {
+    if (this.bottomTooltipContainer) {
+      this.bottomTooltipContainer.destroy();
+      this.bottomTooltipContainer = undefined;
+    }
+  }
+
+  /**
+   * V15-50: Kích hoạt hoặc chọn ô Túi Đồ [1]..[8]
+   */
+  public useOrSelectSlot(index: number): void {
+    this.selectQuickSlot(index);
+    const slot = this.inventorySlotData[index];
+    if (!slot || !slot.itemId) return;
+
+    const itemId = slot.itemId;
+    if (itemId === 'item_herbal_poultice') {
+      this.tryConsumePoultice();
+    } else if (itemId === 'item_lantern_oil') {
+      this.tryConsumeLanternOil();
+    } else if (itemId === 'food_calming_tea' || itemId === 'item_resin_flare') {
+      this.tryUseEmergencySurvivalItem();
+    } else if (itemId === 'item_noise_lure') {
+      this.events.emit('ui_throw_lure');
+    } else if (itemId === 'food_roasted_mushroom') {
+      if (this.playerState.useItem('food_roasted_mushroom')) {
+        AudioManager.getInstance().playPoulticeHeal();
+        this.playerState.stats.health = Math.min(this.playerState.stats.maxHealth, this.playerState.stats.health + 15);
+        this.playerState.stats.stamina = Math.min(this.playerState.stats.maxStamina, this.playerState.stats.stamina + 20);
+        this.playerState.emit('stats_changed');
+        this.showPopupMessage('✔ Đã ăn Nấm Nướng (+15 Máu, +20 Thể Lực)');
+        this.updateQuickSlotCounts();
+      }
+    } else if (itemId === 'food_forest_root_soup') {
+      if (this.playerState.useItem('food_forest_root_soup')) {
+        AudioManager.getInstance().playPoulticeHeal();
+        this.playerState.stats.health = Math.min(this.playerState.stats.maxHealth, this.playerState.stats.health + 30);
+        this.playerState.stats.stamina = Math.min(this.playerState.stats.maxStamina, this.playerState.stats.stamina + 30);
+        this.playerState.emit('stats_changed');
+        this.showPopupMessage('✔ Đã dùng Súp Rễ Rừng (+30 Máu, +30 Thể Lực)');
+        this.updateQuickSlotCounts();
+      }
+    } else if (itemId.startsWith('eqp_')) {
+      const equipDef = EquipmentSystem.getInstance().getEquipmentDef(itemId);
+      if (equipDef) {
+        EquipmentSystem.getInstance().equip(equipDef.slot, itemId);
+        this.showPopupMessage(`✔ Đã trang bị: ${equipDef.name}`);
+        AudioManager.getInstance().playInteract();
+        this.updateQuickSlotCounts();
+      }
+    } else {
+      const meta = itemsData.items.find(i => i.id === itemId);
+      const count = this.playerState.getItemCount(itemId);
+      this.showPopupMessage(`📦 [${index + 1}] ${meta?.name || itemId} (x${count})`);
+      AudioManager.getInstance().playUISelect();
+    }
   }
 
   /**
@@ -1081,11 +1555,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     const activeSlot = this.quickSlotRefs[this.selectedQuickSlotIndex];
     if (!activeSlot) return;
 
-    const btnW = 96;
-    const btnH = 36;
+    const btnW = 42;
+    const btnH = 42;
     const x = activeSlot.x;
 
-    // Viền kép ánh sáng hổ phách nổi bật ô đang được chọn theo thẩm mỹ V1.4 / V1.5
+    // Viền kép ánh sáng hổ phách nổi bật ô đang được chọn theo thẩm mỹ V1.4 / V1.5 / V15-50
     g.lineStyle(2, 0xf39c12, 1);
     g.strokeRoundedRect(x - btnW / 2 - 2, -btnH / 2 - 2, btnW + 4, btnH + 4, 6);
     g.lineStyle(1, 0xffe082, 0.85);
@@ -1425,6 +1899,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   public updateQuickSlotCounts(): void {
+    if (!this.playerState) return;
+
     const poulticeCount = this.playerState.getItemCount('item_herbal_poultice');
     const oilCount = this.playerState.getItemCount('item_lantern_oil');
     const lureCount = this.playerState.getItemCount('item_noise_lure');
@@ -1432,26 +1908,223 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     const flareCount = this.playerState.getItemCount('item_resin_flare');
     const emergencyTotal = teaCount + flareCount;
 
-    if (this.poulticeCountText && this.lastPoulticeCount !== poulticeCount) {
-      this.lastPoulticeCount = poulticeCount;
-      this.poulticeCountText.setText(`x${poulticeCount}`);
-      this.poulticeCountText.setColor(poulticeCount > 0 ? '#2ecc71' : '#7f8c8d');
+    // 1. Cập nhật dữ liệu 8 ô Túi Đồ
+    this.inventorySlotData = this.getInventorySlotItems();
+
+    for (let i = 0; i < 8; i++) {
+      const slot = this.inventorySlotData[i];
+      const iconTxt = this.inventorySlotIcons[i];
+      const countTxt = this.inventorySlotCounts[i];
+      const keyTxt = this.inventorySlotKeyTexts[i];
+
+      if (!slot || !slot.itemId) {
+        if (iconTxt) iconTxt.setText('').setAlpha(1.0);
+        if (countTxt) countTxt.setText('');
+        if (keyTxt) keyTxt.setColor('#7a6855');
+      } else {
+        const iconChar = this.getItemIconChar(slot.itemId);
+        if (iconTxt) {
+          iconTxt.setText(iconChar);
+          iconTxt.setAlpha(slot.count > 0 ? 1.0 : 0.4);
+        }
+        if (countTxt) {
+          // Ô [1] và [2] hiện x0 nếu hết đồ để người chơi nhận biết; các ô khác hiện nếu > 0
+          if (slot.count > 0) {
+            countTxt.setText(`x${slot.count}`);
+            countTxt.setColor('#2ecc71');
+          } else if (i < 2) {
+            countTxt.setText('x0');
+            countTxt.setColor('#7f8c8d');
+          } else {
+            countTxt.setText('');
+          }
+        }
+        if (keyTxt) {
+          keyTxt.setColor(slot.count > 0 ? '#f1c40f' : '#baa892');
+        }
+      }
     }
-    if (this.oilCountText && this.lastOilCount !== oilCount) {
-      this.lastOilCount = oilCount;
-      this.oilCountText.setText(`x${oilCount}`);
-      this.oilCountText.setColor(oilCount > 0 ? '#f39c12' : '#7f8c8d');
+
+    // 2. Cập nhật 4 ô Trang Bị Cá Nhân
+    this.updateBottomBarEquipment();
+
+    // 3. Cập nhật trạng thái đèn lồng trên Taskbar dọc
+    this.updateTaskbarLanternState();
+
+    // Đồng bộ biến đếm backward compatibility
+    this.lastPoulticeCount = poulticeCount;
+    this.lastOilCount = oilCount;
+    this.lastEmergencyCount = emergencyTotal;
+    this.lastLureCount = lureCount;
+  }
+
+  /**
+   * V15-50: Lấy danh sách 8 vật phẩm cho Hotbar túi đồ
+   * Ưu tiên các dược phẩm sinh tồn cơ bản ở các ô đầu, các vật phẩm khác điền vào tiếp theo
+   */
+  private getInventorySlotItems(): Array<{ itemId: string | null; count: number }> {
+    const slots: Array<{ itemId: string | null; count: number }> = [];
+    if (!this.playerState) return slots;
+
+    const invMap = this.playerState.inventory;
+    const activeItems: Array<{ itemId: string; count: number }> = [];
+    invMap.forEach((count, id) => {
+      if (count > 0) {
+        activeItems.push({ itemId: id, count });
+      }
+    });
+
+    const priorityIds = [
+      'item_herbal_poultice',
+      'item_lantern_oil',
+      'food_calming_tea',
+      'item_resin_flare',
+      'item_noise_lure'
+    ];
+
+    const assignedIds = new Set<string>();
+
+    // Ô 0: Thuốc Đắp Thảo Mộc (luôn hiện diện ở ô [1])
+    const poulticeCount = this.playerState.getItemCount('item_herbal_poultice');
+    slots.push({ itemId: 'item_herbal_poultice', count: poulticeCount });
+    assignedIds.add('item_herbal_poultice');
+
+    // Ô 1: Dầu Đèn Lồng (luôn hiện diện ở ô [2])
+    const oilCount = this.playerState.getItemCount('item_lantern_oil');
+    slots.push({ itemId: 'item_lantern_oil', count: oilCount });
+    assignedIds.add('item_lantern_oil');
+
+    // Các vật phẩm ưu tiên khác nếu đang có trong túi đồ
+    for (const pId of priorityIds) {
+      if (slots.length >= 8) break;
+      if (!assignedIds.has(pId)) {
+        const count = this.playerState.getItemCount(pId);
+        if (count > 0) {
+          slots.push({ itemId: pId, count });
+          assignedIds.add(pId);
+        }
+      }
     }
-    if (this.emergencyCountText && this.lastEmergencyCount !== emergencyTotal) {
-      this.lastEmergencyCount = emergencyTotal;
-      this.emergencyCountText.setText(`x${emergencyTotal}`);
-      this.emergencyCountText.setColor(emergencyTotal > 0 ? '#3498db' : '#7f8c8d');
+
+    // Điền các vật phẩm còn lại trong túi đồ vào các ô tiếp theo
+    for (const item of activeItems) {
+      if (slots.length >= 8) break;
+      if (!assignedIds.has(item.itemId)) {
+        slots.push(item);
+        assignedIds.add(item.itemId);
+      }
     }
-    if (this.lureCountText && this.lastLureCount !== lureCount) {
-      this.lastLureCount = lureCount;
-      this.lureCountText.setText(`x${lureCount}`);
-      this.lureCountText.setColor(lureCount > 0 ? '#e67e22' : '#7f8c8d');
+
+    // Nếu chưa đủ 8 ô, điền ô trống
+    while (slots.length < 8) {
+      slots.push({ itemId: null, count: 0 });
     }
+
+    return slots;
+  }
+
+  /**
+   * V15-50: Cập nhật 4 ô Trang Bị Cá Nhân (BODY, FEET, BACK, CHARM) ở đáy màn hình
+   */
+  public updateBottomBarEquipment(): void {
+    if (!this.equipmentSlotGfx) return;
+
+    const equipSlots: Array<{ slot: EquipmentSlot; label: string; defaultIcon: string }> = [
+      { slot: 'body', label: 'BODY', defaultIcon: '🧥' },
+      { slot: 'feet', label: 'FEET', defaultIcon: '👢' },
+      { slot: 'back', label: 'BACK', defaultIcon: '🎒' },
+      { slot: 'charm', label: 'CHARM', defaultIcon: '🔔' }
+    ];
+
+    const slotSize = 42;
+    const gap = 4;
+    const equipStartX = 120;
+
+    for (let i = 0; i < equipSlots.length; i++) {
+      const eq = equipSlots[i];
+      const slotX = equipStartX + i * (slotSize + gap);
+      const g = this.equipmentSlotGfx[eq.slot];
+      const iconTxt = this.equipmentSlotIcons[eq.slot];
+      if (!g || !iconTxt) continue;
+
+      const equippedId = EquipmentSystem.getInstance().getEquipped(eq.slot);
+      const def = equippedId ? EquipmentSystem.getInstance().getEquipmentDef(equippedId) : undefined;
+
+      g.clear();
+      if (def) {
+        // Đang mặc trang bị: viền vàng kim hổ phách rực rỡ
+        g.fillStyle(0x241d15, 0.95);
+        g.fillRoundedRect(slotX - slotSize / 2, -slotSize / 2, slotSize, slotSize, 4);
+        g.lineStyle(1.5, 0xd4af37, 0.95);
+        g.strokeRoundedRect(slotX - slotSize / 2, -slotSize / 2, slotSize, slotSize, 4);
+
+        iconTxt.setText(eq.defaultIcon);
+        iconTxt.setAlpha(1.0);
+      } else {
+        // Ô đang trống: viền đồng tối mờ
+        g.fillStyle(0x141018, 0.9);
+        g.fillRoundedRect(slotX - slotSize / 2, -slotSize / 2, slotSize, slotSize, 4);
+        g.lineStyle(1.2, 0x524336, 0.85);
+        g.strokeRoundedRect(slotX - slotSize / 2, -slotSize / 2, slotSize, slotSize, 4);
+
+        iconTxt.setText(eq.defaultIcon);
+        iconTxt.setAlpha(0.35);
+      }
+    }
+  }
+
+  /**
+   * V15-50: Bản đồ biểu tượng emoji/pixel art sắc nét cho từng vật phẩm
+   */
+  public getItemIconChar(itemId: string): string {
+    const iconMap: Record<string, string> = {
+      item_herbal_poultice: '🌿',
+      item_lantern_oil: '🪔',
+      food_calming_tea: '🍵',
+      item_resin_flare: '🪵',
+      item_noise_lure: '🔔',
+      food_roasted_mushroom: '🍄',
+      food_forest_root_soup: '🍲',
+      res_dry_wood: '🪵',
+      res_flint: '🪨',
+      res_tree_resin: '💧',
+      res_herbs: '🌱',
+      seed_herbs: '🌰',
+      seed_roots: '🌰',
+      seed_mushroom: '🍄',
+      seed_fiber: '🌾',
+      res_forest_roots: '🥔',
+      res_forest_mushroom: '🍄',
+      res_tough_fiber: '🌾',
+      mat_forest_rope: '🪢',
+      mat_charcoal: '⬛',
+      mat_runed_iron: '⚙️',
+      mat_skull_fang: '🦴',
+      mat_shadow_essence: '🔮',
+      eqp_moss_cloak: '🧥',
+      eqp_trail_boots: '👢',
+      eqp_field_backpack: '🎒',
+      eqp_bell_ward_charm: '🔔',
+      wpn_walking_staff: '🦯',
+      wpn_iron_spear: '🗡️',
+      wpn_hunting_hatchet: '🪓',
+      quest_bronze_clapper: '🔔',
+      quest_corrupted_crest: '👑',
+      quest_corrupted_knight_crest: '👑',
+      lore_satyr_journal: '📜',
+      item_knight_journal_page: '📜',
+      relic_heart_of_roots: '💎'
+    };
+
+    if (iconMap[itemId]) return iconMap[itemId];
+    const meta = itemsData.items.find((it: any) => it.id === itemId);
+    if (!meta) return '📦';
+    if (meta.category === 'consumable' || meta.category === 'food') return '🌿';
+    if (meta.category === 'resource') return '🪵';
+    if (meta.category === 'tool') return '🔧';
+    if (meta.category === 'quest') return '👑';
+    if (meta.category === 'lore') return '📜';
+    return '📦';
   }
 
   /**
@@ -1873,6 +2546,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.quickSlotContainer) {
       this.quickSlotContainer.setVisible(shouldShowHUD);
     }
+    if (this.verticalTaskbarContainer) {
+      this.verticalTaskbarContainer.setVisible(shouldShowHUD);
+    }
     if (this.quickActionButtonsContainer) {
       this.quickActionButtonsContainer.setVisible(shouldShowHUD);
     }
@@ -1971,6 +2647,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.questTrackerText) this.questTrackerText.setVisible(visible);
     if (this.questToggleBtn) this.questToggleBtn.setVisible(visible);
     if (this.quickSlotContainer) this.quickSlotContainer.setVisible(visible);
+    if (this.verticalTaskbarContainer) this.verticalTaskbarContainer.setVisible(visible);
     if (this.promptContainer) this.promptContainer.setVisible(visible);
     if (this.promptText) this.promptText.setVisible(visible);
     if (this.zoneBannerContainer) this.zoneBannerContainer.setVisible(visible);

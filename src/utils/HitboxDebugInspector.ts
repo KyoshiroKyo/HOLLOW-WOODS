@@ -868,13 +868,13 @@ export class HitboxDebugInspector {
 
     this.infoText.setText(lines);
 
-    // V1.5 (BƯỚC V15-04): Neo bảng thông số F9 vào góc dưới bên phải màn hình (hoặc cạnh phải dưới khung Nhiệm vụ),
-    // kích thước box tự co giãn và cách mép phải 16px, mép đáy 16px. Tuyệt đối không đè lên cụm 4 thanh chỉ số góc trên trái.
+    // V1.5 (BƯỚC V15-04 / V15-50): Neo bảng thông số F9 vào góc dưới bên phải màn hình (hoặc cạnh phải dưới khung Nhiệm vụ),
+    // kích thước box tự co giãn và cách mép phải 16px, giới hạn đáy <= 650px tránh hoàn toàn đè lên Thanh Item đáy [662..714px].
     const bounds = this.infoText.getBounds();
     const boxW = Math.max(370, bounds.width + 20);
     const boxH = bounds.height + 16;
     const posX = Math.max(16, 1264 - boxW);
-    const posY = Math.max(16, 704 - boxH);
+    const posY = Math.max(16, Math.min(650 - boxH, 704 - boxH));
     this.uiContainer.setPosition(posX, posY);
 
     // Cập nhật khung nền
