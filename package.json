@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "check": "tsc --noEmit",
-    "release:p2game": "npm run build && node scripts/build_p2game_release.mjs"
+    "release:p2game": "npm run build && node scripts/build_p2game_release.mjs",
+    "release:standalone": "node scripts/build_standalone_release.mjs"
   },
   "dependencies": {
     "phaser": "^4.2.1"

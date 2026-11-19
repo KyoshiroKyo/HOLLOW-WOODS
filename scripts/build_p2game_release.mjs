@@ -864,12 +864,7 @@ function generateP2GameJson() {
     schemaVersion: 1,
     id: "hollow-woods",
     name: "HOLLOW WOODS",
-    title: "HOLLOW WOODS: The Fog That Remembers",
     version: version,
-    studio: "Kyoshiro",
-    developer: "Kyoshiro",
-    author: "Kyoshiro",
-    updatedAt: today,
     sdk: {
       version: "1.1",
       cloudSave: true
@@ -890,10 +885,6 @@ function generateP2GameJson() {
     engine: "webgl",
     engineInfo: "Phaser 3.80.1",
     orientation: "landscape",
-    resolution: {
-      width: 1280,
-      height: 720
-    },
     minViewport: {
       width: 960,
       height: 540
@@ -916,7 +907,7 @@ function generateP2GameJson() {
       "vi"
     ],
     controls: {
-      keyboard: "WASD / Mũi tên: Di chuyển | Giữ Shift: Chạy nhanh | [E]: Tương tác, thu thập, nấp bụi | [F]: Vòng Sáng Hộ Tâm (tốn Thể Lực) | Chuột trái / Space: Tấn công kiếm | [1]..[8]: Túi đồ nhanh | [Q]: Ném mồi | [I]/[C]: Bảng Chế Tạo DST | [J]: Sổ Tay Lữ Khách | [N]: La Bàn | [ESC]: Tạm dừng | [F8]: Gỡ kẹt | [F9]: Debug"
+      keyboard: "WASD: Di chuyển | Shift: Chạy | [F]: Vòng Sáng | Space: Đánh | [E]: Tương tác/Nấp | [Q]: Mồi ném | [1]..[8]: Túi đồ | [I/C]: Chế tạo | [J]: Sổ tay | [N]: La bàn | [F8]: Gỡ kẹt | [ESC]: Tạm dừng"
     },
     assets: {
       avatar: "media/avatar_512x512.png",
