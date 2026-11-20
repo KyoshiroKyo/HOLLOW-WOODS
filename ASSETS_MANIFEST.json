@@ -1,6 +1,6 @@
 {
-  "totalFiles": 247,
-  "totalBytes": 69190857,
+  "totalFiles": 248,
+  "totalBytes": 69198175,
   "categories": {
     "audio": [
       {
@@ -1237,6 +1237,11 @@
       {
         "path": "public/assets/buildings/ranger_cabin_wood.png",
         "size": 3278,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/buildings/smithy_workshop_bram_stone.png",
+        "size": 7318,
         "ext": ".png"
       },
       {

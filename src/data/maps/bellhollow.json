@@ -12868,10 +12868,10 @@
           "id": 9,
           "name": "crafting_bench",
           "type": "wall",
-          "x": 1196,
-          "y": 363,
-          "width": 48,
-          "height": 14,
+          "x": 1272,
+          "y": 377,
+          "width": 40,
+          "height": 12,
           "visible": true,
           "properties": [
             {
@@ -12907,8 +12907,8 @@
           "id": 10,
           "name": "village_crafting_bench",
           "type": "lantern_refill",
-          "x": 1220,
-          "y": 370,
+          "x": 1292,
+          "y": 383,
           "width": 48,
           "height": 24,
           "visible": true,
@@ -13003,8 +13003,8 @@
           "id": 13,
           "name": "camp_shelter_tent",
           "type": "shelter",
-          "x": 760,
-          "y": 255,
+          "x": 778,
+          "y": 261,
           "width": 44,
           "height": 36,
           "visible": true,
@@ -13131,8 +13131,8 @@
           "id": 17,
           "name": "bellhollow_farm_gate_sign",
           "type": "clue",
-          "x": 650,
-          "y": 520,
+          "x": 695,
+          "y": 511,
           "width": 32,
           "height": 32,
           "visible": true,
@@ -13259,8 +13259,8 @@
           "id": 21,
           "name": "npc_garth",
           "type": "npc",
-          "x": 490,
-          "y": 210,
+          "x": 540,
+          "y": 190,
           "width": 24,
           "height": 34,
           "visible": true,
@@ -13283,12 +13283,12 @@
             {
               "name": "patrolMinX",
               "type": "int",
-              "value": 482
+              "value": 532
             },
             {
               "name": "patrolMaxX",
               "type": "int",
-              "value": 498
+              "value": 548
             }
           ]
         },
@@ -13407,8 +13407,8 @@
           "id": 25,
           "name": "npc_finn",
           "type": "npc",
-          "x": 660,
-          "y": 265,
+          "x": 909,
+          "y": 216,
           "width": 24,
           "height": 34,
           "visible": true,
@@ -13431,12 +13431,12 @@
             {
               "name": "patrolMinX",
               "type": "int",
-              "value": 652
+              "value": 901
             },
             {
               "name": "patrolMaxX",
               "type": "int",
-              "value": 665
+              "value": 914
             }
           ]
         },

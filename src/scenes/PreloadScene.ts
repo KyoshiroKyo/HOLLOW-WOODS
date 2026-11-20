@@ -611,7 +611,7 @@ export class PreloadScene extends Phaser.Scene {
     // V15-10: Nạp bộ Sprite Kiến Trúc Làng Bellhollow Pixel Art Chuẩn Hóa V1.5
     this.load.image(SPRITE_HOUSE_ELDER_EDDA_V15, 'assets/buildings/house_elder_edda.png');
     this.load.image(SPRITE_HOUSE_HERBALIST_NERIS_V15, 'assets/buildings/house_herbalist_neris.png');
-    this.load.image(SPRITE_SMITHY_WORKSHOP_BRAM_V15, 'assets/buildings/smithy_workshop_bram.png');
+    this.load.image(SPRITE_SMITHY_WORKSHOP_BRAM_V15, 'assets/buildings/smithy_workshop_bram_stone.png');
     this.load.image(SPRITE_GATEHOUSE_GARTH_V15, 'assets/buildings/gatehouse_garth.png');
     this.load.image(SPRITE_BELL_TOWER_GRAND_V15, 'assets/buildings/bell_tower_grand.png');
     this.load.image(SPRITE_VILLAGE_WELL_DETAILED_V15, 'assets/buildings/village_well_detailed.png');

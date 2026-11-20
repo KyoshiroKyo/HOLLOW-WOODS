@@ -183,6 +183,20 @@ export interface ZoneAtmosphere {
   subTitleVietnamese: string;
 }
 
+export interface NPCSpec {
+  id: string;
+  name: string;
+  title: string;
+  x: number;
+  y: number;
+  dialogueKey: string;
+  robeColor?: number;
+  hoodColor?: number;
+  patrolMinX?: number;
+  patrolMaxX?: number;
+  patrolSpeed?: number;
+}
+
 export interface ZoneData {
   id: ZoneId;
   name: string;
@@ -192,6 +206,7 @@ export interface ZoneData {
   bounds: BoundsRect;
   defaultSpawn: Point2D;
   atmosphere: ZoneAtmosphere;
+  npcs?: NPCSpec[];
   colliders: ColliderSpec[];
   interactables: InteractableSpec[];
   transitions: TransitionZone[];

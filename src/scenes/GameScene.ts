@@ -1412,71 +1412,8 @@ export class GameScene extends Phaser.Scene {
     }
     this.npcs = [];
 
-    // 1. Garth — Người Canh Cổng: đứng tại Chốt Canh Cổng Tây (x: 490, y: 210) cạnh cột đèn cổng làng
-    const garth = new NPCEntity(this, {
-      id: 'npc_garth',
-      name: 'Garth',
-      title: 'Người Canh Cổng',
-      x: 490,
-      y: 210,
-      dialogueKey: 'garth_warning',
-      robeColor: 0x3e4a3d,
-      hoodColor: 0x5a3e28,
-      patrolMinX: 482,
-      patrolMaxX: 498,
-      patrolSpeed: 15
-    });
-
-    // 2. Bà Lão Edda — Người Giữ Chuông: đứng trước hiên nhà Đông-Bắc (x: 1160, y: 160) hướng ra lối Tháp Chuông
-    // Cách Tháp Chuông > 260px và thợ rèn Bram > 240px, sân hiên rộng thoáng không bị che khuất
-    const edda = new NPCEntity(this, {
-      id: 'npc_edda',
-      name: 'Bà Lão Edda',
-      title: 'Bà lão giữ chuông',
-      x: 1160,
-      y: 160,
-      dialogueKey: 'edda_intro',
-      robeColor: 0x4a4f56,
-      hoodColor: 0x8a7355
-    });
-
-    // 3. Neris — Thầy Thuốc Thảo Mộc: đứng bên hiên Nhà Thảo Mộc Tây-Nam (x: 570, y: 460) cạnh Nồi Thảo Dược và Vườn Dược
-    // Cách xa Garth > 260px, Finn > 214px và Hiệp Sĩ > 295px, hoàn toàn thông thoáng
-    const neris = new NPCEntity(this, {
-      id: 'npc_neris',
-      name: 'Neris',
-      title: 'Người chữa thảo mộc',
-      x: 570,
-      y: 460,
-      dialogueKey: 'neris_intro',
-      robeColor: 0x27493a,
-      hoodColor: 0x3d7055
-    });
-
-    // 4. Bram — Thợ Rèn Làng: đứng trước hiên Xưởng Rèn & Lò Lửa Đông-Nam (x: 1230, y: 405)
-    // Có lối đi rộng rãi phía trước, cách xa Edda > 240px và Hiệp Sĩ Canh Lửa > 410px
-    const bram = new NPCEntity(this, {
-      id: 'npc_bram',
-      name: 'Bram',
-      title: 'Thợ rèn làng',
-      x: 1230,
-      y: 405,
-      dialogueKey: 'bram_chat'
-    });
-
-    // 5. Finn — Cậu Bé Đưa Tin: đứng tại ngã ba Bảng Tin Dị Thường đầu quảng trường (x: 660, y: 280)
-    // Đứng trên sân đá thoáng trước Bảng Tin Dị Thường (không đè lên collider bảng tin y: 258..266)
-    const finn = new NPCEntity(this, {
-      id: 'npc_finn',
-      name: 'Finn',
-      title: 'Cậu bé đưa tin',
-      x: 660,
-      y: 280,
-      dialogueKey: 'finn_chat',
-      patrolMinX: 652,
-      patrolMaxX: 665,
-      patrolSpeed: 18
-    });
+    const villagers = this.worldBuilder.getZone('bellhollow')?.npcs ?? [];
+    this.npcs = villagers.map(spec => new NPCEntity(this, spec));
 
     // 6. Sir Vaelen — Kỵ Sĩ Trầm Mặc: quỳ chống kiếm bên cạnh Bếp Lửa Hồng đá cổ tại Trạm Lửa Rừng Tĩnh Lặng (x: 1435, y: 710)
     // Nằm ở khoảng đất trống yên bình BÊN NGOÀI làng Bellhollow (điểm giao giữa Rừng Ngoài và Đường Mòn Quanh Co)
@@ -1490,7 +1427,7 @@ export class GameScene extends Phaser.Scene {
     });
     CampSanctuarySystem.getInstance().registerKnightEntity(campfireKnight);
 
-    this.npcs.push(garth, edda, neris, bram, finn, campfireKnight);
+    this.npcs.push(campfireKnight);
 
     // C4-13-17 & C4-132-03: Thiết lập va chạm vật lý giữa BlackKnightPlayer và toàn bộ 5 NPC làng Bellhollow (hộp chân gọn 22x14 px)
     if (this.npcCollider) {
@@ -4674,6 +4611,7 @@ export class GameScene extends Phaser.Scene {
       y: number;
       promptX?: number;
       promptY?: number;
+      outlineFootY?: number;
       width?: number;
       height?: number;
       proximityAlpha: number;
@@ -4960,6 +4898,7 @@ export class GameScene extends Phaser.Scene {
         y: nearbyResource.y,
         promptX: nearbyResource.x,
         promptY: nearbyResource.y - 20,
+        outlineFootY: nearbyResource.y,
         width: 22,
         height: 22,
         proximityAlpha,
@@ -5055,25 +4994,24 @@ export class GameScene extends Phaser.Scene {
         .trim();
       const cleanPrompt = baseWorldName.charAt(0).toUpperCase() + baseWorldName.slice(1);
       const promptText = isWithinActionRange ? `[E] ${cleanPrompt}` : cleanPrompt;
-      // Tính toán tâm chính xác của vật thể tương tác để vẽ khung viền bao quanh đúng vị trí
+      // InteractableSpec uses the same world anchor for distance and outline.
       const propW = nearby.width || 28;
       const propH = nearby.height || 24;
-      const propCenterX = nearby.x + propW / 2;
-      const propCenterY = nearby.y + propH / 2;
 
       candidates.push({
         dist,
         triggerDist: worldTriggerDist,
         promptText,
-        x: propCenterX,
-        y: propCenterY,
-        promptX: propCenterX,
+        x: nearby.x,
+        y: nearby.y,
+        promptX: nearby.x,
         promptY: nearby.y - 14,
+        outlineFootY: nearby.y,
         width: propW,
         height: propH,
         proximityAlpha: isWithinActionRange ? 0.9 : 0.35,
         targetRef: nearby,
-        depth: propCenterY,
+        depth: nearby.y,
         action: () => {
           this.executeMapInteraction(nearby.actionId, nearby.name);
         }
@@ -5258,6 +5196,7 @@ export class GameScene extends Phaser.Scene {
     targetRef?: any;
     targetSprite?: Phaser.GameObjects.Sprite;
     depth?: number;
+    outlineFootY?: number;
   }): void {
     if (!this.interactionOutlineGfx) return;
     this.interactionOutlineGfx.clear();
@@ -5274,7 +5213,7 @@ export class GameScene extends Phaser.Scene {
       // Vòng elip sáng mảnh dưới chân vật thể
       const isNPC = target.targetRef instanceof NPCEntity;
       const footX = target.x;
-      const footY = isNPC ? target.y - 2 : target.y + (target.height ? target.height / 2 : 10);
+      const footY = target.outlineFootY ?? (isNPC ? target.y - 2 : target.y + (target.height ? target.height / 2 : 10));
       const rx = Math.max(16, (target.width || 32) * 0.55);
       const ry = Math.max(7, rx * 0.42);
 

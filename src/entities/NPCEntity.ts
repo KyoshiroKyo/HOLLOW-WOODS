@@ -1,19 +1,7 @@
 import * as Phaser from 'phaser';
 import { HDTextHelper } from '../utils/HDTextHelper';
 
-export interface NPCSpec {
-  id: string;
-  name: string;
-  title: string;
-  x: number;
-  y: number;
-  dialogueKey: string;
-  robeColor?: number;
-  hoodColor?: number;
-  patrolMinX?: number;
-  patrolMaxX?: number;
-  patrolSpeed?: number;
-}
+import type { NPCSpec } from '../types';
 
 export type NPCDirection = 'down' | 'up' | 'left' | 'right';
 
@@ -83,7 +71,7 @@ export class NPCEntity extends Phaser.GameObjects.Container {
     if (this.baseId === 'finn') {
       this.headOffsetY = 54;
     } else if (this.baseId === 'bram') {
-      this.headOffsetY = 56;
+      this.headOffsetY = 48;
     } else if (this.baseId === 'campfire_knight') {
       this.headOffsetY = 46;
     } else {
@@ -135,6 +123,7 @@ export class NPCEntity extends Phaser.GameObjects.Container {
 
     this.npcSprite = scene.add.sprite(0, 0, initialSheet);
     this.npcSprite.setOrigin(0.5, 1.0);
+    if (this.baseId === 'bram') this.npcSprite.setScale(0.82);
     this.add(this.npcSprite);
 
     // Khởi chạy hoạt ảnh ban đầu (mặc định idle)

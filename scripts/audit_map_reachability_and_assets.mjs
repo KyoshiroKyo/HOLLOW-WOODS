@@ -163,6 +163,15 @@ function createMockSprite(x = 0, y = 0) {
   };
   const target = {
     x, y, name: '', body, visible: true, alpha: 1, depth: 0, originX: 0, originY: 0,
+    displayWidth: 32,
+    displayHeight: 32,
+    setOrigin(ox, oy) { this.originX = ox; this.originY = oy; return this; },
+    setDisplaySize(w, h) { this.displayWidth = w; this.displayHeight = h; return this; },
+    refreshBody() {
+      this.body.setSize(this.displayWidth, this.displayHeight);
+      this.body.reset(this.x - this.displayWidth * this.originX, this.y - this.displayHeight * this.originY);
+      return this;
+    },
     setName(n) { this.name = n; return this; },
     add() { return this; }
   };
@@ -185,7 +194,7 @@ const mockGroup = {
     worldColliders.push(s);
     return s;
   },
-  refresh() {}
+  refresh() { this.children.forEach(child => child.refreshBody()); }
 };
 
 function createMockProxy() {
@@ -259,12 +268,10 @@ assert(autoPerimeterWallsSrc.includes("zoneId === 'crooked_path'"), 'AutoPerimet
 // -------------------------------------------------------------
 console.log('\n--- PHẦN 3: KIỂM TRA TỌA ĐỘ ĐỨNG & KHOẢNG TRỐNG MẶT TRƯỚC (>= 48PX) CỦA TOÀN BỘ NPC ---');
 
+const { zones } = JSON.parse(fs.readFileSync('src/data/zones.json', 'utf8'));
+const bellhollow = zones.find(zone => zone.id === 'bellhollow');
 const npcsToAudit = [
-  { id: 'npc_garth', name: 'Garth — Người Canh Cổng', x: 490, y: 210, facing: 'down' },
-  { id: 'npc_edda', name: 'Bà Lão Edda — Người Giữ Chuông', x: 1160, y: 160, facing: 'down' },
-  { id: 'npc_neris', name: 'Neris — Thầy Thuốc Thảo Mộc', x: 570, y: 460, facing: 'down' },
-  { id: 'npc_bram', name: 'Bram — Thợ Rèn Làng', x: 1230, y: 405, facing: 'down' },
-  { id: 'npc_finn', name: 'Finn — Cậu Bé Đưa Tin', x: 660, y: 280, facing: 'down' },
+  ...bellhollow.npcs.map(npc => ({ ...npc, facing: 'down' })),
   { id: 'npc_campfire_knight', name: 'Sir Vaelen — Kỵ Sĩ Trầm Mặc', x: 1435, y: 705, facing: 'down' }
 ];
 
@@ -386,12 +393,7 @@ console.log(`  -> BFS quét thành công ${queue.length} ô liên thông từ L�
 
 // 4.1. Kiểm tra Khả Năng Di Chuyển Thông Suốt tới 100% Phân Khu và Mốc Cốt Truyện
 const reachabilityTargets = [
-  // 1. Phân khu Làng Bellhollow & các vị trí NPC
-  { zone: 'Bellhollow', name: 'Cổng Tây (Garth)', x: 490, y: 210 },
-  { zone: 'Bellhollow', name: 'Hiên Nhà Edda', x: 1160, y: 160 },
-  { zone: 'Bellhollow', name: 'Hiên Nhà Neris', x: 570, y: 460 },
-  { zone: 'Bellhollow', name: 'Xưởng Rèn Bram', x: 1230, y: 405 },
-  { zone: 'Bellhollow', name: 'Ngã Ba Finn', x: 660, y: 280 },
+  ...bellhollow.npcs.map(({ name, x, y }) => ({ zone: 'Bellhollow', name, x, y })),
   { zone: 'Bellhollow', name: 'Sân Trước Tháp Chuông', x: 900, y: 165 },
 
   // 2. Phân khu Nông Trại Trú Ẩn (Sanctuary Farm)
