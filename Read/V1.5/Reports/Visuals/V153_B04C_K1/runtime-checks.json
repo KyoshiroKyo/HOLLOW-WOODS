@@ -64,7 +64,65 @@
       ]
     },
     "pageErrors": [],
-    "httpErrors": []
+    "httpErrors": [],
+    "qaCanvasScreenshotFixture": {
+      "down": {
+        "world": [
+          244,
+          232.24999999999997
+        ],
+        "screen": [
+          530.1999974250793,
+          378.15000802278513
+        ],
+        "zoom": 2.2,
+        "frame": 0,
+        "texture": "wayfarer_idle",
+        "animation": "wayfarer_idle_down"
+      },
+      "up": {
+        "world": [
+          244,
+          219.50000000000006
+        ],
+        "screen": [
+          536.7999977632007,
+          341.3000043630601
+        ],
+        "zoom": 2.2,
+        "frame": 4,
+        "texture": "wayfarer_idle",
+        "animation": "wayfarer_idle_up"
+      },
+      "left": {
+        "world": [
+          227.0000000000001,
+          219.50000000000006
+        ],
+        "screen": [
+          499.3999969525778,
+          341.3000043630601
+        ],
+        "zoom": 2.2,
+        "frame": 8,
+        "texture": "wayfarer_idle",
+        "animation": "wayfarer_idle_left"
+      },
+      "right": {
+        "world": [
+          255.33333333333326,
+          219.50000000000006
+        ],
+        "screen": [
+          561.7333316369494,
+          341.3000043630601
+        ],
+        "zoom": 2.2,
+        "frame": 12,
+        "texture": "wayfarer_idle",
+        "animation": "wayfarer_idle_right"
+      }
+    }
   },
   "productionLocal": {
     "mode": "public",
