@@ -1,4 +1,4 @@
-# 🌲 HOLLOW WOODS V1.5 – THE FOG THAT REMEMBERS (SƯƠNG MÙ GHI NHỚ)
+# 🌲 HOLLOW WOODS V1.5 – THE FOG THAT REMEMBERS (Màn Sương Vọng Ký Ức)
 
 > **Tập 1: The First Toll (Tiếng Chuông Đầu Tiên) — Bản Phát Hành Chính Thức V1.5 Production**  
 > **Thể loại:** 2D Atmospheric Psychological Survival Horror (Kinh Dị Sinh Tồn Tâm Lý & Giải Đố)  
