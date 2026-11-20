@@ -92,10 +92,9 @@ export class WorldGatingSystem {
       tier: 'LAYER_2_FRONTIER',
       conditionType: 'quest_required',
       requiredQuestId: 'Q03_PREPARE_RESOURCES',
-      requiredItem: 'item_lantern_oil',
       requiredFlag: 'talked_to_neris',
       lockedReasonVietnamese: 'Cổng Đông làng Bellhollow đang bị khóa chặt bằng xích sắt phong ấn!',
-      hintVietnamese: 'Hãy gặp Thầy Thuốc Neris và chế tạo Dầu Đèn [Phím I] trước khi tiến vào Rừng Cấm.'
+      hintVietnamese: 'Hãy nói chuyện với Garth, Edda và Thầy Thuốc Neris để mở Cổng Đông.'
     });
 
     this.registerRule({
@@ -239,11 +238,13 @@ export class WorldGatingSystem {
     }
 
     // C4-132-04: Tách riêng quy tắc mở khóa crooked_path và deep_forest (zoneId === 'crooked_path' || zoneId === 'deep_forest')
-    // 1. Tuyến đường mòn The Crooked Path: Mở khóa khi hoàn thành Q03 (chế tạo dầu đèn) hoặc mở Cổng Đông
+    // 1. Tuyến đường mòn The Crooked Path: Mở khóa khi đã nói chuyện với Garth, Edda và Neris (hoặc mở Cổng Đông)
     if (zoneId === 'crooked_path') {
       return (
-        playerState.hasFlag('craft_lantern_oil_complete') ||
         playerState.hasFlag('east_gate_unlocked') ||
+        (playerState.hasFlag('talked_to_garth') &&
+         playerState.hasFlag('talked_to_edda') &&
+         playerState.hasFlag('talked_to_neris')) ||
         playerState.currentQuestId === 'Q04_ANCIENT_RUNES' ||
         playerState.currentQuestId === 'Q05_SOLVE_MIRE' ||
         playerState.currentQuestId === 'Q06_RETRIEVE_CLAPPER'

@@ -58,6 +58,22 @@ export class EquipmentSystem {
       description: 'Bùa hộ mệnh chuông đồng ban tặng bởi Edda. Giảm 25% tốc độ tụt Bình Tâm trong bóng tối và rung báo hiệu khi gần Ký Ức.',
       composureDrainMod: 0.75,
       detectEchoProximity: true
+    },
+    eqp_skull_fang_charm: {
+      id: 'eqp_skull_fang_charm',
+      name: 'Bùa Nanh Xương Cổ',
+      slot: 'charm',
+      description: 'Bùa hộ mệnh bện từ Nanh Xương Cổ phát sáng lân tinh. Giảm 20% tốc độ tụt Tinh Thần và tăng 10% sức đẩy lùi quái vật.',
+      composureDrainMod: 0.80,
+      detectEchoProximity: false
+    },
+    eqp_abyssal_ward_charm: {
+      id: 'eqp_abyssal_ward_charm',
+      name: 'Bùa Trừ Tà Vực Thẳm',
+      slot: 'charm',
+      description: 'Bùa hộ mệnh thanh tẩy từ Tinh Chất Bóng Tối. Giảm 30% tốc độ tụt Tinh Thần và miễn nhiễm hoảng loạn khi bị Trùm Bóng Tối nhìn thấy.',
+      composureDrainMod: 0.70,
+      detectEchoProximity: true
     }
   };
 
@@ -246,15 +262,17 @@ export class EquipmentSystem {
 
   public getComposureDrainMultiplier(): number {
     const charm = this.getEquipped('charm');
-    if (charm === 'eqp_bell_ward_charm') {
-      return 0.75; // Giảm 25% tốc độ tụt bình tâm
+    const def = charm ? this.getEquipmentDef(charm) : undefined;
+    if (def && (def as any).composureDrainMod !== undefined) {
+      return (def as any).composureDrainMod;
     }
     return 1.0;
   }
 
   public hasEchoDetector(): boolean {
     const charm = this.getEquipped('charm');
-    return charm === 'eqp_bell_ward_charm'; // Rung chuông ngân báo hiệu gần Echo
+    const def = charm ? this.getEquipmentDef(charm) : undefined;
+    return def ? Boolean((def as any).detectEchoProximity) : false;
   }
 
   public getMaxInventorySlots(): number {
@@ -348,23 +366,27 @@ export class EquipmentSystem {
         explanation: 'Trọng lượng túi đeo lưng làm cơ thể mệt mỏi nhanh hơn.'
       });
     } else if (slot === 'charm') {
-      const curDrain = currentItem === 'eqp_bell_ward_charm' ? '-25%' : 'Chuẩn';
-      const prevDrain = newItemId === 'eqp_bell_ward_charm' ? '-25%' : 'Chuẩn';
+      const curDef = currentItem ? this.getEquipmentDef(currentItem) : undefined;
+      const newDef = newItemId ? this.getEquipmentDef(newItemId) : undefined;
+      const curMod = curDef && (curDef as any).composureDrainMod !== undefined ? (curDef as any).composureDrainMod : 1.0;
+      const newMod = newDef && (newDef as any).composureDrainMod !== undefined ? (newDef as any).composureDrainMod : 1.0;
+      const curLabel = curMod < 1.0 ? `-${Math.round((1 - curMod) * 100)}%` : 'Chuẩn';
+      const newLabel = newMod < 1.0 ? `-${Math.round((1 - newMod) * 100)}%` : 'Chuẩn';
       results.push({
         labelVi: 'Tụt Bình Tâm bóng tối',
-        currentVal: curDrain,
-        previewVal: prevDrain,
-        diffType: newItemId === 'eqp_bell_ward_charm' ? 'buff' : (currentItem ? 'nerf' : 'neutral'),
-        explanation: 'Tiếng chuông hộ mệnh xoa dịu tâm trí trước sự ám ảnh của Màn Sương.'
+        currentVal: curLabel,
+        previewVal: newLabel,
+        diffType: newMod < curMod ? 'buff' : (newMod > curMod ? 'nerf' : 'neutral'),
+        explanation: 'Bùa hộ mệnh xoa dịu tâm trí trước sự ám ảnh của Màn Sương.'
       });
 
-      const curEcho = currentItem === 'eqp_bell_ward_charm' ? 'Kích hoạt' : 'Tắt';
-      const prevEcho = newItemId === 'eqp_bell_ward_charm' ? 'Kích hoạt' : 'Tắt';
+      const curEcho = curDef && (curDef as any).detectEchoProximity ? 'Kích hoạt' : 'Tắt';
+      const prevEcho = newDef && (newDef as any).detectEchoProximity ? 'Kích hoạt' : 'Tắt';
       results.push({
         labelVi: 'Cảm biến Ký Ức (Echo)',
         currentVal: curEcho,
         previewVal: prevEcho,
-        diffType: newItemId === 'eqp_bell_ward_charm' ? 'buff' : (currentItem ? 'nerf' : 'neutral'),
+        diffType: prevEcho === 'Kích hoạt' && curEcho !== 'Kích hoạt' ? 'buff' : (prevEcho !== 'Kích hoạt' && curEcho === 'Kích hoạt' ? 'nerf' : 'neutral'),
         explanation: 'Rung nhẹ báo hiệu khi tiếp cận khu vực có tàn dư ký ức cổ.'
       });
     }

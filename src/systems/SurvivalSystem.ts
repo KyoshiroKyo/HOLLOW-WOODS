@@ -250,10 +250,10 @@ export class SurvivalSystem {
       this.playerState.emit('player_health_depleted');
     }
 
-    // Chỉ phát sự kiện 'stats_changed' khi các giá trị có sự thay đổi thực sự
+    // Chỉ phát sự kiện 'stats_changed' khi các giá trị có sự thay đổi thực sự (V152-06A: ngưỡng stamina 0.01 cho UI mượt)
     const isDirty =
       Math.abs(stats.health - this.lastHealth) > 0.05 ||
-      Math.abs(stats.stamina - this.lastStamina) > 0.05 ||
+      Math.abs(stats.stamina - this.lastStamina) > 0.01 ||
       Math.abs(stats.lanternOil - this.lastOil) > 0.05 ||
       Math.abs(stats.composure - this.lastComposure) > 0.05 ||
       stats.isLanternOn !== this.lastLanternState ||

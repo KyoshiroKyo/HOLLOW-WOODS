@@ -106,6 +106,14 @@ export class EquipmentModal {
     });
 
     // 2. Khung gỗ mun viền đồng cổ kính
+    let panelImg: Phaser.GameObjects.Image | undefined;
+    if (this.scene.textures.exists('ui_pack_panel_modal')) {
+      panelImg = this.scene.add.image(cx, cy, 'ui_pack_panel_modal');
+      panelImg.setDisplaySize(modalW + 24, modalH + 24);
+      panelImg.setTint(0xbaa187);
+      panelImg.setAlpha(0.65);
+    }
+
     const frame = this.scene.add.graphics();
     frame.fillStyle(0x18110b, 0.96);
     frame.fillRoundedRect(modalX, modalY, modalW, modalH, 10);
@@ -179,8 +187,9 @@ export class EquipmentModal {
     this.previewContainer = this.scene.add.container(0, 0);
     this.weaponsContainer = this.scene.add.container(0, 0);
 
-    this.container.add([
+    const equipElements: Phaser.GameObjects.GameObject[] = [
       overlay,
+      ...(panelImg ? [panelImg] : []),
       frame,
       title,
       subtitle,
@@ -189,7 +198,8 @@ export class EquipmentModal {
       this.inventoryListContainer,
       this.previewContainer,
       this.weaponsContainer
-    ]);
+    ];
+    this.container.add(equipElements);
   }
 
   public open(): void {
@@ -286,7 +296,16 @@ export class EquipmentModal {
         color: '#e0c878'
       });
 
-      this.slotsContainer.add([bg, slotTitle, itemNameText, durText]);
+      // V152-06B: Icon trang bị Pixel Art thật từ UI Pack
+      let slotIcon: Phaser.GameObjects.Image | undefined;
+      if (this.scene.textures.exists(`ui_pack_equip_${s.slot}`)) {
+        slotIcon = this.scene.add.image(startX + slotW - 32, slotY + 22, `ui_pack_equip_${s.slot}`);
+        slotIcon.setDisplaySize(22, 22);
+        slotIcon.setAlpha(equippedDef ? 1.0 : 0.4);
+        if (equippedDef) slotIcon.setTint(0xffd700);
+      }
+
+      this.slotsContainer.add([bg, slotTitle, itemNameText, durText, ...(slotIcon ? [slotIcon] : [])]);
 
       // Nút Tháo Trang Bị nếu đang có đồ
       if (equippedDef) {

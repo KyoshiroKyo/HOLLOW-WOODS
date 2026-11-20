@@ -359,6 +359,27 @@ export class EndingSystem {
     this.endingContainer.setVisible(true);
     this.endingTextContainer.removeAll(true);
 
+    // V152-08: Phát sự kiện p2.gameOver khi đạt Ending cốt truyện
+    try {
+      if (typeof window !== 'undefined' && window.p2 && typeof window.p2.gameOver === 'function') {
+        const day = this.playerState?.dayCount || 1;
+        const comp = this.playerState?.stats?.composure || 0;
+        const loreCount = this.playerState?.unlockedLore?.length || 0;
+        const visitedCount = this.playerState?.visitedZones?.size || 1;
+        const bonus = endingType === 'true_ending' ? 25000 : (endingType === 'sacrifice_ending' ? 15000 : 5000);
+        const endingScore = day * 1000 + comp * 10 + loreCount * 250 + visitedCount * 150 + bonus;
+        window.p2.gameOver({
+          score: endingScore,
+          level: day,
+          day,
+          ending: endingType
+        });
+        console.log(`[P2Game SDK] Đã gửi gameOver từ EndingSystem (${endingType}, Score: ${endingScore}, Level: ${day})`);
+      }
+    } catch (e) {
+      console.warn('[P2Game SDK] Lỗi khi gọi p2.gameOver trong EndingSystem:', e);
+    }
+
     // 1. Phông nền tối màu chuyển sắc nhẹ tạo chiều sâu điện ảnh (HD 1280×720)
     const bgGraphics = target.add.graphics();
     bgGraphics.fillStyle(config.bgGradientBottom, 1);

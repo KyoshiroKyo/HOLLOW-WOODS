@@ -20,8 +20,10 @@
  */
 
 export const SAVE_VERSION = "1.4";
-export const MAX_KEY_BYTES = 60 * 1024; // 61,440 bytes - Chừa khoảng an toàn dưới mức trần 64 KB
+export const MAX_KEY_BYTES = 64 * 1024; // 65,536 bytes - Giới hạn 64 KB theo đặc tả SDK v1.1
+export const MAX_KEY_COUNT = 32;       // Tối đa 32 khóa trong payload
 export const LOCAL_PREFIX = "hollow_woods_backup_";
+export const SAVE_KEY_PROGRESS = "progress"; // V152-08: Khóa lưu chuẩn SDK
 export const SAVE_KEY_SLOT_1 = "hw_save_slot_1";
 export const SAVE_KEY_META = "hw_save_meta";
 export const SAVE_KEY_SETTINGS = "hw_settings";
@@ -333,11 +335,16 @@ export async function saveGameNow(gameState: any): Promise<CloudSaveResult> {
     return { ok: true, source: "local" };
   }
 
-  // 2. Kiểm tra giới hạn 64 KB/key trước khi gọi SDK
+  // 2. Kiểm tra giới hạn payload <= 64 KB và tối đa 32 khóa
   const byteSize = getByteSize(payload);
   if (byteSize > MAX_KEY_BYTES) {
-    console.error(`[CloudSaveService] Save payload quá lớn (${byteSize} bytes), vượt ngưỡng an toàn 60 KB.`);
+    console.error(`[CloudSaveService] Save payload quá lớn (${byteSize} bytes), vượt ngưỡng an toàn 64 KB.`);
     return { ok: false, reason: "QUOTA_EXCEEDED" };
+  }
+
+  const payloadKeyCount = Object.keys(payload).length;
+  if (payloadKeyCount > MAX_KEY_COUNT) {
+    console.warn(`[CloudSaveService] Cảnh báo: payload có ${payloadKeyCount} khóa (vượt ngưỡng 32 khóa).`);
   }
 
   const metaPayload: CloudSaveMeta = {
@@ -351,7 +358,9 @@ export async function saveGameNow(gameState: any): Promise<CloudSaveResult> {
   };
 
   try {
+    // V152-08: Đồng bộ lưu qua "progress" theo đặc tả SDK v1.1
     await Promise.all([
+      p2.storage.set(SAVE_KEY_PROGRESS, payload),
       p2.storage.set(SAVE_KEY_SLOT_1, payload),
       p2.storage.set(SAVE_KEY_META, metaPayload),
     ]);
@@ -409,7 +418,11 @@ export async function loadGameProgress(): Promise<CloudSavePayload | null> {
 
   if (p2 && p2.storage) {
     try {
-      const rawCloud = await p2.storage.get<any>(SAVE_KEY_SLOT_1);
+      // V152-08: Thử tải qua khóa chuẩn "progress", fallback sang slot 1
+      let rawCloud = await p2.storage.get<any>(SAVE_KEY_PROGRESS);
+      if (!rawCloud) {
+        rawCloud = await p2.storage.get<any>(SAVE_KEY_SLOT_1);
+      }
       if (rawCloud) cloudSave = migrateSaveSchema(rawCloud);
     } catch (err: any) {
       console.warn("[CloudSaveService] Không thể tải Cloud Save, dùng bản lưu cục bộ:", err?.message || err);

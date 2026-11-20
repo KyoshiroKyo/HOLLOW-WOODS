@@ -59,12 +59,27 @@ export class HitboxDebugInspector {
   private uiScene: Phaser.Scene;
   private player: SatyrPlayer;
   private isEnabled: boolean = false;
+  private layers = { showColliders: true, showHitboxes: true, showTriggers: true, showInteractRanges: true, showAIRanges: true, enableObjectPicker: false };
   private f8Key!: Phaser.Input.Keyboard.Key;
-  private f9Key!: Phaser.Input.Keyboard.Key;
   private f10Key!: Phaser.Input.Keyboard.Key;
 
   // Graphics overlay vẽ trong GameScene (tọa độ thế giới)
   private debugGfx: Phaser.GameObjects.Graphics;
+  private pickerLabel: Phaser.GameObjects.Text;
+  private readonly pickerHandler = (pointer: Phaser.Input.Pointer): void => {
+    if (!this.isEnabled || !this.layers.enableObjectPicker || pointer.button !== 0) return;
+    const point = pointer.positionToCamera(this.scene.cameras.main) as Phaser.Math.Vector2;
+    const candidates = [...this.scene.children.list].reverse().filter((obj): obj is Phaser.GameObjects.GameObject & { x: number; y: number; texture?: { key: string }; body?: Phaser.Physics.Arcade.Body } =>
+      obj !== this.debugGfx && obj !== this.pickerLabel && (obj as any).active && Number.isFinite((obj as any).x) && Number.isFinite((obj as any).y) && typeof (obj as any).getBounds === 'function');
+    const hit = candidates.find(obj => (obj as any).getBounds().contains(point.x, point.y));
+    if (!hit) { this.pickerLabel.setVisible(false); return; }
+    const bounds = (hit as any).getBounds();
+    const body = hit.body;
+    const name = String((hit as any).name || (hit as any).constructor?.name || 'Entity');
+    const texture = hit.texture?.key || '—';
+    this.pickerLabel.setText(`${name} · ${texture}\n(${Math.round(hit.x)}, ${Math.round(hit.y)}) · Collider ${body ? `${Math.round(body.width)}×${Math.round(body.height)}` : '—'}`);
+    this.pickerLabel.setPosition(bounds.left, bounds.top - 8).setVisible(true);
+  };
 
   // Bảng thông số F9 hiển thị trên UIScene (Zoom 1.0 cố định)
   private uiContainer: Phaser.GameObjects.Container;
@@ -107,6 +122,8 @@ export class HitboxDebugInspector {
     this.debugGfx = this.scene.add.graphics();
     this.debugGfx.setDepth(999999);
     this.debugGfx.setVisible(false);
+    this.pickerLabel = this.scene.add.text(0, 0, '', { fontFamily: 'monospace', fontSize: '11px', color: '#ffffff', backgroundColor: '#101820', padding: { x: 5, y: 4 } }).setDepth(1000000).setScrollFactor(1).setVisible(false);
+    this.scene.input.on('pointerdown', this.pickerHandler);
 
     // V1.5 (BƯỚC V15-04): Đảm bảo Arcade Physics Debug luôn tắt khi khởi tạo
     if (this.scene.physics && this.scene.physics.world) {
@@ -119,11 +136,9 @@ export class HitboxDebugInspector {
 
     if (this.scene.input && this.scene.input.keyboard) {
       this.f8Key = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F8);
-      this.f9Key = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F9);
       this.f10Key = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F10);
       this.scene.input.keyboard.addCapture([
         Phaser.Input.Keyboard.KeyCodes.F8,
-        Phaser.Input.Keyboard.KeyCodes.F9,
         Phaser.Input.Keyboard.KeyCodes.F10
       ]);
     }
@@ -198,14 +213,6 @@ export class HitboxDebugInspector {
   public update(currentZoneId: ZoneId, delta?: number): void {
     const deltaMs = delta !== undefined ? delta : (this.scene.game.loop.delta || 16.6);
 
-    // Bắt phím F9: Bật / Tắt Chế độ Debug Quản trị viên (Đồng bộ với GameScene & UIScene - V15-29)
-    if (this.f9Key && Phaser.Input.Keyboard.JustDown(this.f9Key)) {
-      const gs = this.scene as any;
-      if (!gs || typeof gs.toggleDebugInteractionBoxes !== 'function') {
-        this.toggleDebug();
-      }
-    }
-
     // Bắt phím F10: Kích hoạt / Hủy Benchmark 10s (chỉ khi F9 đang bật)
     if (this.isEnabled && this.f10Key && Phaser.Input.Keyboard.JustDown(this.f10Key)) {
       if (this.isBenchmarkModalVisible) {
@@ -257,20 +264,18 @@ export class HitboxDebugInspector {
     this.isEnabled = !this.isEnabled;
     this.debugGfx.setVisible(this.isEnabled);
     this.uiContainer.setVisible(this.isEnabled);
+    if (!this.isEnabled) { this.debugGfx.clear(); this.pickerLabel.setVisible(false); }
 
     if (this.isEnabled) {
       // Kích hoạt hook WebGL Draw Calls
       this.hookWebGLDrawCalls();
 
-      // Bật Arcade Physics Debug Graphics
+      // Vẽ từng lớp bằng debugGfx để các công tắc lớp hoạt động độc lập.
       if (this.scene.physics && this.scene.physics.world) {
-        this.scene.physics.world.drawDebug = true;
-        if (!this.scene.physics.world.debugGraphic) {
-          this.scene.physics.world.createDebugGraphic();
-        }
+        this.scene.physics.world.drawDebug = false;
         if (this.scene.physics.world.debugGraphic) {
-          this.scene.physics.world.debugGraphic.setVisible(true);
-          this.scene.physics.world.debugGraphic.setDepth(999998);
+          this.scene.physics.world.debugGraphic.clear();
+          this.scene.physics.world.debugGraphic.setVisible(false);
         }
       }
 
@@ -306,6 +311,8 @@ export class HitboxDebugInspector {
       }
     }
   }
+
+  public setLayerOptions(options: Partial<typeof this.layers>): void { this.layers = { ...this.layers, ...options }; }
 
   /**
    * Lấy context WebGL từ renderer
@@ -725,7 +732,7 @@ export class HitboxDebugInspector {
     const gameScene = this.scene as any;
     const wb = gameScene.worldBuilder;
 
-    if (wb && wb.colliderGroup && wb.colliderGroup.getChildren) {
+    if (this.layers.showColliders && wb && wb.colliderGroup && wb.colliderGroup.getChildren) {
       const colliders = wb.colliderGroup.getChildren();
       staticColliderCount = colliders.length;
 
@@ -748,7 +755,7 @@ export class HitboxDebugInspector {
     }
 
     // 2. VẼ CÁC VẬT THỂ TƯƠNG TÁC (INTERACTABLES)
-    if (wb && wb.interactables && Array.isArray(wb.interactables)) {
+    if (this.layers.showTriggers && wb && wb.interactables && Array.isArray(wb.interactables)) {
       interactableCount = wb.interactables.length;
       for (let i = 0; i < wb.interactables.length; i++) {
         const inter = wb.interactables[i];
@@ -763,7 +770,7 @@ export class HitboxDebugInspector {
     }
 
     // 3. VẼ HỘP VA CHẠM NHÂN VẬT CHÍNH (PLAYER)
-    if (this.player && this.player.body) {
+    if (this.layers.showHitboxes && this.player && this.player.body) {
       dynamicCount++;
       const pBody = this.player.body as Phaser.Physics.Arcade.Body;
       
@@ -778,7 +785,7 @@ export class HitboxDebugInspector {
     }
 
     // 4. VẼ CÁC THỰC THỂ DYNAMIC KHÁC (NPCs & MONSTERS)
-    if (gameScene.listenerMonster && gameScene.listenerMonster.body) {
+    if (this.layers.showHitboxes && gameScene.listenerMonster && gameScene.listenerMonster.body) {
       dynamicCount++;
       const mBody = gameScene.listenerMonster.body as Phaser.Physics.Arcade.Body;
       this.debugGfx.fillStyle(0x9b59b6, 0.4);
@@ -787,7 +794,7 @@ export class HitboxDebugInspector {
       this.debugGfx.strokeRect(mBody.x, mBody.y, mBody.width, mBody.height);
     }
 
-    if (gameScene.skullWolves && Array.isArray(gameScene.skullWolves)) {
+    if (this.layers.showHitboxes && gameScene.skullWolves && Array.isArray(gameScene.skullWolves)) {
       for (const wolf of gameScene.skullWolves) {
         if (wolf && wolf.body) {
           dynamicCount++;
@@ -800,7 +807,7 @@ export class HitboxDebugInspector {
       }
     }
 
-    if (gameScene.evilKnightsSystem && gameScene.evilKnightsSystem.getKnights) {
+    if (this.layers.showHitboxes && gameScene.evilKnightsSystem && gameScene.evilKnightsSystem.getKnights) {
       const knights = gameScene.evilKnightsSystem.getKnights();
       for (const k of knights) {
         if (k && k.body) {
@@ -812,6 +819,20 @@ export class HitboxDebugInspector {
           this.debugGfx.strokeRect(kBody.x, kBody.y, kBody.width, kBody.height);
         }
       }
+    }
+
+    if (this.layers.showAIRanges && gameScene.listenerMonster && Number.isFinite(gameScene.listenerMonster.hearingRadius)) {
+      const listener = gameScene.listenerMonster;
+      this.debugGfx.lineStyle(1.5, 0x55d6ff, 0.85);
+      this.debugGfx.strokeCircle(listener.x, listener.y, listener.hearingRadius);
+      if (gameScene.player?.stats?.isLanternOn) {
+        this.debugGfx.lineStyle(1, 0xffd166, 0.8);
+        this.debugGfx.strokeCircle(listener.x, listener.y, listener.hearingRadius * 1.3);
+      }
+    }
+    if (this.layers.showInteractRanges && this.player) {
+      this.debugGfx.lineStyle(1, 0xf1c40f, 0.65);
+      this.debugGfx.strokeCircle(this.player.x, this.player.y, 72);
     }
 
     // 5. THU THẬP SỐ LIỆU ĐO LƯỜNG HIỆU NĂNG THỜI GIAN THỰC
@@ -896,6 +917,8 @@ export class HitboxDebugInspector {
   }
 
   public destroy(): void {
+    this.scene.input.off('pointerdown', this.pickerHandler);
+    this.pickerLabel?.destroy();
     this.unhookWebGLDrawCalls();
     if (this.debugGfx) {
       this.debugGfx.destroy();

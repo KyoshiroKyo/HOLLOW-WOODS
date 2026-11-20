@@ -1,6 +1,6 @@
 {
-  "totalFiles": 226,
-  "totalBytes": 68713514,
+  "totalFiles": 237,
+  "totalBytes": 68941539,
   "categories": {
     "audio": [
       {
@@ -437,33 +437,53 @@
         "ext": ".png"
       },
       {
+        "path": "public/assets/characters/mossbound_wayfarer.rar",
+        "size": 185541,
+        "ext": ".rar"
+      },
+      {
         "path": "public/assets/characters/mossbound_wayfarer/wayfarer_attack.png",
-        "size": 23847,
+        "size": 24228,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/mossbound_wayfarer/wayfarer_buff.png",
+        "size": 22085,
         "ext": ".png"
       },
       {
         "path": "public/assets/characters/mossbound_wayfarer/wayfarer_death.png",
-        "size": 17114,
+        "size": 14777,
         "ext": ".png"
       },
       {
         "path": "public/assets/characters/mossbound_wayfarer/wayfarer_gather.png",
-        "size": 12170,
+        "size": 7816,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/mossbound_wayfarer/wayfarer_heavy_attack.png",
+        "size": 23988,
         "ext": ".png"
       },
       {
         "path": "public/assets/characters/mossbound_wayfarer/wayfarer_hurt.png",
-        "size": 6549,
+        "size": 5270,
         "ext": ".png"
       },
       {
         "path": "public/assets/characters/mossbound_wayfarer/wayfarer_idle.png",
-        "size": 10992,
+        "size": 7513,
         "ext": ".png"
       },
       {
         "path": "public/assets/characters/mossbound_wayfarer/wayfarer_interact.png",
-        "size": 12338,
+        "size": 5621,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/mossbound_wayfarer/wayfarer_parry.png",
+        "size": 15016,
         "ext": ".png"
       },
       {
@@ -472,18 +492,48 @@
         "ext": ".png"
       },
       {
+        "path": "public/assets/characters/mossbound_wayfarer/wayfarer_roll.png",
+        "size": 13440,
+        "ext": ".png"
+      },
+      {
         "path": "public/assets/characters/mossbound_wayfarer/wayfarer_run.png",
-        "size": 21120,
+        "size": 11407,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/mossbound_wayfarer/wayfarer_unarmed_idle.png",
+        "size": 6141,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/mossbound_wayfarer/wayfarer_unarmed_roll.png",
+        "size": 13239,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/mossbound_wayfarer/wayfarer_unarmed_run.png",
+        "size": 11193,
         "ext": ".png"
       },
       {
         "path": "public/assets/characters/mossbound_wayfarer/wayfarer_use_item.png",
-        "size": 12495,
+        "size": 9360,
         "ext": ".png"
       },
       {
         "path": "public/assets/characters/mossbound_wayfarer/wayfarer_walk.png",
-        "size": 21465,
+        "size": 11818,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/mossbound_wayfarer/wayfarer_weapon_art.png",
+        "size": 27244,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/mossbound_wayfarer/wayfarer_weapon_toggle.png",
+        "size": 14261,
         "ext": ".png"
       },
       {
@@ -502,13 +552,13 @@
         "ext": ".png"
       },
       {
-        "path": "public/assets/characters/npcs/edda.png",
-        "size": 2744,
+        "path": "public/assets/characters/npcs/edda_idle_sheet.png",
+        "size": 22626,
         "ext": ".png"
       },
       {
-        "path": "public/assets/characters/npcs/edda_idle_sheet.png",
-        "size": 22626,
+        "path": "public/assets/characters/npcs/edda.png",
+        "size": 2744,
         "ext": ".png"
       },
       {
@@ -517,23 +567,23 @@
         "ext": ".png"
       },
       {
-        "path": "public/assets/characters/npcs/garth.png",
-        "size": 1022,
-        "ext": ".png"
-      },
-      {
         "path": "public/assets/characters/npcs/garth_walk_sheet.png",
         "size": 62113,
         "ext": ".png"
       },
       {
-        "path": "public/assets/characters/npcs/neris.png",
-        "size": 1741,
+        "path": "public/assets/characters/npcs/garth.png",
+        "size": 1022,
         "ext": ".png"
       },
       {
         "path": "public/assets/characters/npcs/neris_idle_sheet.png",
         "size": 8778,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/npcs/neris.png",
+        "size": 1741,
         "ext": ".png"
       },
       {
@@ -599,11 +649,6 @@
       {
         "path": "public/assets/characters/satyr/satyr_portrait.png",
         "size": 2551,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/characters/satyr/satyr_sheet.png",
-        "size": 15866,
         "ext": ".png"
       }
     ],
@@ -709,113 +754,8 @@
         "ext": ".png"
       },
       {
-        "path": "public/assets/environment/sprites/bell_tower.png",
-        "size": 1475,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/sprites/broken_shrine.png",
-        "size": 1543,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/sprites/bush_dense_1.png",
-        "size": 2986,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/sprites/bush_dense_2.png",
-        "size": 2420,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/sprites/crafting_bench.png",
-        "size": 534,
-        "ext": ".png"
-      },
-      {
         "path": "public/assets/environment/sprites/fog_smooth.png",
         "size": 44219,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/sprites/hollow_tree.png",
-        "size": 1599,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/sprites/house_edda.png",
-        "size": 1724,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/sprites/house_neris.png",
-        "size": 1740,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/sprites/pillar_eye.png",
-        "size": 2194,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/sprites/pillar_moon.png",
-        "size": 1924,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/sprites/pillar_root.png",
-        "size": 2112,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/sprites/rock_large.png",
-        "size": 523,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/sprites/rock_medium.png",
-        "size": 317,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/sprites/signpost.png",
-        "size": 1189,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/sprites/stone_altar.png",
-        "size": 2654,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/sprites/tree_dead.png",
-        "size": 736,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/sprites/tree_oak_1.png",
-        "size": 19645,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/sprites/tree_oak_2.png",
-        "size": 15575,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/sprites/tree_oak_3.png",
-        "size": 11852,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/sprites/village_well.png",
-        "size": 522,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/sprites/wooden_fence.png",
-        "size": 399,
         "ext": ".png"
       },
       {
@@ -881,11 +821,6 @@
       {
         "path": "public/assets/environment/trees/tree_pine_small_topdown.png",
         "size": 2756,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/trees/tree_pine_tall_topdown.png",
-        "size": 6708,
         "ext": ".png"
       },
       {
@@ -1049,31 +984,6 @@
         "ext": ".png"
       },
       {
-        "path": "public/assets/environment/v14/trees/tree_birch_amber_v14.png",
-        "size": 1157,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/v14/trees/tree_dead_withered_v14.png",
-        "size": 840,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/v14/trees/tree_maple_crimson_v14.png",
-        "size": 1166,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/v14/trees/tree_oak_ancient_titan_v14.png",
-        "size": 19645,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/environment/v14/trees/tree_oak_mossy_v14.png",
-        "size": 1126,
-        "ext": ".png"
-      },
-      {
         "path": "public/assets/environment/v14/village/prop_barrel_aged_v14.png",
         "size": 630,
         "ext": ".png"
@@ -1136,6 +1046,147 @@
         "ext": ".png"
       }
     ],
-    "ui": []
+    "ui": [
+      {
+        "path": "public/assets/ui/books/ui_pack_open_book_desk.png",
+        "size": 15695,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/books/ui_pack_open_book.png",
+        "size": 4392,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/icons/ui_pack_btn_wood_hover.png",
+        "size": 454,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/icons/ui_pack_btn_wood.png",
+        "size": 434,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/icons/ui_pack_equip_back.png",
+        "size": 265,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/icons/ui_pack_equip_body.png",
+        "size": 135,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/icons/ui_pack_equip_charm.png",
+        "size": 289,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/icons/ui_pack_equip_feet.png",
+        "size": 175,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/icons/ui_pack_tab_craft.png",
+        "size": 506,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/icons/ui_pack_tab_equip.png",
+        "size": 602,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/icons/ui_pack_tab_journal.png",
+        "size": 434,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/icons/ui_pack_tab_map.png",
+        "size": 614,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/panels/ui_pack_panel_cutout_modal.png",
+        "size": 4291,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/panels/ui_pack_panel_dialogue.png",
+        "size": 2324,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/panels/ui_pack_panel_hud.png",
+        "size": 1389,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/panels/ui_pack_panel_modal.png",
+        "size": 3680,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/panels/ui_pack_panel_quest.png",
+        "size": 1010,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/panels/ui_pack_ribbon_header_alt.png",
+        "size": 3483,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/panels/ui_pack_ribbon_header.png",
+        "size": 1387,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/scrolls/ui_pack_map_pin.png",
+        "size": 354,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/scrolls/ui_pack_scroll_compact.png",
+        "size": 2928,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/scrolls/ui_pack_world_map_scroll.png",
+        "size": 5401,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/slots/ui_pack_hotbar_bg.png",
+        "size": 882,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/slots/ui_pack_slot_equip.png",
+        "size": 183,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/slots/ui_pack_slot_hover.png",
+        "size": 361,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/slots/ui_pack_slot_idle.png",
+        "size": 207,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/slots/ui_pack_slot_large.png",
+        "size": 745,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/slots/ui_pack_slot_selected.png",
+        "size": 430,
+        "ext": ".png"
+      }
+    ]
   }
 }

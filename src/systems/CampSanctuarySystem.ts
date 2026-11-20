@@ -11,6 +11,7 @@
 
 import * as Phaser from 'phaser';
 import { NPCEntity } from '../entities/NPCEntity';
+import { AudioManager } from '../audio/AudioManager';
 
 export class CampSanctuarySystem {
   private static instance: CampSanctuarySystem | null = null;
@@ -21,7 +22,7 @@ export class CampSanctuarySystem {
 
   // Tọa độ vị trí Sir Vaelen — Kỵ Sĩ Trầm Mặc quỳ gác bên bếp lửa (bên trái ngọn lửa)
   public readonly knightX: number = 1435;
-  public readonly knightY: number = 705;
+  public readonly knightY: number = 710;
 
   // Bán kính vùng bảo vệ an toàn của Sanctuary Camp (~180px)
   public readonly sanctuaryRadius: number = 180;
@@ -218,5 +219,32 @@ export class CampSanctuarySystem {
    */
   public getBlessingRemainingTime(): number {
     return Math.max(0, Math.ceil(this.bonfireBlessingTimer));
+  }
+
+  /**
+   * V152-02: Kiểm tra trạng thái cô lập âm thanh Trạm Lửa Sir Vaelen (#10)
+   */
+  public isSanctuaryMusicOnly(): boolean {
+    return AudioManager.getInstance().isSanctuaryActive();
+  }
+
+  /**
+   * V152-02: Đồng bộ âm thanh tại Trạm Lửa Sir Vaelen (#10)
+   * - Khi đứng trong Trạm Lửa: fade-out về 0 toàn bộ ambience rừng, mưa, gió rít, nhịp tim và ảo giác;
+   *   chỉ phát DUY NHẤT bản nhạc knights_quiet_fire.
+   * - Khi rời Trạm Lửa: crossfade êm trở lại ambience và BGM rừng.
+   */
+  public updateSanctuaryAudio(playerX: number, playerY: number, zoneId?: string): void {
+    const inSanctuary = this.isPlayerInSanctuary(playerX, playerY, zoneId);
+    const audio = AudioManager.getInstance();
+    if (inSanctuary) {
+      if (!audio.isSanctuaryActive()) {
+        audio.setSanctuaryMusicOnly(true, 1.2);
+      }
+    } else {
+      if (audio.isSanctuaryActive()) {
+        audio.setSanctuaryMusicOnly(false, 1.2);
+      }
+    }
   }
 }

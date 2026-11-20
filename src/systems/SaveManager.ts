@@ -526,6 +526,30 @@ export class SaveManager {
   }
 
   /**
+   * V152-08: Lưu nhanh tiến trình khi nhận sự kiện p2.onBeforeUnload hoặc đóng tab
+   */
+  public static quickSaveOnUnload(): boolean {
+    try {
+      if (typeof window === 'undefined') return false;
+      const game = (window as any).__PHASER_GAME__;
+      if (!game || !game.scene) return false;
+      const gameScene = game.scene.getScene('GameScene') as any;
+      if (gameScene && gameScene.player && !gameScene.player.isDead() && typeof gameScene.captureCurrentSaveState === 'function') {
+        const state = gameScene.captureCurrentSaveState();
+        if (state) {
+          saveGameNow(state);
+          console.log('[SaveManager] quickSaveOnUnload: Đã lưu nhanh tiến trình GameScene.');
+          return true;
+        }
+      }
+      return false;
+    } catch (e) {
+      console.warn('[SaveManager] quickSaveOnUnload warning:', e);
+      return false;
+    }
+  }
+
+  /**
    * Lưu game với bước kiểm tra tính hợp lệ trước khi ghi đè (Đồng bộ CloudSaveService)
    */
   public static saveGame(checkpointName: string, zoneId: string, playerX: number, playerY: number): boolean {

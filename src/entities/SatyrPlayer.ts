@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+import { DeveloperModeManager } from '../debug/DeveloperModeManager';
 import { 
   SATYR_SHEET_KEY, 
   WAYFARER_IDLE_KEY,
@@ -24,6 +25,11 @@ export type OneShotAction =
   | 'interact'
   | 'lantern'
   | 'attack'
+  | 'heavy_attack'
+  | 'weapon_art'
+  | 'parry'
+  | 'roll'
+  | 'weapon_toggle'
   | 'throw_lure'
   | 'craft'
   | 'journal'
@@ -47,6 +53,11 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   private keyE!: Phaser.Input.Keyboard.Key;
   private keyF!: Phaser.Input.Keyboard.Key;
   private keySpace!: Phaser.Input.Keyboard.Key;
+  private keyK!: Phaser.Input.Keyboard.Key;
+  private keyR!: Phaser.Input.Keyboard.Key;
+  private keyV!: Phaser.Input.Keyboard.Key;
+  private keyZ!: Phaser.Input.Keyboard.Key;
+  private keyX!: Phaser.Input.Keyboard.Key;
   
   private eKeyJustPressed: boolean = false;
 
@@ -102,11 +113,28 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       if (!this.isActionLocked()) {
         this.pendingOneShotActions.add('attack');
       }
+    } else if (pointer.rightButtonDown()) {
+      if (Date.now() - this.lastWindowFocusTime < 350) return;
+      if (pointer.y > 640 || (pointer.x < 340 && pointer.y < 160)) return;
+      const uiScene = this.scene.scene.get('UIScene') as any;
+      if (uiScene && uiScene.isAnyModalOpen) return;
+      const gameScene = this.scene as any;
+      if (gameScene.dialogueSystem && gameScene.dialogueSystem.isActive) return;
+      if (!this.isActionLocked()) {
+        this.pendingOneShotActions.add('heavy_attack');
+      }
     }
   };
 
   // Trạng thái hành động độc quyền (Exclusive Action States)
   private _isAttacking: boolean = false;
+  private _isHeavyAttacking: boolean = false;
+  private _isWeaponArting: boolean = false;
+  private _isParrying: boolean = false;
+  private _isRolling: boolean = false;
+  private _isTogglingWeapon: boolean = false;
+  private _isInvulnerable: boolean = false;
+  private _isWeaponDrawn: boolean = true;
   private _isHurt: boolean = false;
   private _isDead: boolean = false;
   private _isGathering: boolean = false;
@@ -114,6 +142,11 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   private _isUsingItem: boolean = false;
   private _isStaminaExhausted: boolean = false;
   private _lastAttackTime: number = 0;
+  private _lastHeavyAttackTime: number = 0;
+  private _lastWeaponArtTime: number = 0;
+  private _lastParryTime: number = 0;
+  private _lastRollTime: number = 0;
+  private _lastAutoZoneCheckTime: number = 0;
 
   // V1.5 (BƯỚC V15-02): Bộ đếm bảo hiểm tự giải phóng khóa hành động (Safety Watchdog Timeout tối đa 600ms)
   public static readonly ACTION_SAFETY_TIMEOUT_MS: number = 600;
@@ -200,6 +233,11 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     this.keyE = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
     this.keyF = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
     this.keySpace = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.keyK = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
+    this.keyR = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+    this.keyV = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V);
+    this.keyZ = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+    this.keyX = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
 
     this.attachDOMInputListeners();
     this.scene.input.on('pointerdown', this.boundPointerDown);
@@ -263,6 +301,13 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       case 'KeyI':
       case 'KeyJ':
       case 'KeyM':
+      case 'KeyK':
+      case 'KeyR':
+      case 'KeyV':
+      case 'KeyZ':
+      case 'KeyX':
+      case 'ControlLeft':
+      case 'ControlRight':
       case 'Digit1':
       case 'Digit2':
       case 'Numpad1':
@@ -398,6 +443,13 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       case 'KeyI':
       case 'KeyJ':
       case 'KeyM':
+      case 'KeyK':
+      case 'KeyR':
+      case 'KeyV':
+      case 'KeyZ':
+      case 'KeyX':
+      case 'ControlLeft':
+      case 'ControlRight':
       case 'Digit1':
       case 'Digit2':
       case 'Tab':
@@ -725,6 +777,16 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       this.pendingOneShotActions.add('lantern');
     } else if (code === 'Space') {
       this.pendingOneShotActions.add('attack');
+    } else if (code === 'KeyK') {
+      this.pendingOneShotActions.add('heavy_attack');
+    } else if (code === 'KeyR') {
+      this.pendingOneShotActions.add('weapon_art');
+    } else if (code === 'KeyV') {
+      this.pendingOneShotActions.add('parry');
+    } else if (code === 'KeyZ' || code === 'ControlLeft' || code === 'ControlRight') {
+      this.pendingOneShotActions.add('roll');
+    } else if (code === 'KeyX') {
+      this.pendingOneShotActions.add('weapon_toggle');
     } else if (code === 'KeyQ') {
       this.pendingOneShotActions.add('throw_lure');
     } else if (code === 'KeyI' || code === 'Tab' || code === 'KeyC') {
@@ -910,8 +972,48 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       this.attack();
     }
 
-    // C4-132-01: Chống kẹt trôi phím khi bật gõ Tiếng Việt Telex/VNI hoặc mất focus
+    // Xử lý Trọng Kích [K] / Chuột phải
+    const phaserK = this.keyK ? Phaser.Input.Keyboard.JustDown(this.keyK) : false;
+    const physicalK = this.consumeOneShotAction('heavy_attack');
+    if (!this.isActionLocked() && (phaserK || physicalK)) {
+      this.heavyAttack();
+    }
+
+    // Xử lý Tuyệt Kỹ Kiếm Khí [R]
+    const phaserR = this.keyR ? Phaser.Input.Keyboard.JustDown(this.keyR) : false;
+    const physicalR = this.consumeOneShotAction('weapon_art');
+    if (!this.isActionLocked() && (phaserR || physicalR)) {
+      this.weaponArt();
+    }
+
+    // Xử lý Đỡ Đòn Phản Công (Parry) [V]
+    const phaserV = this.keyV ? Phaser.Input.Keyboard.JustDown(this.keyV) : false;
+    const physicalV = this.consumeOneShotAction('parry');
+    if (!this.isActionLocked() && (phaserV || physicalV)) {
+      this.parry();
+    }
+
+    // Xử lý Lăn Né (Roll) [Ctrl] / [Z]
+    const phaserZ = this.keyZ ? Phaser.Input.Keyboard.JustDown(this.keyZ) : false;
+    const physicalRoll = this.consumeOneShotAction('roll');
+    if (!this.isActionLocked() && (phaserZ || physicalRoll)) {
+      this.roll();
+    }
+
+    // Xử lý Rút / Tra kiếm thủ công [X]
+    const phaserX = this.keyX ? Phaser.Input.Keyboard.JustDown(this.keyX) : false;
+    const physicalX = this.consumeOneShotAction('weapon_toggle');
+    if (!this.isActionLocked() && (phaserX || physicalX)) {
+      this.toggleWeapon();
+    }
+
+    // Tự động rút / tra kiếm theo phân khu an toàn & nguy hiểm
     const nowPerf = performance.now();
+    const gameScene = this.scene as any;
+    if (gameScene.currentZoneId && nowPerf - this._lastAutoZoneCheckTime > 600) {
+      this._lastAutoZoneCheckTime = nowPerf;
+      this.checkZoneWeaponAutoState(gameScene.currentZoneId, this.x, this.y);
+    }
     for (const code of Array.from(this.activePhysicalCodes)) {
       if (!this.isMovementOrSprintCode(code)) continue;
 
@@ -1008,6 +1110,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   }
 
   private handleMovement(): void {
+    const dev = DeveloperModeManager.getInstance();
     let moveX = 0;
     let moveY = 0;
 
@@ -1084,10 +1187,11 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       speedMultiplier *= 0.90;
     }
     // Ngưỡng Bất An (25 đến 40/100): Tốc độ di chuyển bình thường (100%)
-    const currentSpeed = baseSpeed * speedMultiplier;
+    const currentSpeed = baseSpeed * speedMultiplier * (dev.isEnabled ? dev.speedMultiplier : 1);
 
     // Chuẩn hóa vector di chuyển (tránh đi chéo chạy nhanh hơn và chống vọt lố vào vật cản)
     const body = this.body as Phaser.Physics.Arcade.Body;
+    if (dev.isEnabled) body.checkCollision.none = dev.isNoclip;
     if (moveX !== 0 || moveY !== 0) {
       if (moveX !== 0 && moveY !== 0) {
         // V15-03: Cơ chế Trượt Tiếp Tuyến (Tangent Corner Slide):
@@ -1253,9 +1357,9 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     if (this.isActionLocked()) return;
 
     const isRunning = this.stats.isSprinting;
-    const action = isRunning ? 'run' : 'walk';
+    const action = isRunning ? (this._isWeaponDrawn ? 'run' : 'unarmed_run') : 'walk';
     const wayfarerKey = `wayfarer_${action}_${this.facing}`;
-    const satyrKey = `satyr_${action}_${this.facing}`;
+    const satyrKey = `satyr_${isRunning ? 'run' : 'walk'}_${this.facing}`;
     const targetKey = this.scene.anims.exists(wayfarerKey) ? wayfarerKey : satyrKey;
 
     const currentAnimKey = this.anims.currentAnim?.key;
@@ -1294,9 +1398,12 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   private playIdleAnim(): void {
     if (this.isActionLocked()) return;
 
-    const wayfarerKey = `wayfarer_idle_${this.facing}`;
+    const idleAction = this._isWeaponDrawn ? 'idle' : 'unarmed_idle';
+    const wayfarerKey = `wayfarer_${idleAction}_${this.facing}`;
     const satyrKey = `satyr_idle_${this.facing}`;
-    const targetKey = this.scene.anims.exists(wayfarerKey) ? wayfarerKey : satyrKey;
+    const targetKey = this.scene.anims.exists(wayfarerKey) 
+      ? wayfarerKey 
+      : (this.scene.anims.exists(`wayfarer_idle_${this.facing}`) ? `wayfarer_idle_${this.facing}` : satyrKey);
 
     if (this.anims.currentAnim?.key === targetKey && this.anims.isPlaying) {
       return;
@@ -1437,13 +1544,19 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   }
 
   /**
-   * V1.5 (BƯỚC V15-02): Giải phóng cưỡng bức toàn bộ trạng thái khóa hành động.
+   * V1.5 (BƯỚC V15-02 & V152-05): Giải phóng cưỡng bức toàn bộ trạng thái khóa hành động.
    * Đảm bảo sau khi tấn công, thu thập [E], bật tắt đèn [F] hoặc đóng hộp thoại,
    * nhân vật không bao giờ bị đơ phím hay đứng im vô thời hạn.
    */
   public forceUnlockActionState(): void {
     if (this._isDead) return;
     this._isAttacking = false;
+    this._isHeavyAttacking = false;
+    this._isWeaponArting = false;
+    this._isParrying = false;
+    this._isRolling = false;
+    this._isTogglingWeapon = false;
+    this._isInvulnerable = false;
     this._isHurt = false;
     this._isGathering = false;
     this._isInteracting = false;
@@ -1453,36 +1566,67 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
   }
 
   public isActionLocked(): boolean {
-    return this._isAttacking || this._isHurt || this._isDead || this._isGathering || this._isInteracting || this._isUsingItem;
+    return (
+      this._isAttacking ||
+      this._isHeavyAttacking ||
+      this._isWeaponArting ||
+      this._isParrying ||
+      this._isRolling ||
+      this._isTogglingWeapon ||
+      this._isHurt ||
+      this._isDead ||
+      this._isGathering ||
+      this._isInteracting ||
+      this._isUsingItem
+    );
   }
 
+  public isWeaponDrawn(): boolean {
+    return this._isWeaponDrawn;
+  }
+
+  public isParrying(): boolean {
+    return this._isParrying;
+  }
+
+  public isRolling(): boolean {
+    return this._isRolling;
+  }
+
+  /**
+   * Đòn đánh nhanh (Light Attack) — Chuột trái / Space
+   * Tiêu hao 8 Thể Lực, cooldown 0.35s
+   */
   public attack(): boolean {
     if (this.isActionLocked()) return false;
 
     const equipSys = EquipmentSystem.getInstance();
     const weaponDef = equipSys.getActiveWeaponDef();
 
-    // V1.4 - P8-03: Kiểm tra hồi chiêu vũ khí (Attack Cooldown)
+    // V152-05: Cooldown Light Attack 0.35s (350ms)
     const now = Date.now();
-    if (now - this._lastAttackTime < weaponDef.attackCooldown) {
+    const attackCd = Math.min(350, weaponDef.attackCooldown || 350);
+    if (now - this._lastAttackTime < attackCd) {
       return false;
     }
 
-    // V1.4: Kiểm tra và tiêu hao Thể Lực (Stamina) hợp lý theo từng loại vũ khí
-    if (this.stats.stamina < weaponDef.staminaCost) {
-      return false;
+    // Tiêu hao Thể Lực (8 STA)
+    const staminaCost = 8;
+    const dev = DeveloperModeManager.getInstance();
+    if (!dev.isEnabled || !dev.isInfiniteStamina) {
+      if (this.stats.stamina < staminaCost) return false;
+      this.stats.stamina = Math.max(0, this.stats.stamina - staminaCost);
     }
-    this.stats.stamina = Math.max(0, this.stats.stamina - weaponDef.staminaCost);
     this._lastAttackTime = now;
 
+    // Tự động rút kiếm nếu đang tra kiếm
+    this._isWeaponDrawn = true;
     this._isAttacking = true;
     this._actionLockTimestamp = performance.now();
     (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
 
-    // C4-13-08: Phát âm thanh vung gậy tấn công cận chiến
     AudioManager.getInstance().playAttackSwing();
 
-    // V1.4 - P8-03: Tính toán vùng quét va chạm 4 hướng chuẩn xác theo reach của từng vũ khí
     let hitX = this.x;
     let hitY = this.y;
     const reach = weaponDef.reach || 42;
@@ -1493,7 +1637,6 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       case 'down': hitY += reach; break;
     }
 
-    // Phát sự kiện để GameScene xử lý âm thanh cảnh báo và quét va chạm thực thể
     this.emit('player_attack', {
       x: hitX,
       y: hitY,
@@ -1502,7 +1645,9 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
       facing: this.facing,
       playerX: this.x,
       playerY: this.y,
-      weapon: weaponDef
+      weapon: weaponDef,
+      isHeavy: false,
+      isLight: true
     });
 
     const wayfarerKey = `wayfarer_attack_${this.facing}`;
@@ -1524,8 +1669,7 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     };
     this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
 
-    // Fallback bảo vệ bằng Phaser delayedCall (550ms: 6 frames @ 12fps = 500ms)
-    this.scene.time.delayedCall(550, () => {
+    this.scene.time.delayedCall(450, () => {
       if (this._isAttacking) {
         this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
         this._isAttacking = false;
@@ -1537,8 +1681,313 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     return true;
   }
 
+  /**
+   * Đòn Trọng Kích (Heavy Attack) — Chuột phải / K
+   * Tiêu hao 20 Thể Lực, cooldown 1.2s, phá poise Hiệp Sĩ Sa Ngã
+   */
+  public heavyAttack(): boolean {
+    if (this.isActionLocked()) return false;
+
+    const equipSys = EquipmentSystem.getInstance();
+    const weaponDef = equipSys.getActiveWeaponDef();
+
+    const now = Date.now();
+    if (now - this._lastHeavyAttackTime < 1200) {
+      return false;
+    }
+
+    const staminaCost = 20;
+    const dev = DeveloperModeManager.getInstance();
+    if (!dev.isEnabled || !dev.isInfiniteStamina) {
+      if (this.stats.stamina < staminaCost) return false;
+      this.stats.stamina = Math.max(0, this.stats.stamina - staminaCost);
+    }
+    this._lastHeavyAttackTime = now;
+
+    this._isWeaponDrawn = true;
+    this._isHeavyAttacking = true;
+    this._actionLockTimestamp = performance.now();
+    (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
+
+    AudioManager.getInstance().playAttackSwing();
+
+    let hitX = this.x;
+    let hitY = this.y;
+    const reach = (weaponDef.reach || 42) + 12;
+    switch (this.facing) {
+      case 'left': hitX -= reach; break;
+      case 'right': hitX += reach; break;
+      case 'up': hitY -= reach; break;
+      case 'down': hitY += reach; break;
+    }
+
+    this.emit('player_attack', {
+      x: hitX,
+      y: hitY,
+      radius: (weaponDef.radius || 42) + 8,
+      reach,
+      facing: this.facing,
+      playerX: this.x,
+      playerY: this.y,
+      weapon: weaponDef,
+      isHeavy: true,
+      poiseDamage: 50,
+      damageMultiplier: 2.2
+    });
+
+    const wayfarerKey = `wayfarer_heavy_attack_${this.facing}`;
+    const keyToPlay = this.scene.anims.exists(wayfarerKey) ? wayfarerKey : `wayfarer_attack_${this.facing}`;
+    this.safePlayAnim(keyToPlay, true);
+
+    const onAnimComplete = (anim: Phaser.Animations.Animation) => {
+      if (anim.key === keyToPlay) {
+        this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
+        this._isHeavyAttacking = false;
+        this._actionLockTimestamp = 0;
+        this.playIdleAnim();
+      }
+    };
+    this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
+
+    this.scene.time.delayedCall(650, () => {
+      if (this._isHeavyAttacking) {
+        this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
+        this._isHeavyAttacking = false;
+        this._actionLockTimestamp = 0;
+        this.playIdleAnim();
+      }
+    });
+
+    return true;
+  }
+
+  /**
+   * Tuyệt Kỹ Kiếm Khí (Weapon Art) — Phím R
+   * AoE knockback + stun, tiêu hao 35 Thể Lực, cooldown 5.0s
+   */
+  public weaponArt(): boolean {
+    if (this.isActionLocked()) return false;
+
+    const equipSys = EquipmentSystem.getInstance();
+    const weaponDef = equipSys.getActiveWeaponDef();
+
+    const now = Date.now();
+    if (now - this._lastWeaponArtTime < 5000) {
+      return false;
+    }
+
+    const staminaCost = 35;
+    const dev = DeveloperModeManager.getInstance();
+    if (!dev.isEnabled || !dev.isInfiniteStamina) {
+      if (this.stats.stamina < staminaCost) return false;
+      this.stats.stamina = Math.max(0, this.stats.stamina - staminaCost);
+    }
+    this._lastWeaponArtTime = now;
+
+    this._isWeaponDrawn = true;
+    this._isWeaponArting = true;
+    this._actionLockTimestamp = performance.now();
+    (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
+
+    AudioManager.getInstance().playAttackSwing();
+
+    this.emit('player_attack', {
+      x: this.x,
+      y: this.y,
+      radius: 96,
+      reach: 0,
+      facing: this.facing,
+      playerX: this.x,
+      playerY: this.y,
+      weapon: weaponDef,
+      isWeaponArt: true,
+      isAoE: true,
+      knockback: 220,
+      stunDuration: 2.0,
+      damageMultiplier: 2.8
+    });
+
+    const wayfarerKey = `wayfarer_weapon_art_${this.facing}`;
+    const keyToPlay = this.scene.anims.exists(wayfarerKey) ? wayfarerKey : `wayfarer_attack_${this.facing}`;
+    this.safePlayAnim(keyToPlay, true);
+
+    const onAnimComplete = (anim: Phaser.Animations.Animation) => {
+      if (anim.key === keyToPlay) {
+        this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
+        this._isWeaponArting = false;
+        this._actionLockTimestamp = 0;
+        this.playIdleAnim();
+      }
+    };
+    this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
+
+    this.scene.time.delayedCall(700, () => {
+      if (this._isWeaponArting) {
+        this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
+        this._isWeaponArting = false;
+        this._actionLockTimestamp = 0;
+        this.playIdleAnim();
+      }
+    });
+
+    return true;
+  }
+
+  /**
+   * Đỡ Đòn Phản Công (Parry) — Phím V
+   * Tiêu hao 12 Thể Lực, cooldown 1.5s, i-frame parry window 0.45s làm choáng quái cận chiến
+   */
+  public parry(): boolean {
+    if (this.isActionLocked()) return false;
+
+    const now = Date.now();
+    if (now - this._lastParryTime < 1500) {
+      return false;
+    }
+
+    const staminaCost = 12;
+    const dev = DeveloperModeManager.getInstance();
+    if (!dev.isEnabled || !dev.isInfiniteStamina) {
+      if (this.stats.stamina < staminaCost) return false;
+      this.stats.stamina = Math.max(0, this.stats.stamina - staminaCost);
+    }
+    this._lastParryTime = now;
+
+    this._isWeaponDrawn = true;
+    this._isParrying = true;
+    this._actionLockTimestamp = performance.now();
+    (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
+
+    const wayfarerKey = `wayfarer_parry_${this.facing}`;
+    const keyToPlay = this.scene.anims.exists(wayfarerKey) ? wayfarerKey : `wayfarer_idle_${this.facing}`;
+    this.safePlayAnim(keyToPlay, true);
+
+    // Parry window kéo dài 450ms (0.45s)
+    this.scene.time.delayedCall(450, () => {
+      this._isParrying = false;
+      this._actionLockTimestamp = 0;
+      this.playIdleAnim();
+    });
+
+    return true;
+  }
+
+  /**
+   * Xử lý phản đòn thành công khi đỡ trúng đòn cận chiến của quái
+   */
+  public handleParrySuccess(): void {
+    this._isParrying = false;
+    this._actionLockTimestamp = 0;
+    this.clearTint();
+    this.emit('parry_success', { x: this.x, y: this.y, facing: this.facing });
+    this.playIdleAnim();
+  }
+
+  /**
+   * Lăn Né (Roll) — Phím Ctrl / Z
+   * Tiêu hao 18 Thể Lực, cooldown 0.9s, i-frame 0.35s né 100% sát thương
+   */
+  public roll(): boolean {
+    if (this.isActionLocked()) return false;
+
+    const now = Date.now();
+    if (now - this._lastRollTime < 900) {
+      return false;
+    }
+
+    const staminaCost = 18;
+    const dev = DeveloperModeManager.getInstance();
+    if (!dev.isEnabled || !dev.isInfiniteStamina) {
+      if (this.stats.stamina < staminaCost) return false;
+      this.stats.stamina = Math.max(0, this.stats.stamina - staminaCost);
+    }
+    this._lastRollTime = now;
+
+    this._isRolling = true;
+    this._isInvulnerable = true;
+    this._actionLockTimestamp = performance.now();
+
+    // Lướt nhanh theo hướng đang nhìn
+    const body = this.body as Phaser.Physics.Arcade.Body;
+    const rollSpeed = 220;
+    let vx = 0, vy = 0;
+    switch (this.facing) {
+      case 'left': vx = -rollSpeed; break;
+      case 'right': vx = rollSpeed; break;
+      case 'up': vy = -rollSpeed; break;
+      case 'down': vy = rollSpeed; break;
+    }
+    body.setVelocity(vx, vy);
+
+    const action = this._isWeaponDrawn ? 'roll' : 'unarmed_roll';
+    const wayfarerKey = `wayfarer_${action}_${this.facing}`;
+    const keyToPlay = this.scene.anims.exists(wayfarerKey) ? wayfarerKey : `wayfarer_run_${this.facing}`;
+    this.safePlayAnim(keyToPlay, true);
+
+    // Kết thúc i-frame sau 350ms (0.35s)
+    this.scene.time.delayedCall(350, () => {
+      this._isInvulnerable = false;
+      this._isRolling = false;
+      this._actionLockTimestamp = 0;
+      body.setVelocity(0, 0);
+      this.playIdleAnim();
+    });
+
+    return true;
+  }
+
+  /**
+   * Rút hoặc tra kiếm — Phím X hoặc tự động theo vùng
+   */
+  public toggleWeapon(forceState?: boolean): boolean {
+    if (this.isActionLocked() && !this._isTogglingWeapon) return false;
+
+    const target = forceState !== undefined ? forceState : !this._isWeaponDrawn;
+    if (target === this._isWeaponDrawn) return false;
+
+    this._isWeaponDrawn = target;
+    this._isTogglingWeapon = true;
+    this._actionLockTimestamp = performance.now();
+    (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
+
+    const wayfarerKey = `wayfarer_weapon_toggle_${this.facing}`;
+    const keyToPlay = this.scene.anims.exists(wayfarerKey) ? wayfarerKey : `wayfarer_idle_${this.facing}`;
+    this.safePlayAnim(keyToPlay, true);
+
+    this.scene.time.delayedCall(400, () => {
+      this._isTogglingWeapon = false;
+      this._actionLockTimestamp = 0;
+      this.playIdleAnim();
+    });
+
+    return true;
+  }
+
+  /**
+   * Kiểm tra và tự động rút/tra kiếm theo phân khu an toàn và nguy hiểm
+   */
+  public checkZoneWeaponAutoState(zoneId: string, currentX: number, currentY: number): void {
+    if (this.isActionLocked()) return;
+    const distToBonfire = Math.hypot(currentX - 1435, currentY - 710);
+    const isSafe = zoneId === 'bellhollow' || zoneId === 'sanctuary_farm' || distToBonfire <= 160;
+
+    if (isSafe && this._isWeaponDrawn) {
+      this.toggleWeapon(false);
+    } else if (!isSafe && !this._isWeaponDrawn) {
+      this.toggleWeapon(true);
+    }
+  }
+
   public playHurt(knockbackVx?: number, knockbackVy?: number): boolean {
+    const dev = DeveloperModeManager.getInstance();
+    if (dev.isEnabled && dev.isGodMode) return false;
     if (this._isDead) return false;
+    if (this._isInvulnerable || this._isRolling) return false; // V152-05: i-frame Roll né 100% sát thương
+    if (this._isParrying) {
+      // V152-05: Đỡ đòn phản công thành công
+      this.handleParrySuccess();
+      return false;
+    }
 
     this._isHurt = true;
     this._actionLockTimestamp = performance.now();
@@ -1829,13 +2278,19 @@ export class SatyrPlayer extends Phaser.Physics.Arcade.Sprite {
     // - Mỗi khi nhấn [F] kích hoạt vòng sáng tiêu tốn ngay 10 điểm Thể Lực (Stamina) để nhóm lửa hộ tâm.
     // - Nếu Thể Lực < 10, không thể bật và hiện thông báo nhắc nhở.
     if (!this.stats.isLanternOn) {
-      if (this.stats.stamina < 10) {
+      const dev = DeveloperModeManager.getInstance();
+      if ((!dev.isEnabled || !dev.isInfiniteStamina) && this.stats.stamina < 10) {
         (this.scene as any).uiScene?.showPopupMessage?.('⚠️ Không đủ Thể Lực để nhóm lửa hộ tâm! (Cần 10 Thể Lực)');
         return;
       }
-      this.stats.stamina = Math.max(0, this.stats.stamina - 10);
+      if (!dev.isEnabled || !dev.isInfiniteStamina) this.stats.stamina = Math.max(0, this.stats.stamina - 10);
       this.stats.isLanternOn = true;
       (this.scene as any).audioManager?.playSfx?.('lantern_ignite');
+      // V152-05: Chạy anim wayfarer_buff khi bật sáng Vòng Sáng
+      const buffKey = `wayfarer_buff_${this.facing}`;
+      if (this.scene.anims.exists(buffKey)) {
+        this.safePlayAnim(buffKey, false);
+      }
     } else {
       this.stats.isLanternOn = false;
       (this.scene as any).audioManager?.playSfx?.('lantern_extinguish');

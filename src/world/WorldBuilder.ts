@@ -46,6 +46,7 @@ import {
   SPRITE_PROP_WAYFARER_TENT_V15,
   SPRITE_PROP_LANTERN_POST_V15,
   SPRITE_PROP_SIGNPOST_WOOD_V15,
+  SPRITE_BUILDING_RANGER_OUTPOST_V15,
   SPRITE_PILLAR_MOON,
   SPRITE_PILLAR_ROOT,
   SPRITE_PILLAR_EYE,
@@ -133,6 +134,11 @@ export class WorldBuilder {
   public centralAltarGlow?: Phaser.GameObjects.Graphics;
   public centralAltarBeam?: Phaser.GameObjects.Graphics;
 
+  // V152-07 (#13): Quản lý dựng phân khu bất đồng bộ ưu tiên cụm khởi đầu
+  private renderedZones: Set<string> = new Set();
+  private pendingDeferredZones: ZoneId[] = [];
+  private deferredTimer: Phaser.Time.TimerEvent | null = null;
+
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
     this.loadZonesData();
@@ -206,12 +212,22 @@ export class WorldBuilder {
     this.colliderGroup = this.scene.physics.add.staticGroup();
     this.treeCanopyGroup = this.scene.add.group();
 
-    // Dựng cảnh cho tất cả 5 phân khu
+    // V152-07 (#13): Thiết lập collider, interactables, transitions cho TẤT CẢ phân khu ngay tức thì
+    // để SafeSpawnResolver, WorldGatingSystem và logic chuyển vùng luôn sẵn sàng 100%
     for (const zone of this.zones.values()) {
-      this.renderZoneTerrain(zone);
       this.setupZoneColliders(zone);
       this.setupZoneInteractables(zone);
       this.setupZoneTransitions(zone);
+    }
+
+    // Dựng ưu tiên tức thì cụm vùng khởi đầu để khung hình đầu hiện nhanh mượt (<100ms)
+    const IMMEDIATE_ZONES: ZoneId[] = ['fog_crossing', 'bellhollow', 'sanctuary_farm', 'outer_woods'];
+    for (const zoneId of IMMEDIATE_ZONES) {
+      const zone = this.zones.get(zoneId);
+      if (zone) {
+        this.renderZoneTerrain(zone);
+        this.renderedZones.add(zoneId);
+      }
     }
 
     // C4-13-20: Dựng các dải tiếp giáp địa hình chuyển tiếp tự nhiên (180px–220px) xóa bỏ đường cắt dọc hai thái cực
@@ -231,6 +247,59 @@ export class WorldBuilder {
       }
     }
     this.colliderGroup.refresh();
+
+    // V152-07 (#13): Giãn nhịp bất đồng bộ (deferred chunked) phần dựng địa hình & props các vùng sâu
+    this.pendingDeferredZones = [
+      'crooked_path',
+      'deep_forest',
+      'silent_mire',
+      'ancient_rune_puzzle',
+      'broken_bell_shrine',
+      'sub_bell_workshop',
+      'sub_root_cellar',
+      'sub_whispering_clearing'
+    ];
+    this.scheduleDeferredZoneRendering();
+  }
+
+  /**
+   * V152-07 (#13): Đảm bảo phân khu mục tiêu đã được dựng địa hình & đồ họa hoàn tất
+   * Gọi tự động trước khi chuyển cảnh hoặc khi tải game tại vùng sâu.
+   */
+  public ensureZoneRendered(zoneId: string): void {
+    if (this.renderedZones.has(zoneId)) return;
+    const zone = this.zones.get(zoneId as ZoneId);
+    if (zone) {
+      this.renderZoneTerrain(zone);
+      this.renderedZones.add(zoneId);
+      if (this.colliderGroup) {
+        const children = this.colliderGroup.getChildren();
+        for (let i = 0; i < children.length; i++) {
+          const spr = children[i] as Phaser.Physics.Arcade.Sprite;
+          spr.setVisible(false);
+          spr.setAlpha(0);
+        }
+        this.colliderGroup.refresh();
+      }
+    }
+    this.pendingDeferredZones = this.pendingDeferredZones.filter(id => id !== zoneId);
+  }
+
+  private scheduleDeferredZoneRendering(): void {
+    if (this.pendingDeferredZones.length === 0 || !this.scene?.time) return;
+    this.deferredTimer = this.scene.time.addEvent({
+      delay: 140,
+      callback: () => {
+        const nextZoneId = this.pendingDeferredZones.shift();
+        if (nextZoneId) {
+          this.ensureZoneRendered(nextZoneId);
+        }
+        if (this.pendingDeferredZones.length > 0) {
+          this.scheduleDeferredZoneRendering();
+        }
+      },
+      loop: false
+    });
   }
 
   /**
@@ -636,12 +705,14 @@ export class WorldBuilder {
           { x: 1140, y: 155, r: 20 }
         ], true);
 
-        // 3.4. Nhánh đường Tây-Nam dẫn xuống Nhà Thảo Mộc Neris (x=570, y=430) và Lối Nam ra Nông Trại Trú Ẩn (x=650, y=520)
+        // 3.4. V152-03: Nhánh đường Tây-Nam dẫn xuống Nhà Thảo Mộc Neris và mở thông hành lang rộng >= 80px xuống Nông Trại Trú Ẩn
         drawOrganicDirtPath([
-          { x: 710, y: 340, r: 18 },
-          { x: 640, y: 390, r: 18 },
-          { x: 580, y: 440, r: 19 },
-          { x: 650, y: 520, r: 18 }
+          { x: 710, y: 340, r: 24 },
+          { x: 640, y: 390, r: 24 },
+          { x: 580, y: 440, r: 24 },
+          { x: 650, y: 480, r: 42 },
+          { x: 650, y: 535, r: 44 },
+          { x: 650, y: 560, r: 44 }
         ], false);
 
         // 3.5. Nhánh đường Đông-Nam từ Quảng Trường qua Xưởng Rèn Bram (x=1270, y=360) và Lối Đông Nam ra Rừng Ngoại Vi (1210, 510)
@@ -1098,9 +1169,10 @@ export class WorldBuilder {
         // Ruộng Đông (Thảo mộc hoa vàng/tím):
         drawTilledField(705, 800, 185, 160, '#5a8f42');
 
-        // 4. Hồ Nước Tưới Tiêu / Ao Nông Trại Tự Nhiên (Irrigation Pond: wx 930..1020, wy 705..785)
-        const pondLX = toLX(975);
-        const pondLY = toLY(745);
+        // 4. V152-03: Hồ Nước Tưới Tiêu / Ao Nông Trại Tự Nhiên (dời sang góc trống cạnh luống rau Đông: wx 980, wy 885)
+        // Giải phóng 100% trục đường đất chính Đông-Tây trước giếng nước (910..1030, 740..745)
+        const pondLX = toLX(980);
+        const pondLY = toLY(885);
         const prx = 44;
         const pry = 32;
 
@@ -1362,6 +1434,22 @@ export class WorldBuilder {
           { x: 1260, y: 910, r: 22 }
         ]);
 
+        // V152-04: Tuyến đường mòn huyết mạch nối thẳng Trạm Lửa Sir Vaelen / Bãi Trại Thợ Săn xuống Xưởng Chuông Bỏ Hoang (sub_bell_workshop)
+        drawWoodsPath([
+          { x: 1330, y: 730, r: 24 },
+          { x: 1360, y: 760, r: 24 },
+          { x: 1360, y: 840, r: 24 },
+          { x: 1360, y: 920, r: 24 },
+          { x: 1360, y: 980, r: 26 },
+          { x: 1360, y: 1040, r: 28 }
+        ]);
+        // Nhánh nối từ Bãi Liễu sang lối vào Xưởng Chuông
+        drawWoodsPath([
+          { x: 1260, y: 910, r: 22 },
+          { x: 1300, y: 960, r: 22 },
+          { x: 1360, y: 980, r: 24 }
+        ]);
+
         // 3. Con suối nhỏ / lạch nước rừng ven phía Đông (wx: 1445..1480, wy: 780..960)
         const brookLX = toLX(1460);
         ctx.fillStyle = '#15222c';
@@ -1590,11 +1678,13 @@ export class WorldBuilder {
         drawClearing(2060, 170, 34, 22); // Ngã Rẽ Biển Chỉ Đường Tuyến Vòng (V14-P8-13)
         drawClearing(2740, 390, 38, 24); // Đầu Cầu Gỗ Phụ Xuyên Sương (V14-P8-13)
 
-        // 3.1. V14-P8-13: Lối thẳng cũ từ Cổng Đông bị đứt đoạn tại mép Cầu Đá Cổ Bị Sập x = 1750
+        // 3.1. V152-03: Tuyến đường mòn từ Cổng Đông (1600, 282) trải dài thông suốt, phẳng mượt liền mạch (#18)
         drawTrail([
-          { x: 1600, y: 282, r: 22 }, // Khớp 100% Cổng Đông Bellhollow!
-          { x: 1680, y: 280, r: 21 },
-          { x: 1750, y: 278, r: 20 }  // Chạm vào mép vực sương & chướng ngại vật cầu sập!
+          { x: 1600, y: 282, r: 22 }, // Khớp 100% Cổng Đông Bellhollow
+          { x: 1680, y: 280, r: 22 },
+          { x: 1760, y: 280, r: 22 },
+          { x: 1860, y: 280, r: 22 },
+          { x: 1980, y: 280, r: 21 }  // Nối thông suốt vào trục đường chính của rừng!
         ], true);
 
         // 3.2. V14-P8-13 Chặng 2: Tuyến đường vòng uốn lượn từ nhánh Outer Woods (1610, 500)
@@ -3389,13 +3479,8 @@ export class WorldBuilder {
     // V1.5: Gộp thành 1 thanh collider liền mạch duy nhất
     this.createStaticBoxColliderCentered(825, 88, 94, 12, 'Hàng Rào Bắc Làng');
 
-    // 3. V15-13: Hàng rào gỗ bao quanh Khu Vườn Thảo Dược Tây-Nam của Neris (x: 635..710, y: 472..514)
-    addFenceSegment(635, 472);
-    addFenceSegment(683, 472);
-    addFenceSegment(635, 514);
-    addFenceSegment(683, 514);
-    // Gộp thành 1 thanh collider liền mạch duy nhất cho cạnh vườn thuốc
-    this.createStaticBoxColliderCentered(660, 510, 94, 12, 'Hàng Rào Vườn Dược Tây Nam');
+    // 3. V152-03: Đã giải phóng hoàn toàn lối đi Nam từ nhà Neris xuống Nông Trại Trú Ẩn (x: 610..710)
+    // Xóa bỏ 2 lớp rào gỗ xếp chồng và collider chắn lối, mở thông hành lang rộng >= 80px
 
     // 4. Hàng rào gỗ dọc lối ra Cổng Đông (x: 1050..1240, phía Bắc đường rừng Đông ở y=236)
     addFenceSegment(1060, 236);
@@ -3939,8 +4024,8 @@ export class WorldBuilder {
     // =========================================================================
     const southRimTrees: Array<{ x: number; y: number; v: 'oak1' | 'oak2' | 'oak3' | 'dead'; s: number; t: number }> = [
       { x: 518, y: 544, v: 'oak1', s: 1.12, t: 0xb4c8ae },
+      { x: 574, y: 554, v: 'oak2', s: 1.02, t: 0xb8ccb0 },
       { x: 586, y: 552, v: 'oak3', s: 0.98, t: 0xc2d4bc },
-      { x: 654, y: 542, v: 'oak2', s: 1.08, t: 0xb8ccb0 },
       { x: 728, y: 556, v: 'oak1', s: 1.14, t: 0xaec2a8 },
       { x: 804, y: 544, v: 'oak3', s: 0.96, t: 0xc4d6be },
       { x: 882, y: 558, v: 'oak2', s: 1.10, t: 0xb6caa8 },
@@ -3961,7 +4046,7 @@ export class WorldBuilder {
     // 4. BỤI RẬM TỰ NHIÊN QUANH LÀNG (Đã dọn sạch các bụi đè lên lò rèn Bram & nồi Neris)
     // =========================================================================
     const bushPlacements: Array<{ x: number; y: number; s: number; t: number }> = [
-      { x: 496, y: 178, s: 0.85, t: 0xc8dac2 },
+      { x: 490, y: 168, s: 0.85, t: 0xc8dac2 },
       { x: 618, y: 122, s: 0.82, t: 0xd4e4ce },
       { x: 774, y: 104, s: 0.80, t: 0xd4e4ce },
       { x: 896, y: 86, s: 0.85, t: 0xcadac4 },
@@ -5105,8 +5190,8 @@ export class WorldBuilder {
     this.createDenseBush(1180, 650); // Bụi Rậm Khúc Cua Chữ S
     this.createHollowTree(1360, 620, 'Cây Rỗng Rừng Ven');
     this.createDenseBush(1260, 800); // Bụi Rậm Bãi Rừng Thưa
-    this.createDenseBush(1460, 730); // Bụi Rậm Trạm Lửa Sir Vaelen
-    this.createHollowTree(1320, 910, 'Cây Rỗng Bãi Liễu');
+    this.createDenseBush(1420, 745); // Bụi Rậm Trạm Lửa Sir Vaelen (viền ngoài)
+    this.createHollowTree(1290, 900, 'Cây Rỗng Bãi Liễu');
 
     // 6. V15-14: Quần thể Cụm Rừng Tự Nhiên (Organic Clusters) & Viền Rừng Ngoại Vi
     // Cụm 1: Cụm Thông Cổ Thụ Ven Làng (Bìa Bắc - Tây Bắc)
@@ -5150,7 +5235,9 @@ export class WorldBuilder {
     // Cây viền chu vi đảm bảo cảnh quan khép kín
     this.createTree(1450, 650, 'Cây Cổ Thụ Rừng Ven', true);
     this.createTree(1200, 985, 'Cây Cổ Thụ Viền Nam', true);
-    this.createTree(1340, 990, 'Cây Cổ Thụ Viền Nam', true);
+    this.createTree(1260, 990, 'Cây Cổ Thụ Viền Nam', true);
+    // V152-04: Biển chỉ dẫn nối liền sang phân khu Xưởng Chuông Bỏ Hoang (sub_bell_workshop)
+    this.createStoneSign(1300, 985, 'XƯỞNG CHUÔNG BỎ HOANG ↓');
     this.createTree(1460, 985, 'Cây Cổ Thụ Viền Nam', true);
     this.createTree(1540, 980, 'Cây Cổ Thụ Viền Nam', true);
     this.createTree(1530, 630, 'Cây Cổ Thụ Viền Đông', true);
@@ -5162,11 +5249,11 @@ export class WorldBuilder {
     this.createDenseBush(1235, 780);
     this.createDenseBush(1350, 780);
     this.createDenseBush(1400, 890);
-    this.createDenseBush(1480, 730);
+    this.createDenseBush(1495, 745);
     this.createDenseBush(1510, 830);
     this.createDenseBush(1280, 970);
 
-    this.createRock(1410, 750, 38, 22);
+    this.createRock(1390, 765, 38, 22);
     this.createRock(1450, 840, 32, 18);
     this.createRock(1490, 920, 30, 16);
 
@@ -5807,42 +5894,19 @@ export class WorldBuilder {
   }
 
   /**
-   * C4-12-20: Tạo Lều Bạt Dã Ngoại Thợ Săn (Hunter Lean-To Shelter).
-   * Khung gỗ cọc chéo, phủ bạt thô màu xám-lục sẫm, đệm rơm rạ và đèn lồng ấm.
+   * V152-04: Lều Trại Thợ Săn Pixel Art (prop_wayfarer_tent.png 64x56 px)
+   * Thay thế 100% hình vẽ code Phaser.Graphics bằng Sprite Pixel Art thật.
    */
   private createHunterLeanToShelter(x: number, y: number): void {
-    const g = this.scene.add.graphics();
-    // Bóng đổ dưới lều
-    g.fillStyle(0x0a0e0c, 0.45);
-    g.fillRoundedRect(x - 4, y + 8, 38, 16, 4);
+    const cx = x + 15;
+    const cy = y + 4;
+    const tent = this.safeAddImage(cx, cy + 6, SPRITE_PROP_WAYFARER_TENT_V15);
+    tent.setOrigin(0.5, 0.90);
+    tent.setDepth(cy + 4);
+    this.registerCullable(tent, cx, cy, 65);
 
-    // Đệm rơm lót sàn lều
-    g.fillStyle(0xb58931, 0.85);
-    g.fillRect(x + 2, y + 6, 26, 8);
-    g.fillStyle(0x8a631c, 0.7);
-    g.fillRect(x + 4, y + 7, 22, 6);
-
-    // 2 Cọc gỗ chống xiên
-    g.fillStyle(0x3e2723, 1);
-    g.fillRect(x - 2, y - 14, 4, 26);
-    g.fillRect(x + 28, y - 14, 4, 26);
-
-    // Mái bạt thô dốc nghiêng phủ rêu mốc
-    g.fillStyle(0x2d3a33, 1);
-    g.fillRect(x - 4, y - 16, 38, 6);
-    g.fillStyle(0x3e4e45, 1);
-    g.fillRect(x - 2, y - 19, 34, 5);
-    g.fillStyle(0x4a5d52, 1);
-    g.fillRect(x, y - 21, 30, 4);
-
-    // Nếp gấp dây chằng và viền bạt
-    g.fillStyle(0x1a241f, 1);
-    g.fillRect(x - 2, y - 12, 34, 2);
-
-    g.setDepth(y + 12);
-    this.registerCullable(g, x + 15, y, 40);
-
-    this.createStaticBoxColliderCentered(x + 15, y + 4, 32, 12, 'Lều Thợ Săn');
+    // Hitbox chân lều
+    this.createStaticBoxColliderCentered(cx, cy + 2, 36, 14, 'Lều Thợ Săn');
   }
 
   /**
@@ -5990,7 +6054,8 @@ export class WorldBuilder {
     // 6. Bọc Hành Trang Người Đi Rừng (Hunter's Lost Cache)
     this.createHunterLostCache(2650, 260);
 
-    // V14-P8-13: Chướng Ngại Vật Cầu Đá Cổ Bị Sập Chặn Lối Thẳng Tới Tháp Chuông
+    // V152-03: Đã xóa hoàn toàn khúc cầu gỗ thừa, ô nước vuông, cây đổ và collider chặn lối phía Đông Cổng Đông (#18)
+    // Tuyến đường mòn từ Cổng Đông giờ đây hoàn toàn thông suốt, phẳng mượt liền mạch
     this.createCollapsedStoneBridgeObstacle(1790, 280);
 
     // V14-P8-13: Cây Cầu Gỗ Phụ Xuyên Sương Đưa Lối Vòng Phía Nam Sang Silent Mire & Tháp Chuông
@@ -6162,110 +6227,9 @@ export class WorldBuilder {
    * 4. Khối va chạm Arcade Physics body kiên cố chặn hoàn toàn người chơi và quái vật
    * 5. Điểm tương tác kiểm tra [E] dẫn hướng người chơi tìm đường vòng qua Rừng Ngoài và Đường Mòn Quanh Co
    */
-  private createCollapsedStoneBridgeObstacle(bridgeX: number, roadY: number): void {
-    const g = this.scene.add.graphics();
-    g.setDepth(roadY - 10);
-
-    // 1. Vực sương sâu (Deep Mist Chasm) cắt đứt hoàn toàn lối đi (x: bridgeX - 35 .. bridgeX + 35, y: roadY - 44 .. roadY + 44)
-    g.fillStyle(0x06090c, 0.95);
-    g.fillRoundedRect(bridgeX - 36, roadY - 44, 72, 88, 8);
-    g.fillStyle(0x0c1218, 0.85);
-    g.fillRect(bridgeX - 30, roadY - 38, 60, 76);
-
-    // Sương mù cuộn xoáy dưới vực sâu
-    g.fillStyle(0x2d3e38, 0.55);
-    g.fillEllipse(bridgeX, roadY, 52, 28);
-    g.fillStyle(0x4a6558, 0.35);
-    g.fillEllipse(bridgeX - 10, roadY - 8, 38, 20);
-    g.fillEllipse(bridgeX + 12, roadY + 10, 42, 22);
-
-    // 2. Mố cầu đá và nhịp cầu gãy đôi (Collapsed Ancient Stone Piers)
-    // Bờ Tây (bên trái vực): Mố đá cổ nứt toác, các phiến đá sập nghiêng
-    g.fillStyle(0x1a2128, 1);
-    g.fillRect(bridgeX - 44, roadY - 36, 18, 72);
-    g.fillStyle(0x353f4a, 1);
-    g.fillRect(bridgeX - 42, roadY - 34, 14, 68);
-    g.fillStyle(0x4d5b6a, 1);
-    g.fillRect(bridgeX - 40, roadY - 32, 10, 64);
-    // Mảng rêu phong bám trên đá cổ
-    g.fillStyle(0x2d4829, 0.9);
-    g.fillRect(bridgeX - 42, roadY - 24, 6, 20);
-    g.fillRect(bridgeX - 41, roadY + 8, 7, 18);
-
-    // Phiến đá gãy cắm xuống vực sương
-    g.fillStyle(0x273038, 1);
-    g.beginPath();
-    g.moveTo(bridgeX - 26, roadY - 28);
-    g.lineTo(bridgeX - 10, roadY - 10);
-    g.lineTo(bridgeX - 14, roadY + 5);
-    g.lineTo(bridgeX - 28, roadY - 12);
-    g.closePath();
-    g.fill();
-
-    // Bờ Đông (bên phải vực): Mố đá gãy đối xứng
-    g.fillStyle(0x1a2128, 1);
-    g.fillRect(bridgeX + 26, roadY - 36, 18, 72);
-    g.fillStyle(0x353f4a, 1);
-    g.fillRect(bridgeX + 28, roadY - 34, 14, 68);
-    g.fillStyle(0x4d5b6a, 1);
-    g.fillRect(bridgeX + 30, roadY - 32, 10, 64);
-    g.fillStyle(0x2d4829, 0.9);
-    g.fillRect(bridgeX + 34, roadY - 18, 6, 22);
-
-    // 3. V15-61: Thân cây đại thụ đổ chắn ngang dùng Sprite Pixel Art Thật (prop_fallen_log_mossy_v14)
-    const trunkLog = this.safeAddImage(bridgeX, roadY - 14, 'prop_fallen_log_mossy_v14', SPRITE_HOLLOW_TREE);
-    trunkLog.setOrigin(0.5, 0.5);
-    trunkLog.setScale(1.8, 1.2);
-    trunkLog.setDepth(roadY + 12);
-    this.registerCullable(trunkLog, bridgeX, roadY, 80);
-
-    // 4. Cổng sắt rỉ sét khóa chặt (Rusted Iron Gate with Heavy Chains)
-    const gateGfx = this.scene.add.graphics();
-    gateGfx.setDepth(roadY + 24);
-    gateGfx.fillStyle(0x241812, 1);
-    gateGfx.fillRect(bridgeX - 34, roadY - 48, 8, 56);
-    gateGfx.fillRect(bridgeX + 26, roadY - 48, 8, 56);
-    gateGfx.fillStyle(0x4a3224, 1);
-    gateGfx.fillRect(bridgeX - 32, roadY - 46, 4, 52);
-    gateGfx.fillRect(bridgeX + 28, roadY - 46, 4, 52);
-
-    for (let bx = bridgeX - 24; bx <= bridgeX + 20; bx += 8) {
-      gateGfx.fillStyle(0x1d140e, 1);
-      gateGfx.fillRect(bx, roadY - 42, 4, 48);
-      gateGfx.fillStyle(0x422c1f, 1);
-      gateGfx.fillRect(bx + 1, roadY - 40, 2, 44);
-      gateGfx.fillStyle(0x6e4832, 1);
-      gateGfx.beginPath();
-      gateGfx.moveTo(bx + 2, roadY - 46);
-      gateGfx.lineTo(bx - 1, roadY - 41);
-      gateGfx.lineTo(bx + 5, roadY - 41);
-      gateGfx.closePath();
-      gateGfx.fill();
-    }
-
-    gateGfx.fillStyle(0x221710, 1);
-    gateGfx.fillRect(bridgeX - 32, roadY - 32, 62, 6);
-    gateGfx.fillRect(bridgeX - 32, roadY - 12, 62, 6);
-    gateGfx.lineStyle(2, 0x111114, 0.95);
-    gateGfx.lineBetween(bridgeX - 28, roadY - 34, bridgeX + 24, roadY - 8);
-    gateGfx.lineBetween(bridgeX - 28, roadY - 8, bridgeX + 24, roadY - 34);
-
-    gateGfx.fillStyle(0x1a120c, 1);
-    gateGfx.fillRect(bridgeX - 6, roadY - 24, 12, 14);
-    gateGfx.fillStyle(0x78562d, 1);
-    gateGfx.fillRect(bridgeX - 4, roadY - 22, 8, 10);
-    gateGfx.lineStyle(2, 0x3d2b16, 1);
-    gateGfx.strokeCircle(bridgeX, roadY - 25, 4);
-
-    this.registerCullable(g, bridgeX, roadY, 80);
-    this.registerCullable(trunkLog, bridgeX, roadY, 80);
-    this.registerCullable(gateGfx, bridgeX, roadY, 80);
-
-    // 5. Arcade Physics Collider vững chắc chặn đứng hoàn toàn lối thẳng
-    const blocker = this.createStaticBoxColliderCentered(bridgeX, roadY, 38, 86, 'Cầu Sập Đường Mòn');
-    if (blocker.body) {
-      (blocker.body as Phaser.Physics.Arcade.Body).immovable = true;
-    }
+  private createCollapsedStoneBridgeObstacle(_bridgeX: number, _roadY: number): void {
+    // V152-03: Đã dọn sạch 100% khúc cầu sập thừa, ô nước vuông, thân cây đổ, cổng xích và collider (#18)
+    // Đường đất từ Cổng Đông giờ đây phẳng mượt và thông suốt 100%.
   }
 
   /**
@@ -7607,11 +7571,9 @@ export class WorldBuilder {
     }
     this.registerCullable(stonesGfx, seamX, 230, 200);
 
-    // 3. Bụi cây tự nhiên che chắn hai bên mép đường (y ~ 205 và y ~ 265)
-    this.createDenseBush(seamX - 22, 202);
-    this.createDenseBush(seamX + 22, 206);
-    this.createDenseBush(seamX - 18, 264);
-    this.createDenseBush(seamX + 24, 268);
+    // 3. V152-03: Tỉa gọn bụi cây quanh cổng Garth (#5): xóa bụi đè người và tràn lòng đường, chỉ giữ bụi gọn ở rìa hàng rào hai bên
+    this.createDenseBush(seamX - 24, 186);
+    this.createDenseBush(seamX - 22, 286);
   }
 
   /**
@@ -7777,13 +7739,27 @@ export class WorldBuilder {
   }
 
   /**
-   * C4-13-20: Dải chuyển tiếp địa hình giữa Làng Bellhollow và Đường Mòn Quanh Co tại x = 1600 (Dải rộng 180px: 1510..1690).
+   * C4-13-20 & V152-03: Dải chuyển tiếp địa hình giữa Làng Bellhollow và Đường Mòn Quanh Co / Rừng Ngoại Vi tại x = 1600.
+   * Làm mượt (alpha blend) 100% đường cắt màu sáng–tối thẳng đứng ở ranh giới tiếp giáp (Dải rộng 160px: 1520..1680, Y: 0..560).
    */
   private renderVillageToForestTransition(seamX: number): void {
     const turfGfx = this.scene.add.graphics();
     turfGfx.setDepth(DEPTH_GROUND_TURF);
 
-    // Mảng đất và rêu rừng bìa làng
+    // V152-03: Alpha Blend đa tầng phủ suốt chiều dọc Y (0..560) để triệt tiêu hoàn toàn đường cắt thẳng đứng
+    const blendSteps = 16;
+    const blendWidth = 160;
+    const startX = seamX - blendWidth / 2;
+    const stepW = blendWidth / blendSteps;
+    for (let i = 0; i < blendSteps; i++) {
+      const bx = startX + i * stepW;
+      const progress = i / (blendSteps - 1);
+      // Chuyển sắc từ cỏ sáng sang nền rừng tối
+      turfGfx.fillStyle(0x22321e, 0.12 + progress * 0.48);
+      turfGfx.fillRect(bx, 0, stepW + 1, 560);
+    }
+
+    // Mảng đất và rêu rừng bìa làng hữu cơ đan xen
     turfGfx.fillStyle(0x273622, 0.72);
     turfGfx.fillEllipse(seamX - 10, 180, 140, 44);
     turfGfx.fillStyle(0x2c3b26, 0.65);
@@ -7793,13 +7769,13 @@ export class WorldBuilder {
     turfGfx.fillStyle(0x2b3924, 0.68);
     turfGfx.fillEllipse(seamX + 20, 400, 130, 40);
 
-    // C4-132-06: Dải chuyển tiếp đường đất Làng sang Đường Mòn Quanh Co (Transition Blend Strip 180px: seamX - 90 .. seamX + 90)
+    // C4-132-06 & V152-03: Dải chuyển tiếp đường đất Làng sang Đường Mòn Quanh Co bo cong mượt mà
     turfGfx.fillStyle(0x3e3527, 0.50);
-    turfGfx.fillRect(seamX - 90, 260, 180, 44);
+    turfGfx.fillRoundedRect(seamX - 90, 258, 180, 48, 8);
     turfGfx.fillStyle(0x312b20, 0.40);
-    turfGfx.fillRect(seamX - 20, 260, 70, 44);
+    turfGfx.fillRoundedRect(seamX - 20, 260, 70, 44, 6);
 
-    this.registerCullable(turfGfx, seamX, 280, 240);
+    this.registerCullable(turfGfx, seamX, 280, 560);
 
     // Bụi cây tự nhiên và sương mù bìa rừng
     this.createDenseBush(seamX - 15, 240);
@@ -7846,6 +7822,12 @@ export class WorldBuilder {
         ctx.fillRect(80, 60, 320, 280);
         ctx.fillStyle = '#4a4030';
         ctx.fillRect(100, 80, 280, 240);
+
+        // V152-04: Hành lang đường đất nối liền từ Cổng Bắc Rừng Ngoại Vi (lx: 200..280, wy: 1040)
+        ctx.fillStyle = '#5c452e';
+        ctx.fillRect(200, 0, 80, 80);
+        ctx.fillStyle = '#705439';
+        ctx.fillRect(215, 0, 50, 80);
 
         ctx.fillStyle = '#181410';
         ctx.fillRect(140, 120, 200, 160);
@@ -8286,48 +8268,23 @@ export class WorldBuilder {
   }
 
   /**
-   * V1.4: Nhà Trạm Kiểm Lâm Bỏ Hoang (Abandoned Ranger Outpost) tại Rìa Rừng Ngoài (x: 1420, y: 620)
+   * V152-04: Nhà Trạm Kiểm Lâm Bỏ Hoang Pixel Art (ranger_cabin_wood.png 88x103 px) tại Rìa Rừng Ngoài (x: 1420, y: 620)
+   * Thay thế 100% hình vẽ code Phaser.Graphics bằng Sprite Pixel Art thật từ The Fan-tasy Tileset.
    */
   private createAbandonedRangerOutpost(x: number, y: number): void {
-    const w = 56;
-    const h = 42;
-    const g = this.scene.add.graphics();
+    const cx = x + 28;
+    const cy = y + 42;
 
-    // Bóng đổ móng nhà
-    g.fillStyle(0x0a0e0c, 0.55);
-    g.fillRoundedRect(x - 2, y + h - 8, w + 4, 14, 4);
+    const cabin = this.safeAddImage(cx, cy, SPRITE_BUILDING_RANGER_OUTPOST_V15);
+    cabin.setOrigin(0.5, 0.90);
+    cabin.setDepth(cy);
+    this.registerCullable(cabin, cx, cy - 20, 100);
 
-    // Thân nhà gỗ sồi kiểm lâm cũ kỹ
-    g.fillStyle(0x352317, 1);
-    g.fillRect(x, y + 10, w, h - 10);
-    g.fillStyle(0x4a3222, 1);
-    g.fillRect(x + 2, y + 12, w - 4, h - 14);
-
-    // Cửa ra vào mở toang và khung cửa sổ vỡ
-    g.fillStyle(0x1a120c, 1);
-    g.fillRect(x + 18, y + 20, 14, h - 20); // Cửa
-    g.fillStyle(0x27ae60, 0.4);
-    g.fillRect(x + 36, y + 16, 10, 10); // Cửa sổ bám rêu
-
-    // Mái ngói ván gỗ phủ rêu xanh
-    g.fillStyle(0x2d3a24, 1);
-    g.fillTriangle(x - 4, y + 12, x + w / 2, y - 6, x + w + 4, y + 12);
-    g.fillStyle(0x3a4c2e, 1);
-    g.fillTriangle(x - 2, y + 10, x + w / 2, y - 4, x + w + 2, y + 10);
-
-    // Hiên gỗ xiêu vẹo bên phải và bậc thang
-    g.fillStyle(0x563820, 1);
-    g.fillRect(x + 14, y + h - 2, 22, 4);
-
-    g.setDepth(y + h);
-    this.registerCullable(g, x + w / 2, y + h / 2, Math.max(w, h));
-
-    // Rương tiếp tế kiểm lâm đặt cạnh bậc thềm (1445, 645)
-    this.createChestProp(x + 38, y + h - 12);
+    // Rương tiếp tế kiểm lâm đặt cạnh bậc thềm (1458, 650)
+    this.createChestProp(x + 38, y + 30);
 
     // Hitbox chân đế chuẩn xác (30% đáy công trình)
-    const colH = 14;
-    this.createStaticBoxColliderCentered(x + w / 2, y + h - colH / 2, w - 8, colH, 'Trạm Kiểm Lâm');
+    this.createStaticBoxColliderCentered(cx, cy - 10, 60, 20, 'Trạm Kiểm Lâm');
   }
 
   /**
@@ -8436,6 +8393,10 @@ export class WorldBuilder {
   }
 
   public destroy(): void {
+    if (this.deferredTimer) {
+      this.deferredTimer.destroy();
+      this.deferredTimer = null;
+    }
     if (this.campfireUpdateHandler) {
       PlayerState.getInstance().off('campfire_updated', this.campfireUpdateHandler);
       this.campfireUpdateHandler = undefined;

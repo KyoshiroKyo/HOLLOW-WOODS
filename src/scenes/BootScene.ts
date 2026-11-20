@@ -2,8 +2,6 @@ import * as Phaser from 'phaser';
 import { SCENE_BOOT, SCENE_PRELOAD, VIRTUAL_WIDTH, VIRTUAL_HEIGHT } from '../config/Constants';
 
 export class BootScene extends Phaser.Scene {
-  private static hasNotifiedReady = false;
-
   constructor() {
     super({ key: SCENE_BOOT });
   }
@@ -19,18 +17,7 @@ export class BootScene extends Phaser.Scene {
     bg.fillStyle(0x0b0c10, 1);
     bg.fillRect(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
 
-    // Thông báo cho nền tảng P2Game rằng khung hình đầu tiên đã được dựng xong (chỉ gọi 1 lần duy nhất)
-    if (!BootScene.hasNotifiedReady) {
-      BootScene.hasNotifiedReady = true;
-      try {
-        if (typeof window !== 'undefined' && window.p2 && typeof window.p2.ready === 'function') {
-          window.p2.ready();
-          console.log('[P2Game SDK] Đã phát tín hiệu p2.ready() ở khung hình đầu tiên.');
-        }
-      } catch (err) {
-        console.warn('[P2Game SDK] Lỗi khi gọi p2.ready():', err);
-      }
-    }
+    // V152-08: p2.ready() được chuyển sang MainMenuScene khi vẽ xong khung hình đầu tiên để tránh SD-004
 
     // Chuyển ngay sang PreloadScene
     this.scene.start(SCENE_PRELOAD);

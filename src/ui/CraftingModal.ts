@@ -350,6 +350,15 @@ export class CraftingModal {
     this.sidePanelContainer = this.scene.add.container(0, 0);
     this.container.add(this.sidePanelContainer);
 
+    // V152-06B: Sprite Cuốn Sách Mở Đôi Cổ Kính từ UI Pack
+    if (this.scene.textures.exists('ui_pack_open_book_desk')) {
+      const bookBg = this.scene.add.image(panelX + panelW / 2, panelY + panelH / 2, 'ui_pack_open_book_desk');
+      bookBg.setDisplaySize(panelW + 40, panelH + 40);
+      bookBg.setTint(0xbaa187);
+      bookBg.setAlpha(0.65);
+      this.sidePanelContainer.add(bookBg);
+    }
+
     // 2. Khung bảng gỗ sẫm viền đồng chạm khắc trung cổ (Carved Wood Frame)
     const frame = this.scene.add.graphics();
     frame.fillStyle(0x140e09, 0.98);
@@ -713,6 +722,12 @@ export class CraftingModal {
     const rightX = innerX + 328;
 
     // 1. Khung preview icon phóng to kèm nhãn "Classic" và mũi tên kiểu dáng DST Image 2
+    if (this.scene.textures.exists('ui_pack_slot_large')) {
+      const largeSlotImg = this.scene.add.image(rightX + 25, 33, 'ui_pack_slot_large');
+      largeSlotImg.setDisplaySize(54, 54);
+      this.detailContainer.add(largeSlotImg);
+    }
+
     const prevBg = this.scene.add.graphics();
     prevBg.fillStyle(0x130e09, 0.95);
     prevBg.fillRoundedRect(rightX, 8, 50, 50, 4);
@@ -1114,6 +1129,14 @@ export class CraftingModal {
     for (let i = 0; i < categories.length; i++) {
       const cat = categories[i];
       const curY = startY + i * (tabH + gap);
+
+      // V152-06B: Tai sách đánh dấu Pixel Art thật từ UI Pack
+      if (this.scene.textures.exists('ui_pack_tab_craft')) {
+        const tabImg = this.scene.add.image(tabX + tabW / 2 + 2, curY + tabH / 2, 'ui_pack_tab_craft');
+        tabImg.setDisplaySize(tabW + 6, tabH + 2);
+        tabImg.setTint(0xbaa187);
+        this.sidePanelContainer.add(tabImg);
+      }
 
       const tabGfx = this.scene.add.graphics();
       const tabLabel = HDTextHelper.createText(this.scene, tabX + tabW / 2 + 2, curY + tabH / 2, cat.icon, {

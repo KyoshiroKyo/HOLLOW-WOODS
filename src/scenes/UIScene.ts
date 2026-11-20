@@ -17,7 +17,7 @@ import { ParchmentWorldMapModal } from '../ui/ParchmentWorldMapModal';
 import { TornPageModal } from '../ui/TornPageModal';
 import { TornPageEntry } from '../data/tornPagesData';
 import { AudioManager } from '../audio/AudioManager';
-import { HUDIconGenerator, HUD_ICON_HEALTH, HUD_ICON_STAMINA, HUD_ICON_COMPOSURE } from '../utils/HUDIconGenerator';
+import { HUDIconGenerator, HUD_ICON_HEALTH, HUD_ICON_STAMINA, HUD_ICON_COMPOSURE, HUD_ICON_WOOD } from '../utils/HUDIconGenerator';
 import { TimePhase, TIME_CONFIG } from '../config/TimeConfig';
 import itemsData from '../data/items.json';
 import { EquipmentSystem } from '../systems/EquipmentSystem';
@@ -40,6 +40,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
   // Khung nền chỉ số sinh tồn bán trong suốt (C4-13-07)
   private statCardBg!: Phaser.GameObjects.Graphics;
+  private statCardSprite?: Phaser.GameObjects.Image;
 
   // Tiêu đề nhân vật góc trên trái
   private playerNameText!: Phaser.GameObjects.Text;
@@ -66,6 +67,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
   // Bảng nhiệm vụ góc trên phải
   private questBg!: Phaser.GameObjects.Graphics;
+  private questBgSprite?: Phaser.GameObjects.Image;
   private questHeaderText!: Phaser.GameObjects.Text;
   private questTitleText!: Phaser.GameObjects.Text;
   private questTrackerText!: Phaser.GameObjects.Text;
@@ -116,12 +118,16 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   // V15-50: Quản lý 8 ô Túi Đồ & 4 ô Trang Bị ở đáy màn hình (Don't Starve Style)
   private inventorySlotData: Array<{ itemId: string | null; count: number }> = [];
   private inventorySlotGfx: Phaser.GameObjects.Graphics[] = [];
+  private inventorySlotBaseImages: Phaser.GameObjects.Image[] = [];
   private inventorySlotIcons: Phaser.GameObjects.Text[] = [];
+  private inventorySlotImages: Phaser.GameObjects.Image[] = [];
   private inventorySlotCounts: Phaser.GameObjects.Text[] = [];
   private inventorySlotKeyTexts: Phaser.GameObjects.Text[] = [];
   private inventorySlotZones: Phaser.GameObjects.Zone[] = [];
 
   private equipmentSlotGfx: Record<string, Phaser.GameObjects.Graphics> = {};
+  private equipmentSlotBaseImages: Record<string, Phaser.GameObjects.Image> = {};
+  private equipmentSlotDefaultIcons: Record<string, Phaser.GameObjects.Image> = {};
   private equipmentSlotIcons: Record<string, Phaser.GameObjects.Text> = {};
   private equipmentSlotZones: Record<string, Phaser.GameObjects.Zone> = {};
 
@@ -140,6 +146,13 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   public isQuestCollapsed: boolean = false;
   private questToggleBtn?: Phaser.GameObjects.Text;
   private questToggleZone?: Phaser.GameObjects.Zone;
+
+  // V152-06A: Huy hiệu tên khu vực nhỏ gọn dưới khung Nhiệm Vụ thay thế Mini-map
+  public zoneBadgeContainer?: Phaser.GameObjects.Container;
+  private zoneBadgeBg?: Phaser.GameObjects.Graphics;
+  private zoneBadgeText?: Phaser.GameObjects.Text;
+  private zoneBadgeMapBtn?: Phaser.GameObjects.Text;
+  private lastZoneBadgeName: string = '';
 
   // Lời nhắc tương tác bán trong suốt (C4-13-07)
   private promptContainer!: Phaser.GameObjects.Container;
@@ -218,8 +231,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   private boundWindowBlur?: () => void;
   private boundWindowFocus?: () => void;
 
-  // V15-44: Chống debounce kích hoạt đúp cho Mini-map & World Map
-  private lastMiniMapToggleTime: number = 0;
+  // V15-44: Chống debounce kích hoạt đúp cho World Map
   private lastWorldMapToggleTime: number = 0;
 
   public get paperNoteModal(): TornPageModal | null {
@@ -247,7 +259,16 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.sanctuaryGlowGraphics.setScrollFactor(0);
 
     // 1. Khung chứa 3 thanh chỉ số sinh tồn tinh gọn chuẩn V15-54, gỗ tối viền đồng xỉn
+    if (this.textures.exists('ui_pack_panel_hud')) {
+      this.statCardSprite = this.add.image(202, 50, 'ui_pack_panel_hud');
+      this.statCardSprite.setDisplaySize(376, 80);
+      this.statCardSprite.setDepth(8049);
+      this.statCardSprite.setTint(0x7a6042);
+      this.statCardSprite.setAlpha(0.65);
+    }
+
     this.statCardBg = this.add.graphics();
+    this.statCardBg.setDepth(8050);
     this.statCardBg.fillStyle(0x140f0c, 0.88);
     this.statCardBg.fillRoundedRect(14, 10, 376, 80, 6);
     this.statCardBg.lineStyle(1.5, 0x6e5228, 0.85);
@@ -270,10 +291,12 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       color: isAwakened ? '#ffc048' : '#e5a93c',
       stroke: isAwakened ? '#3d1a04' : '#000000',
       strokeThickness: isAwakened ? 3 : 2
-    });
+    }).setDepth(8053);
 
     this.statBarsGraphics = this.add.graphics();
+    this.statBarsGraphics.setDepth(8051);
     this.statIconsGraphics = this.add.graphics();
+    this.statIconsGraphics.setDepth(8052);
 
     // 1b. Dựng 3 icon pixel cho 3 chỉ số (Góc trên trái chuẩn HD 1280×720)
     this.drawPixelIcons();
@@ -285,15 +308,15 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       color: '#ff7675',
       stroke: '#000000',
       strokeThickness: 2
-    });
+    }).setDepth(8053);
 
-    this.staminaValText = HDTextHelper.createText(this, 228, 48, 'Thể Lực: 80/80', {
+    this.staminaValText = HDTextHelper.createText(this, 228, 48, 'Thể Lực: 100/100', {
       fontSize: '10px',
       fontStyle: 'bold',
       color: '#feca57',
       stroke: '#000000',
       strokeThickness: 2
-    });
+    }).setDepth(8053);
 
     this.oilValText = HDTextHelper.createText(this, -999, -999, '', {
       fontSize: '10px',
@@ -301,7 +324,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       color: '#ff9f43',
       stroke: '#000000',
       strokeThickness: 2
-    }).setVisible(false);
+    }).setVisible(false).setDepth(8053);
 
     this.composureValText = HDTextHelper.createText(this, 228, 64, 'Tinh Thần: 100/100', {
       fontSize: '10px',
@@ -309,17 +332,18 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       color: '#a29bfe',
       stroke: '#000000',
       strokeThickness: 2
-    });
+    }).setDepth(8053);
 
     // 2. Hàng phụ bên dưới khung chính (y: 98, h: 22): Hào quang [F] + Độ Ẩm + Thân Nhiệt (V15-54)
     this.lanternStatusBg = this.add.graphics();
+    this.lanternStatusBg.setDepth(8050);
     this.lanternStatusText = HDTextHelper.createText(this, 14 + 48, 98 + 11, '🌑 [F] SÁNG: TẮT', {
       fontSize: '10px',
       fontStyle: 'bold',
       color: '#8a8275',
       stroke: '#000000',
       strokeThickness: 2
-    }).setOrigin(0.5, 0.5);
+    }).setOrigin(0.5, 0.5).setDepth(8053);
 
     // Vùng bấm chuột cho nút Hào quang [F] tại hàng phụ
     const lanternHit = this.add.zone(14 + 48, 98 + 11, 96, 22).setInteractive({ useHandCursor: true });
@@ -329,22 +353,24 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     });
 
     this.moistureBadgeBg = this.add.graphics();
+    this.moistureBadgeBg.setDepth(8050);
     this.moistureBadgeText = HDTextHelper.createText(this, 116 + 63, 98 + 11, '💧 Khô ráo (0%)', {
       fontSize: '10px',
       fontStyle: 'bold',
       color: '#1abc9c',
       stroke: '#000000',
       strokeThickness: 2
-    }).setOrigin(0.5, 0.5);
+    }).setOrigin(0.5, 0.5).setDepth(8053);
 
     this.temperatureBadgeBg = this.add.graphics();
+    this.temperatureBadgeBg.setDepth(8050);
     this.temperatureBadgeText = HDTextHelper.createText(this, 248 + 71, 98 + 11, '🔥 Ấm áp (80°)', {
       fontSize: '10px',
       fontStyle: 'bold',
       color: '#f39c12',
       stroke: '#000000',
       strokeThickness: 2
-    }).setOrigin(0.5, 0.5);
+    }).setOrigin(0.5, 0.5).setDepth(8053);
 
     this.updateStatusBadges(0, 80);
 
@@ -354,6 +380,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     const questBoxY = 16;
 
     this.questBg = this.add.graphics();
+    this.questBg.setDepth(8000);
 
     this.questHeaderText = HDTextHelper.createText(this, questBoxX + 12, questBoxY + 8, '📜 NHIỆM VỤ HIỆN TẠI [J]:', {
       fontSize: '11px',
@@ -361,7 +388,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       color: '#e5a93c',
       stroke: '#0c0805',
       strokeThickness: 2
-    });
+    }).setDepth(8002);
 
     this.questTitleText = HDTextHelper.createText(this, questBoxX + 12, questBoxY + 26, '', {
       fontSize: '12px',
@@ -369,7 +396,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       color: '#f5eedc',
       stroke: '#0c0805',
       strokeThickness: 2
-    });
+    }).setDepth(8002);
 
     this.questTrackerText = HDTextHelper.createText(this, questBoxX + 12, questBoxY + 45, '', {
       fontSize: '11px',
@@ -378,7 +405,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       lineSpacing: 2,
       stroke: '#0c0805',
       strokeThickness: 1
-    });
+    }).setDepth(8002);
 
     this.questToggleBtn = HDTextHelper.createText(this, questBoxX + questBoxW - 18, questBoxY + 12, '▲', {
       fontSize: '12px',
@@ -386,12 +413,45 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       color: '#baa892',
       stroke: '#000000',
       strokeThickness: 2
-    }).setOrigin(0.5, 0.5);
+    }).setOrigin(0.5, 0.5).setDepth(8002);
 
     this.questToggleZone = this.add.zone(questBoxX + questBoxW / 2, questBoxY + 15, questBoxW, 30).setInteractive({ useHandCursor: true });
     this.questToggleZone.on('pointerdown', () => {
       this.toggleQuestCollapse();
     });
+
+    // 3A. Huy hiệu Tên Phân Khu & Nút Mở Bản Đồ [N] (V152-06A: Thay thế hoàn toàn Mini-map góc màn hình)
+    this.zoneBadgeContainer = this.add.container(questBoxX, questBoxY + 92);
+    this.zoneBadgeContainer.setDepth(8000);
+
+    this.zoneBadgeBg = this.add.graphics();
+    this.zoneBadgeBg.fillStyle(0x0e1118, 0.88);
+    this.zoneBadgeBg.fillRoundedRect(0, 0, questBoxW, 26, 4);
+    this.zoneBadgeBg.lineStyle(1.2, 0x6e5228, 0.85);
+    this.zoneBadgeBg.strokeRoundedRect(0, 0, questBoxW, 26, 4);
+
+    this.zoneBadgeText = HDTextHelper.createText(this, 12, 13, '🧭 Làng Bellhollow', {
+      fontSize: '11px',
+      fontStyle: 'bold',
+      color: '#f5eedc',
+      stroke: '#080503',
+      strokeThickness: 2
+    }).setOrigin(0, 0.5);
+
+    this.zoneBadgeMapBtn = HDTextHelper.createText(this, questBoxW - 12, 13, '🗺️ [N] Bản Đồ', {
+      fontSize: '11px',
+      fontStyle: 'bold',
+      color: '#f1c40f',
+      stroke: '#080503',
+      strokeThickness: 2
+    }).setOrigin(1, 0.5);
+
+    const zoneBadgeHit = this.add.zone(questBoxW - 45, 13, 90, 24).setInteractive({ useHandCursor: true });
+    zoneBadgeHit.on('pointerdown', () => {
+      this.toggleWorldMap();
+    });
+
+    this.zoneBadgeContainer.add([this.zoneBadgeBg, this.zoneBadgeText, this.zoneBadgeMapBtn, zoneBadgeHit]);
 
     this.redrawQuestBox();
 
@@ -716,11 +776,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     // V15-56: Triệt tiêu hoàn toàn lỗi vẽ trùng 2 lớp icon (double-draw), giải phóng statIconsGraphics
     this.statIconsGraphics.clear();
 
-    // Khởi tạo/cập nhật 3 Sprite Image độc lập từ các Texture Pixel Art 16×16 px
+    // Khởi tạo/cập nhật 3 Sprite Image độc lập từ các Texture Pixel Art 16×16 px (Depth 8052)
     if (this.statIconImages.length === 0) {
-      const heartIcon = this.add.image(26, 37, HUD_ICON_HEALTH).setDisplaySize(16, 16).setOrigin(0.5, 0.5);
-      const staminaIcon = this.add.image(26, 53, HUD_ICON_STAMINA).setDisplaySize(16, 16).setOrigin(0.5, 0.5);
-      const composureIcon = this.add.image(26, 69, HUD_ICON_COMPOSURE).setDisplaySize(16, 16).setOrigin(0.5, 0.5);
+      const heartIcon = this.add.image(26, 37, HUD_ICON_HEALTH).setDisplaySize(16, 16).setOrigin(0.5, 0.5).setDepth(8052);
+      const staminaIcon = this.add.image(26, 53, HUD_ICON_STAMINA).setDisplaySize(16, 16).setOrigin(0.5, 0.5).setDepth(8052);
+      const composureIcon = this.add.image(26, 69, HUD_ICON_COMPOSURE).setDisplaySize(16, 16).setOrigin(0.5, 0.5).setDepth(8052);
 
       this.statIconImages = [heartIcon, staminaIcon, composureIcon];
     }
@@ -869,20 +929,23 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   private drawThickBar(g: Phaser.GameObjects.Graphics, x: number, y: number, w: number, h: number, val: number, max: number, darkColor: number, lightColor: number): void {
-    // Nền rãnh thanh chuẩn HD
-    g.fillStyle(0x0e1118, 0.95);
-    g.fillRoundedRect(x - 2, y - 2, w + 4, h + 4, 3);
+    // Nền rãnh thanh tối chuẩn HD Pixel Art (V152-06A: Hiển thị 100% sắc nét ổn định)
+    g.fillStyle(0x0a0d14, 0.95);
+    g.fillRect(x - 2, y - 2, w + 4, h + 4);
     g.lineStyle(1, 0x3d4a5d, 0.9);
-    g.strokeRoundedRect(x - 2, y - 2, w + 4, h + 4, 3);
+    g.strokeRect(x - 2.5, y - 2.5, w + 5, h + 5);
 
-    const fillW = Math.max(0, Math.min(w, (val / max) * w));
+    const safeMax = Math.max(1, max);
+    const safeVal = Math.max(0, Math.min(safeMax, val));
+    const fillW = Math.round((safeVal / safeMax) * w);
+
     if (fillW > 0) {
-      // Thân thanh
+      // Thân thanh màu sắc nét
       g.fillStyle(darkColor, 1);
-      g.fillRoundedRect(x, y, fillW, h, 2);
+      g.fillRect(x, y, fillW, h);
       // Ánh sáng nổi 3D ở mép trên
       g.fillStyle(lightColor, 0.9);
-      g.fillRect(x + 1, y, fillW - 2, Math.max(2, Math.floor(h * 0.35)));
+      g.fillRect(x, y, fillW, Math.max(2, Math.floor(h * 0.35)));
     }
   }
 
@@ -895,6 +958,14 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     const totalH = 52;
 
     // 1. Nền khung gỗ tối viền đồng cổ bao trọn toàn bộ thanh đáy (Don't Starve Pixel Art)
+    if (this.textures.exists('ui_pack_hotbar_bg')) {
+      const hotbarBgImg = this.add.image(0, 0, 'ui_pack_hotbar_bg');
+      hotbarBgImg.setDisplaySize(totalW + 16, totalH + 12);
+      hotbarBgImg.setTint(0xbaa187);
+      hotbarBgImg.setAlpha(0.65);
+      this.quickSlotContainer.add(hotbarBgImg);
+    }
+
     const frameBg = this.add.graphics();
     frameBg.fillStyle(0x140e09, 0.94);
     frameBg.fillRoundedRect(-totalW / 2, -totalH / 2, totalW, totalH, 6);
@@ -918,7 +989,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     this.quickSlotRefs = [];
     this.inventorySlotGfx = [];
+    this.inventorySlotBaseImages = [];
     this.inventorySlotIcons = [];
+    this.inventorySlotImages = [];
     this.inventorySlotCounts = [];
     this.inventorySlotKeyTexts = [];
     this.inventorySlotZones = [];
@@ -930,6 +1003,13 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     // Khởi tạo 8 ô Túi Đồ bên trái
     for (let i = 0; i < 8; i++) {
       const slotX = invStartX + i * (slotSize + gap);
+
+      // V152-06B: Khung ô Pixel Art thật từ UI Pack
+      if (this.textures.exists('ui_pack_slot_idle')) {
+        const slotBase = this.add.image(slotX, 0, 'ui_pack_slot_idle').setDisplaySize(slotSize, slotSize);
+        this.quickSlotContainer.add(slotBase);
+        this.inventorySlotBaseImages.push(slotBase);
+      }
 
       const g = this.add.graphics();
       // Nền ô gỗ tối
@@ -968,7 +1048,12 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.quickSlotContainer.add(keyText);
       this.inventorySlotKeyTexts.push(keyText);
 
-      // Icon vật phẩm ở tâm
+      // Icon Sprite Pixel Art ở tâm (V152-06A: Chống ô vuông trắng □)
+      const iconImg = this.add.image(slotX, 0, HUD_ICON_WOOD).setDisplaySize(22, 22).setOrigin(0.5, 0.5).setVisible(false);
+      this.quickSlotContainer.add(iconImg);
+      this.inventorySlotImages.push(iconImg);
+
+      // Icon Text Unicode/Emoji ở tâm (dự phòng)
       const iconText = HDTextHelper.createText(this, slotX, 0, '', {
         fontSize: '18px'
       }).setOrigin(0.5, 0.5);
@@ -1002,6 +1087,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         this.useOrSelectSlot(i);
       });
       hitZone.on('pointerover', () => {
+        if (this.inventorySlotBaseImages[i]) {
+          this.inventorySlotBaseImages[i].setTexture('ui_pack_slot_hover');
+        }
         g.clear();
         g.fillStyle(0x281d13, 0.98);
         g.fillRoundedRect(slotX - slotSize / 2, -slotSize / 2, slotSize, slotSize, 4);
@@ -1019,6 +1107,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         }
       });
       hitZone.on('pointerout', () => {
+        if (this.inventorySlotBaseImages[i]) {
+          this.inventorySlotBaseImages[i].setTexture(
+            i === this.selectedQuickSlotIndex ? 'ui_pack_slot_selected' : 'ui_pack_slot_idle'
+          );
+        }
         g.clear();
         g.fillStyle(0x18110b, 0.9);
         g.fillRoundedRect(slotX - slotSize / 2, -slotSize / 2, slotSize, slotSize, 4);
@@ -1079,12 +1172,21 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     const equipStartX = 120;
     this.equipmentSlotGfx = {};
+    this.equipmentSlotBaseImages = {};
+    this.equipmentSlotDefaultIcons = {};
     this.equipmentSlotIcons = {};
     this.equipmentSlotZones = {};
 
     for (let i = 0; i < equipSlots.length; i++) {
       const eq = equipSlots[i];
       const slotX = equipStartX + i * (slotSize + gap);
+
+      // V152-06B: Khung ô trang bị Pixel Art thật từ UI Pack
+      if (this.textures.exists('ui_pack_slot_equip')) {
+        const eqBase = this.add.image(slotX, 0, 'ui_pack_slot_equip').setDisplaySize(slotSize, slotSize);
+        this.quickSlotContainer.add(eqBase);
+        this.equipmentSlotBaseImages[eq.slot] = eqBase;
+      }
 
       const g = this.add.graphics();
       // Nền ô trang bị tím đen cổ
@@ -1111,6 +1213,13 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       iconText.setAlpha(0.35);
       this.quickSlotContainer.add(iconText);
       this.equipmentSlotIcons[eq.slot] = iconText;
+
+      // V152-06B: Icon trang bị Pixel Art thật từ UI Pack
+      if (this.textures.exists(`ui_pack_equip_${eq.slot}`)) {
+        const eqIcon = this.add.image(slotX, 3, `ui_pack_equip_${eq.slot}`).setDisplaySize(20, 20).setOrigin(0.5, 0.5).setAlpha(0.5);
+        this.quickSlotContainer.add(eqIcon);
+        this.equipmentSlotDefaultIcons[eq.slot] = eqIcon;
+      }
 
       // Lưu tham chiếu slot
       this.quickSlotRefs.push({
@@ -1578,6 +1687,14 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     g.fillRect(x + btnW / 2 - 2, -btnH / 2 - 1, 3, 3);
     g.fillRect(x - btnW / 2 - 1, btnH / 2 - 2, 3, 3);
     g.fillRect(x + btnW / 2 - 2, btnH / 2 - 2, 3, 3);
+
+    // V152-06B: Cập nhật texture pixel art ô được chọn và ô thường
+    for (let i = 0; i < this.inventorySlotBaseImages.length; i++) {
+      const img = this.inventorySlotBaseImages[i];
+      if (img) {
+        img.setTexture(i === this.selectedQuickSlotIndex ? 'ui_pack_slot_selected' : 'ui_pack_slot_idle');
+      }
+    }
   }
 
   public update(time: number = 0, _delta: number = 0): void {
@@ -1585,6 +1702,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.updatePromptPosition();
     }
     this.updatePanicVignette(time);
+    this.redrawStats(); // V152-06A: Cập nhật thể lực mượt mà theo thời gian thực khi chạy/hồi
   }
 
   /**
@@ -1936,18 +2054,31 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     for (let i = 0; i < 8; i++) {
       const slot = this.inventorySlotData[i];
       const iconTxt = this.inventorySlotIcons[i];
+      const iconImg = this.inventorySlotImages[i];
       const countTxt = this.inventorySlotCounts[i];
       const keyTxt = this.inventorySlotKeyTexts[i];
 
       if (!slot || !slot.itemId) {
         if (iconTxt) iconTxt.setText('').setAlpha(1.0);
+        if (iconImg) iconImg.setVisible(false);
         if (countTxt) countTxt.setText('');
         if (keyTxt) keyTxt.setColor('#7a6855');
       } else {
-        const iconChar = this.getItemIconChar(slot.itemId);
-        if (iconTxt) {
-          iconTxt.setText(iconChar);
-          iconTxt.setAlpha(slot.count > 0 ? 1.0 : 0.4);
+        if (slot.itemId === 'res_dry_wood' || slot.itemId === 'item_resin_flare') {
+          // V152-06A: Dùng Texture Pixel Art Khúc Gỗ Khô 16x16 chống ô vuông trắng □
+          if (iconImg) {
+            iconImg.setTexture(HUD_ICON_WOOD);
+            iconImg.setVisible(true);
+            iconImg.setAlpha(slot.count > 0 ? 1.0 : 0.4);
+          }
+          if (iconTxt) iconTxt.setText('');
+        } else {
+          if (iconImg) iconImg.setVisible(false);
+          const iconChar = this.getItemIconChar(slot.itemId);
+          if (iconTxt) {
+            iconTxt.setText(iconChar);
+            iconTxt.setAlpha(slot.count > 0 ? 1.0 : 0.4);
+          }
         }
         if (countTxt) {
           // Ô [1] và [2] hiện x0 nếu hết đồ để người chơi nhận biết; các ô khác hiện nếu > 0
@@ -2087,6 +2218,12 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
         iconTxt.setText(eq.defaultIcon);
         iconTxt.setAlpha(1.0);
+        if (this.equipmentSlotDefaultIcons[eq.slot]) {
+          this.equipmentSlotDefaultIcons[eq.slot].setAlpha(1.0).setTint(0xffe082);
+        }
+        if (this.equipmentSlotBaseImages[eq.slot]) {
+          this.equipmentSlotBaseImages[eq.slot].setTexture('ui_pack_slot_selected');
+        }
       } else {
         // Ô đang trống: viền đồng tối mờ
         g.fillStyle(0x141018, 0.9);
@@ -2096,6 +2233,12 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
         iconTxt.setText(eq.defaultIcon);
         iconTxt.setAlpha(0.35);
+        if (this.equipmentSlotDefaultIcons[eq.slot]) {
+          this.equipmentSlotDefaultIcons[eq.slot].setAlpha(0.4).clearTint();
+        }
+        if (this.equipmentSlotBaseImages[eq.slot]) {
+          this.equipmentSlotBaseImages[eq.slot].setTexture('ui_pack_slot_equip');
+        }
       }
     }
   }
@@ -2108,11 +2251,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       item_herbal_poultice: '🌿',
       item_lantern_oil: '🪔',
       food_calming_tea: '🍵',
-      item_resin_flare: '🪵',
+      item_resin_flare: '🌲',
       item_noise_lure: '🔔',
       food_roasted_mushroom: '🍄',
       food_forest_root_soup: '🍲',
-      res_dry_wood: '🪵',
+      res_dry_wood: '🌲',
       res_flint: '🪨',
       res_tree_resin: '💧',
       res_herbs: '🌱',
@@ -2165,9 +2308,27 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   public redrawQuestBox(): void {
     if (!this.questBg) return;
     const questBoxW = 340;
-    const questBoxH = this.isQuestCollapsed ? 30 : 86;
     const questBoxX = 1260 - questBoxW; // 920
     const questBoxY = 16;
+
+    // V152-06A: Tự động tính toán chiều cao khung theo số dòng thực tế (padding đáy >= 14px)
+    let dynamicH = 86;
+    if (this.questTrackerText && this.questTrackerText.height > 0) {
+      dynamicH = Math.max(86, Math.ceil((this.questTrackerText.y + this.questTrackerText.height) - questBoxY + 14));
+    }
+    const questBoxH = this.isQuestCollapsed ? 30 : dynamicH;
+
+    // V152-06B: Khung giấy da nhiệm vụ cổ kính từ UI Pack
+    if (this.textures.exists('ui_pack_panel_quest')) {
+      if (!this.questBgSprite) {
+        this.questBgSprite = this.add.image(questBoxX + questBoxW / 2, questBoxY + questBoxH / 2, 'ui_pack_panel_quest');
+        this.questBgSprite.setDepth(7999);
+        this.questBgSprite.setTint(0x8a7052);
+        this.questBgSprite.setAlpha(0.6);
+      }
+      this.questBgSprite.setPosition(questBoxX + questBoxW / 2, questBoxY + questBoxH / 2);
+      this.questBgSprite.setDisplaySize(questBoxW, questBoxH);
+    }
 
     this.questBg.clear();
     // Nền bán trong suốt dịu mắt, hòa nhịp với bối cảnh rừng sương
@@ -2185,6 +2346,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.questToggleBtn) {
       this.questToggleBtn.setText(this.isQuestCollapsed ? '▼' : '▲');
       this.questToggleBtn.setColor(this.isQuestCollapsed ? '#f1c40f' : '#baa892');
+    }
+
+    if (this.zoneBadgeContainer) {
+      this.zoneBadgeContainer.setPosition(questBoxX, questBoxY + questBoxH + 6);
     }
 
     const questSystem = QuestSystem.getInstance();
@@ -2239,6 +2404,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         this.lastQuestTaskText = fullTaskText;
         this.questTrackerText.setText(fullTaskText);
         this.questTrackerText.setColor('#d8cfbe');
+        this.redrawQuestBox();
       }
     }
   }
@@ -2470,6 +2636,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     this.zoneTitleText.setText(atmosphere.titleVietnamese);
     this.zoneSubtitleText.setText(atmosphere.subTitleVietnamese);
+    this.updateZoneBadge(atmosphere.titleVietnamese);
 
     // V14-P8-12: Tự động tính chiều rộng khung viền dựa theo độ dài thực tế của chữ + lề an toàn >= 32px mỗi bên
     const maxTextW = Math.max(this.zoneTitleText.width, this.zoneSubtitleText.width);
@@ -2657,6 +2824,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
    * Sử dụng khi mở Modal / Hộp thoại hoặc Cutscene để triệt tiêu đè chữ (C4-13-07)
    */
   public setHUDVisible(visible: boolean): void {
+    if (this.statCardSprite) this.statCardSprite.setVisible(visible);
     if (this.statCardBg) this.statCardBg.setVisible(visible);
     if (this.playerNameText) this.playerNameText.setVisible(visible);
     if (this.statBarsGraphics) this.statBarsGraphics.setVisible(visible);
@@ -2671,6 +2839,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.lanternStatusBg) this.lanternStatusBg.setVisible(visible);
     if (this.lanternStatusText) this.lanternStatusText.setVisible(visible);
     if (this.questBg) this.questBg.setVisible(visible);
+    if (this.questBgSprite) this.questBgSprite.setVisible(visible);
     if (this.questHeaderText) this.questHeaderText.setVisible(visible);
     if (this.questTitleText) this.questTitleText.setVisible(visible);
     if (this.questTrackerText) this.questTrackerText.setVisible(visible);
@@ -3005,15 +3174,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   public toggleMiniMap(): boolean {
-    const now = performance.now();
-    if (now - this.lastMiniMapToggleTime < 250) {
-      return this.miniMapWidget ? this.miniMapWidget.isVisible : false;
-    }
-    this.lastMiniMapToggleTime = now;
-    const mm = this.getMiniMapWidget();
-    const vis = mm.toggle();
-    this.showPopupMessage(vis ? '🧭 Đã bật Mini-map góc màn hình [Phím N]' : '🧭 Đã tắt Mini-map góc màn hình [Phím N]');
-    return vis;
+    // V152-06A: Phím [N] mở trực tiếp Bản Đồ Giấy Da ParchmentWorldMapModal, không thông báo tắt mini-map
+    return this.toggleWorldMap();
   }
 
   public toggleWorldMap(): boolean {
@@ -3042,6 +3204,14 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   ): void {
     const mm = this.getMiniMapWidget();
     mm.updateZoneTerrain(zone, colliders, transitions);
+    this.updateZoneBadge(zone.name);
+  }
+
+  public updateZoneBadge(zoneName?: string): void {
+    if (!this.zoneBadgeText) return;
+    const name = zoneName || this.lastZoneBadgeName || 'Làng Bellhollow';
+    this.lastZoneBadgeName = name;
+    this.zoneBadgeText.setText(`🧭 ${name}`);
   }
 
   public updateMiniMap(
@@ -3083,18 +3253,31 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     this.activePopup = popup;
 
+    // V152-06A: Tăng thời lượng hiển thị thông báo lên 4.5 đến 6.0 giây (+40ms/ký tự, tối đa 7.5s) kèm fade-out 0.5s
+    const holdDuration = Math.min(7000, Math.max(4000, 4000 + msg.length * 40));
+    const fadeDuration = 500;
+
     this.activePopupTween = this.tweens.add({
       targets: popup,
-      y: 145,
-      alpha: 0,
-      duration: 2200,
-      ease: 'Power2',
+      y: 165,
+      duration: 250,
+      ease: 'Quad.easeOut',
       onComplete: () => {
-        popup.setVisible(false);
-        if (this.activePopup === popup) {
-          this.activePopup = undefined;
-          this.activePopupTween = undefined;
-        }
+        this.activePopupTween = this.tweens.add({
+          targets: popup,
+          alpha: 0,
+          y: 145,
+          delay: holdDuration,
+          duration: fadeDuration,
+          ease: 'Quad.easeIn',
+          onComplete: () => {
+            popup.setVisible(false);
+            if (this.activePopup === popup) {
+              this.activePopup = undefined;
+              this.activePopupTween = undefined;
+            }
+          }
+        });
       }
     });
   }
@@ -3181,6 +3364,15 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.dialogueContainer = this.add.container(640, 595);
     this.dialogueContainer.setDepth(9000);
 
+    // V152-06B: Khung hộp thoại Pixel Art từ UI Pack
+    let dialogueBgSprite: Phaser.GameObjects.Image | undefined;
+    if (this.textures.exists('ui_pack_panel_dialogue')) {
+      dialogueBgSprite = this.add.image(0, 0, 'ui_pack_panel_dialogue');
+      dialogueBgSprite.setDisplaySize(boxWidth, boxHeight);
+      dialogueBgSprite.setTint(0xbaa187);
+      dialogueBgSprite.setAlpha(0.65);
+    }
+
     // Nền hộp thoại giấy da cổ sẫm màu viền đồng cổ kính (V15-25)
     const bg = this.add.graphics();
     bg.fillStyle(0x140e0a, 0.96);
@@ -3238,6 +3430,15 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.dialoguePortraitSprite = this.add.image(pX, pY, 'satyr_portrait');
     this.dialoguePortraitSprite.setDisplaySize(64, 64);
 
+    // V152-06B: Ruy-băng tiêu đề tên NPC từ UI Pack
+    let speakerRibbon: Phaser.GameObjects.Image | undefined;
+    if (this.textures.exists('ui_pack_ribbon_header')) {
+      speakerRibbon = this.add.image(-halfW + 195, -halfH + 20, 'ui_pack_ribbon_header');
+      speakerRibbon.setDisplaySize(180, 36);
+      speakerRibbon.setTint(0xbaa187);
+      speakerRibbon.setAlpha(0.75);
+    }
+
     // Tên người nói nổi bật chuẩn HD Tiếng Việt (Cỡ 20px bold vàng kim, kèm lề an toàn)
     this.dialogueSpeakerText = HDTextHelper.createText(this, -halfW + 120, -halfH + 20, '', {
       fontSize: '20px',
@@ -3271,15 +3472,18 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       color: '#d8ccb8'
     }).setOrigin(1, 0.5);
 
-    this.dialogueContainer.add([
+    const dialogueElements: Phaser.GameObjects.GameObject[] = [
+      ...(dialogueBgSprite ? [dialogueBgSprite] : []),
       bg,
       portraitBg,
       this.dialoguePortraitSprite,
+      ...(speakerRibbon ? [speakerRibbon] : []),
       this.dialogueSpeakerText,
       nameDivider,
       this.dialogueContentText,
       this.dialogueContinuePrompt
-    ]);
+    ];
+    this.dialogueContainer.add(dialogueElements);
 
     this.dialogueContainer.setVisible(false);
 

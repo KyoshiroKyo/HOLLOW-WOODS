@@ -95,6 +95,14 @@ export class StorageChestModal {
     this.container.add(overlay);
 
     // 2. Khung gỗ sẫm cổ điển viền đồng
+    if (this.scene.textures.exists('ui_pack_panel_modal')) {
+      const modalBg = this.scene.add.image(cx, cy, 'ui_pack_panel_modal');
+      modalBg.setDisplaySize(w + 20, h + 20);
+      modalBg.setTint(0xbaa187);
+      modalBg.setAlpha(0.65);
+      this.container.add(modalBg);
+    }
+
     const panel = this.scene.add.graphics();
     // Nền gỗ sẫm
     panel.fillStyle(0x131a16, 0.96);
@@ -150,6 +158,14 @@ export class StorageChestModal {
 
     // 5. Nút Đóng [✕ ESC] ở góc trên bên phải đồng bộ Dark Woodland Brass (V15-26)
     const closeBtnContainer = this.scene.add.container(cx + w / 2 - 50, cy - h / 2 + 25);
+
+    let closeBtnSprite: Phaser.GameObjects.Image | undefined;
+    if (this.scene.textures.exists('ui_pack_btn_wood')) {
+      closeBtnSprite = this.scene.add.image(0, 0, 'ui_pack_btn_wood');
+      closeBtnSprite.setDisplaySize(64, 24);
+      closeBtnContainer.add(closeBtnSprite);
+    }
+
     const closeBtnBg = this.scene.add.graphics();
     const drawCloseBtn = (isHover: boolean) => {
       closeBtnBg.clear();
@@ -170,10 +186,12 @@ export class StorageChestModal {
     closeBtnContainer.setSize(64, 24);
     closeBtnContainer.setInteractive({ useHandCursor: true });
     closeBtnContainer.on('pointerover', () => {
+      if (closeBtnSprite) closeBtnSprite.setTexture('ui_pack_btn_wood_hover');
       drawCloseBtn(true);
       closeBtnText.setColor('#f39c12');
     });
     closeBtnContainer.on('pointerout', () => {
+      if (closeBtnSprite) closeBtnSprite.setTexture('ui_pack_btn_wood');
       drawCloseBtn(false);
       closeBtnText.setColor('#e2d4b7');
     });

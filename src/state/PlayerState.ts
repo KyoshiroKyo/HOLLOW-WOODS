@@ -572,19 +572,41 @@ export class PlayerState extends Phaser.Events.EventEmitter {
   }
 
   private checkQuestProgression(flag: string): void {
+    // V152-01: Hàm helper kiểm tra mở Cổng Đông khi đủ 3 NPC
+    const tryUnlockEastGate = () => {
+      if (this.flags.has('talked_to_garth') && this.flags.has('talked_to_edda') && this.flags.has('talked_to_neris') && !this.flags.has('east_gate_unlocked')) {
+        this.flags.add('east_gate_unlocked');
+        this.completeQuestTask('Q03_PREPARE_RESOURCES', 't1');
+        this.completeQuestTask('Q03_PREPARE_RESOURCES', 't2');
+        if (
+          this.currentQuestId !== 'Q04_ANCIENT_RUNES' &&
+          this.currentQuestId !== 'Q05_SOLVE_MIRE' &&
+          this.currentQuestId !== 'Q06_RETRIEVE_CLAPPER'
+        ) {
+          this.setCurrentQuest('Q04_ANCIENT_RUNES');
+        }
+        this.emit('east_gate_unlocked');
+      }
+    };
+
     if (flag === 'talked_to_villagers') {
       this.completeQuestTask('Q01_MEET_EDDA', 't1');
     } else if (flag === 'talked_to_edda') {
       this.completeQuestTask('Q01_MEET_EDDA', 't2');
       this.setCurrentQuest('Q02_MEET_NERIS');
       this.unlockLore('lore_three_rules');
+      tryUnlockEastGate();
+    } else if (flag === 'talked_to_garth') {
+      tryUnlockEastGate();
     } else if (flag === 'talked_to_neris') {
       this.completeQuestTask('Q02_MEET_NERIS', 't1');
       this.completeQuestTask('Q02_MEET_NERIS', 't2');
       this.setCurrentQuest('Q03_PREPARE_RESOURCES');
       this.unlockLore('lore_herbalist_note');
       this.evaluateQ03ResourceTask();
+      tryUnlockEastGate();
     } else if (flag === 'craft_lantern_oil_complete') {
+      // V152-01: Giữ tương thích ngược — craft_lantern_oil_complete vẫn mở Cổng Đông cho savegame cũ
       this.completeQuestTask('Q03_PREPARE_RESOURCES', 't1');
       this.completeQuestTask('Q03_PREPARE_RESOURCES', 't2');
       this.flags.add('east_gate_unlocked');

@@ -36,7 +36,8 @@ export const SATYR_FRAME_HEIGHT = 64;
 export const SATYR_COLS = 22;
 export const SATYR_ROWS = 4;
 
-// The Mossbound Wayfarer (Protagonist V1.2) Sprite Sheet & Portrait Keys
+// The Mossbound Wayfarer (Protagonist V1.2 & V1.5.2) Sprite Sheet & Portrait Keys
+export const WAYFARER_USE_PURE_ARTIST_SPRITES = false;
 export const WAYFARER_IDLE_KEY = 'wayfarer_idle';
 export const WAYFARER_WALK_KEY = 'wayfarer_walk';
 export const WAYFARER_RUN_KEY = 'wayfarer_run';
@@ -47,6 +48,17 @@ export const WAYFARER_INTERACT_KEY = 'wayfarer_interact';
 export const WAYFARER_GATHER_KEY = 'wayfarer_gather';
 export const WAYFARER_USE_ITEM_KEY = 'wayfarer_use_item';
 export const WAYFARER_PORTRAIT_KEY = 'wayfarer_portrait';
+
+// 9 Sprite Sheets chiến đấu & động tác mới của Black Knight Wayfarer (V1.5.2)
+export const WAYFARER_UNARMED_IDLE_KEY = 'wayfarer_unarmed_idle';
+export const WAYFARER_UNARMED_RUN_KEY = 'wayfarer_unarmed_run';
+export const WAYFARER_HEAVY_ATTACK_KEY = 'wayfarer_heavy_attack';
+export const WAYFARER_WEAPON_ART_KEY = 'wayfarer_weapon_art';
+export const WAYFARER_PARRY_KEY = 'wayfarer_parry';
+export const WAYFARER_ROLL_KEY = 'wayfarer_roll';
+export const WAYFARER_UNARMED_ROLL_KEY = 'wayfarer_unarmed_roll';
+export const WAYFARER_BUFF_KEY = 'wayfarer_buff';
+export const WAYFARER_WEAPON_TOGGLE_KEY = 'wayfarer_weapon_toggle';
 
 export const WAYFARER_FRAME_WIDTH = 64;
 export const WAYFARER_FRAME_HEIGHT = 64;
@@ -95,6 +107,7 @@ export const SPRITE_SMITHY_WORKSHOP_BRAM_V15 = 'smithy_workshop_bram';
 export const SPRITE_GATEHOUSE_GARTH_V15 = 'gatehouse_garth';
 export const SPRITE_BELL_TOWER_GRAND_V15 = 'bell_tower_grand';
 export const SPRITE_VILLAGE_WELL_DETAILED_V15 = 'village_well_detailed';
+export const SPRITE_BUILDING_RANGER_OUTPOST_V15 = 'building_ranger_outpost';
 
 // Khóa Texture Thực Vật & Cây Cổ Thụ Rừng Sương V1.5 (High-Fidelity Foliage)
 export const SPRITE_TREE_MIST_PINE_V15 = 'tree_mist_pine';

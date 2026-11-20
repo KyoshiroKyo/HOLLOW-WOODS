@@ -294,9 +294,10 @@ mdStream.on('finish', () => {
   console.log(`📄 Dung lượng Markdown: ${(mdStat.size / (1024 * 1024)).toFixed(2)} MB (${mdStat.size.toLocaleString()} bytes)`);
 
   // 5. ĐÓNG GÓI BẢN CHẠY P2GAME V1.5 RELEASE ZIP
-  console.log('\n--- 5. Đóng gói bản chạy phát hành release/p2game/hollow-woods-p2game-v1.5.1.zip ---');
+  const pkgVersion = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'package.json'), 'utf8')).version || '1.5.2';
+  console.log(`\n--- 5. Đóng gói bản chạy phát hành release/p2game/hollow-woods-p2game-v${pkgVersion}.zip ---`);
   const distDir = path.join(ROOT_DIR, 'dist');
-  const p2gameZipOut = path.join(P2GAME_RELEASE_DIR, 'hollow-woods-p2game-v1.5.1.zip');
+  const p2gameZipOut = path.join(P2GAME_RELEASE_DIR, `hollow-woods-p2game-v${pkgVersion}.zip`);
 
   if (fs.existsSync(p2gameZipOut)) fs.unlinkSync(p2gameZipOut);
 

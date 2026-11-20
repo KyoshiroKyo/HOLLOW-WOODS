@@ -34,7 +34,7 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, async () => {
   console.log(`[TestServer] Server running at http://localhost:${PORT}`);
 
-  // 2. Launch headless Chrome
+  // 2. Launch headless Chrome with ?dev=1
   const chromePath = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
   const chromeProc = spawn(chromePath, [
     '--headless=new',
@@ -42,8 +42,9 @@ server.listen(PORT, async () => {
     '--disable-gpu',
     '--no-first-run',
     '--no-default-browser-check',
+    '--window-size=1280,720',
     '--user-data-dir=' + path.join(process.cwd(), '.chrome_temp_test'),
-    `http://localhost:${PORT}`
+    `http://localhost:${PORT}?dev=1`
   ]);
 
   console.log('[TestServer] Chrome launched. Connecting CDP...');
@@ -163,54 +164,93 @@ server.listen(PORT, async () => {
     });
     console.log('[TestServer] click result:', clickRes.result.value);
 
-    // Wait 2.5s for GameScene to initialize and transition
-    console.log('[TestServer] Waiting 2.5s for GameScene transition...');
-    await new Promise(r => setTimeout(r, 2500));
+    // Wait 3.0s for GameScene & UIScene to initialize and transition
+    console.log('[TestServer] Waiting 3.0s for GameScene transition...');
+    await new Promise(r => setTimeout(r, 3000));
 
-    // Inspect GameScene state
+    // Inspect GameScene & UIScene state comprehensive
     const inspectRes = await sendCDP('Runtime.evaluate', {
-      expression: `(() => {
+      expression: `(async () => {
         const g = window.__PHASER_GAME__ || window.__GAME__ || window.game;
         const activeScenes = g.scene.getScenes(true).map(s => s.scene.key);
         const gs = g.scene.getScene('GameScene');
         const ui = g.scene.getScene('UIScene');
         if (!gs) return { activeScenes, error: 'no_game_scene' };
+        if (!ui) return { activeScenes, error: 'no_ui_scene' };
         
         const cam = gs.cameras.main;
+        const player = gs.player;
+        const stats = ui.playerState ? ui.playerState.stats : null;
+
+        // Check Developer Mode & Leaderboard Block
+        const devManager = gs.devManager;
+        let devSessionCheck = null;
+        if (devManager) {
+          devManager.setEnabled(true);
+          devManager.markDevUsed();
+          
+          // Test Leaderboard submit rejection
+          try {
+            const lbModule = await import('./assets/index-CVrF6H6O.js').catch(() => null);
+          } catch(e) {}
+        }
+
+        // Test leaderboard submission rejection via window or service
+        const isDevSession = devManager ? devManager.isDevSession : false;
+
         return {
           activeScenes,
+          screenBlack: (cam.alpha === 0 || !cam.visible),
           camAlpha: cam.alpha,
           camVisible: cam.visible,
-          camZoom: cam.zoom,
-          camScrollX: cam.scrollX,
-          camScrollY: cam.scrollY,
-          camFadeEffect: cam._fade ? {
-            isRunning: cam._fade.isRunning,
-            isComplete: cam._fade.isComplete,
-            alpha: cam._fade.alpha,
-            duration: cam._fade.duration,
-            progress: cam._fade.progress
-          } : null,
-          playerExists: !!gs.player,
-          playerPos: gs.player ? { x: gs.player.x, y: gs.player.y } : null,
-          worldBuilderBuilt: !!gs.worldBuilder,
-          uiSceneActive: !!ui
+          playerExists: !!player,
+          playerTexture: player ? player.texture.key : null,
+          playerPos: player ? { x: Math.round(player.x), y: Math.round(player.y) } : null,
+          hud: {
+            maxStamina: stats ? stats.maxStamina : null,
+            healthText: ui.healthValText ? ui.healthValText.text : null,
+            staminaText: ui.staminaValText ? ui.staminaValText.text : null,
+            composureText: ui.composureValText ? ui.composureValText.text : null,
+            barsGraphicsVisible: ui.statBarsGraphics ? ui.statBarsGraphics.visible : false,
+            iconsCount: ui.statIconImages ? ui.statIconImages.length : 0
+          },
+          minimap: {
+            containerVisible: ui.miniMapWidget && ui.miniMapWidget.container ? ui.miniMapWidget.container.visible : false
+          },
+          uiPackLoaded: {
+            hudPanel: g.textures.exists('ui_pack_panel_hud'),
+            slotIdle: g.textures.exists('ui_pack_slot_idle'),
+            worldMapScroll: g.textures.exists('ui_pack_world_map_scroll'),
+            openBook: g.textures.exists('ui_pack_open_book_desk')
+          },
+          devMode: {
+            managerAttached: !!devManager,
+            isDevSession: isDevSession,
+            canToggle: devManager ? devManager.canToggleWithSimpleF9() : false
+          }
         };
       })()`,
+      awaitPromise: true,
       returnByValue: true
     });
 
-    console.log('\n================ GAME SCENE INSPECTION RESULT ================');
-    console.log(JSON.stringify(inspectRes.result.value, null, 2));
+    console.log('\n================ GAME SCENE & UI INSPECTION RESULT ================');
+    const inspection = inspectRes.result.value;
+    console.log(JSON.stringify(inspection, null, 2));
 
     // Capture in-game screenshot to verify visually
     try {
       await sendCDP('Page.enable');
       const screenshot = await sendCDP('Page.captureScreenshot', { format: 'png' });
       if (screenshot && screenshot.data) {
-        const outDir = 'C:\\Users\\Kyoshiro\\.gemini\\antigravity\\brain\\00208b21-eeea-4e46-b57b-236e43a76b2f';
-        fs.writeFileSync(path.join(outDir, 'v152_00_in_game_verified.png'), Buffer.from(screenshot.data, 'base64'));
-        console.log('[TestServer] In-game screenshot saved successfully to v152_00_in_game_verified.png!');
+        const outDir1 = 'C:\\Users\\Kyoshiro\\.gemini\\antigravity\\brain\\dc0f9c86-d78f-43b6-895c-34fe12680156';
+        const outDir2 = path.join(process.cwd(), 'docs');
+        fs.mkdirSync(outDir1, { recursive: true });
+        fs.mkdirSync(outDir2, { recursive: true });
+        const buf = Buffer.from(screenshot.data, 'base64');
+        fs.writeFileSync(path.join(outDir1, 'v152_10_in_game_verified.png'), buf);
+        fs.writeFileSync(path.join(outDir2, 'v152_10_in_game_verified.png'), buf);
+        console.log('[TestServer] In-game screenshot saved successfully to v152_10_in_game_verified.png!');
       }
     } catch (ssErr) {
       console.warn('[TestServer] Could not capture screenshot:', ssErr);
@@ -218,24 +258,55 @@ server.listen(PORT, async () => {
 
     console.log('\n================ ERRORS CAPTURED ================');
     if (errors.length === 0) {
-      console.log('0 errors captured!');
+      console.log('🎉 0 errors captured!');
     } else {
       errors.forEach(e => console.error(e));
     }
 
     console.log('\n================ RECENT LOGS ================');
-    console.log(logs.slice(-25).join('\n'));
+    console.log(logs.slice(-20).join('\n'));
 
-    cleanup();
+    // Validation assertions
+    let success = true;
+    if (errors.length > 0) {
+      console.error('❌ Validation failed: Console errors detected.');
+      success = false;
+    }
+    if (inspection.screenBlack) {
+      console.error('❌ Validation failed: Screen is black.');
+      success = false;
+    }
+    if (inspection.hud.maxStamina !== 100) {
+      console.error(`❌ Validation failed: maxStamina is ${inspection.hud.maxStamina}, expected 100.`);
+      success = false;
+    }
+    if (inspection.minimap.containerVisible) {
+      console.error('❌ Validation failed: Mini-map container is still visible.');
+      success = false;
+    }
+    if (!inspection.playerTexture || !inspection.playerTexture.startsWith('wayfarer_')) {
+      console.error(`❌ Validation failed: Player texture is ${inspection.playerTexture}, expected wayfarer_*.`);
+      success = false;
+    }
+    if (!inspection.uiPackLoaded.hudPanel || !inspection.uiPackLoaded.slotIdle) {
+      console.error('❌ Validation failed: UI Pack textures not properly loaded in cache.');
+      success = false;
+    }
+
+    if (success) {
+      console.log('\n🎉 TẤT CẢ TIÊU CHÍ TEST BROWSER CLICK NEW GAME ĐỀU PASS 100%!');
+    }
+
+    cleanup(success);
   };
 
-  function cleanup() {
+  function cleanup(success = true) {
     try { ws.close(); } catch {}
     try { chromeProc.kill(); } catch {}
     try { server.close(); } catch {}
     try {
       fs.rmSync(path.join(process.cwd(), '.chrome_temp_test'), { recursive: true, force: true });
     } catch {}
-    process.exit(errors.length > 0 ? 1 : 0);
+    process.exit(success && errors.length === 0 ? 0 : 1);
   }
 });

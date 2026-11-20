@@ -85,7 +85,7 @@ Trình duyệt sẽ tự động mở tại địa chỉ `http://localhost:3000/
   ```bash
   npm run release:p2game
   ```
-  *(Tự động tạo `release/p2game/hollow-woods-p2game-v1.5.0.zip` kèm `p2game.json` và bộ media)*
+  *(Tự động tạo `release/p2game/hollow-woods-p2game-v1.5.2.zip` kèm `p2game.json` và bộ media)*
 
 - **Đóng gói mã nguồn tinh gọn cho AI Review:**
   ```bash
@@ -143,6 +143,6 @@ HOLLOW-WOODS/
 
 ## 🏆 Trạng Thái Dự Án & Bản Quyền
 
-- **Phiên bản hiện tại:** HOLLOW WOODS V1.5.0 (`v1.5.0-final`).
+- **Phiên bản hiện tại:** HOLLOW WOODS V1.5.2 (`v1.5.2-final`).
 - **Trạng thái nghiệm thu:** 🎉 **100% BUILD PRODUCTION & KIỂM ĐỊNH TOÀN DIỆN THÀNH CÔNG (0 LỖI)**.
 - **Tác quyền & Quản trị:** Dự án thực thi bởi Chief Software Architect cho `KyoshiroKyo/HOLLOW-WOODS`.

@@ -23,6 +23,7 @@ import itemsData from '../data/items.json';
 export interface PinnedRecipeSlot {
   container: Phaser.GameObjects.Container;
   bg: Phaser.GameObjects.Graphics;
+  slotImg?: Phaser.GameObjects.Image;
   icon: Phaser.GameObjects.Text;
   readyDot: Phaser.GameObjects.Graphics;
   zone: Phaser.GameObjects.Zone;
@@ -139,6 +140,13 @@ export class QuickCraftSidebar {
       const slotY = startY + i * (slotSize + gap);
       const slotContainer = this.scene.add.container(0, slotY);
 
+      // V152-06B: Khung ô Pixel Art thật từ UI Pack
+      let slotImg: Phaser.GameObjects.Image | undefined;
+      if (this.scene.textures.exists('ui_pack_slot_idle')) {
+        slotImg = this.scene.add.image(0, 0, 'ui_pack_slot_idle').setDisplaySize(slotSize, slotSize);
+        slotContainer.add(slotImg);
+      }
+
       const slotBg = this.scene.add.graphics();
       // Nền ô gỗ viền giấy da sáng
       this.drawSlotBg(slotBg, false, false);
@@ -171,6 +179,9 @@ export class QuickCraftSidebar {
       zone.on('pointerover', () => {
         this.isMouseOverSlot = true;
         this.cancelHideTimer();
+        if (slotImg) {
+          slotImg.setTexture('ui_pack_slot_hover');
+        }
         const recipeIndex = this.scrollIndex + i;
         if (recipeIndex < this.pinnedRecipeIds.length) {
           const recipeId = this.pinnedRecipeIds[recipeIndex];
@@ -184,6 +195,9 @@ export class QuickCraftSidebar {
 
       zone.on('pointerout', () => {
         this.isMouseOverSlot = false;
+        if (slotImg) {
+          slotImg.setTexture('ui_pack_slot_idle');
+        }
         const recipeIndex = this.scrollIndex + i;
         if (recipeIndex < this.pinnedRecipeIds.length) {
           const recipeId = this.pinnedRecipeIds[recipeIndex];
@@ -199,6 +213,7 @@ export class QuickCraftSidebar {
       this.slots.push({
         container: slotContainer,
         bg: slotBg,
+        slotImg,
         icon: iconText,
         readyDot,
         zone

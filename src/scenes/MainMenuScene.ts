@@ -44,6 +44,8 @@ import { AudioManager } from '../audio/AudioManager';
 import { SettingsManager } from '../systems/SettingsManager';
 import { SettingsUIHelper } from '../ui/SettingsUIHelper';
 import { KeycapBadgeHelper } from '../ui/KeycapBadgeHelper';
+import { LeaderboardService } from '../services/LeaderboardService';
+import type { P2GamePlayer, P2LeaderboardEntry } from '../types/p2game';
 
 export class MainMenuScene extends Phaser.Scene {
   private activeMenuModal?: Phaser.GameObjects.Container;
@@ -52,6 +54,7 @@ export class MainMenuScene extends Phaser.Scene {
   private continueBtnContainer?: Phaser.GameObjects.Container;
   private continueBtnX: number = 390;
   private continueBtnY: number = 308;
+  private authContainer?: Phaser.GameObjects.Container;
 
   constructor() {
     super({ key: SCENE_MAIN_MENU });
@@ -239,10 +242,10 @@ export class MainMenuScene extends Phaser.Scene {
     diamond.fillPath();
 
     // =========================================================================
-    // 4. HỆ THỐNG 4 NÚT ĐIỀU HƯỚNG SANG TRỌNG DẠNG THẺ GỖ KHẮC VIỀN ĐỒNG
+    // 4. HỆ THỐNG 5 NÚT ĐIỀU HƯỚNG SANG TRỌNG DẠNG THẺ GỖ KHẮC VIỀN ĐỒNG
     // =========================================================================
-    let currentY = 246;
-    const btnSpacing = 62;
+    let currentY = 236;
+    const btnSpacing = 58;
 
     // Nút 1: BƯỚC VÀO MÀN SƯƠNG (New Game)
     this.createMenuButton(
@@ -262,7 +265,19 @@ export class MainMenuScene extends Phaser.Scene {
     this.renderContinueButton();
     currentY += btnSpacing;
 
-    // Nút 3: CÀI ĐẶT TRÒ CHƠI (Settings)
+    // Nút 3: BẢNG XẾP HẠNG SINH TỒN (V152-08 Leaderboard)
+    this.createMenuButton(
+      menuCenterX,
+      currentY,
+      '🏆 BẢNG XẾP HẠNG',
+      null,
+      '#d4af37',
+      true,
+      () => this.showLeaderboardModal()
+    );
+    currentY += btnSpacing;
+
+    // Nút 4: CÀI ĐẶT TRÒ CHƠI (Settings)
     this.createMenuButton(
       menuCenterX,
       currentY,
@@ -274,7 +289,7 @@ export class MainMenuScene extends Phaser.Scene {
     );
     currentY += btnSpacing;
 
-    // Nút 4: BIÊN NIÊN SỬ & HƯỚNG DẪN (Chronicle / Lore & Controls Guide)
+    // Nút 5: BIÊN NIÊN SỬ & HƯỚNG DẪN (Chronicle / Lore & Controls Guide)
     this.createMenuButton(
       menuCenterX,
       currentY,
@@ -339,7 +354,7 @@ export class MainMenuScene extends Phaser.Scene {
 
     // Cột 2: Sinh Tồn (Survival)
     KeycapBadgeHelper.createKeycap(this, 420, gBoxY + 50, 'F', { highlight: true, fontSize: '10px' });
-    HDTextHelper.createText(this, 438, gBoxY + 50, 'Đèn', { fontSize: '10.5px', color: '#f1c40f' }).setOrigin(0, 0.5);
+    HDTextHelper.createText(this, 438, gBoxY + 50, 'Vòng Sáng', { fontSize: '10.5px', color: '#f1c40f' }).setOrigin(0, 0.5);
 
     KeycapBadgeHelper.createKeycap(this, 482, gBoxY + 50, 'E', { fontSize: '10px' });
     HDTextHelper.createText(this, 500, gBoxY + 50, 'Tương Tác', { fontSize: '10.5px', color: '#cbd5e1' }).setOrigin(0, 0.5);
@@ -417,6 +432,23 @@ export class MainMenuScene extends Phaser.Scene {
         this.input.keyboard.once('keydown', unlockAndPlayAmbience);
       }
     }
+
+    // =========================================================================
+    // 7. V152-08: WIDGET ĐĂNG NHẬP CHUẨN P2.AUTH & TÍN HIỆU P2.READY()
+    // =========================================================================
+    this.setupAuthWidget();
+
+    // Phát tín hiệu p2.ready() ngay khi MainMenuScene vẽ xong khung hình đầu tiên (tránh cảnh báo SD-004)
+    this.events.once('render', () => {
+      try {
+        if (typeof window !== 'undefined' && window.p2 && typeof window.p2.ready === 'function') {
+          window.p2.ready();
+          console.log('[P2Game SDK] Đã phát tín hiệu p2.ready() khi MainMenuScene hoàn thành khung hình đầu tiên.');
+        }
+      } catch (err) {
+        console.warn('[P2Game SDK] Lỗi khi gọi p2.ready() từ MainMenuScene:', err);
+      }
+    });
   }
 
   /**
@@ -531,21 +563,22 @@ export class MainMenuScene extends Phaser.Scene {
       fireGfx.fillRect(fireX - 10, groundY - 8, 20, 5);
     }
 
-    // Ngọn lửa 3 tầng bập bùng sống động
+    // Ngọn lửa 3 tầng bập bùng sống động neo vững chãi giữa hố đá (V152-06A: Triệt tiêu dịch Y)
     const flameCore = this.add.graphics();
+    flameCore.setPosition(fireX, groundY);
     flameCore.fillStyle(0xd35400, 0.9);
-    flameCore.fillTriangle(fireX - 10, groundY - 4, fireX + 10, groundY - 4, fireX, groundY - 28);
+    flameCore.fillTriangle(-10, -4, 10, -4, 0, -28);
     flameCore.fillStyle(0xf39c12, 0.95);
-    flameCore.fillTriangle(fireX - 7, groundY - 5, fireX + 7, groundY - 5, fireX, groundY - 24);
+    flameCore.fillTriangle(-7, -5, 7, -5, 0, -24);
     flameCore.fillStyle(0xfff176, 0.98);
-    flameCore.fillTriangle(fireX - 4, groundY - 5, fireX + 4, groundY - 5, fireX, groundY - 18);
+    flameCore.fillTriangle(-4, -5, 4, -5, 0, -18);
 
     this.tweens.add({
       targets: flameCore,
-      scaleY: 1.15,
-      scaleX: 0.95,
+      scaleY: 1.06,
+      scaleX: 0.96,
       alpha: 0.88,
-      duration: 180,
+      duration: 220,
       yoyo: true,
       repeat: -1,
       ease: 'Sine.easeInOut'
@@ -1319,5 +1352,305 @@ export class MainMenuScene extends Phaser.Scene {
       ease: 'Power2',
       onComplete: () => toast.destroy()
     });
+  }
+
+  /**
+   * V152-08: Quản lý hiển thị tài khoản người chơi chuẩn p2.auth
+   * TUYỆT ĐỐI KHÔNG tự dựng form đăng nhập riêng.
+   */
+  private setupAuthWidget(): void {
+    if (this.authContainer) {
+      this.authContainer.destroy();
+    }
+    this.authContainer = this.add.container(1250, 28).setDepth(8500);
+
+    const updateDisplay = (player: P2GamePlayer | null) => {
+      if (!this.authContainer || !this.sys.isActive()) return;
+      this.authContainer.removeAll(true);
+
+      const isAuthenticated = Boolean(player && !player.anonymous);
+      const displayName = isAuthenticated ? (player?.displayName || 'Người Chơi') : 'Khách';
+
+      const bg = this.add.graphics();
+      const text = HDTextHelper.createText(this, isAuthenticated ? -12 : -110, 0, `👤 ${displayName}`, {
+        fontSize: '11.5px',
+        fontStyle: isAuthenticated ? 'bold' : 'normal',
+        color: isAuthenticated ? '#f39c12' : '#94a3b8'
+      }).setOrigin(isAuthenticated ? 1 : 0, 0.5);
+
+      if (isAuthenticated) {
+        const textWidth = text.width;
+        bg.fillStyle(0x0e0c08, 0.85);
+        bg.fillRoundedRect(-textWidth - 28, -14, textWidth + 28, 28, 6);
+        bg.lineStyle(1, 0x8a6d3b, 0.7);
+        bg.strokeRoundedRect(-textWidth - 28, -14, textWidth + 28, 28, 6);
+        this.authContainer.add([bg, text]);
+      } else {
+        // Nút Đăng Nhập gọi trực tiếp window.p2.auth.requestLogin()
+        const loginBtnW = 92;
+        const loginBtnH = 26;
+        const loginBtnX = -loginBtnW;
+        const loginBtnY = -loginBtnH / 2;
+
+        const btnBg = this.add.graphics();
+        const renderBtn = (hover: boolean) => {
+          btnBg.clear();
+          btnBg.fillStyle(hover ? 0x2e1d0f : 0x16100a, 0.92);
+          btnBg.fillRoundedRect(loginBtnX, loginBtnY, loginBtnW, loginBtnH, 5);
+          btnBg.lineStyle(1.2, hover ? 0xf1c40f : 0x8a6d3b, 0.9);
+          btnBg.strokeRoundedRect(loginBtnX, loginBtnY, loginBtnW, loginBtnH, 5);
+        };
+        renderBtn(false);
+
+        const btnText = HDTextHelper.createText(this, loginBtnX + loginBtnW / 2, 0, '🔑 ĐĂNG NHẬP', {
+          fontSize: '10px',
+          fontStyle: 'bold',
+          color: '#e5a93c'
+        }).setOrigin(0.5, 0.5);
+
+        const hitZone = this.add.zone(loginBtnX + loginBtnW / 2, 0, loginBtnW, loginBtnH).setInteractive({ useHandCursor: true });
+        hitZone.on('pointerover', () => {
+          renderBtn(true);
+          btnText.setColor('#fff4da');
+        });
+        hitZone.on('pointerout', () => {
+          renderBtn(false);
+          btnText.setColor('#e5a93c');
+        });
+        hitZone.on('pointerdown', async () => {
+          AudioManager.getInstance().playInteract();
+          try {
+            if (typeof window !== 'undefined' && window.p2?.auth?.requestLogin) {
+              const loggedPlayer = await window.p2.auth.requestLogin();
+              if (loggedPlayer) {
+                updateDisplay(loggedPlayer);
+              }
+            } else {
+              this.showNoticeToast('Nền tảng P2Game chưa sẵn sàng hoặc đang chạy Offline.');
+            }
+          } catch (loginErr: any) {
+            console.warn('[MainMenuScene] requestLogin error:', loginErr);
+          }
+        });
+
+        // Nền pill nhỏ bao quanh chữ "👤 Khách"
+        bg.fillStyle(0x0e0c08, 0.7);
+        bg.fillRoundedRect(-200, -14, 96, 28, 5);
+        bg.lineStyle(1, 0x4a3824, 0.5);
+        bg.strokeRoundedRect(-200, -14, 96, 28, 5);
+
+        text.setPosition(-192, 0);
+
+        this.authContainer.add([bg, text, btnBg, btnText, hitZone]);
+      }
+    };
+
+    // Đọc trạng thái người chơi ban đầu
+    if (typeof window !== 'undefined' && window.p2?.auth?.getUser) {
+      window.p2.auth.getUser().then((player) => {
+        updateDisplay(player);
+      }).catch(() => {
+        updateDisplay(null);
+      });
+
+      // Lắng nghe thay đổi trạng thái đăng nhập
+      if (typeof window.p2.auth.onChange === 'function') {
+        const unsubscribe = window.p2.auth.onChange((player) => {
+          updateDisplay(player);
+        });
+        this.events.once('shutdown', unsubscribe);
+      }
+    } else {
+      updateDisplay(null);
+    }
+  }
+
+  /**
+   * V152-08: Mở modal Bảng Xếp Hạng Sinh Tồn tuần (WEEKLY) và thứ hạng cá nhân
+   * Sử dụng nền giấy da UI Pack và bọc try/catch chuẩn P2GameError
+   */
+  private showLeaderboardModal(): void {
+    this.closeActiveMenuModal();
+
+    const modal = this.add.container(640, 360).setDepth(9000);
+    const modalW = 780;
+    const modalH = 550;
+
+    // 1. Nền tối phủ mờ
+    const overlay = this.add.graphics();
+    overlay.fillStyle(0x000000, 0.75);
+    overlay.fillRect(-640, -360, 1280, 720);
+
+    const overlayHit = this.add.zone(0, 0, 1280, 720).setInteractive();
+    overlayHit.on('pointerdown', () => this.closeActiveMenuModal());
+
+    // 2. Khung viền hộp thoại (kết hợp hình ảnh UI Pack nếu có)
+    const box = this.add.graphics();
+    box.fillStyle(0x120d09, 0.98);
+    box.fillRoundedRect(-modalW / 2, -modalH / 2, modalW, modalH, 10);
+    box.lineStyle(2, 0x8a6d3b, 0.95);
+    box.strokeRoundedRect(-modalW / 2, -modalH / 2, modalW, modalH, 10);
+    box.lineStyle(1, 0x5c4627, 0.6);
+    box.strokeRoundedRect(-modalW / 2 + 3, -modalH / 2 + 3, modalW - 6, modalH - 6, 8);
+
+    // Dùng texture UI Pack trang trí nền nếu tồn tại
+    if (this.textures.exists('ui_pack_panel_modal')) {
+      const decorImg = this.add.image(0, 0, 'ui_pack_panel_modal');
+      decorImg.setDisplaySize(modalW - 12, modalH - 12);
+      decorImg.setAlpha(0.28);
+      modal.add(decorImg);
+    }
+
+    // Tiêu đề modal
+    const title = HDTextHelper.createText(this, 0, -modalH / 2 + 28, '🏆 BẢNG XẾP HẠNG SINH TỒN (SURVIVAL SCORE)', {
+      fontSize: '15px',
+      fontStyle: 'bold',
+      color: '#f39c12'
+    }).setOrigin(0.5, 0.5);
+
+    const subtitle = HDTextHelper.createText(this, 0, -modalH / 2 + 48, '❖ Top 10 Hàng Tuần (WEEKLY) & Thứ Hạng Xung Quanh Bạn ❖', {
+      fontSize: '11px',
+      color: '#94a3b8'
+    }).setOrigin(0.5, 0.5);
+
+    // Tiêu đề các cột
+    const tableHeaderY = -modalH / 2 + 76;
+    const headerRank = HDTextHelper.createText(this, -modalW / 2 + 40, tableHeaderY, 'HẠNG', { fontSize: '11px', fontStyle: 'bold', color: '#c8963e' });
+    const headerName = HDTextHelper.createText(this, -modalW / 2 + 120, tableHeaderY, 'NGƯỜI CHƠI', { fontSize: '11px', fontStyle: 'bold', color: '#c8963e' });
+    const headerDay = HDTextHelper.createText(this, modalW / 2 - 240, tableHeaderY, 'NGÀY', { fontSize: '11px', fontStyle: 'bold', color: '#c8963e' });
+    const headerScore = HDTextHelper.createText(this, modalW / 2 - 60, tableHeaderY, 'ĐIỂM SỐ', { fontSize: '11px', fontStyle: 'bold', color: '#c8963e' }).setOrigin(1, 0);
+
+    const divider = this.add.graphics();
+    divider.lineStyle(1, 0x5c4627, 0.6);
+    divider.lineBetween(-modalW / 2 + 30, tableHeaderY + 20, modalW / 2 - 30, tableHeaderY + 20);
+
+    // Container chứa danh sách các dòng điểm số
+    const rowsContainer = this.add.container(0, 0);
+
+    const statusText = HDTextHelper.createText(this, 0, 0, '⏳ Đang tải dữ liệu bảng xếp hạng...', {
+      fontSize: '13px',
+      color: '#cbd5e1'
+    }).setOrigin(0.5, 0.5);
+
+    // Nút đóng
+    const closeBtn = this.add.container(0, modalH / 2 - 28);
+    const closeBg = this.add.graphics();
+    const renderCloseBtn = (hover: boolean) => {
+      closeBg.clear();
+      closeBg.fillStyle(hover ? 0x3d2817 : 0x1e150d, 0.95);
+      closeBg.fillRoundedRect(-90, -16, 180, 32, 6);
+      closeBg.lineStyle(1.2, hover ? 0xf1c40f : 0x8a6d3b, 0.9);
+      closeBg.strokeRoundedRect(-90, -16, 180, 32, 6);
+    };
+    renderCloseBtn(false);
+
+    const closeText = HDTextHelper.createText(this, 0, 0, '✕ ĐÓNG', {
+      fontSize: '12px',
+      fontStyle: 'bold',
+      color: '#f5eedc'
+    }).setOrigin(0.5, 0.5);
+
+    const closeHit = this.add.zone(0, 0, 180, 32).setInteractive({ useHandCursor: true });
+    closeHit.on('pointerover', () => {
+      renderCloseBtn(true);
+      closeText.setColor('#fff4da');
+    });
+    closeHit.on('pointerout', () => {
+      renderCloseBtn(false);
+      closeText.setColor('#f5eedc');
+    });
+    closeHit.on('pointerdown', () => this.closeActiveMenuModal());
+    closeBtn.add([closeBg, closeText, closeHit]);
+
+    modal.add([
+      overlay,
+      overlayHit,
+      box,
+      title,
+      subtitle,
+      headerRank,
+      headerName,
+      headerDay,
+      headerScore,
+      divider,
+      rowsContainer,
+      statusText,
+      closeBtn
+    ]);
+
+    this.activeMenuModal = modal;
+
+    // Tải dữ liệu từ LeaderboardService
+    (async () => {
+      try {
+        const [topScores, aroundMe] = await Promise.all([
+          LeaderboardService.getInstance().getTopScores(10, 'WEEKLY'),
+          LeaderboardService.getInstance().getScoresAroundMe(3)
+        ]);
+
+        if (!modal.active || !this.sys.isActive()) return;
+        statusText.setVisible(false);
+
+        // Hiển thị thông tin thứ hạng của người chơi nếu có
+        const myRankEntry = aroundMe?.find((e: P2LeaderboardEntry) => e.isMe) || topScores?.find((e: P2LeaderboardEntry) => e.isMe);
+        if (myRankEntry) {
+          subtitle.setText(`❖ Top 10 Hàng Tuần • Thứ hạng của bạn: #${myRankEntry.rank} (${myRankEntry.score.toLocaleString()} điểm) ❖`);
+        }
+
+        if (!topScores || topScores.length === 0) {
+          statusText.setText('Chưa có dữ liệu xếp hạng trong tuần này.');
+          statusText.setVisible(true);
+          return;
+        }
+
+        const startY = tableHeaderY + 30;
+        const rowHeight = 28;
+
+        topScores.forEach((entry: P2LeaderboardEntry, idx: number) => {
+          const rowY = startY + idx * rowHeight;
+          const isTop3 = entry.rank <= 3;
+          const rankColor = entry.rank === 1 ? '#f1c40f' : (entry.rank === 2 ? '#e0e0e0' : (entry.rank === 3 ? '#cd7f32' : '#cbd5e1'));
+
+          const rowBg = this.add.graphics();
+          if (entry.isMe) {
+            rowBg.fillStyle(0x27ae60, 0.18);
+            rowBg.fillRoundedRect(-modalW / 2 + 25, rowY - 12, modalW - 50, 24, 4);
+          } else if (idx % 2 === 1) {
+            rowBg.fillStyle(0xffffff, 0.03);
+            rowBg.fillRoundedRect(-modalW / 2 + 25, rowY - 12, modalW - 50, 24, 4);
+          }
+
+          const rankText = HDTextHelper.createText(this, -modalW / 2 + 40, rowY, `#${entry.rank}`, {
+            fontSize: '11px',
+            fontStyle: isTop3 ? 'bold' : 'normal',
+            color: rankColor
+          }).setOrigin(0, 0.5);
+
+          const nameText = HDTextHelper.createText(this, -modalW / 2 + 120, rowY, entry.displayName || 'Vô Danh', {
+            fontSize: '11px',
+            fontStyle: entry.isMe ? 'bold' : 'normal',
+            color: entry.isMe ? '#2ecc71' : '#f5eedc'
+          }).setOrigin(0, 0.5);
+
+          const dayVal = entry.meta?.day ? `Ngày ${entry.meta.day}` : '-';
+          const dayText = HDTextHelper.createText(this, modalW / 2 - 240, rowY, dayVal, {
+            fontSize: '11px',
+            color: '#94a3b8'
+          }).setOrigin(0, 0.5);
+
+          const scoreText = HDTextHelper.createText(this, modalW / 2 - 60, rowY, entry.score.toLocaleString(), {
+            fontSize: '11.5px',
+            fontStyle: 'bold',
+            color: '#f39c12'
+          }).setOrigin(1, 0.5);
+
+          rowsContainer.add([rowBg, rankText, nameText, dayText, scoreText]);
+        });
+      } catch (err: any) {
+        console.warn('[MainMenuScene] Lỗi nạp bảng xếp hạng:', err);
+        statusText.setText('Không thể kết nối máy chủ xếp hạng.');
+        statusText.setVisible(true);
+      }
+    })();
   }
 }

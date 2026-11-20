@@ -42,6 +42,7 @@ import { EquipmentSystem } from '../systems/EquipmentSystem';
 import { WildlifeSystem } from '../systems/WildlifeSystem';
 import { WorldEventSystem } from '../systems/WorldEventSystem';
 import { TheEcho } from '../entities/TheEcho';
+import { DevPanelOverlay } from '../debug/DevPanelOverlay';
 import { MireWardenBoss, RunePillarTarget, BrazierTarget, BossMireWarden } from '../entities/BossMireWarden';
 import { BossEncounterSystem } from '../systems/BossEncounterSystem';
 import { QuestSystem } from '../systems/QuestSystem';
@@ -52,6 +53,7 @@ import { GraphicsQualitySystem, GraphicsQualitySettings } from '../systems/Graph
 import { TORN_PAGES_REGISTRY } from '../data/tornPagesData';
 import { FallenKnightApparition } from '../entities/FallenKnightApparition';
 import { WhisperTrap } from '../entities/WhisperTrap';
+import { DeveloperModeManager } from '../debug/DeveloperModeManager';
 
 export interface PlantedResinFlare {
   id: string;
@@ -87,6 +89,8 @@ export class GameScene extends Phaser.Scene {
   private cameraSystem!: CameraSystem;
   private debugOverlay!: DebugOverlay;
   private hitboxInspector!: HitboxDebugInspector;
+  private devPanel!: DevPanelOverlay;
+  private devModeKeyHandler!: (event: KeyboardEvent) => void;
   private uiScene!: UIScene;
 
   private playerState!: PlayerState;
@@ -128,6 +132,8 @@ export class GameScene extends Phaser.Scene {
   private lastWestBarrierThoughtTime: number = 0;
   // V14-P8-13: Thời điểm kích hoạt suy nghĩ dẫn hướng khi lại gần Cầu Đá Bị Sập chặn lối thẳng
   private lastCollapsedBridgeThoughtTime: number = 0;
+  // V152-03: Cooldown nhắc nhở 3s khi tiến sát Cổng Đông chưa mở (#11)
+  private lastEastGateReminderTime: number = 0;
 
   // V1.5 (BƯỚC V15-05 & V15-58C): Timer hiệu ứng rung camera, vi chấn và cảnh báo tâm trí
   private panicCameraShakeTimer: number = 0;
@@ -196,8 +202,6 @@ export class GameScene extends Phaser.Scene {
   private interactionOutlineGfx!: Phaser.GameObjects.Graphics;
   private interactionGlowSprite!: Phaser.GameObjects.Sprite;
   public isDebugBoxesVisible: boolean = false;
-  private f9Key!: Phaser.Input.Keyboard.Key;
-  private lastF9ToggleTime: number = 0;
   private f8Key!: Phaser.Input.Keyboard.Key;
   private lastF8PressTime: number = 0;
   private lastCharmEchoVibrateTime: number = 0;
@@ -285,6 +289,9 @@ export class GameScene extends Phaser.Scene {
   }
 
   public create(): void {
+    const devManager = DeveloperModeManager.getInstance();
+    devManager.attachGameScene(this);
+    this.events.once('shutdown', () => DeveloperModeManager.getInstance().detachGameScene());
     // 1. Khởi tạo trạng thái dữ liệu & hệ thống sinh tồn
     this.playerState = PlayerState.getInstance();
     if (!this.isContinueMode) {
@@ -356,6 +363,7 @@ export class GameScene extends Phaser.Scene {
     const devY = urlParams?.get('y');
 
     if (devZone && this.worldBuilder.getZone(devZone as ZoneId)) {
+      this.worldBuilder.ensureZoneRendered(devZone);
       const targetZ = this.worldBuilder.getZone(devZone as ZoneId)!;
       spawnX = devX ? Number(devX) : targetZ.defaultSpawn.x;
       spawnY = devY ? Number(devY) : targetZ.defaultSpawn.y;
@@ -372,6 +380,7 @@ export class GameScene extends Phaser.Scene {
       const rawX = this.continueSaveData.playerPos.x;
       const rawY = this.continueSaveData.playerPos.y;
       const initialZone = (this.continueSaveData.zoneId as ZoneId) || 'fog_crossing';
+      this.worldBuilder.ensureZoneRendered(initialZone);
 
       // V15-34: Tự động dò quét và giải quyết vị trí đứng an toàn khi nạp điểm lưu
       const safeSpawn = SafeSpawnResolver.resolveSafeSpawn(this, rawX, rawY, initialZone);
@@ -409,9 +418,33 @@ export class GameScene extends Phaser.Scene {
     this.player.resetAllActionAndMotionStates();
     this.player.lastSafePosition = { x: spawnX, y: spawnY };
 
+    // V152-05: Chặn contextmenu mặc định của chuột phải trên canvas game để sử dụng cho Heavy Attack
+    if (this.game && this.game.canvas) {
+      this.game.canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+    }
+
     // C4-132-01: Lắng nghe sự kiện vung gậy của nhân vật để xử lý âm thanh cảnh báo và quét va chạm thực thể
-    this.player.on('player_attack', (hitbox: { x: number; y: number; radius: number; facing: string; playerX: number; playerY: number }) => {
+    this.player.on('player_attack', (hitbox: { x: number; y: number; radius: number; facing: string; playerX: number; playerY: number; weapon?: any; isHeavy?: boolean; isWeaponArt?: boolean; isAoE?: boolean; knockback?: number; stunDuration?: number; poiseDamage?: number }) => {
       this.handlePlayerAttackHitbox(hitbox);
+    });
+
+    // V152-05: Lắng nghe sự kiện Parry thành công từ nhân vật
+    this.player.on('parry_success', (data: { x: number; y: number; facing: string }) => {
+      this.createHitSpark(data.x, data.y);
+      this.audioManager.playArmorClank();
+      this.audioManager.playRunestoneResonance();
+      if (this.uiScene) {
+        this.uiScene.showPopupMessage('🛡️ PHẢN ĐÒN HOÀN HẢO! Làm choáng kẻ địch cận chiến!');
+      }
+      if (this.wildlifeSystem) {
+        const fallenKnights = this.wildlifeSystem.getFallenKnights();
+        for (const fk of fallenKnights) {
+          if (fk.active && !fk.isDefeated && Math.hypot(fk.x - data.x, fk.y - data.y) < 90) {
+            fk.takeDamage(2, this.player.x, this.player.y);
+            if (typeof (fk as any).stagger === 'function') (fk as any).stagger(2000);
+          }
+        }
+      }
     });
 
     // V1.4 - Bước 9: Lắng nghe hiệu ứng chao đảo ánh sáng đèn lồng khi bị Dơi Sương Mù phục kích
@@ -568,6 +601,17 @@ export class GameScene extends Phaser.Scene {
     // V1.5 (BƯỚC V15-04 / V15-29): Chế độ Kiểm tra Kỹ thuật Hitbox & Performance Profiler (Phím F9)
     // Tách biệt hoàn toàn khỏi giao diện người chơi thường, mặc định TẮT hoàn toàn (false)
     this.hitboxInspector = new HitboxDebugInspector(this, this.player, this.uiScene);
+    this.devPanel = new DevPanelOverlay(devManager);
+    this.devPanel.layerHandler = (layer, enabled) => this.hitboxInspector.setLayerOptions({ [layer]: enabled });
+    this.devModeKeyHandler = (event: KeyboardEvent) => {
+      const productionShortcut = event.code === 'F9' && event.ctrlKey && event.shiftKey;
+      if (event.code !== 'F9' || (!devManager.canToggleWithSimpleF9() && !productionShortcut)) return;
+      event.preventDefault();
+      devManager.setEnabled(!devManager.isEnabled);
+      this.syncDeveloperModeUI();
+    };
+    window.addEventListener('keydown', this.devModeKeyHandler, true);
+    this.events.once('shutdown', () => { window.removeEventListener('keydown', this.devModeKeyHandler, true); devManager.setEnabled(false); this.devPanel?.destroy(); });
     this.isDebugBoxesVisible = false;
     if (this.hitboxInspector) {
       this.hitboxInspector.setDebugEnabled(false);
@@ -575,8 +619,6 @@ export class GameScene extends Phaser.Scene {
     if (this.input && this.input.keyboard) {
       this.f8Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F8);
       this.input.keyboard.addCapture([Phaser.Input.Keyboard.KeyCodes.F8]);
-      this.f9Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F9);
-      this.input.keyboard.addCapture([Phaser.Input.Keyboard.KeyCodes.F9]);
     }
     if (this.physics && this.physics.world) {
       this.physics.world.drawDebug = false;
@@ -847,10 +889,6 @@ export class GameScene extends Phaser.Scene {
         this.input?.keyboard?.removeKey(Phaser.Input.Keyboard.KeyCodes.F8);
         this.f8Key = undefined as any;
       }
-      if (this.f9Key) {
-        this.input?.keyboard?.removeKey(Phaser.Input.Keyboard.KeyCodes.F9);
-        this.f9Key = undefined as any;
-      }
       if (this.onHealthDepletedHandler) {
         this.playerState.off('player_health_depleted', this.onHealthDepletedHandler);
         this.onHealthDepletedHandler = undefined;
@@ -859,6 +897,7 @@ export class GameScene extends Phaser.Scene {
         this.hitboxInspector.destroy();
         this.hitboxInspector = undefined as any;
       }
+      this.devPanel?.hide();
       if (this.debugOverlay) {
         this.debugOverlay.destroy();
         this.debugOverlay = undefined as any;
@@ -1146,6 +1185,7 @@ export class GameScene extends Phaser.Scene {
       if (typeof window !== 'undefined' && window.p2 && typeof window.p2.gameOver === 'function') {
         window.p2.gameOver({
           score: calculatedScore,
+          level: dayCount,
           day: dayCount,
           zone: this.currentZoneId,
           deathReason
@@ -1416,14 +1456,14 @@ export class GameScene extends Phaser.Scene {
       patrolSpeed: 18
     });
 
-    // 6. Sir Vaelen — Kỵ Sĩ Trầm Mặc: quỳ chống kiếm bên cạnh Bếp Lửa Hồng đá cổ tại Trạm Lửa Rừng Tĩnh Lặng (x: 1435, y: 705)
+    // 6. Sir Vaelen — Kỵ Sĩ Trầm Mặc: quỳ chống kiếm bên cạnh Bếp Lửa Hồng đá cổ tại Trạm Lửa Rừng Tĩnh Lặng (x: 1435, y: 710)
     // Nằm ở khoảng đất trống yên bình BÊN NGOÀI làng Bellhollow (điểm giao giữa Rừng Ngoài và Đường Mòn Quanh Co)
     const campfireKnight = new NPCEntity(this, {
       id: 'npc_campfire_knight',
       name: 'Sir Vaelen — Kỵ Sĩ Trầm Mặc',
       title: 'Lưỡi gươm chọn sự bình yên',
       x: 1435,
-      y: 705,
+      y: 710,
       dialogueKey: 'campfire_knight_intro'
     });
     CampSanctuarySystem.getInstance().registerKnightEntity(campfireKnight);
@@ -1640,18 +1680,18 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    // V14-P8-01: Tạo quầng sáng chuyển sắc mềm mại (Radial Gradient Amber Glow) thay thế các vòng tròn đồng tâm thô cứng
+    // V14-P8-01 & V152-07 (#15): Quầng sáng chuyển sắc mềm dịu mắt, trần tâm maxAlpha <= 0.24, không lóa mặt đất
     if (!this.textures.exists('cached_lantern_glow_radial')) {
       const glowCanvas = this.textures.createCanvas('cached_lantern_glow_radial', 512, 512);
       if (glowCanvas) {
         const ctx = glowCanvas.getContext();
         const grad = ctx.createRadialGradient(256, 256, 0, 256, 256, 256);
-        grad.addColorStop(0, 'rgba(255, 238, 170, 0.75)');   // Lõi sáng vàng ấm hổ phách gần tim đèn
-        grad.addColorStop(0.12, 'rgba(255, 195, 77, 0.55)'); // Quầng lửa ấm
-        grad.addColorStop(0.32, 'rgba(243, 156, 18, 0.36)'); // Sắc hổ phách ấm áp
-        grad.addColorStop(0.58, 'rgba(230, 126, 34, 0.18)'); // Sắc cam nhạt loang êm dịu
-        grad.addColorStop(0.82, 'rgba(180, 80, 15, 0.05)');  // Vùng viền ngoài tản dần
-        grad.addColorStop(1.0, 'rgba(0, 0, 0, 0)');           // Hòa tan hoàn toàn vào bóng tối
+        grad.addColorStop(0, 'rgba(255, 215, 125, 0.24)');   // Hổ phách trầm ấm ở tâm (maxAlpha <= 0.24)
+        grad.addColorStop(0.18, 'rgba(245, 175, 75, 0.18)'); // Chuyển tiếp mịn quầng lửa ấm
+        grad.addColorStop(0.40, 'rgba(220, 130, 45, 0.10)'); // Tán sắc cam ấm dịu mắt
+        grad.addColorStop(0.68, 'rgba(180, 85, 20, 0.03)');  // Viền ngoài mờ dịu
+        grad.addColorStop(0.88, 'rgba(120, 50, 10, 0.008)'); // Mép tản dần
+        grad.addColorStop(1.0, 'rgba(0, 0, 0, 0)');           // Hòa tan hoàn toàn 0% viền sắc cạnh
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, 512, 512);
         glowCanvas.refresh();
@@ -2210,7 +2250,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     // V1.4: Cập nhật hệ sinh thái sinh vật hoang dã (Quạ Rừng & Bướm Đêm Hổ Phách)
-    if (!isUIBusy && this.wildlifeSystem) {
+    if (!isUIBusy && this.wildlifeSystem && !DeveloperModeManager.getInstance().isFreezeAI) {
       const isLanternLit = Boolean(this.player.stats.isLanternOn && this.player.stats.lanternOil > 0);
       const lightPos = this.player.getLanternWorldPosition();
       const playerLight = {
@@ -2459,11 +2499,17 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    // V14-P8-13: Kiểm tra nếu nhân vật lại gần chướng ngại vật cầu đá sập chặn lối thẳng (crooked_path x ~ 1760, y ~ 280)
-    if (this.currentZoneId === 'crooked_path' && this.player) {
+    // V152-03: Kiểm tra Cổng Đông khi CHƯA mở (#11) - Nhắc nhở cooldown 3s, không giật lùi, không inputLocked
+    if (this.currentZoneId === 'bellhollow' && this.player && !this.playerState.isEastGateUnlocked()) {
       const foot = this.player.getFootPosition();
-      if (Math.hypot(foot.x - 1760, foot.y - 280) < 65) {
-        this.triggerCollapsedBridgeThought(false);
+      if (foot.x >= 1440 && foot.x <= 1500 && Math.abs(foot.y - 280) <= 45) {
+        const now = Date.now();
+        if (now - this.lastEastGateReminderTime >= 3000) {
+          this.lastEastGateReminderTime = now;
+          if (this.uiScene) {
+            this.uiScene.showPopupMessage('🔒 Cổng Đông đang khóa chặt! Hãy trò chuyện với Garth, Edda và Neris để nhận quyền mở cổng.');
+          }
+        }
       }
     }
 
@@ -2489,17 +2535,77 @@ export class GameScene extends Phaser.Scene {
     // Cập nhật F4 & F9 Debug Overlays
     this.debugOverlay.update(this.currentZoneId);
     this.hitboxInspector.update(this.currentZoneId, delta);
+    if (this.devManagerState !== DeveloperModeManager.getInstance().isEnabled) this.syncDeveloperModeUI();
     // V15-34: Bắt phím tắt F8 Gỡ Kẹt Về Điểm An Toàn cho người chơi
     if (this.f8Key && Phaser.Input.Keyboard.JustDown(this.f8Key)) {
       this.emergencyUnstuckPlayer();
     }
-    // V15-29: Bắt phím tắt F9 cho Chế độ Debug Khung Tương Tác Quản Trị Viên
-    if (this.f9Key && Phaser.Input.Keyboard.JustDown(this.f9Key)) {
-      this.toggleDebugInteractionBoxes();
-    }
+
+    // V152-03: Chốt kẹp tọa độ nhân vật an toàn 100%, chống văng khỏi rìa đất ra khoảng đen vô tận
+    this.clampPlayerToZoneBounds();
 
     // V15-39: Điều phối Nhạc Nền BGM nghệ thuật theo vùng và bối cảnh
     this.updateBGMState(time, delta);
+  }
+
+  /**
+   * V152-03: Chốt kẹp tọa độ nhân vật an toàn 100%, chống rơi/văng khỏi rìa đất ra khoảng đen vô tận
+   */
+  private clampPlayerToZoneBounds(): void {
+    if (!this.player || this.isTransitioning || this.transitionCooldown > 0) return;
+
+    let minX = 0, maxX = 5000, minY = -1280, maxY = 1400;
+
+    switch (this.currentZoneId) {
+      case 'fog_crossing':
+        minX = 24; maxX = 460; minY = 28; maxY = 330;
+        break;
+      case 'bellhollow':
+        minX = 472; maxX = 1600; minY = 26; maxY = 556;
+        break;
+      case 'sanctuary_farm':
+        minX = 472; maxX = 1110; minY = 550; maxY = 1030;
+        break;
+      case 'outer_woods':
+        minX = 1110; maxX = 1600; minY = 550; maxY = 1030;
+        break;
+      case 'crooked_path':
+        minX = 1590; maxX = 2890; minY = 10; maxY = 620;
+        break;
+      case 'deep_forest':
+        minX = 1610; maxX = 2890; minY = -680; maxY = 20;
+        break;
+      case 'silent_mire':
+        minX = 2870; maxX = 4010; minY = 140; maxY = 500;
+        break;
+      case 'ancient_rune_puzzle':
+        minX = 3340; maxX = 4010; minY = 120; maxY = 480;
+        break;
+      case 'broken_bell_shrine':
+        minX = 3990; maxX = 4650; minY = 180; maxY = 420;
+        break;
+      case 'sub_bell_workshop':
+        minX = 1140; maxX = 1570; minY = 1045; maxY = 1410;
+        break;
+    }
+
+    const curX = this.player.x;
+    const curY = this.player.y;
+    const clampedX = Phaser.Math.Clamp(curX, minX, maxX);
+    const clampedY = Phaser.Math.Clamp(curY, minY, maxY);
+
+    if (clampedX !== curX || clampedY !== curY) {
+      this.player.setPosition(clampedX, clampedY);
+      if (this.player.body) {
+        const body = this.player.body as Phaser.Physics.Arcade.Body;
+        if ((curX < minX && body.velocity.x < 0) || (curX > maxX && body.velocity.x > 0)) {
+          body.velocity.x = 0;
+        }
+        if ((curY < minY && body.velocity.y < 0) || (curY > maxY && body.velocity.y > 0)) {
+          body.velocity.y = 0;
+        }
+      }
+    }
   }
 
   /**
@@ -2543,16 +2649,20 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    // 3. V15-37: Khu vực Trạm Lửa Rừng Tĩnh Lặng của Sir Vaelen (bán kính 180px quanh đốm lửa 1470, 710 & Sir Vaelen 1435, 705)
+    // 3. V15-37 & V152-02: Khu vực Trạm Lửa Rừng Tĩnh Lặng của Sir Vaelen (bán kính 180px quanh đốm lửa 1470, 710 & Sir Vaelen 1435, 705)
     const distToHearth = Math.hypot(this.player.x - 1470, this.player.y - 710);
     const distToVaelen = Math.hypot(this.player.x - 1435, this.player.y - 705);
     const isNearVaelenBonfire = Math.min(distToHearth, distToVaelen) <= 180 || distToVaelen <= 180;
 
     if (isNearVaelenBonfire) {
+      // V152-02: Cô lập hoàn toàn âm thanh tại Trạm Lửa Sir Vaelen (#10), chỉ phát duy nhất bgm_knights_quiet_fire trong trẻo
+      this.audioManager.setSanctuaryMusicOnly(true, 1.2);
       // Tự động chuyển êm (crossfade) sang bản nhạc bgm_knights_quiet_fire (ngày) & bgm_embervale (đêm) bên bếp lửa
-      const vaelenBgm = phase === 'NIGHT' ? 'bgm_embervale' : 'bgm_knights_quiet_fire';
-      this.audioManager.playBGM(vaelenBgm, 1.5, 0.85);
       return;
+    } else {
+      if (this.audioManager.isSanctuaryActive()) {
+        this.audioManager.setSanctuaryMusicOnly(false, 1.2);
+      }
     }
 
     // 4. Khám phá Xưởng Chuông Bỏ Hoang & Hầm Rễ Cổ
@@ -2582,19 +2692,18 @@ export class GameScene extends Phaser.Scene {
    * V15-29: Bật/Tắt Chế độ Debug Khung Tương Tác [F9] cho Quản trị viên
    */
   public toggleDebugInteractionBoxes(): void {
-    const now = Date.now();
-    if (now - this.lastF9ToggleTime < 200) return; // Debounce 200ms
-    this.lastF9ToggleTime = now;
+    const manager = DeveloperModeManager.getInstance();
+    manager.setEnabled(!manager.isEnabled);
+    this.syncDeveloperModeUI();
+  }
 
-    this.isDebugBoxesVisible = !this.isDebugBoxesVisible;
-    if (this.hitboxInspector && this.hitboxInspector.isDebugEnabled() !== this.isDebugBoxesVisible) {
-      this.hitboxInspector.setDebugEnabled(this.isDebugBoxesVisible);
-    }
-    const statusText = this.isDebugBoxesVisible ? 'BẬT' : 'TẮT';
-    const msg = `Chế độ Debug Khung Tương Tác [F9]: ${statusText}`;
-    if (this.uiScene && typeof this.uiScene.showDebugToast === 'function') {
-      this.uiScene.showDebugToast(msg);
-    }
+  private devManagerState = false;
+  private syncDeveloperModeUI(): void {
+    const enabled = DeveloperModeManager.getInstance().isEnabled;
+    this.devManagerState = enabled;
+    this.isDebugBoxesVisible = enabled;
+    this.hitboxInspector?.setDebugEnabled(enabled);
+    if (enabled) this.devPanel?.show(); else this.devPanel?.hide();
   }
 
   /**
@@ -2661,7 +2770,8 @@ export class GameScene extends Phaser.Scene {
 
     const currentPhase = this.timeSystem ? this.timeSystem.getCurrentPhase() : 'DAY';
     const isLanternLit = Boolean(this.playerState.stats.isLanternOn);
-    this.listenerMonster.update(delta, this.player.x, this.player.y, this.player.stats.isHiding, this.player.isDead(), currentPhase, isLanternLit);
+    if (DeveloperModeManager.getInstance().isFreezeAI) this.listenerMonster.setVelocity(0, 0);
+    else this.listenerMonster.update(delta, this.player.x, this.player.y, this.player.stats.isHiding, this.player.isDead(), currentPhase, isLanternLit);
 
     // C4-13-05 & C4-132-05: Toàn bộ Làng Bellhollow và khu vực cổng làng là Khu Vực An Toàn (Safe Zone)
     const isPlayerInSafeZone = (this.currentZoneId === 'bellhollow' && this.player.x <= 1620) || this.currentZoneId === 'sanctuary_farm' || this.currentZoneId === 'fog_crossing';
@@ -2724,7 +2834,22 @@ export class GameScene extends Phaser.Scene {
   }
 
   // C4-132-01: Xử lý tác động thực tế của đòn tấn công tự vệ (Satyr vung vũ khí)
-  private handlePlayerAttackHitbox(hitbox: { x: number; y: number; radius: number; facing: string; playerX: number; playerY: number; weapon?: WeaponDef }): void {
+  private handlePlayerAttackHitbox(hitbox: {
+    x: number;
+    y: number;
+    radius: number;
+    facing: string;
+    playerX: number;
+    playerY: number;
+    weapon?: WeaponDef;
+    isHeavy?: boolean;
+    isWeaponArt?: boolean;
+    isAoE?: boolean;
+    knockback?: number;
+    stunDuration?: number;
+    poiseDamage?: number;
+    damageMultiplier?: number;
+  }): void {
     const weaponDef = hitbox.weapon || EquipmentSystem.getInstance().getActiveWeaponDef();
     const noiseRad = weaponDef.noiseRadius || 120;
     const soundVol = noiseRad / 120;
@@ -2943,7 +3068,7 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    // 8. V1.4 - P8-10: Tác động lên Hiệp Sĩ Sa Ngã (Fallen Knight) khi vung chém
+    // 8. V1.4 - P8-10 & V152-05: Tác động lên Hiệp Sĩ Sa Ngã (Fallen Knight) khi vung chém
     if (this.wildlifeSystem) {
       const fallenKnights = this.wildlifeSystem.getFallenKnights();
       for (const fk of fallenKnights) {
@@ -2951,10 +3076,28 @@ export class GameScene extends Phaser.Scene {
           const distToFk = Math.hypot(fk.x - hitbox.x, fk.y - hitbox.y);
           if (distToFk <= hitbox.radius + 26) {
             this.createHitSpark(hitbox.x, hitbox.y);
-            const dmg = weaponDef.damage || 1;
+            const baseDmg = weaponDef.damage || 1;
+            let dmg = baseDmg;
+            if (hitbox.isHeavy) {
+              dmg = Math.round(baseDmg * (hitbox.damageMultiplier || 2.2));
+            } else if (hitbox.isWeaponArt) {
+              dmg = Math.round(baseDmg * (hitbox.damageMultiplier || 2.8));
+            }
             fk.takeDamage(dmg, this.player.x, this.player.y);
+
+            // Phá poise / Stagger nếu là Heavy Attack hoặc Weapon Art
+            if (hitbox.isHeavy || hitbox.isWeaponArt) {
+              if (typeof (fk as any).stagger === 'function') {
+                (fk as any).stagger(hitbox.stunDuration ? hitbox.stunDuration * 1000 : 1500);
+              }
+            }
+
             if (this.uiScene) {
-              if (fk.isVulnerable) {
+              if (hitbox.isWeaponArt) {
+                this.uiScene.showPopupMessage(`🌀 Tuyệt Kỹ Kiếm Khí bão lốc càn quét! (-${dmg} HP)`);
+              } else if (hitbox.isHeavy) {
+                this.uiScene.showPopupMessage(`💥 Trọng Kích phá vỡ tư thế phòng ngự Hiệp Sĩ Sa Ngã! (-${dmg} HP)`);
+              } else if (fk.isVulnerable) {
                 this.uiScene.showPopupMessage(`⚡ Đòn đánh trúng điểm sơ hở! Sát thương x2 (-${dmg * 2} HP) lên Hiệp Sĩ Sa Ngã!`);
               } else if (fk.hp <= 0) {
                 this.uiScene.showPopupMessage('⚔ Đã tiêu diệt Hiệp Sĩ Sa Ngã!');
@@ -4123,6 +4266,7 @@ export class GameScene extends Phaser.Scene {
         this.veilSystem.cleanupTransitionVFX();
         this.veilSystem.triggerZoneTransitionMist(350);
       }
+      this.worldBuilder.ensureZoneRendered(trans.toZone);
       this.worldBuilder.hibernateDistantZoneObjects(trans.toZone);
 
       this.applyCameraBoundsForZone(trans.toZone);
@@ -4195,7 +4339,8 @@ export class GameScene extends Phaser.Scene {
       this.veilSystem.triggerZoneTransitionMist(350);
     }
 
-    // C4-13-20: Tự động đặt trạng thái ngủ đông cho các đối tượng phân khu xa
+    // C4-13-20 & V152-07 (#13): Đảm bảo vùng đích đã dựng và ngủ đông các vùng xa
+    this.worldBuilder.ensureZoneRendered(trans.toZone);
     this.worldBuilder.hibernateDistantZoneObjects(trans.toZone);
 
     // Hiệu ứng flash nhẹ camera tạo cảm giác chuyển tiếp tự nhiên
@@ -6286,12 +6431,23 @@ export class GameScene extends Phaser.Scene {
     let fogAlpha = activeZone.atmosphere.fogAlpha;
     let fogColor = activeZone.atmosphere.fogColor;
 
-    // V1.4: Hòa trộn màu sắc sương mù theo chu kỳ Ngày / Hoàng Hôn / Đêm
+    // V1.4 & V152-07 (#16): Hòa trộn màu sắc sương mù Dark Shadow theo chu kỳ Ngày / Hoàng Hôn / Đêm
     if (this.timeSystem) {
       const timeColor = this.timeSystem.getFogColor();
-      const timeAlpha = this.timeSystem.getFogAlpha();
+      const alphaMult = this.timeSystem.getFogAlphaMultiplier();
       fogColor = lerpColor(fogColor, timeColor, 0.65);
-      fogAlpha = Math.max(fogAlpha, timeAlpha);
+
+      const currentPhase = this.timeSystem.getCurrentPhase();
+      if (currentPhase === 'DAY') {
+        // Ban ngày: âm u nhiều mây rợp bóng (overcast dark shadow nhẹ tông xanh xám lạnh), làm nổi bật ánh lửa và nấm dạ quang
+        fogAlpha = Phaser.Math.Clamp(fogAlpha * alphaMult, 0.32, 0.55);
+      } else if (currentPhase === 'DUSK') {
+        // Hoàng hôn: tối sậm nhanh, tăng chiều sâu bóng đổ
+        fogAlpha = Phaser.Math.Clamp(fogAlpha * alphaMult, 0.62, 0.82);
+      } else {
+        // Đêm sương: bóng tối sâu bao trùm xung quanh
+        fogAlpha = Phaser.Math.Clamp(fogAlpha * alphaMult, 0.86, 0.94);
+      }
     }
 
     // Trong cuộc rượt đuổi Act 5, Màn Sương chuyển sang sắc tím đậm hung bạo
@@ -6299,8 +6455,9 @@ export class GameScene extends Phaser.Scene {
       fogAlpha = 0.88;
       fogColor = 0x2d122b;
     } else if (this.currentZoneId === 'deep_forest' || this.currentZoneId === 'silent_mire' || this.currentZoneId === 'broken_bell_shrine' || this.currentZoneId === 'crooked_path') {
-      // V15-15: Sương mù rừng sâu mang sắc xanh xám lạnh lẽo cổ kính (0x111c24) tương phản với ánh sáng ấm áp
-      fogColor = lerpColor(fogColor, 0x111c24, 0.45);
+      // V152-07 (#16): Rừng Sâu & Đầm Lầy bóng tối sâu bao trùm xung quanh, sắc đen xanh huyền bí (0x070d14)
+      fogColor = lerpColor(fogColor, 0x070d14, 0.60);
+      fogAlpha = Math.max(fogAlpha, 0.84);
     } else if (this.currentZoneId === 'fog_crossing' || this.player.x < 560) {
       // C4-134-01: Hiệu ứng "Con Đường Sương Mù" Doraemon tại Fog Crossing & lối vào làng
       const fogFactor = Phaser.Math.Clamp((560 - this.player.x) / 400, 0, 1);
@@ -6453,19 +6610,21 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    // V14-P8-01: Hiệu ứng ánh sáng đèn lồng hổ phách ấm áp với chuyển sắc mềm (Radial Gradient)
+    // V14-P8-01 & V152-07 (#15): Hiệu ứng ánh sáng đèn lồng hổ phách trầm ấm, nhịp thở nhẹ, dịu mắt
     if (isLanternLit && this.currentLanternRadius > LANTERN_RADIUS_DIM + 3) {
       const qSettings = GraphicsQualitySystem.getInstance().getSettings();
-      const flicker = qSettings.enableAmberFlicker
-        ? (Math.sin(this.time.now * 0.007) * 0.02 + Math.cos(this.time.now * 0.013) * 0.015)
+      // Nhịp thở nhẹ nhàng (breathing subtle pulsation)
+      const breathing = qSettings.enableAmberFlicker
+        ? (Math.sin(this.time.now * 0.0035) * 0.012 + Math.cos(this.time.now * 0.006) * 0.008)
         : 0;
       const glowFactor = (this.currentLanternRadius - LANTERN_RADIUS_DIM) / (LANTERN_RADIUS_NORMAL - LANTERN_RADIUS_DIM);
-      const glowAlpha = Math.max(0.05, Math.min(0.42, (0.28 + flicker) * glowFactor));
+      // Giới hạn độ sáng trần dịu mắt maxAlpha <= 0.24, tan biến mượt mà, không lóa mặt đất
+      const glowAlpha = Math.max(0.06, Math.min(0.24, (0.20 + breathing) * glowFactor));
 
-      const targetGlowScale = (radius * 2.2) / 512;
+      const targetGlowScale = (radius * 2.0) / 512;
 
       this.lanternGlowImage.setPosition(screenX, screenY);
-      this.lanternGlowImage.setScale(targetGlowScale * (1 + flicker * 0.4));
+      this.lanternGlowImage.setScale(targetGlowScale * (1 + breathing * 0.2));
       this.lanternGlowImage.setAlpha(glowAlpha);
       this.lanternGlowImage.setVisible(true);
 

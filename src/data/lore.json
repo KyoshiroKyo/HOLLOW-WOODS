@@ -185,7 +185,7 @@
       "tasks": [
         {
           "id": "t1",
-          "text": "Di chuyển bằng [WASD / Mũi tên] và bật đèn bằng [F]",
+          "text": "Di chuyển bằng [WASD / Mũi tên] và bật Vòng Sáng bằng [F]",
           "done": true
         },
         {

@@ -390,6 +390,26 @@
       "stackable": false,
       "maxStack": 1,
       "iconColor": "#f1c40f"
+    },
+    {
+      "id": "eqp_skull_fang_charm",
+      "name": "Bùa Nanh Xương Cổ",
+      "category": "equipment",
+      "slot": "charm",
+      "description": "Bùa hộ mệnh bện từ Nanh Xương Cổ phát sáng lân tinh, giảm 20% tốc độ tụt Tinh Thần trong bóng tối và tăng 10% sức đẩy lùi quái vật.",
+      "stackable": false,
+      "maxStack": 1,
+      "iconColor": "#ecf0f1"
+    },
+    {
+      "id": "eqp_abyssal_ward_charm",
+      "name": "Bùa Trừ Tà Vực Thẳm",
+      "category": "equipment",
+      "slot": "charm",
+      "description": "Bùa hộ mệnh thanh tẩy từ Tinh Chất Bóng Tối, giảm 30% tốc độ tụt Tinh Thần trong bóng tối và miễn nhiễm hoảng loạn khi bị Trùm Bóng Tối nhìn thấy.",
+      "stackable": false,
+      "maxStack": 1,
+      "iconColor": "#8e44ad"
     }
   ],
   "recipes": [
@@ -561,7 +581,7 @@
     },
     {
       "id": "craft_skull_fang_charm",
-      "resultItemId": "eqp_bell_ward_charm",
+      "resultItemId": "eqp_skull_fang_charm",
       "resultCount": 1,
       "name": "Chế Tạo Bùa Hộ Mệnh Nanh Xương",
       "description": "Bện Nanh Xương Cổ cùng Dây thừng rừng và Nhựa cây tạo Bùa hộ mệnh xoa dịu Tinh Thần và kháng kinh hoàng.",
@@ -573,13 +593,13 @@
     },
     {
       "id": "craft_abyssal_ward_charm",
-      "resultItemId": "eqp_bell_ward_charm",
+      "resultItemId": "eqp_abyssal_ward_charm",
       "resultCount": 1,
       "name": "Thanh Tẩy Bùa Hộ Mệnh Vực Thẳm",
-      "description": "Kết hợp Mảnh Tinh Chất Bóng Tối với Bùa Chuông Đồng và Nhựa Thông Cổ, tạo lớp bảo vệ vững chắc chống hoảng loạn.",
+      "description": "Kết hợp Mảnh Tinh Chất Bóng Tối với Phụ Kiện Sắt Rèn Cổ Ngữ và Nhựa Thông Cổ, tạo lớp bảo vệ vững chắc chống hoảng loạn.",
       "ingredients": [
         { "itemId": "mat_shadow_essence", "count": 1 },
-        { "itemId": "quest_bronze_clapper", "count": 1 },
+        { "itemId": "mat_runed_iron", "count": 1 },
         { "itemId": "res_tree_resin", "count": 2 }
       ]
     },

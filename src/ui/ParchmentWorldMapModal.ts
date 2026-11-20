@@ -215,6 +215,15 @@ export class ParchmentWorldMapModal {
     const pw = 980;
     const ph = 600;
 
+    // V152-06B: Sprite Cuộn Bản Đồ Giấy Da Cổ từ UI Pack
+    let scrollSprite: Phaser.GameObjects.Image | undefined;
+    if (this.scene.textures.exists('ui_pack_world_map_scroll')) {
+      scrollSprite = this.scene.add.image(640, 360, 'ui_pack_world_map_scroll');
+      scrollSprite.setDisplaySize(pw + 30, ph + 30);
+      scrollSprite.setTint(0xdfd3b6);
+      scrollSprite.setAlpha(0.75);
+    }
+
     this.parchmentBg = this.scene.add.graphics();
     // Nền giấy da ngả vàng nâu cũ kỹ
     this.parchmentBg.fillStyle(0xd9c29e, 1);
@@ -263,7 +272,16 @@ export class ParchmentWorldMapModal {
 
     this.contentContainer = this.scene.add.container(0, 0);
 
-    this.container.add([this.backdrop, this.parchmentBg, titleText, this.subTitleText, closeBtn, this.contentContainer]);
+    const modalChildren: Phaser.GameObjects.GameObject[] = [
+      this.backdrop,
+      ...(scrollSprite ? [scrollSprite] : []),
+      this.parchmentBg,
+      titleText,
+      this.subTitleText,
+      closeBtn,
+      this.contentContainer
+    ];
+    this.container.add(modalChildren);
   }
 
   /**
@@ -547,16 +565,25 @@ export class ParchmentWorldMapModal {
       }
     }
 
-    // 5. Con trỏ định vị vị trí hiện tại của người chơi (Glowing Amber Beacon)
+    // 5. Con trỏ định vị vị trí hiện tại của người chơi (Glowing Amber Beacon & Pixel Map Pin)
     if (beaconPoints.length > 0) {
       const pt = beaconPoints[0];
-      const beaconGfx = this.scene.add.graphics();
-      beaconGfx.fillStyle(0xf39c12, 0.9);
-      beaconGfx.fillCircle(pt.x, pt.y, 6);
-      beaconGfx.lineStyle(2, 0xffffff, 1);
-      beaconGfx.strokeCircle(pt.x, pt.y, 6);
+      if (this.scene.textures.exists('ui_pack_map_pin')) {
+        const pinImg = this.scene.add.image(pt.x, pt.y - 12, 'ui_pack_map_pin');
+        pinImg.setDisplaySize(18, 28).setOrigin(0.5, 1);
+        this.contentContainer.add(pinImg);
+        pulsingObjects.push(pinImg);
+      } else {
+        const beaconGfx = this.scene.add.graphics();
+        beaconGfx.fillStyle(0xf39c12, 0.9);
+        beaconGfx.fillCircle(pt.x, pt.y, 6);
+        beaconGfx.lineStyle(2, 0xffffff, 1);
+        beaconGfx.strokeCircle(pt.x, pt.y, 6);
+        this.contentContainer.add(beaconGfx);
+        pulsingObjects.push(beaconGfx);
+      }
 
-      const beaconLabel = HDTextHelper.createText(this.scene, pt.x, pt.y - 16, '📍 BẠN ĐANG Ở ĐÂY', {
+      const beaconLabel = HDTextHelper.createText(this.scene, pt.x, pt.y - 28, '📍 BẠN ĐANG Ở ĐÂY', {
         fontSize: '9.5px',
         fontStyle: 'bold',
         color: '#f1c40f',
@@ -566,8 +593,7 @@ export class ParchmentWorldMapModal {
         strokeThickness: 2
       }).setOrigin(0.5, 1);
 
-      this.contentContainer.add([beaconGfx, beaconLabel]);
-      pulsingObjects.push(beaconGfx);
+      this.contentContainer.add(beaconLabel);
     }
 
     // Hiệu ứng nhấp nháy phát sáng (Pulsing Animation) cho beacon và target badge

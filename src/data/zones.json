@@ -45,8 +45,26 @@
           "id": "bound_left",
           "x": 0,
           "y": 0,
-          "width": 20,
+          "width": 32,
           "height": 360,
+          "type": "boundary",
+          "isSolid": true
+        },
+        {
+          "id": "fog_bound_right_top",
+          "x": 448,
+          "y": 0,
+          "width": 32,
+          "height": 100,
+          "type": "boundary",
+          "isSolid": true
+        },
+        {
+          "id": "fog_bound_right_bottom",
+          "x": 448,
+          "y": 260,
+          "width": 32,
+          "height": 100,
           "type": "boundary",
           "isSolid": true
         },
@@ -215,9 +233,9 @@
         {
           "id": "fence_top",
           "x": 480,
-          "y": 10,
+          "y": 6,
           "width": 1120,
-          "height": 24,
+          "height": 32,
           "type": "boundary",
           "isSolid": true
         },
@@ -225,9 +243,9 @@
           "id": "fence_bottom_west",
           "name": "Hàng Rào Nam Phía Tây",
           "x": 480,
-          "y": 540,
+          "y": 536,
           "width": 130,
-          "height": 24,
+          "height": 32,
           "type": "boundary",
           "isSolid": true
         },
@@ -235,9 +253,9 @@
           "id": "fence_bottom_mid",
           "name": "Hàng Rào Nam Giữa Làng",
           "x": 710,
-          "y": 540,
+          "y": 536,
           "width": 440,
-          "height": 24,
+          "height": 32,
           "type": "boundary",
           "isSolid": true
         },
@@ -245,9 +263,49 @@
           "id": "fence_bottom_east",
           "name": "Hàng Rào Nam Phía Đông",
           "x": 1270,
-          "y": 540,
+          "y": 536,
           "width": 330,
-          "height": 24,
+          "height": 32,
+          "type": "boundary",
+          "isSolid": true
+        },
+        {
+          "id": "bell_bound_west_top",
+          "name": "Biên Tây Bắc Làng",
+          "x": 450,
+          "y": 6,
+          "width": 32,
+          "height": 194,
+          "type": "boundary",
+          "isSolid": true
+        },
+        {
+          "id": "bell_bound_west_bottom",
+          "name": "Biên Tây Nam Làng",
+          "x": 450,
+          "y": 320,
+          "width": 32,
+          "height": 248,
+          "type": "boundary",
+          "isSolid": true
+        },
+        {
+          "id": "bell_bound_east_top",
+          "name": "Biên Đông Bắc Làng",
+          "x": 1598,
+          "y": 6,
+          "width": 32,
+          "height": 194,
+          "type": "boundary",
+          "isSolid": true
+        },
+        {
+          "id": "bell_bound_east_bottom",
+          "name": "Biên Đông Nam Làng",
+          "x": 1598,
+          "y": 360,
+          "width": 32,
+          "height": 208,
           "type": "boundary",
           "isSolid": true
         },
@@ -575,16 +633,6 @@
           "height": 32,
           "type": "rock",
           "isSolid": true
-        },
-        {
-          "id": "cp_collapsed_bridge_blocker",
-          "name": "Chướng Ngại Vật Cầu Sập Chặn Lối Thẳng",
-          "x": 1775,
-          "y": 240,
-          "width": 36,
-          "height": 84,
-          "type": "ruins",
-          "isSolid": true
         }
       ],
       "interactables": [
@@ -686,17 +734,6 @@
           "height": 24,
           "promptText": "[E] Kiểm Tra Bọc Hành Trang Cũ",
           "actionId": "inspect_cp_hunter_cache"
-        },
-        {
-          "id": "collapsed_shrine_bridge",
-          "name": "Cầu Đá Cổ Bị Sập",
-          "type": "clue",
-          "x": 1760,
-          "y": 280,
-          "width": 48,
-          "height": 48,
-          "promptText": "[E] Khảo sát Cầu Đá Bị Sập",
-          "actionId": "inspect_collapsed_bridge"
         },
         {
           "id": "sign_detour_winding",
@@ -1730,7 +1767,7 @@
           "x": 480,
           "y": 1020,
           "width": 300,
-          "height": 20,
+          "height": 32,
           "type": "boundary",
           "isSolid": true
         },
@@ -1739,15 +1776,15 @@
           "x": 840,
           "y": 1020,
           "width": 280,
-          "height": 20,
+          "height": 32,
           "type": "boundary",
           "isSolid": true
         },
         {
           "id": "farm_bound_left",
-          "x": 480,
+          "x": 448,
           "y": 560,
-          "width": 20,
+          "width": 32,
           "height": 480,
           "type": "boundary",
           "isSolid": true
@@ -1756,7 +1793,7 @@
           "id": "farm_bound_right_top",
           "x": 1100,
           "y": 560,
-          "width": 20,
+          "width": 32,
           "height": 120,
           "type": "boundary",
           "isSolid": true
@@ -1765,7 +1802,7 @@
           "id": "farm_bound_right_bottom",
           "x": 1100,
           "y": 820,
-          "width": 20,
+          "width": 32,
           "height": 220,
           "type": "boundary",
           "isSolid": true
@@ -1961,7 +1998,7 @@
           "x": 1120,
           "y": 1020,
           "width": 200,
-          "height": 20,
+          "height": 32,
           "type": "boundary",
           "isSolid": true
         },
@@ -1970,7 +2007,7 @@
           "x": 1400,
           "y": 1020,
           "width": 200,
-          "height": 20,
+          "height": 32,
           "type": "boundary",
           "isSolid": true
         },
@@ -1978,7 +2015,7 @@
           "id": "ow_bound_right_top",
           "x": 1580,
           "y": 560,
-          "width": 20,
+          "width": 32,
           "height": 100,
           "type": "boundary",
           "isSolid": true
@@ -1987,7 +2024,7 @@
           "id": "ow_bound_right_bottom",
           "x": 1580,
           "y": 840,
-          "width": 20,
+          "width": 32,
           "height": 200,
           "type": "boundary",
           "isSolid": true
@@ -2277,8 +2314,8 @@
           "id": "hide_bush_ow_bonfire",
           "name": "Bụi Rậm Trạm Lửa Sir Vaelen",
           "type": "hiding_spot",
-          "x": 1460,
-          "y": 730,
+          "x": 1420,
+          "y": 745,
           "width": 32,
           "height": 32,
           "promptText": "[E] Ẩn Nấp Vào Bụi Rậm",
@@ -2288,12 +2325,23 @@
           "id": "hide_tree_ow_willow",
           "name": "Cây Rỗng Bãi Liễu",
           "type": "hiding_spot",
-          "x": 1320,
-          "y": 910,
+          "x": 1290,
+          "y": 900,
           "width": 32,
           "height": 32,
           "promptText": "[E] Ẩn Nấp Vào Cây Rỗng",
           "actionId": "hide_tree_ow_willow"
+        },
+        {
+          "id": "sign_sub_bell_workshop",
+          "name": "Biển Chỉ Dẫn: Xưởng Chuông Bỏ Hoang ↓",
+          "type": "clue",
+          "x": 1300,
+          "y": 985,
+          "width": 28,
+          "height": 28,
+          "promptText": "[E] Đọc Biển Chỉ Dẫn: Xưởng Chuông Bỏ Hoang ↓",
+          "actionId": "inspect_sign_bell_workshop"
         }
       ],
       "transitions": [
@@ -2912,7 +2960,7 @@
           "x": 1120,
           "y": 1040,
           "width": 200,
-          "height": 20,
+          "height": 32,
           "type": "boundary",
           "isSolid": true
         },
@@ -2920,17 +2968,17 @@
           "id": "bw_bound_top_right",
           "x": 1400,
           "y": 1040,
-          "width": 180,
-          "height": 20,
+          "width": 200,
+          "height": 32,
           "type": "boundary",
           "isSolid": true
         },
         {
           "id": "bw_bound_bottom",
           "x": 1120,
-          "y": 1420,
+          "y": 1408,
           "width": 480,
-          "height": 20,
+          "height": 32,
           "type": "boundary",
           "isSolid": true
         },
@@ -2938,16 +2986,16 @@
           "id": "bw_bound_left",
           "x": 1120,
           "y": 1040,
-          "width": 20,
+          "width": 32,
           "height": 400,
           "type": "boundary",
           "isSolid": true
         },
         {
           "id": "bw_bound_right",
-          "x": 1580,
+          "x": 1568,
           "y": 1040,
-          "width": 20,
+          "width": 32,
           "height": 400,
           "type": "boundary",
           "isSolid": true

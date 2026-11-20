@@ -15,17 +15,13 @@ import { PNG } from 'pngjs';
 
 console.log('=== RUNNING TEST V15-61: PIXEL ART TREES & BELLHOLLOW CLEANUP ===\n');
 
-// 1. Verify Asset Files on Disk
+// 1. Verify Asset Files on Disk and Atlas (V152-09 Deduplicated)
+const atlas = JSON.parse(fs.readFileSync('public/assets/atlases/hollow_props_atlas.json', 'utf-8'));
 const requiredAssets = [
   'public/assets/environment/trees/tree_mist_pine.png',
   'public/assets/environment/trees/tree_mossy_oak_grand.png',
   'public/assets/environment/trees/tree_weeping_willow.png',
   'public/assets/environment/trees/tree_withered_gnarled.png',
-  'public/assets/environment/sprites/tree_oak_1.png',
-  'public/assets/environment/sprites/tree_oak_2.png',
-  'public/assets/environment/sprites/tree_oak_3.png',
-  'public/assets/environment/sprites/tree_dead.png',
-  'public/assets/environment/sprites/hollow_tree.png',
   'public/assets/environment/v14/props/prop_fallen_log_mossy_v14.png',
   'public/assets/environment/v14/props/tree_hollow_ancient_v14.png'
 ];
@@ -38,7 +34,18 @@ for (const relPath of requiredAssets) {
   const png = PNG.sync.read(buf);
   assert(png.width > 0 && png.height > 0, `Invalid PNG dimensions in: ${relPath}`);
 }
-console.log('✓ PASS: All 15 required pixel art tree and prop assets exist and are valid PNG images.');
+
+const requiredAtlasFrames = [
+  'tree_oak_1',
+  'tree_oak_2',
+  'tree_oak_3',
+  'tree_dead',
+  'hollow_tree'
+];
+for (const frame of requiredAtlasFrames) {
+  assert(atlas.frames && atlas.frames[frame], `Atlas missing tree frame: ${frame}`);
+}
+console.log('✓ PASS: All required pixel art tree and prop assets exist on disk and in hollow_props_atlas.');
 
 // 2. Verify PreloadScene.ts & AtlasTextureResolver
 const preloadContent = fs.readFileSync('src/scenes/PreloadScene.ts', 'utf-8');

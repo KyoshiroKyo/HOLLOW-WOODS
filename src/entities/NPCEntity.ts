@@ -80,7 +80,7 @@ export class NPCEntity extends Phaser.GameObjects.Container {
     }
 
     if (this.baseId === 'finn') {
-      this.headOffsetY = 42;
+      this.headOffsetY = 54;
     } else if (this.baseId === 'bram') {
       this.headOffsetY = 56;
     } else if (this.baseId === 'campfire_knight') {

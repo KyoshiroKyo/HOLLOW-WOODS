@@ -5,6 +5,7 @@
  */
 
 import { P2GamePlayer, P2LeaderboardEntry, P2LeaderboardSubmitResult } from '../types/p2game';
+import { DeveloperModeManager } from '../debug/DeveloperModeManager';
 
 export const SURVIVAL_LEADERBOARD_ID = 'survival-score';
 
@@ -107,6 +108,11 @@ export class LeaderboardService {
    * Metadata luôn được đảm bảo kích thước dưới 1 KB (khoảng 150-200 bytes)
    */
   public async submitSurvivalScore(params: SubmitScoreParams): Promise<P2LeaderboardSubmitResult | null> {
+    if (DeveloperModeManager.getInstance().isDevSession) {
+      console.warn('[DevMode] Đã chặn gửi điểm BXH vì phiên chơi có dùng công cụ Developer');
+      return { accepted: false, reason: 'developer_mode_session' };
+    }
+
     if (this.isSubmitting) {
       console.log('[LeaderboardService] Đang trong tiến trình gửi điểm trước đó, bỏ qua lệnh trùng lặp.');
       return null;
@@ -181,34 +187,54 @@ export class LeaderboardService {
   }
 
   /**
-   * 4. Lấy danh sách Top 10 bảng xếp hạng điểm sinh tồn
+   * 4. Lấy danh sách Top bảng xếp hạng điểm sinh tồn (mặc định WEEKLY limit 10)
    */
-  public async getTopScores(limit: number = 10): Promise<P2LeaderboardEntry[]> {
+  public async getTopScores(limit: number = 10, timeWindow: 'ALL_TIME' | 'DAILY' | 'WEEKLY' = 'WEEKLY'): Promise<P2LeaderboardEntry[]> {
     try {
       if (typeof window === 'undefined' || !window.p2?.leaderboard?.top) {
         return [];
       }
       const clampedLimit = Math.min(Math.max(1, limit), 50);
-      return await window.p2.leaderboard.top(SURVIVAL_LEADERBOARD_ID, { limit: clampedLimit });
+      return await window.p2.leaderboard.top(SURVIVAL_LEADERBOARD_ID, { limit: clampedLimit, window: timeWindow });
     } catch (err: any) {
-      console.warn('[LeaderboardService] Lỗi khi lấy Top bảng xếp hạng:', err);
+      this.handleLeaderboardError('getTopScores', err);
       return [];
     }
   }
 
   /**
-   * 5. Lấy danh sách thứ hạng quanh người chơi hiện tại
+   * 5. Lấy danh sách thứ hạng quanh người chơi hiện tại (mặc định range 3)
    */
-  public async getScoresAroundMe(range: number = 3): Promise<P2LeaderboardEntry[]> {
+  public async getScoresAroundMe(range: number = 3, timeWindow: 'ALL_TIME' | 'DAILY' | 'WEEKLY' = 'WEEKLY'): Promise<P2LeaderboardEntry[]> {
     try {
       if (typeof window === 'undefined' || !window.p2?.leaderboard?.aroundMe) {
         return [];
       }
       const clampedRange = Math.min(Math.max(1, range), 10);
-      return await window.p2.leaderboard.aroundMe(SURVIVAL_LEADERBOARD_ID, { range: clampedRange });
+      return await window.p2.leaderboard.aroundMe(SURVIVAL_LEADERBOARD_ID, { range: clampedRange, window: timeWindow });
     } catch (err: any) {
-      console.warn('[LeaderboardService] Lỗi khi lấy thứ hạng quanh người chơi:', err);
+      this.handleLeaderboardError('getScoresAroundMe', err);
       return [];
+    }
+  }
+
+  /**
+   * Bọc xử lý lỗi chuẩn P2GameError: UNAUTHENTICATED, SCORE_REJECTED, RATE_LIMITED
+   */
+  private handleLeaderboardError(action: string, err: any): void {
+    const code = err?.code || '';
+    if (code === 'UNAUTHENTICATED') {
+      console.warn(`[LeaderboardService] ${action}: Người chơi chưa đăng nhập.`);
+      window.p2?.ui?.toast?.('Vui lòng đăng nhập để đồng bộ bảng xếp hạng.', 'warning');
+    } else if (code === 'SCORE_REJECTED') {
+      console.warn(`[LeaderboardService] ${action}: Điểm số bị từ chối (${err?.message}).`);
+      window.p2?.ui?.toast?.('Điểm số không được chấp nhận hoặc phiên chơi không hợp lệ.', 'warning');
+    } else if (code === 'RATE_LIMITED') {
+      const waitSec = Math.ceil((err.retryAfterMs ?? 5000) / 1000);
+      console.warn(`[LeaderboardService] ${action}: Bị giới hạn tần suất, đợi ${waitSec}s.`);
+      window.p2?.ui?.toast?.(`Thao tác quá nhanh, vui lòng đợi ${waitSec} giây.`, 'warning');
+    } else {
+      console.warn(`[LeaderboardService] ${action} lỗi:`, err?.message || err);
     }
   }
 

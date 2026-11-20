@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import { GameConfig } from './config/GameConfig';
 import { ScaleManager } from './utils/ScaleManager';
+import { SaveManager } from './systems/SaveManager';
 
 window.addEventListener('DOMContentLoaded', async () => {
   // 1. Khởi tạo P2Game SDK trước khi dựng game Phaser
@@ -73,19 +74,35 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   }, { passive: false });
 
-  // 2. Đăng ký vòng đời p2.onPause và p2.onResume cho Phaser Game Loop
+  // 2. Đăng ký đủ 3 sự kiện vòng đời P2Game SDK (onPause, onResume, onBeforeUnload)
   try {
     if (typeof window !== 'undefined' && window.p2) {
       if (typeof window.p2.onPause === 'function') {
         window.p2.onPause(() => {
-          console.log('[P2Game SDK] onPause: Tạm dừng game.loop');
+          console.log('[P2Game SDK] onPause: Tạm dừng game & âm thanh');
           game.loop.sleep();
+          try {
+            if (game.sound) game.sound.pauseAll();
+          } catch {}
         });
       }
       if (typeof window.p2.onResume === 'function') {
         window.p2.onResume(() => {
-          console.log('[P2Game SDK] onResume: Đánh thức game.loop');
+          console.log('[P2Game SDK] onResume: Khôi phục game & âm thanh');
           game.loop.wake();
+          try {
+            if (game.sound) game.sound.resumeAll();
+          } catch {}
+        });
+      }
+      if (typeof window.p2.onBeforeUnload === 'function') {
+        window.p2.onBeforeUnload(() => {
+          console.log('[P2Game SDK] onBeforeUnload: Lưu nhanh tiến trình');
+          try {
+            SaveManager.quickSaveOnUnload();
+          } catch (unloadErr) {
+            console.warn('[P2Game SDK] Lỗi lưu nhanh onBeforeUnload:', unloadErr);
+          }
         });
       }
     }

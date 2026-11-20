@@ -54,6 +54,8 @@ export class MiniMapWidget {
     this.playerState = playerState;
     this.container = this.scene.add.container(MiniMapWidget.POS_X, MiniMapWidget.POS_Y);
     this.container.setDepth(900); // Nằm trên gameplay, dưới các modal toàn màn hình
+    this.container.setVisible(false); // V152-06A: Gỡ bỏ hoàn toàn Mini-map góc màn hình
+    this.isVisible = false;
     this.buildWidgetUI();
   }
 

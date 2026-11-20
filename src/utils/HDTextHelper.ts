@@ -6,9 +6,19 @@
 
 import * as Phaser from 'phaser';
 
-export const HD_FONT_FAMILY = '"Segoe UI", "Roboto", "Inter", system-ui, sans-serif';
+export const HD_FONT_FAMILY = '"Segoe UI", "Roboto", "Inter", "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", system-ui, sans-serif';
 
 export class HDTextHelper {
+  /**
+   * Tính toán độ phân giải Text HD tối ưu theo Device Pixel Ratio (tối thiểu 2x, tối đa 3x)
+   */
+  public static getOptimalResolution(): number {
+    if (typeof window !== 'undefined' && window.devicePixelRatio) {
+      return Math.max(2, Math.min(window.devicePixelRatio, 3));
+    }
+    return 2;
+  }
+
   /**
    * Chuẩn hóa style chữ với font chữ HD Tiếng Việt mặc định
    */
@@ -20,11 +30,12 @@ export class HDTextHelper {
   }
 
   /**
-   * Áp dụng độ phân giải cao (setResolution = 2) và bộ lọc mượt mà (LINEAR) cho Text GameObject
+   * Áp dụng độ phân giải cao và bộ lọc mượt mà (LINEAR) cho Text GameObject
    * Đồng thời tự động duy trì độ phân giải HD mỗi khi cập nhật chữ
    */
-  public static applyHD(textObj: Phaser.GameObjects.Text, resolution: number = 2): Phaser.GameObjects.Text {
-    textObj.setResolution(resolution);
+  public static applyHD(textObj: Phaser.GameObjects.Text, resolution?: number): Phaser.GameObjects.Text {
+    const res = resolution ?? this.getOptimalResolution();
+    textObj.setResolution(res);
     if (textObj.texture) {
       textObj.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
     }
@@ -37,7 +48,7 @@ export class HDTextHelper {
         return textObj; // Tránh tạo lại canvas context và texture upload nếu nội dung không đổi
       }
       const result = originalSetText(value);
-      textObj.setResolution(resolution);
+      textObj.setResolution(res);
       if (textObj.texture) {
         textObj.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
       }
@@ -56,10 +67,12 @@ export class HDTextHelper {
     y: number,
     text: string | string[],
     style?: Phaser.Types.GameObjects.Text.TextStyle,
-    resolution: number = 2
+    resolution?: number
   ): Phaser.GameObjects.Text {
     const formattedStyle = this.formatStyle(style);
-    const textObj = scene.add.text(x, y, text, formattedStyle);
+    const roundX = Math.round(x);
+    const roundY = Math.round(y);
+    const textObj = scene.add.text(roundX, roundY, text, formattedStyle);
     return this.applyHD(textObj, resolution);
   }
 
@@ -69,10 +82,11 @@ export class HDTextHelper {
   public static updateText(
     textObj: Phaser.GameObjects.Text,
     text: string | string[],
-    resolution: number = 2
+    resolution?: number
   ): void {
+    const res = resolution ?? this.getOptimalResolution();
     textObj.setText(text);
-    textObj.setResolution(resolution);
+    textObj.setResolution(res);
     if (textObj.texture) {
       textObj.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
     }

@@ -41,30 +41,30 @@ export const TIME_CONFIG: TimeSystemConfig = {
       name: 'DAY',
       vietnameseName: 'Ban Ngày',
       icon: '☀️',
-      colorHex: '#f1c40f',
+      colorHex: '#9ab0c4',
       duration: 180,
-      visionRadiusUnlit: 220,
-      visionRadiusLit: 260,
-      ambientColor: 0xffffff,
-      fogColor: 0x22362b,
-      fogAlphaMultiplier: 0.85,
+      visionRadiusUnlit: 210,
+      visionRadiusLit: 250,
+      ambientColor: 0x9ab0c4, // V152-07 (#16): Bầu trời u ám rợp bóng mây (overcast dark shadow tông xanh xám lạnh)
+      fogColor: 0x16202a,     // Sắc xanh xám lạnh gothic giúp ánh lửa và nấm dạ quang nổi bật
+      fogAlphaMultiplier: 0.52,
       windIntensity: 0.35,
       composureDrainNormal: 0.0, // Bình Tâm hoàn toàn ổn định khi tắt đèn ban ngày
       composureDrainDeepFog: 0.35,
       composureRecoveryLit: 2.2,
-      transitionAlert: '☀️ Ánh bình minh xuyên qua tán lá, sương mù tạm lắng xuống.'
+      transitionAlert: '☀️ Ánh bình minh âm u xuyên qua tán lá, sương mù rợp bóng.'
     },
     DUSK: {
       name: 'DUSK',
       vietnameseName: 'Hoàng Hôn',
       icon: '🌅',
-      colorHex: '#e67e22',
+      colorHex: '#8c4838',
       duration: 90,
-      visionRadiusUnlit: 150,
-      visionRadiusLit: 195,
-      ambientColor: 0xd47a5b,
-      fogColor: 0x3d2539,
-      fogAlphaMultiplier: 1.15,
+      visionRadiusUnlit: 130,
+      visionRadiusLit: 180,
+      ambientColor: 0x6a3e3c, // V152-07 (#16): Tối sậm nhanh, sắc cam tím sẫm dark shadow
+      fogColor: 0x24141e,     // Tím sẫm hoàng hôn ma quái
+      fogAlphaMultiplier: 1.22,
       windIntensity: 0.65,
       composureDrainNormal: 0.6, // Áp lực nhẹ khi tắt đèn quá lâu
       composureDrainDeepFog: 1.5,
@@ -75,13 +75,13 @@ export const TIME_CONFIG: TimeSystemConfig = {
       name: 'NIGHT',
       vietnameseName: 'Đêm Sương',
       icon: '🌙',
-      colorHex: '#5dade2',
+      colorHex: '#4a6984',
       duration: 90,
-      visionRadiusUnlit: 55, // Thu hẹp còn ~55px trong đêm
-      visionRadiusLit: 140,
-      ambientColor: 0x0c131d,
-      fogColor: 0x090f16,
-      fogAlphaMultiplier: 1.40,
+      visionRadiusUnlit: 50, // Thu hẹp còn ~50px trong đêm
+      visionRadiusLit: 135,
+      ambientColor: 0x080c14, // V152-07 (#16): Bóng tối sâu bao trùm, đen xanh sẫm
+      fogColor: 0x060910,     // Bóng tối thẳm sâu huyền bí
+      fogAlphaMultiplier: 1.45,
       windIntensity: 1.10,
       composureDrainNormal: 1.8, // Nguy hiểm cao nếu không có đèn
       composureDrainDeepFog: 3.2,

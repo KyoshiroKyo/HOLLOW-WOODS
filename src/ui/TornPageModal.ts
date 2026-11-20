@@ -78,6 +78,14 @@ export class TornPageModal {
     });
 
     // 2. Đồ họa nền tấm nền (Parchment / Signpost / Notice / Stele)
+    let scrollBgSprite: Phaser.GameObjects.Image | undefined;
+    if (this.scene.textures.exists('ui_pack_panel_modal')) {
+      scrollBgSprite = this.scene.add.image(640, 320, 'ui_pack_panel_modal');
+      scrollBgSprite.setDisplaySize(700, 440);
+      scrollBgSprite.setTint(0xbaa187);
+      scrollBgSprite.setAlpha(0.65);
+    }
+
     this.parchmentBg = this.scene.add.graphics();
 
     // 3. Tiêu đề, Cổ Ngữ & Tác giả
@@ -188,8 +196,9 @@ export class TornPageModal {
       this.updateCloseButtonTextColor(variant);
     });
 
-    this.container.add([
+    const tornPageElements: Phaser.GameObjects.GameObject[] = [
       this.overlayBg,
+      ...(scrollBgSprite ? [scrollBgSprite] : []),
       this.parchmentBg,
       this.runeText,
       this.titleText,
@@ -201,7 +210,8 @@ export class TornPageModal {
       this.nextPageBtn,
       this.stowBtnContainer,
       this.closeBtnText
-    ]);
+    ];
+    this.container.add(tornPageElements);
   }
 
   // =========================================================================

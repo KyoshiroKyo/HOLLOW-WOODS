@@ -4,6 +4,7 @@ export const HUD_ICON_HEALTH = 'hud_icon_health';
 export const HUD_ICON_STAMINA = 'hud_icon_stamina';
 export const HUD_ICON_OIL = 'hud_icon_oil';
 export const HUD_ICON_COMPOSURE = 'hud_icon_composure';
+export const HUD_ICON_WOOD = 'hud_icon_wood';
 
 // UI Frame Caching Keys (V15-FIX-08)
 export const UI_TEX_QC_SLOT_HOVER = 'ui_tex_qc_slot_hover';
@@ -140,6 +141,36 @@ const COMPOSURE_GRID: string[] = [
   '................'
 ];
 
+// V152-06A: Biểu tượng Khúc Gỗ Khô (16x16 Pixel Art) triệt tiêu ô vuông trắng □ trên hotbar
+const WOOD_PALETTE: Record<string, number | null> = {
+  '.': null,
+  'B': 0x241208, // Viền vỏ cây sẫm
+  'D': 0x5a3818, // Vỏ thân cây
+  'M': 0x8a5528, // Mặt gỗ nâu ấm
+  'L': 0xb87d45, // Thớ gỗ sáng
+  'C': 0xd9a46a, // Vòng năm gỗ
+  'W': 0xf5cf9b  // Tâm lõi gỗ sáng
+};
+
+const WOOD_GRID: string[] = [
+  '................',
+  '....BBBBB.......',
+  '...BLLLLLBBD....',
+  '..BLCCCCCLDDDD..',
+  '..BLCWWWCLDMMD..',
+  '..BLCWWWCLDMMDB.',
+  '..BLCCCCCLDMMDB.',
+  '..BLLLLLBBDMMDB.',
+  '...BBBBBDDDMMDB.',
+  '..BBBBBBDDDMMDB.',
+  '.BLLLLLBBDDMMDB.',
+  'BLCCCCCLDDMMDDB.',
+  'BLCWWWCLDDMMDB..',
+  'BLCCCCCLDDMDDB..',
+  '.BLLLLLBBDMDB...',
+  '..BBBBBB..BB....'
+];
+
 export class HUDIconGenerator {
   /**
    * Tạo texture 16×16 px chuẩn Nearest-Neighbor từ bản đồ pixel
@@ -182,6 +213,7 @@ export class HUDIconGenerator {
     HUDIconGenerator.generateIconTexture(scene, HUD_ICON_STAMINA, STAMINA_GRID, STAMINA_PALETTE);
     HUDIconGenerator.generateIconTexture(scene, HUD_ICON_OIL, OIL_GRID, OIL_PALETTE);
     HUDIconGenerator.generateIconTexture(scene, HUD_ICON_COMPOSURE, COMPOSURE_GRID, COMPOSURE_PALETTE);
+    HUDIconGenerator.generateIconTexture(scene, HUD_ICON_WOOD, WOOD_GRID, WOOD_PALETTE);
   }
 
   /**

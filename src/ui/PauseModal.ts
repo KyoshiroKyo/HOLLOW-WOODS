@@ -92,6 +92,14 @@ export class PauseModal {
     overlay.setInteractive(new Phaser.Geom.Rectangle(0, 0, 1280, 720), Phaser.Geom.Rectangle.Contains);
 
     // 2. Khung modal chính phong cách gothic sẫm màu chuẩn HD
+    let panelImg: Phaser.GameObjects.Image | undefined;
+    if (this.scene.textures.exists('ui_pack_panel_modal')) {
+      panelImg = this.scene.add.image(640, 360, 'ui_pack_panel_modal');
+      panelImg.setDisplaySize(modalW + 24, modalH + 24);
+      panelImg.setTint(0xbaa187);
+      panelImg.setAlpha(0.65);
+    }
+
     const box = this.scene.add.graphics();
     box.fillStyle(0x0d1118, 0.98);
     box.fillRoundedRect(modalX, modalY, modalW, modalH, 10);
@@ -337,8 +345,10 @@ export class PauseModal {
       color: '#7f8c8d'
     }).setOrigin(0.5, 0.5);
 
-    this.container.add([
-      overlay, box, title, closeBtn, this.saveStatusText,
+    const pauseElements: Phaser.GameObjects.GameObject[] = [
+      overlay,
+      ...(panelImg ? [panelImg] : []),
+      box, title, closeBtn, this.saveStatusText,
       resumeBtn, saveBtn, reloadBtn, unstuckBtn, guideBtn, quitBtn,
       settingsBox, settingsTitle,
       graphicsLabel, graphicsBtnContainer, this.graphicsDescText,
@@ -350,7 +360,8 @@ export class PauseModal {
       muteBtnContainer,
       clearSaveBtn,
       tipText
-    ]);
+    ];
+    this.container.add(pauseElements);
 
     this.updateGraphicsQualityText();
   }
@@ -468,6 +479,14 @@ export class PauseModal {
   private createButton(x: number, y: number, text: string, color: string, onClick: () => void, btnW = 360, btnH = 44): Phaser.GameObjects.Container {
     const btnContainer = this.scene.add.container(x, y);
 
+    let btnSprite: Phaser.GameObjects.Image | undefined;
+    if (this.scene.textures.exists('ui_pack_btn_wood')) {
+      btnSprite = this.scene.add.image(0, 0, 'ui_pack_btn_wood');
+      btnSprite.setDisplaySize(btnW, btnH);
+      btnSprite.setTint(0xbaa187);
+      btnContainer.add(btnSprite);
+    }
+
     const bg = this.scene.add.graphics();
     bg.fillStyle(0x141a24, 0.95);
     bg.fillRoundedRect(-btnW / 2, -btnH / 2, btnW, btnH, 6);
@@ -491,6 +510,9 @@ export class PauseModal {
 
     btnContainer.on('pointerdown', onClick);
     btnContainer.on('pointerover', () => {
+      if (btnSprite && this.scene.textures.exists('ui_pack_btn_wood_hover')) {
+        btnSprite.setTexture('ui_pack_btn_wood_hover');
+      }
       bg.clear();
       bg.fillStyle(0x222c3d, 1);
       bg.fillRoundedRect(-btnW / 2, -btnH / 2, btnW, btnH, 6);
@@ -500,6 +522,9 @@ export class PauseModal {
     });
 
     btnContainer.on('pointerout', () => {
+      if (btnSprite && this.scene.textures.exists('ui_pack_btn_wood')) {
+        btnSprite.setTexture('ui_pack_btn_wood');
+      }
       bg.clear();
       bg.fillStyle(0x141a24, 0.95);
       bg.fillRoundedRect(-btnW / 2, -btnH / 2, btnW, btnH, 6);

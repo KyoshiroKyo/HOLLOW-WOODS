@@ -179,6 +179,33 @@ export class ZoneConnectionRegistry {
           connectionId: 'conn_outer_woods_to_crooked_path',
           status: 'active',
           displayLabel: 'Lối mòn sang Đường Mòn Quanh Co'
+        },
+        {
+          zoneId: 'sub_bell_workshop',
+          direction: 'south',
+          connectionId: 'conn_outer_woods_to_bell_workshop',
+          status: 'active',
+          displayLabel: 'Xưởng Chuông Bỏ Hoang'
+        }
+      ]
+    });
+
+    this.zoneNodes.set('sub_bell_workshop', {
+      id: 'sub_bell_workshop',
+      displayName: 'Abandoned Bell Workshop',
+      titleVietnamese: 'Xưởng Chuông Bỏ Hoang',
+      tier: 'LAYER_1_CORE',
+      tierName: 'Tiểu khu — Rừng Ngoại Vi',
+      bounds: { x: 1120, y: 1040, width: 480, height: 400 },
+      defaultSpawn: { x: 1360, y: 1100 },
+      status: 'active',
+      neighbors: [
+        {
+          zoneId: 'outer_woods',
+          direction: 'north',
+          connectionId: 'conn_bell_workshop_to_outer_woods',
+          status: 'active',
+          displayLabel: 'Rừng Ngoại Vi'
         }
       ]
     });
@@ -511,6 +538,34 @@ export class ZoneConnectionRegistry {
         entryPoint: { x: 1540, y: 780, direction: 'left' },
         returnPoint: { x: 1640, y: 500, direction: 'right' },
         description: 'Lối rẽ tự nhiên né tránh quái vật quay về vành đai Rừng Ngoại Vi an toàn.'
+      },
+
+      // -----------------------------------------------------------------------
+      // 5B. Outer Woods <--> Abandoned Bell Workshop (Tầng 1 Core <--> Tiểu khu D)
+      // -----------------------------------------------------------------------
+      {
+        id: 'conn_outer_woods_to_bell_workshop',
+        fromZone: 'outer_woods',
+        toZone: 'sub_bell_workshop',
+        status: 'active',
+        barrierType: 'open',
+        displayLabel: 'Lối vào Xưởng Chuông Bỏ Hoang',
+        triggerRect: { x: 1320, y: 1000, width: 80, height: 40 },
+        entryPoint: { x: 1360, y: 1100, direction: 'down' },
+        returnPoint: { x: 1360, y: 960, direction: 'up' },
+        description: 'Lối mòn phủ rêu dẫn tới phế tích xưởng đúc chuông ven rừng.'
+      },
+      {
+        id: 'conn_bell_workshop_to_outer_woods',
+        fromZone: 'sub_bell_workshop',
+        toZone: 'outer_woods',
+        status: 'active',
+        barrierType: 'open',
+        displayLabel: 'Quay lại Rừng Ngoại Vi',
+        triggerRect: { x: 1320, y: 1040, width: 80, height: 30 },
+        entryPoint: { x: 1360, y: 980, direction: 'up' },
+        returnPoint: { x: 1360, y: 1100, direction: 'down' },
+        description: 'Đường mòn quay về vành đai Rừng Ngoại Vi.'
       },
 
       // -----------------------------------------------------------------------

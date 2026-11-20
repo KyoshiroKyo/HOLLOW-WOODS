@@ -64,8 +64,12 @@ export const CORE_SFX_MANIFEST: Record<string, string> = {
   quest_update: 'assets/audio/sfx/quest_update.wav',
   bronze_bell: 'assets/audio/sfx/bell_low.mp3',
   listener_alert: 'assets/audio/sfx/listener_alert.mp3',
+  herb_gather: 'assets/audio/sfx/herb_gather.wav',
+  monster_step: 'assets/audio/sfx/monster_step.mp3',
   ambience_village: 'assets/audio/ambience/ambience_village.mp3',
-  ambience_forest: 'assets/audio/ambience/ambience_forest.mp3'
+  ambience_forest: 'assets/audio/ambience/ambience_forest.mp3',
+  ambience_mire: 'assets/audio/ambience/ambience_mire.mp3',
+  ambience_crossing: 'assets/audio/ambience/ambience_crossing.mp3'
 };
 
 // V15-FIX-04: Nhóm 2 - LAZY_SFX (tải theo nhu cầu / phân khu)
@@ -75,8 +79,8 @@ export const LAZY_SFX_MANIFEST: Record<string, string> = {
   footstep_wood_2: 'assets/audio/sfx/v14/footstep_wood_2.wav',
   footstep_stone_2: 'assets/audio/sfx/v14/footstep_stone_2.wav',
   footstep_leaves_1: 'assets/audio/sfx/v14/footstep_leaves_1.mp3',
-  ambience_mire: 'assets/audio/ambience/ambience_mire.mp3',
-  ambience_crossing: 'assets/audio/ambience/ambience_crossing.mp3',
+  runestone: 'assets/audio/sfx/rune_resonance.mp3',
+  runestone_err: 'assets/audio/sfx/rune_error.mp3',
   bat_flap: 'assets/audio/sfx/v14/bat_flap.wav',
   bat_screech: 'assets/audio/sfx/v14/bat_screech.wav',
   bat_bite: 'assets/audio/sfx/v14/bat_bite.wav',
@@ -110,9 +114,10 @@ export const ZONE_SFX_MAP: Record<string, string[]> = {
   fog_crossing: ['ambience_crossing', 'footstep_leaves_1', 'ghost_whisper', 'jumpscare_stinger', 'sanity_gasp'],
   crooked_path: ['ambience_crossing', 'skull_wolf_growl', 'skull_wolf_snarl', 'bat_flap', 'bat_screech', 'jumpscare_stinger', 'sanity_gasp'],
   sub_whispering_clearing: ['ghost_whisper', 'ghost_moan', 'sanity_gasp'],
-  silent_mire: ['ambience_mire', 'footstep_mud_1', 'footstep_mud_2', 'footstep_stone_2', 'rune_shift', 'bell_toll_low', 'behemoth_roar', 'behemoth_thud'],
+  silent_mire: ['ambience_mire', 'footstep_mud_1', 'footstep_mud_2', 'footstep_stone_2', 'rune_shift', 'runestone', 'runestone_err', 'bell_toll_low', 'behemoth_roar', 'behemoth_thud'],
+  ancient_rune_puzzle: ['runestone', 'runestone_err', 'rune_shift', 'footstep_mud_1', 'footstep_stone_2', 'bell_toll_low'],
   drowned_mire_depths: ['ambience_mire', 'footstep_mud_1', 'footstep_mud_2', 'rune_shift', 'behemoth_roar', 'behemoth_thud', 'bell_toll_low'],
-  broken_bell_shrine: ['bell_toll_low', 'rune_shift', 'chest_creak', 'journal_page'],
+  broken_bell_shrine: ['bell_toll_low', 'rune_shift', 'runestone', 'runestone_err', 'chest_creak', 'journal_page'],
   deep_forest: ['footstep_leaves_1', 'footstep_stone_2', 'ghost_moan', 'ghost_whisper', 'ghost_scream', 'ghost_dissipate', 'scout_whistle', 'void_stalker_drone', 'void_stalker_screech'],
   whispering_grove_sanctum: ['ghost_whisper', 'ghost_moan', 'ghost_dissipate', 'boss_drone'],
   sunken_crypt_ruins: ['footstep_stone_2', 'ghost_scream', 'ghost_dissipate', 'void_stalker_drone', 'void_stalker_screech', 'boss_drone'],
@@ -138,6 +143,9 @@ export class AudioManager {
   private isBGMSuppressed: boolean = false;
   private pendingBGMTrack: { track: BGMTrack; fadeDuration: number; volumeScale: number } | null = null;
   private fadingBGMAudios: { audio: HTMLAudioElement; intervalId: number }[] = [];
+  private activeBGMRampInterval: number | null = null;
+  private isSanctuaryMusicOnly: boolean = false;
+  private savedPreSanctuaryAmbienceZone: AmbienceZone | null = null;
 
   // Khả năng tương thích ngược
   private currentBGMSource: AudioBufferSourceNode | null = null;
@@ -963,6 +971,12 @@ export class AudioManager {
         ? zoneIdOrType
         : this.mapZoneToAmbience(zoneIdOrType);
 
+    // V152-02: Nếu đang ở chế độ Trạm Lửa Sir Vaelen, lưu lại vùng đích và không phát ambience rừng/đầm lầy
+    if (this.isSanctuaryMusicOnly) {
+      this.savedPreSanctuaryAmbienceZone = targetZone;
+      return;
+    }
+
     // Nếu AudioContext chưa được mở khóa, lưu lại để kích hoạt ngay khi người dùng chạm vào game
     if (!this.ctx || this.ctx.state === 'suspended') {
       this.pendingAmbienceZone = targetZone;
@@ -1260,9 +1274,63 @@ export class AudioManager {
         this.fadingChannels.push({ channel, timerId });
         this.activeAmbience = null;
         this.currentAmbienceZone = null;
+
+        // V152-02: Hạ âm và dừng/ngắt kết nối rainSource sau khi fade-out để tránh rò rỉ tiếng mưa
+        if (this.rainSource) {
+          const oldRainSource = this.rainSource;
+          const oldRainGain = this.rainGain;
+          this.rainSource = null;
+          this.rainGain = null;
+          this.lastRainTargetGain = -1;
+
+          if (oldRainGain) {
+            oldRainGain.gain.cancelScheduledValues(now);
+            oldRainGain.gain.setValueAtTime(oldRainGain.gain.value, now);
+            oldRainGain.gain.linearRampToValueAtTime(0.0001, now + 0.6);
+          }
+          window.setTimeout(() => {
+            try { oldRainSource.stop(); } catch {}
+            try { oldRainSource.disconnect(); } catch {}
+            if (oldRainGain) {
+              try { oldRainGain.disconnect(); } catch {}
+            }
+          }, 700);
+        }
       }
     } else {
       this.currentAmbienceZone = null;
+      if (immediate) {
+        if (this.rainSource) {
+          try { this.rainSource.stop(); } catch {}
+          try { this.rainSource.disconnect(); } catch {}
+          this.rainSource = null;
+        }
+        if (this.rainGain) {
+          try { this.rainGain.disconnect(); } catch {}
+          this.rainGain = null;
+        }
+        this.lastRainTargetGain = -1;
+      } else if (this.rainSource) {
+        // V152-02: Hạ âm và dừng/ngắt kết nối rainSource sau khi fade-out để tránh rò rỉ tiếng mưa
+        const oldRainSource = this.rainSource;
+        const oldRainGain = this.rainGain;
+        this.rainSource = null;
+        this.rainGain = null;
+        this.lastRainTargetGain = -1;
+
+        if (oldRainGain) {
+          oldRainGain.gain.cancelScheduledValues(now);
+          oldRainGain.gain.setValueAtTime(oldRainGain.gain.value, now);
+          oldRainGain.gain.linearRampToValueAtTime(0.0001, now + 0.6);
+        }
+        window.setTimeout(() => {
+          try { oldRainSource.stop(); } catch {}
+          try { oldRainSource.disconnect(); } catch {}
+          if (oldRainGain) {
+            try { oldRainGain.disconnect(); } catch {}
+          }
+        }, 700);
+      }
     }
   }
 
@@ -1290,7 +1358,13 @@ export class AudioManager {
     // Nếu đang phát đúng track này và audio vẫn đang hoạt động
     if (this.currentBGMTrack === track && this.currentBGMAudio) {
       const targetVol = this.calculateEffectiveBGMVolume(volumeScale);
-      this.rampAudioVolume(this.currentBGMAudio, targetVol, 0.3);
+      if (this.activeBGMRampInterval !== null) {
+        window.clearInterval(this.activeBGMRampInterval);
+        this.activeBGMRampInterval = null;
+      }
+      this.activeBGMRampInterval = this.rampAudioVolume(this.currentBGMAudio, targetVol, 0.3, () => {
+        this.activeBGMRampInterval = null;
+      });
       if (this.currentBGMAudio.paused) {
         this.currentBGMAudio.play().catch(() => {});
       }
@@ -1302,6 +1376,10 @@ export class AudioManager {
 
     // 1. Fade-out kênh BGM streaming cũ (nếu có)
     if (this.currentBGMAudio) {
+      if (this.activeBGMRampInterval !== null) {
+        window.clearInterval(this.activeBGMRampInterval);
+        this.activeBGMRampInterval = null;
+      }
       const oldAudio = this.currentBGMAudio;
       const fadeInterval = this.rampAudioVolume(oldAudio, 0, fadeDuration, () => {
         try {
@@ -1347,7 +1425,13 @@ export class AudioManager {
       const playPromise = newAudio.play();
       if (playPromise !== undefined) {
         playPromise.then(() => {
-          this.rampAudioVolume(newAudio, targetVol, fadeDuration);
+          if (this.activeBGMRampInterval !== null) {
+            window.clearInterval(this.activeBGMRampInterval);
+            this.activeBGMRampInterval = null;
+          }
+          this.activeBGMRampInterval = this.rampAudioVolume(newAudio, targetVol, fadeDuration, () => {
+            this.activeBGMRampInterval = null;
+          });
         }).catch(() => {
           // Trình duyệt chặn autoplay khi chưa có tương tác
           this.pendingBGMTrack = { track, fadeDuration, volumeScale };
@@ -1366,6 +1450,11 @@ export class AudioManager {
   public stopBGM(fadeDuration: number = 0.8): void {
     this.pendingBGMTrack = null;
     this.currentBGMTrack = null;
+
+    if (this.activeBGMRampInterval !== null) {
+      window.clearInterval(this.activeBGMRampInterval);
+      this.activeBGMRampInterval = null;
+    }
 
     if (this.currentBGMAudio) {
       const oldAudio = this.currentBGMAudio;
@@ -1413,7 +1502,13 @@ export class AudioManager {
 
     if (this.currentBGMAudio) {
       const targetGain = this.calculateEffectiveBGMVolume();
-      this.rampAudioVolume(this.currentBGMAudio, targetGain, fadeDuration);
+      if (this.activeBGMRampInterval !== null) {
+        window.clearInterval(this.activeBGMRampInterval);
+        this.activeBGMRampInterval = null;
+      }
+      this.activeBGMRampInterval = this.rampAudioVolume(this.currentBGMAudio, targetGain, fadeDuration, () => {
+        this.activeBGMRampInterval = null;
+      });
     }
 
     if (this.ctx && this.currentBGMGain) {
@@ -1432,12 +1527,58 @@ export class AudioManager {
     return this.currentBGMTrack;
   }
 
+  public getCurrentAmbience(): AmbienceZone | null {
+    return this.currentAmbienceZone;
+  }
+
+  /**
+   * V152-02: Kiểm tra trạng thái cô lập âm thanh Trạm Lửa Sir Vaelen (#10)
+   */
+  public isSanctuaryActive(): boolean {
+    return this.isSanctuaryMusicOnly;
+  }
+
+  /**
+   * V152-02: Cô lập hoàn toàn âm thanh tại Trạm Lửa Sir Vaelen (#10)
+   * - active = true: fade-out về 0 toàn bộ ambience rừng, mưa, gió rít, nhịp tim và tạm ngắt ảo giác âm thanh;
+   *   chỉ phát DUY NHẤT bản nhạc du dương bgm_knights_quiet_fire (knights_quiet_fire.mp3) trong trẻo.
+   * - active = false: crossfade êm trở lại ambience và BGM rừng.
+   */
+  public setSanctuaryMusicOnly(active: boolean, fadeDuration: number = 1.2): void {
+    if (this.isSanctuaryMusicOnly === active) return;
+    this.isSanctuaryMusicOnly = active;
+
+    if (active) {
+      if (this.currentAmbienceZone) {
+        this.savedPreSanctuaryAmbienceZone = this.currentAmbienceZone;
+      }
+      // Dập tắt nhịp tim hoảng loạn
+      this.setHeartbeatActive(false);
+
+      // Hạ âm / fade-out toàn bộ ambience môi trường và mưa về 0
+      this.stopAmbience(false);
+      if (this.windGain && this.ctx) {
+        const now = this.ctx.currentTime;
+        this.windGain.gain.cancelScheduledValues(now);
+        this.windGain.gain.setValueAtTime(this.windGain.gain.value, now);
+        this.windGain.gain.linearRampToValueAtTime(0.0001, now + fadeDuration);
+      }
+
+      // Phát DUY NHẤT bản nhạc du dương bgm_knights_quiet_fire trong trẻo
+      this.playBGM('bgm_knights_quiet_fire', fadeDuration, 0.85);
+    } else {
+      // Khi rời Trạm Lửa: crossfade êm trở lại ambience môi trường
+      const returnZone = this.savedPreSanctuaryAmbienceZone || 'forest';
+      this.setAmbienceZone(returnZone, fadeDuration);
+    }
+  }
+
   // =========================================================================
   // 6. TIẾNG NHỊP TIM ĐẬP DỒN DẬP (HEARTBEAT SFX) & DÌM ÂM TÂM LÝ (V15-58C)
   // =========================================================================
 
   public setHeartbeatActive(active: boolean, intervalMs: number = 800): void {
-    if (!active) {
+    if (!active || this.isSanctuaryMusicOnly) {
       if (this.heartbeatTimer) {
         clearInterval(this.heartbeatTimer);
         this.heartbeatTimer = null;
@@ -1478,7 +1619,7 @@ export class AudioManager {
    *   Tự động tắt nhịp tim và hồi phục âm lượng nhạc nền bình thường.
    */
   public updateDynamicHeartbeat(composure: number, isMonsterNear: boolean = false, isSafeZoneOrCampfire: boolean = false): void {
-    if (isSafeZoneOrCampfire || (composure >= 45 && !isMonsterNear)) {
+    if (this.isSanctuaryMusicOnly || isSafeZoneOrCampfire || (composure >= 45 && !isMonsterNear)) {
       if (this.isHeartbeatActive) {
         this.setHeartbeatActive(false);
       }
@@ -1541,7 +1682,13 @@ export class AudioManager {
 
     if (this.currentBGMAudio) {
       const targetGain = this.calculateEffectiveBGMVolume();
-      this.rampAudioVolume(this.currentBGMAudio, targetGain, fadeDuration);
+      if (this.activeBGMRampInterval !== null) {
+        window.clearInterval(this.activeBGMRampInterval);
+        this.activeBGMRampInterval = null;
+      }
+      this.activeBGMRampInterval = this.rampAudioVolume(this.currentBGMAudio, targetGain, fadeDuration, () => {
+        this.activeBGMRampInterval = null;
+      });
     }
 
     if (this.ctx && this.currentBGMGain && !this.isBGMSuppressed) {
@@ -2450,7 +2597,7 @@ export class AudioManager {
    * tạo cảm giác chuông cổ bị rạn nứt, u ám và điềm gở.
    */
   public playCrackedBellToll(): void {
-    if (!this.ctx || this.isMuted || !this.masterGain) return;
+    if (!this.ctx || this.isMuted || !this.masterGain || this.isSanctuaryMusicOnly) return;
     if (!this.checkCooldown('cracked_bell', 1500)) return;
     this.resumeAudio();
 
@@ -2748,6 +2895,10 @@ export class AudioManager {
    * C4-13-03 & C4-133: Dừng toàn bộ âm thanh môi trường, nhịp tim và giải phóng toàn bộ kênh SFX
    */
   public stopAll(): void {
+    if (this.activeBGMRampInterval !== null) {
+      window.clearInterval(this.activeBGMRampInterval);
+      this.activeBGMRampInterval = null;
+    }
     this.stopAmbience(true);
     this.stopBGM(0.1);
     for (const fb of this.fadingBGMAudios) {
@@ -3014,7 +3165,7 @@ export class AudioManager {
    * Âm sắc rỗng và vang xa (hollow bandpass reverb) để phân biệt với quái vật thật
    */
   public playFalseFootsteps(): void {
-    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    if (!this.ctx || this.isMuted || !this.veilFilter || this.isSanctuaryMusicOnly) return;
     if (!this.checkCooldown('false_footsteps', 1800)) return;
     this.resumeAudio();
 
@@ -3052,7 +3203,7 @@ export class AudioManager {
    * V1.4: Tiếng gió rít hú báo hiệu Đợt Sương Dâng (Fog Surge Wind Gust)
    */
   public playWindWhoosh(): void {
-    if (!this.ctx || this.isMuted || !this.veilFilter) return;
+    if (!this.ctx || this.isMuted || !this.veilFilter || this.isSanctuaryMusicOnly) return;
     if (!this.checkCooldown('wind_whoosh', 5000)) return;
     this.resumeAudio();
 
@@ -3761,6 +3912,10 @@ export class AudioManager {
   }
 
   public destroy(): void {
+    if (this.activeBGMRampInterval !== null) {
+      window.clearInterval(this.activeBGMRampInterval);
+      this.activeBGMRampInterval = null;
+    }
     this.stopAmbience(true);
     this.stopBGM(0.1);
     for (const fb of this.fadingBGMAudios) {

@@ -10,8 +10,6 @@ import {
   SCENE_MAIN_MENU, 
   SATYR_SHEET_KEY, 
   SATYR_PORTRAIT_KEY, 
-  SATYR_FRAME_WIDTH, 
-  SATYR_FRAME_HEIGHT,
   WAYFARER_IDLE_KEY,
   WAYFARER_WALK_KEY,
   WAYFARER_RUN_KEY,
@@ -22,6 +20,15 @@ import {
   WAYFARER_GATHER_KEY,
   WAYFARER_USE_ITEM_KEY,
   WAYFARER_PORTRAIT_KEY,
+  WAYFARER_UNARMED_IDLE_KEY,
+  WAYFARER_UNARMED_RUN_KEY,
+  WAYFARER_HEAVY_ATTACK_KEY,
+  WAYFARER_WEAPON_ART_KEY,
+  WAYFARER_PARRY_KEY,
+  WAYFARER_ROLL_KEY,
+  WAYFARER_UNARMED_ROLL_KEY,
+  WAYFARER_BUFF_KEY,
+  WAYFARER_WEAPON_TOGGLE_KEY,
   WAYFARER_FRAME_WIDTH,
   WAYFARER_FRAME_HEIGHT,
   TILE_FOREST_GRASS,
@@ -101,6 +108,7 @@ import {
   SPRITE_GATEHOUSE_GARTH_V15,
   SPRITE_BELL_TOWER_GRAND_V15,
   SPRITE_VILLAGE_WELL_DETAILED_V15,
+  SPRITE_BUILDING_RANGER_OUTPOST_V15,
   SPRITE_TREE_MIST_PINE_V15,
   SPRITE_TREE_MOSSY_OAK_GRAND_V15,
   SPRITE_TREE_WEEPING_WILLOW_V15,
@@ -124,6 +132,7 @@ import {
 } from '../config/Constants';
 
 import { HUDIconGenerator } from '../utils/HUDIconGenerator';
+import { HDTextHelper } from '../utils/HDTextHelper';
 import { AudioManager } from '../audio/AudioManager';
 import {
   AtlasTextureResolver,
@@ -287,9 +296,8 @@ export class PreloadScene extends Phaser.Scene {
       });
     }
 
-    // 3. Tiêu đề trò chơi HOLLOW WOODS & Dòng mô tả
-    this.add.text(640, 280, 'HOLLOW WOODS', {
-      fontFamily: 'serif',
+    // 3. Tiêu đề trò chơi HOLLOW WOODS & Dòng mô tả (Chuẩn hóa HD sắc nét không nhòe v152-06a)
+    HDTextHelper.createText(this, 640, 280, 'HOLLOW WOODS', {
       fontSize: '28px',
       fontStyle: 'bold',
       color: '#f39c12',
@@ -297,8 +305,7 @@ export class PreloadScene extends Phaser.Scene {
       strokeThickness: 4
     }).setOrigin(0.5, 0.5);
 
-    this.add.text(640, 310, 'THE FOG THAT REMEMBERS', {
-      fontFamily: 'serif',
+    HDTextHelper.createText(this, 640, 310, 'THE FOG THAT REMEMBERS', {
       fontSize: '12px',
       fontStyle: 'italic',
       color: '#8c9ba5',
@@ -332,18 +339,17 @@ export class PreloadScene extends Phaser.Scene {
     const progressBar = this.add.graphics();
 
     // Dòng trạng thái chung phía trên thanh tải
-    const loadingText = this.add.text(640, 350, 'Đang xuyên qua Màn Sương...', {
-      fontFamily: 'serif',
-      fontSize: '13px',
+    const loadingText = HDTextHelper.createText(this, 640, 350, 'Đang xuyên qua Màn Sương...', {
+      fontSize: '14px',
+      fontStyle: 'bold',
       color: '#cbd5e1',
       stroke: '#000000',
       strokeThickness: 2
     }).setOrigin(0.5, 0.5);
 
     // Con số phần trăm nằm chính giữa thanh tải
-    const percentText = this.add.text(640, 380, '0%', {
-      fontFamily: 'sans-serif',
-      fontSize: '11px',
+    const percentText = HDTextHelper.createText(this, 640, 380, '0%', {
+      fontSize: '12px',
       fontStyle: 'bold',
       color: '#ffffff',
       stroke: '#000000',
@@ -351,10 +357,9 @@ export class PreloadScene extends Phaser.Scene {
     }).setOrigin(0.5, 0.5);
 
     // Dòng hiển thị tên tài nguyên đang nạp phía dưới thanh tải
-    const assetStatusText = this.add.text(640, 408, 'Đang chuẩn bị tài nguyên khởi động...', {
-      fontFamily: 'sans-serif',
-      fontSize: '11px',
-      color: '#7f8c8d',
+    const assetStatusText = HDTextHelper.createText(this, 640, 408, 'Đang chuẩn bị tài nguyên khởi động...', {
+      fontSize: '12px',
+      color: '#94a3b8',
       stroke: '#000000',
       strokeThickness: 2
     }).setOrigin(0.5, 0.5);
@@ -371,8 +376,7 @@ export class PreloadScene extends Phaser.Scene {
     tipBox.lineStyle(1, 0x4a3728, 0.8);
     tipBox.strokeRoundedRect(boxX, boxY, boxW, boxH, 6);
 
-    this.add.text(640, boxY + 16, '❖ MẸO SINH TỒN & TRUYỀN THUYẾT ❖', {
-      fontFamily: 'serif',
+    HDTextHelper.createText(this, 640, boxY + 16, '❖ MẸO SINH TỒN & TRUYỀN THUYẾT ❖', {
       fontSize: '12px',
       fontStyle: 'bold',
       color: '#d4af37',
@@ -382,9 +386,8 @@ export class PreloadScene extends Phaser.Scene {
 
     // Lựa chọn ngẫu nhiên một câu mẹo truyền thuyết khi khởi động
     let currentTipIndex = Phaser.Math.Between(0, PreloadScene.LORE_TIPS.length - 1);
-    const tipText = this.add.text(640, boxY + 50, `“${PreloadScene.LORE_TIPS[currentTipIndex]}”`, {
-      fontFamily: 'serif',
-      fontSize: '13px',
+    const tipText = HDTextHelper.createText(this, 640, boxY + 50, `“${PreloadScene.LORE_TIPS[currentTipIndex]}”`, {
+      fontSize: '14px',
       fontStyle: 'italic',
       color: '#ecf0f1',
       align: 'center',
@@ -469,10 +472,10 @@ export class PreloadScene extends Phaser.Scene {
       progressBar.fillRect(barX + 4, barY + 5, barWidth - 8, 2);
     });
 
-    // 2. Nạp sprite sheet chính của Satyr (64×64 px - tương thích ngược)
-    this.load.spritesheet(SATYR_SHEET_KEY, 'assets/characters/satyr/satyr_sheet.png', {
-      frameWidth: SATYR_FRAME_WIDTH,
-      frameHeight: SATYR_FRAME_HEIGHT
+    // 2. Nạp sprite sheet tương thích ngược cho Satyr (trỏ sang Wayfarer Idle đã hợp nhất)
+    this.load.spritesheet(SATYR_SHEET_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_idle.png', {
+      frameWidth: WAYFARER_FRAME_WIDTH,
+      frameHeight: WAYFARER_FRAME_HEIGHT
     });
 
     // 2b. Nạp 9 sprite sheets gốc của nhân vật chính The Mossbound Wayfarer (64×64 px)
@@ -513,6 +516,44 @@ export class PreloadScene extends Phaser.Scene {
       frameHeight: WAYFARER_FRAME_HEIGHT
     });
 
+    // 2c. Nạp 9 sprite sheets chiến đấu & động tác mới của Black Knight Wayfarer (64×64 px)
+    this.load.spritesheet(WAYFARER_UNARMED_IDLE_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_unarmed_idle.png', {
+      frameWidth: WAYFARER_FRAME_WIDTH,
+      frameHeight: WAYFARER_FRAME_HEIGHT
+    });
+    this.load.spritesheet(WAYFARER_UNARMED_RUN_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_unarmed_run.png', {
+      frameWidth: WAYFARER_FRAME_WIDTH,
+      frameHeight: WAYFARER_FRAME_HEIGHT
+    });
+    this.load.spritesheet(WAYFARER_HEAVY_ATTACK_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_heavy_attack.png', {
+      frameWidth: WAYFARER_FRAME_WIDTH,
+      frameHeight: WAYFARER_FRAME_HEIGHT
+    });
+    this.load.spritesheet(WAYFARER_WEAPON_ART_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_weapon_art.png', {
+      frameWidth: WAYFARER_FRAME_WIDTH,
+      frameHeight: WAYFARER_FRAME_HEIGHT
+    });
+    this.load.spritesheet(WAYFARER_PARRY_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_parry.png', {
+      frameWidth: WAYFARER_FRAME_WIDTH,
+      frameHeight: WAYFARER_FRAME_HEIGHT
+    });
+    this.load.spritesheet(WAYFARER_ROLL_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_roll.png', {
+      frameWidth: WAYFARER_FRAME_WIDTH,
+      frameHeight: WAYFARER_FRAME_HEIGHT
+    });
+    this.load.spritesheet(WAYFARER_UNARMED_ROLL_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_unarmed_roll.png', {
+      frameWidth: WAYFARER_FRAME_WIDTH,
+      frameHeight: WAYFARER_FRAME_HEIGHT
+    });
+    this.load.spritesheet(WAYFARER_BUFF_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_buff.png', {
+      frameWidth: WAYFARER_FRAME_WIDTH,
+      frameHeight: WAYFARER_FRAME_HEIGHT
+    });
+    this.load.spritesheet(WAYFARER_WEAPON_TOGGLE_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_weapon_toggle.png', {
+      frameWidth: WAYFARER_FRAME_WIDTH,
+      frameHeight: WAYFARER_FRAME_HEIGHT
+    });
+
     // 3. Nạp chân dung hội thoại Satyr & The Mossbound Wayfarer (64×64 px)
     this.load.image(SATYR_PORTRAIT_KEY, 'assets/characters/satyr/satyr_portrait.png');
     this.load.image(WAYFARER_PORTRAIT_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_portrait.png');
@@ -542,6 +583,7 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image(SPRITE_GATEHOUSE_GARTH_V15, 'assets/buildings/gatehouse_garth.png');
     this.load.image(SPRITE_BELL_TOWER_GRAND_V15, 'assets/buildings/bell_tower_grand.png');
     this.load.image(SPRITE_VILLAGE_WELL_DETAILED_V15, 'assets/buildings/village_well_detailed.png');
+    this.load.image(SPRITE_BUILDING_RANGER_OUTPOST_V15, 'assets/buildings/ranger_cabin_wood.png');
 
     // V15-11: Nạp bộ Sprite Cây Cổ Thụ & Lớp Phủ Mặt Đất Rừng Sương V1.5
     this.load.image(SPRITE_TREE_MIST_PINE_V15, 'assets/environment/trees/tree_mist_pine.png');
@@ -553,7 +595,8 @@ export class PreloadScene extends Phaser.Scene {
     // Lưu ý: Các sprite cây sồi, cây khô, cây rỗng, bụi rậm, bạch dương, phong đỏ, gỗ mục và vật phẩm tài nguyên
     // (res_dry_wood, res_tree_resin, res_flint, res_herbs) đã được đóng gói tối ưu trong Atlas Props (hollow_props_atlas)
     // và được AtlasTextureResolver tự động điều phối, tuyệt đối không nạp lặp để tránh cảnh báo Texture key in use.
-    this.load.image('tree_pine_tall_topdown', 'assets/environment/trees/tree_pine_tall_topdown.png');
+    // V152-09: Hợp nhất cặp cây trùng 100% byte (tree_pine_tall_topdown dùng chung tree_mist_pine.png)
+    this.load.image('tree_pine_tall_topdown', 'assets/environment/trees/tree_mist_pine.png');
     this.load.image('tree_pine_med_topdown', 'assets/environment/trees/tree_pine_med_topdown.png');
     this.load.image('tree_pine_slender_topdown', 'assets/environment/trees/tree_pine_slender_topdown.png');
 
@@ -837,6 +880,47 @@ export class PreloadScene extends Phaser.Scene {
     this.load.audio('bell_toll_low', 'assets/audio/sfx/v14/bell_toll_low.wav');
     this.load.audio('chest_creak', 'assets/audio/sfx/v14/chest_creak.wav');
     this.load.audio('journal_page', 'assets/audio/sfx/v14/journal_page.wav');
+
+    // =========================================================================
+    // V152-06B: Nạp trọn bộ 28 Asset UI Pack Pixel Art (Dark Woodland Parchment)
+    // =========================================================================
+    // Books & Journals
+    this.load.image('ui_pack_open_book', 'assets/ui/books/ui_pack_open_book.png');
+    this.load.image('ui_pack_open_book_desk', 'assets/ui/books/ui_pack_open_book_desk.png');
+
+    // Scrolls & Map Pins
+    this.load.image('ui_pack_map_pin', 'assets/ui/scrolls/ui_pack_map_pin.png');
+    this.load.image('ui_pack_scroll_compact', 'assets/ui/scrolls/ui_pack_scroll_compact.png');
+    this.load.image('ui_pack_world_map_scroll', 'assets/ui/scrolls/ui_pack_world_map_scroll.png');
+
+    // Panels & Headers
+    this.load.image('ui_pack_panel_cutout_modal', 'assets/ui/panels/ui_pack_panel_cutout_modal.png');
+    this.load.image('ui_pack_panel_dialogue', 'assets/ui/panels/ui_pack_panel_dialogue.png');
+    this.load.image('ui_pack_panel_hud', 'assets/ui/panels/ui_pack_panel_hud.png');
+    this.load.image('ui_pack_panel_modal', 'assets/ui/panels/ui_pack_panel_modal.png');
+    this.load.image('ui_pack_panel_quest', 'assets/ui/panels/ui_pack_panel_quest.png');
+    this.load.image('ui_pack_ribbon_header', 'assets/ui/panels/ui_pack_ribbon_header.png');
+    this.load.image('ui_pack_ribbon_header_alt', 'assets/ui/panels/ui_pack_ribbon_header_alt.png');
+
+    // Slots & Inventory Frames
+    this.load.image('ui_pack_hotbar_bg', 'assets/ui/slots/ui_pack_hotbar_bg.png');
+    this.load.image('ui_pack_slot_equip', 'assets/ui/slots/ui_pack_slot_equip.png');
+    this.load.image('ui_pack_slot_hover', 'assets/ui/slots/ui_pack_slot_hover.png');
+    this.load.image('ui_pack_slot_idle', 'assets/ui/slots/ui_pack_slot_idle.png');
+    this.load.image('ui_pack_slot_large', 'assets/ui/slots/ui_pack_slot_large.png');
+    this.load.image('ui_pack_slot_selected', 'assets/ui/slots/ui_pack_slot_selected.png');
+
+    // Icons, Tabs & Equipment Placeholders
+    this.load.image('ui_pack_btn_wood', 'assets/ui/icons/ui_pack_btn_wood.png');
+    this.load.image('ui_pack_btn_wood_hover', 'assets/ui/icons/ui_pack_btn_wood_hover.png');
+    this.load.image('ui_pack_tab_craft', 'assets/ui/icons/ui_pack_tab_craft.png');
+    this.load.image('ui_pack_tab_equip', 'assets/ui/icons/ui_pack_tab_equip.png');
+    this.load.image('ui_pack_tab_journal', 'assets/ui/icons/ui_pack_tab_journal.png');
+    this.load.image('ui_pack_tab_map', 'assets/ui/icons/ui_pack_tab_map.png');
+    this.load.image('ui_pack_equip_back', 'assets/ui/icons/ui_pack_equip_back.png');
+    this.load.image('ui_pack_equip_body', 'assets/ui/icons/ui_pack_equip_body.png');
+    this.load.image('ui_pack_equip_charm', 'assets/ui/icons/ui_pack_equip_charm.png');
+    this.load.image('ui_pack_equip_feet', 'assets/ui/icons/ui_pack_equip_feet.png');
 
     // V15-39 & V15-FIX-04: 5 bản nhạc nền BGM chuyển sang Streaming Audio qua HTMLAudioElement trong AudioManager (giảm 500MB RAM decode PCM)
     // - bgm_knights_quiet_fire: 'assets/audio/bgm/knights_quiet_fire.mp3'

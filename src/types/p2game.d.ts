@@ -51,6 +51,15 @@ export interface P2LeaderboardTopOptions {
   window?: 'ALL_TIME' | 'DAILY' | 'WEEKLY';
 }
 
+export type P2ErrorCode = 'UNAUTHENTICATED' | 'SCORE_REJECTED' | 'RATE_LIMITED' | 'QUOTA_EXCEEDED' | 'UNAVAILABLE' | string;
+
+export interface P2GameError extends Error {
+  code?: P2ErrorCode;
+  status?: number;
+  retryAfterMs?: number;
+  details?: any;
+}
+
 export interface P2LeaderboardAroundMeOptions {
   range?: number;
   window?: 'ALL_TIME' | 'DAILY' | 'WEEKLY';

@@ -33,6 +33,19 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
-    sourcemap: false
+    sourcemap: false,
+    chunkSizeWarningLimit: 1800,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/phaser') || id.includes('node_modules\\phaser')) {
+            return 'vendor-phaser';
+          }
+          if (id.includes('/src/data/') || id.includes('\\src\\data\\')) {
+            return 'game-data';
+          }
+        }
+      }
+    }
   }
 });

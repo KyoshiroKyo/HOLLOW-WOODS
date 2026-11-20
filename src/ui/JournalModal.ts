@@ -447,6 +447,14 @@ export class JournalModal {
     overlay.setInteractive(new Phaser.Geom.Rectangle(0, 0, 1280, 720), Phaser.Geom.Rectangle.Contains);
 
     // 2. Khung sổ nhật ký giấy da sẫm màu chuẩn HD (840×520 px) viền nẹp đồng cổ
+    let bookSprite: Phaser.GameObjects.Image | undefined;
+    if (this.scene.textures.exists('ui_pack_open_book_desk')) {
+      bookSprite = this.scene.add.image(640, 360, 'ui_pack_open_book_desk');
+      bookSprite.setDisplaySize(modalW + 60, modalH + 60);
+      bookSprite.setTint(0xbaa187);
+      bookSprite.setAlpha(0.65);
+    }
+
     const book = this.scene.add.graphics();
     book.fillStyle(0x151310, 0.98); // Nền giấy da cổ tối
     book.fillRoundedRect(modalX, modalY, modalW, modalH, 10);
@@ -481,6 +489,14 @@ export class JournalModal {
     const closeBtnX = modalX + modalW - 58;
     const closeBtnY = modalY + 22;
     const closeBtnContainer = this.scene.add.container(closeBtnX, closeBtnY);
+
+    let closeBtnSprite: Phaser.GameObjects.Image | undefined;
+    if (this.scene.textures.exists('ui_pack_btn_wood')) {
+      closeBtnSprite = this.scene.add.image(0, 0, 'ui_pack_btn_wood');
+      closeBtnSprite.setDisplaySize(88, 24);
+      closeBtnContainer.add(closeBtnSprite);
+    }
+
     const closeBg = this.scene.add.graphics();
     const drawCloseBg = (hover: boolean) => {
       closeBg.clear();
@@ -501,10 +517,12 @@ export class JournalModal {
     closeBtnContainer.setSize(88, 24);
     closeBtnContainer.setInteractive(new Phaser.Geom.Rectangle(-44, -12, 88, 24), Phaser.Geom.Rectangle.Contains);
     closeBtnContainer.on('pointerover', () => {
+      if (closeBtnSprite) closeBtnSprite.setTexture('ui_pack_btn_wood_hover');
       drawCloseBg(true);
       closeTxt.setColor('#f39c12');
     });
     closeBtnContainer.on('pointerout', () => {
+      if (closeBtnSprite) closeBtnSprite.setTexture('ui_pack_btn_wood');
       drawCloseBg(false);
       closeTxt.setColor('#e2d4b7');
     });
@@ -560,7 +578,19 @@ export class JournalModal {
       this.refresh();
     });
 
-    this.container.add([overlay, book, title, closeBtnContainer, this.tabQuestBtn, this.tabLoreBtn, this.tabBestiaryBtn, this.tabMapBtn, this.contentContainer]);
+    const journalElements: Phaser.GameObjects.GameObject[] = [
+      overlay,
+      ...(bookSprite ? [bookSprite] : []),
+      book,
+      title,
+      closeBtnContainer,
+      this.tabQuestBtn,
+      this.tabLoreBtn,
+      this.tabBestiaryBtn,
+      this.tabMapBtn,
+      this.contentContainer
+    ];
+    this.container.add(journalElements);
   }
 
   public toggle(): void {
