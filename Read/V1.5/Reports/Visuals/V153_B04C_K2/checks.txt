@@ -1,0 +1,50 @@
+Corrected production build, QA build and checks
+
+build-final
+npm notice New major version of npm available! 11.9.0 -> 12.2.3
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.3
+npm notice To update run: npm install -g npm@12.2.3
+npm notice
+
+build-final-webgl
+npm notice New major version of npm available! 11.9.0 -> 12.2.3
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.3
+npm notice To update run: npm install -g npm@12.2.3
+npm notice
+
+asset-corrected
+KẾT QUẢ KIỂM TRA: 214 HỢP LỆ, 0 THIẾU (404)
+------------------------------------------------------------------------
+🎉 100% TÀI NGUYÊN ĐỀU TỒN TẠI VẬT LÝ TRONG PUBLIC/ — ĐẠT CHUẨN ZERO 404!
+
+
+schema-corrected
+PASS schema 3 metadata, compatibility IDs, farming, and local save/load round trip
+PASS QA progress/settings namespace and cancelled pending save with zero SDK writes or reads
+
+legacy-corrected
+[PASS] V1.5: Bảo toàn vũ khí Giáo Sắt Cổ Ngữ đang cầm
+[PASS] V1.5: Phiên bản lưu trữ chuẩn 1.5.0
+
+=== TỔNG KẾT: 49/49 TESTS ĐẠT HOÀN HẢO ===
+
+record-final
+armed_run 6 140
+unarmed_idle 6 70
+unarmed_walk 6 170
+unarmed_run 6 140
+
+playtest-final
+canvas unarmed up walk 6 run 6 idle 6
+canvas unarmed left walk 6 run 6 idle 6
+canvas unarmed right walk 6 run 6 idle 6
+canvas all checks PASS [['warning', '[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng.'], ['warning', '[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng.']]
+
+all-directions-webgl
+webgl unarmed up walk 6 run 6 idle 6
+webgl unarmed left walk 6 run 6 idle 6
+webgl unarmed right walk 6 run 6 idle 6
+webgl all checks PASS [['warning', '[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng.'], ['warning', '[GraphicsQualitySystem] FPS dropped below 38 for 4s (5.1 FPS). Auto-fallback -> MEDIUM'], ['warning', '[GraphicsQualitySystem] FPS dropped below 38 for 4s (5.1 FPS). Auto-fallback -> LOW'], ['warning', '[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng.']]
+
+fallback-final
+PASS missing clip cannot put legacy artwork on the moving actor; physical sprint and the matching artist stance remain ['[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng.', 'Frame "%s" not found in texture "%s" armed_run_up_5 black_knight_movement']

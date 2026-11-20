@@ -1,4 +1,26 @@
-# V153-BATCH-04-R10 — Checkpoint bàn giao 04B2
+# V153-BATCH-04-R10 — Checkpoint bàn giao 04C-K2
+
+**21/11/2026 · PASS local cho 20 clip K2 · PARTIAL restart sạch console · Dừng sau K2 · HOSTED BLOCKED**
+
+Nhánh `feat/v1.5.3-batch04`. Baseline Owner `d357ebd35529b94d59ca76f6c3741c9f32161037`, reproducer P0 `4f6eb7e2a844e70b26a7f62b013d5d9274fc935f`, runtime đã sửa và kiểm thử `5feed142c9861b12ac0473ae535d8877c2faf814`. [Báo cáo K2](V153_B04_K2_MOVEMENT_REPORT.md) · [Ảnh và log](Visuals/V153_B04C_K2)
+
+| Mục | Trạng thái để tiếp tục |
+|---|---|
+| B04-10-K2 | 20 clip K2, 120 frame được quan sát trong game. PNG/JSON K2 có thêm sáu frame Armed Idle RIGHT sửa trực tiếp lỗi phối profile. |
+| K1 | PNG/JSON giữ nguyên. D/U/L dùng cùng frame K1 và timing 70 ms. RIGHT đã thay visual trong K2. |
+| P0 phối tạo hình và nghi chồng sprite | Đã đối chiếu cùng zoom 2,20×. Sáu trạng thái, bốn hướng và kiểm tra vòng đời ở báo cáo. |
+| Restart Canvas · kiểm tra K2 | PARTIAL. Một actor, actor cũ được hủy. Lỗi Text `drawImage` tái hiện từ 04B2. Giữ ở backlog UI. |
+| B04-10-K3 | OPEN. 20 nhóm chiến đấu/kỹ năng/state ở ma trận. Artwork riêng cho rút/tra kiếm còn ở K3. |
+| NPC Garth | AABB lệch so với sprite, tái hiện từ 04B2. OPEN để kiểm tra đồng thời tất cả NPC ở batch gameplay. |
+| BUG-048 / BUG-049 / B04-05/06 | Giữ BLOCKED/PARTIAL 04B2 theo chi tiết bên dưới. |
+| BUG-051–054 | OPEN tại 04C-G. |
+| Release | BLOCKED, chờ hosted và gate R10. |
+
+**Lệnh tiếp theo sau khi Owner phê duyệt riêng** `V153-BATCH-04C-K3 EXECUTE REMAINING ONLY`. [Ma trận](V153_CHARACTER_ANIMATION_MATRIX.md) · [INDEX R10](../../../docs/chat_and_commands/V153_BATCH04_R10/00_INDEX_V153_BATCH04_R10.md)
+
+---
+
+# V153-BATCH-04-R10 — Checkpoint bàn giao 04B2 lịch sử
 
 **21/11/2026 · PARTIAL · Dừng sau 04B2 · HOSTED BLOCKED**
 
@@ -14,7 +36,7 @@ Nhánh `feat/v1.5.3-batch04`, worktree `/workspace/work/v153-b04/checkout`. Base
 | BUG-051–054 | OPEN tại 04C-G. Giữ cam kết cho phép đánh giá các tuyến khóa dựa vào tiến trình hợp lệ sau khi sửa. |
 | Release | BLOCKED. Chờ gate tại 04F, thiết bị thật tại 04E2 và preview/log hosted hợp lệ. |
 
-**Lệnh tiếp theo sau khi Owner duyệt riêng** `V153-BATCH-04C-K2 EXECUTE REMAINING ONLY`. Sau đó tiếp tục theo INDEX R10. [Đặc tả 04C-K2](../../../docs/chat_and_commands/V153_BATCH04_R10/05_V153_B04C-K2_KNIGHT_MOVEMENT_4DIR.md) · [Registry](V153_TESTER_BUG_REGISTRY.md)
+**Mốc đã bàn giao sang 04C-K2** `V153-BATCH-04C-K2 EXECUTE REMAINING ONLY`. [Đặc tả 04C-K2](../../../docs/chat_and_commands/V153_BATCH04_R10/05_V153_B04C-K2_KNIGHT_MOVEMENT_4DIR.md) · [Registry](V153_TESTER_BUG_REGISTRY.md)
 
 ---
 

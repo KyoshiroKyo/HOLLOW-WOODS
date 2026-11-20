@@ -1,0 +1,56 @@
+{
+  "baseline04B2": {
+    "actors": {
+      "oldGone": true,
+      "actors": [
+        "black_knight_armed_idle"
+      ],
+      "canvas": 1,
+      "zone": "fog_crossing"
+    },
+    "pageErrors": [
+      {
+        "phase": "restart",
+        "message": "Cannot read properties of null (reading 'drawImage')",
+        "stack": "TypeError: Cannot read properties of null (reading 'drawImage')\n    at initialize.updateUVs (http://127.0.0.1:3161/preview/hollow-woods/assets/vendor-phaser-Dtz9Ij9P.js:5788:2997)\n    at initialize.setCutPosition (http://127.0.0.1:3161/preview/hollow-woods/assets/vendor-phaser-Dtz9Ij9P.js:5788:781)\n    at initialize.setSize (http://127.0.0.1:3161/preview/hollow-woods/assets/vendor-phaser-Dtz9Ij9P.js:5788:944)\n    at initialize.updateText (http://127.0.0.1:3161/preview/hollow-woods/assets/vendor-phaser-Dtz9Ij9P.js:2362:2887)\n    at t.updateText (http://127.0.0.1:3161/preview/hollow-woods/assets/index-CoLvCkcb.js:1:11057)\n    at initialize.setText (http://127.0.0.1:3161/preview/hollow-woods/assets/vendor-phaser-Dtz9Ij9P.js:2360:51)\n    at Eo.updateZoneBadge (http://127.0.0.1:3161/preview/hollow-woods/assets/index-CoLvCkcb.js:34:20486)\n    at Eo.updateMiniMapZone (http://127.0.0.1:3161/preview/hollow-woods/assets/index-CoLvCkcb.js:34:20316)\n    at Mo.applyCameraBoundsForZone (http://127.0.0.1:3161/preview/hollow-woods/assets/index-CoLvCkcb.js:16:115904)\n    at Mo.create (http://127.0.0.1:3161/preview/hollow-woods/assets/index-CoLvCkcb.js:16:36205)"
+      }
+    ],
+    "httpErrors": []
+  },
+  "beforeP0": {
+    "actors": {
+      "oldGone": true,
+      "actors": [
+        "black_knight_armed_idle"
+      ],
+      "canvas": 1,
+      "zone": "fog_crossing"
+    },
+    "pageErrors": [
+      {
+        "phase": "restart",
+        "message": "Cannot read properties of null (reading 'drawImage')",
+        "stack": "TypeError: Cannot read properties of null (reading 'drawImage')\n    at initialize.updateUVs (http://127.0.0.1:3163/preview/hollow-woods/assets/vendor-phaser-Dtz9Ij9P.js:5788:2997)\n    at initialize.setCutPosition (http://127.0.0.1:3163/preview/hollow-woods/assets/vendor-phaser-Dtz9Ij9P.js:5788:781)\n    at initialize.setSize (http://127.0.0.1:3163/preview/hollow-woods/assets/vendor-phaser-Dtz9Ij9P.js:5788:944)\n    at initialize.updateText (http://127.0.0.1:3163/preview/hollow-woods/assets/vendor-phaser-Dtz9Ij9P.js:2362:2887)\n    at t.updateText (http://127.0.0.1:3163/preview/hollow-woods/assets/index-C3vu2GQw.js:1:11084)\n    at initialize.setText (http://127.0.0.1:3163/preview/hollow-woods/assets/vendor-phaser-Dtz9Ij9P.js:2360:51)\n    at No.updateZoneBadge (http://127.0.0.1:3163/preview/hollow-woods/assets/index-C3vu2GQw.js:34:20486)\n    at No.updateMiniMapZone (http://127.0.0.1:3163/preview/hollow-woods/assets/index-C3vu2GQw.js:34:20316)\n    at Io.applyCameraBoundsForZone (http://127.0.0.1:3163/preview/hollow-woods/assets/index-C3vu2GQw.js:16:115904)\n    at Io.create (http://127.0.0.1:3163/preview/hollow-woods/assets/index-C3vu2GQw.js:16:36205)"
+      }
+    ],
+    "httpErrors": []
+  },
+  "K2": {
+    "actors": {
+      "oldGone": true,
+      "actors": [
+        "black_knight_armed_idle"
+      ],
+      "canvas": 1,
+      "zone": "fog_crossing"
+    },
+    "pageErrors": [
+      {
+        "phase": "restart",
+        "message": "Cannot read properties of null (reading 'drawImage')",
+        "stack": "TypeError: Cannot read properties of null (reading 'drawImage')\n    at initialize.updateUVs (http://127.0.0.1:3167/preview/hollow-woods/assets/vendor-phaser-Dtz9Ij9P.js:5788:2997)\n    at initialize.setCutPosition (http://127.0.0.1:3167/preview/hollow-woods/assets/vendor-phaser-Dtz9Ij9P.js:5788:781)\n    at initialize.setSize (http://127.0.0.1:3167/preview/hollow-woods/assets/vendor-phaser-Dtz9Ij9P.js:5788:944)\n    at initialize.updateText (http://127.0.0.1:3167/preview/hollow-woods/assets/vendor-phaser-Dtz9Ij9P.js:2362:2887)\n    at t.updateText (http://127.0.0.1:3167/preview/hollow-woods/assets/index-BxcVC12F.js:1:11084)\n    at initialize.setText (http://127.0.0.1:3167/preview/hollow-woods/assets/vendor-phaser-Dtz9Ij9P.js:2360:51)\n    at No.updateZoneBadge (http://127.0.0.1:3167/preview/hollow-woods/assets/index-BxcVC12F.js:34:20486)\n    at No.updateMiniMapZone (http://127.0.0.1:3167/preview/hollow-woods/assets/index-BxcVC12F.js:34:20316)\n    at Io.applyCameraBoundsForZone (http://127.0.0.1:3167/preview/hollow-woods/assets/index-BxcVC12F.js:16:115904)\n    at Io.create (http://127.0.0.1:3167/preview/hollow-woods/assets/index-BxcVC12F.js:16:36205)"
+      }
+    ],
+    "httpErrors": []
+  }
+}

@@ -20,6 +20,9 @@ Dùng mã trong INDEX R10. Hàng **OPEN** của batch khác giữ ở chủ sở
 | BUG-048 | BLOCKED | Cần Owner định danh hai bụi Edda. Giữ các instance ở (1048,94), (1084,162), (1204,204) và lân cận. |
 | BUG-049 | PARTIAL | Vòng và khoảng cách dùng chung điểm neo. Ca đại diện đã thử. Đối tượng ở vùng ngoài camera demo còn cần rà. |
 | BUG-050 | CLOSED-VERIFIED local | Frame cây sồi thật ở (760,120). E mở đúng manh mối, cờ giữ qua Continue. |
+| B04-10-K2 · phối tạo hình | CLOSED-VERIFIED local ở sáu nhóm Idle/Walk/Run | Các profile Fellor tối nằm trong atlas mới trước sửa. Đã dùng artwork custom đồng nhất cho RIGHT, giữ PNG/JSON K1 và nguồn Fellor. Hai bộ log trước/sau có texture, frame, matrix và count một actor. [Báo cáo](V153_B04_K2_MOVEMENT_REPORT.md). |
+| Restart Canvas · đối chiếu K2 | OPEN · 04E1 | Phaser Text `drawImage` trên context null xảy ra ở 04B2 và các build K2. Actor cũ được hủy, actor mới duy nhất. [Stack runtime](Visuals/V153_B04C_K2/restart-compare.json). |
+| Footprint NPC Garth · phát hiện trong K2 | OPEN · 04C-G | Sprite (540,205), AABB tại physics step [561,255,583,269], tái hiện cả 04B2 và K2. Body có va chạm ở đúng AABB. Cần rà offset và neo chân của hành vi NPC. |
 | BUG-051 | OPEN · 04C-G | Tester báo Cổng Đông vẫn khóa sau khi trò chuyện với cả Garth, Edda và Neris. Kiểm tra nhánh hội thoại, điều kiện mở cổng và flag runtime/Save. |
 | BUG-052 | OPEN · 04C-G | Thay điều kiện mở Cổng Đông thành hoàn tất hội thoại mở cổng của Garth **hoặc** Edda **hoặc** Neris. Kiểm thử riêng ba lộ trình và hội thoại chưa hoàn tất. |
 | BUG-053 | OPEN · 04C-G | Nhiệm vụ vừa nhận từ Sir Vaelen hoặc NPC khác cần xuất hiện ngay sau khi nhận. Kiểm tra quest ID và sự kiện cập nhật. |

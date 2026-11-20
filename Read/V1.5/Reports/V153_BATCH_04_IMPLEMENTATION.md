@@ -23,3 +23,8 @@ Sửa commit zone tại mép cổng Tây, vùng an toàn Farm và terrain qua Wo
 ## 04B2 · Đồ họa và bố trí khu demo
 
 Bản bàn giao PARTIAL. Đã kiểm tra Chromium đối với Finn, Garth, nhà và bàn rèn, biển Nam, trại Bellhollow, Hốc Sồi và hai bếp Outer Woods. Luồng Pause → Save → Continue giữ schema 3. Hai bụi Edda chờ Owner định danh. Culling và công trình ở vùng chưa đi thực địa, hosted và các gate phát hành vẫn mở. [Báo cáo 04B2](V153_B04B2_WORLD_ART_LAYOUT_REPORT.md)
+
+
+## 04C-K2 · Black Knight bốn hướng
+
+Hai atlas nhân vật xuất hiện trong game ở đúng trạng thái. K2 bổ sung 20 clip di chuyển và sửa riêng Armed Idle RIGHT khi tái hiện P0. Kiểm tra 120 frame K2, một actor qua vòng đời, Save schema 3 và alias. Các clip combat và artwork rút/tra thuộc K3. [Báo cáo K2](V153_B04_K2_MOVEMENT_REPORT.md)

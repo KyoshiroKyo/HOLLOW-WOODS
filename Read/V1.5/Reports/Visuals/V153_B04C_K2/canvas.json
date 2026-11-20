@@ -1,0 +1,2470 @@
+{
+  "mode": "canvas",
+  "newGame": {
+    "zone": "fog_crossing",
+    "pos": {
+      "x": 120,
+      "y": 195
+    },
+    "facing": "down",
+    "armed": true,
+    "texture": "black_knight_armed_idle",
+    "frame": "armed_idle_down_1",
+    "animation": "wayfarer_idle_down",
+    "flip": false,
+    "body": [
+      18,
+      12,
+      23,
+      46
+    ],
+    "origin": [
+      0.5,
+      1
+    ],
+    "noclip": false,
+    "vx": 0,
+    "vy": 0,
+    "hits": {
+      "none": true,
+      "up": false,
+      "down": false,
+      "left": false,
+      "right": false
+    },
+    "rendered": true,
+    "alpha": 1,
+    "renderer": "CANVAS",
+    "rotation": 0,
+    "scaleMode": 1
+  },
+  "registry": {
+    "directional": 76,
+    "base": 15,
+    "frameRefs": 501,
+    "invalid": [],
+    "aliases": [],
+    "clips": {
+      "wayfarer_idle_down": {
+        "names": [
+          [
+            "black_knight_armed_idle",
+            "armed_idle_down_0"
+          ],
+          [
+            "black_knight_armed_idle",
+            "armed_idle_down_1"
+          ],
+          [
+            "black_knight_armed_idle",
+            "armed_idle_down_2"
+          ],
+          [
+            "black_knight_armed_idle",
+            "armed_idle_down_3"
+          ],
+          [
+            "black_knight_armed_idle",
+            "armed_idle_down_4"
+          ],
+          [
+            "black_knight_armed_idle",
+            "armed_idle_down_5"
+          ]
+        ],
+        "ms": 70,
+        "repeats": -1
+      },
+      "wayfarer_idle_up": {
+        "names": [
+          [
+            "black_knight_armed_idle",
+            "armed_idle_up_0"
+          ],
+          [
+            "black_knight_armed_idle",
+            "armed_idle_up_1"
+          ],
+          [
+            "black_knight_armed_idle",
+            "armed_idle_up_2"
+          ],
+          [
+            "black_knight_armed_idle",
+            "armed_idle_up_3"
+          ],
+          [
+            "black_knight_armed_idle",
+            "armed_idle_up_4"
+          ],
+          [
+            "black_knight_armed_idle",
+            "armed_idle_up_5"
+          ]
+        ],
+        "ms": 70,
+        "repeats": -1
+      },
+      "wayfarer_idle_left": {
+        "names": [
+          [
+            "black_knight_armed_idle",
+            "armed_idle_left_0"
+          ],
+          [
+            "black_knight_armed_idle",
+            "armed_idle_left_1"
+          ],
+          [
+            "black_knight_armed_idle",
+            "armed_idle_left_2"
+          ],
+          [
+            "black_knight_armed_idle",
+            "armed_idle_left_3"
+          ],
+          [
+            "black_knight_armed_idle",
+            "armed_idle_left_4"
+          ],
+          [
+            "black_knight_armed_idle",
+            "armed_idle_left_5"
+          ]
+        ],
+        "ms": 70,
+        "repeats": -1
+      },
+      "wayfarer_idle_right": {
+        "names": [
+          [
+            "black_knight_movement",
+            "armed_idle_right_0"
+          ],
+          [
+            "black_knight_movement",
+            "armed_idle_right_1"
+          ],
+          [
+            "black_knight_movement",
+            "armed_idle_right_2"
+          ],
+          [
+            "black_knight_movement",
+            "armed_idle_right_3"
+          ],
+          [
+            "black_knight_movement",
+            "armed_idle_right_4"
+          ],
+          [
+            "black_knight_movement",
+            "armed_idle_right_5"
+          ]
+        ],
+        "ms": 70,
+        "repeats": -1
+      },
+      "wayfarer_walk_down": {
+        "names": [
+          [
+            "black_knight_movement",
+            "armed_walk_down_0"
+          ],
+          [
+            "black_knight_movement",
+            "armed_walk_down_1"
+          ],
+          [
+            "black_knight_movement",
+            "armed_walk_down_2"
+          ],
+          [
+            "black_knight_movement",
+            "armed_walk_down_3"
+          ],
+          [
+            "black_knight_movement",
+            "armed_walk_down_4"
+          ],
+          [
+            "black_knight_movement",
+            "armed_walk_down_5"
+          ]
+        ],
+        "ms": 170,
+        "repeats": -1
+      },
+      "wayfarer_walk_up": {
+        "names": [
+          [
+            "black_knight_movement",
+            "armed_walk_up_0"
+          ],
+          [
+            "black_knight_movement",
+            "armed_walk_up_1"
+          ],
+          [
+            "black_knight_movement",
+            "armed_walk_up_2"
+          ],
+          [
+            "black_knight_movement",
+            "armed_walk_up_3"
+          ],
+          [
+            "black_knight_movement",
+            "armed_walk_up_4"
+          ],
+          [
+            "black_knight_movement",
+            "armed_walk_up_5"
+          ]
+        ],
+        "ms": 170,
+        "repeats": -1
+      },
+      "wayfarer_walk_left": {
+        "names": [
+          [
+            "black_knight_movement",
+            "armed_walk_left_0"
+          ],
+          [
+            "black_knight_movement",
+            "armed_walk_left_1"
+          ],
+          [
+            "black_knight_movement",
+            "armed_walk_left_2"
+          ],
+          [
+            "black_knight_movement",
+            "armed_walk_left_3"
+          ],
+          [
+            "black_knight_movement",
+            "armed_walk_left_4"
+          ],
+          [
+            "black_knight_movement",
+            "armed_walk_left_5"
+          ]
+        ],
+        "ms": 170,
+        "repeats": -1
+      },
+      "wayfarer_walk_right": {
+        "names": [
+          [
+            "black_knight_movement",
+            "armed_walk_right_0"
+          ],
+          [
+            "black_knight_movement",
+            "armed_walk_right_1"
+          ],
+          [
+            "black_knight_movement",
+            "armed_walk_right_2"
+          ],
+          [
+            "black_knight_movement",
+            "armed_walk_right_3"
+          ],
+          [
+            "black_knight_movement",
+            "armed_walk_right_4"
+          ],
+          [
+            "black_knight_movement",
+            "armed_walk_right_5"
+          ]
+        ],
+        "ms": 170,
+        "repeats": -1
+      },
+      "wayfarer_run_down": {
+        "names": [
+          [
+            "black_knight_movement",
+            "armed_run_down_0"
+          ],
+          [
+            "black_knight_movement",
+            "armed_run_down_1"
+          ],
+          [
+            "black_knight_movement",
+            "armed_run_down_2"
+          ],
+          [
+            "black_knight_movement",
+            "armed_run_down_3"
+          ],
+          [
+            "black_knight_movement",
+            "armed_run_down_4"
+          ],
+          [
+            "black_knight_movement",
+            "armed_run_down_5"
+          ]
+        ],
+        "ms": 140,
+        "repeats": -1
+      },
+      "wayfarer_run_up": {
+        "names": [
+          [
+            "black_knight_movement",
+            "armed_run_up_0"
+          ],
+          [
+            "black_knight_movement",
+            "armed_run_up_1"
+          ],
+          [
+            "black_knight_movement",
+            "armed_run_up_2"
+          ],
+          [
+            "black_knight_movement",
+            "armed_run_up_3"
+          ],
+          [
+            "black_knight_movement",
+            "armed_run_up_4"
+          ],
+          [
+            "black_knight_movement",
+            "armed_run_up_5"
+          ]
+        ],
+        "ms": 140,
+        "repeats": -1
+      },
+      "wayfarer_run_left": {
+        "names": [
+          [
+            "black_knight_movement",
+            "armed_run_left_0"
+          ],
+          [
+            "black_knight_movement",
+            "armed_run_left_1"
+          ],
+          [
+            "black_knight_movement",
+            "armed_run_left_2"
+          ],
+          [
+            "black_knight_movement",
+            "armed_run_left_3"
+          ],
+          [
+            "black_knight_movement",
+            "armed_run_left_4"
+          ],
+          [
+            "black_knight_movement",
+            "armed_run_left_5"
+          ]
+        ],
+        "ms": 140,
+        "repeats": -1
+      },
+      "wayfarer_run_right": {
+        "names": [
+          [
+            "black_knight_movement",
+            "armed_run_right_0"
+          ],
+          [
+            "black_knight_movement",
+            "armed_run_right_1"
+          ],
+          [
+            "black_knight_movement",
+            "armed_run_right_2"
+          ],
+          [
+            "black_knight_movement",
+            "armed_run_right_3"
+          ],
+          [
+            "black_knight_movement",
+            "armed_run_right_4"
+          ],
+          [
+            "black_knight_movement",
+            "armed_run_right_5"
+          ]
+        ],
+        "ms": 140,
+        "repeats": -1
+      },
+      "wayfarer_unarmed_idle_down": {
+        "names": [
+          [
+            "black_knight_movement",
+            "unarmed_idle_down_0"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_down_1"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_down_2"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_down_3"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_down_4"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_down_5"
+          ]
+        ],
+        "ms": 70,
+        "repeats": -1
+      },
+      "wayfarer_unarmed_idle": {
+        "names": [
+          [
+            "black_knight_movement",
+            "unarmed_idle_down_0"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_down_1"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_down_2"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_down_3"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_down_4"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_down_5"
+          ]
+        ],
+        "ms": 70,
+        "repeats": -1
+      },
+      "wayfarer_unarmed_idle_up": {
+        "names": [
+          [
+            "black_knight_movement",
+            "unarmed_idle_up_0"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_up_1"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_up_2"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_up_3"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_up_4"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_up_5"
+          ]
+        ],
+        "ms": 70,
+        "repeats": -1
+      },
+      "wayfarer_unarmed_idle_left": {
+        "names": [
+          [
+            "black_knight_movement",
+            "unarmed_idle_left_0"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_left_1"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_left_2"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_left_3"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_left_4"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_left_5"
+          ]
+        ],
+        "ms": 70,
+        "repeats": -1
+      },
+      "wayfarer_unarmed_idle_right": {
+        "names": [
+          [
+            "black_knight_movement",
+            "unarmed_idle_right_0"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_right_1"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_right_2"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_right_3"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_right_4"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_idle_right_5"
+          ]
+        ],
+        "ms": 70,
+        "repeats": -1
+      },
+      "wayfarer_unarmed_walk_down": {
+        "names": [
+          [
+            "black_knight_movement",
+            "unarmed_walk_down_0"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_walk_down_1"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_walk_down_2"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_walk_down_3"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_walk_down_4"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_walk_down_5"
+          ]
+        ],
+        "ms": 170,
+        "repeats": -1
+      },
+      "wayfarer_unarmed_walk_up": {
+        "names": [
+          [
+            "black_knight_movement",
+            "unarmed_walk_up_0"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_walk_up_1"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_walk_up_2"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_walk_up_3"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_walk_up_4"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_walk_up_5"
+          ]
+        ],
+        "ms": 170,
+        "repeats": -1
+      },
+      "wayfarer_unarmed_walk_left": {
+        "names": [
+          [
+            "black_knight_movement",
+            "unarmed_walk_left_0"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_walk_left_1"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_walk_left_2"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_walk_left_3"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_walk_left_4"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_walk_left_5"
+          ]
+        ],
+        "ms": 170,
+        "repeats": -1
+      },
+      "wayfarer_unarmed_walk_right": {
+        "names": [
+          [
+            "black_knight_movement",
+            "unarmed_walk_right_0"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_walk_right_1"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_walk_right_2"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_walk_right_3"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_walk_right_4"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_walk_right_5"
+          ]
+        ],
+        "ms": 170,
+        "repeats": -1
+      },
+      "wayfarer_unarmed_run_down": {
+        "names": [
+          [
+            "black_knight_movement",
+            "unarmed_run_down_0"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_down_1"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_down_2"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_down_3"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_down_4"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_down_5"
+          ]
+        ],
+        "ms": 140,
+        "repeats": -1
+      },
+      "wayfarer_unarmed_run": {
+        "names": [
+          [
+            "black_knight_movement",
+            "unarmed_run_down_0"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_down_1"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_down_2"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_down_3"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_down_4"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_down_5"
+          ]
+        ],
+        "ms": 140,
+        "repeats": -1
+      },
+      "wayfarer_unarmed_run_up": {
+        "names": [
+          [
+            "black_knight_movement",
+            "unarmed_run_up_0"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_up_1"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_up_2"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_up_3"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_up_4"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_up_5"
+          ]
+        ],
+        "ms": 140,
+        "repeats": -1
+      },
+      "wayfarer_unarmed_run_left": {
+        "names": [
+          [
+            "black_knight_movement",
+            "unarmed_run_left_0"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_left_1"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_left_2"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_left_3"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_left_4"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_left_5"
+          ]
+        ],
+        "ms": 140,
+        "repeats": -1
+      },
+      "wayfarer_unarmed_run_right": {
+        "names": [
+          [
+            "black_knight_movement",
+            "unarmed_run_right_0"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_right_1"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_right_2"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_right_3"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_right_4"
+          ],
+          [
+            "black_knight_movement",
+            "unarmed_run_right_5"
+          ]
+        ],
+        "ms": 140,
+        "repeats": -1
+      }
+    },
+    "atlasFrames": {
+      "black_knight_movement": 126,
+      "black_knight_armed_idle": 24,
+      "satyr_sheet": 16
+    }
+  },
+  "armed": {
+    "down": {
+      "walk": {
+        "zone": "fog_crossing",
+        "pos": {
+          "x": 305,
+          "y": 162.0833333333333
+        },
+        "facing": "down",
+        "armed": true,
+        "texture": "black_knight_movement",
+        "frame": "armed_walk_down_0",
+        "animation": "wayfarer_walk_down",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 0,
+        "vy": 85,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "run": {
+        "zone": "fog_crossing",
+        "pos": {
+          "x": 305,
+          "y": 183.50000000000009
+        },
+        "facing": "down",
+        "armed": true,
+        "texture": "black_knight_movement",
+        "frame": "armed_run_down_1",
+        "animation": "wayfarer_run_down",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 0,
+        "vy": 140,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "idle": {
+        "zone": "fog_crossing",
+        "pos": {
+          "x": 305,
+          "y": 265.1666666666671
+        },
+        "facing": "down",
+        "armed": true,
+        "texture": "black_knight_armed_idle",
+        "frame": "armed_idle_down_1",
+        "animation": "wayfarer_idle_down",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 0,
+        "vy": 0,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "frames": {
+        "walk": [
+          "armed_walk_down_0",
+          "armed_walk_down_1",
+          "armed_walk_down_2",
+          "armed_walk_down_3",
+          "armed_walk_down_4",
+          "armed_walk_down_5"
+        ],
+        "run": [
+          "armed_run_down_0",
+          "armed_run_down_1",
+          "armed_run_down_2",
+          "armed_run_down_3",
+          "armed_run_down_4",
+          "armed_run_down_5"
+        ],
+        "idle": [
+          "armed_idle_down_1",
+          "armed_idle_down_2",
+          "armed_idle_down_3",
+          "armed_idle_down_4",
+          "armed_idle_down_5",
+          "armed_idle_down_0"
+        ]
+      }
+    },
+    "up": {
+      "walk": {
+        "zone": "fog_crossing",
+        "pos": {
+          "x": 305,
+          "y": 274.9166666666666
+        },
+        "facing": "up",
+        "armed": true,
+        "texture": "black_knight_movement",
+        "frame": "armed_walk_up_0",
+        "animation": "wayfarer_walk_up",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 0,
+        "vy": -85,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "run": {
+        "zone": "fog_crossing",
+        "pos": {
+          "x": 305,
+          "y": 259.58333333333314
+        },
+        "facing": "up",
+        "armed": true,
+        "texture": "black_knight_movement",
+        "frame": "armed_run_up_1",
+        "animation": "wayfarer_run_up",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 0,
+        "vy": -140,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "idle": {
+        "zone": "fog_crossing",
+        "pos": {
+          "x": 305,
+          "y": 163.9166666666661
+        },
+        "facing": "up",
+        "armed": true,
+        "texture": "black_knight_armed_idle",
+        "frame": "armed_idle_up_0",
+        "animation": "wayfarer_idle_up",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 0,
+        "vy": 0,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "frames": {
+        "walk": [
+          "armed_walk_up_0",
+          "armed_walk_up_1",
+          "armed_walk_up_2",
+          "armed_walk_up_3",
+          "armed_walk_up_4",
+          "armed_walk_up_5"
+        ],
+        "run": [
+          "armed_run_up_0",
+          "armed_run_up_1",
+          "armed_run_up_2",
+          "armed_run_up_3",
+          "armed_run_up_4",
+          "armed_run_up_5"
+        ],
+        "idle": [
+          "armed_idle_up_0",
+          "armed_idle_up_1",
+          "armed_idle_up_2",
+          "armed_idle_up_3",
+          "armed_idle_up_4",
+          "armed_idle_up_5"
+        ]
+      }
+    },
+    "left": {
+      "walk": {
+        "zone": "fog_crossing",
+        "pos": {
+          "x": 302.9166666666666,
+          "y": 244
+        },
+        "facing": "left",
+        "armed": true,
+        "texture": "black_knight_movement",
+        "frame": "armed_walk_left_0",
+        "animation": "wayfarer_walk_left",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": -85,
+        "vy": 0,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "run": {
+        "zone": "fog_crossing",
+        "pos": {
+          "x": 285.25000000000017,
+          "y": 244
+        },
+        "facing": "left",
+        "armed": true,
+        "texture": "black_knight_movement",
+        "frame": "armed_run_left_1",
+        "animation": "wayfarer_run_left",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": -140,
+        "vy": 0,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "idle": {
+        "zone": "fog_crossing",
+        "pos": {
+          "x": 194.24999999999997,
+          "y": 244
+        },
+        "facing": "left",
+        "armed": true,
+        "texture": "black_knight_armed_idle",
+        "frame": "armed_idle_left_0",
+        "animation": "wayfarer_idle_left",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 0,
+        "vy": 0,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "frames": {
+        "walk": [
+          "armed_walk_left_0",
+          "armed_walk_left_1",
+          "armed_walk_left_2",
+          "armed_walk_left_3",
+          "armed_walk_left_4",
+          "armed_walk_left_5"
+        ],
+        "run": [
+          "armed_run_left_0",
+          "armed_run_left_1",
+          "armed_run_left_2",
+          "armed_run_left_3",
+          "armed_run_left_4",
+          "armed_run_left_5"
+        ],
+        "idle": [
+          "armed_idle_left_0",
+          "armed_idle_left_1",
+          "armed_idle_left_2",
+          "armed_idle_left_3",
+          "armed_idle_left_4",
+          "armed_idle_left_5"
+        ]
+      }
+    },
+    "right": {
+      "walk": {
+        "zone": "fog_crossing",
+        "pos": {
+          "x": 251.0833333333333,
+          "y": 244
+        },
+        "facing": "right",
+        "armed": true,
+        "texture": "black_knight_movement",
+        "frame": "armed_walk_right_0",
+        "animation": "wayfarer_walk_right",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 85,
+        "vy": 0,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "run": {
+        "zone": "fog_crossing",
+        "pos": {
+          "x": 271.0833333333334,
+          "y": 244
+        },
+        "facing": "right",
+        "armed": true,
+        "texture": "black_knight_movement",
+        "frame": "armed_run_right_0",
+        "animation": "wayfarer_run_right",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 140,
+        "vy": 0,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "idle": {
+        "zone": "fog_crossing",
+        "pos": {
+          "x": 366.7499999999993,
+          "y": 244
+        },
+        "facing": "right",
+        "armed": true,
+        "texture": "black_knight_movement",
+        "frame": "armed_idle_right_0",
+        "animation": "wayfarer_idle_right",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 0,
+        "vy": 0,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "frames": {
+        "walk": [
+          "armed_walk_right_0",
+          "armed_walk_right_1",
+          "armed_walk_right_2",
+          "armed_walk_right_3",
+          "armed_walk_right_4",
+          "armed_walk_right_5"
+        ],
+        "run": [
+          "armed_run_right_0",
+          "armed_run_right_5",
+          "armed_run_right_1",
+          "armed_run_right_2",
+          "armed_run_right_3",
+          "armed_run_right_4"
+        ],
+        "idle": [
+          "armed_idle_right_0",
+          "armed_idle_right_1",
+          "armed_idle_right_2",
+          "armed_idle_right_3",
+          "armed_idle_right_4",
+          "armed_idle_right_5"
+        ]
+      }
+    }
+  },
+  "unarmed": {
+    "down": {
+      "walk": {
+        "zone": "bellhollow",
+        "pos": {
+          "x": 975,
+          "y": 274.0833333333332
+        },
+        "facing": "down",
+        "armed": false,
+        "texture": "black_knight_movement",
+        "frame": "unarmed_walk_down_0",
+        "animation": "wayfarer_unarmed_walk_down",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 0,
+        "vy": 85,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "run": {
+        "zone": "bellhollow",
+        "pos": {
+          "x": 975,
+          "y": 289.4166666666666
+        },
+        "facing": "down",
+        "armed": false,
+        "texture": "black_knight_movement",
+        "frame": "unarmed_run_down_0",
+        "animation": "wayfarer_unarmed_run_down",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 0,
+        "vy": 140,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "idle": {
+        "zone": "bellhollow",
+        "pos": {
+          "x": 975,
+          "y": 382.74999999999915
+        },
+        "facing": "down",
+        "armed": false,
+        "texture": "black_knight_movement",
+        "frame": "unarmed_idle_down_1",
+        "animation": "wayfarer_unarmed_idle_down",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 0,
+        "vy": 0,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "frames": {
+        "walk": [
+          "unarmed_walk_down_0",
+          "unarmed_walk_down_1",
+          "unarmed_walk_down_2",
+          "unarmed_walk_down_3",
+          "unarmed_walk_down_4",
+          "unarmed_walk_down_5"
+        ],
+        "run": [
+          "unarmed_run_down_0",
+          "unarmed_run_down_5",
+          "unarmed_run_down_1",
+          "unarmed_run_down_2",
+          "unarmed_run_down_3",
+          "unarmed_run_down_4"
+        ],
+        "idle": [
+          "unarmed_idle_down_0",
+          "unarmed_idle_down_1",
+          "unarmed_idle_down_2",
+          "unarmed_idle_down_3",
+          "unarmed_idle_down_4",
+          "unarmed_idle_down_5"
+        ]
+      }
+    },
+    "up": {
+      "walk": {
+        "zone": "bellhollow",
+        "pos": {
+          "x": 975,
+          "y": 348.33333333333326
+        },
+        "facing": "up",
+        "armed": false,
+        "texture": "black_knight_movement",
+        "frame": "unarmed_walk_up_0",
+        "animation": "wayfarer_unarmed_walk_up",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 0,
+        "vy": -85,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "run": {
+        "zone": "bellhollow",
+        "pos": {
+          "x": 975,
+          "y": 331.5833333333335
+        },
+        "facing": "up",
+        "armed": false,
+        "texture": "black_knight_movement",
+        "frame": "unarmed_run_up_1",
+        "animation": "wayfarer_unarmed_run_up",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 0,
+        "vy": -140,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "idle": {
+        "zone": "bellhollow",
+        "pos": {
+          "x": 975,
+          "y": 240.5833333333338
+        },
+        "facing": "up",
+        "armed": false,
+        "texture": "black_knight_movement",
+        "frame": "unarmed_idle_up_1",
+        "animation": "wayfarer_unarmed_idle_up",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 0,
+        "vy": 0,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "frames": {
+        "walk": [
+          "unarmed_walk_up_0",
+          "unarmed_walk_up_1",
+          "unarmed_walk_up_2",
+          "unarmed_walk_up_3",
+          "unarmed_walk_up_4",
+          "unarmed_walk_up_5"
+        ],
+        "run": [
+          "unarmed_run_up_0",
+          "unarmed_run_up_1",
+          "unarmed_run_up_2",
+          "unarmed_run_up_3",
+          "unarmed_run_up_4",
+          "unarmed_run_up_5"
+        ],
+        "idle": [
+          "unarmed_idle_up_0",
+          "unarmed_idle_up_1",
+          "unarmed_idle_up_2",
+          "unarmed_idle_up_3",
+          "unarmed_idle_up_4",
+          "unarmed_idle_up_5"
+        ]
+      }
+    },
+    "left": {
+      "walk": {
+        "zone": "bellhollow",
+        "pos": {
+          "x": 1006.9166666666669,
+          "y": 344
+        },
+        "facing": "left",
+        "armed": false,
+        "texture": "black_knight_movement",
+        "frame": "unarmed_walk_left_0",
+        "animation": "wayfarer_unarmed_walk_left",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": -85,
+        "vy": 0,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "run": {
+        "zone": "bellhollow",
+        "pos": {
+          "x": 998.5833333333331,
+          "y": 344
+        },
+        "facing": "left",
+        "armed": false,
+        "texture": "black_knight_movement",
+        "frame": "unarmed_run_left_0",
+        "animation": "wayfarer_unarmed_run_left",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": -140,
+        "vy": 0,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "idle": {
+        "zone": "bellhollow",
+        "pos": {
+          "x": 905.2499999999983,
+          "y": 344
+        },
+        "facing": "left",
+        "armed": false,
+        "texture": "black_knight_movement",
+        "frame": "unarmed_idle_left_0",
+        "animation": "wayfarer_unarmed_idle_left",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 0,
+        "vy": 0,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "frames": {
+        "walk": [
+          "unarmed_walk_left_0",
+          "unarmed_walk_left_1",
+          "unarmed_walk_left_2",
+          "unarmed_walk_left_3",
+          "unarmed_walk_left_4",
+          "unarmed_walk_left_5"
+        ],
+        "run": [
+          "unarmed_run_left_0",
+          "unarmed_run_left_1",
+          "unarmed_run_left_2",
+          "unarmed_run_left_3",
+          "unarmed_run_left_4",
+          "unarmed_run_left_5"
+        ],
+        "idle": [
+          "unarmed_idle_left_0",
+          "unarmed_idle_left_1",
+          "unarmed_idle_left_2",
+          "unarmed_idle_left_3",
+          "unarmed_idle_left_4",
+          "unarmed_idle_left_5"
+        ]
+      }
+    },
+    "right": {
+      "walk": {
+        "zone": "bellhollow",
+        "pos": {
+          "x": 972.0833333333331,
+          "y": 298
+        },
+        "facing": "right",
+        "armed": false,
+        "texture": "black_knight_movement",
+        "frame": "unarmed_walk_right_0",
+        "animation": "wayfarer_unarmed_walk_right",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 85,
+        "vy": 0,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "run": {
+        "zone": "bellhollow",
+        "pos": {
+          "x": 1007.5000000000006,
+          "y": 298
+        },
+        "facing": "right",
+        "armed": false,
+        "texture": "black_knight_movement",
+        "frame": "unarmed_run_right_1",
+        "animation": "wayfarer_unarmed_run_right",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 140,
+        "vy": 0,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "idle": {
+        "zone": "bellhollow",
+        "pos": {
+          "x": 1082.166666666666,
+          "y": 298
+        },
+        "facing": "right",
+        "armed": false,
+        "texture": "black_knight_movement",
+        "frame": "unarmed_idle_right_0",
+        "animation": "wayfarer_unarmed_idle_right",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 0,
+        "vy": 0,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "frames": {
+        "walk": [
+          "unarmed_walk_right_0",
+          "unarmed_walk_right_1",
+          "unarmed_walk_right_2",
+          "unarmed_walk_right_3",
+          "unarmed_walk_right_4",
+          "unarmed_walk_right_5"
+        ],
+        "run": [
+          "unarmed_run_right_0",
+          "unarmed_run_right_5",
+          "unarmed_run_right_1",
+          "unarmed_run_right_2",
+          "unarmed_run_right_3",
+          "unarmed_run_right_4"
+        ],
+        "idle": [
+          "unarmed_idle_right_0",
+          "unarmed_idle_right_1",
+          "unarmed_idle_right_2",
+          "unarmed_idle_right_3",
+          "unarmed_idle_right_4",
+          "unarmed_idle_right_5"
+        ]
+      }
+    }
+  },
+  "keyFlows": {
+    "diagonal": {
+      "zone": "fog_crossing",
+      "pos": {
+        "x": 263.4201358800285,
+        "y": 242.99653078663812
+      },
+      "facing": "right",
+      "armed": true,
+      "texture": "black_knight_movement",
+      "frame": "armed_walk_right_0",
+      "animation": "wayfarer_walk_right",
+      "flip": false,
+      "body": [
+        18,
+        12,
+        23,
+        46
+      ],
+      "origin": [
+        0.5,
+        1
+      ],
+      "noclip": false,
+      "vx": 60.10407640085654,
+      "vy": -60.10407640085654,
+      "hits": {
+        "none": true,
+        "up": false,
+        "down": false,
+        "left": false,
+        "right": false
+      },
+      "rendered": true,
+      "alpha": 1,
+      "renderer": "CANVAS",
+      "rotation": 0,
+      "scaleMode": 1
+    },
+    "turns": [
+      {
+        "zone": "fog_crossing",
+        "pos": {
+          "x": 252.83333333333331,
+          "y": 245
+        },
+        "facing": "right",
+        "armed": true,
+        "texture": "black_knight_movement",
+        "frame": "armed_walk_right_0",
+        "animation": "wayfarer_walk_right",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 85,
+        "vy": 0,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      {
+        "zone": "fog_crossing",
+        "pos": {
+          "x": 257.08333333333326,
+          "y": 252.0833333333333
+        },
+        "facing": "down",
+        "armed": true,
+        "texture": "black_knight_movement",
+        "frame": "armed_walk_down_0",
+        "animation": "wayfarer_walk_down",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 0,
+        "vy": 85,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      {
+        "zone": "fog_crossing",
+        "pos": {
+          "x": 249.99999999999997,
+          "y": 259.1666666666666
+        },
+        "facing": "left",
+        "armed": true,
+        "texture": "black_knight_movement",
+        "frame": "armed_walk_left_0",
+        "animation": "wayfarer_walk_left",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": -85,
+        "vy": 0,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      {
+        "zone": "fog_crossing",
+        "pos": {
+          "x": 242.91666666666669,
+          "y": 253.49999999999991
+        },
+        "facing": "up",
+        "armed": true,
+        "texture": "black_knight_movement",
+        "frame": "armed_walk_up_0",
+        "animation": "wayfarer_walk_up",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 0,
+        "vy": -85,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      }
+    ],
+    "runToWalk": {
+      "zone": "fog_crossing",
+      "pos": {
+        "x": 309.4166666666666,
+        "y": 245
+      },
+      "facing": "right",
+      "armed": true,
+      "texture": "black_knight_movement",
+      "frame": "armed_walk_right_2",
+      "animation": "wayfarer_walk_right",
+      "flip": false,
+      "body": [
+        18,
+        12,
+        23,
+        46
+      ],
+      "origin": [
+        0.5,
+        1
+      ],
+      "noclip": false,
+      "vx": 85,
+      "vy": 0,
+      "hits": {
+        "none": true,
+        "up": false,
+        "down": false,
+        "left": false,
+        "right": false
+      },
+      "rendered": true,
+      "alpha": 1,
+      "renderer": "CANVAS",
+      "rotation": 0,
+      "scaleMode": 1
+    },
+    "stop": {
+      "zone": "fog_crossing",
+      "pos": {
+        "x": 312.24999999999994,
+        "y": 245
+      },
+      "facing": "right",
+      "armed": true,
+      "texture": "black_knight_movement",
+      "frame": "armed_idle_right_0",
+      "animation": "wayfarer_idle_right",
+      "flip": false,
+      "body": [
+        18,
+        12,
+        23,
+        46
+      ],
+      "origin": [
+        0.5,
+        1
+      ],
+      "noclip": false,
+      "vx": 0,
+      "vy": 0,
+      "hits": {
+        "none": true,
+        "up": false,
+        "down": false,
+        "left": false,
+        "right": false
+      },
+      "rendered": true,
+      "alpha": 1,
+      "renderer": "CANVAS",
+      "rotation": 0,
+      "scaleMode": 1
+    },
+    "manualX-fog_crossing": [
+      [
+        "wayfarer_unarmed_idle_right",
+        false,
+        29097.30000000447
+      ]
+    ],
+    "manualX-bellhollow": [
+      [
+        "wayfarer_idle_right",
+        true,
+        29483.30000000447
+      ]
+    ],
+    "ime": {
+      "editableIsolated": {
+        "zone": "fog_crossing",
+        "pos": {
+          "x": 265,
+          "y": 254
+        },
+        "facing": "right",
+        "armed": true,
+        "texture": "black_knight_movement",
+        "frame": "armed_idle_right_3",
+        "animation": "wayfarer_idle_right",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 0,
+        "vy": 0,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "gameCanvasMapped": {
+        "zone": "fog_crossing",
+        "pos": {
+          "x": 265,
+          "y": 251.16666666666669
+        },
+        "facing": "up",
+        "armed": true,
+        "texture": "black_knight_movement",
+        "frame": "armed_walk_up_0",
+        "animation": "wayfarer_walk_up",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 0,
+        "vy": -85,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      },
+      "released": {
+        "zone": "fog_crossing",
+        "pos": {
+          "x": 265,
+          "y": 212.91666666666694
+        },
+        "facing": "up",
+        "armed": true,
+        "texture": "black_knight_armed_idle",
+        "frame": "armed_idle_up_0",
+        "animation": "wayfarer_idle_up",
+        "flip": false,
+        "body": [
+          18,
+          12,
+          23,
+          46
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "noclip": false,
+        "vx": 0,
+        "vy": 0,
+        "hits": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "rendered": true,
+        "alpha": 1,
+        "renderer": "CANVAS",
+        "rotation": 0,
+        "scaleMode": 1
+      }
+    }
+  },
+  "saved": {
+    "schema": 3,
+    "zone": "fog_crossing",
+    "xy": [
+      290,
+      255
+    ]
+  },
+  "continue": {
+    "zone": "fog_crossing",
+    "pos": {
+      "x": 290,
+      "y": 255
+    },
+    "facing": "down",
+    "armed": true,
+    "texture": "black_knight_armed_idle",
+    "frame": "armed_idle_down_0",
+    "animation": "wayfarer_idle_down",
+    "flip": false,
+    "body": [
+      18,
+      12,
+      23,
+      46
+    ],
+    "origin": [
+      0.5,
+      1
+    ],
+    "noclip": false,
+    "vx": 0,
+    "vy": 0,
+    "hits": {
+      "none": true,
+      "up": false,
+      "down": false,
+      "left": false,
+      "right": false
+    },
+    "rendered": true,
+    "alpha": 1,
+    "renderer": "CANVAS",
+    "rotation": 0,
+    "scaleMode": 1
+  },
+  "log": {
+    "console": [
+      [
+        "warning",
+        "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+      ],
+      [
+        "warning",
+        "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+      ]
+    ],
+    "jsErrors": [],
+    "httpErrors": [],
+    "failedRequests": [],
+    "atlasResponses": [
+      [
+        200,
+        "black_knight_armed_idle.png"
+      ],
+      [
+        200,
+        "black_knight_armed_idle.json"
+      ],
+      [
+        200,
+        "black_knight_movement.png"
+      ],
+      [
+        200,
+        "black_knight_movement.json"
+      ],
+      [
+        200,
+        "black_knight_armed_idle.png"
+      ],
+      [
+        200,
+        "black_knight_movement.json"
+      ],
+      [
+        200,
+        "black_knight_movement.png"
+      ],
+      [
+        200,
+        "black_knight_armed_idle.json"
+      ]
+    ]
+  }
+}

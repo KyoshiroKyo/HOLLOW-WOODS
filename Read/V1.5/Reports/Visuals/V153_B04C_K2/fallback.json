@@ -1,0 +1,264 @@
+{
+  "removed": "armed_run_up_5",
+  "registry": {
+    "idle": {
+      "down": [
+        [
+          "black_knight_armed_idle",
+          6
+        ],
+        [
+          "black_knight_armed_idle",
+          6
+        ]
+      ],
+      "up": [
+        [
+          "black_knight_armed_idle",
+          6
+        ],
+        [
+          "black_knight_armed_idle",
+          6
+        ]
+      ],
+      "left": [
+        [
+          "black_knight_armed_idle",
+          6
+        ],
+        [
+          "black_knight_armed_idle",
+          6
+        ]
+      ],
+      "right": [
+        [
+          "black_knight_movement",
+          6
+        ],
+        [
+          "black_knight_movement",
+          6
+        ]
+      ]
+    },
+    "run": {
+      "down": [
+        [
+          "wayfarer_run",
+          6
+        ],
+        [
+          "wayfarer_run",
+          6
+        ]
+      ],
+      "up": [
+        [
+          "wayfarer_run",
+          6
+        ],
+        [
+          "wayfarer_run",
+          6
+        ]
+      ],
+      "left": [
+        [
+          "wayfarer_run",
+          6
+        ],
+        [
+          "wayfarer_run",
+          6
+        ]
+      ],
+      "right": [
+        [
+          "wayfarer_run",
+          6
+        ],
+        [
+          "wayfarer_run",
+          6
+        ]
+      ]
+    },
+    "walk": {
+      "down": [
+        [
+          "black_knight_movement",
+          6
+        ],
+        [
+          "black_knight_movement",
+          6
+        ]
+      ],
+      "up": [
+        [
+          "black_knight_movement",
+          6
+        ],
+        [
+          "black_knight_movement",
+          6
+        ]
+      ],
+      "left": [
+        [
+          "black_knight_movement",
+          6
+        ],
+        [
+          "black_knight_movement",
+          6
+        ]
+      ],
+      "right": [
+        [
+          "black_knight_movement",
+          6
+        ],
+        [
+          "black_knight_movement",
+          6
+        ]
+      ]
+    },
+    "unarmed_run": {
+      "down": [
+        [
+          "black_knight_movement",
+          6
+        ],
+        [
+          "black_knight_movement",
+          6
+        ]
+      ],
+      "up": [
+        [
+          "black_knight_movement",
+          6
+        ],
+        [
+          "black_knight_movement",
+          6
+        ]
+      ],
+      "left": [
+        [
+          "black_knight_movement",
+          6
+        ],
+        [
+          "black_knight_movement",
+          6
+        ]
+      ],
+      "right": [
+        [
+          "black_knight_movement",
+          6
+        ],
+        [
+          "black_knight_movement",
+          6
+        ]
+      ]
+    },
+    "unarmed_idle": {
+      "down": [
+        [
+          "black_knight_movement",
+          6
+        ],
+        [
+          "black_knight_movement",
+          6
+        ]
+      ],
+      "up": [
+        [
+          "black_knight_movement",
+          6
+        ],
+        [
+          "black_knight_movement",
+          6
+        ]
+      ],
+      "left": [
+        [
+          "black_knight_movement",
+          6
+        ],
+        [
+          "black_knight_movement",
+          6
+        ]
+      ],
+      "right": [
+        [
+          "black_knight_movement",
+          6
+        ],
+        [
+          "black_knight_movement",
+          6
+        ]
+      ]
+    },
+    "unarmed_walk": {
+      "down": [
+        [
+          "black_knight_movement",
+          6
+        ],
+        [
+          "black_knight_movement",
+          6
+        ]
+      ],
+      "up": [
+        [
+          "black_knight_movement",
+          6
+        ],
+        [
+          "black_knight_movement",
+          6
+        ]
+      ],
+      "left": [
+        [
+          "black_knight_movement",
+          6
+        ],
+        [
+          "black_knight_movement",
+          6
+        ]
+      ],
+      "right": [
+        [
+          "black_knight_movement",
+          6
+        ],
+        [
+          "black_knight_movement",
+          6
+        ]
+      ]
+    }
+  },
+  "physicalShiftD": "black_knight_movement",
+  "warnings": [
+    "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng.",
+    "Frame \"%s\" not found in texture \"%s\" armed_run_up_5 black_knight_movement"
+  ],
+  "errors": [],
+  "badHttp": []
+}

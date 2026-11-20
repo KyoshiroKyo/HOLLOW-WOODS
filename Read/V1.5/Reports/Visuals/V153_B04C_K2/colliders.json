@@ -1,0 +1,774 @@
+{
+  "fence": {
+    "start": [
+      556,
+      262,
+      510,
+      280,
+      602,
+      292
+    ],
+    "target": [
+      {
+        "n": "Hàng Rào Cổng Tây",
+        "id": null,
+        "xy": [
+          510,
+          280
+        ],
+        "rect": [
+          510,
+          280,
+          602,
+          292
+        ]
+      }
+    ],
+    "events": 42,
+    "firstContacts": [
+      {
+        "foot": {
+          "x": 552,
+          "y": 286
+        },
+        "pos": [
+          543,
+          268,
+          561,
+          280
+        ],
+        "rect": [
+          510,
+          280,
+          602,
+          292
+        ],
+        "actor": [
+          510,
+          280
+        ],
+        "active": true,
+        "texture": "black_knight_movement",
+        "noclip": false,
+        "hit": {
+          "block": {
+            "none": false,
+            "up": false,
+            "down": true,
+            "left": false,
+            "right": false
+          },
+          "touch": {
+            "none": false,
+            "up": false,
+            "down": true,
+            "left": false,
+            "right": false
+          }
+        }
+      },
+      {
+        "foot": {
+          "x": 552,
+          "y": 286
+        },
+        "pos": [
+          543,
+          268,
+          561,
+          280
+        ],
+        "rect": [
+          510,
+          280,
+          602,
+          292
+        ],
+        "actor": [
+          510,
+          280
+        ],
+        "active": true,
+        "texture": "black_knight_movement",
+        "noclip": false,
+        "hit": {
+          "block": {
+            "none": false,
+            "up": false,
+            "down": true,
+            "left": false,
+            "right": false
+          },
+          "touch": {
+            "none": false,
+            "up": false,
+            "down": true,
+            "left": false,
+            "right": false
+          }
+        }
+      },
+      {
+        "foot": {
+          "x": 552,
+          "y": 286
+        },
+        "pos": [
+          543,
+          268,
+          561,
+          280
+        ],
+        "rect": [
+          510,
+          280,
+          602,
+          292
+        ],
+        "actor": [
+          510,
+          280
+        ],
+        "active": true,
+        "texture": "black_knight_movement",
+        "noclip": false,
+        "hit": {
+          "block": {
+            "none": false,
+            "up": false,
+            "down": true,
+            "left": false,
+            "right": false
+          },
+          "touch": {
+            "none": false,
+            "up": false,
+            "down": true,
+            "left": false,
+            "right": false
+          }
+        }
+      }
+    ],
+    "lastFrame": {
+      "foot": {
+        "x": 552,
+        "y": 286
+      },
+      "pos": [
+        543,
+        268,
+        561,
+        280
+      ],
+      "rect": [
+        510,
+        280,
+        602,
+        292
+      ],
+      "actor": [
+        510,
+        280
+      ],
+      "active": true,
+      "texture": "black_knight_movement",
+      "noclip": false,
+      "hit": {
+        "block": {
+          "none": false,
+          "up": false,
+          "down": true,
+          "left": false,
+          "right": false
+        },
+        "touch": {
+          "none": false,
+          "up": false,
+          "down": true,
+          "left": false,
+          "right": false
+        }
+      }
+    }
+  },
+  "npc": {
+    "start": [
+      528,
+      274,
+      540,
+      205,
+      562,
+      219
+    ],
+    "target": [
+      {
+        "n": "",
+        "id": "npc_garth",
+        "xy": [
+          540,
+          205
+        ],
+        "rect": [
+          540,
+          205,
+          562,
+          219
+        ]
+      }
+    ],
+    "events": 46,
+    "firstContacts": [
+      {
+        "foot": {
+          "x": 552,
+          "y": 274
+        },
+        "pos": [
+          543,
+          256,
+          561,
+          268
+        ],
+        "rect": [
+          561,
+          255,
+          583,
+          269
+        ],
+        "actor": [
+          540,
+          205
+        ],
+        "active": true,
+        "texture": "black_knight_movement",
+        "noclip": false,
+        "hit": {
+          "block": {
+            "none": false,
+            "up": false,
+            "down": false,
+            "left": false,
+            "right": true
+          },
+          "touch": {
+            "none": false,
+            "up": false,
+            "down": false,
+            "left": false,
+            "right": true
+          }
+        }
+      },
+      {
+        "foot": {
+          "x": 552,
+          "y": 274
+        },
+        "pos": [
+          543,
+          256,
+          561,
+          268
+        ],
+        "rect": [
+          561,
+          255,
+          583,
+          269
+        ],
+        "actor": [
+          540,
+          205
+        ],
+        "active": true,
+        "texture": "black_knight_movement",
+        "noclip": false,
+        "hit": {
+          "block": {
+            "none": false,
+            "up": false,
+            "down": false,
+            "left": false,
+            "right": true
+          },
+          "touch": {
+            "none": false,
+            "up": false,
+            "down": false,
+            "left": false,
+            "right": true
+          }
+        }
+      },
+      {
+        "foot": {
+          "x": 552,
+          "y": 274
+        },
+        "pos": [
+          543,
+          256,
+          561,
+          268
+        ],
+        "rect": [
+          561,
+          255,
+          583,
+          269
+        ],
+        "actor": [
+          540,
+          205
+        ],
+        "active": true,
+        "texture": "black_knight_movement",
+        "noclip": false,
+        "hit": {
+          "block": {
+            "none": false,
+            "up": false,
+            "down": false,
+            "left": false,
+            "right": true
+          },
+          "touch": {
+            "none": false,
+            "up": false,
+            "down": false,
+            "left": false,
+            "right": true
+          }
+        }
+      }
+    ],
+    "lastFrame": {
+      "foot": {
+        "x": 552,
+        "y": 274
+      },
+      "pos": [
+        543,
+        256,
+        561,
+        268
+      ],
+      "rect": [
+        561,
+        255,
+        583,
+        269
+      ],
+      "actor": [
+        540,
+        205
+      ],
+      "active": true,
+      "texture": "black_knight_movement",
+      "noclip": false,
+      "hit": {
+        "block": {
+          "none": false,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": true
+        },
+        "touch": {
+          "none": false,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": true
+        }
+      }
+    }
+  },
+  "tree": {
+    "start": [
+      1238,
+      593,
+      1271,
+      576,
+      1289,
+      586
+    ],
+    "target": [
+      {
+        "n": "Gốc Cây Pixel Art",
+        "id": null,
+        "xy": [
+          1271,
+          576
+        ],
+        "rect": [
+          1271,
+          576,
+          1289,
+          586
+        ]
+      }
+    ],
+    "events": 4,
+    "firstContacts": [
+      {
+        "foot": {
+          "x": 1330.0000000000036,
+          "y": 605
+        },
+        "pos": [
+          1252,
+          576,
+          1270,
+          588
+        ],
+        "rect": [
+          1271,
+          576,
+          1289,
+          586
+        ],
+        "actor": [
+          1271,
+          576
+        ],
+        "active": true,
+        "texture": "black_knight_movement",
+        "noclip": false,
+        "hit": {
+          "block": {
+            "none": false,
+            "up": false,
+            "down": false,
+            "left": false,
+            "right": true
+          },
+          "touch": {
+            "none": false,
+            "up": false,
+            "down": false,
+            "left": false,
+            "right": true
+          }
+        }
+      },
+      {
+        "foot": {
+          "x": 1330.0000000000036,
+          "y": 605
+        },
+        "pos": [
+          1253,
+          579,
+          1271,
+          591
+        ],
+        "rect": [
+          1271,
+          576,
+          1289,
+          586
+        ],
+        "actor": [
+          1271,
+          576
+        ],
+        "active": true,
+        "texture": "black_knight_movement",
+        "noclip": false,
+        "hit": {
+          "block": {
+            "none": false,
+            "up": false,
+            "down": false,
+            "left": false,
+            "right": true
+          },
+          "touch": {
+            "none": false,
+            "up": false,
+            "down": false,
+            "left": false,
+            "right": true
+          }
+        }
+      },
+      {
+        "foot": {
+          "x": 1330.0000000000036,
+          "y": 605
+        },
+        "pos": [
+          1253,
+          583,
+          1271,
+          595
+        ],
+        "rect": [
+          1271,
+          576,
+          1289,
+          586
+        ],
+        "actor": [
+          1271,
+          576
+        ],
+        "active": true,
+        "texture": "black_knight_movement",
+        "noclip": false,
+        "hit": {
+          "block": {
+            "none": false,
+            "up": false,
+            "down": false,
+            "left": false,
+            "right": true
+          },
+          "touch": {
+            "none": false,
+            "up": false,
+            "down": false,
+            "left": false,
+            "right": true
+          }
+        }
+      }
+    ],
+    "lastFrame": {
+      "foot": {
+        "x": 1330.0000000000036,
+        "y": 605
+      },
+      "pos": [
+        1322.4166666666704,
+        587,
+        1340.4166666666704,
+        599
+      ],
+      "rect": [
+        1271,
+        576,
+        1289,
+        586
+      ],
+      "actor": [
+        1271,
+        576
+      ],
+      "active": true,
+      "texture": "black_knight_movement",
+      "noclip": false,
+      "hit": {
+        "block": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "touch": {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        }
+      }
+    }
+  },
+  "smithy": {
+    "start": [
+      1254,
+      402,
+      1193,
+      328,
+      1347,
+      360
+    ],
+    "target": [
+      {
+        "n": "Mái Xưởng Rèn",
+        "id": null,
+        "xy": [
+          1193,
+          328
+        ],
+        "rect": [
+          1193,
+          328,
+          1347,
+          360
+        ]
+      }
+    ],
+    "events": 52,
+    "firstContacts": [
+      {
+        "foot": {
+          "x": 1254,
+          "y": 378
+        },
+        "pos": [
+          1245,
+          360,
+          1263,
+          372
+        ],
+        "rect": [
+          1193,
+          328,
+          1347,
+          360
+        ],
+        "actor": [
+          1193,
+          328
+        ],
+        "active": true,
+        "texture": "black_knight_movement",
+        "noclip": false,
+        "hit": {
+          "block": {
+            "none": false,
+            "up": true,
+            "down": false,
+            "left": false,
+            "right": false
+          },
+          "touch": {
+            "none": false,
+            "up": true,
+            "down": false,
+            "left": false,
+            "right": false
+          }
+        }
+      },
+      {
+        "foot": {
+          "x": 1254,
+          "y": 378
+        },
+        "pos": [
+          1245,
+          360,
+          1263,
+          372
+        ],
+        "rect": [
+          1193,
+          328,
+          1347,
+          360
+        ],
+        "actor": [
+          1193,
+          328
+        ],
+        "active": true,
+        "texture": "black_knight_movement",
+        "noclip": false,
+        "hit": {
+          "block": {
+            "none": false,
+            "up": true,
+            "down": false,
+            "left": false,
+            "right": false
+          },
+          "touch": {
+            "none": false,
+            "up": true,
+            "down": false,
+            "left": false,
+            "right": false
+          }
+        }
+      },
+      {
+        "foot": {
+          "x": 1254,
+          "y": 378
+        },
+        "pos": [
+          1245,
+          360,
+          1263,
+          372
+        ],
+        "rect": [
+          1193,
+          328,
+          1347,
+          360
+        ],
+        "actor": [
+          1193,
+          328
+        ],
+        "active": true,
+        "texture": "black_knight_movement",
+        "noclip": false,
+        "hit": {
+          "block": {
+            "none": false,
+            "up": true,
+            "down": false,
+            "left": false,
+            "right": false
+          },
+          "touch": {
+            "none": false,
+            "up": true,
+            "down": false,
+            "left": false,
+            "right": false
+          }
+        }
+      }
+    ],
+    "lastFrame": {
+      "foot": {
+        "x": 1254,
+        "y": 378
+      },
+      "pos": [
+        1245,
+        360,
+        1263,
+        372
+      ],
+      "rect": [
+        1193,
+        328,
+        1347,
+        360
+      ],
+      "actor": [
+        1193,
+        328
+      ],
+      "active": true,
+      "texture": "black_knight_movement",
+      "noclip": false,
+      "hit": {
+        "block": {
+          "none": false,
+          "up": true,
+          "down": false,
+          "left": false,
+          "right": false
+        },
+        "touch": {
+          "none": false,
+          "up": true,
+          "down": false,
+          "left": false,
+          "right": false
+        }
+      }
+    }
+  }
+}
