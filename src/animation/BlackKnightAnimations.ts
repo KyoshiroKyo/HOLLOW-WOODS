@@ -61,15 +61,14 @@ const ARMED_IDLE_FRAME_MS = 70;
 interface ArtistMovementClip {
   prefix: string;
   frameMs: number;
-  fellorRight?: boolean;
 }
 
 const ARTIST_MOVEMENT: Partial<Record<string, ArtistMovementClip>> = {
   walk: { prefix: 'armed_walk', frameMs: 170 },
-  run: { prefix: 'armed_run', frameMs: 140, fellorRight: true },
+  run: { prefix: 'armed_run', frameMs: 140 },
   unarmed_idle: { prefix: 'unarmed_idle', frameMs: 70 },
   unarmed_walk: { prefix: 'unarmed_walk', frameMs: 170 },
-  unarmed_run: { prefix: 'unarmed_run', frameMs: 140, fellorRight: true },
+  unarmed_run: { prefix: 'unarmed_run', frameMs: 140 },
 };
 
 function getMovementGroup(anims: Phaser.Animations.AnimationManager, action: string) {
@@ -77,14 +76,12 @@ function getMovementGroup(anims: Phaser.Animations.AnimationManager, action: str
   if (!WAYFARER_USE_PURE_ARTIST_SPRITES || !clip) return undefined;
 
   const directions = DIRECTIONS.map(dir => {
-    // The authored RIGHT run has twice the poses at the same total loop duration.
-    const original = dir === 'right' && clip.fellorRight;
-    const expectedCount = original ? 12 : 6;
+    const expectedCount = 6;
     const frames = anims.generateFrameNames(BLACK_KNIGHT_MOVEMENT_KEY, {
       prefix: `${clip.prefix}_${dir}_`,
       end: expectedCount - 1,
     });
-    return { frames, expectedCount, frameRate: 1000 / (original ? 70 : clip.frameMs) };
+    return { frames, expectedCount, frameRate: 1000 / clip.frameMs };
   });
   return directions.every(dir => dir.frames.length === dir.expectedCount) ? directions : undefined;
 }
@@ -92,11 +89,21 @@ function getMovementGroup(anims: Phaser.Animations.AnimationManager, action: str
 
 /** Register the directional Wayfarer clips and their supported Satyr animation aliases. */
 export function registerWayfarerAnimations(anims: Phaser.Animations.AnimationManager): void {
+  // The original RIGHT artwork stays in the K1 asset for compatibility.
+  // Use the reviewed replacement when complete, even if the unused K1 row is absent.
+  const consistentRightIdle = WAYFARER_USE_PURE_ARTIST_SPRITES
+    ? anims.generateFrameNames(BLACK_KNIGHT_MOVEMENT_KEY, {
+      prefix: 'armed_idle_right_',
+      end: ARMED_IDLE_FRAMES_PER_DIRECTION - 1,
+    })
+    : [];
   const artistIdle = WAYFARER_USE_PURE_ARTIST_SPRITES
-    ? DIRECTIONS.map(dir => anims.generateFrameNames(BLACK_KNIGHT_ARMED_IDLE_KEY, {
-      prefix: `armed_idle_${dir}_`,
-      end: ARMED_IDLE_FRAMES_PER_DIRECTION - 1
-    }))
+    ? DIRECTIONS.map(dir => dir === 'right' && consistentRightIdle.length === ARMED_IDLE_FRAMES_PER_DIRECTION
+      ? consistentRightIdle
+      : anims.generateFrameNames(BLACK_KNIGHT_ARMED_IDLE_KEY, {
+        prefix: `armed_idle_${dir}_`,
+        end: ARMED_IDLE_FRAMES_PER_DIRECTION - 1,
+      }))
     : [];
   const hasCompleteArtistIdle = artistIdle.length === DIRECTIONS.length &&
     artistIdle.every(frames => frames.length === ARMED_IDLE_FRAMES_PER_DIRECTION);

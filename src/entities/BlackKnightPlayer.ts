@@ -1,7 +1,9 @@
 import * as Phaser from 'phaser';
 import { DeveloperModeManager } from '../debug/DeveloperModeManager';
 import { 
-  SATYR_SHEET_KEY, 
+  SATYR_SHEET_KEY,
+  BLACK_KNIGHT_MOVEMENT_KEY,
+  WAYFARER_USE_PURE_ARTIST_SPRITES,
   WAYFARER_IDLE_KEY,
   WAYFARER_ORIGIN_X,
   WAYFARER_ORIGIN_Y,
@@ -1348,11 +1350,11 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     }
 
     const targetAnim = this.scene.anims.get(targetKey);
-    if (!targetAnim || !targetAnim.frames || targetAnim.frames.length === 0) {
-      const fallbackKey = isRunning
-        ? (this.scene.anims.exists('wayfarer_run_down') ? 'wayfarer_run_down' : 'satyr_run_down')
-        : (this.scene.anims.exists('wayfarer_walk_down') ? 'wayfarer_walk_down' : 'satyr_walk_down');
-      this.safePlayAnim(fallbackKey, true);
+    if (!targetAnim?.frames.length ||
+      (WAYFARER_USE_PURE_ARTIST_SPRITES && targetAnim.frames[0].textureKey !== BLACK_KNIGHT_MOVEMENT_KEY)) {
+      // Keep physical movement when a clip is missing. An idle pose of the
+      // matching weapon state avoids displaying a different character mid-step.
+      this.playIdleAnim();
       return;
     }
 
@@ -1371,23 +1373,22 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     this.playIdleAnim();
   }
 
+  private getIdleAnimationKey(): string | undefined {
+    const action = this._isWeaponDrawn ? 'idle' : 'unarmed_idle';
+    const directional = `wayfarer_${action}_${this.facing}`;
+    if (this.scene.anims.exists(directional)) return directional;
+
+    return [
+      `satyr_${action}_${this.facing}`, `wayfarer_${action}_down`, `satyr_${action}_down`,
+    ].find(key => this.scene.anims.exists(key));
+  }
+
   private playIdleAnim(): void {
     if (this.isActionLocked()) return;
 
-    const idleAction = this._isWeaponDrawn ? 'idle' : 'unarmed_idle';
-    const wayfarerKey = `wayfarer_${idleAction}_${this.facing}`;
-    const satyrKey = `satyr_idle_${this.facing}`;
-    const targetKey = this.scene.anims.exists(wayfarerKey) 
-      ? wayfarerKey 
-      : (this.scene.anims.exists(`wayfarer_idle_${this.facing}`) ? `wayfarer_idle_${this.facing}` : satyrKey);
-
-    if (this.anims.currentAnim?.key === targetKey && this.anims.isPlaying) {
-      return;
-    }
-
-    if (!this.safePlayAnim(targetKey, true)) {
-      const fallbackKey = this.scene.anims.exists('wayfarer_idle_down') ? 'wayfarer_idle_down' : 'satyr_idle_down';
-      this.safePlayAnim(fallbackKey, true);
+    const key = this.getIdleAnimationKey();
+    if (key && (this.anims.currentAnim?.key !== key || !this.anims.isPlaying)) {
+      this.safePlayAnim(key, true);
     }
   }
 
@@ -1933,9 +1934,12 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     this._actionLockTimestamp = performance.now();
     (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
 
-    const wayfarerKey = `wayfarer_weapon_toggle_${this.facing}`;
-    const keyToPlay = this.scene.anims.exists(wayfarerKey) ? wayfarerKey : `wayfarer_idle_${this.facing}`;
-    this.safePlayAnim(keyToPlay, true);
+    // Until state-specific draw/sheath artwork is available, keep a verified
+    // stance of the new weapon state on the one player sprite.
+    const pose = WAYFARER_USE_PURE_ARTIST_SPRITES
+      ? this.getIdleAnimationKey()
+      : `wayfarer_weapon_toggle_${this.facing}`;
+    if (pose) this.safePlayAnim(pose, true);
 
     this.scene.time.delayedCall(400, () => {
       this._isTogglingWeapon = false;

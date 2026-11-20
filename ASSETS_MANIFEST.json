@@ -1,6 +1,6 @@
 {
   "totalFiles": 250,
-  "totalBytes": 69417799,
+  "totalBytes": 69443014,
   "categories": {
     "audio": [
       {
@@ -343,12 +343,12 @@
       },
       {
         "path": "public/assets/characters/black_knight/black_knight_movement.json",
-        "size": 68018,
+        "size": 77038,
         "ext": ".json"
       },
       {
         "path": "public/assets/characters/black_knight/black_knight_movement.png",
-        "size": 151606,
+        "size": 167801,
         "ext": ".png"
       },
       {
