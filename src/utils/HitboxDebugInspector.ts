@@ -15,6 +15,8 @@
 import * as Phaser from 'phaser';
 import { BlackKnightPlayer } from '../entities/BlackKnightPlayer';
 import { ZoneId } from '../types';
+import type { GameScene } from '../scenes/GameScene';
+import { CampSanctuarySystem } from '../systems/CampSanctuarySystem';
 import { HDTextHelper } from './HDTextHelper';
 import { TILED_PIPELINE_CONFIG } from '../config/tiledPipelineConfig';
 import { CullingOptimizationModule } from '../world/modules/CullingOptimizationModule';
@@ -54,37 +56,201 @@ export interface BenchmarkResult {
   };
 }
 
+const defaults = {
+  showColliders: true, showHitboxes: true, showHurtboxes: false, showTriggers: true,
+  showInteractRanges: true, showAIRanges: true, showCamera: false, showWorld: false,
+  showSafeZones: false, enableObjectPicker: false
+};
+
+export type InspectorLayer = keyof typeof defaults;
+
+interface InspectedEntity extends Omit<Phaser.GameObjects.GameObject, 'body'> {
+  x: number;
+  y: number;
+  depth?: number;
+  visible?: boolean;
+  alpha?: number;
+  originX?: number;
+  originY?: number;
+  scaleX?: number;
+  scaleY?: number;
+  texture?: { key: string };
+  body?: Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody;
+  getBounds?: () => Phaser.Geom.Rectangle;
+  spec?: { id?: string; name?: string };
+  stats?: { health?: number };
+  currentHP?: number;
+  ai?: { state?: string; currentState?: string };
+  anims?: Phaser.Animations.AnimationState;
+  npcSprite?: { texture?: { key: string }; anims?: Phaser.Animations.AnimationState };
+}
+
+interface PickedFootprint {
+  entity: InspectedEntity | null;
+  visual: Phaser.Geom.Rectangle | null;
+  body: Phaser.Geom.Rectangle | null;
+  label: string;
+}
+
 export class HitboxDebugInspector {
   private scene: Phaser.Scene;
   private uiScene: Phaser.Scene;
   private player: BlackKnightPlayer;
   private isEnabled: boolean = false;
-  private layers = { showColliders: true, showHitboxes: true, showTriggers: true, showInteractRanges: true, showAIRanges: true, enableObjectPicker: false };
+  private layers = { ...defaults };
   private f8Key!: Phaser.Input.Keyboard.Key;
-  private f10Key!: Phaser.Input.Keyboard.Key;
-
-  // Graphics overlay vẽ trong GameScene (tọa độ thế giới)
   private debugGfx: Phaser.GameObjects.Graphics;
   private pickerLabel: Phaser.GameObjects.Text;
-  private readonly pickerHandler = (pointer: Phaser.Input.Pointer): void => {
-    if (!this.isEnabled || !this.layers.enableObjectPicker || pointer.button !== 0) return;
-    const point = pointer.positionToCamera(this.scene.cameras.main) as Phaser.Math.Vector2;
-    const candidates = [...this.scene.children.list].reverse().filter((obj): obj is Phaser.GameObjects.GameObject & { x: number; y: number; texture?: { key: string }; body?: Phaser.Physics.Arcade.Body } =>
-      obj !== this.debugGfx && obj !== this.pickerLabel && (obj as any).active && Number.isFinite((obj as any).x) && Number.isFinite((obj as any).y) && typeof (obj as any).getBounds === 'function');
-    const hit = candidates.find(obj => (obj as any).getBounds().contains(point.x, point.y));
-    if (!hit) { this.pickerLabel.setVisible(false); return; }
-    const bounds = (hit as any).getBounds();
-    const body = hit.body;
-    const name = String((hit as any).name || (hit as any).constructor?.name || 'Entity');
-    const texture = hit.texture?.key || '—';
-    this.pickerLabel.setText(`${name} · ${texture}\n(${Math.round(hit.x)}, ${Math.round(hit.y)}) · Collider ${body ? `${Math.round(body.width)}×${Math.round(body.height)}` : '—'}`);
-    this.pickerLabel.setPosition(bounds.left, bounds.top - 8).setVisible(true);
+  private picked: PickedFootprint | null = null;
+  private pickIndex = 0;
+  private lastAttack: { x: number; y: number; radius: number; until: number } | null = null;
+  private readonly attackHandler = (hit: { x: number; y: number; radius: number }): void => {
+    if (this.isEnabled) this.lastAttack = { x: hit.x, y: hit.y, radius: hit.radius, until: this.scene.time.now + 550 };
   };
 
-  // Bảng thông số F9 hiển thị trên UIScene (Zoom 1.0 cố định)
-  private uiContainer: Phaser.GameObjects.Container;
-  private infoText: Phaser.GameObjects.Text;
-  private uiBg: Phaser.GameObjects.Graphics;
+  public isPicking(): boolean { return this.isEnabled && this.layers.enableObjectPicker; }
+
+  private bodyRect(entity: InspectedEntity): Phaser.Geom.Rectangle | null {
+    const b = entity.body;
+    return b && b.enable ? new Phaser.Geom.Rectangle(b.x, b.y, b.width, b.height) : null;
+  }
+
+  private describe(entity: InspectedEntity, point: Phaser.Math.Vector2): PickedFootprint {
+    const visual = entity.visible === false ? null : entity.getBounds?.() ?? null;
+    const body = this.bodyRect(entity);
+    const b = entity.body;
+    const anims = entity.anims ?? entity.npcSprite?.anims;
+    const id = entity.spec?.id || entity.getData?.('id') || entity.name || entity.type;
+    const key = entity.texture?.key ?? entity.npcSprite?.texture?.key ?? '—';
+    const hp = entity.stats?.health ?? entity.currentHP;
+    const camera = this.scene.cameras.main;
+    const name = entity.spec?.name || entity.name || entity.type;
+    const debugWorld = `${Math.round(point.x)}, ${Math.round(point.y)}`;
+    const label = [
+      `${name} · ${id} · ${key}`,
+      `World (${Math.round(entity.x)}, ${Math.round(entity.y)}) · trỏ (${debugWorld}) · depth ${entity.depth ?? 0}`,
+      `Origin ${entity.originX ?? '—'},${entity.originY ?? '—'} · scale ${entity.scaleX ?? '—'},${entity.scaleY ?? '—'}`,
+      `Visual ${visual ? `${Math.round(visual.width)}×${Math.round(visual.height)}` : '—'} · Collider ${body ? `${body.width}×${body.height} @ ${Math.round(body.x)},${Math.round(body.y)}` : '—'}`,
+      `Body ${b ? (b.physicsType === Phaser.Physics.Arcade.STATIC_BODY ? 'static' : 'dynamic') : '—'} · offset ${b ? `${b.offset.x},${b.offset.y}` : '—'}`,
+      `HP ${hp ?? '—'} · AI ${entity.ai?.currentState ?? entity.ai?.state ?? '—'} · ${anims?.currentAnim?.key ?? '—'} #${anims?.currentFrame?.index ?? '—'}`,
+      `Zoom ${camera.zoom.toFixed(2)}× · ${(this.scene as GameScene).getCurrentZoneId()}`
+    ].join('\n');
+    return { entity, visual, body, label };
+  }
+
+  private clearPick(): void {
+    this.picked = null;
+    this.pickIndex = 0;
+    this.pickerLabel.setVisible(false);
+  }
+
+  private readonly pickerHandler = (pointer: Phaser.Input.Pointer): void => {
+    if (!this.isPicking() || pointer.button !== 0) return;
+    const camera = this.scene.cameras.main;
+    const point = pointer.positionToCamera(camera) as Phaser.Math.Vector2;
+    const world = this.scene as GameScene;
+    const builder = (world as any).worldBuilder;
+    const hits: PickedFootprint[] = [];
+
+    this.scene.children.depthSort();
+    for (const child of this.scene.children.list.slice().reverse() as InspectedEntity[]) {
+      if (!child.active || child.visible !== true || child.alpha === 0 || child.cameraFilter & camera.id ||
+          !['Sprite', 'Image', 'Container', 'TileSprite', 'NineSlice'].includes(child.type)) continue;
+      if (child.getBounds?.().contains(point.x, point.y)) hits.push(this.describe(child, point));
+    }
+    for (const child of builder?.colliderGroup.getChildren() ?? []) {
+      if (hits.some(hit => hit.entity === child)) continue;
+      if (this.bodyRect(child)?.contains(point.x, point.y)) hits.push(this.describe(child, point));
+    }
+    for (const transition of builder?.getTransitions() ?? []) {
+      if (transition.fromZone !== world.getCurrentZoneId()) continue;
+      const b = transition.triggerRect;
+      const bounds = new Phaser.Geom.Rectangle(b.x, b.y, b.width, b.height);
+      if (bounds.contains(point.x, point.y)) {
+        hits.push({ entity: null, body: bounds, visual: null, label: `Trigger ${transition.id} · ${transition.fromZone} → ${transition.toZone}
+${b.x}, ${b.y} · ${b.width}×${b.height}` });
+      }
+    }
+    if (!hits.length) { this.clearPick(); return; }
+    this.pickIndex = pointer.event?.shiftKey ? (this.pickIndex + 1) % hits.length : 0;
+    const hit = hits[this.pickIndex];
+    this.picked = hit;
+    const x = Phaser.Math.Clamp(pointer.x + 10, 12, 860);
+    const y = Phaser.Math.Clamp(pointer.y - 116, 12, 620);
+    this.pickerLabel.setText(`${hit.label}
+${this.pickIndex + 1}/${hits.length} · Shift+click để chọn lớp dưới`);
+    this.pickerLabel.setPosition(x, y).setVisible(true);
+  };
+
+  private cameraTrace: string[] = [];
+  private nextTraceTime = 0;
+  private frameTimes: number[] = [];
+
+  private updateDiagnostics(zoneId: ZoneId, deltaMs: number): void {
+    if (Number.isFinite(deltaMs) && deltaMs > 0) {
+      this.frameTimes.push(deltaMs);
+      if (this.frameTimes.length > 120) this.frameTimes.shift();
+    }
+    const now = this.scene.time.now;
+    if (now < this.nextTraceTime) return;
+    this.nextTraceTime = now + 250;
+    const camera = this.scene.cameras.main;
+    const p = this.player;
+    const camp = CampSanctuarySystem.getInstance();
+    const flags = [camera.shakeEffect.isRunning && 'shake', camera.flashEffect.isRunning && 'flash',
+      camera.fadeEffect.isRunning && 'fade', camera.panEffect.isRunning && 'pan'].filter(Boolean);
+    const cameraRuntime = camera as unknown as { _follow?: unknown; rotation?: number };
+    const follow = cameraRuntime._follow === p ? 'player' : 'other/none';
+    this.cameraTrace.push(`${Math.round(now)}ms ${zoneId} @ ${Math.round(p.x)},${Math.round(p.y)} · ` +
+      `scroll ${Math.round(camera.scrollX)},${Math.round(camera.scrollY)} · rot ${cameraRuntime.rotation?.toFixed(3) ?? '—'} · zoom ${camera.zoom.toFixed(2)} · follow ${follow} · ` +
+      `FX ${flags.join(',') || '—'} · camp ${camp.isPlayerInSanctuary(p.x, p.y, zoneId)} · ` +
+      `Tinh Thần ${p.stats.composure.toFixed(1)} · v ${Math.round(p.body?.velocity.x ?? 0)},${Math.round(p.body?.velocity.y ?? 0)}`);
+    if (this.cameraTrace.length > 24) this.cameraTrace.shift();
+  }
+
+  public getProfilerInfo(): string {
+    const culling = CullingOptimizationModule.getInstance().getStats();
+    const world = this.scene as GameScene;
+    const runtime = world as any;
+    const zoneId = world.getCurrentZoneId();
+    const triggers = runtime.worldBuilder?.getTransitions().filter((t: { fromZone: string }) => t.fromZone === zoneId).length ?? 0;
+    const frames = this.frameTimes;
+    const worst = [...frames].sort((a, b) => b - a).slice(0, Math.ceil(frames.length / 100));
+    const low = worst.length ? (1000 * worst.length / worst.reduce((sum, ms) => sum + ms, 0)).toFixed(1) : '—';
+    const benchmark = this.isBenchmarking
+      ? `F10 đang đo ${(this.benchmarkElapsedMs / 1000).toFixed(1)}s`
+      : this.lastBenchmarkResult ? `F10 ${this.lastBenchmarkResult.avgFps} FPS trung bình` : 'F10 đo 10 giây';
+    return [
+      `1% low ${low} FPS · ${frames.length} frame · draw calls ${this.isHooked ? this.lastFrameDrawCalls : '—'}`,
+      `Cullable hiển thị ${culling.visible}/${culling.total} · Texture ${Object.keys(this.scene.textures.list).length}`,
+      `Trigger vùng ${triggers} · F8 ${GraphicsQualitySystem.getInstance().getSettings().level} · ${benchmark}`
+    ].join(String.fromCharCode(10));
+  }
+
+  public getBugInfo(): string {
+    const scene = this.scene as GameScene;
+    const camera = scene.cameras.main;
+    const view = camera.worldView;
+    const clamp = camera.getBounds();
+    const world = scene.physics.world.bounds;
+    const p = this.player;
+    const rounded = (r: Phaser.Geom.Rectangle) => [r.x, r.y, r.width, r.height].map(value => Math.round(value)).join(', ');
+    const audio = AudioManager.getInstance().getPlaybackDiagnostics();
+    const flags = ['east_gate_unlocked', 'mire_unlocked', 'mire_pillars_solved', 'shrine_unlocked']
+      .filter(flag => (scene as any).playerState.hasFlag(flag));
+    return [
+      `HOLLOW WOODS QA · ${scene.getCurrentZoneId()}`,
+      `Player ${Math.round(p.x)}, ${Math.round(p.y)} · Canvas ${scene.game.scale.width}×${scene.game.scale.height}`,
+      `Camera ${rounded(view)} · bounds ${rounded(clamp)} · zoom ${camera.zoom.toFixed(2)}`,
+      `Physics world ${rounded(world)} · frame ${scene.game.loop.delta.toFixed(2)} ms · FPS ${scene.game.loop.actualFps.toFixed(1)}`,
+      `Animation ${p.anims.currentAnim?.key ?? '—'} #${p.anims.currentFrame?.index ?? '—'}`,
+      `Vòng Sáng ${p.stats.isLanternOn ? 'bật' : 'tắt'} · Quest ${(scene as any).playerState.currentQuestId ?? '—'} · Cổng ${flags.join(', ') || '—'}`,
+      `Audio ${audio.context} · ambience ${audio.ambience ?? '—'} · BGM ${audio.bgm ?? '—'} · gain ${audio.gain?.toFixed(3) ?? '—'} · loop ${audio.loop ?? '—'}`,
+      this.picked?.label ?? 'Chưa chọn đối tượng',
+      'Camera và trạng thái quan sát · 250 ms/mẫu',
+      ...this.cameraTrace
+    ].join('\n');
+  }
 
   // Bảng tổng kết kết quả Benchmark F10 (Modal giữa màn hình)
   private benchmarkModalContainer!: Phaser.GameObjects.Container;
@@ -102,10 +268,6 @@ export class HitboxDebugInspector {
   private lastFrameDrawCalls: number = 0;
   private postRenderListener: (() => void) | null = null;
 
-  // Sliding window tính 1% Low FPS (120 frames gần nhất)
-  private frameTimeHistory: number[] = [];
-  private readonly HISTORY_SIZE = 120;
-
   // Quản lý Benchmark 10 giây (F10)
   private isBenchmarking: boolean = false;
   private benchmarkElapsedMs: number = 0;
@@ -122,8 +284,9 @@ export class HitboxDebugInspector {
     this.debugGfx = this.scene.add.graphics();
     this.debugGfx.setDepth(999999);
     this.debugGfx.setVisible(false);
-    this.pickerLabel = this.scene.add.text(0, 0, '', { fontFamily: 'monospace', fontSize: '11px', color: '#ffffff', backgroundColor: '#101820', padding: { x: 5, y: 4 } }).setDepth(1000000).setScrollFactor(1).setVisible(false);
+    this.pickerLabel = this.createPickerLabel();
     this.scene.input.on('pointerdown', this.pickerHandler);
+    this.player.on('player_attack', this.attackHandler);
 
     // V1.5 (BƯỚC V15-04): Đảm bảo Arcade Physics Debug luôn tắt khi khởi tạo
     if (this.scene.physics && this.scene.physics.world) {
@@ -136,32 +299,8 @@ export class HitboxDebugInspector {
 
     if (this.scene.input && this.scene.input.keyboard) {
       this.f8Key = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F8);
-      this.f10Key = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F10);
-      this.scene.input.keyboard.addCapture([
-        Phaser.Input.Keyboard.KeyCodes.F8,
-        Phaser.Input.Keyboard.KeyCodes.F10
-      ]);
+      this.scene.input.keyboard.addCapture(Phaser.Input.Keyboard.KeyCodes.F8);
     }
-
-    // V1.5 (BƯỚC V15-04): Khởi tạo bảng hiển thị ở góc dưới bên phải màn hình (X: 840, Y: 420),
-    // tuyệt đối không đặt đè lên cụm 4 thanh chỉ số ở góc trên bên trái (X: 12..374, Y: 8..100).
-    // Trạng thái mặc định luôn là TẮT hoàn toàn (false).
-    this.uiContainer = this.uiScene.add.container(840, 420);
-    this.uiContainer.setScrollFactor(0);
-    this.uiContainer.setDepth(100000);
-    this.uiContainer.setVisible(false);
-
-    this.uiBg = this.uiScene.add.graphics();
-    this.infoText = HDTextHelper.createText(this.uiScene, 10, 8, '', {
-      fontFamily: 'Consolas, "Courier New", monospace',
-      fontSize: '11px',
-      color: '#00ffcc',
-      stroke: '#000000',
-      strokeThickness: 2,
-      lineSpacing: 1.5
-    });
-
-    this.uiContainer.add([this.uiBg, this.infoText]);
 
     // Khởi tạo container Modal Benchmark F10 ở trung tâm màn hình (640, 360)
     this.createBenchmarkModalUI();
@@ -177,32 +316,23 @@ export class HitboxDebugInspector {
     this.benchmarkModalContainer.setVisible(false);
   }
 
+  private createPickerLabel(): Phaser.GameObjects.Text {
+    return this.uiScene.add.text(0, 0, '', {
+      fontFamily: 'monospace', fontSize: '11px', color: '#ffffff', backgroundColor: '#101820',
+      wordWrap: { width: 410 }, padding: { x: 5, y: 4 }
+    }).setDepth(100011).setScrollFactor(0).setVisible(false);
+  }
+
   public setUIScene(uiScene: Phaser.Scene): void {
     if (this.uiScene !== uiScene) {
-      if (this.uiContainer) {
-        this.uiContainer.destroy();
-      }
       if (this.benchmarkModalContainer) {
         this.benchmarkModalContainer.destroy();
       }
+      this.pickerLabel.destroy();
       this.uiScene = uiScene;
+      this.pickerLabel = this.createPickerLabel();
+      this.picked = null;
 
-      this.uiContainer = this.uiScene.add.container(840, 420);
-      this.uiContainer.setScrollFactor(0);
-      this.uiContainer.setDepth(100000);
-      this.uiContainer.setVisible(this.isEnabled);
-
-      this.uiBg = this.uiScene.add.graphics();
-      this.infoText = HDTextHelper.createText(this.uiScene, 10, 8, '', {
-        fontFamily: 'Consolas, "Courier New", monospace',
-        fontSize: '11px',
-        color: '#00ffcc',
-        stroke: '#000000',
-        strokeThickness: 2,
-        lineSpacing: 1.5
-      });
-
-      this.uiContainer.add([this.uiBg, this.infoText]);
       this.createBenchmarkModalUI();
     }
   }
@@ -212,15 +342,6 @@ export class HitboxDebugInspector {
    */
   public update(currentZoneId: ZoneId, delta?: number): void {
     const deltaMs = delta !== undefined ? delta : (this.scene.game.loop.delta || 16.6);
-
-    // Bắt phím F10: Kích hoạt / Hủy Benchmark 10s (chỉ khi F9 đang bật)
-    if (this.isEnabled && this.f10Key && Phaser.Input.Keyboard.JustDown(this.f10Key)) {
-      if (this.isBenchmarkModalVisible) {
-        this.closeBenchmarkModal();
-      } else if (!this.isBenchmarking) {
-        this.startBenchmark();
-      }
-    }
 
     // Bắt phím F8: Chuyển đổi chất lượng đồ họa HIGH -> MEDIUM -> LOW
     if (this.isEnabled && this.f8Key && Phaser.Input.Keyboard.JustDown(this.f8Key)) {
@@ -243,18 +364,13 @@ export class HitboxDebugInspector {
 
     if (!this.isEnabled) return;
 
-    // Ghi nhận lịch sử frame time cho 1% Low FPS
-    this.frameTimeHistory.push(deltaMs);
-    if (this.frameTimeHistory.length > this.HISTORY_SIZE) {
-      this.frameTimeHistory.shift();
-    }
-
     // Tiến trình Benchmark 10s tự động
     if (this.isBenchmarking) {
       this.updateBenchmarkProgress(currentZoneId, deltaMs);
     }
 
-    this.renderDebugGraphics(currentZoneId, deltaMs);
+    this.updateDiagnostics(currentZoneId, deltaMs);
+    this.renderDebugGraphics(currentZoneId);
   }
 
   /**
@@ -263,8 +379,7 @@ export class HitboxDebugInspector {
   public toggleDebug(): void {
     this.isEnabled = !this.isEnabled;
     this.debugGfx.setVisible(this.isEnabled);
-    this.uiContainer.setVisible(this.isEnabled);
-    if (!this.isEnabled) { this.debugGfx.clear(); this.pickerLabel.setVisible(false); }
+    if (!this.isEnabled) { this.debugGfx.clear(); this.clearPick(); this.lastAttack = null; this.cameraTrace = []; this.frameTimes = []; this.nextTraceTime = 0; }
 
     if (this.isEnabled) {
       // Kích hoạt hook WebGL Draw Calls
@@ -312,7 +427,10 @@ export class HitboxDebugInspector {
     }
   }
 
-  public setLayerOptions(options: Partial<typeof this.layers>): void { this.layers = { ...this.layers, ...options }; }
+  public setLayerOptions(options: Partial<Record<InspectorLayer, boolean>>): void {
+    this.layers = { ...this.layers, ...options };
+    if (!this.layers.enableObjectPicker) this.clearPick();
+  }
 
   /**
    * Lấy context WebGL từ renderer
@@ -418,22 +536,14 @@ export class HitboxDebugInspector {
   }
 
   /**
-   * Tính toán chỉ số 1% Low FPS từ lịch sử frame time
-   */
-  private calculateOnePercentLowFps(currentFps: number): number {
-    if (this.frameTimeHistory.length < 10) return Math.round(currentFps);
-
-    const sorted = [...this.frameTimeHistory].sort((a, b) => a - b);
-    const worstCount = Math.max(1, Math.ceil(sorted.length * 0.01));
-    const worstSlice = sorted.slice(sorted.length - worstCount);
-    const avgWorstTime = worstSlice.reduce((sum, v) => sum + v, 0) / worstCount;
-
-    return avgWorstTime > 0 ? Math.min(60, Math.round(1000 / avgWorstTime)) : Math.round(currentFps);
-  }
-
-  /**
    * Bắt đầu phiên Chạy Thử Hiệu Năng 10 giây (F10)
    */
+  public toggleBenchmark(): void {
+    if (!this.isEnabled) return;
+    if (this.isBenchmarkModalVisible) this.closeBenchmarkModal();
+    else if (!this.isBenchmarking) this.startBenchmark();
+  }
+
   public startBenchmark(): void {
     if (this.isBenchmarking) return;
     this.isBenchmarking = true;
@@ -721,189 +831,119 @@ export class HitboxDebugInspector {
   /**
    * Vẽ viền hitbox thế giới và cập nhật bảng F9 Profiler góc màn hình
    */
-  private renderDebugGraphics(currentZoneId: ZoneId, deltaMs: number): void {
+  private renderDebugGraphics(currentZoneId: ZoneId): void {
     this.debugGfx.clear();
 
-    let staticColliderCount = 0;
-    let dynamicCount = 0;
-    let interactableCount = 0;
+    const gameScene = this.scene as GameScene;
+    const runtime = gameScene as any;
+    const builder = runtime.worldBuilder;
+    const physics = this.scene.physics.world;
+    const camera = this.scene.cameras.main;
+    const view = camera.worldView;
+    const staticBodies = physics.staticBodies;
+    const dynamicBodies = physics.bodies;
 
-    // 1. VẼ TOÀN BỘ VẬT CẢN TĨNH / BIÊN BẢN ĐỒ (STATIC COLLIDERS) TỪ WORLDBUILDER
-    const gameScene = this.scene as any;
-    const wb = gameScene.worldBuilder;
-
-    if (this.layers.showColliders && wb && wb.colliderGroup && wb.colliderGroup.getChildren) {
-      const colliders = wb.colliderGroup.getChildren();
-      staticColliderCount = colliders.length;
-
-      for (let i = 0; i < colliders.length; i++) {
-        const item = colliders[i];
-        if (item && item.body) {
-          const body = item.body as Phaser.Physics.Arcade.Body;
-          if (body.enable) {
-            this.debugGfx.fillStyle(0xff0000, 0.32);
-            this.debugGfx.fillRect(body.x, body.y, body.width, body.height);
-
-            this.debugGfx.lineStyle(1.5, 0xff3333, 0.95);
-            this.debugGfx.strokeRect(body.x, body.y, body.width, body.height);
-
-            this.debugGfx.fillStyle(0xffff00, 0.8);
-            this.debugGfx.fillCircle(body.center.x, body.center.y, 2);
-          }
+    if (this.layers.showColliders) {
+      for (const bodies of [staticBodies, dynamicBodies]) {
+        const color = bodies === staticBodies ? 0xff5555 : 0x30dfbb;
+        this.debugGfx.lineStyle(1.3, color, 0.95);
+        this.debugGfx.fillStyle(color, 0.20);
+        for (const body of bodies) {
+          if (!body.enable || body.right < view.left || body.left > view.right ||
+              body.bottom < view.top || body.top > view.bottom) continue;
+          this.debugGfx.fillRect(body.x, body.y, body.width, body.height);
+          this.debugGfx.strokeRect(body.x, body.y, body.width, body.height);
         }
       }
     }
 
-    // 2. VẼ CÁC VẬT THỂ TƯƠNG TÁC (INTERACTABLES)
-    if (this.layers.showTriggers && wb && wb.interactables && Array.isArray(wb.interactables)) {
-      interactableCount = wb.interactables.length;
-      for (let i = 0; i < wb.interactables.length; i++) {
-        const inter = wb.interactables[i];
-        if (inter) {
-          this.debugGfx.fillStyle(0xf1c40f, 0.20);
-          this.debugGfx.fillRect(inter.x, inter.y, inter.width, inter.height);
-
-          this.debugGfx.lineStyle(1.5, 0xf39c12, 0.9);
-          this.debugGfx.strokeRect(inter.x, inter.y, inter.width, inter.height);
-        }
+    if (this.layers.showTriggers) {
+      this.debugGfx.lineStyle(2, 0xf4a630, 0.95);
+      for (const transition of builder?.getTransitions() ?? []) {
+        if (transition.fromZone !== currentZoneId) continue;
+        const { x, y, width, height } = transition.triggerRect;
+        this.debugGfx.strokeRect(x, y, width, height);
+      }
+    }
+    if (this.layers.showInteractRanges) {
+      this.debugGfx.lineStyle(1.2, 0xf3e76b, 0.72);
+      for (const inter of builder?.interactables ?? []) {
+        if (!view.contains(inter.x, inter.y)) continue;
+        this.debugGfx.strokeRect(inter.x, inter.y, inter.width, inter.height);
+        if (inter.triggerDist) this.debugGfx.strokeCircle(inter.x, inter.y, inter.triggerDist);
       }
     }
 
-    // 3. VẼ HỘP VA CHẠM NHÂN VẬT CHÍNH (PLAYER)
-    if (this.layers.showHitboxes && this.player && this.player.body) {
-      dynamicCount++;
-      const pBody = this.player.body as Phaser.Physics.Arcade.Body;
-      
-      this.debugGfx.fillStyle(0x00ff88, 0.45);
-      this.debugGfx.fillRect(pBody.x, pBody.y, pBody.width, pBody.height);
-
-      this.debugGfx.lineStyle(2, 0x00ffcc, 1);
-      this.debugGfx.strokeRect(pBody.x, pBody.y, pBody.width, pBody.height);
-
-      this.debugGfx.fillStyle(0xffffff, 1);
-      this.debugGfx.fillCircle(this.player.x, this.player.y, 3);
+    if (this.layers.showHitboxes && this.lastAttack && this.scene.time.now <= this.lastAttack.until) {
+      const { x, y, radius } = this.lastAttack;
+      this.debugGfx.lineStyle(2, 0xff6d4a, 0.95);
+      this.debugGfx.fillStyle(0xff6d4a, 0.22);
+      this.debugGfx.fillCircle(x, y, radius);
+      this.debugGfx.strokeCircle(x, y, radius);
     }
-
-    // 4. VẼ CÁC THỰC THỂ DYNAMIC KHÁC (NPCs & MONSTERS)
-    if (this.layers.showHitboxes && gameScene.listenerMonster && gameScene.listenerMonster.body) {
-      dynamicCount++;
-      const mBody = gameScene.listenerMonster.body as Phaser.Physics.Arcade.Body;
-      this.debugGfx.fillStyle(0x9b59b6, 0.4);
-      this.debugGfx.fillRect(mBody.x, mBody.y, mBody.width, mBody.height);
-      this.debugGfx.lineStyle(2, 0x8e44ad, 1);
-      this.debugGfx.strokeRect(mBody.x, mBody.y, mBody.width, mBody.height);
+    if (this.layers.showHurtboxes && runtime.listenerMonster?.active) {
+      // Corresponds to the extra tolerance used by the player hit test.
+      const listener = runtime.listenerMonster;
+      this.debugGfx.lineStyle(1.5, 0xf68de8, 0.95);
+      this.debugGfx.strokeCircle(listener.x, listener.y, 24);
     }
-
-    if (this.layers.showHitboxes && gameScene.skullWolves && Array.isArray(gameScene.skullWolves)) {
-      for (const wolf of gameScene.skullWolves) {
-        if (wolf && wolf.body) {
-          dynamicCount++;
-          const wBody = wolf.body as Phaser.Physics.Arcade.Body;
-          this.debugGfx.fillStyle(0xe74c3c, 0.4);
-          this.debugGfx.fillRect(wBody.x, wBody.y, wBody.width, wBody.height);
-          this.debugGfx.lineStyle(1.5, 0xc0392b, 1);
-          this.debugGfx.strokeRect(wBody.x, wBody.y, wBody.width, wBody.height);
-        }
-      }
-    }
-
-    if (this.layers.showHitboxes && gameScene.evilKnightsSystem && gameScene.evilKnightsSystem.getKnights) {
-      const knights = gameScene.evilKnightsSystem.getKnights();
-      for (const k of knights) {
-        if (k && k.body) {
-          dynamicCount++;
-          const kBody = k.body as Phaser.Physics.Arcade.Body;
-          this.debugGfx.fillStyle(0xe74c3c, 0.4);
-          this.debugGfx.fillRect(kBody.x, kBody.y, kBody.width, kBody.height);
-          this.debugGfx.lineStyle(1.5, 0xff0000, 1);
-          this.debugGfx.strokeRect(kBody.x, kBody.y, kBody.width, kBody.height);
-        }
-      }
-    }
-
-    if (this.layers.showAIRanges && gameScene.listenerMonster && Number.isFinite(gameScene.listenerMonster.hearingRadius)) {
-      const listener = gameScene.listenerMonster;
+    if (this.layers.showAIRanges && runtime.listenerMonster?.active && Number.isFinite(runtime.listenerMonster.hearingRadius)) {
+      const listener = runtime.listenerMonster;
       this.debugGfx.lineStyle(1.5, 0x55d6ff, 0.85);
       this.debugGfx.strokeCircle(listener.x, listener.y, listener.hearingRadius);
-      if (gameScene.player?.stats?.isLanternOn) {
+      if (this.player.stats.isLanternOn) {
         this.debugGfx.lineStyle(1, 0xffd166, 0.8);
         this.debugGfx.strokeCircle(listener.x, listener.y, listener.hearingRadius * 1.3);
       }
     }
-    if (this.layers.showInteractRanges && this.player) {
-      this.debugGfx.lineStyle(1, 0xf1c40f, 0.65);
-      this.debugGfx.strokeCircle(this.player.x, this.player.y, 72);
+    if (this.layers.showSafeZones) {
+      const camp = CampSanctuarySystem.getInstance();
+      this.debugGfx.lineStyle(1.6, 0x61d577, 0.85);
+      this.debugGfx.strokeCircle(camp.campfireX, camp.campfireY, camp.sanctuaryRadius);
+      this.debugGfx.strokeCircle(camp.knightX, camp.knightY, camp.sanctuaryRadius);
+      const light = this.player.getLanternWorldPosition();
+      if (light.isVisible && Number.isFinite(runtime.currentLanternRadius)) {
+        this.debugGfx.lineStyle(1.6, 0xffbf42, 0.85);
+        this.debugGfx.strokeCircle(light.x, light.y, runtime.currentLanternRadius * 0.82);
+      }
+    }
+    if (this.layers.showCamera) {
+      const clamp = camera.getBounds();
+      this.debugGfx.lineStyle(2, 0x80b2ff, 0.9);
+      this.debugGfx.strokeRect(clamp.x, clamp.y, clamp.width, clamp.height);
+      this.debugGfx.lineStyle(1, 0xc5dbff, 0.95);
+      this.debugGfx.strokeRect(view.x + 2, view.y + 2, view.width - 4, view.height - 4);
+    }
+    if (this.layers.showWorld) {
+      const world = physics.bounds;
+      const zone = builder?.getZone(currentZoneId)?.bounds;
+      this.debugGfx.lineStyle(2.3, 0xc879ed, 0.9);
+      this.debugGfx.strokeRect(world.x, world.y, world.width, world.height);
+      if (zone) {
+        this.debugGfx.lineStyle(1.5, 0xffdfef, 0.9);
+        this.debugGfx.strokeRect(zone.x, zone.y, zone.width, zone.height);
+      }
+    }
+    if (this.picked?.entity && !this.picked.entity.scene) this.clearPick();
+    if (this.picked) {
+      const { entity } = this.picked;
+      const visual = entity?.getBounds?.() ?? this.picked.visual;
+      const body = entity ? this.bodyRect(entity) : this.picked.body;
+      const footprint = visual ?? body;
+      if (!footprint || !Phaser.Geom.Intersects.RectangleToRectangle(view, footprint)) {
+        this.clearPick();
+      } else {
+        if (visual) {
+          this.debugGfx.lineStyle(2, 0x52e6ff, 0.95);
+          this.debugGfx.strokeRect(visual.x, visual.y, visual.width, visual.height);
+        }
+        if (body) {
+          this.debugGfx.lineStyle(2, 0xff704f, 0.95);
+          this.debugGfx.strokeRect(body.x, body.y, body.width, body.height);
+        }
+      }
     }
 
-    // 5. THU THẬP SỐ LIỆU ĐO LƯỜNG HIỆU NĂNG THỜI GIAN THỰC
-    const px = Math.round(this.player.x);
-    const py = Math.round(this.player.y);
-    const actualFps = this.scene.game.loop.actualFps || (deltaMs > 0 ? 1000 / deltaMs : 60);
-    const onePercentLow = this.calculateOnePercentLowFps(actualFps);
-    const drawCalls = this.lastFrameDrawCalls;
-
-    const totalGameObjects = this.scene.children ? this.scene.children.list.length : 0;
-    const cullingStats = CullingOptimizationModule.getInstance().getStats();
-    const vramTextures = this.scene.textures ? Object.keys(this.scene.textures.list).length : 0;
-
-    const ySortingStatus = TILED_PIPELINE_CONFIG.enableYSortingModule ? 'ON' : 'OFF';
-    const cullingStatus = TILED_PIPELINE_CONFIG.enableCullingOptimization ? 'ON' : 'OFF';
-    const perimeterStatus = TILED_PIPELINE_CONFIG.enableAutoPerimeterWalls ? 'ON' : 'OFF';
-    const gSettings = GraphicsQualitySystem.getInstance().getSettings();
-
-    // Xây dựng các dòng thông số hiển thị
-    const lines = [
-      '⚡ [F9] PERFORMANCE PROFILER & HITBOX DEBUGGER',
-      '────────────────────────────────────────────────────────',
-      `📊 HIỆU NĂNG THỜI GIAN THỰC:`,
-      `   • FPS Hiện tại: ${actualFps.toFixed(1)} FPS  (1% Low: ${onePercentLow} FPS)`,
-      `   • Frame Time  : ${deltaMs.toFixed(1)} ms`,
-      `   • Draw Calls  : ${drawCalls} calls/frame`,
-      `⚙️ CHẤT LƯỢNG ĐỒ HỌA [F8]:`,
-      `   • Mức cấu hình: [${gSettings.level}] (Buffer: ${gSettings.lightingScale}x, Sương: ${gSettings.maxFogLayers} lớp, Đom đóm: ${gSettings.maxFireflies})`,
-      `📦 KẾT XUẤT & ĐỐI TƯỢNG (CULLING):`,
-      `   • GameObjects : ${totalGameObjects} đối tượng active`,
-      `   • Hiển thị    : ${cullingStats.visible} / ${cullingStats.total} (Culled: ${cullingStats.culled})`,
-      `   • VRAM Textures: ${vramTextures} textures đã nạp`,
-      `⚙️ TRẠNG THÁI TILED PIPELINE:`,
-      `   • YSorting: [${ySortingStatus}]  |  Culling: [${cullingStatus}]  |  Walls: [${perimeterStatus}]`,
-      `🎯 HITBOX & MÔI TRƯỜNG:`,
-      `   • Tọa độ: X = ${px}, Y = ${py} | Phân khu: ${currentZoneId}`,
-      `   • Colliders: ${staticColliderCount} | Dynamic: ${dynamicCount} | Triggers: ${interactableCount}`,
-      '────────────────────────────────────────────────────────'
-    ];
-
-    if (this.isBenchmarking) {
-      const remainingSec = Math.max(0, (this.BENCHMARK_DURATION_MS - this.benchmarkElapsedMs) / 1000).toFixed(1);
-      const progressPercent = Math.min(100, Math.round((this.benchmarkElapsedMs / this.BENCHMARK_DURATION_MS) * 100));
-      const barCount = Math.floor(progressPercent / 10);
-      const progressBar = '='.repeat(barCount) + '>'.repeat(barCount < 10 ? 1 : 0) + ' '.repeat(Math.max(0, 9 - barCount));
-      lines.push(`⏱️ [F10] BENCHMARK ĐANG CHẠY: ${remainingSec}s [${progressBar}] ${progressPercent}%`);
-      lines.push('   (Đang thu thập mẫu FPS, Draw Calls & Culling...)');
-    } else if (this.lastBenchmarkResult) {
-      lines.push(`🏆 BENCHMARK GẦN NHẤT: Avg ${this.lastBenchmarkResult.avgFps} FPS | DrawCalls: ${this.lastBenchmarkResult.avgDrawCalls}`);
-      lines.push('💡 [F8]: Đổi Đồ Họa  |  [F10]: Chạy lại Benchmark  |  [F9]: Tắt Profiler');
-    } else {
-      lines.push('💡 [F8]: Đổi Đồ Họa  |  [F10]: 10s Stress Benchmark  |  [F9]: Tắt');
-    }
-
-    this.infoText.setText(lines);
-
-    // V1.5 (BƯỚC V15-04 / V15-50): Neo bảng thông số F9 vào góc dưới bên phải màn hình (hoặc cạnh phải dưới khung Nhiệm vụ),
-    // kích thước box tự co giãn và cách mép phải 16px, giới hạn đáy <= 650px tránh hoàn toàn đè lên Thanh Item đáy [662..714px].
-    const bounds = this.infoText.getBounds();
-    const boxW = Math.max(370, bounds.width + 20);
-    const boxH = bounds.height + 16;
-    const posX = Math.max(16, 1264 - boxW);
-    const posY = Math.max(16, Math.min(650 - boxH, 704 - boxH));
-    this.uiContainer.setPosition(posX, posY);
-
-    // Cập nhật khung nền
-    this.uiBg.clear();
-    this.uiBg.fillStyle(0x0a0f16, 0.92);
-    this.uiBg.fillRoundedRect(0, 0, boxW, boxH, 6);
-    this.uiBg.lineStyle(1.5, this.isBenchmarking ? 0xf39c12 : 0x00ffcc, 0.95);
-    this.uiBg.strokeRoundedRect(0, 0, boxW, boxH, 6);
   }
 
   public isDebugEnabled(): boolean {
@@ -918,13 +958,11 @@ export class HitboxDebugInspector {
 
   public destroy(): void {
     this.scene.input.off('pointerdown', this.pickerHandler);
+    this.player.off('player_attack', this.attackHandler);
     this.pickerLabel?.destroy();
     this.unhookWebGLDrawCalls();
     if (this.debugGfx) {
       this.debugGfx.destroy();
-    }
-    if (this.uiContainer) {
-      this.uiContainer.destroy();
     }
     if (this.benchmarkModalContainer) {
       this.benchmarkModalContainer.destroy();

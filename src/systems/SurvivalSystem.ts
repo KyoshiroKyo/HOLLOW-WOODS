@@ -1,3 +1,4 @@
+import { DeveloperModeManager } from '../debug/DeveloperModeManager';
 import { PlayerState } from '../state/PlayerState';
 import { EquipmentSystem } from './EquipmentSystem';
 import { CampSanctuarySystem } from './CampSanctuarySystem';
@@ -71,10 +72,18 @@ export class SurvivalSystem {
     CampSanctuarySystem.getInstance().update(dt);
 
     const stats = this.playerState.stats;
+    const dev = DeveloperModeManager.getInstance();
+    const infiniteStamina = dev.isEnabled && dev.isInfiniteStamina;
+    const infiniteComposure = dev.isEnabled && dev.isInfiniteComposure;
+    const healthBeforeUpdate = stats.health;
+    if (infiniteComposure) stats.composure = stats.maxComposure;
+
 
     // 1. Quản lý Thể lực (Stamina) - C4-132-01: Tụt mượt mà về đúng 0/100, hoãn hồi phục 1.0s sau khi dừng chạy
     const equipSys = EquipmentSystem.getInstance();
-    if (stats.isSprinting) {
+    if (infiniteStamina) {
+      stats.stamina = stats.maxStamina;
+    } else if (stats.isSprinting) {
       this.sprintCooldownTimer = 1.0;
       const staminaDrainMod = equipSys.getStaminaDrainMultiplier();
       if (staminaDrainMod === 1.0) {
@@ -106,7 +115,7 @@ export class SurvivalSystem {
     }
 
     // 2. V15-54: Vòng sáng ấm dịu [F] tiêu hao nhẹ 1.2 Thể Lực / giây trong lúc duy trì sáng
-    if (stats.isLanternOn) {
+    if (stats.isLanternOn && !infiniteStamina) {
       stats.stamina = Math.max(0, stats.stamina - 1.2 * dt);
       if (stats.stamina < 5) {
         stats.isLanternOn = false;
@@ -243,6 +252,9 @@ export class SurvivalSystem {
         stats.composure = Math.max(0, stats.composure - 0.4 * dt);
       }
     }
+
+    if (infiniteComposure) stats.composure = stats.maxComposure;
+    if (dev.isEnabled && dev.isGodMode) stats.health = Math.max(healthBeforeUpdate, stats.health);
 
     // C4-13-03: Báo động tức thời khi sinh lực chạm đáy (health <= 0)
     if (stats.health <= 0) {

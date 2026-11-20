@@ -27,17 +27,17 @@ function scanAssets(dir, relPath = '') {
 scanAssets(publicAssetsDir);
 assetEntries.sort((a, b) => a.path.localeCompare(b.path));
 
+const categories = { audio: [], maps: [], characters: [], environment: [], monsters: [], ui: [], other: [] };
+for (const asset of assetEntries) {
+  const [, , directory, subgroup] = asset.path.split('/');
+  const category = directory === 'characters' && subgroup === 'monsters' ? 'monsters' : directory;
+  (Object.hasOwn(categories, category) ? categories[category] : categories.other).push(asset);
+}
+
 const assetSummary = {
   totalFiles: assetEntries.length,
   totalBytes: assetEntries.reduce((acc, cur) => acc + cur.size, 0),
-  categories: {
-    audio: assetEntries.filter(a => a.path.includes('/audio/')),
-    maps: assetEntries.filter(a => a.path.includes('/maps/')),
-    characters: assetEntries.filter(a => a.path.includes('/characters/')),
-    environment: assetEntries.filter(a => a.path.includes('/environment/')),
-    monsters: assetEntries.filter(a => a.path.includes('/monsters/')),
-    ui: assetEntries.filter(a => a.path.includes('/ui/'))
-  }
+  categories
 };
 
 fs.writeFileSync(path.join(ROOT_DIR, 'ASSETS_MANIFEST.json'), JSON.stringify(assetSummary, null, 2), 'utf8');

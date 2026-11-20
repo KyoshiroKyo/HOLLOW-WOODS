@@ -4,6 +4,7 @@
  * Tuân thủ nghiêm ngặt đặc tả P2Game SDK v1.1
  */
 
+import { QA_BUILD } from '../debug/DevSessionPolicy';
 import { P2GamePlayer, P2LeaderboardEntry, P2LeaderboardSubmitResult } from '../types/p2game';
 import { DeveloperModeManager } from '../debug/DeveloperModeManager';
 
@@ -108,7 +109,7 @@ export class LeaderboardService {
    * Metadata luôn được đảm bảo kích thước dưới 1 KB (khoảng 150-200 bytes)
    */
   public async submitSurvivalScore(params: SubmitScoreParams): Promise<P2LeaderboardSubmitResult | null> {
-    if (DeveloperModeManager.getInstance().isDevSession) {
+    if (QA_BUILD || DeveloperModeManager.getInstance().isDevSession) {
       console.warn('[DevMode] Đã chặn gửi điểm BXH vì phiên chơi có dùng công cụ Developer');
       return { accepted: false, reason: 'developer_mode_session' };
     }
@@ -148,6 +149,9 @@ export class LeaderboardService {
 
       // Xác thực người chơi nếu cần
       await this.ensureAuthenticated();
+      if (!DeveloperModeManager.getInstance().canReportProgress()) {
+        return { accepted: false, reason: 'developer_mode_session' };
+      }
 
       console.log(`[LeaderboardService] Đang gửi điểm sinh tồn: ${score} điểm...`, metadata);
       const result = await window.p2.leaderboard.submit(SURVIVAL_LEADERBOARD_ID, score, metadata);

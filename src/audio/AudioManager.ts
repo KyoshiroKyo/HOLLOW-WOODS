@@ -1523,6 +1523,16 @@ export class AudioManager {
   /**
    * Lấy mã track BGM hiện đang hoạt động
    */
+  public getPlaybackDiagnostics() {
+    return {
+      context: this.ctx?.state ?? 'uninitialized',
+      ambience: this.getCurrentAmbience(),
+      bgm: this.getCurrentBGM(),
+      gain: this.currentBGMAudio?.volume ?? this.currentBGMGain?.gain.value ?? null,
+      loop: this.currentBGMAudio?.loop ?? this.currentBGMSource?.loop ?? null
+    };
+  }
+
   public getCurrentBGM(): BGMTrack | null {
     return this.currentBGMTrack;
   }

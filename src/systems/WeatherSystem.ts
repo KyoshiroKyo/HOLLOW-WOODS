@@ -83,7 +83,7 @@ export class WeatherSystem {
   /**
    * Cập nhật bước thời tiết mỗi khung hình
    */
-  public update(dt: number, currentZoneId: string, timePhase: string): void {
+  public update(dt: number, currentZoneId: string, timePhase: string, allowRandomRain = true): void {
     if (dt <= 0) return;
 
     // 1. Chuyển dịch mượt mà cường độ mưa (Fade In / Fade Out)
@@ -109,7 +109,7 @@ export class WeatherSystem {
       if (this.weatherTimer >= this.rainDuration) {
         this.stopRain();
       }
-    } else {
+    } else if (allowRandomRain) {
       // 3. Tự động kiểm tra thời tiết ngẫu nhiên theo vùng
       this.nextWeatherCheckTime -= dt;
       if (this.nextWeatherCheckTime <= 0) {

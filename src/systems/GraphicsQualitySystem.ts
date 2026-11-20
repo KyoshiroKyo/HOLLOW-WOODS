@@ -9,6 +9,8 @@
  * Tự động chuyển xuống MEDIUM / LOW nếu FPS tụt dưới 38 FPS trong 4 giây liên tục.
  */
 
+import { GRAPHICS_QUALITY_KEY } from '../debug/DevSessionPolicy';
+
 export type GraphicsQualityLevel = 'HIGH' | 'MEDIUM' | 'LOW';
 
 export interface GraphicsQualitySettings {
@@ -86,7 +88,7 @@ export class GraphicsQualitySystem {
   private loadSavedQuality(): void {
     try {
       if (typeof window !== 'undefined' && window.localStorage) {
-        const saved = window.localStorage.getItem('hw_graphics_quality');
+        const saved = window.localStorage.getItem(GRAPHICS_QUALITY_KEY);
         if (saved === 'HIGH' || saved === 'MEDIUM' || saved === 'LOW') {
           this.currentQuality = saved;
           return;
@@ -101,7 +103,7 @@ export class GraphicsQualitySystem {
   public saveQuality(): void {
     try {
       if (typeof window !== 'undefined' && window.localStorage) {
-        window.localStorage.setItem('hw_graphics_quality', this.currentQuality);
+        window.localStorage.setItem(GRAPHICS_QUALITY_KEY, this.currentQuality);
       }
     } catch {
       // Ignored

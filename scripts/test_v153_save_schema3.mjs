@@ -1,14 +1,20 @@
 import assert from 'node:assert/strict';
-import fs from 'node:fs';
-import ts from 'typescript';
+import { build } from 'esbuild';
+import { fileURLToPath } from 'node:url';
 
-// CloudSaveService has no imports or browser startup side effects.
-const source = fs.readFileSync(new URL('../src/services/CloudSaveService.ts', import.meta.url), 'utf8');
-const { outputText } = ts.transpileModule(source, {
-  compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext }
-});
-const moduleUrl = 'data:text/javascript;base64,' + Buffer.from(outputText).toString('base64');
-const { migrateSaveSchema, loadGameProgress, saveGameNow, LOCAL_PREFIX, MAX_KEY_COUNT } = await import(moduleUrl);
+async function loadSaveService(qaBuild) {
+  const result = await build({
+    entryPoints: [fileURLToPath(new URL('../src/services/CloudSaveService.ts', import.meta.url))],
+    bundle: true,
+    write: false,
+    format: 'esm',
+    define: { 'import.meta.env': JSON.stringify({ DEV: false, VITE_HOLLOW_WOODS_QA: qaBuild ? '1' : '0' }) }
+  });
+  const moduleUrl = 'data:text/javascript;base64,' + Buffer.from(result.outputFiles[0].text).toString('base64');
+  return import(moduleUrl);
+}
+
+const { migrateSaveSchema, loadGameProgress, saveGameNow, LOCAL_PREFIX, MAX_KEY_COUNT } = await loadSaveService(false);
 
 const storage = new Map();
 globalThis.localStorage = {
@@ -49,3 +55,32 @@ assert.equal(written.version, '1.5.1');
 assert.deepEqual(JSON.parse(JSON.stringify(await loadGameProgress())), written);
 assert.deepEqual(written, { ...expected, version: '1.5.1', updatedAt: written.updatedAt, timestamp: written.timestamp });
 console.log('PASS schema 3 metadata, compatibility IDs, farming, and local save/load round trip');
+
+
+const qa = await loadSaveService(true);
+const savedNormal = new Map(storage);
+const calls = [];
+globalThis.window = {
+  p2: {
+    storage: {
+      get: async (key) => calls.push(['get', key]),
+      set: async (key) => calls.push(['set', key])
+    },
+    onBeforeUnload: () => calls.push('unload hook'),
+    auth: { onChange: () => calls.push('auth hook') }
+  }
+};
+assert.equal(await qa.loadGameProgress(), null);
+assert.deepEqual(await qa.saveGameNow(fixture), { ok: true, source: 'local' });
+assert.equal((await qa.loadGameProgress()).saveSchemaVersion, 3);
+assert.equal(JSON.parse(storage.get('hollow_woods_qa_v1_savegame')).checkpointName, fixture.checkpointName);
+await qa.saveSettings({ masterVolume: 0.21 });
+assert.equal((await qa.loadSettings()).masterVolume, 0.21);
+const cleanup = qa.bindCloudSaveLifecycle(() => fixture);
+qa.scheduleDebouncedSave({ ...fixture, checkpointName: 'Discarded after shutdown' }, 5);
+cleanup();
+await new Promise((resolve) => setTimeout(resolve, 25));
+assert.equal((await qa.loadGameProgress()).checkpointName, fixture.checkpointName);
+for (const [key, value] of savedNormal) assert.equal(storage.get(key), value);
+assert.deepEqual(calls, []);
+console.log('PASS QA progress/settings namespace and cancelled pending save with zero SDK writes or reads');

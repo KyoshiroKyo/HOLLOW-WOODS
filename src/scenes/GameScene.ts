@@ -88,8 +88,8 @@ export class GameScene extends Phaser.Scene {
   private worldBuilder!: WorldBuilder;
   private cameraSystem!: CameraSystem;
   private debugOverlay!: DebugOverlay;
-  private hitboxInspector!: HitboxDebugInspector;
-  private devPanel!: DevPanelOverlay;
+  private hitboxInspector?: HitboxDebugInspector;
+  private devPanel?: DevPanelOverlay;
   private devModeKeyHandler!: (event: KeyboardEvent) => void;
   private uiScene!: UIScene;
 
@@ -290,7 +290,7 @@ export class GameScene extends Phaser.Scene {
 
   public create(): void {
     const devManager = DeveloperModeManager.getInstance();
-    devManager.attachGameScene(this);
+    devManager.attachGameScene(this, this.isContinueMode);
     this.events.once('shutdown', () => DeveloperModeManager.getInstance().detachGameScene());
     // 1. Khởi tạo trạng thái dữ liệu & hệ thống sinh tồn
     this.playerState = PlayerState.getInstance();
@@ -357,12 +357,12 @@ export class GameScene extends Phaser.Scene {
     let spawnY = initialZone.defaultSpawn.y;
 
     // Hỗ trợ tham số URL QA/Testing (?zone=bellhollow&x=780&y=310) cho phép điều hướng trực tiếp không cần savegame
-    const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+    const urlParams = devManager.canToggleWithSimpleF9() ? new URLSearchParams(window.location.search) : null;
     const devZone = urlParams?.get('zone');
     const devX = urlParams?.get('x');
     const devY = urlParams?.get('y');
 
-    if (devZone && this.worldBuilder.getZone(devZone as ZoneId)) {
+    if (devZone && this.worldBuilder.getZone(devZone as ZoneId) && devManager.markDevUsed()) {
       this.worldBuilder.ensureZoneRendered(devZone);
       const targetZ = this.worldBuilder.getZone(devZone as ZoneId)!;
       spawnX = devX ? Number(devX) : targetZ.defaultSpawn.x;
@@ -600,22 +600,42 @@ export class GameScene extends Phaser.Scene {
     this.debugOverlay = new DebugOverlay(this, this.player, this.uiScene);
     // V1.5 (BƯỚC V15-04 / V15-29): Chế độ Kiểm tra Kỹ thuật Hitbox & Performance Profiler (Phím F9)
     // Tách biệt hoàn toàn khỏi giao diện người chơi thường, mặc định TẮT hoàn toàn (false)
-    this.hitboxInspector = new HitboxDebugInspector(this, this.player, this.uiScene);
-    this.devPanel = new DevPanelOverlay(devManager);
-    this.devPanel.layerHandler = (layer, enabled) => this.hitboxInspector.setLayerOptions({ [layer]: enabled });
+    if (devManager.canToggleWithSimpleF9()) {
+      this.hitboxInspector = new HitboxDebugInspector(this, this.player, this.uiScene);
+      this.devPanel = new DevPanelOverlay(devManager);
+      this.devPanel.layerHandler = (layer, enabled) => this.hitboxInspector?.setLayerOptions({ [layer]: enabled });
+      this.devPanel.getBugInfo = () => this.hitboxInspector?.getBugInfo() ?? '';
+      this.devPanel.getProfilerInfo = () => this.hitboxInspector?.getProfilerInfo() ?? '';
+    }
+
     this.devModeKeyHandler = (event: KeyboardEvent) => {
-      const productionShortcut = event.code === 'F9' && event.ctrlKey && event.shiftKey;
-      if (event.code !== 'F9' || (!devManager.canToggleWithSimpleF9() && !productionShortcut)) return;
+      if (event.repeat || (event.code !== 'F9' && event.code !== 'F10')) return;
+      const editable = event.target instanceof Element && event.target.closest('input,select,textarea,[contenteditable]');
+      if (event.code === 'F10') {
+        if (!editable && !event.isComposing && this.hitboxInspector?.isDebugEnabled() && !this.uiScene?.isAnyModalOpen) {
+          event.preventDefault();
+          this.hitboxInspector.toggleBenchmark();
+        }
+        return;
+      }
+      const forceOff = event.ctrlKey && event.shiftKey;
+      if (!forceOff && (editable || event.isComposing || !devManager.canToggleWithSimpleF9())) return;
       event.preventDefault();
-      devManager.setEnabled(!devManager.isEnabled);
+      devManager.setEnabled(forceOff ? false : !devManager.isEnabled);
       this.syncDeveloperModeUI();
     };
     window.addEventListener('keydown', this.devModeKeyHandler, true);
-    this.events.once('shutdown', () => { window.removeEventListener('keydown', this.devModeKeyHandler, true); devManager.setEnabled(false); this.devPanel?.destroy(); });
+    const disposeDevInput = () => {
+      window.removeEventListener('keydown', this.devModeKeyHandler, true);
+      this.events.off('shutdown', disposeDevInput);
+      this.events.off('destroy', disposeDevInput);
+      devManager.setEnabled(false);
+      this.devPanel?.destroy();
+    };
+    this.events.once('shutdown', disposeDevInput);
+    this.events.once('destroy', disposeDevInput);
     this.isDebugBoxesVisible = false;
-    if (this.hitboxInspector) {
-      this.hitboxInspector.setDebugEnabled(false);
-    }
+    this.devManagerState = false;
     if (this.input && this.input.keyboard) {
       this.f8Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F8);
       this.input.keyboard.addCapture([Phaser.Input.Keyboard.KeyCodes.F8]);
@@ -895,7 +915,7 @@ export class GameScene extends Phaser.Scene {
       }
       if (this.hitboxInspector) {
         this.hitboxInspector.destroy();
-        this.hitboxInspector = undefined as any;
+        this.hitboxInspector = undefined;
       }
       this.devPanel?.hide();
       if (this.debugOverlay) {
@@ -1182,7 +1202,7 @@ export class GameScene extends Phaser.Scene {
 
     // Thông báo cho P2Game SDK biết ván chơi kết thúc
     try {
-      if (typeof window !== 'undefined' && window.p2 && typeof window.p2.gameOver === 'function') {
+      if (DeveloperModeManager.getInstance().canReportProgress() && typeof window !== 'undefined' && typeof window.p2?.gameOver === 'function') {
         window.p2.gameOver({
           score: calculatedScore,
           level: dayCount,
@@ -1574,6 +1594,11 @@ export class GameScene extends Phaser.Scene {
     return 'none';
   }
 
+  private canTakeEncounterDamage(): boolean {
+    const dev = DeveloperModeManager.getInstance();
+    return !dev.isEnabled || (!dev.isGodMode && !dev.isFreezeAI);
+  }
+
   private spawnTheListener(): void {
     // Lộ trình tuần tra mặc định của The Listener trong rừng The Crooked Path
     const waypoints = [
@@ -1593,6 +1618,7 @@ export class GameScene extends Phaser.Scene {
 
     // Va chạm rượt đuổi: nếu The Listener chạm vào Satyr ngoài chỗ nấp
     this.physics.add.overlap(this.player, this.listenerMonster, () => {
+      if (!this.canTakeEncounterDamage()) return;
       if (this.isGameOverPending || (this.player && this.player.isDead())) return;
 
       if (!this.player.stats.isHiding && !this.player.isHurt() && this.listenerMonster.canAttack()) {
@@ -1924,15 +1950,19 @@ export class GameScene extends Phaser.Scene {
 
     // V1.4: Cập nhật hệ thống Thời Gian & Thời Tiết
     if (this.timeSystem) {
-      this.timeSystem.setPaused(isUIBusy);
-      if (!isUIBusy) {
+      const dev = DeveloperModeManager.getInstance();
+      const timeFrozen = isUIBusy || (dev.isEnabled && dev.freezeTime);
+      this.timeSystem.setPaused(timeFrozen);
+      if (!timeFrozen) {
         this.timeSystem.update(dt);
       }
     }
 
     if (this.weatherSystem) {
+      const dev = DeveloperModeManager.getInstance();
       if (!isUIBusy) {
-        this.weatherSystem.update(dt, this.currentZoneId, this.timeSystem ? this.timeSystem.getCurrentPhase() : 'DAY');
+        this.weatherSystem.update(dt, this.currentZoneId, this.timeSystem ? this.timeSystem.getCurrentPhase() : 'DAY',
+          !dev.isEnabled || dev.rainEnabled);
       }
       if (this.rainGfx) {
         this.weatherSystem.renderRainParticles(this.rainGfx);
@@ -1951,7 +1981,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     // V1.4 - P6: Cập nhật vòng lặp Đấu Trùm Kẻ Nuốt Tiếng Chuông (Mire Warden Boss)
-    if (!isUIBusy && this.isBossFightActive) {
+    if (!isUIBusy && this.isBossFightActive && !DeveloperModeManager.getInstance().isFreezeAI) {
       this.updateMireWardenBossEncounter(time, delta);
     }
 
@@ -2303,7 +2333,7 @@ export class GameScene extends Phaser.Scene {
       const isSanctuaryProtected = campSanctuary.isPlayerInSanctuary(this.player.x, this.player.y, this.currentZoneId);
 
       // V1.4 - P8-08: Kiểm tra va chạm đòn vồ (Lunge) của Sói Xương với người chơi (Bảo vệ tuyệt đối khi trong Sanctuary Camp)
-      if (!this.isGameOverPending && !this.player.isDead() && !this.player.stats.isHiding && !isSanctuaryProtected) {
+      if (this.canTakeEncounterDamage() && !this.isGameOverPending && !this.player.isDead() && !this.player.stats.isHiding && !isSanctuaryProtected) {
         const wolves = this.wildlifeSystem.getSkullWolves();
         for (const wolf of wolves) {
           if (wolf.active && !wolf.isDefeated && wolf.wolfState === 'lunge' && !wolf.hasHitPlayerInCurrentLunge) {
@@ -2535,10 +2565,10 @@ export class GameScene extends Phaser.Scene {
 
     // Cập nhật F4 & F9 Debug Overlays
     this.debugOverlay.update(this.currentZoneId);
-    this.hitboxInspector.update(this.currentZoneId, delta);
+    this.hitboxInspector?.update(this.currentZoneId, delta);
     if (this.devManagerState !== DeveloperModeManager.getInstance().isEnabled) this.syncDeveloperModeUI();
     // V15-34: Bắt phím tắt F8 Gỡ Kẹt Về Điểm An Toàn cho người chơi
-    if (this.f8Key && Phaser.Input.Keyboard.JustDown(this.f8Key)) {
+    if (!this.isDebugBoxesVisible && this.f8Key && Phaser.Input.Keyboard.JustDown(this.f8Key)) {
       this.emergencyUnstuckPlayer();
     }
 
@@ -2696,6 +2726,10 @@ export class GameScene extends Phaser.Scene {
     const manager = DeveloperModeManager.getInstance();
     manager.setEnabled(!manager.isEnabled);
     this.syncDeveloperModeUI();
+  }
+
+  public isDebugObjectPicking(): boolean {
+    return this.hitboxInspector?.isPicking() ?? false;
   }
 
   private devManagerState = false;
@@ -4418,6 +4452,31 @@ export class GameScene extends Phaser.Scene {
     this.time.delayedCall(200, () => {
       this.isTransitioning = false;
     });
+  }
+
+  public teleportForDeveloper(zoneId: ZoneId, x: number, y: number): void {
+    const dev = DeveloperModeManager.getInstance();
+    const zone = this.worldBuilder.getZone(zoneId);
+    if (!dev.isEnabled || !zone || !dev.markDevUsed() || this.player.isDead()) return;
+
+    this.worldBuilder.ensureZoneRendered(zoneId);
+    const spawn = SafeSpawnResolver.resolveSafeSpawn(this, x, y, zoneId);
+    this.player.setPosition(spawn.x, spawn.y);
+    (this.player.body as Phaser.Physics.Arcade.Body).reset(spawn.x, spawn.y);
+    this.player.resetAllInputState();
+
+    this.currentZoneId = zoneId;
+    this.previousZoneId = zoneId;
+    this.playerState.setCurrentZone(zoneId);
+    this.worldBuilder.setActiveZone(zoneId);
+    this.worldBuilder.hibernateDistantZoneObjects(zoneId);
+    this.wildlifeSystem.switchZone(zoneId);
+    this.applyCameraBoundsForZone(zoneId);
+    this.cameraSystem.centerOn(spawn.x, spawn.y);
+    this.audioManager.setAmbienceZone(zoneId);
+    this.audioManager.preloadZoneAudio(zoneId);
+    this.transitionCooldown = 1000;
+    this.transitionCooldownUntil = performance.now() + 1000;
   }
 
   private handleZoneLogic(): void {
@@ -6867,7 +6926,7 @@ export class GameScene extends Phaser.Scene {
       // V15-45 & V15-47: Va chạm trúng người chơi khi Boss lao húc -> Đẩy lùi, gây sát thương
       if (this.player) {
         const distP = Math.hypot(this.mireWardenBoss.x - this.player.x, this.mireWardenBoss.y - this.player.y);
-        if (distP <= 65 && !this.mireWardenBoss.isStaggered) {
+        if (distP <= 65 && !this.mireWardenBoss.isStaggered && this.canTakeEncounterDamage()) {
           const isCompZero = this.playerState.stats.composure <= 0;
           if (isCompZero) {
             // V15-47: Bình Tâm chạm 0 -> Lớp bảo vệ tinh thần sụp đổ hoàn toàn: Boss xé toạc Sinh Lực!
@@ -7038,7 +7097,7 @@ export class GameScene extends Phaser.Scene {
     this.mireWardenBoss.triggerSonicRoar(() => {
       if (!this.player || !this.mireWardenBoss) return;
       const dist = Math.hypot(this.player.x - this.mireWardenBoss.x, this.player.y - this.mireWardenBoss.y);
-      if (dist <= 155) {
+      if (dist <= 155 && this.canTakeEncounterDamage()) {
         const isRolling = (this.player as any).isRolling || false;
         if (!isRolling) {
           const isCompZero = this.playerState.stats.composure <= 0;

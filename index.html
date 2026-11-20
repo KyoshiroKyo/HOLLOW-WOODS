@@ -61,11 +61,15 @@
         text-align: center;
         line-height: 1.5;
       }
+      #game-startup[data-phase="preload"]:not([data-state="error"]) {
+        visibility: hidden;
+      }
       #game-startup a {
-        display: inline-block;
+        display: none;
         margin-top: 8px;
         color: #e09f3e;
       }
+      #game-startup[data-state="error"] a { display: inline-block; }
     </style>
   </head>
   <body>

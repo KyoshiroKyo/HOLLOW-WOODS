@@ -18,6 +18,7 @@
  * và tự động mở khóa các mảnh Lore tương ứng vào Sổ Tay [J].
  */
 
+import { DeveloperModeManager } from '../debug/DeveloperModeManager';
 import * as Phaser from 'phaser';
 import { SCENE_MAIN_MENU } from '../config/Constants';
 import { PlayerState } from '../state/PlayerState';
@@ -361,7 +362,7 @@ export class EndingSystem {
 
     // V152-08: Phát sự kiện p2.gameOver khi đạt Ending cốt truyện
     try {
-      if (typeof window !== 'undefined' && window.p2 && typeof window.p2.gameOver === 'function') {
+      if (DeveloperModeManager.getInstance().canReportProgress() && typeof window !== 'undefined' && typeof window.p2?.gameOver === 'function') {
         const day = this.playerState?.dayCount || 1;
         const comp = this.playerState?.stats?.composure || 0;
         const loreCount = this.playerState?.unlockedLore?.length || 0;

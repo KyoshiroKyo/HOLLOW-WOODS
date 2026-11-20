@@ -1,3 +1,4 @@
+import { DeveloperModeManager } from '../debug/DeveloperModeManager';
 import * as Phaser from 'phaser';
 import { WildlifeSpec } from '../types';
 import { WildlifeEntity } from '../entities/WildlifeEntity';
@@ -659,6 +660,19 @@ export class WildlifeSystem {
 
   public getEntities(): WildlifeEntity[] {
     return this.entities;
+  }
+
+  public spawnDebugCreature(type: 'skull_wolf' | 'fallen_knight', x: number, y: number): void {
+    const dev = DeveloperModeManager.getInstance();
+    if (!dev.isEnabled || !dev.markDevUsed()) return;
+    if (type === 'skull_wolf') this.skullWolves.push(new SkullWolfEntity(this.scene, x, y, this.currentZoneId));
+    else if (type === 'fallen_knight') this.fallenKnights.push(new FallenKnightEntity(this.scene, x, y));
+  }
+
+  public stopDebugMotion(): void {
+    const bodies = [...this.getSkullWolves(), ...this.getFallenKnights(), ...this.getDreadHorsemen(),
+      ...this.getShadowCrows(), ...this.getShadowEyes(), this.getShadowBehemoth(), this.getHoodedKnight()];
+    for (const entity of bodies) entity?.setVelocity(0, 0);
   }
 
   public getSkullWolves(): SkullWolfEntity[] {

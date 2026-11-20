@@ -1,5 +1,6 @@
 import * as Phaser from 'phaser';
 import { DeveloperModeManager } from './DeveloperModeManager';
+import type { InspectorLayer } from '../utils/HitboxDebugInspector';
 import itemData from '../data/items.json';
 
 type DevAction = (...args: unknown[]) => unknown;
@@ -15,7 +16,7 @@ const ZONES = [
 
 const CSS = `
 #dev-panel-overlay{position:fixed;inset:0 0 0 auto;width:310px;max-width:92vw;z-index:2147483647;display:none;box-sizing:border-box;background:rgba(12,14,18,.92);color:#d8e0e5;border-left:1px solid #56616b;font:12px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace;box-shadow:-8px 0 28px #0008;backdrop-filter:blur(8px)}
-#dev-panel-overlay *{box-sizing:border-box}#dev-panel-overlay .dp-head{position:sticky;top:0;background:#151a20;border-bottom:1px solid #38434d;padding:10px;z-index:2}#dev-panel-overlay .dp-title{display:flex;align-items:center;justify-content:space-between;font-weight:700;color:#f2c879}#dev-panel-overlay .dp-stats{color:#aebac4;margin:7px 0;white-space:normal}#dev-panel-overlay .dp-badge{border:0;border-radius:10px;background:#9d2525;color:#fff;padding:2px 8px;cursor:pointer}#dev-panel-overlay button,#dev-panel-overlay select,#dev-panel-overlay input{font:inherit;color:inherit;background:#202830;border:1px solid #46525d;border-radius:3px;padding:5px}#dev-panel-overlay button{cursor:pointer}#dev-panel-overlay button:hover{background:#34414b}#dev-panel-overlay .dp-tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin-top:9px}#dev-panel-overlay .dp-tabs button{padding:5px 1px;font-size:10px}#dev-panel-overlay .dp-tabs button[aria-selected=true]{background:#755f35;color:#fff}#dev-panel-overlay .dp-body{height:calc(100% - 112px);overflow:auto;padding:10px}#dev-panel-overlay .dp-section{border:1px solid #303a43;padding:8px;margin-bottom:8px;border-radius:4px}#dev-panel-overlay h3{font-size:11px;color:#f2c879;margin:0 0 7px;text-transform:uppercase;letter-spacing:.07em}#dev-panel-overlay label{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:6px 0}#dev-panel-overlay .dp-row{display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin:6px 0}#dev-panel-overlay .dp-row>*{flex:1}#dev-panel-overlay input[type=checkbox]{flex:0 0 auto;accent-color:#d5a64f}#dev-panel-overlay input[type=range]{width:100%;padding:0}#dev-panel-overlay .dp-log{max-height:200px;overflow:auto;color:#b9c5cd;white-space:pre-wrap;word-break:break-word}#dev-panel-overlay .dp-note{color:#e1aa74;font-size:10px}#dev-panel-overlay .dp-close{float:right}#dev-panel-overlay .dp-entity{display:flex;justify-content:space-between;border-bottom:1px solid #303a43;padding:5px 0}
+#dev-panel-overlay *{box-sizing:border-box}#dev-panel-overlay .dp-head{position:sticky;top:0;background:#151a20;border-bottom:1px solid #38434d;padding:10px;z-index:2}#dev-panel-overlay .dp-title{display:flex;align-items:center;justify-content:space-between;font-weight:700;color:#f2c879}#dev-panel-overlay .dp-stats{color:#aebac4;margin:7px 0;white-space:normal}#dev-panel-overlay .dp-badge{border:0;border-radius:10px;background:#9d2525;color:#fff;padding:2px 8px;cursor:pointer}#dev-panel-overlay button,#dev-panel-overlay select,#dev-panel-overlay input{font:inherit;color:inherit;background:#202830;border:1px solid #46525d;border-radius:3px;padding:5px}#dev-panel-overlay button{cursor:pointer}#dev-panel-overlay button:hover,#dev-panel-overlay button[aria-pressed=true]{background:#34414b}#dev-panel-overlay .dp-tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin-top:9px}#dev-panel-overlay .dp-tabs button{padding:5px 1px;font-size:10px}#dev-panel-overlay .dp-tabs button[aria-selected=true]{background:#755f35;color:#fff}#dev-panel-overlay .dp-body{height:calc(100% - 112px);overflow:auto;padding:10px}#dev-panel-overlay .dp-section{border:1px solid #303a43;padding:8px;margin-bottom:8px;border-radius:4px}#dev-panel-overlay h3{font-size:11px;color:#f2c879;margin:0 0 7px;text-transform:uppercase;letter-spacing:.07em}#dev-panel-overlay label{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:6px 0}#dev-panel-overlay .dp-row{display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin:6px 0}#dev-panel-overlay .dp-row>*{flex:1}#dev-panel-overlay input[type=checkbox]{flex:0 0 auto;accent-color:#d5a64f}#dev-panel-overlay input[type=range]{width:100%;padding:0}#dev-panel-overlay .dp-log{max-height:200px;overflow:auto;color:#b9c5cd;white-space:pre-wrap;word-break:break-word}#dev-panel-overlay .dp-note{color:#e1aa74;font-size:10px}#dev-panel-overlay .dp-close{float:right}#dev-panel-overlay .dp-entity{display:flex;justify-content:space-between;border-bottom:1px solid #303a43;padding:5px 0}
 `;
 
 /** HTML developer UI. It lives outside the Phaser canvas and adds no WebGL draw calls. */
@@ -29,6 +30,18 @@ export class DevPanelOverlay {
   private activeTab = 0;
   private compact = false;
   private selectedItem = '';
+  private readonly layers: Record<InspectorLayer, { label: string; checked: boolean }> = {
+    showColliders: { label: 'Collider tĩnh/động', checked: true },
+    showHitboxes: { label: 'Hitbox đòn đánh', checked: true },
+    showHurtboxes: { label: 'Hurtbox Listener', checked: false },
+    showTriggers: { label: 'Cửa chuyển vùng', checked: true },
+    showInteractRanges: { label: 'Vùng tương tác', checked: true },
+    showAIRanges: { label: 'Tầm nghe AI', checked: true },
+    showCamera: { label: 'Viewport và camera bounds', checked: false },
+    showWorld: { label: 'Giới hạn physics và zone', checked: false },
+    showSafeZones: { label: 'Vùng an toàn / Vòng Sáng', checked: false },
+    enableObjectPicker: { label: 'Click soi Object', checked: false }
+  };
 
   public constructor(manager: DeveloperModeManager = DeveloperModeManager.getInstance()) {
     void Phaser;
@@ -50,15 +63,21 @@ export class DevPanelOverlay {
     this.root.addEventListener('keydown', this.onKeyDown);
   }
 
-  public show(): void { this.root.style.display = 'block'; this.update(); if (this.timer === null) this.timer = window.setInterval(() => this.update(), 250); }
-  public hide(): void { this.root.style.display = 'none'; if (this.timer !== null) window.clearInterval(this.timer); this.timer = null; document.getElementById('game-canvas')?.focus(); }
+  public show(): void { this.root.style.display = 'block'; this.syncControls(); this.update(); if (this.timer === null) this.timer = window.setInterval(() => this.update(), 250); }
+  public hide(): void {
+    const restoreFocus = this.root.contains(document.activeElement);
+    this.root.style.display = 'none';
+    if (this.timer !== null) window.clearInterval(this.timer);
+    this.timer = null;
+    if (restoreFocus) document.getElementById('game-canvas')?.focus();
+  }
   public toggle(): void { this.root.style.display === 'none' ? this.show() : this.hide(); }
   public destroy(): void { this.hide(); this.root.removeEventListener('click', this.onClick); this.root.removeEventListener('change', this.onChange); this.root.removeEventListener('input', this.onInput); this.root.removeEventListener('keydown', this.onKeyDown); this.root.remove(); }
 
   private buildTabs(): void {
     const tabs = ['Log & Hiệu năng', 'Di chuyển & Map', 'Nhân vật & Đồ', 'Nhiệm vụ & MT', 'Thực thể & AI'];
     const holder = this.root.querySelector('.dp-tabs') as HTMLDivElement;
-    tabs.forEach((name, i) => { const button = document.createElement('button'); button.textContent = `${i + 1}`; button.title = name; button.setAttribute('role', 'tab'); button.dataset.tab = String(i); holder.appendChild(button); });
+    tabs.forEach((name, i) => { const button = document.createElement('button'); button.textContent = name; button.title = name; button.setAttribute('role', 'tab'); button.dataset.tab = String(i); holder.appendChild(button); });
   }
 
   private renderTab(): void {
@@ -72,24 +91,35 @@ export class DevPanelOverlay {
     this.syncControls();
   }
 
-  private logTab(): string { return `<section class="dp-section"><h3>Hiệu năng</h3><div data-perf></div></section><section class="dp-section"><h3>Bug / Warning</h3><div class="dp-row"><button data-action="copy-log">Copy Log</button><button data-action="clear-log">Xóa</button></div><div class="dp-log" data-logs></div></section>`; }
-  private mapTab(): string { return `<section class="dp-section"><h3>Di chuyển</h3><label>Noclip <input type="checkbox" data-control="noclip"></label><div class="dp-row">${[1,2,3].map(n=>`<button data-action="speed" data-value="${n}">${n}x</button>`).join('')}</div><label>Phân khu <select data-control="zone">${ZONES.map(([id,name])=>`<option value="${id}">${name}</option>`).join('')}</select></label><div class="dp-row"><input placeholder="X" data-x type="number"><input placeholder="Y" data-y type="number"><button data-action="goto">Đi tới</button></div></section><section class="dp-section"><h3>Lớp debug</h3>${[['Collision','showColliders'],['Hitbox','showHitboxes'],['Trigger','showTriggers'],['Interact','showInteractRanges'],['AI Range','showAIRanges'],['Click soi Object','enableObjectPicker']].map(([n,id])=>`<label>${n}<input type="checkbox" data-layer="${id}" ${id==='showColliders'||id==='showHitboxes'||id==='showTriggers'||id==='showInteractRanges'||id==='showAIRanges'?'checked':''}></label>`).join('')}</section>`; }
-  private playerTab(): string { return `<section class="dp-section"><h3>Nhân vật</h3><label>God Mode <input type="checkbox" data-control="god"></label><label>Vô hạn Thể Lực <input type="checkbox" data-control="stamina"></label>${['HP','Stamina','Tinh Thần'].map((n,i)=>`<label>${n}<input type="range" min="0" max="100" value="100" data-stat="${i}"></label>`).join('')}<button data-action="sanity15">Tinh Thần = 15</button></section><section class="dp-section"><h3>Vật phẩm</h3><input placeholder="Lọc items.json…" data-search><div data-items></div><div class="dp-row"><button data-action="item" data-value="1">+1</button><button data-action="item" data-value="5">+5</button></div></section>`; }
-  private worldTab(): string { return `<section class="dp-section"><h3>Nhiệm vụ & Môi trường</h3><button data-action="gates">Mở mọi Cổng & Phong Ấn</button><label>Nhảy Chặng <select data-control="act">${[1,2,3,4,5,6,7].map(n=>`<option>${n}</option>`).join('')}</select></label><div class="dp-row">${['Ngày','Hoàng Hôn','Đêm'].map((n,i)=>`<button data-action="time" data-value="${i}">${n}</button>`).join('')}</div>${[['Đóng băng thời gian','timeFrozen'],['Sương mù','fog'],['Mưa','rain']].map(([n,id])=>`<label>${n}<input type="checkbox" data-control="${id}"></label>`).join('')}<div class="dp-row">${[['True','true'],['Sacrifice','sacrifice'],['Fog Loop','fog_loop']].map(([n,id])=>`<button data-action="ending" data-value="${id}">${n}</button>`).join('')}</div></section>`; }
+  private logTab(): string { return `<section class="dp-section"><h3>Hiệu năng</h3><div data-perf></div><div data-profiler style="white-space:pre-line"></div></section><section class="dp-section"><h3>Bug / Warning</h3><div class="dp-row"><button data-action="copy-bug">Copy Bug Info</button><button data-action="copy-log">Copy Log</button><button data-action="clear-log">Xóa</button></div><div class="dp-log" data-logs></div></section>`; }
+  private mapTab(): string { return `<section class="dp-section"><h3>Di chuyển</h3><label>Noclip <input type="checkbox" data-control="noclip"></label><div class="dp-row">${[1,2,3].map(n=>`<button data-action="speed" data-value="${n}">${n}x</button>`).join('')}</div><p>Hồi chiêu chiến đấu</p><div class="dp-row">${[1,2,3].map(n=>`<button data-action="combat-speed" data-value="${n}">${n}x</button>`).join('')}</div><label>Phân khu <select data-control="zone">${ZONES.map(([id,name])=>`<option value="${id}">${name}</option>`).join('')}</select></label><div class="dp-row"><input placeholder="X" data-x type="number"><input placeholder="Y" data-y type="number"><button data-action="goto">Đi tới</button></div></section><section class="dp-section"><h3>Lớp debug</h3>${Object.entries(this.layers).map(([id, layer]) => `<label>${layer.label}<input type="checkbox" data-layer="${id}" ${layer.checked ? 'checked' : ''}></label>`).join('')}</section>`; }
+  private playerTab(): string { return `<section class="dp-section"><h3>Nhân vật</h3><label>God Mode <input type="checkbox" data-control="god"></label><label>Vô hạn Thể Lực <input type="checkbox" data-control="stamina"></label><label>Vô hạn Tinh Thần <input type="checkbox" data-control="composure"></label><button data-action="refill">Hồi đầy chỉ số</button>${['HP','Stamina','Tinh Thần'].map((n,i)=>`<label>${n}<input type="range" min="0" max="100" value="100" data-stat="${i}"></label>`).join('')}<button data-action="sanity15">Tinh Thần = 15</button></section><section class="dp-section"><h3>Vật phẩm</h3><input placeholder="Lọc items.json…" data-search><div data-items></div><div class="dp-row"><button data-action="item" data-value="1">+1</button><button data-action="item" data-value="5">+5</button></div></section>`; }
+  private worldTab(): string { return `<section class="dp-section"><h3>Nhiệm vụ & Môi trường</h3><button data-action="gates">Mở mọi Cổng & Phong Ấn</button><label>Xem chặng <select data-control="act"><option value="0">Tiến trình hiện tại</option>${[1,2,3,4,5,6,7].map(n=>`<option>${n}</option>`).join('')}</select></label><div class="dp-row">${['Ngày','Hoàng Hôn','Đêm'].map((n,i)=>`<button data-action="time" data-value="${i}">${n}</button>`).join('')}</div>${[['Đóng băng thời gian','timeFrozen'],['Sương mù','fog'],['Mưa','rain']].map(([n,id])=>`<label>${n}<input type="checkbox" data-control="${id}"></label>`).join('')}<div class="dp-row">${[['True','true'],['Sacrifice','sacrifice'],['Fog Loop','fog_loop']].map(([n,id])=>`<button data-action="ending" data-value="${id}">${n}</button>`).join('')}</div></section>`; }
   private entityTab(): string { return `<section class="dp-section"><h3>Thực thể & AI</h3><label>Đóng băng AI <input type="checkbox" data-control="aiFrozen"></label><div class="dp-row">${['The Listener','Skull Wolf','Fallen Knight'].map(n=>`<button data-action="spawn" data-value="${n}">${n}</button>`).join('')}</div><div data-entities></div></section>`; }
 
   private syncControls(): void {
-    this.root.querySelectorAll<HTMLInputElement>('[data-control]').forEach(input => { const value = (({ noclip: this.manager.isNoclip, god: this.manager.isGodMode, stamina: this.manager.isInfiniteStamina, timeFrozen: this.manager.freezeTime, fog: this.manager.fogEnabled, rain: this.manager.rainEnabled, aiFrozen: this.manager.isFreezeAI } as Record<string, boolean>)[input.dataset.control || '']); if (typeof value === 'boolean') input.checked = value; });
-    this.refreshItems(); this.refreshEntities();
+    this.root.querySelectorAll<HTMLInputElement>('[data-control]').forEach(input => { const value = (({ noclip: this.manager.isNoclip, god: this.manager.isGodMode, stamina: this.manager.isInfiniteStamina, composure: this.manager.isInfiniteComposure, timeFrozen: this.manager.freezeTime, fog: this.manager.fogEnabled, rain: this.manager.rainEnabled, aiFrozen: this.manager.isFreezeAI } as Record<string, boolean>)[input.dataset.control || '']); if (typeof value === 'boolean') input.checked = value; });
+    this.refreshItems(); this.refreshEntities(); this.syncSpeeds();
   }
+  private syncSpeeds(): void {
+    const speeds = { speed: this.manager.speedMultiplier, 'combat-speed': this.manager.combatSpeedMultiplier };
+    for (const button of this.body.querySelectorAll<HTMLButtonElement>('[data-action="speed"],[data-action="combat-speed"]')) {
+      const action = button.dataset.action as keyof typeof speeds;
+      button.setAttribute('aria-pressed', String(Number(button.dataset.value) === speeds[action]));
+    }
+  }
+
   private update = (): void => {
     const snapshot = this.manager.getPerfSnapshot(); const logs = this.manager.getLogs();
     const bugs = this.manager.errorCount + this.manager.warnCount;
     this.badge.textContent = `● ${bugs}`; this.badge.title = `${this.manager.errorCount} Bug · ${this.manager.warnCount} Warn`;
     this.statLine.textContent = `FPS ${snapshot.fps?.toFixed(0) ?? '—'} · (${snapshot.player ? `${snapshot.player.x.toFixed(0)}, ${snapshot.player.y.toFixed(0)}` : '—'}) · ${snapshot.zoneId ?? '—'}`;
     if (this.activeTab === 0) {
-      const perf = this.body.querySelector('[data-perf]'); if (perf) perf.innerHTML = `FPS: ${snapshot.fps?.toFixed(1) ?? '—'} · Frame: ${snapshot.frameTimeMs?.toFixed(1) ?? '—'} ms<br>Collider: ${snapshot.colliderCount ?? '—'} · Entity: ${snapshot.gameObjectCount ?? '—'}<br>JS Heap: ${snapshot.jsHeapMb ?? '—'} MB<br>Audio: BGM ${snapshot.currentBGM ?? '—'} · Ambience ${snapshot.currentAmbience ?? '—'} · Heartbeat ${snapshot.isHeartbeatActive ?? '—'} · Sanity Duck ${snapshot.isSanityDucked ?? '—'}`;
-      const logNode = this.body.querySelector('[data-logs]'); if (logNode) logNode.textContent = logs.map(entry => `[${entry.time}] ${entry.level}: ${entry.message}`).join('\n') || 'Chưa có Bug / Warning';
+      const perf = this.body.querySelector('[data-perf]'); if (perf) perf.innerHTML = `FPS: ${snapshot.fps?.toFixed(1) ?? '—'} · Frame: ${snapshot.frameTimeMs?.toFixed(1) ?? '—'} ms<br>Quan hệ va chạm: ${snapshot.colliderCount ?? '—'}<br>Body bật: ${snapshot.staticBodyCount ?? '—'} tĩnh · ${snapshot.dynamicBodyCount ?? '—'} động · Object: ${snapshot.gameObjectCount ?? '—'}<br>JS Heap: ${snapshot.jsHeapMb ?? '—'} MB<br>Audio: BGM ${snapshot.currentBGM ?? '—'} · Ambience ${snapshot.currentAmbience ?? '—'} · Heartbeat ${snapshot.isHeartbeatActive ?? '—'} · Sanity Duck ${snapshot.isSanityDucked ?? '—'}`;
+      const profiler = this.body.querySelector('[data-profiler]');
+      const snapshotText = this.getProfilerInfo?.() ?? '';
+      if (profiler && profiler.textContent !== snapshotText) profiler.textContent = snapshotText;
+      const logNode = this.body.querySelector('[data-logs]'); if (logNode) logNode.textContent = logs.map(entry => `[${entry.time}] ${entry.level}: ${entry.message}${entry.count > 1 ? ` ×${entry.count}` : ''}`).join('\n') || 'Chưa có Bug / Warning';
     }
   };
   private call(name: string, ...args: unknown[]): unknown { const fn = (this.manager as unknown as Record<string, unknown>)[name] as DevAction | undefined; if (!fn) return undefined; try { return fn.apply(this.manager, args); } catch (error) { console.warn(`Dev panel action ${name} failed`, error); return undefined; } }
@@ -101,9 +131,12 @@ export class DevPanelOverlay {
       case 'close': this.manager.setEnabled(false); this.hide(); break;
       case 'compact': this.compact = !this.compact; this.body.style.display = this.compact ? 'none' : ''; break;
       case 'logs': this.activeTab = 0; this.renderTab(); this.update(); break;
+      case 'copy-bug': this.copyBugInfo(target); break;
       case 'clear-log': this.manager.clearLogs(); this.update(); break;
-      case 'copy-log': void navigator.clipboard?.writeText(this.manager.getLogs().map(e=>`[${e.time}] ${e.level}: ${e.message}`).join('\n')); break;
-      case 'speed': this.manager.setSpeedMultiplier(Number(value) as 1 | 2 | 3); break;
+      case 'copy-log': void navigator.clipboard?.writeText(this.manager.getLogs().map(e=>`[${e.time}] ${e.level}: ${e.message}${e.count > 1 ? ` ×${e.count}` : ''}`).join('\n')); break;
+      case 'speed': this.manager.setSpeedMultiplier(Number(value) as 1 | 2 | 3); this.syncSpeeds(); break;
+      case 'combat-speed': this.manager.setCombatSpeedMultiplier(Number(value) as 1 | 2 | 3); this.syncSpeeds(); break;
+      case 'refill': this.manager.refillStats(); break;
       case 'goto': this.manager.teleportToCoords(Number(this.root.querySelector<HTMLInputElement>('[data-x]')?.value), Number(this.root.querySelector<HTMLInputElement>('[data-y]')?.value)); break;
       case 'sanity15': this.manager.setStats({ composure: 15 }); break;
       case 'item': if (this.selectedItem) this.manager.giveItem(this.selectedItem, Number(value)); break;
@@ -117,19 +150,43 @@ export class DevPanelOverlay {
     const input = event.target as HTMLInputElement | HTMLSelectElement;
     if (input.matches('[data-control]')) {
       if (input.dataset.control === 'act') { this.manager.jumpToQuestStage(Number(input.value)); return; }
-      const actions: Record<string, string> = { noclip:'setNoclip', god:'setGodMode', stamina:'setInfiniteStamina', timeFrozen:'setFreezeTime', fog:'setFogEnabled', rain:'setRainEnabled', aiFrozen:'setFreezeAI' };
+      const actions: Record<string, string> = { noclip:'setNoclip', god:'setGodMode', stamina:'setInfiniteStamina', composure:'setInfiniteComposure', timeFrozen:'setFreezeTime', fog:'setFogEnabled', rain:'setRainEnabled', aiFrozen:'setFreezeAI' };
       const action = actions[input.dataset.control || '']; if (action) this.call(action, input instanceof HTMLInputElement ? input.checked : input.value);
       if (input.dataset.control === 'zone') this.manager.teleportToZone(input.value);
     }
     if (input instanceof HTMLInputElement && input.dataset.layer !== undefined) {
       const layer = input.dataset.layer;
-      if (['showColliders','showHitboxes','showTriggers','showInteractRanges','showAIRanges','enableObjectPicker'].includes(layer)) this.layerHandler?.(layer, input.checked);
+      if (Object.hasOwn(this.layers, layer)) {
+        const key = layer as InspectorLayer;
+        this.layers[key].checked = input.checked;
+        this.layerHandler?.(key, input.checked);
+      }
     }
     if (input instanceof HTMLInputElement && input.dataset.stat !== undefined) { const key = ['hp','stamina','composure'][Number(input.dataset.stat)]; this.manager.setStats({ [key]: Number(input.value) }); }
   };
   private onInput = (event: Event): void => { const input = event.target as HTMLInputElement; if (input.matches('[data-search]')) this.refreshItems(input.value); };
-  private onKeyDown = (event: KeyboardEvent): void => { if ((event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement) && event.target !== this.root.querySelector('[data-search]')) event.stopPropagation(); };
-  public layerHandler?: (layer: string, enabled: boolean) => void;
+  private onKeyDown = (event: KeyboardEvent): void => { if (event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement) event.stopPropagation(); };
+  public layerHandler?: (layer: InspectorLayer, enabled: boolean) => void;
+  public getBugInfo?: () => string;
+  public getProfilerInfo?: () => string;
+
+  private copyBugInfo(target: HTMLElement): void {
+    const summary = this.getBugInfo?.();
+    if (!summary) return;
+    const fallback = () => {
+      const area = this.body.querySelector<HTMLTextAreaElement>('[data-bug-summary]') ?? document.createElement('textarea');
+      area.dataset.bugSummary = '';
+      area.readOnly = true;
+      area.setAttribute('aria-label', 'Bug Info');
+      area.value = summary;
+      this.body.prepend(area);
+      area.select();
+    };
+    if (!navigator.clipboard?.writeText) { fallback(); return; }
+    void navigator.clipboard.writeText(summary).then(() => {
+      target.textContent = 'Đã sao chép';
+    }, fallback);
+  }
   private refreshItems(query = ''): void {
     const list = this.body.querySelector('[data-items]'); if (!list) return;
     const needle = query.trim().toLocaleLowerCase();
@@ -137,5 +194,5 @@ export class DevPanelOverlay {
     list.innerHTML = found.slice(0, 12).map(item=>`<button data-item="${item.id}">${item.name}</button>`).join('');
     list.querySelectorAll<HTMLElement>('[data-item]').forEach(button=>button.addEventListener('click',()=>{this.selectedItem=button.dataset.item||'';}));
   }
-  private refreshEntities(): void { const list=this.body.querySelector('[data-entities]'); if(!list)return; const entities=this.manager.getNearbyEntities(); const rows=Array.isArray(entities)?entities as Array<{name:string;x?:number;y?:number}>:[]; list.innerHTML=rows.map(e=>`<div class="dp-entity"><span>${e.name} (${e.x?.toFixed(0)??'?'}, ${e.y?.toFixed(0)??'?'})</span><button data-fly="${e.x??0},${e.y??0}">Bay tới</button></div>`).join('')||'<p class="dp-note">Chưa có dữ liệu thực thể.</p>'; list.querySelectorAll<HTMLElement>('[data-fly]').forEach(button=>button.addEventListener('click',()=>{const [x,y]=(button.dataset.fly||'0,0').split(',').map(Number);this.manager.teleportToCoords(x,y);})); }
+  private refreshEntities(): void { const list=this.body.querySelector('[data-entities]'); if(!list)return; const entities=this.manager.getNearbyEntities(); const rows=Array.isArray(entities)?entities as Array<{id:string;name:string;x?:number;y?:number}>:[]; list.innerHTML=rows.map(e=>`<div class="dp-entity"><span>${e.name} (${e.x?.toFixed(0)??'?'}, ${e.y?.toFixed(0)??'?'})</span><button data-fly="${e.id}">Bay tới</button></div>`).join('')||'<p class="dp-note">Chưa có dữ liệu thực thể.</p>'; list.querySelectorAll<HTMLElement>('[data-fly]').forEach(button=>button.addEventListener('click',()=>{const id=button.dataset.fly; if(id) this.manager.teleportToNPC(id);})); }
 }

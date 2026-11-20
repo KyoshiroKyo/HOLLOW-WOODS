@@ -1,6 +1,6 @@
 {
-  "totalFiles": 246,
-  "totalBytes": 69334783,
+  "totalFiles": 245,
+  "totalBytes": 69148004,
   "categories": {
     "audio": [
       {
@@ -332,6 +332,11 @@
     "maps": [],
     "characters": [
       {
+        "path": "public/assets/characters/black_knight/black_knight_portrait.png",
+        "size": 2809,
+        "ext": ".png"
+      },
+      {
         "path": "public/assets/characters/bosses/hooded_knight_sheet.png",
         "size": 108059,
         "ext": ".png"
@@ -400,46 +405,6 @@
         "path": "public/assets/characters/enemies/portrait_fallen_knight.png",
         "size": 2335,
         "ext": ".png"
-      },
-      {
-        "path": "public/assets/characters/monsters/bat_sheet.png",
-        "size": 75068,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/characters/monsters/ghost_sheet.png",
-        "size": 59183,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/characters/monsters/goblin_scout_dagger_sheet.png",
-        "size": 33560,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/characters/monsters/portrait_skull_wolf.png",
-        "size": 2377,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/characters/monsters/shadow_crow_sheet.png",
-        "size": 10519,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/characters/monsters/shadow_eyes_sheet.png",
-        "size": 3347,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/characters/monsters/skull_wolf_sheet.png",
-        "size": 43410,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/characters/mossbound_wayfarer.rar",
-        "size": 185541,
-        "ext": ".rar"
       },
       {
         "path": "public/assets/characters/mossbound_wayfarer/wayfarer_attack.png",
@@ -649,11 +614,6 @@
       {
         "path": "public/assets/characters/satyr/satyr_portrait.png",
         "size": 2551,
-        "ext": ".png"
-      },
-      {
-        "path": "public/assets/characters/black_knight/black_knight_portrait.png",
-        "size": 2809,
         "ext": ".png"
       }
     ],
@@ -1063,6 +1023,21 @@
         "ext": ".png"
       },
       {
+        "path": "public/assets/ui/fonts/hollow-woods-ui-bold.woff",
+        "size": 73816,
+        "ext": ".woff"
+      },
+      {
+        "path": "public/assets/ui/fonts/hollow-woods-ui-regular.woff",
+        "size": 74552,
+        "ext": ".woff"
+      },
+      {
+        "path": "public/assets/ui/fonts/OFL-NotoSans.txt",
+        "size": 4114,
+        "ext": ".txt"
+      },
+      {
         "path": "public/assets/ui/icons/ui_pack_btn_wood_hover.png",
         "size": 454,
         "ext": ".png"
@@ -1110,6 +1085,31 @@
       {
         "path": "public/assets/ui/icons/ui_pack_tab_map.png",
         "size": 614,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/menu/black_knight_button_hover.png",
+        "size": 637,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/menu/black_knight_button.png",
+        "size": 607,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/menu/black_knight_cinematic.png",
+        "size": 195091,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/menu/black_knight_fallback.png",
+        "size": 15439,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/menu/black_knight_woodland.png",
+        "size": 26179,
         "ext": ".png"
       },
       {
@@ -1191,46 +1191,53 @@
         "path": "public/assets/ui/slots/ui_pack_slot_selected.png",
         "size": 430,
         "ext": ".png"
+      }
+    ],
+    "other": [
+      {
+        "path": "public/assets/atlases/hollow_props_atlas.json",
+        "size": 20799,
+        "ext": ".json"
       },
       {
-        "path": "public/assets/ui/menu/black_knight_button.png",
-        "size": 607,
+        "path": "public/assets/atlases/hollow_props_atlas.png",
+        "size": 205344,
         "ext": ".png"
       },
       {
-        "path": "public/assets/ui/menu/black_knight_button_hover.png",
-        "size": 637,
+        "path": "public/assets/buildings/bell_tower_grand.png",
+        "size": 21171,
         "ext": ".png"
       },
       {
-        "path": "public/assets/ui/menu/black_knight_cinematic.png",
-        "size": 195091,
+        "path": "public/assets/buildings/gatehouse_garth.png",
+        "size": 13782,
         "ext": ".png"
       },
       {
-        "path": "public/assets/ui/menu/black_knight_fallback.png",
-        "size": 15439,
+        "path": "public/assets/buildings/house_elder_edda.png",
+        "size": 22407,
         "ext": ".png"
       },
       {
-        "path": "public/assets/ui/menu/black_knight_woodland.png",
-        "size": 26179,
+        "path": "public/assets/buildings/house_herbalist_neris.png",
+        "size": 14566,
         "ext": ".png"
       },
       {
-        "path": "public/assets/ui/fonts/OFL-NotoSans.txt",
-        "size": 4114,
-        "ext": ".txt"
+        "path": "public/assets/buildings/ranger_cabin_wood.png",
+        "size": 3278,
+        "ext": ".png"
       },
       {
-        "path": "public/assets/ui/fonts/hollow-woods-ui-bold.woff",
-        "size": 73816,
-        "ext": ".woff"
+        "path": "public/assets/buildings/smithy_workshop_bram.png",
+        "size": 14702,
+        "ext": ".png"
       },
       {
-        "path": "public/assets/ui/fonts/hollow-woods-ui-regular.woff",
-        "size": 74552,
-        "ext": ".woff"
+        "path": "public/assets/buildings/village_well_detailed.png",
+        "size": 3289,
+        "ext": ".png"
       }
     ]
   }

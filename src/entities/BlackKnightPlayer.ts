@@ -107,6 +107,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
         return;
       }
       const gameScene = this.scene as any;
+      if (gameScene.isDebugObjectPicking?.()) return;
       if (gameScene.dialogueSystem && gameScene.dialogueSystem.isActive) {
         return;
       }
@@ -506,6 +507,8 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     window.addEventListener('compositionstart', this.boundCompositionStart, { capture: true });
     window.addEventListener('compositionend', this.boundCompositionEnd, { capture: true });
     window.addEventListener('blur', this.boundWindowBlur);
+    this.scene.game.canvas.addEventListener('blur', this.boundWindowBlur);
+    this.scene.game.canvas.addEventListener('pointercancel', this.boundWindowBlur);
     window.addEventListener('focus', this.boundWindowFocus);
     window.addEventListener('focusin', this.boundFocusChange, { capture: true });
     window.addEventListener('focusout', this.boundFocusChange, { capture: true });
@@ -527,6 +530,8 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       window.removeEventListener('compositionstart', this.boundCompositionStart, { capture: true });
       window.removeEventListener('compositionend', this.boundCompositionEnd, { capture: true });
       window.removeEventListener('blur', this.boundWindowBlur);
+      this.scene?.game?.canvas?.removeEventListener('blur', this.boundWindowBlur);
+      this.scene?.game?.canvas?.removeEventListener('pointercancel', this.boundWindowBlur);
       window.removeEventListener('focus', this.boundWindowFocus);
       window.removeEventListener('focusin', this.boundFocusChange, { capture: true });
       window.removeEventListener('focusout', this.boundFocusChange, { capture: true });
@@ -1612,7 +1617,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
 
     // V152-05: Cooldown Light Attack 0.35s (350ms)
     const now = Date.now();
-    const attackCd = Math.min(350, weaponDef.attackCooldown || 350);
+    const attackCd = Math.min(350, weaponDef.attackCooldown || 350) / DeveloperModeManager.getInstance().getCombatSpeedMultiplier();
     if (now - this._lastAttackTime < attackCd) {
       return false;
     }
@@ -1699,7 +1704,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     const weaponDef = equipSys.getActiveWeaponDef();
 
     const now = Date.now();
-    if (now - this._lastHeavyAttackTime < 1200) {
+    if (now - this._lastHeavyAttackTime < 1200 / DeveloperModeManager.getInstance().getCombatSpeedMultiplier()) {
       return false;
     }
 
@@ -1779,7 +1784,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     const weaponDef = equipSys.getActiveWeaponDef();
 
     const now = Date.now();
-    if (now - this._lastWeaponArtTime < 5000) {
+    if (now - this._lastWeaponArtTime < 5000 / DeveloperModeManager.getInstance().getCombatSpeedMultiplier()) {
       return false;
     }
 

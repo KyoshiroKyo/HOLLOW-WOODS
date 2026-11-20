@@ -19,6 +19,8 @@
  * 8. Vòng đời SDK: Gắn p2.onBeforeUnload() và p2.auth.onChange() chống mất tiến trình khi đóng tab hoặc mới đăng nhập.
  */
 
+import { GRAPHICS_QUALITY_KEY, QA_BUILD, QA_SAVE_KEY, QA_SETTINGS_KEY } from '../debug/DevSessionPolicy';
+
 export const SAVE_VERSION = "1.4";
 export const MAX_KEY_BYTES = 64 * 1024; // 65,536 bytes - Giới hạn 64 KB theo đặc tả SDK v1.1
 export const MAX_KEY_COUNT = 32;       // Tối đa 32 khóa trong payload
@@ -331,6 +333,16 @@ export async function saveGameNow(gameState: any): Promise<CloudSaveResult> {
     return { ok: false, reason: 'INVALID_STATE' };
   }
 
+  if (QA_BUILD) {
+    cancelPendingGameSave();
+    try {
+      localStorage.setItem(QA_SAVE_KEY, JSON.stringify(payload));
+      return { ok: true, source: 'local' };
+    } catch {
+      return { ok: false, reason: 'UNAVAILABLE' };
+    }
+  }
+
   // 1. Luôn lưu bản sao cục bộ trước để đảm bảo không bao giờ mất dữ liệu
   try {
     const jsonStr = JSON.stringify(payload);
@@ -401,6 +413,12 @@ export async function saveGameNow(gameState: any): Promise<CloudSaveResult> {
 /**
  * Lưu có độ trễ (Debounce) cho các sự kiện nhỏ (nhặt đồ, mở sương mù) để tránh spam API
  */
+export function cancelPendingGameSave(): void {
+  if (saveDebounceTimer) clearTimeout(saveDebounceTimer);
+  saveDebounceTimer = null;
+  latestPendingState = null;
+}
+
 export function scheduleDebouncedSave(gameState: any, delayMs: number = 2500): void {
   latestPendingState = gameState;
   if (saveDebounceTimer) clearTimeout(saveDebounceTimer);
@@ -415,6 +433,15 @@ export function scheduleDebouncedSave(gameState: any, delayMs: number = 2500): v
  * Tải tiến trình: Tự động so sánh bản Cloud và bản Local, lấy bản mới nhất
  */
 export async function loadGameProgress(): Promise<CloudSavePayload | null> {
+  if (QA_BUILD) {
+    try {
+      const raw = localStorage.getItem(QA_SAVE_KEY);
+      return raw ? migrateSaveSchema(JSON.parse(raw)) : null;
+    } catch {
+      return null;
+    }
+  }
+
   const p2 = typeof window !== 'undefined' ? window.p2 : undefined;
   let localSave: CloudSavePayload | null = null;
   let cloudSave: CloudSavePayload | null = null;
@@ -467,6 +494,7 @@ export async function loadGameProgress(): Promise<CloudSavePayload | null> {
  * Đăng ký các sự kiện vòng đời SDK để chống mất dữ liệu khi đóng tab hoặc mới đăng nhập
  */
 export function bindCloudSaveLifecycle(getCurrentGameStateFn: () => any): () => void {
+  if (QA_BUILD) return cancelPendingGameSave;
   const p2 = typeof window !== 'undefined' ? window.p2 : undefined;
   if (!p2) return () => {};
 
@@ -507,10 +535,10 @@ export function bindCloudSaveLifecycle(getCurrentGameStateFn: () => any): () => 
  * Lưu cấu hình người chơi vào key hw_settings
  */
 export async function saveSettings(settings: GameSettingsData): Promise<CloudSaveResult> {
-  const p2 = typeof window !== 'undefined' ? window.p2 : undefined;
+  const p2 = !QA_BUILD && typeof window !== 'undefined' ? window.p2 : undefined;
   const payload: GameSettingsData = {
     updatedAt: Date.now(),
-    graphicsQuality: settings.graphicsQuality || (typeof localStorage !== 'undefined' ? localStorage.getItem('hw_graphics_quality') || 'HIGH' : 'HIGH'),
+    graphicsQuality: settings.graphicsQuality || (typeof localStorage !== 'undefined' ? localStorage.getItem(GRAPHICS_QUALITY_KEY) || 'HIGH' : 'HIGH'),
     masterVolume: settings.masterVolume ?? 0.8,
     musicVolume: settings.musicVolume ?? 0.7,
     sfxVolume: settings.sfxVolume ?? 0.8,
@@ -520,7 +548,7 @@ export async function saveSettings(settings: GameSettingsData): Promise<CloudSav
 
   try {
     if (typeof localStorage !== 'undefined') {
-      localStorage.setItem(`${LOCAL_PREFIX}settings`, JSON.stringify(payload));
+      localStorage.setItem(QA_BUILD ? QA_SETTINGS_KEY : `${LOCAL_PREFIX}settings`, JSON.stringify(payload));
     }
   } catch (e) {
     console.warn('[CloudSaveService] LocalStorage settings warning:', e);
@@ -548,13 +576,13 @@ export async function saveSettings(settings: GameSettingsData): Promise<CloudSav
  * Tải cấu hình người chơi từ Cloud / Local
  */
 export async function loadSettings(): Promise<GameSettingsData | null> {
-  const p2 = typeof window !== 'undefined' ? window.p2 : undefined;
+  const p2 = !QA_BUILD && typeof window !== 'undefined' ? window.p2 : undefined;
   let localSettings: GameSettingsData | null = null;
   let cloudSettings: GameSettingsData | null = null;
 
   try {
     if (typeof localStorage !== 'undefined') {
-      const raw = localStorage.getItem(`${LOCAL_PREFIX}settings`);
+      const raw = localStorage.getItem(QA_BUILD ? QA_SETTINGS_KEY : `${LOCAL_PREFIX}settings`);
       if (raw) localSettings = JSON.parse(raw);
     }
   } catch {}

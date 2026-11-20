@@ -1,6 +1,7 @@
 import { PlayerState } from '../state/PlayerState';
 import type { CropType, HerbPlotData, HerbPlotStage, ZoneId } from '../types';
-import { saveGameNow, loadGameProgress, LOCAL_PREFIX } from '../services/CloudSaveService';
+import { QA_BUILD, QA_SAVE_KEY } from '../debug/DevSessionPolicy';
+import { saveGameNow, loadGameProgress, cancelPendingGameSave, LOCAL_PREFIX } from '../services/CloudSaveService';
 import { SafeSpawnResolver } from './SafeSpawnResolver';
 import type { SafeSpawnResult } from './SafeSpawnResolver';
 export { SafeSpawnResolver };
@@ -90,6 +91,7 @@ export class SaveManager {
    */
   public static getRawSaveData(): string | null {
     try {
+      if (QA_BUILD) return localStorage.getItem(QA_SAVE_KEY);
       let raw = localStorage.getItem(`${LOCAL_PREFIX}slot_1`) || localStorage.getItem(SaveManager.SAVE_KEY);
       if (!raw) {
         // Tương thích ngược: kiểm tra khóa lưu cũ v3
@@ -114,6 +116,7 @@ export class SaveManager {
    * Tự động sao lưu bản lưu V1.3 sang khóa dự phòng trước khi thực hiện bất kỳ nâng cấp nào
    */
   public static backupV13Save(rawString: string): void {
+    if (QA_BUILD) return;
     try {
       if (!rawString) return;
       // Lưu vào cả hai khóa chuẩn để tương thích 100% với mọi hệ thống kiểm thử
@@ -132,6 +135,7 @@ export class SaveManager {
    * Khôi phục bản lưu V1.3 từ khóa dự phòng khi cần thiết
    */
   public static restoreV13Backup(): boolean {
+    if (QA_BUILD) return false;
     try {
       const backup = localStorage.getItem(SaveManager.V13_BACKUP_KEY_V1_3) || localStorage.getItem(SaveManager.V13_BACKUP_KEY);
       if (backup) {
@@ -753,6 +757,11 @@ export class SaveManager {
 
   public static clearSave(): void {
     try {
+      if (QA_BUILD) {
+        cancelPendingGameSave();
+        localStorage.removeItem(QA_SAVE_KEY);
+        return;
+      }
       localStorage.removeItem(SaveManager.SAVE_KEY);
       localStorage.removeItem(SaveManager.LEGACY_SAVE_KEY);
       localStorage.removeItem(`${LOCAL_PREFIX}slot_1`);

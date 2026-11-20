@@ -8,9 +8,21 @@
     message.textContent = text;
     console.error('[HOLLOW WOODS startup]', text);
   };
-  const timer = window.setTimeout(() => {
-    fail('Khởi động quá lâu. Hãy kiểm tra kết nối rồi tải lại.');
-  }, 45000);
+  let timer;
+  const armWatchdog = () => {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(() => {
+      fail('Khởi động quá lâu. Hãy kiểm tra kết nối rồi tải lại.');
+    }, 45000);
+  };
+  armWatchdog();
+  const onProgress = () => {
+    if (!status.hidden && status.dataset.state !== 'error') {
+      status.dataset.phase = 'preload';
+      armWatchdog();
+    }
+  };
+  window.addEventListener('hollow-woods:startup-progress', onProgress);
 
   window.addEventListener('error', (event) => {
     const target = event.target;
@@ -23,6 +35,7 @@
 
   window.addEventListener('hollow-woods:startup-ready', () => {
     window.clearTimeout(timer);
+    window.removeEventListener('hollow-woods:startup-progress', onProgress);
     status.hidden = true;
   }, { once: true });
 })();

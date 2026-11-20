@@ -12,6 +12,7 @@
  * Chặng 7: Tại C (Broken Bell Shrine -> Đấu Trùm, Thu Hồi Lưỡi Chuông & Kết Thúc)
  */
 
+import { QA_BUILD } from '../debug/DevSessionPolicy';
 import { PlayerState } from '../state/PlayerState';
 import questsData from '../data/quests.json';
 
@@ -127,8 +128,14 @@ export class QuestSystem {
   /**
    * Lấy cấu hình đầy đủ của chặng nhiệm vụ hiện tại
    */
+  private developerStagePreview: number | null = null;
+
+  public setDeveloperStagePreview(stage: number | null): void {
+    if (QA_BUILD) this.developerStagePreview = stage;
+  }
+
   public getCurrentStageInfo(state?: PlayerState): QuestStageConfig {
-    const stageNum = this.getCurrentStageNumber(state);
+    const stageNum = this.developerStagePreview ?? this.getCurrentStageNumber(state);
     const stage = this.getStage(stageNum);
     return stage || this.stages[0];
   }

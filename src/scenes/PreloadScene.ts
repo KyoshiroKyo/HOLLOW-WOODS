@@ -421,7 +421,15 @@ export class PreloadScene extends Phaser.Scene {
     // =========================================================================
     // LẮNG NGHE TIẾN TRÌNH TẢI TÀI NGUYÊN (LOADER EVENTS)
     // =========================================================================
+    let lastProgress = 0;
+    const fileProgress = new WeakMap<Phaser.Loader.File, number>();
+    const notifyStartupProgress = () => window.dispatchEvent(new Event('hollow-woods:startup-progress'));
+    notifyStartupProgress();
     this.load.on('progress', (value: number) => {
+      if (value > lastProgress) {
+        lastProgress = value;
+        notifyStartupProgress();
+      }
       percentText.setText(`${Math.floor(value * 100)}%`);
       const fillW = Math.max(0, (barWidth - 8) * value);
 
@@ -442,7 +450,11 @@ export class PreloadScene extends Phaser.Scene {
       }
     });
 
-    this.load.on('fileprogress', (file: Phaser.Loader.File) => {
+    this.load.on('fileprogress', (file: Phaser.Loader.File, progress: number) => {
+      if (progress > (fileProgress.get(file) ?? 0)) {
+        fileProgress.set(file, progress);
+        notifyStartupProgress();
+      }
       const rawName = typeof file.key === 'string' && file.key.trim().length > 0
         ? file.key
         : (typeof file.url === 'string' ? file.url : 'Tài nguyên');

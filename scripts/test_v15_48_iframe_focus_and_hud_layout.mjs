@@ -38,7 +38,8 @@ const mainTs = fs.readFileSync('src/main.ts', 'utf8');
 assert(mainTs.includes('existingCanvas.tabIndex = 0'), 'Thiết lập existingCanvas.tabIndex = 0');
 assert(mainTs.includes('autoFocus: true'), 'Cấu hình autoFocus: true');
 assert(mainTs.includes('const focusGameCanvas'), 'Có hàm focusGameCanvas');
-assert(mainTs.includes('window.addEventListener(\'pointerdown\''), 'Lắng nghe pointerdown để ép focus');
+assert(mainTs.includes("focusCanvas?.addEventListener('pointerdown', focusGameCanvas") &&
+  !mainTs.includes("window.addEventListener('pointerdown'"), 'Focus trên canvas, không lấy tiêu điểm của panel ngoài canvas');
 assert(mainTs.includes('window.addEventListener(\'keydown\'') && mainTs.includes('e.preventDefault()'), 'Chặn cuộn trang iframe đối với các phím điều hướng & phím Space');
 assert(mainTs.includes('(window as any).__FOCUS_GAME__'), 'Expose __FOCUS_GAME__ cho window');
 

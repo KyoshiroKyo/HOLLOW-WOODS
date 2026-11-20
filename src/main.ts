@@ -112,14 +112,16 @@ async function startGame(): Promise<void> {
     (window as any).__FOCUS_GAME__ = focusGameCanvas;
   }
 
-  // Tự động nhận tiêu điểm bàn phím khi người chơi click/chạm vào màn hình Web / iframe
-  window.addEventListener('pointerdown', () => focusGameCanvas(), { passive: true });
-  window.addEventListener('click', () => focusGameCanvas(), { passive: true });
+  // Refocus the game only when interacting with its canvas.
+  const focusCanvas = existingCanvas || game.canvas;
+  focusCanvas?.addEventListener('pointerdown', focusGameCanvas, { passive: true });
+  game.events.once(Phaser.Core.Events.DESTROY, () => {
+    focusCanvas?.removeEventListener('pointerdown', focusGameCanvas);
+  });
 
   // V15-48: Chặn trình duyệt / iframe cuộn trang ngoài ý muốn khi nhấn phím điều hướng & phím Space
   window.addEventListener('keydown', (e: KeyboardEvent) => {
-    const tag = (e.target as HTMLElement)?.tagName?.toLowerCase();
-    if (tag === 'input' || tag === 'textarea') return;
+    if (document.activeElement !== game.canvas) return;
     if (
       ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code) ||
       ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)
