@@ -4836,7 +4836,9 @@ export class WorldBuilder {
 
   private setupZoneInteractables(zone: ZoneData): void {
     for (const item of zone.interactables) {
-      this.interactables.push(item);
+      // A few expansion templates only have the editor's "prompt" field and no action.
+      // Do not publish these as interactive runtime objects until their action is implemented.
+      if (item.promptText && item.actionId) this.interactables.push(item);
     }
 
     // C4-132-05: Bổ sung 2 bụi rậm ẩn nấp (hiding spot) dọc trục đường chính phân khu The Crooked Path
