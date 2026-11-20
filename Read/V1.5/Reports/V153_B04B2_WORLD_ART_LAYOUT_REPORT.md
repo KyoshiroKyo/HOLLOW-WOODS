@@ -2,7 +2,7 @@
 
 **21/11/2026 · PARTIAL · PRODUCTION LOCAL PASS cho các ca đã liệt kê · HOSTED BLOCKED**
 
-Nhánh bàn giao `feat/v1.5.3-batch04`. Checkpoint đầu `666ee8dfc16852c3bea8eb42cb2385b50caf2c0b`. Mã runtime được build và thử tại `d1e1adf4e4bbc4572285fa52b4eb758c46ce595c`. Commit bàn giao là commit tài liệu và bằng chứng ngay sau mã runtime trên cùng nhánh. Worktree dùng cho batch là `/workspace/work/v153-b04/checkout`. Chromium 156.0.8078.79 trên Linux chạy bản build Vite cục bộ với profile riêng và SDK dự phòng. F9 chạy trên build QA riêng. [Checkpoint](V153_BATCH_04_CHECKPOINT.md) · [Registry](V153_TESTER_BUG_REGISTRY.md) · [Ảnh và log](Visuals/V153_B04B2)
+Nhánh bàn giao `feat/v1.5.3-batch04`. Checkpoint đầu `666ee8dfc16852c3bea8eb42cb2385b50caf2c0b`. Mã runtime được build và thử tại `d1e1adf4e4bbc4572285fa52b4eb758c46ce595c`. Các commit tài liệu và bằng chứng nối tiếp mã runtime trên cùng nhánh. Worktree dùng cho batch là `/workspace/work/v153-b04/checkout`. Chromium 156.0.8078.79 trên Linux chạy bản build Vite cục bộ với profile riêng và SDK dự phòng. F9 chạy trên build QA riêng. [Checkpoint](V153_BATCH_04_CHECKPOINT.md) · [Registry](V153_TESTER_BUG_REGISTRY.md) · [Ảnh và log](Visuals/V153_B04B2)
 
 ## 1. Trạng thái trước và sau
 
@@ -57,7 +57,7 @@ Nhánh bàn giao `feat/v1.5.3-batch04`. Checkpoint đầu `666ee8dfc16852c3bea8e
 | `node scripts/verify_data_integrity.mjs` | 15/15. |
 | `node scripts/verify_zero_404_assets.mjs` | 212 tham chiếu hợp lệ, 0 thiếu. |
 | `node scripts/test_v153_save_schema3.mjs` | Hai nhóm PASS, gồm tương thích ID, farming, local round-trip và cách ly Dev khỏi Save/SDK. |
-| Chromium production local | 6/6 lượt chuyển vùng, 11/11 lượt action map, 5/5 lượt hội thoại, thêm củi và hai ca Continue. `W/A/S/D`, Shift và E bằng input bàn phím. Fixture đặt điểm bắt đầu cho từng ca, sau đó dùng phím thật với Noclip OFF. Camera và trigger được đọc từng frame. Developer Mode dùng riêng để kiểm tra hiển thị. |
+| Chromium production local | 6/6 lượt chuyển vùng, 10/10 lượt action map, 5/5 lượt hội thoại, thêm củi và hai ca Continue. `W/A/S/D`, Shift và E bằng input bàn phím. Fixture đặt điểm bắt đầu cho từng ca, sau đó dùng phím thật với Noclip OFF. Camera và trigger được đọc từng frame. Developer Mode dùng riêng để kiểm tra hiển thị. |
 | Chromium Save/Continue | Dùng Pause → Save, reload và Continue. Schema 3, Bellhollow (953,247), cờ sồi còn, Finn có một instance tại home sau tải, Cổng Đông vẫn khóa. Save schema 3 từ build 04B1 tại (750,260) tải tại đúng điểm và đi được bằng phím. |
 | Console / network | Số liệu ở log runtime. 0 lỗi JS hoặc HTTP. Bản chốt chỉ có cảnh báo SDK dự phòng. Bản thử song song trước đó có cảnh báo tự hạ chất lượng trong headless. Chưa đo hiệu năng thiết bị thật. |
 
