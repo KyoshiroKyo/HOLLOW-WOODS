@@ -1521,7 +1521,7 @@ export class AudioManager {
   }
 
   /**
-   * Lấy mã track BGM hiện đang hoạt động
+   * Đọc trạng thái phát hiện tại khi QA lấy snapshot.
    */
   public getPlaybackDiagnostics() {
     return {
@@ -1529,7 +1529,14 @@ export class AudioManager {
       ambience: this.getCurrentAmbience(),
       bgm: this.getCurrentBGM(),
       gain: this.currentBGMAudio?.volume ?? this.currentBGMGain?.gain.value ?? null,
-      loop: this.currentBGMAudio?.loop ?? this.currentBGMSource?.loop ?? null
+      loop: this.currentBGMAudio?.loop ?? this.currentBGMSource?.loop ?? null,
+      sfx: [...this.activeSFXChannels]
+        .filter(([, channels]) => channels.length > 0)
+        .slice(0, 12)
+        .map(([key, channels]) => ({
+          key,
+          channels: channels.map(({ source, gain }) => ({ gain: gain.gain.value, loop: source.loop }))
+        }))
     };
   }
 

@@ -7,7 +7,7 @@
  * 1. FPS & Frame Time: Số khung hình/giây hiện tại (actualFps), 1% Low FPS, thời gian xử lý frame (ms).
  * 2. WebGL Draw Calls: Đếm chính xác số lệnh vẽ (drawElements / drawArrays) mỗi frame qua hook context.
  *    RÀNG BUỘC HIỆU NĂNG: Chỉ kích hoạt hook khi F9 bật. Khi tắt F9, overhead bằng 0 tuyệt đối.
- * 3. Đối tượng & Culling: Đếm GameObject trong scene, số đối tượng/tile hiển thị và culled, textures nạp VRAM.
+ * 3. Đối tượng & Culling: Đếm GameObject, đối tượng hiển thị hoặc culled và texture trong Texture Manager.
  * 4. Trạng thái 3 Module Tiled: Hiển thị ON/OFF của YSorting, Culling, PerimeterWalls.
  * 5. Bảng tổng kết Benchmark 10s: Thống kê trung bình, đỉnh điểm, tự động xuất log JSON và cập nhật báo cáo.
  */
@@ -26,7 +26,7 @@ import { GraphicsQualitySystem } from '../systems/GraphicsQualitySystem';
 export interface BenchmarkSample {
   fps: number;
   frameTimeMs: number;
-  drawCalls: number;
+  drawCalls: number | null;
   visible: number;
   culled: number;
   total: number;
@@ -42,13 +42,13 @@ export interface BenchmarkResult {
   maxFps: number;
   onePercentLowFps: number;
   avgFrameTimeMs: number;
-  avgDrawCalls: number;
-  peakDrawCalls: number;
+  avgDrawCalls: number | null;
+  peakDrawCalls: number | null;
   avgVisibleObjects: number;
   avgCulledObjects: number;
   culledRatioPercent: number;
   totalObjects: number;
-  vramTextures: number;
+  textureCount: number;
   tiledModules: {
     ySorting: boolean;
     culling: boolean;
@@ -236,6 +236,10 @@ ${this.pickIndex + 1}/${hits.length} · Shift+click để chọn lớp dưới`)
     const p = this.player;
     const rounded = (r: Phaser.Geom.Rectangle) => [r.x, r.y, r.width, r.height].map(value => Math.round(value)).join(', ');
     const audio = AudioManager.getInstance().getPlaybackDiagnostics();
+    const sfx = audio.sfx.map(({ key, channels }) => {
+      const playback = channels.map(({ gain, loop }) => `gain ${gain.toFixed(3)} loop ${loop}`).join(', ');
+      return `${key} ×${channels.length} (${playback})`;
+    });
     const flags = ['east_gate_unlocked', 'mire_unlocked', 'mire_pillars_solved', 'shrine_unlocked']
       .filter(flag => (scene as any).playerState.hasFlag(flag));
     return [
@@ -246,6 +250,8 @@ ${this.pickIndex + 1}/${hits.length} · Shift+click để chọn lớp dưới`)
       `Animation ${p.anims.currentAnim?.key ?? '—'} #${p.anims.currentFrame?.index ?? '—'}`,
       `Vòng Sáng ${p.stats.isLanternOn ? 'bật' : 'tắt'} · Quest ${(scene as any).playerState.currentQuestId ?? '—'} · Cổng ${flags.join(', ') || '—'}`,
       `Audio ${audio.context} · ambience ${audio.ambience ?? '—'} · BGM ${audio.bgm ?? '—'} · gain ${audio.gain?.toFixed(3) ?? '—'} · loop ${audio.loop ?? '—'}`,
+      `SFX đang phát ${sfx.join(' · ') || '—'}`,
+      `Nguồn Tinh Thần gần nhất trong hệ sinh tồn · ${scene.getLastSurvivalComposureSource()}`,
       this.picked?.label ?? 'Chưa chọn đối tượng',
       'Camera và trạng thái quan sát · 250 ms/mẫu',
       ...this.cameraTrace
@@ -570,7 +576,7 @@ ${this.pickIndex + 1}/${hits.length} · Shift+click để chọn lớp dưới`)
     this.benchmarkSamples.push({
       fps: Math.round(fps * 10) / 10,
       frameTimeMs: Math.round(deltaMs * 10) / 10,
-      drawCalls: this.lastFrameDrawCalls,
+      drawCalls: this.isHooked ? this.lastFrameDrawCalls : null,
       visible: cullingStats.visible,
       culled: cullingStats.culled,
       total: cullingStats.total
@@ -601,9 +607,11 @@ ${this.pickIndex + 1}/${hits.length} · Shift+click để chọn lớp dưới`)
     const avgWorstTime = worstSlice.reduce((sum, v) => sum + v, 0) / worstCount;
     const onePercentLowFps = avgWorstTime > 0 ? Math.round(1000 / avgWorstTime) : minFps;
 
-    const drawCallsList = this.benchmarkSamples.map(s => s.drawCalls);
-    const avgDrawCalls = Math.round(drawCallsList.reduce((a, b) => a + b, 0) / sampleCount);
-    const peakDrawCalls = Math.max(...drawCallsList);
+    const drawCallsList = this.benchmarkSamples.map(s => s.drawCalls).filter(value => value !== null);
+    const avgDrawCalls = drawCallsList.length
+      ? Math.round(drawCallsList.reduce((a, b) => a + b, 0) / drawCallsList.length)
+      : null;
+    const peakDrawCalls = drawCallsList.length ? Math.max(...drawCallsList) : null;
 
     const avgFrameTimeMs = Math.round(this.benchmarkSamples.map(s => s.frameTimeMs).reduce((a, b) => a + b, 0) / sampleCount * 10) / 10;
     const avgVisible = Math.round(this.benchmarkSamples.map(s => s.visible).reduce((a, b) => a + b, 0) / sampleCount);
@@ -611,7 +619,7 @@ ${this.pickIndex + 1}/${hits.length} · Shift+click để chọn lớp dưới`)
     const totalObjs = this.benchmarkSamples[sampleCount - 1].total;
     const culledRatioPercent = totalObjs > 0 ? Math.round((avgCulled / totalObjs) * 1000) / 10 : 0;
 
-    const vramTextures = this.scene.textures ? Object.keys(this.scene.textures.list).length : 0;
+    const textureCount = Object.keys(this.scene.textures.list).length;
 
     const result: BenchmarkResult = {
       timestamp: new Date().toISOString(),
@@ -629,7 +637,7 @@ ${this.pickIndex + 1}/${hits.length} · Shift+click để chọn lớp dưới`)
       avgCulledObjects: avgCulled,
       culledRatioPercent,
       totalObjects: totalObjs,
-      vramTextures,
+      textureCount,
       tiledModules: {
         ySorting: TILED_PIPELINE_CONFIG.enableYSortingModule,
         culling: TILED_PIPELINE_CONFIG.enableCullingOptimization,
@@ -653,13 +661,13 @@ ${this.pickIndex + 1}/${hits.length} · Shift+click để chọn lớp dưới`)
       'Visible Objects': result.avgVisibleObjects,
       'Culled Objects': `${result.avgCulledObjects} (${result.culledRatioPercent}%)`,
       'Total Objects': result.totalObjects,
-      'VRAM Textures': result.vramTextures
+      'Texture Count': result.textureCount
     });
 
     // Lưu trữ localStorage
     try {
       if (typeof window !== 'undefined' && window.localStorage) {
-        window.localStorage.setItem('hw_last_benchmark_result', JSON.stringify(result, null, 2));
+        window.localStorage.setItem('hw_qa_last_benchmark_result', JSON.stringify(result, null, 2));
       }
     } catch {
       // Ignored
@@ -751,8 +759,10 @@ ${this.pickIndex + 1}/${hits.length} · Shift+click để chọn lớp dưới`)
       `   • Thời gian Frame  : ${result.avgFrameTimeMs} ms / frame`,
       ``,
       `🎨 WEBGL & KẾT XUẤT ĐỒ HỌA:`,
-      `   • WebGL Draw Calls : ~${result.avgDrawCalls} calls/frame (Đỉnh tải: ${result.peakDrawCalls} calls)`,
-      `   • Textures nạp VRAM: ${result.vramTextures} textures`,
+      `   • WebGL Draw Calls : ${result.avgDrawCalls === null
+        ? 'Chưa đo được'
+        : `~${result.avgDrawCalls} calls/frame (Đỉnh tải: ${result.peakDrawCalls} calls)`}`,
+      `   • Texture trong bộ nhớ: ${result.textureCount} textures`,
       ``,
       `🌲 HIỆU QUẢ CULLING & VẬT THỂ:`,
       `   • Vật thể kết xuất : ${result.avgVisibleObjects} / ${result.totalObjects} đối tượng`,

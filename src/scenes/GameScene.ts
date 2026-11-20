@@ -7396,6 +7396,10 @@ export class GameScene extends Phaser.Scene {
     return this.currentZoneId;
   }
 
+  public getLastSurvivalComposureSource(): string {
+    return this.survivalSystem.getLastComposureSource();
+  }
+
   public getPlayerState(): PlayerState {
     return this.playerState;
   }

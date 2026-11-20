@@ -32,6 +32,7 @@ export class SurvivalSystem {
   private lastStamina: number = -1;
   private lastOil: number = -1;
   private lastComposure: number = -1;
+  private lastComposureSource = '—';
   private lastLanternState: boolean | null = null;
   private lastSprinting: boolean | null = null;
   private lastMoisture: number = -1;
@@ -52,6 +53,10 @@ export class SurvivalSystem {
 
   public setBossFightActive(active: boolean): void {
     this.isBossFightActive = active;
+  }
+
+  public getLastComposureSource(): string {
+    return this.lastComposureSource;
   }
 
   constructor() {
@@ -76,6 +81,9 @@ export class SurvivalSystem {
     const infiniteStamina = dev.isEnabled && dev.isInfiniteStamina;
     const infiniteComposure = dev.isEnabled && dev.isInfiniteComposure;
     const healthBeforeUpdate = stats.health;
+    const composureBeforeUpdate = stats.composure;
+    let composureSource = '—';
+    let coldDrain = false;
     if (infiniteComposure) stats.composure = stats.maxComposure;
 
 
@@ -154,10 +162,12 @@ export class SurvivalSystem {
       // V1.5 (BƯỚC V15-05): Hồi máu nhẹ (+4 HP/s) và hồi phục Tinh Thần (+4.0/s) khi đứng cạnh nguồn nhiệt / lửa trại đang cháy
       stats.health = Math.min(stats.maxHealth, stats.health + 4 * dt);
       stats.composure = Math.min(stats.maxComposure, stats.composure + (4.0 * composureMult) * dt);
+      composureSource = inSanctuary ? 'trại an toàn' : 'nguồn nhiệt';
     } else if (isProtected) {
       // V1.5 (BƯỚC V15-05): Khi là BAN NGÀY (DAY) hoặc đứng trong vùng an toàn Làng Bellhollow:
       // Tinh Thần không tự tụt mà được hồi phục chậm tự nhiên (+1.5 mỗi giây)
       stats.composure = Math.min(stats.maxComposure, stats.composure + 1.5 * dt);
+      composureSource = isBellhollowSafe ? 'vùng an toàn Bellhollow' : 'ban ngày';
     } else {
       if (!stats.isLanternOn) {
         // Ngoài vùng an toàn, vào ban đêm/hoàng hôn & trong bóng tối: Tinh Thần sụt giảm dựa trên chu kỳ ngày/đêm V1.4
@@ -172,6 +182,7 @@ export class SurvivalSystem {
         const blessingDrainMod = CampSanctuarySystem.getInstance().getBlessingDrainMultiplier();
         const composureDrainMod = equipSys.getComposureDrainMultiplier() * blessingDrainMod;
         stats.composure = Math.max(0, stats.composure - drain * composureDrainMod * dt);
+        composureSource = inDeepFog ? 'sương sâu' : 'bóng tối';
       } else if (!isBossArena) {
         // Có ánh sáng vòng hộ tâm: Tinh Thần hồi phục dần theo pha
         let recoveryRate = COMPOSURE_RECOVERY_NEAR_LIGHT;
@@ -179,8 +190,11 @@ export class SurvivalSystem {
           recoveryRate = TIME_CONFIG.phases[timePhase].composureRecoveryLit;
         }
         stats.composure = Math.min(stats.maxComposure, stats.composure + recoveryRate * dt);
+        composureSource = 'Vòng Sáng';
       }
     }
+
+    if (stats.composure === composureBeforeUpdate) composureSource = '—';
 
     // V15-47: Thiết lập cơ chế rút Sinh Lực (HP) mạnh dần khi Tinh thần suy sụp
     if (isBossArena) {
@@ -249,11 +263,21 @@ export class SurvivalSystem {
 
       // Khi bị cóng lạnh (FREEZING <= 34%): gây áp lực nhẹ lên Bình Tâm (-0.4/s)
       if (stats.temperature <= 34) {
+        coldDrain = stats.composure > 0;
         stats.composure = Math.max(0, stats.composure - 0.4 * dt);
       }
     }
 
     if (infiniteComposure) stats.composure = stats.maxComposure;
+    if (dev.isEnabled && stats.composure !== composureBeforeUpdate) {
+      if (infiniteComposure) {
+        this.lastComposureSource = 'QA vô hạn';
+      } else if (coldDrain) {
+        this.lastComposureSource = composureSource === '—' ? 'lạnh cóng' : `${composureSource} + lạnh cóng`;
+      } else {
+        this.lastComposureSource = composureSource;
+      }
+    }
     if (dev.isEnabled && dev.isGodMode) stats.health = Math.max(healthBeforeUpdate, stats.health);
 
     // C4-13-03: Báo động tức thời khi sinh lực chạm đáy (health <= 0)
