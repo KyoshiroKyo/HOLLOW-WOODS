@@ -1,0 +1,1440 @@
+{
+  "baselineCommit": "c89cb8ec06b462d4b3d15387d138b9723cf64824",
+  "runtimeCommit": "0b16b7d4e531607de8bc98053f07a995367b3666",
+  "baseline": {
+    "totalMissingWarnings": 136,
+    "missingWarnings": {
+      "Frame \"%s\" not found in texture \"%s\" 16 satyr_sheet": 8,
+      "Frame \"%s\" not found in texture \"%s\" 17 satyr_sheet": 8,
+      "Frame \"%s\" not found in texture \"%s\" 20 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 21 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 22 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 23 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 24 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 25 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 26 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 27 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 28 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 29 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 30 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 31 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 32 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 33 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 40 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 41 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 42 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 43 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 44 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 45 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 46 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 47 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 48 satyr_sheet": 5,
+      "Frame \"%s\" not found in texture \"%s\" 49 satyr_sheet": 5
+    },
+    "state": {
+      "aliasFrames": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15"
+      ],
+      "texture": "wayfarer_weapon_toggle",
+      "animation": "wayfarer_weapon_toggle_down",
+      "body": [
+        18,
+        12,
+        23,
+        46
+      ],
+      "origin": [
+        0.5,
+        1
+      ]
+    },
+    "pageErrors": [],
+    "httpErrors": []
+  },
+  "productionLocal": {
+    "mode": "public",
+    "first": {
+      "zone": "fog_crossing",
+      "xy": [
+        120,
+        195
+      ],
+      "facing": "down",
+      "armed": true,
+      "texture": "black_knight_armed_idle",
+      "frame": "armed_idle_down_0",
+      "animation": "wayfarer_idle_down",
+      "flip": false,
+      "body": [
+        18,
+        12,
+        23,
+        46
+      ],
+      "origin": [
+        0.5,
+        1
+      ],
+      "rendered": true,
+      "alpha": 1,
+      "renderer": "CANVAS"
+    },
+    "directions": {
+      "down": {
+        "walk": {
+          "zone": "fog_crossing",
+          "xy": [
+            120,
+            203.49999999999994
+          ],
+          "facing": "down",
+          "armed": true,
+          "texture": "wayfarer_walk",
+          "frame": 1,
+          "animation": "wayfarer_walk_down",
+          "flip": false,
+          "body": [
+            18,
+            12,
+            23,
+            46
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "rendered": true,
+          "alpha": 1,
+          "renderer": "CANVAS"
+        },
+        "idle": {
+          "zone": "fog_crossing",
+          "xy": [
+            120,
+            210.58333333333323
+          ],
+          "facing": "down",
+          "armed": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_down_0",
+          "animation": "wayfarer_idle_down",
+          "flip": false,
+          "body": [
+            18,
+            12,
+            23,
+            46
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "rendered": true,
+          "alpha": 1,
+          "renderer": "CANVAS"
+        },
+        "observedFrameKeys": [
+          "armed_idle_down_0",
+          "armed_idle_down_1",
+          "armed_idle_down_2",
+          "armed_idle_down_3",
+          "armed_idle_down_4",
+          "armed_idle_down_5"
+        ]
+      },
+      "up": {
+        "walk": {
+          "zone": "fog_crossing",
+          "xy": [
+            120,
+            203.49999999999994
+          ],
+          "facing": "up",
+          "armed": true,
+          "texture": "wayfarer_walk",
+          "frame": 6,
+          "animation": "wayfarer_walk_up",
+          "flip": false,
+          "body": [
+            18,
+            12,
+            23,
+            46
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "rendered": true,
+          "alpha": 1,
+          "renderer": "CANVAS"
+        },
+        "idle": {
+          "zone": "fog_crossing",
+          "xy": [
+            120,
+            199.24999999999997
+          ],
+          "facing": "up",
+          "armed": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_up_0",
+          "animation": "wayfarer_idle_up",
+          "flip": false,
+          "body": [
+            18,
+            12,
+            23,
+            46
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "rendered": true,
+          "alpha": 1,
+          "renderer": "CANVAS"
+        },
+        "observedFrameKeys": [
+          "armed_idle_up_0",
+          "armed_idle_up_1",
+          "armed_idle_up_2",
+          "armed_idle_up_3",
+          "armed_idle_up_4",
+          "armed_idle_up_5"
+        ]
+      },
+      "left": {
+        "walk": {
+          "zone": "fog_crossing",
+          "xy": [
+            111.49999999999997,
+            199.24999999999997
+          ],
+          "facing": "left",
+          "armed": true,
+          "texture": "wayfarer_walk",
+          "frame": 12,
+          "animation": "wayfarer_walk_left",
+          "flip": false,
+          "body": [
+            18,
+            12,
+            23,
+            46
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "rendered": true,
+          "alpha": 1,
+          "renderer": "CANVAS"
+        },
+        "idle": {
+          "zone": "fog_crossing",
+          "xy": [
+            108.66666666666663,
+            199.24999999999997
+          ],
+          "facing": "left",
+          "armed": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_left_0",
+          "animation": "wayfarer_idle_left",
+          "flip": false,
+          "body": [
+            18,
+            12,
+            23,
+            46
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "rendered": true,
+          "alpha": 1,
+          "renderer": "CANVAS"
+        },
+        "observedFrameKeys": [
+          "armed_idle_left_0",
+          "armed_idle_left_1",
+          "armed_idle_left_2",
+          "armed_idle_left_3",
+          "armed_idle_left_4",
+          "armed_idle_left_5"
+        ]
+      },
+      "right": {
+        "walk": {
+          "zone": "fog_crossing",
+          "xy": [
+            115.74999999999999,
+            199.24999999999997
+          ],
+          "facing": "right",
+          "armed": true,
+          "texture": "wayfarer_walk",
+          "frame": 18,
+          "animation": "wayfarer_walk_right",
+          "flip": false,
+          "body": [
+            18,
+            12,
+            23,
+            46
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "rendered": true,
+          "alpha": 1,
+          "renderer": "CANVAS"
+        },
+        "idle": {
+          "zone": "fog_crossing",
+          "xy": [
+            120,
+            199.24999999999997
+          ],
+          "facing": "right",
+          "armed": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_right_0",
+          "animation": "wayfarer_idle_right",
+          "flip": false,
+          "body": [
+            18,
+            12,
+            23,
+            46
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "rendered": true,
+          "alpha": 1,
+          "renderer": "CANVAS"
+        },
+        "observedFrameKeys": [
+          "armed_idle_right_0",
+          "armed_idle_right_1",
+          "armed_idle_right_2",
+          "armed_idle_right_3",
+          "armed_idle_right_4",
+          "armed_idle_right_5"
+        ]
+      }
+    },
+    "registry": {
+      "pairs": 72,
+      "baseAliases": 15,
+      "frames": 467,
+      "invalid": [],
+      "different": [],
+      "artist": {
+        "wayfarer_idle_down": {
+          "frames": [
+            [
+              "black_knight_armed_idle",
+              "armed_idle_down_0"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_down_1"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_down_2"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_down_3"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_down_4"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_down_5"
+            ]
+          ],
+          "ms": 70,
+          "loop": true
+        },
+        "wayfarer_idle_up": {
+          "frames": [
+            [
+              "black_knight_armed_idle",
+              "armed_idle_up_0"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_up_1"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_up_2"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_up_3"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_up_4"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_up_5"
+            ]
+          ],
+          "ms": 70,
+          "loop": true
+        },
+        "wayfarer_idle_left": {
+          "frames": [
+            [
+              "black_knight_armed_idle",
+              "armed_idle_left_0"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_left_1"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_left_2"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_left_3"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_left_4"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_left_5"
+            ]
+          ],
+          "ms": 70,
+          "loop": true
+        },
+        "wayfarer_idle_right": {
+          "frames": [
+            [
+              "black_knight_armed_idle",
+              "armed_idle_right_0"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_right_1"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_right_2"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_right_3"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_right_4"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_right_5"
+            ]
+          ],
+          "ms": 70,
+          "loop": true
+        }
+      },
+      "aliasFrames": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15"
+      ]
+    },
+    "run": {
+      "zone": "fog_crossing",
+      "xy": [
+        131.66666666666663,
+        199.24999999999997
+      ],
+      "facing": "right",
+      "armed": true,
+      "texture": "wayfarer_run",
+      "frame": 19,
+      "animation": "wayfarer_run_right",
+      "flip": false,
+      "body": [
+        18,
+        12,
+        23,
+        46
+      ],
+      "origin": [
+        0.5,
+        1
+      ],
+      "rendered": true,
+      "alpha": 1,
+      "renderer": "CANVAS"
+    },
+    "transitions": [
+      "wayfarer_walk_down",
+      "wayfarer_idle_down",
+      "wayfarer_walk_up",
+      "wayfarer_idle_up",
+      "wayfarer_walk_left",
+      "wayfarer_idle_left",
+      "wayfarer_walk_right",
+      "wayfarer_idle_right",
+      "wayfarer_run_right",
+      "wayfarer_attack_right",
+      "wayfarer_weapon_toggle_right",
+      "wayfarer_unarmed_idle_right"
+    ],
+    "f9Diagnostic": null,
+    "save": {
+      "schema": 3,
+      "zone": "fog_crossing",
+      "xy": [
+        138.66666666666663,
+        199.24999999999997
+      ]
+    },
+    "continue": {
+      "zone": "fog_crossing",
+      "xy": [
+        138.66666666666663,
+        199.24999999999997
+      ],
+      "facing": "down",
+      "armed": true,
+      "texture": "black_knight_armed_idle",
+      "frame": "armed_idle_down_0",
+      "animation": "wayfarer_idle_down",
+      "flip": false,
+      "body": [
+        18,
+        12,
+        23,
+        46
+      ],
+      "origin": [
+        0.5,
+        1
+      ],
+      "rendered": true,
+      "alpha": 1,
+      "renderer": "CANVAS"
+    },
+    "log": {
+      "console": [
+        [
+          "warning",
+          "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+        ],
+        [
+          "warning",
+          "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+        ]
+      ],
+      "pageErrors": [],
+      "httpErrors": [],
+      "failedRequests": [],
+      "atlasResponses": [
+        [
+          200,
+          "http://127.0.0.1:3150/preview/hollow-woods/assets/characters/black_knight/black_knight_armed_idle.png",
+          "image/png"
+        ],
+        [
+          200,
+          "http://127.0.0.1:3150/preview/hollow-woods/assets/characters/black_knight/black_knight_armed_idle.json",
+          "application/json"
+        ],
+        [
+          200,
+          "http://127.0.0.1:3150/preview/hollow-woods/assets/characters/black_knight/black_knight_armed_idle.png",
+          "image/png"
+        ],
+        [
+          200,
+          "http://127.0.0.1:3150/preview/hollow-woods/assets/characters/black_knight/black_knight_armed_idle.json",
+          "application/json"
+        ]
+      ]
+    }
+  },
+  "qaBuild": {
+    "mode": "qa",
+    "first": {
+      "zone": "fog_crossing",
+      "xy": [
+        120,
+        195
+      ],
+      "facing": "down",
+      "armed": true,
+      "texture": "black_knight_armed_idle",
+      "frame": "armed_idle_down_0",
+      "animation": "wayfarer_idle_down",
+      "flip": false,
+      "body": [
+        18,
+        12,
+        23,
+        46
+      ],
+      "origin": [
+        0.5,
+        1
+      ],
+      "rendered": true,
+      "alpha": 1,
+      "renderer": "WEBGL"
+    },
+    "directions": {
+      "down": {
+        "walk": {
+          "zone": "fog_crossing",
+          "xy": [
+            120,
+            195
+          ],
+          "facing": "down",
+          "armed": true,
+          "texture": "wayfarer_walk",
+          "frame": 0,
+          "animation": "wayfarer_walk_down",
+          "flip": false,
+          "body": [
+            18,
+            12,
+            23,
+            46
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "rendered": true,
+          "alpha": 1,
+          "renderer": "WEBGL"
+        },
+        "idle": {
+          "zone": "fog_crossing",
+          "xy": [
+            120,
+            196.41666666666666
+          ],
+          "facing": "down",
+          "armed": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_down_0",
+          "animation": "wayfarer_idle_down",
+          "flip": false,
+          "body": [
+            18,
+            12,
+            23,
+            46
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "rendered": true,
+          "alpha": 1,
+          "renderer": "WEBGL"
+        },
+        "observedFrameKeys": [
+          "armed_idle_down_0",
+          "armed_idle_down_1",
+          "armed_idle_down_2",
+          "armed_idle_down_3",
+          "armed_idle_down_4",
+          "armed_idle_down_5"
+        ]
+      },
+      "up": {
+        "walk": {
+          "zone": "fog_crossing",
+          "xy": [
+            120,
+            190.75000000000003
+          ],
+          "facing": "up",
+          "armed": true,
+          "texture": "wayfarer_walk",
+          "frame": 6,
+          "animation": "wayfarer_walk_up",
+          "flip": false,
+          "body": [
+            18,
+            12,
+            23,
+            46
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "rendered": true,
+          "alpha": 1,
+          "renderer": "WEBGL"
+        },
+        "idle": {
+          "zone": "fog_crossing",
+          "xy": [
+            120,
+            185.0833333333334
+          ],
+          "facing": "up",
+          "armed": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_up_0",
+          "animation": "wayfarer_idle_up",
+          "flip": false,
+          "body": [
+            18,
+            12,
+            23,
+            46
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "rendered": true,
+          "alpha": 1,
+          "renderer": "WEBGL"
+        },
+        "observedFrameKeys": [
+          "armed_idle_up_0",
+          "armed_idle_up_1",
+          "armed_idle_up_2",
+          "armed_idle_up_3",
+          "armed_idle_up_4",
+          "armed_idle_up_5"
+        ]
+      },
+      "left": {
+        "walk": {
+          "zone": "fog_crossing",
+          "xy": [
+            111.49999999999997,
+            185.0833333333334
+          ],
+          "facing": "left",
+          "armed": true,
+          "texture": "wayfarer_walk",
+          "frame": 12,
+          "animation": "wayfarer_walk_left",
+          "flip": false,
+          "body": [
+            18,
+            12,
+            23,
+            46
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "rendered": true,
+          "alpha": 1,
+          "renderer": "WEBGL"
+        },
+        "idle": {
+          "zone": "fog_crossing",
+          "xy": [
+            100.1666666666666,
+            185.0833333333334
+          ],
+          "facing": "left",
+          "armed": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_left_0",
+          "animation": "wayfarer_idle_left",
+          "flip": false,
+          "body": [
+            18,
+            12,
+            23,
+            46
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "rendered": true,
+          "alpha": 1,
+          "renderer": "WEBGL"
+        },
+        "observedFrameKeys": [
+          "armed_idle_left_0",
+          "armed_idle_left_1",
+          "armed_idle_left_2",
+          "armed_idle_left_3",
+          "armed_idle_left_4",
+          "armed_idle_left_5"
+        ]
+      },
+      "right": {
+        "walk": {
+          "zone": "fog_crossing",
+          "xy": [
+            112.91666666666664,
+            185.0833333333334
+          ],
+          "facing": "right",
+          "armed": true,
+          "texture": "wayfarer_walk",
+          "frame": 18,
+          "animation": "wayfarer_walk_right",
+          "flip": false,
+          "body": [
+            18,
+            12,
+            23,
+            46
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "rendered": true,
+          "alpha": 1,
+          "renderer": "WEBGL"
+        },
+        "idle": {
+          "zone": "fog_crossing",
+          "xy": [
+            125.66666666666669,
+            185.0833333333334
+          ],
+          "facing": "right",
+          "armed": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_right_0",
+          "animation": "wayfarer_idle_right",
+          "flip": false,
+          "body": [
+            18,
+            12,
+            23,
+            46
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "rendered": true,
+          "alpha": 1,
+          "renderer": "WEBGL"
+        },
+        "observedFrameKeys": [
+          "armed_idle_right_0",
+          "armed_idle_right_1",
+          "armed_idle_right_2",
+          "armed_idle_right_3",
+          "armed_idle_right_4",
+          "armed_idle_right_5"
+        ]
+      }
+    },
+    "registry": {
+      "pairs": 72,
+      "baseAliases": 15,
+      "frames": 467,
+      "invalid": [],
+      "different": [],
+      "artist": {
+        "wayfarer_idle_down": {
+          "frames": [
+            [
+              "black_knight_armed_idle",
+              "armed_idle_down_0"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_down_1"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_down_2"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_down_3"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_down_4"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_down_5"
+            ]
+          ],
+          "ms": 70,
+          "loop": true
+        },
+        "wayfarer_idle_up": {
+          "frames": [
+            [
+              "black_knight_armed_idle",
+              "armed_idle_up_0"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_up_1"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_up_2"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_up_3"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_up_4"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_up_5"
+            ]
+          ],
+          "ms": 70,
+          "loop": true
+        },
+        "wayfarer_idle_left": {
+          "frames": [
+            [
+              "black_knight_armed_idle",
+              "armed_idle_left_0"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_left_1"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_left_2"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_left_3"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_left_4"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_left_5"
+            ]
+          ],
+          "ms": 70,
+          "loop": true
+        },
+        "wayfarer_idle_right": {
+          "frames": [
+            [
+              "black_knight_armed_idle",
+              "armed_idle_right_0"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_right_1"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_right_2"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_right_3"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_right_4"
+            ],
+            [
+              "black_knight_armed_idle",
+              "armed_idle_right_5"
+            ]
+          ],
+          "ms": 70,
+          "loop": true
+        }
+      },
+      "aliasFrames": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15"
+      ]
+    },
+    "run": {
+      "zone": "fog_crossing",
+      "xy": [
+        125.66666666666669,
+        185.0833333333334
+      ],
+      "facing": "right",
+      "armed": true,
+      "texture": "wayfarer_run",
+      "frame": 18,
+      "animation": "wayfarer_run_right",
+      "flip": false,
+      "body": [
+        18,
+        12,
+        23,
+        46
+      ],
+      "origin": [
+        0.5,
+        1
+      ],
+      "rendered": true,
+      "alpha": 1,
+      "renderer": "WEBGL"
+    },
+    "transitions": [
+      "wayfarer_walk_down",
+      "wayfarer_idle_down",
+      "wayfarer_walk_up",
+      "wayfarer_idle_up",
+      "wayfarer_walk_left",
+      "wayfarer_idle_left",
+      "wayfarer_walk_right",
+      "wayfarer_idle_right",
+      "wayfarer_run_right",
+      "wayfarer_attack_right",
+      "wayfarer_weapon_toggle_right",
+      "wayfarer_unarmed_idle_right"
+    ],
+    "f9Diagnostic": "Animation wayfarer_idle_right #3",
+    "save": {
+      "schema": 3,
+      "zone": "fog_crossing",
+      "xy": [
+        149.00000000000006,
+        185.0833333333334
+      ]
+    },
+    "continue": {
+      "zone": "fog_crossing",
+      "xy": [
+        149.00000000000006,
+        185.0833333333334
+      ],
+      "facing": "down",
+      "armed": true,
+      "texture": "black_knight_armed_idle",
+      "frame": "armed_idle_down_0",
+      "animation": "wayfarer_idle_down",
+      "flip": false,
+      "body": [
+        18,
+        12,
+        23,
+        46
+      ],
+      "origin": [
+        0.5,
+        1
+      ],
+      "rendered": true,
+      "alpha": 1,
+      "renderer": "WEBGL"
+    },
+    "log": {
+      "console": [
+        [
+          "warning",
+          "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+        ],
+        [
+          "warning",
+          "[GraphicsQualitySystem] FPS dropped below 38 for 4s (6.0 FPS). Auto-fallback -> MEDIUM"
+        ],
+        [
+          "warning",
+          "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+        ]
+      ],
+      "pageErrors": [],
+      "httpErrors": [],
+      "failedRequests": [],
+      "atlasResponses": [
+        [
+          200,
+          "http://127.0.0.1:3151/preview/hollow-woods/assets/characters/black_knight/black_knight_armed_idle.png",
+          "image/png"
+        ],
+        [
+          200,
+          "http://127.0.0.1:3151/preview/hollow-woods/assets/characters/black_knight/black_knight_armed_idle.json",
+          "application/json"
+        ],
+        [
+          200,
+          "http://127.0.0.1:3151/preview/hollow-woods/assets/characters/black_knight/black_knight_armed_idle.png",
+          "image/png"
+        ],
+        [
+          200,
+          "http://127.0.0.1:3151/preview/hollow-woods/assets/characters/black_knight/black_knight_armed_idle.json",
+          "application/json"
+        ]
+      ]
+    }
+  },
+  "qaCanvasScreenshotFixture": {
+    "down": {
+      "world": [
+        244,
+        233.66666666666663
+      ],
+      "screen": [
+        538.9999978542328,
+        385.66666865348805
+      ],
+      "zoom": 2.2,
+      "frame": "armed_idle_down_0"
+    },
+    "up": {
+      "world": [
+        244,
+        218.0833333333334
+      ],
+      "screen": [
+        538.9999978542328,
+        331.58333152532595
+      ],
+      "zoom": 2.2,
+      "frame": "armed_idle_up_1"
+    },
+    "left": {
+      "world": [
+        218.50000000000017,
+        218.0833333333334
+      ],
+      "screen": [
+        480.6999965472664,
+        338.18333762884157
+      ],
+      "zoom": 2.2,
+      "frame": "armed_idle_left_0"
+    },
+    "right": {
+      "world": [
+        242.58333333333334,
+        218.0833333333334
+      ],
+      "screen": [
+        533.6833310289821,
+        338.18333762884157
+      ],
+      "zoom": 2.2,
+      "frame": "armed_idle_right_0"
+    }
+  },
+  "additionalCombatTransitions": {
+    "records": [
+      {
+        "action": {
+          "key": "wayfarer_heavy_attack_up",
+          "texture": "wayfarer_heavy_attack",
+          "frame": 6
+        },
+        "resume": {
+          "zone": "fog_crossing",
+          "xy": [
+            120,
+            185.0833333333334
+          ],
+          "facing": "up",
+          "armed": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_up_0",
+          "animation": "wayfarer_idle_up",
+          "flip": false,
+          "body": [
+            18,
+            12,
+            23,
+            46
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "rendered": true,
+          "alpha": 1,
+          "renderer": "CANVAS"
+        }
+      },
+      {
+        "action": {
+          "key": "wayfarer_weapon_art_left",
+          "texture": "wayfarer_weapon_art",
+          "frame": 12
+        },
+        "resume": {
+          "zone": "fog_crossing",
+          "xy": [
+            108.66666666666663,
+            185.0833333333334
+          ],
+          "facing": "left",
+          "armed": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_left_0",
+          "animation": "wayfarer_idle_left",
+          "flip": false,
+          "body": [
+            18,
+            12,
+            23,
+            46
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "rendered": true,
+          "alpha": 1,
+          "renderer": "CANVAS"
+        }
+      },
+      {
+        "action": {
+          "key": "wayfarer_parry_down",
+          "texture": "wayfarer_parry",
+          "frame": 0
+        },
+        "resume": {
+          "zone": "fog_crossing",
+          "xy": [
+            108.66666666666663,
+            195
+          ],
+          "facing": "down",
+          "armed": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_down_0",
+          "animation": "wayfarer_idle_down",
+          "flip": false,
+          "body": [
+            18,
+            12,
+            23,
+            46
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "rendered": true,
+          "alpha": 1,
+          "renderer": "CANVAS"
+        }
+      },
+      {
+        "action": {
+          "key": "wayfarer_roll_right",
+          "texture": "wayfarer_roll",
+          "frame": 18
+        },
+        "resume": {
+          "zone": "fog_crossing",
+          "xy": [
+            120,
+            195
+          ],
+          "facing": "right",
+          "armed": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_right_0",
+          "animation": "wayfarer_idle_right",
+          "flip": false,
+          "body": [
+            18,
+            12,
+            23,
+            46
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "rendered": true,
+          "alpha": 1,
+          "renderer": "CANVAS"
+        }
+      }
+    ],
+    "log": {
+      "console": [
+        [
+          "warning",
+          "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+        ]
+      ],
+      "pageErrors": [],
+      "httpErrors": [],
+      "failedRequests": [],
+      "atlasResponses": [
+        [
+          200,
+          "http://127.0.0.1:3150/assets/characters/black_knight/black_knight_armed_idle.png",
+          "image/png"
+        ],
+        [
+          200,
+          "http://127.0.0.1:3150/assets/characters/black_knight/black_knight_armed_idle.json",
+          "application/json"
+        ]
+      ]
+    }
+  },
+  "intentionalAtlasDamage": {
+    "missingByFixture": "armed_idle_up_5",
+    "warnings": [
+      "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng.",
+      "Frame \"%s\" not found in texture \"%s\" armed_idle_up_5 black_knight_armed_idle"
+    ],
+    "pageErrors": [],
+    "allDirections": {
+      "down": [
+        [
+          "wayfarer_idle",
+          0
+        ],
+        [
+          "wayfarer_idle",
+          1
+        ],
+        [
+          "wayfarer_idle",
+          2
+        ],
+        [
+          "wayfarer_idle",
+          3
+        ]
+      ],
+      "up": [
+        [
+          "wayfarer_idle",
+          4
+        ],
+        [
+          "wayfarer_idle",
+          5
+        ],
+        [
+          "wayfarer_idle",
+          6
+        ],
+        [
+          "wayfarer_idle",
+          7
+        ]
+      ],
+      "left": [
+        [
+          "wayfarer_idle",
+          8
+        ],
+        [
+          "wayfarer_idle",
+          9
+        ],
+        [
+          "wayfarer_idle",
+          10
+        ],
+        [
+          "wayfarer_idle",
+          11
+        ]
+      ],
+      "right": [
+        [
+          "wayfarer_idle",
+          12
+        ],
+        [
+          "wayfarer_idle",
+          13
+        ],
+        [
+          "wayfarer_idle",
+          14
+        ],
+        [
+          "wayfarer_idle",
+          15
+        ]
+      ]
+    }
+  }
+}

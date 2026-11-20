@@ -7,6 +7,10 @@ Nhánh QA `qa/v1.5.3-batch03-r2` ở SHA `0ceffa58f3cb7ffce12b0ba6af9364eb08835e
 - **B04-01.** Sửa generator manifest để mỗi file có một mục. 245 mục khớp đúng file và size, 210/210 đường dẫn loader hợp lệ, 65 file audio có stream nhận diện được. Kiểm tra 176 PNG, 51 vùng atlas và 51 lớp của 17 map Tiled. Ba tham chiếu TSX editor vắng trong checkout. Runtime hiện dùng lớp nền baked và collider Arcade. [QA](V153_BATCH_04_FINAL_QA.md).
 - **B04-02A → 02E.** Phân cách Save, setting và báo điểm trong build QA. Nâng F9, các điều khiển và inspector, sửa hotkey ép tắt và vòng đời. Bộ phận độc lập được thử ở runtime với SDK mock. [Báo cáo nâng cấp](V153_B04_DEV_MODE_UPGRADE_REPORT.md).
 
-04C-K1 là batch kế sau khi Owner duyệt theo INDEX R10. B04-10 vẫn bao gồm đủ 26 nhóm hoạt ảnh theo bốn hướng. LEFT Armed Idle còn phải duyệt và pipeline Atlas/RUNTIME chưa đạt gate. [Checkpoint](V153_BATCH_04_CHECKPOINT.md) · [Ma trận Black Knight](V153_CHARACTER_ANIMATION_MATRIX.md).
+B04-10 bao gồm 26 nhóm hoạt ảnh bốn hướng. K1 đã chốt bốn hướng Armed Idle và registry trước khi chuyển tới phần còn thiếu của lộ trình. [Checkpoint](V153_BATCH_04_CHECKPOINT.md) · [Ma trận Black Knight](V153_CHARACTER_ANIMATION_MATRIX.md).
 
 Báo cáo bàn giao R10 chốt các sửa tiếp theo ở BUG-024, BUG-031, BUG-032 và BUG-037, cùng trạng thái PARTIAL cuối 04A. [Báo cáo riêng 04A](V153_B04A_RESUME_REPORT.md).
+
+## 04C-K1
+
+Đã cân lại palette LEFT R2, tích hợp atlas Armed Idle 24 frame, giữ alias và loại vòng đăng ký frame sai nguồn gây 136 cảnh báo. Hai build Chromium kiểm tra bốn hướng, chuyển state, Save/Continue và 0 missing-frame. K2/K3 giữ các nhóm còn lại. [Báo cáo K1](V153_B04_K1_RUNTIME_REPORT.md) · [Ảnh trực tiếp trong game](Visuals/V153_B04C_K1/armed-idle-runtime-details.png).
