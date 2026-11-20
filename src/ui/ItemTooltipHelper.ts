@@ -268,9 +268,9 @@ export class ItemTooltipHelper {
     curY += 7;
 
     const descText = HDTextHelper.createText(scene, pad, curY, info.description, {
-      fontSize: '11px',
-      color: '#e2d4b7',
-      wordWrap: { width: tooltipW - pad * 2 },
+      fontSize: '12px',
+      color: '#f2e8d2',
+      wordWrap: { width: tooltipW - pad * 2, useAdvancedWrap: true },
       lineSpacing: 3
     });
     curY += descText.height + 8;

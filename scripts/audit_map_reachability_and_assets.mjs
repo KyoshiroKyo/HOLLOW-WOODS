@@ -124,7 +124,7 @@ bossAssets.forEach(a => {
 });
 
 // 1.5. Xác nhận không còn mã vẽ tạm hình học bằng Graphics cho thân thực thể
-const satyrPlayerSrc = fs.readFileSync('src/entities/SatyrPlayer.ts', 'utf8');
+const satyrPlayerSrc = fs.readFileSync('src/entities/BlackKnightPlayer.ts', 'utf8');
 const npcEntitySrc = fs.readFileSync('src/entities/NPCEntity.ts', 'utf8');
 const bossSrc = fs.readFileSync('src/entities/MireWardenBoss.ts', 'utf8');
 

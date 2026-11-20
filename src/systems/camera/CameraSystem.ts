@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import { SatyrPlayer } from '../../entities/SatyrPlayer';
+import { BlackKnightPlayer } from '../../entities/BlackKnightPlayer';
 import { BoundsRect } from '../../types';
 import { SettingsManager } from '../SettingsManager';
 
@@ -17,7 +17,7 @@ export class CameraSystem {
     this.camera.setZoom(2.2);
   }
 
-  public follow(target: SatyrPlayer): void {
+  public follow(target: BlackKnightPlayer): void {
     // Bám theo mục tiêu với độ mượt lerp (0.1, 0.1)
     this.camera.startFollow(target, true, 0.1, 0.1);
     // Vùng chết (deadzone) giúp camera không giật khi nhân vật di chuyển nhỏ

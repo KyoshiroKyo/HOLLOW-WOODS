@@ -128,7 +128,11 @@ assert(chestSrc.includes('ui_pack_btn_wood'), 'StorageChestModal tích hợp nú
 
 // 10. Kiểm tra ASSETS_MANIFEST.json
 const manifest = JSON.parse(fs.readFileSync(path.join(rootDir, 'ASSETS_MANIFEST.json'), 'utf8'));
-assert(Array.isArray(manifest.categories.ui) && manifest.categories.ui.length === 28, 'ASSETS_MANIFEST.json chứa đầy đủ 28 file UI');
+const uiAssets = manifest.categories.ui;
+assert(
+  Array.isArray(uiAssets) && uiAssets.filter(({ path: assetPath }) => path.basename(assetPath).startsWith('ui_pack_')).length === 28,
+  'ASSETS_MANIFEST.json chứa đầy đủ 28 file UI Pack'
+);
 
 console.log(`\n========================================================================`);
 console.log(`KẾT QUẢ: ${passCount} PASSED, ${failCount} FAILED`);

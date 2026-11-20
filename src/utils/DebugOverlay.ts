@@ -6,7 +6,7 @@
  */
 
 import * as Phaser from 'phaser';
-import { SatyrPlayer } from '../entities/SatyrPlayer';
+import { BlackKnightPlayer } from '../entities/BlackKnightPlayer';
 import { 
   SATYR_FRAME_WIDTH, 
   SATYR_FRAME_HEIGHT, 
@@ -23,13 +23,13 @@ import { HDTextHelper } from './HDTextHelper';
 export class DebugOverlay {
   private scene: Phaser.Scene;
   private uiScene: Phaser.Scene;
-  private player: SatyrPlayer;
+  private player: BlackKnightPlayer;
   private graphics: Phaser.GameObjects.Graphics;
   private textObject: Phaser.GameObjects.Text;
   private isVisible: boolean = false;
   private f4Key: Phaser.Input.Keyboard.Key;
 
-  constructor(scene: Phaser.Scene, player: SatyrPlayer, uiScene?: Phaser.Scene) {
+  constructor(scene: Phaser.Scene, player: BlackKnightPlayer, uiScene?: Phaser.Scene) {
     this.scene = scene;
     this.uiScene = uiScene || scene;
     this.player = player;

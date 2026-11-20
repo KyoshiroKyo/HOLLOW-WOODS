@@ -89,7 +89,7 @@ console.log(`✅ Thuật toán quét an toàn tìm được ô trống tại (${
 
 // 2. Kiểm tra SatyrPlayer.ts
 console.log('\n--- 2. Kiểm tra SatyrPlayer.ts ---');
-const playerPath = path.resolve('src/entities/SatyrPlayer.ts');
+const playerPath = path.resolve('src/entities/BlackKnightPlayer.ts');
 const playerCode = fs.readFileSync(playerPath, 'utf8');
 
 assert(playerCode.includes('resetAllActionAndMotionStates'), 'SatyrPlayer phải có resetAllActionAndMotionStates');

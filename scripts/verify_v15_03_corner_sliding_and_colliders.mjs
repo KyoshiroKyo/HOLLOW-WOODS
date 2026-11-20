@@ -37,7 +37,7 @@ assert(!/setOffset\(-/.test(npcContent), 'Tuyệt đối không có offset âm t
 
 // 3. Kiểm tra SatyrPlayer.ts & Thuật toán Corner Assist
 console.log('\n[3/5] Kiểm tra Thuật toán Trượt Góc Corner Assist (SatyrPlayer.ts):');
-const playerPath = path.resolve('src/entities/SatyrPlayer.ts');
+const playerPath = path.resolve('src/entities/BlackKnightPlayer.ts');
 const playerContent = fs.readFileSync(playerPath, 'utf8').replace(/\r\n/g, '\n');
 
 assert(playerContent.includes('public applyCornerAssistWith(obstacle: Phaser.Physics.Arcade.Sprite): void'), 'Có phương thức applyCornerAssistWith');

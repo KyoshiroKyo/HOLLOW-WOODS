@@ -20,7 +20,7 @@ assert(!indexHtml.includes('image-rendering: pixelated;'), 'index.html does not 
 
 // 2. Check HDTextHelper.ts
 const hdHelper = fs.readFileSync('src/utils/HDTextHelper.ts', 'utf-8');
-assert(hdHelper.includes('Segoe UI Emoji'), 'HDTextHelper includes Segoe UI Emoji in font family');
+assert(hdHelper.includes('"Hollow Woods UI"'), 'HDTextHelper prefers the local Vietnamese UI font');
 assert(hdHelper.includes('getOptimalResolution'), 'HDTextHelper provides dynamic optimal resolution');
 
 // 3. Check PreloadScene.ts
@@ -31,10 +31,10 @@ assert(preload.includes("HDTextHelper.createText(this, 640, 350, 'Đang xuyên q
 
 // 4. Check MainMenuScene.ts
 const menu = fs.readFileSync('src/scenes/MainMenuScene.ts', 'utf-8');
-assert(menu.includes("'Vòng Sáng'"), "MainMenuScene footer label is [F] 'Vòng Sáng'");
+assert(menu.includes('F Vòng Sáng'), "MainMenuScene footer label is [F] 'Vòng Sáng'");
 assert(!menu.includes("'Đèn'"), "MainMenuScene does not use obsolete '[F] Đèn'");
-assert(menu.includes("flameCore.setPosition(fireX, groundY);"), 'MainMenuScene flameCore is anchored at (fireX, groundY)');
-assert(menu.includes("scaleY: 1.06"), 'MainMenuScene flameCore tweens scale without jumping down');
+assert(menu.includes('menu_black_knight_cover_loop') && menu.includes('frameRate: 10'), 'MainMenuScene plays the cover at its source timing');
+assert(menu.includes('menu_black_knight_fallback'), 'MainMenuScene has a static Fellor cover fallback');
 
 // 5. Check HUDIconGenerator.ts
 const hudGen = fs.readFileSync('src/utils/HUDIconGenerator.ts', 'utf-8');

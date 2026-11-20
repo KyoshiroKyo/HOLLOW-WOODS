@@ -5,8 +5,8 @@ import {
   LANTERN_RADIUS_NORMAL, 
   LANTERN_RADIUS_DIM 
 } from '../config/Constants';
-import { SatyrPlayer } from '../entities/SatyrPlayer';
-import { registerSatyrAnimations } from '../animation/SatyrAnimations';
+import { BlackKnightPlayer } from '../entities/BlackKnightPlayer';
+import { registerBlackKnightAnimations } from '../animation/BlackKnightAnimations';
 import { WorldBuilder } from '../world/WorldBuilder';
 import { CameraSystem } from '../systems/camera/CameraSystem';
 import { DebugOverlay } from '../utils/DebugOverlay';
@@ -84,7 +84,7 @@ interface Firefly {
 }
 
 export class GameScene extends Phaser.Scene {
-  private player!: SatyrPlayer;
+  private player!: BlackKnightPlayer;
   private worldBuilder!: WorldBuilder;
   private cameraSystem!: CameraSystem;
   private debugOverlay!: DebugOverlay;
@@ -301,7 +301,7 @@ export class GameScene extends Phaser.Scene {
     this.cameraSystem = new CameraSystem(this);
 
     // 2. Đăng ký hoạt ảnh Satyr
-    registerSatyrAnimations(this.anims);
+    registerBlackKnightAnimations(this.anims);
 
     // 3. Dựng 5 phân khu thế giới kết nối
     this.worldBuilder = new WorldBuilder(this);
@@ -409,7 +409,7 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    this.player = new SatyrPlayer(this, spawnX, spawnY);
+    this.player = new BlackKnightPlayer(this, spawnX, spawnY);
     this.player.stats.isLanternOn = this.playerState.stats.isLanternOn;
     // C4-13-01 & V15-34 & V15-48 & V15-FIX-09: Reset sạch toàn bộ cờ trạng thái hành động, ẩn nấp, hiển thị và mở khóa điều khiển
     this.isGameOverPending = false;
@@ -1047,7 +1047,7 @@ export class GameScene extends Phaser.Scene {
       return;
     }
     if (this.dialogueSystem && this.dialogueSystem.isActive) {
-      this.dialogueSystem.endDialogue();
+      this.dialogueSystem.cancelDialogue();
       if (this.player) this.player.forceUnlockActionState();
       return;
     }
@@ -1135,7 +1135,7 @@ export class GameScene extends Phaser.Scene {
     if (this.craftingModal && this.craftingModal.isOpen) this.craftingModal.close();
     if (this.journalModal && this.journalModal.isOpen) this.journalModal.close();
     if (this.pauseModal && this.pauseModal.isOpen) this.pauseModal.close();
-    if (this.dialogueSystem && this.dialogueSystem.isActive) this.dialogueSystem.endDialogue();
+    if (this.dialogueSystem && this.dialogueSystem.isActive) this.dialogueSystem.cancelDialogue();
 
     if (this.uiScene) {
       this.uiScene.setInteractionPrompt(null);
@@ -1470,7 +1470,7 @@ export class GameScene extends Phaser.Scene {
 
     this.npcs.push(garth, edda, neris, bram, finn, campfireKnight);
 
-    // C4-13-17 & C4-132-03: Thiết lập va chạm vật lý giữa SatyrPlayer và toàn bộ 5 NPC làng Bellhollow (hộp chân gọn 22x14 px)
+    // C4-13-17 & C4-132-03: Thiết lập va chạm vật lý giữa BlackKnightPlayer và toàn bộ 5 NPC làng Bellhollow (hộp chân gọn 22x14 px)
     if (this.npcCollider) {
       this.npcCollider.destroy();
       this.npcCollider = undefined;
@@ -1890,10 +1890,11 @@ export class GameScene extends Phaser.Scene {
     // GATE 1C: Đóng băng toàn bộ thế giới trò chơi khi Pause Menu đang mở
     if (this.pauseModal && this.pauseModal.isOpen) {
       if (this.player && this.player.body) {
+        const resumeRequested = this.player.isPauseRequested();
         (this.player.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
         this.player.playIdle();
         this.player.resetAllInputState();
-        if (this.player.isPauseRequested()) {
+        if (resumeRequested) {
           this.handleESCPress();
         }
       }
@@ -2007,7 +2008,7 @@ export class GameScene extends Phaser.Scene {
         const isPauseReq = this.player.isPauseRequested();
         const isCraftReq = this.player.isCraftingRequested();
         const isJournalReq = this.player.isJournalRequested();
-        const isInteractReq = this.player.isInteractRequested();
+        const isInteractReq = this.player.isInteractRequested() || this.player.consumeAction('interact');
         const isAttackReq = this.player.consumeAction('attack');
 
         // V15-30: Đảm bảo quái vật xung quanh tạm dừng chuyển động khi người chơi mở Modal đọc giấy hoặc UI
@@ -4069,7 +4070,8 @@ export class GameScene extends Phaser.Scene {
       this.cameraSystem.setWorldBounds({ x: 0, y: -700, width: 5000, height: 1850 });
     } else {
       this.physics.world.setBounds(0, -250, 5000, 1400);
-      this.cameraSystem.setWorldBounds({ x: 0, y: -250, width: 5000, height: 1400 });
+      const villageBounds = zoneId === 'bellhollow' ? this.worldBuilder?.getZone(zoneId)?.bounds : undefined;
+      this.cameraSystem.setWorldBounds(villageBounds ?? { x: 0, y: -250, width: 5000, height: 1400 });
     }
 
     if (zoneId === 'deep_forest' && this.worldBuilder) {
@@ -4688,7 +4690,7 @@ export class GameScene extends Phaser.Scene {
       const triggerDist = 52;
       const isWithinInteractRange = dist <= triggerDist;
       const proximityAlpha = isWithinInteractRange ? 0.9 : 0.35;
-      let baseName = `Trò chuyện với ${npc.spec.name} (${npc.spec.title})`;
+      let baseName = `Trò chuyện với ${npc.spec.name}`;
       if (npc.spec.id === 'npc_campfire_knight') {
         baseName = 'Trò chuyện với Kỵ Sĩ Vaelen';
       }
@@ -7337,5 +7339,9 @@ export class GameScene extends Phaser.Scene {
 
   public getPlayerState(): PlayerState {
     return this.playerState;
+  }
+
+  public getRunningState() {
+    return this.player?.getRunningState() ?? 'normal';
   }
 }

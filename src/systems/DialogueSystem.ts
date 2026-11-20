@@ -387,11 +387,19 @@ export class DialogueSystem {
       }
     }
 
+    this.cancelDialogue();
+    this.scene.events.emit('dialogue_completed', payload);
+  }
+
+  /** Close an interrupted conversation without applying the completion effects. */
+  public cancelDialogue(): void {
+    if (!this.isActive) return;
     if (this.typewriterTimer) {
       this.typewriterTimer.remove();
       this.typewriterTimer = null;
     }
 
+    this.isTyping = false;
     this.isShowingChoices = false;
     this.isShowingResponseLine = false;
     this.pendingChoice = null;
@@ -409,7 +417,6 @@ export class DialogueSystem {
       this.onDialogueEnd();
     }
 
-    this.scene.events.emit('dialogue_completed', payload);
   }
 
   public destroy(): void {

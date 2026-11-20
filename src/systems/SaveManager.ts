@@ -1,5 +1,5 @@
 import { PlayerState } from '../state/PlayerState';
-import { HerbPlotStage, ZoneId } from '../types';
+import type { CropType, HerbPlotData, HerbPlotStage, ZoneId } from '../types';
 import { saveGameNow, loadGameProgress, LOCAL_PREFIX } from '../services/CloudSaveService';
 import { SafeSpawnResolver } from './SafeSpawnResolver';
 import type { SafeSpawnResult } from './SafeSpawnResolver';
@@ -12,6 +12,9 @@ export interface EquippedSlotsData {
   back: string | null;
   charm: string | null;
 }
+
+type SavedHerbPlot = Pick<HerbPlotData, 'id' | 'stage' | 'plantedAt' | 'cropType' | 'isPrepared'>;
+const VALID_CROPS: readonly CropType[] = ['herbs', 'roots', 'mushroom', 'fiber'];
 
 export interface SaveData {
   saveVersion?: number | string; // V1.3: 1, 2, '1.3' hoặc undefined; V1.4: 3
@@ -40,7 +43,7 @@ export interface SaveData {
   unlockedLoreIds: string[];
   visitedZones?: string[];
   unlockedZones?: string[];
-  herbPlots?: { id: string; stage: HerbPlotStage; plantedAt: number }[];
+  herbPlots?: SavedHerbPlot[];
   
   // V1.4 Mở Rộng:
   dayCount?: number;          // Mặc định: 1
@@ -304,14 +307,16 @@ export class SaveManager {
       }
 
       // 8. Trạng thái Nông Trại Sanctuary (HerbPlots)
-      const herbPlots: { id: string; stage: HerbPlotStage; plantedAt: number }[] = [];
+      const herbPlots: SavedHerbPlot[] = [];
       if (Array.isArray(rawObj.herbPlots)) {
         for (const p of rawObj.herbPlots) {
           if (p && typeof p === 'object' && typeof p.id === 'string') {
             const validStages: HerbPlotStage[] = ['empty', 'planted', 'growing', 'harvest_ready'];
             const stage: HerbPlotStage = validStages.includes(p.stage) ? p.stage : 'empty';
             const plantedAt = typeof p.plantedAt === 'number' && !isNaN(p.plantedAt) ? p.plantedAt : 0;
-            herbPlots.push({ id: p.id, stage, plantedAt });
+            const cropType = VALID_CROPS.includes(p.cropType) ? p.cropType : undefined;
+            const isPrepared = typeof p.isPrepared === 'boolean' ? p.isPrepared : undefined;
+            herbPlots.push({ id: p.id, stage, plantedAt, cropType, isPrepared });
           }
         }
       }
@@ -369,14 +374,16 @@ export class SaveManager {
       }
 
       // V1.5 - V15-16: Điểm Tin Cậy Dân Làng (villageTrustScore: 0 - 100, Mặc định: 50)
-      const villageTrustScore = typeof rawObj.villageTrustScore === 'number' && !isNaN(rawObj.villageTrustScore)
-        ? Math.max(0, Math.min(100, Math.round(rawObj.villageTrustScore)))
+      const rawTrust = rawObj.villageTrustScore ?? rawObj.player?.villageTrustScore;
+      const villageTrustScore = typeof rawTrust === 'number' && Number.isFinite(rawTrust)
+        ? Math.max(0, Math.min(100, Math.round(rawTrust)))
         : 50;
 
       // V1.5 - V15-16: Cờ Lựa Chọn Cốt Truyện (storyFlags) — Mặc định: []
       const storyFlags: string[] = [];
-      if (Array.isArray(rawObj.storyFlags)) {
-        for (const sf of rawObj.storyFlags) {
+      const rawStoryFlags = rawObj.storyFlags ?? rawObj.player?.storyFlags;
+      if (Array.isArray(rawStoryFlags)) {
+        for (const sf of rawStoryFlags) {
           if (typeof sf === 'string' && sf.trim().length > 0 && !storyFlags.includes(sf.trim())) {
             storyFlags.push(sf.trim());
           }
@@ -384,8 +391,9 @@ export class SaveManager {
       }
 
       // V1.5 - BƯỚC V15-27: Vũ khí tự vệ kích hoạt (activeWeapon) — Mặc định: 'wpn_walking_staff'
-      const activeWeapon = typeof rawObj.activeWeapon === 'string' && rawObj.activeWeapon.trim().length > 0
-        ? rawObj.activeWeapon.trim()
+      const rawWeapon = rawObj.activeWeapon ?? rawObj.player?.activeWeapon;
+      const activeWeapon = typeof rawWeapon === 'string' && rawWeapon.trim().length > 0
+        ? rawWeapon.trim()
         : 'wpn_walking_staff';
 
       // Giữ nguyên các trường không xác định vào legacyExtraData
@@ -507,7 +515,9 @@ export class SaveManager {
       unlockedLoreIds: state.unlockedLore.map(l => l.id),
       visitedZones: state.getVisitedZones(),
       unlockedZones: state.getUnlockedZones(),
-      herbPlots: state.getHerbPlots().map(p => ({ id: p.id, stage: p.stage, plantedAt: p.plantedAt })),
+      herbPlots: state.getHerbPlots().map(({ id, stage, plantedAt, cropType, isPrepared }) => ({
+        id, stage, plantedAt, cropType, isPrepared
+      })),
       dayCount: state.dayCount ?? 1,
       timeOfDay: state.timeOfDay ?? 0,
       equippedSlots: state.equippedSlots ?? { body: null, feet: null, back: null, charm: null },
@@ -635,9 +645,18 @@ export class SaveManager {
 
     // Phục hồi nông trại thảo mộc Sanctuary Farm
     if (data.herbPlots && Array.isArray(data.herbPlots)) {
-      for (const pSave of data.herbPlots) {
-        state.updateHerbPlot(pSave.id, pSave.stage, pSave.plantedAt);
-      }
+      const savedPlots = new Map(data.herbPlots.map(plot => [plot.id, plot]));
+      state.setHerbPlots(state.getHerbPlots().map(plot => {
+        const saved = savedPlots.get(plot.id);
+        if (!saved) return plot;
+        return {
+          ...plot,
+          stage: saved.stage,
+          plantedAt: saved.plantedAt,
+          cropType: saved.cropType,
+          isPrepared: saved.isPrepared
+        };
+      }));
     }
 
     // Phục hồi trạng thái mở khóa phân khu

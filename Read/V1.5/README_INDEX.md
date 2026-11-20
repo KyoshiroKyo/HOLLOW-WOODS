@@ -133,3 +133,12 @@ node scripts/test_v15_34_safe_spawn_and_unstuck.mjs
 
 ---
 *Tài liệu được cập nhật tự động và đóng dấu hoàn thành trọn vẹn tại bước V15-36 — 19/11/2026.*
+
+## 4. PHÁT TRIỂN V1.5.3
+
+| Nhiệm vụ | Đầu ra | Báo cáo |
+|---|---|---|
+| V153-F0-0 | Khóa kiến trúc V1.5.3 và lập kiểm kê nguồn Black Knight | [Quy tắc và kiểm kê](Reports/V153_F0_0_RULES_AND_INVENTORY.md) · [Frame Map](Reports/V153_F0_0_BLACK_KNIGHT_FRAME_MAP.md) · [Ma trận animation](Reports/V153_F0_0_ANIMATION_COVERAGE_MATRIX.md) |
+| CLOUD-01A | Source Library gồm 34 chuỗi và 324 frame từ artwork Fellor | [Trích xuất nguồn](Reports/V153_CLOUD_01A_ORIGINAL_BLACK_KNIGHT_EXTRACTION.md) |
+| V153-BATCH-02 | Thiết kế Black Knight bốn hướng, avatar và cover P2Game, Cinematic Main Menu, typography và sáu ảnh runtime | [Báo cáo triển khai và kiểm thử](Reports/V153_BATCH_02_IMPLEMENTATION.md) · [Contact sheet P2Game](Reports/Visuals/V153_BATCH_02/p2game-contact-sheet.png) |
+| V153-BATCH-03-R2 | Checkpoint sửa lỗi khởi động, Bellhollow, hội thoại và Save schema 3 | [Triển khai](Reports/V153_BATCH_03_IMPLEMENTATION.md) · [Checkpoint](Reports/V153_BATCH_03_CHECKPOINT.md) · [QA](Reports/V153_FINAL_QA_REPORT.md) |

@@ -86,7 +86,14 @@ console.log('\n--- PHẦN 3: KIỂM TRA TƯƠNG THÍCH BẢN LƯU SAVEMANAGER V1
 const saveManagerPath = path.resolve('src/systems/SaveManager.ts');
 const saveManagerCode = fs.readFileSync(saveManagerPath, 'utf8');
 assert(saveManagerCode.includes('activeWeapon?: string;'), 'SaveData hỗ trợ lưu trữ activeWeapon');
-assert(saveManagerCode.includes("version: '1.5.0'"), 'buildSaveData xuất bản lưu phiên bản V1.5.0');
+const currentSchema = /CURRENT_SCHEMA_VERSION\s*=\s*3\b/.test(saveManagerCode);
+const buildSaveData = saveManagerCode.slice(
+  saveManagerCode.indexOf('public static buildSaveData('),
+  saveManagerCode.indexOf('public static quickSaveOnUnload(')
+);
+assert(currentSchema && buildSaveData.includes('saveVersion: SaveManager.CURRENT_SCHEMA_VERSION') &&
+  buildSaveData.includes('saveSchemaVersion: SaveManager.CURRENT_SCHEMA_VERSION'),
+  'buildSaveData ghi hai trường schema 3 độc lập với chuỗi phiên bản phát hành');
 assert(saveManagerCode.includes('state.setActiveWeapon(data.activeWeapon)'), 'applySaveToState phục hồi activeWeapon');
 
 // Giả lập trực tiếp logic sanitizeAndMigrateSaveData để kiểm thử tương thích 3 thế hệ bản lưu

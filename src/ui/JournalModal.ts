@@ -507,7 +507,7 @@ export class JournalModal {
     };
     drawCloseBg(false);
 
-    const closeTxt = HDTextHelper.createText(this.scene, 0, 0, '✕ [J / ESC] Đóng', {
+    const closeTxt = HDTextHelper.createText(this.scene, 0, 0, '✕ [J / ESC]', {
       fontSize: '11px',
       fontStyle: 'bold',
       color: '#e2d4b7'
@@ -723,7 +723,7 @@ export class JournalModal {
 
     // Cột bên trái: Chi tiết nhiệm vụ chính/phụ hiện tại
     const displayTitle = isSide ? currentQ.title : stageInfo.title;
-    const qTitle = HDTextHelper.createText(this.scene, mx + 30, my + 84, displayTitle, {
+    const qTitle = HDTextHelper.createText(this.scene, mx + 30, qTag.y + qTag.height + 5, displayTitle, {
       fontSize: '16px',
       fontStyle: 'bold',
       color: '#e67e22',
@@ -735,21 +735,22 @@ export class JournalModal {
     const destinationGuide = isSide
       ? ''
       : `🧭 Mục tiêu: ${stageInfo.targetZoneName} (Hướng ${stageInfo.directionHint})`;
-    const qGuide = HDTextHelper.createText(this.scene, mx + 30, my + 108, destinationGuide, {
+    const qGuide = HDTextHelper.createText(this.scene, mx + 30, qTitle.y + qTitle.height + 5, destinationGuide, {
       fontSize: '12px',
       fontStyle: 'bold',
-      color: '#3498db'
+      color: '#83c6f0',
+      wordWrap: { width: mw / 2 - 50, useAdvancedWrap: true }
     });
 
     const displayDesc = isSide ? currentQ.description : stageInfo.description;
-    const qDesc = HDTextHelper.createText(this.scene, mx + 30, my + 130, displayDesc, {
+    const qDesc = HDTextHelper.createText(this.scene, mx + 30, qGuide.y + qGuide.height + 8, displayDesc, {
       fontSize: '12px',
       color: '#bdc3c7',
       wordWrap: { width: mw / 2 - 50 },
       lineSpacing: 4
     });
 
-    const taskTitle = HDTextHelper.createText(this.scene, mx + 30, my + 185, 'MỤC TIÊU CẦN LÀM:', {
+    const taskTitle = HDTextHelper.createText(this.scene, mx + 30, qDesc.y + qDesc.height + 12, 'MỤC TIÊU CẦN LÀM:', {
       fontSize: '13px',
       fontStyle: 'bold',
       color: '#f1c40f'
@@ -757,7 +758,7 @@ export class JournalModal {
 
     this.contentContainer.add([qTag, qTitle, qGuide, qDesc, taskTitle]);
 
-    let taskY = my + 210;
+    let taskY = taskTitle.y + taskTitle.height + 6;
     const tasksToDisplay = isSide ? currentQ.tasks : stageInfo.tasks;
     for (const task of tasksToDisplay) {
       const mark = task.done ? '☑' : '☐';
@@ -769,7 +770,7 @@ export class JournalModal {
         lineSpacing: 4
       });
       this.contentContainer.add(t);
-      taskY += 34;
+      taskY += t.height + 8;
     }
 
     // Cột bên phải: Danh mục các Hồi đã mở khóa
@@ -816,6 +817,7 @@ export class JournalModal {
       if (this.questFilter === 'side') return q.category === 'side';
       return true;
     });
+    const rowSpacing = Math.min(26, Math.floor((my + mh - 18 - histY) / Math.max(1, questsToDisplay.length)));
 
     for (const q of questsToDisplay) {
       const isCurrent = q.id === currentQ.id;
@@ -839,10 +841,10 @@ export class JournalModal {
       });
 
       this.contentContainer.add(row);
-      histY += 28;
+      histY += rowSpacing;
     }
 
-    this.contentContainer.add([qTag, qTitle, qDesc, taskTitle, histTitle, fAll, fMain, fSide]);
+    this.contentContainer.add([histTitle, fAll, fMain, fSide]);
   }
 
   // ===========================================================================
@@ -948,13 +950,13 @@ export class JournalModal {
       wordWrap: { width: rightW }
     });
 
-    const rAuthor = HDTextHelper.createText(this.scene, rightX, my + 105, `Ghi lại bởi: ${entry.author}`, {
+    const rAuthor = HDTextHelper.createText(this.scene, rightX, rTitle.y + rTitle.height + 6, `Ghi lại bởi: ${entry.author}`, {
       fontSize: '12px',
       fontStyle: 'italic',
       color: isEntryMemory ? '#f5cd79' : '#95a5a6'
     });
 
-    const rContent = HDTextHelper.createText(this.scene, rightX, my + 130, entry.content, {
+    const rContent = HDTextHelper.createText(this.scene, rightX, rAuthor.y + rAuthor.height + 10, entry.content, {
       fontSize: entry.content.length > 500 ? '11px' : '12px',
       color: '#f0e6d2',
       wordWrap: { width: rightW - 10 },

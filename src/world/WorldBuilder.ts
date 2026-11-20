@@ -2779,10 +2779,10 @@ export class WorldBuilder {
 
     const sprite = this.colliderGroup.create(minX, minY, undefined) as Phaser.Physics.Arcade.Sprite;
     sprite.setOrigin(0, 0);
+    // Static groups refresh from the display box, including its size.
+    sprite.setDisplaySize(width, height);
     sprite.setVisible(false);
-    const body = sprite.body as Phaser.Physics.Arcade.StaticBody;
-    body.setSize(width, height, false);
-    body.reset(minX, minY);
+    sprite.refreshBody();
     if (name) {
       sprite.setName(name);
     }

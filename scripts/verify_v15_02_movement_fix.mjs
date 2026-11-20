@@ -33,7 +33,7 @@ for (const speed of testSpeeds) {
 
 // 2. Code Inspection of SatyrPlayer.ts
 console.log('\n--- 2. SatyrPlayer.ts Code Architecture Test ---');
-const satyrCode = fs.readFileSync('src/entities/SatyrPlayer.ts', 'utf8');
+const satyrCode = fs.readFileSync('src/entities/BlackKnightPlayer.ts', 'utf8');
 
 assert(satyrCode.includes('Math.SQRT1_2'), 'SatyrPlayer uses Math.SQRT1_2 for diagonal normalization');
 assert(satyrCode.includes('public static readonly ACTION_SAFETY_TIMEOUT_MS: number = 600;'), 'ACTION_SAFETY_TIMEOUT_MS is defined as 600ms');
@@ -41,7 +41,7 @@ assert(satyrCode.includes('public static readonly DIRECTION_BUFFER_MS: number = 
 assert(satyrCode.includes('forceUnlockActionState(): void'), 'forceUnlockActionState method is implemented');
 
 // Watchdog in update
-assert(satyrCode.includes('now - this._actionLockTimestamp > SatyrPlayer.ACTION_SAFETY_TIMEOUT_MS'), 'Update watchdog checks elapsed action lock time against 600ms');
+assert(satyrCode.includes('now - this._actionLockTimestamp > BlackKnightPlayer.ACTION_SAFETY_TIMEOUT_MS'), 'Update watchdog checks elapsed action lock time against 600ms');
 
 // Action lock timestamp assignments
 assert(satyrCode.includes('this._isAttacking = true;\n    this._actionLockTimestamp = performance.now();'), 'attack() records _actionLockTimestamp');

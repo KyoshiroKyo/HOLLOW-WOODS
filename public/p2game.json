@@ -17,8 +17,8 @@
       "minSessionSeconds": 30
     }
   ],
-  "description": "HOLLOW WOODS: The Fog That Remembers (Bản Cập Nhật V1.5 Production Release) là tựa game sinh tồn kinh dị 2D Pixel Art đỉnh cao kết hợp giải đố môi trường, đưa bạn vào hành trình cứu rỗi ngôi làng cổ Bellhollow khi Màn Sương Ký Ức trỗi dậy nuốt chửng vạn vật.\n\nBối Cảnh & Cốt Truyện V1.5\nTrong vai lữ khách Hiệp Sĩ The Mossbound Wayfarer, bạn thức tỉnh trên con đường độc đạo dẫn vào Bellhollow. Cùng với cư dân làng (Garth gác cổng, Bà lão Edda, Thợ rèn Bram, Y sư Neris, Cậu bé đưa tin Finn) và Kỵ Sĩ Trầm Mặc Sir Vaelen tại Trạm Lửa Rừng Tĩnh Lặng, bạn sẽ vén màn bi kịch Đoàn Kỵ Sĩ Cổ Xưa, tôi luyện Chìa Khóa Thanh Tẩy, hóa giải Phong Ấn Rễ Cổ tại Đầm Lầy và đối mặt với Kẻ Nuốt Tiếng Chuông (SHADOW Series) tại Miếu Chuông Phế Tích.\n\nCơ Chế Gameplay & Sinh Tồn Don't Starve Together Style\n- Quản lý 3 chỉ số sinh tồn cốt lõi: Sinh Lực (HP), Thể Lực (Stamina) và Tinh Thần (Sanity/Composure).\n- Vòng Sáng Hộ Tâm [F] & Nghịch Lý Ánh Sáng: Tiêu hao Thể Lực để nhóm vòng sáng ấm dịu bảo vệ Tinh Thần; tuy nhiên khi bật sáng, quái vật bóng tối sẽ phát hiện bạn xa hơn +30%.\n- Chiều sâu Kinh Dị Tâm Lý: Ảo giác Hiệp Sĩ Sa Ngã (<30%), bẫy mồi nhử Tiếng Gọi Trong Sương, nhịp tim Web Audio động (75..135 BPM) và 4 góc màn hình co bóp theo mức hoảng loạn.\n- Giao diện Túi Đồ & Chế Tạo Don't Starve: Thanh 8 ô túi đồ + 4 ô trang bị cá nhân (Body, Feet, Back, Charm), thanh ghim nhanh dọc và Bảng Chế Tạo 2 tầng mở rộng [I]/[C] có tìm kiếm, danh mục và bookmark tabs.\n- Đấu trí thính giác với The Listener và Boss SHADOW Series: Ẩn nấp trong bụi rậm, ném mồi đánh lạc hướng và phá 3 Trụ Rễ Ma Quái để giải trừ phong ấn.",
-  "shortDescription": "Game sinh tồn kinh dị & giải đố 2D Pixel Art V1.5. Vòng sáng [F] tốn Thể Lực, quản lý Tinh Thần, bẫy ảo giác, chế tác DST và giải mã Miếu Chuông Phế Tích.",
+  "description": "HOLLOW WOODS — The Fog That Remembers là game sinh tồn kinh dị, khám phá và giải đố 2D Pixel Art. Hóa thân thành Kỵ Sĩ Đen, khám phá khu rừng bí ẩn, sử dụng Vòng Sáng, quản lý Thể Lực và Tinh Thần, thu thập tài nguyên, chế tạo vật phẩm và giải mã những bí mật của Miếu Chuông Phế Tích.",
+  "shortDescription": "Hóa thân thành Kỵ Sĩ Đen trong game sinh tồn kinh dị 2D Pixel Art. Thắp Vòng Sáng, chế tạo và giải mã bí mật của khu rừng.",
   "entry": "index.html",
   "engine": "webgl",
   "engineInfo": "Phaser 4.2.1",
@@ -48,15 +48,17 @@
     "keyboard": "WASD: Di chuyển | Shift: Chạy | [F]: Vòng Sáng | Space: Đánh | [E]: Tương tác/Nấp | [Q]: Mồi ném | [1]..[8]: Túi đồ | [I/C]: Chế tạo | [J]: Sổ tay | [N]: La bàn | [F8]: Gỡ kẹt | [ESC]: Tạm dừng"
   },
   "assets": {
-    "avatar": "media/avatar_512x512.png",
-    "icon": "media/avatar_512x512.png",
-    "cover": "media/cover_banner_1280x720.png",
-    "background": "media/cover_banner_1280x720.png",
+    "avatar": "media/hollow_woods_avatar.png",
+    "icon": "media/hollow_woods_avatar.png",
+    "cover": "media/hollow_woods_black_knight_cover.png",
+    "background": "media/hollow_woods_black_knight_cover.png",
     "screenshots": [
-      "media/screen_01_bellhollow_v15.png",
-      "media/screen_02_sir_vaelen_fire.png",
-      "media/screen_03_crafting_ui.png",
-      "media/screen_04_boss_shadow.png"
+      "media/screen_v153_01_main_menu.png",
+      "media/screen_v153_02_bellhollow.png",
+      "media/screen_v153_03_outer_woods.png",
+      "media/screen_v153_04_crooked_path.png",
+      "media/screen_v153_05_silent_mire.png",
+      "media/screen_v153_06_crafting.png"
     ]
   },
   "permissions": [

@@ -35,7 +35,7 @@ assert(survivalContent.includes('if (stats.composure <= 40)') && survivalContent
 
 // 3. Kiểm tra Tốc độ Di chuyển (SatyrPlayer.ts)
 console.log('\n[3/5] Kiểm tra tốc độ di chuyển theo cấp độ Bình Tâm (SatyrPlayer.ts):');
-const playerPath = path.resolve('src/entities/SatyrPlayer.ts');
+const playerPath = path.resolve('src/entities/BlackKnightPlayer.ts');
 const playerContent = fs.readFileSync(playerPath, 'utf8').replace(/\r\n/g, '\n');
 
 assert(playerContent.includes('if (this.stats.composure < 10)'), 'Kiểm tra ngưỡng Hoảng Loạn Cực Độ (<10)');

@@ -357,7 +357,7 @@ export class EquipmentModal {
   private renderAvailableInventory(): void {
     this.inventoryListContainer.removeAll(true);
     const startX = 590;
-    const startY = 100;
+    const startY = 161;
     const w = 450;
 
     const header = HDTextHelper.createText(this.scene, startX, startY, `VẬT PHẨM KHẢ DỤNG CHO: ${this.selectedSlot.toUpperCase()}`, {
@@ -377,9 +377,10 @@ export class EquipmentModal {
     }
 
     if (candidates.length === 0) {
-      const emptyText = HDTextHelper.createText(this.scene, startX, startY + 28, '(Không có trang bị phù hợp trong túi đồ. Hãy chế tác tại Bàn Chế Tạo [I])', {
-        fontSize: '11px',
-        color: '#7f8c8d'
+      const emptyText = HDTextHelper.createText(this.scene, startX, startY + 28, 'Chưa có trang bị phù hợp. Chế tạo vật phẩm tại [I].', {
+        fontSize: '12px',
+        color: '#C8CFC2',
+        wordWrap: { width: w - 20, useAdvancedWrap: true }
       });
       this.inventoryListContainer.add(emptyText);
       return;
@@ -523,6 +524,7 @@ export class EquipmentModal {
     this.weaponsContainer.add(title);
 
     const btnW = 255;
+    const btnH = 57;
     for (let i = 0; i < weapons.length; i++) {
       const wpn = weapons[i];
       const btnX = startX + i * (btnW + 16);
@@ -531,9 +533,9 @@ export class EquipmentModal {
 
       const g = this.scene.add.graphics();
       g.fillStyle(isSelected ? 0x221811 : 0x140e08, 0.95);
-      g.fillRoundedRect(btnX, startY, btnW, 46, 5);
+      g.fillRoundedRect(btnX, startY, btnW, btnH, 5);
       g.lineStyle(1.5, isSelected ? 0xf39c12 : 0x3d2c18, 0.9);
-      g.strokeRoundedRect(btnX, startY, btnW, 46, 5);
+      g.strokeRoundedRect(btnX, startY, btnW, btnH, 5);
 
       const label = HDTextHelper.createText(this.scene, btnX + 10, startY + 6, `${wpn.name} ${count > 0 ? '✔' : '(Chưa có)'}`, {
         fontSize: '11px',
@@ -542,14 +544,15 @@ export class EquipmentModal {
       });
 
       const details = HDTextHelper.createText(this.scene, btnX + 10, startY + 24, `Tầm: ${wpn.reach} • Đẩy: ${wpn.knockback} • ${wpn.note}`, {
-        fontSize: '9px',
-        color: '#a0aec0'
+        fontSize: '10.5px',
+        color: '#C8CFC2',
+        wordWrap: { width: btnW - 20, useAdvancedWrap: true }
       });
 
       this.weaponsContainer.add([g, label, details]);
 
       if (count > 0) {
-        const hit = this.scene.add.zone(btnX + btnW / 2, startY + 23, btnW, 46).setInteractive({ useHandCursor: true });
+        const hit = this.scene.add.zone(btnX + btnW / 2, startY + btnH / 2, btnW, btnH).setInteractive({ useHandCursor: true });
         hit.on('pointerdown', () => {
           ItemTooltipHelper.getInstance().hide();
           this.playerState.setActiveWeapon(wpn.id);

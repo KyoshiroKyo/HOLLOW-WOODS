@@ -74,7 +74,7 @@ test('WorldBuilder.ts: Y-Sorting toàn bộ công trình tuân theo groundBaseY'
 });
 
 // 4. Kiểm tra SatyrPlayer & NPCEntity Y-Sorting
-const playerCode = fs.readFileSync('src/entities/SatyrPlayer.ts', 'utf8');
+const playerCode = fs.readFileSync('src/entities/BlackKnightPlayer.ts', 'utf8');
 test('SatyrPlayer.ts: Nhân vật chính tuân theo Y-sorting Math.floor(this.y)', () => {
   assert(playerCode.includes('const targetDepth = Math.floor(this.y)'), 'Thiếu targetDepth Math.floor(this.y)');
   assert(playerCode.includes('this.setDepth(targetDepth)'), 'Thiếu this.setDepth(targetDepth)');

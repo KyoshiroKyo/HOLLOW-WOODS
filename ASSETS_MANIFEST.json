@@ -1,6 +1,6 @@
 {
-  "totalFiles": 237,
-  "totalBytes": 68941539,
+  "totalFiles": 246,
+  "totalBytes": 69334783,
   "categories": {
     "audio": [
       {
@@ -650,6 +650,11 @@
         "path": "public/assets/characters/satyr/satyr_portrait.png",
         "size": 2551,
         "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/black_knight/black_knight_portrait.png",
+        "size": 2809,
+        "ext": ".png"
       }
     ],
     "environment": [
@@ -1186,6 +1191,46 @@
         "path": "public/assets/ui/slots/ui_pack_slot_selected.png",
         "size": 430,
         "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/menu/black_knight_button.png",
+        "size": 607,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/menu/black_knight_button_hover.png",
+        "size": 637,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/menu/black_knight_cinematic.png",
+        "size": 195091,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/menu/black_knight_fallback.png",
+        "size": 15439,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/menu/black_knight_woodland.png",
+        "size": 26179,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/ui/fonts/OFL-NotoSans.txt",
+        "size": 4114,
+        "ext": ".txt"
+      },
+      {
+        "path": "public/assets/ui/fonts/hollow-woods-ui-bold.woff",
+        "size": 73816,
+        "ext": ".woff"
+      },
+      {
+        "path": "public/assets/ui/fonts/hollow-woods-ui-regular.woff",
+        "size": 74552,
+        "ext": ".woff"
       }
     ]
   }

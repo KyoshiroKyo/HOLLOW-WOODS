@@ -44,10 +44,15 @@ export interface CloudSavePlayer {
   temperature?: number;
   daysSurvived: number;
   timeOfDay?: number;
+  activeWeapon?: string;
+  villageTrustScore?: number;
+  storyFlags?: string[];
 }
 
 export interface CloudSavePayload {
   version: string;
+  saveVersion?: number | string;
+  saveSchemaVersion?: number;
   updatedAt: number;
   checkpointName?: string;
   player: CloudSavePlayer;
@@ -248,7 +253,11 @@ export function migrateSaveSchema(rawData: any): CloudSavePayload | null {
   const updatedAt = typeof rawData.updatedAt === 'number' && !isNaN(rawData.updatedAt) ? rawData.updatedAt : (typeof rawData.timestamp === 'number' ? rawData.timestamp : Date.now());
 
   return {
-    version: SAVE_VERSION,
+    version: typeof rawData.version === 'string' && rawData.version ? rawData.version : SAVE_VERSION,
+    saveVersion: typeof rawData.saveVersion === 'number' || typeof rawData.saveVersion === 'string'
+      ? rawData.saveVersion
+      : undefined,
+    saveSchemaVersion: typeof rawData.saveSchemaVersion === 'number' ? rawData.saveSchemaVersion : undefined,
     updatedAt,
     checkpointName,
     player: {
@@ -264,6 +273,9 @@ export function migrateSaveSchema(rawData: any): CloudSavePayload | null {
       temperature,
       daysSurvived,
       timeOfDay,
+      activeWeapon: rawData.activeWeapon ?? p.activeWeapon,
+      villageTrustScore: rawData.villageTrustScore ?? p.villageTrustScore,
+      storyFlags: rawData.storyFlags ?? p.storyFlags,
     },
     inventory,
     questFlags,

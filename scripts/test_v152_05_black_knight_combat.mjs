@@ -102,7 +102,7 @@ assert(preloadContent.includes('WAYFARER_WEAPON_TOGGLE_KEY'), 'PreloadScene nạ
 
 // 5. Kiểm tra SatyrAnimations.ts
 console.log('\n--- 5. KIỂM TRA ĐĂNG KÝ ANIMATION TRONG SATYRAMINATIONS.TS ---');
-const animContent = fs.readFileSync('src/animation/SatyrAnimations.ts', 'utf8');
+const animContent = fs.readFileSync('src/animation/BlackKnightAnimations.ts', 'utf8');
 assert(animContent.includes("action: 'heavy_attack'"), 'SatyrAnimations cấu hình heavy_attack');
 assert(animContent.includes("action: 'weapon_art'"), 'SatyrAnimations cấu hình weapon_art');
 assert(animContent.includes("action: 'parry'"), 'SatyrAnimations cấu hình parry');
@@ -112,7 +112,7 @@ assert(animContent.includes("action: 'weapon_toggle'"), 'SatyrAnimations cấu h
 
 // 6. Kiểm tra SatyrPlayer.ts
 console.log('\n--- 6. KIỂM TRA HỆ THỐNG CHIẾN ĐẤU TRONG SATYRPLAYER.TS ---');
-const playerContent = fs.readFileSync('src/entities/SatyrPlayer.ts', 'utf8');
+const playerContent = fs.readFileSync('src/entities/BlackKnightPlayer.ts', 'utf8');
 assert(playerContent.includes('public heavyAttack()'), 'SatyrPlayer có hàm heavyAttack');
 assert(playerContent.includes('public weaponArt()'), 'SatyrPlayer có hàm weaponArt');
 assert(playerContent.includes('public parry()'), 'SatyrPlayer có hàm parry');

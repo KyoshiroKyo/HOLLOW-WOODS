@@ -209,7 +209,7 @@ mdStream.write(`├── src/ (94 files TypeScript + JSON Data + Assets)\n`);
 mdStream.write(`│   ├── audio/ (AudioManager.ts, Web Audio API đa tầng)\n`);
 mdStream.write(`│   ├── config/ (Constants.ts, GameConfig.ts, ContentRegistry)\n`);
 mdStream.write(`│   ├── data/ (dialogues.json, lore.json, quests.json, tornPagesData.ts)\n`);
-mdStream.write(`│   ├── entities/ (SatyrPlayer.ts, NPCEntity.ts, TheListener.ts, TheEcho.ts, Boss)\n`);
+mdStream.write(`│   ├── entities/ (BlackKnightPlayer.ts, NPCEntity.ts, TheListener.ts, TheEcho.ts, Boss)\n`);
 mdStream.write(`│   ├── scenes/ (PreloadScene.ts, MainMenuScene.ts, GameScene.ts, UIScene.ts)\n`);
 mdStream.write(`│   ├── services/ (CloudSaveService.ts, LeaderboardService.ts, P2GameSDK)\n`);
 mdStream.write(`│   ├── state/ (PlayerState.ts Singleton)\n`);

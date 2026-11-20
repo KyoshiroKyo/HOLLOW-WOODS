@@ -4,9 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HOLLOW WOODS V1.5 – The Fog That Remembers</title>
-    <!-- P2Game Platform SDK -->
-    <script src="https://games.p2game.io/sdk/p2game-sdk.v1.js"></script>
+    <link rel="icon" type="image/png" href="./media/hollow_woods_avatar.png" />
     <style>
+      @font-face {
+        font-family: 'Hollow Woods UI';
+        src: url('./assets/ui/fonts/hollow-woods-ui-regular.woff') format('woff');
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'Hollow Woods UI';
+        src: url('./assets/ui/fonts/hollow-woods-ui-bold.woff') format('woff');
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap;
+      }
       * {
         box-sizing: border-box;
         margin: 0;
@@ -19,7 +32,7 @@
         overflow: hidden;
         background-color: #0b0c10;
         color: #c5c6c7;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: 'Hollow Woods UI', system-ui, sans-serif;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -37,12 +50,33 @@
         outline: none;
         -webkit-tap-highlight-color: transparent;
       }
+      #game-startup {
+        position: fixed;
+        z-index: 1;
+        width: min(420px, calc(100vw - 32px));
+        border: 1px solid #7f6743;
+        background: #141712;
+        color: #e8dfc8;
+        padding: 20px 24px;
+        text-align: center;
+        line-height: 1.5;
+      }
+      #game-startup a {
+        display: inline-block;
+        margin-top: 8px;
+        color: #e09f3e;
+      }
     </style>
   </head>
   <body>
-    <div id="game-container">
+    <div id="game-container" data-sdk-src="https://games.p2game.io/sdk/p2game-sdk.v1.js">
       <canvas id="game-canvas" tabindex="0"></canvas>
     </div>
+    <section id="game-startup" role="status" aria-live="polite">
+      <p id="game-startup-message">Đang khởi động HOLLOW WOODS…</p>
+      <a href="">Tải lại</a>
+    </section>
+    <script src="./startup-status.js"></script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

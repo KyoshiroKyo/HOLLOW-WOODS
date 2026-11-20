@@ -20,7 +20,7 @@ function assert(condition, message) {
 }
 
 console.log('--- 1. Kiểm tra SatyrPlayer.ts: Vòng Sáng Ấm Dịu & Chi Phí 10 Thể Lực ---');
-const playerSrc = fs.readFileSync('src/entities/SatyrPlayer.ts', 'utf8');
+const playerSrc = fs.readFileSync('src/entities/BlackKnightPlayer.ts', 'utf8');
 assert(playerSrc.includes('stats.stamina < 10'), 'toggleLantern kiểm tra Thể Lực < 10 trước khi bật sáng');
 assert(playerSrc.includes('stats.stamina = Math.max(0, this.stats.stamina - 10)'), 'toggleLantern trừ 10 điểm Thể Lực khi bật sáng');
 assert(playerSrc.includes('Không đủ Thể Lực để nhóm lửa hộ tâm! (Cần 10 Thể Lực)'), 'Có cảnh báo khi Thể Lực không đủ 10');

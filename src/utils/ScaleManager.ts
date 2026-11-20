@@ -8,8 +8,17 @@ export class ScaleManager {
     return Math.max(1, scale); // Tối thiểu 1×
   }
 
-  public static applyPixelatedCanvas(canvas: HTMLCanvasElement): void {
-    canvas.style.imageRendering = 'pixelated';
+  public static applyCanvasSampling(canvas: HTMLCanvasElement): void {
+    const { width, height } = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    const scaleX = width * dpr / canvas.width;
+    const scaleY = height * dpr / canvas.height;
+    const integerScale = Math.round(scaleX);
+    const integerDisplay = integerScale >= 1
+      && Math.abs(scaleX - integerScale) < 0.01
+      && Math.abs(scaleY - integerScale) < 0.01;
+    // Sprites keep their own filtering in the renderer. Fractional CSS scaling samples the composed frame.
+    canvas.style.imageRendering = integerDisplay ? 'pixelated' : 'auto';
   }
 }
 

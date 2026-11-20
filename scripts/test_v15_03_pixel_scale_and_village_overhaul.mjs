@@ -58,7 +58,7 @@ assert(wbTs.includes('withCollider: boolean = true'), 'createTree hỗ trợ c�
 
 // 5. Kiểm tra Thuật toán Trượt Mép Tường & Tangent Slide (SatyrPlayer.ts)
 console.log('\n5. Kiểm tra Thuật toán Trượt Mép Tường (SatyrPlayer.ts):');
-const playerTs = fs.readFileSync('src/entities/SatyrPlayer.ts', 'utf8');
+const playerTs = fs.readFileSync('src/entities/BlackKnightPlayer.ts', 'utf8');
 assert(playerTs.includes('CORNER_THRESHOLD = 10;'), 'Ngưỡng góc sai số CORNER_THRESHOLD = 10px');
 assert(playerTs.includes('SLIDE_NUDGE = 2.0;'), 'Lực trượt SLIDE_NUDGE = 2.0px/frame');
 assert(playerTs.includes('isXBlocked && !isYBlocked'), 'Có thuật toán Tangent Slide: trượt dọc Y khi trục X bị chặn');

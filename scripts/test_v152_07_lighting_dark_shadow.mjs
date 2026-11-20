@@ -24,7 +24,7 @@ console.log('=== KIỂM THỬ XÁC MINH V152-07: ÁNH SÁNG AURA [F], DARK SHADO
 // 1. Quầng sáng Aura [F] dịu mắt, tự nhiên (#15)
 console.log('--- 1. Kiểm tra Quầng Sáng Aura [F] Dịu Mắt (#15) ---');
 const gameSceneSrc = fs.readFileSync('src/scenes/GameScene.ts', 'utf8');
-const playerSrc = fs.readFileSync('src/entities/SatyrPlayer.ts', 'utf8');
+const playerSrc = fs.readFileSync('src/entities/BlackKnightPlayer.ts', 'utf8');
 
 assert(gameSceneSrc.includes("grad.addColorStop(0, 'rgba(255, 215, 125, 0.24)')"), 'cached_lantern_glow_radial có tâm maxAlpha <= 0.24 hổ phách trầm ấm');
 assert(gameSceneSrc.includes("grad.addColorStop(1.0, 'rgba(0, 0, 0, 0)')"), 'cached_lantern_glow_radial tan biến hoàn toàn 0% viền sắc cạnh');

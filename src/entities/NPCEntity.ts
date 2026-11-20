@@ -42,6 +42,7 @@ export class NPCEntity extends Phaser.GameObjects.Container {
   private namePlateTween?: Phaser.Tweens.Tween;
   private indicatorTween?: Phaser.Tweens.Tween;
   private headOffsetY: number = 52;
+  private namePlateWidth = 100;
 
   constructor(scene: Phaser.Scene, spec: NPCSpec) {
     super(scene, spec.x, spec.y);
@@ -366,19 +367,6 @@ export class NPCEntity extends Phaser.GameObjects.Container {
 
     // Dòng 1: Tên NPC (vàng kim đậm sắc nét)
     const cleanName = spec.name.replace(/\s*\(.*\)/, '').trim();
-    // V15-31: Căn độ rộng huy hiệu động theo chiều dài tên NPC (đặc biệt cho Sir Vaelen — Kỵ Sĩ Trầm Mặc)
-    const badgeW = Math.max(100, Math.round(cleanName.length * 6.8 + 24));
-    const badgeH = 32;
-
-    const bg = scene.add.graphics();
-    // Khung nền đen mờ gọn gàng tương phản cao (opacity 0.94)
-    bg.fillStyle(0x090d0b, 0.94);
-    bg.fillRoundedRect(-badgeW / 2, -badgeH / 2, badgeW, badgeH, 4);
-    // Viền đồng cổ kép sắc sảo không bị chìm trong sương
-    bg.lineStyle(1.5, 0x9b7b4d, 0.95);
-    bg.strokeRoundedRect(-badgeW / 2, -badgeH / 2, badgeW, badgeH, 4);
-    bg.lineStyle(0.5, 0xd4af37, 0.5);
-    bg.strokeRoundedRect(-badgeW / 2 + 1.5, -badgeH / 2 + 1.5, badgeW - 3, badgeH - 3, 3);
 
     // Biểu tượng đại diện chức danh
     let icon = '🛡️';
@@ -388,22 +376,30 @@ export class NPCEntity extends Phaser.GameObjects.Container {
     else if (this.baseId === 'finn') icon = '📜';
     else if (this.baseId === 'campfire_knight') icon = '🔥';
 
-    const nameText = HDTextHelper.createText(scene, 0, -6, `${icon} ${cleanName}`, {
-      fontSize: '9.5px',
+    const nameText = HDTextHelper.createText(scene, 0, -7, `${icon} ${cleanName}`, {
+      fontSize: '11px',
       fontStyle: 'bold',
       color: '#f1c40f',
       stroke: '#000000',
-      strokeThickness: 2
+      strokeThickness: 1
     }).setOrigin(0.5, 0.5);
 
     // Dòng 2: Chức danh / Vai trò + gợi ý [E] (ngà ấm áp)
-    const titleText = HDTextHelper.createText(scene, 0, 7, `${spec.title} • [E]`, {
-      fontSize: '7.5px',
+    const titleText = HDTextHelper.createText(scene, 0, 8, `${spec.title} • [E]`, {
+      fontSize: '9px',
       color: '#d8ccb8',
       stroke: '#000000',
-      strokeThickness: 1.5
+      strokeThickness: 1
     }).setOrigin(0.5, 0.5);
 
+    const badgeW = Math.max(100, Math.ceil(Math.max(nameText.width, titleText.width)) + 20);
+    this.namePlateWidth = badgeW;
+    const badgeH = 36;
+    const bg = scene.add.graphics();
+    bg.fillStyle(0x090d0b, 0.94);
+    bg.fillRoundedRect(-badgeW / 2, -badgeH / 2, badgeW, badgeH, 4);
+    bg.lineStyle(1.5, 0x9b7b4d, 0.95);
+    bg.strokeRoundedRect(-badgeW / 2, -badgeH / 2, badgeW, badgeH, 4);
     container.add([bg, nameText, titleText]);
     return container;
   }
@@ -650,7 +646,20 @@ export class NPCEntity extends Phaser.GameObjects.Container {
 
     // Đồng bộ vị trí NamePlate và QuestIndicator theo NPC
     if (this.namePlate) {
-      this.namePlate.setPosition(this.x, this.y - this.headOffsetY);
+      const camera = this.scene.cameras.main;
+      const view = camera.worldView;
+      const scale = 1 / camera.zoom;
+      if (this.namePlate.scaleX !== scale) this.namePlate.setScale(scale);
+      const marginX = (this.namePlateWidth / 2 + 8) * scale;
+      const marginY = 26 * scale;
+      const headY = this.y - this.headOffsetY;
+      const x = view.width > 2 * marginX
+        ? Phaser.Math.Clamp(this.x, view.left + marginX, view.right - marginX)
+        : this.x;
+      const y = view.height > 2 * marginY
+        ? Phaser.Math.Clamp(headY, view.top + marginY, view.bottom - marginY)
+        : headY;
+      this.namePlate.setPosition(x, y);
     }
     if (this.questIndicator) {
       this.questIndicator.x = this.x;

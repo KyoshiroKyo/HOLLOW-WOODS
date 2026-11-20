@@ -472,6 +472,15 @@ export class PreloadScene extends Phaser.Scene {
       progressBar.fillRect(barX + 4, barY + 5, barWidth - 8, 2);
     });
 
+    this.load.image('menu_black_knight_woodland', 'assets/ui/menu/black_knight_woodland.png');
+    this.load.image('menu_black_knight_fallback', 'assets/ui/menu/black_knight_fallback.png');
+    this.load.image('menu_black_knight_button', 'assets/ui/menu/black_knight_button.png');
+    this.load.image('menu_black_knight_button_hover', 'assets/ui/menu/black_knight_button_hover.png');
+    this.load.spritesheet('menu_black_knight_cinematic', 'assets/ui/menu/black_knight_cinematic.png', {
+      frameWidth: 640,
+      frameHeight: 360,
+    });
+
     // 2. Nạp sprite sheet tương thích ngược cho Satyr (trỏ sang Wayfarer Idle đã hợp nhất)
     this.load.spritesheet(SATYR_SHEET_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_idle.png', {
       frameWidth: WAYFARER_FRAME_WIDTH,
@@ -554,9 +563,10 @@ export class PreloadScene extends Phaser.Scene {
       frameHeight: WAYFARER_FRAME_HEIGHT
     });
 
-    // 3. Nạp chân dung hội thoại Satyr & The Mossbound Wayfarer (64×64 px)
-    this.load.image(SATYR_PORTRAIT_KEY, 'assets/characters/satyr/satyr_portrait.png');
-    this.load.image(WAYFARER_PORTRAIT_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_portrait.png');
+    // Hai khóa hội thoại cũ cùng trỏ đến chân dung Black Knight.
+    const blackKnightPortrait = 'assets/characters/black_knight/black_knight_portrait.png';
+    this.load.image(SATYR_PORTRAIT_KEY, blackKnightPortrait);
+    this.load.image(WAYFARER_PORTRAIT_KEY, blackKnightPortrait);
 
     // 4. Nạp các tileset môi trường đã trích xuất
     this.load.image('tx_grass', 'assets/environment/tilesets/TX Tileset Grass.png');

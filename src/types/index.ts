@@ -199,7 +199,7 @@ export interface ZoneData {
   spawnPoints?: ZoneSpawnPoint[];
 }
 
-export type SatyrAnimState = 
+export type BlackKnightAnimState =
   | 'idle_down' 
   | 'walk_down' 
   | 'idle_up' 
@@ -216,6 +216,9 @@ export type SatyrAnimState =
   | 'dash' 
   | 'attack' 
   | 'death';
+
+/** @deprecated Use BlackKnightAnimState. */
+export type SatyrAnimState = BlackKnightAnimState;
 
 export type FacingDirection = 'down' | 'left' | 'right' | 'up';
 

@@ -91,7 +91,7 @@ assert(
   'Trang bị huy hiệu đếm số lượng vật phẩm khẩn cấp trên ô số [3]'
 );
 
-const satyrCode = fs.readFileSync('src/entities/SatyrPlayer.ts', 'utf-8');
+const satyrCode = fs.readFileSync('src/entities/BlackKnightPlayer.ts', 'utf-8');
 assert(
   satyrCode.includes("'emergency'") &&
   satyrCode.includes("case 'Digit3'") || satyrCode.includes("code === 'Digit3'"),

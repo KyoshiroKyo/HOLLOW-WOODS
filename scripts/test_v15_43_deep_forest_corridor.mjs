@@ -78,13 +78,13 @@ assert(gameSceneContent.includes("actionId === 'open_deep_forest_chest'"), 'Game
 
 // 6. Kiểm tra SatyrPlayer.ts (Corner Sliding & WayfarerPlayer export)
 console.log('\n6. Kiểm tra SatyrPlayer.ts:');
-const playerPath = path.join(projectRoot, 'src/entities/SatyrPlayer.ts');
+const playerPath = path.join(projectRoot, 'src/entities/BlackKnightPlayer.ts');
 const playerContent = fs.readFileSync(playerPath, 'utf8');
 assert(playerContent.includes('CORNER_THRESHOLD = 8'), 'SatyrPlayer đặt ngưỡng trượt góc CORNER_THRESHOLD = 8px');
 assert(playerContent.includes('SLIDE_NUDGE = 2.5'), 'SatyrPlayer đặt SLIDE_NUDGE = 2.5px');
 assert(playerContent.includes('pBody.velocity.x += nudgeX * 35'), 'SatyrPlayer áp dụng gia tốc quán tính khi trượt góc X');
 assert(playerContent.includes('pBody.velocity.y += nudgeY * 35'), 'SatyrPlayer áp dụng gia tốc quán tính khi trượt góc Y');
-assert(playerContent.includes('export const WayfarerPlayer = SatyrPlayer;'), 'SatyrPlayer xuất khẩu alias WayfarerPlayer');
+assert(playerContent.includes('export { BlackKnightPlayer as WayfarerPlayer };'), 'SatyrPlayer xuất khẩu alias WayfarerPlayer');
 
 console.log(`\n==================================================`);
 console.log(`KẾT QUẢ KIỂM THỬ: ${passed} PASS, ${failed} FAIL`);

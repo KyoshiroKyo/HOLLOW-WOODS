@@ -2,23 +2,69 @@ import * as Phaser from 'phaser';
 import { GameConfig } from './config/GameConfig';
 import { ScaleManager } from './utils/ScaleManager';
 import { SaveManager } from './systems/SaveManager';
+import { SCENE_MAIN_MENU } from './config/Constants';
 
-window.addEventListener('DOMContentLoaded', async () => {
-  // 1. Khởi tạo P2Game SDK trước khi dựng game Phaser
+async function withDeadline<T>(pending: Promise<T>, delayMs: number, failure: string): Promise<T> {
+  let timer: number | undefined;
   try {
-    if (typeof window !== 'undefined' && window.p2 && typeof window.p2.init === 'function') {
-      const ctx = await window.p2.init({
-        timeoutMs: 10000,
-        allowStandalone: true,
-        debug: false
-      });
-      console.log('[P2Game SDK] Khởi tạo thành công:', ctx?.sessionId ?? 'standalone');
-    } else {
+    return await Promise.race([
+      pending,
+      new Promise<never>((_, reject) => {
+        timer = window.setTimeout(() => reject(new Error(failure)), delayMs);
+      }),
+    ]);
+  } finally {
+    window.clearTimeout(timer);
+  }
+}
+
+async function waitForSdkScript(): Promise<void> {
+  const src = document.getElementById('game-container')?.dataset.sdkSrc;
+  if (window.p2 || !src) return;
+  const script = document.createElement('script');
+  script.id = 'p2game-sdk';
+  script.src = src;
+  const events = new AbortController();
+  const loaded = new Promise<void>((resolve) => {
+    script.addEventListener('load', () => resolve(), { signal: events.signal });
+    script.addEventListener('error', () => resolve(), { signal: events.signal });
+  });
+  document.head.append(script);
+  try {
+    await withDeadline(loaded, 12000, 'P2Game tải quá lâu. Hãy kiểm tra mạng rồi tải lại.');
+  } finally {
+    events.abort();
+  }
+}
+
+async function initSdk(): Promise<void> {
+  try {
+    if (typeof window.p2?.init !== 'function') {
       console.warn('[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng.');
+      return;
     }
+    const ctx = await window.p2.init({
+      timeoutMs: 10000,
+      allowStandalone: true,
+      debug: false
+    });
+    console.log('[P2Game SDK] Khởi tạo thành công:', ctx?.sessionId ?? 'standalone');
   } catch (err) {
     console.warn('[P2Game SDK] Cảnh báo lỗi khởi tạo SDK (dự phòng standalone):', err);
   }
+}
+
+async function startGame(): Promise<void> {
+  const uiFontSample = 'Sinh Lực · Thể Lực · Tinh Thần · Vòng Sáng';
+  const uiFontsReady = Promise.allSettled([
+    document.fonts.load('400 16px "Hollow Woods UI"', uiFontSample),
+    document.fonts.load('700 16px "Hollow Woods UI"', uiFontSample),
+  ]);
+  await waitForSdkScript();
+  await withDeadline(initSdk(), 11000, 'P2Game chưa phản hồi. Hãy tải lại để kết nối lại.');
+  await withDeadline(uiFontsReady, 4500, 'Font trò chơi tải chậm.').catch((error) => {
+    console.warn('[HOLLOW WOODS startup]', error);
+  });
 
   const canUseWebGL = (() => {
     try {
@@ -41,6 +87,14 @@ window.addEventListener('DOMContentLoaded', async () => {
     type: canUseWebGL ? Phaser.WEBGL : Phaser.CANVAS,
     ...(existingCanvas ? { canvas: existingCanvas } : {})
   });
+
+  const onMenuRendered = () => {
+    if (game.scene.isActive(SCENE_MAIN_MENU) && game.canvas.clientWidth > 0 && game.canvas.clientHeight > 0) {
+      game.events.off(Phaser.Core.Events.POST_RENDER, onMenuRendered);
+      window.dispatchEvent(new Event('hollow-woods:startup-ready'));
+    }
+  };
+  game.events.on(Phaser.Core.Events.POST_RENDER, onMenuRendered);
 
   const focusGameCanvas = () => {
     try {
@@ -110,21 +164,30 @@ window.addEventListener('DOMContentLoaded', async () => {
     console.warn('[P2Game SDK] Lỗi khi đăng ký sự kiện vòng đời:', lifecycleErr);
   }
 
-  // Áp dụng pixelated rendering cho canvas khi canvas sẵn sàng và nhận tiêu điểm
   game.events.once(Phaser.Core.Events.READY, () => {
-    if (game.canvas) {
-      game.canvas.tabIndex = 0;
-      game.canvas.style.outline = 'none';
-      ScaleManager.applyPixelatedCanvas(game.canvas);
-      focusGameCanvas();
-    }
+    game.canvas.tabIndex = 0;
+    game.canvas.style.outline = 'none';
+    const updateSampling = () => ScaleManager.applyCanvasSampling(game.canvas);
+    updateSampling();
+    game.scale.on(Phaser.Scale.Events.RESIZE, updateSampling);
+    game.events.once(Phaser.Core.Events.DESTROY, () => {
+      game.scale.off(Phaser.Scale.Events.RESIZE, updateSampling);
+    });
+    focusGameCanvas();
   });
+}
 
-  // Tự động căn chỉnh và tối ưu khi thay đổi kích thước cửa sổ
-  window.addEventListener('resize', () => {
-    if (game.canvas) {
-      ScaleManager.applyPixelatedCanvas(game.canvas);
+window.addEventListener('DOMContentLoaded', () => {
+  void startGame().catch((error: unknown) => {
+    console.error('[HOLLOW WOODS startup]', error);
+    const status = document.getElementById('game-startup');
+    const message = document.getElementById('game-startup-message');
+    if (status) status.dataset.state = 'error';
+    if (message) {
+      message.textContent = error instanceof Error && error.message.startsWith('P2Game')
+        ? error.message
+        : 'Không thể khởi động trò chơi. Hãy kiểm tra kết nối rồi tải lại.';
     }
   });
-});
+}, { once: true });
 

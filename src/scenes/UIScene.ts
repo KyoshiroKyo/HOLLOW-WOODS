@@ -26,6 +26,16 @@ import { ItemTooltipHelper } from '../ui/ItemTooltipHelper';
 import { QuickCraftSidebar } from '../ui/QuickCraftSidebar';
 import { CampSanctuarySystem } from '../systems/CampSanctuarySystem';
 import { QuestSystem } from '../systems/QuestSystem';
+import type { GameScene } from './GameScene';
+
+const RUNNING_LABELS = {
+  normal: { text: 'Bình thường', color: '#C8CFC2' },
+  sprinting: { text: 'Đang chạy', color: '#E8DFC8' },
+  low_stamina: { text: 'Sắp hụt sức', color: '#feca57' },
+  exhausted: { text: 'Hồi sức', color: '#ff9f75' },
+} as const;
+const DIALOGUE_BOTTOM = 685;
+const DIALOGUE_HEIGHT = 240;
 
 export interface QuickSlotRef {
   id: string;
@@ -37,6 +47,7 @@ export interface QuickSlotRef {
 
 export class UIScene extends Phaser.Scene implements IDialogueView {
   private playerState!: PlayerState;
+  private hudVisible = true;
 
   // Khung nền chỉ số sinh tồn bán trong suốt (C4-13-07)
   private statCardBg!: Phaser.GameObjects.Graphics;
@@ -51,6 +62,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   private statIconImages: Phaser.GameObjects.Image[] = [];
   private healthValText!: Phaser.GameObjects.Text;
   private staminaValText!: Phaser.GameObjects.Text;
+  private runningStateText!: Phaser.GameObjects.Text;
   private oilValText!: Phaser.GameObjects.Text;
   private composureValText!: Phaser.GameObjects.Text;
   private lanternStatusBg!: Phaser.GameObjects.Graphics;
@@ -243,6 +255,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   public create(): void {
+    this.hudVisible = true;
     // Đảm bảo Camera UI luôn hiển thị ở tỉ lệ chuẩn zoom = 1.0 không bị phóng to
     this.cameras.main.setZoom(1.0);
 
@@ -303,20 +316,26 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     // 1c. Bổ sung các nhãn số liệu rõ nét cho 3 thanh chỉ số sinh tồn (Căn lề chuẩn x: 228)
     this.healthValText = HDTextHelper.createText(this, 228, 32, 'Sinh Lực: 100/100', {
-      fontSize: '10px',
+      fontSize: '11.5px',
       fontStyle: 'bold',
       color: '#ff7675',
       stroke: '#000000',
-      strokeThickness: 2
+      strokeThickness: 1
     }).setDepth(8053);
 
     this.staminaValText = HDTextHelper.createText(this, 228, 48, 'Thể Lực: 100/100', {
-      fontSize: '10px',
+      fontSize: '11.5px',
       fontStyle: 'bold',
       color: '#feca57',
       stroke: '#000000',
-      strokeThickness: 2
+      strokeThickness: 1
     }).setDepth(8053);
+
+    this.runningStateText = HDTextHelper.createText(this, 377, 15, RUNNING_LABELS.normal.text, {
+      fontSize: '11.5px',
+      fontStyle: 'bold',
+      color: RUNNING_LABELS.normal.color
+    }).setOrigin(1, 0).setDepth(8053);
 
     this.oilValText = HDTextHelper.createText(this, -999, -999, '', {
       fontSize: '10px',
@@ -327,11 +346,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     }).setVisible(false).setDepth(8053);
 
     this.composureValText = HDTextHelper.createText(this, 228, 64, 'Tinh Thần: 100/100', {
-      fontSize: '10px',
+      fontSize: '11.5px',
       fontStyle: 'bold',
       color: '#a29bfe',
       stroke: '#000000',
-      strokeThickness: 2
+      strokeThickness: 1
     }).setDepth(8053);
 
     // 2. Hàng phụ bên dưới khung chính (y: 98, h: 22): Hào quang [F] + Độ Ẩm + Thân Nhiệt (V15-54)
@@ -391,18 +410,21 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     }).setDepth(8002);
 
     this.questTitleText = HDTextHelper.createText(this, questBoxX + 12, questBoxY + 26, '', {
-      fontSize: '12px',
+      fontSize: '12.5px',
       fontStyle: 'bold',
       color: '#f5eedc',
+      wordWrap: { width: questBoxW - 32, useAdvancedWrap: true },
+      maxLines: 2,
       stroke: '#0c0805',
       strokeThickness: 2
     }).setDepth(8002);
 
     this.questTrackerText = HDTextHelper.createText(this, questBoxX + 12, questBoxY + 45, '', {
-      fontSize: '11px',
+      fontSize: '12px',
       color: '#d8cfbe',
-      wordWrap: { width: questBoxW - 32 },
-      lineSpacing: 2,
+      wordWrap: { width: questBoxW - 32, useAdvancedWrap: true },
+      maxLines: 6,
+      lineSpacing: 3,
       stroke: '#0c0805',
       strokeThickness: 1
     }).setDepth(8002);
@@ -552,9 +574,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.promptContainer.add(this.promptBg);
 
     this.promptText = HDTextHelper.createText(this, 0, 0, '', {
-      fontSize: '12px',
+      fontSize: '14px',
       fontStyle: 'bold',
-      color: '#f1c40f',
+      color: '#ffe3a6',
+      wordWrap: { width: 308, useAdvancedWrap: true },
       stroke: '#000000',
       strokeThickness: 2
     }).setOrigin(0.5, 0.5);
@@ -713,6 +736,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       });
       // V15-44: Xử lý phím tắt toggle giao diện không bị chặn bởi isAnyModalOpen
       this.input.keyboard.on('keydown-C', () => {
+        if (this.isDialogueActive) return;
         if (this.craftingModal && this.craftingModal.isOpen) {
           this.craftingModal.close();
           return;
@@ -723,6 +747,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         this.toggleCrafting();
       });
       this.input.keyboard.on('keydown-I', () => {
+        if (this.isDialogueActive) return;
         if (this.craftingModal && this.craftingModal.isOpen) {
           this.craftingModal.close();
           return;
@@ -733,6 +758,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         this.toggleCrafting();
       });
       this.input.keyboard.on('keydown-J', () => {
+        if (this.isDialogueActive) return;
         if (this.journalModal && this.journalModal.isOpen) {
           this.journalModal.close();
           return;
@@ -743,6 +769,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         this.toggleJournal();
       });
       this.input.keyboard.on('keydown-ESC', () => {
+        if (this.isDialogueActive) return;
         if (this.craftingModal && this.craftingModal.isOpen) { this.craftingModal.close(); return; }
         if (this.journalModal && this.journalModal.isOpen) { this.journalModal.close(); return; }
         if (this.tornPageModal && this.tornPageModal.isOpen) { this.tornPageModal.close(); return; }
@@ -863,6 +890,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.lastMaxS = maxS;
       this.staminaValText.setText(`Thể Lực: ${curS}/${maxS}`);
       this.staminaValText.setPosition(228, 48);
+    }
+    const runningState = (this.scene.get('GameScene') as GameScene | null)?.getRunningState() ?? 'normal';
+    const runningLabel = RUNNING_LABELS[runningState];
+    if (this.runningStateText && this.runningStateText.text !== runningLabel.text) {
+      this.runningStateText.setText(runningLabel.text).setColor(runningLabel.color);
     }
 
     const curC = Math.round(stats.composure);
@@ -1062,9 +1094,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
       // Số lượng xếp chồng ở góc dưới phải (x2, x10)
       const countText = HDTextHelper.createText(this, slotX + slotSize / 2 - 2, slotSize / 2 - 2, '', {
-        fontSize: '10.5px',
+        fontSize: '12px',
         fontStyle: 'bold',
-        color: '#2ecc71',
+        color: '#f3eddc',
         stroke: '#000000',
         strokeThickness: 2
       }).setOrigin(1, 1);
@@ -2328,6 +2360,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       }
       this.questBgSprite.setPosition(questBoxX + questBoxW / 2, questBoxY + questBoxH / 2);
       this.questBgSprite.setDisplaySize(questBoxW, questBoxH);
+      this.questBgSprite.setVisible(this.hudVisible);
     }
 
     this.questBg.clear();
@@ -2367,8 +2400,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         this.questHeaderText.setText(`📜 NHIỆM VỤ HIỆN TẠI [J] — CHẶNG ${stageInfo.stageNumber}/7:`);
         this.questHeaderText.setPosition(questBoxX + 12, questBoxY + 8);
       }
-      if (this.questTitleText) this.questTitleText.setVisible(true);
-      if (this.questTrackerText) this.questTrackerText.setVisible(true);
+      if (this.questTitleText) this.questTitleText.setVisible(this.hudVisible);
+      if (this.questTrackerText) this.questTrackerText.setVisible(this.hudVisible);
     }
   }
 
@@ -2387,11 +2420,13 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.questHeaderText.setText(`📜 NHIỆM VỤ HIỆN TẠI [J] — CHẶNG ${stageInfo.stageNumber}/7:`);
     }
 
+    let layoutChanged = false;
     if (this.questTitleText) {
       const fullTitle = `${stageInfo.title}`;
       if (this.lastQuestTitle !== fullTitle) {
         this.lastQuestTitle = fullTitle;
         this.questTitleText.setText(fullTitle);
+        layoutChanged = true;
       }
     }
 
@@ -2403,9 +2438,12 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       if (this.lastQuestTaskText !== fullTaskText) {
         this.lastQuestTaskText = fullTaskText;
         this.questTrackerText.setText(fullTaskText);
-        this.questTrackerText.setColor('#d8cfbe');
-        this.redrawQuestBox();
+        layoutChanged = true;
       }
+    }
+    if (layoutChanged && this.questTitleText && this.questTrackerText) {
+      this.questTrackerText.setY(this.questTitleText.y + this.questTitleText.height + 4);
+      this.redrawQuestBox();
     }
   }
 
@@ -2824,6 +2862,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
    * Sử dụng khi mở Modal / Hộp thoại hoặc Cutscene để triệt tiêu đè chữ (C4-13-07)
    */
   public setHUDVisible(visible: boolean): void {
+    this.hudVisible = visible;
     if (this.statCardSprite) this.statCardSprite.setVisible(visible);
     if (this.statCardBg) this.statCardBg.setVisible(visible);
     if (this.playerNameText) this.playerNameText.setVisible(visible);
@@ -2834,6 +2873,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     }
     if (this.healthValText) this.healthValText.setVisible(visible);
     if (this.staminaValText) this.staminaValText.setVisible(visible);
+    if (this.runningStateText) this.runningStateText.setVisible(visible);
     if (this.oilValText) this.oilValText.setVisible(visible);
     if (this.composureValText) this.composureValText.setVisible(visible);
     if (this.lanternStatusBg) this.lanternStatusBg.setVisible(visible);
@@ -2841,9 +2881,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.questBg) this.questBg.setVisible(visible);
     if (this.questBgSprite) this.questBgSprite.setVisible(visible);
     if (this.questHeaderText) this.questHeaderText.setVisible(visible);
-    if (this.questTitleText) this.questTitleText.setVisible(visible);
-    if (this.questTrackerText) this.questTrackerText.setVisible(visible);
+    if (this.questTitleText) this.questTitleText.setVisible(visible && !this.isQuestCollapsed);
+    if (this.questTrackerText) this.questTrackerText.setVisible(visible && !this.isQuestCollapsed);
     if (this.questToggleBtn) this.questToggleBtn.setVisible(visible);
+    if (this.questToggleZone?.input) this.questToggleZone.input.enabled = visible;
+    if (this.zoneBadgeContainer) this.zoneBadgeContainer.setVisible(visible);
     if (this.quickSlotContainer) this.quickSlotContainer.setVisible(visible);
     if (this.verticalTaskbarContainer) this.verticalTaskbarContainer.setVisible(visible);
     if (this.quickCraftSidebar) this.quickCraftSidebar.setVisible(visible);
@@ -2890,9 +2932,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
   public toggleCrafting(): void {
     if (this.gameOverModal && this.gameOverModal.isOpen) return;
-    if (this.isDialogueActive) {
-      this.hideDialogue();
-    }
+    if (this.isDialogueActive) return;
     AudioManager.getInstance().playInteract();
     if (this.pauseModal && this.pauseModal.isOpen) {
       this.pauseModal.close();
@@ -2909,9 +2949,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
   public openCraftingBench(): void {
     if (this.gameOverModal && this.gameOverModal.isOpen) return;
-    if (this.isDialogueActive) {
-      this.hideDialogue();
-    }
+    if (this.isDialogueActive) return;
     AudioManager.getInstance().playInteract();
     if (this.pauseModal && this.pauseModal.isOpen) {
       this.pauseModal.close();
@@ -2930,9 +2968,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
   public toggleJournal(): void {
     if (this.gameOverModal && this.gameOverModal.isOpen) return;
-    if (this.isDialogueActive) {
-      this.hideDialogue();
-    }
+    if (this.isDialogueActive) return;
     AudioManager.getInstance().playInteract();
     if (this.pauseModal && this.pauseModal.isOpen) {
       this.pauseModal.close();
@@ -2950,9 +2986,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
   public openWorldMap(): void {
     if (this.gameOverModal && this.gameOverModal.isOpen) return;
-    if (this.isDialogueActive) {
-      this.hideDialogue();
-    }
+    if (this.isDialogueActive) return;
     AudioManager.getInstance().playInteract();
     if (this.pauseModal && this.pauseModal.isOpen) {
       this.pauseModal.close();
@@ -2966,9 +3000,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
   public togglePause(): void {
     if (this.gameOverModal && this.gameOverModal.isOpen) return;
-    if (this.isDialogueActive) {
-      this.hideDialogue();
-    }
+    if (this.isDialogueActive) return;
     AudioManager.getInstance().playInteract();
     if (this.craftingModal && this.craftingModal.isOpen) {
       this.craftingModal.close();
@@ -3109,6 +3141,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
   public toggleEquipment(): void {
     if (this.gameOverModal && this.gameOverModal.isOpen) return;
+    if (this.isDialogueActive) return;
     const modal = this.getEquipmentModal();
     modal.toggle();
   }
@@ -3146,7 +3179,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
   public openTornPage(entry: TornPageEntry, onStowCallback?: () => void): void {
     if (this.gameOverModal && this.gameOverModal.isOpen) return;
-    if (this.isDialogueActive) this.hideDialogue();
+    if (this.isDialogueActive) return;
     if (this.pauseModal && this.pauseModal.isOpen) this.pauseModal.close();
     if (this.craftingModal && this.craftingModal.isOpen) this.craftingModal.close();
     if (this.journalModal && this.journalModal.isOpen) this.journalModal.close();
@@ -3179,6 +3212,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   public toggleWorldMap(): boolean {
+    if (this.isDialogueActive) return false;
     const now = performance.now();
     if (now - this.lastWorldMapToggleTime < 250) {
       return this.parchmentWorldMapModal ? this.parchmentWorldMapModal.isOpen : false;
@@ -3351,17 +3385,17 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   /**
-   * Dựng khung hộp thoại chuẩn HD 1280×720 đặt tại (640, 595) kích thước 1060×180 px (GATE 1A - V15-25)
+   * Dựng khung hộp thoại ở đáy Canvas với chỗ trống cho lời thoại dài và lời nhắc tiếp tục.
    */
   private buildDialogueUI(): void {
     if (this.dialogueContainer) return;
 
     const boxWidth = 1060;
-    const boxHeight = 180;
+    const boxHeight = DIALOGUE_HEIGHT;
     const halfW = boxWidth / 2;
     const halfH = boxHeight / 2;
 
-    this.dialogueContainer = this.add.container(640, 595);
+    this.dialogueContainer = this.add.container(640, DIALOGUE_BOTTOM - halfH);
     this.dialogueContainer.setDepth(9000);
 
     // V152-06B: Khung hộp thoại Pixel Art từ UI Pack
@@ -3458,8 +3492,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.dialogueContentText = HDTextHelper.createText(this, -halfW + 120, -halfH + 54, '', {
       fontSize: '18px',
       color: '#f5eedc',
-      wordWrap: { width: boxWidth - 160 },
-      lineSpacing: 7,
+      wordWrap: { width: boxWidth - 176, useAdvancedWrap: true },
+      lineSpacing: 4,
       stroke: '#000000',
       strokeThickness: 1.5,
       padding: { left: 8, right: 8, top: 4, bottom: 4 }
@@ -3521,7 +3555,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       }
       if (this.textures.exists(key)) {
         this.dialoguePortraitSprite.setTexture(key);
-        this.dialoguePortraitSprite.setDisplaySize(64, 64);
+        const frame = this.dialoguePortraitSprite.frame;
+        this.dialoguePortraitSprite.setScale(64 / Math.max(frame.width, frame.height));
         this.dialoguePortraitSprite.setVisible(true);
       } else {
         this.dialoguePortraitSprite.setVisible(false);
@@ -3558,7 +3593,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
    */
   public showChoices(choices: Array<{ text: string; index: number }>, onSelect: (index: number) => void): void {
     if (!this.dialogueChoicesContainer) {
-      this.dialogueChoicesContainer = this.add.container(640, 485);
+      this.dialogueChoicesContainer = this.add.container(640, DIALOGUE_BOTTOM - DIALOGUE_HEIGHT - 20);
       this.dialogueChoicesContainer.setDepth(9100);
     }
 

@@ -13,7 +13,7 @@
  */
 
 import * as Phaser from 'phaser';
-import { SatyrPlayer } from '../entities/SatyrPlayer';
+import { BlackKnightPlayer } from '../entities/BlackKnightPlayer';
 import { ZoneId } from '../types';
 import { HDTextHelper } from './HDTextHelper';
 import { TILED_PIPELINE_CONFIG } from '../config/tiledPipelineConfig';
@@ -57,7 +57,7 @@ export interface BenchmarkResult {
 export class HitboxDebugInspector {
   private scene: Phaser.Scene;
   private uiScene: Phaser.Scene;
-  private player: SatyrPlayer;
+  private player: BlackKnightPlayer;
   private isEnabled: boolean = false;
   private layers = { showColliders: true, showHitboxes: true, showTriggers: true, showInteractRanges: true, showAIRanges: true, enableObjectPicker: false };
   private f8Key!: Phaser.Input.Keyboard.Key;
@@ -113,7 +113,7 @@ export class HitboxDebugInspector {
   private benchmarkSamples: BenchmarkSample[] = [];
   public lastBenchmarkResult: BenchmarkResult | null = null;
 
-  constructor(scene: Phaser.Scene, player: SatyrPlayer, uiScene?: Phaser.Scene) {
+  constructor(scene: Phaser.Scene, player: BlackKnightPlayer, uiScene?: Phaser.Scene) {
     this.scene = scene;
     this.uiScene = uiScene || scene;
     this.player = player;

@@ -515,7 +515,7 @@ export class CraftingModal {
     };
     drawCloseBtn(false);
 
-    const closeBtnText = HDTextHelper.createText(this.scene, closeBtnX + closeBtnW / 2, topBarY + closeBtnH / 2 + 1, '✕ [I / ESC] Đóng', {
+    const closeBtnText = HDTextHelper.createText(this.scene, closeBtnX + closeBtnW / 2, topBarY + closeBtnH / 2 + 1, '✕ [I / ESC]', {
       fontSize: '11px',
       fontStyle: 'bold',
       color: '#e2d4b7'
@@ -645,7 +645,7 @@ export class CraftingModal {
     this.sidePanelContainer.add(this.detailContainer);
 
     const frameW = w - 36;
-    const frameH = 126;
+    const frameH = 180;
     const innerX = 18;
 
     // Nền khung chi tiết (Nửa gỗ tối, nửa da thuộc ấm)
@@ -688,32 +688,36 @@ export class CraftingModal {
       fontStyle: 'bold',
       color: '#f39c12',
       stroke: '#000000',
-      strokeThickness: 2
+      strokeThickness: 1,
+      maxLines: 2,
+      wordWrap: { width: 290, useAdvancedWrap: true }
     });
 
-    this.detailOutputBadge = HDTextHelper.createText(this.scene, leftX + 190, 34, '', {
+    this.detailOutputBadge = HDTextHelper.createText(this.scene, leftX, 52, '', {
       fontSize: '10.5px',
       fontStyle: 'bold',
       color: '#e67e22'
     });
 
-    this.detailCatTag = HDTextHelper.createText(this.scene, leftX + 250, 35, '', {
-      fontSize: '9.5px',
-      color: '#7f8c8d'
+    this.detailCatTag = HDTextHelper.createText(this.scene, leftX + 92, 52, '', {
+      fontSize: '10.5px',
+      color: '#cbd5e0'
     });
 
     // 3. Mô tả tác dụng công thức (không tràn chữ)
-    this.detailDescText = HDTextHelper.createText(this.scene, leftX, 54, '', {
-      fontSize: '10.5px',
+    this.detailDescText = HDTextHelper.createText(this.scene, leftX, 72, '', {
+      fontSize: '11px',
       color: '#cbd5e0',
-      wordWrap: { width: 290 }
+      maxLines: 3,
+      wordWrap: { width: 290, useAdvancedWrap: true }
     });
 
     // 4. Trạng thái sẵn sàng / thiếu đồ / đang khóa
-    this.detailStatusBadge = HDTextHelper.createText(this.scene, leftX, 98, '', {
+    this.detailStatusBadge = HDTextHelper.createText(this.scene, leftX, 142, '', {
       fontSize: '10px',
       fontStyle: 'bold',
-      color: '#2ecc71'
+      color: '#2ecc71',
+      wordWrap: { width: 290, useAdvancedWrap: true }
     });
 
     this.detailContainer.add([this.detailNameText, this.detailOutputBadge, this.detailCatTag, this.detailDescText, this.detailStatusBadge]);
@@ -947,9 +951,13 @@ export class CraftingModal {
       structures: '[Chế Tác]'
     };
     this.detailCatTag.setText(catLabels[dstCat] || '[Sinh Tồn]');
+    const metaY = this.detailNameText.y + this.detailNameText.height + 3;
+    this.detailOutputBadge.setY(metaY);
+    this.detailCatTag.setPosition(this.detailOutputBadge.x + this.detailOutputBadge.width + 9, metaY);
 
     // 3. Mô tả
     this.detailDescText.setText(recipe.description || 'Chế tạo vật phẩm sinh tồn.');
+    this.detailDescText.setY(metaY + Math.max(this.detailOutputBadge.height, this.detailCatTag.height) + 5);
 
     // 4. Trạng thái
     if (isLocked) {
