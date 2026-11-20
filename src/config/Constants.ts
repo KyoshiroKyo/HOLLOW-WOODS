@@ -37,7 +37,9 @@ export const SATYR_COLS = 22;
 export const SATYR_ROWS = 4;
 
 // The Mossbound Wayfarer (Protagonist V1.2 & V1.5.2) Sprite Sheet & Portrait Keys
-export const WAYFARER_USE_PURE_ARTIST_SPRITES = false;
+// Apply verified artist-based atlases to the animation groups that have all four directions.
+export const WAYFARER_USE_PURE_ARTIST_SPRITES = true;
+export const BLACK_KNIGHT_ARMED_IDLE_KEY = 'black_knight_armed_idle';
 export const WAYFARER_IDLE_KEY = 'wayfarer_idle';
 export const WAYFARER_WALK_KEY = 'wayfarer_walk';
 export const WAYFARER_RUN_KEY = 'wayfarer_run';

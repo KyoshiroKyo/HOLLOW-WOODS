@@ -1,0 +1,697 @@
+{
+  "frames": {
+    "armed_idle_down_0": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_down_1": {
+      "frame": {
+        "x": 64,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_down_2": {
+      "frame": {
+        "x": 128,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_down_3": {
+      "frame": {
+        "x": 192,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_down_4": {
+      "frame": {
+        "x": 256,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_down_5": {
+      "frame": {
+        "x": 320,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_up_0": {
+      "frame": {
+        "x": 0,
+        "y": 64,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_up_1": {
+      "frame": {
+        "x": 64,
+        "y": 64,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_up_2": {
+      "frame": {
+        "x": 128,
+        "y": 64,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_up_3": {
+      "frame": {
+        "x": 192,
+        "y": 64,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_up_4": {
+      "frame": {
+        "x": 256,
+        "y": 64,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_up_5": {
+      "frame": {
+        "x": 320,
+        "y": 64,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_left_0": {
+      "frame": {
+        "x": 0,
+        "y": 128,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_left_1": {
+      "frame": {
+        "x": 64,
+        "y": 128,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_left_2": {
+      "frame": {
+        "x": 128,
+        "y": 128,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_left_3": {
+      "frame": {
+        "x": 192,
+        "y": 128,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_left_4": {
+      "frame": {
+        "x": 256,
+        "y": 128,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_left_5": {
+      "frame": {
+        "x": 320,
+        "y": 128,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_right_0": {
+      "frame": {
+        "x": 0,
+        "y": 192,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_right_1": {
+      "frame": {
+        "x": 64,
+        "y": 192,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_right_2": {
+      "frame": {
+        "x": 128,
+        "y": 192,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_right_3": {
+      "frame": {
+        "x": 192,
+        "y": 192,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_right_4": {
+      "frame": {
+        "x": 256,
+        "y": 192,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "armed_idle_right_5": {
+      "frame": {
+        "x": 320,
+        "y": 192,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    }
+  },
+  "meta": {
+    "image": "black_knight_armed_idle.png",
+    "size": {
+      "w": 384,
+      "h": 256
+    },
+    "scale": "1",
+    "license": "Fellor / BitBlast Studio. In-game use only. See Pixel_Art/Black Knight/License.txt.",
+    "animation": {
+      "loop": true,
+      "frameDurationMs": 70,
+      "order": [
+        "down",
+        "up",
+        "left",
+        "right"
+      ]
+    },
+    "sourceCanvasPx": [
+      144,
+      64
+    ],
+    "sourceContentAnchorPx": [
+      72,
+      63
+    ],
+    "runtimeCropPx": [
+      40,
+      0,
+      104,
+      64
+    ],
+    "runtimeOrigin": [
+      0.5,
+      1
+    ],
+    "origins": {
+      "down": {
+        "artistReference": "Fellor / BitBlast Studio",
+        "artwork": "ImageGen supplemental",
+        "imageGenFile": "exec-e567e595-9b7d-4026-8876-b60e03172a04.png",
+        "imageGenSha256": "8e7146ca7453819c5fd83dab595d215cbcda687f733c1b35c40eadc56e354571",
+        "frames": [
+          {
+            "key": "armed_idle_down_0",
+            "sourceFile": "01.png",
+            "sourceSha256": "8005c9b0a3cf1aede265abd4e62397be51ce8db0885e5d9cbeb6a14425acc0d1",
+            "greenSpillPixelsCorrected": 0,
+            "opaqueBoundsPx": [
+              19,
+              33,
+              46,
+              63
+            ]
+          },
+          {
+            "key": "armed_idle_down_1",
+            "sourceFile": "02.png",
+            "sourceSha256": "1e73a9b5496a164fe8ad6140ac19a540a8a63f9798d12ddc369a839f0b811a95",
+            "greenSpillPixelsCorrected": 2,
+            "opaqueBoundsPx": [
+              18,
+              33,
+              46,
+              63
+            ]
+          },
+          {
+            "key": "armed_idle_down_2",
+            "sourceFile": "03.png",
+            "sourceSha256": "4a1e15feddf2bf00f914668f33c097f8fb21113986ca48c6a2af8a0978c39601",
+            "greenSpillPixelsCorrected": 0,
+            "opaqueBoundsPx": [
+              19,
+              35,
+              46,
+              63
+            ]
+          },
+          {
+            "key": "armed_idle_down_3",
+            "sourceFile": "04.png",
+            "sourceSha256": "e352aec8a76acef48587541c6f591306141c1a374edaccab33a148ab6b806581",
+            "greenSpillPixelsCorrected": 2,
+            "opaqueBoundsPx": [
+              19,
+              35,
+              46,
+              63
+            ]
+          },
+          {
+            "key": "armed_idle_down_4",
+            "sourceFile": "05.png",
+            "sourceSha256": "30873d51a990433e8f1e1be73f1b1139ec03ab22c574542f7848d7dd40b371f3",
+            "greenSpillPixelsCorrected": 1,
+            "opaqueBoundsPx": [
+              19,
+              33,
+              46,
+              63
+            ]
+          },
+          {
+            "key": "armed_idle_down_5",
+            "sourceFile": "06.png",
+            "sourceSha256": "c3ed737c34b2793658d2e2f030d8589ed5ef3e2a55fdb1e6ded0527346117cfd",
+            "greenSpillPixelsCorrected": 1,
+            "opaqueBoundsPx": [
+              19,
+              32,
+              46,
+              63
+            ]
+          }
+        ]
+      },
+      "up": {
+        "artistReference": "Fellor / BitBlast Studio",
+        "artwork": "ImageGen supplemental",
+        "imageGenFile": "exec-fee6450f-cf4e-4838-81ab-fc97ebc08623.png",
+        "imageGenSha256": "c59205a90925f36349e7ed61a339759bda86c75e5dcc3e504e21cf094543903e",
+        "frames": [
+          {
+            "key": "armed_idle_up_0",
+            "sourceFile": "01.png",
+            "sourceSha256": "30b190f4d23d90298ebb9574048874f047cf8b51831132186176a55780271b85",
+            "greenSpillPixelsCorrected": 0,
+            "opaqueBoundsPx": [
+              20,
+              32,
+              46,
+              63
+            ]
+          },
+          {
+            "key": "armed_idle_up_1",
+            "sourceFile": "02.png",
+            "sourceSha256": "a2a22d1e55be191bf704f6a927edfcf9472dd19175bffe116037907442dc017f",
+            "greenSpillPixelsCorrected": 0,
+            "opaqueBoundsPx": [
+              20,
+              33,
+              46,
+              63
+            ]
+          },
+          {
+            "key": "armed_idle_up_2",
+            "sourceFile": "03.png",
+            "sourceSha256": "030f85b3c7ba458266bef050947e2ad914d88032db13ed4256b47329c9d098e5",
+            "greenSpillPixelsCorrected": 0,
+            "opaqueBoundsPx": [
+              20,
+              34,
+              46,
+              63
+            ]
+          },
+          {
+            "key": "armed_idle_up_3",
+            "sourceFile": "04.png",
+            "sourceSha256": "80a51554823478820872a7eb7a07b671097fce1f4c8426387e32b4953275ae29",
+            "greenSpillPixelsCorrected": 0,
+            "opaqueBoundsPx": [
+              20,
+              35,
+              46,
+              63
+            ]
+          },
+          {
+            "key": "armed_idle_up_4",
+            "sourceFile": "05.png",
+            "sourceSha256": "ba0265cfef9de41c5314a61acde101adc24b7edd1a42176aec302dd567f94f3c",
+            "greenSpillPixelsCorrected": 0,
+            "opaqueBoundsPx": [
+              20,
+              33,
+              46,
+              63
+            ]
+          },
+          {
+            "key": "armed_idle_up_5",
+            "sourceFile": "06.png",
+            "sourceSha256": "8129527c94456fad1f757b1d0669fd72128cb82743aad485a6d1b0aa08559b96",
+            "greenSpillPixelsCorrected": 1,
+            "opaqueBoundsPx": [
+              20,
+              32,
+              47,
+              63
+            ]
+          }
+        ]
+      },
+      "right": {
+        "artwork": "Fellor original",
+        "sourceMetadata": "Pixel_Art/Black Knight/Source_Library/03-armed-idle/metadata.json",
+        "frames": [
+          {
+            "key": "armed_idle_right_0",
+            "sourceFile": "01-cell-032.png",
+            "sourceSha256": "0b560750cefdfed16f849c1a64ae259a4ed43d5ea3bfff3ff1037e0a75db1be0",
+            "greenSpillPixelsCorrected": 0,
+            "opaqueBoundsPx": [
+              18,
+              32,
+              48,
+              63
+            ]
+          },
+          {
+            "key": "armed_idle_right_1",
+            "sourceFile": "02-cell-033.png",
+            "sourceSha256": "5e9bdae8f76165e7d94ec8585588088457bf438e8799e6f0c7d24ebcae7a0889",
+            "greenSpillPixelsCorrected": 0,
+            "opaqueBoundsPx": [
+              18,
+              32,
+              48,
+              63
+            ]
+          },
+          {
+            "key": "armed_idle_right_2",
+            "sourceFile": "03-cell-034.png",
+            "sourceSha256": "e0e34b88f2b369f0ad5cc1403f5f18aa7f984ff0f1fad943313441d75fc74ea4",
+            "greenSpillPixelsCorrected": 0,
+            "opaqueBoundsPx": [
+              17,
+              33,
+              48,
+              63
+            ]
+          },
+          {
+            "key": "armed_idle_right_3",
+            "sourceFile": "04-cell-035.png",
+            "sourceSha256": "967b9a542e05a917c2d3a13744c0f0215426a08ad6284ae141cee4ecffb3d8c4",
+            "greenSpillPixelsCorrected": 0,
+            "opaqueBoundsPx": [
+              16,
+              34,
+              48,
+              63
+            ]
+          },
+          {
+            "key": "armed_idle_right_4",
+            "sourceFile": "05-cell-036.png",
+            "sourceSha256": "8ce50907a71f873805108ac89500cda3451c581c2bd39a1b454be333341bc108",
+            "greenSpillPixelsCorrected": 0,
+            "opaqueBoundsPx": [
+              16,
+              34,
+              48,
+              63
+            ]
+          },
+          {
+            "key": "armed_idle_right_5",
+            "sourceFile": "06-cell-037.png",
+            "sourceSha256": "f49697b653eb0e18f76d6eda1c6b367eb25baaf23e7ee6d7cb6b625e3f731460",
+            "greenSpillPixelsCorrected": 0,
+            "opaqueBoundsPx": [
+              17,
+              32,
+              48,
+              63
+            ]
+          }
+        ]
+      },
+      "left": {
+        "artwork": "ImageGen supplemental, LEFT R2",
+        "artistReference": "Fellor / BitBlast Studio",
+        "imageGenFile": "exec-81435f45-b0c9-4979-bb11-64a17a8b4907.png",
+        "imageGenSha256": "9053abcc4536c7128e46d7b80820d736f36ce776df96323f2a686837f33ee8ae",
+        "frames": [
+          {
+            "key": "armed_idle_left_0",
+            "sourceFile": "01.png",
+            "sourceSha256": "75e33698a66aadacc5e46d6b635cf58b8c16233370585dd7fbc88d4ad1451534",
+            "greenSpillPixelsCorrected": 1,
+            "opaqueBoundsPx": [
+              16,
+              33,
+              46,
+              63
+            ]
+          },
+          {
+            "key": "armed_idle_left_1",
+            "sourceFile": "02.png",
+            "sourceSha256": "745c285c036a03899471e387503389cbc68c88b9be1d817262f30962a1f08d39",
+            "greenSpillPixelsCorrected": 1,
+            "opaqueBoundsPx": [
+              14,
+              33,
+              46,
+              63
+            ]
+          },
+          {
+            "key": "armed_idle_left_2",
+            "sourceFile": "03.png",
+            "sourceSha256": "2261684e3a9a09ebc9b8da228b591c71432a255d6846c07e9db756ad5e6eec47",
+            "greenSpillPixelsCorrected": 3,
+            "opaqueBoundsPx": [
+              13,
+              32,
+              46,
+              63
+            ]
+          },
+          {
+            "key": "armed_idle_left_3",
+            "sourceFile": "04.png",
+            "sourceSha256": "bf2df77d6b4fcb3ff8ca4b78e05717e31ae00d577ba901ad6afea79b28070e72",
+            "greenSpillPixelsCorrected": 1,
+            "opaqueBoundsPx": [
+              11,
+              32,
+              46,
+              63
+            ]
+          },
+          {
+            "key": "armed_idle_left_4",
+            "sourceFile": "05.png",
+            "sourceSha256": "01ae00e80003a5d6c5f6b5ff934076f23e542dca95b8a663f37e6d60e4ee0be1",
+            "greenSpillPixelsCorrected": 5,
+            "opaqueBoundsPx": [
+              15,
+              34,
+              46,
+              63
+            ]
+          },
+          {
+            "key": "armed_idle_left_5",
+            "sourceFile": "06.png",
+            "sourceSha256": "ac672fc53443b9a978a0ef7c542a0fc9d5c3b788d92c5ab4af6f009aac133b19",
+            "greenSpillPixelsCorrected": 1,
+            "opaqueBoundsPx": [
+              16,
+              34,
+              46,
+              63
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

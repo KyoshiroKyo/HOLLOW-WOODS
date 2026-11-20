@@ -10,6 +10,8 @@ import {
   SCENE_MAIN_MENU, 
   SATYR_SHEET_KEY, 
   SATYR_PORTRAIT_KEY, 
+  BLACK_KNIGHT_ARMED_IDLE_KEY,
+  WAYFARER_USE_PURE_ARTIST_SPRITES,
   WAYFARER_IDLE_KEY,
   WAYFARER_WALK_KEY,
   WAYFARER_RUN_KEY,
@@ -492,6 +494,14 @@ export class PreloadScene extends Phaser.Scene {
       frameWidth: 640,
       frameHeight: 360,
     });
+
+    if (WAYFARER_USE_PURE_ARTIST_SPRITES) {
+      this.load.atlas(
+        BLACK_KNIGHT_ARMED_IDLE_KEY,
+        'assets/characters/black_knight/black_knight_armed_idle.png',
+        'assets/characters/black_knight/black_knight_armed_idle.json'
+      );
+    }
 
     // 2. Nạp sprite sheet tương thích ngược cho Satyr (trỏ sang Wayfarer Idle đã hợp nhất)
     this.load.spritesheet(SATYR_SHEET_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_idle.png', {

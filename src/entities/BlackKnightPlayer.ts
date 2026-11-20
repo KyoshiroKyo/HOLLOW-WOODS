@@ -1297,24 +1297,8 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       this.directionBufferStartTime = 0;
     }
 
-    // Với The Mossbound Wayfarer (đã có đủ 4 hàng Down/Up/Left/Right), không lật gương flipX.
-    // Với sheet Satyr cũ 50-frame (640×320 chỉ có hướng phải), lật ngang khi sang trái.
-    const isWayfarer = (this.texture && this.texture.key.startsWith('wayfarer_')) || 
-                       (this.anims.currentAnim && this.anims.currentAnim.key.startsWith('wayfarer_'));
-    if (isWayfarer) {
-      this.setFlipX(false);
-    } else {
-      const realFrameCount = this.texture && this.texture.frameTotal > 1 ? this.texture.frameTotal - 1 : 50;
-      if (realFrameCount <= 50) {
-        if (moveX < 0 || this.facing === 'left') {
-          this.setFlipX(true);
-        } else if (moveX > 0 || this.facing === 'right') {
-          this.setFlipX(false);
-        }
-      } else {
-        this.setFlipX(false);
-      }
-    }
+    // Both Wayfarer keys and Satyr aliases use authored directional frames.
+    this.setFlipX(false);
   }
 
   /**
@@ -1322,17 +1306,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
    */
   public setFacing(direction: FacingDirection): void {
     this.facing = direction;
-    const isWayfarer = (this.texture && this.texture.key.startsWith('wayfarer_')) || 
-                       (this.anims.currentAnim && this.anims.currentAnim.key.startsWith('wayfarer_'));
-    if (isWayfarer) {
-      this.setFlipX(false);
-    } else {
-      if (direction === 'left') {
-        this.setFlipX(true);
-      } else if (direction === 'right') {
-        this.setFlipX(false);
-      }
-    }
+    this.setFlipX(false);
     this.playIdleAnim();
   }
 
