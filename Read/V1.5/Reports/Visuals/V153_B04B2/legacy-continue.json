@@ -1,0 +1,22 @@
+{
+  "schema": 3,
+  "loaded": {
+    "zone": "bellhollow",
+    "foot": {
+      "x": 750,
+      "y": 260
+    },
+    "noclip": null,
+    "east": false
+  },
+  "walked": {
+    "zone": "bellhollow",
+    "foot": {
+      "x": 750,
+      "y": 288.3333333333335
+    },
+    "noclip": null,
+    "east": false
+  },
+  "baselineErrors": []
+}

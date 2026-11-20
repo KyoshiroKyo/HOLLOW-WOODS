@@ -1,0 +1,15 @@
+{
+  "before": {
+    "wood": 2,
+    "fuel": 178.49511999999987,
+    "modal": true,
+    "night": "NIGHT"
+  },
+  "after": {
+    "wood": 1,
+    "fuel": 268.4951199999999,
+    "modal": true,
+    "night": "NIGHT"
+  },
+  "errors": []
+}

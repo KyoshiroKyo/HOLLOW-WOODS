@@ -1,0 +1,98 @@
+[
+  {
+    "x": 493,
+    "y": 93.91666666666677,
+    "zone": "bellhollow",
+    "active": "bellhollow",
+    "transition": null,
+    "rotation": 0,
+    "scroll": [
+      -147,
+      -196.36363636363637
+    ],
+    "zoom": 2.2,
+    "view": [
+      202.09090909090912,
+      0,
+      581.8181818181818,
+      327.27272727272725
+    ],
+    "bounds": [
+      0,
+      0,
+      1600,
+      1040
+    ],
+    "follow": true,
+    "shake": false,
+    "composure": 73.12233999999978,
+    "source": "—",
+    "phase": "DAY",
+    "east": false,
+    "noclip": null
+  },
+  {
+    "x": 681.4166666666626,
+    "y": 93.91666666666677,
+    "zone": "bellhollow",
+    "active": "bellhollow",
+    "transition": null,
+    "rotation": 0,
+    "scroll": [
+      22.947836948564145,
+      -196.36363636363637
+    ],
+    "zoom": 2.2,
+    "view": [
+      372.03874603947327,
+      0,
+      581.8181818181818,
+      327.27272727272725
+    ],
+    "bounds": [
+      0,
+      0,
+      1600,
+      1040
+    ],
+    "follow": true,
+    "shake": false,
+    "composure": 77.08721499999974,
+    "source": "—",
+    "phase": "DAY",
+    "east": false,
+    "noclip": null
+  },
+  {
+    "x": 681.4166666666626,
+    "y": 215.74999999999983,
+    "zone": "bellhollow",
+    "active": "bellhollow",
+    "transition": null,
+    "rotation": 0,
+    "scroll": [
+      25.416000769947157,
+      -159.13277334900758
+    ],
+    "zoom": 2.2,
+    "view": [
+      374.50690986085624,
+      37.230863014628795,
+      581.8181818181818,
+      327.27272727272725
+    ],
+    "bounds": [
+      0,
+      0,
+      1600,
+      1040
+    ],
+    "follow": true,
+    "shake": false,
+    "composure": 79.8971499999997,
+    "source": "—",
+    "phase": "DAY",
+    "east": false,
+    "noclip": null
+  }
+]

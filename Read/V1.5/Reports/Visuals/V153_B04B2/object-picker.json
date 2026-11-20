@@ -1,0 +1,309 @@
+{
+  "beforeqa": {
+    "bell": {
+      "targets": {
+        "west": {
+          "label": "Image · Image · gatehouse_garth\nWorld (510, 175) · trỏ (510, 136) · depth 175\nOrigin 0.5,1 · scale 1,1\nVisual 128×136 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+          "rendered": true,
+          "player": {
+            "x": 529,
+            "y": 226
+          },
+          "noclip": false,
+          "dev": true,
+          "candidates": [
+            "Image · Image · gatehouse_garth\nWorld (510, 175) · trỏ (510, 136) · depth 175\nOrigin 0.5,1 · scale 1,1\nVisual 128×136 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow"
+          ]
+        },
+        "finn": {
+          "label": "Finn · npc_finn · errand_boy_walk_sheet\nWorld (665, 280) · trỏ (660, 273) · depth 280\nOrigin 0.5,0.5 · scale 1,1\nVisual 64×64 · Collider 22×14 @ 665,280\nBody dynamic · offset 21,50\nHP — · AI — · npc_finn_idle_left #3\nZoom 2.20× · bellhollow",
+          "rendered": true,
+          "player": {
+            "x": 650,
+            "y": 289
+          },
+          "noclip": false,
+          "dev": true,
+          "candidates": [
+            "TileSprite · TileSprite · fog_smooth\nWorld (0, 0) · trỏ (660, 273) · depth 450\nOrigin 0,0 · scale 1,1\nVisual 1280×720 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+            "Sprite · Sprite · wayfarer_unarmed_idle\nWorld (650, 289) · trỏ (660, 273) · depth 289\nOrigin 0.5,1 · scale 1,1\nVisual 64×64 · Collider 18×12 @ 641,271\nBody dynamic · offset 23,46\nHP 100 · AI — · wayfarer_unarmed_idle_down #1\nZoom 2.20× · bellhollow",
+            "Finn · npc_finn · errand_boy_walk_sheet\nWorld (665, 280) · trỏ (660, 273) · depth 280\nOrigin 0.5,0.5 · scale 1,1\nVisual 64×64 · Collider 22×14 @ 665,280\nBody dynamic · offset 21,50\nHP — · AI — · npc_finn_idle_left #3\nZoom 2.20× · bellhollow"
+          ]
+        },
+        "south": {
+          "label": "Image · Image · tree_mossy_oak_grand\nWorld (728, 556) · trỏ (695, 505) · depth 556\nOrigin 0.5,1 · scale 1.14,1.14\nVisual 91×108 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+          "rendered": true,
+          "player": {
+            "x": 652,
+            "y": 503
+          },
+          "noclip": false,
+          "dev": true,
+          "candidates": [
+            "Image · Image · tree_mossy_oak_grand\nWorld (728, 556) · trỏ (695, 505) · depth 556\nOrigin 0.5,1 · scale 1.14,1.14\nVisual 91×108 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+            "TileSprite · TileSprite · fog_smooth\nWorld (0, 0) · trỏ (695, 505) · depth 450\nOrigin 0,0 · scale 1,1\nVisual 1280×720 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+            "TileSprite · TileSprite · fog_smooth\nWorld (0, 0) · trỏ (695, 505) · depth -7000\nOrigin 0,0 · scale 1,1\nVisual 1280×720 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+            "Image · Image · bellhollow_ground_baked_v12\nWorld (480, -200) · trỏ (695, 505) · depth -10000\nOrigin 0,0 · scale 1,1\nVisual 1120×960 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow"
+          ]
+        },
+        "camp": {
+          "label": "Image · Image · prop_lantern_post\nWorld (900, 335) · trỏ (900, 331) · depth 337\nOrigin 0.38,0.95 · scale 1,1\nVisual 32×64 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+          "rendered": true,
+          "player": {
+            "x": 838,
+            "y": 319
+          },
+          "noclip": false,
+          "dev": true,
+          "candidates": [
+            "Image · Image · prop_lantern_post\nWorld (900, 335) · trỏ (900, 331) · depth 337\nOrigin 0.38,0.95 · scale 1,1\nVisual 32×64 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow"
+          ]
+        },
+        "edda": {
+          "label": "Image · Image · hollow_props_atlas\nWorld (1204, 204) · trỏ (1204, 199) · depth 204\nOrigin 0.5,1 · scale 0.92,0.92\nVisual 46×40 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+          "rendered": true,
+          "player": {
+            "x": 1164,
+            "y": 188
+          },
+          "noclip": false,
+          "dev": true,
+          "candidates": [
+            "Image · Image · hollow_props_atlas\nWorld (1204, 204) · trỏ (1204, 199) · depth 204\nOrigin 0.5,1 · scale 0.92,0.92\nVisual 46×40 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow"
+          ]
+        },
+        "oak": {
+          "label": "Image · Image · decal_glowing_mushrooms\nWorld (760, 120) · trỏ (760, 113) · depth 119\nOrigin 0.5,0.5 · scale 1,1\nVisual 32×24 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+          "rendered": true,
+          "player": {
+            "x": 764,
+            "y": 150
+          },
+          "noclip": false,
+          "dev": true,
+          "candidates": [
+            "Sprite · Sprite · wayfarer_unarmed_idle\nWorld (764, 150) · trỏ (760, 113) · depth 150\nOrigin 0.5,1 · scale 1,1\nVisual 64×64 · Collider 18×12 @ 755,132\nBody dynamic · offset 23,46\nHP 100 · AI — · wayfarer_unarmed_idle_down #1\nZoom 2.20× · bellhollow",
+            "Image · Image · decal_glowing_mushrooms\nWorld (760, 120) · trỏ (760, 113) · depth 119\nOrigin 0.5,0.5 · scale 1,1\nVisual 32×24 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow"
+          ]
+        },
+        "forge": {
+          "label": "Bàn Chế Tạo · Bàn Chế Tạo · __MISSING\nWorld (1214, 373) · trỏ (1238, 376) · depth 0\nOrigin 0,0 · scale 1.5,0.4375\nVisual — · Collider 48×14 @ 1214,373\nBody static · offset 0,0\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+          "rendered": true,
+          "player": {
+            "x": 1245,
+            "y": 424
+          },
+          "noclip": false,
+          "dev": true,
+          "candidates": [
+            "Sprite · Sprite · wayfarer_unarmed_idle\nWorld (1245, 424) · trỏ (1238, 376) · depth 424\nOrigin 0.5,1 · scale 1,1\nVisual 64×64 · Collider 18×12 @ 1236,406\nBody dynamic · offset 23,46\nHP 100 · AI — · wayfarer_unarmed_idle_down #2\nZoom 2.20× · bellhollow",
+            "Bram · npc_bram · blacksmith_sheet\nWorld (1230, 405) · trỏ (1238, 376) · depth 405\nOrigin 0.5,0.5 · scale 1,1\nVisual 64×64 · Collider 22×14 @ 1230,405\nBody dynamic · offset 21,50\nHP — · AI — · npc_bram_idle_down #6\nZoom 2.20× · bellhollow",
+            "Image · Image · hollow_props_atlas\nWorld (1238, 379) · trỏ (1238, 376) · depth 388\nOrigin 0.5,0.72 · scale 1,1\nVisual 67×36 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+            "TileSprite · TileSprite · fog_smooth\nWorld (0, 0) · trỏ (1238, 376) · depth -7000\nOrigin 0,0 · scale 1,1\nVisual 1280×720 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+            "Image · Image · hollow_props_atlas\nWorld (1471, 385) · trỏ (1238, 376) · depth -8000\nOrigin 0.5,0.5 · scale 0.95,0.95\nVisual 486×243 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+            "Image · Image · hollow_props_atlas\nWorld (1339, 395) · trỏ (1238, 376) · depth -8000\nOrigin 0.5,0.5 · scale 0.9,0.85\nVisual 461×218 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+            "Image · Image · bellhollow_ground_baked_v12\nWorld (480, -200) · trỏ (1238, 376) · depth -10000\nOrigin 0,0 · scale 1,1\nVisual 1120×960 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+            "Bàn Chế Tạo · Bàn Chế Tạo · __MISSING\nWorld (1214, 373) · trỏ (1238, 376) · depth 0\nOrigin 0,0 · scale 1.5,0.4375\nVisual — · Collider 48×14 @ 1214,373\nBody static · offset 0,0\nHP — · AI — · — #—\nZoom 2.20× · bellhollow"
+          ]
+        },
+        "hunter": {
+          "label": null,
+          "rendered": false,
+          "player": {
+            "x": 1445.1666666666667,
+            "y": 736
+          },
+          "noclip": false,
+          "dev": true,
+          "candidates": [
+            ""
+          ]
+        }
+      },
+      "errors": []
+    },
+    "outer": {
+      "targets": {
+        "hunter-fire": {
+          "label": "Image · Image · campfire_tier2\nWorld (1338, 740) · trỏ (1338, 731) · depth 739\nOrigin 0.5,0.85 · scale 0.9999983886792906,1.0000032226414188\nVisual 48×48 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · outer_woods",
+          "rendered": true,
+          "player": {
+            "x": 1371,
+            "y": 736
+          },
+          "noclip": false,
+          "dev": true,
+          "candidates": [
+            "Image · Image · campfire_tier2\nWorld (1338, 740) · trỏ (1338, 731) · depth 739\nOrigin 0.5,0.85 · scale 0.9999983886792906,1.0000032226414188\nVisual 48×48 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · outer_woods"
+          ]
+        },
+        "quiet-fire": {
+          "label": "Image · Image · campfire_tier2\nWorld (1470, 715) · trỏ (1470, 706) · depth 714\nOrigin 0.5,0.85 · scale 0.9942792907782885,1.0095345153695192\nVisual 48×48 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · outer_woods",
+          "rendered": true,
+          "player": {
+            "x": 1448,
+            "y": 739
+          },
+          "noclip": false,
+          "dev": true,
+          "candidates": [
+            "Sprite · Sprite · wayfarer_unarmed_idle\nWorld (1448, 739) · trỏ (1470, 706) · depth 739\nOrigin 0.5,1 · scale 1,1\nVisual 64×64 · Collider 18×12 @ 1439,721\nBody dynamic · offset 23,46\nHP 100 · AI — · wayfarer_unarmed_idle_down #1\nZoom 2.20× · outer_woods",
+            "Image · Image · campfire_tier2\nWorld (1470, 715) · trỏ (1470, 706) · depth 714\nOrigin 0.5,0.85 · scale 0.9942792907782885,1.0095345153695192\nVisual 48×48 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · outer_woods"
+          ]
+        }
+      },
+      "errors": []
+    }
+  },
+  "afterqa": {
+    "bell": {
+      "targets": {
+        "west": {
+          "label": "Image · Image · gatehouse_garth\nWorld (562, 160) · trỏ (558, 136) · depth 160\nOrigin 0.5,1 · scale 1,1\nVisual 128×136 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+          "rendered": true,
+          "player": {
+            "x": 529,
+            "y": 226
+          },
+          "noclip": false,
+          "dev": true,
+          "candidates": [
+            "Image · Image · gatehouse_garth\nWorld (562, 160) · trỏ (558, 136) · depth 160\nOrigin 0.5,1 · scale 1,1\nVisual 128×136 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow"
+          ]
+        },
+        "finn": {
+          "label": "Finn · npc_finn · errand_boy_walk_sheet\nWorld (914, 231) · trỏ (909, 220) · depth 231\nOrigin 0.5,0.5 · scale 1,1\nVisual 64×64 · Collider 22×14 @ 914,231\nBody dynamic · offset 21,50\nHP — · AI — · npc_finn_idle_left #3\nZoom 2.20× · bellhollow",
+          "rendered": true,
+          "player": {
+            "x": 894,
+            "y": 242
+          },
+          "noclip": false,
+          "dev": true,
+          "candidates": [
+            "TileSprite · TileSprite · fog_smooth\nWorld (0, 0) · trỏ (909, 220) · depth 450\nOrigin 0,0 · scale 1,1\nVisual 1280×720 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+            "Sprite · Sprite · wayfarer_unarmed_idle\nWorld (894, 242) · trỏ (909, 220) · depth 242\nOrigin 0.5,1 · scale 1,1\nVisual 64×64 · Collider 18×12 @ 885,224\nBody dynamic · offset 23,46\nHP 100 · AI — · wayfarer_unarmed_idle_down #1\nZoom 2.20× · bellhollow",
+            "Finn · npc_finn · errand_boy_walk_sheet\nWorld (914, 231) · trỏ (909, 220) · depth 231\nOrigin 0.5,0.5 · scale 1,1\nVisual 64×64 · Collider 22×14 @ 914,231\nBody dynamic · offset 21,50\nHP — · AI — · npc_finn_idle_left #3\nZoom 2.20× · bellhollow"
+          ]
+        },
+        "south": {
+          "label": "Image · Image · prop_signpost_wood\nWorld (695, 511) · trỏ (695, 505) · depth 511\nOrigin 0.5,0.92 · scale 1,1\nVisual 36×48 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+          "rendered": true,
+          "player": {
+            "x": 652,
+            "y": 503
+          },
+          "noclip": false,
+          "dev": true,
+          "candidates": [
+            "Image · Image · tree_mossy_oak_grand\nWorld (728, 556) · trỏ (695, 505) · depth 556\nOrigin 0.5,1 · scale 1.14,1.14\nVisual 91×108 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+            "Image · Image · prop_signpost_wood\nWorld (695, 511) · trỏ (695, 505) · depth 511\nOrigin 0.5,0.92 · scale 1,1\nVisual 36×48 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow"
+          ]
+        },
+        "camp": {
+          "label": "Image · Image · campfire_tier1\nWorld (860, 315) · trỏ (860, 307) · depth 314\nOrigin 0.5,0.85 · scale 0.9800564779822876,1.0398870440354249\nVisual 47×50 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+          "rendered": true,
+          "player": {
+            "x": 838,
+            "y": 319
+          },
+          "noclip": false,
+          "dev": true,
+          "candidates": [
+            "Sprite · Sprite · wayfarer_unarmed_idle\nWorld (838, 319) · trỏ (860, 307) · depth 319\nOrigin 0.5,1 · scale 1,1\nVisual 64×64 · Collider 18×12 @ 829,301\nBody dynamic · offset 23,46\nHP 100 · AI — · wayfarer_unarmed_idle_down #4\nZoom 2.20× · bellhollow",
+            "Image · Image · campfire_tier1\nWorld (860, 315) · trỏ (860, 307) · depth 314\nOrigin 0.5,0.85 · scale 0.9800564779822876,1.0398870440354249\nVisual 47×50 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow"
+          ]
+        },
+        "edda": {
+          "label": "Image · Image · hollow_props_atlas\nWorld (1204, 204) · trỏ (1204, 199) · depth 204\nOrigin 0.5,1 · scale 0.92,0.92\nVisual 46×40 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+          "rendered": true,
+          "player": {
+            "x": 1164,
+            "y": 188
+          },
+          "noclip": false,
+          "dev": true,
+          "candidates": [
+            "Image · Image · hollow_props_atlas\nWorld (1204, 204) · trỏ (1204, 199) · depth 204\nOrigin 0.5,1 · scale 0.92,0.92\nVisual 46×40 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow"
+          ]
+        },
+        "oak": {
+          "label": "Image · Image · hollow_props_atlas\nWorld (760, 120) · trỏ (760, 113) · depth 120\nOrigin 0.5,1 · scale 1,1\nVisual 43×61 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+          "rendered": true,
+          "player": {
+            "x": 764,
+            "y": 150
+          },
+          "noclip": false,
+          "dev": true,
+          "candidates": [
+            "Sprite · Sprite · wayfarer_unarmed_idle\nWorld (764, 150) · trỏ (760, 113) · depth 150\nOrigin 0.5,1 · scale 1,1\nVisual 64×64 · Collider 18×12 @ 755,132\nBody dynamic · offset 23,46\nHP 100 · AI — · wayfarer_unarmed_idle_down #4\nZoom 2.20× · bellhollow",
+            "Image · Image · hollow_props_atlas\nWorld (760, 120) · trỏ (760, 113) · depth 120\nOrigin 0.5,1 · scale 1,1\nVisual 43×61 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow"
+          ]
+        },
+        "forge": {
+          "label": "Image · Image · hollow_props_atlas\nWorld (1292, 383) · trỏ (1292, 375) · depth 383\nOrigin 0.5,0.85 · scale 1,1\nVisual 67×36 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+          "rendered": true,
+          "player": {
+            "x": 1245,
+            "y": 424
+          },
+          "noclip": false,
+          "dev": true,
+          "candidates": [
+            "Image · Image · hollow_props_atlas\nWorld (1292, 383) · trỏ (1292, 375) · depth 383\nOrigin 0.5,0.85 · scale 1,1\nVisual 67×36 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+            "Image · Image · hollow_props_atlas\nWorld (1469, 385) · trỏ (1292, 375) · depth -8000\nOrigin 0.5,0.5 · scale 0.95,0.95\nVisual 486×243 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+            "Image · Image · hollow_props_atlas\nWorld (1337, 395) · trỏ (1292, 375) · depth -8000\nOrigin 0.5,0.5 · scale 0.9,0.85\nVisual 461×218 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow",
+            "Image · Image · bellhollow_ground_baked_v12\nWorld (480, -200) · trỏ (1292, 375) · depth -10000\nOrigin 0,0 · scale 1,1\nVisual 1120×960 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · bellhollow"
+          ]
+        },
+        "hunter": {
+          "label": null,
+          "rendered": false,
+          "player": {
+            "x": 1443.5,
+            "y": 736
+          },
+          "noclip": false,
+          "dev": true,
+          "candidates": [
+            ""
+          ]
+        }
+      },
+      "errors": []
+    },
+    "outer": {
+      "targets": {
+        "hunter-fire": {
+          "label": "Image · Image · campfire_unlit\nWorld (1320, 725) · trỏ (1320, 719) · depth 724\nOrigin 0.5,0.85 · scale 1,1\nVisual 48×48 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · outer_woods",
+          "rendered": true,
+          "player": {
+            "x": 1371,
+            "y": 736
+          },
+          "noclip": false,
+          "dev": true,
+          "candidates": [
+            "Image · Image · campfire_unlit\nWorld (1320, 725) · trỏ (1320, 719) · depth 724\nOrigin 0.5,0.85 · scale 1,1\nVisual 48×48 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · outer_woods"
+          ]
+        },
+        "quiet-fire": {
+          "label": "Image · Image · campfire_tier2\nWorld (1470, 715) · trỏ (1470, 706) · depth 714\nOrigin 0.5,0.85 · scale 0.9874538629450739,1.020910228424877\nVisual 47×49 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · outer_woods",
+          "rendered": true,
+          "player": {
+            "x": 1448,
+            "y": 739
+          },
+          "noclip": false,
+          "dev": true,
+          "candidates": [
+            "Sprite · Sprite · wayfarer_unarmed_idle\nWorld (1448, 739) · trỏ (1470, 706) · depth 739\nOrigin 0.5,1 · scale 1,1\nVisual 64×64 · Collider 18×12 @ 1439,721\nBody dynamic · offset 23,46\nHP 100 · AI — · wayfarer_unarmed_idle_down #1\nZoom 2.20× · outer_woods",
+            "Image · Image · campfire_tier2\nWorld (1470, 715) · trỏ (1470, 706) · depth 714\nOrigin 0.5,0.85 · scale 0.9874538629450739,1.020910228424877\nVisual 47×49 · Collider —\nBody — · offset —\nHP — · AI — · — #—\nZoom 2.20× · outer_woods"
+          ]
+        }
+      },
+      "errors": []
+    }
+  }
+}

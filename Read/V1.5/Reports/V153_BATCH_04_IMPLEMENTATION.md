@@ -18,3 +18,8 @@ Báo cáo bàn giao R10 chốt các sửa tiếp theo ở BUG-024, BUG-031, BUG-
 ## 04B1
 
 Sửa commit zone tại mép cổng Tây, vùng an toàn Farm và terrain qua Workshop/các vùng mở rộng. Đồng bộ World Map với transitions runtime và phục hồi ba TSX từ archive editor. Chromium ghi 16 tuyến qua, 25 đích khóa theo tiến trình. Hosted còn BLOCKED. [Báo cáo 04B1](V153_B04B1_WORLD_CAMERA_REPORT.md).
+
+
+## 04B2 · Đồ họa và bố trí khu demo
+
+Bản bàn giao PARTIAL. Đã kiểm tra Chromium đối với Finn, Garth, nhà và bàn rèn, biển Nam, trại Bellhollow, Hốc Sồi và hai bếp Outer Woods. Luồng Pause → Save → Continue giữ schema 3. Hai bụi Edda chờ Owner định danh. Culling và công trình ở vùng chưa đi thực địa, hosted và các gate phát hành vẫn mở. [Báo cáo 04B2](V153_B04B2_WORLD_ART_LAYOUT_REPORT.md)

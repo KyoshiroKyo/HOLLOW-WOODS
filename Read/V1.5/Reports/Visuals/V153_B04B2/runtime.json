@@ -1,0 +1,1709 @@
+{
+  "checks": {
+    "newGameNpc": [
+      {
+        "id": "npc_garth",
+        "x": 540,
+        "y": 205,
+        "home": [
+          540,
+          205
+        ],
+        "patrol": [
+          532,
+          548
+        ],
+        "anchor": [
+          0,
+          0,
+          0.5,
+          1
+        ],
+        "texture": "garth_walk_sheet"
+      },
+      {
+        "id": "npc_edda",
+        "x": 1160,
+        "y": 160,
+        "home": [
+          1160,
+          160
+        ],
+        "patrol": [
+          null,
+          null
+        ],
+        "anchor": [
+          0,
+          0,
+          0.5,
+          1
+        ],
+        "texture": "edda_idle_sheet"
+      },
+      {
+        "id": "npc_neris",
+        "x": 570,
+        "y": 460,
+        "home": [
+          570,
+          460
+        ],
+        "patrol": [
+          null,
+          null
+        ],
+        "anchor": [
+          0,
+          0,
+          0.5,
+          1
+        ],
+        "texture": "neris_idle_sheet"
+      },
+      {
+        "id": "npc_bram",
+        "x": 1230,
+        "y": 405,
+        "home": [
+          1230,
+          405
+        ],
+        "patrol": [
+          null,
+          null
+        ],
+        "anchor": [
+          0,
+          0,
+          0.5,
+          1
+        ],
+        "texture": "blacksmith_sheet"
+      },
+      {
+        "id": "npc_finn",
+        "x": 909,
+        "y": 231,
+        "home": [
+          909,
+          231
+        ],
+        "patrol": [
+          901,
+          914
+        ],
+        "anchor": [
+          0,
+          0,
+          0.5,
+          1
+        ],
+        "texture": "errand_boy_walk_sheet"
+      },
+      {
+        "id": "npc_campfire_knight",
+        "x": 1435,
+        "y": 710,
+        "home": [
+          1435,
+          710
+        ],
+        "patrol": [
+          null,
+          null
+        ],
+        "anchor": [
+          0,
+          0,
+          0.5,
+          1
+        ],
+        "texture": "campfire_knight_pray_sheet"
+      }
+    ],
+    "west-in": {
+      "start": {
+        "x": 436,
+        "y": 232,
+        "zone": "fog_crossing",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.28498499999999
+      },
+      "points": [
+        {
+          "x": 506.8333333333343,
+          "y": 232,
+          "zone": "bellhollow",
+          "noclip": false,
+          "rot": 0,
+          "phase": "DAY",
+          "active": false,
+          "east": false,
+          "composure": 72.76739500000008
+        }
+      ],
+      "transitions": [
+        [
+          "fog_crossing",
+          null
+        ],
+        [
+          "bellhollow",
+          "to_bellhollow"
+        ]
+      ],
+      "rotation": [
+        0
+      ],
+      "noclipEver": false
+    },
+    "west-out": {
+      "start": {
+        "x": 526,
+        "y": 232,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.30250500000001
+      },
+      "points": [
+        {
+          "x": 438.16666666666566,
+          "y": 232,
+          "zone": "fog_crossing",
+          "noclip": false,
+          "rot": 0,
+          "phase": "DAY",
+          "active": false,
+          "east": false,
+          "composure": 67.78988000000014
+        }
+      ],
+      "transitions": [
+        [
+          "bellhollow",
+          null
+        ],
+        [
+          "fog_crossing",
+          "to_fog_crossing"
+        ]
+      ],
+      "rotation": [
+        0
+      ],
+      "noclipEver": false
+    },
+    "south-in-sprint": {
+      "start": {
+        "x": 650,
+        "y": 510,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.31995
+      },
+      "points": [
+        {
+          "x": 650,
+          "y": 582.3333333333337,
+          "zone": "sanctuary_farm",
+          "noclip": false,
+          "rot": 0,
+          "phase": "DAY",
+          "active": false,
+          "east": false,
+          "composure": 72.36989500000001
+        }
+      ],
+      "transitions": [
+        [
+          "bellhollow",
+          null
+        ],
+        [
+          "sanctuary_farm",
+          "to_sanctuary_farm"
+        ]
+      ],
+      "rotation": [
+        0
+      ],
+      "noclipEver": false
+    },
+    "south-out": {
+      "start": {
+        "x": 650,
+        "y": 601,
+        "zone": "sanctuary_farm",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.32499000000003
+      },
+      "points": [
+        {
+          "x": 650,
+          "y": 513.6666666666667,
+          "zone": "bellhollow",
+          "noclip": false,
+          "rot": 0,
+          "phase": "DAY",
+          "active": false,
+          "east": false,
+          "composure": 72.4423899999999
+        }
+      ],
+      "transitions": [
+        [
+          "sanctuary_farm",
+          null
+        ],
+        [
+          "bellhollow",
+          "to_bellhollow_from_farm"
+        ]
+      ],
+      "rotation": [
+        0
+      ],
+      "noclipEver": false
+    },
+    "workshop-in": {
+      "start": {
+        "x": 1360,
+        "y": 998,
+        "zone": "outer_woods",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.30501000000004
+      },
+      "points": [
+        {
+          "x": 1360,
+          "y": 1160.91666666667,
+          "zone": "sub_bell_workshop",
+          "noclip": false,
+          "rot": 0,
+          "phase": "DAY",
+          "active": false,
+          "east": false,
+          "composure": 72.62741499999987
+        }
+      ],
+      "transitions": [
+        [
+          "outer_woods",
+          null
+        ],
+        [
+          "sub_bell_workshop",
+          "to_bell_workshop"
+        ]
+      ],
+      "rotation": [
+        0
+      ],
+      "noclipEver": false
+    },
+    "workshop-out": {
+      "start": {
+        "x": 1360,
+        "y": 1100,
+        "zone": "sub_bell_workshop",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.30502500000004
+      },
+      "points": [
+        {
+          "x": 1360,
+          "y": 917.6666666666683,
+          "zone": "outer_woods",
+          "noclip": false,
+          "rot": 0,
+          "phase": "DAY",
+          "active": false,
+          "east": false,
+          "composure": 72.62993500000003
+        }
+      ],
+      "transitions": [
+        [
+          "sub_bell_workshop",
+          null
+        ],
+        [
+          "outer_woods",
+          "to_outer_woods_from_bw"
+        ]
+      ],
+      "rotation": [
+        0
+      ],
+      "noclipEver": false
+    },
+    "watchpost-around": {
+      "start": {
+        "x": 493,
+        "y": 186,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.29745
+      },
+      "points": [
+        {
+          "x": 493,
+          "y": 146.3333333333336,
+          "zone": "bellhollow",
+          "noclip": false,
+          "rot": 0,
+          "phase": "DAY",
+          "active": false,
+          "east": false,
+          "composure": 72.20989000000012
+        },
+        {
+          "x": 504.99999999999994,
+          "y": 146.3333333333336,
+          "zone": "bellhollow",
+          "noclip": false,
+          "rot": 0,
+          "phase": "DAY",
+          "active": false,
+          "east": false,
+          "composure": 76.19971000000022
+        },
+        {
+          "x": 507,
+          "y": 219.41666666666688,
+          "zone": "bellhollow",
+          "noclip": false,
+          "rot": 0,
+          "phase": "DAY",
+          "active": false,
+          "east": false,
+          "composure": 78.15710500000031
+        }
+      ],
+      "transitions": [
+        [
+          "bellhollow",
+          null
+        ]
+      ],
+      "rotation": [
+        0
+      ],
+      "noclipEver": false
+    },
+    "forge-west-side": {
+      "start": {
+        "x": 1166,
+        "y": 397,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.78003999999997
+      },
+      "points": [
+        {
+          "x": 1166,
+          "y": 303.49999999999875,
+          "zone": "bellhollow",
+          "noclip": false,
+          "rot": 0,
+          "phase": "DAY",
+          "active": false,
+          "east": false,
+          "composure": 76.8530399999998
+        }
+      ],
+      "transitions": [
+        [
+          "bellhollow",
+          null
+        ]
+      ],
+      "rotation": [
+        0
+      ],
+      "noclipEver": false
+    },
+    "forge-east-side": {
+      "start": {
+        "x": 1381,
+        "y": 398,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.28249500000003
+      },
+      "points": [
+        {
+          "x": 1381,
+          "y": 307.3333333333321,
+          "zone": "bellhollow",
+          "noclip": false,
+          "rot": 0,
+          "phase": "DAY",
+          "active": false,
+          "east": false,
+          "composure": 72.49490500000012
+        }
+      ],
+      "transitions": [
+        [
+          "bellhollow",
+          null
+        ]
+      ],
+      "rotation": [
+        0
+      ],
+      "noclipEver": false
+    },
+    "camp-connection": {
+      "start": {
+        "x": 1349,
+        "y": 773,
+        "zone": "outer_woods",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 71.03185600000002
+      },
+      "points": [
+        {
+          "x": 1429.7500000000043,
+          "y": 773,
+          "zone": "outer_woods",
+          "noclip": false,
+          "rot": 0,
+          "phase": "DAY",
+          "active": false,
+          "east": false,
+          "composure": 77.59950400000001
+        },
+        {
+          "x": 1429.7500000000043,
+          "y": 747.5000000000007,
+          "zone": "outer_woods",
+          "noclip": false,
+          "rot": 0,
+          "phase": "DAY",
+          "active": false,
+          "east": false,
+          "composure": 80.911456
+        }
+      ],
+      "transitions": [
+        [
+          "outer_woods",
+          null
+        ]
+      ],
+      "rotation": [
+        0
+      ],
+      "noclipEver": false
+    },
+    "south-sign": {
+      "start": {
+        "x": 671,
+        "y": 483,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.32503499999994
+      },
+      "beforeE": {
+        "x": 671,
+        "y": 501.4166666666669,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 71.24999499999983
+      },
+      "afterE": {
+        "x": 671,
+        "y": 501.4166666666669,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 72.07493499999981
+      },
+      "anchor": [
+        [
+          "bellhollow_farm_gate_sign",
+          695,
+          511
+        ],
+        [
+          "bellhollow_farm_gate_sign",
+          695,
+          511
+        ],
+        [
+          "bellhollow_farm_gate_sign",
+          695,
+          511
+        ],
+        [
+          "bellhollow_farm_gate_sign",
+          695,
+          511
+        ]
+      ],
+      "items": [
+        [
+          "inspect_farm_gate",
+          "Biển Chỉ Dẫn Lối Nam (Nông Trại)"
+        ]
+      ],
+      "dialogues": [],
+      "popups": [],
+      "modal": true
+    },
+    "south-sign-from-farm": {
+      "start": {
+        "x": 676,
+        "y": 546,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.32497499999998
+      },
+      "beforeE": {
+        "x": 676,
+        "y": 520.5,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 71.30747499999985
+      },
+      "afterE": {
+        "x": 676,
+        "y": 520.5,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 72.21491499999989
+      },
+      "anchor": [
+        [
+          "bellhollow_farm_gate_sign",
+          695,
+          511
+        ],
+        [
+          "bellhollow_farm_gate_sign",
+          695,
+          511
+        ],
+        [
+          "bellhollow_farm_gate_sign",
+          695,
+          511
+        ],
+        [
+          "bellhollow_farm_gate_sign",
+          695,
+          511
+        ]
+      ],
+      "items": [
+        [
+          "inspect_farm_gate",
+          "Biển Chỉ Dẫn Lối Nam (Nông Trại)"
+        ]
+      ],
+      "dialogues": [],
+      "popups": [],
+      "modal": true
+    },
+    "oak-clue": {
+      "start": {
+        "x": 733,
+        "y": 150,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.30248999999998
+      },
+      "beforeE": {
+        "x": 749.9999999999995,
+        "y": 150,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 71.22495999999997
+      },
+      "afterE": {
+        "x": 749.9999999999995,
+        "y": 150,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 92.17739999999999
+      },
+      "anchor": [
+        [
+          "env_ancient_oak_hollow",
+          760,
+          120
+        ],
+        [
+          "env_ancient_oak_hollow",
+          760,
+          120
+        ],
+        [
+          "env_ancient_oak_hollow",
+          760,
+          120
+        ],
+        [
+          "env_ancient_oak_hollow",
+          760,
+          120
+        ]
+      ],
+      "items": [
+        [
+          "inspect_ancient_oak_hollow",
+          "Gốc Sồi Cổ Thụ & Dấu Mạch Rễ"
+        ]
+      ],
+      "dialogues": [],
+      "popups": [
+        "🌳 [GỐC SỒI NGÀN NĂM]: Hốc cây rỗng đập nhẹ nhịp sống của đại ngàn. Bạn tìm thấy 2 Nhựa Cây Tinh Khiết (+20 Bình Tâm)!"
+      ],
+      "modal": false
+    },
+    "camp-fire": {
+      "start": {
+        "x": 851,
+        "y": 357,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.95336
+      },
+      "beforeE": {
+        "x": 851,
+        "y": 339.9999999999998,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 73.39995999999987
+      },
+      "afterE": {
+        "x": 851,
+        "y": 339.9999999999998,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 75.55311999999984
+      },
+      "anchor": [
+        [
+          "camp_central_campfire",
+          860,
+          310
+        ],
+        [
+          "camp_central_campfire",
+          860,
+          310
+        ],
+        [
+          "camp_central_campfire",
+          860,
+          310
+        ],
+        [
+          "camp_central_campfire",
+          860,
+          310
+        ]
+      ],
+      "items": [
+        [
+          "interact_camp_fire",
+          "Lửa Trại Trung Tâm"
+        ]
+      ],
+      "dialogues": [],
+      "popups": [
+        "🔥 Hơi ấm lửa trại đang xoa dịu vết thương và tâm trí..."
+      ],
+      "modal": true
+    },
+    "camp-chest": {
+      "start": {
+        "x": 751,
+        "y": 322,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.86660000000003
+      },
+      "beforeE": {
+        "x": 769.4166666666662,
+        "y": 322,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 73.33320000000015
+      },
+      "afterE": {
+        "x": 769.4166666666662,
+        "y": 322,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 75.33312000000012
+      },
+      "anchor": [
+        [
+          "camp_storage_chest",
+          775,
+          295
+        ],
+        [
+          "camp_storage_chest",
+          775,
+          295
+        ],
+        [
+          "camp_storage_chest",
+          775,
+          295
+        ],
+        [
+          "camp_storage_chest",
+          775,
+          295
+        ]
+      ],
+      "items": [
+        [
+          "open_camp_chest",
+          "Rương Trú Ẩn 12 Ô"
+        ]
+      ],
+      "dialogues": [],
+      "popups": [],
+      "modal": true
+    },
+    "camp-tent": {
+      "start": {
+        "x": 721,
+        "y": 243,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.310005
+      },
+      "beforeE": {
+        "x": 756.4166666666657,
+        "y": 243,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 71.53495000000004
+      },
+      "afterE": {
+        "x": 756.4166666666657,
+        "y": 243,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DUSK",
+        "active": false,
+        "east": false,
+        "composure": 100
+      },
+      "anchor": [
+        [
+          "camp_shelter_tent",
+          778,
+          261
+        ],
+        [
+          "camp_shelter_tent",
+          778,
+          261
+        ],
+        [
+          "camp_shelter_tent",
+          778,
+          261
+        ],
+        [
+          "camp_shelter_tent",
+          778,
+          261
+        ]
+      ],
+      "items": [
+        [
+          "rest_in_tent",
+          "Lều Trú Ẩn Sanctuary"
+        ]
+      ],
+      "dialogues": [],
+      "popups": [
+        "🏕️ Bạn đã có giấc ngủ ấm áp trong Lều Trú Ẩn. Sinh lực và tinh thần được hồi phục trọn vẹn."
+      ],
+      "modal": false
+    },
+    "forge-bench": {
+      "start": {
+        "x": 1280,
+        "y": 438,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.87991999999994
+      },
+      "beforeE": {
+        "x": 1280,
+        "y": 409.6666666666663,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 73.7665199999998
+      },
+      "afterE": {
+        "x": 1280,
+        "y": 409.6666666666663,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 76.15307999999975
+      },
+      "anchor": [
+        [
+          "village_crafting_bench",
+          1292,
+          383
+        ],
+        [
+          "village_crafting_bench",
+          1292,
+          383
+        ],
+        [
+          "village_crafting_bench",
+          1292,
+          383
+        ],
+        [
+          "village_crafting_bench",
+          1292,
+          383
+        ]
+      ],
+      "items": [
+        [
+          "open_crafting_bench",
+          "Bàn Chế Tạo Sinh Tồn"
+        ]
+      ],
+      "dialogues": [],
+      "popups": [],
+      "modal": true
+    },
+    "bram-talk": {
+      "start": {
+        "x": 1202,
+        "y": 437,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.76659999999997
+      },
+      "beforeE": {
+        "x": 1210.5000000000005,
+        "y": 437,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 72.81995999999992
+      },
+      "afterE": {
+        "x": 1210.5000000000005,
+        "y": 437,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": true,
+        "east": false,
+        "composure": 75.23975999999988
+      },
+      "anchor": [
+        [
+          "npc_bram",
+          1230,
+          389
+        ],
+        [
+          "npc_bram",
+          1230,
+          389
+        ],
+        [
+          "npc_bram",
+          1230,
+          389
+        ],
+        [
+          "npc_bram",
+          1230,
+          389
+        ]
+      ],
+      "items": [],
+      "dialogues": [
+        "bram_chat"
+      ],
+      "popups": [],
+      "modal": true
+    },
+    "garth-from-west": {
+      "start": {
+        "x": 498,
+        "y": 221,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.32502000000004
+      },
+      "beforeE": {
+        "x": 516.416666666667,
+        "y": 221,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 71.2674700000001
+      },
+      "afterE": {
+        "x": 516.416666666667,
+        "y": 221,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": true,
+        "east": false,
+        "composure": 72.14743000000011
+      },
+      "anchor": [
+        [
+          "npc_garth",
+          548,
+          189
+        ],
+        [
+          "npc_garth",
+          548,
+          189
+        ],
+        [
+          "npc_garth",
+          548,
+          189
+        ],
+        [
+          "npc_garth",
+          548,
+          189
+        ]
+      ],
+      "items": [],
+      "dialogues": [
+        "garth_warning"
+      ],
+      "popups": [],
+      "modal": true
+    },
+    "garth-from-plaza": {
+      "start": {
+        "x": 585,
+        "y": 228,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.32501999999997
+      },
+      "beforeE": {
+        "x": 558.083333333334,
+        "y": 228,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 66.34498999999998
+      },
+      "afterE": {
+        "x": 558.083333333334,
+        "y": 228,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": true,
+        "east": false,
+        "composure": 67.29993499999999
+      },
+      "anchor": [
+        [
+          "npc_garth",
+          548,
+          189
+        ],
+        [
+          "npc_garth",
+          548,
+          189
+        ],
+        [
+          "npc_garth",
+          548,
+          189
+        ],
+        [
+          "npc_garth",
+          548,
+          189
+        ]
+      ],
+      "items": [],
+      "dialogues": [
+        "garth_warning"
+      ],
+      "popups": [
+        "👁️ Ánh nhìn vào bóng hình trong bóng tối khiến bạn lạnh gáy... (-5 Tĩnh Tâm)"
+      ],
+      "modal": true
+    },
+    "finn-talk": {
+      "start": {
+        "x": 875,
+        "y": 247,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.93331999999997
+      },
+      "beforeE": {
+        "x": 891.9999999999995,
+        "y": 247,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 73.33315999999995
+      },
+      "afterE": {
+        "x": 891.9999999999995,
+        "y": 247,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": true,
+        "east": false,
+        "composure": 76.31299999999995
+      },
+      "anchor": [
+        [
+          "npc_finn",
+          901,
+          215
+        ],
+        [
+          "npc_finn",
+          901,
+          215
+        ],
+        [
+          "npc_finn",
+          901,
+          215
+        ],
+        [
+          "npc_finn",
+          901,
+          215
+        ]
+      ],
+      "items": [],
+      "dialogues": [
+        "finn_rumors"
+      ],
+      "popups": [],
+      "modal": true
+    },
+    "edda-talk": {
+      "start": {
+        "x": 1130,
+        "y": 191,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.475005
+      },
+      "beforeE": {
+        "x": 1152.6666666666679,
+        "y": 191,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 71.55747999999998
+      },
+      "afterE": {
+        "x": 1152.6666666666679,
+        "y": 191,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": true,
+        "east": false,
+        "composure": 72.74492499999991
+      },
+      "anchor": [
+        [
+          "npc_edda",
+          1160,
+          144
+        ],
+        [
+          "npc_edda",
+          1160,
+          144
+        ],
+        [
+          "npc_edda",
+          1160,
+          144
+        ],
+        [
+          "npc_edda",
+          1160,
+          144
+        ]
+      ],
+      "items": [],
+      "dialogues": [
+        "edda_intro"
+      ],
+      "popups": [
+        "⚠️ Tiếng Quạ Bóng Tối rít xé gió! Kẻ Lắng Nghe đang hướng về đây!"
+      ],
+      "modal": true
+    },
+    "hunter-fire": {
+      "start": {
+        "x": 1343,
+        "y": 762,
+        "zone": "outer_woods",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 71.00795200000003
+      },
+      "beforeE": {
+        "x": 1343,
+        "y": 722.3333333333344,
+        "zone": "outer_woods",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 75.03976000000016
+      },
+      "afterE": {
+        "x": 1343,
+        "y": 722.3333333333344,
+        "zone": "outer_woods",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 78.65569600000018
+      },
+      "anchor": [
+        [
+          "ow_hunter_camp",
+          1320,
+          720
+        ],
+        [
+          "ow_hunter_camp",
+          1320,
+          720
+        ],
+        [
+          "ow_hunter_camp",
+          1320,
+          720
+        ],
+        [
+          "ow_hunter_camp",
+          1320,
+          720
+        ]
+      ],
+      "items": [
+        [
+          "inspect_ow_campfire",
+          "Bếp Lửa Trại Thợ Săn"
+        ]
+      ],
+      "dialogues": [],
+      "popups": [
+        "🔥 Hơi ấm lửa trại đang xoa dịu vết thương và tâm trí...",
+        "🏕️ Bếp Lửa Thợ Săn: Tàn tro than đã nguội lạnh. Rải rác xung quanh là đá lửa và cành củi khô."
+      ],
+      "modal": false
+    },
+    "quiet-fire": {
+      "start": {
+        "x": 1480,
+        "y": 762,
+        "zone": "outer_woods",
+        "noclip": false,
+        "rot": 0,
+        "phase": "NIGHT",
+        "active": false,
+        "east": false,
+        "composure": 71.18382400000002
+      },
+      "beforeE": {
+        "x": 1480,
+        "y": 736,
+        "zone": "outer_woods",
+        "noclip": false,
+        "rot": 0,
+        "phase": "NIGHT",
+        "active": false,
+        "east": false,
+        "composure": 75.19964800000007
+      },
+      "afterE": {
+        "x": 1480,
+        "y": 736,
+        "zone": "outer_woods",
+        "noclip": false,
+        "rot": 0,
+        "phase": "NIGHT",
+        "active": false,
+        "east": false,
+        "composure": 93.87150400000013
+      },
+      "anchor": [
+        [
+          "quiet_forest_bonfire",
+          1470,
+          710
+        ],
+        [
+          "quiet_forest_bonfire",
+          1470,
+          710
+        ],
+        [
+          "quiet_forest_bonfire",
+          1470,
+          710
+        ],
+        [
+          "quiet_forest_bonfire",
+          1470,
+          710
+        ]
+      ],
+      "items": [
+        [
+          "warm_quiet_bonfire",
+          "Bếp Lửa Hồng Rừng Tĩnh Lặng"
+        ]
+      ],
+      "dialogues": [],
+      "popups": [
+        "🔥 [TRẠM LỬA RỪNG TĨNH LẶNG]: Ngọn lửa hồng đá cổ xua tan giá buốt và tà khí The Veil. Bạn được sưởi ấm và phục hồi tinh thần bên Kỵ Sĩ Vaelen (+15 Tinh Thần)."
+      ],
+      "modal": false
+    },
+    "outerFires": {
+      "sprites": [
+        [
+          "campfire_tier2",
+          1470,
+          715
+        ],
+        [
+          "campfire_unlit",
+          1320,
+          725
+        ]
+      ],
+      "quiet": 1,
+      "hunter": 1
+    },
+    "workshop-note": {
+      "start": {
+        "x": 1425,
+        "y": 1250,
+        "zone": "sub_bell_workshop",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.47749499999996
+      },
+      "beforeE": {
+        "x": 1425,
+        "y": 1237.2499999999993,
+        "zone": "sub_bell_workshop",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 71.4774099999999
+      },
+      "afterE": {
+        "x": 1425,
+        "y": 1237.2499999999993,
+        "zone": "sub_bell_workshop",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 72.40988499999989
+      },
+      "anchor": [
+        [
+          "env_bellmaker_dew_journal",
+          1420,
+          1200
+        ],
+        [
+          "env_bellmaker_dew_journal",
+          1420,
+          1200
+        ],
+        [
+          "env_bellmaker_dew_journal",
+          1420,
+          1200
+        ],
+        [
+          "env_bellmaker_dew_journal",
+          1420,
+          1200
+        ]
+      ],
+      "items": [
+        [
+          "inspect_bellmaker_dew_journal",
+          "Trang Nhật Ký Ướt Sương"
+        ]
+      ],
+      "dialogues": [],
+      "popups": [],
+      "modal": true
+    },
+    "beforeSave": {
+      "x": 953,
+      "y": 247,
+      "zone": "bellhollow",
+      "noclip": false,
+      "rot": 0,
+      "phase": "DAY",
+      "active": false,
+      "east": false,
+      "composure": 70.73328000000001
+    },
+    "saved": {
+      "schema": 3,
+      "zone": "bellhollow",
+      "x": 953,
+      "y": 247
+    },
+    "continue": {
+      "state": {
+        "x": 953,
+        "y": 247,
+        "zone": "bellhollow",
+        "noclip": false,
+        "rot": 0,
+        "phase": "DAY",
+        "active": false,
+        "east": false,
+        "composure": 70.94660000000002
+      },
+      "npcs": [
+        {
+          "id": "npc_garth",
+          "x": 540,
+          "y": 205,
+          "home": [
+            540,
+            205
+          ],
+          "patrol": [
+            532,
+            548
+          ],
+          "anchor": [
+            0,
+            0,
+            0.5,
+            1
+          ],
+          "texture": "garth_walk_sheet"
+        },
+        {
+          "id": "npc_edda",
+          "x": 1160,
+          "y": 160,
+          "home": [
+            1160,
+            160
+          ],
+          "patrol": [
+            null,
+            null
+          ],
+          "anchor": [
+            0,
+            0,
+            0.5,
+            1
+          ],
+          "texture": "edda_idle_sheet"
+        },
+        {
+          "id": "npc_neris",
+          "x": 570,
+          "y": 460,
+          "home": [
+            570,
+            460
+          ],
+          "patrol": [
+            null,
+            null
+          ],
+          "anchor": [
+            0,
+            0,
+            0.5,
+            1
+          ],
+          "texture": "neris_idle_sheet"
+        },
+        {
+          "id": "npc_bram",
+          "x": 1230,
+          "y": 405,
+          "home": [
+            1230,
+            405
+          ],
+          "patrol": [
+            null,
+            null
+          ],
+          "anchor": [
+            0,
+            0,
+            0.5,
+            1
+          ],
+          "texture": "blacksmith_sheet"
+        },
+        {
+          "id": "npc_finn",
+          "x": 909,
+          "y": 231,
+          "home": [
+            909,
+            231
+          ],
+          "patrol": [
+            901,
+            914
+          ],
+          "anchor": [
+            0,
+            0,
+            0.5,
+            1
+          ],
+          "texture": "errand_boy_walk_sheet"
+        },
+        {
+          "id": "npc_campfire_knight",
+          "x": 1435,
+          "y": 710,
+          "home": [
+            1435,
+            710
+          ],
+          "patrol": [
+            null,
+            null
+          ],
+          "anchor": [
+            0,
+            0,
+            0.5,
+            1
+          ],
+          "texture": "campfire_knight_pray_sheet"
+        }
+      ],
+      "lorePersisted": true
+    }
+  },
+  "errors": [],
+  "warnings": [
+    [
+      "warning",
+      "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+    ]
+  ]
+}

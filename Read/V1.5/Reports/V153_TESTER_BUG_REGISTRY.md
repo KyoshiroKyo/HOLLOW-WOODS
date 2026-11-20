@@ -12,6 +12,14 @@ Dùng mã trong INDEX R10. Hàng **OPEN** của batch khác giữ ở chủ sở
 | BUG-031 | CLOSED-VERIFIED local | Hai bảng xuất hiện trong audit ở Bellhollow. Đã chuyển profiler vào tab Log & Hiệu năng. F10 giữ bảng kết quả benchmark khi gọi bằng tay. [Trước](Visuals/V153_BATCH_04A/before-f9-tab-1.png) · [Sau](Visuals/V153_BATCH_04A/r10-single-dev-panel.png). |
 | BUG-032 | PARTIAL | Quan hệ xử lý va chạm khác số body vật lý. Panel đã phân biệt quan hệ đang bật và body static/dynamic đang bật. Phần cảnh báo frame `satyr_sheet` CLOSED-VERIFIED local tại K1, từ 136 xuống 0. Các lỗi chuyển động/đòn đánh chưa kiểm thử đầy đủ ở K2/K3. [K1](V153_B04_K1_RUNTIME_REPORT.md). |
 | BUG-037 | CLOSED-VERIFIED local cho nền input | Main nghe pointerdown và click toàn trang nên cướp focus của panel/website. Focus chỉ nằm ở canvas khi click vùng game. Nhả trạng thái giữ trên blur và pointercancel. Click-away gameplay vẫn thuộc 04E1. |
+| BUG-034 | CLOSED-VERIFIED local | Mảng xám trong nguồn nhà rèn. Bản tường đá và cửa thông gió dùng TX Wall, bàn rèn khớp body và E, Bram giữ ID. |
+| BUG-044 | CLOSED-VERIFIED local | Luống Graphics cạnh nhà Neris dời khỏi hành lang. Biển/trigger tại (695,511), Tile Nam–Farm cùng pha. Đã thử hai chiều. |
+| BUG-045 | CLOSED-VERIFIED local | Trạm Tây (562,160), Garth (540,205). Tới từ hai phía, hội thoại đúng, rotation 0 qua cổng. |
+| BUG-046 | CLOSED-VERIFIED local | Finn chân (909,231), Tiled (909,216), patrol 901–914. Hội thoại, New Game và Continue đều có bằng chứng. |
+| BUG-047 | CLOSED-VERIFIED local | Gỡ cột (900,335). Giữ bếp, lều, rương và cột đèn khác. E và nạp 1 củi được thử ban đêm. |
+| BUG-048 | BLOCKED | Cần Owner định danh hai bụi Edda. Giữ các instance ở (1048,94), (1084,162), (1204,204) và lân cận. |
+| BUG-049 | PARTIAL | Vòng và khoảng cách dùng chung điểm neo. Ca đại diện đã thử. Đối tượng ở vùng ngoài camera demo còn cần rà. |
+| BUG-050 | CLOSED-VERIFIED local | Frame cây sồi thật ở (760,120). E mở đúng manh mối, cờ giữ qua Continue. |
 | BUG-051 | OPEN · 04C-G | Tester báo Cổng Đông vẫn khóa sau khi trò chuyện với cả Garth, Edda và Neris. Kiểm tra nhánh hội thoại, điều kiện mở cổng và flag runtime/Save. |
 | BUG-052 | OPEN · 04C-G | Thay điều kiện mở Cổng Đông thành hoàn tất hội thoại mở cổng của Garth **hoặc** Edda **hoặc** Neris. Kiểm thử riêng ba lộ trình và hội thoại chưa hoàn tất. |
 | BUG-053 | OPEN · 04C-G | Nhiệm vụ vừa nhận từ Sir Vaelen hoặc NPC khác cần xuất hiện ngay sau khi nhận. Kiểm tra quest ID và sự kiện cập nhật. |
@@ -21,7 +29,7 @@ Dùng mã trong INDEX R10. Hàng **OPEN** của batch khác giữ ở chủ sở
 | Hàng chờ | Chủ sở hữu để tiếp tục |
 |---|---|
 | BUG-021/022/029, phần map của BUG-033 | 04B1 đã chốt kết quả theo hàng trên. Phần layout/Map UI và chiều khóa theo tiến trình giữ đúng nhóm sở hữu. |
-| BUG-034, BUG-044–050 | 04B2 và 04C-G tùy logic. Giữ ID và tọa độ trong INDEX. |
+| BUG-048, BUG-049 | Hai bụi cần Owner định danh; rà thêm tương tác/despawn ở các vùng chưa thử. [Báo cáo 04B2](V153_B04B2_WORLD_ART_LAYOUT_REPORT.md). |
 | BUG-051–054 | 04C-G. Bổ sung theo Owner trong 04C-K1, chưa triển khai hoặc tái hiện tại K1. |
 | BUG-025, phần logic BUG-038–043 | 04C-G và 04E1. |
 | BUG-023/026/027 | 04D. Chưa có nghiệm thu thiết bị đối với chớp, audio lửa trại hoặc ambience. |

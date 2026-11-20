@@ -1,0 +1,39 @@
+build-handoff
+
+../b2/site-handoff/assets/vendor-phaser-Dtz9Ij9P.js  1,685.15 kB │ gzip: 381.48 kB
+✓ built in 6.08s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.3
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.3
+npm notice To update run: npm install -g npm@12.2.3
+npm notice
+audit-handoff
+
+  ✔ [PASS] [Miếu Chuông Phế Tích] Phòng Boss Kẻ Nuốt Tiếng Chuông (Broken Bell Shrine) (4400, 300) -> THÔNG SUỐT (BFS Reachable = true, Blocked = false)
+
+================================================================
+KẾT QUẢ KIỂM TOÁN BẢN ĐỒ VÀ ASSET (V15-49): 73/73 BÀI KIỂM TRA ĐẠT (100%)
+🎉 100% PHÂN KHU THÔNG SUỐT, 100% ASSET CHUẨN XÁC, KHÔNG CÓ ĐIỂM NGHẼN!
+================================================================
+
+data-handoff
+
+
+========================================================================
+📊 TỔNG KẾT KIỂM TRA TOÀN VẸN DỮ LIỆU: 15/15 KIỂM TRA ĐẠT
+========================================================================
+
+🎉 TOÀN BỘ DỮ LIỆU GAME (ITEMS, RECIPES, DIALOGUES, QUESTS, REGISTRY, LORE) ĐẠT 100% CHUẨN TOÀN VẸN!
+
+schema-handoff
+
+PASS schema 3 metadata, compatibility IDs, farming, and local save/load round trip
+PASS QA progress/settings namespace and cancelled pending save with zero SDK writes or reads
+assets-handoff
+
+
+
+------------------------------------------------------------------------
+KẾT QUẢ KIỂM TRA: 212 HỢP LỆ, 0 THIẾU (404)
+------------------------------------------------------------------------
+🎉 100% TÀI NGUYÊN ĐỀU TỒN TẠI VẬT LÝ TRONG PUBLIC/ — ĐẠT CHUẨN ZERO 404!

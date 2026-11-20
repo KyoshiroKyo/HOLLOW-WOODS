@@ -1,4 +1,24 @@
-# V153-BATCH-04-R10 — Checkpoint bàn giao 04B1
+# V153-BATCH-04-R10 — Checkpoint bàn giao 04B2
+
+**21/11/2026 · PARTIAL · Dừng sau 04B2 · HOSTED BLOCKED**
+
+Nhánh `feat/v1.5.3-batch04`, worktree `/workspace/work/v153-b04/checkout`. Baseline `666ee8dfc16852c3bea8eb42cb2385b50caf2c0b`. Runtime đã build và thử `d1e1adf4e4bbc4572285fa52b4eb758c46ce595c`. HEAD bàn giao chứa báo cáo và bằng chứng đi cùng. [Báo cáo 04B2](V153_B04B2_WORLD_ART_LAYOUT_REPORT.md) · [Ảnh và log](Visuals/V153_B04B2)
+
+| ID | Trạng thái để tiếp tục |
+|---|---|
+| BUG-034, 044–047, 050 | CLOSED-VERIFIED local cho các ca ghi trong báo cáo. Nhà rèn, Garth/trạm Tây, Finn (909,231), biển và đường Nam, đèn dư, Hốc Sồi. |
+| BUG-048 | BLOCKED. Cần Owner chỉ đúng hai bụi Edda. Ứng viên (1048,94), (1084,162), (1204,204). Các bụi vẫn giữ nguyên. |
+| BUG-049 | PARTIAL. Các điểm demo khớp vòng và trigger với sprite, dải tương tác ngoài khu demo còn cần rà. |
+| B04-05/05A/06 | PARTIAL cho toàn bản đồ. Các tuyến ưu tiên đã thử. Hai bếp Outer Woods hiện có một trigger mỗi bếp. Giữ phần cây/culling, cầu/giếng/hàng rào/công trình ở vùng chưa phủ trong backlog. |
+| Kiểm thử | Sáu chiều qua cổng Tây, South/Farm và Workshop bằng phím, rotation 0, Noclip OFF. New Game/Save/Continue schema 3 và save 04B1 qua. Audit 73/73, dữ liệu 15/15, loader 212/212. |
+| BUG-051–054 | OPEN tại 04C-G. Giữ cam kết cho phép đánh giá các tuyến khóa dựa vào tiến trình hợp lệ sau khi sửa. |
+| Release | BLOCKED. Chờ gate tại 04F, thiết bị thật tại 04E2 và preview/log hosted hợp lệ. |
+
+**Lệnh tiếp theo sau khi Owner duyệt riêng** `V153-BATCH-04C-K2 EXECUTE REMAINING ONLY`. Sau đó tiếp tục theo INDEX R10. [Đặc tả 04C-K2](../../../docs/chat_and_commands/V153_BATCH04_R10/05_V153_B04C-K2_KNIGHT_MOVEMENT_4DIR.md) · [Registry](V153_TESTER_BUG_REGISTRY.md)
+
+---
+
+# V153-BATCH-04-R10 — Checkpoint bàn giao 04B1 lịch sử
 
 **20/11/2026 · PARTIAL · Dừng sau 04B1 · HOSTED BLOCKED**
 
@@ -18,7 +38,7 @@ Nhánh `feat/v1.5.3-batch04`, worktree `/workspace/work/v153-b04/checkout`. Mố
 | BUG-051–054 | OPEN tại 04C-G. Handoff không sửa luật Cổng Đông hoặc nhiệm vụ. |
 | Release | BLOCKED vì các gate phát hành và hosted chưa nghiệm thu. |
 
-**Command tiếp theo khi Owner duyệt riêng:** `V153-BATCH-04B2 EXECUTE REMAINING ONLY`. Sau 04B2 giữ thứ tự 04C-K2 → 04C-K3 → 04C-G → 04D → 04E1 → 04E2 → 04F. [Đặc tả 04B2](../../../docs/chat_and_commands/V153_BATCH04_R10/04_V153_B04B2_WORLD_ART_BUILDINGS_LAYOUT.md) · [INDEX R10](../../../docs/chat_and_commands/V153_BATCH04_R10/00_INDEX_V153_BATCH04_R10.md).
+**Mốc lệnh đã bàn giao sang 04B2:** `V153-BATCH-04B2 EXECUTE REMAINING ONLY`. [Đặc tả 04B2](../../../docs/chat_and_commands/V153_BATCH04_R10/04_V153_B04B2_WORLD_ART_BUILDINGS_LAYOUT.md) · [INDEX R10](../../../docs/chat_and_commands/V153_BATCH04_R10/00_INDEX_V153_BATCH04_R10.md).
 
 ## Mốc lịch sử 04C-K1 và 04A
 

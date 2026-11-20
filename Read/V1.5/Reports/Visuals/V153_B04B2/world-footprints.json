@@ -1,0 +1,1165 @@
+{
+  "before": {
+    "errors": [],
+    "areas": {
+      "west": {
+        "foot": {
+          "x": 529,
+          "y": 226
+        },
+        "npc": [
+          [
+            "npc_garth",
+            490,
+            210,
+            0,
+            490,
+            210
+          ],
+          [
+            "npc_finn",
+            660,
+            280,
+            0,
+            660,
+            280
+          ]
+        ],
+        "interact": [],
+        "bodies": [
+          {
+            "x": 462,
+            "y": 143,
+            "w": 96,
+            "h": 32,
+            "n": "Trạm Gác Cổng Tây"
+          },
+          {
+            "x": 553,
+            "y": 187,
+            "w": 14,
+            "h": 10,
+            "n": "Biển Chỉ Dẫn"
+          },
+          {
+            "x": 477,
+            "y": 190,
+            "w": 10,
+            "h": 8,
+            "n": "Cột Đèn Lồng"
+          }
+        ]
+      },
+      "finn": {
+        "foot": {
+          "x": 894,
+          "y": 242
+        },
+        "npc": [],
+        "interact": [
+          {
+            "id": "camp_central_campfire",
+            "name": "Lửa Trại Trung Tâm",
+            "type": "campfire",
+            "x": 860,
+            "y": 310,
+            "width": 36,
+            "height": 36,
+            "promptText": "[E] Nạp củi & Duy trì Lửa Trại",
+            "actionId": "interact_camp_fire"
+          },
+          {
+            "id": "bell_tower_altar",
+            "name": "Bệ Tháp Chuông",
+            "type": "bell_shrine",
+            "x": 900,
+            "y": 145,
+            "width": 44,
+            "height": 32,
+            "promptText": "Nhấn [E] kiểm tra Quả Chuông Câm",
+            "actionId": "inspect_bell"
+          }
+        ],
+        "bodies": [
+          {
+            "x": 866,
+            "y": 317,
+            "w": 24,
+            "h": 16,
+            "n": "Lửa Trại Làng"
+          },
+          {
+            "x": 759,
+            "y": 255,
+            "w": 38,
+            "h": 16,
+            "n": "Lều Trú Ẩn"
+          },
+          {
+            "x": 775,
+            "y": 245,
+            "w": 10,
+            "h": 8,
+            "n": "Cột Đèn Lồng"
+          },
+          {
+            "x": 895,
+            "y": 330,
+            "w": 10,
+            "h": 8,
+            "n": "Cột Đèn Lồng"
+          }
+        ]
+      },
+      "south": {
+        "foot": {
+          "x": 652,
+          "y": 503
+        },
+        "npc": [
+          [
+            "npc_neris",
+            570,
+            460,
+            0,
+            570,
+            460
+          ]
+        ],
+        "interact": [
+          {
+            "id": "camp_herbal_cauldron",
+            "name": "Nồi Thảo Dược Neris",
+            "type": "cauldron",
+            "x": 630,
+            "y": 445,
+            "width": 26,
+            "height": 20,
+            "promptText": "[E] Sắc Thuốc & Trà Thảo Mộc",
+            "actionId": "open_herbal_cauldron"
+          },
+          {
+            "id": "bellhollow_farm_gate_sign",
+            "name": "Biển Chỉ Dẫn Lối Nam (Nông Trại)",
+            "type": "clue",
+            "x": 650,
+            "y": 520,
+            "width": 32,
+            "height": 32,
+            "promptText": "Nhấn [E] xem Biển Lối Nam",
+            "actionId": "inspect_farm_gate"
+          },
+          {
+            "id": "farm_welcome_sign",
+            "name": "Biển Đề Danh Nông Trại Trú Ẩn",
+            "type": "clue",
+            "x": 615,
+            "y": 590,
+            "width": 24,
+            "height": 24,
+            "promptText": "[E] Đọc Biển Nông Trại Trú Ẩn",
+            "actionId": "read_farm_sign"
+          }
+        ],
+        "bodies": [
+          {
+            "x": 608,
+            "y": 583,
+            "w": 14,
+            "h": 10,
+            "n": "Biển Chỉ Dẫn"
+          }
+        ]
+      },
+      "camp": {
+        "foot": {
+          "x": 838,
+          "y": 319
+        },
+        "npc": [
+          [
+            "npc_finn",
+            665,
+            280,
+            0,
+            660,
+            280
+          ]
+        ],
+        "interact": [
+          {
+            "id": "camp_central_campfire",
+            "name": "Lửa Trại Trung Tâm",
+            "type": "campfire",
+            "x": 860,
+            "y": 310,
+            "width": 36,
+            "height": 36,
+            "promptText": "[E] Nạp củi & Duy trì Lửa Trại",
+            "actionId": "interact_camp_fire"
+          },
+          {
+            "id": "camp_storage_chest",
+            "name": "Rương Trú Ẩn 12 Ô",
+            "type": "storage",
+            "x": 775,
+            "y": 295,
+            "width": 28,
+            "height": 18,
+            "promptText": "[E] Mở Rương Trú Ẩn 12 Ô",
+            "actionId": "open_camp_chest"
+          },
+          {
+            "id": "camp_shelter_tent",
+            "name": "Lều Trú Ẩn Sanctuary",
+            "type": "shelter",
+            "x": 760,
+            "y": 255,
+            "width": 44,
+            "height": 36,
+            "promptText": "[E] Nghỉ ngơi tại Lều Trú Ẩn",
+            "actionId": "rest_in_tent"
+          }
+        ],
+        "bodies": [
+          {
+            "x": 866,
+            "y": 317,
+            "w": 24,
+            "h": 16,
+            "n": "Lửa Trại Làng"
+          },
+          {
+            "x": 759,
+            "y": 255,
+            "w": 38,
+            "h": 16,
+            "n": "Lều Trú Ẩn"
+          },
+          {
+            "x": 775,
+            "y": 245,
+            "w": 10,
+            "h": 8,
+            "n": "Cột Đèn Lồng"
+          },
+          {
+            "x": 895,
+            "y": 330,
+            "w": 10,
+            "h": 8,
+            "n": "Cột Đèn Lồng"
+          }
+        ]
+      },
+      "edda": {
+        "foot": {
+          "x": 1164,
+          "y": 188
+        },
+        "npc": [
+          [
+            "npc_edda",
+            1160,
+            160,
+            0,
+            1160,
+            160
+          ]
+        ],
+        "interact": [],
+        "bodies": []
+      },
+      "oak": {
+        "foot": {
+          "x": 764,
+          "y": 150
+        },
+        "npc": [
+          [
+            "npc_finn",
+            665,
+            280,
+            0,
+            660,
+            280
+          ]
+        ],
+        "interact": [
+          {
+            "id": "camp_shelter_tent",
+            "name": "Lều Trú Ẩn Sanctuary",
+            "type": "shelter",
+            "x": 760,
+            "y": 255,
+            "width": 44,
+            "height": 36,
+            "promptText": "[E] Nghỉ ngơi tại Lều Trú Ẩn",
+            "actionId": "rest_in_tent"
+          },
+          {
+            "id": "env_ancient_oak_hollow",
+            "name": "Gốc Sồi Cổ Thụ & Dấu Mạch Rễ",
+            "type": "clue",
+            "x": 760,
+            "y": 120,
+            "width": 42,
+            "height": 42,
+            "promptText": "[E] Chạm Vào Hốc Sồi Ngàn Năm",
+            "actionId": "inspect_ancient_oak_hollow"
+          }
+        ],
+        "bodies": [
+          {
+            "x": 759,
+            "y": 255,
+            "w": 38,
+            "h": 16,
+            "n": "Lều Trú Ẩn"
+          },
+          {
+            "x": 775,
+            "y": 245,
+            "w": 10,
+            "h": 8,
+            "n": "Cột Đèn Lồng"
+          }
+        ]
+      },
+      "forge": {
+        "foot": {
+          "x": 1245,
+          "y": 424
+        },
+        "npc": [
+          [
+            "npc_bram",
+            1230,
+            405,
+            0,
+            1230,
+            405
+          ]
+        ],
+        "interact": [
+          {
+            "id": "village_crafting_bench",
+            "name": "Bàn Chế Tạo Sinh Tồn",
+            "type": "lantern_refill",
+            "x": 1220,
+            "y": 370,
+            "width": 48,
+            "height": 24,
+            "promptText": "[E] Sử dụng Bàn Chế Tạo",
+            "actionId": "open_crafting_bench"
+          },
+          {
+            "id": "bellhollow_outer_woods_gate_sign",
+            "name": "Biển Chỉ Dẫn Rừng Ngoại Vi",
+            "type": "clue",
+            "x": 1200,
+            "y": 510,
+            "width": 32,
+            "height": 32,
+            "promptText": "Nhấn [E] xem Biển Rừng Ngoại Vi",
+            "actionId": "inspect_outer_woods_gate"
+          }
+        ],
+        "bodies": [
+          {
+            "x": 1214,
+            "y": 373,
+            "w": 48,
+            "h": 14,
+            "n": "Bàn Chế Tạo"
+          }
+        ]
+      },
+      "hunter": {
+        "foot": {
+          "x": 1407,
+          "y": 764
+        },
+        "npc": [
+          [
+            "npc_campfire_knight",
+            1435,
+            710,
+            0,
+            1435,
+            710
+          ]
+        ],
+        "interact": [
+          {
+            "id": "ow_hunter_camp",
+            "name": "Bếp Lửa Trại Thợ Săn",
+            "type": "clue",
+            "x": 1320,
+            "y": 720,
+            "width": 32,
+            "height": 24,
+            "promptText": "[E] Kiểm Tra Bếp Lửa Thợ Săn",
+            "actionId": "inspect_ow_campfire"
+          },
+          {
+            "id": "ow_fallen_tree",
+            "name": "Thân Cây Đổ Rêu Phong",
+            "type": "clue",
+            "x": 1480,
+            "y": 800,
+            "width": 40,
+            "height": 20,
+            "promptText": "[E] Quan Sát Thân Cây Cổ Thụ Đổ",
+            "actionId": "inspect_ow_fallen_tree"
+          },
+          {
+            "id": "gather_herbs_ow_1",
+            "name": "Bụi Thảo Dược Ven Suối",
+            "type": "gather",
+            "x": 1480,
+            "y": 830,
+            "width": 32,
+            "height": 32,
+            "promptText": "[E] Hái Bụi Thảo Dược Ven Suối",
+            "actionId": "gather_herbs_ow_1"
+          },
+          {
+            "id": "env_echo_ruins_prayer",
+            "name": "Tiếng Vọng Ký Ức (Tàn Tích)",
+            "type": "clue",
+            "x": 1480,
+            "y": 840,
+            "width": 32,
+            "height": 32,
+            "promptText": "[E] Lắng Nghe Tiếng Vọng Ký Ức",
+            "actionId": "inspect_echo_ruins_prayer"
+          },
+          {
+            "id": "quiet_forest_bonfire",
+            "name": "Bếp Lửa Hồng Rừng Tĩnh Lặng",
+            "type": "clue",
+            "x": 1470,
+            "y": 710,
+            "width": 36,
+            "height": 30,
+            "promptText": "[E] Sưởi Ấm Bên Lửa Cổ",
+            "actionId": "warm_quiet_bonfire"
+          },
+          {
+            "id": "gather_mushroom_ow_1",
+            "name": "Nấm Rừng Thân Gỗ Mục",
+            "type": "gather",
+            "x": 1475,
+            "y": 805,
+            "width": 32,
+            "height": 32,
+            "promptText": "[E] Hái Nấm Rừng Thơm Ngát",
+            "actionId": "gather_mushroom_ow_1"
+          },
+          {
+            "id": "hide_bush_ow_bonfire",
+            "name": "Bụi Rậm Trạm Lửa Sir Vaelen",
+            "type": "hiding_spot",
+            "x": 1420,
+            "y": 745,
+            "width": 32,
+            "height": 32,
+            "promptText": "[E] Ẩn Nấp Vào Bụi Rậm",
+            "actionId": "hide_bush_ow_bonfire"
+          },
+          {
+            "id": "quiet_forest_bonfire",
+            "type": "clue",
+            "x": 1452,
+            "y": 698,
+            "width": 36,
+            "height": 28,
+            "name": "Bếp Lửa Hồng Rừng Tĩnh Lặng",
+            "promptText": "[E] Sưởi Ấm Bên Lửa Cổ",
+            "actionId": "warm_quiet_bonfire"
+          }
+        ],
+        "bodies": [
+          {
+            "x": 1326,
+            "y": 727,
+            "w": 24,
+            "h": 16,
+            "n": "Lửa Trại Thợ Săn"
+          },
+          {
+            "x": 1458,
+            "y": 702,
+            "w": 24,
+            "h": 16,
+            "n": "Bếp Lửa Hồng Đá Cổ"
+          }
+        ]
+      },
+      "workshop": {
+        "foot": {
+          "x": 1422,
+          "y": 1170
+        },
+        "npc": [],
+        "interact": [
+          {
+            "id": "inspect_runed_iron_part",
+            "name": "Phụ Kiện Sắt Rèn Cổ Ngữ",
+            "type": "clue",
+            "x": 1330,
+            "y": 1240,
+            "width": 32,
+            "height": 32,
+            "promptText": "[E] Nhặt Phụ Kiện Sắt Rèn Cổ Ngữ",
+            "actionId": "collect_runed_iron_part"
+          },
+          {
+            "id": "inspect_blacksmith_journal",
+            "name": "Nhật Ký Thợ Rèn",
+            "type": "clue",
+            "x": 1360,
+            "y": 1160,
+            "width": 32,
+            "height": 32,
+            "promptText": "[E] Đọc Nhật Ký Thợ Rèn",
+            "actionId": "read_blacksmith_journal"
+          },
+          {
+            "id": "inspect_black_knight_stele",
+            "name": "Văn Bia Cổ Hiệp Sĩ Đen",
+            "type": "clue",
+            "x": 1400,
+            "y": 1180,
+            "width": 36,
+            "height": 36,
+            "promptText": "[E] Đọc Văn Bia Cổ Hiệp Sĩ Đen",
+            "actionId": "read_black_knight_stele"
+          },
+          {
+            "id": "env_bellmaker_dew_journal",
+            "name": "Trang Nhật Ký Ướt Sương",
+            "type": "clue",
+            "x": 1420,
+            "y": 1200,
+            "width": 28,
+            "height": 28,
+            "promptText": "[E] Đọc Trang Nhật Ký Ướt Sương",
+            "actionId": "inspect_bellmaker_dew_journal"
+          }
+        ],
+        "bodies": []
+      }
+    }
+  },
+  "handoffcap": {
+    "errors": [],
+    "areas": {
+      "west": {
+        "foot": {
+          "x": 529,
+          "y": 226
+        },
+        "npc": [
+          [
+            "npc_garth",
+            540,
+            205,
+            0,
+            540,
+            205
+          ]
+        ],
+        "interact": [],
+        "bodies": [
+          {
+            "x": 514,
+            "y": 128,
+            "w": 96,
+            "h": 32,
+            "n": "Trạm Gác Cổng Tây"
+          },
+          {
+            "x": 593,
+            "y": 198,
+            "w": 14,
+            "h": 10,
+            "n": "Biển Chỉ Dẫn"
+          },
+          {
+            "x": 509,
+            "y": 178,
+            "w": 10,
+            "h": 8,
+            "n": "Cột Đèn Lồng"
+          }
+        ]
+      },
+      "finn": {
+        "foot": {
+          "x": 894,
+          "y": 242
+        },
+        "npc": [
+          [
+            "npc_finn",
+            909,
+            231,
+            0,
+            909,
+            231
+          ]
+        ],
+        "interact": [
+          {
+            "id": "camp_central_campfire",
+            "name": "Lửa Trại Trung Tâm",
+            "type": "campfire",
+            "x": 860,
+            "y": 310,
+            "width": 36,
+            "height": 36,
+            "promptText": "[E] Nạp củi & Duy trì Lửa Trại",
+            "actionId": "interact_camp_fire"
+          },
+          {
+            "id": "bell_tower_altar",
+            "name": "Bệ Tháp Chuông",
+            "type": "bell_shrine",
+            "x": 900,
+            "y": 145,
+            "width": 44,
+            "height": 32,
+            "promptText": "Nhấn [E] kiểm tra Quả Chuông Câm",
+            "actionId": "inspect_bell"
+          }
+        ],
+        "bodies": [
+          {
+            "x": 848,
+            "y": 302,
+            "w": 24,
+            "h": 16,
+            "n": "Lửa Trại Làng"
+          },
+          {
+            "x": 759,
+            "y": 255,
+            "w": 38,
+            "h": 16,
+            "n": "Lều Trú Ẩn"
+          },
+          {
+            "x": 775,
+            "y": 245,
+            "w": 10,
+            "h": 8,
+            "n": "Cột Đèn Lồng"
+          },
+          {
+            "x": 751,
+            "y": 111,
+            "w": 18,
+            "h": 10,
+            "n": "Hốc Sồi Ngàn Năm"
+          }
+        ]
+      },
+      "south": {
+        "foot": {
+          "x": 652,
+          "y": 503
+        },
+        "npc": [
+          [
+            "npc_neris",
+            570,
+            460,
+            0,
+            570,
+            460
+          ]
+        ],
+        "interact": [
+          {
+            "id": "camp_herbal_cauldron",
+            "name": "Nồi Thảo Dược Neris",
+            "type": "cauldron",
+            "x": 630,
+            "y": 445,
+            "width": 26,
+            "height": 20,
+            "promptText": "[E] Sắc Thuốc & Trà Thảo Mộc",
+            "actionId": "open_herbal_cauldron"
+          },
+          {
+            "id": "bellhollow_farm_gate_sign",
+            "name": "Biển Chỉ Dẫn Lối Nam (Nông Trại)",
+            "type": "clue",
+            "x": 695,
+            "y": 511,
+            "width": 32,
+            "height": 32,
+            "promptText": "Nhấn [E] xem Biển Lối Nam",
+            "actionId": "inspect_farm_gate"
+          },
+          {
+            "id": "farm_welcome_sign",
+            "name": "Biển Đề Danh Nông Trại Trú Ẩn",
+            "type": "clue",
+            "x": 615,
+            "y": 590,
+            "width": 24,
+            "height": 24,
+            "promptText": "[E] Đọc Biển Nông Trại Trú Ẩn",
+            "actionId": "read_farm_sign"
+          }
+        ],
+        "bodies": [
+          {
+            "x": 688,
+            "y": 504,
+            "w": 14,
+            "h": 10,
+            "n": "Biển Chỉ Dẫn"
+          },
+          {
+            "x": 608,
+            "y": 583,
+            "w": 14,
+            "h": 10,
+            "n": "Biển Chỉ Dẫn"
+          }
+        ]
+      },
+      "farm": {
+        "foot": {
+          "x": 649,
+          "y": 682
+        },
+        "npc": [],
+        "interact": [
+          {
+            "id": "farm_storage_chest",
+            "name": "Rương Trú Ẩn Nông Trại",
+            "type": "chest",
+            "x": 680,
+            "y": 640,
+            "width": 32,
+            "height": 24,
+            "promptText": "[E] Mở Rương Trú Ẩn",
+            "actionId": "open_storage"
+          },
+          {
+            "id": "farm_processing_bench",
+            "name": "Bàn Sơ Chế Thảo Mộc",
+            "type": "workbench",
+            "x": 685,
+            "y": 630,
+            "width": 36,
+            "height": 24,
+            "promptText": "[E] Bàn Sơ Chế Thảo Mộc",
+            "actionId": "open_crafting_bench"
+          },
+          {
+            "id": "farm_welcome_sign",
+            "name": "Biển Đề Danh Nông Trại Trú Ẩn",
+            "type": "clue",
+            "x": 615,
+            "y": 590,
+            "width": 24,
+            "height": 24,
+            "promptText": "[E] Đọc Biển Nông Trại Trú Ẩn",
+            "actionId": "read_farm_sign"
+          },
+          {
+            "id": "farm_herb_terrace_sign",
+            "name": "Biển Vườn Dược Sanctuary",
+            "type": "clue",
+            "x": 730,
+            "y": 625,
+            "width": 24,
+            "height": 24,
+            "promptText": "[E] Đọc Biển Vườn Dược Sanctuary",
+            "actionId": "read_herb_terrace_sign"
+          }
+        ],
+        "bodies": [
+          {
+            "x": 608,
+            "y": 583,
+            "w": 14,
+            "h": 10,
+            "n": "Biển Chỉ Dẫn"
+          },
+          {
+            "x": 544,
+            "y": 708,
+            "w": 92,
+            "h": 22,
+            "n": "Kho Thóc"
+          }
+        ]
+      },
+      "camp": {
+        "foot": {
+          "x": 838,
+          "y": 319
+        },
+        "npc": [
+          [
+            "npc_finn",
+            914,
+            231,
+            0,
+            909,
+            231
+          ]
+        ],
+        "interact": [
+          {
+            "id": "camp_central_campfire",
+            "name": "Lửa Trại Trung Tâm",
+            "type": "campfire",
+            "x": 860,
+            "y": 310,
+            "width": 36,
+            "height": 36,
+            "promptText": "[E] Nạp củi & Duy trì Lửa Trại",
+            "actionId": "interact_camp_fire"
+          },
+          {
+            "id": "camp_storage_chest",
+            "name": "Rương Trú Ẩn 12 Ô",
+            "type": "storage",
+            "x": 775,
+            "y": 295,
+            "width": 28,
+            "height": 18,
+            "promptText": "[E] Mở Rương Trú Ẩn 12 Ô",
+            "actionId": "open_camp_chest"
+          },
+          {
+            "id": "camp_shelter_tent",
+            "name": "Lều Trú Ẩn Sanctuary",
+            "type": "shelter",
+            "x": 778,
+            "y": 261,
+            "width": 44,
+            "height": 36,
+            "promptText": "[E] Nghỉ ngơi tại Lều Trú Ẩn",
+            "actionId": "rest_in_tent"
+          }
+        ],
+        "bodies": [
+          {
+            "x": 848,
+            "y": 302,
+            "w": 24,
+            "h": 16,
+            "n": "Lửa Trại Làng"
+          },
+          {
+            "x": 759,
+            "y": 255,
+            "w": 38,
+            "h": 16,
+            "n": "Lều Trú Ẩn"
+          },
+          {
+            "x": 775,
+            "y": 245,
+            "w": 10,
+            "h": 8,
+            "n": "Cột Đèn Lồng"
+          }
+        ]
+      },
+      "edda": {
+        "foot": {
+          "x": 1164,
+          "y": 188
+        },
+        "npc": [
+          [
+            "npc_edda",
+            1160,
+            160,
+            0,
+            1160,
+            160
+          ]
+        ],
+        "interact": [],
+        "bodies": []
+      },
+      "oak": {
+        "foot": {
+          "x": 764,
+          "y": 150
+        },
+        "npc": [
+          [
+            "npc_finn",
+            914,
+            231,
+            0,
+            909,
+            231
+          ]
+        ],
+        "interact": [
+          {
+            "id": "env_ancient_oak_hollow",
+            "name": "Gốc Sồi Cổ Thụ & Dấu Mạch Rễ",
+            "type": "clue",
+            "x": 760,
+            "y": 120,
+            "width": 42,
+            "height": 42,
+            "promptText": "[E] Chạm Vào Hốc Sồi Ngàn Năm",
+            "actionId": "inspect_ancient_oak_hollow"
+          }
+        ],
+        "bodies": [
+          {
+            "x": 759,
+            "y": 255,
+            "w": 38,
+            "h": 16,
+            "n": "Lều Trú Ẩn"
+          },
+          {
+            "x": 775,
+            "y": 245,
+            "w": 10,
+            "h": 8,
+            "n": "Cột Đèn Lồng"
+          },
+          {
+            "x": 751,
+            "y": 111,
+            "w": 18,
+            "h": 10,
+            "n": "Hốc Sồi Ngàn Năm"
+          }
+        ]
+      },
+      "forge": {
+        "foot": {
+          "x": 1245,
+          "y": 424
+        },
+        "npc": [
+          [
+            "npc_bram",
+            1230,
+            405,
+            0,
+            1230,
+            405
+          ]
+        ],
+        "interact": [
+          {
+            "id": "village_crafting_bench",
+            "name": "Bàn Chế Tạo Sinh Tồn",
+            "type": "lantern_refill",
+            "x": 1292,
+            "y": 383,
+            "width": 48,
+            "height": 24,
+            "promptText": "[E] Sử dụng Bàn Chế Tạo",
+            "actionId": "open_crafting_bench"
+          },
+          {
+            "id": "bellhollow_outer_woods_gate_sign",
+            "name": "Biển Chỉ Dẫn Rừng Ngoại Vi",
+            "type": "clue",
+            "x": 1200,
+            "y": 510,
+            "width": 32,
+            "height": 32,
+            "promptText": "Nhấn [E] xem Biển Rừng Ngoại Vi",
+            "actionId": "inspect_outer_woods_gate"
+          }
+        ],
+        "bodies": [
+          {
+            "x": 1272,
+            "y": 377,
+            "w": 40,
+            "h": 12,
+            "n": "Bàn Chế Tạo"
+          }
+        ]
+      },
+      "hunter": {
+        "foot": {
+          "x": 1407,
+          "y": 764
+        },
+        "npc": [
+          [
+            "npc_campfire_knight",
+            1435,
+            710,
+            0,
+            1435,
+            710
+          ]
+        ],
+        "interact": [
+          {
+            "id": "ow_hunter_camp",
+            "name": "Bếp Lửa Trại Thợ Săn",
+            "type": "clue",
+            "x": 1320,
+            "y": 720,
+            "width": 32,
+            "height": 24,
+            "promptText": "[E] Kiểm Tra Bếp Lửa Thợ Săn",
+            "actionId": "inspect_ow_campfire"
+          },
+          {
+            "id": "ow_fallen_tree",
+            "name": "Thân Cây Đổ Rêu Phong",
+            "type": "clue",
+            "x": 1480,
+            "y": 800,
+            "width": 40,
+            "height": 20,
+            "promptText": "[E] Quan Sát Thân Cây Cổ Thụ Đổ",
+            "actionId": "inspect_ow_fallen_tree"
+          },
+          {
+            "id": "gather_herbs_ow_1",
+            "name": "Bụi Thảo Dược Ven Suối",
+            "type": "gather",
+            "x": 1480,
+            "y": 830,
+            "width": 32,
+            "height": 32,
+            "promptText": "[E] Hái Bụi Thảo Dược Ven Suối",
+            "actionId": "gather_herbs_ow_1"
+          },
+          {
+            "id": "env_echo_ruins_prayer",
+            "name": "Tiếng Vọng Ký Ức (Tàn Tích)",
+            "type": "clue",
+            "x": 1480,
+            "y": 840,
+            "width": 32,
+            "height": 32,
+            "promptText": "[E] Lắng Nghe Tiếng Vọng Ký Ức",
+            "actionId": "inspect_echo_ruins_prayer"
+          },
+          {
+            "id": "quiet_forest_bonfire",
+            "name": "Bếp Lửa Hồng Rừng Tĩnh Lặng",
+            "type": "clue",
+            "x": 1470,
+            "y": 710,
+            "width": 36,
+            "height": 30,
+            "promptText": "[E] Sưởi Ấm Bên Lửa Cổ",
+            "actionId": "warm_quiet_bonfire"
+          },
+          {
+            "id": "gather_mushroom_ow_1",
+            "name": "Nấm Rừng Thân Gỗ Mục",
+            "type": "gather",
+            "x": 1475,
+            "y": 805,
+            "width": 32,
+            "height": 32,
+            "promptText": "[E] Hái Nấm Rừng Thơm Ngát",
+            "actionId": "gather_mushroom_ow_1"
+          },
+          {
+            "id": "hide_bush_ow_bonfire",
+            "name": "Bụi Rậm Trạm Lửa Sir Vaelen",
+            "type": "hiding_spot",
+            "x": 1420,
+            "y": 745,
+            "width": 32,
+            "height": 32,
+            "promptText": "[E] Ẩn Nấp Vào Bụi Rậm",
+            "actionId": "hide_bush_ow_bonfire"
+          }
+        ],
+        "bodies": [
+          {
+            "x": 1308,
+            "y": 712,
+            "w": 24,
+            "h": 16,
+            "n": "Lửa Trại Thợ Săn"
+          },
+          {
+            "x": 1458,
+            "y": 702,
+            "w": 24,
+            "h": 16,
+            "n": "Bếp Lửa Hồng Đá Cổ"
+          }
+        ]
+      },
+      "workshop": {
+        "foot": {
+          "x": 1422,
+          "y": 1170
+        },
+        "npc": [],
+        "interact": [
+          {
+            "id": "inspect_runed_iron_part",
+            "name": "Phụ Kiện Sắt Rèn Cổ Ngữ",
+            "type": "clue",
+            "x": 1330,
+            "y": 1240,
+            "width": 32,
+            "height": 32,
+            "promptText": "[E] Nhặt Phụ Kiện Sắt Rèn Cổ Ngữ",
+            "actionId": "collect_runed_iron_part"
+          },
+          {
+            "id": "inspect_blacksmith_journal",
+            "name": "Nhật Ký Thợ Rèn",
+            "type": "clue",
+            "x": 1360,
+            "y": 1160,
+            "width": 32,
+            "height": 32,
+            "promptText": "[E] Đọc Nhật Ký Thợ Rèn",
+            "actionId": "read_blacksmith_journal"
+          },
+          {
+            "id": "inspect_black_knight_stele",
+            "name": "Văn Bia Cổ Hiệp Sĩ Đen",
+            "type": "clue",
+            "x": 1400,
+            "y": 1180,
+            "width": 36,
+            "height": 36,
+            "promptText": "[E] Đọc Văn Bia Cổ Hiệp Sĩ Đen",
+            "actionId": "read_black_knight_stele"
+          },
+          {
+            "id": "env_bellmaker_dew_journal",
+            "name": "Trang Nhật Ký Ướt Sương",
+            "type": "clue",
+            "x": 1420,
+            "y": 1200,
+            "width": 28,
+            "height": 28,
+            "promptText": "[E] Đọc Trang Nhật Ký Ướt Sương",
+            "actionId": "inspect_bellmaker_dew_journal"
+          }
+        ],
+        "bodies": []
+      }
+    }
+  }
+}
