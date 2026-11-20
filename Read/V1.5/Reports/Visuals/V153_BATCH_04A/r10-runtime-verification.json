@@ -541,5 +541,58 @@
         "sdkWarnings": []
       }
     }
+  },
+  "finalProductionQaEastGatePhysicalInput": {
+    "from": {
+      "zone": "bellhollow",
+      "pos": [
+        1440,
+        280
+      ],
+      "foot": [
+        1440,
+        280
+      ],
+      "gateOpen": true,
+      "noclip": false,
+      "blocked": {
+        "none": true,
+        "up": false,
+        "down": false,
+        "left": false,
+        "right": false
+      }
+    },
+    "to": {
+      "zone": "crooked_path",
+      "pos": [
+        1615.666666666676,
+        280
+      ],
+      "foot": [
+        1615.666666666676,
+        280
+      ],
+      "gateOpen": true,
+      "noclip": false,
+      "blocked": {
+        "none": true,
+        "up": false,
+        "down": false,
+        "left": false,
+        "right": false
+      }
+    },
+    "input": "Keyboard D held with real repeat keydown and Noclip off",
+    "gateOpenedByQaStartFixture": true,
+    "log": {
+      "pageErrors": [],
+      "consoleErrors": [],
+      "httpErrors": [],
+      "failedRequests": [],
+      "sdkWarnings": [
+        "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+      ]
+    }
   }
 }
