@@ -7539,7 +7539,17 @@ export class WorldBuilder {
         ctx.quadraticCurveTo(90, 55, 0, 42);
         ctx.closePath();
         ctx.clip();
+        ctx.filter = 'brightness(0.8) saturate(0.65)';
         this.paintGroundTiles(ctx, TILE_DIRT_TRAIL, 160, 70);
+        ctx.filter = 'none';
+        const ends = ctx.createLinearGradient(0, 0, 160, 0);
+        ends.addColorStop(0, 'transparent');
+        ends.addColorStop(0.18, 'white');
+        ends.addColorStop(0.82, 'white');
+        ends.addColorStop(1, 'transparent');
+        ctx.globalCompositeOperation = 'destination-in';
+        ctx.fillStyle = ends;
+        ctx.fillRect(0, 0, 160, 70);
         canvas.refresh();
       }
     }
@@ -7848,6 +7858,7 @@ export class WorldBuilder {
       if (canvasTex) {
         const ctx = canvasTex.getContext();
         ctx.imageSmoothingEnabled = false;
+        ctx.filter = 'brightness(0.74) saturate(0.68)';
         this.paintGroundTiles(ctx, TILE_FOREST_GRASS, bounds.width, bounds.height);
 
         // The trail continues from (1360,1040) into the weathered workshop floor.
@@ -7870,8 +7881,10 @@ export class WorldBuilder {
         ctx.beginPath();
         ctx.ellipse(240, 208, 141, 126, 0, 0, Math.PI * 2);
         ctx.clip();
+        ctx.filter = 'brightness(0.58) saturate(0.66)';
         this.paintGroundTiles(ctx, TILE_STONE_FLOOR, bounds.width, bounds.height);
         ctx.restore();
+        ctx.filter = 'none';
         canvasTex.refresh();
       }
     }

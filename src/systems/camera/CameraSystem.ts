@@ -3,8 +3,11 @@ import { BlackKnightPlayer } from '../../entities/BlackKnightPlayer';
 import { BoundsRect } from '../../types';
 import { SettingsManager } from '../SettingsManager';
 
+const DEFAULT_WORLD_ZOOM = 2.2;
+
 export class CameraSystem {
   private camera: Phaser.Cameras.Scene2D.Camera;
+  private zoneZoom = DEFAULT_WORLD_ZOOM;
 
   constructor(scene: Phaser.Scene) {
     this.camera = scene.cameras.main;
@@ -14,7 +17,7 @@ export class CameraSystem {
   private setupCamera(): void {
     this.camera.setSize(1280, 720);
     this.camera.setRoundPixels(true);
-    this.camera.setZoom(2.2);
+    this.camera.setZoom(DEFAULT_WORLD_ZOOM);
   }
 
   public follow(target: BlackKnightPlayer): void {
@@ -29,6 +32,14 @@ export class CameraSystem {
     if (current.x !== bounds.x || current.y !== bounds.y ||
         current.width !== bounds.width || current.height !== bounds.height) {
       this.camera.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
+    }
+
+    // A narrow room must still cover the viewport at its camera clamp.
+    const fit = Math.max(this.camera.width / bounds.width, this.camera.height / bounds.height);
+    const zoom = Math.max(DEFAULT_WORLD_ZOOM, Math.ceil(fit * 100) / 100);
+    if (zoom !== this.zoneZoom) {
+      this.zoneZoom = zoom;
+      this.camera.setZoom(zoom);
     }
   }
 
