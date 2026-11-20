@@ -1,6 +1,6 @@
 {
-  "totalFiles": 248,
-  "totalBytes": 69198175,
+  "totalFiles": 250,
+  "totalBytes": 69417799,
   "categories": {
     "audio": [
       {
@@ -339,6 +339,16 @@
       {
         "path": "public/assets/characters/black_knight/black_knight_armed_idle.png",
         "size": 26670,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/black_knight/black_knight_movement.json",
+        "size": 68018,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/characters/black_knight/black_knight_movement.png",
+        "size": 151606,
         "ext": ".png"
       },
       {

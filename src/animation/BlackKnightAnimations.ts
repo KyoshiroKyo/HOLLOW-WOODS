@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import { 
   BLACK_KNIGHT_ARMED_IDLE_KEY,
+  BLACK_KNIGHT_MOVEMENT_KEY,
   WAYFARER_USE_PURE_ARTIST_SPRITES,
   WAYFARER_IDLE_KEY,
   WAYFARER_WALK_KEY,
@@ -42,6 +43,7 @@ const WAYFARER_CONFIGS: WayfarerSheetConfig[] = [
   { action: 'use_item', sheetKey: WAYFARER_USE_ITEM_KEY, fps: 8, repeat: 0, framesPerDir: 4 },
   // 9 animations chiến đấu & động tác mới V1.5.2
   { action: 'unarmed_idle', sheetKey: WAYFARER_UNARMED_IDLE_KEY, fps: 6, repeat: -1, framesPerDir: 4 },
+  { action: 'unarmed_walk', sheetKey: WAYFARER_WALK_KEY, fps: 10, repeat: -1, framesPerDir: 6 },
   { action: 'unarmed_run', sheetKey: WAYFARER_UNARMED_RUN_KEY, fps: 14, repeat: -1, framesPerDir: 6 },
   { action: 'heavy_attack', sheetKey: WAYFARER_HEAVY_ATTACK_KEY, fps: 10, repeat: 0, framesPerDir: 6 },
   { action: 'weapon_art', sheetKey: WAYFARER_WEAPON_ART_KEY, fps: 12, repeat: 0, framesPerDir: 6 },
@@ -56,6 +58,38 @@ const DIRECTIONS = ['down', 'up', 'left', 'right'] as const;
 const ARMED_IDLE_FRAMES_PER_DIRECTION = 6;
 const ARMED_IDLE_FRAME_MS = 70;
 
+interface ArtistMovementClip {
+  prefix: string;
+  frameMs: number;
+  fellorRight?: boolean;
+}
+
+const ARTIST_MOVEMENT: Partial<Record<string, ArtistMovementClip>> = {
+  walk: { prefix: 'armed_walk', frameMs: 170 },
+  run: { prefix: 'armed_run', frameMs: 140, fellorRight: true },
+  unarmed_idle: { prefix: 'unarmed_idle', frameMs: 70 },
+  unarmed_walk: { prefix: 'unarmed_walk', frameMs: 170 },
+  unarmed_run: { prefix: 'unarmed_run', frameMs: 140, fellorRight: true },
+};
+
+function getMovementGroup(anims: Phaser.Animations.AnimationManager, action: string) {
+  const clip = ARTIST_MOVEMENT[action];
+  if (!WAYFARER_USE_PURE_ARTIST_SPRITES || !clip) return undefined;
+
+  const directions = DIRECTIONS.map(dir => {
+    // The authored RIGHT run has twice the poses at the same total loop duration.
+    const original = dir === 'right' && clip.fellorRight;
+    const expectedCount = original ? 12 : 6;
+    const frames = anims.generateFrameNames(BLACK_KNIGHT_MOVEMENT_KEY, {
+      prefix: `${clip.prefix}_${dir}_`,
+      end: expectedCount - 1,
+    });
+    return { frames, expectedCount, frameRate: 1000 / (original ? 70 : clip.frameMs) };
+  });
+  return directions.every(dir => dir.frames.length === dir.expectedCount) ? directions : undefined;
+}
+
+
 /** Register the directional Wayfarer clips and their supported Satyr animation aliases. */
 export function registerWayfarerAnimations(anims: Phaser.Animations.AnimationManager): void {
   const artistIdle = WAYFARER_USE_PURE_ARTIST_SPRITES
@@ -69,16 +103,19 @@ export function registerWayfarerAnimations(anims: Phaser.Animations.AnimationMan
 
   for (const cfg of WAYFARER_CONFIGS) {
     const useArtistIdle = cfg.action === 'idle' && hasCompleteArtistIdle;
-    const frameRate = useArtistIdle ? 1000 / ARMED_IDLE_FRAME_MS : cfg.fps;
-    const hasBaseAlias = cfg.action !== 'idle' && cfg.action !== 'walk' && cfg.action !== 'run';
+    const movement = getMovementGroup(anims, cfg.action);
+    const hasBaseAlias = cfg.action !== 'idle' && cfg.action !== 'walk' &&
+      cfg.action !== 'unarmed_walk' && cfg.action !== 'run';
 
     for (const [row, dir] of DIRECTIONS.entries()) {
       const start = row * cfg.framesPerDir;
-      const frames = useArtistIdle ? artistIdle[row] : anims.generateFrameNumbers(cfg.sheetKey, {
+      const artist = movement?.[row];
+      const frames = useArtistIdle ? artistIdle[row] : artist?.frames ?? anims.generateFrameNumbers(cfg.sheetKey, {
         start,
         end: start + cfg.framesPerDir - 1
       });
-      const expectedCount = useArtistIdle ? ARMED_IDLE_FRAMES_PER_DIRECTION : cfg.framesPerDir;
+      const expectedCount = useArtistIdle ? ARMED_IDLE_FRAMES_PER_DIRECTION : artist?.expectedCount ?? cfg.framesPerDir;
+      const frameRate = useArtistIdle ? 1000 / ARMED_IDLE_FRAME_MS : artist?.frameRate ?? cfg.fps;
       if (frames.length !== expectedCount) continue;
 
       for (const prefix of ['wayfarer', 'satyr']) {

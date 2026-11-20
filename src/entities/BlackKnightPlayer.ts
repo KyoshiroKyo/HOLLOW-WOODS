@@ -1329,16 +1329,17 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
   /**
    * Phát hoạt ảnh Walk hoặc Run theo 4 hướng.
    * Ưu tiên khóa wayfarer_* và tương thích với satyr_*.
-   * Nếu đang cùng hướng di chuyển và chỉ đổi tốc độ Walk <-> Run,
-   * bảo tồn tiến trình frame hiện tại để không bị ngắt quãng giật cục về frame 0.
+   * Giữ pha bước khi đổi tốc độ hoặc hướng giữa các clip di chuyển,
+   * kể cả khi hai clip có số frame khác nhau.
    */
   private playWalkOrRunAnim(): void {
     if (this.isActionLocked()) return;
 
     const isRunning = this.stats.isSprinting;
-    const action = isRunning ? (this._isWeaponDrawn ? 'run' : 'unarmed_run') : 'walk';
+    const gait = isRunning ? 'run' : 'walk';
+    const action = this._isWeaponDrawn ? gait : `unarmed_${gait}`;
     const wayfarerKey = `wayfarer_${action}_${this.facing}`;
-    const satyrKey = `satyr_${isRunning ? 'run' : 'walk'}_${this.facing}`;
+    const satyrKey = `satyr_${action}_${this.facing}`;
     const targetKey = this.scene.anims.exists(wayfarerKey) ? wayfarerKey : satyrKey;
 
     const currentAnimKey = this.anims.currentAnim?.key;
@@ -1355,15 +1356,11 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    const isSameDirection = currentAnimKey?.endsWith(this.facing);
-    const isWalkRunSwitch =
-      (currentAnimKey?.includes('_walk_') && isRunning) ||
-      (currentAnimKey?.includes('_run_') && !isRunning);
-
-    if (isSameDirection && isWalkRunSwitch && this.anims.currentFrame) {
-      const currentFrameIndex = Math.max(0, this.anims.currentFrame.index - 1);
+    const previousAnim = this.anims.currentAnim;
+    if (previousAnim && /_(walk|run)_/.test(previousAnim.key) && this.anims.currentFrame) {
+      const phase = (this.anims.currentFrame.index - 1) / previousAnim.frames.length;
+      const frameIdx = Math.floor(phase * targetAnim.frames.length);
       this.play(targetKey);
-      const frameIdx = currentFrameIndex % targetAnim.frames.length;
       this.anims.setCurrentFrame(targetAnim.frames[frameIdx]);
     } else {
       this.play(targetKey, true);
