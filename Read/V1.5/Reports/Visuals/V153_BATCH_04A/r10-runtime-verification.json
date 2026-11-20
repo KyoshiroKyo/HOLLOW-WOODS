@@ -1,0 +1,545 @@
+{
+  "runtimeCommit": "35a1cf5181eb69a2ecc6c800e3eb8bbdb45ab8de",
+  "productionLocalStartup": {
+    "failed-sdk": {
+      "menu": {
+        "canvas": [
+          1280,
+          720
+        ],
+        "dpr": 1,
+        "renderer": "WEBGL",
+        "sdkInit": 0,
+        "sdkReady": 0
+      },
+      "log": {
+        "pageErrors": [],
+        "consoleErrors": [
+          "Failed to load resource: net::ERR_FAILED"
+        ],
+        "httpErrors": [],
+        "requestsFailed": [
+          [
+            "https://games.p2game.io/sdk/p2game-sdk.v1.js",
+            "net::ERR_FAILED"
+          ]
+        ]
+      }
+    },
+    "missing-module": {
+      "visibleError": "Không tải được mã trò chơi. Hãy tải lại trang.",
+      "log": {
+        "pageErrors": [],
+        "consoleErrors": [
+          "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "[HOLLOW WOODS startup] Không tải được mã trò chơi. Hãy tải lại trang."
+        ],
+        "httpErrors": [
+          [
+            404,
+            "http://127.0.0.1:3146/preview/hollow-woods/assets/index-CLD7qG8a.js"
+          ]
+        ],
+        "requestsFailed": [
+          [
+            "http://127.0.0.1:3146/preview/hollow-woods/assets/index-CLD7qG8a.js",
+            "net::ERR_ABORTED"
+          ]
+        ]
+      }
+    },
+    "normal-sdk-fixture": {
+      "menu": {
+        "canvas": [
+          1280,
+          720
+        ],
+        "dpr": 1,
+        "renderer": "WEBGL",
+        "sdkInit": 1,
+        "sdkReady": 1
+      },
+      "log": {
+        "pageErrors": [],
+        "consoleErrors": [],
+        "httpErrors": [],
+        "requestsFailed": []
+      }
+    },
+    "preload-fallback": {
+      "menu": {
+        "canvas": [
+          1280,
+          720
+        ],
+        "dpr": 1,
+        "renderer": "WEBGL",
+        "sdkInit": 0,
+        "sdkReady": 0,
+        "fallback": true
+      },
+      "log": {
+        "pageErrors": [],
+        "consoleErrors": [
+          "Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ],
+        "httpErrors": [
+          [
+            404,
+            "http://127.0.0.1:3146/preview/hollow-woods/assets/ui/menu/black_knight_cinematic.png"
+          ]
+        ],
+        "requestsFailed": []
+      }
+    },
+    "local-iframe": {
+      "menu": {
+        "canvas": [
+          1600,
+          900
+        ],
+        "dpr": 1.25,
+        "renderer": "WEBGL",
+        "sdkInit": 0,
+        "sdkReady": 0,
+        "resize": true,
+        "keyboard": true,
+        "developerModePublicOff": true,
+        "lantern": true,
+        "audioUnlocked": true,
+        "continue": {
+          "schema": 3,
+          "zone": "fog_crossing"
+        }
+      },
+      "log": {
+        "pageErrors": [],
+        "consoleErrors": [],
+        "httpErrors": [],
+        "requestsFailed": []
+      }
+    },
+    "no-webgl": {
+      "status": {
+        "active": true,
+        "renderer": "CANVAS",
+        "phase": null,
+        "error": "Đang khởi động HOLLOW WOODS…"
+      },
+      "pageErrors": []
+    }
+  },
+  "productionLocalColdWarmCache": {
+    "menus": {
+      "cold": {
+        "assets": 258,
+        "cached": 5
+      },
+      "reload1": {
+        "assets": 258,
+        "cached": 11,
+        "not_modified": 0
+      },
+      "reload2": {
+        "assets": 258,
+        "cached": 11,
+        "not_modified": 0
+      }
+    },
+    "logs": {
+      "pageErrors": [],
+      "consoleErrors": [],
+      "httpErrors": [],
+      "failedRequests": [
+        [
+          "inspector",
+          "https://games.p2game.io/sdk/p2game-sdk.v1.js"
+        ],
+        [
+          "inspector",
+          "https://games.p2game.io/sdk/p2game-sdk.v1.js"
+        ],
+        [
+          "inspector",
+          "https://games.p2game.io/sdk/p2game-sdk.v1.js"
+        ]
+      ],
+      "sdkWarnings": [
+        "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng.",
+        "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng.",
+        "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+      ]
+    }
+  },
+  "previousCheckpointBootReferences": {
+    "slow-sdk": {
+      "menu": {
+        "canvas": [
+          1280,
+          720
+        ],
+        "dpr": 1,
+        "renderer": "WEBGL",
+        "sdkInit": 0,
+        "sdkReady": 0
+      },
+      "log": {
+        "pageErrors": [],
+        "consoleErrors": [],
+        "httpErrors": [],
+        "requestsFailed": []
+      }
+    },
+    "pending-init": {
+      "visibleError": "P2Game chưa phản hồi. Hãy tải lại để kết nối lại.",
+      "menu": {
+        "canvas": [
+          1280,
+          720
+        ],
+        "dpr": 1,
+        "renderer": "WEBGL",
+        "sdkInit": 1,
+        "sdkReady": 1
+      },
+      "log": {
+        "pageErrors": [],
+        "consoleErrors": [
+          "[HOLLOW WOODS startup] Error: P2Game chưa phản hồi. Hãy tải lại để kết nối lại.\n    at http://127.0.0.1:3142/preview/hollow-woods/assets/index-wPFMcz70.js:33:31363"
+        ],
+        "httpErrors": [],
+        "requestsFailed": []
+      }
+    }
+  },
+  "mockSdk": {
+    "public": {
+      "metrics": {
+        "submits": [
+          "survival-score"
+        ],
+        "storage": [
+          [
+            "set",
+            "hw_save_slot_1"
+          ],
+          [
+            "set",
+            "hw_save_meta"
+          ]
+        ],
+        "over": 1,
+        "dpr": 1
+      },
+      "log": {
+        "pageErrors": [],
+        "consoleErrors": [],
+        "httpErrors": [],
+        "failedRequests": [],
+        "sdkWarnings": []
+      }
+    },
+    "qaIframe": {
+      "metrics": {
+        "submits": [],
+        "storage": [],
+        "over": 0,
+        "dpr": 1.25
+      },
+      "log": {
+        "pageErrors": [],
+        "consoleErrors": [],
+        "httpErrors": [],
+        "failedRequests": [],
+        "sdkWarnings": []
+      }
+    }
+  },
+  "devPanelAndFocus": {
+    "ui": {
+      "perf": "FPS: 16.0 · Frame: 16.7 ms\nQuan hệ va chạm: 4\nBody bật: 228 tĩnh · 8 động · Object: 695\nJS Heap: 84.5 MB\nAudio: BGM — · Ambience village · Heartbeat false · Sanity Duck false",
+      "outsideClearedHeldKey": true,
+      "pausePreserved": true,
+      "console": {
+        "pageErrors": [],
+        "consoleErrors": [],
+        "httpErrors": [],
+        "failedRequests": [],
+        "sdkWarnings": [
+          "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+        ]
+      }
+    }
+  },
+  "devLifecycle": {
+    "cycleCounts": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "log": {
+      "pageErrors": [],
+      "consoleErrors": [],
+      "httpErrors": [],
+      "failedRequests": [],
+      "sdkWarnings": []
+    }
+  },
+  "devEffectFixtures": {
+    "effectChecks": true,
+    "endingGameOverCalls": 0,
+    "logs": {
+      "pageErrors": [],
+      "consoleErrors": [],
+      "httpErrors": [],
+      "failedRequests": [],
+      "sdkWarnings": []
+    }
+  },
+  "nerisAndBellhollowPhysicalInput": {
+    "corridor": {
+      "from": [
+        541,
+        481
+      ],
+      "to": [
+        541,
+        448.41666666666623
+      ],
+      "props": [
+        [
+          "Nhà Neris – Thảo Mộc",
+          505,
+          400,
+          130,
+          30,
+          true,
+          false
+        ],
+        [
+          "Bàn Thuốc Trái",
+          488,
+          432,
+          24,
+          10,
+          true,
+          false
+        ],
+        [
+          "Cụm Vật Phẩm Làng",
+          1090,
+          122,
+          20,
+          12,
+          true,
+          false
+        ],
+        [
+          "Cổng Đông",
+          1477,
+          242,
+          16,
+          76,
+          true,
+          false
+        ]
+      ],
+      "body": [
+        532,
+        430.41666666666623,
+        18,
+        12,
+        {
+          "none": true,
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false
+        }
+      ],
+      "loop": 132,
+      "nearby": [
+        [
+          "Nhà Neris – Thảo Mộc",
+          505,
+          400,
+          130,
+          30
+        ],
+        [
+          "Bàn Thuốc Trái",
+          488,
+          432,
+          24,
+          10
+        ],
+        [
+          "Cụm Vật Phẩm Làng",
+          500,
+          431,
+          20,
+          12
+        ]
+      ],
+      "view": [
+        480,
+        310.8410370519697
+      ],
+      "zone": "bellhollow"
+    },
+    "trees": [],
+    "walkedEntry": {
+      "zone": "bellhollow",
+      "pos": [
+        486.5000000000008,
+        232
+      ]
+    },
+    "errors": {
+      "pageErrors": [],
+      "consoleErrors": [],
+      "httpErrors": [],
+      "failedRequests": [],
+      "sdkWarnings": [
+        "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng.",
+        "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng.",
+        "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+      ]
+    }
+  },
+  "finalDiagnosticsCommit": "82468756b40242e29eb9c094a0ae334c02bac24a",
+  "f10DiagnosticsBefore": {
+    "benchmark": {
+      "zoneId": "bellhollow",
+      "durationSeconds": 10,
+      "sampleCount": 95,
+      "avgFps": 7.6,
+      "minFps": 5,
+      "maxFps": 19,
+      "onePercentLowFps": 5,
+      "avgFrameTimeMs": 106.6,
+      "avgDrawCalls": 185,
+      "peakDrawCalls": 218,
+      "avgVisibleObjects": 164,
+      "avgCulledObjects": 512,
+      "culledRatioPercent": 69.1,
+      "totalObjects": 741,
+      "vramTextures": 493,
+      "tiledModules": {
+        "ySorting": true,
+        "culling": true,
+        "perimeterWalls": true
+      }
+    },
+    "textureLabel": "   • Textures nạp VRAM: 493 textures",
+    "logs": {
+      "pageErrors": [],
+      "consoleErrors": [],
+      "httpErrors": [],
+      "failedRequests": [],
+      "sdkWarnings": [
+        "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+      ]
+    }
+  },
+  "f10DiagnosticsAfter": {
+    "benchmark": {
+      "zoneId": "bellhollow",
+      "durationSeconds": 10,
+      "sampleCount": 133,
+      "avgFps": 4.6,
+      "minFps": 3,
+      "maxFps": 11,
+      "onePercentLowFps": 6,
+      "avgFrameTimeMs": 76.3,
+      "avgDrawCalls": 185,
+      "peakDrawCalls": 218,
+      "avgVisibleObjects": 165,
+      "avgCulledObjects": 530,
+      "culledRatioPercent": 71.5,
+      "totalObjects": 741,
+      "textureCount": 493,
+      "tiledModules": {
+        "ySorting": true,
+        "culling": true,
+        "perimeterWalls": true
+      }
+    },
+    "textureLabel": "   • Texture trong bộ nhớ: 493 textures",
+    "logs": {
+      "pageErrors": [],
+      "consoleErrors": [],
+      "httpErrors": [],
+      "failedRequests": [],
+      "sdkWarnings": [
+        "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+      ]
+    },
+    "extraChecks": [
+      "real dagger SFX gain/count/loop and release",
+      "last environmental composure source",
+      "pointercancel and visibilitychange clear D",
+      "QA benchmark storage"
+    ]
+  },
+  "finalProductionAndQaSdkFixtures": {
+    "public": {
+      "metrics": {
+        "submits": [
+          "survival-score"
+        ],
+        "storage": [
+          [
+            "set",
+            "hw_save_slot_1"
+          ],
+          [
+            "set",
+            "hw_save_meta"
+          ]
+        ],
+        "over": 1,
+        "dpr": 1
+      },
+      "log": {
+        "pageErrors": [],
+        "consoleErrors": [],
+        "httpErrors": [],
+        "failedRequests": [],
+        "sdkWarnings": []
+      }
+    },
+    "qaIframe": {
+      "metrics": {
+        "submits": [],
+        "storage": [],
+        "over": 0,
+        "dpr": 1.25
+      },
+      "log": {
+        "pageErrors": [],
+        "consoleErrors": [],
+        "httpErrors": [],
+        "failedRequests": [],
+        "sdkWarnings": []
+      }
+    }
+  }
+}
