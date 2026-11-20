@@ -68,9 +68,8 @@ export class AutoPerimeterWallsModule {
     const wall = colliderGroup.create(minX, minY, undefined) as Phaser.Physics.Arcade.Sprite;
     wall.setOrigin(0, 0);
     wall.setVisible(false);
-    const body = wall.body as Phaser.Physics.Arcade.StaticBody;
-    body.setSize(width, height, false);
-    body.reset(minX, minY);
+    wall.setDisplaySize(width, height);
+    wall.refreshBody();
     wall.setName(name);
     return wall;
   }
@@ -140,7 +139,7 @@ export class AutoPerimeterWallsModule {
           this.createWallSegment(colliderGroup, curX, minY - wallThickness / 2, segW, wallThickness, `auto_north_${zoneId}_seg_${i}`)
         );
       }
-      curX = portalRight;
+      curX = Math.max(curX, portalRight);
     }
     if (curX < maxX) {
       createdWalls.push(
@@ -165,7 +164,7 @@ export class AutoPerimeterWallsModule {
           this.createWallSegment(colliderGroup, curX, maxY - wallThickness / 2, segW, wallThickness, `auto_south_${zoneId}_seg_${i}`)
         );
       }
-      curX = portalRight;
+      curX = Math.max(curX, portalRight);
     }
     if (curX < maxX) {
       createdWalls.push(
@@ -190,7 +189,7 @@ export class AutoPerimeterWallsModule {
           this.createWallSegment(colliderGroup, minX - wallThickness / 2, curY, wallThickness, segH, `auto_west_${zoneId}_seg_${i}`)
         );
       }
-      curY = portalBottom;
+      curY = Math.max(curY, portalBottom);
     }
     if (curY < maxY) {
       createdWalls.push(
@@ -215,7 +214,7 @@ export class AutoPerimeterWallsModule {
           this.createWallSegment(colliderGroup, maxX - wallThickness / 2, curY, wallThickness, segH, `auto_east_${zoneId}_seg_${i}`)
         );
       }
-      curY = portalBottom;
+      curY = Math.max(curY, portalBottom);
     }
     if (curY < maxY) {
       createdWalls.push(

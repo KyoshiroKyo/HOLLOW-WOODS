@@ -8,6 +8,7 @@ import { CampSystem } from '../systems/CampSystem';
 import {
   TILE_FOREST_GRASS,
   TILE_SWAMP_MUD,
+  TILE_DIRT_TRAIL,
   TILE_COBBLE_ROAD,
   TILE_STONE_FLOOR,
   SPRITE_TREE_OAK_1,
@@ -230,6 +231,10 @@ export class WorldBuilder {
       }
     }
 
+    // The continuous starter camera can see the forest shoulder south of Fog Crossing.
+    this.scene.add.tileSprite(0, 360, 480, 680, TILE_FOREST_GRASS)
+      .setOrigin(0, 0).setDepth(DEPTH_GROUND_BASE - 1);
+
     // C4-13-20: Dựng các dải tiếp giáp địa hình chuyển tiếp tự nhiên (180px–220px) xóa bỏ đường cắt dọc hai thái cực
     this.renderZoneBoundaryTransitions();
 
@@ -333,6 +338,11 @@ export class WorldBuilder {
       this.renderSubRootCellarTerrain(bounds);
     } else if (id === 'sub_whispering_clearing') {
       this.renderSubWhisperingClearingTerrain(bounds);
+    } else {
+      const terrain = id === 'drowned_mire_depths' ? TILE_SWAMP_MUD
+        : id === 'whispering_grove_sanctum' ? TILE_FOREST_GRASS : TILE_STONE_FLOOR;
+      this.scene.add.tileSprite(bounds.x, bounds.y, bounds.width, bounds.height, terrain)
+        .setOrigin(0, 0).setDepth(DEPTH_GROUND_BASE);
     }
 
     // 3. Dựng các chi tiết kiến trúc đặc thù
@@ -7056,7 +7066,8 @@ export class WorldBuilder {
     this.createStaticBoxCollider(bounds.x + 40, 665, bounds.width - 80, 35, 'Rặng Cây Khô Viền Nam Silent Mire');
     this.createStaticBoxCollider(2895, bounds.y + 40, 35, Math.max(20, 150 - (bounds.y + 40)), 'Rặng Cây Khô Viền Tây Bắc Silent Mire');
     this.createStaticBoxCollider(2895, 235, 35, 30, 'Rặng Cây Khô Viền Tây Giữa Silent Mire');
-    this.createStaticBoxCollider(2895, 400, 35, bounds.y + bounds.height - 40 - 400, 'Rặng Cây Khô Viền Tây Nam Silent Mire');
+    // Preserve the tree line below the bridge opening (x=2880–2916, y=410–450).
+    this.createStaticBoxCollider(2895, 452, 35, bounds.y + bounds.height - 40 - 452, 'Rặng Cây Khô Viền Tây Nam Silent Mire');
     this.createStaticBoxCollider(3955, bounds.y + 40, 35, 235 - (bounds.y + 40), 'Rặng Cây Khô Viền Đông Bắc Silent Mire');
     this.createStaticBoxCollider(3955, 400, 35, bounds.y + bounds.height - 40 - 400, 'Rặng Cây Khô Viền Đông Nam Silent Mire');
 
@@ -7509,6 +7520,28 @@ export class WorldBuilder {
 
     // 3. RANH GIỚI BELLHOLLOW <-> CROOKED PATH (x = 1600, Dải tiếp giáp 180px: 1510..1690)
     this.renderVillageToForestTransition(1600);
+    this.renderFarmTrailCrossing();
+  }
+
+  private renderFarmTrailCrossing(): void {
+    const key = 'farm_woods_trail_connection';
+    if (!this.scene.textures.exists(key)) {
+      const canvas = this.scene.textures.createCanvas(key, 160, 70);
+      if (canvas) {
+        const ctx = canvas.getContext();
+        ctx.imageSmoothingEnabled = false;
+        ctx.beginPath();
+        ctx.moveTo(0, 27);
+        ctx.quadraticCurveTo(72, 13, 160, 30);
+        ctx.lineTo(160, 46);
+        ctx.quadraticCurveTo(90, 55, 0, 42);
+        ctx.closePath();
+        ctx.clip();
+        this.paintGroundTiles(ctx, TILE_DIRT_TRAIL, 160, 70);
+        canvas.refresh();
+      }
+    }
+    this.scene.add.image(1040, 705, key).setOrigin(0, 0).setDepth(DEPTH_GROUND_BASE + 1);
   }
 
   /**
@@ -7807,38 +7840,49 @@ export class WorldBuilder {
   // ===========================================================================
 
   private renderSubBellWorkshopTerrain(bounds: { x: number; y: number; width: number; height: number }): void {
-    const texKey = 'sub_bell_workshop_ground_baked_v14';
+    const texKey = 'sub_bell_workshop_ground_baked_v15';
     if (!this.scene.textures.exists(texKey)) {
-      const W = bounds.width;
-      const H = bounds.height;
-      const canvasTex = this.scene.textures.createCanvas(texKey, W, H);
+      const canvasTex = this.scene.textures.createCanvas(texKey, bounds.width, bounds.height);
       if (canvasTex) {
         const ctx = canvasTex.getContext();
         ctx.imageSmoothingEnabled = false;
-        ctx.fillStyle = '#23201a';
-        ctx.fillRect(0, 0, W, H);
+        this.paintGroundTiles(ctx, TILE_FOREST_GRASS, bounds.width, bounds.height);
 
-        ctx.fillStyle = '#363024';
-        ctx.fillRect(80, 60, 320, 280);
-        ctx.fillStyle = '#4a4030';
-        ctx.fillRect(100, 80, 280, 240);
+        // The trail continues from (1360,1040) into the weathered workshop floor.
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(215, 0);
+        ctx.lineTo(265, 0);
+        ctx.lineTo(269, 63);
+        ctx.lineTo(294, 114);
+        ctx.lineTo(276, 173);
+        ctx.lineTo(209, 168);
+        ctx.lineTo(211, 112);
+        ctx.lineTo(224, 65);
+        ctx.closePath();
+        ctx.clip();
+        this.paintGroundTiles(ctx, TILE_DIRT_TRAIL, bounds.width, bounds.height);
+        ctx.restore();
 
-        // V152-04: Hành lang đường đất nối liền từ Cổng Bắc Rừng Ngoại Vi (lx: 200..280, wy: 1040)
-        ctx.fillStyle = '#5c452e';
-        ctx.fillRect(200, 0, 80, 80);
-        ctx.fillStyle = '#705439';
-        ctx.fillRect(215, 0, 50, 80);
-
-        ctx.fillStyle = '#181410';
-        ctx.fillRect(140, 120, 200, 160);
-
+        ctx.save();
+        ctx.beginPath();
+        ctx.ellipse(240, 208, 141, 126, 0, 0, Math.PI * 2);
+        ctx.clip();
+        this.paintGroundTiles(ctx, TILE_STONE_FLOOR, bounds.width, bounds.height);
+        ctx.restore();
         canvasTex.refresh();
       }
     }
-    const ground = this.scene.add.image(bounds.x, bounds.y, texKey);
-    ground.setOrigin(0, 0);
-    ground.setDepth(DEPTH_GROUND_BASE);
-    this.registerCullable(ground, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, bounds.width);
+    this.scene.add.image(bounds.x, bounds.y, texKey).setOrigin(0, 0).setDepth(DEPTH_GROUND_BASE);
+  }
+
+  private paintGroundTiles(ctx: CanvasRenderingContext2D, texture: string, width: number, height: number): void {
+    const image = this.scene.textures.get(texture).getSourceImage() as HTMLImageElement | HTMLCanvasElement;
+    const pattern = ctx.createPattern(image, 'repeat');
+    if (pattern) {
+      ctx.fillStyle = pattern;
+      ctx.fillRect(0, 0, width, height);
+    }
   }
 
   private renderSubRootCellarTerrain(bounds: { x: number; y: number; width: number; height: number }): void {
@@ -8035,49 +8079,10 @@ export class WorldBuilder {
   }
 
   public detectCurrentZone(pos: Point2D): ZoneId {
-    // C4-13-19 & C4-132-03: Cơ chế vùng đệm trễ vị trí (Hysteresis Margin 80px) chống dao động phân khu lặp lại
-    // Đặc biệt bảo vệ ranh giới giữa Đầm Lầy Tĩnh Lặng, Câu Đố Cổ Ngữ và Miếu Chuông Phế Tích
-    // V15-41: Margin ranh giới chính xác (12px) cho ancient_rune_puzzle, giải phóng lối đi Tây (X < 3340) ra Đầm Lầy Tĩnh Lặng
-    if (this.activeZoneId === 'ancient_rune_puzzle') {
-      const activeZone = this.zones.get('ancient_rune_puzzle');
-      if (activeZone) {
-        const b = activeZone.bounds;
-        const margin = 12;
-        if (
-          pos.x >= b.x - margin &&
-          pos.x <= b.x + b.width + margin &&
-          pos.y >= b.y - margin &&
-          pos.y <= b.y + b.height + margin
-        ) {
-          return 'ancient_rune_puzzle';
-        }
-      }
-    }
-
-    if (this.activeZoneId === 'broken_bell_shrine') {
-      const activeZone = this.zones.get('broken_bell_shrine');
-      if (activeZone) {
-        const b = activeZone.bounds;
-        const margin = 80;
-        if (
-          pos.x >= b.x - margin &&
-          pos.x <= b.x + b.width + margin &&
-          pos.y >= b.y - margin &&
-          pos.y <= b.y + b.height + margin
-        ) {
-          return 'broken_bell_shrine';
-        }
-      }
-    }
-
-    // C4-12-29: Sử dụng mảng sortedZonesByArea đã pre-sort sẵn (zero heap allocation, zero per-frame sort)
-    for (let i = 0; i < this.sortedZonesByArea.length; i++) {
-      const zone = this.sortedZonesByArea[i];
+    // Resolve ownership without changing the active zone until GameScene accepts the crossing.
+    for (const zone of this.sortedZonesByArea) {
       const b = zone.bounds;
-      if (pos.x >= b.x && pos.x <= b.x + b.width && pos.y >= b.y && pos.y <= b.y + b.height) {
-        if (this.activeZoneId !== zone.id) {
-          this.activeZoneId = zone.id;
-        }
+      if (pos.x >= b.x && pos.x < b.x + b.width && pos.y >= b.y && pos.y < b.y + b.height) {
         return zone.id;
       }
     }

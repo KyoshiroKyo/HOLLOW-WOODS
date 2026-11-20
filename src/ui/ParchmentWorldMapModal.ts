@@ -1,3 +1,5 @@
+import { ZoneConnectionRegistry } from '../world/ZoneConnectionRegistry';
+import { WorldGatingSystem } from '../world/WorldGatingSystem';
 /**
  * HOLLOW WOODS V1.4 - PARCHMENT WORLD MAP MODAL (PHÍM M)
  * Bản đồ Thế giới Giấy Da toàn vùng lấy Làng Bellhollow làm trung tâm.
@@ -25,7 +27,6 @@ export interface ParchmentMapNode {
   color: number;
   borderColor: number;
   landmarks: string[];
-  connections: string[];
   clue: string;
 }
 
@@ -60,7 +61,6 @@ export class ParchmentWorldMapModal {
       color: 0x3d301f,
       borderColor: 0xd4af37, // Viền vàng hoàng kim
       landmarks: ['Tháp Chuông Cổ', 'Bảng Tin Dị Thường', 'Lò Rèn Bram', 'Giếng Nước Cổ'],
-      connections: ['outer_woods', 'crooked_path', 'silent_mire', 'fog_crossing', 'sanctuary_farm'],
       clue: 'Nơi cư ngụ của dân làng. Lưỡi Chuông Đồng bảo vệ làng đã bị Kẻ Lắng Nghe đánh cắp.'
     },
     {
@@ -74,7 +74,6 @@ export class ParchmentWorldMapModal {
       color: 0x242e20,
       borderColor: 0x5a7d52,
       landmarks: ['Nhà Trạm Kiểm Lâm', 'Rương Tiếp Tế', 'Gốc Sồi Mục'],
-      connections: ['bellhollow', 'crooked_path', 'abyssal_chasm'],
       clue: 'Trạm kiểm lâm bỏ hoang chứa rương quân lương và lối tắt thân cây đổ nối sang Đầm Lầy.'
     },
     {
@@ -88,7 +87,6 @@ export class ParchmentWorldMapModal {
       color: 0x2f281e,
       borderColor: 0x7a6344,
       landmarks: ['Ổ Đá Canh Gác', 'Biển Cảnh Báo'],
-      connections: ['bellhollow', 'outer_woods', 'deep_forest'],
       clue: 'Tuyến đường huyết mạch hiểm trở nối thẳng lên Rừng Sâu u tối.'
     },
     {
@@ -102,7 +100,6 @@ export class ParchmentWorldMapModal {
       color: 0x1b281f,
       borderColor: 0x3e6848,
       landmarks: ['Cột Vật Tổ Thì Thầm', 'Cổng Hư Không', 'Bụi Gai Đầm Lầy'],
-      connections: ['crooked_path', 'ancient_rune_puzzle'],
       clue: 'Cột vật tổ thì thầm cảnh báo lũ Kỵ Binh Hắc Ám và Sói Xương rình rập.'
     },
     {
@@ -116,7 +113,6 @@ export class ParchmentWorldMapModal {
       color: 0x22262d,
       borderColor: 0x5d6878,
       landmarks: ['Bờ Vực Sương Mù', 'Lửa Trại Tàn Tích'],
-      connections: ['bellhollow'],
       clue: 'Điểm khởi đầu nơi người lữ khách lần đầu lạc bước vào Khu Rừng Rỗng.'
     },
     {
@@ -130,7 +126,6 @@ export class ParchmentWorldMapModal {
       color: 0x33281c,
       borderColor: 0x826945,
       landmarks: ['Vườn Thảo Dược Edda', 'Hàng Rào Gỗ'],
-      connections: ['bellhollow', 'silent_mire'],
       clue: 'Vườn thuốc an lành thu hoạch Thảo Dược Quý chế tạo Cao Dược.'
     },
     {
@@ -144,7 +139,6 @@ export class ParchmentWorldMapModal {
       color: 0x1d2e2b,
       borderColor: 0x3d7066,
       landmarks: ['Miếu Thờ Chìm', 'Chuông Đồng Chìm', 'Cầu Ván Gỗ'],
-      connections: ['bellhollow', 'sanctuary_farm', 'ancient_rune_puzzle', 'broken_bell_shrine'],
       clue: 'Cầu ván gỗ mục dẫn tới Miếu Thờ Chìm phong ấn Lưỡi Chuông Đồng linh thiêng.'
     },
     {
@@ -158,7 +152,6 @@ export class ParchmentWorldMapModal {
       color: 0x291f33,
       borderColor: 0x7d5ea6,
       landmarks: ['Cột Ngữ Trăng Khuyết', 'Cột Ngữ Rễ Cây', 'Cột Ngữ Con Mắt'],
-      connections: ['deep_forest', 'silent_mire', 'broken_bell_shrine'],
       clue: 'Giải mã quy luật cổ ngữ thắp sáng 3 trụ đá để phá vỡ kết giới vào Miếu Chuông.'
     },
     {
@@ -172,7 +165,6 @@ export class ParchmentWorldMapModal {
       color: 0x361c20,
       borderColor: 0xa8434f,
       landmarks: ['Quả Chuông Khổng Lồ', 'Tế Đàn Mạch Rễ', 'Đài Lửa Cổ Ngữ'],
-      connections: ['silent_mire', 'ancient_rune_puzzle'],
       clue: 'Nơi ngủ say của Kẻ Nuốt Tiếng Chuông — Trùm tối thượng phong tỏa Khu Rừng Rỗng.'
     },
     {
@@ -186,7 +178,6 @@ export class ParchmentWorldMapModal {
       color: 0x17121b,
       borderColor: 0x4d3b59,
       landmarks: ['Rìa Vực Thẳm', 'Cổng Hư Vô'],
-      connections: ['outer_woods'],
       clue: 'Khe nứt không gian thăm thẳm dẫn tới cội nguồn tà ác của Màn Sương The Veil.'
     }
   ];
@@ -365,9 +356,8 @@ export class ParchmentWorldMapModal {
 
     // Xác định phân khu mục tiêu tiếp theo trên bản đồ
     let targetNodeId = currentStage.targetZone;
-    if (targetNodeId === 'sub_bell_workshop' || targetNodeId === 'sub_root_cellar') {
-      targetNodeId = 'outer_woods';
-    }
+    if (targetNodeId === 'sub_bell_workshop') targetNodeId = 'outer_woods';
+    else if (targetNodeId === 'sub_root_cellar') targetNodeId = 'sanctuary_farm';
 
     // 1. Thống kê khám phá & Chú thích phía đáy bản đồ
     const statsText = HDTextHelper.createText(this.scene, 180, 620, `🧭 Đã khai mở: ${discoveredCount}/10 Khu Vực`, {
@@ -393,9 +383,12 @@ export class ParchmentWorldMapModal {
     const roadGfx = this.scene.add.graphics();
     const drawnEdges = new Set<string>();
 
+    const topology = ZoneConnectionRegistry.getInstance();
+    const gates = WorldGatingSystem.getInstance();
     for (const node of this.nodes) {
       const fromDiscovered = this.playerState.hasVisitedZone(node.id);
-      for (const targetId of node.connections) {
+      for (const route of topology.getRuntimeExits(node.id)) {
+        const targetId = route.toZone;
         const edgeKey = node.id < targetId ? `${node.id}-${targetId}` : `${targetId}-${node.id}`;
         if (drawnEdges.has(edgeKey)) continue;
         drawnEdges.add(edgeKey);
@@ -405,7 +398,8 @@ export class ParchmentWorldMapModal {
         const toDiscovered = this.playerState.hasVisitedZone(targetNode.id);
 
         // Nét vẽ đường mòn
-        if (fromDiscovered && toDiscovered) {
+        if (fromDiscovered && toDiscovered && route.status === 'active' &&
+            gates.isZoneUnlocked(route.toZone, this.playerState)) {
           // Tuyến đường đã mở rõ nét: Nét đứt màu nâu sẫm
           roadGfx.lineStyle(2.5, 0x5a3d24, 0.85);
         } else {

@@ -140,9 +140,9 @@
           "barrierType": "open",
           "triggerRect": {
             "x": 460,
-            "y": 100,
+            "y": 200,
             "width": 20,
-            "height": 160
+            "height": 60
           },
           "targetSpawn": {
             "x": 520,

@@ -52,7 +52,6 @@ export interface WorldMapNodeSpec {
   canvasY: number; // Tọa độ tương đối trên Canvas Bản đồ (0..350)
   description: string;
   landmarks: string[];
-  connections: string[];
   icon: string;
   isImplemented: boolean;
 }
@@ -105,7 +104,6 @@ export class JournalModal {
         'Cây Cổ Thụ Đổ Chắn Lối Ven Bờ',
         'Cổng Tây Làng Bellhollow'
       ],
-      connections: ['bellhollow'],
       icon: '🌫',
       isImplemented: true
     },
@@ -125,7 +123,6 @@ export class JournalModal {
         'Giếng Nước Cổ & Bảng Cáo Thị Làng',
         'Cổng Đông Phong Ấn Dẫn Sang Rừng Cấm'
       ],
-      connections: ['fog_crossing', 'sanctuary_farm', 'outer_woods', 'crooked_path'],
       icon: '🏡',
       isImplemented: true
     },
@@ -144,7 +141,6 @@ export class JournalModal {
         'Bàn Phơi & Sơ Chế Dược Liệu',
         'Chòi Cất Nông Cụ & Hàng Rào Gỗ Ấm Cúng'
       ],
-      connections: ['bellhollow', 'outer_woods'],
       icon: '🌾',
       isImplemented: true
     },
@@ -163,7 +159,6 @@ export class JournalModal {
         'Mỏ Khai Thác Đá Lửa Tự Nhiên',
         'Đống Củi Gỗ Khô Đầu Rừng'
       ],
-      connections: ['bellhollow', 'sanctuary_farm', 'crooked_path'],
       icon: '🌲',
       isImplemented: true
     },
@@ -186,7 +181,6 @@ export class JournalModal {
         'Cụm Cây Sồi Đổ Lớn Dọc Đường',
         'Dấu Vết Cổ Ngữ Đầu Tiên'
       ],
-      connections: ['bellhollow', 'outer_woods', 'deep_forest', 'silent_mire'],
       icon: '🌿',
       isImplemented: true
     },
@@ -205,7 +199,6 @@ export class JournalModal {
         'Cột Mốc Cảnh Báo Gỗ Mục',
         'Vạt Rừng Đom Đóm Âm U'
       ],
-      connections: ['crooked_path', 'silent_mire'],
       icon: '👁',
       isImplemented: true
     },
@@ -228,7 +221,6 @@ export class JournalModal {
         'Cổng Đá Dẫn Vào Trận Địa Cổ Ngữ',
         'Lối Đá Dẫn Lên Miếu Chuông Vỡ'
       ],
-      connections: ['crooked_path', 'deep_forest', 'ancient_rune_puzzle', 'broken_bell_shrine'],
       icon: '🌫',
       isImplemented: true
     },
@@ -248,7 +240,6 @@ export class JournalModal {
         'Cột Cổ Ngữ Con Mắt (Pillar Eye)',
         'Bệ Đá Tế Trung Tâm (Stone Altar)'
       ],
-      connections: ['silent_mire'],
       icon: '🔮',
       isImplemented: true
     },
@@ -267,7 +258,6 @@ export class JournalModal {
         'Vòng Tròn Phù Hiệu Đá Phong Ấn',
         'Nơi Thu Thập Chày Chuông (Clapper)'
       ],
-      connections: ['silent_mire'],
       icon: '🔔',
       isImplemented: true
     },
@@ -289,7 +279,6 @@ export class JournalModal {
         'Cổng Vòm Hầm Ngục Đang Đóng Kín',
         'Biển Cảnh Báo Nguy Hiểm V1.3'
       ],
-      connections: [],
       icon: '⏳',
       isImplemented: false
     },
@@ -312,7 +301,6 @@ export class JournalModal {
         'Đống Phế Liệu Sắt Rèn Cổ Ngữ',
         'Lối Ra Rừng Ngoại Vi'
       ],
-      connections: ['outer_woods'],
       icon: '⚒️',
       isImplemented: true
     },
@@ -331,7 +319,6 @@ export class JournalModal {
         'Cơ Quan Khóa Ánh Sáng Rễ Cổ',
         'Bích Họa Nguồn Gốc Sương Mù'
       ],
-      connections: ['sanctuary_farm'],
       icon: '🌱',
       isImplemented: true
     },
@@ -350,7 +337,6 @@ export class JournalModal {
         'Lối Dẫn Vào Rừng Sâu',
         'Lối Về Đường Mòn Quanh Co'
       ],
-      connections: ['outer_woods', 'deep_forest'],
       icon: '🔊',
       isImplemented: true
     }
@@ -1293,7 +1279,8 @@ export class JournalModal {
       const x1 = mapCanvasX + node.canvasX;
       const y1 = mapCanvasY + node.canvasY + 15;
 
-      for (const targetId of node.connections) {
+      for (const route of this.zoneRegistry.getRuntimeExits(node.id)) {
+        const targetId = route.toZone;
         const pairKey = node.id < targetId ? `${node.id}-${targetId}` : `${targetId}-${node.id}`;
         if (renderedPairs.has(pairKey)) continue;
         renderedPairs.add(pairKey);
@@ -1309,7 +1296,7 @@ export class JournalModal {
         const bothOpenOrExplored = (fromStatus === 'EXPLORED' || fromStatus === 'OPEN') &&
                                    (toStatus === 'EXPLORED' || toStatus === 'OPEN');
 
-        if (node.id === 'the_depths' || targetId === 'the_depths') {
+        if (route.status === 'pending_construction') {
           // Tuyến chưa triển khai: nét đứt xám mờ
           connGraphics.lineStyle(1.5, 0x444444, 0.4);
           this.drawDashedLine(connGraphics, x1, y1, x2, y2, 5, 4);
@@ -1568,7 +1555,7 @@ export class JournalModal {
 
     // Tuyến kết nối liên vùng (Exits & Routes từ ZoneConnectionRegistry)
     if (selectedNode.id !== 'the_depths') {
-      const neighbors = this.zoneRegistry.getNeighbors(selectedNode.id as ZoneId);
+      const neighbors = this.zoneRegistry.getRuntimeExits(selectedNode.id);
       if (neighbors && neighbors.length > 0) {
         const exitHeader = HDTextHelper.createText(this.scene, ix + 14, nextY, '• LỐI THÔNG LIÊN VÙNG:', {
           fontSize: '11px',

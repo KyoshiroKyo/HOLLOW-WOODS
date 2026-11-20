@@ -1,3 +1,4 @@
+import { isVillageSanctuary } from '../world/ZoneSafety';
 import * as Phaser from 'phaser';
 import { PlayerState } from '../state/PlayerState';
 import { ZoneAtmosphere, ZoneData, TransitionZone } from '../types';
@@ -1751,7 +1752,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     // V15-58C: Kiểm tra điều kiện An toàn: Ban ngày, Làng an toàn, hoặc Gần nguồn nhiệt / Lửa trại Sir Vaelen
     const gameScene = this.scene.get('GameScene') as any;
-    const isSafeVillage = gameScene?.currentZoneId === 'bellhollow' || gameScene?.currentZoneId === 'sanctuary_farm';
+    const isDaytime = gameScene?.timeSystem?.getCurrentPhase() === 'DAY';
     const playerX = gameScene?.player?.x ?? 0;
     const playerY = gameScene?.player?.y ?? 0;
     const currentZone = gameScene?.currentZoneId;
@@ -1760,7 +1761,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       ? gameScene.survivalSystem.isNearWarmth(playerX, playerY, currentZone)
       : false;
     const isSanctuaryCamp = CampSanctuarySystem.getInstance().isPlayerInSanctuary(playerX, playerY, currentZone);
-    const isProtectedZone = isSafeVillage || isNearWarmth || isSanctuaryCamp;
+    const isProtectedZone = isDaytime || isVillageSanctuary(currentZone) || isNearWarmth || isSanctuaryCamp;
 
     // Kiểm tra điều kiện trong trận Boss Miếu Chuông Phế Tích
     const isBossFight = gameScene?.isBossFightActive && currentZone === 'broken_bell_shrine';

@@ -1,3 +1,4 @@
+import { isVillageSanctuary } from '../world/ZoneSafety';
 import * as Phaser from 'phaser';
 import { 
   SCENE_GAME, 
@@ -389,6 +390,7 @@ export class GameScene extends Phaser.Scene {
 
       // C4-13-11: Xác định chính xác phân khu thực tế từ tọa độ và cập nhật ngay lập tức cho GameScene & Camera
       const detectedZone = this.worldBuilder.detectCurrentZone({ x: spawnX, y: spawnY }) || initialZone;
+      this.worldBuilder.setActiveZone(detectedZone);
       this.currentZoneId = detectedZone;
       this.previousZoneId = detectedZone;
       this.playerState.setCurrentZone(detectedZone);
@@ -2086,8 +2088,9 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    // Cập nhật camera
-    this.cameraSystem.update();
+    // Resolve the foot position before survival and the HUD consume the zone.
+    this.checkZoneTransitions(delta);
+    this.handleZoneLogic();
 
     // Cập nhật hệ thống sinh tồn (PlayerState.stats là nguồn dữ liệu duy nhất)
     const inDeepFog = this.currentZoneId === 'fog_crossing' || this.currentZoneId === 'silent_mire' || this.currentZoneId === 'deep_forest' || this.isAct5ChaseActive;
@@ -2183,7 +2186,7 @@ export class GameScene extends Phaser.Scene {
 
     // V15-58C: Xử lý Nhịp Tim Web Audio động, viền hoảng loạn và micro-tremor camera theo Tinh Thần
     const isDay = Boolean(this.timeSystem && this.timeSystem.getCurrentPhase() === 'DAY');
-    const isSafeVillageZone = (this.currentZoneId === 'bellhollow' && this.player.x <= 1620) || this.currentZoneId === 'sanctuary_farm' || this.currentZoneId === 'fog_crossing';
+    const isSafeVillageZone = isVillageSanctuary(this.currentZoneId) || this.currentZoneId === 'fog_crossing';
     const isNearWarmth = Boolean(this.survivalSystem && this.survivalSystem.isNearWarmth(this.player.x, this.player.y, this.currentZoneId));
     const isSanctuaryCamp = CampSanctuarySystem.getInstance().isPlayerInSanctuary(this.player.x, this.player.y, this.currentZoneId);
     const isBossArena = this.isBossFightActive && this.currentZoneId === 'broken_bell_shrine';
@@ -2292,7 +2295,7 @@ export class GameScene extends Phaser.Scene {
       const campfirePos = (this.campSystem && this.campSystem.getCampfireRadius() > 0)
         ? { x: 1050, y: 480, active: true }
         : undefined;
-      const isSafeVillageZone = (this.currentZoneId === 'bellhollow' && this.player.x <= 1620) || this.currentZoneId === 'sanctuary_farm' || this.currentZoneId === 'fog_crossing';
+      const isSafeVillageZone = isVillageSanctuary(this.currentZoneId) || this.currentZoneId === 'fog_crossing';
       this.wildlifeSystem.update(time, delta, {
         playerX: this.player.x,
         playerY: this.player.y,
@@ -2498,9 +2501,6 @@ export class GameScene extends Phaser.Scene {
     // Kiểm tra ném mồi tiếng động [Phím Q]
     this.handleNoiseLureThrow();
 
-    // C4-12-27: Kiểm tra và ổn định các điểm chuyển vùng (Transition Triggers & Debounce)
-    this.checkZoneTransitions(delta);
-
     // C4-12-29 / V15-27: Throttled Camera Frustum Culling (chạy mỗi 75ms thay vì mỗi frame 16ms để tiết kiệm CPU)
     this.cullingTimer += delta;
     if (this.cullingTimer >= 75) {
@@ -2508,9 +2508,6 @@ export class GameScene extends Phaser.Scene {
       this.worldBuilder.updateCameraCulling(this.cameras.main);
       this.updateEntityCameraCulling();
     }
-
-    // Phát hiện và xử lý phân khu
-    this.handleZoneLogic();
 
     // C4-13-02 / V14-P8-11: Luôn bảo đảm thuộc tính visible và alpha của nhân vật được giữ bật khi không ẩn nấp
     if (this.player && !this.player.stats.isHiding) {
@@ -2583,31 +2580,34 @@ export class GameScene extends Phaser.Scene {
    * V152-03: Chốt kẹp tọa độ nhân vật an toàn 100%, chống rơi/văng khỏi rìa đất ra khoảng đen vô tận
    */
   private clampPlayerToZoneBounds(): void {
-    if (!this.player || this.isTransitioning || this.transitionCooldown > 0) return;
+    if (!this.player || this.isTransitioning) return;
 
-    let minX = 0, maxX = 5000, minY = -1280, maxY = 1400;
+    const bounds = this.worldBuilder.getZone(this.currentZoneId)?.bounds;
+    if (!bounds) return;
+    let minX = bounds.x, maxX = bounds.x + bounds.width - 0.01;
+    let minY = bounds.y, maxY = bounds.y + bounds.height - 0.01;
 
     switch (this.currentZoneId) {
       case 'fog_crossing':
-        minX = 24; maxX = 460; minY = 28; maxY = 330;
+        minX = 24; maxX = 480; minY = 28; maxY = 330;
         break;
       case 'bellhollow':
-        minX = 472; maxX = 1600; minY = 26; maxY = 556;
+        minX = 480; maxX = 1599; minY = 26; maxY = 559;
         break;
       case 'sanctuary_farm':
-        minX = 472; maxX = 1110; minY = 550; maxY = 1030;
+        minX = 472; maxX = 1120; minY = 550; maxY = 1030;
         break;
       case 'outer_woods':
-        minX = 1110; maxX = 1600; minY = 550; maxY = 1030;
+        minX = 1120; maxX = 1599; minY = 560; maxY = 1030;
         break;
       case 'crooked_path':
-        minX = 1590; maxX = 2890; minY = 10; maxY = 620;
+        minX = 1600; maxX = 2879; minY = 0; maxY = 620;
         break;
       case 'deep_forest':
-        minX = 1610; maxX = 2890; minY = -680; maxY = 20;
+        minX = 1610; maxX = 2879; minY = -640; maxY = -1;
         break;
       case 'silent_mire':
-        minX = 2870; maxX = 4010; minY = 140; maxY = 500;
+        minX = 2880; maxX = 3999; minY = 140; maxY = 733;
         break;
       case 'ancient_rune_puzzle':
         minX = 3340; maxX = 4010; minY = 120; maxY = 480;
@@ -2809,7 +2809,7 @@ export class GameScene extends Phaser.Scene {
     else this.listenerMonster.update(delta, this.player.x, this.player.y, this.player.stats.isHiding, this.player.isDead(), currentPhase, isLanternLit);
 
     // C4-13-05 & C4-132-05: Toàn bộ Làng Bellhollow và khu vực cổng làng là Khu Vực An Toàn (Safe Zone)
-    const isPlayerInSafeZone = (this.currentZoneId === 'bellhollow' && this.player.x <= 1620) || this.currentZoneId === 'sanctuary_farm' || this.currentZoneId === 'fog_crossing';
+    const isPlayerInSafeZone = isVillageSanctuary(this.currentZoneId) || this.currentZoneId === 'fog_crossing';
 
     // V14-P7-01: Chỉ báo thị giác nguy hiểm (Visual Threat Accessibility Indicator) khi mưa sương át âm thanh
     if (this.veilSystem) {
@@ -3408,14 +3408,14 @@ export class GameScene extends Phaser.Scene {
   private updateSanctuaryAndWildernessAtmosphere(delta: number): void {
     if (!this.player || !this.playerState) return;
 
-    const isInSanctuary = this.currentZoneId === 'bellhollow';
+    const isInSanctuary = isVillageSanctuary(this.currentZoneId);
 
     // 1. Phản hồi thị giác khi bước vào Sanctuary an toàn từ vùng nguy hiểm
     if (isInSanctuary && !this.wasInSanctuary) {
       this.wasInSanctuary = true;
       if (this.uiScene) {
         this.uiScene.triggerSanctuaryReliefGlow();
-        this.uiScene.showPopupMessage('🕊️ Bạn đã bước vào vùng an toàn của Làng Chuông. Tinh Thần đang hồi phục.');
+        this.uiScene.showPopupMessage('🕊️ Bạn đã bước vào vùng định cư an toàn. Tinh Thần đang hồi phục.');
       }
     } else if (!isInSanctuary && this.wasInSanctuary) {
       this.wasInSanctuary = false;
@@ -3795,12 +3795,12 @@ export class GameScene extends Phaser.Scene {
     }
 
     const composure = this.playerState.stats.composure;
-    const isBellhollow = this.currentZoneId === 'bellhollow';
+    const isSafeSettlement = isVillageSanctuary(this.currentZoneId);
     const isNearCampfire = this.survivalSystem.isNearWarmth(this.player.x, this.player.y, this.currentZoneId);
     const isInSanctuary = CampSanctuarySystem.getInstance().isPlayerInSanctuary(this.player.x, this.player.y, this.currentZoneId);
 
     // Điều kiện sinh ảo ảnh: Tinh Thần < 30/100 và không đứng trong vùng an toàn/lửa trại
-    if (composure < 30 && !isBellhollow && !isNearCampfire && !isInSanctuary) {
+    if (composure < 30 && !isSafeSettlement && !isNearCampfire && !isInSanctuary) {
       if (this.knightApparitions.length < 2 && this.apparitionSpawnCooldown <= 0) {
         // Sinh tại rìa vùng tối cách nhân vật 150–210px
         const angle = Math.random() * Math.PI * 2;
@@ -3873,7 +3873,7 @@ export class GameScene extends Phaser.Scene {
       // - Người chơi quay lưng bỏ đi xa (> 320px)
       // - Người chơi bước vào vòng lửa của Sir Vaelen / Làng Bellhollow
       // - Tinh Thần hồi phục lên trên 45/100
-      if (dist > 320 || isNearCampfire || isBellhollow || isInSanctuary || composure >= 45) {
+      if (dist > 320 || isNearCampfire || isSafeSettlement || isInSanctuary || composure >= 45) {
         app.fadeOutAndDestroy();
         this.knightApparitions.splice(i, 1);
         continue;
@@ -3917,12 +3917,12 @@ export class GameScene extends Phaser.Scene {
     }
 
     const composure = this.playerState.stats.composure;
-    const isBellhollow = this.currentZoneId === 'bellhollow';
+    const isSafeSettlement = isVillageSanctuary(this.currentZoneId);
     const isNearCampfire = this.survivalSystem.isNearWarmth(this.player.x, this.player.y, this.currentZoneId);
     const isInSanctuary = CampSanctuarySystem.getInstance().isPlayerInSanctuary(this.player.x, this.player.y, this.currentZoneId);
 
     // Điều kiện sinh bẫy: Tinh Thần < 60/100, ở ngoài Làng Bellhollow và không đứng trong lửa trại/sanctuary
-    if (composure < 60 && !isBellhollow && !isNearCampfire && !isInSanctuary) {
+    if (composure < 60 && !isSafeSettlement && !isNearCampfire && !isInSanctuary) {
       this.whisperTrapSpawnTimer -= dt;
       if (this.whisperTrapSpawnTimer <= 0) {
         this.whisperTrapSpawnTimer = 35 + Math.random() * 15; // 35–50 giây
@@ -4096,16 +4096,19 @@ export class GameScene extends Phaser.Scene {
    * C4-12-27: Cập nhật giới hạn camera và physics bounds theo phân khu đích
    */
   public applyCameraBoundsForZone(zoneId: ZoneId): void {
-    if (zoneId === 'abyssal_chasm') {
-      this.physics.world.setBounds(0, -1350, 5000, 2500);
-      this.cameraSystem.setWorldBounds({ x: 0, y: -1350, width: 5000, height: 2500 });
-    } else if (zoneId === 'deep_forest') {
-      this.physics.world.setBounds(0, -700, 5000, 1850);
-      this.cameraSystem.setWorldBounds({ x: 0, y: -700, width: 5000, height: 1850 });
-    } else {
-      this.physics.world.setBounds(0, -250, 5000, 1400);
-      const villageBounds = zoneId === 'bellhollow' ? this.worldBuilder?.getZone(zoneId)?.bounds : undefined;
-      this.cameraSystem.setWorldBounds(villageBounds ?? { x: 0, y: -250, width: 5000, height: 1400 });
+    const zoneBounds = this.worldBuilder.getZone(zoneId)?.bounds;
+    if (zoneBounds) {
+      // The starter regions share one continuous ground plane and one camera clamp.
+      const starterZone = zoneId === 'fog_crossing' || zoneId === 'bellhollow' ||
+        zoneId === 'sanctuary_farm' || zoneId === 'outer_woods';
+      const parentZone = zoneId === 'ancient_rune_puzzle' ? 'silent_mire'
+        : zoneId === 'sub_whispering_clearing' ? 'deep_forest' : zoneId;
+      const cameraBounds = starterZone ? { x: 0, y: 0, width: 1600, height: 1040 }
+        : this.worldBuilder.getZone(parentZone)?.bounds ?? zoneBounds;
+      this.cameraSystem.setWorldBounds(cameraBounds);
+      const top = Math.min(-250, zoneBounds.y);
+      const bottom = Math.max(1150, zoneBounds.y + zoneBounds.height);
+      this.physics.world.setBounds(0, top, 5000, bottom - top);
     }
 
     if (zoneId === 'deep_forest' && this.worldBuilder) {
@@ -4192,8 +4195,6 @@ export class GameScene extends Phaser.Scene {
       'outer_woods:sanctuary_farm',
       'bellhollow:crooked_path',
       'crooked_path:bellhollow',
-      'outer_woods:crooked_path',
-      'crooked_path:outer_woods',
       'crooked_path:silent_mire',
       'silent_mire:crooked_path',
       'silent_mire:ancient_rune_puzzle',
@@ -4208,9 +4209,7 @@ export class GameScene extends Phaser.Scene {
       'deep_forest:sub_whispering_clearing',
       'sub_whispering_clearing:deep_forest',
       'crooked_path:sub_whispering_clearing',
-      'sub_whispering_clearing:crooked_path',
-      'deep_forest:silent_mire',
-      'silent_mire:deep_forest'
+      'sub_whispering_clearing:crooked_path'
     ]);
     return seamlessPairs.has(`${fromZone}:${toZone}`);
   }
@@ -4250,6 +4249,10 @@ export class GameScene extends Phaser.Scene {
         footPos.y >= trig.y &&
         footPos.y <= trig.y + trig.height
       ) {
+        // A walkable seam changes zone only once the player's foot has crossed it.
+        if (trans.status !== 'pending_construction' &&
+            this.isSeamlessAdjacentTransition(trans.fromZone, trans.toZone) &&
+            WorldGatingSystem.getInstance().isZoneUnlocked(trans.toZone, this.playerState)) continue;
         this.executeTransition(trans);
         return;
       }
@@ -4259,9 +4262,9 @@ export class GameScene extends Phaser.Scene {
   /**
    * C4-12-27 & C4-134-01: Thực thi chuyển vùng an toàn hoặc đẩy lùi nếu đang khóa
    */
-  public executeTransition(trans: TransitionZone): void {
-    const now = performance.now();
-    if (this.isTransitioning || this.transitionCooldown > 0 || now < this.transitionCooldownUntil) return;
+  public executeTransition(trans: TransitionZone, crossedOnFoot = false): void {
+    if (this.isTransitioning || (!crossedOnFoot &&
+        (this.transitionCooldown > 0 || performance.now() < this.transitionCooldownUntil))) return;
 
     const gating = WorldGatingSystem.getInstance();
     const isUnlocked = gating.isZoneUnlocked(trans.toZone, this.playerState);
@@ -4291,9 +4294,6 @@ export class GameScene extends Phaser.Scene {
     // TRƯỜNG HỢP 2A: PHÂN KHU LIỀN KỀ LIÊN TỤC (SEAMLESS ADJACENT ZONES)
     // Giữ nguyên vị trí và vận tốc di chuyển tự nhiên của người chơi (TUYỆT ĐỐI KHÔNG setPosition/reset velocity)
     if (this.isSeamlessAdjacentTransition(trans.fromZone, trans.toZone)) {
-      this.isTransitioning = true;
-      this.transitionCooldown = 1000;
-      this.transitionCooldownUntil = performance.now() + 1000;
       this.lastTransitionId = trans.id;
 
       // V14-P7-01: Thu dọn audio loops và VFX overlay trước khi chuyển cảnh
@@ -4305,9 +4305,6 @@ export class GameScene extends Phaser.Scene {
       this.worldBuilder.ensureZoneRendered(trans.toZone);
       this.worldBuilder.hibernateDistantZoneObjects(trans.toZone);
 
-      this.applyCameraBoundsForZone(trans.toZone);
-      this.worldBuilder.updateCameraCulling(this.cameras.main);
-
       // V14-P8-11: Tự động thoát trạng thái ẩn nấp và tái xác nhận hiển thị nhân vật 100% khi chuyển sang phân khu mới
       if (this.player.stats.isHiding) {
         this.player.exitHiding();
@@ -4316,29 +4313,9 @@ export class GameScene extends Phaser.Scene {
       this.player.setActive(true);
       this.player.setAlpha(1);
 
+      this.worldBuilder.setActiveZone(trans.toZone);
       this.currentZoneId = trans.toZone;
-      this.previousZoneId = trans.toZone;
-      if (this.wildlifeSystem) {
-        this.wildlifeSystem.switchZone(this.currentZoneId);
-      }
       this.triggerCreatureObservationsForZone(this.currentZoneId);
-      this.playerState.setCurrentZone(trans.toZone);
-      this.audioManager.setAmbienceZone(trans.toZone);
-      this.audioManager.preloadZoneAudio(trans.toZone);
-
-      const targetZoneData = this.worldBuilder.getZone(trans.toZone);
-      const currentTime = performance.now();
-      if (targetZoneData && this.uiScene && (currentTime - this.lastZoneBannerTime >= 4000) && (trans.toZone !== this.lastBannerZoneId)) {
-        this.lastZoneBannerTime = currentTime;
-        this.lastBannerZoneId = trans.toZone;
-        this.uiScene.showZoneBanner(targetZoneData.atmosphere);
-        this.cameraSystem.shake(100, 0.002);
-      }
-
-      if (!this.isAct5ChaseActive) {
-        const title = targetZoneData?.atmosphere.titleVietnamese || trans.toZone;
-        SaveManager.saveGame(`KHU VỰC: ${title}`, trans.toZone, this.player.x, this.player.y);
-      }
 
       // V1.4 - P6: Tự động kích hoạt trận đấu trùm Miếu Chuông khi bước vào phân khu sau khi giải Cổ Ngữ
       if (trans.toZone === 'broken_bell_shrine' && !this.playerState.hasFlag('boss_mire_warden_defeated') && (this.playerState.hasFlag('mire_pillars_solved') || this.playerState.hasFlag('mire_puzzle_solved'))) {
@@ -4356,9 +4333,6 @@ export class GameScene extends Phaser.Scene {
         }
       }
 
-      this.time.delayedCall(200, () => {
-        this.isTransitioning = false;
-      });
       return;
     }
 
@@ -4407,6 +4381,7 @@ export class GameScene extends Phaser.Scene {
     this.player.setAlpha(1);
 
     // Cập nhật âm thanh & phân khu
+    this.worldBuilder.setActiveZone(trans.toZone);
     this.currentZoneId = trans.toZone;
     this.previousZoneId = trans.toZone;
     if (this.wildlifeSystem) {
@@ -4483,34 +4458,20 @@ export class GameScene extends Phaser.Scene {
     const footPos = this.player.getFootPosition();
     const detectedZone = this.worldBuilder.detectCurrentZone(footPos);
 
-    // C4-12-27 & V15-41: Kiểm tra an toàn khi di chuyển liên tục qua ranh giới thế giới mở
-    // TUYỆT ĐỐI KHÔNG tự động setPosition/snapback nhân vật về safeSpawn trong vòng lặp update() khi đi ngang ranh giới!
-    if (detectedZone !== this.currentZoneId) {
-      const isUnlocked = WorldGatingSystem.getInstance().isZoneUnlocked(detectedZone, this.playerState);
-      if (!isUnlocked) {
-        const evalResult = WorldGatingSystem.getInstance().evaluateTransition(this.currentZoneId, detectedZone, this.playerState);
-        // V15-41: Dừng vận tốc và giữ nguyên vị trí chân nhân vật, tuyệt đối không teleport về trung tâm phân khu
-        this.player.setVelocity(0, 0);
-        this.transitionCooldown = 1200;
-        this.transitionCooldownUntil = performance.now() + 1200;
-        if (this.uiScene) {
-          this.uiScene.showPopupMessage(`🔒 ${evalResult.reason} ${evalResult.hint || ''}`);
-        }
-        return;
+    if (detectedZone !== this.currentZoneId && !this.isTransitioning &&
+        this.isSeamlessAdjacentTransition(this.currentZoneId, detectedZone)) {
+      const route = this.worldBuilder.transitions.find(t =>
+        t.fromZone === this.currentZoneId && t.toZone === detectedZone);
+      const gating = WorldGatingSystem.getInstance();
+      if (route && route.status !== 'pending_construction' && gating.isZoneUnlocked(detectedZone, this.playerState)) {
+        this.executeTransition(route, true);
+      } else if (!route && gating.isZoneUnlocked(detectedZone, this.playerState)) {
+        this.worldBuilder.ensureZoneRendered(detectedZone);
+        this.worldBuilder.setActiveZone(detectedZone);
+        this.currentZoneId = detectedZone;
       }
-
-      // C4-13-20: Màn sương chuyển cảnh mượt mà (Mist Fade Transition 0.35s) khi chuyển phân khu
-      if (this.veilSystem) {
-        this.veilSystem.triggerZoneTransitionMist(350);
-      }
-
-      // C4-13-20: Tự động đặt trạng thái ngủ đông cho các đối tượng phân khu xa
-      this.worldBuilder.hibernateDistantZoneObjects(detectedZone);
-      this.transitionCooldown = 1000;
-      this.transitionCooldownUntil = performance.now() + 1000;
     }
 
-    this.currentZoneId = detectedZone;
     this.playerState.setCurrentZone(this.currentZoneId);
 
     // C4-12-03: Kiểm tra bước qua Cổng Đông làng Bellhollow (gateX = 1485, khi x >= 1500)

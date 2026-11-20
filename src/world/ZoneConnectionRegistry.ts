@@ -1,3 +1,4 @@
+import zonesData from '../data/zones.json';
 import type {
   ZoneId,
   WorldTier,
@@ -5,6 +6,7 @@ import type {
   ConnectionStatus,
   ZoneNeighborInfo,
   ZoneNodeMetadata,
+  TransitionZone,
   ZoneConnectionDescriptor
 } from '../types';
 import { PlayerState } from '../state/PlayerState';
@@ -745,6 +747,11 @@ export class ZoneConnectionRegistry {
 
   public getConnection(id: string): ZoneConnectionDescriptor | undefined {
     return this.connections.get(id);
+  }
+
+  /** The map uses the same outgoing exits as WorldBuilder, including one-way shortcuts. */
+  public getRuntimeExits(zoneId: string): readonly TransitionZone[] {
+    return (zonesData.zones.find(zone => zone.id === zoneId)?.transitions ?? []) as TransitionZone[];
   }
 
   public getAllConnections(): ZoneConnectionDescriptor[] {

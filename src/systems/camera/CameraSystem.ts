@@ -25,7 +25,11 @@ export class CameraSystem {
   }
 
   public setWorldBounds(bounds: BoundsRect): void {
-    this.camera.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
+    const current = this.camera.getBounds();
+    if (current.x !== bounds.x || current.y !== bounds.y ||
+        current.width !== bounds.width || current.height !== bounds.height) {
+      this.camera.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
+    }
   }
 
   /**
@@ -33,12 +37,6 @@ export class CameraSystem {
    */
   public centerOn(x: number, y: number): void {
     this.camera.centerOn(x, y);
-    this.camera.scrollX = Math.round(this.camera.scrollX);
-    this.camera.scrollY = Math.round(this.camera.scrollY);
-  }
-
-  public update(): void {
-    // Đảm bảo tọa độ camera luôn được làm tròn nguyên số để pixel art luôn sắc nét 100%
     this.camera.scrollX = Math.round(this.camera.scrollX);
     this.camera.scrollY = Math.round(this.camera.scrollY);
   }

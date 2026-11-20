@@ -1,3 +1,4 @@
+import { isVillageSanctuary } from '../world/ZoneSafety';
 import { DeveloperModeManager } from '../debug/DeveloperModeManager';
 import { PlayerState } from '../state/PlayerState';
 import { EquipmentSystem } from './EquipmentSystem';
@@ -151,9 +152,9 @@ export class SurvivalSystem {
     }
 
     const isBossArena = (zoneId === 'broken_bell_shrine') && this.isBossFightActive;
-    const isBellhollowSafe = zoneId === 'bellhollow';
+    const isSafeSettlement = isVillageSanctuary(zoneId);
     const isDaytime = timePhase === 'DAY';
-    const isProtected = !isBossArena && (isDaytime || isBellhollowSafe);
+    const isProtected = !isBossArena && (isDaytime || isSafeSettlement);
 
     if (nearCampfire) {
       const campSanctuary = CampSanctuarySystem.getInstance();
@@ -167,7 +168,7 @@ export class SurvivalSystem {
       // V1.5 (BƯỚC V15-05): Khi là BAN NGÀY (DAY) hoặc đứng trong vùng an toàn Làng Bellhollow:
       // Tinh Thần không tự tụt mà được hồi phục chậm tự nhiên (+1.5 mỗi giây)
       stats.composure = Math.min(stats.maxComposure, stats.composure + 1.5 * dt);
-      composureSource = isBellhollowSafe ? 'vùng an toàn Bellhollow' : 'ban ngày';
+      composureSource = isSafeSettlement ? 'vùng định cư an toàn' : 'ban ngày';
     } else {
       if (!stats.isLanternOn) {
         // Ngoài vùng an toàn, vào ban đêm/hoàng hôn & trong bóng tối: Tinh Thần sụt giảm dựa trên chu kỳ ngày/đêm V1.4
@@ -311,8 +312,7 @@ export class SurvivalSystem {
 
     // 5. V15-58A: Tầng Ảo Giác Thính Giác & Bóng Lướt Rìa Tầm Nhìn
     // Khi Tinh Thần (Sanity) giảm xuống dưới 55/100 ở ngoài Làng Bellhollow:
-    const isBellhollow = zoneId === 'bellhollow';
-    if (stats.composure < 55 && !isBellhollow) {
+    if (stats.composure < 55 && !isSafeSettlement) {
       if (this.hallucinationCooldown > 0) {
         this.hallucinationCooldown -= dt;
       }
