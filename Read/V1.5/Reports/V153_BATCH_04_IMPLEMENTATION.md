@@ -14,3 +14,7 @@ Báo cáo bàn giao R10 chốt các sửa tiếp theo ở BUG-024, BUG-031, BUG-
 ## 04C-K1
 
 Đã cân lại palette LEFT R2, tích hợp atlas Armed Idle 24 frame, giữ alias và loại vòng đăng ký frame sai nguồn gây 136 cảnh báo. Hai build Chromium kiểm tra bốn hướng, chuyển state, Save/Continue và 0 missing-frame. K2/K3 giữ các nhóm còn lại. [Báo cáo K1](V153_B04_K1_RUNTIME_REPORT.md) · [Ảnh trực tiếp trong game](Visuals/V153_B04C_K1/armed-idle-runtime-details.png).
+
+## 04B1
+
+Sửa commit zone tại mép cổng Tây, vùng an toàn Farm và terrain qua Workshop/các vùng mở rộng. Đồng bộ World Map với transitions runtime và phục hồi ba TSX từ archive editor. Chromium ghi 16 tuyến qua, 25 đích khóa theo tiến trình. Hosted còn BLOCKED. [Báo cáo 04B1](V153_B04B1_WORLD_CAMERA_REPORT.md).

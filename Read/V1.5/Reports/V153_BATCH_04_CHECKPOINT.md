@@ -1,6 +1,26 @@
-# V153-BATCH-04-R10 — Checkpoint bàn giao 04C-K1
+# V153-BATCH-04-R10 — Checkpoint bàn giao 04B1
 
-**20/11/2026 · Dừng sau 04C-K1 · Armed Idle RUNTIME_TESTED · bộ hoạt ảnh PARTIAL · release BLOCKED**
+**20/11/2026 · PARTIAL · Dừng sau 04B1 · HOSTED BLOCKED**
+
+Nhánh `feat/v1.5.3-batch04`, worktree `/workspace/work/v153-b04/checkout`. Mốc Owner 04C-K1 `7cde6db2a7f7a1d9617c21121687889fd8878d7f`; HEAD trước sửa `eb7c50e66d7b89cfabb70cff126c70d5e30b3f0e` có bổ sung báo cáo và ảnh K1. Runtime 04B1 `47b61674907d7033d8b4bbc61834fc5b327d6c04`, tiếp theo `4ccc761638eb6cdaadb9f809d5e96547dcd42dd7` xử lý crash tương tác vùng sâu và `477f26557412362ded834a58237a20ab4b672b4f` khớp camera phòng hẹp. HEAD nhánh chứa báo cáo và bằng chứng. [Báo cáo 04B1](V153_B04B1_WORLD_CAMERA_REPORT.md).
+
+| ID | Trạng thái và điểm nối |
+|---|---|
+| BUG-021 | CLOSED-VERIFIED local cho cú giật camera tại cổng Tây. Một commit zone tại mép, rotation 0. |
+| BUG-022 | CLOSED-VERIFIED local cho hao Tinh Thần sai bên Farm. Cơ chế drain của rừng còn hiệu lực ngoài mép. |
+| B04-03 | 41 tuyến được rà, 16 qua bằng phím và 25 đích khóa theo tiến trình. Phải nghiệm thu các chiều còn khóa bằng save hợp lệ hoặc playthrough sau BUG-051–054. |
+| BUG-029 / B04-04 | PARTIAL. Đường Farm–Outer Woods, Workshop và năm nền mở rộng đã có asset thực. Tiếp tục terrain khu chưa phủ và bản vẽ môi trường tổng thể ở nhóm sở hữu. |
+| BUG-033 | PARTIAL. Dữ liệu các tuyến xuất phát từ runtime. Bố cục World Map và HUD giữ 04E1. |
+| TSX | Ba TSX và 17 map đã kiểm tra đối chiếu. Chạy `python scripts/restore_tiled_tileset_images.py` để phục hồi 25 ảnh editor trong checkout mới. |
+| Audit 11 body | Đã so live, 11 cặp là cạnh ngang/dọc khác kích thước. Bản mock cũ còn cảnh báo 66/73. Ca layout Garth/Bram/Finn giữ 04B2. |
+| Sanity Mechanics | 15/19 static. Bằng chứng Farm runtime đã lưu. Bốn assertion lịch sử giữ nguyên theo phạm vi FX/audio/gameplay. |
+| B04-10-K1 | Kế thừa Armed Idle 24 frame, 4/4 hướng. K2/K3 giữ phần còn thiếu theo ma trận. |
+| BUG-051–054 | OPEN tại 04C-G. Handoff không sửa luật Cổng Đông hoặc nhiệm vụ. |
+| Release | BLOCKED vì các gate phát hành và hosted chưa nghiệm thu. |
+
+**Command tiếp theo khi Owner duyệt riêng:** `V153-BATCH-04B2 EXECUTE REMAINING ONLY`. Sau 04B2 giữ thứ tự 04C-K2 → 04C-K3 → 04C-G → 04D → 04E1 → 04E2 → 04F. [Đặc tả 04B2](../../../docs/chat_and_commands/V153_BATCH04_R10/04_V153_B04B2_WORLD_ART_BUILDINGS_LAYOUT.md) · [INDEX R10](../../../docs/chat_and_commands/V153_BATCH04_R10/00_INDEX_V153_BATCH04_R10.md).
+
+## Mốc lịch sử 04C-K1 và 04A
 
 HEAD nhánh `feat/v1.5.3-batch04` chứa checkpoint này. Worktree `/workspace/work/v153-b04/checkout`. Mốc đã được Owner nghiệm thu 04A PARTIAL là `c89cb8ec06b462d4b3d15387d138b9723cf64824`. Commit runtime K1 là `0b16b7d4e531607de8bc98053f07a995367b3666`. [Báo cáo K1](V153_B04_K1_RUNTIME_REPORT.md) · [Ảnh và log](Visuals/V153_B04C_K1).
 
@@ -42,5 +62,3 @@ Nhánh phát triển `feat/v1.5.3-batch04`, worktree `/workspace/work/v153-b04/c
 Việc 04A còn mở cần preview/log thật là nghiệm thu hosted. Các phần chưa có bằng chứng đầy đủ về inspector và editor được ghi trong báo cáo 04A.
 
 Nhánh phát triển dùng để review và kiểm thử 04A. Xem hướng dẫn tạo build QA tách biệt. [Tester guide](V153_BATCH_04_TESTER_GUIDE.md).
-
-**Command tiếp theo khi Owner duyệt riêng:** `V153-BATCH-04B1 EXECUTE REMAINING ONLY`. Dùng HEAD nhánh phát triển, báo cáo K1 và lệnh 03. Sau 04B1 giữ thứ tự 04B2 → 04C-K2 → 04C-K3 → 04C-G → 04D → 04E1 → 04E2 → 04F. [Đặc tả 04B1](../../../docs/chat_and_commands/V153_BATCH04_R10/03_V153_B04B1_PLAYTEST_MAP_CAMERA_TERRAIN.md) · [INDEX R10](../../../docs/chat_and_commands/V153_BATCH04_R10/00_INDEX_V153_BATCH04_R10.md).

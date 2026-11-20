@@ -4,6 +4,10 @@ Dùng mã trong INDEX R10. Hàng **OPEN** của batch khác giữ ở chủ sở
 
 | ID | Trạng thái | Dấu hiệu và phạm vi |
 |---|---|---|
+| BUG-021 | CLOSED-VERIFIED local | Camera áp Bellhollow và Fog tại cùng (461,232) khi trigger sớm bị dò vùng đảo lại. Chuyển commit theo tọa độ chân và dùng bounds liên tục. [Log](V153_B04B1_WORLD_CAMERA_REPORT.md). |
+| BUG-022 | CLOSED-VERIFIED local | Farm thiếu ở điều kiện safe zone của Survival. NIGHT trong Farm không còn drain rừng. Hai phía ranh x=1120 đã thử 30 giây. |
+| BUG-029 | PARTIAL | Cải thiện đường qua Farm/Outer Woods, Workshop và nền năm vùng mở rộng bằng tile đã có. Khu còn khóa chờ nghiệm thu thực địa. |
+| BUG-033 | PARTIAL | World Map đọc transitions thật và giữ gate. Nhãn chồng, tràn khung và bố cục giữ 04E1. |
 | BUG-024 | CLOSED-VERIFIED production local · HOSTED BLOCKED | Chromium thấy Tải lại với loader còn tải (`dagger_slash.wav` truyền từng đoạn). R10 chỉ hiển thị Tải lại khi thật sự lỗi/đứng yên và nhường chỗ cho Preload. Tệp WAV PCM 44.100 Hz, 54.808 byte đạt kiểm tra decode. [Trước](Visuals/V153_BATCH_04A/r10-loader-before.png) · [Sau](Visuals/V153_BATCH_04A/r10-loader-after.png) · [Đứng tải](Visuals/V153_BATCH_04A/r10-loader-stall.png). |
 | BUG-031 | CLOSED-VERIFIED local | Hai bảng xuất hiện trong audit ở Bellhollow. Đã chuyển profiler vào tab Log & Hiệu năng. F10 giữ bảng kết quả benchmark khi gọi bằng tay. [Trước](Visuals/V153_BATCH_04A/before-f9-tab-1.png) · [Sau](Visuals/V153_BATCH_04A/r10-single-dev-panel.png). |
 | BUG-032 | PARTIAL | Quan hệ xử lý va chạm khác số body vật lý. Panel đã phân biệt quan hệ đang bật và body static/dynamic đang bật. Phần cảnh báo frame `satyr_sheet` CLOSED-VERIFIED local tại K1, từ 136 xuống 0. Các lỗi chuyển động/đòn đánh chưa kiểm thử đầy đủ ở K2/K3. [K1](V153_B04_K1_RUNTIME_REPORT.md). |
@@ -16,7 +20,7 @@ Dùng mã trong INDEX R10. Hàng **OPEN** của batch khác giữ ở chủ sở
 
 | Hàng chờ | Chủ sở hữu để tiếp tục |
 |---|---|
-| BUG-021/022/029, phần map của BUG-033 | 04B1. Camera vòng ở đầu làng, ranh Farm ảnh hưởng Tinh Thần, nền/đường và dữ liệu Map. |
+| BUG-021/022/029, phần map của BUG-033 | 04B1 đã chốt kết quả theo hàng trên. Phần layout/Map UI và chiều khóa theo tiến trình giữ đúng nhóm sở hữu. |
 | BUG-034, BUG-044–050 | 04B2 và 04C-G tùy logic. Giữ ID và tọa độ trong INDEX. |
 | BUG-051–054 | 04C-G. Bổ sung theo Owner trong 04C-K1, chưa triển khai hoặc tái hiện tại K1. |
 | BUG-025, phần logic BUG-038–043 | 04C-G và 04E1. |
