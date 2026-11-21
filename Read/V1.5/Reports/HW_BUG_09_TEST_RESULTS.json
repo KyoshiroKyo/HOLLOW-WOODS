@@ -1,0 +1,118 @@
+{
+  "test1_assets": {
+    "village": {
+      "duration": 71.96,
+      "sampleRate": 48000,
+      "channels": 2,
+      "rms": 0.0182,
+      "peak": 0.1261,
+      "clickCount": 0,
+      "startAmp": 0,
+      "endAmp": 0.0001,
+      "fileSizeBytes": 0
+    },
+    "crossing": {
+      "duration": 150.72,
+      "sampleRate": 48000,
+      "channels": 2,
+      "rms": 0.0417,
+      "peak": 0.2098,
+      "clickCount": 0,
+      "startAmp": 0.0096,
+      "endAmp": 0.0274,
+      "fileSizeBytes": 0
+    },
+    "forest": {
+      "duration": 13.67,
+      "sampleRate": 48000,
+      "channels": 2,
+      "rms": 0.1815,
+      "peak": 0.8783,
+      "clickCount": 0,
+      "startAmp": 0,
+      "endAmp": 0,
+      "fileSizeBytes": 0
+    },
+    "mire": {
+      "duration": 17.25,
+      "sampleRate": 48000,
+      "channels": 2,
+      "rms": 0.0074,
+      "peak": 0.093,
+      "clickCount": 0,
+      "startAmp": 0.0001,
+      "endAmp": 0.0003,
+      "fileSizeBytes": 0
+    }
+  },
+  "test2_transitions": {
+    "success": true,
+    "transitions": [
+      {
+        "zone": "village",
+        "currentZone": "village",
+        "hasActiveAmbience": true,
+        "nodesCount": 4
+      },
+      {
+        "zone": "crossing",
+        "currentZone": "crossing",
+        "hasActiveAmbience": true,
+        "fadingCount": 1
+      },
+      {
+        "zone": "forest",
+        "currentZone": "forest",
+        "hasActiveAmbience": true
+      },
+      {
+        "zone": "mire",
+        "currentZone": "mire",
+        "hasActiveAmbience": true
+      },
+      {
+        "zone": "village_return",
+        "currentZone": "village",
+        "hasActiveAmbience": true
+      }
+    ],
+    "remainingFading": 0
+  },
+  "test3_mute": {
+    "initialMute": false,
+    "initialMasterGain": 1,
+    "muted": true,
+    "mutedGain": 0,
+    "unmuted": false,
+    "unmutedGain": 1
+  },
+  "test4_sanctuary": {
+    "inSanctuary": true,
+    "activeAmbienceInSanctuary": false,
+    "outSanctuary": false,
+    "activeAmbienceAfter": true,
+    "restoredZone": "village"
+  },
+  "test5_pause_resume": {
+    "stateBefore": "running",
+    "stateDuring": "running",
+    "stateAfter": "running",
+    "isAmbienceAlive": true
+  },
+  "test6_spectral_loop": {
+    "villageMetrics": {
+      "durationSec": 71.96,
+      "avgRms": 0.0185,
+      "rmsStdDev": 0.0009,
+      "seamMaxDiff": 0.0479,
+      "stabilityScore": 0.95
+    },
+    "crossingMetrics": {
+      "durationSec": 150.72,
+      "avgRms": 0.0409,
+      "rmsStdDev": 0.0045,
+      "seamMaxDiff": 0.1723,
+      "stabilityScore": 0.89
+    }
+  }
+}
