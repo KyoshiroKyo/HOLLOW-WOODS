@@ -235,9 +235,9 @@ export class WorldBuilder {
       }
     }
 
-    // The continuous starter camera can see the forest shoulder south of Fog Crossing.
-    this.scene.add.tileSprite(0, 360, 480, 680, TILE_FOREST_GRASS)
-      .setOrigin(0, 0).setDepth(DEPTH_GROUND_BASE - 1);
+    // BUG-029: Bề mặt địa hình vai rừng Tây Nam (Southwest Forest Shoulder: x: 0..480, y: 360..1040)
+    // Thay thế TileSprite sáng màu thô ráp bằng CanvasTexture hòa sắc hữu cơ, xóa sạch đường cắt hình chữ nhật.
+    this.renderSouthwestForestShoulderTerrain();
 
     // C4-13-20: Dựng các dải tiếp giáp địa hình chuyển tiếp tự nhiên (180px–220px) xóa bỏ đường cắt dọc hai thái cực
     this.renderZoneBoundaryTransitions();
@@ -490,6 +490,94 @@ export class WorldBuilder {
     const groundImg = this.scene.add.image(bounds.x, bounds.y, texKey);
     groundImg.setOrigin(0, 0);
     groundImg.setDepth(DEPTH_GROUND_BASE);
+  }
+
+  /**
+   * BUG-029: Bề mặt địa hình vai rừng Tây Nam (Southwest Forest Shoulder: x: 0..480, y: 360..1040).
+   * Thay thế hoàn toàn mảng TileSprite sáng màu thô ráp bằng CanvasTexture hòa sắc hữu cơ,
+   * khớp liền mạch với đáy Fog Crossing (y=360), rìa Tây Bellhollow và rìa Tây Sanctuary Farm (x=480).
+   */
+  private renderSouthwestForestShoulderTerrain(): void {
+    const texKey = 'southwest_forest_shoulder_ground_baked_v15';
+    if (!this.scene.textures.exists(texKey)) {
+      const W = 480;
+      const H = 680;
+      const overlapPadding = 32;
+      const totalW = W + overlapPadding; // 512px
+      const canvasTex = this.scene.textures.createCanvas(texKey, totalW, H);
+      if (canvasTex) {
+        const ctx = canvasTex.getContext();
+        ctx.imageSmoothingEnabled = false;
+
+        let seed = 439812;
+        const nextRand = () => {
+          seed = (seed * 1664525 + 1013904223) >>> 0;
+          return seed / 4294967296;
+        };
+
+        // 1. Nền cỏ rừng tối màu có chiều sâu đồng điệu với Bellhollow và Fog Crossing
+        ctx.fillStyle = '#263326';
+        ctx.fillRect(0, 0, totalW, H);
+
+        const grassImg = this.scene.textures.get(TILE_FOREST_GRASS).getSourceImage() as HTMLImageElement | HTMLCanvasElement;
+        if (grassImg && grassImg.width > 0) {
+          ctx.save();
+          ctx.globalAlpha = 0.28;
+          for (let gy = 0; gy < H; gy += 32) {
+            for (let gx = 0; gx < totalW; gx += 32) {
+              ctx.drawImage(grassImg, gx, gy, 32, 32);
+            }
+          }
+          ctx.restore();
+        }
+
+        // 2. Bóng tối bìa rừng phía Bắc (y: 0..100) khớp với đáy Fog Crossing (y=360 có botGrad rgba(12, 18, 14, 0.82))
+        const northShade = ctx.createLinearGradient(0, 0, 0, 100);
+        northShade.addColorStop(0, 'rgba(12, 18, 14, 0.82)');
+        northShade.addColorStop(0.6, 'rgba(12, 18, 14, 0.45)');
+        northShade.addColorStop(1, 'rgba(12, 18, 14, 0)');
+        ctx.fillStyle = northShade;
+        ctx.fillRect(0, 0, totalW, 100);
+
+        // 3. Bóng râm rìa phía Đông (x: 400..512) khớp với westShade của Bellhollow và Farm
+        const eastShade = ctx.createLinearGradient(400, 0, totalW, 0);
+        eastShade.addColorStop(0, 'rgba(12, 18, 14, 0)');
+        eastShade.addColorStop(0.7, 'rgba(12, 18, 14, 0.55)');
+        eastShade.addColorStop(1, 'rgba(12, 18, 14, 0.80)');
+        ctx.fillStyle = eastShade;
+        ctx.fillRect(400, 0, totalW - 400, H);
+
+        // 4. Bóng tối rừng sâu hoang sơ phía Tây (x < 120) và phía Nam (y > 580)
+        const westDeepShade = ctx.createLinearGradient(0, 0, 120, 0);
+        westDeepShade.addColorStop(0, 'rgba(10, 15, 12, 0.90)');
+        westDeepShade.addColorStop(1, 'rgba(10, 15, 12, 0)');
+        ctx.fillStyle = westDeepShade;
+        ctx.fillRect(0, 0, 120, H);
+
+        const southDeepShade = ctx.createLinearGradient(0, 560, 0, H);
+        southDeepShade.addColorStop(0, 'rgba(10, 15, 12, 0)');
+        southDeepShade.addColorStop(1, 'rgba(10, 15, 12, 0.88)');
+        ctx.fillStyle = southDeepShade;
+        ctx.fillRect(0, 560, totalW, H - 560);
+
+        // 5. Thảm rêu và đốm rừng hữu cơ
+        const shoulderMossPalette = ['#1e2d1d', '#283b27', '#344b31', '#1f2b1d', '#2c3624'];
+        for (let i = 0; i < 700; i++) {
+          const lx = Math.floor(nextRand() * totalW);
+          const ly = Math.floor(nextRand() * H);
+          const pw = 4 + Math.floor(nextRand() * 9);
+          const ph = 3 + Math.floor(nextRand() * 6);
+          ctx.fillStyle = shoulderMossPalette[Math.floor(nextRand() * shoulderMossPalette.length)];
+          ctx.fillRect(lx, ly, pw, ph);
+        }
+
+        canvasTex.refresh();
+      }
+    }
+
+    const groundImg = this.scene.add.image(0, 360, texKey);
+    groundImg.setOrigin(0, 0);
+    groundImg.setDepth(DEPTH_GROUND_BASE - 1);
   }
 
   /**
@@ -968,7 +1056,7 @@ export class WorldBuilder {
    * Bao gồm thảm cỏ đồng quê ấm áp, 2 thửa ruộng thảo mộc cày luống màu mỡ, ao tưới nước tự nhiên và mạng lưới đường đất rộng rãi.
    */
   private renderSanctuaryFarmTerrain(bounds: { x: number; y: number; width: number; height: number }): void {
-    const texKey = 'sanctuary_farm_ground_baked_v12';
+    const texKey = 'sanctuary_farm_ground_baked_v13';
     if (!this.scene.textures.exists(texKey)) {
       const W = bounds.width;  // 640 (x: 480..1120)
       const H = bounds.height; // 480 (y: 560..1040)
@@ -1028,6 +1116,22 @@ export class WorldBuilder {
         southShade.addColorStop(1, 'rgba(12, 18, 14, 0.85)');
         ctx.fillStyle = southShade;
         ctx.fillRect(0, toLY(980), W, H - toLY(980));
+
+        // BUG-029: Bóng râm thảm thực vật rìa Bắc (wy < 620) hòa nhịp êm dịu vào bóng rừng phía Nam Bellhollow (southShade)
+        const northShade = ctx.createLinearGradient(0, 0, 0, toLY(620));
+        northShade.addColorStop(0, 'rgba(16, 25, 18, 0.65)');
+        northShade.addColorStop(0.45, 'rgba(16, 25, 18, 0.35)');
+        northShade.addColorStop(1, 'rgba(16, 25, 18, 0)');
+        ctx.fillStyle = northShade;
+        ctx.fillRect(0, 0, W, toLY(620));
+
+        // BUG-029: Bóng râm thảm thực vật rìa Đông (wx > 1060) hòa nhịp vào nền rừng lá kim tối màu Outer Woods
+        const eastShade = ctx.createLinearGradient(toLX(1060), 0, W, 0);
+        eastShade.addColorStop(0, 'rgba(12, 18, 14, 0)');
+        eastShade.addColorStop(0.6, 'rgba(12, 18, 14, 0.45)');
+        eastShade.addColorStop(1, 'rgba(12, 18, 14, 0.75)');
+        ctx.fillStyle = eastShade;
+        ctx.fillRect(toLX(1060), 0, W - toLX(1060), H);
 
         // Rải rác đốm rêu và cỏ dại nông trại
         const farmMossPalette = ['#24351f', '#32482a', '#3c5532', '#48633c'];
@@ -1244,7 +1348,7 @@ export class WorldBuilder {
    * Bao gồm thảm lá kim tối màu, rêu rừng ẩm, bãi trại thợ săn và đường mòn đất uốn lượn tự nhiên.
    */
   private renderOuterWoodsTerrain(bounds: { x: number; y: number; width: number; height: number }): void {
-    const texKey = 'outer_woods_ground_baked_v14';
+    const texKey = 'outer_woods_ground_baked_v15';
     if (!this.scene.textures.exists(texKey)) {
       const W = bounds.width;  // 480 (x: 1120..1600)
       const H = bounds.height; // 480 (y: 560..1040)
@@ -1294,6 +1398,22 @@ export class WorldBuilder {
         southForestShade.addColorStop(1, 'rgba(10, 16, 12, 0.85)');
         ctx.fillStyle = southForestShade;
         ctx.fillRect(0, toLY(960), W, H - toLY(960));
+
+        // BUG-029: Bóng râm thảm thực vật rìa Bắc (wy < 620) khớp với bóng rừng phía Nam Bellhollow
+        const northForestShade = ctx.createLinearGradient(0, 0, 0, toLY(620));
+        northForestShade.addColorStop(0, 'rgba(12, 18, 14, 0.70)');
+        northForestShade.addColorStop(0.5, 'rgba(12, 18, 14, 0.35)');
+        northForestShade.addColorStop(1, 'rgba(12, 18, 14, 0)');
+        ctx.fillStyle = northForestShade;
+        ctx.fillRect(0, 0, W, toLY(620));
+
+        // BUG-029: Bóng râm thảm thực vật rìa Tây (wx < 1180) khớp với eastShade của Sanctuary Farm
+        const westForestShade = ctx.createLinearGradient(0, 0, toLX(1180), 0);
+        westForestShade.addColorStop(0, 'rgba(12, 18, 14, 0.70)');
+        westForestShade.addColorStop(0.5, 'rgba(12, 18, 14, 0.35)');
+        westForestShade.addColorStop(1, 'rgba(12, 18, 14, 0)');
+        ctx.fillStyle = westForestShade;
+        ctx.fillRect(0, 0, toLX(1180), H);
 
         // Rải rác đốm rêu rừng và mùn lá kim sẫm màu
         const woodsMossPalette = ['#1a2918', '#253920', '#2d4428', '#1c2618', '#3b2c1b', '#2e2215'];
@@ -7156,6 +7276,9 @@ export class WorldBuilder {
     // 3. RANH GIỚI BELLHOLLOW <-> CROOKED PATH (x = 1600, Dải tiếp giáp 180px: 1510..1690)
     this.renderVillageToForestTransition(1600);
     this.renderFarmTrailCrossing();
+
+    // 4. BUG-029: RANH GIỚI BELLHOLLOW <-> SANCTUARY FARM (y = 560, Dải tiếp giáp Y: 530..590, X: 520..780)
+    this.renderVillageToFarmTransition(560);
   }
 
   private renderFarmTrailCrossing(): void {
@@ -7187,6 +7310,58 @@ export class WorldBuilder {
       }
     }
     this.scene.add.image(1040, 705, key).setOrigin(0, 0).setDepth(DEPTH_GROUND_BASE + 1);
+  }
+
+  /**
+   * BUG-029: Dải chuyển tiếp địa hình tự nhiên giữa Làng Bellhollow và Nông Trại Trú Ẩn tại ranh giới y = 560.
+   * Xóa sạch 100% đường cắt ngang và mảng khối sắc cạnh, hòa quyện mượt mà giữa đường mòn làng và đường nông trại.
+   */
+  private renderVillageToFarmTransition(seamY: number): void {
+    const turfGfx = this.scene.add.graphics();
+    turfGfx.setDepth(DEPTH_GROUND_TURF);
+
+    // 1. Mảng rêu và cỏ rừng hữu cơ đan xen phía Tây lối đi (x: 520..620, y: 535..585)
+    turfGfx.fillStyle(0x233324, 0.72);
+    turfGfx.fillEllipse(570, seamY - 12, 100, 36);
+    turfGfx.fillStyle(0x283b27, 0.65);
+    turfGfx.fillEllipse(595, seamY + 10, 90, 32);
+    turfGfx.fillStyle(0x1e2c1e, 0.80);
+    turfGfx.fillEllipse(545, seamY + 4, 80, 28);
+
+    // 2. Mảng rêu và cỏ rừng hữu cơ đan xen phía Đông lối đi (x: 680..780, y: 535..585)
+    turfGfx.fillStyle(0x253526, 0.70);
+    turfGfx.fillEllipse(720, seamY - 10, 95, 34);
+    turfGfx.fillStyle(0x2b3d29, 0.62);
+    turfGfx.fillEllipse(745, seamY + 12, 90, 32);
+    turfGfx.fillStyle(0x1e2b1e, 0.78);
+    turfGfx.fillEllipse(695, seamY + 6, 85, 30);
+
+    // 3. Dải chuyển tiếp nền đường đất qua ranh giới (x: 625..675, y: seamY - 20 .. seamY + 20)
+    turfGfx.fillStyle(0x4a3726, 0.50);
+    turfGfx.fillRoundedRect(626, seamY - 16, 48, 32, 6);
+    turfGfx.fillStyle(0x5c442f, 0.40);
+    turfGfx.fillRoundedRect(632, seamY - 10, 36, 20, 4);
+
+    this.registerCullable(turfGfx, 650, seamY, 200);
+
+    // 4. Đá cuội và sỏi tự nhiên hai bên lề đường chuyển tiếp (depth -88)
+    const stonesGfx = this.scene.add.graphics();
+    stonesGfx.setDepth(DEPTH_GROUND_STONES);
+    const borderStones = [
+      { x: 628, y: seamY - 14, w: 8, h: 5, c: 0x545b61 },
+      { x: 624, y: seamY + 6, w: 9, h: 6, c: 0x626a71 },
+      { x: 627, y: seamY + 18, w: 7, h: 5, c: 0x4e555b },
+      { x: 672, y: seamY - 12, w: 8, h: 5, c: 0x565d63 },
+      { x: 675, y: seamY + 8, w: 10, h: 6, c: 0x656c73 },
+      { x: 671, y: seamY + 20, w: 7, h: 4, c: 0x4f565c }
+    ];
+    for (const st of borderStones) {
+      stonesGfx.fillStyle(0x101713, 0.45);
+      stonesGfx.fillEllipse(st.x + 1, st.y + 2, st.w + 2, st.h);
+      stonesGfx.fillStyle(st.c, 1);
+      stonesGfx.fillRoundedRect(st.x - Math.round(st.w / 2), st.y - Math.round(st.h / 2), st.w, st.h, 2);
+    }
+    this.registerCullable(stonesGfx, 650, seamY, 200);
   }
 
   /**
