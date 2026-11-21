@@ -1,0 +1,398 @@
+{
+  "part_d_loader": {
+    "startupHidden": true,
+    "startupState": null,
+    "startupPhase": "preload",
+    "hasDaggerSlash": true,
+    "hasAudioMaster": true,
+    "audioCacheKeysCount": 60
+  },
+  "part_a": {
+    "actorCount": 1,
+    "animationRegistries": {
+      "wayfarer_walk_down": {
+        "key": "wayfarer_walk_down",
+        "framesCount": 6,
+        "textureKey": "black_knight_movement",
+        "firstFrame": "armed_walk_down_0"
+      },
+      "wayfarer_unarmed_walk_down": {
+        "key": "wayfarer_unarmed_walk_down",
+        "framesCount": 6,
+        "textureKey": "black_knight_movement",
+        "firstFrame": "unarmed_walk_down_0"
+      },
+      "wayfarer_run_down": {
+        "key": "wayfarer_run_down",
+        "framesCount": 12,
+        "textureKey": "black_knight_conversion_motion",
+        "firstFrame": "armed_run_sequence_down_0"
+      },
+      "wayfarer_unarmed_run_down": {
+        "key": "wayfarer_unarmed_run_down",
+        "framesCount": 12,
+        "textureKey": "black_knight_conversion_motion",
+        "firstFrame": "unarmed_run_sequence_down_0"
+      }
+    },
+    "walkArmed": {
+      "down": {
+        "animKey": "wayfarer_walk_down",
+        "textureKey": "black_knight_movement",
+        "frameName": "armed_walk_down_0",
+        "scaleX": 1,
+        "scaleY": 1,
+        "bodyWidth": 18,
+        "bodyHeight": 12,
+        "bodyVelX": 0,
+        "bodyVelY": 85,
+        "shadowVisible": true,
+        "shadowDeltaX": 0,
+        "shadowDeltaY": 0,
+        "originX": 0.5,
+        "originY": 1
+      },
+      "up": {
+        "animKey": "wayfarer_walk_up",
+        "textureKey": "black_knight_movement",
+        "frameName": "armed_walk_up_0",
+        "scaleX": 1,
+        "scaleY": 1,
+        "bodyWidth": 18,
+        "bodyHeight": 12,
+        "bodyVelX": 0,
+        "bodyVelY": -85,
+        "shadowVisible": true,
+        "shadowDeltaX": 0,
+        "shadowDeltaY": 0,
+        "originX": 0.5,
+        "originY": 1
+      },
+      "left": {
+        "animKey": "wayfarer_walk_left",
+        "textureKey": "black_knight_movement",
+        "frameName": "armed_walk_left_0",
+        "scaleX": 1,
+        "scaleY": 1,
+        "bodyWidth": 18,
+        "bodyHeight": 12,
+        "bodyVelX": -85,
+        "bodyVelY": 0,
+        "shadowVisible": true,
+        "shadowDeltaX": 0,
+        "shadowDeltaY": 0,
+        "originX": 0.5,
+        "originY": 1
+      },
+      "right": {
+        "animKey": "wayfarer_walk_right",
+        "textureKey": "black_knight_movement",
+        "frameName": "armed_walk_right_0",
+        "scaleX": 1,
+        "scaleY": 1,
+        "bodyWidth": 18,
+        "bodyHeight": 12,
+        "bodyVelX": 85,
+        "bodyVelY": 0,
+        "shadowVisible": true,
+        "shadowDeltaX": 0,
+        "shadowDeltaY": 0,
+        "originX": 0.5,
+        "originY": 1
+      }
+    },
+    "walkUnarmed": {
+      "down": {
+        "animKey": "wayfarer_unarmed_walk_down",
+        "textureKey": "black_knight_movement",
+        "frameName": "unarmed_walk_down_0",
+        "scaleX": 1,
+        "scaleY": 1,
+        "bodyWidth": 18,
+        "bodyHeight": 12,
+        "bodyVelX": 0,
+        "bodyVelY": 85,
+        "shadowVisible": true,
+        "shadowDeltaX": 0,
+        "shadowDeltaY": 0,
+        "originX": 0.5,
+        "originY": 1
+      },
+      "up": {
+        "animKey": "wayfarer_unarmed_walk_up",
+        "textureKey": "black_knight_movement",
+        "frameName": "unarmed_walk_up_0",
+        "scaleX": 1,
+        "scaleY": 1,
+        "bodyWidth": 18,
+        "bodyHeight": 12,
+        "bodyVelX": 0,
+        "bodyVelY": -85,
+        "shadowVisible": true,
+        "shadowDeltaX": 0,
+        "shadowDeltaY": 0,
+        "originX": 0.5,
+        "originY": 1
+      },
+      "left": {
+        "animKey": "wayfarer_unarmed_walk_left",
+        "textureKey": "black_knight_movement",
+        "frameName": "unarmed_walk_left_0",
+        "scaleX": 1,
+        "scaleY": 1,
+        "bodyWidth": 18,
+        "bodyHeight": 12,
+        "bodyVelX": -85,
+        "bodyVelY": 0,
+        "shadowVisible": true,
+        "shadowDeltaX": 0,
+        "shadowDeltaY": 0,
+        "originX": 0.5,
+        "originY": 1
+      },
+      "right": {
+        "animKey": "wayfarer_unarmed_walk_right",
+        "textureKey": "black_knight_movement",
+        "frameName": "unarmed_walk_right_0",
+        "scaleX": 1,
+        "scaleY": 1,
+        "bodyWidth": 18,
+        "bodyHeight": 12,
+        "bodyVelX": 85,
+        "bodyVelY": 0,
+        "shadowVisible": true,
+        "shadowDeltaX": 0,
+        "shadowDeltaY": 0,
+        "originX": 0.5,
+        "originY": 1
+      }
+    },
+    "runArmed": {
+      "down": {
+        "animKey": "wayfarer_run_down",
+        "textureKey": "black_knight_conversion_motion",
+        "frameName": "armed_run_sequence_down_0",
+        "scaleX": 0.8,
+        "scaleY": 0.8,
+        "bodyWidth": 18,
+        "bodyHeight": 12,
+        "bodyVelX": 0,
+        "bodyVelY": 140,
+        "shadowVisible": true,
+        "shadowDeltaX": 0,
+        "shadowDeltaY": 0,
+        "originX": 0.5,
+        "originY": 0.875
+      },
+      "up": {
+        "animKey": "wayfarer_run_up",
+        "textureKey": "black_knight_conversion_motion",
+        "frameName": "armed_run_sequence_up_0",
+        "scaleX": 0.8,
+        "scaleY": 0.8,
+        "bodyWidth": 18,
+        "bodyHeight": 12,
+        "bodyVelX": 0,
+        "bodyVelY": -140,
+        "shadowVisible": true,
+        "shadowDeltaX": 0,
+        "shadowDeltaY": 0,
+        "originX": 0.5,
+        "originY": 0.875
+      },
+      "left": {
+        "animKey": "wayfarer_run_left",
+        "textureKey": "black_knight_conversion_motion",
+        "frameName": "armed_run_sequence_left_0",
+        "scaleX": 0.8,
+        "scaleY": 0.8,
+        "bodyWidth": 18,
+        "bodyHeight": 12,
+        "bodyVelX": -140,
+        "bodyVelY": 0,
+        "shadowVisible": true,
+        "shadowDeltaX": 0,
+        "shadowDeltaY": 0,
+        "originX": 0.5,
+        "originY": 0.875
+      },
+      "right": {
+        "animKey": "wayfarer_run_right",
+        "textureKey": "black_knight_conversion_motion",
+        "frameName": "armed_run_sequence_right_0",
+        "scaleX": 0.8,
+        "scaleY": 0.8,
+        "bodyWidth": 18,
+        "bodyHeight": 12,
+        "bodyVelX": 140,
+        "bodyVelY": 0,
+        "shadowVisible": true,
+        "shadowDeltaX": 0,
+        "shadowDeltaY": 0,
+        "originX": 0.5,
+        "originY": 0.875
+      }
+    },
+    "runUnarmed": {
+      "down": {
+        "animKey": "wayfarer_unarmed_run_down",
+        "textureKey": "black_knight_conversion_motion",
+        "frameName": "unarmed_run_sequence_down_0",
+        "scaleX": 0.68,
+        "scaleY": 0.68,
+        "bodyWidth": 18,
+        "bodyHeight": 12,
+        "bodyVelX": 0,
+        "bodyVelY": 140,
+        "shadowVisible": true,
+        "shadowDeltaX": 0,
+        "shadowDeltaY": 0,
+        "originX": 0.5,
+        "originY": 0.875
+      },
+      "up": {
+        "animKey": "wayfarer_unarmed_run_up",
+        "textureKey": "black_knight_conversion_motion",
+        "frameName": "unarmed_run_sequence_up_0",
+        "scaleX": 0.68,
+        "scaleY": 0.68,
+        "bodyWidth": 18,
+        "bodyHeight": 12,
+        "bodyVelX": 0,
+        "bodyVelY": -140,
+        "shadowVisible": true,
+        "shadowDeltaX": 0,
+        "shadowDeltaY": 0,
+        "originX": 0.5,
+        "originY": 0.875
+      },
+      "left": {
+        "animKey": "wayfarer_unarmed_run_left",
+        "textureKey": "black_knight_conversion_motion",
+        "frameName": "unarmed_run_sequence_left_0",
+        "scaleX": 0.68,
+        "scaleY": 0.68,
+        "bodyWidth": 18,
+        "bodyHeight": 12,
+        "bodyVelX": -140,
+        "bodyVelY": 0,
+        "shadowVisible": true,
+        "shadowDeltaX": 0,
+        "shadowDeltaY": 0,
+        "originX": 0.5,
+        "originY": 0.875
+      },
+      "right": {
+        "animKey": "wayfarer_unarmed_run_right",
+        "textureKey": "black_knight_conversion_motion",
+        "frameName": "unarmed_run_sequence_right_0",
+        "scaleX": 0.68,
+        "scaleY": 0.68,
+        "bodyWidth": 18,
+        "bodyHeight": 12,
+        "bodyVelX": 140,
+        "bodyVelY": 0,
+        "shadowVisible": true,
+        "shadowDeltaX": 0,
+        "shadowDeltaY": 0,
+        "originX": 0.5,
+        "originY": 0.875
+      }
+    },
+    "shadowCheck": {
+      "runScale": 0.8,
+      "walkScale": 1,
+      "idleScale": 1,
+      "idleShadowDeltaX": 0,
+      "idleShadowDeltaY": 0,
+      "idleShadowVisible": true
+    },
+    "directionSwitch": {}
+  },
+  "part_b": {
+    "normalKeyHold": {
+      "velYBefore": -85,
+      "isWActive": true
+    },
+    "blurReset": {
+      "isWActiveAfterBlur": false,
+      "holdsCountAfterBlur": 0,
+      "velYAfterBlur": 0
+    },
+    "focusRecovery": {
+      "velXAfterFocus": 85,
+      "isDActive": true,
+      "velXAfterRelease": 0
+    },
+    "imePacketSeparation": {
+      "confirmedBeforePacket": true,
+      "stillHeldAfterImeKeyup": true,
+      "confirmedAfterImeKeyup": true,
+      "releasedAfterRealKeyup": true
+    },
+    "textInputShield": {
+      "isPhaserKeyboardDisabled": true,
+      "isTextInputFocused": true,
+      "isPhaserKeyboardRestored": true
+    }
+  },
+  "part_c": {
+    "snapshotCounters": {
+      "perfColliderCount": 4,
+      "perfStaticBodyCount": 247,
+      "perfDynamicBodyCount": 8,
+      "actualColliderCount": 4,
+      "actualStaticBodyCount": 247,
+      "actualDynamicBodyCount": 8,
+      "areMetricsDistinguished": true
+    },
+    "animationFrameAudit": {
+      "totalRegisteredAnims": 731,
+      "totalCheckedFrames": 5774,
+      "missingFramesCount": 0,
+      "satyrSheetFramesCount": 0
+    },
+    "combatSmoke": {
+      "lightAttackAnim": "wayfarer_attack_up",
+      "heavyAttackAnim": "wayfarer_heavy_attack_up",
+      "weaponArtAnim": "wayfarer_weapon_art_up",
+      "rollAnim": "wayfarer_roll_up",
+      "isRollingTriggered": true
+    }
+  },
+  "part_d_details": {
+    "audioChecks": {
+      "dagger_slash": {
+        "cached": true,
+        "decoded": true
+      },
+      "scout_whistle": {
+        "cached": true,
+        "decoded": true
+      },
+      "sanity_gasp": {
+        "cached": true,
+        "decoded": true
+      },
+      "ambience_village": {
+        "cached": true,
+        "decoded": true
+      },
+      "ambience_crossing": {
+        "cached": true,
+        "decoded": true
+      },
+      "attack_swing": {
+        "cached": true,
+        "decoded": true
+      },
+      "lantern_toggle": {
+        "cached": true,
+        "decoded": true
+      }
+    },
+    "startupElementHidden": true,
+    "startupElementError": false,
+    "allRequiredAudioDecoded": true
+  }
+}
