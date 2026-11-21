@@ -37,12 +37,15 @@ Dùng mã trong INDEX R10. Hàng **OPEN** của batch khác giữ ở chủ sở
 | BUG-054 | CLOSED-VERIFIED local · 04C-G P0 | HUD, Sổ Tay, World Map và Continue thống nhất qua nhận, chọn, hoàn tất nhiệm vụ. Chọn quest muộn trong Sổ Tay giữ nguyên quyền mở vùng. [Báo cáo](V153_B04CG_P0_REPORT.md). |
 | LEG-R8-14 | CLOSED-VERIFIED local | Chỉ mở F9 đã latch lượt Dev, Save QA tách khóa, mock SDK xác minh chặn sau await và luồng gửi điểm sạch. [Audit](V153_B04_DEV_MODE_BASELINE_AUDIT.md). |
 | HW-BUG-#5 / BUG-034B | CLOSED-VERIFIED local | Di dời hoàn tất toàn bộ cụm xưởng Bram từ (1270,360) sang (1373,432). Sprite, footing, collider 154x32 [1296,400,1450,432], Bram (1333,477), Bàn chế tạo (1395,455) collider [1375,449,1415,461], forge glow (1318,408), khói (1325,288), củi (1433,452), giải tỏa bụi cây (1416,348) và cành khô (1364,340). Noclip OFF, hội thoại [E], Crafting modal, Save/Load, Transition và Restart đều đạt 100%. [Báo cáo](HW_BUG_05_BRAM_RELOCATION_REPORT.md). |
+| HW-BUG-#6 / BUG-049 | CLOSED-VERIFIED local | Chuẩn hóa toàn diện hệ thống neo tương tác (Interaction Anchors) và dọn dẹp vật phẩm (Despawn Flow). Neo chân chuẩn cho outline, thuật toán chống kích hoạt nhầm, dọn sạch trigger và chống nhặt trùng cốt truyện, dời node_wood_3 khỏi móng xưởng Bram. [Báo cáo](HW_BUG_06_INTERACTION_ANCHORS_REPORT.md). |
+| HW-BUG-#7 / BUG-025 | CLOSED-VERIFIED local | Xử lý triệt để icon bị thiếu, sai và placeholder trong hệ thống UI (B04-09A). Đóng gói Texture Atlas Pixel Art 16×16 (`item_icons_atlas`) cho toàn bộ 43 items trong `src/data/items.json` cùng 3 legacy Save aliases (`item_runed_iron_part`, `food_root_soup`, `quest_corrupted_knight_crest`). Tạo helper tập trung `ItemIconHelper`. Đồng bộ Hotbar/Quickbar (hiển thị icon mờ + nhãn 'x0' khi hết đồ tiêu hao), CraftingModal (preview + 18 grid tiles + ingredient badges), QuickCraftSidebar (4 pinned slots + flyout badges), StorageChestModal (12 slots balo + 12 slots rương), EquipmentModal (equipped slots, túi đồ, vũ khí) và ItemTooltipHelper. Bộ test tự động Playwright 6/6 PASS, 0 lỗi console, 0 asset 404, contact sheet [item_icons_contact_sheet.png](item_icons_contact_sheet.png). [Báo cáo](HW_BUG_07_ITEM_ICONS_REPORT.md). |
 
 | Hàng chờ | Chủ sở hữu để tiếp tục |
 |---|---|
 | BUG-021/022/029, phần map của BUG-033 | 04B1 đã chốt kết quả theo hàng trên. Phần layout/Map UI và chiều khóa theo tiến trình giữ đúng nhóm sở hữu. |
 | BUG-049 | Đã nghiệm thu toàn diện tại HW-BUG-#6. [Báo cáo](HW_BUG_06_INTERACTION_ANCHORS_REPORT.md). |
-| BUG-025, phần logic BUG-038–043 | 04C-G và 04E1. |
+| BUG-025 | Đã nghiệm thu toàn diện tại HW-BUG-#7. [Báo cáo](HW_BUG_07_ITEM_ICONS_REPORT.md). |
+| Phần logic BUG-038–043 | 04C-G và 04E1. |
 | BUG-026/027 | 04D. Chưa có nghiệm thu thiết bị đối với audio lửa trại hoặc ambience (chờ tester). |
 | BUG-028/030/033/035/036, phần UI BUG-037–043 | 04E1. |
 | LEG-R8-03 và phần frame BUG-032 | Registry CLOSED-VERIFIED local tại 04C-K1. Hoạt ảnh combat và Hurt/Death chuyển K2/K3 theo ma trận. |

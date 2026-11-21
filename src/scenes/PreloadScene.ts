@@ -129,6 +129,11 @@ import {
   ATLAS_PROPS_PNG,
   ATLAS_PROPS_JSON
 } from '../utils/AtlasTextureResolver';
+import {
+  ATLAS_ITEM_ICONS_KEY,
+  ATLAS_ITEM_ICONS_PNG,
+  ATLAS_ITEM_ICONS_JSON
+} from '../utils/ItemIconHelper';
 
 export class PreloadScene extends Phaser.Scene {
   // V15-21: Bộ sưu tập Mẹo Sinh Tồn & Mảnh Truyền Thuyết Rừng Sương
@@ -548,6 +553,9 @@ export class PreloadScene extends Phaser.Scene {
     AtlasTextureResolver.install();
     this.load.atlas(ATLAS_PROPS_KEY, ATLAS_PROPS_PNG, ATLAS_PROPS_JSON);
 
+    // BUG-025: Nạp Texture Atlas trọn bộ 43 biểu tượng vật phẩm Pixel Art 16x16
+    this.load.atlas(ATLAS_ITEM_ICONS_KEY, ATLAS_ITEM_ICONS_PNG, ATLAS_ITEM_ICONS_JSON);
+
     // 8. Nạp các tile địa hình mặt đất (PASS T07)
     this.load.image(TILE_FOREST_GRASS, 'assets/environment/tiles/tile_forest_grass.png');
     this.load.image(TILE_DIRT_TRAIL, 'assets/environment/tiles/tile_dirt_trail.png');
@@ -922,6 +930,11 @@ export class PreloadScene extends Phaser.Scene {
 
     // HW-V14-ATLAS: Đồng bộ hóa Texture Atlas & thiết lập NEAREST Filter cho toàn bộ Tilemap & Atlas (chống lem viền pixel)
     AtlasTextureResolver.syncTextures(this);
+
+    // BUG-025: Thiết lập NEAREST Filter cho Item Icons Atlas chống nhòe mờ biểu tượng
+    if (this.textures.exists(ATLAS_ITEM_ICONS_KEY)) {
+      this.textures.get(ATLAS_ITEM_ICONS_KEY).setFilter(Phaser.Textures.FilterMode.NEAREST);
+    }
 
     // V14-P8-14B: Đăng ký 2 hoạt ảnh chuẩn của Hiệp Sĩ Canh Lửa (anim_campfire_knight_pray và anim_campfire_knight_idle)
     if (this.textures.exists(SPRITE_CAMPFIRE_KNIGHT_PRAY) && !this.anims.exists('anim_campfire_knight_pray')) {

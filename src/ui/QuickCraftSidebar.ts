@@ -19,12 +19,14 @@ import { PlayerState } from '../state/PlayerState';
 import { AudioManager } from '../audio/AudioManager';
 import { HDTextHelper } from '../utils/HDTextHelper';
 import itemsData from '../data/items.json';
+import { ItemIconHelper } from '../utils/ItemIconHelper';
 
 export interface PinnedRecipeSlot {
   container: Phaser.GameObjects.Container;
   bg: Phaser.GameObjects.Graphics;
   slotImg?: Phaser.GameObjects.Image;
   icon: Phaser.GameObjects.Text;
+  iconImg?: Phaser.GameObjects.Image;
   readyDot: Phaser.GameObjects.Graphics;
   zone: Phaser.GameObjects.Zone;
 }
@@ -152,7 +154,12 @@ export class QuickCraftSidebar {
       this.drawSlotBg(slotBg, false, false);
       slotContainer.add(slotBg);
 
-      // Icon thành phẩm
+      // Icon thành phẩm Pixel Art (BUG-025)
+      const iconImg = ItemIconHelper.createItemIconImage(this.scene, 0, 0, 'res_dry_wood', 22);
+      iconImg.setVisible(false);
+      slotContainer.add(iconImg);
+
+      // Icon thành phẩm (dự phòng text)
       const iconText = HDTextHelper.createText(this.scene, 0, 0, '', {
         fontSize: '17px'
       }).setOrigin(0.5, 0.5);
@@ -215,6 +222,7 @@ export class QuickCraftSidebar {
         bg: slotBg,
         slotImg,
         icon: iconText,
+        iconImg,
         readyDot,
         zone
       });
@@ -333,8 +341,11 @@ export class QuickCraftSidebar {
 
         if (recipe) {
           slot.container.setVisible(true);
-          const iconChar = this.getRecipeIconChar(recipe);
-          slot.icon.setText(iconChar);
+          if (slot.iconImg) {
+            ItemIconHelper.setItemIconTexture(this.scene, slot.iconImg, recipe.resultItemId, 22);
+            slot.iconImg.setVisible(true);
+          }
+          slot.icon.setText('');
 
           const canCraft = this.craftingSystem.canCraft(recipe);
           this.drawSlotBg(slot.bg, false, canCraft);
@@ -503,10 +514,8 @@ export class QuickCraftSidebar {
       }
 
       const ingInfo = this.getIngredientInfo(ing.itemId);
-      // Icon nguyên liệu lớn ở giữa ô kèm tham chiếu tên ngắn ingInfo.shortName
-      const iconTxt = HDTextHelper.createText(this.scene, badgeX + badgeSize / 2, ingY + 12, ingInfo.icon, {
-        fontSize: '15px'
-      }).setOrigin(0.5, 0.5);
+      // BUG-025: Icon nguyên liệu Pixel Art 16x16 sắc nét ở giữa ô
+      const ingIcon = ItemIconHelper.createItemIconImage(this.scene, badgeX + badgeSize / 2, ingY + 13, ing.itemId, 20);
 
       // Tên ngắn nguyên liệu hiển thị tinh tế (ingInfo.shortName)
       const ingShortName = ingInfo.shortName;
@@ -521,7 +530,7 @@ export class QuickCraftSidebar {
         strokeThickness: 1
       }).setOrigin(0.5, 1);
 
-      this.flyoutContainer.add([badgeGfx, iconTxt, ingCountTxt]);
+      this.flyoutContainer.add([badgeGfx, ingIcon, ingCountTxt]);
     }
 
     // 5. Mô tả tác dụng ngắn gọn căn giữa bên dưới hàng ô nguyên liệu

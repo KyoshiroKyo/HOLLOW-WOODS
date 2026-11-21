@@ -9,6 +9,7 @@ import * as Phaser from 'phaser';
 import itemsData from '../data/items.json';
 import { EquipmentSystem } from '../systems/EquipmentSystem';
 import { HDTextHelper } from '../utils/HDTextHelper';
+import { ItemIconHelper } from '../utils/ItemIconHelper';
 
 export interface ItemTooltipInfo {
   id: string;
@@ -245,17 +246,20 @@ export class ItemTooltipHelper {
     this.container.setScrollFactor(0);
     this.container.setDepth(9999);
 
+    // BUG-025: Biểu tượng Pixel Art 16x16 ở đầu tiêu đề
+    const itemIcon = ItemIconHelper.createItemIconImage(scene, pad + 10, pad + 10, itemId, 20);
+
     // Chuẩn bị nội dung Text trước để tính toán chiều cao tự động
-    const titleText = HDTextHelper.createText(scene, pad, pad, `${info.categoryIcon} ${info.name}`, {
-      fontSize: '13.5px',
+    const titleText = HDTextHelper.createText(scene, pad + 24, pad, info.name, {
+      fontSize: '13px',
       fontStyle: 'bold',
       color: '#f1c40f',
       stroke: '#000000',
       strokeThickness: 2,
-      wordWrap: { width: tooltipW - pad * 2 }
+      wordWrap: { width: tooltipW - pad * 2 - 24 }
     });
 
-    const categoryText = HDTextHelper.createText(scene, pad, pad + titleText.height + 2, info.categoryName, {
+    const categoryText = HDTextHelper.createText(scene, pad + 24, pad + titleText.height + 2, info.categoryName, {
       fontSize: '10.5px',
       fontStyle: 'italic',
       color: info.categoryColor
@@ -349,7 +353,7 @@ export class ItemTooltipHelper {
     bg.lineBetween(pad, div2Y, tooltipW - pad, div2Y);
 
     this.container.add(bg);
-    this.container.add([titleText, categoryText, descText]);
+    this.container.add([itemIcon, titleText, categoryText, descText]);
     if (statText) {
       this.container.add(statText);
     }

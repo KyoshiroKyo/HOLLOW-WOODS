@@ -15,6 +15,7 @@ import { AudioManager } from '../audio/AudioManager';
 import { HDTextHelper } from '../utils/HDTextHelper';
 import { SaveManager } from '../systems/SaveManager';
 import { ItemTooltipHelper } from './ItemTooltipHelper';
+import { ItemIconHelper } from '../utils/ItemIconHelper';
 
 export class StorageChestModal {
   private scene: Phaser.Scene;
@@ -345,8 +346,8 @@ export class StorageChestModal {
     const invItems: Array<{ key: string; name: string; count: number }> = [];
     for (const [key, count] of this.playerState.inventory.entries()) {
       if (count > 0) {
-        const def = (itemsData as Record<string, any>)[key] || { name: key };
-        invItems.push({ key, name: def.name || key, count });
+        const def = (itemsData.items as Array<any>).find(it => it.id === key);
+        invItems.push({ key, name: def ? def.name : key, count });
       }
     }
     this.invCountText.setText(`${invItems.length} Món`);
@@ -393,12 +394,15 @@ export class StorageChestModal {
       if (hasItem) {
         const item = pageItems[i];
 
+        // BUG-025: Biểu tượng Pixel Art 16x16
+        const iconImg = ItemIconHelper.createItemIconImage(this.scene, sx + 20, sy + 22, item.key, 22);
+
         // Tên vật phẩm
-        const nameText = HDTextHelper.createText(this.scene, sx + 8, sy + 7, item.name, {
+        const nameText = HDTextHelper.createText(this.scene, sx + 36, sy + 7, item.name, {
           fontSize: '11px',
           color: '#e2e8f0',
           fontStyle: 'bold',
-          wordWrap: { width: slotW - 16 }
+          wordWrap: { width: slotW - 44 }
         });
 
         // Số lượng xếp chồng góc dưới phải
@@ -415,7 +419,7 @@ export class StorageChestModal {
           fontStyle: 'bold'
         });
 
-        this.leftInventoryContainer.add([nameText, countText, actionHint]);
+        this.leftInventoryContainer.add([iconImg, nameText, countText, actionHint]);
 
         // Hitbox tương tác
         const hitZone = this.scene.add.zone(sx + slotW / 2, sy + slotH / 2, slotW, slotH)
@@ -544,12 +548,15 @@ export class StorageChestModal {
       if (hasItem) {
         const item = chestItems[i];
 
+        // BUG-025: Biểu tượng Pixel Art 16x16
+        const iconImg = ItemIconHelper.createItemIconImage(this.scene, sx + 20, sy + 22, item.key, 22);
+
         // Tên vật phẩm trong rương
-        const nameText = HDTextHelper.createText(this.scene, sx + 8, sy + 7, item.name, {
+        const nameText = HDTextHelper.createText(this.scene, sx + 36, sy + 7, item.name, {
           fontSize: '11px',
           color: '#fffaf0',
           fontStyle: 'bold',
-          wordWrap: { width: slotW - 16 }
+          wordWrap: { width: slotW - 44 }
         });
 
         // Số lượng xếp chồng trong rương
@@ -566,7 +573,7 @@ export class StorageChestModal {
           fontStyle: 'bold'
         });
 
-        this.rightChestContainer.add([nameText, countText, actionHint]);
+        this.rightChestContainer.add([iconImg, nameText, countText, actionHint]);
 
         // Hitbox tương tác
         const hitZone = this.scene.add.zone(sx + slotW / 2, sy + slotH / 2, slotW, slotH)

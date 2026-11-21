@@ -20,6 +20,7 @@ import { EquipmentSlot, WeaponId, EquipmentItemDef } from '../types';
 import { AudioManager } from '../audio/AudioManager';
 import { HDTextHelper } from '../utils/HDTextHelper';
 import { ItemTooltipHelper } from './ItemTooltipHelper';
+import { ItemIconHelper } from '../utils/ItemIconHelper';
 
 export class EquipmentModal {
   private scene: Phaser.Scene;
@@ -296,13 +297,14 @@ export class EquipmentModal {
         color: '#e0c878'
       });
 
-      // V152-06B: Icon trang bị Pixel Art thật từ UI Pack
+      // BUG-025: Icon trang bị Pixel Art thật từ ItemIconHelper / UI Pack
       let slotIcon: Phaser.GameObjects.Image | undefined;
-      if (this.scene.textures.exists(`ui_pack_equip_${s.slot}`)) {
+      if (equippedItemId) {
+        slotIcon = ItemIconHelper.createItemIconImage(this.scene, startX + slotW - 32, slotY + 22, equippedItemId, 24);
+      } else if (this.scene.textures.exists(`ui_pack_equip_${s.slot}`)) {
         slotIcon = this.scene.add.image(startX + slotW - 32, slotY + 22, `ui_pack_equip_${s.slot}`);
         slotIcon.setDisplaySize(22, 22);
-        slotIcon.setAlpha(equippedDef ? 1.0 : 0.4);
-        if (equippedDef) slotIcon.setTint(0xffd700);
+        slotIcon.setAlpha(0.4);
       }
 
       this.slotsContainer.add([bg, slotTitle, itemNameText, durText, ...(slotIcon ? [slotIcon] : [])]);
@@ -395,16 +397,19 @@ export class EquipmentModal {
       g.lineStyle(1.2, isSelected ? 0xf39c12 : 0x4a3722, 0.85);
       g.strokeRoundedRect(startX, itemY, w, 44, 5);
 
-      const label = HDTextHelper.createText(this.scene, startX + 12, itemY + 8, `${item.def.name} (x${item.count})`, {
+      // BUG-025: Biểu tượng Pixel Art của trang bị khả dụng
+      const iconImg = ItemIconHelper.createItemIconImage(this.scene, startX + 22, itemY + 22, item.id, 24);
+
+      const label = HDTextHelper.createText(this.scene, startX + 42, itemY + 8, `${item.def.name} (x${item.count})`, {
         fontSize: '11px',
         fontStyle: 'bold',
         color: '#ffffff'
       });
 
-      const sub = HDTextHelper.createText(this.scene, startX + 12, itemY + 24, item.def.description, {
+      const sub = HDTextHelper.createText(this.scene, startX + 42, itemY + 24, item.def.description, {
         fontSize: '9px',
         color: '#a0aec0',
-        wordWrap: { width: 330 }
+        wordWrap: { width: 300 }
       });
 
       // Nút Trang Bị
@@ -430,7 +435,7 @@ export class EquipmentModal {
         this.refreshView();
       });
 
-      this.inventoryListContainer.add([g, label, sub, equipBtn]);
+      this.inventoryListContainer.add([g, iconImg, label, sub, equipBtn]);
 
       const hit = this.scene.add.zone(startX + w / 2, itemY + 22, w, 44).setInteractive({ useHandCursor: true });
       hit.on('pointerdown', () => {
@@ -537,19 +542,23 @@ export class EquipmentModal {
       g.lineStyle(1.5, isSelected ? 0xf39c12 : 0x3d2c18, 0.9);
       g.strokeRoundedRect(btnX, startY, btnW, btnH, 5);
 
-      const label = HDTextHelper.createText(this.scene, btnX + 10, startY + 6, `${wpn.name} ${count > 0 ? '✔' : '(Chưa có)'}`, {
+      const label = HDTextHelper.createText(this.scene, btnX + 32, startY + 6, `${wpn.name} ${count > 0 ? '✔' : '(Chưa có)'}`, {
         fontSize: '11px',
         fontStyle: 'bold',
         color: isSelected ? '#f39c12' : (count > 0 ? '#ffffff' : '#7f8c8d')
       });
 
-      const details = HDTextHelper.createText(this.scene, btnX + 10, startY + 24, `Tầm: ${wpn.reach} • Đẩy: ${wpn.knockback} • ${wpn.note}`, {
-        fontSize: '10.5px',
+      // BUG-025: Biểu tượng Pixel Art vũ khí
+      const wpnIcon = ItemIconHelper.createItemIconImage(this.scene, btnX + 18, startY + 16, wpn.id, 20);
+      wpnIcon.setAlpha(count > 0 ? 1.0 : 0.4);
+
+      const details = HDTextHelper.createText(this.scene, btnX + 10, startY + 26, `Tầm: ${wpn.reach} • Đẩy: ${wpn.knockback} • ${wpn.note}`, {
+        fontSize: '10px',
         color: '#C8CFC2',
         wordWrap: { width: btnW - 20, useAdvancedWrap: true }
       });
 
-      this.weaponsContainer.add([g, label, details]);
+      this.weaponsContainer.add([g, wpnIcon, label, details]);
 
       if (count > 0) {
         const hit = this.scene.add.zone(btnX + btnW / 2, startY + btnH / 2, btnW, btnH).setInteractive({ useHandCursor: true });

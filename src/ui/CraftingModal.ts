@@ -23,6 +23,7 @@ import { CraftingSystem, CraftingRecipe } from '../systems/CraftingSystem';
 import { PlayerState } from '../state/PlayerState';
 import itemsData from '../data/items.json';
 import { AudioManager } from '../audio/AudioManager';
+import { ItemIconHelper } from '../utils/ItemIconHelper';
 import { HDTextHelper } from '../utils/HDTextHelper';
 import { ItemTooltipHelper } from './ItemTooltipHelper';
 
@@ -85,7 +86,7 @@ export class CraftingModal {
 
   // Các phần tử giao diện Tầng 3 (Recipe Grid)
   private gridContainer!: Phaser.GameObjects.Container;
-  private gridTileGfx: Map<string, { bg: Phaser.GameObjects.Graphics; icon: Phaser.GameObjects.Text; lock: Phaser.GameObjects.Text; zone: Phaser.GameObjects.Zone }> = new Map();
+  private gridTileGfx: Map<string, { bg: Phaser.GameObjects.Graphics; icon: Phaser.GameObjects.Text; iconImg?: Phaser.GameObjects.Image; lock: Phaser.GameObjects.Text; zone: Phaser.GameObjects.Zone }> = new Map();
 
   // Các phần tử giao diện Tầng 4 (Detail Frame)
   private detailContainer!: Phaser.GameObjects.Container;
@@ -97,6 +98,7 @@ export class CraftingModal {
   private detailPinBtnText!: Phaser.GameObjects.Text;
   private detailPinBtnBg!: Phaser.GameObjects.Graphics;
   private detailPreviewIcon!: Phaser.GameObjects.Text;
+  private detailPreviewImage!: Phaser.GameObjects.Image;
   private detailIngredientsContainer!: Phaser.GameObjects.Container;
   private detailCraftBtnBg!: Phaser.GameObjects.Graphics;
   private detailCraftBtnText!: Phaser.GameObjects.Text;
@@ -737,16 +739,17 @@ export class CraftingModal {
     prevBg.fillRoundedRect(rightX, 8, 50, 50, 4);
     prevBg.lineStyle(1.2, 0x5c4224, 0.9);
     prevBg.strokeRoundedRect(rightX, 8, 50, 50, 4);
-    this.detailPreviewIcon = HDTextHelper.createText(this.scene, rightX + 25, 30, '🪔', {
+    this.detailPreviewIcon = HDTextHelper.createText(this.scene, rightX + 25, 30, '', {
       fontSize: '24px'
     }).setOrigin(0.5, 0.5);
+    this.detailPreviewImage = ItemIconHelper.createItemIconImage(this.scene, rightX + 25, 30, 'item_lantern_oil', 32);
 
     // Nhãn "Cổ Điển" (Classic) và mũi tên chuyển biến thể phong cách Don't Starve Together
     const skinLabel = HDTextHelper.createText(this.scene, rightX + 25, 48, '◀ Cổ Điển ▶', {
       fontSize: '7.5px',
       color: '#8c7853'
     }).setOrigin(0.5, 0.5);
-    this.detailContainer.add([prevBg, this.detailPreviewIcon, skinLabel]);
+    this.detailContainer.add([prevBg, this.detailPreviewImage, this.detailPreviewIcon, skinLabel]);
 
     // 2. Dãy các ô nguyên liệu yêu cầu
     this.detailIngredientsContainer = this.scene.add.container(rightX + 56, 10);
@@ -822,12 +825,13 @@ export class CraftingModal {
 
       this.drawTileBg(tileBg, tileX, tileY, tileSize, isSelected, isLocked, canCraft);
 
-      // Icon thành phẩm
-      const iconChar = this.getRecipeIconChar(recipe);
-      const iconText = HDTextHelper.createText(this.scene, tileX + tileSize / 2, tileY + tileSize / 2, iconChar, {
+      // Icon thành phẩm (BUG-025: Pixel Art 16x16 sắc nét)
+      const iconImg = ItemIconHelper.createItemIconImage(this.scene, tileX + tileSize / 2, tileY + tileSize / 2, recipe.resultItemId, 24);
+      iconImg.setAlpha(isLocked ? 0.35 : (canCraft ? 1.0 : 0.7));
+
+      const iconText = HDTextHelper.createText(this.scene, tileX + tileSize / 2, tileY + tileSize / 2, '', {
         fontSize: '18px'
       }).setOrigin(0.5, 0.5);
-      iconText.setAlpha(isLocked ? 0.35 : (canCraft ? 1.0 : 0.7));
 
       // Ổ khóa nhỏ nếu chưa mở khóa
       const lockText = HDTextHelper.createText(this.scene, tileX + 3, tileY + 2, isLocked ? '🔒' : '', {
@@ -861,8 +865,8 @@ export class CraftingModal {
         ItemTooltipHelper.getInstance().hide();
       });
 
-      this.gridContainer.add([tileBg, iconText, lockText, zone]);
-      this.gridTileGfx.set(recipe.id, { bg: tileBg, icon: iconText, lock: lockText, zone });
+      this.gridContainer.add([tileBg, iconImg, iconText, lockText, zone]);
+      this.gridTileGfx.set(recipe.id, { bg: tileBg, icon: iconText, iconImg, lock: lockText, zone });
     }
 
     this.refreshDetailPanel();
@@ -971,8 +975,9 @@ export class CraftingModal {
       this.detailStatusBadge.setColor('#e74c3c');
     }
 
-    // 5. Preview Icon phóng to
-    this.detailPreviewIcon.setText(this.getRecipeIconChar(recipe));
+    // 5. Preview Icon phóng to (BUG-025: Pixel Art 16x16)
+    ItemIconHelper.setItemIconTexture(this.scene, this.detailPreviewImage, recipe.resultItemId, 32);
+    this.detailPreviewIcon.setText('');
 
     // 6. Dãy ô nguyên liệu yêu cầu
     this.detailIngredientsContainer.removeAll(true);
@@ -1000,19 +1005,20 @@ export class CraftingModal {
       }
 
       const ingInfo = this.getIngredientInfo(ing.itemId);
-      const nameTxt = HDTextHelper.createText(this.scene, badgeX + badgeW / 2, 4, `${ingInfo.icon} ${ingInfo.shortName}`, {
-        fontSize: '9px',
+      const ingIcon = ItemIconHelper.createItemIconImage(this.scene, badgeX + 13, 17, ing.itemId, 16);
+      const nameTxt = HDTextHelper.createText(this.scene, badgeX + 23, 4, ingInfo.shortName, {
+        fontSize: '8.5px',
         fontStyle: 'bold',
         color: '#ffffff'
-      }).setOrigin(0.5, 0);
+      }).setOrigin(0, 0);
 
-      const countTxt = HDTextHelper.createText(this.scene, badgeX + badgeW / 2, 18, `${has}/${ing.count}`, {
-        fontSize: '10px',
+      const countTxt = HDTextHelper.createText(this.scene, badgeX + 23, 17, `${has}/${ing.count}`, {
+        fontSize: '9.5px',
         fontStyle: 'bold',
         color: isEnough ? '#ffffff' : '#ffd4d4'
-      }).setOrigin(0.5, 0);
+      }).setOrigin(0, 0);
 
-      this.detailIngredientsContainer.add([bGfx, nameTxt, countTxt]);
+      this.detailIngredientsContainer.add([bGfx, ingIcon, nameTxt, countTxt]);
     }
 
     // 7. Nút [Chế Tạo]

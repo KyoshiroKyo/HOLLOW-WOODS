@@ -24,6 +24,7 @@ import itemsData from '../data/items.json';
 import { EquipmentSystem } from '../systems/EquipmentSystem';
 import { EquipmentSlot } from '../types';
 import { ItemTooltipHelper } from '../ui/ItemTooltipHelper';
+import { ItemIconHelper } from '../utils/ItemIconHelper';
 import { QuickCraftSidebar } from '../ui/QuickCraftSidebar';
 import { CampSanctuarySystem } from '../systems/CampSanctuarySystem';
 import { QuestSystem } from '../systems/QuestSystem';
@@ -2121,22 +2122,19 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         if (countTxt) countTxt.setText('');
         if (keyTxt) keyTxt.setColor('#7a6855');
       } else {
-        if (slot.itemId === 'res_dry_wood' || slot.itemId === 'item_resin_flare') {
-          // V152-06A: Dùng Texture Pixel Art Khúc Gỗ Khô 16x16 chống ô vuông trắng □
-          if (iconImg) {
-            iconImg.setTexture(HUD_ICON_WOOD);
-            iconImg.setVisible(true);
-            iconImg.setAlpha(slot.count > 0 ? 1.0 : 0.4);
+        // BUG-025: Hiển thị 100% biểu tượng Pixel Art sắc nét từ ItemIconHelper (chống emoji □)
+        const iconRes = ItemIconHelper.resolveItemIcon(this, slot.itemId);
+        if (iconImg) {
+          if (iconRes.frame) {
+            iconImg.setTexture(iconRes.texture, iconRes.frame);
+          } else {
+            iconImg.setTexture(iconRes.texture);
           }
-          if (iconTxt) iconTxt.setText('');
-        } else {
-          if (iconImg) iconImg.setVisible(false);
-          const iconChar = this.getItemIconChar(slot.itemId);
-          if (iconTxt) {
-            iconTxt.setText(iconChar);
-            iconTxt.setAlpha(slot.count > 0 ? 1.0 : 0.4);
-          }
+          iconImg.setDisplaySize(22, 22);
+          iconImg.setVisible(true);
+          iconImg.setAlpha(slot.count > 0 ? 1.0 : 0.4);
         }
+        if (iconTxt) iconTxt.setText('');
         if (countTxt) {
           // Ô [1] và [2] hiện x0 nếu hết đồ để người chơi nhận biết; các ô khác hiện nếu > 0
           if (slot.count > 0) {
