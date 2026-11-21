@@ -5252,7 +5252,8 @@ export class WorldBuilder {
 
     // 2. Bãi Trại Thợ Săn (Hunter's Camp: 1320..1360, 700..740)
     this.createHunterLeanToShelter(1350, 690);
-    this.placeFootAnchoredSprite(1295, 744, SPRITE_PROP_CRATE_WEATHERED_V14, 0.65);
+    // V153-02B: Dời hòm gỗ từ lề đường giao cắt (1295, 744) về sát cụm lều (1335, 705) giải phóng lòng đường
+    this.placeFootAnchoredSprite(1335, 705, SPRITE_PROP_CRATE_WEATHERED_V14, 0.65);
     this.createVillagePropCluster(1385, 725, 'firewood');
     this.createVillagePropCluster(1275, 710, 'barrels');
 
@@ -5293,10 +5294,10 @@ export class WorldBuilder {
       bushes: [{ dx: 14, dy: 10 }]
     });
 
-    // Cụm 3: Cụm Sồi Đại Thụ Bãi Trại Thợ Săn
+    // Cụm 3: Cụm Sồi Đại Thụ Bãi Trại Thợ Săn (V153-02B: Dời offset cây phụ từ (-26, 18) -> (28, 24) để giải phóng trục đường X=1360 xuống Xưởng Chuông)
     this.createOrganicTreeCluster(1375, 855, {
       primaryType: 'oak',
-      subTrees: [{ dx: -26, dy: 18, type: 'oak' }],
+      subTrees: [{ dx: 28, dy: 24, type: 'oak' }],
       bushes: [{ dx: 16, dy: 12 }],
       rocks: [{ dx: 22, dy: 16, w: 22, h: 14 }]
     });
@@ -5332,11 +5333,13 @@ export class WorldBuilder {
     this.createDenseBush(1235, 780);
     this.createDenseBush(1350, 780);
     this.createDenseBush(1400, 890);
-    this.createDenseBush(1495, 745);
+    // V153-02B: Dời bụi cảnh quan từ (1495, 745) sang (1520, 755) ôm sát bìa rừng Đông, tạo khoảng thoáng quanh bếp Sir Vaelen
+    this.createDenseBush(1520, 755);
     this.createDenseBush(1510, 830);
     this.createDenseBush(1280, 970);
 
-    this.createRock(1390, 765, 38, 22);
+    // V153-02B: Dời đá cảnh quan từ (1390, 765) sang (1415, 785) ôm sát mép suối tự nhiên, giải phóng ngã 3 rẽ
+    this.createRock(1415, 785, 38, 22);
     this.createRock(1450, 840, 32, 18);
     this.createRock(1490, 920, 30, 16);
 
@@ -5633,6 +5636,19 @@ export class WorldBuilder {
 
     // 6. Hộp va chạm nhỏ chống bước đè lên tâm ngọn lửa
     this.createStaticBoxColliderCentered(cx, cy, 24, 16, 'Bếp Lửa Hồng Đá Cổ');
+
+    // 7. Điểm tương tác kiểm tra và sưởi ấm bếp lửa (V153-02B: Bảo toàn điểm tương tác warm_quiet_bonfire)
+    this.interactables.push({
+      id: 'quiet_forest_bonfire',
+      type: 'clue',
+      x: cx,
+      y: cy,
+      width: 36,
+      height: 28,
+      name: 'Bếp Lửa Hồng Rừng Tĩnh Lặng',
+      promptText: '[E] Sưởi Ấm Bên Lửa Cổ',
+      actionId: 'warm_quiet_bonfire'
+    });
 
   }
 
