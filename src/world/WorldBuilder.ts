@@ -5127,7 +5127,6 @@ export class WorldBuilder {
     this.createStoneSign(1220, 640, 'RỪNG NGOẠI VI');
 
     // 2. Bãi Trại Thợ Săn (Hunter's Camp: 1320..1360, 700..740)
-    this.createHunterCampfire(1320, 720);
     this.createHunterLeanToShelter(1350, 690);
     this.placeFootAnchoredSprite(1295, 744, SPRITE_PROP_CRATE_WEATHERED_V14, 0.65);
     this.createVillagePropCluster(1385, 725, 'firewood');
@@ -5450,14 +5449,6 @@ export class WorldBuilder {
 
     // Hitbox chân đế rương chỉ 20×8px sát đáy
     this.createStaticBoxColliderCentered(cx, cy + 8, 20, 8, 'Rương Gỗ Rừng Sâu');
-  }
-
-  private createHunterCampfire(x: number, y: number): void {
-    // The Hunter Camp inspection describes cold ashes. Sir Vaelen's hearth stays lit.
-    const firepit = this.safeAddImage(x, y + 5, SPRITE_CAMPFIRE_UNLIT_V15);
-    firepit.setOrigin(0.5, 0.85).setDepth(y + 4);
-    this.registerCullable(firepit, x, y, 50);
-    this.createStaticBoxColliderCentered(x, y, 24, 16, 'Lửa Trại Thợ Săn');
   }
 
   /**

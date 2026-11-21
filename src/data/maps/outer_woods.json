@@ -2857,33 +2857,6 @@
           ]
         },
         {
-          "id": 5,
-          "name": "ow_firepit_rock",
-          "type": "wall",
-          "x": 1320,
-          "y": 720,
-          "width": 36,
-          "height": 30,
-          "visible": true,
-          "properties": [
-            {
-              "name": "isSolid",
-              "type": "bool",
-              "value": true
-            },
-            {
-              "name": "footLevelRatio",
-              "type": "float",
-              "value": 1
-            },
-            {
-              "name": "originalHeight",
-              "type": "int",
-              "value": 30
-            }
-          ]
-        },
-        {
           "id": 6,
           "name": "ow_lean_to_shelter",
           "type": "wall",
@@ -3081,38 +3054,6 @@
               "name": "actionId",
               "type": "string",
               "value": "read_ow_sign"
-            },
-            {
-              "name": "hookArchetype",
-              "type": "string",
-              "value": "Archaeological Clue"
-            }
-          ]
-        },
-        {
-          "id": 13,
-          "name": "ow_hunter_camp",
-          "type": "clue",
-          "x": 1320,
-          "y": 720,
-          "width": 32,
-          "height": 24,
-          "visible": true,
-          "properties": [
-            {
-              "name": "displayName",
-              "type": "string",
-              "value": "Bếp Lửa Trại Thợ Săn"
-            },
-            {
-              "name": "promptText",
-              "type": "string",
-              "value": "[E] Kiểm Tra Bếp Lửa Thợ Săn"
-            },
-            {
-              "name": "actionId",
-              "type": "string",
-              "value": "inspect_ow_campfire"
             },
             {
               "name": "hookArchetype",

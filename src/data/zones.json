@@ -2021,16 +2021,6 @@
           "isSolid": true
         },
         {
-          "id": "ow_firepit_rock",
-          "name": "Bếp Lửa Trại Thợ Săn",
-          "x": 1320,
-          "y": 720,
-          "width": 36,
-          "height": 30,
-          "type": "wall",
-          "isSolid": true
-        },
-        {
           "id": "ow_lean_to_shelter",
           "name": "Lều Bạt Dã Ngoại Thợ Săn",
           "x": 1350,
@@ -2102,17 +2092,6 @@
           "height": 24,
           "promptText": "[E] Đọc Biển Chỉ Dẫn Rừng Ven",
           "actionId": "read_ow_sign"
-        },
-        {
-          "id": "ow_hunter_camp",
-          "name": "Bếp Lửa Trại Thợ Săn",
-          "type": "clue",
-          "x": 1320,
-          "y": 720,
-          "width": 32,
-          "height": 24,
-          "promptText": "[E] Kiểm Tra Bếp Lửa Thợ Săn",
-          "actionId": "inspect_ow_campfire"
         },
         {
           "id": "ow_fallen_tree",

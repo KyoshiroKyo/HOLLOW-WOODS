@@ -5831,13 +5831,6 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    if (actionId === 'inspect_ow_campfire') {
-      if (this.uiScene) {
-        this.uiScene.showPopupMessage('🏕️ Bếp Lửa Thợ Săn: Tàn tro than đã nguội lạnh. Rải rác xung quanh là đá lửa và cành củi khô.');
-      }
-      return;
-    }
-
     if (actionId === 'inspect_ow_fallen_tree') {
       if (this.uiScene) {
         this.uiScene.showPopupMessage('🪵 Thân Cây Cổ Thụ Đổ: Một cây sồi đại ngàn bị quật ngã, rêu ẩm phủ đầy thân cây và nhựa rỉ ra từ kẽ nứt.');
