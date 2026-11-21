@@ -73,10 +73,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
   private activePhysicalCodes: Set<string> = new Set();
   private physicalKeyHeldForOneShot: Set<string> = new Set();
   private pendingOneShotActions: Set<OneShotAction> = new Set();
-  private keyDownTimestamps: Map<string, number> = new Map();
-  private syntheticHoldTimers: Map<string, number> = new Map();
-  private lastKeyActivityTime: Map<string, number> = new Map();
-  private hasRecentIMEEvent: boolean = false;
+  private readonly movementHolds = new Map<string, { expiresAt: number; confirmed: boolean }>();
   private lastWindowFocusTime: number = 0;
   private lastExhaustPopupTime: number = 0;
   private isComposingInTextInput: boolean = false;
@@ -517,6 +514,11 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
 
   private setPhaserKeyboardsEnabled(enabled: boolean): void {
     if (!this.scene || !this.scene.game || !this.scene.game.scene) return;
+    // Scene plugins can be disabled while Phaser's global DOM capture still
+    // calls preventDefault. Release that capture while the player types.
+    const keyboard = this.scene.input.keyboard;
+    if (enabled) keyboard?.enableGlobalCapture();
+    else keyboard?.disableGlobalCapture();
     for (const sc of this.scene.game.scene.scenes) {
       if (sc && sc.input && sc.input.keyboard) {
         sc.input.keyboard.enabled = enabled;
@@ -589,7 +591,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     if (BlackKnightPlayer.activeDOMListenerOwner === this) {
       BlackKnightPlayer.activeDOMListenerOwner = null;
     }
-    this.clearAllSyntheticHoldTimers();
+    this.movementHolds.clear();
   }
 
   private isMovementOrSprintCode(code: string): boolean {
@@ -607,34 +609,19 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     );
   }
 
-  private armSyntheticHoldWatchdog(code: string, durationMs: number = 550): void {
-    if (typeof window === 'undefined') return;
-    const prev = this.syntheticHoldTimers.get(code);
-    if (prev !== undefined) {
-      window.clearTimeout(prev);
-    }
-    const timerId = window.setTimeout(() => {
-      this.syntheticHoldTimers.delete(code);
-      this.releasePhysicalCode(code);
-    }, durationMs);
-    this.syntheticHoldTimers.set(code, timerId);
+  private static isImeMovementPacket(event: KeyboardEvent): boolean {
+    return event.keyCode === 229 || event.keyCode === 231 || event.key === 'Process' ||
+      (!event.code && event.keyCode === 0) ||
+      (event.isComposing && (!event.code || event.keyCode === 0));
   }
 
-  private clearSyntheticHoldWatchdog(code: string): void {
-    if (typeof window === 'undefined') return;
-    const prev = this.syntheticHoldTimers.get(code);
-    if (prev !== undefined) {
-      window.clearTimeout(prev);
-      this.syntheticHoldTimers.delete(code);
+  private syncPhysicalShift(event: KeyboardEvent, isShiftDown = false): void {
+    this.isPhysicalShiftHeld = isShiftDown || event.getModifierState('Shift');
+    if (!this.isPhysicalShiftHeld &&
+        (this.activePhysicalCodes.has('ShiftLeft') || this.activePhysicalCodes.has('ShiftRight'))) {
+      this.releasePhysicalCode('ShiftLeft');
+      this.releasePhysicalCode('ShiftRight');
     }
-  }
-
-  private clearAllSyntheticHoldTimers(): void {
-    if (typeof window === 'undefined') return;
-    for (const timerId of this.syntheticHoldTimers.values()) {
-      window.clearTimeout(timerId);
-    }
-    this.syntheticHoldTimers.clear();
   }
 
   private resetPhaserKeyForCode(code: string): void {
@@ -682,10 +669,8 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
 
   private releasePhysicalCode(code: string): void {
     this.activePhysicalCodes.delete(code);
-    this.lastKeyActivityTime.delete(code);
-    this.keyDownTimestamps.delete(code);
+    this.movementHolds.delete(code);
     this.physicalKeyHeldForOneShot.delete(code);
-    this.clearSyntheticHoldWatchdog(code);
     this.resetPhaserKeyForCode(code);
   }
 
@@ -700,13 +685,10 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
 
     this.isPhysicalShiftHeld = false;
     this.activePhysicalCodes.clear();
-    this.lastKeyActivityTime.clear();
+    this.movementHolds.clear();
     this.physicalKeyHeldForOneShot.clear();
     this.pendingOneShotActions.clear();
-    this.keyDownTimestamps.clear();
-    this.clearAllSyntheticHoldTimers();
     this.eKeyJustPressed = false;
-    this.hasRecentIMEEvent = false;
 
     this.keyW?.reset();
     this.keyA?.reset();
@@ -763,56 +745,27 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       this.setPhaserKeyboardsEnabled(true);
     }
 
-    // C4-135-01: Đồng bộ trạng thái phím Shift từ native OS / browser modifier state
-    if (typeof event.getModifierState === 'function') {
-      this.isPhysicalShiftHeld = event.getModifierState('Shift');
-    } else if (typeof event.shiftKey === 'boolean') {
-      this.isPhysicalShiftHeld = event.shiftKey;
-    }
-
     const code = BlackKnightPlayer.resolvePhysicalCode(event);
+    const isImePacket = BlackKnightPlayer.isImeMovementPacket(event);
+    const isShift = code === 'ShiftLeft' || code === 'ShiftRight';
+    if (!isImePacket) this.syncPhysicalShift(event, isShift);
     if (!code) return;
 
-    if (code === 'ShiftLeft' || code === 'ShiftRight') {
-      this.isPhysicalShiftHeld = true;
-    }
-
-    // Chặn hành vi mặc định của trình duyệt cho các phím điều khiển game khi đang chơi
-    // (ngăn cuộn trang Space/Arrows, ngăn nhảy tab khỏi canvas, và ngăn hệ điều hành đệm gõ văn bản/IME)
-    if (BlackKnightPlayer.isGameControlCode(code)) {
-      if (typeof event.preventDefault === 'function') {
-        event.preventDefault();
-      }
-    }
-
-    const isSyntheticOrIME =
-      !event.code ||
-      event.keyCode === 231 ||
-      event.keyCode === 229 ||
-      event.key === 'Process' ||
-      event.isComposing === true;
-
-    if (isSyntheticOrIME) {
-      this.hasRecentIMEEvent = true;
-    }
+    if (BlackKnightPlayer.isGameControlCode(code)) event.preventDefault();
 
     if (this.isMovementOrSprintCode(code)) {
-      this.lastKeyActivityTime.set(code, performance.now());
-      if (!this.activePhysicalCodes.has(code)) {
-        this.keyDownTimestamps.set(code, performance.now());
+      if (isShift) {
+        if (!isImePacket) this.activePhysicalCodes.add(code);
+        else event.stopImmediatePropagation();
+        return;
       }
+
+      // A packet can refresh movement, but cannot downgrade a known hardware
+      // hold or set the Shift modifier. Keep a finite fallback if events stop.
+      const confirmed = !isImePacket || this.movementHolds.get(code)?.confirmed === true;
+      const expiresAt = performance.now() + (confirmed ? 2000 : 450);
+      this.movementHolds.set(code, { confirmed, expiresAt });
       this.activePhysicalCodes.add(code);
-
-      // C4-135-01: Nếu người chơi đang giữ Shift trong khi gõ các phím di chuyển, duy trì trạng thái Shift
-      if (this.isPhysicalShiftHeld) {
-        this.activePhysicalCodes.add('ShiftLeft');
-        this.lastKeyActivityTime.set('ShiftLeft', performance.now());
-      }
-
-      // C4-135-01: Tuyệt đối không lập lịch giải phóng tự động (synthetic watchdog) cho phím Shift
-      if (isSyntheticOrIME && code !== 'ShiftLeft' && code !== 'ShiftRight') {
-        this.armSyntheticHoldWatchdog(code, 450);
-      }
       return;
     }
 
@@ -856,7 +809,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       this.pendingOneShotActions.add('mute');
     }
 
-    if (isSyntheticOrIME && typeof window !== 'undefined') {
+    if ((isImePacket || event.isComposing || !event.code) && typeof window !== 'undefined') {
       window.setTimeout(() => {
         this.physicalKeyHeldForOneShot.delete(code);
       }, 180);
@@ -869,42 +822,18 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    // C4-135-01: Đồng bộ trạng thái phím Shift từ native OS / browser modifier state
-    if (typeof event.getModifierState === 'function') {
-      this.isPhysicalShiftHeld = event.getModifierState('Shift');
-    } else if (typeof event.shiftKey === 'boolean') {
-      this.isPhysicalShiftHeld = event.shiftKey;
-    }
-
     const code = BlackKnightPlayer.resolvePhysicalCode(event);
+    const isImePacket = BlackKnightPlayer.isImeMovementPacket(event);
+    if (!isImePacket) this.syncPhysicalShift(event);
     if (!code) return;
 
-    // Chặn hành vi mặc định của trình duyệt cho các phím điều khiển game khi đang chơi
-    // (ngăn cuộn trang Space/Arrows, ngăn nhảy tab khỏi canvas, và ngăn hệ điều hành đệm gõ văn bản/IME)
-    if (BlackKnightPlayer.isGameControlCode(code)) {
-      if (typeof event.preventDefault === 'function') {
-        event.preventDefault();
-      }
-    }
-
-    const isSyntheticVKPacketKeyUp =
-      !event.code && (event.keyCode === 231 || event.keyCode === 229 || event.keyCode === 0);
-
-    if (isSyntheticVKPacketKeyUp && this.isMovementOrSprintCode(code)) {
-      // Gói VK_PACKET của UniKey/EVKey tự phát keyup ảo ngay sau keydown khi ngón tay vẫn giữ phím;
-      // giữ trạng thái di chuyển cho đến khi có hardware keyup thực sự (event.code='KeyW', keyCode=87) hoặc hết watchdog 550ms.
+    if (BlackKnightPlayer.isGameControlCode(code)) event.preventDefault();
+    if (isImePacket && this.isMovementOrSprintCode(code)) {
+      // Do not let an IME packet reset the Phaser state of the real key.
+      event.stopImmediatePropagation();
       return;
     }
-
-    // C4-135-01: Nếu OS xác nhận phím Shift vẫn đang được giữ vật lý, không giải phóng Shift
-    if ((code === 'ShiftLeft' || code === 'ShiftRight') && this.isPhysicalShiftHeld) {
-      return;
-    }
-
     this.releasePhysicalCode(code);
-    if (code === 'ShiftLeft' || code === 'ShiftRight') {
-      this.isPhysicalShiftHeld = false;
-    }
   }
 
   public consumeAction(action: OneShotAction): boolean {
@@ -1069,64 +998,9 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       this._lastAutoZoneCheckTime = nowPerf;
       this.checkZoneWeaponAutoState(gameScene.currentZoneId, this.x, this.y);
     }
-    for (const code of Array.from(this.activePhysicalCodes)) {
-      if (!this.isMovementOrSprintCode(code)) continue;
-
-      const lastTime = this.lastKeyActivityTime.get(code) ?? 0;
-      const timeSinceLastActivity = nowPerf - lastTime;
-
-      let phaserKeyIsDown = false;
-      switch (code) {
-        case 'KeyW': phaserKeyIsDown = Boolean(this.keyW && this.keyW.isDown); break;
-        case 'KeyA': phaserKeyIsDown = Boolean(this.keyA && this.keyA.isDown); break;
-        case 'KeyS': phaserKeyIsDown = Boolean(this.keyS && this.keyS.isDown); break;
-        case 'KeyD': phaserKeyIsDown = Boolean(this.keyD && this.keyD.isDown); break;
-        case 'ArrowUp': phaserKeyIsDown = Boolean(this.cursors?.up && this.cursors.up.isDown); break;
-        case 'ArrowDown': phaserKeyIsDown = Boolean(this.cursors?.down && this.cursors.down.isDown); break;
-        case 'ArrowLeft': phaserKeyIsDown = Boolean(this.cursors?.left && this.cursors.left.isDown); break;
-        case 'ArrowRight': phaserKeyIsDown = Boolean(this.cursors?.right && this.cursors.right.isDown); break;
-        case 'ShiftLeft':
-        case 'ShiftRight':
-          phaserKeyIsDown = Boolean(
-            (this.keyShift && this.keyShift.isDown) ||
-            (this.cursors?.shift && this.cursors.shift.isDown)
-          );
-          break;
-      }
-
-      // Xử lý riêng Shift: trong Windows phím Shift không phát sinh sự kiện keydown lặp lại (auto-repeat).
-      // Shift được giải phóng chuẩn xác thông qua DOM keyup hoặc khi cả 2 hệ thống đều xác nhận nhả phím.
-      // Tách biệt cơ chế giám sát phím Shift (do Windows không auto-repeat Shift khi giữ)
-      if (code === 'ShiftLeft' || code === 'ShiftRight') {
-        const isShiftHeld =
-          this.isPhysicalShiftHeld ||
-          phaserKeyIsDown ||
-          Boolean(this.keyShift && this.keyShift.isDown) ||
-          Boolean(this.cursors && this.cursors.shift && this.cursors.shift.isDown);
-
-        if (isShiftHeld) {
-          this.lastKeyActivityTime.set(code, nowPerf);
-          continue;
-        }
-
-        // Chỉ giải phóng khi cả OS modifier, Phaser và DOM keyup đều xác nhận Shift đã thực sự nhả
-        this.releasePhysicalCode(code);
-        continue;
-      }
-
-      // Đối với các phím di chuyển WASD / Mũi tên:
-      // Tuyệt đối KHÔNG xóa mã phím chỉ vì phaserKeyIsDown == false khi người chơi đang giữ phím,
-      // bởi vì bộ gõ Tiếng Việt (EVKey / UniKey) gửi sự kiện với keyCode=229 (VK_PROCESSKEY) khiến phaserKeyIsDown luôn là false.
-      // Chỉ giải phóng khi:
-      // 1. Phím Phaser không down VÀ không nhận được sự kiện lặp lại (auto-repeat) DOM nào trong hơn 650ms.
-      // 2. Hoặc phát hiện sự kiện IME và đã quá 650ms không có tín hiệu mới.
-      const isPhaserDown = phaserKeyIsDown;
-      const isDOMActive = timeSinceLastActivity <= 650;
-      if (!isPhaserDown && !isDOMActive) {
-        this.releasePhysicalCode(code);
-      } else if (this.hasRecentIMEEvent && timeSinceLastActivity > 650) {
-        this.releasePhysicalCode(code);
-      }
+    for (const [code, hold] of this.movementHolds) {
+      if (nowPerf < hold.expiresAt) continue;
+      this.releasePhysicalCode(code);
     }
 
     // Xử lý di chuyển nếu không đang bị khóa hành động
