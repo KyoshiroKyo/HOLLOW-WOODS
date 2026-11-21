@@ -6,6 +6,7 @@ Dùng mã trong INDEX R10. Hàng **OPEN** của batch khác giữ ở chủ sở
 |---|---|---|
 | BUG-021 | CLOSED-VERIFIED local | Camera áp Bellhollow và Fog tại cùng (461,232) khi trigger sớm bị dò vùng đảo lại. Chuyển commit theo tọa độ chân và dùng bounds liên tục. [Log](V153_B04B1_WORLD_CAMERA_REPORT.md). |
 | BUG-022 | CLOSED-VERIFIED local | Farm thiếu ở điều kiện safe zone của Survival. NIGHT trong Farm không còn drain rừng. Hai phía ranh x=1120 đã thử 30 giây. |
+| BUG-023 | CLOSED-VERIFIED local | Sửa tận gốc màn hình chớp nháy khi Tinh Thần giảm: triệt tiêu compFlicker tần số cao của Fog of War quầng sáng; xóa bỏ overlay viền đen tím trùng lặp tại VeilSystem; tách riêng redDangerGraphics và chuyển triggerRedDangerVignetteFlash sang tween phai mượt mà (chống strobe timer); bổ sung flash throttling & tích hợp prefers-reduced-motion trong SettingsManager và CameraSystem. 8/8 regression tests PASS. [Báo cáo](V153_HW_BUG_02_SANITY_FLASH_REPORT.md). |
 | BUG-029 | CLOSED-VERIFIED local | Khắc phục triệt để mảng chữ nhật vàng xanh và ranh giới thô giữa Bellhollow và Sanctuary Farm: thay tileSprite vai rừng Tây Nam bằng CanvasTexture đồng sắc hữu cơ; bổ sung bóng râm phía Bắc & Đông cho Farm; thêm dải chuyển tiếp turf, sỏi và nền đất tại y=560. Kiểm thử Noclip OFF hai chiều đạt. [Trước](Visuals/V153_AG_QUEUE_02A/before_boundary_overview_x650_y560.png) · [Sau](Visuals/V153_AG_QUEUE_02A/after_boundary_overview_x650_y560.png) · [Báo cáo](V153_AG_WORLD_POLISH_REPORT.md). |
 | BUG-033 | PARTIAL | World Map đọc transitions thật và giữ gate. Nhãn chồng, tràn khung và bố cục giữ 04E1. |
 | BUG-024 | CLOSED-VERIFIED production local · HOSTED BLOCKED | Chromium thấy Tải lại với loader còn tải (`dagger_slash.wav` truyền từng đoạn). R10 chỉ hiển thị Tải lại khi thật sự lỗi/đứng yên và nhường chỗ cho Preload. Tệp WAV PCM 44.100 Hz, 54.808 byte đạt kiểm tra decode. [Trước](Visuals/V153_BATCH_04A/r10-loader-before.png) · [Sau](Visuals/V153_BATCH_04A/r10-loader-after.png) · [Đứng tải](Visuals/V153_BATCH_04A/r10-loader-stall.png). |
@@ -41,7 +42,7 @@ Dùng mã trong INDEX R10. Hàng **OPEN** của batch khác giữ ở chủ sở
 | BUG-021/022/029, phần map của BUG-033 | 04B1 đã chốt kết quả theo hàng trên. Phần layout/Map UI và chiều khóa theo tiến trình giữ đúng nhóm sở hữu. |
 | BUG-049 | Vòng và khoảng cách dùng chung điểm neo; rà thêm tương tác/despawn ở các vùng chưa thử. [Báo cáo 04B2](V153_B04B2_WORLD_ART_LAYOUT_REPORT.md). |
 | BUG-025, phần logic BUG-038–043 | 04C-G và 04E1. |
-| BUG-023/026/027 | 04D. Chưa có nghiệm thu thiết bị đối với chớp, audio lửa trại hoặc ambience. |
+| BUG-026/027 | 04D. Chưa có nghiệm thu thiết bị đối với audio lửa trại hoặc ambience (chờ tester). |
 | BUG-028/030/033/035/036, phần UI BUG-037–043 | 04E1. |
 | LEG-R8-03 và phần frame BUG-032 | Registry CLOSED-VERIFIED local tại 04C-K1. Hoạt ảnh combat và Hurt/Death chuyển K2/K3 theo ma trận. |
 | Các mã LEG-R8 khác | Kế thừa từng trạng thái và owner trong INDEX R10. |

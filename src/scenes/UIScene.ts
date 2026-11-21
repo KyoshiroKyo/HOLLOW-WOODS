@@ -27,6 +27,7 @@ import { ItemTooltipHelper } from '../ui/ItemTooltipHelper';
 import { QuickCraftSidebar } from '../ui/QuickCraftSidebar';
 import { CampSanctuarySystem } from '../systems/CampSanctuarySystem';
 import { QuestSystem } from '../systems/QuestSystem';
+import { SettingsManager } from '../systems/SettingsManager';
 import type { GameScene } from './GameScene';
 
 const RUNNING_LABELS = {
@@ -234,6 +235,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
   // C4-13-18 & C4-132-07: Hiệu ứng viền tối/đỏ hoảng loạn khi cạn kiệt Bình Tâm
   private panicVignetteGraphics!: Phaser.GameObjects.Graphics;
+  private redDangerGraphics!: Phaser.GameObjects.Graphics;
+  private activeRedDangerTween?: Phaser.Tweens.Tween;
   private sanctuaryGlowGraphics?: Phaser.GameObjects.Graphics;
   private isPanicVignetteActive: boolean = false;
   private lastPanicWarningTime: number = 0;
@@ -266,6 +269,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.panicVignetteGraphics = this.add.graphics();
     this.panicVignetteGraphics.setDepth(900);
     this.panicVignetteGraphics.setScrollFactor(0);
+
+    // V1.5.3 (BUG-023 FIX): Lớp đồ họa cảnh báo nguy hiểm độc lập (depth: 901) tránh xung đột vẽ với panicVignette
+    this.redDangerGraphics = this.add.graphics();
+    this.redDangerGraphics.setDepth(901);
+    this.redDangerGraphics.setScrollFactor(0);
 
     // C4-14-B04: Viền hào quang vàng ấm áp khi trở về Sanctuary làng an toàn (depth: 895)
     this.sanctuaryGlowGraphics = this.add.graphics();
@@ -642,6 +650,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       if (this.tornPageModal) { this.tornPageModal.destroy(); this.tornPageModal = undefined as any; }
       if (this.pooledPopupText) { this.pooledPopupText.destroy(); this.pooledPopupText = undefined as any; }
       if (this.panicVignetteGraphics) { this.panicVignetteGraphics.clear(); this.panicVignetteGraphics = undefined as any; }
+      if (this.activeRedDangerTween) { this.activeRedDangerTween.stop(); this.activeRedDangerTween = undefined; }
+      if (this.redDangerGraphics) { this.redDangerGraphics.clear(); this.redDangerGraphics = undefined as any; }
       if (this.timeWidgetBg) { this.timeWidgetBg.destroy(); this.timeWidgetBg = undefined as any; }
       if (this.timeClockGfx) { this.timeClockGfx.destroy(); this.timeClockGfx = undefined as any; }
       if (this.quickActionButtonsContainer) { this.quickActionButtonsContainer.destroy(); this.quickActionButtonsContainer = undefined as any; }
@@ -1780,30 +1790,31 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.isPanicVignetteActive = true;
     this.panicVignetteGraphics.clear();
 
-    // Nhịp co bóp đồng bộ với nhịp tim Web Audio
-    const bpm = AudioManager.getInstance().getHeartbeatBpm() || 75;
-    const omega = (bpm * 2 * Math.PI) / 60000;
-    const pulseFactor = Math.pow(Math.max(0, Math.sin(time * omega)), 1.8);
+    const isReducedMotion = SettingsManager.getInstance().isReducedMotionPreferred();
 
-    // Hệ số hoảng loạn t: từ 0 (tại 45) -> 1 (tại <= 15) và tiếp tục tăng nhẹ tới 1.35 khi Tinh Thần = 0
+    // V1.5.3 (BUG-023 FIX): Nhịp thở chậm rãi, êm dịu (tần số thấp 0.35 Hz thay vì dồn dập theo BPM gây nhức mắt)
+    // Nếu bật Reduced Motion: pulseFactor = 0 (viền tối hiển thị tĩnh, không chuyển động)
+    const pulseFactor = isReducedMotion ? 0 : Math.pow(Math.max(0, Math.sin(time * 0.0022)), 2);
+
+    // Hệ số hoảng loạn t: từ 0 (tại 45) -> 1 (tại <= 15)
     const t = Math.max(0, (45 - composure) / 30);
     const w = 1280;
     const h = 720;
 
-    // Viền mép ngoài mờ hữu cơ (Outer Edge Vignette)
-    const basePulse = 0.08 + t * 0.18;
-    const pulseAlpha = Math.min(0.92, basePulse + pulseFactor * (0.06 + t * 0.12));
-    const edgeColor = composure < 15 ? 0x2e0610 : (composure < 30 ? 0x1c0612 : 0x0f040d);
+    // Viền mép ngoài mờ hữu cơ (Outer Edge Vignette) - làm dịu độ tương phản để bảo vệ thị giác
+    const basePulse = 0.05 + t * 0.12;
+    const pulseAlpha = Math.min(0.68, basePulse + pulseFactor * (0.03 + t * 0.05));
+    const edgeColor = composure < 15 ? 0x22050c : (composure < 30 ? 0x14040c : 0x0a0208);
 
     const edgeLayers = [
-      { inset: 0, thick: Math.round(16 + t * 10), alphaMult: 1.25 },
-      { inset: Math.round(16 + t * 10), thick: Math.round(20 + t * 12), alphaMult: 0.85 },
-      { inset: Math.round(36 + t * 22), thick: Math.round(24 + t * 14), alphaMult: 0.50 },
-      { inset: Math.round(60 + t * 36), thick: Math.round(28 + t * 16), alphaMult: 0.22 }
+      { inset: 0, thick: Math.round(14 + t * 8), alphaMult: 1.15 },
+      { inset: Math.round(14 + t * 8), thick: Math.round(16 + t * 10), alphaMult: 0.75 },
+      { inset: Math.round(30 + t * 18), thick: Math.round(20 + t * 12), alphaMult: 0.42 },
+      { inset: Math.round(50 + t * 30), thick: Math.round(24 + t * 14), alphaMult: 0.18 }
     ];
 
     for (const l of edgeLayers) {
-      const alpha = Math.min(0.95, pulseAlpha * l.alphaMult);
+      const alpha = Math.min(0.85, pulseAlpha * l.alphaMult);
       this.panicVignetteGraphics.fillStyle(edgeColor, alpha);
       // Top
       this.panicVignetteGraphics.fillRect(l.inset, l.inset, w - l.inset * 2, l.thick);
@@ -1816,30 +1827,30 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     }
 
     // Viền Ám Ảnh 4 góc màn hình (4 Corner Horror Tendril Vignette)
-    const baseCornerSize = Math.round(75 + t * 130);
-    const dynamicCorner = Math.round(baseCornerSize + pulseFactor * (20 + t * 25));
+    const baseCornerSize = Math.round(65 + t * 100);
+    const dynamicCorner = isReducedMotion ? baseCornerSize : Math.round(baseCornerSize + pulseFactor * (12 + t * 16));
 
     // Lớp 1: Quầng đỏ thẫm ngoài rìa (Outer Crimson Glow)
-    const haloAlpha = Math.min(0.85, 0.18 + t * 0.32 + pulseFactor * 0.14 * t);
-    this.panicVignetteGraphics.fillStyle(0x280712, haloAlpha);
+    const haloAlpha = Math.min(0.70, 0.14 + t * 0.24 + pulseFactor * 0.08 * t);
+    this.panicVignetteGraphics.fillStyle(0x20050e, haloAlpha);
     this.panicVignetteGraphics.fillTriangle(0, 0, dynamicCorner, 0, 0, dynamicCorner);
     this.panicVignetteGraphics.fillTriangle(w, 0, w - dynamicCorner, 0, w, dynamicCorner);
     this.panicVignetteGraphics.fillTriangle(0, h, dynamicCorner, h, 0, h - dynamicCorner);
     this.panicVignetteGraphics.fillTriangle(w, h, w - dynamicCorner, h, w, h - dynamicCorner);
 
     // Lớp 2: Khối bóng tối thẫm (Mid Crimson-Black)
-    const midCorner = Math.round(dynamicCorner * 0.72);
-    const midAlpha = Math.min(0.92, 0.30 + t * 0.40 + pulseFactor * 0.18 * t);
-    this.panicVignetteGraphics.fillStyle(0x18030b, midAlpha);
+    const midCorner = Math.round(dynamicCorner * 0.70);
+    const midAlpha = Math.min(0.80, 0.22 + t * 0.32 + pulseFactor * 0.10 * t);
+    this.panicVignetteGraphics.fillStyle(0x120208, midAlpha);
     this.panicVignetteGraphics.fillTriangle(0, 0, midCorner, 0, 0, midCorner);
     this.panicVignetteGraphics.fillTriangle(w, 0, w - midCorner, 0, w, midCorner);
     this.panicVignetteGraphics.fillTriangle(0, h, midCorner, h, 0, h - midCorner);
     this.panicVignetteGraphics.fillTriangle(w, h, w - midCorner, h, w, h - midCorner);
 
     // Lớp 3: Tâm điểm đen sâu thẳm ở 4 góc (Deep Corner Void)
-    const coreCorner = Math.round(dynamicCorner * 0.45);
-    const coreAlpha = Math.min(0.96, 0.45 + t * 0.45);
-    this.panicVignetteGraphics.fillStyle(0x0a0105, coreAlpha);
+    const coreCorner = Math.round(dynamicCorner * 0.42);
+    const coreAlpha = Math.min(0.88, 0.35 + t * 0.35);
+    this.panicVignetteGraphics.fillStyle(0x080104, coreAlpha);
     this.panicVignetteGraphics.fillTriangle(0, 0, coreCorner, 0, 0, coreCorner);
     this.panicVignetteGraphics.fillTriangle(w, 0, w - coreCorner, 0, w, coreCorner);
     this.panicVignetteGraphics.fillTriangle(0, h, coreCorner, h, 0, h - coreCorner);
@@ -1872,40 +1883,51 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   /**
-   * V15-47: Kích hoạt viền nháy đỏ cảnh báo nguy hiểm toàn màn hình (Red Danger Vignette Flash)
-   * khi Bình Tâm = 0 và bị Boss đánh trúng
+   * V15-47 & V1.5.3 (BUG-023 FIX): Kích hoạt viền đỏ cảnh báo nguy hiểm độc lập (Red Danger Vignette Flash)
+   * Sử dụng tween mượt mà trên redDangerGraphics riêng biệt, triệt tiêu hoàn toàn nhấp nháy strobe đỏ-đen.
    */
   public triggerRedDangerVignetteFlash(): void {
-    if (!this.panicVignetteGraphics) return;
-    const g = this.panicVignetteGraphics;
+    if (!this.redDangerGraphics) return;
+    const g = this.redDangerGraphics;
     const w = 1280;
     const h = 720;
 
-    let elapsed = 0;
-    const flashTimer = this.time.addEvent({
-      delay: 35,
-      repeat: 8,
-      callback: () => {
-        elapsed += 35;
-        const alpha = Math.max(0, 0.88 - (elapsed / 280) * 0.88);
-        g.clear();
-        g.fillStyle(0xcc1122, alpha);
-        // Viền đỏ rực bao quanh 4 mép màn hình
-        g.fillRect(0, 0, w, 48);
-        g.fillRect(0, h - 48, w, 48);
-        g.fillRect(0, 48, 48, h - 96);
-        g.fillRect(w - 48, 48, 48, h - 96);
+    // Hủy tween cũ nếu có để chống chồng chéo
+    if (this.activeRedDangerTween) {
+      this.activeRedDangerTween.stop();
+      this.activeRedDangerTween = undefined;
+    }
 
-        // 4 góc tam giác nhọn đè sâu vào màn hình
-        g.fillTriangle(0, 0, 190, 0, 0, 190);
-        g.fillTriangle(w, 0, w - 190, 0, w, 190);
-        g.fillTriangle(0, h, 190, h, 0, h - 190);
-        g.fillTriangle(w, h, w - 190, h, w, h - 190);
+    g.clear();
+    g.setAlpha(1);
 
-        if (elapsed >= 280) {
-          g.clear();
-          flashTimer.remove();
-        }
+    // Vẽ viền đỏ cảnh báo dịu mắt một lần duy nhất
+    const edgeThickness = 36;
+    g.fillStyle(0x8b101e, 0.42);
+    g.fillRect(0, 0, w, edgeThickness);
+    g.fillRect(0, h - edgeThickness, w, edgeThickness);
+    g.fillRect(0, edgeThickness, edgeThickness, h - edgeThickness * 2);
+    g.fillRect(w - edgeThickness, edgeThickness, edgeThickness, h - edgeThickness * 2);
+
+    // 4 góc tam giác mềm
+    g.fillStyle(0x6b0a14, 0.52);
+    const cSize = 110;
+    g.fillTriangle(0, 0, cSize, 0, 0, cSize);
+    g.fillTriangle(w, 0, w - cSize, 0, w, cSize);
+    g.fillTriangle(0, h, cSize, h, 0, h - cSize);
+    g.fillTriangle(w, h, w - cSize, h, w, h - cSize);
+
+    const isReducedMotion = SettingsManager.getInstance().isReducedMotionPreferred();
+    const duration = isReducedMotion ? 180 : 380;
+
+    this.activeRedDangerTween = this.tweens.add({
+      targets: g,
+      alpha: 0,
+      duration: duration,
+      ease: 'Quad.easeOut',
+      onComplete: () => {
+        if (g) g.clear();
+        this.activeRedDangerTween = undefined;
       }
     });
   }

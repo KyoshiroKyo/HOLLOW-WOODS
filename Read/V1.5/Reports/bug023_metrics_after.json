@@ -1,0 +1,33 @@
+{
+  "mode": "after",
+  "res_high": {
+    "mean": 88.06436497836792,
+    "maxStepDelta": 2.522126097326719,
+    "signFlips": 0,
+    "min": 79.95275339273945,
+    "max": 96.0759950003379,
+    "samplesCount": 30
+  },
+  "res_low": {
+    "mean": 94.67399614411411,
+    "maxStepDelta": 1.0994616158059216,
+    "signFlips": 0,
+    "min": 93.79490979447282,
+    "max": 96.0759950003379,
+    "samplesCount": 30
+  },
+  "overlays_info": {
+    "veilHasDistortionDrawn": false,
+    "uisPanicActive": false,
+    "hasRedDangerGraphics": true
+  },
+  "danger_flash_res": {
+    "hasTween": true,
+    "tweenDuration": 380
+  },
+  "f_cycle_res": {
+    "v40": false,
+    "v10": false,
+    "lanternOn": true
+  }
+}

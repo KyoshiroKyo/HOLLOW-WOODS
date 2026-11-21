@@ -15,6 +15,8 @@ export interface GameSettings {
   sfxVolume: number;
   isMuted: boolean;
   screenShakeEnabled: boolean;
+  screenFlashEnabled: boolean;
+  reducedMotionEnabled: boolean;
   graphicsQuality: GraphicsQualityLevel;
 }
 
@@ -31,6 +33,8 @@ export class SettingsManager {
     sfxVolume: 0.85,
     isMuted: false,
     screenShakeEnabled: true,
+    screenFlashEnabled: true,
+    reducedMotionEnabled: false,
     graphicsQuality: 'HIGH'
   };
 
@@ -102,6 +106,12 @@ export class SettingsManager {
     if (typeof data.screenShakeEnabled === 'boolean') {
       this.settings.screenShakeEnabled = data.screenShakeEnabled;
     }
+    if (typeof data.screenFlashEnabled === 'boolean') {
+      this.settings.screenFlashEnabled = data.screenFlashEnabled;
+    }
+    if (typeof data.reducedMotionEnabled === 'boolean') {
+      this.settings.reducedMotionEnabled = data.reducedMotionEnabled;
+    }
     if (data.graphicsQuality && (data.graphicsQuality === 'HIGH' || data.graphicsQuality === 'MEDIUM' || data.graphicsQuality === 'LOW')) {
       this.settings.graphicsQuality = data.graphicsQuality as GraphicsQualityLevel;
     }
@@ -162,8 +172,18 @@ export class SettingsManager {
     return { ...this.settings };
   }
 
+  public isReducedMotionPreferred(): boolean {
+    if (this.settings.reducedMotionEnabled) return true;
+    if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
+      try {
+        return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      } catch {}
+    }
+    return false;
+  }
+
   public isScreenShakeEnabled(): boolean {
-    return this.settings.screenShakeEnabled;
+    return this.settings.screenShakeEnabled && !this.isReducedMotionPreferred();
   }
 
   public setScreenShakeEnabled(enabled: boolean): void {
@@ -176,6 +196,38 @@ export class SettingsManager {
   public toggleScreenShake(): boolean {
     this.setScreenShakeEnabled(!this.settings.screenShakeEnabled);
     return this.settings.screenShakeEnabled;
+  }
+
+  public isScreenFlashEnabled(): boolean {
+    return this.settings.screenFlashEnabled && !this.isReducedMotionPreferred();
+  }
+
+  public setScreenFlashEnabled(enabled: boolean): void {
+    if (this.settings.screenFlashEnabled === enabled) return;
+    this.settings.screenFlashEnabled = enabled;
+    this.scheduleSave();
+    this.notifyListeners();
+  }
+
+  public toggleScreenFlash(): boolean {
+    this.setScreenFlashEnabled(!this.settings.screenFlashEnabled);
+    return this.settings.screenFlashEnabled;
+  }
+
+  public isReducedMotionEnabled(): boolean {
+    return this.settings.reducedMotionEnabled;
+  }
+
+  public setReducedMotionEnabled(enabled: boolean): void {
+    if (this.settings.reducedMotionEnabled === enabled) return;
+    this.settings.reducedMotionEnabled = enabled;
+    this.scheduleSave();
+    this.notifyListeners();
+  }
+
+  public toggleReducedMotion(): boolean {
+    this.setReducedMotionEnabled(!this.settings.reducedMotionEnabled);
+    return this.settings.reducedMotionEnabled;
   }
 
   public getMasterVolume(): number {

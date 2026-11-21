@@ -1,0 +1,36 @@
+{
+  "mode": "before",
+  "res_high": {
+    "mean": 87.67323054558133,
+    "stdDev": 4.6229385962621485,
+    "min": 79.95275339273945,
+    "max": 92.20974831138713,
+    "samplesCount": 30
+  },
+  "res_low": {
+    "mean": 93.57765928926054,
+    "stdDev": 1.2102255571096343,
+    "min": 92.20974831138713,
+    "max": 95.46210598765485,
+    "samplesCount": 30
+  },
+  "overlays_info": {
+    "veilHasDistortionDrawn": true,
+    "veilDistortionAlpha": 1,
+    "uisPanicActive": false,
+    "uisPanicAlpha": 1
+  },
+  "metrics": {
+    "flashCalls": [],
+    "shakeCalls": [
+      {
+        "time": 14883.699999999255,
+        "duration": 400,
+        "intensity": 0.005
+      }
+    ],
+    "fowRadiusSamples": [],
+    "fowDirtyCount": 0,
+    "overlayDrawCount": 0
+  }
+}

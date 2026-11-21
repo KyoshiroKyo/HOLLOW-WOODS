@@ -8,6 +8,8 @@ const DEFAULT_WORLD_ZOOM = 2.2;
 export class CameraSystem {
   private camera: Phaser.Cameras.Scene2D.Camera;
   private zoneZoom = DEFAULT_WORLD_ZOOM;
+  private lastFlashTimestamp: number = 0;
+  private lastShakeTimestamp: number = 0;
 
   constructor(scene: Phaser.Scene) {
     this.camera = scene.cameras.main;
@@ -53,12 +55,34 @@ export class CameraSystem {
   }
 
   public shake(duration: number = 250, intensity: number = 0.008): void {
-    if (!SettingsManager.getInstance().isScreenShakeEnabled()) return;
-    this.camera.shake(duration, intensity);
+    const settings = SettingsManager.getInstance();
+    if (!settings.isScreenShakeEnabled()) return;
+
+    const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+    if (now - this.lastShakeTimestamp < 120) return;
+    this.lastShakeTimestamp = now;
+
+    const safeIntensity = Math.min(0.018, intensity);
+    const safeDuration = Math.min(400, duration);
+    this.camera.shake(safeDuration, safeIntensity);
   }
 
   public flash(duration: number = 300, red: number = 255, green: number = 255, blue: number = 255): void {
-    this.camera.flash(duration, red, green, blue);
+    const settings = SettingsManager.getInstance();
+    if (!settings.isScreenFlashEnabled()) return;
+
+    // V1.5.3 (BUG-023 FIX): Chống nhấp nháy/chớp camera dồn dập (thời gian giãn cách tối thiểu 450ms)
+    const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+    if (now - this.lastFlashTimestamp < 450) return;
+    this.lastFlashTimestamp = now;
+
+    // Giảm độ gắt RGB để bảo vệ mắt, tránh flash chói lóa tương phản cực mạnh
+    const safeR = Math.min(190, red);
+    const safeG = Math.min(190, green);
+    const safeB = Math.min(190, blue);
+    const safeDuration = Math.min(380, Math.max(140, duration));
+
+    this.camera.flash(safeDuration, safeR, safeG, safeB);
   }
 
   public zoomTo(zoom: number, duration: number = 500): void {

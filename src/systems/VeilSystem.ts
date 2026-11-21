@@ -353,7 +353,7 @@ export class VeilSystem {
     return this.playerState.stats.isLanternOn ? 1.3 : 1.0;
   }
 
-  private updatePsychologicalEffects(time: number, unstable: boolean, composure: number): void {
+  private updatePsychologicalEffects(time: number, unstable: boolean, _composure: number): void {
     if (!unstable) {
       if (this.hasDistortionDrawn) {
         this.distortionOverlay.clear();
@@ -363,47 +363,10 @@ export class VeilSystem {
       return;
     }
 
-    // Mức độ hoảng loạn từ 0 -> 1
-    const panicSeverity = Math.max(0, (50 - composure) / 50);
-
-    // V1.5 (BƯỚC V15-06): Lớp phủ viền tối co bóp theo nhịp tim (Dark Tendril Vignette) ở 4 góc màn hình khi Bình Tâm dưới 30%
-    if (composure < 30) {
-      const tendrilFactor = Math.max(0, (30 - composure) / 30); // 0 (tại 30%) -> 1 (tại 0%)
-      const pulse = (Math.sin(time * 0.007) * 0.5 + 0.5);
-      const tendrilPulse = tendrilFactor * (0.65 + 0.35 * pulse);
-
-      // Độ dày viền mở rộng từ 36px lên tới 140px ép sát vào trung tâm màn hình
-      const thickness = Math.round(Phaser.Math.Linear(36, 140, tendrilFactor));
-      const cornerSize = Math.round(Phaser.Math.Linear(80, 260, tendrilFactor));
-
-      this.distortionOverlay.clear();
-      // Màu đen tím ám ảnh (0x120617)
-      this.distortionOverlay.fillStyle(0x120617, Math.min(0.92, 0.45 + tendrilPulse * 0.42));
-
-      // 4 dải viền xung quanh màn hình
-      this.distortionOverlay.fillRect(0, 0, 1280, thickness);
-      this.distortionOverlay.fillRect(0, 720 - thickness, 1280, thickness);
-      this.distortionOverlay.fillRect(0, 0, thickness, 720);
-      this.distortionOverlay.fillRect(1280 - thickness, 0, thickness, 720);
-
-      // 4 khối tam giác góc tua đen tím sâu ở 4 góc ép vào tâm
-      this.distortionOverlay.fillTriangle(0, 0, cornerSize, 0, 0, cornerSize);
-      this.distortionOverlay.fillTriangle(1280, 0, 1280 - cornerSize, 0, 1280, cornerSize);
-      this.distortionOverlay.fillTriangle(0, 720, cornerSize, 720, 0, 720 - cornerSize);
-      this.distortionOverlay.fillTriangle(1280, 720, 1280 - cornerSize, 720, 1280, 720 - cornerSize);
-
-      this.hasDistortionDrawn = true;
-    } else if (panicSeverity > 0.15) {
-      // Hiệu ứng viền đỏ tía nhẹ khi 30 <= composure < 42.5
-      this.distortionOverlay.clear();
-      const pulseAlpha = (Math.sin(time * 0.005) * 0.5 + 0.5) * panicSeverity * 0.45;
-      this.distortionOverlay.fillStyle(0x3a0d1a, pulseAlpha);
-      this.distortionOverlay.fillRect(0, 0, 1280, 32);
-      this.distortionOverlay.fillRect(0, 720 - 32, 1280, 32);
-      this.distortionOverlay.fillRect(0, 0, 32, 720);
-      this.distortionOverlay.fillRect(1280 - 32, 0, 32, 720);
-      this.hasDistortionDrawn = true;
-    } else if (this.hasDistortionDrawn) {
+    // V1.5.3 (BUG-023 FIX): Triệt tiêu hoàn toàn việc vẽ viền mép màn hình trùng lặp tại VeilSystem.
+    // Toàn bộ hiệu ứng Viền Ám Ảnh (Panic / Horror Vignette) được chuẩn hóa và quản lý tập trung
+    // tại UIScene (updatePanicVignette) để tránh hiện tượng giao thoa chu kỳ sóng gây chớp nháy nhức mắt.
+    if (this.hasDistortionDrawn) {
       this.distortionOverlay.clear();
       this.hasDistortionDrawn = false;
     }

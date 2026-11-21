@@ -6463,17 +6463,14 @@ export class GameScene extends Phaser.Scene {
     }
     targetBaseRadius *= compScale;
 
-    // Khi Bình Tâm < 50%, quầng sáng co nhỏ lại và chập chờn mạnh như sắp tắt
-    if (composure < 50) {
-      const panicFlickerSeverity = (50 - composure) / 50;
-      const compFlicker = (Math.sin(Date.now() * 0.016) * 0.07 + Math.cos(Date.now() * 0.029) * 0.05) * panicFlickerSeverity;
-      targetBaseRadius *= Math.max(0.65, 1.0 + compFlicker);
-    }
+    // V1.5.3 (BUG-023 FIX): Triệt tiêu hoàn toàn compFlicker tần số cao (nguyên nhân gây chớp nháy FOW liên tục)
+    // Tầm nhìn đã được thu hẹp tự nhiên, êm dịu và ổn định qua compScale = getComposureVisionScale() ở trên.
+    // Quầng sáng giữ kích thước ổn định theo mức Tinh Thần, không dao động chu kỳ cao gây mỏi mắt/co giật thị giác.
 
-    // Hiệu ứng chao đảo ánh sáng khi dơi phục kích cắn trúng
+    // Hiệu ứng chao đảo ánh sáng khi dơi phục kích cắn trúng (tần số thấp êm dịu, giới hạn biên độ)
     if (this.batLanternFlickerTimer > 0) {
       this.batLanternFlickerTimer -= 16.6;
-      targetBaseRadius *= (0.55 + Math.sin(Date.now() * 0.04) * 0.45);
+      targetBaseRadius *= (0.82 + Math.sin(Date.now() * 0.008) * 0.18);
     }
 
     // V1.5 (BƯỚC V15-06): Đảm bảo chuyển tiếp êm dịu: Khi người chơi bật đèn, uống thuốc/trà
