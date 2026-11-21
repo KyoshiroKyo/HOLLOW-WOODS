@@ -212,6 +212,9 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       body.setOffset(WAYFARER_BODY_OFFSET_X, WAYFARER_BODY_OFFSET_Y);
       body.setCollideWorldBounds(true);
       this.on(Phaser.Animations.Events.ANIMATION_START, this.syncBodyFootAnchor, this);
+      this.on(Phaser.Animations.Events.ANIMATION_UPDATE, () => {
+        if (this.texture.key === BLACK_KNIGHT_CONVERSION_MOTION_KEY) this.syncBodyFootAnchor();
+      });
     }
 
     // Khởi tạo phím điều khiển
@@ -221,7 +224,8 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     this.footShadowGfx = scene.add.graphics();
     this.footShadowGfx.fillStyle(0x000000, 0.28);
     this.footShadowGfx.fillEllipse(0, 0, 18, 6);
-    this.footShadowGfx.setDepth(this.depth - 1);
+    this.syncFootShadow();
+    scene.events.on(Phaser.Scenes.Events.POST_UPDATE, this.syncFootShadow, this);
 
     // Khởi tạo lớp đồ họa đèn lồng trực quan gắn trên nhân vật
     this.lanternOverlayGfx = scene.add.graphics();
@@ -238,10 +242,30 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     if (!this.frame.customPivot && (this.originX !== WAYFARER_ORIGIN_X || this.originY !== WAYFARER_ORIGIN_Y)) {
       this.setOrigin(WAYFARER_ORIGIN_X, WAYFARER_ORIGIN_Y);
     }
-    // Wide VFX frames still use the same local AABB relative to the foot pivot.
+    const scale = this.getLocomotionArtworkScale();
+    if (this.scaleX !== scale || this.scaleY !== scale) {
+      this.setScale(scale);
+      // The Arcade Body uses source units. Compensate so its world dimensions
+      // and its position remain unchanged when only the artwork scale changes.
+      body.setSize(WAYFARER_BODY_WIDTH / scale, WAYFARER_BODY_HEIGHT / scale, false);
+      body.updateBounds();
+    }
+
+    // Wide VFX frames and scaled locomotion share the same world foot box.
     const localX = WAYFARER_BODY_OFFSET_X - WAYFARER_FRAME_WIDTH * WAYFARER_ORIGIN_X;
     const localY = WAYFARER_BODY_OFFSET_Y - WAYFARER_FRAME_HEIGHT * WAYFARER_ORIGIN_Y;
-    body.setOffset(this.displayOriginX + localX, this.displayOriginY + localY);
+    body.setOffset(this.displayOriginX + localX / scale, this.displayOriginY + localY / scale);
+  }
+
+  private getLocomotionArtworkScale(): number {
+    if (this.texture.key !== BLACK_KNIGHT_CONVERSION_MOTION_KEY) return 1;
+    const key = this.anims.currentAnim?.key ?? '';
+    if (/^(wayfarer|satyr)_run_(down|up|left|right)$/.test(key)) return 0.8;
+    if (/^(wayfarer|satyr)_unarmed_run_(down|up|left|right)$/.test(key)) {
+      // The two six-frame unarmed passes were authored at different sizes.
+      return (this.anims.currentFrame?.index ?? 1) <= 6 ? 0.68 : 0.78;
+    }
+    return 1;
   }
 
   private setupInput(): void {
@@ -1132,7 +1156,10 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     // Cập nhật lớp hiển thị đèn lồng hổ phách theo tư thế và nhịp chuyển động (C4-12-07)
     this.updateLanternVisual();
 
-    // C4-13-06: Cập nhật vị trí và hiển thị của bóng đổ mặt đất theo tọa độ chân Satyr
+  }
+
+  private syncFootShadow(): void {
+    // Arcade applies movement to the sprite in the scene's post-update.
     if (this.footShadowGfx) {
       this.footShadowGfx.setPosition(this.x, this.y);
       this.footShadowGfx.setDepth(this.depth - 1);
@@ -2148,13 +2175,6 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
 
     state.emit('stats_changed', this.stats);
     this.updateLanternVisual();
-
-    // C4-13-06: Cập nhật vị trí và hiển thị của bóng đổ mặt đất theo tọa độ chân Satyr
-    if (this.footShadowGfx) {
-      this.footShadowGfx.setPosition(this.x, this.y);
-      this.footShadowGfx.setDepth(this.depth - 1);
-      this.footShadowGfx.setVisible(this.visible && !this.stats.isHiding && !this._isDead);
-    }
   }
 
   // Bảng tọa độ cung vung gậy chính xác theo từng frame của hoạt ảnh Attack (C4-13-04)
@@ -2323,6 +2343,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
   public destroy(fromScene?: boolean): void {
     this.cancelAttackAnimation?.();
     this.clearDefenseTimer();
+    this.scene?.events.off(Phaser.Scenes.Events.POST_UPDATE, this.syncFootShadow, this);
     if (this.scene && this.scene.input) {
       this.scene.input.off('pointerdown', this.boundPointerDown);
     }
