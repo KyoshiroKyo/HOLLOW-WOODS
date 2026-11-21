@@ -44,6 +44,7 @@ import {
   SPRITE_CAMPFIRE_TIER2_V15,
   SPRITE_CAMPFIRE_TIER3_V15,
   SPRITE_CAMPFIRE_UNLIT_V15,
+  SPRITE_RES_RUNED_IRON,
   SPRITE_PROP_CHEST_BRONZE_V15,
   SPRITE_PROP_CAULDRON_TRIPOD_V15,
   SPRITE_PROP_WAYFARER_TENT_V15,
@@ -111,6 +112,7 @@ export class WorldBuilder {
   public colliderGroup!: Phaser.Physics.Arcade.StaticGroup;
   public treeCanopyGroup!: Phaser.GameObjects.Group;
   public interactables: InteractableSpec[] = [];
+  private runedIronPickup?: Phaser.GameObjects.Image;
   public transitions: TransitionZone[] = [];
 
   // C4-12-03: Quản lý trạng thái và hình ảnh Cổng Đông làng Bellhollow
@@ -4785,6 +4787,8 @@ export class WorldBuilder {
 
   private setupZoneInteractables(zone: ZoneData): void {
     for (const item of zone.interactables) {
+      if (item.actionId === 'collect_runed_iron_part' &&
+          PlayerState.getInstance().hasFlag('has_runed_iron_part')) continue;
       // A few expansion templates only have the editor's "prompt" field and no action.
       // Do not publish these as interactive runtime objects until their action is implemented.
       if (item.promptText && item.actionId) this.interactables.push(item);
@@ -7603,6 +7607,11 @@ export class WorldBuilder {
     const b = zone.bounds;
     this.placeFootAnchoredSprite(b.x + 220, b.y + 177, SPRITE_CRAFTING_BENCH);
     this.placeFootAnchoredSprite(b.x + 320, b.y + 193, 'rock_large_mossy_v14', 0.85);
+    const pickup = this.interactables.find(item => item.actionId === 'collect_runed_iron_part');
+    if (pickup) {
+      this.runedIronPickup = this.scene.add.image(pickup.x, pickup.y, SPRITE_RES_RUNED_IRON)
+        .setOrigin(0.5, 1).setScale(1.5).setDepth(pickup.y);
+    }
 
     // Quầng sáng đèn treo cổ
     const lampGfx = this.scene.add.graphics();
@@ -7610,6 +7619,12 @@ export class WorldBuilder {
     lampGfx.fillCircle(b.x + 240, b.y + 80, 60);
     lampGfx.setDepth(DEPTH_GROUND_DECALS);
     this.registerCullable(lampGfx, b.x + 240, b.y + 80, 60);
+  }
+
+  public removeRunedIronPickup(): void {
+    this.runedIronPickup?.destroy();
+    this.runedIronPickup = undefined;
+    this.interactables = this.interactables.filter(item => item.actionId !== 'collect_runed_iron_part');
   }
 
   private renderSubRootCellarDecorations(zone: ZoneData): void {

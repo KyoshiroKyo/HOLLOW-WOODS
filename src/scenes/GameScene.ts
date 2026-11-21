@@ -5855,10 +5855,13 @@ export class GameScene extends Phaser.Scene {
 
     // V1.4 - P6: Tương tác Xưởng Chuông Bỏ Hoang (Abandoned Bell Workshop)
     if (actionId === 'collect_runed_iron_part') {
+      if (this.playerState.hasFlag('has_runed_iron_part')) return;
+      this.playerState.setFlag('has_runed_iron_part');
+      this.worldBuilder.removeRunedIronPickup();
+      this.uiScene?.setInteractionPrompt(null);
       this.audioManager.playInteract();
       this.player.playGather();
       this.playerState.addItem('mat_runed_iron', 1);
-      this.playerState.setFlag('has_runed_iron_part');
       this.playerState.completeQuestTask('SQ01_RUNED_IRON', 't1');
       if (this.uiScene) {
         this.uiScene.showPopupMessage('⚙️ Đã thu thập: Phụ Kiện Sắt Rèn Cổ Ngữ! Hãy mang về cho Bram tại lò rèn Bellhollow.');
@@ -5899,6 +5902,7 @@ export class GameScene extends Phaser.Scene {
       if (!this.playerState.hasFlag('has_runed_iron_part')) {
         this.playerState.addItem('mat_runed_iron', 1);
         this.playerState.setFlag('has_runed_iron_part');
+        this.worldBuilder.removeRunedIronPickup();
         this.playerState.completeQuestTask('SQ01_RUNED_IRON', 't2');
       }
       if (this.uiScene) {
