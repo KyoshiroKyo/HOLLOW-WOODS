@@ -16,6 +16,7 @@ export class NPCEntity extends Phaser.GameObjects.Container {
   private isPlayerNearby: boolean = false;
   private isShowingNamePlate: boolean = false;
   private isNamePlateSuppressed: boolean = false;
+  private titleText?: Phaser.GameObjects.Text;
   private currentDirection: NPCDirection = 'down';
   private baseId: string = 'garth';
 
@@ -391,13 +392,14 @@ export class NPCEntity extends Phaser.GameObjects.Container {
       strokeThickness: 1
     }).setOrigin(0.5, 0.5);
 
-    // Dòng 2: Chức danh / Vai trò + gợi ý [E] (ngà ấm áp)
-    const titleText = HDTextHelper.createText(scene, 0, 8, `${spec.title} • [E]`, {
+    // Dòng 2: Chức danh / Vai trò (ngà ấm áp). Không hardcode [E] để tránh cạnh tranh 2 nhãn tương tác (BUG-043)
+    const titleText = HDTextHelper.createText(scene, 0, 8, spec.title, {
       fontSize: '9px',
       color: '#d8ccb8',
       stroke: '#000000',
       strokeThickness: 1
     }).setOrigin(0.5, 0.5);
+    this.titleText = titleText;
 
     const badgeW = Math.max(100, Math.ceil(Math.max(nameText.width, titleText.width)) + 20);
     this.namePlateWidth = badgeW;
@@ -542,6 +544,15 @@ export class NPCEntity extends Phaser.GameObjects.Container {
           this.npcSprite.play(prayKey, true);
         }
       }
+    }
+  }
+
+  /**
+   * BUG-043: Cập nhật nhãn tương tác [E] khi được chọn là mục tiêu duy nhất
+   */
+  public setTargeted(targeted: boolean): void {
+    if (this.titleText) {
+      this.titleText.setText(targeted ? `${this.spec.title} • [E]` : this.spec.title);
     }
   }
 

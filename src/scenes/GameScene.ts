@@ -207,6 +207,7 @@ export class GameScene extends Phaser.Scene {
   private lastF8PressTime: number = 0;
   private lastCharmEchoVibrateTime: number = 0;
   private lastBGMCheckTime: number = 0;
+  public lastModalCloseTime: number = 0;
 
   // V1.4 - P6: Trận Chạm Trán Đấu Trùm Kẻ Nuốt Tiếng Chuông (Mire Warden Boss)
   public mireWardenBoss: MireWardenBoss | null = null;
@@ -1029,53 +1030,66 @@ export class GameScene extends Phaser.Scene {
     // V15-44: Ưu tiên đóng toàn bộ các modal giao diện đang mở trước khi mở Pause Menu
     if (this.craftingModal && this.craftingModal.isOpen) {
       this.craftingModal.close();
+      this.lastModalCloseTime = Date.now();
       if (this.player) this.player.forceUnlockActionState();
       return;
     }
     if (this.journalModal && this.journalModal.isOpen) {
       this.journalModal.close();
+      this.lastModalCloseTime = Date.now();
       if (this.player) this.player.forceUnlockActionState();
       return;
     }
     if (this.uiScene && this.uiScene.tornPageModal && this.uiScene.tornPageModal.isOpen) {
       this.uiScene.tornPageModal.close();
+      this.lastModalCloseTime = Date.now();
       if (this.player) this.player.forceUnlockActionState();
       return;
     }
     if (this.uiScene && this.uiScene.parchmentWorldMapModal && this.uiScene.parchmentWorldMapModal.isOpen) {
       this.uiScene.parchmentWorldMapModal.close();
+      this.lastModalCloseTime = Date.now();
       if (this.player) this.player.forceUnlockActionState();
       return;
     }
     if (this.uiScene && this.uiScene.storageChestModal && this.uiScene.storageChestModal.isOpen) {
       this.uiScene.storageChestModal.close();
+      this.lastModalCloseTime = Date.now();
       if (this.player) this.player.forceUnlockActionState();
       return;
     }
     if (this.uiScene && this.uiScene.campfireModal && this.uiScene.campfireModal.isOpen) {
       this.uiScene.campfireModal.close();
+      this.lastModalCloseTime = Date.now();
       if (this.player) this.player.forceUnlockActionState();
       return;
     }
     if (this.uiScene && this.uiScene.cauldronModal && this.uiScene.cauldronModal.isOpen) {
       this.uiScene.cauldronModal.close();
+      this.lastModalCloseTime = Date.now();
       if (this.player) this.player.forceUnlockActionState();
       return;
     }
     if (this.uiScene && this.uiScene.equipmentModal && this.uiScene.equipmentModal.isOpen) {
       this.uiScene.equipmentModal.close();
+      this.lastModalCloseTime = Date.now();
       if (this.player) this.player.forceUnlockActionState();
       return;
     }
     if (this.hitboxInspector && this.hitboxInspector.isBenchmarkModalOpen()) {
       this.hitboxInspector.closeBenchmarkModal();
+      this.lastModalCloseTime = Date.now();
       return;
     }
     if (this.dialogueSystem && this.dialogueSystem.isActive) {
       this.dialogueSystem.cancelDialogue();
+      this.lastModalCloseTime = Date.now();
       if (this.player) this.player.forceUnlockActionState();
       return;
     }
+
+    if (Date.now() - (this.lastModalCloseTime || 0) < 300) return;
+    if (this.uiScene && Date.now() - (this.uiScene.lastModalCloseTime || 0) < 300) return;
 
     if (this.pauseModal) {
       this.pauseModal.toggle();
@@ -1122,7 +1136,8 @@ export class GameScene extends Phaser.Scene {
       (this.endingSystem && this.endingSystem.isEndingActive) ||
       (this.dialogueSystem && this.dialogueSystem.isActive) ||
       (this.craftingModal && this.craftingModal.isOpen) ||
-      (this.journalModal && this.journalModal.isOpen)
+      (this.journalModal && this.journalModal.isOpen) ||
+      (this.uiScene && this.uiScene.isAnyModalOpen)
     );
   }
 
@@ -4624,6 +4639,7 @@ export class GameScene extends Phaser.Scene {
       targetRef?: any;
       targetSprite?: Phaser.GameObjects.Sprite;
       depth?: number;
+      isAlreadyRead?: boolean;
       action: () => void;
     }
 
@@ -4983,12 +4999,14 @@ export class GameScene extends Phaser.Scene {
       let rawPrompt = nearby.promptText;
 
       // V15-30 / V15-33: Kiểm tra nếu là mẩu nhật ký / biển báo / văn bia trong TORN_PAGES_REGISTRY
+      let isAlreadyRead = false;
       const tornPageEntry = TORN_PAGES_REGISTRY[nearby.actionId];
       if (tornPageEntry) {
         const isCollected = this.playerState.hasFlag('collected_note_' + nearby.actionId) ||
                             (Boolean(tornPageEntry.loreId) && this.playerState.unlockedLore.some(l => l.id === tornPageEntry.loreId));
         if (isCollected) {
           rawPrompt = 'Đã đọc (Xem lại)';
+          isAlreadyRead = true;
         }
       }
 
@@ -5018,6 +5036,7 @@ export class GameScene extends Phaser.Scene {
         proximityAlpha: isWithinActionRange ? 0.9 : 0.35,
         targetRef: nearby,
         depth: nearby.y,
+        isAlreadyRead,
         action: () => {
           this.executeMapInteraction(nearby.actionId, nearby.name);
         }
@@ -5155,18 +5174,27 @@ export class GameScene extends Phaser.Scene {
       }
       this.clearInteractionOutline();
       for (const npc of this.npcs) {
+        if (typeof (npc as any).setTargeted === 'function') {
+          (npc as any).setTargeted(false);
+        }
         npc.setNamePlateSuppressed(false);
       }
       return;
     }
 
-    // HW-BUG-#6 / BUG-049: Ưu tiên ứng viên đủ điều kiện hành động (dist <= triggerDist),
-    // sau đó chọn mục tiêu có khoảng cách gần nhất. Đảm bảo 2 object gần nhau không bao giờ bị kích hoạt nhầm.
+    // HW-BUG-#6 / BUG-049 & HW-BUG-#8 / BUG-043: Ưu tiên ứng viên đủ điều kiện hành động (dist <= triggerDist).
+    // Nếu cả 2 đều đủ điều kiện hành động, ưu tiên mục tiêu mới/chưa đọc trước mục tiêu đã đọc (BUG-043).
+    // Sau đó chọn mục tiêu có khoảng cách gần nhất. Đảm bảo 2 object gần nhau không bao giờ bị kích hoạt nhầm.
     candidates.sort((a, b) => {
       const aActionable = a.dist <= a.triggerDist;
       const bActionable = b.dist <= b.triggerDist;
       if (aActionable !== bActionable) {
         return aActionable ? -1 : 1;
+      }
+      const aFresh = (a as any).isAlreadyRead !== true;
+      const bFresh = (b as any).isAlreadyRead !== true;
+      if (aActionable && bActionable && aFresh !== bFresh) {
+        return aFresh ? -1 : 1;
       }
       return a.dist - b.dist;
     });
@@ -5175,10 +5203,14 @@ export class GameScene extends Phaser.Scene {
     // V15-29: Bán kính tương tác viền sáng chuẩn hóa <= 52px
     const isWithinOutlineRange = best.dist <= 52;
 
-    // V15-29: Tự động tạm ẩn bảng tên cố định của NPC khi hiện khung nhắc "[E] ..." để không bao giờ chồng 2 khung chữ
+    // V15-29 & BUG-043: Tự động tạm ẩn bảng tên cố định của NPC khi hiện khung nhắc "[E] ..." để không bao giờ chồng 2 khung chữ
     const activeNPC = (best.targetRef instanceof NPCEntity) ? best.targetRef : null;
     for (const npc of this.npcs) {
-      if (npc === activeNPC && (isWithinOutlineRange || isWithinActionRange)) {
+      const isTargeted = (npc === activeNPC);
+      if (typeof (npc as any).setTargeted === 'function') {
+        (npc as any).setTargeted(isTargeted && !isWithinOutlineRange && !isWithinActionRange);
+      }
+      if (isTargeted && (isWithinOutlineRange || isWithinActionRange)) {
         npc.setNamePlateSuppressed(true);
       } else {
         npc.setNamePlateSuppressed(false);

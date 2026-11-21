@@ -707,13 +707,22 @@ export class PlayerState extends Phaser.Events.EventEmitter {
     return Array.from(this.quests.values()).filter(q => (q.category || 'main') === category);
   }
 
-  public unlockLore(loreId: string): void {
+  public unlockLore(loreId: string, fallbackEntry?: Partial<LoreEntry>): void {
     if (this.unlockedLore.some(l => l.id === loreId)) return;
     const allLore = [
       ...loreData.loreEntries,
       ...(((loreData as any).subAreaLoreEntries as LoreEntry[]) || [])
     ];
-    const lore = allLore.find(l => l.id === loreId);
+    let lore = allLore.find(l => l.id === loreId);
+    if (!lore && fallbackEntry && fallbackEntry.title && fallbackEntry.content) {
+      lore = {
+        id: loreId,
+        act: fallbackEntry.act ?? 1,
+        title: fallbackEntry.title,
+        author: fallbackEntry.author ?? 'Vô danh',
+        content: fallbackEntry.content
+      } as LoreEntry;
+    }
     if (lore) {
       this.unlockedLore.push(lore as LoreEntry);
       this.emit('lore_unlocked', lore);

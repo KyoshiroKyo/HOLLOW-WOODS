@@ -21,9 +21,21 @@ export class TornPageModal {
   private container: Phaser.GameObjects.Container;
   public isOpen: boolean = false;
 
-  private currentEntry: TornPageEntry | null = null;
-  private currentPageIndex: number = 0;
-  private isAlreadyCollected: boolean = false;
+  public currentEntry: TornPageEntry | null = null;
+  public currentPageIndex: number = 0;
+  public isAlreadyCollected: boolean = false;
+
+  public get currentPage(): number {
+    return this.currentPageIndex;
+  }
+
+  public get totalPages(): number {
+    return this.currentEntry?.pages?.length ?? 0;
+  }
+
+  public get stowButtonLabel(): string {
+    return this.stowBtnText ? this.stowBtnText.text : '';
+  }
 
   // Visual Components
   private overlayBg!: Phaser.GameObjects.Graphics;
@@ -43,9 +55,6 @@ export class TornPageModal {
   private stowBtnBg!: Phaser.GameObjects.Graphics;
   private stowBtnText!: Phaser.GameObjects.Text;
   private closeBtnText!: Phaser.GameObjects.Text;
-
-  // Keyboard Handlers
-  private keyListeners: Array<{ key: Phaser.Input.Keyboard.Key; handler: () => void }> = [];
 
   // Callbacks
   public onOpen?: () => void;
@@ -767,7 +776,11 @@ export class TornPageModal {
 
     // 1. Mở khóa lore trong Sổ Tay [J] nếu có loreId
     if (entry.loreId) {
-      this.playerState.unlockLore(entry.loreId);
+      this.playerState.unlockLore(entry.loreId, {
+        title: entry.title,
+        author: entry.author,
+        content: entry.pages.join('\n\n')
+      });
     }
 
     // 2. Ghi nhận cờ đã thu thập / đọc để đổi trạng thái prompt trên bản đồ
@@ -805,6 +818,21 @@ export class TornPageModal {
     this.isOpen = false;
     this.cleanupKeyboardListeners();
 
+    // Ghi nhận mốc thời gian vừa đóng modal để chặn phím ESC mở Pause Menu trùng lặp
+    const ui = this.scene as any;
+    if (ui) {
+      ui.lastModalCloseTime = Date.now();
+    }
+    const gameScene = this.scene.scene?.get('GameScene') as any;
+    if (gameScene) {
+      gameScene.lastModalCloseTime = Date.now();
+      gameScene.lastEKeyPressTime = 0;
+      if (gameScene.player && typeof gameScene.player.resetAllInputState === 'function') {
+        gameScene.player.resetAllInputState();
+        gameScene.player.forceUnlockActionState();
+      }
+    }
+
     try {
       AudioManager.getInstance().playUICancel();
     } catch {
@@ -828,55 +856,72 @@ export class TornPageModal {
   }
 
   /**
-   * Đăng ký phím tắt bàn phím (E, Space, Enter, ESC, A, D, Mũi tên)
+   * Bộ xử lý sự kiện bàn phím dạng capture cấp cao:
+   * Chặn hoàn toàn phím rơi xuống gameplay, xử lý A/D chuyển trang, E/Space cất & đóng, ESC đóng an toàn.
+   */
+  private onKeyDownCapture = (event: KeyboardEvent): void => {
+    if (!this.isOpen) return;
+
+    const code = event.code;
+    const key = event.key;
+
+    // Phím chuyển trang: A, D, Mũi tên Trái, Mũi tên Phải
+    const isPrev = code === 'KeyA' || key === 'a' || key === 'A' || code === 'ArrowLeft';
+    const isNext = code === 'KeyD' || key === 'd' || key === 'D' || code === 'ArrowRight';
+
+    // Phím cất & đóng: E, Space, Enter
+    const isStow = code === 'KeyE' || key === 'e' || key === 'E' || code === 'Space' || key === ' ' || code === 'Enter' || key === 'Enter';
+
+    // Phím đóng: Escape
+    const isEsc = code === 'Escape' || key === 'Escape';
+
+    // Chặn hoàn toàn tất cả các phím điều khiển game rơi xuống gameplay khi modal đang mở
+    if (isPrev || isNext || isStow || isEsc || code === 'KeyW' || code === 'KeyS' || code === 'ShiftLeft' || code === 'ShiftRight') {
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+    }
+
+    // Chống lặp phím khi người chơi đè giữ phím (event.repeat)
+    if (event.repeat) {
+      return;
+    }
+
+    if (isPrev) {
+      this.prevPage();
+    } else if (isNext) {
+      this.nextPage();
+    } else if (isStow) {
+      this.stowAndClose();
+    } else if (isEsc) {
+      this.close();
+    }
+  };
+
+  private onWindowBlur = (): void => {
+    // Khi mất focus cửa sổ (Alt-Tab), dọn dẹp sạch sẽ trạng thái nhân vật
+    const gameScene = this.scene.scene?.get('GameScene') as any;
+    if (gameScene && gameScene.player && typeof gameScene.player.resetAllInputState === 'function') {
+      gameScene.player.resetAllInputState();
+    }
+  };
+
+  /**
+   * Đăng ký phím tắt bàn phím (E, Space, Enter, ESC, A, D, Mũi tên) với quyền ưu tiên capture
    */
   private setupKeyboardListeners(): void {
     this.cleanupKeyboardListeners();
-    if (!this.scene.input || !this.scene.input.keyboard) return;
-
-    const kb = this.scene.input.keyboard;
-
-    const addKeyHandler = (keyCode: number, handler: () => void) => {
-      const key = kb.addKey(keyCode);
-      this.keyListeners.push({ key, handler });
-    };
-
-    // Phím Cất & Đóng: E, Space, Enter
-    addKeyHandler(Phaser.Input.Keyboard.KeyCodes.E, () => this.stowAndClose());
-    addKeyHandler(Phaser.Input.Keyboard.KeyCodes.SPACE, () => this.stowAndClose());
-    addKeyHandler(Phaser.Input.Keyboard.KeyCodes.ENTER, () => this.stowAndClose());
-
-    // Phím Đóng: ESC
-    addKeyHandler(Phaser.Input.Keyboard.KeyCodes.ESC, () => this.close());
-
-    // Phím chuyển trang: A / ArrowLeft, D / ArrowRight
-    addKeyHandler(Phaser.Input.Keyboard.KeyCodes.A, () => this.prevPage());
-    addKeyHandler(Phaser.Input.Keyboard.KeyCodes.LEFT, () => this.prevPage());
-    addKeyHandler(Phaser.Input.Keyboard.KeyCodes.D, () => this.nextPage());
-    addKeyHandler(Phaser.Input.Keyboard.KeyCodes.RIGHT, () => this.nextPage());
-
-    // Bắt sự kiện keydown mỗi frame
-    this.scene.events.on('update', this.handleUpdateKeys, this);
-  }
-
-  private handleUpdateKeys(): void {
-    if (!this.isOpen) return;
-    for (const item of this.keyListeners) {
-      if (item.key && Phaser.Input.Keyboard.JustDown(item.key)) {
-        item.handler();
-        break;
-      }
+    if (typeof window !== 'undefined') {
+      window.addEventListener('keydown', this.onKeyDownCapture, { capture: true, passive: false });
+      window.addEventListener('blur', this.onWindowBlur);
     }
   }
 
   private cleanupKeyboardListeners(): void {
-    this.scene.events.off('update', this.handleUpdateKeys, this);
-    if (this.scene.input && this.scene.input.keyboard) {
-      for (const item of this.keyListeners) {
-        this.scene.input.keyboard.removeKey(item.key);
-      }
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('keydown', this.onKeyDownCapture, { capture: true });
+      window.removeEventListener('blur', this.onWindowBlur);
     }
-    this.keyListeners = [];
   }
 
   /**

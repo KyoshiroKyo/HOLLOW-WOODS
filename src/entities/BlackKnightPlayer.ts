@@ -745,6 +745,19 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       this.setPhaserKeyboardsEnabled(true);
     }
 
+    // B04-07A: Khi bất kỳ Modal nào đang mở hoặc Gameplay Input bị khóa, chặn hoàn toàn input rơi xuống gameplay
+    const gameScene = this.scene as any;
+    const uiScene = this.scene.scene ? (this.scene.scene.get('UIScene') as any) : null;
+    const isUIBusy = Boolean(
+      (uiScene && uiScene.isAnyModalOpen) ||
+      (gameScene && gameScene.isGameplayInputLocked && gameScene.isGameplayInputLocked()) ||
+      (gameScene && gameScene.dialogueSystem && gameScene.dialogueSystem.isActive)
+    );
+
+    if (isUIBusy) {
+      return;
+    }
+
     const code = BlackKnightPlayer.resolvePhysicalCode(event);
     const isImePacket = BlackKnightPlayer.isImeMovementPacket(event);
     const isShift = code === 'ShiftLeft' || code === 'ShiftRight';

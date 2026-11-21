@@ -197,6 +197,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   public miniMapWidget!: MiniMapWidget;
   public parchmentWorldMapModal!: ParchmentWorldMapModal;
   public tornPageModal!: TornPageModal;
+  public lastModalCloseTime: number = 0;
 
   // V1.4 - P6: Thanh Độ Ổn Định Phong Ấn (Boss Seal Bar)
   private bossSealContainer!: Phaser.GameObjects.Container;
@@ -784,6 +785,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       });
       this.input.keyboard.on('keydown-ESC', () => {
         if (this.isDialogueActive) return;
+        if (Date.now() - this.lastModalCloseTime < 300) return;
         if (this.craftingModal && this.craftingModal.isOpen) { this.craftingModal.close(); return; }
         if (this.journalModal && this.journalModal.isOpen) { this.journalModal.close(); return; }
         if (this.tornPageModal && this.tornPageModal.isOpen) { this.tornPageModal.close(); return; }
@@ -2934,6 +2936,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   public handleModalClosed(): void {
+    this.lastModalCloseTime = Date.now();
     if (!this.isAnyModalOpen) {
       this.setDialogueActive(false);
       this.setHUDVisible(true);
@@ -3020,6 +3023,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   public togglePause(): void {
     if (this.gameOverModal && this.gameOverModal.isOpen) return;
     if (this.isDialogueActive) return;
+    if (Date.now() - this.lastModalCloseTime < 300) return;
     AudioManager.getInstance().playInteract();
     if (this.craftingModal && this.craftingModal.isOpen) {
       this.craftingModal.close();

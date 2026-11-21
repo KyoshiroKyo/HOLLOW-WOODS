@@ -416,6 +416,26 @@ export class JournalModal {
           this.refresh();
         }
       });
+      const handlePrev = () => {
+        if (!this.isOpen) return;
+        if (this.currentTab === 'lore') {
+          this.prevLoreEntry();
+        } else if (this.currentTab === 'bestiary') {
+          this.prevBestiaryEntry();
+        }
+      };
+      const handleNext = () => {
+        if (!this.isOpen) return;
+        if (this.currentTab === 'lore') {
+          this.nextLoreEntry();
+        } else if (this.currentTab === 'bestiary') {
+          this.nextBestiaryEntry();
+        }
+      };
+      addKey('keydown-A', handlePrev);
+      addKey('keydown-LEFT', handlePrev);
+      addKey('keydown-D', handleNext);
+      addKey('keydown-RIGHT', handleNext);
     }
   }
 
@@ -629,6 +649,42 @@ export class JournalModal {
 
   public openQuests(): void {
     this.openTab('quest');
+  }
+
+  public prevLoreEntry(): void {
+    const list = this.playerState.unlockedLore;
+    if (!list || list.length === 0) return;
+    this.currentLoreIndex = (this.currentLoreIndex - 1 + list.length) % list.length;
+    AudioManager.getInstance().playInteract();
+    this.refresh();
+  }
+
+  public nextLoreEntry(): void {
+    const list = this.playerState.unlockedLore;
+    if (!list || list.length === 0) return;
+    this.currentLoreIndex = (this.currentLoreIndex + 1) % list.length;
+    AudioManager.getInstance().playInteract();
+    this.refresh();
+  }
+
+  public prevBestiaryEntry(): void {
+    const entries = this.playerState.getBestiaryEntries();
+    if (!entries || entries.length === 0) return;
+    const curIdx = entries.findIndex(e => e.species === this.selectedBestiarySpecies);
+    const prevIdx = (curIdx - 1 + entries.length) % entries.length;
+    this.selectedBestiarySpecies = entries[prevIdx].species;
+    AudioManager.getInstance().playInteract();
+    this.refresh();
+  }
+
+  public nextBestiaryEntry(): void {
+    const entries = this.playerState.getBestiaryEntries();
+    if (!entries || entries.length === 0) return;
+    const curIdx = entries.findIndex(e => e.species === this.selectedBestiarySpecies);
+    const nextIdx = (curIdx + 1) % entries.length;
+    this.selectedBestiarySpecies = entries[nextIdx].species;
+    AudioManager.getInstance().playInteract();
+    this.refresh();
   }
 
   public close(): void {

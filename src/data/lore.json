@@ -311,6 +311,13 @@
   ],
   "subAreaLoreEntries": [
     {
+      "id": "lore_fog_journal_1",
+      "act": 1,
+      "title": "MẨU NHẬT KÝ RÁCH: KẺ ĐI TRƯỚC",
+      "author": "Người Lữ Hành Vô Danh – Fog Crossing",
+      "content": "Màn sương đen The Veil đã nuốt chửng lối quay về. Nó không chỉ là hơi sương giá buốt đơn thuần, mà là một thực thể sống đang thì thầm gọi tên từng người bước vào đại ngàn...\n\nNếu ngươi còn giữ được lý trí, hãy lần theo tiếng chuông ngân trầm và ánh đèn bão màu hổ phách phía Đông để tìm đến ngôi làng Bellhollow.\n\nQuy tắc sinh tồn duy nhất: Đừng bao giờ tắt đèn lồng quá lâu giữa bóng tối. Khi bình tâm suy kiệt, bóng ma The Tendril sẽ bóp nghẹt buồng phổi của ngươi.\n\nTa để lại mẩu giấy này tại cổng vòm đá trước khi bước vào đầm lầy... Cầu mong Đại Hồng Chung sẽ ngân vang trở lại."
+    },
+    {
       "id": "lore_blacksmith_journal",
       "act": 2,
       "title": "NHẬT KÝ THỢ RÈN XƯỞNG CHUÔNG CŨ",
