@@ -4912,6 +4912,12 @@ export class WorldBuilder {
     for (const item of zone.interactables) {
       if (item.actionId === 'collect_runed_iron_part' &&
           PlayerState.getInstance().hasFlag('has_runed_iron_part')) continue;
+      if (item.actionId === 'inspect_bell_mold' &&
+          PlayerState.getInstance().hasFlag('has_bell_mold')) continue;
+      if (item.actionId === 'collect_rare_roots' &&
+          PlayerState.getInstance().hasFlag('has_rare_roots')) continue;
+      if (item.actionId === 'collect_bell_tongue' &&
+          PlayerState.getInstance().hasFlag('clapper_collected')) continue;
       // A few expansion templates only have the editor's "prompt" field and no action.
       // Do not publish these as interactive runtime objects until their action is implemented.
       if (item.promptText && item.actionId) this.interactables.push(item);
@@ -5380,7 +5386,7 @@ export class WorldBuilder {
    */
   private createSanctuaryCampHub(): void {
     this.createCentralCampfire(860, 310);
-    this.createChestProp(761, 285);
+    this.createChestProp(775, 295);
     this.createShelterTent(778, 261);
     this.createHerbalCauldron(630, 445);
   }
@@ -5555,8 +5561,8 @@ export class WorldBuilder {
    * Gỗ sồi nâu ấm bo góc, nẹp đai đồng cổ viền đinh tán vàng kim, ổ khóa đồng cổ điển.
    */
   private createChestProp(x: number, y: number): void {
-    const cx = x + 14;
-    const cy = y + 10;
+    const cx = x;
+    const cy = y;
     const chest = this.safeAddImage(cx, cy + 6, SPRITE_PROP_CHEST_BRONZE_V15);
     chest.setOrigin(0.5, 0.88);
     chest.setDepth(cy + 2);
@@ -5570,8 +5576,8 @@ export class WorldBuilder {
    * Giúp nhân vật di chuyển quanh rương mượt mà, triệt tiêu hoàn toàn hốc chữ L bẫy góc
    */
   private createChestPropWithBaseHitbox(x: number, y: number): void {
-    const cx = x + 14;
-    const cy = y + 10;
+    const cx = x;
+    const cy = y;
     const chest = this.safeAddImage(cx, cy + 6, SPRITE_PROP_CHEST_BRONZE_V15);
     chest.setOrigin(0.5, 0.88);
     chest.setDepth(cy + 2);
@@ -5641,17 +5647,19 @@ export class WorldBuilder {
     this.createStaticBoxColliderCentered(cx, cy, 24, 16, 'Bếp Lửa Hồng Đá Cổ');
 
     // 7. Điểm tương tác kiểm tra và sưởi ấm bếp lửa (V153-02B: Bảo toàn điểm tương tác warm_quiet_bonfire)
-    this.interactables.push({
-      id: 'quiet_forest_bonfire',
-      type: 'clue',
-      x: cx,
-      y: cy,
-      width: 36,
-      height: 28,
-      name: 'Bếp Lửa Hồng Rừng Tĩnh Lặng',
-      promptText: '[E] Sưởi Ấm Bên Lửa Cổ',
-      actionId: 'warm_quiet_bonfire'
-    });
+    if (!this.interactables.some(i => i.id === 'quiet_forest_bonfire')) {
+      this.interactables.push({
+        id: 'quiet_forest_bonfire',
+        type: 'clue',
+        x: cx,
+        y: cy,
+        width: 36,
+        height: 28,
+        name: 'Bếp Lửa Hồng Rừng Tĩnh Lặng',
+        promptText: '[E] Sưởi Ấm Bên Lửa Cổ',
+        actionId: 'warm_quiet_bonfire'
+      });
+    }
 
   }
 
@@ -5696,7 +5704,7 @@ export class WorldBuilder {
    */
   private createHerbalistProcessingShelter(x: number, y: number): void {
     this.placeFootAnchoredSprite(x + 17, y + 8, SPRITE_PROP_WAYFARER_TENT_V15, 0.75);
-    this.placeFootAnchoredSprite(x + 17, y + 13, SPRITE_CRAFTING_BENCH, 0.7);
+    this.placeFootAnchoredSprite(x + 17, y + 4, SPRITE_CRAFTING_BENCH, 0.7);
     this.createStaticBoxColliderCentered(x + 17, y + 4, 32, 10, 'Bàn Sơ Chế Thảo Mộc');
   }
 
@@ -7974,6 +7982,27 @@ export class WorldBuilder {
   }
 
   /**
+   * HW-BUG-#6 / BUG-049: Lấy danh sách toàn bộ vật thể tương tác hợp lệ trong bán kính gợi ý
+   * giúp GameScene đánh giá đầy đủ tất cả candidate mà không bị vật thể gần hơn che lấp.
+   */
+  public getNearbyInteractables(pos: Point2D, maxRadius: number = 65): { item: InteractableSpec; dist: number }[] {
+    const results: { item: InteractableSpec; dist: number }[] = [];
+    const maxRadiusSq = maxRadius * maxRadius;
+    for (let i = 0; i < this.interactables.length; i++) {
+      const item = this.interactables[i];
+      const dx = pos.x - item.x;
+      if (Math.abs(dx) > maxRadius) continue;
+      const dy = pos.y - item.y;
+      if (Math.abs(dy) > maxRadius) continue;
+      const distSq = dx * dx + dy * dy;
+      if (distSq <= maxRadiusSq) {
+        results.push({ item, dist: Math.sqrt(distSq) });
+      }
+    }
+    return results;
+  }
+
+  /**
    * C4-12-29: Đăng ký một thực thể môi trường vào hệ thống Camera Frustum Culling
    */
   public registerCullable(gameObject: any, x?: number, y?: number, radius: number = 80): void {
@@ -8126,8 +8155,8 @@ export class WorldBuilder {
     cabin.setDepth(cy);
     this.registerCullable(cabin, cx, cy - 20, 100);
 
-    // Rương tiếp tế kiểm lâm đặt cạnh bậc thềm (1458, 650)
-    this.createChestProp(x + 38, y + 30);
+    // Rương tiếp tế kiểm lâm đặt cạnh bậc thềm (1445, 645)
+    this.createChestProp(1445, 645);
 
     // Hitbox chân đế chuẩn xác (30% đáy công trình)
     this.createStaticBoxColliderCentered(cx, cy - 10, 60, 20, 'Trạm Kiểm Lâm');

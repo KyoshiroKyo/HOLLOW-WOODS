@@ -4667,6 +4667,7 @@ export class GameScene extends Phaser.Scene {
         y: npc.y - 16,
         promptX: npc.x,
         promptY: npc.y - 48,
+        outlineFootY: npc.y,
         width: 24,
         height: 34,
         proximityAlpha,
@@ -4884,12 +4885,12 @@ export class GameScene extends Phaser.Scene {
     }
 
     // 2. Kiểm tra mỏ tài nguyên gần (triggerDist: 50px, quét gợi ý: 65px)
-    const nearbyResource = this.inventorySystem.getNearbyAvailableNode(px, py, 65);
-    if (nearbyResource) {
-      const resDist = Math.hypot(px - nearbyResource.x, py - nearbyResource.y);
+    const nearbyResources = this.inventorySystem.getNearbyAvailableNodes(px, py, 65);
+    for (const nearbyResource of nearbyResources) {
+      const resDist = nearbyResource.distance;
       const resTriggerDist = 50;
       const isWithinHarvestRange = resDist <= resTriggerDist;
-      const proximityAlpha = isWithinHarvestRange ? 0.9 : 0.35; // isWithinHarvestRange ? 1.0 : 0.45
+      const proximityAlpha = isWithinHarvestRange ? 0.9 : 0.35;
       const baseName = `Thu thập ${nearbyResource.itemName} (x${nearbyResource.count})`;
       const promptText = isWithinHarvestRange ? `[E] ${baseName}` : baseName;
       candidates.push({
@@ -4921,6 +4922,7 @@ export class GameScene extends Phaser.Scene {
             this.audioManager.playResourceGather(harvestResult.itemId);
             this.player.playGather();
             this.uiScene.setInteractionPrompt(null);
+            this.clearInteractionOutline();
             const milestoneJustFired =
               !wasQ03T1Done && nowQ03T1Done && this.playerState.getStoryQuestId() === 'Q03_PREPARE_RESOURCES';
             if (!milestoneJustFired) {
@@ -4955,6 +4957,9 @@ export class GameScene extends Phaser.Scene {
           promptText,
           x: nearbyPlot.x,
           y: nearbyPlot.y,
+          promptX: nearbyPlot.x,
+          promptY: nearbyPlot.y - 20,
+          outlineFootY: nearbyPlot.y,
           proximityAlpha: isWithinPlotRange ? 0.9 : 0.35,
           targetRef: nearbyPlot,
           depth: nearbyPlot.y,
@@ -4971,9 +4976,8 @@ export class GameScene extends Phaser.Scene {
     }
 
     // 3. Kiểm tra các vật thể, Bàn Chế Tạo và câu đố trên bản đồ (triggerDist: 52px, quét gợi ý: 65px)
-    const nearbyProximity = this.worldBuilder.checkInteractableProximity(this.player.getFootPosition(), 65);
-    if (nearbyProximity) {
-      const { item: nearby, dist } = nearbyProximity;
+    const nearbyList = this.worldBuilder.getNearbyInteractables(this.player.getFootPosition(), 65);
+    for (const { item: nearby, dist } of nearbyList) {
       const worldTriggerDist = 52;
       const isWithinActionRange = dist <= worldTriggerDist;
       let rawPrompt = nearby.promptText;
@@ -5156,7 +5160,16 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    candidates.sort((a, b) => a.dist - b.dist);
+    // HW-BUG-#6 / BUG-049: Ưu tiên ứng viên đủ điều kiện hành động (dist <= triggerDist),
+    // sau đó chọn mục tiêu có khoảng cách gần nhất. Đảm bảo 2 object gần nhau không bao giờ bị kích hoạt nhầm.
+    candidates.sort((a, b) => {
+      const aActionable = a.dist <= a.triggerDist;
+      const bActionable = b.dist <= b.triggerDist;
+      if (aActionable !== bActionable) {
+        return aActionable ? -1 : 1;
+      }
+      return a.dist - b.dist;
+    });
     const best = candidates[0];
     const isWithinActionRange = best.dist <= best.triggerDist;
     // V15-29: Bán kính tương tác viền sáng chuẩn hóa <= 52px
@@ -5212,10 +5225,9 @@ export class GameScene extends Phaser.Scene {
       // Đặt depth ngay dưới vật thể để không bao giờ che mặt nhân vật
       this.interactionOutlineGfx.setDepth(Math.max(1, targetDepth - 1));
 
-      // Vòng elip sáng mảnh dưới chân vật thể
-      const isNPC = target.targetRef instanceof NPCEntity;
+      // Vòng elip sáng mảnh dưới chân vật thể (HW-BUG-#6: dùng chuẩn outlineFootY hoặc target.y, không cộng lệch height hai lần)
       const footX = target.x;
-      const footY = target.outlineFootY ?? (isNPC ? target.y - 2 : target.y + (target.height ? target.height / 2 : 10));
+      const footY = target.outlineFootY ?? target.y;
       const rx = Math.max(16, (target.width || 32) * 0.55);
       const ry = Math.max(7, rx * 0.42);
 
@@ -5876,10 +5888,14 @@ export class GameScene extends Phaser.Scene {
     }
 
     if (actionId === 'inspect_bell_mold') {
+      if (this.playerState.hasFlag('has_bell_mold')) return;
+      this.playerState.setFlag('has_bell_mold');
+      this.worldBuilder.interactables = this.worldBuilder.interactables.filter(item => item.actionId !== 'inspect_bell_mold');
+      this.uiScene?.setInteractionPrompt(null);
+      this.clearInteractionOutline();
       this.audioManager.playInteract();
       this.player.playGather();
       this.playerState.addItem('item_bell_mold', 1);
-      this.playerState.setFlag('has_bell_mold');
       this.playerState.completeQuestTask('SQ02_BELL_MEMORY', 't1');
       if (this.uiScene) {
         this.uiScene.showPopupMessage('🔔 Đã tìm thấy: [Khuôn Đúc Đồng Cổ]! Hãy tiến sâu lên Rừng Sâu & Khu Cổ Ngữ (F) (hướng Bắc) để tìm Mảnh Cổ Ngữ Khai Mở.');
@@ -5942,10 +5958,14 @@ export class GameScene extends Phaser.Scene {
     }
 
     if (actionId === 'collect_rare_roots') {
+      if (this.playerState.hasFlag('has_rare_roots')) return;
+      this.playerState.setFlag('has_rare_roots');
+      this.worldBuilder.interactables = this.worldBuilder.interactables.filter(item => item.actionId !== 'collect_rare_roots');
+      this.uiScene?.setInteractionPrompt(null);
+      this.clearInteractionOutline();
       this.audioManager.playInteract();
       this.player.playGather();
       this.playerState.addItem('item_medicinal_roots', 2);
-      this.playerState.setFlag('has_rare_roots');
       this.playerState.completeQuestTask('SQ03_CELLAR_TEA', 't2');
       if (this.uiScene) {
         this.uiScene.showPopupMessage('🌿 Đã thu hoạch: Rễ Thuốc Cổ Quý Hiếm (+2)! Thảo dược ngàn năm dùng để nấu Trà An Thần.');
@@ -6203,6 +6223,9 @@ export class GameScene extends Phaser.Scene {
         this.audioManager.playBronzeBellToll();
         this.playerState.addItem('quest_bronze_clapper', 1);
         this.playerState.setFlag('clapper_collected');
+        this.worldBuilder.interactables = this.worldBuilder.interactables.filter(item => item.actionId !== 'collect_bell_tongue');
+        this.uiScene?.setInteractionPrompt(null);
+        this.clearInteractionOutline();
         this.startAct5EscapeChase();
       } else {
         if (this.uiScene) {

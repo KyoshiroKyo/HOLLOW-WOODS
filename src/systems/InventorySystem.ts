@@ -88,7 +88,7 @@ export class InventorySystem {
       { id: 'node_resin_1', itemId: 'res_tree_resin', x: 970, y: 75, count: 1 },
       { id: 'node_herb_1', itemId: 'res_herbs', x: 1190, y: 85, count: 2 },
       { id: 'node_herb_2', itemId: 'res_herbs', x: 620, y: 470, count: 1 },
-      { id: 'node_wood_3', itemId: 'res_dry_wood', x: 1330, y: 410, count: 1 },
+      { id: 'node_wood_3', itemId: 'res_dry_wood', x: 1240, y: 360, count: 1 },
 
       // 2B. C4-12-20: Rừng Ngoại Vi (Outer Woods: x=1120..1600, y=560..1040 - Vùng tài nguyên tự do đầu game)
       { id: 'node_wood_ow_1', itemId: 'res_dry_wood', x: 1190, y: 650, count: 1 },
@@ -252,6 +252,40 @@ export class InventorySystem {
       y: bestSpec.y,
       distance: Math.sqrt(bestDistSq)
     };
+  }
+
+  public getNearbyAvailableNodes(
+    playerX: number,
+    playerY: number,
+    radius: number = InventorySystem.DEFAULT_INTERACTION_RADIUS
+  ): NearbyResourceInfo[] {
+    const results: NearbyResourceInfo[] = [];
+    const radiusSq = radius * radius;
+
+    for (let i = 0; i < this.nodes.length; i++) {
+      const node = this.nodes[i];
+      if (!node.available || this.playerState.isNodeDepleted(node.spec.id)) continue;
+      const dx = playerX - node.spec.x;
+      if (Math.abs(dx) > radius) continue;
+      const dy = playerY - node.spec.y;
+      if (Math.abs(dy) > radius) continue;
+      const distSq = dx * dx + dy * dy;
+      if (distSq <= radiusSq) {
+        const itemMeta = itemsData.items.find(it => it.id === node.spec.itemId);
+        const itemName = itemMeta ? itemMeta.name : node.spec.itemId;
+        results.push({
+          id: node.spec.id,
+          itemId: node.spec.itemId,
+          itemName,
+          count: node.spec.count,
+          x: node.spec.x,
+          y: node.spec.y,
+          distance: Math.sqrt(distSq)
+        });
+      }
+    }
+
+    return results;
   }
 
   public checkHarvestNearby(
