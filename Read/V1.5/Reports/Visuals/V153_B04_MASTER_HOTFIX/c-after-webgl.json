@@ -1,0 +1,28 @@
+{
+  "checks": [
+    {
+      "label": "New Game",
+      "zone": "fog_crossing",
+      "expected": "Fog Crossing",
+      "badge": "🧭 Fog Crossing",
+      "badgeCount": 1,
+      "canvas": 1,
+      "miniMapZone": "fog_crossing",
+      "actors": 1,
+      "mode": "webgl"
+    },
+    {
+      "label": "Restart 1",
+      "zone": "fog_crossing",
+      "expected": "Fog Crossing",
+      "badge": "🧭 Fog Crossing",
+      "badgeCount": 1,
+      "canvas": 1,
+      "miniMapZone": "fog_crossing",
+      "actors": 1,
+      "mode": "webgl"
+    }
+  ],
+  "stale": [],
+  "errors": []
+}

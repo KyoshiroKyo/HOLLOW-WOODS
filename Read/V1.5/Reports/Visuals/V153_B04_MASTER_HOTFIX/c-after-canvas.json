@@ -1,0 +1,94 @@
+{
+  "checks": [
+    {
+      "label": "New Game",
+      "zone": "fog_crossing",
+      "expected": "Fog Crossing",
+      "badge": "🧭 Fog Crossing",
+      "badgeCount": 1,
+      "canvas": 1,
+      "miniMapZone": "fog_crossing",
+      "actors": 1,
+      "mode": "canvas"
+    },
+    {
+      "label": "Restart 1",
+      "zone": "fog_crossing",
+      "expected": "Fog Crossing",
+      "badge": "🧭 Fog Crossing",
+      "badgeCount": 1,
+      "canvas": 1,
+      "miniMapZone": "fog_crossing",
+      "actors": 1,
+      "mode": "canvas"
+    },
+    {
+      "label": "Restart 2",
+      "zone": "fog_crossing",
+      "expected": "Fog Crossing",
+      "badge": "🧭 Fog Crossing",
+      "badgeCount": 1,
+      "canvas": 1,
+      "miniMapZone": "fog_crossing",
+      "actors": 1,
+      "mode": "canvas"
+    },
+    {
+      "label": "Restart 3",
+      "zone": "fog_crossing",
+      "expected": "Fog Crossing",
+      "badge": "🧭 Fog Crossing",
+      "badgeCount": 1,
+      "canvas": 1,
+      "miniMapZone": "fog_crossing",
+      "actors": 1,
+      "mode": "canvas"
+    },
+    {
+      "label": "Walk to Bellhollow",
+      "zone": "bellhollow",
+      "expected": "Bellhollow",
+      "badge": "🧭 LÀNG BELLHOLLOW",
+      "badgeCount": 1,
+      "canvas": 1,
+      "miniMapZone": "bellhollow",
+      "actors": 1,
+      "mode": "canvas"
+    },
+    {
+      "label": "Continue from Bellhollow",
+      "zone": "bellhollow",
+      "expected": "Bellhollow",
+      "badge": "🧭 Bellhollow",
+      "badgeCount": 1,
+      "canvas": 1,
+      "miniMapZone": "bellhollow",
+      "actors": 1,
+      "mode": "canvas"
+    },
+    {
+      "label": "Restart after Continue",
+      "zone": "fog_crossing",
+      "expected": "Fog Crossing",
+      "badge": "🧭 LỐI MÒN XUYÊN SƯƠNG",
+      "badgeCount": 1,
+      "canvas": 1,
+      "miniMapZone": "fog_crossing",
+      "actors": 1,
+      "mode": "canvas"
+    },
+    {
+      "label": "Restart after zone crossing",
+      "zone": "fog_crossing",
+      "expected": "Fog Crossing",
+      "badge": "🧭 Fog Crossing",
+      "badgeCount": 1,
+      "canvas": 1,
+      "miniMapZone": "fog_crossing",
+      "actors": 1,
+      "mode": "canvas"
+    }
+  ],
+  "stale": [],
+  "errors": []
+}

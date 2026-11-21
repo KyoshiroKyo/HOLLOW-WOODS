@@ -1,0 +1,35 @@
+{
+  "checks": [
+    {
+      "label": "New Game",
+      "zone": "fog_crossing",
+      "expected": "Fog Crossing",
+      "badge": "🧭 Làng Bellhollow",
+      "badgeCount": 1,
+      "canvas": 1,
+      "miniMapZone": "fog_crossing",
+      "actors": 1,
+      "mode": "canvas"
+    },
+    {
+      "label": "Restart",
+      "zone": "fog_crossing",
+      "hudReady": false,
+      "oldTextDestroyed": true
+    }
+  ],
+  "stale": [
+    {
+      "sameAsOld": true,
+      "textHasScene": false,
+      "status": 8,
+      "text": "🧭 Fog Crossing"
+    }
+  ],
+  "errors": [
+    {
+      "message": "Cannot read properties of null (reading 'drawImage')",
+      "stack": "TypeError: Cannot read properties of null (reading 'drawImage')\n    at initialize.updateUVs (http://127.0.0.1:3187/preview/hollow-woods/assets/vendor-phaser-ztabhtcd.js:5788:2997)\n    at initialize.setCutPosition (http://127.0.0.1:3187/preview/hollow-woods/assets/vendor-phaser-ztabhtcd.js:5788:781)\n    at initialize.setSize (http://127.0.0.1:3187/preview/hollow-woods/assets/vendor-phaser-ztabhtcd.js:5788:944)\n    at initialize.updateText (http://127.0.0.1:3187/preview/hollow-woods/assets/vendor-phaser-ztabhtcd.js:2362:2887)\n    at t.updateText (http://127.0.0.1:3187/preview/hollow-woods/assets/index-CbAOJVV6.js:1:10934)\n    at initialize.setText (http://127.0.0.1:3187/preview/hollow-woods/assets/vendor-phaser-ztabhtcd.js:2360:51)\n    at oldBadge.setText (eval at evaluate (:311:30), <anonymous>:6:32)\n    at Vo.updateZoneBadge (http://127.0.0.1:3187/preview/hollow-woods/assets/index-CbAOJVV6.js:33:20483)\n    at Vo.updateMiniMapZone (http://127.0.0.1:3187/preview/hollow-woods/assets/index-CbAOJVV6.js:33:20313)\n    at Eo.applyCameraBoundsForZone (http://127.0.0.1:3187/preview/hollow-woods/assets/index-CbAOJVV6.js:15:115897)"
+    }
+  ]
+}
