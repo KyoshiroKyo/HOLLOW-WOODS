@@ -1,0 +1,1191 @@
+{
+  "newGame": {
+    "actors": [
+      {
+        "player": true,
+        "texture": "black_knight_armed_idle",
+        "frame": "armed_idle_down_0",
+        "type": "Sprite"
+      }
+    ],
+    "canvasCount": 1,
+    "zoom": 2.2,
+    "zone": "fog_crossing",
+    "texture": "black_knight_armed_idle",
+    "animation": "wayfarer_idle_down",
+    "frame": "armed_idle_down_0",
+    "displayPx": [
+      64,
+      64
+    ],
+    "foot": {
+      "x": 120,
+      "y": 195
+    },
+    "origin": [
+      0.5,
+      1
+    ],
+    "facing": "down",
+    "armed": true,
+    "toggling": false
+  },
+  "toggles": {
+    "down": [
+      {
+        "before": {
+          "actors": [
+            {
+              "player": true,
+              "texture": "black_knight_armed_idle",
+              "frame": "armed_idle_down_0",
+              "type": "Sprite"
+            }
+          ],
+          "canvasCount": 1,
+          "zoom": 2.2,
+          "zone": "fog_crossing",
+          "texture": "black_knight_armed_idle",
+          "animation": "wayfarer_idle_down",
+          "frame": "armed_idle_down_0",
+          "displayPx": [
+            64,
+            64
+          ],
+          "foot": {
+            "x": 293,
+            "y": 250.33333333333326
+          },
+          "origin": [
+            0.5,
+            1
+          ],
+          "facing": "down",
+          "armed": true,
+          "toggling": false
+        },
+        "after": {
+          "actors": [
+            {
+              "player": true,
+              "texture": "black_knight_movement",
+              "frame": "unarmed_idle_down_0",
+              "type": "Sprite"
+            }
+          ],
+          "canvasCount": 1,
+          "zoom": 2.2,
+          "zone": "fog_crossing",
+          "texture": "black_knight_movement",
+          "animation": "wayfarer_unarmed_idle_down",
+          "frame": "unarmed_idle_down_0",
+          "displayPx": [
+            64,
+            64
+          ],
+          "foot": {
+            "x": 293,
+            "y": 250.33333333333326
+          },
+          "origin": [
+            0.5,
+            1
+          ],
+          "facing": "down",
+          "armed": false,
+          "toggling": true
+        }
+      },
+      {
+        "before": {
+          "actors": [
+            {
+              "player": true,
+              "texture": "black_knight_movement",
+              "frame": "unarmed_idle_down_0",
+              "type": "Sprite"
+            }
+          ],
+          "canvasCount": 1,
+          "zoom": 2.2,
+          "zone": "bellhollow",
+          "texture": "black_knight_movement",
+          "animation": "wayfarer_unarmed_idle_down",
+          "frame": "unarmed_idle_down_0",
+          "displayPx": [
+            64,
+            64
+          ],
+          "foot": {
+            "x": 976,
+            "y": 320.75000000000017
+          },
+          "origin": [
+            0.5,
+            1
+          ],
+          "facing": "down",
+          "armed": false,
+          "toggling": false
+        },
+        "after": {
+          "actors": [
+            {
+              "player": true,
+              "texture": "black_knight_armed_idle",
+              "frame": "armed_idle_down_0",
+              "type": "Sprite"
+            }
+          ],
+          "canvasCount": 1,
+          "zoom": 2.2,
+          "zone": "bellhollow",
+          "texture": "black_knight_armed_idle",
+          "animation": "wayfarer_idle_down",
+          "frame": "armed_idle_down_0",
+          "displayPx": [
+            64,
+            64
+          ],
+          "foot": {
+            "x": 976,
+            "y": 320.75000000000017
+          },
+          "origin": [
+            0.5,
+            1
+          ],
+          "facing": "down",
+          "armed": true,
+          "toggling": true
+        }
+      }
+    ],
+    "up": [
+      {
+        "before": {
+          "actors": [
+            {
+              "player": true,
+              "texture": "black_knight_armed_idle",
+              "frame": "armed_idle_up_0",
+              "type": "Sprite"
+            }
+          ],
+          "canvasCount": 1,
+          "zoom": 2.2,
+          "zone": "fog_crossing",
+          "texture": "black_knight_armed_idle",
+          "animation": "wayfarer_idle_up",
+          "frame": "armed_idle_up_0",
+          "displayPx": [
+            64,
+            64
+          ],
+          "foot": {
+            "x": 293,
+            "y": 229.0833333333334
+          },
+          "origin": [
+            0.5,
+            1
+          ],
+          "facing": "up",
+          "armed": true,
+          "toggling": false
+        },
+        "after": {
+          "actors": [
+            {
+              "player": true,
+              "texture": "black_knight_movement",
+              "frame": "unarmed_idle_up_0",
+              "type": "Sprite"
+            }
+          ],
+          "canvasCount": 1,
+          "zoom": 2.2,
+          "zone": "fog_crossing",
+          "texture": "black_knight_movement",
+          "animation": "wayfarer_unarmed_idle_up",
+          "frame": "unarmed_idle_up_0",
+          "displayPx": [
+            64,
+            64
+          ],
+          "foot": {
+            "x": 293,
+            "y": 229.0833333333334
+          },
+          "origin": [
+            0.5,
+            1
+          ],
+          "facing": "up",
+          "armed": false,
+          "toggling": true
+        }
+      },
+      {
+        "before": {
+          "actors": [
+            {
+              "player": true,
+              "texture": "black_knight_movement",
+              "frame": "unarmed_idle_up_0",
+              "type": "Sprite"
+            }
+          ],
+          "canvasCount": 1,
+          "zoom": 2.2,
+          "zone": "bellhollow",
+          "texture": "black_knight_movement",
+          "animation": "wayfarer_unarmed_idle_up",
+          "frame": "unarmed_idle_up_0",
+          "displayPx": [
+            64,
+            64
+          ],
+          "foot": {
+            "x": 976,
+            "y": 293.83333333333314
+          },
+          "origin": [
+            0.5,
+            1
+          ],
+          "facing": "up",
+          "armed": false,
+          "toggling": false
+        },
+        "after": {
+          "actors": [
+            {
+              "player": true,
+              "texture": "black_knight_armed_idle",
+              "frame": "armed_idle_up_0",
+              "type": "Sprite"
+            }
+          ],
+          "canvasCount": 1,
+          "zoom": 2.2,
+          "zone": "bellhollow",
+          "texture": "black_knight_armed_idle",
+          "animation": "wayfarer_idle_up",
+          "frame": "armed_idle_up_0",
+          "displayPx": [
+            64,
+            64
+          ],
+          "foot": {
+            "x": 976,
+            "y": 293.83333333333314
+          },
+          "origin": [
+            0.5,
+            1
+          ],
+          "facing": "up",
+          "armed": true,
+          "toggling": true
+        }
+      }
+    ],
+    "left": [
+      {
+        "before": {
+          "actors": [
+            {
+              "player": true,
+              "texture": "black_knight_armed_idle",
+              "frame": "armed_idle_left_0",
+              "type": "Sprite"
+            }
+          ],
+          "canvasCount": 1,
+          "zoom": 2.2,
+          "zone": "fog_crossing",
+          "texture": "black_knight_armed_idle",
+          "animation": "wayfarer_idle_left",
+          "frame": "armed_idle_left_0",
+          "displayPx": [
+            64,
+            64
+          ],
+          "foot": {
+            "x": 283.0833333333332,
+            "y": 239
+          },
+          "origin": [
+            0.5,
+            1
+          ],
+          "facing": "left",
+          "armed": true,
+          "toggling": false
+        },
+        "after": {
+          "actors": [
+            {
+              "player": true,
+              "texture": "black_knight_movement",
+              "frame": "unarmed_idle_left_0",
+              "type": "Sprite"
+            }
+          ],
+          "canvasCount": 1,
+          "zoom": 2.2,
+          "zone": "fog_crossing",
+          "texture": "black_knight_movement",
+          "animation": "wayfarer_unarmed_idle_left",
+          "frame": "unarmed_idle_left_0",
+          "displayPx": [
+            64,
+            64
+          ],
+          "foot": {
+            "x": 283.0833333333332,
+            "y": 239
+          },
+          "origin": [
+            0.5,
+            1
+          ],
+          "facing": "left",
+          "armed": false,
+          "toggling": true
+        }
+      },
+      {
+        "before": {
+          "actors": [
+            {
+              "player": true,
+              "texture": "black_knight_movement",
+              "frame": "unarmed_idle_left_0",
+              "type": "Sprite"
+            }
+          ],
+          "canvasCount": 1,
+          "zoom": 2.2,
+          "zone": "bellhollow",
+          "texture": "black_knight_movement",
+          "animation": "wayfarer_unarmed_idle_left",
+          "frame": "unarmed_idle_left_0",
+          "displayPx": [
+            64,
+            64
+          ],
+          "foot": {
+            "x": 964.666666666667,
+            "y": 308
+          },
+          "origin": [
+            0.5,
+            1
+          ],
+          "facing": "left",
+          "armed": false,
+          "toggling": false
+        },
+        "after": {
+          "actors": [
+            {
+              "player": true,
+              "texture": "black_knight_armed_idle",
+              "frame": "armed_idle_left_0",
+              "type": "Sprite"
+            }
+          ],
+          "canvasCount": 1,
+          "zoom": 2.2,
+          "zone": "bellhollow",
+          "texture": "black_knight_armed_idle",
+          "animation": "wayfarer_idle_left",
+          "frame": "armed_idle_left_0",
+          "displayPx": [
+            64,
+            64
+          ],
+          "foot": {
+            "x": 964.666666666667,
+            "y": 308
+          },
+          "origin": [
+            0.5,
+            1
+          ],
+          "facing": "left",
+          "armed": true,
+          "toggling": true
+        }
+      }
+    ],
+    "right": [
+      {
+        "before": {
+          "actors": [
+            {
+              "player": true,
+              "texture": "black_knight_movement",
+              "frame": "armed_idle_right_0",
+              "type": "Sprite"
+            }
+          ],
+          "canvasCount": 1,
+          "zoom": 2.2,
+          "zone": "fog_crossing",
+          "texture": "black_knight_movement",
+          "animation": "wayfarer_idle_right",
+          "frame": "armed_idle_right_0",
+          "displayPx": [
+            64,
+            64
+          ],
+          "foot": {
+            "x": 301.5000000000001,
+            "y": 239
+          },
+          "origin": [
+            0.5,
+            1
+          ],
+          "facing": "right",
+          "armed": true,
+          "toggling": false
+        },
+        "after": {
+          "actors": [
+            {
+              "player": true,
+              "texture": "black_knight_movement",
+              "frame": "unarmed_idle_right_0",
+              "type": "Sprite"
+            }
+          ],
+          "canvasCount": 1,
+          "zoom": 2.2,
+          "zone": "fog_crossing",
+          "texture": "black_knight_movement",
+          "animation": "wayfarer_unarmed_idle_right",
+          "frame": "unarmed_idle_right_0",
+          "displayPx": [
+            64,
+            64
+          ],
+          "foot": {
+            "x": 301.5000000000001,
+            "y": 239
+          },
+          "origin": [
+            0.5,
+            1
+          ],
+          "facing": "right",
+          "armed": false,
+          "toggling": true
+        }
+      },
+      {
+        "before": {
+          "actors": [
+            {
+              "player": true,
+              "texture": "black_knight_movement",
+              "frame": "unarmed_idle_right_0",
+              "type": "Sprite"
+            }
+          ],
+          "canvasCount": 1,
+          "zoom": 2.2,
+          "zone": "bellhollow",
+          "texture": "black_knight_movement",
+          "animation": "wayfarer_unarmed_idle_right",
+          "frame": "unarmed_idle_right_0",
+          "displayPx": [
+            64,
+            64
+          ],
+          "foot": {
+            "x": 985.9166666666664,
+            "y": 308
+          },
+          "origin": [
+            0.5,
+            1
+          ],
+          "facing": "right",
+          "armed": false,
+          "toggling": false
+        },
+        "after": {
+          "actors": [
+            {
+              "player": true,
+              "texture": "black_knight_movement",
+              "frame": "armed_idle_right_0",
+              "type": "Sprite"
+            }
+          ],
+          "canvasCount": 1,
+          "zoom": 2.2,
+          "zone": "bellhollow",
+          "texture": "black_knight_movement",
+          "animation": "wayfarer_idle_right",
+          "frame": "armed_idle_right_0",
+          "displayPx": [
+            64,
+            64
+          ],
+          "foot": {
+            "x": 985.9166666666664,
+            "y": 308
+          },
+          "origin": [
+            0.5,
+            1
+          ],
+          "facing": "right",
+          "armed": true,
+          "toggling": true
+        }
+      }
+    ]
+  },
+  "turning": [
+    {
+      "actors": [
+        {
+          "player": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_left_0",
+          "type": "Sprite"
+        }
+      ],
+      "canvasCount": 1,
+      "zoom": 2.2,
+      "zone": "fog_crossing",
+      "texture": "black_knight_armed_idle",
+      "animation": "wayfarer_idle_left",
+      "frame": "armed_idle_left_0",
+      "displayPx": [
+        64,
+        64
+      ],
+      "foot": {
+        "x": 277.4999999999999,
+        "y": 245
+      },
+      "origin": [
+        0.5,
+        1
+      ],
+      "facing": "left",
+      "armed": true,
+      "toggling": false
+    },
+    {
+      "actors": [
+        {
+          "player": true,
+          "texture": "black_knight_movement",
+          "frame": "armed_idle_right_0",
+          "type": "Sprite"
+        }
+      ],
+      "canvasCount": 1,
+      "zoom": 2.2,
+      "zone": "fog_crossing",
+      "texture": "black_knight_movement",
+      "animation": "wayfarer_idle_right",
+      "frame": "armed_idle_right_0",
+      "displayPx": [
+        64,
+        64
+      ],
+      "foot": {
+        "x": 291.66666666666674,
+        "y": 245
+      },
+      "origin": [
+        0.5,
+        1
+      ],
+      "facing": "right",
+      "armed": true,
+      "toggling": false
+    },
+    {
+      "actors": [
+        {
+          "player": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_left_0",
+          "type": "Sprite"
+        }
+      ],
+      "canvasCount": 1,
+      "zoom": 2.2,
+      "zone": "fog_crossing",
+      "texture": "black_knight_armed_idle",
+      "animation": "wayfarer_idle_left",
+      "frame": "armed_idle_left_0",
+      "displayPx": [
+        64,
+        64
+      ],
+      "foot": {
+        "x": 281.74999999999994,
+        "y": 245
+      },
+      "origin": [
+        0.5,
+        1
+      ],
+      "facing": "left",
+      "armed": true,
+      "toggling": false
+    },
+    {
+      "actors": [
+        {
+          "player": true,
+          "texture": "black_knight_movement",
+          "frame": "armed_idle_right_0",
+          "type": "Sprite"
+        }
+      ],
+      "canvasCount": 1,
+      "zoom": 2.2,
+      "zone": "fog_crossing",
+      "texture": "black_knight_movement",
+      "animation": "wayfarer_idle_right",
+      "frame": "armed_idle_right_0",
+      "displayPx": [
+        64,
+        64
+      ],
+      "foot": {
+        "x": 293.0833333333334,
+        "y": 245
+      },
+      "origin": [
+        0.5,
+        1
+      ],
+      "facing": "right",
+      "armed": true,
+      "toggling": false
+    },
+    {
+      "actors": [
+        {
+          "player": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_left_0",
+          "type": "Sprite"
+        }
+      ],
+      "canvasCount": 1,
+      "zoom": 2.2,
+      "zone": "fog_crossing",
+      "texture": "black_knight_armed_idle",
+      "animation": "wayfarer_idle_left",
+      "frame": "armed_idle_left_0",
+      "displayPx": [
+        64,
+        64
+      ],
+      "foot": {
+        "x": 284.5833333333333,
+        "y": 245
+      },
+      "origin": [
+        0.5,
+        1
+      ],
+      "facing": "left",
+      "armed": true,
+      "toggling": false
+    },
+    {
+      "actors": [
+        {
+          "player": true,
+          "texture": "black_knight_movement",
+          "frame": "armed_idle_right_0",
+          "type": "Sprite"
+        }
+      ],
+      "canvasCount": 1,
+      "zoom": 2.2,
+      "zone": "fog_crossing",
+      "texture": "black_knight_movement",
+      "animation": "wayfarer_idle_right",
+      "frame": "armed_idle_right_0",
+      "displayPx": [
+        64,
+        64
+      ],
+      "foot": {
+        "x": 298.75000000000017,
+        "y": 245
+      },
+      "origin": [
+        0.5,
+        1
+      ],
+      "facing": "right",
+      "armed": true,
+      "toggling": false
+    },
+    {
+      "actors": [
+        {
+          "player": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_up_0",
+          "type": "Sprite"
+        }
+      ],
+      "canvasCount": 1,
+      "zoom": 2.2,
+      "zone": "fog_crossing",
+      "texture": "black_knight_armed_idle",
+      "animation": "wayfarer_idle_up",
+      "frame": "armed_idle_up_0",
+      "displayPx": [
+        64,
+        64
+      ],
+      "foot": {
+        "x": 298.75000000000017,
+        "y": 233.66666666666674
+      },
+      "origin": [
+        0.5,
+        1
+      ],
+      "facing": "up",
+      "armed": true,
+      "toggling": false
+    },
+    {
+      "actors": [
+        {
+          "player": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_down_0",
+          "type": "Sprite"
+        }
+      ],
+      "canvasCount": 1,
+      "zoom": 2.2,
+      "zone": "fog_crossing",
+      "texture": "black_knight_armed_idle",
+      "animation": "wayfarer_idle_down",
+      "frame": "armed_idle_down_0",
+      "displayPx": [
+        64,
+        64
+      ],
+      "foot": {
+        "x": 298.75000000000017,
+        "y": 245
+      },
+      "origin": [
+        0.5,
+        1
+      ],
+      "facing": "down",
+      "armed": true,
+      "toggling": false
+    },
+    {
+      "actors": [
+        {
+          "player": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_up_0",
+          "type": "Sprite"
+        }
+      ],
+      "canvasCount": 1,
+      "zoom": 2.2,
+      "zone": "fog_crossing",
+      "texture": "black_knight_armed_idle",
+      "animation": "wayfarer_idle_up",
+      "frame": "armed_idle_up_0",
+      "displayPx": [
+        64,
+        64
+      ],
+      "foot": {
+        "x": 298.75000000000017,
+        "y": 230.83333333333343
+      },
+      "origin": [
+        0.5,
+        1
+      ],
+      "facing": "up",
+      "armed": true,
+      "toggling": false
+    },
+    {
+      "actors": [
+        {
+          "player": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_down_0",
+          "type": "Sprite"
+        }
+      ],
+      "canvasCount": 1,
+      "zoom": 2.2,
+      "zone": "fog_crossing",
+      "texture": "black_knight_armed_idle",
+      "animation": "wayfarer_idle_down",
+      "frame": "armed_idle_down_0",
+      "displayPx": [
+        64,
+        64
+      ],
+      "foot": {
+        "x": 298.75000000000017,
+        "y": 240.75000000000003
+      },
+      "origin": [
+        0.5,
+        1
+      ],
+      "facing": "down",
+      "armed": true,
+      "toggling": false
+    },
+    {
+      "actors": [
+        {
+          "player": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_up_0",
+          "type": "Sprite"
+        }
+      ],
+      "canvasCount": 1,
+      "zoom": 2.2,
+      "zone": "fog_crossing",
+      "texture": "black_knight_armed_idle",
+      "animation": "wayfarer_idle_up",
+      "frame": "armed_idle_up_0",
+      "displayPx": [
+        64,
+        64
+      ],
+      "foot": {
+        "x": 298.75000000000017,
+        "y": 232.25000000000009
+      },
+      "origin": [
+        0.5,
+        1
+      ],
+      "facing": "up",
+      "armed": true,
+      "toggling": false
+    },
+    {
+      "actors": [
+        {
+          "player": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_down_0",
+          "type": "Sprite"
+        }
+      ],
+      "canvasCount": 1,
+      "zoom": 2.2,
+      "zone": "fog_crossing",
+      "texture": "black_knight_armed_idle",
+      "animation": "wayfarer_idle_down",
+      "frame": "armed_idle_down_0",
+      "displayPx": [
+        64,
+        64
+      ],
+      "foot": {
+        "x": 298.75000000000017,
+        "y": 243.58333333333334
+      },
+      "origin": [
+        0.5,
+        1
+      ],
+      "facing": "down",
+      "armed": true,
+      "toggling": false
+    }
+  ],
+  "enteredBellhollow": {
+    "actors": [
+      {
+        "player": true,
+        "texture": "black_knight_movement",
+        "frame": "armed_idle_right_0",
+        "type": "Sprite"
+      }
+    ],
+    "canvasCount": 1,
+    "zoom": 2.2,
+    "zone": "bellhollow",
+    "texture": "black_knight_movement",
+    "animation": "wayfarer_idle_right",
+    "frame": "armed_idle_right_0",
+    "displayPx": [
+      64,
+      64
+    ],
+    "foot": {
+      "x": 491.25000000000074,
+      "y": 232
+    },
+    "origin": [
+      0.5,
+      1
+    ],
+    "facing": "right",
+    "armed": true,
+    "toggling": false
+  },
+  "returnedToFog": {
+    "actors": [
+      {
+        "player": true,
+        "texture": "black_knight_armed_idle",
+        "frame": "armed_idle_left_5",
+        "type": "Sprite"
+      }
+    ],
+    "canvasCount": 1,
+    "zoom": 2.2,
+    "zone": "fog_crossing",
+    "texture": "black_knight_armed_idle",
+    "animation": "wayfarer_idle_left",
+    "frame": "armed_idle_left_5",
+    "displayPx": [
+      64,
+      64
+    ],
+    "foot": {
+      "x": 473.83333333333275,
+      "y": 232
+    },
+    "origin": [
+      0.5,
+      1
+    ],
+    "facing": "left",
+    "armed": true,
+    "toggling": false
+  },
+  "watchBeforeReload": {
+    "frames": 378,
+    "wrong": [],
+    "maxVisuals": 1,
+    "transitionVisuals": [
+      {
+        "actors": [
+          {
+            "player": true,
+            "texture": "black_knight_movement",
+            "frame": "armed_idle_right_0",
+            "type": "Sprite"
+          }
+        ],
+        "canvasCount": 1,
+        "zoom": 2.2,
+        "zone": "bellhollow",
+        "texture": "black_knight_movement",
+        "animation": "wayfarer_idle_right",
+        "frame": "armed_idle_right_0",
+        "displayPx": [
+          64,
+          64
+        ],
+        "foot": {
+          "x": 306.09894479346184,
+          "y": 235.98438853987153
+        },
+        "origin": [
+          0.5,
+          1
+        ],
+        "facing": "right",
+        "armed": true,
+        "toggling": true
+      },
+      {
+        "actors": [
+          {
+            "player": true,
+            "texture": "black_knight_movement",
+            "frame": "unarmed_idle_left_0",
+            "type": "Sprite"
+          }
+        ],
+        "canvasCount": 1,
+        "zoom": 2.2,
+        "zone": "bellhollow",
+        "texture": "black_knight_movement",
+        "animation": "wayfarer_unarmed_idle_left",
+        "frame": "unarmed_idle_left_0",
+        "displayPx": [
+          64,
+          64
+        ],
+        "foot": {
+          "x": 306.09894479346184,
+          "y": 235.98438853987153
+        },
+        "origin": [
+          0.5,
+          1
+        ],
+        "facing": "left",
+        "armed": false,
+        "toggling": true
+      },
+      {
+        "actors": [
+          {
+            "player": true,
+            "texture": "black_knight_armed_idle",
+            "frame": "armed_idle_left_0",
+            "type": "Sprite"
+          }
+        ],
+        "canvasCount": 1,
+        "zoom": 2.2,
+        "zone": "fog_crossing",
+        "texture": "black_knight_armed_idle",
+        "animation": "wayfarer_idle_left",
+        "frame": "armed_idle_left_0",
+        "displayPx": [
+          64,
+          64
+        ],
+        "foot": {
+          "x": 306.09894479346184,
+          "y": 235.98438853987153
+        },
+        "origin": [
+          0.5,
+          1
+        ],
+        "facing": "left",
+        "armed": true,
+        "toggling": true
+      }
+    ]
+  },
+  "saved": {
+    "schema": 3,
+    "xy": {
+      "x": 290,
+      "y": 255
+    },
+    "zone": "fog_crossing"
+  },
+  "continue": {
+    "actors": [
+      {
+        "player": true,
+        "texture": "black_knight_armed_idle",
+        "frame": "armed_idle_down_2",
+        "type": "Sprite"
+      }
+    ],
+    "canvasCount": 1,
+    "zoom": 2.2,
+    "zone": "fog_crossing",
+    "texture": "black_knight_armed_idle",
+    "animation": "wayfarer_idle_down",
+    "frame": "armed_idle_down_2",
+    "displayPx": [
+      64,
+      64
+    ],
+    "foot": {
+      "x": 290,
+      "y": 255
+    },
+    "origin": [
+      0.5,
+      1
+    ],
+    "facing": "down",
+    "armed": true,
+    "toggling": false
+  },
+  "watchAfterReload": {
+    "frames": 20,
+    "wrong": [],
+    "maxVisuals": 1,
+    "transitionVisuals": []
+  },
+  "restart": {
+    "oldDestroyed": true,
+    "current": {
+      "actors": [
+        {
+          "player": true,
+          "texture": "black_knight_armed_idle",
+          "frame": "armed_idle_down_0",
+          "type": "Sprite"
+        }
+      ],
+      "canvasCount": 1,
+      "zoom": 2.2,
+      "zone": "fog_crossing",
+      "texture": "black_knight_armed_idle",
+      "animation": "wayfarer_idle_down",
+      "frame": "armed_idle_down_0",
+      "displayPx": [
+        64,
+        64
+      ],
+      "foot": {
+        "x": 120,
+        "y": 195
+      },
+      "origin": [
+        0.5,
+        1
+      ],
+      "facing": "down",
+      "armed": true,
+      "toggling": false
+    },
+    "noPendingAttack": true
+  },
+  "watchAfterRestart": {
+    "frames": 21,
+    "wrong": [],
+    "maxVisuals": 1,
+    "transitionVisuals": []
+  },
+  "console": [
+    [
+      "warning",
+      "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+    ],
+    [
+      "warning",
+      "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+    ]
+  ],
+  "pageErrors": [
+    "Cannot read properties of null (reading 'drawImage')"
+  ],
+  "httpErrors": []
+}

@@ -1,3 +1,20 @@
+# V153-BATCH-04-R10 — Checkpoint K3-A
+
+**21/11/2026 · 04C-K3 PARTIAL · K3-A 4/4 nhóm đã kiểm thử bốn hướng · HOSTED BLOCKED**
+
+Nhánh `feat/v1.5.3-batch04`. Mốc K2 `e91809963955c60778cc763427c56d052528df4a`, runtime K3-A `0a927c226587a3f82957b06183138ecf9f9a6fe2`. Dùng SHA của commit báo cáo trên nhánh này khi resume. [Báo cáo K3](V153_B04_K3_COMBAT_REPORT.md) · [Ảnh/log](Visuals/V153_B04C_K3)
+
+| Mã | Trạng thái |
+|---|---|
+| K3-A · 01–04 | PASS LOCAL — 4-DIR VERIFIED. Light/Heavy/Combo và Recovery, 72 frame qua Canvas/WebGL. Active frame và AABB khớp, hủy hit khi bị ngắt. |
+| K3-B · 05–12 | OPEN. Parry, hai Roll, rút/tra kiếm, hai Hurt, Death. |
+| K3-C · 13–20 | OPEN. Chỉ mở khi A và B đã qua cổng kiểm thử/push, không có lỗi K3 nghiêm trọng, không cần quyết định Owner và môi trường đủ ổn định. |
+| Restart Canvas / hosted | Phaser Text còn OPEN 04E1. Actor cũ được hủy khi restart. Hosted P2Game vẫn BLOCKED. |
+
+**Lệnh tiếp nối** `V153-BATCH-04C-K3 EXECUTE REMAINING ONLY — K3-B: 05–12`. Chạy targeted tests và Chromium, cập nhật ma trận/báo cáo, push checkpoint và xác minh SHA GitHub trước khi xét K3-C.
+
+---
+
 # V153-BATCH-04-R10 — Checkpoint bàn giao 04C-K2
 
 **21/11/2026 · PASS local cho 20 clip K2 · PARTIAL restart sạch console · Dừng sau K2 · HOSTED BLOCKED**

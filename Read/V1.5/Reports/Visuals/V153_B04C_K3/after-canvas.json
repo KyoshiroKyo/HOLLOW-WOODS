@@ -1,0 +1,5681 @@
+{
+  "mode": "canvas",
+  "phase": "after",
+  "runs": {
+    "light-down": {
+      "trace": [
+        {
+          "evt": "animationstart",
+          "key": "wayfarer_attack_down",
+          "index": 1,
+          "frameName": "attack_down_0",
+          "anim": "wayfarer_attack_down",
+          "frame": "attack_down_0",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 10757.70000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_down",
+          "index": 2,
+          "frameName": "attack_down_1",
+          "anim": "wayfarer_attack_down",
+          "frame": "attack_down_1",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 10800.90000000596,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_down",
+          "index": 3,
+          "frameName": "attack_down_2",
+          "anim": "wayfarer_attack_down",
+          "frame": "attack_down_2",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 10881.10000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "hit",
+          "anim": "wayfarer_attack_down",
+          "frame": "attack_down_2",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 10882.70000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1,
+          "hit": {
+            "x": 268,
+            "y": 287,
+            "reach": 42,
+            "radius": 42,
+            "facing": "down",
+            "playerX": 268,
+            "playerY": 245,
+            "isHeavy": false,
+            "damageMultiplier": null,
+            "poiseDamage": null
+          }
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_down",
+          "index": 4,
+          "frameName": "attack_down_3",
+          "anim": "wayfarer_attack_down",
+          "frame": "attack_down_3",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 11056.60000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_down",
+          "index": 5,
+          "frameName": "attack_down_4",
+          "anim": "wayfarer_attack_down",
+          "frame": "attack_down_4",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 11083.20000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_down",
+          "index": 6,
+          "frameName": "attack_down_5",
+          "anim": "wayfarer_attack_down",
+          "frame": "attack_down_5",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 11189.20000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationcomplete",
+          "key": "wayfarer_attack_down",
+          "index": 6,
+          "frameName": "attack_down_5",
+          "anim": "wayfarer_attack_down",
+          "frame": "attack_down_5",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 11267.10000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        }
+      ],
+      "final": {
+        "anim": "wayfarer_idle_down",
+        "frame": "armed_idle_down_1",
+        "texture": "black_knight_armed_idle",
+        "facing": "down",
+        "locked": false,
+        "armed": true,
+        "t": 11388,
+        "angle": 0,
+        "scale": [
+          1,
+          1
+        ],
+        "size": [
+          64,
+          64
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "offset": [
+          23,
+          46
+        ],
+        "aabbLocal": [
+          -9,
+          -18,
+          18,
+          12
+        ],
+        "actors": 1,
+        "rendered": true,
+        "nearest": 1
+      }
+    },
+    "heavy-down": {
+      "trace": [
+        {
+          "evt": "animationstart",
+          "key": "wayfarer_heavy_attack_down",
+          "index": 1,
+          "frameName": "heavy_attack_down_0",
+          "anim": "wayfarer_heavy_attack_down",
+          "frame": "heavy_attack_down_0",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 11587.20000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_heavy_attack_down",
+          "index": 2,
+          "frameName": "heavy_attack_down_1",
+          "anim": "wayfarer_heavy_attack_down",
+          "frame": "heavy_attack_down_1",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 11695.40000000596,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_heavy_attack_down",
+          "index": 3,
+          "frameName": "heavy_attack_down_2",
+          "anim": "wayfarer_heavy_attack_down",
+          "frame": "heavy_attack_down_2",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 11855.300000011921,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_heavy_attack_down",
+          "index": 4,
+          "frameName": "heavy_attack_down_3",
+          "anim": "wayfarer_heavy_attack_down",
+          "frame": "heavy_attack_down_3",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 11971.20000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "hit",
+          "anim": "wayfarer_heavy_attack_down",
+          "frame": "heavy_attack_down_3",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 11971.60000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1,
+          "hit": {
+            "x": 268,
+            "y": 299,
+            "reach": 54,
+            "radius": 50,
+            "facing": "down",
+            "playerX": 268,
+            "playerY": 245,
+            "isHeavy": true,
+            "damageMultiplier": 2.2,
+            "poiseDamage": 50
+          }
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_heavy_attack_down",
+          "index": 5,
+          "frameName": "heavy_attack_down_4",
+          "anim": "wayfarer_heavy_attack_down",
+          "frame": "heavy_attack_down_4",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 12066.5,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_heavy_attack_down",
+          "index": 6,
+          "frameName": "heavy_attack_down_5",
+          "anim": "wayfarer_heavy_attack_down",
+          "frame": "heavy_attack_down_5",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 12159.300000011921,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationcomplete",
+          "key": "wayfarer_heavy_attack_down",
+          "index": 6,
+          "frameName": "heavy_attack_down_5",
+          "anim": "wayfarer_heavy_attack_down",
+          "frame": "heavy_attack_down_5",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 12250.90000000596,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        }
+      ],
+      "final": {
+        "anim": "wayfarer_idle_down",
+        "frame": "armed_idle_down_0",
+        "texture": "black_knight_armed_idle",
+        "facing": "down",
+        "locked": false,
+        "armed": true,
+        "t": 12352.300000011921,
+        "angle": 0,
+        "scale": [
+          1,
+          1
+        ],
+        "size": [
+          64,
+          64
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "offset": [
+          23,
+          46
+        ],
+        "aabbLocal": [
+          -9,
+          -18,
+          18,
+          12
+        ],
+        "actors": 1,
+        "rendered": true,
+        "nearest": 1
+      }
+    },
+    "light-up": {
+      "trace": [
+        {
+          "evt": "animationstart",
+          "key": "wayfarer_attack_up",
+          "index": 1,
+          "frameName": "attack_up_0",
+          "anim": "wayfarer_attack_up",
+          "frame": "attack_up_0",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 12596.90000000596,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_up",
+          "index": 2,
+          "frameName": "attack_up_1",
+          "anim": "wayfarer_attack_up",
+          "frame": "attack_up_1",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 12696.5,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_up",
+          "index": 3,
+          "frameName": "attack_up_2",
+          "anim": "wayfarer_attack_up",
+          "frame": "attack_up_2",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 12789.800000011921,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "hit",
+          "anim": "wayfarer_attack_up",
+          "frame": "attack_up_2",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 12790.20000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1,
+          "hit": {
+            "x": 268,
+            "y": 203,
+            "reach": 42,
+            "radius": 42,
+            "facing": "up",
+            "playerX": 268,
+            "playerY": 245,
+            "isHeavy": false,
+            "damageMultiplier": null,
+            "poiseDamage": null
+          }
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_up",
+          "index": 4,
+          "frameName": "attack_up_3",
+          "anim": "wayfarer_attack_up",
+          "frame": "attack_up_3",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 12885.5,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_up",
+          "index": 5,
+          "frameName": "attack_up_4",
+          "anim": "wayfarer_attack_up",
+          "frame": "attack_up_4",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 12982.5,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_up",
+          "index": 6,
+          "frameName": "attack_up_5",
+          "anim": "wayfarer_attack_up",
+          "frame": "attack_up_5",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 13045,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationcomplete",
+          "key": "wayfarer_attack_up",
+          "index": 6,
+          "frameName": "attack_up_5",
+          "anim": "wayfarer_attack_up",
+          "frame": "attack_up_5",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 13152.60000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        }
+      ],
+      "final": {
+        "anim": "wayfarer_idle_up",
+        "frame": "armed_idle_up_0",
+        "texture": "black_knight_armed_idle",
+        "facing": "up",
+        "locked": false,
+        "armed": true,
+        "t": 13209,
+        "angle": 0,
+        "scale": [
+          1,
+          1
+        ],
+        "size": [
+          64,
+          64
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "offset": [
+          23,
+          46
+        ],
+        "aabbLocal": [
+          -9,
+          -18,
+          18,
+          12
+        ],
+        "actors": 1,
+        "rendered": true,
+        "nearest": 1
+      }
+    },
+    "heavy-up": {
+      "trace": [
+        {
+          "evt": "animationstart",
+          "key": "wayfarer_heavy_attack_up",
+          "index": 1,
+          "frameName": "heavy_attack_up_0",
+          "anim": "wayfarer_heavy_attack_up",
+          "frame": "heavy_attack_up_0",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 13495.10000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_heavy_attack_up",
+          "index": 2,
+          "frameName": "heavy_attack_up_1",
+          "anim": "wayfarer_heavy_attack_up",
+          "frame": "heavy_attack_up_1",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 13657.20000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_heavy_attack_up",
+          "index": 3,
+          "frameName": "heavy_attack_up_2",
+          "anim": "wayfarer_heavy_attack_up",
+          "frame": "heavy_attack_up_2",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 13755.20000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_heavy_attack_up",
+          "index": 4,
+          "frameName": "heavy_attack_up_3",
+          "anim": "wayfarer_heavy_attack_up",
+          "frame": "heavy_attack_up_3",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 13905.10000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "hit",
+          "anim": "wayfarer_heavy_attack_up",
+          "frame": "heavy_attack_up_3",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 13905.60000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1,
+          "hit": {
+            "x": 268,
+            "y": 191,
+            "reach": 54,
+            "radius": 50,
+            "facing": "up",
+            "playerX": 268,
+            "playerY": 245,
+            "isHeavy": true,
+            "damageMultiplier": 2.2,
+            "poiseDamage": 50
+          }
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_heavy_attack_up",
+          "index": 5,
+          "frameName": "heavy_attack_up_4",
+          "anim": "wayfarer_heavy_attack_up",
+          "frame": "heavy_attack_up_4",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 13981.10000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_heavy_attack_up",
+          "index": 6,
+          "frameName": "heavy_attack_up_5",
+          "anim": "wayfarer_heavy_attack_up",
+          "frame": "heavy_attack_up_5",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 14084.60000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationcomplete",
+          "key": "wayfarer_heavy_attack_up",
+          "index": 6,
+          "frameName": "heavy_attack_up_5",
+          "anim": "wayfarer_heavy_attack_up",
+          "frame": "heavy_attack_up_5",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 14176.300000011921,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        }
+      ],
+      "final": {
+        "anim": "wayfarer_idle_up",
+        "frame": "armed_idle_up_0",
+        "texture": "black_knight_armed_idle",
+        "facing": "up",
+        "locked": false,
+        "armed": true,
+        "t": 14278.40000000596,
+        "angle": 0,
+        "scale": [
+          1,
+          1
+        ],
+        "size": [
+          64,
+          64
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "offset": [
+          23,
+          46
+        ],
+        "aabbLocal": [
+          -9,
+          -18,
+          18,
+          12
+        ],
+        "actors": 1,
+        "rendered": true,
+        "nearest": 1
+      }
+    },
+    "light-left": {
+      "trace": [
+        {
+          "evt": "animationstart",
+          "key": "wayfarer_attack_left",
+          "index": 1,
+          "frameName": "attack_left_0",
+          "anim": "wayfarer_attack_left",
+          "frame": "attack_left_0",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 14496.70000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_left",
+          "index": 2,
+          "frameName": "attack_left_1",
+          "anim": "wayfarer_attack_left",
+          "frame": "attack_left_1",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 14587.800000011921,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_left",
+          "index": 3,
+          "frameName": "attack_left_2",
+          "anim": "wayfarer_attack_left",
+          "frame": "attack_left_2",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 14670.20000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "hit",
+          "anim": "wayfarer_attack_left",
+          "frame": "attack_left_2",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 14670.5,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1,
+          "hit": {
+            "x": 226,
+            "y": 245,
+            "reach": 42,
+            "radius": 42,
+            "facing": "left",
+            "playerX": 268,
+            "playerY": 245,
+            "isHeavy": false,
+            "damageMultiplier": null,
+            "poiseDamage": null
+          }
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_left",
+          "index": 4,
+          "frameName": "attack_left_3",
+          "anim": "wayfarer_attack_left",
+          "frame": "attack_left_3",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 14789.800000011921,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_left",
+          "index": 5,
+          "frameName": "attack_left_4",
+          "anim": "wayfarer_attack_left",
+          "frame": "attack_left_4",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 14854.300000011921,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_left",
+          "index": 6,
+          "frameName": "attack_left_5",
+          "anim": "wayfarer_attack_left",
+          "frame": "attack_left_5",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 14948.60000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationcomplete",
+          "key": "wayfarer_attack_left",
+          "index": 6,
+          "frameName": "attack_left_5",
+          "anim": "wayfarer_attack_left",
+          "frame": "attack_left_5",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 15055.300000011921,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        }
+      ],
+      "final": {
+        "anim": "wayfarer_idle_left",
+        "frame": "armed_idle_left_0",
+        "texture": "black_knight_armed_idle",
+        "facing": "left",
+        "locked": false,
+        "armed": true,
+        "t": 15098.90000000596,
+        "angle": 0,
+        "scale": [
+          1,
+          1
+        ],
+        "size": [
+          64,
+          64
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "offset": [
+          23,
+          46
+        ],
+        "aabbLocal": [
+          -9,
+          -18,
+          18,
+          12
+        ],
+        "actors": 1,
+        "rendered": true,
+        "nearest": 1
+      }
+    },
+    "heavy-left": {
+      "trace": [
+        {
+          "evt": "animationstart",
+          "key": "wayfarer_heavy_attack_left",
+          "index": 1,
+          "frameName": "heavy_attack_left_0",
+          "anim": "wayfarer_heavy_attack_left",
+          "frame": "heavy_attack_left_0",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 15369.5,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_heavy_attack_left",
+          "index": 2,
+          "frameName": "heavy_attack_left_1",
+          "anim": "wayfarer_heavy_attack_left",
+          "frame": "heavy_attack_left_1",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 15479.60000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_heavy_attack_left",
+          "index": 3,
+          "frameName": "heavy_attack_left_2",
+          "anim": "wayfarer_heavy_attack_left",
+          "frame": "heavy_attack_left_2",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 15560.20000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_heavy_attack_left",
+          "index": 4,
+          "frameName": "heavy_attack_left_3",
+          "anim": "wayfarer_heavy_attack_left",
+          "frame": "heavy_attack_left_3",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 15686.300000011921,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "hit",
+          "anim": "wayfarer_heavy_attack_left",
+          "frame": "heavy_attack_left_3",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 15686.60000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1,
+          "hit": {
+            "x": 214,
+            "y": 245,
+            "reach": 54,
+            "radius": 50,
+            "facing": "left",
+            "playerX": 268,
+            "playerY": 245,
+            "isHeavy": true,
+            "damageMultiplier": 2.2,
+            "poiseDamage": 50
+          }
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_heavy_attack_left",
+          "index": 5,
+          "frameName": "heavy_attack_left_4",
+          "anim": "wayfarer_heavy_attack_left",
+          "frame": "heavy_attack_left_4",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 15848.800000011921,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_heavy_attack_left",
+          "index": 6,
+          "frameName": "heavy_attack_left_5",
+          "anim": "wayfarer_heavy_attack_left",
+          "frame": "heavy_attack_left_5",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 15898.10000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationcomplete",
+          "key": "wayfarer_heavy_attack_left",
+          "index": 6,
+          "frameName": "heavy_attack_left_5",
+          "anim": "wayfarer_heavy_attack_left",
+          "frame": "heavy_attack_left_5",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 15985,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        }
+      ],
+      "final": {
+        "anim": "wayfarer_idle_left",
+        "frame": "armed_idle_left_0",
+        "texture": "black_knight_armed_idle",
+        "facing": "left",
+        "locked": false,
+        "armed": true,
+        "t": 16088.90000000596,
+        "angle": 0,
+        "scale": [
+          1,
+          1
+        ],
+        "size": [
+          64,
+          64
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "offset": [
+          23,
+          46
+        ],
+        "aabbLocal": [
+          -9,
+          -18,
+          18,
+          12
+        ],
+        "actors": 1,
+        "rendered": true,
+        "nearest": 1
+      }
+    },
+    "light-right": {
+      "trace": [
+        {
+          "evt": "animationstart",
+          "key": "wayfarer_attack_right",
+          "index": 1,
+          "frameName": "attack_right_0",
+          "anim": "wayfarer_attack_right",
+          "frame": "attack_right_0",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 16352.300000011921,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_right",
+          "index": 2,
+          "frameName": "attack_right_1",
+          "anim": "wayfarer_attack_right",
+          "frame": "attack_right_1",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 16406.60000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_right",
+          "index": 3,
+          "frameName": "attack_right_2",
+          "anim": "wayfarer_attack_right",
+          "frame": "attack_right_2",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 16487.90000000596,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "hit",
+          "anim": "wayfarer_attack_right",
+          "frame": "attack_right_2",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 16488.20000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1,
+          "hit": {
+            "x": 310,
+            "y": 245,
+            "reach": 42,
+            "radius": 42,
+            "facing": "right",
+            "playerX": 268,
+            "playerY": 245,
+            "isHeavy": false,
+            "damageMultiplier": null,
+            "poiseDamage": null
+          }
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_right",
+          "index": 4,
+          "frameName": "attack_right_3",
+          "anim": "wayfarer_attack_right",
+          "frame": "attack_right_3",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 16647.30000001192,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_right",
+          "index": 5,
+          "frameName": "attack_right_4",
+          "anim": "wayfarer_attack_right",
+          "frame": "attack_right_4",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 16693.10000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_right",
+          "index": 6,
+          "frameName": "attack_right_5",
+          "anim": "wayfarer_attack_right",
+          "frame": "attack_right_5",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 16746.20000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationcomplete",
+          "key": "wayfarer_attack_right",
+          "index": 6,
+          "frameName": "attack_right_5",
+          "anim": "wayfarer_attack_right",
+          "frame": "attack_right_5",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 16862,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        }
+      ],
+      "final": {
+        "anim": "wayfarer_idle_right",
+        "frame": "armed_idle_right_0",
+        "texture": "black_knight_movement",
+        "facing": "right",
+        "locked": false,
+        "armed": true,
+        "t": 16910.5,
+        "angle": 0,
+        "scale": [
+          1,
+          1
+        ],
+        "size": [
+          64,
+          64
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "offset": [
+          23,
+          46
+        ],
+        "aabbLocal": [
+          -9,
+          -18,
+          18,
+          12
+        ],
+        "actors": 1,
+        "rendered": true,
+        "nearest": 1
+      }
+    },
+    "heavy-right": {
+      "trace": [
+        {
+          "evt": "animationstart",
+          "key": "wayfarer_heavy_attack_right",
+          "index": 1,
+          "frameName": "heavy_attack_right_0",
+          "anim": "wayfarer_heavy_attack_right",
+          "frame": "heavy_attack_right_0",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 17172.5,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_heavy_attack_right",
+          "index": 2,
+          "frameName": "heavy_attack_right_1",
+          "anim": "wayfarer_heavy_attack_right",
+          "frame": "heavy_attack_right_1",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 17278.30000001192,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_heavy_attack_right",
+          "index": 3,
+          "frameName": "heavy_attack_right_2",
+          "anim": "wayfarer_heavy_attack_right",
+          "frame": "heavy_attack_right_2",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 17373.70000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_heavy_attack_right",
+          "index": 4,
+          "frameName": "heavy_attack_right_3",
+          "anim": "wayfarer_heavy_attack_right",
+          "frame": "heavy_attack_right_3",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 17505.30000001192,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "hit",
+          "anim": "wayfarer_heavy_attack_right",
+          "frame": "heavy_attack_right_3",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 17505.60000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1,
+          "hit": {
+            "x": 322,
+            "y": 245,
+            "reach": 54,
+            "radius": 50,
+            "facing": "right",
+            "playerX": 268,
+            "playerY": 245,
+            "isHeavy": true,
+            "damageMultiplier": 2.2,
+            "poiseDamage": 50
+          }
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_heavy_attack_right",
+          "index": 5,
+          "frameName": "heavy_attack_right_4",
+          "anim": "wayfarer_heavy_attack_right",
+          "frame": "heavy_attack_right_4",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 17589.30000001192,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_heavy_attack_right",
+          "index": 6,
+          "frameName": "heavy_attack_right_5",
+          "anim": "wayfarer_heavy_attack_right",
+          "frame": "heavy_attack_right_5",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 17658.60000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationcomplete",
+          "key": "wayfarer_heavy_attack_right",
+          "index": 6,
+          "frameName": "heavy_attack_right_5",
+          "anim": "wayfarer_heavy_attack_right",
+          "frame": "heavy_attack_right_5",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 17748,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        }
+      ],
+      "final": {
+        "anim": "wayfarer_idle_right",
+        "frame": "armed_idle_right_0",
+        "texture": "black_knight_movement",
+        "facing": "right",
+        "locked": false,
+        "armed": true,
+        "t": 17800,
+        "angle": 0,
+        "scale": [
+          1,
+          1
+        ],
+        "size": [
+          64,
+          64
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "offset": [
+          23,
+          46
+        ],
+        "aabbLocal": [
+          -9,
+          -18,
+          18,
+          12
+        ],
+        "actors": 1,
+        "rendered": true,
+        "nearest": 1
+      }
+    },
+    "combo-down": {
+      "trace": [
+        {
+          "evt": "animationstart",
+          "key": "wayfarer_attack_down",
+          "index": 1,
+          "frameName": "attack_down_0",
+          "anim": "wayfarer_attack_down",
+          "frame": "attack_down_0",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 17958.20000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_down",
+          "index": 2,
+          "frameName": "attack_down_1",
+          "anim": "wayfarer_attack_down",
+          "frame": "attack_down_1",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 18001.5,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_down",
+          "index": 3,
+          "frameName": "attack_down_2",
+          "anim": "wayfarer_attack_down",
+          "frame": "attack_down_2",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 18073.80000001192,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "hit",
+          "anim": "wayfarer_attack_down",
+          "frame": "attack_down_2",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 18074.30000001192,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1,
+          "hit": {
+            "x": 268,
+            "y": 287,
+            "reach": 42,
+            "radius": 42,
+            "facing": "down",
+            "playerX": 268,
+            "playerY": 245,
+            "isHeavy": false,
+            "damageMultiplier": null,
+            "poiseDamage": null
+          }
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_down",
+          "index": 4,
+          "frameName": "attack_down_3",
+          "anim": "wayfarer_attack_down",
+          "frame": "attack_down_3",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 18184.20000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_down",
+          "index": 5,
+          "frameName": "attack_down_4",
+          "anim": "wayfarer_attack_down",
+          "frame": "attack_down_4",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 18275.40000000596,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_down",
+          "index": 6,
+          "frameName": "attack_down_5",
+          "anim": "wayfarer_attack_down",
+          "frame": "attack_down_5",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 18310.10000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationcomplete",
+          "key": "wayfarer_attack_down",
+          "index": 6,
+          "frameName": "attack_down_5",
+          "anim": "wayfarer_attack_down",
+          "frame": "attack_down_5",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 18370.20000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationstart",
+          "key": "wayfarer_attack_combo_down",
+          "index": 1,
+          "frameName": "attack_combo_down_0",
+          "anim": "wayfarer_attack_combo_down",
+          "frame": "attack_combo_down_0",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 18385.10000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_combo_down",
+          "index": 2,
+          "frameName": "attack_combo_down_1",
+          "anim": "wayfarer_attack_combo_down",
+          "frame": "attack_combo_down_1",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 18657.5,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_combo_down",
+          "index": 3,
+          "frameName": "attack_combo_down_2",
+          "anim": "wayfarer_attack_combo_down",
+          "frame": "attack_combo_down_2",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 18700.60000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "hit",
+          "anim": "wayfarer_attack_combo_down",
+          "frame": "attack_combo_down_2",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 18701,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1,
+          "hit": {
+            "x": 268,
+            "y": 287,
+            "reach": 42,
+            "radius": 42,
+            "facing": "down",
+            "playerX": 268,
+            "playerY": 245,
+            "isHeavy": false,
+            "damageMultiplier": null,
+            "poiseDamage": null
+          }
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_combo_down",
+          "index": 4,
+          "frameName": "attack_combo_down_3",
+          "anim": "wayfarer_attack_combo_down",
+          "frame": "attack_combo_down_3",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 18779.20000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_combo_down",
+          "index": 5,
+          "frameName": "attack_combo_down_4",
+          "anim": "wayfarer_attack_combo_down",
+          "frame": "attack_combo_down_4",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 18794.90000000596,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_combo_down",
+          "index": 6,
+          "frameName": "attack_combo_down_5",
+          "anim": "wayfarer_attack_combo_down",
+          "frame": "attack_combo_down_5",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 18851.30000001192,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationcomplete",
+          "key": "wayfarer_attack_combo_down",
+          "index": 6,
+          "frameName": "attack_combo_down_5",
+          "anim": "wayfarer_attack_combo_down",
+          "frame": "attack_combo_down_5",
+          "texture": "black_knight_core_combat",
+          "facing": "down",
+          "locked": true,
+          "armed": true,
+          "t": 18872.10000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        }
+      ],
+      "final": {
+        "anim": "wayfarer_idle_down",
+        "frame": "armed_idle_down_0",
+        "texture": "black_knight_armed_idle",
+        "facing": "down",
+        "locked": false,
+        "armed": true,
+        "t": 18946,
+        "angle": 0,
+        "scale": [
+          1,
+          1
+        ],
+        "size": [
+          64,
+          64
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "offset": [
+          23,
+          46
+        ],
+        "aabbLocal": [
+          -9,
+          -18,
+          18,
+          12
+        ],
+        "actors": 1,
+        "rendered": true,
+        "nearest": 1
+      }
+    },
+    "combo-up": {
+      "trace": [
+        {
+          "evt": "animationstart",
+          "key": "wayfarer_attack_up",
+          "index": 1,
+          "frameName": "attack_up_0",
+          "anim": "wayfarer_attack_up",
+          "frame": "attack_up_0",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 19064.70000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_up",
+          "index": 2,
+          "frameName": "attack_up_1",
+          "anim": "wayfarer_attack_up",
+          "frame": "attack_up_1",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 19154.80000001192,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_up",
+          "index": 3,
+          "frameName": "attack_up_2",
+          "anim": "wayfarer_attack_up",
+          "frame": "attack_up_2",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 19204.70000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "hit",
+          "anim": "wayfarer_attack_up",
+          "frame": "attack_up_2",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 19205,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1,
+          "hit": {
+            "x": 268,
+            "y": 203,
+            "reach": 42,
+            "radius": 42,
+            "facing": "up",
+            "playerX": 268,
+            "playerY": 245,
+            "isHeavy": false,
+            "damageMultiplier": null,
+            "poiseDamage": null
+          }
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_up",
+          "index": 4,
+          "frameName": "attack_up_3",
+          "anim": "wayfarer_attack_up",
+          "frame": "attack_up_3",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 19307.60000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_up",
+          "index": 5,
+          "frameName": "attack_up_4",
+          "anim": "wayfarer_attack_up",
+          "frame": "attack_up_4",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 19368.5,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_up",
+          "index": 6,
+          "frameName": "attack_up_5",
+          "anim": "wayfarer_attack_up",
+          "frame": "attack_up_5",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 19447.70000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationcomplete",
+          "key": "wayfarer_attack_up",
+          "index": 6,
+          "frameName": "attack_up_5",
+          "anim": "wayfarer_attack_up",
+          "frame": "attack_up_5",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 19493,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationstart",
+          "key": "wayfarer_attack_combo_up",
+          "index": 1,
+          "frameName": "attack_combo_up_0",
+          "anim": "wayfarer_attack_combo_up",
+          "frame": "attack_combo_up_0",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 19545.60000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_combo_up",
+          "index": 2,
+          "frameName": "attack_combo_up_1",
+          "anim": "wayfarer_attack_combo_up",
+          "frame": "attack_combo_up_1",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 19606.40000000596,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_combo_up",
+          "index": 3,
+          "frameName": "attack_combo_up_2",
+          "anim": "wayfarer_attack_combo_up",
+          "frame": "attack_combo_up_2",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 19683.20000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "hit",
+          "anim": "wayfarer_attack_combo_up",
+          "frame": "attack_combo_up_2",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 19683.40000000596,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1,
+          "hit": {
+            "x": 268,
+            "y": 203,
+            "reach": 42,
+            "radius": 42,
+            "facing": "up",
+            "playerX": 268,
+            "playerY": 245,
+            "isHeavy": false,
+            "damageMultiplier": null,
+            "poiseDamage": null
+          }
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_combo_up",
+          "index": 4,
+          "frameName": "attack_combo_up_3",
+          "anim": "wayfarer_attack_combo_up",
+          "frame": "attack_combo_up_3",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 19777.30000001192,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_combo_up",
+          "index": 5,
+          "frameName": "attack_combo_up_4",
+          "anim": "wayfarer_attack_combo_up",
+          "frame": "attack_combo_up_4",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 19854.90000000596,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_combo_up",
+          "index": 6,
+          "frameName": "attack_combo_up_5",
+          "anim": "wayfarer_attack_combo_up",
+          "frame": "attack_combo_up_5",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 19898.60000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationcomplete",
+          "key": "wayfarer_attack_combo_up",
+          "index": 6,
+          "frameName": "attack_combo_up_5",
+          "anim": "wayfarer_attack_combo_up",
+          "frame": "attack_combo_up_5",
+          "texture": "black_knight_core_combat",
+          "facing": "up",
+          "locked": true,
+          "armed": true,
+          "t": 19976.10000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        }
+      ],
+      "final": {
+        "anim": "wayfarer_idle_up",
+        "frame": "armed_idle_up_0",
+        "texture": "black_knight_armed_idle",
+        "facing": "up",
+        "locked": false,
+        "armed": true,
+        "t": 20006.5,
+        "angle": 0,
+        "scale": [
+          1,
+          1
+        ],
+        "size": [
+          64,
+          64
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "offset": [
+          23,
+          46
+        ],
+        "aabbLocal": [
+          -9,
+          -18,
+          18,
+          12
+        ],
+        "actors": 1,
+        "rendered": true,
+        "nearest": 1
+      }
+    },
+    "combo-left": {
+      "trace": [
+        {
+          "evt": "animationstart",
+          "key": "wayfarer_attack_left",
+          "index": 1,
+          "frameName": "attack_left_0",
+          "anim": "wayfarer_attack_left",
+          "frame": "attack_left_0",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 20169.90000000596,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_left",
+          "index": 2,
+          "frameName": "attack_left_1",
+          "anim": "wayfarer_attack_left",
+          "frame": "attack_left_1",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 20296.80000001192,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_left",
+          "index": 3,
+          "frameName": "attack_left_2",
+          "anim": "wayfarer_attack_left",
+          "frame": "attack_left_2",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 20359.30000001192,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "hit",
+          "anim": "wayfarer_attack_left",
+          "frame": "attack_left_2",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 20359.80000001192,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1,
+          "hit": {
+            "x": 226,
+            "y": 245,
+            "reach": 42,
+            "radius": 42,
+            "facing": "left",
+            "playerX": 268,
+            "playerY": 245,
+            "isHeavy": false,
+            "damageMultiplier": null,
+            "poiseDamage": null
+          }
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_left",
+          "index": 4,
+          "frameName": "attack_left_3",
+          "anim": "wayfarer_attack_left",
+          "frame": "attack_left_3",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 20467,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_left",
+          "index": 5,
+          "frameName": "attack_left_4",
+          "anim": "wayfarer_attack_left",
+          "frame": "attack_left_4",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 20501.30000001192,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_left",
+          "index": 6,
+          "frameName": "attack_left_5",
+          "anim": "wayfarer_attack_left",
+          "frame": "attack_left_5",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 20562.90000000596,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationcomplete",
+          "key": "wayfarer_attack_left",
+          "index": 6,
+          "frameName": "attack_left_5",
+          "anim": "wayfarer_attack_left",
+          "frame": "attack_left_5",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 20782.10000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationstart",
+          "key": "wayfarer_attack_combo_left",
+          "index": 1,
+          "frameName": "attack_combo_left_0",
+          "anim": "wayfarer_attack_combo_left",
+          "frame": "attack_combo_left_0",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 20844.70000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_combo_left",
+          "index": 2,
+          "frameName": "attack_combo_left_1",
+          "anim": "wayfarer_attack_combo_left",
+          "frame": "attack_combo_left_1",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 20876.60000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_combo_left",
+          "index": 3,
+          "frameName": "attack_combo_left_2",
+          "anim": "wayfarer_attack_combo_left",
+          "frame": "attack_combo_left_2",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 20902.30000001192,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "hit",
+          "anim": "wayfarer_attack_combo_left",
+          "frame": "attack_combo_left_2",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 20902.60000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1,
+          "hit": {
+            "x": 226,
+            "y": 245,
+            "reach": 42,
+            "radius": 42,
+            "facing": "left",
+            "playerX": 268,
+            "playerY": 245,
+            "isHeavy": false,
+            "damageMultiplier": null,
+            "poiseDamage": null
+          }
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_combo_left",
+          "index": 4,
+          "frameName": "attack_combo_left_3",
+          "anim": "wayfarer_attack_combo_left",
+          "frame": "attack_combo_left_3",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 20980.40000000596,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_combo_left",
+          "index": 5,
+          "frameName": "attack_combo_left_4",
+          "anim": "wayfarer_attack_combo_left",
+          "frame": "attack_combo_left_4",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 21056.40000000596,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_combo_left",
+          "index": 6,
+          "frameName": "attack_combo_left_5",
+          "anim": "wayfarer_attack_combo_left",
+          "frame": "attack_combo_left_5",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 21107.20000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationcomplete",
+          "key": "wayfarer_attack_combo_left",
+          "index": 6,
+          "frameName": "attack_combo_left_5",
+          "anim": "wayfarer_attack_combo_left",
+          "frame": "attack_combo_left_5",
+          "texture": "black_knight_core_combat",
+          "facing": "left",
+          "locked": true,
+          "armed": true,
+          "t": 21173.30000001192,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        }
+      ],
+      "final": {
+        "anim": "wayfarer_idle_left",
+        "frame": "armed_idle_left_0",
+        "texture": "black_knight_armed_idle",
+        "facing": "left",
+        "locked": false,
+        "armed": true,
+        "t": 21207.20000000298,
+        "angle": 0,
+        "scale": [
+          1,
+          1
+        ],
+        "size": [
+          64,
+          64
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "offset": [
+          23,
+          46
+        ],
+        "aabbLocal": [
+          -9,
+          -18,
+          18,
+          12
+        ],
+        "actors": 1,
+        "rendered": true,
+        "nearest": 1
+      }
+    },
+    "combo-right": {
+      "trace": [
+        {
+          "evt": "animationstart",
+          "key": "wayfarer_attack_right",
+          "index": 1,
+          "frameName": "attack_right_0",
+          "anim": "wayfarer_attack_right",
+          "frame": "attack_right_0",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 21305.70000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_right",
+          "index": 2,
+          "frameName": "attack_right_1",
+          "anim": "wayfarer_attack_right",
+          "frame": "attack_right_1",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 21409.5,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_right",
+          "index": 3,
+          "frameName": "attack_right_2",
+          "anim": "wayfarer_attack_right",
+          "frame": "attack_right_2",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 21482,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "hit",
+          "anim": "wayfarer_attack_right",
+          "frame": "attack_right_2",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 21482.20000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1,
+          "hit": {
+            "x": 310,
+            "y": 245,
+            "reach": 42,
+            "radius": 42,
+            "facing": "right",
+            "playerX": 268,
+            "playerY": 245,
+            "isHeavy": false,
+            "damageMultiplier": null,
+            "poiseDamage": null
+          }
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_right",
+          "index": 4,
+          "frameName": "attack_right_3",
+          "anim": "wayfarer_attack_right",
+          "frame": "attack_right_3",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 21571.40000000596,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_right",
+          "index": 5,
+          "frameName": "attack_right_4",
+          "anim": "wayfarer_attack_right",
+          "frame": "attack_right_4",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 21647.5,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_right",
+          "index": 6,
+          "frameName": "attack_right_5",
+          "anim": "wayfarer_attack_right",
+          "frame": "attack_right_5",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 21687.30000001192,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationcomplete",
+          "key": "wayfarer_attack_right",
+          "index": 6,
+          "frameName": "attack_right_5",
+          "anim": "wayfarer_attack_right",
+          "frame": "attack_right_5",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 21761.70000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationstart",
+          "key": "wayfarer_attack_combo_right",
+          "index": 1,
+          "frameName": "attack_combo_right_0",
+          "anim": "wayfarer_attack_combo_right",
+          "frame": "attack_combo_right_0",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 21778.70000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_combo_right",
+          "index": 2,
+          "frameName": "attack_combo_right_1",
+          "anim": "wayfarer_attack_combo_right",
+          "frame": "attack_combo_right_1",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 21870.5,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_combo_right",
+          "index": 3,
+          "frameName": "attack_combo_right_2",
+          "anim": "wayfarer_attack_combo_right",
+          "frame": "attack_combo_right_2",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 21952.20000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "hit",
+          "anim": "wayfarer_attack_combo_right",
+          "frame": "attack_combo_right_2",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 21952.70000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1,
+          "hit": {
+            "x": 310,
+            "y": 245,
+            "reach": 42,
+            "radius": 42,
+            "facing": "right",
+            "playerX": 268,
+            "playerY": 245,
+            "isHeavy": false,
+            "damageMultiplier": null,
+            "poiseDamage": null
+          }
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_combo_right",
+          "index": 4,
+          "frameName": "attack_combo_right_3",
+          "anim": "wayfarer_attack_combo_right",
+          "frame": "attack_combo_right_3",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 22067.70000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_combo_right",
+          "index": 5,
+          "frameName": "attack_combo_right_4",
+          "anim": "wayfarer_attack_combo_right",
+          "frame": "attack_combo_right_4",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 22154.60000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationupdate",
+          "key": "wayfarer_attack_combo_right",
+          "index": 6,
+          "frameName": "attack_combo_right_5",
+          "anim": "wayfarer_attack_combo_right",
+          "frame": "attack_combo_right_5",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 22182.60000000894,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        },
+        {
+          "evt": "animationcomplete",
+          "key": "wayfarer_attack_combo_right",
+          "index": 6,
+          "frameName": "attack_combo_right_5",
+          "anim": "wayfarer_attack_combo_right",
+          "frame": "attack_combo_right_5",
+          "texture": "black_knight_core_combat",
+          "facing": "right",
+          "locked": true,
+          "armed": true,
+          "t": 22262.20000000298,
+          "angle": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "size": [
+            64,
+            64
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "offset": [
+            23,
+            46
+          ],
+          "aabbLocal": [
+            -9,
+            -18,
+            18,
+            12
+          ],
+          "actors": 1,
+          "rendered": true,
+          "nearest": 1
+        }
+      ],
+      "final": {
+        "anim": "wayfarer_idle_right",
+        "frame": "armed_idle_right_0",
+        "texture": "black_knight_movement",
+        "facing": "right",
+        "locked": false,
+        "armed": true,
+        "t": 22296.20000000298,
+        "angle": 0,
+        "scale": [
+          1,
+          1
+        ],
+        "size": [
+          64,
+          64
+        ],
+        "origin": [
+          0.5,
+          1
+        ],
+        "offset": [
+          23,
+          46
+        ],
+        "aabbLocal": [
+          -9,
+          -18,
+          18,
+          12
+        ],
+        "actors": 1,
+        "rendered": true,
+        "nearest": 1
+      }
+    }
+  },
+  "errors": [],
+  "httpErrors": [],
+  "warnings": [
+    [
+      "warning",
+      "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+    ],
+    [
+      "warning",
+      "[GraphicsQualitySystem] FPS dropped below 38 for 4s (23.0 FPS). Auto-fallback -> MEDIUM"
+    ],
+    [
+      "warning",
+      "[GraphicsQualitySystem] FPS dropped below 38 for 4s (22.7 FPS). Auto-fallback -> LOW"
+    ]
+  ],
+  "atlasRequests": [
+    [
+      200,
+      "black_knight_woodland.png"
+    ],
+    [
+      200,
+      "black_knight_button_hover.png"
+    ],
+    [
+      200,
+      "black_knight_button.png"
+    ],
+    [
+      200,
+      "black_knight_fallback.png"
+    ],
+    [
+      200,
+      "black_knight_cinematic.png"
+    ],
+    [
+      200,
+      "black_knight_armed_idle.json"
+    ],
+    [
+      200,
+      "black_knight_armed_idle.png"
+    ],
+    [
+      200,
+      "black_knight_movement.png"
+    ],
+    [
+      200,
+      "black_knight_core_combat.png"
+    ],
+    [
+      200,
+      "black_knight_core_combat.json"
+    ],
+    [
+      200,
+      "black_knight_movement.json"
+    ],
+    [
+      200,
+      "black_knight_portrait.png"
+    ],
+    [
+      200,
+      "black_knight_portrait.png"
+    ]
+  ],
+  "renderer": "canvas"
+}

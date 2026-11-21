@@ -1,0 +1,1256 @@
+{
+  "sha256": {
+    "black_knight_core_combat.png": "5126a4a490f84f1b31437fe110dfdeecebd184e07a4075b7531c9f4596c633fd",
+    "black_knight_core_combat.json": "24a80fdece9b739b69a43aa21d5d10077f342617b7c024211e4eae84819e352d"
+  },
+  "clips": {
+    "attack_down": [
+      {
+        "atlasFrame": "attack_down_0",
+        "bounds": [
+          17,
+          31,
+          44,
+          63
+        ],
+        "opaquePixels": 451,
+        "phase": "windup",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_down",
+          "satyr_attack_down"
+        ],
+        "sha256": "06efca77bbe1be548afe098283fb8a10623f1d67f0297968bf1ed0f18a997450"
+      },
+      {
+        "atlasFrame": "attack_down_1",
+        "bounds": [
+          19,
+          30,
+          44,
+          63
+        ],
+        "opaquePixels": 393,
+        "phase": "windup",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_down",
+          "satyr_attack_down"
+        ],
+        "sha256": "dc4ae31fa5544d97b468b08845cc5e1ca61b8bdd5164c180204c929da9120c2a"
+      },
+      {
+        "atlasFrame": "attack_down_2",
+        "bounds": [
+          15,
+          31,
+          49,
+          63
+        ],
+        "opaquePixels": 416,
+        "phase": "impact",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_down",
+          "satyr_attack_down"
+        ],
+        "sha256": "3e1f6e8978bfe7ed41515da81e4c2e82578705ae4973ad0f7ad7682ddd8e0eb7"
+      },
+      {
+        "atlasFrame": "attack_down_3",
+        "bounds": [
+          17,
+          32,
+          47,
+          63
+        ],
+        "opaquePixels": 409,
+        "phase": "follow-through",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_down",
+          "satyr_attack_down"
+        ],
+        "sha256": "749bb7b37dd449e40364d0bab6c69ae84c97dead25fa94b3588d734e7e2bdcdc"
+      },
+      {
+        "atlasFrame": "attack_down_4",
+        "bounds": [
+          19,
+          31,
+          42,
+          63
+        ],
+        "opaquePixels": 438,
+        "phase": "recovery",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_down",
+          "satyr_attack_down"
+        ],
+        "sha256": "3cf4487b1b9d7622228cc229860377fc4ce93ea5a357e87308d02d8b561c43d6"
+      },
+      {
+        "atlasFrame": "attack_down_5",
+        "bounds": [
+          17,
+          31,
+          42,
+          63
+        ],
+        "opaquePixels": 436,
+        "phase": "recovery",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_down",
+          "satyr_attack_down"
+        ],
+        "sha256": "5f1c3dc64c28ffc1054e0a8fbf0167383bc994375b1dcfe1998ee447761e3ace"
+      }
+    ],
+    "attack_up": [
+      {
+        "atlasFrame": "attack_up_0",
+        "bounds": [
+          19,
+          31,
+          46,
+          63
+        ],
+        "opaquePixels": 432,
+        "phase": "windup",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_up",
+          "satyr_attack_up"
+        ],
+        "sha256": "5046f9f9658ff6791e97f0b89ed5027a17a1a5830c4bf504148d853836cce0d9"
+      },
+      {
+        "atlasFrame": "attack_up_1",
+        "bounds": [
+          20,
+          30,
+          45,
+          63
+        ],
+        "opaquePixels": 413,
+        "phase": "windup",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_up",
+          "satyr_attack_up"
+        ],
+        "sha256": "abc6aa29ba21cc21e89f4fccbe5a2b26e757e4235adf4a5e37dd9957b28c4c9c"
+      },
+      {
+        "atlasFrame": "attack_up_2",
+        "bounds": [
+          16,
+          32,
+          54,
+          63
+        ],
+        "opaquePixels": 461,
+        "phase": "impact",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_up",
+          "satyr_attack_up"
+        ],
+        "sha256": "534d9b72b0a15ce859e925902028d019079def96db2acc1de42169b20aed5f98"
+      },
+      {
+        "atlasFrame": "attack_up_3",
+        "bounds": [
+          18,
+          32,
+          47,
+          63
+        ],
+        "opaquePixels": 387,
+        "phase": "follow-through",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_up",
+          "satyr_attack_up"
+        ],
+        "sha256": "20a5db1345f3a773b5aabb5aa93f388110a1321efab4ee39af0c203c34ea3113"
+      },
+      {
+        "atlasFrame": "attack_up_4",
+        "bounds": [
+          18,
+          32,
+          45,
+          63
+        ],
+        "opaquePixels": 425,
+        "phase": "recovery",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_up",
+          "satyr_attack_up"
+        ],
+        "sha256": "5a6e28c0b01bf1a06f6d23abc2d56ca820e102a10bef5d977edc54b840fbe7b3"
+      },
+      {
+        "atlasFrame": "attack_up_5",
+        "bounds": [
+          19,
+          31,
+          46,
+          63
+        ],
+        "opaquePixels": 433,
+        "phase": "recovery",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_up",
+          "satyr_attack_up"
+        ],
+        "sha256": "6ab15ea1da4d5217e46781b2a05859d76e95b3351270c7beca6fab2346c935b9"
+      }
+    ],
+    "attack_left": [
+      {
+        "atlasFrame": "attack_left_0",
+        "bounds": [
+          18,
+          31,
+          44,
+          63
+        ],
+        "opaquePixels": 386,
+        "phase": "windup",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_left",
+          "satyr_attack_left"
+        ],
+        "sha256": "cd13b0840297c043a49b15888ecff7ddd00f2c096eeffaf0a909be774de1a4aa"
+      },
+      {
+        "atlasFrame": "attack_left_1",
+        "bounds": [
+          24,
+          31,
+          45,
+          63
+        ],
+        "opaquePixels": 378,
+        "phase": "windup",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_left",
+          "satyr_attack_left"
+        ],
+        "sha256": "b8fcf8fe4f482cbe5811835c1166018a63b0f5f7736ecc0c462307555cfe35db"
+      },
+      {
+        "atlasFrame": "attack_left_2",
+        "bounds": [
+          10,
+          31,
+          47,
+          63
+        ],
+        "opaquePixels": 433,
+        "phase": "impact",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_left",
+          "satyr_attack_left"
+        ],
+        "sha256": "c8b85ca6c9d81bf9cf8544bd84474178bc52dabd223bc05c26e9ace7eb4cf421"
+      },
+      {
+        "atlasFrame": "attack_left_3",
+        "bounds": [
+          14,
+          32,
+          45,
+          63
+        ],
+        "opaquePixels": 401,
+        "phase": "follow-through",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_left",
+          "satyr_attack_left"
+        ],
+        "sha256": "faff116ea15212976e23ec6321cd3bd6379449f86fb66251246ba36c104cd5eb"
+      },
+      {
+        "atlasFrame": "attack_left_4",
+        "bounds": [
+          18,
+          32,
+          44,
+          63
+        ],
+        "opaquePixels": 375,
+        "phase": "recovery",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_left",
+          "satyr_attack_left"
+        ],
+        "sha256": "36b768dfd09a5770158aa4859f6f7f586a4dcb5bcb64397784d1fd3dec2b5655"
+      },
+      {
+        "atlasFrame": "attack_left_5",
+        "bounds": [
+          20,
+          31,
+          43,
+          63
+        ],
+        "opaquePixels": 362,
+        "phase": "recovery",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_left",
+          "satyr_attack_left"
+        ],
+        "sha256": "de0b8ca207e331e2ee6c904387f2d73bd6b8cc13bc4676b26392de9679099e77"
+      }
+    ],
+    "attack_right": [
+      {
+        "atlasFrame": "attack_right_0",
+        "bounds": [
+          20,
+          31,
+          46,
+          63
+        ],
+        "opaquePixels": 384,
+        "phase": "windup",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_right",
+          "satyr_attack_right"
+        ],
+        "sha256": "8ae24935c3eebee6ac7ccb7d93b94e9a10ab56a8bb6069474510759a76d4fde4"
+      },
+      {
+        "atlasFrame": "attack_right_1",
+        "bounds": [
+          18,
+          31,
+          40,
+          63
+        ],
+        "opaquePixels": 385,
+        "phase": "windup",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_right",
+          "satyr_attack_right"
+        ],
+        "sha256": "e8444134688a66e027f7afa92d208b5a275156ea5d95489343988c5f4658fc5b"
+      },
+      {
+        "atlasFrame": "attack_right_2",
+        "bounds": [
+          17,
+          32,
+          55,
+          63
+        ],
+        "opaquePixels": 442,
+        "phase": "impact",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_right",
+          "satyr_attack_right"
+        ],
+        "sha256": "2ff502a717ef74bf9f62cc9ea944f7d1ddfd25f03eb33b9e0fa89a13b31059a0"
+      },
+      {
+        "atlasFrame": "attack_right_3",
+        "bounds": [
+          19,
+          32,
+          49,
+          63
+        ],
+        "opaquePixels": 391,
+        "phase": "follow-through",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_right",
+          "satyr_attack_right"
+        ],
+        "sha256": "d7145eb71a26fa633cf9c3a6c1aee4ff4d14f54af00fba7bb50c0e3e53c421f3"
+      },
+      {
+        "atlasFrame": "attack_right_4",
+        "bounds": [
+          21,
+          31,
+          47,
+          63
+        ],
+        "opaquePixels": 380,
+        "phase": "recovery",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_right",
+          "satyr_attack_right"
+        ],
+        "sha256": "6dfefba402565989f0764ae3a44b0b084f28b9102505811375fbff4dbb814068"
+      },
+      {
+        "atlasFrame": "attack_right_5",
+        "bounds": [
+          22,
+          31,
+          45,
+          63
+        ],
+        "opaquePixels": 353,
+        "phase": "recovery",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_right",
+          "satyr_attack_right"
+        ],
+        "sha256": "f2011155d8f6fe8a6d1093698b7592c9e2ee780353fcba3071b57123b4a02040"
+      }
+    ],
+    "heavy_attack_down": [
+      {
+        "atlasFrame": "heavy_attack_down_0",
+        "bounds": [
+          15,
+          31,
+          44,
+          63
+        ],
+        "opaquePixels": 417,
+        "phase": "windup",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_down",
+          "satyr_heavy_attack_down"
+        ],
+        "sha256": "dcd3655546137278a6b1a46586adbfd7440a82b2496e9f68b4e3434410bd26a4"
+      },
+      {
+        "atlasFrame": "heavy_attack_down_1",
+        "bounds": [
+          18,
+          31,
+          46,
+          63
+        ],
+        "opaquePixels": 472,
+        "phase": "windup",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_down",
+          "satyr_heavy_attack_down"
+        ],
+        "sha256": "4557d757a5a7d3126ddf12a6b9726f1a6cd4fb960cd91723e5e60682498140d7"
+      },
+      {
+        "atlasFrame": "heavy_attack_down_2",
+        "bounds": [
+          19,
+          28,
+          42,
+          63
+        ],
+        "opaquePixels": 453,
+        "phase": "windup",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_down",
+          "satyr_heavy_attack_down"
+        ],
+        "sha256": "a756e630dac4111dc5588bbb1eb511f6868ff76898dbcaae14313d3cc4530003"
+      },
+      {
+        "atlasFrame": "heavy_attack_down_3",
+        "bounds": [
+          12,
+          33,
+          44,
+          63
+        ],
+        "opaquePixels": 435,
+        "phase": "impact",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_down",
+          "satyr_heavy_attack_down"
+        ],
+        "sha256": "d40cb5925835883da05be3fef276dee74fd9286e491c9291773032b498201b9a"
+      },
+      {
+        "atlasFrame": "heavy_attack_down_4",
+        "bounds": [
+          7,
+          36,
+          44,
+          63
+        ],
+        "opaquePixels": 408,
+        "phase": "recovery",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_down",
+          "satyr_heavy_attack_down"
+        ],
+        "sha256": "b03b35890e573c3337d4d77d96918c841b2ad707f25593e53c1f77958521e8b5"
+      },
+      {
+        "atlasFrame": "heavy_attack_down_5",
+        "bounds": [
+          13,
+          31,
+          43,
+          63
+        ],
+        "opaquePixels": 427,
+        "phase": "recovery",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_down",
+          "satyr_heavy_attack_down"
+        ],
+        "sha256": "0c5b44180422faabd2d0a11680414374c638199d2f66f10835d199d63aa4c2c1"
+      }
+    ],
+    "heavy_attack_up": [
+      {
+        "atlasFrame": "heavy_attack_up_0",
+        "bounds": [
+          19,
+          31,
+          49,
+          63
+        ],
+        "opaquePixels": 434,
+        "phase": "windup",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_up",
+          "satyr_heavy_attack_up"
+        ],
+        "sha256": "fa34627ba05a008527d60947facc0ffede39a159239a39e152948a4d447302dc"
+      },
+      {
+        "atlasFrame": "heavy_attack_up_1",
+        "bounds": [
+          19,
+          29,
+          45,
+          63
+        ],
+        "opaquePixels": 433,
+        "phase": "windup",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_up",
+          "satyr_heavy_attack_up"
+        ],
+        "sha256": "7c15b2c7ddb10fc034e0bb1188f0f369aba0c91e3dee5687291be148cc3d19a1"
+      },
+      {
+        "atlasFrame": "heavy_attack_up_2",
+        "bounds": [
+          19,
+          25,
+          44,
+          63
+        ],
+        "opaquePixels": 480,
+        "phase": "windup",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_up",
+          "satyr_heavy_attack_up"
+        ],
+        "sha256": "76c8619e1310db480d70e35901db0a9e3c91299383b925a06177b94713c12986"
+      },
+      {
+        "atlasFrame": "heavy_attack_up_3",
+        "bounds": [
+          15,
+          31,
+          47,
+          63
+        ],
+        "opaquePixels": 467,
+        "phase": "impact",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_up",
+          "satyr_heavy_attack_up"
+        ],
+        "sha256": "4d091a97eeaf5ac6469ffb6c7cb93199b518e32baf71a71f73bf3ae6f590e20a"
+      },
+      {
+        "atlasFrame": "heavy_attack_up_4",
+        "bounds": [
+          15,
+          38,
+          53,
+          63
+        ],
+        "opaquePixels": 375,
+        "phase": "recovery",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_up",
+          "satyr_heavy_attack_up"
+        ],
+        "sha256": "efaf982d049c0b1f05ef28ac605468c37eb145dc045d86b6f8f4df026b90f750"
+      },
+      {
+        "atlasFrame": "heavy_attack_up_5",
+        "bounds": [
+          17,
+          31,
+          47,
+          63
+        ],
+        "opaquePixels": 438,
+        "phase": "recovery",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_up",
+          "satyr_heavy_attack_up"
+        ],
+        "sha256": "39884fe4cbf010a0a299e4c98caafe43db41f7278dd2477fea137e50507e0038"
+      }
+    ],
+    "heavy_attack_left": [
+      {
+        "atlasFrame": "heavy_attack_left_0",
+        "bounds": [
+          17,
+          31,
+          46,
+          63
+        ],
+        "opaquePixels": 382,
+        "phase": "windup",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_left",
+          "satyr_heavy_attack_left"
+        ],
+        "sha256": "5f7ae212852f1d953c267696c5a49314c3de53f70cc682798a1bc032cf32c731"
+      },
+      {
+        "atlasFrame": "heavy_attack_left_1",
+        "bounds": [
+          19,
+          30,
+          48,
+          63
+        ],
+        "opaquePixels": 435,
+        "phase": "windup",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_left",
+          "satyr_heavy_attack_left"
+        ],
+        "sha256": "6560e98785add63c5c310533efe2b75d2d05a2315c38aa04167796e0fe1616bf"
+      },
+      {
+        "atlasFrame": "heavy_attack_left_2",
+        "bounds": [
+          19,
+          26,
+          46,
+          63
+        ],
+        "opaquePixels": 462,
+        "phase": "windup",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_left",
+          "satyr_heavy_attack_left"
+        ],
+        "sha256": "0e3bfbbbad184ba77ae0ea07baa2ff511526ce4a108034e530e1e76ae4749cd1"
+      },
+      {
+        "atlasFrame": "heavy_attack_left_3",
+        "bounds": [
+          11,
+          29,
+          47,
+          63
+        ],
+        "opaquePixels": 475,
+        "phase": "impact",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_left",
+          "satyr_heavy_attack_left"
+        ],
+        "sha256": "751e3efa96f5cbd59ba1bc5d70e05efe7721d7f40ebb3b268f58b49734af558a"
+      },
+      {
+        "atlasFrame": "heavy_attack_left_4",
+        "bounds": [
+          7,
+          36,
+          47,
+          63
+        ],
+        "opaquePixels": 420,
+        "phase": "recovery",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_left",
+          "satyr_heavy_attack_left"
+        ],
+        "sha256": "ec3f8db07fc031d1c09f901834f556abe7ffeeebfe84802b037cd54acf9899fa"
+      },
+      {
+        "atlasFrame": "heavy_attack_left_5",
+        "bounds": [
+          15,
+          30,
+          46,
+          63
+        ],
+        "opaquePixels": 416,
+        "phase": "recovery",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_left",
+          "satyr_heavy_attack_left"
+        ],
+        "sha256": "4c722ec3861baa34e9ce6bfbf52c4b295d519b38e6832761c4ec9e82bc0a842c"
+      }
+    ],
+    "heavy_attack_right": [
+      {
+        "atlasFrame": "heavy_attack_right_0",
+        "bounds": [
+          17,
+          31,
+          49,
+          63
+        ],
+        "opaquePixels": 432,
+        "phase": "windup",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_right",
+          "satyr_heavy_attack_right"
+        ],
+        "sha256": "2df1b252e4e7ca1b0f90fc50499f34104dc5466c8d04a9c09f85b0923d65f918"
+      },
+      {
+        "atlasFrame": "heavy_attack_right_1",
+        "bounds": [
+          17,
+          29,
+          46,
+          63
+        ],
+        "opaquePixels": 460,
+        "phase": "windup",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_right",
+          "satyr_heavy_attack_right"
+        ],
+        "sha256": "90d5f767b85b4600478d7ccf2ec371b26366148fbfdc686aed42fbf41e4b2170"
+      },
+      {
+        "atlasFrame": "heavy_attack_right_2",
+        "bounds": [
+          16,
+          25,
+          43,
+          63
+        ],
+        "opaquePixels": 475,
+        "phase": "windup",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_right",
+          "satyr_heavy_attack_right"
+        ],
+        "sha256": "4db9d99f261dd30632c8e43c4a769d1b4b114b31ced456f30b3c4c26d447a159"
+      },
+      {
+        "atlasFrame": "heavy_attack_right_3",
+        "bounds": [
+          12,
+          31,
+          47,
+          63
+        ],
+        "opaquePixels": 478,
+        "phase": "impact",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_right",
+          "satyr_heavy_attack_right"
+        ],
+        "sha256": "0a0443558776ae6d5bda0e8d9f7e6d94efd9b45d5a38d88e021f620f8d0b4024"
+      },
+      {
+        "atlasFrame": "heavy_attack_right_4",
+        "bounds": [
+          12,
+          36,
+          54,
+          63
+        ],
+        "opaquePixels": 422,
+        "phase": "recovery",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_right",
+          "satyr_heavy_attack_right"
+        ],
+        "sha256": "07aced41cd5521d39097f2daa73d6bdbed806487f9b584d5707134ca5bb64656"
+      },
+      {
+        "atlasFrame": "heavy_attack_right_5",
+        "bounds": [
+          16,
+          31,
+          47,
+          63
+        ],
+        "opaquePixels": 428,
+        "phase": "recovery",
+        "ms": 100,
+        "runtimeKeys": [
+          "wayfarer_heavy_attack_right",
+          "satyr_heavy_attack_right"
+        ],
+        "sha256": "f080ee1316f798d374dcb93c7829f5b70d96cbcad329b61945a1baf89b5a4468"
+      }
+    ],
+    "attack_combo_down": [
+      {
+        "atlasFrame": "attack_combo_down_0",
+        "bounds": [
+          17,
+          31,
+          44,
+          63
+        ],
+        "opaquePixels": 454,
+        "phase": "windup",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_down",
+          "satyr_attack_combo_down"
+        ],
+        "sha256": "94c7c935369c62356cf77720cfde9c929f2c17be7955763b932928f02960c6aa"
+      },
+      {
+        "atlasFrame": "attack_combo_down_1",
+        "bounds": [
+          19,
+          33,
+          43,
+          63
+        ],
+        "opaquePixels": 409,
+        "phase": "windup",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_down",
+          "satyr_attack_combo_down"
+        ],
+        "sha256": "915090f58fc03af1ff18e1f8bd1ed6a2093935e2e4d7e429052ccc255df569c5"
+      },
+      {
+        "atlasFrame": "attack_combo_down_2",
+        "bounds": [
+          16,
+          34,
+          50,
+          63
+        ],
+        "opaquePixels": 396,
+        "phase": "impact",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_down",
+          "satyr_attack_combo_down"
+        ],
+        "sha256": "4411c2c0cb8b2173efca83f610a6aa5afef215207cde707b87b33404adbac3a5"
+      },
+      {
+        "atlasFrame": "attack_combo_down_3",
+        "bounds": [
+          16,
+          34,
+          49,
+          63
+        ],
+        "opaquePixels": 433,
+        "phase": "follow-through",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_down",
+          "satyr_attack_combo_down"
+        ],
+        "sha256": "0ce6236a3670c32c6f54eef8861cb08ff2415d435ceacb4e5d5044610dfe796b"
+      },
+      {
+        "atlasFrame": "attack_combo_down_4",
+        "bounds": [
+          17,
+          32,
+          40,
+          63
+        ],
+        "opaquePixels": 406,
+        "phase": "recovery",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_down",
+          "satyr_attack_combo_down"
+        ],
+        "sha256": "14e9e11bce7e17254747f1b0e79146f58ab581ccc9369b742bb59f41c5cda5bb"
+      },
+      {
+        "atlasFrame": "attack_combo_down_5",
+        "bounds": [
+          17,
+          31,
+          43,
+          63
+        ],
+        "opaquePixels": 444,
+        "phase": "recovery",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_down",
+          "satyr_attack_combo_down"
+        ],
+        "sha256": "ea840a029a55be84aeacb1342fc301874ad763ae9f34a06075c36b2c3a59d74d"
+      }
+    ],
+    "attack_combo_up": [
+      {
+        "atlasFrame": "attack_combo_up_0",
+        "bounds": [
+          19,
+          31,
+          46,
+          63
+        ],
+        "opaquePixels": 436,
+        "phase": "windup",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_up",
+          "satyr_attack_combo_up"
+        ],
+        "sha256": "1a04005052b070bfc89ea5eeef36b64255d3dc10dbeff120b76e5154e086d79d"
+      },
+      {
+        "atlasFrame": "attack_combo_up_1",
+        "bounds": [
+          18,
+          31,
+          45,
+          63
+        ],
+        "opaquePixels": 427,
+        "phase": "windup",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_up",
+          "satyr_attack_combo_up"
+        ],
+        "sha256": "8aa3f4fba4864c4b3b0204b6c579c2a6cd51290b04a8a008ee1bfdbf95f9d3d4"
+      },
+      {
+        "atlasFrame": "attack_combo_up_2",
+        "bounds": [
+          14,
+          33,
+          52,
+          63
+        ],
+        "opaquePixels": 450,
+        "phase": "impact",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_up",
+          "satyr_attack_combo_up"
+        ],
+        "sha256": "0872d4c2621ae8f0ad07533b66592b28c779d5c9ebcbd808fc32aa533967a09a"
+      },
+      {
+        "atlasFrame": "attack_combo_up_3",
+        "bounds": [
+          17,
+          33,
+          52,
+          63
+        ],
+        "opaquePixels": 420,
+        "phase": "follow-through",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_up",
+          "satyr_attack_combo_up"
+        ],
+        "sha256": "b5ab2438385d62894d81fcdcf79a497f74976db5a9eaef2f6a0ff5b43a1def4b"
+      },
+      {
+        "atlasFrame": "attack_combo_up_4",
+        "bounds": [
+          17,
+          32,
+          45,
+          63
+        ],
+        "opaquePixels": 402,
+        "phase": "recovery",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_up",
+          "satyr_attack_combo_up"
+        ],
+        "sha256": "b7c8711ab396223e4c7cd8fc6b0ef2c57a0e7c30c5b08d29ba3b32538db76b9e"
+      },
+      {
+        "atlasFrame": "attack_combo_up_5",
+        "bounds": [
+          19,
+          31,
+          45,
+          63
+        ],
+        "opaquePixels": 428,
+        "phase": "recovery",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_up",
+          "satyr_attack_combo_up"
+        ],
+        "sha256": "6f09c6bddfc0b9350ccbbe0c87f7259159465d252e3eeec56ba3e86ea541ca65"
+      }
+    ],
+    "attack_combo_left": [
+      {
+        "atlasFrame": "attack_combo_left_0",
+        "bounds": [
+          18,
+          31,
+          44,
+          63
+        ],
+        "opaquePixels": 383,
+        "phase": "windup",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_left",
+          "satyr_attack_combo_left"
+        ],
+        "sha256": "5a751cb253912bf0fff15a38487b153cb08cced44dc35c15cffb031a0f80447d"
+      },
+      {
+        "atlasFrame": "attack_combo_left_1",
+        "bounds": [
+          21,
+          32,
+          44,
+          63
+        ],
+        "opaquePixels": 382,
+        "phase": "windup",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_left",
+          "satyr_attack_combo_left"
+        ],
+        "sha256": "6f651a2d20dea394bb3023d43d757b6976d2183fe17cf9e91e3f761b80410b44"
+      },
+      {
+        "atlasFrame": "attack_combo_left_2",
+        "bounds": [
+          10,
+          32,
+          47,
+          63
+        ],
+        "opaquePixels": 448,
+        "phase": "impact",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_left",
+          "satyr_attack_combo_left"
+        ],
+        "sha256": "103cc504b3d2682f2648ebd26e462eeaeb976edf682a68dbde7c68491f4ca737"
+      },
+      {
+        "atlasFrame": "attack_combo_left_3",
+        "bounds": [
+          11,
+          33,
+          45,
+          63
+        ],
+        "opaquePixels": 417,
+        "phase": "follow-through",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_left",
+          "satyr_attack_combo_left"
+        ],
+        "sha256": "b96c8b252f4b645ac04352914a796d42bb79ce223fe1c6fd8f691284c06732e7"
+      },
+      {
+        "atlasFrame": "attack_combo_left_4",
+        "bounds": [
+          16,
+          32,
+          45,
+          63
+        ],
+        "opaquePixels": 402,
+        "phase": "recovery",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_left",
+          "satyr_attack_combo_left"
+        ],
+        "sha256": "ac18af4c789f517462eb6bac40b4da637f8d2dcb49154fb164bdfd8300118ffc"
+      },
+      {
+        "atlasFrame": "attack_combo_left_5",
+        "bounds": [
+          20,
+          31,
+          43,
+          63
+        ],
+        "opaquePixels": 354,
+        "phase": "recovery",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_left",
+          "satyr_attack_combo_left"
+        ],
+        "sha256": "303cea2118e06f9da03bd9fba8f8fefe9c0e61445c7f04f857f5f1aac99a6a24"
+      }
+    ],
+    "attack_combo_right": [
+      {
+        "atlasFrame": "attack_combo_right_0",
+        "bounds": [
+          20,
+          31,
+          45,
+          63
+        ],
+        "opaquePixels": 375,
+        "phase": "windup",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_right",
+          "satyr_attack_combo_right"
+        ],
+        "sha256": "ef563f8d2545576b1015687842e5f5a2af997e202ca0ae109c1a1a44add07757"
+      },
+      {
+        "atlasFrame": "attack_combo_right_1",
+        "bounds": [
+          18,
+          32,
+          42,
+          63
+        ],
+        "opaquePixels": 403,
+        "phase": "windup",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_right",
+          "satyr_attack_combo_right"
+        ],
+        "sha256": "7a35b2dd85cdb5580f9b46941d5714eaf5992e92488200d6c59b659c2109ad39"
+      },
+      {
+        "atlasFrame": "attack_combo_right_2",
+        "bounds": [
+          18,
+          32,
+          53,
+          63
+        ],
+        "opaquePixels": 454,
+        "phase": "impact",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_right",
+          "satyr_attack_combo_right"
+        ],
+        "sha256": "6831655c7a64f07c0a8747f4f06f3dd1bf3734cbd3a9bec3a9ed4fa45e5686e8"
+      },
+      {
+        "atlasFrame": "attack_combo_right_3",
+        "bounds": [
+          19,
+          32,
+          52,
+          63
+        ],
+        "opaquePixels": 424,
+        "phase": "follow-through",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_right",
+          "satyr_attack_combo_right"
+        ],
+        "sha256": "e39f206136b12f5bee92876bf0ac4cb36ad411f1e93eee51b2040a96d90fddcb"
+      },
+      {
+        "atlasFrame": "attack_combo_right_4",
+        "bounds": [
+          21,
+          32,
+          48,
+          63
+        ],
+        "opaquePixels": 380,
+        "phase": "recovery",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_right",
+          "satyr_attack_combo_right"
+        ],
+        "sha256": "fb235fde2bdccead25d44d90e5b79fd5261523209e27ed70442375feef7c3ea2"
+      },
+      {
+        "atlasFrame": "attack_combo_right_5",
+        "bounds": [
+          22,
+          31,
+          45,
+          63
+        ],
+        "opaquePixels": 351,
+        "phase": "recovery",
+        "ms": 75,
+        "runtimeKeys": [
+          "wayfarer_attack_combo_right",
+          "satyr_attack_combo_right"
+        ],
+        "sha256": "5f12e17beb0b8b821b12acf1c0f1f4d78f8e65498368a5e044409c4f6622ec6f"
+      }
+    ]
+  }
+}

@@ -1,0 +1,210 @@
+{
+  "mode": "canvas",
+  "phase": "after",
+  "runs": {},
+  "errors": [],
+  "httpErrors": [],
+  "warnings": [
+    [
+      "warning",
+      "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+    ],
+    [
+      "warning",
+      "[GraphicsQualitySystem] FPS dropped below 38 for 4s (24.4 FPS). Auto-fallback -> MEDIUM"
+    ]
+  ],
+  "atlasRequests": [
+    [
+      200,
+      "black_knight_woodland.png"
+    ],
+    [
+      200,
+      "black_knight_fallback.png"
+    ],
+    [
+      200,
+      "black_knight_button.png"
+    ],
+    [
+      200,
+      "black_knight_cinematic.png"
+    ],
+    [
+      200,
+      "black_knight_armed_idle.json"
+    ],
+    [
+      200,
+      "black_knight_armed_idle.png"
+    ],
+    [
+      200,
+      "black_knight_button_hover.png"
+    ],
+    [
+      200,
+      "black_knight_movement.png"
+    ],
+    [
+      200,
+      "black_knight_movement.json"
+    ],
+    [
+      200,
+      "black_knight_core_combat.png"
+    ],
+    [
+      200,
+      "black_knight_core_combat.json"
+    ],
+    [
+      200,
+      "black_knight_portrait.png"
+    ],
+    [
+      200,
+      "black_knight_portrait.png"
+    ]
+  ],
+  "renderer": "canvas",
+  "f9": {
+    "debugOverlay": "object",
+    "devPanel": "object",
+    "devModeKeyHandler": "function",
+    "worldEventSystem": "object",
+    "isDebugBoxesVisible": true,
+    "devManagerState": true
+  },
+  "targetProvision": {
+    "created": true,
+    "count": 1,
+    "position": [
+      310,
+      245
+    ]
+  },
+  "hpTimeline": [
+    [
+      "wayfarer_attack_right",
+      2,
+      1000
+    ],
+    [
+      "wayfarer_attack_right",
+      3,
+      1000
+    ],
+    [
+      "player_attack",
+      3,
+      990
+    ],
+    [
+      "wayfarer_attack_right",
+      4,
+      990
+    ],
+    [
+      "wayfarer_attack_right",
+      5,
+      990
+    ],
+    [
+      "wayfarer_attack_right",
+      6,
+      990
+    ],
+    [
+      "wayfarer_heavy_attack_right",
+      2,
+      990
+    ],
+    [
+      "wayfarer_heavy_attack_right",
+      3,
+      990
+    ],
+    [
+      "wayfarer_heavy_attack_right",
+      4,
+      990
+    ],
+    [
+      "player_attack",
+      4,
+      968
+    ],
+    [
+      "wayfarer_heavy_attack_right",
+      5,
+      968
+    ],
+    [
+      "wayfarer_heavy_attack_right",
+      6,
+      968
+    ]
+  ],
+  "listenersBefore": [
+    3,
+    1,
+    1
+  ],
+  "cancelResult": {
+    "hp": 2,
+    "isHurt": true,
+    "listeners": [
+      3,
+      1,
+      2
+    ]
+  },
+  "listenersAfter": [
+    3,
+    1,
+    1
+  ],
+  "pauseResume": {
+    "anim": "wayfarer_idle_right",
+    "frame": "armed_idle_right_3",
+    "texture": "black_knight_movement",
+    "facing": "right",
+    "locked": false,
+    "armed": true,
+    "t": 14393.800000011921,
+    "angle": 0,
+    "scale": [
+      1,
+      1
+    ],
+    "size": [
+      64,
+      64
+    ],
+    "origin": [
+      0.5,
+      1
+    ],
+    "offset": [
+      23,
+      46
+    ],
+    "aabbLocal": [
+      -9,
+      -18,
+      18,
+      12
+    ],
+    "actors": 1,
+    "rendered": true,
+    "nearest": 1
+  },
+  "performance": {
+    "animationFrames": 120,
+    "fps": 33.21,
+    "p50Ms": 16.700000000000728,
+    "p95Ms": 66.59999999999854
+  }
+}

@@ -1,21 +1,21 @@
-# V153-BATCH-04C-K2 — Ma trận hoạt ảnh Black Knight
+# V153-BATCH-04C-K3 — Ma trận hoạt ảnh Black Knight
 
-**21/11/2026 · 6/26 nhóm bốn hướng RUNTIME_TESTED · 20 nhóm còn lại giữ ở K3**
+**21/11/2026 · 6 nhóm đã nghiệm thu ở K1/K2 · 4 nhóm K3-A · 16 nhóm K3 còn OPEN**
 
-`6 QA` là sáu frame bổ sung đã qua kiểm tra kỹ thuật và hướng nhìn. `Ứng viên` là artwork chờ duyệt. `Nguồn` ghi clip thực sự có trong Source Library. Các clip nguồn là profile RIGHT. `Pha nguồn` dùng ô tương ứng trong clip gốc. Các ô `Thiếu` chưa có clip bốn hướng phù hợp. `6 runtime` nghĩa là sáu frame đã đóng atlas, nạp và quan sát trong Chromium. Các hàng từ Light Attack trở xuống ghi coverage artwork nguồn hoặc pha nguồn. Các clip tương ứng tiếp tục dùng registry legacy ở runtime nếu có.
+`4D` = PASS LOCAL — 4-DIR VERIFIED. Các chiều trạng thái được ghi theo thứ tự: Artwork validated / Runtime tested / Gameplay tested / Mirrored / Temporary fallback / Blocked / Not tested. Với các ô `4D`, giá trị là Có/Có/Có/Không/Không/Không/Không trong phạm vi từng nhóm đã nghiệm thu. Với các ô `Thiếu`, `Nguồn`, `Pha nguồn` hoặc `Ứng viên`, giá trị là Không/Không/Không/Không/Không/Không/Có đối với bản tích hợp K3. Mục Có ở phần nguồn ghi đúng clip tham chiếu đang có. Các nhóm OPEN có thể tiếp tục dùng key legacy hiện hành.
 
 | Animation | DOWN | UP | LEFT | RIGHT | Đối chiếu Source Library |
 |---|---|---|---|---|---|
-| Armed Idle | 6 runtime · K1 | 6 runtime · K1 | 6 runtime · K1 R2 | 6 runtime · K2 custom | 03 Fellor và toàn bộ atlas K1 giữ nguyên. RIGHT chuyển visual ở K2 sau tái hiện P0. |
-| Armed Walk | 6 runtime · custom | 6 runtime · custom | 6 runtime · custom | 6 runtime · custom | Artwork Walk riêng ở atlas K2 |
-| Armed Run | 6 runtime · custom | 6 runtime · custom | 6 runtime · custom | 6 runtime · custom | 15 Armed Run Fellor giữ 12 nguồn RIGHT, runtime dùng profile custom đồng nhất. |
-| Unarmed Idle | 6 runtime · custom | 6 runtime · custom | 6 runtime · custom | 6 runtime · custom | 04 Unarmed Idle Fellor giữ 6 nguồn RIGHT. |
-| Unarmed Walk | 6 runtime · custom | 6 runtime · custom | 6 runtime · custom | 6 runtime · custom | Artwork Walk riêng, vỏ kiếm tối ở phía lưng. |
-| Unarmed Run | 6 runtime · custom | 6 runtime · custom | 6 runtime · custom | 6 runtime · custom | 14 Unarmed Run Fellor giữ 12 nguồn RIGHT. |
-| Light Attack | Thiếu | Thiếu | Thiếu | 40 nguồn | 08–11 Attack 1–4 |
-| Heavy Attack | Thiếu | Thiếu | Thiếu | 40 nguồn | 05–07 Heavy Attack 1–3 |
-| Attack Combo | Thiếu | Thiếu | Thiếu | Pha nguồn | 05–11, theo ranh từng đòn |
-| Attack Recovery | Thiếu | Thiếu | Thiếu | Pha nguồn | Cuối các đòn 05–11 và 26 |
+| Armed Idle | 6 4D · K1 | 6 4D · K1 | 6 4D · K1 R2 | 6 4D · K2 custom | 03 Fellor và toàn bộ atlas K1 giữ nguyên. RIGHT chuyển visual ở K2 sau tái hiện P0. |
+| Armed Walk | 6 4D · custom | 6 4D · custom | 6 4D · custom | 6 4D · custom | Artwork Walk riêng ở atlas K2 |
+| Armed Run | 6 4D · custom | 6 4D · custom | 6 4D · custom | 6 4D · custom | 15 Armed Run Fellor giữ 12 nguồn RIGHT, runtime dùng profile custom đồng nhất. |
+| Unarmed Idle | 6 4D · custom | 6 4D · custom | 6 4D · custom | 6 4D · custom | 04 Unarmed Idle Fellor giữ 6 nguồn RIGHT. |
+| Unarmed Walk | 6 4D · custom | 6 4D · custom | 6 4D · custom | 6 4D · custom | Artwork Walk riêng, vỏ kiếm tối ở phía lưng. |
+| Unarmed Run | 6 4D · custom | 6 4D · custom | 6 4D · custom | 6 4D · custom | 14 Unarmed Run Fellor giữ 12 nguồn RIGHT. |
+| Light Attack | 6 4D | 6 4D | 6 4D | 6 4D | Custom, 08–11 Fellor tham chiếu. Prefix `attack`, 75 ms, impact 2. |
+| Heavy Attack | 6 4D | 6 4D | 6 4D | 6 4D | Custom, 05–07 Fellor tham chiếu. Prefix `heavy_attack`, 100 ms, impact 3. |
+| Attack Combo | 6 4D | 6 4D | 6 4D | 6 4D | Custom. Prefix `attack_combo`, 75 ms, impact 2. |
+| Attack Recovery | 2 4D mỗi đòn | 2 4D mỗi đòn | 2 4D mỗi đòn | 2 4D mỗi đòn | Frame 4–5 ở mỗi đòn trên rồi về Armed Idle. |
 | Thrust | Thiếu | Thiếu | Thiếu | Pha nguồn | 11 Attack 4 |
 | Ground Slam | Thiếu | Thiếu | Thiếu | Ứng viên nguồn | 10 Attack 3 và 05 Heavy Attack 1 |
 | Flame Stream | Thiếu | Thiếu | Thiếu | Pha nguồn | 11 Attack 4 |
@@ -41,3 +41,6 @@ Bản thử R2 có SHA-256 `9053abcc4536c7128e46d7b80820d736f36ce776df96323f2a68
 
 
 K2 dùng atlas RGBA 896×576 và 126 frame đã xác minh. Kích thước mỗi frame 64×64, origin (0.5, 1.0), mốc chân y=63, body 18×12 offset (23,46). Idle 70 ms/frame, Walk 170 ms/frame, Run 140 ms/frame. Bốn hướng của cả năm nhóm K2 đều có sáu frame. Artwork rút và tra kiếm theo chuyển động riêng vẫn giữ trạng thái OPEN. [Báo cáo K2](V153_B04_K2_MOVEMENT_REPORT.md) · [Atlas và nguồn từng clip](../../../public/assets/characters/black_knight/black_knight_movement.json) · [Runtime](Visuals/V153_B04C_K2)
+
+
+K3-A dùng atlas `black_knight_core_combat`, frame 64×64, origin (0.5,1), neo chân y=63, body Arcade 18×12 offset (23,46). Registry `wayfarer_<prefix>_<hướng>` và `satyr_<prefix>_<hướng>` dùng cùng frame `<prefix>_<hướng>_<i>`. Timing, từng bounds, nguồn, hash, test và ảnh trước/sau trong báo cáo. [K3](V153_B04_K3_COMBAT_REPORT.md) · [Atlas và metadata](../../../public/assets/characters/black_knight/black_knight_core_combat.json)
