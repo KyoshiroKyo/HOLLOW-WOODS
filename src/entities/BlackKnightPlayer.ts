@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import { CORE_COMBAT_CLIPS, CORE_COMBAT_FRAMES, type CoreCombatAction, type DefenseAction } from '../animation/BlackKnightAnimations';
+import { CORE_COMBAT_CLIPS, CORE_COMBAT_FRAMES, EXTENDED_SKILL_CLIPS, type CoreCombatAction, type DefenseAction } from '../animation/BlackKnightAnimations';
 import { DeveloperModeManager } from '../debug/DeveloperModeManager';
 import { 
   SATYR_SHEET_KEY,
@@ -7,6 +7,9 @@ import {
   BLACK_KNIGHT_ARMED_IDLE_KEY,
   BLACK_KNIGHT_CORE_COMBAT_KEY,
   BLACK_KNIGHT_DEFENSE_KEY,
+  BLACK_KNIGHT_EXTENDED_SKILLS_KEY,
+  WAYFARER_FRAME_WIDTH,
+  WAYFARER_FRAME_HEIGHT,
   WAYFARER_USE_PURE_ARTIST_SPRITES,
   WAYFARER_IDLE_KEY,
   WAYFARER_ORIGIN_X,
@@ -150,7 +153,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
   private _isStaminaExhausted: boolean = false;
   private _lastAttackTime: number = 0;
   private _lastHeavyAttackTime: number = 0;
-  private cancelCoreAttack?: () => void;
+  private cancelAttackAnimation?: () => void;
   private defenseTimer?: Phaser.Time.TimerEvent;
   private attackCombo?: { facing: FacingDirection; remainingMs: number };
   private _lastWeaponArtTime: number = 0;
@@ -211,6 +214,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       body.setSize(WAYFARER_BODY_WIDTH, WAYFARER_BODY_HEIGHT);
       body.setOffset(WAYFARER_BODY_OFFSET_X, WAYFARER_BODY_OFFSET_Y);
       body.setCollideWorldBounds(true);
+      this.on(Phaser.Animations.Events.ANIMATION_START, this.syncBodyFootAnchor, this);
     }
 
     // Khởi tạo phím điều khiển
@@ -229,6 +233,18 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     // Hoạt ảnh mặc định ban đầu: The Mossbound Wayfarer đứng thở nhẹ hướng DOWN
     const defaultAnim = this.scene.anims.exists('wayfarer_idle_down') ? 'wayfarer_idle_down' : 'satyr_idle_down';
     this.play(defaultAnim);
+  }
+
+  private syncBodyFootAnchor(): void {
+    const body = this.body as Phaser.Physics.Arcade.Body;
+    // Restore the standard origin when leaving an atlas with a custom VFX pivot.
+    if (!this.frame.customPivot && (this.originX !== WAYFARER_ORIGIN_X || this.originY !== WAYFARER_ORIGIN_Y)) {
+      this.setOrigin(WAYFARER_ORIGIN_X, WAYFARER_ORIGIN_Y);
+    }
+    // Wide VFX frames still use the same local AABB relative to the foot pivot.
+    const localX = WAYFARER_BODY_OFFSET_X - WAYFARER_FRAME_WIDTH * WAYFARER_ORIGIN_X;
+    const localY = WAYFARER_BODY_OFFSET_Y - WAYFARER_FRAME_HEIGHT * WAYFARER_ORIGIN_Y;
+    body.setOffset(this.displayOriginX + localX, this.displayOriginY + localY);
   }
 
   private setupInput(): void {
@@ -1548,7 +1564,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
    */
   public forceUnlockActionState(): void {
     if (this._isDead) return;
-    this.cancelCoreAttack?.();
+    this.cancelAttackAnimation?.();
     this.clearDefenseTimer();
     if (this.texture.key === BLACK_KNIGHT_DEFENSE_KEY && this.anims.isPlaying) this.anims.stop();
     if (this._isRolling && this.body) this.setVelocity(0, 0);
@@ -1625,7 +1641,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     const combo = this.attackCombo;
     const action = combo?.facing === this.facing
       ? 'attack_combo' : 'attack';
-    this.playCoreAttack(action, weaponDef);
+    this.playAttackAnimation(action, weaponDef);
     return true;
   }
 
@@ -1652,27 +1668,30 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     }
     this._lastHeavyAttackTime = now;
 
-    this.playCoreAttack('heavy_attack', weaponDef);
+    this.playAttackAnimation('heavy_attack', weaponDef);
     return true;
   }
 
-  private playCoreAttack(action: CoreCombatAction, weapon: WeaponDef): void {
+  private playAttackAnimation(action: CoreCombatAction | 'weapon_art', weapon: WeaponDef): void {
     const heavy = action === 'heavy_attack';
+    const weaponArt = action === 'weapon_art';
     const facing = this.facing;
-    const clip = CORE_COMBAT_CLIPS[action];
+    const clip = weaponArt ? EXTENDED_SKILL_CLIPS.weapon_art : CORE_COMBAT_CLIPS[action];
+    const atlas = weaponArt ? BLACK_KNIGHT_EXTENDED_SKILLS_KEY : BLACK_KNIGHT_CORE_COMBAT_KEY;
     const key = `wayfarer_${action}_${facing}`;
     const animation = this.scene.anims.get(key);
     const useAttackClip = animation?.frames.length === CORE_COMBAT_FRAMES &&
       (!WAYFARER_USE_PURE_ARTIST_SPRITES ||
-        animation.frames.every(frame => frame.textureKey === BLACK_KNIGHT_CORE_COMBAT_KEY));
+        animation.frames.every(frame => frame.textureKey === atlas));
     const events = Phaser.Animations.Events;
     const duration = CORE_COMBAT_FRAMES * clip.frameMs;
 
     this.attackCombo = undefined;
     this._isWeaponDrawn = true;
-    this._isAttacking = !heavy;
+    this._isAttacking = !heavy && !weaponArt;
     this._isHeavyAttacking = heavy;
-    // Core attacks use a scene-time watchdog, which pauses with their frames.
+    this._isWeaponArting = weaponArt;
+    // Attacks use a scene-time watchdog, which pauses with their frames.
     this._actionLockTimestamp = 0;
     this.setVelocity(0, 0);
 
@@ -1683,7 +1702,25 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       if (struck) return;
       struck = true;
       AudioManager.getInstance().playAttackSwing();
-      this.emitCoreAttackHit(facing, weapon, heavy);
+      if (weaponArt) {
+        this.emit('player_attack', {
+          x: this.x,
+          y: this.y,
+          radius: 96,
+          reach: 0,
+          facing,
+          playerX: this.x,
+          playerY: this.y,
+          weapon,
+          isWeaponArt: true,
+          isAoE: true,
+          knockback: 220,
+          stunDuration: 2.0,
+          damageMultiplier: 2.8
+        });
+      } else {
+        this.emitCoreAttackHit(facing, weapon, heavy);
+      }
     };
     const clear = () => {
       this.off(events.ANIMATION_UPDATE, onFrame);
@@ -1691,9 +1728,10 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       this.off(events.ANIMATION_STOP, onStop);
       impactTimer?.remove();
       endTimer?.remove();
-      this.cancelCoreAttack = undefined;
+      this.cancelAttackAnimation = undefined;
       this._isAttacking = false;
       this._isHeavyAttacking = false;
+      this._isWeaponArting = false;
     };
     const resolve = (completed: boolean) => {
       clear();
@@ -1718,7 +1756,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     const onStop = (anim: Phaser.Animations.Animation) => {
       if (anim.key === key) clear();
     };
-    this.cancelCoreAttack = clear;
+    this.cancelAttackAnimation = clear;
 
     if (useAttackClip) {
       this.on(events.ANIMATION_UPDATE, onFrame);
@@ -1726,6 +1764,8 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       this.on(events.ANIMATION_STOP, onStop);
       endTimer = this.scene.time.addEvent(watchdog);
       this.play(key);
+      // Weapon Art already hits on input. Start on its authored impact frame.
+      if (clip.impactFrame === 0) strike();
     } else {
       // If the atlas is unavailable, retain the matching artist idle and
       // apply the existing attack through scene time without a legacy sprite.
@@ -1734,8 +1774,9 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       if (idle && (texture === BLACK_KNIGHT_ARMED_IDLE_KEY || texture === BLACK_KNIGHT_MOVEMENT_KEY)) {
         this.play(idle, true);
       }
-      impactTimer = this.scene.time.delayedCall(clip.impactFrame * clip.frameMs, strike);
       endTimer = this.scene.time.delayedCall(duration, () => resolve(false));
+      if (clip.impactFrame === 0) strike();
+      else impactTimer = this.scene.time.delayedCall(clip.impactFrame * clip.frameMs, strike);
     }
   }
 
@@ -1783,52 +1824,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     }
     this._lastWeaponArtTime = now;
 
-    this._isWeaponDrawn = true;
-    this._isWeaponArting = true;
-    this._actionLockTimestamp = performance.now();
-    (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
-
-    AudioManager.getInstance().playAttackSwing();
-
-    this.emit('player_attack', {
-      x: this.x,
-      y: this.y,
-      radius: 96,
-      reach: 0,
-      facing: this.facing,
-      playerX: this.x,
-      playerY: this.y,
-      weapon: weaponDef,
-      isWeaponArt: true,
-      isAoE: true,
-      knockback: 220,
-      stunDuration: 2.0,
-      damageMultiplier: 2.8
-    });
-
-    const wayfarerKey = `wayfarer_weapon_art_${this.facing}`;
-    const keyToPlay = this.scene.anims.exists(wayfarerKey) ? wayfarerKey : `wayfarer_attack_${this.facing}`;
-    this.safePlayAnim(keyToPlay, true);
-
-    const onAnimComplete = (anim: Phaser.Animations.Animation) => {
-      if (anim.key === keyToPlay) {
-        this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
-        this._isWeaponArting = false;
-        this._actionLockTimestamp = 0;
-        this.playIdleAnim();
-      }
-    };
-    this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
-
-    this.scene.time.delayedCall(700, () => {
-      if (this._isWeaponArting) {
-        this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
-        this._isWeaponArting = false;
-        this._actionLockTimestamp = 0;
-        this.playIdleAnim();
-      }
-    });
-
+    this.playAttackAnimation('weapon_art', weaponDef);
     return true;
   }
 
@@ -1969,7 +1965,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       return false;
     }
 
-    this.cancelCoreAttack?.();
+    this.cancelAttackAnimation?.();
     this._isTogglingWeapon = false;
     this.attackCombo = undefined;
     this._isHurt = true;
@@ -2001,7 +1997,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
   public die(): void {
     if (this._isDead) return;
 
-    this.cancelCoreAttack?.();
+    this.cancelAttackAnimation?.();
     this.clearDefenseTimer();
     this._isRolling = this._isInvulnerable = this._isTogglingWeapon = this._isParrying = false;
     this.attackCombo = undefined;
@@ -2266,11 +2262,6 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       if (!dev.isEnabled || !dev.isInfiniteStamina) this.stats.stamina = Math.max(0, this.stats.stamina - 10);
       this.stats.isLanternOn = true;
       (this.scene as any).audioManager?.playSfx?.('lantern_ignite');
-      // V152-05: Chạy anim wayfarer_buff khi bật sáng Vòng Sáng
-      const buffKey = `wayfarer_buff_${this.facing}`;
-      if (this.scene.anims.exists(buffKey)) {
-        this.safePlayAnim(buffKey, false);
-      }
     } else {
       this.stats.isLanternOn = false;
       (this.scene as any).audioManager?.playSfx?.('lantern_extinguish');
@@ -2450,7 +2441,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
   }
 
   public destroy(fromScene?: boolean): void {
-    this.cancelCoreAttack?.();
+    this.cancelAttackAnimation?.();
     this.clearDefenseTimer();
     if (this.scene && this.scene.input) {
       this.scene.input.off('pointerdown', this.boundPointerDown);

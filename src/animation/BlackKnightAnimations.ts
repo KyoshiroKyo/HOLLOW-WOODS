@@ -4,6 +4,7 @@ import {
   BLACK_KNIGHT_MOVEMENT_KEY,
   BLACK_KNIGHT_CORE_COMBAT_KEY,
   BLACK_KNIGHT_DEFENSE_KEY,
+  BLACK_KNIGHT_EXTENDED_SKILLS_KEY,
   WAYFARER_USE_PURE_ARTIST_SPRITES,
   WAYFARER_IDLE_KEY,
   WAYFARER_WALK_KEY,
@@ -82,6 +83,18 @@ export const DEFENSE_CLIPS = {
 } as const;
 export type DefenseAction = keyof typeof DEFENSE_CLIPS;
 
+// Only Weapon Art has an approved gameplay entry point.
+export const EXTENDED_SKILL_CLIPS = {
+  armed_buff: { frameMs: 140 },
+  unarmed_buff: { frameMs: 140 },
+  thrust: { frameMs: 70 },
+  ground_slam: { frameMs: 100 },
+  flame_stream: { frameMs: 100 },
+  fire_wave: { frameMs: 95 },
+  aerial_somersault: { frameMs: 100 },
+  weapon_art: { frameMs: 1000 / 12, impactFrame: 0, recoveryFrame: 1 },
+} as const;
+
 interface ArtistAction {
   frames: Phaser.Types.Animations.AnimationFrame[][];
   frameMs: number;
@@ -152,6 +165,9 @@ export function registerWayfarerAnimations(anims: Phaser.Animations.AnimationMan
   if (WAYFARER_USE_PURE_ARTIST_SPRITES) {
     collect(BLACK_KNIGHT_CORE_COMBAT_KEY, CORE_COMBAT_CLIPS);
     collect(BLACK_KNIGHT_DEFENSE_KEY, DEFENSE_CLIPS);
+    collect(BLACK_KNIGHT_EXTENDED_SKILLS_KEY, EXTENDED_SKILL_CLIPS);
+    const armedBuff = artistActions.get('armed_buff');
+    if (armedBuff) artistActions.set('buff', armedBuff);
   }
 
   for (const cfg of WAYFARER_CONFIGS) {

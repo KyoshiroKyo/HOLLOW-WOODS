@@ -14,6 +14,7 @@ import {
   BLACK_KNIGHT_MOVEMENT_KEY,
   BLACK_KNIGHT_CORE_COMBAT_KEY,
   BLACK_KNIGHT_DEFENSE_KEY,
+  BLACK_KNIGHT_EXTENDED_SKILLS_KEY,
   WAYFARER_USE_PURE_ARTIST_SPRITES,
   WAYFARER_IDLE_KEY,
   WAYFARER_WALK_KEY,
@@ -518,6 +519,11 @@ export class PreloadScene extends Phaser.Scene {
         BLACK_KNIGHT_DEFENSE_KEY,
         'assets/characters/black_knight/black_knight_defense.png',
         'assets/characters/black_knight/black_knight_defense.json'
+      );
+      this.load.atlas(
+        BLACK_KNIGHT_EXTENDED_SKILLS_KEY,
+        'assets/characters/black_knight/black_knight_extended_skills.png',
+        'assets/characters/black_knight/black_knight_extended_skills.json'
       );
     }
 
