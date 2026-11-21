@@ -1,6 +1,6 @@
 # V153-BATCH-04C-K3 — Ma trận hoạt ảnh Black Knight
 
-**21/11/2026 · 6 nhóm đã nghiệm thu ở K1/K2 · 4 nhóm K3-A · 16 nhóm K3 còn OPEN**
+**21/11/2026 · 6 nhóm đã nghiệm thu ở K1/K2 · 4 nhóm K3-A · 8 nhóm K3-B · 8 nhóm K3-C còn OPEN**
 
 `4D` = PASS LOCAL — 4-DIR VERIFIED. Các chiều trạng thái được ghi theo thứ tự: Artwork validated / Runtime tested / Gameplay tested / Mirrored / Temporary fallback / Blocked / Not tested. Với các ô `4D`, giá trị là Có/Có/Có/Không/Không/Không/Không trong phạm vi từng nhóm đã nghiệm thu. Với các ô `Thiếu`, `Nguồn`, `Pha nguồn` hoặc `Ứng viên`, giá trị là Không/Không/Không/Không/Không/Không/Có đối với bản tích hợp K3. Mục Có ở phần nguồn ghi đúng clip tham chiếu đang có. Các nhóm OPEN có thể tiếp tục dùng key legacy hiện hành.
 
@@ -22,16 +22,16 @@
 | Fire Wave | Thiếu | Thiếu | Thiếu | Ứng viên nguồn | 07 Heavy Attack 3, đối chiếu 10–11 |
 | Aerial Somersault | Thiếu | Thiếu | Thiếu | Pha nguồn | 26 Weapon Art |
 | Weapon Art | Thiếu | Thiếu | Thiếu | 35 nguồn | 26 Weapon Art |
-| Parry | Thiếu | Thiếu | Thiếu | 6 + 15 + 3 nguồn | 27–29. Fire Nova là pha VFX trong 28 Parry |
-| Armed Roll | Thiếu | Thiếu | Thiếu | 12 nguồn | 12 Armed Roll |
-| Unarmed Roll | Thiếu | Thiếu | Thiếu | 12 nguồn | 13 Unarmed Roll |
-| Weapon On | Thiếu | Thiếu | Thiếu | 18 nguồn | 01 Weapon On |
-| Weapon Off | Thiếu | Thiếu | Thiếu | 14 nguồn | 02 Weapon Off |
+| Parry | 6 + 6 4D | 6 + 6 4D | 6 + 6 4D | 6 + 6 4D | Custom, 27–29 tham chiếu. `parry` 75 ms; `parry_success` 65 ms. 28 Fire Nova thuộc thành công. |
+| Armed Roll | 6 4D | 6 4D | 6 4D | 6 4D | Custom, 12 tham chiếu. `roll` 57 ms. |
+| Unarmed Roll | 6 4D | 6 4D | 6 4D | 6 4D | Custom, 13 tham chiếu. `unarmed_roll` 57 ms. |
+| Weapon On | 6 4D | 6 4D | 6 4D | 6 4D | Custom, 01 tham chiếu. `weapon_on` 65 ms. |
+| Weapon Off | 6 4D | 6 4D | 6 4D | 6 4D | Custom, 02 tham chiếu. `weapon_off` 65 ms. |
 | Armed Buff | Thiếu | Thiếu | Thiếu | 12 nguồn | 34 Armed Buff |
 | Unarmed Buff | Thiếu | Thiếu | Thiếu | 12 nguồn | 33 Unarmed Buff |
-| Armed Hurt | Thiếu | Thiếu | Thiếu | 5 nguồn | 31 Armed Hurt |
-| Unarmed Hurt | Thiếu | Thiếu | Thiếu | 5 nguồn | 30 Unarmed Hurt |
-| Death | Thiếu | Thiếu | Thiếu | 9 nguồn | 32 Death, nguồn có một clip chung |
+| Armed Hurt | 6 4D | 6 4D | 6 4D | 6 4D | Custom, 31 tham chiếu. `hurt` 62,5 ms. |
+| Unarmed Hurt | 6 4D | 6 4D | 6 4D | 6 4D | Custom, 30 tham chiếu. `unarmed_hurt` 62,5 ms. |
+| Death | 6 4D | 6 4D | 6 4D | 6 4D | Custom, 32 tham chiếu. `death` 125 ms. Clip chung, kết thúc ở tàn lửa. |
 
 10 clip Jump, Mid Air, Fall Light, Fall Heavy và Land của Armed và Unarmed nằm ở mục 16–25, trạng thái ARCHIVED. Cả 34 metadata và 324 PNG nguồn được bảo toàn. Thư mục nguồn cục bộ `Pixel_Art/Black Knight/Source_Library/`. [Frame Map](V153_F0_0_BLACK_KNIGHT_FRAME_MAP.md) · [Coverage legacy](V153_F0_0_ANIMATION_COVERAGE_MATRIX.md).
 
@@ -44,3 +44,5 @@ K2 dùng atlas RGBA 896×576 và 126 frame đã xác minh. Kích thước mỗi 
 
 
 K3-A dùng atlas `black_knight_core_combat`, frame 64×64, origin (0.5,1), neo chân y=63, body Arcade 18×12 offset (23,46). Registry `wayfarer_<prefix>_<hướng>` và `satyr_<prefix>_<hướng>` dùng cùng frame `<prefix>_<hướng>_<i>`. Timing, từng bounds, nguồn, hash, test và ảnh trước/sau trong báo cáo. [K3](V153_B04_K3_COMBAT_REPORT.md) · [Atlas và metadata](../../../public/assets/characters/black_knight/black_knight_core_combat.json)
+
+K3-B dùng atlas `black_knight_defense`, 36 clip × 6 frame, bốn hướng. Kích thước, origin và offset cùng K3-A. Đòn hiển thị bằng actor hiện có. Hai clip Parry dùng chung nhóm nghiệm thu. [Ảnh/log](Visuals/V153_B04C_K3) · [Metadata atlas](../../../public/assets/characters/black_knight/black_knight_defense.json)

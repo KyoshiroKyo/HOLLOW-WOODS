@@ -1,3 +1,21 @@
+# V153-BATCH-04-R10 — Checkpoint K3-B
+
+**21/11/2026 · K3 PARTIAL · A 4/4 và B 8/8 nhóm local bốn hướng · HOSTED BLOCKED**
+
+Nhánh `feat/v1.5.3-batch04`. Commit runtime B `6a64978d09b0f9f88c96b85f509a1c34ec097fe3`, checkpoint A đã xác minh GitHub `d65bf7b8956214602f624677636e60e59a015674`. Dùng commit bàn giao B mới nhất trên nhánh phát triển để tiếp tục. [Báo cáo](V153_B04_K3_COMBAT_REPORT.md) · [Bằng chứng](Visuals/V153_B04C_K3) · [Ma trận](V153_CHARACTER_ANIMATION_MATRIX.md)
+
+| Mã | Trạng thái |
+|---|---|
+| K3-A · 01–04 | PASS LOCAL — 4-DIR VERIFIED. Canvas/WebGL đã thấy active frame và recovery. Canvas hồi quy trên build B đạt 12/12 clip. |
+| K3-B · 05–12 | PASS LOCAL — 4-DIR VERIFIED. 36 clip, 216 frame trong mỗi renderer. Một actor, đúng texture, Roll chạm hàng rào với Noclip OFF. |
+| K3-C · 13–20 | OPEN. Armed/Unarmed Buff, Thrust, Ground Slam, Flame Stream, Fire Wave, Aerial Somersault và Weapon Art. |
+| Gate | Dừng sau B theo yêu cầu Owner kiểm tra sprite. Khi mở C, xác minh A/B đã bàn giao, không còn lỗi K3 nghiêm trọng, không cần quyết định Owner và môi trường đủ ổn định cho checkpoint mới. |
+| Backlog khác | Phaser Text Canvas restart OPEN 04E1. Hosted P2Game và kiểm thử hiệu năng release vẫn mở. |
+
+**Lệnh tiếp nối** `V153-BATCH-04C-K3 EXECUTE REMAINING ONLY — K3-C: 13–20`, sau khi Owner mở phạm vi. Giữ dữ liệu, Save schema 3, nhánh QA và K1/K2/A/B đã nghiệm thu.
+
+---
+
 # V153-BATCH-04-R10 — Checkpoint K3-A
 
 **21/11/2026 · 04C-K3 PARTIAL · K3-A 4/4 nhóm đã kiểm thử bốn hướng · HOSTED BLOCKED**
