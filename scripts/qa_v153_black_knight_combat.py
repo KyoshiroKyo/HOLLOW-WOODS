@@ -10,7 +10,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[1]
-ATLAS_KEY = "black_knight_core_combat"
+ATLAS_KEYS = {"core": "black_knight_core_combat", "defense": "black_knight_defense"}
 ATLAS = ROOT / "public/assets/characters/black_knight"
 REGISTRY = ROOT / "src/animation/BlackKnightAnimations.ts"
 DIRECTIONS = ("down", "up", "left", "right")
@@ -21,6 +21,15 @@ PROVENANCE = {
     "attack": "Fellor Source Library 08–11 motion reference + K1/K2 identity",
     "heavy_attack": "Fellor Source Library 05–07 motion reference + K1/K2 identity",
     "attack_combo": "K3 Light Attack pose reference + K1/K2 identity",
+    "parry": "Fellor Source Library 27 and 29 + K1/K2 identity",
+    "parry_success": "Fellor Source Library 28 + K1/K2 identity",
+    "roll": "Fellor Source Library 12 + K1/K2 identity",
+    "unarmed_roll": "Fellor Source Library 13 + K1/K2 identity",
+    "weapon_on": "Fellor Source Library 01 + K1/K2 identity",
+    "weapon_off": "Fellor Source Library 02 + K1/K2 identity",
+    "hurt": "Fellor Source Library 31 + K1/K2 identity",
+    "unarmed_hurt": "Fellor Source Library 30 + K1/K2 identity",
+    "death": "Fellor Source Library 32 + K1/K2 identity",
 }
 
 
@@ -28,13 +37,16 @@ def sha256(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def config():
+def config(group):
     registry = REGISTRY.read_text()
     count = int(re.search(r"const CORE_COMBAT_FRAMES = (\d+);", registry)[1])
-    entries = re.findall(
-        r"(\w+): \{ frameMs: (\d+), impactFrame: (\d+), recoveryFrame: (\d+) \},", registry
-    )
-    return count, {action: (int(ms), int(impact), int(recovery)) for action, ms, impact, recovery in entries}
+    if group == "core":
+        entries = re.findall(
+            r"(\w+): \{ frameMs: (\d+), impactFrame: (\d+), recoveryFrame: (\d+) \},", registry
+        )
+        return count, {action: (int(ms), int(impact), int(recovery)) for action, ms, impact, recovery in entries}
+    entries = re.findall(r"(\w+): \{ frameMs: ([\d.]+) \},", registry)
+    return count, {action: (float(ms), None, None) for action, ms in entries}
 
 
 def cyan_mask(rgb):
@@ -55,10 +67,14 @@ def matte(sheet, row, column, count):
     return image.crop(bounds), bounds, cell
 
 
-def normalize_row(sheet, row, count):
+def normalize_row(sheet, row, count, action):
     poses = [matte(sheet, row, column, count) for column in range(count)]
     neutral, box, _ = poses[0]
     ratio = 32 / neutral.height
+    ground = box[3]
+    if action in ("parry", "parry_success", "roll", "unarmed_roll", "weapon_on", "weapon_off",
+                  "hurt", "unarmed_hurt", "death"):
+        ground = max(bounds[3] for _, bounds, _ in poses)
     feet = np.array(neutral)[round(neutral.height * .84):]
     r, g, b, a = feet.astype(np.int16).transpose((2, 0, 1))
     feet_x = np.nonzero((a > 0) & ~((r > g + 30) & (g > b + 30)))[1]
@@ -69,7 +85,7 @@ def normalize_row(sheet, row, count):
             (round(pixels.width * ratio), round(pixels.height * ratio)), Image.Resampling.NEAREST
         )
         x = FRAME // 2 + round((bounds[0] - source_x) * ratio)
-        y = GROUND + round((bounds[3] - box[3]) * ratio) - resized.height
+        y = GROUND + round((bounds[3] - ground) * ratio) - resized.height
         if not (0 < x < x + resized.width < FRAME and 0 < y < y + resized.height < FRAME):
             raise ValueError(f"Runtime sprite would clip at {x}, {y}: {bounds}")
         result = Image.new("RGBA", (FRAME, FRAME))
@@ -77,7 +93,7 @@ def normalize_row(sheet, row, count):
         yield result, list(cell), list(bounds)
 
 
-def pack(source, parts, count):
+def pack(atlas_key, source, parts, count):
     names = [f"{action}_{d}_{i}" for action in parts for d in DIRECTIONS for i in range(count)]
     atlas = Image.new("RGBA", (COLUMNS * FRAME, (len(names) + COLUMNS - 1) // COLUMNS * FRAME))
     size = {"w": FRAME, "h": FRAME}
@@ -90,7 +106,7 @@ def pack(source, parts, count):
             "reference": PROVENANCE[action], "frameMs": ms, "impactFrame": hit, "recoveryFrame": recovery,
         }
         for row, direction in enumerate(DIRECTIONS):
-            for index, (art, cell, bounds) in enumerate(normalize_row(sheet, row, count)):
+            for index, (art, cell, bounds) in enumerate(normalize_row(sheet, row, count, action)):
                 name = f"{action}_{direction}_{index}"
                 n = len(frames)
                 x, y = n % COLUMNS * FRAME, n // COLUMNS * FRAME
@@ -101,15 +117,15 @@ def pack(source, parts, count):
                     "pivot": {"x": 0.5, "y": 1}, "duration": ms,
                     "sourceCell": cell, "sourceBoxInCell": bounds,
                 }
-    atlas.save(ATLAS / f"{ATLAS_KEY}.png", optimize=True)
-    meta = {"image": f"{ATLAS_KEY}.png", "size": {"w": atlas.width, "h": atlas.height},
+    atlas.save(ATLAS / f"{atlas_key}.png", optimize=True)
+    meta = {"image": f"{atlas_key}.png", "size": {"w": atlas.width, "h": atlas.height},
             "format": "RGBA8888", "scale": "1", "sources": sources}
-    (ATLAS / f"{ATLAS_KEY}.json").write_text(json.dumps({"frames": frames, "meta": meta},
+    (ATLAS / f"{atlas_key}.json").write_text(json.dumps({"frames": frames, "meta": meta},
                                                       ensure_ascii=False, indent=2) + "\n")
 
 
-def verify(evidence, parts, count, source):
-    paths = [ATLAS / f"{ATLAS_KEY}.{ext}" for ext in ("png", "json")]
+def verify(atlas_key, evidence, parts, count, source):
+    paths = [ATLAS / f"{atlas_key}.{ext}" for ext in ("png", "json")]
     atlas = Image.open(paths[0])
     data = json.loads(paths[1].read_text())
     assert atlas.mode == "RGBA" and data["meta"]["size"] == {"w": atlas.width, "h": atlas.height}
@@ -117,10 +133,11 @@ def verify(evidence, parts, count, source):
     coverage = {"sha256": {path.name: sha256(path) for path in paths}, "clips": {}}
     reference = Image.new("RGB", (124 + count * 128, (len(parts) * 4) * 140 + 22), "#34343d")
     draw = ImageDraw.Draw(reference)
-    draw.text((8, 6), "Black Knight K3-A | atlas pixels at 2x | phase markers and ground y=63", fill="white")
+    draw.text((8, 6), f"{atlas_key} | atlas pixels at 2x | ground y=63", fill="white")
     used = set()
     for action, (ms, hit, recovery) in parts.items():
-        assert 0 < hit < recovery < count
+        if hit is not None:
+            assert 0 < hit < recovery < count
         origin = data["meta"]["sources"][action]
         assert (origin["frameMs"], origin["impactFrame"], origin["recoveryFrame"]) == (ms, hit, recovery)
         source_sheet = None
@@ -134,7 +151,7 @@ def verify(evidence, parts, count, source):
             draw.text((8, line_y + 42), f"{action}\n{direction.upper()} · {ms} ms", fill="white")
             poses = []
             coverage["clips"][key] = poses
-            source_poses = list(normalize_row(source_sheet, row, count)) if source_sheet is not None else None
+            source_poses = list(normalize_row(source_sheet, row, count, action)) if source_sheet is not None else None
             for i in range(count):
                 entry = data["frames"][f"{key}_{i}"]
                 x, y, w, h = (entry["frame"][k] for k in ("x", "y", "w", "h"))
@@ -155,8 +172,21 @@ def verify(evidence, parts, count, source):
                 assert set(np.unique(opacity)) == {0, 255}, (key, i, "alpha or empty")
                 assert not np.any((opacity > 0) & cyan_mask(arr[:, :, :3])), (key, i, "cyan")
                 x0, y0, x1, y1 = art.getbbox()
-                assert 0 < x0 < x1 < w and 0 < y0 < y1 < h and y1 - y0 >= 23, (key, i, "bounds")
-                phase = "windup" if i < hit else "impact" if i == hit else "recovery" if i >= recovery else "follow-through"
+                assert 0 < x0 < x1 < w and 0 < y0 < y1 < h, (key, i, "bounds")
+                if hit is not None:
+                    assert y1 - y0 >= 23, (key, i, "height")
+                if action.startswith("unarmed_") or action in ("weapon_on", "weapon_off", "roll", "hurt"):
+                    r, g, b, a = arr.astype(np.int16).transpose((2, 0, 1))
+                    # Separate the bright saturated blade from the leather strap and ivory hit flash.
+                    blade = np.count_nonzero((a > 0) & (r >= 170) & (g >= 90) & (r - b >= 75) & (g - b >= 35))
+                    armed = (action in ("roll", "hurt") or action == "weapon_on" and i >= 3 or
+                             action == "weapon_off" and i < 2)
+                    unarmed = (action.startswith("unarmed_") or action == "weapon_on" and i < 2 or
+                               action == "weapon_off" and i == count - 1)
+                    assert not (armed and blade <= 2 or unarmed and blade > 2), (key, i, "blade", blade)
+                phase = "pose"
+                if hit is not None:
+                    phase = "windup" if i < hit else "impact" if i == hit else "recovery" if i >= recovery else "follow-through"
                 poses.append({"atlasFrame": f"{key}_{i}", "bounds": [x0, y0, x1, y1],
                               "opaquePixels": int(np.count_nonzero(opacity)), "phase": phase, "ms": ms,
                               "runtimeKeys": [f"wayfarer_{key}", f"satyr_{key}"],
@@ -169,8 +199,9 @@ def verify(evidence, parts, count, source):
             assert len({pose["sha256"] for pose in poses}) >= count - 1, (key, "duplicate action poses")
 
     evidence.mkdir(parents=True, exist_ok=True)
-    reference.save(evidence / "core-combat-contact.png", optimize=True)
-    (evidence / "core-combat-asset-qa.json").write_text(json.dumps(coverage, indent=2) + "\n")
+    prefix = "core-combat" if atlas_key.endswith("core_combat") else "defense"
+    reference.save(evidence / f"{prefix}-contact.png", optimize=True)
+    (evidence / f"{prefix}-asset-qa.json").write_text(json.dumps(coverage, indent=2) + "\n")
     print(f"{len(coverage['clips'])} clips, {len(used)} frames. Alpha, matte, bounds, phases and mapping PASS.")
     for name, digest in coverage["sha256"].items():
         print(f"{digest}  {name}")
@@ -178,16 +209,18 @@ def verify(evidence, parts, count, source):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--group", choices=ATLAS_KEYS, default="core")
     parser.add_argument("--source", type=Path, help="Review sheets named after each action")
     parser.add_argument("--pack", action="store_true", help="Write the production atlas from --source")
     parser.add_argument("--evidence", type=Path, required=True)
     options = parser.parse_args()
     if options.pack and not options.source:
         parser.error("--pack requires --source")
-    count, parts = config()
+    count, parts = config(options.group)
+    atlas_key = ATLAS_KEYS[options.group]
     if options.pack:
-        pack(options.source, parts, count)
-    verify(options.evidence, parts, count, options.source)
+        pack(atlas_key, options.source, parts, count)
+    verify(atlas_key, options.evidence, parts, count, options.source)
 
 
 if __name__ == "__main__":

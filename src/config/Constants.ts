@@ -42,6 +42,7 @@ export const WAYFARER_USE_PURE_ARTIST_SPRITES = true;
 export const BLACK_KNIGHT_ARMED_IDLE_KEY = 'black_knight_armed_idle';
 export const BLACK_KNIGHT_MOVEMENT_KEY = 'black_knight_movement';
 export const BLACK_KNIGHT_CORE_COMBAT_KEY = 'black_knight_core_combat';
+export const BLACK_KNIGHT_DEFENSE_KEY = 'black_knight_defense';
 export const WAYFARER_IDLE_KEY = 'wayfarer_idle';
 export const WAYFARER_WALK_KEY = 'wayfarer_walk';
 export const WAYFARER_RUN_KEY = 'wayfarer_run';

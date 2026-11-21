@@ -3,6 +3,7 @@ import {
   BLACK_KNIGHT_ARMED_IDLE_KEY,
   BLACK_KNIGHT_MOVEMENT_KEY,
   BLACK_KNIGHT_CORE_COMBAT_KEY,
+  BLACK_KNIGHT_DEFENSE_KEY,
   WAYFARER_USE_PURE_ARTIST_SPRITES,
   WAYFARER_IDLE_KEY,
   WAYFARER_WALK_KEY,
@@ -68,6 +69,24 @@ export const CORE_COMBAT_CLIPS = {
 } as const;
 export type CoreCombatAction = keyof typeof CORE_COMBAT_CLIPS;
 
+export const DEFENSE_CLIPS = {
+  parry: { frameMs: 75 },
+  parry_success: { frameMs: 65 },
+  roll: { frameMs: 57 },
+  unarmed_roll: { frameMs: 57 },
+  weapon_on: { frameMs: 65 },
+  weapon_off: { frameMs: 65 },
+  hurt: { frameMs: 62.5 },
+  unarmed_hurt: { frameMs: 62.5 },
+  death: { frameMs: 125 },
+} as const;
+export type DefenseAction = keyof typeof DEFENSE_CLIPS;
+
+interface ArtistAction {
+  frames: Phaser.Types.Animations.AnimationFrame[][];
+  frameMs: number;
+}
+
 interface ArtistMovementClip {
   prefix: string;
   frameMs: number;
@@ -118,20 +137,25 @@ export function registerWayfarerAnimations(anims: Phaser.Animations.AnimationMan
   const hasCompleteArtistIdle = artistIdle.length === DIRECTIONS.length &&
     artistIdle.every(frames => frames.length === ARMED_IDLE_FRAMES_PER_DIRECTION);
 
-  const combatActions = Object.keys(CORE_COMBAT_CLIPS) as CoreCombatAction[];
-  const combatClips = new Map<CoreCombatAction, Phaser.Types.Animations.AnimationFrame[][]>();
-  if (WAYFARER_USE_PURE_ARTIST_SPRITES) {
-    for (const action of combatActions) {
-      const clips = DIRECTIONS.map(dir => anims.generateFrameNames(BLACK_KNIGHT_CORE_COMBAT_KEY, {
-        prefix: `${action}_${dir}_`,
-        end: CORE_COMBAT_FRAMES - 1,
-      }));
-      if (clips.every(frames => frames.length === CORE_COMBAT_FRAMES)) combatClips.set(action, clips);
+  const artistActions = new Map<string, ArtistAction>();
+  const collect = (texture: string, config: Readonly<Record<string, { frameMs: number }>>) => {
+    const available = new Set(anims.generateFrameNames(texture).map(frame => frame.frame));
+    for (const [action, { frameMs }] of Object.entries(config)) {
+      const frames = DIRECTIONS.map(dir => Array.from({ length: CORE_COMBAT_FRAMES }, (_, i) => ({
+        key: texture, frame: `${action}_${dir}_${i}`,
+      })));
+      if (frames.every(clip => clip.every(frame => available.has(frame.frame)))) {
+        artistActions.set(action, { frames, frameMs });
+      }
     }
+  };
+  if (WAYFARER_USE_PURE_ARTIST_SPRITES) {
+    collect(BLACK_KNIGHT_CORE_COMBAT_KEY, CORE_COMBAT_CLIPS);
+    collect(BLACK_KNIGHT_DEFENSE_KEY, DEFENSE_CLIPS);
   }
 
   for (const cfg of WAYFARER_CONFIGS) {
-    if (combatClips.has(cfg.action as CoreCombatAction)) continue;
+    if (artistActions.has(cfg.action)) continue;
     const useArtistIdle = cfg.action === 'idle' && hasCompleteArtistIdle;
     const movement = getMovementGroup(anims, cfg.action);
     const hasBaseAlias = cfg.action !== 'idle' && cfg.action !== 'walk' &&
@@ -159,7 +183,7 @@ export function registerWayfarerAnimations(anims: Phaser.Animations.AnimationMan
     }
   }
 
-  for (const [action, clips] of combatClips) {
+  for (const [action, clip] of artistActions) {
     for (const [row, dir] of DIRECTIONS.entries()) {
       for (const prefix of ['wayfarer', 'satyr']) {
         const base = `${prefix}_${action}`;
@@ -167,7 +191,7 @@ export function registerWayfarerAnimations(anims: Phaser.Animations.AnimationMan
         for (const key of keys) {
           if (anims.exists(key)) anims.remove(key);
           anims.create({
-            key, frames: clips[row], frameRate: 1000 / CORE_COMBAT_CLIPS[action].frameMs,
+            key, frames: clip.frames[row], frameRate: 1000 / clip.frameMs,
             repeat: 0, skipMissedFrames: false,
           });
         }
