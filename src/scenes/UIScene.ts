@@ -152,6 +152,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   public verticalTaskbarContainer!: Phaser.GameObjects.Container;
   private verticalTaskbarBg!: Phaser.GameObjects.Graphics;
   private taskbarButtonGfx: Phaser.GameObjects.Graphics[] = [];
+  private taskbarButtonsData: Array<{ id: string; g: Phaser.GameObjects.Graphics; btnY: number; btnSize: number; title: string; shortcut: string; desc: string }> = [];
   private taskbarLanternGlow?: Phaser.GameObjects.Graphics;
   private taskbarLanternIcon?: Phaser.GameObjects.Text;
   private taskbarTooltipContainer?: Phaser.GameObjects.Container;
@@ -180,6 +181,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   // Khung hộp thoại chuẩn HD 1280×720 (GATE 1A - Presentation in UIScene at Zoom 1.0)
   private dialogueContainer!: Phaser.GameObjects.Container;
   private dialogueSpeakerText!: Phaser.GameObjects.Text;
+  private dialogueSpeakerTitleText?: Phaser.GameObjects.Text;
+  private dialogueSpeakerBadgeGfx?: Phaser.GameObjects.Graphics;
+  private dialogueNameDivider?: Phaser.GameObjects.Graphics;
   private dialogueContentText!: Phaser.GameObjects.Text;
   private dialogueContinuePrompt!: Phaser.GameObjects.Text;
   private dialoguePortraitSprite!: Phaser.GameObjects.Image;
@@ -793,18 +797,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         this.toggleJournal();
       });
       this.input.keyboard.on('keydown-ESC', () => {
-        if (this.isDialogueActive) return;
-        if (Date.now() - this.lastModalCloseTime < 300) return;
-        if (this.craftingModal && this.craftingModal.isOpen) { this.craftingModal.close(); return; }
-        if (this.journalModal && this.journalModal.isOpen) { this.journalModal.close(); return; }
-        if (this.tornPageModal && this.tornPageModal.isOpen) { this.tornPageModal.close(); return; }
-        if (this.equipmentModal && this.equipmentModal.isOpen) { this.equipmentModal.close(); return; }
-        if (this.storageChestModal && this.storageChestModal.isOpen) { this.storageChestModal.close(); return; }
-        if (this.campfireModal && this.campfireModal.isOpen) { this.campfireModal.close(); return; }
-        if (this.cauldronModal && this.cauldronModal.isOpen) { this.cauldronModal.close(); return; }
-        if (this.parchmentWorldMapModal && this.parchmentWorldMapModal.isOpen) { this.parchmentWorldMapModal.close(); return; }
-        this.selectQuickSlot(7);
-        this.togglePause();
+        this.handleESC();
       });
       this.input.keyboard.on('keydown-B', () => {
         if (this.gameOverModal && this.gameOverModal.isOpen) return;
@@ -1397,7 +1390,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         title: '🧭 La Bàn & Bản Đồ',
         shortcut: '[N] / [M]',
         desc: 'Mở rộng la bàn định vị hoặc bản đồ giấy da thế giới.',
-        action: () => this.toggleMiniMap()
+        action: () => this.toggleWorldMap()
       },
       {
         id: 'unstuck',
@@ -1431,6 +1424,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     const startY = -barH / 2 + 6 + btnSize / 2;
 
     this.taskbarButtonGfx = [];
+    this.taskbarButtonsData = [];
 
     for (let i = 0; i < taskbarButtons.length; i++) {
       const btn = taskbarButtons[i];
@@ -1445,6 +1439,15 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
       this.verticalTaskbarContainer.add(g);
       this.taskbarButtonGfx.push(g);
+      this.taskbarButtonsData.push({
+        id: btn.id,
+        g,
+        btnY,
+        btnSize,
+        title: btn.title,
+        shortcut: btn.shortcut,
+        desc: btn.desc
+      });
 
       if (btn.id === 'lantern') {
         this.taskbarLanternGlow = this.add.graphics();
@@ -1498,11 +1501,19 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         this.showTaskbarTooltip(62, 266 + btnY - 25, btn.title, btn.shortcut, btn.desc);
       });
       hitZone.on('pointerout', () => {
+        const isActive = this.isTaskbarButtonActive(btn.id);
         g.clear();
-        g.fillStyle(0x18110b, 0.88);
-        g.fillRoundedRect(-btnSize / 2, btnY - btnSize / 2, btnSize, btnSize, 4);
-        g.lineStyle(1.2, 0x5c4224, 0.85);
-        g.strokeRoundedRect(-btnSize / 2, btnY - btnSize / 2, btnSize, btnSize, 4);
+        if (isActive) {
+          g.fillStyle(0x281d13, 0.98);
+          g.fillRoundedRect(-btnSize / 2, btnY - btnSize / 2, btnSize, btnSize, 4);
+          g.lineStyle(1.5, 0xf1c40f, 0.95);
+          g.strokeRoundedRect(-btnSize / 2, btnY - btnSize / 2, btnSize, btnSize, 4);
+        } else {
+          g.fillStyle(0x18110b, 0.88);
+          g.fillRoundedRect(-btnSize / 2, btnY - btnSize / 2, btnSize, btnSize, 4);
+          g.lineStyle(1.2, 0x5c4224, 0.85);
+          g.strokeRoundedRect(-btnSize / 2, btnY - btnSize / 2, btnSize, btnSize, 4);
+        }
 
         this.hideTaskbarTooltip();
       });
@@ -1510,6 +1521,44 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.verticalTaskbarContainer.add(hitZone);
     }
 
+    this.updateTaskbarLanternState();
+    this.updateVerticalTaskbarStates();
+  }
+
+  public isTaskbarButtonActive(id: string): boolean {
+    switch (id) {
+      case 'craft':
+        return !!this.craftingModal && this.craftingModal.isOpen;
+      case 'journal':
+        return !!this.journalModal && this.journalModal.isOpen;
+      case 'lantern':
+        return !!this.playerState?.stats?.isLanternOn;
+      case 'map':
+        return !!this.parchmentWorldMapModal && this.parchmentWorldMapModal.isOpen;
+      case 'pause':
+        return !!this.pauseModal && this.pauseModal.isOpen;
+      default:
+        return false;
+    }
+  }
+
+  public updateVerticalTaskbarStates(): void {
+    if (!this.taskbarButtonsData || this.taskbarButtonsData.length === 0) return;
+    for (const b of this.taskbarButtonsData) {
+      const isActive = this.isTaskbarButtonActive(b.id);
+      b.g.clear();
+      if (isActive) {
+        b.g.fillStyle(0x281d13, 0.98);
+        b.g.fillRoundedRect(-b.btnSize / 2, b.btnY - b.btnSize / 2, b.btnSize, b.btnSize, 4);
+        b.g.lineStyle(1.6, 0xf1c40f, 0.98);
+        b.g.strokeRoundedRect(-b.btnSize / 2, b.btnY - b.btnSize / 2, b.btnSize, b.btnSize, 4);
+      } else {
+        b.g.fillStyle(0x18110b, 0.88);
+        b.g.fillRoundedRect(-b.btnSize / 2, b.btnY - b.btnSize / 2, b.btnSize, b.btnSize, 4);
+        b.g.lineStyle(1.2, 0x5c4224, 0.85);
+        b.g.strokeRoundedRect(-b.btnSize / 2, b.btnY - b.btnSize / 2, b.btnSize, b.btnSize, 4);
+      }
+    }
     this.updateTaskbarLanternState();
   }
 
@@ -2970,10 +3019,12 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.quickCraftSidebar) this.quickCraftSidebar.hideFlyout();
     this.setHUDVisible(false);
     this.setDialogueActive(true);
+    this.updateVerticalTaskbarStates();
   }
 
   public handleModalClosed(): void {
     this.lastModalCloseTime = Date.now();
+    this.updateVerticalTaskbarStates();
     if (!this.isAnyModalOpen) {
       this.setDialogueActive(false);
       this.setHUDVisible(true);
@@ -2987,6 +3038,46 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       }
       this.focusGameCanvas();
     }
+  }
+
+  public handleESC(): void {
+    if (this.gameOverModal && this.gameOverModal.isOpen) return;
+    const gameScene = this.scene.get('GameScene') as any;
+    if (gameScene && gameScene.endingSystem && gameScene.endingSystem.isEndingActive) {
+      if (gameScene.endingSystem.canReturnToMenu()) {
+        gameScene.endingSystem.returnToMainMenu();
+      }
+      return;
+    }
+    if (gameScene && gameScene.hitboxInspector && gameScene.hitboxInspector.isBenchmarkModalOpen()) {
+      gameScene.hitboxInspector.closeBenchmarkModal();
+      this.lastModalCloseTime = Date.now();
+      return;
+    }
+    if (this.isDialogueActive) {
+      if (gameScene && gameScene.dialogueSystem && gameScene.dialogueSystem.isActive) {
+        gameScene.dialogueSystem.cancelDialogue();
+      } else {
+        this.hideDialogue();
+      }
+      this.lastModalCloseTime = Date.now();
+      return;
+    }
+    if (this.craftingModal && this.craftingModal.isOpen) { this.craftingModal.close(); return; }
+    if (this.journalModal && this.journalModal.isOpen) { this.journalModal.close(); return; }
+    if (this.tornPageModal && this.tornPageModal.isOpen) { this.tornPageModal.close(); return; }
+    if (this.equipmentModal && this.equipmentModal.isOpen) { this.equipmentModal.close(); return; }
+    if (this.storageChestModal && this.storageChestModal.isOpen) { this.storageChestModal.close(); return; }
+    if (this.campfireModal && this.campfireModal.isOpen) { this.campfireModal.close(); return; }
+    if (this.cauldronModal && this.cauldronModal.isOpen) { this.cauldronModal.close(); return; }
+    if (this.parchmentWorldMapModal && this.parchmentWorldMapModal.isOpen) { this.parchmentWorldMapModal.close(); return; }
+
+    const now = Date.now();
+    if (now - (this.lastModalCloseTime || 0) < 250) return;
+    if (gameScene && now - (gameScene.lastModalCloseTime || 0) < 250) return;
+
+    this.selectQuickSlot(7);
+    this.togglePause();
   }
 
   public toggleCrafting(): void {
@@ -3524,39 +3615,43 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.dialoguePortraitSprite = this.add.image(pX, pY, 'satyr_portrait');
     this.dialoguePortraitSprite.setDisplaySize(64, 64);
 
-    // V152-06B: Ruy-băng tiêu đề tên NPC từ UI Pack
-    let speakerRibbon: Phaser.GameObjects.Image | undefined;
-    if (this.textures.exists('ui_pack_ribbon_header')) {
-      speakerRibbon = this.add.image(-halfW + 195, -halfH + 20, 'ui_pack_ribbon_header');
-      speakerRibbon.setDisplaySize(180, 36);
-      speakerRibbon.setTint(0xbaa187);
-      speakerRibbon.setAlpha(0.75);
-    }
+    // BUG-040: Huy hiệu nền bảng tên người nói (Speaker Nameplate Badge Graphics) căn chỉnh chuẩn xác theo nội dung
+    this.dialogueSpeakerBadgeGfx = this.add.graphics();
 
-    // Tên người nói nổi bật chuẩn HD Tiếng Việt (Cỡ 20px bold vàng kim, kèm lề an toàn)
-    this.dialogueSpeakerText = HDTextHelper.createText(this, -halfW + 120, -halfH + 20, '', {
-      fontSize: '20px',
+    // Tên người nói nổi bật chuẩn HD Tiếng Việt (Cỡ 19px bold vàng kim Ember Gold)
+    this.dialogueSpeakerText = HDTextHelper.createText(this, -halfW + 126, -halfH + 18, '', {
+      fontSize: '19px',
       fontStyle: 'bold',
       color: '#f1c40f',
       stroke: '#000000',
-      strokeThickness: 3,
-      padding: { left: 4, right: 8, top: 2, bottom: 2 }
+      strokeThickness: 2.5,
+      padding: { left: 4, right: 6, top: 2, bottom: 2 }
+    });
+
+    // Chức danh / Vai trò người nói (Cỡ 13px bold ngà ấm áp)
+    this.dialogueSpeakerTitleText = HDTextHelper.createText(this, -halfW + 126, -halfH + 22, '', {
+      fontSize: '13px',
+      fontStyle: 'bold',
+      color: '#d8ccb8',
+      stroke: '#000000',
+      strokeThickness: 2,
+      padding: { left: 2, right: 6, top: 2, bottom: 2 }
     });
 
     // Vạch đồng kẻ ngang mảnh trang trí dưới tên người nói
-    const nameDivider = this.add.graphics();
-    nameDivider.lineStyle(1, 0x5c4224, 0.7);
-    nameDivider.lineBetween(-halfW + 120, -halfH + 46, halfW - 24, -halfH + 46);
+    this.dialogueNameDivider = this.add.graphics();
+    this.dialogueNameDivider.lineStyle(1, 0x5c4224, 0.7);
+    this.dialogueNameDivider.lineBetween(-halfW + 120, -halfH + 48, halfW - 24, -halfH + 48);
 
-    // Nội dung câu thoại chuẩn HD Tiếng Việt (Cỡ 18px ngà ấm, lề đệm an toàn padding chống lẹm chữ 100%)
-    this.dialogueContentText = HDTextHelper.createText(this, -halfW + 120, -halfH + 54, '', {
-      fontSize: '18px',
+    // Nội dung câu thoại chuẩn HD Tiếng Việt (Cỡ 17px ngà ấm, lề đệm an toàn padding chống lẹm chữ 100%)
+    this.dialogueContentText = HDTextHelper.createText(this, -halfW + 120, -halfH + 58, '', {
+      fontSize: '17px',
       color: '#f5eedc',
-      wordWrap: { width: boxWidth - 176, useAdvancedWrap: true },
-      lineSpacing: 4,
+      wordWrap: { width: boxWidth - 160, useAdvancedWrap: true },
+      lineSpacing: 5,
       stroke: '#000000',
       strokeThickness: 1.5,
-      padding: { left: 8, right: 8, top: 4, bottom: 4 }
+      padding: { left: 6, right: 8, top: 4, bottom: 4 }
     });
 
     // Lời nhắc tiếp tục chuẩn HD Tiếng Việt
@@ -3571,9 +3666,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       bg,
       portraitBg,
       this.dialoguePortraitSprite,
-      ...(speakerRibbon ? [speakerRibbon] : []),
+      this.dialogueSpeakerBadgeGfx,
       this.dialogueSpeakerText,
-      nameDivider,
+      this.dialogueSpeakerTitleText,
+      this.dialogueNameDivider,
       this.dialogueContentText,
       this.dialogueContinuePrompt
     ];
@@ -3596,8 +3692,41 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.buildDialogueUI();
     }
 
+    // BUG-040 & BUG-041: Phân tách Tên và Chức danh chuẩn xác, không kéo dãn ribbon
+    const parts = speaker.split(/\s*[–—-]\s*/);
+    const nameStr = parts[0] ? parts[0].trim() : speaker;
+    const titleStr = parts.length > 1 ? parts.slice(1).join(' • ').trim() : '';
+
     if (this.dialogueSpeakerText) {
-      this.dialogueSpeakerText.setText(speaker);
+      this.dialogueSpeakerText.setText(nameStr);
+    }
+    if (this.dialogueSpeakerTitleText) {
+      if (titleStr) {
+        this.dialogueSpeakerTitleText.setText(`• ${titleStr}`);
+        this.dialogueSpeakerTitleText.setX(this.dialogueSpeakerText.x + this.dialogueSpeakerText.width + 8);
+        this.dialogueSpeakerTitleText.setVisible(true);
+      } else {
+        this.dialogueSpeakerTitleText.setText('');
+        this.dialogueSpeakerTitleText.setVisible(false);
+      }
+    }
+
+    if (this.dialogueSpeakerBadgeGfx) {
+      this.dialogueSpeakerBadgeGfx.clear();
+      const halfW = 1060 / 2;
+      const halfH = DIALOGUE_HEIGHT / 2;
+      const totalTextW = (this.dialogueSpeakerText?.width || 0) + (titleStr ? (this.dialogueSpeakerTitleText?.width || 0) + 8 : 0);
+      const badgeW = Math.max(160, totalTextW + 28);
+      const badgeH = 30;
+      const badgeX = -halfW + 118;
+      const badgeY = -halfH + 15;
+
+      this.dialogueSpeakerBadgeGfx.fillStyle(0x1a120c, 0.92);
+      this.dialogueSpeakerBadgeGfx.fillRoundedRect(badgeX, badgeY, badgeW, badgeH, 4);
+      this.dialogueSpeakerBadgeGfx.lineStyle(1.2, 0x8c6d3b, 0.9);
+      this.dialogueSpeakerBadgeGfx.strokeRoundedRect(badgeX, badgeY, badgeW, badgeH, 4);
+      this.dialogueSpeakerBadgeGfx.lineStyle(0.5, 0xd4af37, 0.4);
+      this.dialogueSpeakerBadgeGfx.strokeRoundedRect(badgeX + 1.5, badgeY + 1.5, badgeW - 3, badgeH - 3, 3);
     }
 
     if (this.dialoguePortraitSprite) {
@@ -3610,6 +3739,12 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
           key = this.textures.exists('portrait_blacksmith') ? 'portrait_blacksmith' : 'portrait_bram';
         }
         else if (speaker.includes('Finn')) key = 'portrait_finn';
+        else if (speaker.includes('Canh Lửa') || speaker.includes('Vaelen')) {
+          key = this.textures.exists('portrait_campfire_knight') ? 'portrait_campfire_knight' : 'portrait_campfire_knight.png';
+        }
+        else if (speaker.includes('Trùm Mũ') && this.textures.exists('portrait_hooded_knight')) {
+          key = 'portrait_hooded_knight';
+        }
         else if (this.textures.exists('wayfarer_portrait')) key = 'wayfarer_portrait';
         else key = 'satyr_portrait';
       }

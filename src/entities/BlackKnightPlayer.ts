@@ -108,10 +108,13 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
         return;
       }
       const uiScene = this.scene.scene.get('UIScene') as any;
-      if (uiScene && uiScene.isAnyModalOpen) {
+      if (uiScene && (uiScene.isAnyModalOpen || Date.now() - (uiScene.lastModalCloseTime || 0) < 250)) {
         return;
       }
       const gameScene = this.scene as any;
+      if (gameScene && (gameScene.isGameplayInputLocked?.() || Date.now() - (gameScene.lastModalCloseTime || 0) < 250)) {
+        return;
+      }
       if (gameScene.isDebugObjectPicking?.()) return;
       if (gameScene.dialogueSystem && gameScene.dialogueSystem.isActive) {
         return;
@@ -123,8 +126,9 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       if (Date.now() - this.lastWindowFocusTime < 350) return;
       if (pointer.y > 640 || (pointer.x < 340 && pointer.y < 160)) return;
       const uiScene = this.scene.scene.get('UIScene') as any;
-      if (uiScene && uiScene.isAnyModalOpen) return;
+      if (uiScene && (uiScene.isAnyModalOpen || Date.now() - (uiScene.lastModalCloseTime || 0) < 250)) return;
       const gameScene = this.scene as any;
+      if (gameScene && (gameScene.isGameplayInputLocked?.() || Date.now() - (gameScene.lastModalCloseTime || 0) < 250)) return;
       if (gameScene.dialogueSystem && gameScene.dialogueSystem.isActive) return;
       if (!this.isActionLocked()) {
         this.pendingOneShotActions.add('heavy_attack');

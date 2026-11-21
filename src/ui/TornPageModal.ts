@@ -82,8 +82,13 @@ export class TornPageModal {
     this.overlayBg.fillStyle(0x000000, 0.76);
     this.overlayBg.fillRect(0, 0, 1280, 720);
     this.overlayBg.setInteractive(new Phaser.Geom.Rectangle(0, 0, 1280, 720), Phaser.Geom.Rectangle.Contains);
-    this.overlayBg.on('pointerdown', () => {
-      this.close();
+    this.overlayBg.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+      // Chỉ đóng khi nhấp chuột ra ngoài khung giấy/bia đá (BUG-037)
+      const pageX = 640 - 700 / 2;
+      const pageY = 320 - 440 / 2;
+      if (pointer.x < pageX || pointer.x > pageX + 700 || pointer.y < pageY || pointer.y > pageY + 440) {
+        this.close();
+      }
     });
 
     // 2. Đồ họa nền tấm nền (Parchment / Signpost / Notice / Stele)

@@ -90,6 +90,17 @@ export class PauseModal {
     overlay.fillStyle(0x000000, 0.78);
     overlay.fillRect(0, 0, 1280, 720);
     overlay.setInteractive(new Phaser.Geom.Rectangle(0, 0, 1280, 720), Phaser.Geom.Rectangle.Contains);
+    overlay.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+      // Nếu đang mở bảng hướng dẫn phụ, đóng bảng hướng dẫn trước
+      if (this.guideOverlayContainer && this.guideOverlayContainer.visible) {
+        this.toggleGuideOverlay();
+        return;
+      }
+      // Nhấp chuột ra ngoài khung menu Pause để đóng / tiếp tục trò chơi (BUG-037)
+      if (pointer.x < modalX || pointer.x > modalX + modalW || pointer.y < modalY || pointer.y > modalY + modalH) {
+        this.close();
+      }
+    });
 
     // 2. Khung modal chính phong cách gothic sẫm màu chuẩn HD
     let panelImg: Phaser.GameObjects.Image | undefined;

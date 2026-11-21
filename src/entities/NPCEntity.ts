@@ -70,11 +70,13 @@ export class NPCEntity extends Phaser.GameObjects.Container {
     }
 
     if (this.baseId === 'finn') {
-      this.headOffsetY = 54;
+      this.headOffsetY = 42;
     } else if (this.baseId === 'bram') {
-      this.headOffsetY = 48;
+      this.headOffsetY = 56;
     } else if (this.baseId === 'campfire_knight') {
       this.headOffsetY = 46;
+    } else if (this.baseId === 'edda' || this.baseId === 'neris') {
+      this.headOffsetY = 48;
     } else {
       this.headOffsetY = 52;
     }
@@ -124,7 +126,18 @@ export class NPCEntity extends Phaser.GameObjects.Container {
 
     this.npcSprite = scene.add.sprite(0, 0, initialSheet);
     this.npcSprite.setOrigin(0.5, 1.0);
-    if (this.baseId === 'bram') this.npcSprite.setScale(0.82);
+    // BUG-042: Cân chỉnh Visual Scale dựa trên Black Knight reference (scale 1.0):
+    // Finn cậu bé thấp hơn (0.85), Bram thợ rèn lực lưỡng to khỏe (1.08), Garth / Vaelen (1.0), Edda / Neris (0.95)
+    // TUYỆT ĐỐI GIỮ NGUYÊN Arcade physics body collider theo spec footprint [529,191,551,205]
+    if (this.baseId === 'finn') {
+      this.npcSprite.setScale(0.85);
+    } else if (this.baseId === 'bram') {
+      this.npcSprite.setScale(1.08);
+    } else if (this.baseId === 'edda' || this.baseId === 'neris') {
+      this.npcSprite.setScale(0.95);
+    } else {
+      this.npcSprite.setScale(1.0);
+    }
     this.add(this.npcSprite);
 
     // Khởi chạy hoạt ảnh ban đầu (mặc định idle)

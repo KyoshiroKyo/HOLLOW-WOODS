@@ -199,6 +199,12 @@ export class ParchmentWorldMapModal {
     this.backdrop.fillStyle(0x05070a, 0.85);
     this.backdrop.fillRect(0, 0, 1280, 720);
     this.backdrop.setInteractive(new Phaser.Geom.Rectangle(0, 0, 1280, 720), Phaser.Geom.Rectangle.Contains);
+    this.backdrop.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+      // Nhấp chuột ra ngoài khung bản đồ giấy da để đóng an toàn (BUG-037)
+      if (pointer.x < px || pointer.x > px + pw || pointer.y < py || pointer.y > py + ph) {
+        this.close();
+      }
+    });
 
     // 2. Khung Giấy Da Cổ (Aged Parchment Board) kích thước 980x600 px tại tâm (640, 360)
     const px = 150;

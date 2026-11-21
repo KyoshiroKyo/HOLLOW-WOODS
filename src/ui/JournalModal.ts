@@ -450,6 +450,12 @@ export class JournalModal {
     overlay.fillStyle(0x000000, 0.75);
     overlay.fillRect(0, 0, 1280, 720);
     overlay.setInteractive(new Phaser.Geom.Rectangle(0, 0, 1280, 720), Phaser.Geom.Rectangle.Contains);
+    overlay.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+      // Nhấp chuột ra ngoài khung sổ nhật ký để đóng an toàn (BUG-037)
+      if (pointer.x < modalX || pointer.x > modalX + modalW || pointer.y < modalY || pointer.y > modalY + modalH) {
+        this.close();
+      }
+    });
 
     // 2. Khung sổ nhật ký giấy da sẫm màu chuẩn HD (840×520 px) viền nẹp đồng cổ
     let bookSprite: Phaser.GameObjects.Image | undefined;

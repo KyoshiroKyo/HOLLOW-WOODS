@@ -955,8 +955,6 @@ export class GameScene extends Phaser.Scene {
       this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
       this.key3 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
       this.key3.on('down', () => this.tryPlantResinFlare());
-      this.keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-      this.keyESC.on('down', () => this.handleESCPress());
 
       // V15-59: Phím ENTER kích hoạt Chơi Hành Trình Mới khi đang ở màn hình kết thúc
       const keyEnter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
@@ -965,22 +963,7 @@ export class GameScene extends Phaser.Scene {
           this.endingSystem.startNewJourney();
         }
       });
-
-      // Phím M mở Bản đồ Thế giới Giấy Da (Parchment World Map)
-      this.keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
-      this.keyM.on('down', () => {
-        if (this.uiScene) {
-          this.uiScene.toggleWorldMap();
-        }
-      });
-
-      // Phím N bật/tắt Mini-map góc trên phải (Woodland Compact Compass Map)
-      this.keyN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
-      this.keyN.on('down', () => {
-        if (this.uiScene) {
-          this.uiScene.toggleMiniMap();
-        }
-      });
+      // BUG-036: Phím ESC, M, N được quản lý tập trung và duy nhất tại UIScene (tránh duplicate listeners)
     }
 
     // C4-12-24: Khôi phục trạng thái hoàn thành Câu Đố Ba Cột Đá nếu cờ đã lưu
@@ -1013,6 +996,10 @@ export class GameScene extends Phaser.Scene {
   }
 
   private handleESCPress(): void {
+    if (this.uiScene) {
+      this.uiScene.handleESC();
+      return;
+    }
     if (this.isGameOverPending || (this.gameOverModal && this.gameOverModal.isOpen) || (this.player && this.player.isDead())) {
       return;
     }
@@ -1026,70 +1013,6 @@ export class GameScene extends Phaser.Scene {
       }
       return;
     }
-
-    // V15-44: Ưu tiên đóng toàn bộ các modal giao diện đang mở trước khi mở Pause Menu
-    if (this.craftingModal && this.craftingModal.isOpen) {
-      this.craftingModal.close();
-      this.lastModalCloseTime = Date.now();
-      if (this.player) this.player.forceUnlockActionState();
-      return;
-    }
-    if (this.journalModal && this.journalModal.isOpen) {
-      this.journalModal.close();
-      this.lastModalCloseTime = Date.now();
-      if (this.player) this.player.forceUnlockActionState();
-      return;
-    }
-    if (this.uiScene && this.uiScene.tornPageModal && this.uiScene.tornPageModal.isOpen) {
-      this.uiScene.tornPageModal.close();
-      this.lastModalCloseTime = Date.now();
-      if (this.player) this.player.forceUnlockActionState();
-      return;
-    }
-    if (this.uiScene && this.uiScene.parchmentWorldMapModal && this.uiScene.parchmentWorldMapModal.isOpen) {
-      this.uiScene.parchmentWorldMapModal.close();
-      this.lastModalCloseTime = Date.now();
-      if (this.player) this.player.forceUnlockActionState();
-      return;
-    }
-    if (this.uiScene && this.uiScene.storageChestModal && this.uiScene.storageChestModal.isOpen) {
-      this.uiScene.storageChestModal.close();
-      this.lastModalCloseTime = Date.now();
-      if (this.player) this.player.forceUnlockActionState();
-      return;
-    }
-    if (this.uiScene && this.uiScene.campfireModal && this.uiScene.campfireModal.isOpen) {
-      this.uiScene.campfireModal.close();
-      this.lastModalCloseTime = Date.now();
-      if (this.player) this.player.forceUnlockActionState();
-      return;
-    }
-    if (this.uiScene && this.uiScene.cauldronModal && this.uiScene.cauldronModal.isOpen) {
-      this.uiScene.cauldronModal.close();
-      this.lastModalCloseTime = Date.now();
-      if (this.player) this.player.forceUnlockActionState();
-      return;
-    }
-    if (this.uiScene && this.uiScene.equipmentModal && this.uiScene.equipmentModal.isOpen) {
-      this.uiScene.equipmentModal.close();
-      this.lastModalCloseTime = Date.now();
-      if (this.player) this.player.forceUnlockActionState();
-      return;
-    }
-    if (this.hitboxInspector && this.hitboxInspector.isBenchmarkModalOpen()) {
-      this.hitboxInspector.closeBenchmarkModal();
-      this.lastModalCloseTime = Date.now();
-      return;
-    }
-    if (this.dialogueSystem && this.dialogueSystem.isActive) {
-      this.dialogueSystem.cancelDialogue();
-      this.lastModalCloseTime = Date.now();
-      if (this.player) this.player.forceUnlockActionState();
-      return;
-    }
-
-    if (Date.now() - (this.lastModalCloseTime || 0) < 300) return;
-    if (this.uiScene && Date.now() - (this.uiScene.lastModalCloseTime || 0) < 300) return;
 
     if (this.pauseModal) {
       this.pauseModal.toggle();

@@ -43,18 +43,24 @@ export class MainMenuScene extends Phaser.Scene {
 
     HDTextHelper.createText(this, 76, 82, 'HOLLOW WOODS', {
       fontFamily: 'Georgia, "Times New Roman", serif',
-      fontSize: '58px',
+      fontSize: '56px',
       fontStyle: 'bold',
       color: '#E09F3E',
+      stroke: '#080c09',
+      strokeThickness: 4,
     });
     HDTextHelper.createText(this, 80, 155, 'DỊ CẢNH RỪNG SƯƠNG', {
       fontSize: '17px',
       fontStyle: 'bold',
       color: '#E8DFC8',
+      stroke: '#080c09',
+      strokeThickness: 2,
     }).setLetterSpacing(0.5);
     HDTextHelper.createText(this, 80, 181, 'THE FOG THAT REMEMBERS', {
       fontSize: '13px',
       color: '#C8CFC2',
+      stroke: '#080c09',
+      strokeThickness: 1.5,
     }).setLetterSpacing(0.5);
     this.add.rectangle(80, 204, 114, 2, 0xC8963E).setOrigin(0, 0);
 
@@ -177,6 +183,12 @@ export class MainMenuScene extends Phaser.Scene {
         .setAlpha(0.14);
       this.tweens.add({ targets: mist, x: 950, alpha: 0.07, duration: 8500, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
     }
+
+    // B04-13B: Lớp tối nhẹ chuyển sắc bên trái (Ember Gold & Dark Moss UI Contrast Scrim)
+    // Giữ Black Knight bên phải sáng rõ và rực rỡ, tạo nền tối tĩnh lặng cho menu và tiêu đề
+    const leftVignette = this.add.graphics();
+    leftVignette.fillGradientStyle(0x0c0f0d, 0x0c0f0d, 0x0c0f0d, 0x0c0f0d, 0.90, 0.0, 0.90, 0.0);
+    leftVignette.fillRect(0, 0, 580, 720);
   }
 
   private focusMenuAction(action?: MenuAction): void {
@@ -222,8 +234,12 @@ export class MainMenuScene extends Phaser.Scene {
     btn.add([material, main]);
     if (subText) {
       btn.add(HDTextHelper.createText(this, 0, 13, subText, {
-        fontSize: '12px', color: '#C8CFC2', maxLines: 1,
-        wordWrap: { width: width - 100, useAdvancedWrap: true },
+        fontSize: '11px',
+        color: enabled ? '#C8CFC2' : '#8a9485',
+        maxLines: 1,
+        stroke: '#0b0e0c',
+        strokeThickness: 1.5,
+        wordWrap: { width: width - 40, useAdvancedWrap: true },
       }).setOrigin(0.5));
     }
 
@@ -338,7 +354,13 @@ export class MainMenuScene extends Phaser.Scene {
 
     // HitZone đóng modal khi nhấn ra ngoài
     const overlayHit = this.add.zone(0, 0, 1280, 720).setInteractive();
-    overlayHit.on('pointerdown', () => this.closeActiveMenuModal());
+    overlayHit.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+      const lx = pointer.x - 640;
+      const ly = pointer.y - 360;
+      if (lx < -modalW / 2 || lx > modalW / 2 || ly < -modalH / 2 || ly > modalH / 2) {
+        this.closeActiveMenuModal();
+      }
+    });
 
     // Khung hộp thoại gỗ tối viền đồng xỉn
     const box = this.add.graphics();
@@ -605,7 +627,13 @@ export class MainMenuScene extends Phaser.Scene {
     overlay.fillRect(-640, -360, 1280, 720);
 
     const overlayHit = this.add.zone(0, 0, 1280, 720).setInteractive();
-    overlayHit.on('pointerdown', () => this.closeActiveMenuModal());
+    overlayHit.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+      const lx = pointer.x - 640;
+      const ly = pointer.y - 360;
+      if (lx < -modalW / 2 || lx > modalW / 2 || ly < -modalH / 2 || ly > modalH / 2) {
+        this.closeActiveMenuModal();
+      }
+    });
 
     const box = this.add.graphics();
     box.fillStyle(0x120d09, 0.98);
@@ -848,7 +876,13 @@ export class MainMenuScene extends Phaser.Scene {
     overlay.fillRect(-640, -360, 1280, 720);
 
     const overlayHit = this.add.zone(0, 0, 1280, 720).setInteractive();
-    overlayHit.on('pointerdown', () => this.closeActiveMenuModal());
+    overlayHit.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+      const lx = pointer.x - 640;
+      const ly = pointer.y - 360;
+      if (lx < -modalW / 2 || lx > modalW / 2 || ly < -modalH / 2 || ly > modalH / 2) {
+        this.closeActiveMenuModal();
+      }
+    });
 
     // 2. Khung viền hộp thoại (kết hợp hình ảnh UI Pack nếu có)
     const box = this.add.graphics();
