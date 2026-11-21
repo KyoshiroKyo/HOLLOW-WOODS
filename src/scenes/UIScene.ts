@@ -634,6 +634,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       if (this.cauldronModal) { this.cauldronModal.destroy(); this.cauldronModal = undefined as any; }
       if (this.equipmentModal) { this.equipmentModal.destroy(); this.equipmentModal = undefined as any; }
       if (this.miniMapWidget) { this.miniMapWidget.destroy(); this.miniMapWidget = undefined as any; }
+      this.zoneBadgeContainer = undefined;
+      this.zoneBadgeBg = undefined;
+      this.zoneBadgeText = undefined;
+      this.zoneBadgeMapBtn = undefined;
       if (this.parchmentWorldMapModal) { this.parchmentWorldMapModal.destroy(); this.parchmentWorldMapModal = undefined as any; }
       if (this.tornPageModal) { this.tornPageModal.destroy(); this.tornPageModal = undefined as any; }
       if (this.pooledPopupText) { this.pooledPopupText.destroy(); this.pooledPopupText = undefined as any; }

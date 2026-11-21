@@ -514,8 +514,10 @@ export class GameScene extends Phaser.Scene {
     this.spawnTheListener();
 
     // 10. Khởi động UIScene pixel sắc nét (Overlay)
-    this.scene.launch('UIScene');
     this.uiScene = this.scene.get('UIScene') as UIScene;
+    const syncInitialMiniMap = () => this.syncMiniMapZone(this.currentZoneId);
+    this.uiScene.events.once(Phaser.Scenes.Events.CREATE, syncInitialMiniMap);
+    this.scene.launch('UIScene');
     this.dialogueSystem.setView(this.uiScene);
     // GATE 3C: Kết nối UIScene (Zoom 1.0) cho EndingSystem
     this.endingSystem.setUIScene(this.uiScene);
@@ -941,6 +943,7 @@ export class GameScene extends Phaser.Scene {
       }
       this.plantedFlares = [];
       if (this.uiScene && this.uiScene.events) {
+        this.uiScene.events.off(Phaser.Scenes.Events.CREATE, syncInitialMiniMap);
         this.uiScene.events.off('ui_toggle_lantern', onUIToggleLantern);
         this.uiScene.events.off('ui_throw_lure', onUIThrowLure);
       }
@@ -4054,13 +4057,16 @@ export class GameScene extends Phaser.Scene {
       this.worldBuilder.updateDeepForestBarriers(isAbyssalOpen, isMireOpen);
     }
 
-    // V1.4: Tự động cập nhật nền địa hình tĩnh cho Mini-map khi chuyển phân khu
-    if (this.uiScene && this.worldBuilder) {
-      const zone = this.worldBuilder.getZone(zoneId) || this.worldBuilder.getActiveZone();
-      if (zone) {
-        const colliders = this.worldBuilder.getZoneColliders(zoneId);
-        this.uiScene.updateMiniMapZone(zone, colliders, this.worldBuilder.transitions);
-      }
+    this.syncMiniMapZone(zoneId);
+  }
+
+  private syncMiniMapZone(zoneId: ZoneId): void {
+    // A queued UI launch can still refer to the previous, destroyed HUD.
+    if (!this.uiScene?.sys.isActive()) return;
+    const zone = this.worldBuilder.getZone(zoneId) || this.worldBuilder.getActiveZone();
+    if (zone) {
+      const colliders = this.worldBuilder.getZoneColliders(zoneId);
+      this.uiScene.updateMiniMapZone(zone, colliders, this.worldBuilder.transitions);
     }
   }
 
