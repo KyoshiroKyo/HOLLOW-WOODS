@@ -1,0 +1,212 @@
+[
+  {
+    "id": "npc_garth",
+    "name": "Garth",
+    "baseId": "garth",
+    "containerPos": {
+      "x": 540,
+      "y": 205
+    },
+    "spritePos": {
+      "x": 0,
+      "y": 0,
+      "originX": 0.5,
+      "originY": 1
+    },
+    "visualFeetPos": {
+      "x": 540,
+      "y": 205
+    },
+    "body": {
+      "x": 529,
+      "y": 191,
+      "width": 22,
+      "height": 14,
+      "offsetX": -11,
+      "offsetY": -14,
+      "aabb": [
+        529,
+        191,
+        551,
+        205
+      ],
+      "deltaFeetX": 0,
+      "deltaFeetY": 0
+    }
+  },
+  {
+    "id": "npc_edda",
+    "name": "B\u00e0 L\u00e3o Edda",
+    "baseId": "edda",
+    "containerPos": {
+      "x": 1160,
+      "y": 160
+    },
+    "spritePos": {
+      "x": 0,
+      "y": 0,
+      "originX": 0.5,
+      "originY": 1
+    },
+    "visualFeetPos": {
+      "x": 1160,
+      "y": 160
+    },
+    "body": {
+      "x": 1152,
+      "y": 148,
+      "width": 16,
+      "height": 12,
+      "offsetX": -8,
+      "offsetY": -12,
+      "aabb": [
+        1152,
+        148,
+        1168,
+        160
+      ],
+      "deltaFeetX": 0,
+      "deltaFeetY": 0
+    }
+  },
+  {
+    "id": "npc_neris",
+    "name": "Neris",
+    "baseId": "neris",
+    "containerPos": {
+      "x": 570,
+      "y": 460
+    },
+    "spritePos": {
+      "x": 0,
+      "y": 0,
+      "originX": 0.5,
+      "originY": 1
+    },
+    "visualFeetPos": {
+      "x": 570,
+      "y": 460
+    },
+    "body": {
+      "x": 562,
+      "y": 448,
+      "width": 16,
+      "height": 12,
+      "offsetX": -8,
+      "offsetY": -12,
+      "aabb": [
+        562,
+        448,
+        578,
+        460
+      ],
+      "deltaFeetX": 0,
+      "deltaFeetY": 0
+    }
+  },
+  {
+    "id": "npc_bram",
+    "name": "Bram",
+    "baseId": "bram",
+    "containerPos": {
+      "x": 1230,
+      "y": 405
+    },
+    "spritePos": {
+      "x": 0,
+      "y": 0,
+      "originX": 0.5,
+      "originY": 1
+    },
+    "visualFeetPos": {
+      "x": 1230,
+      "y": 405
+    },
+    "body": {
+      "x": 1218,
+      "y": 391,
+      "width": 24,
+      "height": 14,
+      "offsetX": -12,
+      "offsetY": -14,
+      "aabb": [
+        1218,
+        391,
+        1242,
+        405
+      ],
+      "deltaFeetX": 0,
+      "deltaFeetY": 0
+    }
+  },
+  {
+    "id": "npc_finn",
+    "name": "Finn",
+    "baseId": "finn",
+    "containerPos": {
+      "x": 909,
+      "y": 231
+    },
+    "spritePos": {
+      "x": 0,
+      "y": 0,
+      "originX": 0.5,
+      "originY": 1
+    },
+    "visualFeetPos": {
+      "x": 909,
+      "y": 231
+    },
+    "body": {
+      "x": 902,
+      "y": 221,
+      "width": 14,
+      "height": 10,
+      "offsetX": -7,
+      "offsetY": -10,
+      "aabb": [
+        902,
+        221,
+        916,
+        231
+      ],
+      "deltaFeetX": 0,
+      "deltaFeetY": 0
+    }
+  },
+  {
+    "id": "npc_campfire_knight",
+    "name": "Sir Vaelen \u2014 K\u1ef5 S\u0129 Tr\u1ea7m M\u1eb7c",
+    "baseId": "campfire_knight",
+    "containerPos": {
+      "x": 1435,
+      "y": 710
+    },
+    "spritePos": {
+      "x": 0,
+      "y": 0,
+      "originX": 0.5,
+      "originY": 1
+    },
+    "visualFeetPos": {
+      "x": 1435,
+      "y": 710
+    },
+    "body": {
+      "x": 1424,
+      "y": 696,
+      "width": 22,
+      "height": 14,
+      "offsetX": -11,
+      "offsetY": -14,
+      "aabb": [
+        1424,
+        696,
+        1446,
+        710
+      ],
+      "deltaFeetX": 0,
+      "deltaFeetY": 0
+    }
+  }
+]

@@ -139,13 +139,31 @@ export class NPCEntity extends Phaser.GameObjects.Container {
     // Depth sorting nhân vật theo tọa độ Y chân
     this.setDepth(spec.y);
 
-    // V1.5 (BƯỚC V15-03): Hộp va chạm chân nhỏ gọn (22x14 px) chuẩn xác tại bàn chân NPC trong frame 64x64 px
-    // Căn giữa theo trục X ((64-22)/2 = 21), đáy chân chạm y=64 (64-14 = 50), tuyệt đối không dùng offset âm
+    // V1.5.3 (HW-BUG-#3 FIX): Thiết lập footprint collider chuẩn xác tại gốc bàn chân Container (0, 0)
+    // Phân loại kích thước hộp va chạm theo tỷ lệ thể hình của từng loại NPC
     scene.physics.add.existing(this);
     const body = this.body as Phaser.Physics.Arcade.Body;
     if (body) {
-      body.setSize(22, 14);
-      body.setOffset(21, 50);
+      let bodyW = 22;
+      let bodyH = 14;
+      if (this.baseId === 'bram') {
+        bodyW = 24;
+        bodyH = 14;
+      } else if (this.baseId === 'garth' || this.baseId === 'campfire_knight') {
+        bodyW = 22;
+        bodyH = 14;
+      } else if (this.baseId === 'edda' || this.baseId === 'neris') {
+        bodyW = 16;
+        bodyH = 12;
+      } else if (this.baseId === 'finn') {
+        bodyW = 14;
+        bodyH = 10;
+      }
+
+      body.setSize(bodyW, bodyH);
+      // Container origin là (0, 0) tại bàn chân tiếp đất (do sprite có origin 0.5, 1.0)
+      // Căn giữa theo trục X (-width / 2) và đặt đáy hộp va chạm tại Y = 0 (-height)
+      body.setOffset(-Math.round(bodyW / 2), -bodyH);
       body.setImmovable(true);
     }
   }
@@ -622,9 +640,9 @@ export class NPCEntity extends Phaser.GameObjects.Container {
    * Cập nhật lộ trình tuần tra và đồng bộ vị trí NamePlate & QuestIndicator
    */
   public update(delta: number): void {
-    // C4-13-17: Đồng bộ tọa độ hộp va chạm vật lý theo vị trí thực tế của NPC
+    // C4-13-17 & HW-BUG-#3: Đồng bộ tọa độ hộp va chạm vật lý theo vị trí thực tế của NPC
     if (this.body) {
-      (this.body as Phaser.Physics.Arcade.Body).reset(this.x, this.y);
+      (this.body as Phaser.Physics.Arcade.Body).updateFromGameObject();
     }
 
     // C4-132-03: Đồng bộ độ sâu Y-Sorting theo cạnh đáy chân tiếp đất của NPC
