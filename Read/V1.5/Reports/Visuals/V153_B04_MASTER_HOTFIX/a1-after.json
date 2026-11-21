@@ -1,0 +1,202 @@
+{
+  "inventory": {
+    "bodies": [
+      [
+        "Lều Thợ Săn",
+        1347,
+        689,
+        36,
+        14,
+        true
+      ],
+      [
+        "Cụm Vật Phẩm Làng",
+        1375,
+        721,
+        20,
+        12,
+        true
+      ],
+      [
+        "Cụm Vật Phẩm Làng",
+        1265,
+        706,
+        20,
+        12,
+        true
+      ],
+      [
+        "Bếp Lửa Hồng Đá Cổ",
+        1458,
+        702,
+        24,
+        16,
+        true
+      ],
+      [
+        "Thân Cây Đổ",
+        1459,
+        790,
+        32,
+        10,
+        true
+      ],
+      [
+        "Gốc Cây Pixel Art",
+        1516,
+        801,
+        18,
+        10,
+        true
+      ],
+      [
+        "Gốc Cây Pixel Art",
+        1531,
+        721,
+        18,
+        10,
+        true
+      ],
+      [
+        "Tảng Đá",
+        1394.5,
+        774,
+        29,
+        11,
+        true
+      ]
+    ],
+    "sprites": [
+      "campfire_tier2"
+    ],
+    "props": [
+      {
+        "id": "quiet_forest_bonfire",
+        "x": 1470,
+        "y": 710,
+        "action": "warm_quiet_bonfire"
+      }
+    ]
+  },
+  "cases": {
+    "oldCampWalk": {
+      "x": 1436.8333333333371,
+      "y": 726,
+      "zone": "outer_woods",
+      "blocked": {
+        "none": true,
+        "up": false,
+        "down": false,
+        "left": false,
+        "right": false
+      },
+      "noclip": false,
+      "stamina": 100,
+      "composure": 100,
+      "moisture": 0,
+      "fps": 46.76123046875
+    },
+    "oldCampRunNorth": {
+      "x": 1332,
+      "y": 625.6666666666646,
+      "zone": "outer_woods",
+      "blocked": {
+        "none": true,
+        "up": false,
+        "down": false,
+        "left": false,
+        "right": false
+      },
+      "noclip": false,
+      "stamina": 79.21066000000012,
+      "composure": 100,
+      "moisture": 0,
+      "fps": 47.8209228515625
+    },
+    "arcEast": {
+      "x": 1428.3333333333376,
+      "y": 773,
+      "zone": "outer_woods",
+      "blocked": {
+        "none": true,
+        "up": false,
+        "down": false,
+        "left": false,
+        "right": false
+      },
+      "noclip": false,
+      "stamina": 100,
+      "composure": 100,
+      "moisture": 0,
+      "fps": 51.586769104003906
+    },
+    "arcNorth": {
+      "x": 1432.5833333333378,
+      "y": 737.5833333333343,
+      "zone": "outer_woods",
+      "blocked": {
+        "none": true,
+        "up": false,
+        "down": false,
+        "left": false,
+        "right": false
+      },
+      "noclip": false,
+      "stamina": 100,
+      "composure": 100,
+      "moisture": 0,
+      "fps": 51.586769104003906
+    },
+    "workshopIn": {
+      "x": 1360,
+      "y": 1160.91666666667,
+      "zone": "sub_bell_workshop",
+      "blocked": {
+        "none": true,
+        "up": false,
+        "down": false,
+        "left": false,
+        "right": false
+      },
+      "noclip": false,
+      "stamina": 100,
+      "composure": 100,
+      "moisture": 0,
+      "fps": 53.8925576210022
+    },
+    "workshopOut": {
+      "x": 1360,
+      "y": 904.9166666666687,
+      "zone": "outer_woods",
+      "blocked": {
+        "none": true,
+        "up": false,
+        "down": false,
+        "left": false,
+        "right": false
+      },
+      "noclip": false,
+      "stamina": 100,
+      "composure": 100,
+      "moisture": 0,
+      "fps": 55.502063661813736
+    },
+    "warm": {
+      "x": 1480,
+      "y": 736,
+      "zone": "outer_woods",
+      "blocked": {
+        "none": true,
+        "up": false,
+        "down": false,
+        "left": false,
+        "right": false
+      },
+      "noclip": false,
+      "stamina": 100,
+      "composure": 76.57588799999999,
+      "moisture": 25.060280000000006,
+      "fps": 55.1265477463603
+    }
+  }
+}

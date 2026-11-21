@@ -1,0 +1,115 @@
+{
+  "inventory": {
+    "bodies": [
+      [
+        "Lửa Trại Thợ Săn",
+        1308,
+        712,
+        24,
+        16,
+        true
+      ],
+      [
+        "Lều Thợ Săn",
+        1347,
+        689,
+        36,
+        14,
+        true
+      ],
+      [
+        "Cụm Vật Phẩm Làng",
+        1375,
+        721,
+        20,
+        12,
+        true
+      ],
+      [
+        "Cụm Vật Phẩm Làng",
+        1265,
+        706,
+        20,
+        12,
+        true
+      ],
+      [
+        "Bếp Lửa Hồng Đá Cổ",
+        1458,
+        702,
+        24,
+        16,
+        true
+      ],
+      [
+        "Thân Cây Đổ",
+        1459,
+        790,
+        32,
+        10,
+        true
+      ],
+      [
+        "Gốc Cây Pixel Art",
+        1516,
+        801,
+        18,
+        10,
+        true
+      ],
+      [
+        "Gốc Cây Pixel Art",
+        1531,
+        721,
+        18,
+        10,
+        true
+      ],
+      [
+        "Tảng Đá",
+        1394.5,
+        774,
+        29,
+        11,
+        true
+      ]
+    ],
+    "sprites": [
+      "campfire_tier2",
+      "campfire_unlit"
+    ],
+    "props": [
+      {
+        "id": "ow_hunter_camp",
+        "x": 1320,
+        "y": 720,
+        "action": "inspect_ow_campfire"
+      },
+      {
+        "id": "quiet_forest_bonfire",
+        "x": 1470,
+        "y": 710,
+        "action": "warm_quiet_bonfire"
+      }
+    ]
+  },
+  "cases": {
+    "oldCampWalk": {
+      "x": 1299,
+      "y": 730,
+      "zone": "outer_woods",
+      "blocked": {
+        "none": false,
+        "up": false,
+        "down": false,
+        "left": false,
+        "right": true
+      },
+      "noclip": false,
+      "stamina": 100,
+      "composure": 100,
+      "moisture": 0,
+      "fps": 46.322265625
+    }
+  }
+}
