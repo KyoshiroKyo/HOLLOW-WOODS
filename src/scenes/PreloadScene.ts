@@ -12,6 +12,7 @@ import {
   SATYR_PORTRAIT_KEY, 
   BLACK_KNIGHT_ARMED_IDLE_KEY,
   BLACK_KNIGHT_MOVEMENT_KEY,
+  BLACK_KNIGHT_CORE_COMBAT_KEY,
   WAYFARER_USE_PURE_ARTIST_SPRITES,
   WAYFARER_IDLE_KEY,
   WAYFARER_WALK_KEY,
@@ -506,6 +507,11 @@ export class PreloadScene extends Phaser.Scene {
         BLACK_KNIGHT_MOVEMENT_KEY,
         'assets/characters/black_knight/black_knight_movement.png',
         'assets/characters/black_knight/black_knight_movement.json'
+      );
+      this.load.atlas(
+        BLACK_KNIGHT_CORE_COMBAT_KEY,
+        'assets/characters/black_knight/black_knight_core_combat.png',
+        'assets/characters/black_knight/black_knight_core_combat.json'
       );
     }
 

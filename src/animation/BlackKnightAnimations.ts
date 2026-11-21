@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import { 
   BLACK_KNIGHT_ARMED_IDLE_KEY,
   BLACK_KNIGHT_MOVEMENT_KEY,
+  BLACK_KNIGHT_CORE_COMBAT_KEY,
   WAYFARER_USE_PURE_ARTIST_SPRITES,
   WAYFARER_IDLE_KEY,
   WAYFARER_WALK_KEY,
@@ -58,6 +59,15 @@ const DIRECTIONS = ['down', 'up', 'left', 'right'] as const;
 const ARMED_IDLE_FRAMES_PER_DIRECTION = 6;
 const ARMED_IDLE_FRAME_MS = 70;
 
+export const CORE_COMBAT_FRAMES = 6;
+// Atlas indices are zero-based. AnimationFrame.index in Phaser is one-based.
+export const CORE_COMBAT_CLIPS = {
+  attack: { frameMs: 75, impactFrame: 2, recoveryFrame: 4 },
+  heavy_attack: { frameMs: 100, impactFrame: 3, recoveryFrame: 4 },
+  attack_combo: { frameMs: 75, impactFrame: 2, recoveryFrame: 4 },
+} as const;
+export type CoreCombatAction = keyof typeof CORE_COMBAT_CLIPS;
+
 interface ArtistMovementClip {
   prefix: string;
   frameMs: number;
@@ -108,7 +118,20 @@ export function registerWayfarerAnimations(anims: Phaser.Animations.AnimationMan
   const hasCompleteArtistIdle = artistIdle.length === DIRECTIONS.length &&
     artistIdle.every(frames => frames.length === ARMED_IDLE_FRAMES_PER_DIRECTION);
 
+  const combatActions = Object.keys(CORE_COMBAT_CLIPS) as CoreCombatAction[];
+  const combatClips = new Map<CoreCombatAction, Phaser.Types.Animations.AnimationFrame[][]>();
+  if (WAYFARER_USE_PURE_ARTIST_SPRITES) {
+    for (const action of combatActions) {
+      const clips = DIRECTIONS.map(dir => anims.generateFrameNames(BLACK_KNIGHT_CORE_COMBAT_KEY, {
+        prefix: `${action}_${dir}_`,
+        end: CORE_COMBAT_FRAMES - 1,
+      }));
+      if (clips.every(frames => frames.length === CORE_COMBAT_FRAMES)) combatClips.set(action, clips);
+    }
+  }
+
   for (const cfg of WAYFARER_CONFIGS) {
+    if (combatClips.has(cfg.action as CoreCombatAction)) continue;
     const useArtistIdle = cfg.action === 'idle' && hasCompleteArtistIdle;
     const movement = getMovementGroup(anims, cfg.action);
     const hasBaseAlias = cfg.action !== 'idle' && cfg.action !== 'walk' &&
@@ -131,6 +154,22 @@ export function registerWayfarerAnimations(anims: Phaser.Animations.AnimationMan
         for (const key of keys) {
           if (anims.exists(key)) anims.remove(key);
           anims.create({ key, frames, frameRate, repeat: cfg.repeat });
+        }
+      }
+    }
+  }
+
+  for (const [action, clips] of combatClips) {
+    for (const [row, dir] of DIRECTIONS.entries()) {
+      for (const prefix of ['wayfarer', 'satyr']) {
+        const base = `${prefix}_${action}`;
+        const keys = row === 0 ? [base, `${base}_${dir}`] : [`${base}_${dir}`];
+        for (const key of keys) {
+          if (anims.exists(key)) anims.remove(key);
+          anims.create({
+            key, frames: clips[row], frameRate: 1000 / CORE_COMBAT_CLIPS[action].frameMs,
+            repeat: 0, skipMissedFrames: false,
+          });
         }
       }
     }
