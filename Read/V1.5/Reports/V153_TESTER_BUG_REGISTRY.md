@@ -29,6 +29,7 @@ Dùng mã trong INDEX R10. Hàng **OPEN** của batch khác giữ ở chủ sở
 | HOTFIX-A1 | CLOSED-VERIFIED local | Bỏ bếp Thợ Săn và collider, giữ bếp Vaelen. Chromium kiểm tra các tuyến với Noclip tắt và tương tác sưởi. [Báo cáo](V153_B04_MASTER_HOTFIX_REPORT.md). |
 | HOTFIX-A2 | CLOSED-VERIFIED local | Sắt cổ ngữ có sprite tại điểm E, chỉ nhặt một lần. Continue vẫn ẩn item sau khi tiêu hao. [Báo cáo](V153_B04_MASTER_HOTFIX_REPORT.md). |
 | HOTFIX-B1 | PARTIAL · local | Đã chuẩn hóa hai Run live và neo bóng sau bước physics. Chưa tái hiện phóng lớn trong Walk ở bốn hướng Armed/Unarmed. [Báo cáo](V153_B04_MASTER_HOTFIX_REPORT.md). |
+| HOTFIX-B2 | PARTIAL · local | Chromium đạt ca phím thật, packet IME giả lập, blur và nhập văn bản. EVKey Windows cần xác nhận. [Báo cáo](V153_B04_MASTER_HOTFIX_REPORT.md). |
 | BUG-051 | CLOSED-VERIFIED local · 04C-G P0 | Thoại Garth từng ghi sai cờ so với điều kiện khóa. Chromium xác nhận cờ cổng, collider và đi bộ qua Cổng Đông. [Báo cáo](V153_B04CG_P0_REPORT.md). |
 | BUG-052 | CLOSED-VERIFIED local · 04C-G P0 | Garth, Edda hoặc Neris đều mở cổng khi hoàn tất thoại mở cổng. Mở thoại và Escape giữ khóa. Cả ba nhánh giữ cổng mở sau Continue schema 3. [Báo cáo](V153_B04CG_P0_REPORT.md). |
 | BUG-053 | CLOSED-VERIFIED local · 04C-G P0 | HUD cập nhật khi nhận quest Edda, Giữ Lửa Trong Sương, Dấu Vết Đồng Đội Cũ và chỉ dẫn tìm khuôn của Sir Vaelen. [Báo cáo](V153_B04CG_P0_REPORT.md). |

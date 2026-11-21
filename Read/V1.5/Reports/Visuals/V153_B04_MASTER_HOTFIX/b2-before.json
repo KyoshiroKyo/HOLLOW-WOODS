@@ -1,0 +1,37 @@
+{
+  "normalDown": {
+    "x": 272,
+    "y": 250.83333333333346,
+    "vx": 0,
+    "vy": -85,
+    "sprinting": false,
+    "codes": [
+      "KeyW"
+    ],
+    "n": false,
+    "focus": false,
+    "composing": false
+  },
+  "packetKeyUp": {
+    "x": 272,
+    "y": 246.58333333333348,
+    "vx": 0,
+    "vy": 0,
+    "sprinting": false,
+    "codes": [],
+    "n": false,
+    "focus": false,
+    "composing": false
+  },
+  "nativeHoldThroughPacketDown": {
+    "x": 272,
+    "y": 205.50000000000045,
+    "vx": 0,
+    "vy": 0,
+    "sprinting": false,
+    "codes": [],
+    "n": false,
+    "focus": false,
+    "composing": false
+  }
+}

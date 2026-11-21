@@ -29,3 +29,23 @@ SHA triển khai `e4de67eee638b56308ed103ce92201c9c1dfef3f`. Chromium Canvas ở
 `BlackKnightPlayer.ts` giảm scale hiển thị hai Run live theo kích thước nguồn, giữ nguyên PNG/JSON, pivot và chu kỳ 840 ms. Run còn 27,2–35,1 px theo alpha; Idle và Walk giữ mức gốc. Bù hệ số trò chơi về nguồn Arcade để AABB thế giới vẫn `[-9,-18,18,12]`. Đồng bộ bóng tại post-update sau khi Arcade cập nhật vị trí. Độ trễ bóng đo khi chạy/rẽ trước sửa đến 7 px, sau sửa 0 ở các mẫu.
 
 Build PASS. Tám tổ hợp thực hiện Idle → Walk → Run → Idle đủ mọi frame. Kiểm tra thêm đổi hướng khi giữ Shift, nhả Shift về Walk và đứng yên. WebGL New Game/Restart smoke PASS sau thay đổi listener bóng. Cần bằng chứng từ máy Owner cho hiện tượng phóng lớn trong Walk nếu tiếp tục xảy ra. [So sánh Canvas 2.2×](Visuals/V153_B04_MASTER_HOTFIX/b1-runtime-compare.png) · [Frame, pivot, tỷ lệ và AABB](Visuals/V153_B04_MASTER_HOTFIX/b1-frame-compare.json)
+
+## B2 — PARTIAL · EVKey Windows cần Owner xác nhận
+
+SHA triển khai `6851702a9f8f6fa80a14eb6c7e81381078dc1b13`. Chromium Linux tái hiện logic cũ giải phóng W khi nhận keyup gói IME có `code=KeyW`. Keydown gói IME cũng đưa hold đã xác nhận vào watchdog ngắn. Khi focus một ô nhập, Phaser vẫn giữ global DOM capture dù các keyboard plugin của Scene bị tắt.
+
+`BlackKnightPlayer.ts` giữ ưu tiên `event.code`, phân loại packet 229/231 và lưu deadline theo từng phím. Packet keyup không giải phóng một hold đã nhận. Keyup chuẩn giải phóng ngay, kể cả có cờ composition với code và mã phím chuẩn. Shift lấy từ modifier xác nhận. Khi trình duyệt không nhận thêm tín hiệu, hold đã xác nhận có giới hạn 2 giây và hold chỉ có packet có giới hạn 450 ms. Blur và nhập văn bản xóa trạng thái gameplay. Global capture nhường cho ô nhập và được khôi phục khi quay lại game.
+
+Build PASS và bộ focus/HUD 28/28 PASS. Chromium kiểm W không repeat, Shift+W qua packet giả lập, nhả Shift về Walk, nhả W/D thật, đường chéo, đổi hướng, mũi tên, hết hạn khi mất sự kiện, blur/focus, nhập `wsad` và lấy lại điều khiển. Không có môi trường Windows với EVKey trong ca này. Hành vi khi sự kiện bị chặn trước khi tới trình duyệt vẫn cần xác nhận trên máy Owner. [Bản ghi trước](Visuals/V153_B04_MASTER_HOTFIX/b2-before.json) · [Bản ghi sau](Visuals/V153_B04_MASTER_HOTFIX/b2-after.json)
+
+## Checkpoint bàn giao
+
+| Nhóm | Checkpoint đã xác minh trên GitHub |
+|---|---|
+| A1 | `d4695755682922e28256c1f3dabea0dfb7c3c216` |
+| A2 | `adcd504503a348367f396f0e69749f95539fc7e3` |
+| C | `8ef1c42cfa57335f6879c28f10ea40dded9681f7` |
+| B1 | `640856dd8c25a0d892de0321c4776879d3b88852` |
+| B2 | Commit bàn giao chứa báo cáo này, với SHA triển khai ghi ở mục B2. |
+
+Dừng sau lượt 1. Nền đất và cảnh quan thuộc lượt 2.
