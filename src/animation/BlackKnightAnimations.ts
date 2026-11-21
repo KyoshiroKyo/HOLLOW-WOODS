@@ -1,61 +1,17 @@
 import * as Phaser from 'phaser';
-import { 
+import {
   BLACK_KNIGHT_ARMED_IDLE_KEY,
   BLACK_KNIGHT_MOVEMENT_KEY,
   BLACK_KNIGHT_CORE_COMBAT_KEY,
   BLACK_KNIGHT_DEFENSE_KEY,
   BLACK_KNIGHT_EXTENDED_SKILLS_KEY,
-  WAYFARER_USE_PURE_ARTIST_SPRITES,
-  WAYFARER_IDLE_KEY,
-  WAYFARER_WALK_KEY,
-  WAYFARER_RUN_KEY,
-  WAYFARER_ATTACK_KEY,
-  WAYFARER_HURT_KEY,
-  WAYFARER_DEATH_KEY,
-  WAYFARER_INTERACT_KEY,
-  WAYFARER_GATHER_KEY,
-  WAYFARER_USE_ITEM_KEY,
-  WAYFARER_UNARMED_IDLE_KEY,
-  WAYFARER_UNARMED_RUN_KEY,
-  WAYFARER_HEAVY_ATTACK_KEY,
-  WAYFARER_WEAPON_ART_KEY,
-  WAYFARER_PARRY_KEY,
-  WAYFARER_ROLL_KEY,
-  WAYFARER_UNARMED_ROLL_KEY,
-  WAYFARER_BUFF_KEY,
-  WAYFARER_WEAPON_TOGGLE_KEY
+  BLACK_KNIGHT_CONVERSION_ACTIONS_KEY,
+  BLACK_KNIGHT_CONVERSION_AIR_KEY,
+  BLACK_KNIGHT_CONVERSION_COMBAT_KEY,
+  BLACK_KNIGHT_CONVERSION_STATES_KEY,
+  BLACK_KNIGHT_CONVERSION_MOTION_KEY,
 } from '../config/Constants';
-
-interface WayfarerSheetConfig {
-  action: string;
-  sheetKey: string;
-  fps: number;
-  repeat: number;
-  framesPerDir: number;
-}
-
-const WAYFARER_CONFIGS: WayfarerSheetConfig[] = [
-  { action: 'idle', sheetKey: WAYFARER_IDLE_KEY, fps: 6, repeat: -1, framesPerDir: 4 },
-  { action: 'walk', sheetKey: WAYFARER_WALK_KEY, fps: 10, repeat: -1, framesPerDir: 6 },
-  { action: 'run', sheetKey: WAYFARER_RUN_KEY, fps: 14, repeat: -1, framesPerDir: 6 },
-  { action: 'attack', sheetKey: WAYFARER_ATTACK_KEY, fps: 12, repeat: 0, framesPerDir: 6 },
-  { action: 'hurt', sheetKey: WAYFARER_HURT_KEY, fps: 8, repeat: 0, framesPerDir: 3 },
-  { action: 'death', sheetKey: WAYFARER_DEATH_KEY, fps: 8, repeat: 0, framesPerDir: 6 },
-  { action: 'interact', sheetKey: WAYFARER_INTERACT_KEY, fps: 8, repeat: 0, framesPerDir: 4 },
-  { action: 'gather', sheetKey: WAYFARER_GATHER_KEY, fps: 8, repeat: 0, framesPerDir: 4 },
-  { action: 'use_item', sheetKey: WAYFARER_USE_ITEM_KEY, fps: 8, repeat: 0, framesPerDir: 4 },
-  // 9 animations chiến đấu & động tác mới V1.5.2
-  { action: 'unarmed_idle', sheetKey: WAYFARER_UNARMED_IDLE_KEY, fps: 6, repeat: -1, framesPerDir: 4 },
-  { action: 'unarmed_walk', sheetKey: WAYFARER_WALK_KEY, fps: 10, repeat: -1, framesPerDir: 6 },
-  { action: 'unarmed_run', sheetKey: WAYFARER_UNARMED_RUN_KEY, fps: 14, repeat: -1, framesPerDir: 6 },
-  { action: 'heavy_attack', sheetKey: WAYFARER_HEAVY_ATTACK_KEY, fps: 10, repeat: 0, framesPerDir: 6 },
-  { action: 'weapon_art', sheetKey: WAYFARER_WEAPON_ART_KEY, fps: 12, repeat: 0, framesPerDir: 6 },
-  { action: 'parry', sheetKey: WAYFARER_PARRY_KEY, fps: 12, repeat: 0, framesPerDir: 6 },
-  { action: 'roll', sheetKey: WAYFARER_ROLL_KEY, fps: 14, repeat: 0, framesPerDir: 6 },
-  { action: 'unarmed_roll', sheetKey: WAYFARER_UNARMED_ROLL_KEY, fps: 14, repeat: 0, framesPerDir: 6 },
-  { action: 'buff', sheetKey: WAYFARER_BUFF_KEY, fps: 8, repeat: 0, framesPerDir: 6 },
-  { action: 'weapon_toggle', sheetKey: WAYFARER_WEAPON_TOGGLE_KEY, fps: 10, repeat: 0, framesPerDir: 6 },
-];
+import conversionClips from './BlackKnightConversion.json';
 
 const DIRECTIONS = ['down', 'up', 'left', 'right'] as const;
 const ARMED_IDLE_FRAMES_PER_DIRECTION = 6;
@@ -95,120 +51,91 @@ export const EXTENDED_SKILL_CLIPS = {
   weapon_art: { frameMs: 1000 / 12, impactFrame: 0, recoveryFrame: 1 },
 } as const;
 
+interface Clip {
+  frameMs: number;
+  frames?: number;
+  prefix?: string;
+  firstFrame?: number;
+}
+
 interface ArtistAction {
   frames: Phaser.Types.Animations.AnimationFrame[][];
   frameMs: number;
+  repeat: number;
 }
 
-interface ArtistMovementClip {
-  prefix: string;
-  frameMs: number;
-}
-
-const ARTIST_MOVEMENT: Partial<Record<string, ArtistMovementClip>> = {
+const MOVEMENT_CLIPS: Readonly<Record<string, Clip>> = {
   walk: { prefix: 'armed_walk', frameMs: 170 },
   run: { prefix: 'armed_run', frameMs: 140 },
-  unarmed_idle: { prefix: 'unarmed_idle', frameMs: 70 },
-  unarmed_walk: { prefix: 'unarmed_walk', frameMs: 170 },
-  unarmed_run: { prefix: 'unarmed_run', frameMs: 140 },
+  unarmed_idle: { frameMs: 70 },
+  unarmed_walk: { frameMs: 170 },
+  unarmed_run: { frameMs: 140 },
 };
 
-function getMovementGroup(anims: Phaser.Animations.AnimationManager, action: string) {
-  const clip = ARTIST_MOVEMENT[action];
-  if (!WAYFARER_USE_PURE_ARTIST_SPRITES || !clip) return undefined;
+const COMPATIBILITY_ACTIONS = {
+  buff: 'armed_buff',
+  interact: 'unarmed_interact',
+  gather: 'unarmed_gather',
+  use_item: 'unarmed_use_item',
+  weapon_toggle: 'weapon_on',
+} as const;
 
-  const directions = DIRECTIONS.map(dir => {
-    const expectedCount = 6;
-    const frames = anims.generateFrameNames(BLACK_KNIGHT_MOVEMENT_KEY, {
-      prefix: `${clip.prefix}_${dir}_`,
-      end: expectedCount - 1,
-    });
-    return { frames, expectedCount, frameRate: 1000 / clip.frameMs };
-  });
-  return directions.every(dir => dir.frames.length === dir.expectedCount) ? directions : undefined;
-}
-
-
-/** Register the directional Wayfarer clips and their supported Satyr animation aliases. */
+/** Keep historical animation names backed by approved custom frames. */
 export function registerWayfarerAnimations(anims: Phaser.Animations.AnimationManager): void {
-  // The original RIGHT artwork stays in the K1 asset for compatibility.
-  // Use the reviewed replacement when complete, even if the unused K1 row is absent.
-  const consistentRightIdle = WAYFARER_USE_PURE_ARTIST_SPRITES
-    ? anims.generateFrameNames(BLACK_KNIGHT_MOVEMENT_KEY, {
-      prefix: 'armed_idle_right_',
-      end: ARMED_IDLE_FRAMES_PER_DIRECTION - 1,
-    })
-    : [];
-  const artistIdle = WAYFARER_USE_PURE_ARTIST_SPRITES
-    ? DIRECTIONS.map(dir => dir === 'right' && consistentRightIdle.length === ARMED_IDLE_FRAMES_PER_DIRECTION
-      ? consistentRightIdle
-      : anims.generateFrameNames(BLACK_KNIGHT_ARMED_IDLE_KEY, {
-        prefix: `armed_idle_${dir}_`,
-        end: ARMED_IDLE_FRAMES_PER_DIRECTION - 1,
-      }))
-    : [];
-  const hasCompleteArtistIdle = artistIdle.length === DIRECTIONS.length &&
-    artistIdle.every(frames => frames.length === ARMED_IDLE_FRAMES_PER_DIRECTION);
-
-  const artistActions = new Map<string, ArtistAction>();
-  const collect = (texture: string, config: Readonly<Record<string, { frameMs: number }>>) => {
+  const actions = new Map<string, ArtistAction>();
+  const collect = (texture: string, config: Readonly<Record<string, Clip>>, repeat = 0) => {
     const available = new Set(anims.generateFrameNames(texture).map(frame => frame.frame));
-    for (const [action, { frameMs }] of Object.entries(config)) {
-      const frames = DIRECTIONS.map(dir => Array.from({ length: CORE_COMBAT_FRAMES }, (_, i) => ({
-        key: texture, frame: `${action}_${dir}_${i}`,
+    for (const [action, spec] of Object.entries(config)) {
+      const frames = DIRECTIONS.map(dir => Array.from({ length: spec.frames ?? CORE_COMBAT_FRAMES }, (_, index) => ({
+        key: texture,
+        frame: `${spec.prefix ?? action}_${dir}_${index + (spec.firstFrame ?? 0)}`,
       })));
       if (frames.every(clip => clip.every(frame => available.has(frame.frame)))) {
-        artistActions.set(action, { frames, frameMs });
+        actions.set(action, { frames, frameMs: spec.frameMs, repeat });
       }
     }
   };
-  if (WAYFARER_USE_PURE_ARTIST_SPRITES) {
-    collect(BLACK_KNIGHT_CORE_COMBAT_KEY, CORE_COMBAT_CLIPS);
-    collect(BLACK_KNIGHT_DEFENSE_KEY, DEFENSE_CLIPS);
-    collect(BLACK_KNIGHT_EXTENDED_SKILLS_KEY, EXTENDED_SKILL_CLIPS);
-    const armedBuff = artistActions.get('armed_buff');
-    if (armedBuff) artistActions.set('buff', armedBuff);
+
+  const armedIdle = DIRECTIONS.map(dir => anims.generateFrameNames(
+    dir === 'right' ? BLACK_KNIGHT_MOVEMENT_KEY : BLACK_KNIGHT_ARMED_IDLE_KEY,
+    { prefix: `armed_idle_${dir}_`, end: ARMED_IDLE_FRAMES_PER_DIRECTION - 1 }
+  ));
+  if (armedIdle.every(frames => frames.length === ARMED_IDLE_FRAMES_PER_DIRECTION)) {
+    actions.set('idle', { frames: armedIdle, frameMs: ARMED_IDLE_FRAME_MS, repeat: -1 });
+  }
+  collect(BLACK_KNIGHT_MOVEMENT_KEY, MOVEMENT_CLIPS, -1);
+  collect(BLACK_KNIGHT_CORE_COMBAT_KEY, CORE_COMBAT_CLIPS);
+  collect(BLACK_KNIGHT_DEFENSE_KEY, DEFENSE_CLIPS);
+  collect(BLACK_KNIGHT_DEFENSE_KEY, conversionClips.references);
+  collect(BLACK_KNIGHT_EXTENDED_SKILLS_KEY, EXTENDED_SKILL_CLIPS);
+  collect(BLACK_KNIGHT_CONVERSION_ACTIONS_KEY, conversionClips.actions);
+  collect(BLACK_KNIGHT_CONVERSION_AIR_KEY, conversionClips.air);
+  collect(BLACK_KNIGHT_CONVERSION_COMBAT_KEY, conversionClips.combat);
+  collect(BLACK_KNIGHT_CONVERSION_STATES_KEY, conversionClips.states);
+  collect(BLACK_KNIGHT_CONVERSION_MOTION_KEY, conversionClips.motion);
+  for (const [action, sequence] of [
+    ['run', 'armed_run_sequence'], ['unarmed_run', 'unarmed_run_sequence'],
+  ]) {
+    const clip = actions.get(sequence);
+    // Preserve the 840 ms running cycle while showing all 12 source phases.
+    if (clip) actions.set(action, { ...clip, repeat: -1 });
+  }
+  for (const [alias, action] of Object.entries(COMPATIBILITY_ACTIONS)) {
+    const clip = actions.get(action);
+    if (clip) actions.set(alias, clip);
   }
 
-  for (const cfg of WAYFARER_CONFIGS) {
-    if (artistActions.has(cfg.action)) continue;
-    const useArtistIdle = cfg.action === 'idle' && hasCompleteArtistIdle;
-    const movement = getMovementGroup(anims, cfg.action);
-    const hasBaseAlias = cfg.action !== 'idle' && cfg.action !== 'walk' &&
-      cfg.action !== 'unarmed_walk' && cfg.action !== 'run';
-
-    for (const [row, dir] of DIRECTIONS.entries()) {
-      const start = row * cfg.framesPerDir;
-      const artist = movement?.[row];
-      const frames = useArtistIdle ? artistIdle[row] : artist?.frames ?? anims.generateFrameNumbers(cfg.sheetKey, {
-        start,
-        end: start + cfg.framesPerDir - 1
-      });
-      const expectedCount = useArtistIdle ? ARMED_IDLE_FRAMES_PER_DIRECTION : artist?.expectedCount ?? cfg.framesPerDir;
-      const frameRate = useArtistIdle ? 1000 / ARMED_IDLE_FRAME_MS : artist?.frameRate ?? cfg.fps;
-      if (frames.length !== expectedCount) continue;
-
-      for (const prefix of ['wayfarer', 'satyr']) {
-        const baseKey = `${prefix}_${cfg.action}`;
-        const keys = row === 0 && hasBaseAlias ? [`${baseKey}_${dir}`, baseKey] : [`${baseKey}_${dir}`];
-        for (const key of keys) {
-          if (anims.exists(key)) anims.remove(key);
-          anims.create({ key, frames, frameRate, repeat: cfg.repeat });
-        }
-      }
-    }
-  }
-
-  for (const [action, clip] of artistActions) {
+  for (const [action, clip] of actions) {
     for (const [row, dir] of DIRECTIONS.entries()) {
       for (const prefix of ['wayfarer', 'satyr']) {
         const base = `${prefix}_${action}`;
-        const keys = row === 0 ? [base, `${base}_${dir}`] : [`${base}_${dir}`];
+        const isMovement = ['idle', 'walk', 'run', 'unarmed_walk'].includes(action);
+        const keys = row === 0 && !isMovement ? [base, `${base}_${dir}`] : [`${base}_${dir}`];
         for (const key of keys) {
           if (anims.exists(key)) anims.remove(key);
           anims.create({
             key, frames: clip.frames[row], frameRate: 1000 / clip.frameMs,
-            repeat: 0, skipMissedFrames: false,
+            repeat: clip.repeat, skipMissedFrames: clip.repeat === -1,
           });
         }
       }
@@ -216,7 +143,4 @@ export function registerWayfarerAnimations(anims: Phaser.Animations.AnimationMan
   }
 }
 
-// satyr_sheet is a 16-frame texture alias for Wayfarer Idle. The historical
-// 50-frame table cannot be registered on it, and every legacy animation key
-// already resolves to the directional clips registered above.
 export const registerBlackKnightAnimations = registerWayfarerAnimations;

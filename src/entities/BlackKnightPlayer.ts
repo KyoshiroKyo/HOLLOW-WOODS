@@ -2,16 +2,15 @@ import * as Phaser from 'phaser';
 import { CORE_COMBAT_CLIPS, CORE_COMBAT_FRAMES, EXTENDED_SKILL_CLIPS, type CoreCombatAction, type DefenseAction } from '../animation/BlackKnightAnimations';
 import { DeveloperModeManager } from '../debug/DeveloperModeManager';
 import { 
-  SATYR_SHEET_KEY,
   BLACK_KNIGHT_MOVEMENT_KEY,
+  BLACK_KNIGHT_CONVERSION_MOTION_KEY,
   BLACK_KNIGHT_ARMED_IDLE_KEY,
   BLACK_KNIGHT_CORE_COMBAT_KEY,
   BLACK_KNIGHT_DEFENSE_KEY,
   BLACK_KNIGHT_EXTENDED_SKILLS_KEY,
+  BLACK_KNIGHT_CONVERSION_ACTIONS_KEY,
   WAYFARER_FRAME_WIDTH,
   WAYFARER_FRAME_HEIGHT,
-  WAYFARER_USE_PURE_ARTIST_SPRITES,
-  WAYFARER_IDLE_KEY,
   WAYFARER_ORIGIN_X,
   WAYFARER_ORIGIN_Y,
   WAYFARER_BODY_WIDTH,
@@ -196,9 +195,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
   }
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    // Khởi tạo sprite với texture của The Mossbound Wayfarer (hoặc fallback SATYR_SHEET_KEY)
-    const initialTexture = scene.textures.exists(WAYFARER_IDLE_KEY) ? WAYFARER_IDLE_KEY : SATYR_SHEET_KEY;
-    super(scene, x, y, initialTexture, 0);
+    super(scene, x, y, BLACK_KNIGHT_ARMED_IDLE_KEY, 'armed_idle_down_0');
 
     // Thêm sprite vào Scene và bật Arcade Physics
     scene.add.existing(this);
@@ -1343,9 +1340,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     const anim = this.scene.anims.get(key);
     if (!anim || !anim.frames || anim.frames.length === 0) {
       // V14-P8-11: Nếu animation đích không tồn tại hoặc rỗng, bảo đảm sprite luôn có frame hoạt ảnh hiển thị
-      const fallbackIdle = this.scene.anims.exists('wayfarer_idle_down')
-        ? 'wayfarer_idle_down'
-        : (this.scene.anims.exists('satyr_idle_down') ? 'satyr_idle_down' : null);
+      const fallbackIdle = this.getIdleAnimationKey();
       if (fallbackIdle && key !== fallbackIdle) {
         this.play(fallbackIdle, true);
       }
@@ -1377,8 +1372,8 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     }
 
     const targetAnim = this.scene.anims.get(targetKey);
-    if (!targetAnim?.frames.length ||
-      (WAYFARER_USE_PURE_ARTIST_SPRITES && targetAnim.frames[0].textureKey !== BLACK_KNIGHT_MOVEMENT_KEY)) {
+    const texture = targetAnim?.frames[0]?.textureKey;
+    if (!targetAnim || (texture !== BLACK_KNIGHT_MOVEMENT_KEY && texture !== BLACK_KNIGHT_CONVERSION_MOTION_KEY)) {
       // Keep physical movement when a clip is missing. An idle pose of the
       // matching weapon state avoids displaying a different character mid-step.
       this.playIdleAnim();
@@ -1414,7 +1409,8 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
   private playIdleAnim(): void {
     // The gameplay window ends on scene time. Let the remaining defensive
     // artwork finish at rest even if rendering fell behind.
-    if (this.isActionLocked() || (this.anims.isPlaying && this.texture.key === BLACK_KNIGHT_DEFENSE_KEY)) return;
+    if (this.isActionLocked() || (this.anims.isPlaying &&
+      (this.texture.key === BLACK_KNIGHT_DEFENSE_KEY || this.texture.key === BLACK_KNIGHT_CONVERSION_ACTIONS_KEY))) return;
 
     const key = this.getIdleAnimationKey();
     if (key && (this.anims.currentAnim?.key !== key || !this.anims.isPlaying)) {
@@ -1566,7 +1562,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     if (this._isDead) return;
     this.cancelAttackAnimation?.();
     this.clearDefenseTimer();
-    if (this.texture.key === BLACK_KNIGHT_DEFENSE_KEY && this.anims.isPlaying) this.anims.stop();
+    if (this.anims.isPlaying && this.texture.key === BLACK_KNIGHT_DEFENSE_KEY) this.anims.stop();
     if (this._isRolling && this.body) this.setVelocity(0, 0);
     this.attackCombo = undefined;
     this._isAttacking = false;
@@ -1681,8 +1677,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     const key = `wayfarer_${action}_${facing}`;
     const animation = this.scene.anims.get(key);
     const useAttackClip = animation?.frames.length === CORE_COMBAT_FRAMES &&
-      (!WAYFARER_USE_PURE_ARTIST_SPRITES ||
-        animation.frames.every(frame => frame.textureKey === atlas));
+      animation.frames.every(frame => frame.textureKey === atlas);
     const events = Phaser.Animations.Events;
     const duration = CORE_COMBAT_FRAMES * clip.frameMs;
 
@@ -1854,7 +1849,10 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
 
     this.playDefenseOrStance('parry');
-    this.endDefenseAfter(450, () => { this._isParrying = false; });
+    this.endDefenseAfter(450, () => {
+      this._isParrying = false;
+      this.safePlayAnim(`wayfarer_parry_miss_${this.facing}`, false);
+    });
 
     return true;
   }
@@ -1932,7 +1930,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     this._actionLockTimestamp = 0;
     (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
 
-    this.playDefenseOrStance(target ? 'weapon_on' : 'weapon_off', 'weapon_toggle');
+    this.playDefenseOrStance(target ? 'weapon_on' : 'weapon_off');
     this.endDefenseAfter(400, () => { this._isTogglingWeapon = false; });
 
     return true;
@@ -1985,7 +1983,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     // Hiệu ứng màu đỏ khi trúng đòn
     this.setTint(0xff6666);
 
-    this.playDefenseOrStance(this._isWeaponDrawn ? 'hurt' : 'unarmed_hurt', 'hurt');
+    this.playDefenseOrStance(this._isWeaponDrawn ? 'hurt' : 'unarmed_hurt');
     this.endDefenseAfter(375, () => {
       this.clearTint();
       this._isHurt = false;
@@ -2026,15 +2024,13 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     const key = `wayfarer_${action}_${this.facing}`;
     const animation = this.scene.anims.get(key);
     if (!animation?.frames.length ||
-      (WAYFARER_USE_PURE_ARTIST_SPRITES && animation.frames[0].textureKey !== BLACK_KNIGHT_DEFENSE_KEY)) return false;
+      animation.frames[0].textureKey !== BLACK_KNIGHT_DEFENSE_KEY) return false;
     return this.safePlayAnim(key, false);
   }
 
-  private playDefenseOrStance(action: DefenseAction, legacy: string = action): void {
+  private playDefenseOrStance(action: DefenseAction): void {
     if (this.playDefenseClip(action)) return;
-    const key = WAYFARER_USE_PURE_ARTIST_SPRITES
-      ? this.getIdleAnimationKey()
-      : `wayfarer_${legacy}_${this.facing}`;
+    const key = this.getIdleAnimationKey();
     if (key) this.safePlayAnim(key, true);
   }
 
@@ -2088,148 +2084,31 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
    * Khóa di chuyển tạm thời ~500ms rồi tự động trở về Idle.
    */
   public playInteract(): boolean {
-    if (this.isActionLocked()) return false;
-
-    this._isInteracting = true;
-    this._actionLockTimestamp = performance.now();
-    (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
-
-    const wayfarerKey = `wayfarer_interact_${this.facing}`;
-    const satyrKey = `satyr_interact_${this.facing}`;
-    const keyToPlay = this.scene.anims.exists(wayfarerKey)
-      ? wayfarerKey
-      : this.scene.anims.exists(satyrKey)
-      ? satyrKey
-      : (this.scene.anims.exists('wayfarer_interact') ? 'wayfarer_interact' : 'satyr_interact');
-
-    if (!keyToPlay) {
-      this._isInteracting = false;
-      this._actionLockTimestamp = 0;
-      return false;
-    }
-
-    this.safePlayAnim(keyToPlay, false);
-
-    const onAnimComplete = (anim: Phaser.Animations.Animation) => {
-      if (anim.key === keyToPlay) {
-        this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
-        this._isInteracting = false;
-        this._actionLockTimestamp = 0;
-        this.playIdleAnim();
-      }
-    };
-    this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
-
-    // Fallback bảo vệ bằng Phaser delayedCall (550ms: 4 frames @ 8fps = 500ms)
-    this.scene.time.delayedCall(550, () => {
-      if (this._isInteracting) {
-        this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
-        this._isInteracting = false;
-        this._actionLockTimestamp = 0;
-        this.playIdleAnim();
-      }
-    });
-
-    return true;
+    return this.playUtilityAction('interact', '_isInteracting');
   }
 
-  /**
-   * Kích hoạt hoạt ảnh thu thập tài nguyên (cúi người nhặt gỗ khô, hái thảo mộc, lấy nhựa cây).
-   * Khóa di chuyển tạm thời ~500ms rồi tự động trở về Idle.
-   */
+  /** Play the existing gathering action with the current weapon posture. */
   public playGather(): boolean {
-    if (this.isActionLocked()) return false;
-
-    this._isGathering = true;
-    this._actionLockTimestamp = performance.now();
-    (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
-
-    const wayfarerKey = `wayfarer_gather_${this.facing}`;
-    const satyrKey = `satyr_gather_${this.facing}`;
-    const keyToPlay = this.scene.anims.exists(wayfarerKey)
-      ? wayfarerKey
-      : this.scene.anims.exists(satyrKey)
-      ? satyrKey
-      : (this.scene.anims.exists('wayfarer_gather') ? 'wayfarer_gather' : 'satyr_gather');
-
-    if (!keyToPlay) {
-      this._isGathering = false;
-      this._actionLockTimestamp = 0;
-      return false;
-    }
-
-    this.safePlayAnim(keyToPlay, false);
-
-    const onAnimComplete = (anim: Phaser.Animations.Animation) => {
-      if (anim.key === keyToPlay) {
-        this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
-        this._isGathering = false;
-        this._actionLockTimestamp = 0;
-        this.playIdleAnim();
-      }
-    };
-    this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
-
-    // Fallback bảo vệ bằng Phaser delayedCall (550ms: 4 frames @ 8fps = 500ms)
-    this.scene.time.delayedCall(550, () => {
-      if (this._isGathering) {
-        this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
-        this._isGathering = false;
-        this._actionLockTimestamp = 0;
-        this.playIdleAnim();
-      }
-    });
-
-    return true;
+    return this.playUtilityAction('gather', '_isGathering');
   }
 
-  /**
-   * Kích hoạt hoạt ảnh dùng nhanh vật phẩm (uống/dùng thuốc đắp thảo mộc, rót bình dầu đèn).
-   * Khóa di chuyển tạm thời ~500ms rồi tự động trở về Idle.
-   */
+  /** Display use of an already accepted item. Inventory remains Scene-owned. */
   public playUseItem(): boolean {
+    return this.playUtilityAction('use_item', '_isUsingItem');
+  }
+
+  private playUtilityAction(
+    action: 'interact' | 'gather' | 'use_item',
+    state: '_isInteracting' | '_isGathering' | '_isUsingItem'
+  ): boolean {
     if (this.isActionLocked()) return false;
 
-    this._isUsingItem = true;
-    this._actionLockTimestamp = performance.now();
-    (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
-
-    const wayfarerKey = `wayfarer_use_item_${this.facing}`;
-    const satyrKey = `satyr_use_item_${this.facing}`;
-    const keyToPlay = this.scene.anims.exists(wayfarerKey)
-      ? wayfarerKey
-      : this.scene.anims.exists(satyrKey)
-      ? satyrKey
-      : (this.scene.anims.exists('wayfarer_use_item') ? 'wayfarer_use_item' : 'satyr_use_item');
-
-    if (!keyToPlay) {
-      this._isUsingItem = false;
-      this._actionLockTimestamp = 0;
-      return false;
-    }
-
-    this.safePlayAnim(keyToPlay, false);
-
-    const onAnimComplete = (anim: Phaser.Animations.Animation) => {
-      if (anim.key === keyToPlay) {
-        this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
-        this._isUsingItem = false;
-        this._actionLockTimestamp = 0;
-        this.playIdleAnim();
-      }
-    };
-    this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
-
-    // Fallback bảo vệ bằng Phaser delayedCall (550ms: 4 frames @ 8fps = 500ms)
-    this.scene.time.delayedCall(550, () => {
-      if (this._isUsingItem) {
-        this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, onAnimComplete);
-        this._isUsingItem = false;
-        this._actionLockTimestamp = 0;
-        this.playIdleAnim();
-      }
-    });
-
+    this[state] = true;
+    this._actionLockTimestamp = 0;
+    this.setVelocity(0, 0);
+    const posture = this._isWeaponDrawn ? 'armed' : 'unarmed';
+    this.safePlayAnim(`wayfarer_${posture}_${action}_${this.facing}`, false);
+    this.endDefenseAfter(500, () => { this[state] = false; });
     return true;
   }
 
@@ -2365,14 +2244,15 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       }
     } else if (currentAnimKey.includes('_run_')) {
       // Nhịp chạy nhanh 6 frames: gậy chúi và dao động biên độ lớn hơn
+      const runFrame = this.texture.key === BLACK_KNIGHT_CONVERSION_MOTION_KEY ? Math.floor(frameIdx / 2) : frameIdx;
       const bobRunY = [0, 2, -1, 0, 2, -1];
-      animBobY = bobRunY[frameIdx % bobRunY.length];
+      animBobY = bobRunY[runFrame % bobRunY.length];
       if (this.facing === 'left') {
         const bobRunX = [1, 0, -1, -2, -1, -1];
-        animBobX = bobRunX[frameIdx % bobRunX.length];
+        animBobX = bobRunX[runFrame % bobRunX.length];
       } else if (this.facing === 'right') {
         const bobRunX = [-1, 0, 1, 2, 1, 1];
-        animBobX = bobRunX[frameIdx % bobRunX.length];
+        animBobX = bobRunX[runFrame % bobRunX.length];
       }
     } else if (currentAnimKey.includes('_gather_')) {
       // Cúi người thu hoạch tài nguyên: hạ thấp gậy theo tay

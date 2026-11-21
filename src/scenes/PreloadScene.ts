@@ -8,35 +8,18 @@ import * as Phaser from 'phaser';
 import { 
   SCENE_PRELOAD, 
   SCENE_MAIN_MENU, 
-  SATYR_SHEET_KEY, 
   SATYR_PORTRAIT_KEY, 
   BLACK_KNIGHT_ARMED_IDLE_KEY,
   BLACK_KNIGHT_MOVEMENT_KEY,
   BLACK_KNIGHT_CORE_COMBAT_KEY,
   BLACK_KNIGHT_DEFENSE_KEY,
   BLACK_KNIGHT_EXTENDED_SKILLS_KEY,
-  WAYFARER_USE_PURE_ARTIST_SPRITES,
-  WAYFARER_IDLE_KEY,
-  WAYFARER_WALK_KEY,
-  WAYFARER_RUN_KEY,
-  WAYFARER_ATTACK_KEY,
-  WAYFARER_HURT_KEY,
-  WAYFARER_DEATH_KEY,
-  WAYFARER_INTERACT_KEY,
-  WAYFARER_GATHER_KEY,
-  WAYFARER_USE_ITEM_KEY,
   WAYFARER_PORTRAIT_KEY,
-  WAYFARER_UNARMED_IDLE_KEY,
-  WAYFARER_UNARMED_RUN_KEY,
-  WAYFARER_HEAVY_ATTACK_KEY,
-  WAYFARER_WEAPON_ART_KEY,
-  WAYFARER_PARRY_KEY,
-  WAYFARER_ROLL_KEY,
-  WAYFARER_UNARMED_ROLL_KEY,
-  WAYFARER_BUFF_KEY,
-  WAYFARER_WEAPON_TOGGLE_KEY,
-  WAYFARER_FRAME_WIDTH,
-  WAYFARER_FRAME_HEIGHT,
+  BLACK_KNIGHT_CONVERSION_ACTIONS_KEY,
+  BLACK_KNIGHT_CONVERSION_AIR_KEY,
+  BLACK_KNIGHT_CONVERSION_COMBAT_KEY,
+  BLACK_KNIGHT_CONVERSION_STATES_KEY,
+  BLACK_KNIGHT_CONVERSION_MOTION_KEY,
   TILE_FOREST_GRASS,
   TILE_DIRT_TRAIL,
   TILE_SWAMP_MUD,
@@ -499,117 +482,57 @@ export class PreloadScene extends Phaser.Scene {
       frameHeight: 360,
     });
 
-    if (WAYFARER_USE_PURE_ARTIST_SPRITES) {
-      this.load.atlas(
-        BLACK_KNIGHT_ARMED_IDLE_KEY,
-        'assets/characters/black_knight/black_knight_armed_idle.png',
-        'assets/characters/black_knight/black_knight_armed_idle.json'
-      );
-      this.load.atlas(
-        BLACK_KNIGHT_MOVEMENT_KEY,
-        'assets/characters/black_knight/black_knight_movement.png',
-        'assets/characters/black_knight/black_knight_movement.json'
-      );
-      this.load.atlas(
-        BLACK_KNIGHT_CORE_COMBAT_KEY,
-        'assets/characters/black_knight/black_knight_core_combat.png',
-        'assets/characters/black_knight/black_knight_core_combat.json'
-      );
-      this.load.atlas(
-        BLACK_KNIGHT_DEFENSE_KEY,
-        'assets/characters/black_knight/black_knight_defense.png',
-        'assets/characters/black_knight/black_knight_defense.json'
-      );
-      this.load.atlas(
-        BLACK_KNIGHT_EXTENDED_SKILLS_KEY,
-        'assets/characters/black_knight/black_knight_extended_skills.png',
-        'assets/characters/black_knight/black_knight_extended_skills.json'
-      );
-    }
+    this.load.atlas(
+      BLACK_KNIGHT_ARMED_IDLE_KEY,
+      'assets/characters/black_knight/black_knight_armed_idle.png',
+      'assets/characters/black_knight/black_knight_armed_idle.json'
+    );
+    this.load.atlas(
+      BLACK_KNIGHT_MOVEMENT_KEY,
+      'assets/characters/black_knight/black_knight_movement.png',
+      'assets/characters/black_knight/black_knight_movement.json'
+    );
+    this.load.atlas(
+      BLACK_KNIGHT_CORE_COMBAT_KEY,
+      'assets/characters/black_knight/black_knight_core_combat.png',
+      'assets/characters/black_knight/black_knight_core_combat.json'
+    );
+    this.load.atlas(
+      BLACK_KNIGHT_DEFENSE_KEY,
+      'assets/characters/black_knight/black_knight_defense.png',
+      'assets/characters/black_knight/black_knight_defense.json'
+    );
+    this.load.atlas(
+      BLACK_KNIGHT_EXTENDED_SKILLS_KEY,
+      'assets/characters/black_knight/black_knight_extended_skills.png',
+      'assets/characters/black_knight/black_knight_extended_skills.json'
+    );
+    this.load.atlas(
+      BLACK_KNIGHT_CONVERSION_ACTIONS_KEY,
+      'assets/characters/black_knight/black_knight_conversion_actions.png',
+      'assets/characters/black_knight/black_knight_conversion_actions.json'
+    );
+    this.load.atlas(
+      BLACK_KNIGHT_CONVERSION_AIR_KEY,
+      'assets/characters/black_knight/black_knight_conversion_air.png',
+      'assets/characters/black_knight/black_knight_conversion_air.json'
+    );
+    this.load.atlas(
+      BLACK_KNIGHT_CONVERSION_COMBAT_KEY,
+      'assets/characters/black_knight/black_knight_conversion_combat.png',
+      'assets/characters/black_knight/black_knight_conversion_combat.json'
+    );
+    this.load.atlas(
+      BLACK_KNIGHT_CONVERSION_STATES_KEY,
+      'assets/characters/black_knight/black_knight_conversion_states.png',
+      'assets/characters/black_knight/black_knight_conversion_states.json'
+    );
+    this.load.atlas(
+      BLACK_KNIGHT_CONVERSION_MOTION_KEY,
+      'assets/characters/black_knight/black_knight_conversion_motion.png',
+      'assets/characters/black_knight/black_knight_conversion_motion.json'
+    );
 
-    // 2. Nạp sprite sheet tương thích ngược cho Satyr (trỏ sang Wayfarer Idle đã hợp nhất)
-    this.load.spritesheet(SATYR_SHEET_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_idle.png', {
-      frameWidth: WAYFARER_FRAME_WIDTH,
-      frameHeight: WAYFARER_FRAME_HEIGHT
-    });
-
-    // 2b. Nạp 9 sprite sheets gốc của nhân vật chính The Mossbound Wayfarer (64×64 px)
-    this.load.spritesheet(WAYFARER_IDLE_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_idle.png', {
-      frameWidth: WAYFARER_FRAME_WIDTH,
-      frameHeight: WAYFARER_FRAME_HEIGHT
-    });
-    this.load.spritesheet(WAYFARER_WALK_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_walk.png', {
-      frameWidth: WAYFARER_FRAME_WIDTH,
-      frameHeight: WAYFARER_FRAME_HEIGHT
-    });
-    this.load.spritesheet(WAYFARER_RUN_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_run.png', {
-      frameWidth: WAYFARER_FRAME_WIDTH,
-      frameHeight: WAYFARER_FRAME_HEIGHT
-    });
-    this.load.spritesheet(WAYFARER_ATTACK_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_attack.png', {
-      frameWidth: WAYFARER_FRAME_WIDTH,
-      frameHeight: WAYFARER_FRAME_HEIGHT
-    });
-    this.load.spritesheet(WAYFARER_HURT_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_hurt.png', {
-      frameWidth: WAYFARER_FRAME_WIDTH,
-      frameHeight: WAYFARER_FRAME_HEIGHT
-    });
-    this.load.spritesheet(WAYFARER_DEATH_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_death.png', {
-      frameWidth: WAYFARER_FRAME_WIDTH,
-      frameHeight: WAYFARER_FRAME_HEIGHT
-    });
-    this.load.spritesheet(WAYFARER_INTERACT_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_interact.png', {
-      frameWidth: WAYFARER_FRAME_WIDTH,
-      frameHeight: WAYFARER_FRAME_HEIGHT
-    });
-    this.load.spritesheet(WAYFARER_GATHER_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_gather.png', {
-      frameWidth: WAYFARER_FRAME_WIDTH,
-      frameHeight: WAYFARER_FRAME_HEIGHT
-    });
-    this.load.spritesheet(WAYFARER_USE_ITEM_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_use_item.png', {
-      frameWidth: WAYFARER_FRAME_WIDTH,
-      frameHeight: WAYFARER_FRAME_HEIGHT
-    });
-
-    // 2c. Nạp 9 sprite sheets chiến đấu & động tác mới của Black Knight Wayfarer (64×64 px)
-    this.load.spritesheet(WAYFARER_UNARMED_IDLE_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_unarmed_idle.png', {
-      frameWidth: WAYFARER_FRAME_WIDTH,
-      frameHeight: WAYFARER_FRAME_HEIGHT
-    });
-    this.load.spritesheet(WAYFARER_UNARMED_RUN_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_unarmed_run.png', {
-      frameWidth: WAYFARER_FRAME_WIDTH,
-      frameHeight: WAYFARER_FRAME_HEIGHT
-    });
-    this.load.spritesheet(WAYFARER_HEAVY_ATTACK_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_heavy_attack.png', {
-      frameWidth: WAYFARER_FRAME_WIDTH,
-      frameHeight: WAYFARER_FRAME_HEIGHT
-    });
-    this.load.spritesheet(WAYFARER_WEAPON_ART_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_weapon_art.png', {
-      frameWidth: WAYFARER_FRAME_WIDTH,
-      frameHeight: WAYFARER_FRAME_HEIGHT
-    });
-    this.load.spritesheet(WAYFARER_PARRY_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_parry.png', {
-      frameWidth: WAYFARER_FRAME_WIDTH,
-      frameHeight: WAYFARER_FRAME_HEIGHT
-    });
-    this.load.spritesheet(WAYFARER_ROLL_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_roll.png', {
-      frameWidth: WAYFARER_FRAME_WIDTH,
-      frameHeight: WAYFARER_FRAME_HEIGHT
-    });
-    this.load.spritesheet(WAYFARER_UNARMED_ROLL_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_unarmed_roll.png', {
-      frameWidth: WAYFARER_FRAME_WIDTH,
-      frameHeight: WAYFARER_FRAME_HEIGHT
-    });
-    this.load.spritesheet(WAYFARER_BUFF_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_buff.png', {
-      frameWidth: WAYFARER_FRAME_WIDTH,
-      frameHeight: WAYFARER_FRAME_HEIGHT
-    });
-    this.load.spritesheet(WAYFARER_WEAPON_TOGGLE_KEY, 'assets/characters/mossbound_wayfarer/wayfarer_weapon_toggle.png', {
-      frameWidth: WAYFARER_FRAME_WIDTH,
-      frameHeight: WAYFARER_FRAME_HEIGHT
-    });
-
-    // Hai khóa hội thoại cũ cùng trỏ đến chân dung Black Knight.
     const blackKnightPortrait = 'assets/characters/black_knight/black_knight_portrait.png';
     this.load.image(SATYR_PORTRAIT_KEY, blackKnightPortrait);
     this.load.image(WAYFARER_PORTRAIT_KEY, blackKnightPortrait);

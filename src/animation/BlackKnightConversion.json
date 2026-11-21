@@ -1,0 +1,537 @@
+{
+  "actions": {
+    "armed_interact": {
+      "frames": 6,
+      "frameMs": 83.33333333333333,
+      "width": 64,
+      "height": 64,
+      "belowFoot": 0
+    },
+    "unarmed_interact": {
+      "frames": 6,
+      "frameMs": 83.33333333333333,
+      "width": 64,
+      "height": 64,
+      "belowFoot": 0
+    },
+    "armed_gather": {
+      "frames": 6,
+      "frameMs": 83.33333333333333,
+      "width": 64,
+      "height": 64,
+      "belowFoot": 0
+    },
+    "unarmed_gather": {
+      "frames": 6,
+      "frameMs": 83.33333333333333,
+      "width": 64,
+      "height": 64,
+      "belowFoot": 0
+    },
+    "armed_use_item": {
+      "frames": 6,
+      "frameMs": 83.33333333333333,
+      "width": 64,
+      "height": 64,
+      "belowFoot": 0
+    },
+    "unarmed_use_item": {
+      "frames": 6,
+      "frameMs": 83.33333333333333,
+      "width": 64,
+      "height": 64,
+      "belowFoot": 0
+    },
+    "parry_miss": {
+      "frames": 3,
+      "frameMs": 70,
+      "width": 80,
+      "height": 64,
+      "belowFoot": 8,
+      "sample": [
+        0,
+        2,
+        5
+      ],
+      "sourceGroup": 29
+    }
+  },
+  "air": {
+    "unarmed_jump": {
+      "frames": 6,
+      "frameMs": 70,
+      "width": 80,
+      "height": 80,
+      "belowFoot": 8,
+      "sourceGroup": 16
+    },
+    "unarmed_mid_air": {
+      "frames": 1,
+      "frameMs": 70,
+      "width": 80,
+      "height": 80,
+      "belowFoot": 8,
+      "sourceGroup": 17,
+      "artwork": "unarmed_jump",
+      "sample": [
+        5
+      ]
+    },
+    "unarmed_fall_light": {
+      "frames": 6,
+      "frameMs": 70,
+      "width": 80,
+      "height": 80,
+      "belowFoot": 8,
+      "sourceGroup": 18
+    },
+    "unarmed_fall_heavy": {
+      "frames": 6,
+      "frameMs": 70,
+      "width": 80,
+      "height": 80,
+      "belowFoot": 8,
+      "sourceGroup": 19
+    },
+    "unarmed_land": {
+      "frames": 6,
+      "frameMs": 70,
+      "width": 80,
+      "height": 80,
+      "belowFoot": 8,
+      "sourceGroup": 20
+    },
+    "armed_jump": {
+      "frames": 6,
+      "frameMs": 70,
+      "width": 80,
+      "height": 80,
+      "belowFoot": 8,
+      "sourceGroup": 21
+    },
+    "armed_mid_air": {
+      "frames": 1,
+      "frameMs": 70,
+      "width": 80,
+      "height": 80,
+      "belowFoot": 8,
+      "sourceGroup": 22,
+      "artwork": "armed_jump",
+      "sample": [
+        5
+      ]
+    },
+    "armed_fall_light": {
+      "frames": 6,
+      "frameMs": 70,
+      "width": 80,
+      "height": 80,
+      "belowFoot": 8,
+      "sourceGroup": 23
+    },
+    "armed_fall_heavy": {
+      "frames": 6,
+      "frameMs": 70,
+      "width": 80,
+      "height": 80,
+      "belowFoot": 8,
+      "sourceGroup": 24
+    },
+    "armed_land": {
+      "frames": 6,
+      "frameMs": 70,
+      "width": 80,
+      "height": 80,
+      "belowFoot": 8,
+      "sourceGroup": 25
+    }
+  },
+  "combat": {
+    "heavy_attack_1_sequence": {
+      "frames": 19,
+      "frameMs": 70,
+      "width": 112,
+      "height": 72,
+      "belowFoot": 10,
+      "sourceGroup": 5,
+      "referenceHeight": 130,
+      "segments": [
+        {
+          "artwork": "heavy1_wind",
+          "artworkFrames": 6
+        },
+        {
+          "artwork": "heavy1_cut_7",
+          "artworkFrames": 7
+        },
+        {
+          "artwork": "heavy1_end",
+          "artworkFrames": 6
+        }
+      ]
+    },
+    "heavy_attack_2_sequence": {
+      "frames": 8,
+      "frameMs": 70,
+      "width": 112,
+      "height": 72,
+      "belowFoot": 10,
+      "sourceGroup": 6,
+      "artwork": "heavy_attack_2",
+      "artworkFrames": 8
+    },
+    "heavy_attack_3_sequence": {
+      "frames": 13,
+      "frameMs": 70,
+      "width": 112,
+      "height": 72,
+      "belowFoot": 10,
+      "sourceGroup": 7,
+      "referenceHeight": 130,
+      "segments": [
+        {
+          "artwork": "heavy3_wind",
+          "artworkFrames": 6
+        },
+        {
+          "artwork": "heavy3_end_clean",
+          "artworkFrames": 7
+        }
+      ]
+    },
+    "light_attack_1_sequence": {
+      "frames": 9,
+      "frameMs": 70,
+      "width": 112,
+      "height": 72,
+      "belowFoot": 10,
+      "sourceGroup": 8,
+      "artwork": "light_attack_1",
+      "artworkFrames": 9
+    },
+    "light_attack_2_sequence": {
+      "frames": 9,
+      "frameMs": 70,
+      "width": 112,
+      "height": 72,
+      "belowFoot": 10,
+      "sourceGroup": 9,
+      "artwork": "light_attack_2",
+      "artworkFrames": 9
+    },
+    "light_attack_3_sequence": {
+      "frames": 11,
+      "frameMs": 70,
+      "width": 112,
+      "height": 72,
+      "belowFoot": 10,
+      "sourceGroup": 10,
+      "referenceHeight": 130,
+      "segments": [
+        {
+          "artwork": "attack3_arc",
+          "artworkFrames": 6
+        },
+        {
+          "artwork": "attack3_low",
+          "artworkFrames": 6,
+          "sample": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    "light_attack_4_sequence": {
+      "frames": 11,
+      "frameMs": 70,
+      "width": 112,
+      "height": 72,
+      "belowFoot": 10,
+      "sourceGroup": 11,
+      "referenceHeight": 130,
+      "segments": [
+        {
+          "artwork": "attack4_thrust",
+          "artworkFrames": 6,
+          "sample": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "artwork": "attack4_fade",
+          "artworkFrames": 6
+        }
+      ]
+    },
+    "weapon_art_sequence": {
+      "frames": 35,
+      "frameMs": 70,
+      "width": 112,
+      "height": 72,
+      "belowFoot": 10,
+      "sourceGroup": 26,
+      "referenceHeight": 130,
+      "segments": [
+        {
+          "artwork": "weapon_art_entry",
+          "artworkFrames": 6
+        },
+        {
+          "artwork": "weapon_art_reverse",
+          "artworkFrames": 6
+        },
+        {
+          "artwork": "weapon_art_whirl",
+          "artworkFrames": 6
+        },
+        {
+          "artwork": "weapon_art_launch",
+          "artworkFrames": 6
+        },
+        {
+          "artwork": "weapon_art_dive",
+          "artworkFrames": 6
+        },
+        {
+          "artwork": "weapon_art_recover",
+          "artworkFrames": 6,
+          "sample": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    }
+  },
+  "states": {
+    "weapon_on_sequence": {
+      "frames": 18,
+      "frameMs": 70,
+      "width": 80,
+      "height": 72,
+      "belowFoot": 9,
+      "sourceGroup": 1,
+      "referenceHeight": 127,
+      "segments": [
+        {
+          "artwork": "on_reach",
+          "artworkFrames": 6
+        },
+        {
+          "artwork": "on_draw",
+          "artworkFrames": 6
+        },
+        {
+          "artwork": "on_finish",
+          "artworkFrames": 6
+        }
+      ]
+    },
+    "weapon_off_sequence": {
+      "frames": 14,
+      "frameMs": 70,
+      "width": 80,
+      "height": 72,
+      "belowFoot": 9,
+      "sourceGroup": 2,
+      "referenceHeight": 127,
+      "segments": [
+        {
+          "artwork": "off_lift",
+          "artworkFrames": 7
+        },
+        {
+          "artwork": "off_release",
+          "artworkFrames": 7
+        }
+      ]
+    },
+    "parry_success_sequence": {
+      "frames": 15,
+      "frameMs": 70,
+      "width": 112,
+      "height": 72,
+      "belowFoot": 9,
+      "sourceGroup": 28,
+      "referenceHeight": 127,
+      "segments": [
+        {
+          "artwork": "parry_impact",
+          "artworkFrames": 5
+        },
+        {
+          "artwork": "parry_burst",
+          "artworkFrames": 5
+        },
+        {
+          "artwork": "parry_return",
+          "artworkFrames": 5
+        }
+      ]
+    },
+    "death_sequence": {
+      "frames": 9,
+      "frameMs": 70,
+      "width": 80,
+      "height": 72,
+      "belowFoot": 9,
+      "sourceGroup": 32,
+      "referenceHeight": 127,
+      "segments": [
+        {
+          "artwork": "death_9",
+          "artworkFrames": 9
+        }
+      ]
+    },
+    "unarmed_buff_sequence": {
+      "frames": 12,
+      "frameMs": 70,
+      "width": 80,
+      "height": 72,
+      "belowFoot": 9,
+      "sourceGroup": 33,
+      "referenceHeight": 127,
+      "segments": [
+        {
+          "artwork": "unarmed_buff_rise",
+          "artworkFrames": 6
+        },
+        {
+          "artwork": "unarmed_buff_fade",
+          "artworkFrames": 6
+        }
+      ]
+    },
+    "armed_buff_sequence": {
+      "frames": 12,
+      "frameMs": 70,
+      "width": 80,
+      "height": 72,
+      "belowFoot": 9,
+      "sourceGroup": 34,
+      "referenceHeight": 127,
+      "segments": [
+        {
+          "artwork": "armed_buff_rise",
+          "artworkFrames": 6
+        },
+        {
+          "artwork": "armed_buff_fade_repair",
+          "artworkFrames": 6
+        }
+      ]
+    }
+  },
+  "motion": {
+    "armed_roll_sequence": {
+      "frames": 12,
+      "frameMs": 70,
+      "width": 80,
+      "height": 72,
+      "belowFoot": 9,
+      "sourceGroup": 12,
+      "referenceHeight": 127,
+      "segments": [
+        {
+          "artwork": "armed_roll_in",
+          "artworkFrames": 6
+        },
+        {
+          "artwork": "armed_roll_out",
+          "artworkFrames": 6
+        }
+      ]
+    },
+    "unarmed_roll_sequence": {
+      "frames": 12,
+      "frameMs": 70,
+      "width": 80,
+      "height": 72,
+      "belowFoot": 9,
+      "sourceGroup": 13,
+      "referenceHeight": 127,
+      "segments": [
+        {
+          "artwork": "unarmed_roll_in",
+          "artworkFrames": 6
+        },
+        {
+          "artwork": "unarmed_roll_out",
+          "artworkFrames": 6
+        }
+      ]
+    },
+    "unarmed_run_sequence": {
+      "frames": 12,
+      "frameMs": 70,
+      "width": 84,
+      "height": 72,
+      "belowFoot": 9,
+      "sourceGroup": 14,
+      "referenceHeight": 127,
+      "segments": [
+        {
+          "artwork": "unarmed_run_a",
+          "artworkFrames": 6
+        },
+        {
+          "artwork": "unarmed_run_b",
+          "artworkFrames": 6
+        }
+      ]
+    },
+    "armed_run_sequence": {
+      "frames": 12,
+      "frameMs": 70,
+      "width": 84,
+      "height": 72,
+      "belowFoot": 9,
+      "sourceGroup": 15,
+      "referenceHeight": 127,
+      "segments": [
+        {
+          "artwork": "armed_run_a",
+          "artworkFrames": 6
+        },
+        {
+          "artwork": "armed_run_b",
+          "artworkFrames": 6
+        }
+      ]
+    }
+  },
+  "references": {
+    "parry_start_sequence": {
+      "frames": 6,
+      "frameMs": 70,
+      "prefix": "parry",
+      "sourceGroup": 27
+    },
+    "unarmed_hurt_sequence": {
+      "frames": 5,
+      "frameMs": 70,
+      "prefix": "unarmed_hurt",
+      "firstFrame": 1,
+      "sourceGroup": 30
+    },
+    "armed_hurt_sequence": {
+      "frames": 5,
+      "frameMs": 70,
+      "prefix": "hurt",
+      "firstFrame": 1,
+      "sourceGroup": 31
+    }
+  }
+}

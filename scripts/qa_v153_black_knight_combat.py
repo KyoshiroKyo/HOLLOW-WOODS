@@ -100,13 +100,13 @@ def row_cells(sheet, row, count, action):
     return [(boundaries[column], top, boundaries[column + 1], bottom) for column in range(count)]
 
 
-def matte(sheet, cell):
+def matte(sheet, cell, min_margin=4):
     rgb = np.asarray(sheet.crop(cell).convert("RGB"))
     opaque = ~cyan_mask(rgb)
     rgba = np.dstack([np.where(opaque[:, :, None], rgb, 0), (opaque * 255).astype(np.uint8)])
     image = Image.fromarray(rgba)
     bounds = image.getbbox()
-    if not bounds or min(bounds[0], bounds[1], image.width - bounds[2], image.height - bounds[3]) < 4:
+    if not bounds or min(bounds[0], bounds[1], image.width - bounds[2], image.height - bounds[3]) < min_margin:
         raise ValueError(f"Empty or clipped source: cell {cell}, bounds {bounds}")
     return image.crop(bounds), bounds, cell
 

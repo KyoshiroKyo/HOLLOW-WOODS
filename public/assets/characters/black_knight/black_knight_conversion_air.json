@@ -1,0 +1,7924 @@
+{
+  "frames": {
+    "unarmed_jump_down_0": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "sourceBoxInCell": [
+        69,
+        52,
+        203,
+        239
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_down_1": {
+      "frame": {
+        "x": 80,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        0,
+        512,
+        256
+      ],
+      "sourceBoxInCell": [
+        71,
+        67,
+        204,
+        239
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_down_2": {
+      "frame": {
+        "x": 160,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        0,
+        768,
+        256
+      ],
+      "sourceBoxInCell": [
+        65,
+        86,
+        199,
+        239
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_down_3": {
+      "frame": {
+        "x": 240,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        0,
+        1024,
+        256
+      ],
+      "sourceBoxInCell": [
+        65,
+        52,
+        193,
+        223
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_down_4": {
+      "frame": {
+        "x": 320,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        0,
+        1280,
+        256
+      ],
+      "sourceBoxInCell": [
+        71,
+        32,
+        189,
+        199
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_down_5": {
+      "frame": {
+        "x": 400,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        0,
+        1536,
+        256
+      ],
+      "sourceBoxInCell": [
+        63,
+        27,
+        192,
+        176
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_up_0": {
+      "frame": {
+        "x": 480,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        256,
+        256,
+        512
+      ],
+      "sourceBoxInCell": [
+        65,
+        52,
+        198,
+        239
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_up_1": {
+      "frame": {
+        "x": 560,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        256,
+        512,
+        512
+      ],
+      "sourceBoxInCell": [
+        71,
+        65,
+        202,
+        239
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_up_2": {
+      "frame": {
+        "x": 640,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        256,
+        768,
+        512
+      ],
+      "sourceBoxInCell": [
+        65,
+        86,
+        199,
+        239
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_up_3": {
+      "frame": {
+        "x": 720,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        256,
+        1024,
+        512
+      ],
+      "sourceBoxInCell": [
+        65,
+        45,
+        193,
+        214
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_up_4": {
+      "frame": {
+        "x": 800,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        256,
+        1280,
+        512
+      ],
+      "sourceBoxInCell": [
+        67,
+        30,
+        192,
+        201
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_up_5": {
+      "frame": {
+        "x": 880,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        256,
+        1536,
+        512
+      ],
+      "sourceBoxInCell": [
+        67,
+        24,
+        191,
+        172
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_left_0": {
+      "frame": {
+        "x": 0,
+        "y": 80,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        512,
+        256,
+        768
+      ],
+      "sourceBoxInCell": [
+        93,
+        48,
+        190,
+        235
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_left_1": {
+      "frame": {
+        "x": 80,
+        "y": 80,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        512,
+        512,
+        768
+      ],
+      "sourceBoxInCell": [
+        87,
+        65,
+        199,
+        235
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_left_2": {
+      "frame": {
+        "x": 160,
+        "y": 80,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        512,
+        768,
+        768
+      ],
+      "sourceBoxInCell": [
+        78,
+        84,
+        202,
+        235
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_left_3": {
+      "frame": {
+        "x": 240,
+        "y": 80,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        512,
+        1024,
+        768
+      ],
+      "sourceBoxInCell": [
+        89,
+        42,
+        194,
+        215
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_left_4": {
+      "frame": {
+        "x": 320,
+        "y": 80,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        512,
+        1280,
+        768
+      ],
+      "sourceBoxInCell": [
+        87,
+        25,
+        192,
+        183
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_left_5": {
+      "frame": {
+        "x": 400,
+        "y": 80,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        512,
+        1536,
+        768
+      ],
+      "sourceBoxInCell": [
+        87,
+        19,
+        191,
+        165
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_right_0": {
+      "frame": {
+        "x": 480,
+        "y": 80,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        768,
+        256,
+        1024
+      ],
+      "sourceBoxInCell": [
+        81,
+        50,
+        179,
+        235
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_right_1": {
+      "frame": {
+        "x": 560,
+        "y": 80,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        768,
+        512,
+        1024
+      ],
+      "sourceBoxInCell": [
+        71,
+        64,
+        184,
+        235
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_right_2": {
+      "frame": {
+        "x": 640,
+        "y": 80,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        768,
+        768,
+        1024
+      ],
+      "sourceBoxInCell": [
+        61,
+        85,
+        187,
+        236
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_right_3": {
+      "frame": {
+        "x": 720,
+        "y": 80,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        768,
+        1024,
+        1024
+      ],
+      "sourceBoxInCell": [
+        69,
+        42,
+        177,
+        213
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_right_4": {
+      "frame": {
+        "x": 800,
+        "y": 80,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        768,
+        1280,
+        1024
+      ],
+      "sourceBoxInCell": [
+        72,
+        23,
+        173,
+        182
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_jump_right_5": {
+      "frame": {
+        "x": 880,
+        "y": 80,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        768,
+        1536,
+        1024
+      ],
+      "sourceBoxInCell": [
+        75,
+        20,
+        180,
+        167
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_mid_air_down_0": {
+      "frame": {
+        "x": 0,
+        "y": 160,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        0,
+        1536,
+        256
+      ],
+      "sourceBoxInCell": [
+        63,
+        27,
+        192,
+        176
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_mid_air_up_0": {
+      "frame": {
+        "x": 80,
+        "y": 160,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        256,
+        1536,
+        512
+      ],
+      "sourceBoxInCell": [
+        67,
+        24,
+        191,
+        172
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_mid_air_left_0": {
+      "frame": {
+        "x": 160,
+        "y": 160,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        512,
+        1536,
+        768
+      ],
+      "sourceBoxInCell": [
+        87,
+        19,
+        191,
+        165
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_mid_air_right_0": {
+      "frame": {
+        "x": 240,
+        "y": 160,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        768,
+        1536,
+        1024
+      ],
+      "sourceBoxInCell": [
+        75,
+        20,
+        180,
+        167
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "unarmed_jump.png"
+    },
+    "unarmed_fall_light_down_0": {
+      "frame": {
+        "x": 0,
+        "y": 240,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "sourceBoxInCell": [
+        59,
+        42,
+        203,
+        206
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_down_1": {
+      "frame": {
+        "x": 80,
+        "y": 240,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        0,
+        512,
+        256
+      ],
+      "sourceBoxInCell": [
+        59,
+        46,
+        200,
+        219
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_down_2": {
+      "frame": {
+        "x": 160,
+        "y": 240,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        0,
+        768,
+        256
+      ],
+      "sourceBoxInCell": [
+        57,
+        54,
+        197,
+        227
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_down_3": {
+      "frame": {
+        "x": 240,
+        "y": 240,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        0,
+        1024,
+        256
+      ],
+      "sourceBoxInCell": [
+        61,
+        62,
+        194,
+        234
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_down_4": {
+      "frame": {
+        "x": 320,
+        "y": 240,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        0,
+        1280,
+        256
+      ],
+      "sourceBoxInCell": [
+        61,
+        74,
+        196,
+        234
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_down_5": {
+      "frame": {
+        "x": 400,
+        "y": 240,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        0,
+        1536,
+        256
+      ],
+      "sourceBoxInCell": [
+        57,
+        84,
+        196,
+        234
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_up_0": {
+      "frame": {
+        "x": 480,
+        "y": 240,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        256,
+        256,
+        512
+      ],
+      "sourceBoxInCell": [
+        58,
+        32,
+        203,
+        195
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_up_1": {
+      "frame": {
+        "x": 560,
+        "y": 240,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        256,
+        512,
+        512
+      ],
+      "sourceBoxInCell": [
+        59,
+        36,
+        200,
+        206
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_up_2": {
+      "frame": {
+        "x": 640,
+        "y": 240,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        256,
+        768,
+        512
+      ],
+      "sourceBoxInCell": [
+        58,
+        43,
+        197,
+        218
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_up_3": {
+      "frame": {
+        "x": 720,
+        "y": 240,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        256,
+        1024,
+        512
+      ],
+      "sourceBoxInCell": [
+        61,
+        52,
+        194,
+        226
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_up_4": {
+      "frame": {
+        "x": 800,
+        "y": 240,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        256,
+        1280,
+        512
+      ],
+      "sourceBoxInCell": [
+        61,
+        64,
+        192,
+        226
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_up_5": {
+      "frame": {
+        "x": 880,
+        "y": 240,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        256,
+        1536,
+        512
+      ],
+      "sourceBoxInCell": [
+        60,
+        74,
+        191,
+        226
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_left_0": {
+      "frame": {
+        "x": 0,
+        "y": 320,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        512,
+        256,
+        768
+      ],
+      "sourceBoxInCell": [
+        90,
+        27,
+        203,
+        185
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_left_1": {
+      "frame": {
+        "x": 80,
+        "y": 320,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        512,
+        512,
+        768
+      ],
+      "sourceBoxInCell": [
+        90,
+        33,
+        196,
+        202
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_left_2": {
+      "frame": {
+        "x": 160,
+        "y": 320,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        512,
+        768,
+        768
+      ],
+      "sourceBoxInCell": [
+        88,
+        40,
+        191,
+        217
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_left_3": {
+      "frame": {
+        "x": 240,
+        "y": 320,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        512,
+        1024,
+        768
+      ],
+      "sourceBoxInCell": [
+        83,
+        49,
+        194,
+        221
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_left_4": {
+      "frame": {
+        "x": 320,
+        "y": 320,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        512,
+        1280,
+        768
+      ],
+      "sourceBoxInCell": [
+        77,
+        60,
+        192,
+        222
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_left_5": {
+      "frame": {
+        "x": 400,
+        "y": 320,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        512,
+        1536,
+        768
+      ],
+      "sourceBoxInCell": [
+        73,
+        71,
+        191,
+        222
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_right_0": {
+      "frame": {
+        "x": 480,
+        "y": 320,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        768,
+        256,
+        1024
+      ],
+      "sourceBoxInCell": [
+        70,
+        24,
+        188,
+        180
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_right_1": {
+      "frame": {
+        "x": 560,
+        "y": 320,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        768,
+        512,
+        1024
+      ],
+      "sourceBoxInCell": [
+        76,
+        28,
+        186,
+        201
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_right_2": {
+      "frame": {
+        "x": 640,
+        "y": 320,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        768,
+        768,
+        1024
+      ],
+      "sourceBoxInCell": [
+        82,
+        39,
+        186,
+        214
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_right_3": {
+      "frame": {
+        "x": 720,
+        "y": 320,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        768,
+        1024,
+        1024
+      ],
+      "sourceBoxInCell": [
+        82,
+        49,
+        187,
+        218
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_right_4": {
+      "frame": {
+        "x": 800,
+        "y": 320,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        768,
+        1280,
+        1024
+      ],
+      "sourceBoxInCell": [
+        77,
+        59,
+        190,
+        219
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_light_right_5": {
+      "frame": {
+        "x": 880,
+        "y": 320,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        768,
+        1536,
+        1024
+      ],
+      "sourceBoxInCell": [
+        73,
+        68,
+        186,
+        218
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "unarmed_fall_light.png"
+    },
+    "unarmed_fall_heavy_down_0": {
+      "frame": {
+        "x": 0,
+        "y": 400,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "sourceBoxInCell": [
+        84,
+        12,
+        207,
+        186
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_down_1": {
+      "frame": {
+        "x": 80,
+        "y": 400,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        0,
+        512,
+        256
+      ],
+      "sourceBoxInCell": [
+        84,
+        22,
+        200,
+        199
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_down_2": {
+      "frame": {
+        "x": 160,
+        "y": 400,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        0,
+        768,
+        256
+      ],
+      "sourceBoxInCell": [
+        83,
+        34,
+        200,
+        211
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_down_3": {
+      "frame": {
+        "x": 240,
+        "y": 400,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        0,
+        1024,
+        256
+      ],
+      "sourceBoxInCell": [
+        83,
+        46,
+        195,
+        223
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_down_4": {
+      "frame": {
+        "x": 320,
+        "y": 400,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        0,
+        1280,
+        256
+      ],
+      "sourceBoxInCell": [
+        82,
+        57,
+        192,
+        234
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_down_5": {
+      "frame": {
+        "x": 400,
+        "y": 400,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        0,
+        1536,
+        256
+      ],
+      "sourceBoxInCell": [
+        82,
+        73,
+        188,
+        241
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_up_0": {
+      "frame": {
+        "x": 480,
+        "y": 400,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        256,
+        256,
+        512
+      ],
+      "sourceBoxInCell": [
+        72,
+        7,
+        199,
+        179
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_up_1": {
+      "frame": {
+        "x": 560,
+        "y": 400,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        256,
+        512,
+        512
+      ],
+      "sourceBoxInCell": [
+        79,
+        20,
+        196,
+        197
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_up_2": {
+      "frame": {
+        "x": 640,
+        "y": 400,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        256,
+        768,
+        512
+      ],
+      "sourceBoxInCell": [
+        72,
+        32,
+        191,
+        210
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_up_3": {
+      "frame": {
+        "x": 720,
+        "y": 400,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        256,
+        1024,
+        512
+      ],
+      "sourceBoxInCell": [
+        71,
+        44,
+        188,
+        221
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_up_4": {
+      "frame": {
+        "x": 800,
+        "y": 400,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        256,
+        1280,
+        512
+      ],
+      "sourceBoxInCell": [
+        75,
+        56,
+        193,
+        231
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_up_5": {
+      "frame": {
+        "x": 880,
+        "y": 400,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        256,
+        1536,
+        512
+      ],
+      "sourceBoxInCell": [
+        78,
+        72,
+        188,
+        237
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_left_0": {
+      "frame": {
+        "x": 0,
+        "y": 480,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        512,
+        256,
+        766
+      ],
+      "sourceBoxInCell": [
+        91,
+        7,
+        200,
+        175
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_left_1": {
+      "frame": {
+        "x": 80,
+        "y": 480,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        512,
+        512,
+        766
+      ],
+      "sourceBoxInCell": [
+        91,
+        19,
+        198,
+        191
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_left_2": {
+      "frame": {
+        "x": 160,
+        "y": 480,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        512,
+        768,
+        766
+      ],
+      "sourceBoxInCell": [
+        91,
+        32,
+        200,
+        200
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_left_3": {
+      "frame": {
+        "x": 240,
+        "y": 480,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        512,
+        1024,
+        766
+      ],
+      "sourceBoxInCell": [
+        91,
+        44,
+        195,
+        212
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_left_4": {
+      "frame": {
+        "x": 320,
+        "y": 480,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        512,
+        1280,
+        766
+      ],
+      "sourceBoxInCell": [
+        91,
+        60,
+        193,
+        227
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_left_5": {
+      "frame": {
+        "x": 400,
+        "y": 480,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        512,
+        1536,
+        766
+      ],
+      "sourceBoxInCell": [
+        92,
+        75,
+        194,
+        234
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_right_0": {
+      "frame": {
+        "x": 480,
+        "y": 480,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        766,
+        256,
+        1024
+      ],
+      "sourceBoxInCell": [
+        78,
+        5,
+        184,
+        174
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_right_1": {
+      "frame": {
+        "x": 560,
+        "y": 480,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        766,
+        512,
+        1024
+      ],
+      "sourceBoxInCell": [
+        84,
+        19,
+        186,
+        187
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_right_2": {
+      "frame": {
+        "x": 640,
+        "y": 480,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        766,
+        768,
+        1024
+      ],
+      "sourceBoxInCell": [
+        81,
+        31,
+        185,
+        201
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_right_3": {
+      "frame": {
+        "x": 720,
+        "y": 480,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        766,
+        1024,
+        1024
+      ],
+      "sourceBoxInCell": [
+        86,
+        46,
+        185,
+        212
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_right_4": {
+      "frame": {
+        "x": 800,
+        "y": 480,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        766,
+        1280,
+        1024
+      ],
+      "sourceBoxInCell": [
+        84,
+        62,
+        183,
+        223
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_fall_heavy_right_5": {
+      "frame": {
+        "x": 880,
+        "y": 480,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        766,
+        1536,
+        1024
+      ],
+      "sourceBoxInCell": [
+        83,
+        74,
+        183,
+        231
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "unarmed_fall_heavy.png"
+    },
+    "unarmed_land_down_0": {
+      "frame": {
+        "x": 0,
+        "y": 560,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "sourceBoxInCell": [
+        77,
+        59,
+        198,
+        233
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_down_1": {
+      "frame": {
+        "x": 80,
+        "y": 560,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        0,
+        512,
+        256
+      ],
+      "sourceBoxInCell": [
+        67,
+        78,
+        199,
+        231
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_down_2": {
+      "frame": {
+        "x": 160,
+        "y": 560,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        0,
+        768,
+        256
+      ],
+      "sourceBoxInCell": [
+        37,
+        102,
+        218,
+        231
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_down_3": {
+      "frame": {
+        "x": 240,
+        "y": 560,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        0,
+        1024,
+        256
+      ],
+      "sourceBoxInCell": [
+        61,
+        82,
+        191,
+        231
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_down_4": {
+      "frame": {
+        "x": 320,
+        "y": 560,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        0,
+        1280,
+        256
+      ],
+      "sourceBoxInCell": [
+        60,
+        71,
+        191,
+        232
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_down_5": {
+      "frame": {
+        "x": 400,
+        "y": 560,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        0,
+        1536,
+        256
+      ],
+      "sourceBoxInCell": [
+        70,
+        60,
+        187,
+        233
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_up_0": {
+      "frame": {
+        "x": 480,
+        "y": 560,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        256,
+        256,
+        512
+      ],
+      "sourceBoxInCell": [
+        75,
+        46,
+        196,
+        224
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_up_1": {
+      "frame": {
+        "x": 560,
+        "y": 560,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        256,
+        512,
+        512
+      ],
+      "sourceBoxInCell": [
+        73,
+        65,
+        196,
+        224
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_up_2": {
+      "frame": {
+        "x": 640,
+        "y": 560,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        256,
+        768,
+        512
+      ],
+      "sourceBoxInCell": [
+        32,
+        84,
+        224,
+        224
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_up_3": {
+      "frame": {
+        "x": 720,
+        "y": 560,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        256,
+        1024,
+        512
+      ],
+      "sourceBoxInCell": [
+        58,
+        67,
+        189,
+        224
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_up_4": {
+      "frame": {
+        "x": 800,
+        "y": 560,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        256,
+        1280,
+        512
+      ],
+      "sourceBoxInCell": [
+        61,
+        56,
+        186,
+        224
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_up_5": {
+      "frame": {
+        "x": 880,
+        "y": 560,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        256,
+        1536,
+        512
+      ],
+      "sourceBoxInCell": [
+        66,
+        46,
+        185,
+        224
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_left_0": {
+      "frame": {
+        "x": 0,
+        "y": 640,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        512,
+        256,
+        768
+      ],
+      "sourceBoxInCell": [
+        89,
+        37,
+        188,
+        213
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_left_1": {
+      "frame": {
+        "x": 80,
+        "y": 640,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        512,
+        512,
+        768
+      ],
+      "sourceBoxInCell": [
+        70,
+        55,
+        192,
+        212
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_left_2": {
+      "frame": {
+        "x": 160,
+        "y": 640,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        512,
+        768,
+        768
+      ],
+      "sourceBoxInCell": [
+        41,
+        79,
+        223,
+        211
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_left_3": {
+      "frame": {
+        "x": 240,
+        "y": 640,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        512,
+        1024,
+        768
+      ],
+      "sourceBoxInCell": [
+        66,
+        54,
+        180,
+        211
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_left_4": {
+      "frame": {
+        "x": 320,
+        "y": 640,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        512,
+        1280,
+        768
+      ],
+      "sourceBoxInCell": [
+        58,
+        43,
+        171,
+        212
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_left_5": {
+      "frame": {
+        "x": 400,
+        "y": 640,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        512,
+        1536,
+        768
+      ],
+      "sourceBoxInCell": [
+        81,
+        37,
+        182,
+        213
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_right_0": {
+      "frame": {
+        "x": 480,
+        "y": 640,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        768,
+        256,
+        1024
+      ],
+      "sourceBoxInCell": [
+        79,
+        31,
+        175,
+        209
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_right_1": {
+      "frame": {
+        "x": 560,
+        "y": 640,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        768,
+        512,
+        1024
+      ],
+      "sourceBoxInCell": [
+        67,
+        52,
+        187,
+        208
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_right_2": {
+      "frame": {
+        "x": 640,
+        "y": 640,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        768,
+        768,
+        1024
+      ],
+      "sourceBoxInCell": [
+        33,
+        74,
+        209,
+        207
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_right_3": {
+      "frame": {
+        "x": 720,
+        "y": 640,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        768,
+        1024,
+        1024
+      ],
+      "sourceBoxInCell": [
+        67,
+        47,
+        178,
+        207
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_right_4": {
+      "frame": {
+        "x": 800,
+        "y": 640,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        768,
+        1280,
+        1024
+      ],
+      "sourceBoxInCell": [
+        65,
+        37,
+        176,
+        207
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "unarmed_land.png"
+    },
+    "unarmed_land_right_5": {
+      "frame": {
+        "x": 880,
+        "y": 640,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        768,
+        1536,
+        1024
+      ],
+      "sourceBoxInCell": [
+        69,
+        31,
+        166,
+        209
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "unarmed_land.png"
+    },
+    "armed_jump_down_0": {
+      "frame": {
+        "x": 0,
+        "y": 720,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "sourceBoxInCell": [
+        65,
+        64,
+        201,
+        231
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_down_1": {
+      "frame": {
+        "x": 80,
+        "y": 720,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        0,
+        512,
+        256
+      ],
+      "sourceBoxInCell": [
+        66,
+        87,
+        201,
+        231
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_down_2": {
+      "frame": {
+        "x": 160,
+        "y": 720,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        0,
+        768,
+        256
+      ],
+      "sourceBoxInCell": [
+        61,
+        101,
+        195,
+        231
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_down_3": {
+      "frame": {
+        "x": 240,
+        "y": 720,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        0,
+        1024,
+        256
+      ],
+      "sourceBoxInCell": [
+        60,
+        56,
+        188,
+        216
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_down_4": {
+      "frame": {
+        "x": 320,
+        "y": 720,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        0,
+        1280,
+        256
+      ],
+      "sourceBoxInCell": [
+        58,
+        41,
+        186,
+        196
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_down_5": {
+      "frame": {
+        "x": 400,
+        "y": 720,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        0,
+        1536,
+        256
+      ],
+      "sourceBoxInCell": [
+        60,
+        33,
+        190,
+        175
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_up_0": {
+      "frame": {
+        "x": 480,
+        "y": 720,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        256,
+        256,
+        512
+      ],
+      "sourceBoxInCell": [
+        74,
+        59,
+        212,
+        232
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_up_1": {
+      "frame": {
+        "x": 560,
+        "y": 720,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        256,
+        512,
+        512
+      ],
+      "sourceBoxInCell": [
+        74,
+        81,
+        208,
+        232
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_up_2": {
+      "frame": {
+        "x": 640,
+        "y": 720,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        256,
+        768,
+        512
+      ],
+      "sourceBoxInCell": [
+        64,
+        99,
+        201,
+        232
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_up_3": {
+      "frame": {
+        "x": 720,
+        "y": 720,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        256,
+        1024,
+        512
+      ],
+      "sourceBoxInCell": [
+        69,
+        47,
+        199,
+        218
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_up_4": {
+      "frame": {
+        "x": 800,
+        "y": 720,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        256,
+        1280,
+        512
+      ],
+      "sourceBoxInCell": [
+        68,
+        31,
+        196,
+        198
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_up_5": {
+      "frame": {
+        "x": 880,
+        "y": 720,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        256,
+        1536,
+        512
+      ],
+      "sourceBoxInCell": [
+        66,
+        19,
+        196,
+        173
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_left_0": {
+      "frame": {
+        "x": 0,
+        "y": 800,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        512,
+        256,
+        768
+      ],
+      "sourceBoxInCell": [
+        58,
+        57,
+        188,
+        230
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_left_1": {
+      "frame": {
+        "x": 80,
+        "y": 800,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        512,
+        512,
+        768
+      ],
+      "sourceBoxInCell": [
+        58,
+        82,
+        195,
+        230
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_left_2": {
+      "frame": {
+        "x": 160,
+        "y": 800,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        512,
+        768,
+        768
+      ],
+      "sourceBoxInCell": [
+        57,
+        95,
+        193,
+        230
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_left_3": {
+      "frame": {
+        "x": 240,
+        "y": 800,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        512,
+        1024,
+        768
+      ],
+      "sourceBoxInCell": [
+        60,
+        44,
+        192,
+        208
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_left_4": {
+      "frame": {
+        "x": 320,
+        "y": 800,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        512,
+        1280,
+        768
+      ],
+      "sourceBoxInCell": [
+        58,
+        28,
+        195,
+        179
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_left_5": {
+      "frame": {
+        "x": 400,
+        "y": 800,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        512,
+        1536,
+        768
+      ],
+      "sourceBoxInCell": [
+        60,
+        18,
+        190,
+        165
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_right_0": {
+      "frame": {
+        "x": 480,
+        "y": 800,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        768,
+        256,
+        1024
+      ],
+      "sourceBoxInCell": [
+        82,
+        58,
+        213,
+        230
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_right_1": {
+      "frame": {
+        "x": 560,
+        "y": 800,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        768,
+        512,
+        1024
+      ],
+      "sourceBoxInCell": [
+        77,
+        81,
+        213,
+        230
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_right_2": {
+      "frame": {
+        "x": 640,
+        "y": 800,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        768,
+        768,
+        1024
+      ],
+      "sourceBoxInCell": [
+        71,
+        93,
+        205,
+        230
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_right_3": {
+      "frame": {
+        "x": 720,
+        "y": 800,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        768,
+        1024,
+        1024
+      ],
+      "sourceBoxInCell": [
+        63,
+        46,
+        197,
+        207
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_right_4": {
+      "frame": {
+        "x": 800,
+        "y": 800,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        768,
+        1280,
+        1024
+      ],
+      "sourceBoxInCell": [
+        63,
+        30,
+        197,
+        182
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_jump_right_5": {
+      "frame": {
+        "x": 880,
+        "y": 800,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        768,
+        1536,
+        1024
+      ],
+      "sourceBoxInCell": [
+        66,
+        19,
+        196,
+        161
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_mid_air_down_0": {
+      "frame": {
+        "x": 0,
+        "y": 880,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        0,
+        1536,
+        256
+      ],
+      "sourceBoxInCell": [
+        60,
+        33,
+        190,
+        175
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_mid_air_up_0": {
+      "frame": {
+        "x": 80,
+        "y": 880,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        256,
+        1536,
+        512
+      ],
+      "sourceBoxInCell": [
+        66,
+        19,
+        196,
+        173
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_mid_air_left_0": {
+      "frame": {
+        "x": 160,
+        "y": 880,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        512,
+        1536,
+        768
+      ],
+      "sourceBoxInCell": [
+        60,
+        18,
+        190,
+        165
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_mid_air_right_0": {
+      "frame": {
+        "x": 240,
+        "y": 880,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        768,
+        1536,
+        1024
+      ],
+      "sourceBoxInCell": [
+        66,
+        19,
+        196,
+        161
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "armed_jump.png"
+    },
+    "armed_fall_light_down_0": {
+      "frame": {
+        "x": 0,
+        "y": 960,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "sourceBoxInCell": [
+        56,
+        38,
+        201,
+        172
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_down_1": {
+      "frame": {
+        "x": 80,
+        "y": 960,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        0,
+        512,
+        256
+      ],
+      "sourceBoxInCell": [
+        57,
+        41,
+        202,
+        180
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_down_2": {
+      "frame": {
+        "x": 160,
+        "y": 960,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        0,
+        768,
+        256
+      ],
+      "sourceBoxInCell": [
+        57,
+        46,
+        198,
+        193
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_down_3": {
+      "frame": {
+        "x": 240,
+        "y": 960,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        0,
+        1024,
+        256
+      ],
+      "sourceBoxInCell": [
+        58,
+        51,
+        196,
+        205
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_down_4": {
+      "frame": {
+        "x": 320,
+        "y": 960,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        0,
+        1280,
+        256
+      ],
+      "sourceBoxInCell": [
+        59,
+        56,
+        195,
+        216
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_down_5": {
+      "frame": {
+        "x": 400,
+        "y": 960,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        0,
+        1536,
+        256
+      ],
+      "sourceBoxInCell": [
+        60,
+        62,
+        196,
+        226
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_up_0": {
+      "frame": {
+        "x": 480,
+        "y": 960,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        256,
+        256,
+        512
+      ],
+      "sourceBoxInCell": [
+        71,
+        25,
+        209,
+        162
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_up_1": {
+      "frame": {
+        "x": 560,
+        "y": 960,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        256,
+        512,
+        512
+      ],
+      "sourceBoxInCell": [
+        72,
+        30,
+        211,
+        173
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_up_2": {
+      "frame": {
+        "x": 640,
+        "y": 960,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        256,
+        768,
+        512
+      ],
+      "sourceBoxInCell": [
+        75,
+        30,
+        211,
+        186
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_up_3": {
+      "frame": {
+        "x": 720,
+        "y": 960,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        256,
+        1024,
+        512
+      ],
+      "sourceBoxInCell": [
+        76,
+        36,
+        211,
+        203
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_up_4": {
+      "frame": {
+        "x": 800,
+        "y": 960,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        256,
+        1280,
+        512
+      ],
+      "sourceBoxInCell": [
+        76,
+        39,
+        211,
+        214
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_up_5": {
+      "frame": {
+        "x": 880,
+        "y": 960,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        256,
+        1536,
+        512
+      ],
+      "sourceBoxInCell": [
+        76,
+        40,
+        210,
+        225
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_left_0": {
+      "frame": {
+        "x": 0,
+        "y": 1040,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        512,
+        256,
+        768
+      ],
+      "sourceBoxInCell": [
+        56,
+        22,
+        203,
+        145
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_left_1": {
+      "frame": {
+        "x": 80,
+        "y": 1040,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        512,
+        512,
+        768
+      ],
+      "sourceBoxInCell": [
+        57,
+        27,
+        202,
+        162
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_left_2": {
+      "frame": {
+        "x": 160,
+        "y": 1040,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        512,
+        768,
+        768
+      ],
+      "sourceBoxInCell": [
+        57,
+        30,
+        201,
+        178
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_left_3": {
+      "frame": {
+        "x": 240,
+        "y": 1040,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        512,
+        1024,
+        768
+      ],
+      "sourceBoxInCell": [
+        57,
+        36,
+        199,
+        195
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_left_4": {
+      "frame": {
+        "x": 320,
+        "y": 1040,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        512,
+        1280,
+        768
+      ],
+      "sourceBoxInCell": [
+        58,
+        40,
+        198,
+        206
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_left_5": {
+      "frame": {
+        "x": 400,
+        "y": 1040,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        512,
+        1536,
+        768
+      ],
+      "sourceBoxInCell": [
+        60,
+        48,
+        196,
+        214
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_right_0": {
+      "frame": {
+        "x": 480,
+        "y": 1040,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        768,
+        256,
+        1024
+      ],
+      "sourceBoxInCell": [
+        60,
+        22,
+        204,
+        146
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_right_1": {
+      "frame": {
+        "x": 560,
+        "y": 1040,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        768,
+        512,
+        1024
+      ],
+      "sourceBoxInCell": [
+        61,
+        25,
+        206,
+        161
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_right_2": {
+      "frame": {
+        "x": 640,
+        "y": 1040,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        768,
+        768,
+        1024
+      ],
+      "sourceBoxInCell": [
+        61,
+        28,
+        207,
+        178
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_right_3": {
+      "frame": {
+        "x": 720,
+        "y": 1040,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        768,
+        1024,
+        1024
+      ],
+      "sourceBoxInCell": [
+        61,
+        34,
+        207,
+        194
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_right_4": {
+      "frame": {
+        "x": 800,
+        "y": 1040,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        768,
+        1280,
+        1024
+      ],
+      "sourceBoxInCell": [
+        62,
+        38,
+        207,
+        205
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_light_right_5": {
+      "frame": {
+        "x": 880,
+        "y": 1040,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        768,
+        1536,
+        1024
+      ],
+      "sourceBoxInCell": [
+        64,
+        45,
+        207,
+        217
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "armed_fall_light.png"
+    },
+    "armed_fall_heavy_down_0": {
+      "frame": {
+        "x": 0,
+        "y": 1120,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        0,
+        256,
+        249
+      ],
+      "sourceBoxInCell": [
+        65,
+        3,
+        196,
+        180
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_down_1": {
+      "frame": {
+        "x": 80,
+        "y": 1120,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        0,
+        512,
+        249
+      ],
+      "sourceBoxInCell": [
+        66,
+        12,
+        195,
+        194
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_down_2": {
+      "frame": {
+        "x": 160,
+        "y": 1120,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        0,
+        768,
+        249
+      ],
+      "sourceBoxInCell": [
+        66,
+        21,
+        195,
+        204
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_down_3": {
+      "frame": {
+        "x": 240,
+        "y": 1120,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        0,
+        1024,
+        249
+      ],
+      "sourceBoxInCell": [
+        67,
+        33,
+        196,
+        211
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_down_4": {
+      "frame": {
+        "x": 320,
+        "y": 1120,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        0,
+        1280,
+        249
+      ],
+      "sourceBoxInCell": [
+        66,
+        43,
+        196,
+        221
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_down_5": {
+      "frame": {
+        "x": 400,
+        "y": 1120,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        0,
+        1536,
+        249
+      ],
+      "sourceBoxInCell": [
+        66,
+        51,
+        195,
+        229
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_up_0": {
+      "frame": {
+        "x": 480,
+        "y": 1120,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        249,
+        256,
+        507
+      ],
+      "sourceBoxInCell": [
+        66,
+        5,
+        198,
+        186
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_up_1": {
+      "frame": {
+        "x": 560,
+        "y": 1120,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        249,
+        512,
+        507
+      ],
+      "sourceBoxInCell": [
+        67,
+        19,
+        199,
+        201
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_up_2": {
+      "frame": {
+        "x": 640,
+        "y": 1120,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        249,
+        768,
+        507
+      ],
+      "sourceBoxInCell": [
+        68,
+        32,
+        199,
+        212
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_up_3": {
+      "frame": {
+        "x": 720,
+        "y": 1120,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        249,
+        1024,
+        507
+      ],
+      "sourceBoxInCell": [
+        68,
+        43,
+        199,
+        224
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_up_4": {
+      "frame": {
+        "x": 800,
+        "y": 1120,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        249,
+        1280,
+        507
+      ],
+      "sourceBoxInCell": [
+        67,
+        53,
+        201,
+        233
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_up_5": {
+      "frame": {
+        "x": 880,
+        "y": 1120,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        249,
+        1536,
+        507
+      ],
+      "sourceBoxInCell": [
+        68,
+        63,
+        201,
+        239
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_left_0": {
+      "frame": {
+        "x": 0,
+        "y": 1200,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        507,
+        256,
+        761
+      ],
+      "sourceBoxInCell": [
+        54,
+        5,
+        198,
+        182
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_left_1": {
+      "frame": {
+        "x": 80,
+        "y": 1200,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        507,
+        512,
+        761
+      ],
+      "sourceBoxInCell": [
+        55,
+        15,
+        199,
+        197
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_left_2": {
+      "frame": {
+        "x": 160,
+        "y": 1200,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        507,
+        768,
+        761
+      ],
+      "sourceBoxInCell": [
+        55,
+        26,
+        200,
+        207
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_left_3": {
+      "frame": {
+        "x": 240,
+        "y": 1200,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        507,
+        1024,
+        761
+      ],
+      "sourceBoxInCell": [
+        56,
+        33,
+        200,
+        218
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_left_4": {
+      "frame": {
+        "x": 320,
+        "y": 1200,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        507,
+        1280,
+        761
+      ],
+      "sourceBoxInCell": [
+        55,
+        44,
+        200,
+        228
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_left_5": {
+      "frame": {
+        "x": 400,
+        "y": 1200,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        507,
+        1536,
+        761
+      ],
+      "sourceBoxInCell": [
+        57,
+        56,
+        200,
+        234
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_right_0": {
+      "frame": {
+        "x": 480,
+        "y": 1200,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        761,
+        256,
+        1024
+      ],
+      "sourceBoxInCell": [
+        58,
+        5,
+        209,
+        182
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_right_1": {
+      "frame": {
+        "x": 560,
+        "y": 1200,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        761,
+        512,
+        1024
+      ],
+      "sourceBoxInCell": [
+        57,
+        22,
+        211,
+        196
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_right_2": {
+      "frame": {
+        "x": 640,
+        "y": 1200,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        761,
+        768,
+        1024
+      ],
+      "sourceBoxInCell": [
+        60,
+        34,
+        212,
+        210
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_right_3": {
+      "frame": {
+        "x": 720,
+        "y": 1200,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        761,
+        1024,
+        1024
+      ],
+      "sourceBoxInCell": [
+        62,
+        42,
+        212,
+        218
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_right_4": {
+      "frame": {
+        "x": 800,
+        "y": 1200,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        761,
+        1280,
+        1024
+      ],
+      "sourceBoxInCell": [
+        63,
+        52,
+        212,
+        228
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_fall_heavy_right_5": {
+      "frame": {
+        "x": 880,
+        "y": 1200,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        761,
+        1536,
+        1024
+      ],
+      "sourceBoxInCell": [
+        64,
+        61,
+        213,
+        236
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "armed_fall_heavy.png"
+    },
+    "armed_land_down_0": {
+      "frame": {
+        "x": 0,
+        "y": 1280,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "sourceBoxInCell": [
+        62,
+        49,
+        209,
+        227
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_down_1": {
+      "frame": {
+        "x": 80,
+        "y": 1280,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        0,
+        512,
+        256
+      ],
+      "sourceBoxInCell": [
+        59,
+        67,
+        207,
+        227
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_down_2": {
+      "frame": {
+        "x": 160,
+        "y": 1280,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        0,
+        768,
+        256
+      ],
+      "sourceBoxInCell": [
+        37,
+        86,
+        223,
+        228
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_down_3": {
+      "frame": {
+        "x": 240,
+        "y": 1280,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        0,
+        1024,
+        256
+      ],
+      "sourceBoxInCell": [
+        55,
+        64,
+        204,
+        228
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_down_4": {
+      "frame": {
+        "x": 320,
+        "y": 1280,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        0,
+        1280,
+        256
+      ],
+      "sourceBoxInCell": [
+        55,
+        57,
+        197,
+        228
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_down_5": {
+      "frame": {
+        "x": 400,
+        "y": 1280,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        0,
+        1536,
+        256
+      ],
+      "sourceBoxInCell": [
+        51,
+        53,
+        197,
+        227
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_up_0": {
+      "frame": {
+        "x": 480,
+        "y": 1280,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        256,
+        256,
+        512
+      ],
+      "sourceBoxInCell": [
+        64,
+        46,
+        216,
+        228
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_up_1": {
+      "frame": {
+        "x": 560,
+        "y": 1280,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        256,
+        512,
+        512
+      ],
+      "sourceBoxInCell": [
+        68,
+        65,
+        220,
+        228
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_up_2": {
+      "frame": {
+        "x": 640,
+        "y": 1280,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        256,
+        768,
+        512
+      ],
+      "sourceBoxInCell": [
+        37,
+        85,
+        235,
+        228
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_up_3": {
+      "frame": {
+        "x": 720,
+        "y": 1280,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        256,
+        1024,
+        512
+      ],
+      "sourceBoxInCell": [
+        57,
+        62,
+        217,
+        228
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_up_4": {
+      "frame": {
+        "x": 800,
+        "y": 1280,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        256,
+        1280,
+        512
+      ],
+      "sourceBoxInCell": [
+        64,
+        54,
+        215,
+        228
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_up_5": {
+      "frame": {
+        "x": 880,
+        "y": 1280,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        256,
+        1536,
+        512
+      ],
+      "sourceBoxInCell": [
+        67,
+        46,
+        214,
+        228
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_left_0": {
+      "frame": {
+        "x": 0,
+        "y": 1360,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        512,
+        256,
+        768
+      ],
+      "sourceBoxInCell": [
+        59,
+        40,
+        202,
+        213
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_left_1": {
+      "frame": {
+        "x": 80,
+        "y": 1360,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        512,
+        512,
+        768
+      ],
+      "sourceBoxInCell": [
+        61,
+        58,
+        203,
+        213
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_left_2": {
+      "frame": {
+        "x": 160,
+        "y": 1360,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        512,
+        768,
+        768
+      ],
+      "sourceBoxInCell": [
+        41,
+        86,
+        227,
+        213
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_left_3": {
+      "frame": {
+        "x": 240,
+        "y": 1360,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        512,
+        1024,
+        768
+      ],
+      "sourceBoxInCell": [
+        57,
+        58,
+        204,
+        213
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_left_4": {
+      "frame": {
+        "x": 320,
+        "y": 1360,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        512,
+        1280,
+        768
+      ],
+      "sourceBoxInCell": [
+        61,
+        47,
+        196,
+        213
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_left_5": {
+      "frame": {
+        "x": 400,
+        "y": 1360,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        512,
+        1536,
+        768
+      ],
+      "sourceBoxInCell": [
+        63,
+        40,
+        195,
+        213
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_right_0": {
+      "frame": {
+        "x": 480,
+        "y": 1360,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        0,
+        768,
+        256,
+        1024
+      ],
+      "sourceBoxInCell": [
+        71,
+        39,
+        207,
+        213
+      ],
+      "artworkColumnZeroBased": 0,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_right_1": {
+      "frame": {
+        "x": 560,
+        "y": 1360,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        256,
+        768,
+        512,
+        1024
+      ],
+      "sourceBoxInCell": [
+        66,
+        59,
+        205,
+        213
+      ],
+      "artworkColumnZeroBased": 1,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_right_2": {
+      "frame": {
+        "x": 640,
+        "y": 1360,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        512,
+        768,
+        768,
+        1024
+      ],
+      "sourceBoxInCell": [
+        41,
+        84,
+        231,
+        213
+      ],
+      "artworkColumnZeroBased": 2,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_right_3": {
+      "frame": {
+        "x": 720,
+        "y": 1360,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        768,
+        768,
+        1024,
+        1024
+      ],
+      "sourceBoxInCell": [
+        60,
+        59,
+        205,
+        213
+      ],
+      "artworkColumnZeroBased": 3,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_right_4": {
+      "frame": {
+        "x": 800,
+        "y": 1360,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1024,
+        768,
+        1280,
+        1024
+      ],
+      "sourceBoxInCell": [
+        65,
+        46,
+        201,
+        213
+      ],
+      "artworkColumnZeroBased": 4,
+      "artworkFile": "armed_land.png"
+    },
+    "armed_land_right_5": {
+      "frame": {
+        "x": 880,
+        "y": 1360,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "duration": 70,
+      "sourceCell": [
+        1280,
+        768,
+        1536,
+        1024
+      ],
+      "sourceBoxInCell": [
+        71,
+        39,
+        200,
+        213
+      ],
+      "artworkColumnZeroBased": 5,
+      "artworkFile": "armed_land.png"
+    }
+  },
+  "meta": {
+    "image": "black_knight_conversion_air.png",
+    "size": {
+      "w": 960,
+      "h": 1440
+    },
+    "sources": {
+      "unarmed_jump": {
+        "sheets": [
+          {
+            "file": "unarmed_jump.png",
+            "sha256": "87ff53197533de09c40ef5ac56f5bd6fd115a55c5a94d951c3c442f62ec33836"
+          }
+        ],
+        "sourceGroup": 16,
+        "frameMs": 70,
+        "authoring": "Custom ImageGen artwork based on approved K1/K2 identity and Fellor motion references"
+      },
+      "unarmed_mid_air": {
+        "sheets": [
+          {
+            "file": "unarmed_jump.png",
+            "sha256": "87ff53197533de09c40ef5ac56f5bd6fd115a55c5a94d951c3c442f62ec33836"
+          }
+        ],
+        "sourceGroup": 17,
+        "frameMs": 70,
+        "authoring": "Custom ImageGen artwork based on approved K1/K2 identity and Fellor motion references"
+      },
+      "unarmed_fall_light": {
+        "sheets": [
+          {
+            "file": "unarmed_fall_light.png",
+            "sha256": "8749553dd6080033a342c12e5d25015e03ac343041220518433b5710ab14298c"
+          }
+        ],
+        "sourceGroup": 18,
+        "frameMs": 70,
+        "authoring": "Custom ImageGen artwork based on approved K1/K2 identity and Fellor motion references"
+      },
+      "unarmed_fall_heavy": {
+        "sheets": [
+          {
+            "file": "unarmed_fall_heavy.png",
+            "sha256": "6b9d03355f8d80614632d32ecbb40ccb2a520c3875a6c8759faa337653d21e37"
+          }
+        ],
+        "sourceGroup": 19,
+        "frameMs": 70,
+        "authoring": "Custom ImageGen artwork based on approved K1/K2 identity and Fellor motion references"
+      },
+      "unarmed_land": {
+        "sheets": [
+          {
+            "file": "unarmed_land.png",
+            "sha256": "71e83ebfb7c4a4e73df872441e74dd94b6690b14dff648c0644eba929927a0a7"
+          }
+        ],
+        "sourceGroup": 20,
+        "frameMs": 70,
+        "authoring": "Custom ImageGen artwork based on approved K1/K2 identity and Fellor motion references"
+      },
+      "armed_jump": {
+        "sheets": [
+          {
+            "file": "armed_jump.png",
+            "sha256": "09f8c3e2d2a1a5afcd39d2a7011b0ca96bd911c0c470cb0e6b43134ef35324be"
+          }
+        ],
+        "sourceGroup": 21,
+        "frameMs": 70,
+        "authoring": "Custom ImageGen artwork based on approved K1/K2 identity and Fellor motion references"
+      },
+      "armed_mid_air": {
+        "sheets": [
+          {
+            "file": "armed_jump.png",
+            "sha256": "09f8c3e2d2a1a5afcd39d2a7011b0ca96bd911c0c470cb0e6b43134ef35324be"
+          }
+        ],
+        "sourceGroup": 22,
+        "frameMs": 70,
+        "authoring": "Custom ImageGen artwork based on approved K1/K2 identity and Fellor motion references"
+      },
+      "armed_fall_light": {
+        "sheets": [
+          {
+            "file": "armed_fall_light.png",
+            "sha256": "efb2dd0a7a50f77d087c90db29d527febe94ccbbf9af4af0bb192fd641ff7314"
+          }
+        ],
+        "sourceGroup": 23,
+        "frameMs": 70,
+        "authoring": "Custom ImageGen artwork based on approved K1/K2 identity and Fellor motion references"
+      },
+      "armed_fall_heavy": {
+        "sheets": [
+          {
+            "file": "armed_fall_heavy.png",
+            "sha256": "5739f619490e51cedc01574c1500d003dbc88e64325df77f785e5cff7fde30db"
+          }
+        ],
+        "sourceGroup": 24,
+        "frameMs": 70,
+        "authoring": "Custom ImageGen artwork based on approved K1/K2 identity and Fellor motion references"
+      },
+      "armed_land": {
+        "sheets": [
+          {
+            "file": "armed_land.png",
+            "sha256": "3ebf652abc2650f9aae7bb2c7528cbd519158412188f45ad8029da85bbf4f4ff"
+          }
+        ],
+        "sourceGroup": 25,
+        "frameMs": 70,
+        "authoring": "Custom ImageGen artwork based on approved K1/K2 identity and Fellor motion references"
+      }
+    },
+    "format": "RGBA8888"
+  }
+}
