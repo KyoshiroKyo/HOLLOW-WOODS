@@ -205,8 +205,8 @@
           "id": "npc_bram",
           "name": "Bram",
           "title": "Thợ rèn làng",
-          "x": 1230,
-          "y": 405,
+          "x": 1333,
+          "y": 477,
           "dialogueKey": "bram_chat"
         },
         {
@@ -351,8 +351,8 @@
           "id": "village_crafting_bench",
           "name": "Bàn Chế Tạo Sinh Tồn",
           "type": "lantern_refill",
-          "x": 1292,
-          "y": 383,
+          "x": 1395,
+          "y": 455,
           "width": 48,
           "height": 24,
           "promptText": "[E] Sử dụng Bàn Chế Tạo",

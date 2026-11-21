@@ -821,13 +821,18 @@ export class WorldBuilder {
           { x: 650, y: 580, r: 24 }
         ], false, true);
 
-        // 3.5. Nhánh đường Đông-Nam từ Quảng Trường qua Xưởng Rèn Bram (x=1270, y=360) và Lối Đông Nam ra Rừng Ngoại Vi (1210, 510)
+        // 3.5. Nhánh đường Đông-Nam từ Quảng Trường xuống Lối Rừng Ngoại Vi (1210, 510) và rẽ vào Xưởng Rèn Bram mới (1330, 440)
         drawOrganicDirtPath([
           { x: 930, y: 340, r: 19 },
           { x: 1060, y: 360, r: 20 },
           { x: 1190, y: 375, r: 22 },
           { x: 1210, y: 510, r: 18 }
         ], true);
+        drawOrganicDirtPath([
+          { x: 1190, y: 375, r: 20 },
+          { x: 1260, y: 410, r: 19 },
+          { x: 1330, y: 440, r: 20 }
+        ], false);
 
         // 3.6. Đường Rừng Phía Đông (từ Quảng Trường Trung Tâm x=935 uốn lượn qua Cổng Đông x=1490 tới ranh giới The Crooked Path x=1600, y=280)
         drawOrganicDirtPath([
@@ -1021,7 +1026,7 @@ export class WorldBuilder {
         addWarmGroundPool(850, 315, 68, 0.24); // Quanh Lửa Trại & Hiệp Sĩ Canh Lửa
         addWarmGroundPool(900, 140, 52, 0.20); // Trước cửa tháp chuông
         addWarmGroundPool(1160, 145, 50, 0.20); // Trước hiên nhà Edda
-        addWarmGroundPool(1240, 375, 56, 0.22); // Quanh bàn chế tạo & lò rèn Bram
+        addWarmGroundPool(1343, 447, 56, 0.22); // HW-BUG-#5: Quanh bàn chế tạo & lò rèn Bram mới
         addWarmGroundPool(563, 196, 46, 0.18); // Trạm gác cổng Tây chỗ Garth
         addWarmGroundPool(570, 445, 52, 0.18); // Trước hiên nhà Neris & vườn dược
         addWarmGroundPool(655, 255, 36, 0.16); // Ngã ba bảng tin dị thường & Finn
@@ -2700,11 +2705,11 @@ export class WorldBuilder {
       this.createVillagePropCluster(1100, 126, 'firewood');
       this.createVillagePropCluster(1230, 126, 'barrels');
 
-      // 6. Xưởng Rèn & Lò Lửa của Bram (Đông-Nam: tâm x=1270, chân móng y=360; Bram đứng tại 1230, 390)
-      this.createCraftingWorkshopPavilion(1270, 360);
+      // 6. Xưởng Rèn & Lò Lửa của Bram (HW-BUG-#5: Di dời sang Đông-Nam mới tâm x=1373, chân móng y=432; Bram đứng tại 1333, 477)
+      this.createCraftingWorkshopPavilion(1373, 432);
       const bench = zone.interactables.find(item => item.id === 'village_crafting_bench');
       if (bench) this.createCraftingBench(bench.x, bench.y);
-      this.createVillagePropCluster(1330, 380, 'firewood');
+      this.createVillagePropCluster(1433, 452, 'firewood');
 
       // 7. Nhà Thảo Mộc Neris & Vườn Dược Sanctuary (Tây-Nam: tâm x=570, chân móng y=430; Neris đứng tại 570, 460)
       this.createBuilding(570, 430, 152, 136, 0x4a4335, 0x6e7845, 'Nhà Neris – Thảo Mộc');
@@ -4139,7 +4144,7 @@ export class WorldBuilder {
       { x: 878, y: 452, s: 0.84, t: 0xcfdcc8 },
       { x: 1018, y: 468, s: 0.82, t: 0xc8dac2 },
       { x: 1152, y: 466, s: 0.90, t: 0xc2d4bc },
-      { x: 1416, y: 348, s: 0.94, t: 0xaec2a6 },
+      { x: 1475, y: 410, s: 0.94, t: 0xaec2a6 }, // HW-BUG-#5: Dời khỏi (1416, 348) để nhường vị trí xưởng Bram mới
       { x: 1516, y: 344, s: 0.96, t: 0x9eb296 }
     ];
     for (const bp of bushPlacements) {
@@ -4154,7 +4159,7 @@ export class WorldBuilder {
       { x: 1138, y: 196, w: 18, h: 4 },
       { x: 1268, y: 218, w: 20, h: 4 },
       { x: 1396, y: 230, w: 18, h: 4 },
-      { x: 1364, y: 340, w: 20, h: 4 },
+      { x: 1250, y: 350, w: 20, h: 4 }, // HW-BUG-#5: Dời khỏi (1364, 340) sang bãi đất cũ để nhường nền móng xưởng Bram mới
       { x: 1218, y: 352, w: 16, h: 4 },
       { x: 684, y: 458, w: 18, h: 4 }
     ];
@@ -4334,7 +4339,7 @@ export class WorldBuilder {
     // 3. Màn sương rừng dày và tối dần về phía Lối Vào Rừng Outer Woods (Cổng Đông x: 1280..1620)
     // Tầng ngoài (x ~ 1320): sương xám lục nhạt bắt đầu phủ lên đường rừng
     addBoundaryMist(1330, 175, 0.90, 0.85, 0.24, 0x526662, 590, 16, 6500);
-    addBoundaryMist(1330, 395, 0.90, 0.85, 0.24, 0x526662, 590, 16, 6700);
+    addBoundaryMist(1330, 520, 0.90, 0.85, 0.24, 0x526662, 590, 16, 6700); // HW-BUG-#5: Dời xuống sát hàng rào Nam tránh che lò than hồng Bram
 
     // Tầng giữa quanh Cổng Đông "Rừng Ngoại Vi →" (x ~ 1460..1500): sương rừng sẫm màu bao quanh vòm cổng
     addBoundaryMist(1465, 185, 0.95, 0.95, 0.34, 0x2c3b39, 610, 14, 5800);

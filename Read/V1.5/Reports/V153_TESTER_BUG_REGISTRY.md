@@ -36,6 +36,7 @@ Dùng mã trong INDEX R10. Hàng **OPEN** của batch khác giữ ở chủ sở
 | BUG-053 | CLOSED-VERIFIED local · 04C-G P0 | HUD cập nhật khi nhận quest Edda, Giữ Lửa Trong Sương, Dấu Vết Đồng Đội Cũ và chỉ dẫn tìm khuôn của Sir Vaelen. [Báo cáo](V153_B04CG_P0_REPORT.md). |
 | BUG-054 | CLOSED-VERIFIED local · 04C-G P0 | HUD, Sổ Tay, World Map và Continue thống nhất qua nhận, chọn, hoàn tất nhiệm vụ. Chọn quest muộn trong Sổ Tay giữ nguyên quyền mở vùng. [Báo cáo](V153_B04CG_P0_REPORT.md). |
 | LEG-R8-14 | CLOSED-VERIFIED local | Chỉ mở F9 đã latch lượt Dev, Save QA tách khóa, mock SDK xác minh chặn sau await và luồng gửi điểm sạch. [Audit](V153_B04_DEV_MODE_BASELINE_AUDIT.md). |
+| HW-BUG-#5 / BUG-034B | CLOSED-VERIFIED local | Di dời hoàn tất toàn bộ cụm xưởng Bram từ (1270,360) sang (1373,432). Sprite, footing, collider 154x32 [1296,400,1450,432], Bram (1333,477), Bàn chế tạo (1395,455) collider [1375,449,1415,461], forge glow (1318,408), khói (1325,288), củi (1433,452), giải tỏa bụi cây (1416,348) và cành khô (1364,340). Noclip OFF, hội thoại [E], Crafting modal, Save/Load, Transition và Restart đều đạt 100%. [Báo cáo](HW_BUG_05_BRAM_RELOCATION_REPORT.md). |
 
 | Hàng chờ | Chủ sở hữu để tiếp tục |
 |---|---|

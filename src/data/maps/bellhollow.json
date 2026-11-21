@@ -12868,8 +12868,8 @@
           "id": 9,
           "name": "crafting_bench",
           "type": "wall",
-          "x": 1272,
-          "y": 377,
+          "x": 1375,
+          "y": 449,
           "width": 40,
           "height": 12,
           "visible": true,
@@ -12907,8 +12907,8 @@
           "id": 10,
           "name": "village_crafting_bench",
           "type": "lantern_refill",
-          "x": 1292,
-          "y": 383,
+          "x": 1395,
+          "y": 455,
           "width": 48,
           "height": 24,
           "visible": true,
@@ -13370,8 +13370,8 @@
           "id": 24,
           "name": "npc_bram",
           "type": "npc",
-          "x": 1230,
-          "y": 390,
+          "x": 1333,
+          "y": 462,
           "width": 24,
           "height": 34,
           "visible": true,
@@ -13394,12 +13394,12 @@
             {
               "name": "patrolMinX",
               "type": "int",
-              "value": 1230
+              "value": 1333
             },
             {
               "name": "patrolMaxX",
               "type": "int",
-              "value": 1230
+              "value": 1333
             }
           ]
         },
