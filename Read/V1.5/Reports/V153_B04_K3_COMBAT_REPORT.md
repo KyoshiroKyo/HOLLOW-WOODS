@@ -1,12 +1,12 @@
 # V153-BATCH-04C-K3 — Chiến đấu và trạng thái của Black Knight
 
-**21/11/2026 · K3 PARTIAL · K3-A 4/4 và K3-B 8/8 nhóm đã kiểm thử bốn hướng**
+**21/11/2026 · K3 PASS LOCAL về hoạt ảnh · 26/26 nhóm bốn hướng · K3-C 8/8**
 
-Nhánh `feat/v1.5.3-batch04`, mốc vào `e91809963955c60778cc763427c56d052528df4a`. Mốc vào khớp GitHub và worktree triển khai sạch. Bốn nhóm K3-A dùng ba clip mỗi hướng, gồm pha hồi phục nằm trong từng clip. Hồ sơ kiểm thử dùng Chromium cục bộ và profile riêng với SDK mô phỏng. Hosted P2Game vẫn BLOCKED.
+Nhánh `feat/v1.5.3-batch04`, mốc vào `e91809963955c60778cc763427c56d052528df4a`. Mốc vào khớp GitHub và worktree triển khai sạch. Bốn nhóm K3-A dùng ba clip mỗi hướng, gồm pha hồi phục nằm trong từng clip. K3-C có một kỹ năng gameplay hiện hành và bảy nhóm ASSET/ANIMATION ONLY. Hồ sơ kiểm thử dùng Chromium cục bộ và profile riêng với SDK mô phỏng. Hosted P2Game vẫn BLOCKED.
 
 ## A. Task ledger
 
-| Mã | Trước | Sau checkpoint B | Kết quả |
+| Mã | Trước | Sau checkpoint C | Kết quả |
 |---|---|---|---|
 | K3-A · 01 Light Attack | OPEN · sheet legacy | PASS LOCAL — 4-DIR VERIFIED | 6 frame/hướng × 75 ms. Va chạm ở frame 2, khóa đến hết frame 5. |
 | K3-A · 02 Heavy Attack | OPEN · sheet legacy | PASS LOCAL — 4-DIR VERIFIED | 6 frame/hướng × 100 ms. Va chạm ở frame 3 và vẫn có hai frame hồi phục. |
@@ -20,14 +20,14 @@ Nhánh `feat/v1.5.3-batch04`, mốc vào `e91809963955c60778cc763427c56d052528df
 | K3-B · 10 Armed Hurt | OPEN | PASS LOCAL — 4-DIR VERIFIED | Nguồn 31. |
 | K3-B · 11 Unarmed Hurt | OPEN | PASS LOCAL — 4-DIR VERIFIED | Nguồn 30. |
 | K3-B · 12 Death | OPEN | PASS LOCAL — 4-DIR VERIFIED | Nguồn 32, clip chung. |
-| K3-C · 13 Armed Buff | OPEN | NOT TESTED | Nguồn 34. |
-| K3-C · 14 Unarmed Buff | OPEN | NOT TESTED | Nguồn 33. |
-| K3-C · 15 Thrust | OPEN | NOT TESTED | Pha nguồn 11. |
-| K3-C · 16 Ground Slam | OPEN | NOT TESTED | Đối chiếu 05 và 10. |
-| K3-C · 17 Flame Stream | OPEN | NOT TESTED | Pha nguồn 11. |
-| K3-C · 18 Fire Wave | OPEN | NOT TESTED | Đối chiếu 07, 10 và 11. |
-| K3-C · 19 Aerial Somersault | OPEN | NOT TESTED | Pha nguồn 26. |
-| K3-C · 20 Weapon Art | OPEN | NOT TESTED | Nguồn 26. |
+| K3-C · 13 Armed Buff | OPEN | PASS LOCAL — 4-DIR VERIFIED | Nguồn 34. |
+| K3-C · 14 Unarmed Buff | OPEN | PASS LOCAL — 4-DIR VERIFIED | Nguồn 33. |
+| K3-C · 15 Thrust | OPEN | PASS LOCAL — 4-DIR VERIFIED | Pha nguồn 11. |
+| K3-C · 16 Ground Slam | OPEN | PASS LOCAL — 4-DIR VERIFIED | Đối chiếu 05 và 10. |
+| K3-C · 17 Flame Stream | OPEN | PASS LOCAL — 4-DIR VERIFIED | Pha nguồn 11. |
+| K3-C · 18 Fire Wave | OPEN | PASS LOCAL — 4-DIR VERIFIED | Đối chiếu 07, 10 và 11. |
+| K3-C · 19 Aerial Somersault | OPEN | PASS LOCAL — 4-DIR VERIFIED | Pha nguồn 26. |
+| K3-C · 20 Weapon Art | OPEN | PASS LOCAL — 4-DIR VERIFIED | Nguồn 26. |
 
 Kế thừa sáu nhóm Idle, Walk và Run từ K1/K2. Ba hướng Armed Idle tiếp tục dùng atlas K1, RIGHT dùng đoạn đã nghiệm thu ở K2. Các tệp atlas K1/K2, portrait và Source Library giữ nguyên SHA qua diff. Bằng chứng mở khóa, đi vùng và Save/Continue ở phần dưới là hồi quy của bản chạy K3-A. [K1](V153_B04_K1_RUNTIME_REPORT.md) · [K2](V153_B04_K2_MOVEMENT_REPORT.md) · [Ma trận 26 nhóm](V153_CHARACTER_ANIMATION_MATRIX.md)
 
@@ -140,3 +140,68 @@ Vòng cập nhật cũ đặt vận tốc Roll thành 0 ngay trong lượt xử 
 Runtime và atlas B ở `6a64978d09b0f9f88c96b85f509a1c34ec097fe3`. Commit kế tiếp trên nhánh phát triển giữ tài liệu và ảnh chốt B. Đã dừng phạm vi thực hiện tại K3-B theo yêu cầu kiểm tra sprite của Owner. K3 giữ **PARTIAL**, 12/20 nhóm đã xác minh. Tám nhóm K3-C vẫn OPEN. Hosted, 60 FPS, và lỗi Phaser Text khi restart vẫn ở các gate cũ. [Runtime B](https://github.com/KyoshiroKyo/HOLLOW-WOODS/commit/6a64978d09b0f9f88c96b85f509a1c34ec097fe3) · [Lịch sử checkpoint](https://github.com/KyoshiroKyo/HOLLOW-WOODS/commits/feat/v1.5.3-batch04) · [Checkpoint](V153_BATCH_04_CHECKPOINT.md)
 
 Lệnh tiếp nối khi Owner mở phạm vi và cổng thực thi đáp ứng đủ điều kiện. `V153-BATCH-04C-K3 EXECUTE REMAINING ONLY — K3-C: 13–20. Xác minh HEAD của checkpoint B; giữ nguyên A/B đã PASS; chỉ bật gameplay cho kỹ năng đã duyệt.`
+
+## H. K3-C — Buff và hoạt ảnh kỹ năng mở rộng
+
+Owner đã mở đúng các mã 13–20 từ checkpoint `0a4f7f1bea073e098c201f941f7b984d2a9dcef0`. HEAD nhánh phát triển khớp GitHub, worktree triển khai sạch trước khi sửa. Worktree thiết kế ở nhánh `work` giữ nguyên các thay đổi cũ và được đọc để đối chiếu nguồn. Jump/Fall/Land tiếp tục ARCHIVED.
+
+### Trụ 1 — Artwork & Animation
+
+Mỗi nhóm có sáu frame thật, riêng cho DOWN, UP, LEFT, RIGHT. Tám sheet custom xử lý bằng cùng pipeline K3-A/B. Hướng UP dùng tạo hình quay lưng, DOWN trực diện, hai profile trỏ đúng phía. Cả hai Buff dùng hào quang đỏ sẫm. Armed giữ một kiếm, Unarmed tay trống và vỏ đeo lưng. VFX lớn giữ nguyên pixel từ nguồn đã chọn, mở khung đến 112×80 và dành chỗ dưới neo cho hiệu ứng mặt đất. Những biên ô nguồn của Flame Stream/Fire Wave được đặt lại ở khoảng cyan đã kiểm để giữ đuôi lửa. Pipeline loại ô trống, pixel cyan, bbox chạm biên và frame trùng, đồng thời kiểm pixel atlas so với sheet. Không có hướng mirrored hoặc fallback tạm trong atlas.
+
+| Mã | Trước K3-C | Nhóm | Frame size, pivot pixel | Timing | Nguồn đối chiếu | Bề mặt gameplay |
+|---|---|---|---|---:|---|---|
+| 13 | OPEN | Armed Buff | 64×64 · (32,64) | 140 ms | Fellor 34, master 312–323 | ASSET/ANIMATION ONLY |
+| 14 | OPEN | Unarmed Buff | 64×64 · (32,64) | 140 ms | Fellor 33, master 300–311 | ASSET/ANIMATION ONLY |
+| 15 | OPEN | Thrust | 80×64 · (40,56) | 70 ms | Fellor 11, 113–123 | ASSET/ANIMATION ONLY |
+| 16 | OPEN | Ground Slam | 112×72 · (56,60) | 100 ms | Fellor 05/10, 53–60 và 108–112 | ASSET/ANIMATION ONLY |
+| 17 | OPEN | Flame Stream | 112×80 · (56,68) | 100 ms | Fellor 11, 113–122 | ASSET/ANIMATION ONLY |
+| 18 | OPEN | Fire Wave | 112×80 · (56,68) | 95 ms | Fellor 07/11, 76–81 và 113–122 | ASSET/ANIMATION ONLY |
+| 19 | OPEN | Aerial Somersault | 96×80 · (48,70) | 100 ms | Fellor 26, 243–256 | ASSET/ANIMATION ONLY |
+| 20 | OPEN | Weapon Art | 112×72 · (56,62) | 83⅓ ms | Fellor 26, 222–256 | [R] đang hoạt động từ baseline |
+
+| Phân loại ảnh | Bản đối chiếu |
+|---|---|
+| `SOURCE_REFERENCE` | Bảng `fellor-buff.png`, `fellor-cuts.png`, `fellor-art.png` trong khu làm việc K3-C và 34 chuỗi ở `Pixel_Art/Black Knight/Source_Library/`. Silhouette tối trong các bảng đó là hình gốc được giữ để đối chiếu chuyển động. |
+| `CUSTOM_ART_CANDIDATE` | Sheet nền cyan ImageGen trước khâu lọc nền, chọn pose và đóng atlas. Mỗi sheet sản xuất có SHA nguồn trong `meta.sources`. Bản Weapon Art lấy đà là ứng viên thay bằng bản impact ngay frame đầu để giữ timing gameplay. |
+| `BASELINE_BEFORE` | Trace bản `0a4f7f1` trong Chromium. [F] bắt đầu `wayfarer_buff` frame 18 dù đang Unarmed. [R] phát hitbox khi actor vẫn hiện Armed Idle. |
+| `RUNTIME_ATLAS` | Contact sheet đọc từ PNG sản xuất, ảnh in-game lấy ở `postrender` và trace ghi chính texture/frame actor ở thời điểm vẽ. |
+
+Atlas `public/assets/characters/black_knight/black_knight_extended_skills.png` 1.344×1.152 RGBA, 192 frame, khoảng 5,91 MiB khi giải mã. SHA-256 PNG `236e8c1fdcd5dd28ccd9b6ef3b011951e3594414f5658234cd6c9cef872049e2`. SHA-256 JSON `06da44db2d6e8f23ea2e9af726cc0c2c5f07b86c42d34bdf17db367f8bd23df7`. Bốn atlas đã nghiệm thu và cây `Pixel_Art/Black Knight` khớp baseline theo diff. Giấy phép Fellor/BitBlast Studio áp dụng cho nguồn tham chiếu. [Giấy phép](<../../../Pixel_Art/Black Knight/License.txt>) · [Atlas và nguồn từng sheet](../../../public/assets/characters/black_knight/black_knight_extended_skills.json) · [Contact sheet C](Visuals/V153_B04C_K3/extended-skills-contact.png) · [QA từng frame](Visuals/V153_B04C_K3/extended-skills-asset-qa.json)
+
+Chạy kiểm toán lặp bằng `python scripts/qa_v153_black_knight_combat.py --group extended --evidence /tmp/v153-k3c-qa`. Có thể thêm `--source <thư mục>` để đối chiếu cả sheet gốc đã chọn. QA tự động kiểm alpha, bounds, frame mapping, sha và ảnh contact.
+
+### Trụ 2 — Runtime
+
+Mapping cho từng hàng trên là `wayfarer_<tên>_<hướng>` và alias `satyr_<tên>_<hướng>` → atlas `black_knight_extended_skills` → frame `<tên>_<hướng>_0…5`. Dùng tên theo thứ tự bảng `armed_buff`, `unarmed_buff`, `thrust`, `ground_slam`, `flame_stream`, `fire_wave`, `aerial_somersault`, `weapon_art`. Alias `wayfarer_buff`/`satyr_buff` trỏ bộ Armed cho tương thích. Alias giữ nguyên tên vì bằng chứng runtime nằm ở texture và frame. Legacy texture vẫn tồn tại ở bản build để bảo toàn tương thích.
+
+Phaser áp pivot từ metadata khi đổi frame. Player đặt lại offset AABB từ điểm neo hiện tại ở `ANIMATION_START`. Kích thước Arcade 18×12, góc 0, local AABB `[-9,-18,18,12]` giống idle. Tỷ lệ actor (1,1), một actor, tất cả frame nearest-neighbor. Khi quay về movement atlas cũ, origin trở lại (0.5,1), offset (23,46). Giới hạn atlas giữ trọn kiếm và VFX trong từng ô, không có lớp sprite thứ hai.
+
+### Trụ 3 — Gameplay
+
+Tại baseline, `weaponArt()` phát hit ngay khi nhấn R trước khi thay frame. Bản C đặt VFX impact lên frame 0 để cả hit và pose cùng bắt đầu trên input, rồi phát trọn hồi phục. Gameplay giữ cửa sổ danh định 6 frame ở 12 FPS, chi phí 35 Thể Lực, cooldown 5.000 ms, bán kính AoE 96 quanh chân, `reach:0`, knockback 220, stun 2 giây, hệ số 2,8 và các dung sai của mục tiêu hiện có. AoE tròn nên tâm và AABB giữ nguyên theo cả bốn hướng. “96” là bán kính logic đã được duyệt; kích thước vòng lửa trên sprite thuộc hình ảnh. Dùng cùng vòng đời listener/timer với đòn A để kết thúc sạch khi bị ngắt, đến Idle hoặc hủy actor.
+
+Hai Buff cùng năm kỹ năng còn lại chỉ nạp asset và đăng ký animation. Fixture phát trực tiếp qua Phaser để kiểm hình, không bind phím, thêm hitbox hoặc tạo skill tree. [F] tiếp tục đổi Vòng Sáng với chi phí 10 khi bật; đã bỏ lệnh phát Buff legacy dính với [F]. Fire Nova tiếp tục thuộc Parry thành công. **AUDIO DEFERRED TO 04D.**
+
+### Kết quả kiểm thử và bàn giao C
+
+| Ca | Kết quả |
+|---|---|
+| Artwork và animation | 192/192 frame đạt QA. 8/8 nhóm C đạt PASS LOCAL — 4-DIR VERIFIED ở trụ artwork/runtime. Ma trận đạt 26/26 nhóm hoạt ảnh bốn hướng. |
+| Chromium 156 Canvas | 32/32 clip, 192/192 tên frame thấy qua `postrender`, 32 ảnh thực trong game. 0 frame legacy, 0 double-render, 0 HTTP 404, 0 missing frame C hoặc hồi quy mới. |
+| Chromium 156 WebGL SwiftShader | Cùng 32/32 clip, 192/192 frame và 32 ảnh thực. Tâm actor và AABB tương đối khớp Canvas. Cả JSON lẫn PNG K3-C trả HTTP 200 ở hai renderer. |
+| Hồi quy K1/K2/A/B | Kiểm registry và alias bốn hướng. Phát mẫu đại diện của 18 nhãn clip cũ ở hai renderer, gồm hai pha Parry. Kiểm pha Attack Recovery bằng Space ở bốn hướng, frame 4–5 giữ khóa, rồi Idle. Giữ toàn bộ bốn atlas cũ theo SHA. |
+| Weapon Art [R] | Cả hai renderer phát đúng một hit ngay frame 0 trong mỗi hướng. Canvas đo 100 → 65 Thể Lực khi bắt đầu, lần nhấn lại trong cooldown bị từ chối. Profile QA thử từ trạng thái tra kiếm. [R] rút kiếm như baseline. Fallen Knight ở tầm 110 px giảm 1.000 → 972 HP, mục tiêu đặt cách 160 px giữ 1.000 HP. |
+| Vòng Sáng [F] và bảy nhóm asset-only | Cả hai renderer ghi đúng mức trừ 10 ở sự kiện bật. Thử khi Unarmed vẫn tay trống và giữ texture Idle. Không có lần kích hoạt Buff từ [F] hoặc `player_attack` từ clip fixture. |
+| Listener/timer và restart | Ngắt Weapon Art sau va chạm giữ đúng một hit, bộ đếm listener update/stop/complete trở về `[1,1,1]`. Restart trong Weapon Art hủy actor cũ, 0 listener hoặc callback trên actor cũ và một actor mới. Lượt lifecycle riêng vẫn tái hiện Phaser Text `drawImage` nền Canvas, OPEN 04E1. |
+| New Game, chuyển vùng, Save/Continue | Điều khiển vật lý bằng phím, bốn hướng của X, đi chéo/Shift, hai chiều Fog Crossing ↔ Bellhollow. Manual Save schema 3 và Continue khôi phục đúng tọa độ. `test_v153_save_schema3.mjs` đạt cả hai ca, gồm tên khóa QA và chặn SDK. |
+| Lệnh kiểm tra | `npx tsc --noEmit`, `npm run build` production/QA, `verify_zero_404_assets.mjs` 220/220, `git diff --check`. Kiểm lại hai atlas A/B bằng script QA. |
+| Hiệu năng | 75 mẫu RAF mỗi renderer. Canvas 53,50 FPS, p95 33,4 ms; WebGL SwiftShader 6,83 FPS, p95 250 ms. Quality tự hạ LOW ở Cloud. Hiệu năng đích 60 FPS và hosted P2Game còn mở. |
+
+[Ảnh 32 hướng/clip Canvas](Visuals/V153_B04C_K3/extended-runtime-canvas.png) · [Ảnh 32 hướng/clip WebGL](Visuals/V153_B04C_K3/extended-runtime-webgl.png) · [Trace Canvas](Visuals/V153_B04C_K3/extended-runtime-canvas.json) · [Trace WebGL](Visuals/V153_B04C_K3/extended-runtime-webgl.json)
+
+[Trace baseline](Visuals/V153_B04C_K3/extended-before-canvas.json) · [Fallen Knight và cleanup](Visuals/V153_B04C_K3/extended-gameplay-qa-canvas.json) · [Save/Continue và restart Canvas](Visuals/V153_B04C_K3/extended-lifecycle-canvas.json) · [Recovery Canvas](Visuals/V153_B04C_K3/extended-recovery-canvas.json) · [Recovery WebGL](Visuals/V153_B04C_K3/extended-recovery-webgl.json)
+
+**File code** `BlackKnightAnimations.ts` đăng ký 8 nhóm và alias. `BlackKnightPlayer.ts` đồng bộ origin, AABB, Weapon Art và tách [F]. `Constants.ts` và `PreloadScene.ts` khai báo key và nạp atlas. `scripts/qa_v153_black_knight_combat.py` tái kiểm bounds, luồng source, SHA, hình kiếm và contact sheet. Hai tệp atlas C là tài nguyên sản xuất mới. Phần báo cáo, checkpoint, matrix, registry, README Index và các tệp `Visuals/V153_B04C_K3/extended-*` ghi bằng chứng. Không xóa tệp nguồn. Runtime commit `d383c52bd88d2b265db373e5b362cbf19a547d71`. [Runtime commit](https://github.com/KyoshiroKyo/HOLLOW-WOODS/commit/d383c52bd88d2b265db373e5b362cbf19a547d71)
+
+Chỉ nhánh `feat/v1.5.3-batch04` nhận bàn giao. HEAD bàn giao là commit báo cáo kế tiếp runtime C trên nhánh này. Dừng ở cuối K3-C để Owner nghiệm thu. [Nhánh phát triển](https://github.com/KyoshiroKyo/HOLLOW-WOODS/tree/feat/v1.5.3-batch04) · [Checkpoint](V153_BATCH_04_CHECKPOINT.md)

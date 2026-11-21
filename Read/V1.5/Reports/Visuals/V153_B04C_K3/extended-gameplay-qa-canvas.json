@@ -1,0 +1,166 @@
+{
+  "renderer": "canvas",
+  "suite": "qa",
+  "actions": {},
+  "regression": {},
+  "http": [],
+  "console": [
+    [
+      "warning",
+      "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+    ]
+  ],
+  "pageErrors": [],
+  "atlasResponses": [
+    [
+      200,
+      "black_knight_extended_skills.png"
+    ],
+    [
+      200,
+      "black_knight_extended_skills.json"
+    ]
+  ],
+  "target": {
+    "hpBefore": 1000,
+    "atContact": {
+      "hit": {
+        "x": 268,
+        "y": 245,
+        "reach": 0,
+        "radius": 96,
+        "facing": "right",
+        "playerX": 268,
+        "playerY": 245,
+        "isWeaponArt": true,
+        "isAoE": true,
+        "knockback": 220,
+        "stunDuration": 2,
+        "damageMultiplier": 2.8,
+        "baseDamage": 10
+      },
+      "time": 5403.70000000298,
+      "texture": "black_knight_extended_skills",
+      "name": "weapon_art_right_0",
+      "anim": "wayfarer_weapon_art_right",
+      "playing": true,
+      "facing": "right",
+      "armed": true,
+      "x": 268,
+      "y": 245,
+      "lock": true,
+      "lantern": false,
+      "sta": 65,
+      "size": [
+        112,
+        72
+      ],
+      "scale": [
+        1,
+        1
+      ],
+      "zoom": 2.2,
+      "pivot": [
+        56,
+        62
+      ],
+      "origin": [
+        0.5,
+        0.8611111111111112
+      ],
+      "localAabb": [
+        -9,
+        -18,
+        18,
+        12
+      ],
+      "actualAabb": [
+        -9,
+        -18,
+        18,
+        12
+      ],
+      "offset": [
+        47,
+        44
+      ],
+      "angle": 0,
+      "nearest": 1,
+      "actors": 1,
+      "target": 972
+    },
+    "beforeCast": {
+      "time": 5371.0999999940395,
+      "texture": "black_knight_movement",
+      "name": "unarmed_idle_right_0",
+      "anim": "wayfarer_unarmed_idle_right",
+      "playing": true,
+      "facing": "right",
+      "armed": false,
+      "x": 268,
+      "y": 245,
+      "lock": false,
+      "lantern": false,
+      "sta": 100,
+      "size": [
+        64,
+        64
+      ],
+      "scale": [
+        1,
+        1
+      ],
+      "zoom": 2.2,
+      "pivot": [
+        32,
+        64
+      ],
+      "origin": [
+        0.5,
+        1
+      ],
+      "localAabb": [
+        -9,
+        -18,
+        18,
+        12
+      ],
+      "actualAabb": [
+        -9,
+        -18,
+        18,
+        12
+      ],
+      "offset": [
+        23,
+        46
+      ],
+      "angle": 0,
+      "nearest": 1,
+      "actors": 1
+    },
+    "outsideDistanceAtPlacement": 160,
+    "outsideHpAfter": 1000
+  },
+  "interrupt": {
+    "listenerCountsBefore": [
+      1,
+      1,
+      1
+    ],
+    "after": [
+      1,
+      1,
+      1
+    ],
+    "hits": 1,
+    "duplicateHits": 0
+  },
+  "restart": {
+    "oldDestroyed": true,
+    "oldCallbackCleared": true,
+    "oldListenerCount": 0,
+    "oneImmediateHit": true,
+    "actors": 1
+  }
+}

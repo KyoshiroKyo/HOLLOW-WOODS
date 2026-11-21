@@ -1,3 +1,20 @@
+# V153-BATCH-04-R10 — Checkpoint K3-C
+
+**21/11/2026 · K3-C 8/8 nhóm PASS LOCAL về hoạt ảnh · Ma trận 26/26 · HOSTED BLOCKED**
+
+Nhánh `feat/v1.5.3-batch04`. Mốc Owner duyệt B `0a4f7f1bea073e098c201f941f7b984d2a9dcef0`. Runtime C `d383c52bd88d2b265db373e5b362cbf19a547d71`. Dùng HEAD bàn giao báo cáo C đã push trên nhánh này để tiếp tục. [Báo cáo K3](V153_B04_K3_COMBAT_REPORT.md) · [Ma trận 26 nhóm](V153_CHARACTER_ANIMATION_MATRIX.md)
+
+| Mã | Trạng thái |
+|---|---|
+| K1/K2 và K3-A/B | Kế thừa 18 nhóm, bốn atlas và Source Library khớp baseline. Hồi quy Chromium trên build C. |
+| K3-C · 13–20 | PASS LOCAL — 4-DIR VERIFIED ở trụ artwork/runtime. 192 frame trên Canvas và WebGL, đúng texture, đúng pivot, một actor. |
+| K3-C · gameplay | Weapon Art giữ [R], thời điểm hit ngay khi nhấn và chi phí 35. Bảy nhóm còn lại ASSET/ANIMATION ONLY. Hai Buff tách khỏi Vòng Sáng [F]. |
+| Backlog | Restart Canvas `drawImage` OPEN 04E1. Audio nguồn chuyển 04D. Hiệu năng và hosted P2Game tiếp tục theo gate cũ. |
+
+**Dừng sau K3-C để Owner nghiệm thu.** Các batch ngoài K3 giữ nguyên hàng chờ R10. [Ảnh Canvas](Visuals/V153_B04C_K3/extended-runtime-canvas.png) · [Ảnh WebGL](Visuals/V153_B04C_K3/extended-runtime-webgl.png)
+
+---
+
 # V153-BATCH-04-R10 — Checkpoint K3-B
 
 **21/11/2026 · K3 PARTIAL · A 4/4 và B 8/8 nhóm local bốn hướng · HOSTED BLOCKED**
