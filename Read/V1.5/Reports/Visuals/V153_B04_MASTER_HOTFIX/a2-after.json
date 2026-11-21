@@ -1,0 +1,69 @@
+{
+  "far": {
+    "sprites": [
+      {
+        "x": 1330,
+        "y": 1240,
+        "visible": true,
+        "origin": [
+          0.5,
+          1
+        ],
+        "size": [
+          36,
+          36
+        ]
+      }
+    ],
+    "pick": null,
+    "flag": false,
+    "count": 0,
+    "task": false
+  },
+  "near": {
+    "sprites": [
+      {
+        "x": 1330,
+        "y": 1240,
+        "visible": true,
+        "origin": [
+          0.5,
+          1
+        ],
+        "size": [
+          36,
+          36
+        ]
+      }
+    ],
+    "pick": "inspect_runed_iron_part",
+    "flag": false,
+    "count": 0,
+    "task": false
+  },
+  "first": {
+    "sprites": [],
+    "pick": null,
+    "flag": true,
+    "count": 1,
+    "task": true
+  },
+  "second": {
+    "sprites": [],
+    "pick": null,
+    "flag": true,
+    "count": 1,
+    "task": true
+  },
+  "saved": {
+    "schema": 3,
+    "flag": true
+  },
+  "continued": {
+    "sprites": [],
+    "pick": null,
+    "flag": true,
+    "count": 0,
+    "task": true
+  }
+}

@@ -27,6 +27,7 @@ Dùng mã trong INDEX R10. Hàng **OPEN** của batch khác giữ ở chủ sở
 | Restart Canvas · đối chiếu K2/K3 | OPEN · 04E1 | Phaser Text `drawImage` trên context null xảy ra ở 04B2 và các build K2. Actor cũ được hủy, actor mới duy nhất. [Stack runtime](Visuals/V153_B04C_K2/restart-compare.json). |
 | Footprint NPC Garth · phát hiện trong K2 | OPEN · 04C-G | Sprite (540,205), AABB tại physics step [561,255,583,269], tái hiện cả 04B2 và K2. Body có va chạm ở đúng AABB. Cần rà offset và neo chân của hành vi NPC. |
 | HOTFIX-A1 | CLOSED-VERIFIED local | Bỏ bếp Thợ Săn và collider, giữ bếp Vaelen. Chromium kiểm tra các tuyến với Noclip tắt và tương tác sưởi. [Báo cáo](V153_B04_MASTER_HOTFIX_REPORT.md). |
+| HOTFIX-A2 | CLOSED-VERIFIED local | Sắt cổ ngữ có sprite tại điểm E, chỉ nhặt một lần. Continue vẫn ẩn item sau khi tiêu hao. [Báo cáo](V153_B04_MASTER_HOTFIX_REPORT.md). |
 | BUG-051 | CLOSED-VERIFIED local · 04C-G P0 | Thoại Garth từng ghi sai cờ so với điều kiện khóa. Chromium xác nhận cờ cổng, collider và đi bộ qua Cổng Đông. [Báo cáo](V153_B04CG_P0_REPORT.md). |
 | BUG-052 | CLOSED-VERIFIED local · 04C-G P0 | Garth, Edda hoặc Neris đều mở cổng khi hoàn tất thoại mở cổng. Mở thoại và Escape giữ khóa. Cả ba nhánh giữ cổng mở sau Continue schema 3. [Báo cáo](V153_B04CG_P0_REPORT.md). |
 | BUG-053 | CLOSED-VERIFIED local · 04C-G P0 | HUD cập nhật khi nhận quest Edda, Giữ Lửa Trong Sương, Dấu Vết Đồng Đội Cũ và chỉ dẫn tìm khuôn của Sir Vaelen. [Báo cáo](V153_B04CG_P0_REPORT.md). |

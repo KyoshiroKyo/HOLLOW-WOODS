@@ -1,0 +1,30 @@
+{
+  "far": {
+    "sprites": [],
+    "pick": null,
+    "flag": false,
+    "count": 0,
+    "task": false
+  },
+  "near": {
+    "sprites": [],
+    "pick": "inspect_runed_iron_part",
+    "flag": false,
+    "count": 0,
+    "task": false
+  },
+  "first": {
+    "sprites": [],
+    "pick": "inspect_runed_iron_part",
+    "flag": true,
+    "count": 1,
+    "task": true
+  },
+  "second": {
+    "sprites": [],
+    "pick": "inspect_runed_iron_part",
+    "flag": true,
+    "count": 2,
+    "task": true
+  }
+}
