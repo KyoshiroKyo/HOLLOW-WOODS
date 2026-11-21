@@ -17,7 +17,7 @@ Dùng mã trong INDEX R10. Hàng **OPEN** của batch khác giữ ở chủ sở
 | BUG-045 | CLOSED-VERIFIED local | Trạm Tây (562,160), Garth (540,205). Tới từ hai phía, hội thoại đúng, rotation 0 qua cổng. |
 | BUG-046 | CLOSED-VERIFIED local | Finn chân (909,231), Tiled (909,216), patrol 901–914. Hội thoại, New Game và Continue đều có bằng chứng. |
 | BUG-047 | CLOSED-VERIFIED local | Gỡ cột (900,335). Giữ bếp, lều, rương và cột đèn khác. E và nạp 1 củi được thử ban đêm. |
-| BUG-048 | BLOCKED | Cần Owner định danh hai bụi Edda. Giữ các instance ở (1048,94), (1084,162), (1204,204) và lân cận. |
+| BUG-048 | CLOSED-VERIFIED local | Owner đã xác định chính xác ba tọa độ (1048,94), (1084,162), (1204,204). Đã xóa 3 entry khỏi bushPlacements trong WorldBuilder.ts. Lối đi quanh nhà Edda thông thoáng, Noclip OFF đi thông suốt, hội thoại Edda [E] và quest flags bảo toàn 100%. Ảnh Before/After đầy đủ. [Báo cáo](V153_AG_BELLHOLLOW_REPORT.md). |
 | BUG-049 | PARTIAL | Vòng và khoảng cách dùng chung điểm neo. Ca đại diện đã thử. Đối tượng ở vùng ngoài camera demo còn cần rà. |
 | BUG-050 | CLOSED-VERIFIED local | Frame cây sồi thật ở (760,120). E mở đúng manh mối, cờ giữ qua Continue. |
 | B04-10-K2 · phối tạo hình | CLOSED-VERIFIED local ở sáu nhóm Idle/Walk/Run | Các profile Fellor tối nằm trong atlas mới trước sửa. Đã dùng artwork custom đồng nhất cho RIGHT, giữ PNG/JSON K1 và nguồn Fellor. Hai bộ log trước/sau có texture, frame, matrix và count một actor. [Báo cáo](V153_B04_K2_MOVEMENT_REPORT.md). |
@@ -39,7 +39,7 @@ Dùng mã trong INDEX R10. Hàng **OPEN** của batch khác giữ ở chủ sở
 | Hàng chờ | Chủ sở hữu để tiếp tục |
 |---|---|
 | BUG-021/022/029, phần map của BUG-033 | 04B1 đã chốt kết quả theo hàng trên. Phần layout/Map UI và chiều khóa theo tiến trình giữ đúng nhóm sở hữu. |
-| BUG-048, BUG-049 | Hai bụi cần Owner định danh; rà thêm tương tác/despawn ở các vùng chưa thử. [Báo cáo 04B2](V153_B04B2_WORLD_ART_LAYOUT_REPORT.md). |
+| BUG-049 | Vòng và khoảng cách dùng chung điểm neo; rà thêm tương tác/despawn ở các vùng chưa thử. [Báo cáo 04B2](V153_B04B2_WORLD_ART_LAYOUT_REPORT.md). |
 | BUG-025, phần logic BUG-038–043 | 04C-G và 04E1. |
 | BUG-023/026/027 | 04D. Chưa có nghiệm thu thiết bị đối với chớp, audio lửa trại hoặc ambience. |
 | BUG-028/030/033/035/036, phần UI BUG-037–043 | 04E1. |

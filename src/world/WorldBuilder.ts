@@ -4125,15 +4125,13 @@ export class WorldBuilder {
 
     // =========================================================================
     // 4. BỤI RẬM TỰ NHIÊN QUANH LÀNG (Đã dọn sạch các bụi đè lên lò rèn Bram & nồi Neris)
+    // BUG-048 / HW-BUG-#1: Đã xóa chính xác 3 bụi cây cản trở quanh nhà Edda tại (1048, 94), (1084, 162), (1204, 204)
     // =========================================================================
     const bushPlacements: Array<{ x: number; y: number; s: number; t: number }> = [
       { x: 490, y: 168, s: 0.85, t: 0xc8dac2 },
       { x: 618, y: 122, s: 0.82, t: 0xd4e4ce },
       { x: 774, y: 104, s: 0.80, t: 0xd4e4ce },
       { x: 896, y: 86, s: 0.85, t: 0xcadac4 },
-      { x: 1048, y: 94, s: 0.88, t: 0xc8dac2 },
-      { x: 1084, y: 162, s: 0.84, t: 0xc4d6be },
-      { x: 1204, y: 204, s: 0.92, t: 0xb8ccb0 },
       { x: 1352, y: 214, s: 0.95, t: 0xaec2a6 },
       { x: 1418, y: 222, s: 0.88, t: 0xa8bc9e },
       { x: 1518, y: 224, s: 0.92, t: 0x9eb296 },
