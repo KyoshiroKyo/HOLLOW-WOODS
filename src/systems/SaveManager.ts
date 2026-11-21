@@ -622,7 +622,7 @@ export class SaveManager {
     }
 
     // Phục hồi nhiệm vụ
-    state.currentQuestId = data.currentQuestId;
+    state.currentQuestId = state.quests.has(data.currentQuestId) ? data.currentQuestId : 'Q01_MEET_EDDA';
     for (const qSave of data.quests) {
       const qLive = state.quests.get(qSave.id);
       if (qLive) {
@@ -664,6 +664,10 @@ export class SaveManager {
     }
 
     // Phục hồi trạng thái mở khóa phân khu
+    const legacyEastGateOpen = data.unlockedZones?.includes('crooked_path') ||
+      ['talked_to_garth', 'talked_to_edda', 'talked_to_neris'].every(flag => state.hasFlag(flag)) ||
+      ['Q04_ANCIENT_RUNES', 'Q05_SOLVE_MIRE', 'Q06_RETRIEVE_CLAPPER'].includes(state.getStoryQuestId());
+    if (legacyEastGateOpen) state.flags.add('east_gate_unlocked');
     state.restoreUnlockedZones(data.unlockedZones);
 
     // Phục hồi các trường mới V1.4
@@ -711,6 +715,7 @@ export class SaveManager {
 
     state.emit('stats_changed', state.stats);
     state.emit('inventory_changed', {});
+    state.emit('quest_changed', state.getCurrentQuest());
     return data;
   }
 

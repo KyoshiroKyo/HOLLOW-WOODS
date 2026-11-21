@@ -591,10 +591,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     };
     const onQuestChanged = () => {
       this.updateQuestTracker();
-      AudioManager.getInstance().playQuestUpdate();
-    };
-    const onQuestUpdated = () => {
-      this.updateQuestTracker();
+      if (this.journalModal?.isOpen) this.journalModal.refresh();
+      this.parchmentWorldMapModal?.refreshTrackedQuest();
       AudioManager.getInstance().playQuestUpdate();
     };
     const onInventoryChanged = () => this.updateQuickSlotCounts();
@@ -603,7 +601,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     this.playerState.on('stats_changed', onStatsChanged);
     this.playerState.on('quest_changed', onQuestChanged);
-    this.playerState.on('quest_updated', onQuestUpdated);
+    this.playerState.on('quest_updated', onQuestChanged);
     this.playerState.on('inventory_changed', onInventoryChanged);
     this.playerState.on('equipment_changed', onEquipmentChanged);
     this.playerState.on('memory_awakening_changed', onMemoryAwakened);
@@ -611,7 +609,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.events.once('shutdown', () => {
       this.playerState.off('stats_changed', onStatsChanged);
       this.playerState.off('quest_changed', onQuestChanged);
-      this.playerState.off('quest_updated', onQuestUpdated);
+      this.playerState.off('quest_updated', onQuestChanged);
       this.playerState.off('inventory_changed', onInventoryChanged);
       this.playerState.off('equipment_changed', onEquipmentChanged);
       this.playerState.off('memory_awakening_changed', onMemoryAwakened);
@@ -2386,19 +2384,18 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.zoneBadgeContainer.setPosition(questBoxX, questBoxY + questBoxH + 6);
     }
 
-    const questSystem = QuestSystem.getInstance();
-    const stageInfo = questSystem.getCurrentStageInfo(this.playerState);
+    const quest = QuestSystem.getInstance().getHUDQuestDisplay(this.playerState);
 
     if (this.isQuestCollapsed) {
       if (this.questTitleText) this.questTitleText.setVisible(false);
       if (this.questTrackerText) this.questTrackerText.setVisible(false);
       if (this.questHeaderText) {
-        this.questHeaderText.setText(`📜 [J] Chặng ${stageInfo.stageNumber}/7: ${stageInfo.targetZoneName}`);
+        this.questHeaderText.setText(`📜 [J] ${quest.title}`);
         this.questHeaderText.setPosition(questBoxX + 12, questBoxY + 8);
       }
     } else {
       if (this.questHeaderText) {
-        this.questHeaderText.setText(`📜 NHIỆM VỤ HIỆN TẠI [J] — CHẶNG ${stageInfo.stageNumber}/7:`);
+        this.questHeaderText.setText(quest.header);
         this.questHeaderText.setPosition(questBoxX + 12, questBoxY + 8);
       }
       if (this.questTitleText) this.questTitleText.setVisible(this.hudVisible);
@@ -2407,23 +2404,22 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   public updateQuestTracker(): void {
-    const questSystem = QuestSystem.getInstance();
-    const stageInfo = questSystem.getCurrentStageInfo(this.playerState);
+    const quest = QuestSystem.getInstance().getHUDQuestDisplay(this.playerState);
 
     if (this.isQuestCollapsed) {
       if (this.questHeaderText) {
-        this.questHeaderText.setText(`📜 [J] Chặng ${stageInfo.stageNumber}/7: ${stageInfo.targetZoneName}`);
+        this.questHeaderText.setText(`📜 [J] ${quest.title}`);
       }
       return;
     }
 
     if (this.questHeaderText) {
-      this.questHeaderText.setText(`📜 NHIỆM VỤ HIỆN TẠI [J] — CHẶNG ${stageInfo.stageNumber}/7:`);
+      this.questHeaderText.setText(quest.header);
     }
 
     let layoutChanged = false;
     if (this.questTitleText) {
-      const fullTitle = `${stageInfo.title}`;
+      const fullTitle = quest.title;
       if (this.lastQuestTitle !== fullTitle) {
         this.lastQuestTitle = fullTitle;
         this.questTitleText.setText(fullTitle);
@@ -2432,9 +2428,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     }
 
     if (this.questTrackerText) {
-      const taskLine = `☐ ${stageInfo.hudHint}`;
-      const dirLine = `🧭 Đến: ${stageInfo.targetZoneName} (Hướng ${stageInfo.directionHint})`;
-      const fullTaskText = `${taskLine}\n${dirLine}`;
+      const fullTaskText = [quest.taskText, quest.directionHint].filter(Boolean).join('\n');
 
       if (this.lastQuestTaskText !== fullTaskText) {
         this.lastQuestTaskText = fullTaskText;

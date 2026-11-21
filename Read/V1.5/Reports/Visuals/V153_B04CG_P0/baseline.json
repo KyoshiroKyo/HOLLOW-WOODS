@@ -1,0 +1,36 @@
+{
+  "gates": {
+    "garth": [
+      false,
+      false,
+      false,
+      true,
+      "Q01_MEET_EDDA"
+    ],
+    "edda": [
+      false,
+      false,
+      false,
+      true,
+      "Q02_MEET_NERIS"
+    ],
+    "neris": [
+      false,
+      false,
+      false,
+      true,
+      "Q03_PREPARE_RESOURCES"
+    ]
+  },
+  "vaelen": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
+  "hud": [
+    "SQ06_KEEP_FIRE",
+    "NHIỆM VỤ TIẾN TRÌNH: GIỮ LỬA TRONG SƯƠNG",
+    "Chặng 1: Điều Tra Đầm Lầy Tĩnh Lặng (A -> E)"
+  ],
+  "journal": [
+    "Q01_MEET_EDDA",
+    "SQ06_KEEP_FIRE"
+  ],
+  "map": "🎯 [CHẶNG 1/7] Chặng 1: Điều Tra Đầm Lầy Tĩnh Lặng (A -> E) (A -> E) • Hướng đi: Đông / Đông Nam"
+}

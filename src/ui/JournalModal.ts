@@ -74,7 +74,6 @@ export class JournalModal {
   private tabMapBtn!: Phaser.GameObjects.Text;
 
   private questFilter: 'all' | 'main' | 'side' = 'all';
-  private selectedQuestId: string | null = null;
   private selectedBestiarySpecies: string = 'crow';
 
   public isOpen: boolean = false;
@@ -680,8 +679,8 @@ export class JournalModal {
     spine.lineBetween(mx + mw / 2, my + 60, mx + mw / 2, my + mh - 25);
     this.contentContainer.add(spine);
 
-    const currentQ = (this.selectedQuestId ? this.playerState.quests.get(this.selectedQuestId) : null) || this.playerState.getCurrentQuest();
-    if (!currentQ) {
+    const tracked = QuestSystem.getInstance().getTrackedQuestDisplay(this.playerState);
+    if (!tracked) {
       const emptyQ = HDTextHelper.createText(this.scene, mx + mw / 4, my + 150, 'Hiện tại chưa có nhiệm vụ nào được kích hoạt.', {
         fontSize: '14px',
         fontStyle: 'italic',
@@ -692,13 +691,12 @@ export class JournalModal {
       return;
     }
 
-    const questSystem = QuestSystem.getInstance();
-    const stageInfo = questSystem.getCurrentStageInfo(this.playerState);
-
+    const currentQ = tracked.quest;
     const isSide = currentQ.category === 'side';
-    const tagText = isSide
-      ? '[NHIỆM VỤ PHỤ]'
-      : `[NHIỆM VỤ CHÍNH — LỘ TRÌNH 7 CHẶNG: CHẶNG ${stageInfo.stageNumber}/7]`;
+    const mainTag = tracked.route
+      ? `[NHIỆM VỤ CHÍNH — LỘ TRÌNH 7 CHẶNG: CHẶNG ${tracked.route.stageNumber}/7]`
+      : '[NHIỆM VỤ CHÍNH]';
+    const tagText = isSide ? '[NHIỆM VỤ PHỤ]' : mainTag;
     const tagColor = isSide ? '#00d2d3' : '#f39c12';
 
     const qTag = HDTextHelper.createText(this.scene, mx + 30, my + 66, tagText, {
@@ -708,8 +706,7 @@ export class JournalModal {
     });
 
     // Cột bên trái: Chi tiết nhiệm vụ chính/phụ hiện tại
-    const displayTitle = isSide ? currentQ.title : stageInfo.title;
-    const qTitle = HDTextHelper.createText(this.scene, mx + 30, qTag.y + qTag.height + 5, displayTitle, {
+    const qTitle = HDTextHelper.createText(this.scene, mx + 30, qTag.y + qTag.height + 5, tracked.title, {
       fontSize: '16px',
       fontStyle: 'bold',
       color: '#e67e22',
@@ -718,9 +715,8 @@ export class JournalModal {
       wordWrap: { width: mw / 2 - 50 }
     });
 
-    const destinationGuide = isSide
-      ? ''
-      : `🧭 Mục tiêu: ${stageInfo.targetZoneName} (Hướng ${stageInfo.directionHint})`;
+    const direction = tracked.route ? ` (Hướng ${tracked.route.directionHint})` : '';
+    const destinationGuide = tracked.targetName ? `🧭 Mục tiêu: ${tracked.targetName}${direction}` : '☑ Đã hoàn thành';
     const qGuide = HDTextHelper.createText(this.scene, mx + 30, qTitle.y + qTitle.height + 5, destinationGuide, {
       fontSize: '12px',
       fontStyle: 'bold',
@@ -728,8 +724,7 @@ export class JournalModal {
       wordWrap: { width: mw / 2 - 50, useAdvancedWrap: true }
     });
 
-    const displayDesc = isSide ? currentQ.description : stageInfo.description;
-    const qDesc = HDTextHelper.createText(this.scene, mx + 30, qGuide.y + qGuide.height + 8, displayDesc, {
+    const qDesc = HDTextHelper.createText(this.scene, mx + 30, qGuide.y + qGuide.height + 8, tracked.description, {
       fontSize: '12px',
       color: '#bdc3c7',
       wordWrap: { width: mw / 2 - 50 },
@@ -745,8 +740,7 @@ export class JournalModal {
     this.contentContainer.add([qTag, qTitle, qGuide, qDesc, taskTitle]);
 
     let taskY = taskTitle.y + taskTitle.height + 6;
-    const tasksToDisplay = isSide ? currentQ.tasks : stageInfo.tasks;
-    for (const task of tasksToDisplay) {
+    for (const task of tracked.tasks) {
       const mark = task.done ? '☑' : '☐';
       const color = task.done ? '#2ecc71' : '#f8f9fa';
       const t = HDTextHelper.createText(this.scene, mx + 30, taskY, `${mark} ${task.text}`, {
@@ -822,8 +816,7 @@ export class JournalModal {
 
       row.on('pointerdown', () => {
         AudioManager.getInstance().playInteract();
-        this.selectedQuestId = q.id;
-        this.refresh();
+        this.playerState.trackQuest(q.id);
       });
 
       this.contentContainer.add(row);

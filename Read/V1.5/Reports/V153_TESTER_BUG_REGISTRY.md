@@ -26,17 +26,16 @@ Dùng mã trong INDEX R10. Hàng **OPEN** của batch khác giữ ở chủ sở
 | B04-10-K3 · Buff legacy, neo VFX và thời điểm Weapon Art | CLOSED-VERIFIED local ở K3-C | Baseline [F] từng gọi texture Buff legacy khi Unarmed; [R] từng phát va chạm trên Idle. C tách cả hai Buff khỏi [F], giữ va chạm [R] ngay frame 0 và thêm bảy nhóm asset-only. Canvas/WebGL đối chiếu texture, frame và AABB; tất cả 26 nhóm hoạt ảnh có coverage bốn hướng. [Báo cáo](V153_B04_K3_COMBAT_REPORT.md). |
 | Restart Canvas · đối chiếu K2/K3 | OPEN · 04E1 | Phaser Text `drawImage` trên context null xảy ra ở 04B2 và các build K2. Actor cũ được hủy, actor mới duy nhất. [Stack runtime](Visuals/V153_B04C_K2/restart-compare.json). |
 | Footprint NPC Garth · phát hiện trong K2 | OPEN · 04C-G | Sprite (540,205), AABB tại physics step [561,255,583,269], tái hiện cả 04B2 và K2. Body có va chạm ở đúng AABB. Cần rà offset và neo chân của hành vi NPC. |
-| BUG-051 | OPEN · 04C-G | Tester báo Cổng Đông vẫn khóa sau khi trò chuyện với cả Garth, Edda và Neris. Kiểm tra nhánh hội thoại, điều kiện mở cổng và flag runtime/Save. |
-| BUG-052 | OPEN · 04C-G | Thay điều kiện mở Cổng Đông thành hoàn tất hội thoại mở cổng của Garth **hoặc** Edda **hoặc** Neris. Kiểm thử riêng ba lộ trình và hội thoại chưa hoàn tất. |
-| BUG-053 | OPEN · 04C-G | Nhiệm vụ vừa nhận từ Sir Vaelen hoặc NPC khác cần xuất hiện ngay sau khi nhận. Kiểm tra quest ID và sự kiện cập nhật. |
-| BUG-054 | OPEN · 04C-G | Đồng bộ nhiệm vụ đang theo dõi giữa HUD, Sổ Tay, World Map và Save/Load. Kiểm tra nhận, đổi, hoàn tất và Continue. |
+| BUG-051 | CLOSED-VERIFIED local · 04C-G P0 | Thoại Garth từng ghi sai cờ so với điều kiện khóa. Chromium xác nhận cờ cổng, collider và đi bộ qua Cổng Đông. [Báo cáo](V153_B04CG_P0_REPORT.md). |
+| BUG-052 | CLOSED-VERIFIED local · 04C-G P0 | Garth, Edda hoặc Neris đều mở cổng khi hoàn tất thoại mở cổng. Mở thoại và Escape giữ khóa. Cả ba nhánh giữ cổng mở sau Continue schema 3. [Báo cáo](V153_B04CG_P0_REPORT.md). |
+| BUG-053 | CLOSED-VERIFIED local · 04C-G P0 | HUD cập nhật khi nhận quest Edda, Giữ Lửa Trong Sương, Dấu Vết Đồng Đội Cũ và chỉ dẫn tìm khuôn của Sir Vaelen. [Báo cáo](V153_B04CG_P0_REPORT.md). |
+| BUG-054 | CLOSED-VERIFIED local · 04C-G P0 | HUD, Sổ Tay, World Map và Continue thống nhất qua nhận, chọn, hoàn tất nhiệm vụ. Chọn quest muộn trong Sổ Tay giữ nguyên quyền mở vùng. [Báo cáo](V153_B04CG_P0_REPORT.md). |
 | LEG-R8-14 | CLOSED-VERIFIED local | Chỉ mở F9 đã latch lượt Dev, Save QA tách khóa, mock SDK xác minh chặn sau await và luồng gửi điểm sạch. [Audit](V153_B04_DEV_MODE_BASELINE_AUDIT.md). |
 
 | Hàng chờ | Chủ sở hữu để tiếp tục |
 |---|---|
 | BUG-021/022/029, phần map của BUG-033 | 04B1 đã chốt kết quả theo hàng trên. Phần layout/Map UI và chiều khóa theo tiến trình giữ đúng nhóm sở hữu. |
 | BUG-048, BUG-049 | Hai bụi cần Owner định danh; rà thêm tương tác/despawn ở các vùng chưa thử. [Báo cáo 04B2](V153_B04B2_WORLD_ART_LAYOUT_REPORT.md). |
-| BUG-051–054 | 04C-G. Bổ sung theo Owner trong 04C-K1, chưa triển khai hoặc tái hiện tại K1. |
 | BUG-025, phần logic BUG-038–043 | 04C-G và 04E1. |
 | BUG-023/026/027 | 04D. Chưa có nghiệm thu thiết bị đối với chớp, audio lửa trại hoặc ambience. |
 | BUG-028/030/033/035/036, phần UI BUG-037–043 | 04E1. |

@@ -3,10 +3,12 @@
     "garth_warning": {
       "speaker": "Garth – Người Gác Cổng",
       "portrait": "portrait_garth",
+      "opensEastGate": true,
       "lines": [
         "Đứng lại! Đừng bước thêm một bước nào nữa!",
         "Ngươi... vạt áo ngươi còn vương hơi sương trắng! Ngươi vừa bước ra từ Màn Sương Quỷ dữ sao?!",
-        "Khu rừng Hollow Woods không bao giờ trả lại thứ gì nguyên vẹn! Mau đi gặp bà Edda tại Tháp Chuông trước khi tai ương giáng xuống làng ta!"
+        "Khu rừng Hollow Woods không bao giờ trả lại thứ gì nguyên vẹn! Mau đi gặp bà Edda tại Tháp Chuông trước khi tai ương giáng xuống làng ta!",
+        "Ta sẽ cho mở Cổng Đông sau khi ta nói xong. Hãy ghé Tháp Chuông gặp bà Edda nếu ngươi cần biết cách sống sót trong sương."
       ],
       "choices": [
         {
@@ -34,17 +36,20 @@
     "garth_reminder_edda": {
       "speaker": "Garth – Người Gác Cổng",
       "portrait": "portrait_garth",
+      "opensEastGate": true,
       "lines": [
         "Ta đã bảo mau đến gặp bà Edda tại Tháp Chuông ở quảng trường làng rồi cơ mà!",
-        "Bà lão là người duy nhất nắm giữ Ba Quy Tắc Bằng Máu để sống sót trong khu rừng này!"
+        "Bà lão là người duy nhất nắm giữ Ba Quy Tắc Bằng Máu để sống sót trong khu rừng này!",
+        "Ta sẽ mở Cổng Đông cho ngươi. Hãy ghé Tháp Chuông gặp bà Edda nếu ngươi muốn học Ba Quy Tắc Bằng Máu."
       ]
     },
     "garth_reminder_gate_locked": {
       "speaker": "Garth – Người Gác Cổng",
       "portrait": "portrait_garth",
+      "opensEastGate": true,
       "lines": [
-        "Bà Edda đã dặn rồi: Rừng ngoài kia nguy hiểm khôn lường. Muốn ta mở Cổng Đông, ngươi phải tới gặp Neris ở tiệm thuốc để chữa thương và chuẩn bị ít nhất 1 phần Hương Trầm Tinh Thần dự phòng!",
-        "Không có hào quang giữ vững Tinh Thần, ngươi sẽ mất trí trong sương mù chỉ sau vài bước chân!"
+        "Bà Edda đã dặn rồi: Rừng ngoài kia nguy hiểm khôn lường. Ta sẽ báo người gác mở lối.",
+        "Ta sẽ cho mở Cổng Đông. Rừng ngoài kia nguy hiểm, hãy chuẩn bị Hương Trầm Tinh Thần và ghé Neris nếu cần chữa thương."
       ]
     },
     "garth_east_gate_open": {
@@ -137,6 +142,7 @@
     "edda_intro": {
       "speaker": "Edda – Người Giữ Chuông",
       "portrait": "portrait_edda",
+      "opensEastGate": true,
       "lines": [
         "Khuôn mặt này... ánh nhìn này... Đã bao nhiêu mùa trôi qua kể từ khi có một kẻ sống sót bước ra từ Màn Sương Rừng Sâu?",
         "Chiếc áo choàng vương rêu xanh... Ngươi là một Lữ Khách bước ra từ sương mù rêu phong sao? Nghe như một âm vang vọng lại từ bờ bên kia ranh giới.",
@@ -145,7 +151,8 @@
         "QUY TẮC 2: Đừng đi theo chiếc đèn thứ hai xuất hiện trong sương mù. Chiếc đèn đó không có người cầm.",
         "QUY TẮC 3: Tuyệt đối không rung chuông khi màn sương đã vượt qua hàng rào làng.",
         "Trái tim của ngôi làng là Quả Chuông Cổ, nhưng Lưỡi Chuông Đồng đã bị đánh cắp mang sâu vào Miếu Chuông Phế Tích.",
-        "Nếu ngươi muốn tìm đường trở về thế giới của mình, hãy tìm lại Lưỡi Chuông Đồng cho ta!"
+        "Nếu ngươi muốn tìm đường trở về thế giới của mình, hãy tìm lại Lưỡi Chuông Đồng cho ta!",
+        "Ta sẽ báo cho Garth mở Cổng Đông. Nếu còn bị thương, hãy ghé chỗ Neris trước khi lên đường!"
       ],
       "choices": [
         {
@@ -173,9 +180,10 @@
     "edda_reminder_locked": {
       "speaker": "Edda – Người Giữ Chuông",
       "portrait": "portrait_edda",
+      "opensEastGate": true,
       "lines": [
         "Hãy nhớ kỹ Ba Quy Tắc Bằng Máu: Không trả lời tiếng gọi tên, Không theo chiếc đèn thứ hai, và Không rung chuông khi sương đã vào làng.",
-        "Mau đến tìm Neris ở tiệm thuốc phía Tây Nam làng để chữa trị vết thương và học cách luyện Hương Trầm Tinh Thần. Chỉ khi ngươi chuẩn bị đủ hương trầm sinh tồn, Garth mới được phép mở Cổng Đông cho ngươi!"
+        "Ta sẽ báo cho Garth mở Cổng Đông. Nếu cần thuốc đắp hay Hương Trầm Tinh Thần, hãy ghé Neris ở phía Tây Nam làng."
       ]
     },
     "edda_reminder_open": {
@@ -259,12 +267,14 @@
     "neris_intro": {
       "speaker": "Neris – Người Chữa Thảo Mộc",
       "portrait": "portrait_neris",
+      "opensEastGate": true,
       "lines": [
         "Ngươi thở dốc, mắt lờ đờ và mạch đập nhanh quá mức... Màn sương đã ngấm vào tâm trí ngươi rồi.",
         "Cầm lấy nắm Thuốc Đắp Thảo Mộc này. Nó sẽ giúp vết thương khép miệng và xoa dịu nỗi sợ hãi trong đầu ngươi.",
         "Khu rừng Hollow Woods chứa đầy thảo dược bạc và nhựa cây thông. Hãy thu thập chúng bên các bờ suối và thân cây cổ thụ.",
         "Dùng bàn chế tạo [Phím I]: Nhựa thông và Gỗ khô sẽ luyện ra Hương Trầm Tinh Thần. Hai nắm Thảo dược sẽ giã thành Thuốc Đắp. Còn Đá lửa ghép với Gỗ sẽ tạo thành Mồi Tiếng Động để ném đánh lạc hướng quái vật.",
-        "Ta đã phục hồi sinh lực cho ngươi. Hãy giữ vững ngọn lửa tinh thần luôn cháy sáng, hỡi Lữ Khách Rêu Phong!"
+        "Ta đã phục hồi sinh lực cho ngươi. Hãy giữ vững ngọn lửa tinh thần luôn cháy sáng, hỡi Lữ Khách Rêu Phong!",
+        "Khi chữa xong cho ngươi, ta sẽ báo cho Garth mở Cổng Đông."
       ],
       "choices": [
         {
@@ -295,9 +305,10 @@
     "neris_heal_locked": {
       "speaker": "Neris – Người Chữa Thảo Mộc",
       "portrait": "portrait_neris",
+      "opensEastGate": true,
       "lines": [
         "Để ta băng lại vết trầy xước cho ngươi... Hương thảo dược này sẽ giữ cho tâm trí ngươi không bị Màn Sương nuốt chửng.",
-        "Nếu chưa đủ Hương Trầm Tinh Thần, hãy nhặt Nhựa Cây và Cành Gỗ quanh làng rồi mở túi chế tạo [Phím I] để luyện chế. Khi có hương trầm hộ tâm, Garth sẽ mở Cổng Đông cho ngươi."
+        "Ta sẽ báo cho Garth mở Cổng Đông. Nếu cần thêm Hương Trầm Tinh Thần, hãy nhặt Nhựa Cây và Gỗ Khô rồi chế tạo [I]."
       ],
       "healPlayer": true
     },
@@ -553,7 +564,8 @@
         "Nơi đó từng đúc thử nghiệm chuông làng, chắc chắn còn sót lại Phụ Kiện Sắt Rèn Cổ Ngữ.",
         "Nếu ngươi tìm được và mang về đây, ta sẽ dùng than rèn nhiệt luyện để gia cố cán giáo gỗ và nâng cấp dụng cụ sinh tồn cho ngươi!"
       ],
-      "onCompleteFlag": "quest_bram_iron_accepted"
+      "onCompleteFlag": "quest_bram_iron_accepted",
+      "nextQuestId": "SQ01_RUNED_IRON"
     },
     "edda_quest_bell_memory": {
       "speaker": "Edda – Người Giữ Chuông",
@@ -574,7 +586,8 @@
         "Ngay dưới chòi nông cụ Nông Trại Trú Ẩn có một lối xuống Hầm Rễ Cổ. Nơi đó rễ đại thụ ngàn năm tiết ra dược chất quý hiếm.",
         "Hãy bật hào quang ấm áp [F], tìm xuống hầm thu hoạch Rễ Thuốc Cổ và mang về Nồi Thảo Dược, ta sẽ chỉ ngươi cách nấu Trà An Thần xoa dịu tâm trí!"
       ],
-      "onCompleteFlag": "quest_neris_tea_accepted"
+      "onCompleteFlag": "quest_neris_tea_accepted",
+      "nextQuestId": "SQ03_CELLAR_TEA"
     },
     "garth_quest_clearing_patrol": {
       "speaker": "Garth – Người Tuần Tra",
@@ -585,7 +598,8 @@
         "Ngươi hãy can đảm tiến vào trinh sát, học cách phân biệt tiếng gió thì thầm với bước chân quái vật thật.",
         "Nếu hoàn thành chuyến tuần tra này an toàn, ta sẽ tặng ngươi đôi Ủng Đi Rừng để bước đi vững vàng trên bùn lầy!"
       ],
-      "onCompleteFlag": "quest_garth_patrol_accepted"
+      "onCompleteFlag": "quest_garth_patrol_accepted",
+      "nextQuestId": "SQ04_CLEARING_PATROL"
     },
     "finn_rumors": {
       "speaker": "Finn – Cậu Bé Đưa Tin",
@@ -933,7 +947,8 @@
         "Để phá vỡ phong ấn ấy và hạ thân cây làm cầu thông sang Miếu Chuông (C), ngươi cần 'Chìa Khóa Thanh Tẩy'. Nhưng chiếc chìa khóa gốc đã thất lạc khi xưởng rèn sụp đổ.",
         "Hãy tiến về hướng Nam vào Xưởng Chuông Bỏ Hoang & Hầm Rễ Cổ (D). Ở đó có cất giữ 'Khuôn Đúc Đồng Cổ'. Sau khi tìm thấy khuôn đúc, hãy tiến lên Rừng Sâu tìm Mảnh Cổ Ngữ rồi mang về đây, ta sẽ luyện thành Chìa Khóa Thanh Tẩy cho ngươi!"
       ],
-      "onCompleteFlag": "vaelen_mold_quest_assigned"
+      "onCompleteFlag": "vaelen_mold_quest_assigned",
+      "nextQuestId": "Q05_SOLVE_MIRE"
     },
     "vaelen_mold_reminder": {
       "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",

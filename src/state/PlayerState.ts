@@ -5,6 +5,10 @@ import { PlayerStats, HerbPlotData, HerbPlotStage, CropType, ZoneId, BestiaryEnt
 import { WorldGatingSystem } from '../world/WorldGatingSystem';
 import { ZoneConnectionRegistry } from '../world/ZoneConnectionRegistry';
 
+const MAIN_QUEST_IDS = loreData.questLog.map(quest => quest.id);
+const MAIN_QUEST_IDS_LATEST_FIRST = [...MAIN_QUEST_IDS].reverse();
+const MAIN_QUEST_FLAG_PREFIX = 'main_quest_reached:';
+
 export interface InventoryItem {
   itemId: string;
   count: number;
@@ -548,7 +552,7 @@ export class PlayerState extends Phaser.Events.EventEmitter {
     if (t1.done) return true;
 
     const isQ03ActiveOrUnlocked =
-      this.currentQuestId === 'Q03_PREPARE_RESOURCES' ||
+      this.getStoryQuestId() === 'Q03_PREPARE_RESOURCES' ||
       this.flags.has('talked_to_neris');
 
     if (!isQ03ActiveOrUnlocked) return false;
@@ -572,54 +576,21 @@ export class PlayerState extends Phaser.Events.EventEmitter {
   }
 
   private checkQuestProgression(flag: string): void {
-    // V152-01: Hàm helper kiểm tra mở Cổng Đông khi đủ 3 NPC
-    const tryUnlockEastGate = () => {
-      if (this.flags.has('talked_to_garth') && this.flags.has('talked_to_edda') && this.flags.has('talked_to_neris') && !this.flags.has('east_gate_unlocked')) {
-        this.flags.add('east_gate_unlocked');
-        this.completeQuestTask('Q03_PREPARE_RESOURCES', 't1');
-        this.completeQuestTask('Q03_PREPARE_RESOURCES', 't2');
-        if (
-          this.currentQuestId !== 'Q04_ANCIENT_RUNES' &&
-          this.currentQuestId !== 'Q05_SOLVE_MIRE' &&
-          this.currentQuestId !== 'Q06_RETRIEVE_CLAPPER'
-        ) {
-          this.setCurrentQuest('Q04_ANCIENT_RUNES');
-        }
-        this.emit('east_gate_unlocked');
-      }
-    };
-
     if (flag === 'talked_to_villagers') {
       this.completeQuestTask('Q01_MEET_EDDA', 't1');
     } else if (flag === 'talked_to_edda') {
       this.completeQuestTask('Q01_MEET_EDDA', 't2');
       this.setCurrentQuest('Q02_MEET_NERIS');
       this.unlockLore('lore_three_rules');
-      tryUnlockEastGate();
-    } else if (flag === 'talked_to_garth') {
-      tryUnlockEastGate();
     } else if (flag === 'talked_to_neris') {
       this.completeQuestTask('Q02_MEET_NERIS', 't1');
       this.completeQuestTask('Q02_MEET_NERIS', 't2');
       this.setCurrentQuest('Q03_PREPARE_RESOURCES');
       this.unlockLore('lore_herbalist_note');
       this.evaluateQ03ResourceTask();
-      tryUnlockEastGate();
     } else if (flag === 'craft_lantern_oil_complete') {
-      // V152-01: Giữ tương thích ngược — craft_lantern_oil_complete vẫn mở Cổng Đông cho savegame cũ
       this.completeQuestTask('Q03_PREPARE_RESOURCES', 't1');
       this.completeQuestTask('Q03_PREPARE_RESOURCES', 't2');
-      this.flags.add('east_gate_unlocked');
-      if (
-        this.currentQuestId !== 'Q04_ANCIENT_RUNES' &&
-        this.currentQuestId !== 'Q05_SOLVE_MIRE' &&
-        this.currentQuestId !== 'Q06_RETRIEVE_CLAPPER'
-      ) {
-        this.setCurrentQuest('Q04_ANCIENT_RUNES');
-      }
-      this.emit('east_gate_unlocked');
-    } else if (flag === 'east_gate_unlocked') {
-      this.emit('east_gate_unlocked');
     } else if (flag === 'clapper_collected') {
       this.completeQuestTask('Q06_RETRIEVE_CLAPPER', 't1');
       this.unlockLore('lore_clapper_curse');
@@ -631,9 +602,7 @@ export class PlayerState extends Phaser.Events.EventEmitter {
       this.flags.add('mire_drained');
       this.flags.add('mire_pillars_solved');
       this.flags.add('mire_puzzle_solved');
-      if (this.currentQuestId !== 'Q06_RETRIEVE_CLAPPER') {
-        this.setCurrentQuest('Q06_RETRIEVE_CLAPPER');
-      }
+      this.advanceStoryQuest('Q06_RETRIEVE_CLAPPER');
       this.unlockLore('lore_runestones');
     } else if (
       flag === 'choice_knight_empathy' ||
@@ -687,17 +656,47 @@ export class PlayerState extends Phaser.Events.EventEmitter {
     }
   }
 
-  public setCurrentQuest(questId: string): void {
-    if (!this.quests.has(questId)) return;
+  /** Recover the main story independently of which quest the player is tracking. */
+  public getStoryQuestId(): string {
+    const recorded = MAIN_QUEST_IDS_LATEST_FIRST.find(id => this.flags.has(MAIN_QUEST_FLAG_PREFIX + id));
+    if (recorded) return recorded;
+    if (MAIN_QUEST_IDS.includes(this.currentQuestId)) return this.currentQuestId;
+    if (this.hasFlag('clapper_collected') || this.hasFlag('mire_pillars_solved')) return 'Q06_RETRIEVE_CLAPPER';
+    if (this.hasFlag('entered_silent_mire')) return 'Q05_SOLVE_MIRE';
+    if (this.isQuestTaskCompleted('Q04_ANCIENT_RUNES', 't1') || this.hasFlag('east_gate_unlocked')) return 'Q04_ANCIENT_RUNES';
+    if (this.hasFlag('talked_to_neris')) return 'Q03_PREPARE_RESOURCES';
+    if (this.hasFlag('talked_to_edda')) return 'Q02_MEET_NERIS';
+    return 'Q01_MEET_EDDA';
+  }
+
+  public trackQuest(questId: string): void {
+    const quest = this.quests.get(questId);
+    if (!quest || this.currentQuestId === questId) return;
+    this.flags.add(MAIN_QUEST_FLAG_PREFIX + this.getStoryQuestId());
     this.currentQuestId = questId;
-    const q = this.quests.get(questId);
-    if (q) {
-      this.emit('quest_changed', q);
-      if (questId === 'Q03_PREPARE_RESOURCES') {
-        this.evaluateQ03ResourceTask();
-      }
-      this.checkAndEmitUnlockEvents();
+    this.emit('quest_changed', quest);
+  }
+
+  public advanceStoryQuest(questId: string): void {
+    const previous = this.getStoryQuestId();
+    if (MAIN_QUEST_IDS.indexOf(questId) <= MAIN_QUEST_IDS.indexOf(previous)) return;
+    this.flags.add(MAIN_QUEST_FLAG_PREFIX + questId);
+    if (this.currentQuestId === previous) this.trackQuest(questId);
+    this.checkAndEmitUnlockEvents();
+  }
+
+  public setCurrentQuest(questId: string): void {
+    const quest = this.quests.get(questId);
+    if (!quest) return;
+    if (quest.category === 'main') {
+      const previous = this.getStoryQuestId();
+      const next = MAIN_QUEST_IDS.indexOf(questId) > MAIN_QUEST_IDS.indexOf(previous) ? questId : previous;
+      this.flags.add(MAIN_QUEST_FLAG_PREFIX + next);
     }
+    if (this.currentQuestId === questId) this.emit('quest_changed', quest);
+    else this.trackQuest(questId);
+    if (questId === 'Q03_PREPARE_RESOURCES') this.evaluateQ03ResourceTask();
+    this.checkAndEmitUnlockEvents();
   }
 
   public getCurrentQuest(): Quest | undefined {

@@ -796,7 +796,7 @@ export class GameScene extends Phaser.Scene {
 
     // Lắng nghe thông báo nhiệm vụ & sinh tồn từ PlayerState và Quickbar UIScene
     const onQ03ResourcesReady = () => {
-      if (this.uiScene && this.playerState.currentQuestId === 'Q03_PREPARE_RESOURCES') {
+      if (this.uiScene && this.playerState.getStoryQuestId() === 'Q03_PREPARE_RESOURCES') {
         this.uiScene.showPopupMessage('✔ Đã đủ Gỗ Khô & Nhựa Cây! Nhấn [I] hoặc đến Bàn Chế Tạo để pha Dầu Đèn.');
       }
     };
@@ -1457,7 +1457,7 @@ export class GameScene extends Phaser.Scene {
       if (this.playerState.hasFlag('inspected_echo_pillar') && !this.playerState.hasFlag('garth_patrol_rewarded')) {
         return 'complete';
       }
-      if (!this.playerState.hasFlag('talked_to_villagers') || !this.playerState.hasFlag('talked_to_garth')) {
+      if (!this.playerState.hasFlag('talked_to_villagers') || !this.playerState.isEastGateUnlocked()) {
         return 'new';
       }
       return 'none';
@@ -2472,7 +2472,7 @@ export class GameScene extends Phaser.Scene {
         if (now - this.lastEastGateReminderTime >= 3000) {
           this.lastEastGateReminderTime = now;
           if (this.uiScene) {
-            this.uiScene.showPopupMessage('🔒 Cổng Đông đang khóa chặt! Hãy trò chuyện với Garth, Edda và Neris để nhận quyền mở cổng.');
+            this.uiScene.showPopupMessage('🔒 Cổng Đông đang khóa chặt! Hãy hoàn tất hội thoại mở cổng với Garth, Edda hoặc Neris.');
           }
         }
       }
@@ -4413,6 +4413,7 @@ export class GameScene extends Phaser.Scene {
 
     // C4-12-03: Kiểm tra bước qua Cổng Đông làng Bellhollow (gateX = 1485, khi x >= 1500)
     if (this.currentZoneId === 'bellhollow' && footPos.x >= 1500 && this.playerState.isEastGateUnlocked()) {
+      this.playerState.advanceStoryQuest('Q04_ANCIENT_RUNES');
       const q04 = this.playerState.quests.get('Q04_ANCIENT_RUNES');
       const t1 = q04?.tasks.find(t => t.id === 't1');
       if (t1 && !t1.done) {
@@ -4425,14 +4426,13 @@ export class GameScene extends Phaser.Scene {
 
     if (this.currentZoneId === 'crooked_path') {
       if (this.playerState.isEastGateUnlocked()) {
+        this.playerState.advanceStoryQuest('Q04_ANCIENT_RUNES');
         this.playerState.completeQuestTask('Q04_ANCIENT_RUNES', 't1');
       }
     } else if (this.currentZoneId === 'silent_mire') {
       this.playerState.completeQuestTask('Q04_ANCIENT_RUNES', 't1');
       this.playerState.completeQuestTask('Q04_ANCIENT_RUNES', 't2');
-      if (this.playerState.currentQuestId === 'Q04_ANCIENT_RUNES') {
-        this.playerState.setCurrentQuest('Q05_SOLVE_MIRE');
-      }
+      this.playerState.advanceStoryQuest('Q05_SOLVE_MIRE');
     }
 
     if (this.currentZoneId !== this.previousZoneId) {
@@ -4690,7 +4690,7 @@ export class GameScene extends Phaser.Scene {
                 if (this.uiScene) {
                   this.uiScene.showPopupMessage('🎁 Garth đã tặng bạn: Ủng Đi Rừng (Trail Boots)! Giảm 30% tiếng ồn bước chân.');
                 }
-              } else if (this.playerState.memoryAwakeningStage >= 3) {
+              } else if (this.playerState.memoryAwakeningStage >= 3 && this.playerState.isEastGateUnlocked()) {
                 dKey = 'garth_black_knight_reverence';
               } else if (!this.playerState.hasFlag('talked_to_villagers')) {
                 dKey = 'garth_warning';
@@ -4710,7 +4710,7 @@ export class GameScene extends Phaser.Scene {
                 dKey = 'edda_quest_bell_memory';
                 this.playerState.setFlag('edda_mold_rewarded');
                 this.playerState.completeQuestTask('SQ02_BELL_MEMORY', 't2');
-              } else if (this.playerState.memoryAwakeningStage >= 3) {
+              } else if (this.playerState.memoryAwakeningStage >= 3 && this.playerState.isEastGateUnlocked()) {
                 dKey = 'edda_black_knight_reverence';
               } else if (!this.playerState.hasFlag('talked_to_edda')) {
                 dKey = 'edda_intro';
@@ -4743,7 +4743,7 @@ export class GameScene extends Phaser.Scene {
                 dKey = 'neris_quest_cellar_tea';
                 this.playerState.setFlag('neris_tea_rewarded');
                 this.playerState.completeQuestTask('SQ03_CELLAR_TEA', 't3');
-              } else if (this.playerState.memoryAwakeningStage >= 3) {
+              } else if (this.playerState.memoryAwakeningStage >= 3 && this.playerState.isEastGateUnlocked()) {
                 dKey = 'neris_black_knight_reverence';
               } else if (!this.playerState.hasFlag('talked_to_neris')) {
                 dKey = 'neris_intro';
@@ -4800,10 +4800,6 @@ export class GameScene extends Phaser.Scene {
                 dKey = 'vaelen_mold_reminder';
               } else if (hasCrest && !this.playerState.hasFlag('vaelen_mold_quest_assigned')) {
                 dKey = 'vaelen_examine_crest_and_seek_mold';
-                this.playerState.setFlag('vaelen_mold_quest_assigned');
-                if (this.uiScene) {
-                  this.uiScene.updateQuestTracker();
-                }
               } else if (hasCrest && !hasMold) {
                 dKey = 'vaelen_mold_reminder';
               } else if (this.playerState.hasFlag('campfire_knight_q3_completed')) {
@@ -4920,7 +4916,7 @@ export class GameScene extends Phaser.Scene {
             this.player.playGather();
             this.uiScene.setInteractionPrompt(null);
             const milestoneJustFired =
-              !wasQ03T1Done && nowQ03T1Done && this.playerState.currentQuestId === 'Q03_PREPARE_RESOURCES';
+              !wasQ03T1Done && nowQ03T1Done && this.playerState.getStoryQuestId() === 'Q03_PREPARE_RESOURCES';
             if (!milestoneJustFired) {
               this.uiScene.showPopupMessage(`✔ Đã thu thập: +${harvestResult.count} ${harvestResult.itemName}`);
             }

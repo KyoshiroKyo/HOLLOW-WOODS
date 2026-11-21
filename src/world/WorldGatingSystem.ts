@@ -90,11 +90,10 @@ export class WorldGatingSystem {
     this.registerRule({
       zoneId: 'crooked_path',
       tier: 'LAYER_2_FRONTIER',
-      conditionType: 'quest_required',
-      requiredQuestId: 'Q03_PREPARE_RESOURCES',
-      requiredFlag: 'talked_to_neris',
+      conditionType: 'flag_required',
+      requiredFlag: 'east_gate_unlocked',
       lockedReasonVietnamese: 'Cổng Đông làng Bellhollow đang bị khóa chặt bằng xích sắt phong ấn!',
-      hintVietnamese: 'Hãy nói chuyện với Garth, Edda và Thầy Thuốc Neris để mở Cổng Đông.'
+      hintVietnamese: 'Hãy hoàn tất hội thoại mở cổng với Garth, Edda hoặc Neris.'
     });
 
     this.registerRule({
@@ -237,19 +236,7 @@ export class WorldGatingSystem {
       return true;
     }
 
-    // C4-132-04: Tách riêng quy tắc mở khóa crooked_path và deep_forest (zoneId === 'crooked_path' || zoneId === 'deep_forest')
-    // 1. Tuyến đường mòn The Crooked Path: Mở khóa khi đã nói chuyện với Garth, Edda và Neris (hoặc mở Cổng Đông)
-    if (zoneId === 'crooked_path') {
-      return (
-        playerState.hasFlag('east_gate_unlocked') ||
-        (playerState.hasFlag('talked_to_garth') &&
-         playerState.hasFlag('talked_to_edda') &&
-         playerState.hasFlag('talked_to_neris')) ||
-        playerState.currentQuestId === 'Q04_ANCIENT_RUNES' ||
-        playerState.currentQuestId === 'Q05_SOLVE_MIRE' ||
-        playerState.currentQuestId === 'Q06_RETRIEVE_CLAPPER'
-      );
-    }
+    const storyQuestId = playerState.getStoryQuestId();
 
     // 2. Khu vực Rừng Sâu Deep Forest: Chỉ mở khi Cổng Đông đã mở VÀ tiến trình đạt từ Q04 trở đi (hoặc có flag deep_forest_unlocked)
     if (zoneId === 'deep_forest') {
@@ -258,9 +245,9 @@ export class WorldGatingSystem {
 
       return (
         playerState.hasFlag('deep_forest_unlocked') ||
-        playerState.currentQuestId === 'Q04_ANCIENT_RUNES' ||
-        playerState.currentQuestId === 'Q05_SOLVE_MIRE' ||
-        playerState.currentQuestId === 'Q06_RETRIEVE_CLAPPER'
+        storyQuestId === 'Q04_ANCIENT_RUNES' ||
+        storyQuestId === 'Q05_SOLVE_MIRE' ||
+        storyQuestId === 'Q06_RETRIEVE_CLAPPER'
       );
     }
 
@@ -272,8 +259,8 @@ export class WorldGatingSystem {
       const q04 = playerState.quests.get('Q04_ANCIENT_RUNES');
       const t1Done = q04?.tasks.find(t => t.id === 't1')?.done ?? false;
       const pastQ04 =
-        playerState.currentQuestId === 'Q05_SOLVE_MIRE' ||
-        playerState.currentQuestId === 'Q06_RETRIEVE_CLAPPER';
+        storyQuestId === 'Q05_SOLVE_MIRE' ||
+        storyQuestId === 'Q06_RETRIEVE_CLAPPER';
       return (
         t1Done ||
         pastQ04 ||
@@ -290,7 +277,7 @@ export class WorldGatingSystem {
         playerState.hasFlag('mire_puzzle_solved') ||
         playerState.hasFlag('mire_pillars_solved') ||
         playerState.hasFlag('mire_drained') ||
-        playerState.currentQuestId === 'Q06_RETRIEVE_CLAPPER' ||
+        storyQuestId === 'Q06_RETRIEVE_CLAPPER' ||
         playerState.hasFlag('clapper_collected')
       );
     }
@@ -302,7 +289,7 @@ export class WorldGatingSystem {
       return (
         playerState.hasFlag('abyssal_gate_unlocked') ||
         playerState.hasFlag('abyssal_chasm_unlocked') ||
-        playerState.currentQuestId === 'Q06_RETRIEVE_CLAPPER' ||
+        storyQuestId === 'Q06_RETRIEVE_CLAPPER' ||
         playerState.hasFlag('clapper_collected') ||
         playerState.hasFlag('mire_puzzle_solved')
       );
@@ -313,7 +300,7 @@ export class WorldGatingSystem {
       return (
         playerState.hasFlag('mire_drained') ||
         playerState.hasFlag('mire_puzzle_solved') ||
-        playerState.currentQuestId === 'Q06_RETRIEVE_CLAPPER'
+        storyQuestId === 'Q06_RETRIEVE_CLAPPER'
       );
     }
 
@@ -322,9 +309,9 @@ export class WorldGatingSystem {
       return (
         this.isZoneUnlocked('sub_whispering_clearing', playerState) &&
         (playerState.hasFlag('grove_sanctum_unlocked') ||
-         playerState.currentQuestId === 'Q04_ANCIENT_RUNES' ||
-         playerState.currentQuestId === 'Q05_SOLVE_MIRE' ||
-         playerState.currentQuestId === 'Q06_RETRIEVE_CLAPPER')
+         storyQuestId === 'Q04_ANCIENT_RUNES' ||
+         storyQuestId === 'Q05_SOLVE_MIRE' ||
+         storyQuestId === 'Q06_RETRIEVE_CLAPPER')
       );
     }
 
@@ -357,7 +344,7 @@ export class WorldGatingSystem {
       }
 
       case 'quest_required': {
-        if (rule.requiredQuestId && playerState.currentQuestId === rule.requiredQuestId) {
+        if (rule.requiredQuestId && storyQuestId === rule.requiredQuestId) {
           if (rule.requiredTaskId) {
             const q = playerState.quests.get(rule.requiredQuestId);
             return q?.tasks.find(t => t.id === rule.requiredTaskId)?.done ?? false;

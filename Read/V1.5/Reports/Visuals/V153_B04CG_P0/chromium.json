@@ -1,0 +1,123 @@
+{
+  "gates": {
+    "garth": {
+      "speaker": "Garth – Người Gác Cổng",
+      "closedOnStart": true,
+      "closedOnEscape": true,
+      "openAfterCompletion": [
+        true,
+        true,
+        true,
+        false,
+        "Q01_MEET_EDDA"
+      ],
+      "schema": 3,
+      "continuedGate": [
+        true,
+        true,
+        true,
+        false,
+        "Q01_MEET_EDDA"
+      ],
+      "walkedTo": "crooked_path"
+    },
+    "edda": {
+      "speaker": "Edda – Người Giữ Chuông",
+      "closedOnStart": true,
+      "closedOnEscape": true,
+      "openAfterCompletion": [
+        true,
+        true,
+        true,
+        false,
+        "Q02_MEET_NERIS"
+      ],
+      "schema": 3,
+      "continuedGate": [
+        true,
+        true,
+        true,
+        false,
+        "Q02_MEET_NERIS"
+      ]
+    },
+    "neris": {
+      "speaker": "Neris – Người Chữa Thảo Mộc",
+      "closedOnStart": true,
+      "closedOnEscape": true,
+      "openAfterCompletion": [
+        true,
+        true,
+        true,
+        false,
+        "Q03_PREPARE_RESOURCES"
+      ],
+      "schema": 3,
+      "continuedGate": [
+        true,
+        true,
+        true,
+        false,
+        "Q03_PREPARE_RESOURCES"
+      ]
+    }
+  },
+  "quests": {
+    "eddaAccepted": {
+      "quest": "Q02_MEET_NERIS",
+      "hud": "HỒI 1: THUỐC CỨU SINH MẠNG",
+      "map": "🎯 HỒI 1: THUỐC CỨU SINH MẠNG • Làng Chuông Cổ",
+      "mapPin": "bellhollow",
+      "completed": false
+    },
+    "vaelenAccepted": {
+      "quest": "SQ06_KEEP_FIRE",
+      "hud": "NHIỆM VỤ TIẾN TRÌNH: GIỮ LỬA TRONG SƯƠNG",
+      "map": "🎯 NHIỆM VỤ TIẾN TRÌNH: GIỮ LỬA TRONG SƯƠNG • Rừng Ngoại Vi",
+      "mapPin": "outer_woods",
+      "completed": false
+    },
+    "switched": {
+      "quest": "Q06_RETRIEVE_CLAPPER",
+      "hud": "HỒI 5: MIẾU CHUÔNG PHẾ TÍCH",
+      "map": "🎯 HỒI 5: MIẾU CHUÔNG PHẾ TÍCH • Miếu Chuông Phế Tích",
+      "mapPin": "broken_bell_shrine",
+      "completed": false
+    },
+    "switchedAfterContinue": {
+      "quest": "Q06_RETRIEVE_CLAPPER",
+      "hud": "HỒI 5: MIẾU CHUÔNG PHẾ TÍCH",
+      "map": "🎯 HỒI 5: MIẾU CHUÔNG PHẾ TÍCH • Miếu Chuông Phế Tích",
+      "mapPin": "broken_bell_shrine",
+      "completed": false
+    },
+    "vaelenSecond": {
+      "quest": "SQ07_LOST_COMRADES",
+      "hud": "NHIỆM VỤ TIẾN TRÌNH: DẤU VẾT ĐỒNG ĐỘI CŨ",
+      "map": "🎯 NHIỆM VỤ TIẾN TRÌNH: DẤU VẾT ĐỒNG ĐỘI CŨ • Rừng Ngoại Vi",
+      "mapPin": "outer_woods",
+      "completed": false
+    },
+    "completed": {
+      "quest": "SQ06_KEEP_FIRE",
+      "hud": "NHIỆM VỤ TIẾN TRÌNH: GIỮ LỬA TRONG SƯƠNG",
+      "map": "🎯 NHIỆM VỤ TIẾN TRÌNH: GIỮ LỬA TRONG SƯƠNG • Đã hoàn thành",
+      "mapPin": null,
+      "completed": true
+    },
+    "continued": {
+      "quest": "SQ06_KEEP_FIRE",
+      "hud": "NHIỆM VỤ TIẾN TRÌNH: GIỮ LỬA TRONG SƯƠNG",
+      "map": "🎯 NHIỆM VỤ TIẾN TRÌNH: GIỮ LỬA TRONG SƯƠNG • Đã hoàn thành",
+      "mapPin": null,
+      "completed": true
+    },
+    "vaelenMold": {
+      "quest": "Q05_SOLVE_MIRE",
+      "hud": "Chặng 3: Giải Mã Huy Hiệu & Khuôn Đúc Cổ (B -> D)",
+      "map": "🎯 Chặng 3: Giải Mã Huy Hiệu & Khuôn Đúc Cổ (B -> D) • Xưởng Chuông Bỏ Hoang & Hầm Rễ Cổ • Hướng đi: Nam (Rìa Nam Rừng Ngoài)",
+      "mapPin": "outer_woods",
+      "completed": false
+    }
+  }
+}

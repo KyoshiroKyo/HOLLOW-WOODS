@@ -296,6 +296,10 @@ export class ParchmentWorldMapModal {
     }
   }
 
+  public refreshTrackedQuest(): void {
+    if (this.isOpen) this.renderWorldMapContent();
+  }
+
   /**
    * Đóng Bản đồ Giấy Da
    */
@@ -344,18 +348,19 @@ export class ParchmentWorldMapModal {
     const discoveredCount = this.nodes.filter(n => visitedZones.includes(n.id)).length;
 
     // Lấy thông tin chặng nhiệm vụ chính tuyến V1.5 (A -> E -> B -> D -> F -> E -> C)
-    const currentStage = QuestSystem.getInstance().getCurrentStageInfo(this.playerState);
-    const bridgeSeal = QuestSystem.getInstance().getBridgeSealState(this.playerState);
+    const quests = QuestSystem.getInstance();
+    const tracked = quests.getTrackedQuestDisplay(this.playerState);
+    const bridgeSeal = quests.getBridgeSealState(this.playerState);
 
     // Cập nhật tiêu đề chặng & hướng đi chi tiết
     if (this.subTitleText) {
-      this.subTitleText.setText(
-        `🎯 [CHẶNG ${currentStage.stageNumber}/7] ${currentStage.title} (${currentStage.route}) • Hướng đi: ${currentStage.directionHint}`
-      );
+      const objective = tracked?.nextTask ? tracked.targetName ?? tracked.nextTask.text : 'Đã hoàn thành';
+      const direction = tracked?.route ? ` • Hướng đi: ${tracked.route.directionHint}` : '';
+      this.subTitleText.setText(tracked ? `🎯 ${tracked.title} • ${objective}${direction}` : '');
     }
 
     // Xác định phân khu mục tiêu tiếp theo trên bản đồ
-    let targetNodeId = currentStage.targetZone;
+    let targetNodeId = tracked?.targetZone;
     if (targetNodeId === 'sub_bell_workshop') targetNodeId = 'outer_woods';
     else if (targetNodeId === 'sub_root_cellar') targetNodeId = 'sanctuary_farm';
 
@@ -542,7 +547,7 @@ export class ParchmentWorldMapModal {
           this.scene,
           node.canvasX + node.width / 2,
           node.canvasY - 12,
-          `🎯 MỤC TIÊU [CHẶNG ${currentStage.stageNumber}]`,
+          '🎯 MỤC TIÊU NHIỆM VỤ',
           {
             fontSize: '9px',
             fontStyle: 'bold',

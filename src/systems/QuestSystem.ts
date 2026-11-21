@@ -15,6 +15,27 @@
 import { QA_BUILD } from '../debug/DevSessionPolicy';
 import { PlayerState } from '../state/PlayerState';
 import questsData from '../data/quests.json';
+import { ZoneConnectionRegistry } from '../world/ZoneConnectionRegistry';
+import type { ZoneId } from '../types';
+
+const QUEST_DESTINATIONS: Partial<Record<string, ZoneId>> = {
+  Q00_WAKE_UP: 'fog_crossing',
+  Q01_MEET_EDDA: 'bellhollow',
+  Q02_MEET_NERIS: 'bellhollow',
+  Q03_PREPARE_RESOURCES: 'bellhollow',
+  Q04_ANCIENT_RUNES: 'crooked_path',
+  Q05_SOLVE_MIRE: 'silent_mire',
+  Q06_RETRIEVE_CLAPPER: 'broken_bell_shrine',
+  SQ01_RUNED_IRON: 'outer_woods',
+  SQ02_BELL_MEMORY: 'outer_woods',
+  SQ03_CELLAR_TEA: 'sanctuary_farm',
+  SQ04_CLEARING_PATROL: 'outer_woods',
+  SQ05_FINN_INTEL: 'bellhollow',
+  SQ06_KEEP_FIRE: 'outer_woods',
+  SQ07_LOST_COMRADES: 'outer_woods',
+  SQ08_PURIFY_FALLEN: 'deep_forest',
+  SQ09_BROKEN_LANTERN: 'outer_woods',
+};
 
 export interface QuestTaskConfig {
   id: string;
@@ -30,7 +51,7 @@ export interface QuestStageConfig {
   title: string;
   route: string;
   fromZone: string;
-  targetZone: string;
+  targetZone: ZoneId;
   targetZoneName: string;
   directionHint: string;
   giver: string;
@@ -75,7 +96,7 @@ export class QuestSystem {
       ps.hasFlag('boss_mire_warden_defeated') ||
       ps.hasFlag('mire_root_seal_broken') ||
       ps.hasFlag('shrine_bridge_lowered') ||
-      ps.currentQuestId === 'Q06_RETRIEVE_CLAPPER'
+      ps.getStoryQuestId() === 'Q06_RETRIEVE_CLAPPER'
     ) {
       return 7;
     }
@@ -215,6 +236,46 @@ export class QuestSystem {
   /**
    * Định dạng dữ liệu hiển thị trên HUD "NHIỆM VỤ HIỆN TẠI [J]"
    */
+  public getTrackedQuestDisplay(ps = PlayerState.getInstance()) {
+    const quest = ps.getCurrentQuest();
+    if (!quest) return undefined;
+
+    // Vaelen's workshop objective already has route data and uses the current
+    // main quest ID. Display that objective after he assigns it.
+    const stage = this.getCurrentStageInfo(ps);
+    const workshop = quest.id === 'Q05_SOLVE_MIRE' && stage.stageNumber === 3 &&
+      ps.hasFlag('vaelen_mold_quest_assigned');
+    const tasks = workshop
+      ? stage.tasks.map((task, index) => ({ ...task, done: index === 0 }))
+      : quest.tasks;
+    const nextTask = tasks.find(task => !task.done);
+    const followsStory = quest.id === ps.getStoryQuestId();
+    const followsRoute = followsStory && (
+      (quest.id === 'Q04_ANCIENT_RUNES' && stage.stageNumber === 1 && quest.tasks[0]?.done) ||
+      (quest.id === 'Q05_SOLVE_MIRE' && (workshop || [2, 4, 5, 6].includes(stage.stageNumber))) ||
+      (quest.id === 'Q06_RETRIEVE_CLAPPER' && nextTask?.id === 't1' && stage.stageNumber === 7)
+    );
+    const route = nextTask && followsRoute ? stage : undefined;
+    const targetZone = nextTask ? route?.targetZone ?? this.getQuestDestination(quest.id, nextTask.id) : undefined;
+    const targetName = route?.targetZoneName ??
+      (targetZone && ZoneConnectionRegistry.getInstance().getZoneNode(targetZone)?.titleVietnamese);
+    return {
+      quest, tasks, nextTask, targetZone, targetName, route,
+      title: workshop ? stage.title : quest.title,
+      description: workshop ? stage.description : quest.description,
+    };
+  }
+
+  private getQuestDestination(questId: string, taskId: string): ZoneId | undefined {
+    if (questId === 'Q06_RETRIEVE_CLAPPER' && taskId === 't2') return 'bellhollow';
+    if (questId === 'SQ01_RUNED_IRON' && taskId === 't2') return 'bellhollow';
+    if (questId === 'SQ02_BELL_MEMORY' && taskId === 't2') return 'bellhollow';
+    if (questId === 'SQ04_CLEARING_PATROL' && taskId === 't3') return 'bellhollow';
+    if (questId === 'SQ08_PURIFY_FALLEN' && taskId === 't3') return 'outer_woods';
+    if (questId === 'SQ09_BROKEN_LANTERN' && taskId !== 't2') return 'bellhollow';
+    return QUEST_DESTINATIONS[questId];
+  }
+
   public getHUDQuestDisplay(state?: PlayerState): {
     header: string;
     title: string;
@@ -222,15 +283,14 @@ export class QuestSystem {
     directionHint: string;
     fullText: string;
   } {
-    const ps = state || PlayerState.getInstance();
-    const stage = this.getCurrentStageInfo(ps);
+    const tracked = this.getTrackedQuestDisplay(state);
+    const header = '📜 NHIỆM VỤ HIỆN TẠI [J]:';
+    const title = tracked?.title ?? '';
+    const direction = tracked?.route ? ` (Hướng ${tracked.route.directionHint})` : '';
+    const directionHint = tracked?.targetName ? `🧭 Mục tiêu: ${tracked.targetName}${direction}` : '';
+    const taskText = tracked?.nextTask ? `☐ ${tracked.nextTask.text}` : tracked ? '☑ Đã hoàn thành' : '';
 
-    const header = `📜 NHIỆM VỤ HIỆN TẠI [J] — CHẶNG ${stage.stageNumber}/7:`;
-    const title = `${stage.title}`;
-    const directionHint = `🧭 Mục tiêu: ${stage.targetZoneName} (Hướng ${stage.directionHint})`;
-    const taskText = `☐ ${stage.hudHint}`;
-
-    const fullText = `${title}\n${taskText}\n${directionHint}`;
+    const fullText = [title, taskText, directionHint].filter(Boolean).join('\n');
 
     return {
       header,

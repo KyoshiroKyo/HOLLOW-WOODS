@@ -18,6 +18,7 @@ export interface DialoguePayload {
   portrait: string;
   lines: string[];
   onCompleteFlag?: string;
+  opensEastGate?: boolean;
   nextQuestId?: string;
   rewardItem?: string;
   rewardCount?: number;
@@ -341,6 +342,9 @@ export class DialogueSystem {
     // 2. Chuyển quest kế tiếp nếu có
     if (payload.nextQuestId) {
       state.setCurrentQuest(payload.nextQuestId);
+    }
+    if (payload.opensEastGate) {
+      state.setFlag('east_gate_unlocked');
     }
 
     // 3. Trao thưởng vật phẩm
