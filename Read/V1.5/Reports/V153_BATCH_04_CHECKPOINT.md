@@ -1,3 +1,21 @@
+# V153-R10 — Checkpoint Black Knight Full Conversion
+
+**21/11/2026 · Source audit 34/34 chuỗi và 324/324 frame · Gameplay PARTIAL**
+
+Nhánh `feat/v1.5.3-batch04`. Baseline K3-C `61b244562c9aacd81125144d0f29e5043a9fe84c`, runtime Black Knight Full Conversion `6bb15b80479f1206e2eaba878cd5903434f63ea4`. HEAD local chứa báo cáo và bằng chứng. [Báo cáo và ma trận source parity](V153_BLACK_KNIGHT_SOURCE_PARITY_REPORT.md)
+
+| Nhóm | Trạng thái |
+|---|---|
+| Source Library | 34/34 chuỗi và 324/324 frame được đối chiếu RGBA với master. Dùng làm SOURCE_REFERENCE. |
+| Registry, texture, frame | 34/34 có bản custom đủ frame và nhịp nguồn. Canvas/WebGL xác nhận alias tương thích, render một actor và không tải texture sprite legacy. |
+| Gameplay live | 5 dòng source parity PASS gồm hai Idle, hai Run và Parry Miss. Interact, Gather và Use Item là ba nhóm bổ sung và đã thử qua input thực. |
+| Gameplay asset-only | 29 dòng có bản đầy đủ qua runtime fixture. Giữ giới hạn gameplay hiện hành và backlog các điểm cần Owner quyết định. |
+| Kiểm thử | TypeScript, build, 212/212 asset, schema 3, frame trace hai renderer. Giữ lỗi Phaser Text `drawImage` tại restart trong hồ sơ cũ, kiểm tra actor và Continue đã đạt. |
+
+**Dừng tại Black Knight Full Conversion để Owner nghiệm thu.** Các mục ngoài nhân vật giữ trạng thái ở checkpoint R10 bên dưới.
+
+---
+
 # V153-BATCH-04-R10 — Checkpoint K3-C
 
 **21/11/2026 · K3-C 8/8 nhóm PASS LOCAL về hoạt ảnh · Ma trận 26/26 · HOSTED BLOCKED**

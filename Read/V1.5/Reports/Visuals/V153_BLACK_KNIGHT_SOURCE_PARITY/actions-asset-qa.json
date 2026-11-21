@@ -1,0 +1,2560 @@
+{
+  "sha256": {
+    "black_knight_conversion_actions.png": "4774f891abd3264814637e7377af03f12a4f32597f2e47c83ac0f2ae3d725a27",
+    "black_knight_conversion_actions.json": "f257d0377abe0fee2b5094dc110f48a4643c8c754b9bb3ebe6a6de21ca61ac9f"
+  },
+  "clips": {
+    "armed_interact_down": [
+      {
+        "frame": "armed_interact_down_0",
+        "bounds": [
+          19,
+          31,
+          44,
+          63
+        ],
+        "sha256": "9d06f65796429cabfa252701156fd7f610cb7c0ccfc44a0eda433095fc9e2010",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 15
+      },
+      {
+        "frame": "armed_interact_down_1",
+        "bounds": [
+          18,
+          31,
+          42,
+          63
+        ],
+        "sha256": "363bc9c770a5531314db24da732acdc243859dec112ad285850f30a545c033c1",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 14
+      },
+      {
+        "frame": "armed_interact_down_2",
+        "bounds": [
+          18,
+          31,
+          44,
+          63
+        ],
+        "sha256": "68aa11d6aaff32002aa2365517d2d4bbc3740e1f5f3813400cceab5d44edd9fa",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 13
+      },
+      {
+        "frame": "armed_interact_down_3",
+        "bounds": [
+          17,
+          31,
+          44,
+          63
+        ],
+        "sha256": "911b0296513f7165810714ad29cf7836135f829d4bccc71cabc2b6d429eb5852",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 14
+      },
+      {
+        "frame": "armed_interact_down_4",
+        "bounds": [
+          17,
+          31,
+          40,
+          63
+        ],
+        "sha256": "645378c88567436fa790bb7c1a556c8963a5b5734eea2e6905fc370242207f6f",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 11
+      },
+      {
+        "frame": "armed_interact_down_5",
+        "bounds": [
+          16,
+          31,
+          40,
+          63
+        ],
+        "sha256": "2678d4638cc272c9d69dab4cfcd63c0c6eb1e3a675e5459c3407fd7e55966f2b",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 15
+      }
+    ],
+    "armed_interact_up": [
+      {
+        "frame": "armed_interact_up_0",
+        "bounds": [
+          20,
+          31,
+          46,
+          63
+        ],
+        "sha256": "15c6d1c199d27bf2fca65965d0b8a2e912317557a15d73587403b80501e0d78f",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 10
+      },
+      {
+        "frame": "armed_interact_up_1",
+        "bounds": [
+          20,
+          31,
+          46,
+          63
+        ],
+        "sha256": "963faa761f90836677a154421b45a4d472597b20ae874a439310d68a62d5f634",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 11
+      },
+      {
+        "frame": "armed_interact_up_2",
+        "bounds": [
+          18,
+          31,
+          45,
+          63
+        ],
+        "sha256": "393546411f5fc64f69378e895ef186015d0eb58236542af6618e92ac254a72a5",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 11
+      },
+      {
+        "frame": "armed_interact_up_3",
+        "bounds": [
+          16,
+          31,
+          45,
+          63
+        ],
+        "sha256": "e8f492459c4c8f1e69f80a488ff97f2cd1c2dc759b26fcd450fa7adb52018ed0",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 10
+      },
+      {
+        "frame": "armed_interact_up_4",
+        "bounds": [
+          18,
+          31,
+          45,
+          63
+        ],
+        "sha256": "da5a5d0ffdaaeef1c0243f1ed79b2d436b93fcd3c9680ccc4ddf1e3f5a7f3b42",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 11
+      },
+      {
+        "frame": "armed_interact_up_5",
+        "bounds": [
+          18,
+          31,
+          44,
+          63
+        ],
+        "sha256": "d09928139a9a9e7171254f4f915eaf7ff9aa0b75ac70c115a65fc4626337b7c8",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 11
+      }
+    ],
+    "armed_interact_left": [
+      {
+        "frame": "armed_interact_left_0",
+        "bounds": [
+          24,
+          31,
+          42,
+          63
+        ],
+        "sha256": "87b92ed0bbd359b325294787583f7423d2b382dde831aa75e87fd293ec580373",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 15
+      },
+      {
+        "frame": "armed_interact_left_1",
+        "bounds": [
+          21,
+          31,
+          41,
+          63
+        ],
+        "sha256": "9008a10a817ecba9e949d8e0600bd9ad70ea22ed4e559fd9e842124c19d109ca",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 15
+      },
+      {
+        "frame": "armed_interact_left_2",
+        "bounds": [
+          18,
+          31,
+          41,
+          63
+        ],
+        "sha256": "120e0974fe72b88673e06299c4150eaf94cf9f12d90f9f603984b20ae61694af",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 13
+      },
+      {
+        "frame": "armed_interact_left_3",
+        "bounds": [
+          16,
+          31,
+          41,
+          63
+        ],
+        "sha256": "7ef72a6b16bc0baa98549992801c04d507a738a825fcda99f584803461416801",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 16
+      },
+      {
+        "frame": "armed_interact_left_4",
+        "bounds": [
+          20,
+          31,
+          41,
+          63
+        ],
+        "sha256": "d2359b9bb6f1103b98a6be00bf95124eab24de084c0cb31991f43f01521aa4bf",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 14
+      },
+      {
+        "frame": "armed_interact_left_5",
+        "bounds": [
+          22,
+          31,
+          40,
+          63
+        ],
+        "sha256": "fae1abd2cf5e16cd21cb7b13157f94fdf45dd5fe28a8030c63afd6de6b32ddae",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 13
+      }
+    ],
+    "armed_interact_right": [
+      {
+        "frame": "armed_interact_right_0",
+        "bounds": [
+          23,
+          31,
+          41,
+          63
+        ],
+        "sha256": "f8bfb81fa7df5f679d67a9a21f6bda46cb21c628ea026f33671c09027ced7de7",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 16
+      },
+      {
+        "frame": "armed_interact_right_1",
+        "bounds": [
+          21,
+          31,
+          43,
+          63
+        ],
+        "sha256": "4b84fccf48b852fdcd6486e0ee09cdf6586eeb05d4f4937ab33cc42ae3402a22",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 17
+      },
+      {
+        "frame": "armed_interact_right_2",
+        "bounds": [
+          20,
+          31,
+          45,
+          63
+        ],
+        "sha256": "6d85444451a90d1670f3eb6f237b16e6b0985ce4b5df0cc9f9034183dcd12833",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 16
+      },
+      {
+        "frame": "armed_interact_right_3",
+        "bounds": [
+          19,
+          31,
+          44,
+          63
+        ],
+        "sha256": "ce59b29bc2be2fe023b7d64f1b718a739558cf085233b6bf2719639ce9d1ce1f",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 16
+      },
+      {
+        "frame": "armed_interact_right_4",
+        "bounds": [
+          19,
+          31,
+          40,
+          63
+        ],
+        "sha256": "dd578f39d90a653d7a2a9904e2a077553f1a3f92f6d73ca25573c1b640e30a8e",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 16
+      },
+      {
+        "frame": "armed_interact_right_5",
+        "bounds": [
+          18,
+          31,
+          36,
+          63
+        ],
+        "sha256": "8eb063a61b8aaf3ddfae57f8c13dfe5495572d7ea0fa56cffc13c31d7013f093",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 14
+      }
+    ],
+    "unarmed_interact_down": [
+      {
+        "frame": "unarmed_interact_down_0",
+        "bounds": [
+          20,
+          31,
+          44,
+          63
+        ],
+        "sha256": "e881b8e8f868c032d662a9527e8d568e630f02c5febb9d72275cc87ecebf1c80",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_interact_down_1",
+        "bounds": [
+          21,
+          31,
+          44,
+          63
+        ],
+        "sha256": "5565d4ca8ce458966721dda6ee39185084f3970e259ff0de9024598f1de737a6",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_interact_down_2",
+        "bounds": [
+          20,
+          31,
+          44,
+          63
+        ],
+        "sha256": "1dc05b932bed5ffdb38c82679a7c07d0f084a84715a187993c37c3afad2c5dcf",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_interact_down_3",
+        "bounds": [
+          16,
+          31,
+          44,
+          63
+        ],
+        "sha256": "f4b0e2aa04ac5060c4ceb4c22051385efce0a4f8dcc43f7df64ab56e86fd094c",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_interact_down_4",
+        "bounds": [
+          21,
+          31,
+          44,
+          63
+        ],
+        "sha256": "921f705385ea8aea15ada7f73c9b0120b99855fe6afa6316371e5ec228cb2b52",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_interact_down_5",
+        "bounds": [
+          20,
+          31,
+          44,
+          63
+        ],
+        "sha256": "3d869d1cc56828e42e055d8a1e925a2de0a86ecaa14f54f45bcfe9167eef5611",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      }
+    ],
+    "unarmed_interact_up": [
+      {
+        "frame": "unarmed_interact_up_0",
+        "bounds": [
+          20,
+          31,
+          44,
+          63
+        ],
+        "sha256": "783a98fe4edbfc9e052ddb7e4bb6c6fec2cfd5e266399297e79db82abd8695f5",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_interact_up_1",
+        "bounds": [
+          21,
+          31,
+          44,
+          63
+        ],
+        "sha256": "f46b98cf3b6527b151975503bcc6f5e79866ef641aa2f746cfd3c9662dd17b28",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_interact_up_2",
+        "bounds": [
+          21,
+          31,
+          46,
+          63
+        ],
+        "sha256": "2746918d5f7e04658b01f581a97963465240f0c539a6f448a85b56c59c50ec37",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_interact_up_3",
+        "bounds": [
+          21,
+          31,
+          48,
+          63
+        ],
+        "sha256": "6610624f76e525a11829bc22b37f5ca11176559ca37531e98e95408188b1095d",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_interact_up_4",
+        "bounds": [
+          21,
+          31,
+          44,
+          63
+        ],
+        "sha256": "59c15c5e54dd61d51bc8a781eec1442de75f2086ce902ccf230cd04bc92a5bb5",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_interact_up_5",
+        "bounds": [
+          21,
+          31,
+          45,
+          63
+        ],
+        "sha256": "e99a021dfa1679782d4f21aed6c79dd4d26645884ef65ada0af32969a5906e84",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      }
+    ],
+    "unarmed_interact_left": [
+      {
+        "frame": "unarmed_interact_left_0",
+        "bounds": [
+          24,
+          31,
+          42,
+          63
+        ],
+        "sha256": "20288976c28786f6e391dd9bfa1937894c8d86a0fb9c85ae3d25bfccc3a7f780",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_interact_left_1",
+        "bounds": [
+          23,
+          31,
+          42,
+          63
+        ],
+        "sha256": "f7608782fcd9281511d4ccd2b2cdddc86f1a2f3a9281a6e4586c6309c001bb2b",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_interact_left_2",
+        "bounds": [
+          21,
+          31,
+          43,
+          63
+        ],
+        "sha256": "443e8c924e5bf87aa5689c3f1c1e1a7b4203656223d90a552f4f89903ee82caf",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_interact_left_3",
+        "bounds": [
+          18,
+          31,
+          43,
+          63
+        ],
+        "sha256": "100c4e04c9c5d52470b0deca4b0367f0298dc046b5d58ce67f1ec5292e172503",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_interact_left_4",
+        "bounds": [
+          23,
+          31,
+          42,
+          63
+        ],
+        "sha256": "3e1d591e0d73f5faa1bafcdf63de8d80b7f4741bb2f8b70fbf44cbe22b17d635",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_interact_left_5",
+        "bounds": [
+          24,
+          31,
+          42,
+          63
+        ],
+        "sha256": "ef47572225e87ee46d3b4c9b6fa3b3bea503512f0386b52385bf0c00355c5327",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      }
+    ],
+    "unarmed_interact_right": [
+      {
+        "frame": "unarmed_interact_right_0",
+        "bounds": [
+          22,
+          31,
+          40,
+          63
+        ],
+        "sha256": "c93d4ebfb42f7b6a630bf66f437872c47f8ff853412f97dc19bac1070311c585",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_interact_right_1",
+        "bounds": [
+          22,
+          31,
+          41,
+          63
+        ],
+        "sha256": "e5be3afb68d8783f71751c7ed763a07bdb77d16cc4821b593520a6186ca2686f",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_interact_right_2",
+        "bounds": [
+          22,
+          31,
+          45,
+          63
+        ],
+        "sha256": "07d1ac74a97cf110a2dabd0c22788fd40459a5000a4e99398799a5e0d5932f8d",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_interact_right_3",
+        "bounds": [
+          22,
+          31,
+          48,
+          63
+        ],
+        "sha256": "2093bc1be81ad03be3be739210723210142d7577168c612f49450c5da2c364ff",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_interact_right_4",
+        "bounds": [
+          22,
+          31,
+          41,
+          63
+        ],
+        "sha256": "23f8e84b206204db36f3ed7e14d33dee1d479aa311aa937ca2530a17c12645b9",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_interact_right_5",
+        "bounds": [
+          22,
+          31,
+          40,
+          63
+        ],
+        "sha256": "7430e8c8cfbb35f6e96c314f854e678e0a9f9ca1b32106f95ad3d16e0156ec7a",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      }
+    ],
+    "armed_gather_down": [
+      {
+        "frame": "armed_gather_down_0",
+        "bounds": [
+          17,
+          30,
+          43,
+          62
+        ],
+        "sha256": "063f5ea111cb9a46e00e6d94499ba048f4f22fcb297cad421e87477fd54419a8",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 11
+      },
+      {
+        "frame": "armed_gather_down_1",
+        "bounds": [
+          17,
+          32,
+          43,
+          62
+        ],
+        "sha256": "f8fbb4dabea659ce35c0125b8c23016eb1dd4c6d9358a0f37fecec9f5d208af1",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 12
+      },
+      {
+        "frame": "armed_gather_down_2",
+        "bounds": [
+          17,
+          38,
+          43,
+          63
+        ],
+        "sha256": "5de0a105cbc594d9b60e0def5b8344d188109c79b0cc8ff05a6283485e42611f",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 10
+      },
+      {
+        "frame": "armed_gather_down_3",
+        "bounds": [
+          17,
+          38,
+          43,
+          63
+        ],
+        "sha256": "6e460e121faf2b3aa4597b081fa0c0d367f5e45a20e3fb315272ac14df4a89f8",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 11
+      },
+      {
+        "frame": "armed_gather_down_4",
+        "bounds": [
+          18,
+          32,
+          43,
+          62
+        ],
+        "sha256": "9c2f237ab5187d34e2e7da5aa9e09f952bc2b1cbe17477be0115f52fe3a7cf48",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 11
+      },
+      {
+        "frame": "armed_gather_down_5",
+        "bounds": [
+          18,
+          29,
+          42,
+          62
+        ],
+        "sha256": "a3d63a91094a9097b084ca198395930d6af10ee050e9e81798c018da7abfb350",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 11
+      }
+    ],
+    "armed_gather_up": [
+      {
+        "frame": "armed_gather_up_0",
+        "bounds": [
+          21,
+          31,
+          45,
+          63
+        ],
+        "sha256": "34982536f5188f16d4ee7bab4570f55736483d62d43e1407193a1cf542fa8084",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 11
+      },
+      {
+        "frame": "armed_gather_up_1",
+        "bounds": [
+          20,
+          35,
+          45,
+          63
+        ],
+        "sha256": "775bc629a530cb63c85b9bb372c7ee4f294c125b599873f56956dab3f3796450",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 8
+      },
+      {
+        "frame": "armed_gather_up_2",
+        "bounds": [
+          20,
+          40,
+          46,
+          63
+        ],
+        "sha256": "c7bedac9a1571f6cbc300ffeb77abb0af7565c4d8ded2c50cc59a02132e2f709",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 7
+      },
+      {
+        "frame": "armed_gather_up_3",
+        "bounds": [
+          18,
+          41,
+          44,
+          63
+        ],
+        "sha256": "c74b3ee0df831a2618b3d1f1124076d9b1010121b927bd96d574b222edf10b07",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 7
+      },
+      {
+        "frame": "armed_gather_up_4",
+        "bounds": [
+          21,
+          33,
+          45,
+          63
+        ],
+        "sha256": "8994e2770ac1debfae65538037e895505fcce8d630cd6b84962bf64d6367234c",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 8
+      },
+      {
+        "frame": "armed_gather_up_5",
+        "bounds": [
+          22,
+          31,
+          45,
+          63
+        ],
+        "sha256": "dfc7c4214c49a897334b567ea54eb0ad2f8b23e87fba439d2fbaf1f1167abe10",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 8
+      }
+    ],
+    "armed_gather_left": [
+      {
+        "frame": "armed_gather_left_0",
+        "bounds": [
+          18,
+          31,
+          42,
+          63
+        ],
+        "sha256": "1c043fb8078731c8c5af04407a7e5056e998fd44faeec4022eed7988bc7b923c",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 11
+      },
+      {
+        "frame": "armed_gather_left_1",
+        "bounds": [
+          19,
+          34,
+          45,
+          63
+        ],
+        "sha256": "d2251686a445f099e59826c9196b1300c260c5eeee8e0eaf318ee25136a85acf",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 11
+      },
+      {
+        "frame": "armed_gather_left_2",
+        "bounds": [
+          19,
+          40,
+          44,
+          63
+        ],
+        "sha256": "ac654ded922b4212ff9b68776c588be7f083d5d641fecc4456b0c286b3509637",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 8
+      },
+      {
+        "frame": "armed_gather_left_3",
+        "bounds": [
+          18,
+          40,
+          43,
+          63
+        ],
+        "sha256": "68c0f01dcb478ef26963f7587c766997e3ceef192463ede2ab7dc8691300fdf2",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 6
+      },
+      {
+        "frame": "armed_gather_left_4",
+        "bounds": [
+          19,
+          33,
+          42,
+          63
+        ],
+        "sha256": "3f0e2ad6e94b611a1c4f07d930ba129a78c21181d41050d442cf914c97a3c9fd",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 9
+      },
+      {
+        "frame": "armed_gather_left_5",
+        "bounds": [
+          19,
+          30,
+          42,
+          63
+        ],
+        "sha256": "f7292a6121f96ea2143b2a61866397da081edb85b89f75a09ba703a9e39734db",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 12
+      }
+    ],
+    "armed_gather_right": [
+      {
+        "frame": "armed_gather_right_0",
+        "bounds": [
+          22,
+          31,
+          46,
+          63
+        ],
+        "sha256": "535357ea2c57d03c37d43f8bc8206d803800f2edc43b177eb2ac610ec070baa1",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 10
+      },
+      {
+        "frame": "armed_gather_right_1",
+        "bounds": [
+          21,
+          34,
+          44,
+          63
+        ],
+        "sha256": "4b8bd666251288a5097cd7d470480f4e25bf737995ccea9df4ecb6e09f93c3f1",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 9
+      },
+      {
+        "frame": "armed_gather_right_2",
+        "bounds": [
+          19,
+          40,
+          43,
+          63
+        ],
+        "sha256": "b0446030f3499fd4d477ef0c13582c40f3f188f4d925a9a04b995ab487132720",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 7
+      },
+      {
+        "frame": "armed_gather_right_3",
+        "bounds": [
+          20,
+          40,
+          44,
+          63
+        ],
+        "sha256": "d20f9b2cac3a0caa146712488192981a6ddd14c490eb8f654835416cdd924fc0",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "armed_gather_right_4",
+        "bounds": [
+          23,
+          33,
+          44,
+          63
+        ],
+        "sha256": "b52e6ba732eda67c0e41b7cbe696890336bbca788f4a88210f23c1161f9205df",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 8
+      },
+      {
+        "frame": "armed_gather_right_5",
+        "bounds": [
+          22,
+          31,
+          45,
+          63
+        ],
+        "sha256": "fa53e9acac0e64072f4e8b2e4a081b717dcb0896a2eba8280879749b8043483d",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 12
+      }
+    ],
+    "unarmed_gather_down": [
+      {
+        "frame": "unarmed_gather_down_0",
+        "bounds": [
+          20,
+          31,
+          44,
+          63
+        ],
+        "sha256": "3e394ac40508212b27946a99b474f2a8d722767d1cd21e21674a9267633745fe",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_gather_down_1",
+        "bounds": [
+          19,
+          35,
+          44,
+          63
+        ],
+        "sha256": "68e8e0866a161d7f34a683bc8b927420f18da5186c8e13d33f19b36b09761987",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_gather_down_2",
+        "bounds": [
+          18,
+          38,
+          43,
+          63
+        ],
+        "sha256": "5c1a172162ba3487f33d238aeb0c97ee25f63c38515a5be41453f10e6fd08ba4",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_gather_down_3",
+        "bounds": [
+          18,
+          38,
+          43,
+          63
+        ],
+        "sha256": "d57996db015a8bafcd545d494a8e14795f8f21a88787887447baecaa0d2d6b37",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_gather_down_4",
+        "bounds": [
+          19,
+          32,
+          43,
+          63
+        ],
+        "sha256": "382a71a20c2f2aed0fc5a7e3a21695aa35765716738db8e832dbaf64a593cf1a",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_gather_down_5",
+        "bounds": [
+          18,
+          31,
+          42,
+          63
+        ],
+        "sha256": "96522efe3f638bc2f50a490e57ba35117ff4ec78de53ee818bd2e6a9503a573b",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      }
+    ],
+    "unarmed_gather_up": [
+      {
+        "frame": "unarmed_gather_up_0",
+        "bounds": [
+          21,
+          31,
+          44,
+          63
+        ],
+        "sha256": "82e47467d177f12ae979166fbfa7dfe8560b0fc70e7bf9f42449c8e497b3da5b",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_gather_up_1",
+        "bounds": [
+          19,
+          35,
+          42,
+          63
+        ],
+        "sha256": "43df70319520aef98c60a1c2ed1eedae176703ce658fc7d5c0fd58f83ee756fc",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_gather_up_2",
+        "bounds": [
+          18,
+          39,
+          42,
+          63
+        ],
+        "sha256": "91726fc05f808c28adb9e4d2002b7b0b927097abc068700615d8ec06063bd96b",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_gather_up_3",
+        "bounds": [
+          17,
+          40,
+          43,
+          63
+        ],
+        "sha256": "76a5e68c09813b18e9d4144101512b87df6ca92c2502e52a0d06dcbb1aa2714d",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_gather_up_4",
+        "bounds": [
+          19,
+          33,
+          41,
+          63
+        ],
+        "sha256": "ddbcd0d6f0540b9bd67698721598385002d1c0e7fb8ce364b49bffd90e8ad304",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_gather_up_5",
+        "bounds": [
+          19,
+          31,
+          42,
+          63
+        ],
+        "sha256": "0f09ffc5c0d8cdba5e57d08f5b5bd6018be4179d42aa0b3a814d8a404bcae2a0",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      }
+    ],
+    "unarmed_gather_left": [
+      {
+        "frame": "unarmed_gather_left_0",
+        "bounds": [
+          25,
+          31,
+          42,
+          63
+        ],
+        "sha256": "f1e8f185148eb32e802f83c572de6b10e58c1d2f160aa5f4e065df6477999c3f",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_gather_left_1",
+        "bounds": [
+          23,
+          34,
+          43,
+          63
+        ],
+        "sha256": "91f4ff24c817f17bbf1875f00381c8287d1ba5906661b68fa5b8e7d691aaab18",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_gather_left_2",
+        "bounds": [
+          19,
+          39,
+          44,
+          63
+        ],
+        "sha256": "5d2d4c7796d1dfa54632f7c231bc24aa44f468742110fda959b3f3d2af4a4ff6",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_gather_left_3",
+        "bounds": [
+          18,
+          40,
+          44,
+          63
+        ],
+        "sha256": "51d1205a17b4d343ed605afc649da2a0588ca2b1cdc5ad37d141e80975d7dd18",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_gather_left_4",
+        "bounds": [
+          22,
+          33,
+          43,
+          63
+        ],
+        "sha256": "79e69749838d2336ac40b9f426d1263f8737f4bc0a955e0a56db1aea8419403a",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_gather_left_5",
+        "bounds": [
+          24,
+          31,
+          41,
+          63
+        ],
+        "sha256": "9e0d02107c8f4160c30e7814f71d9b96777798efe8fbd2137415bfb451b7afd8",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      }
+    ],
+    "unarmed_gather_right": [
+      {
+        "frame": "unarmed_gather_right_0",
+        "bounds": [
+          22,
+          31,
+          40,
+          63
+        ],
+        "sha256": "6f5060faffb1cfb5dd0fd8c2515f2b34c2f1544636a17f07bb592e3f2c998e57",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_gather_right_1",
+        "bounds": [
+          21,
+          34,
+          40,
+          63
+        ],
+        "sha256": "ed33e5260268e014e66df96439fae02b32881ef1d769300106386fe4beffd9b4",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_gather_right_2",
+        "bounds": [
+          19,
+          39,
+          43,
+          63
+        ],
+        "sha256": "bd88cea481ab39913461f105199f3c1429a216ad9fc59d508b7a1e86c32bf110",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_gather_right_3",
+        "bounds": [
+          16,
+          40,
+          41,
+          63
+        ],
+        "sha256": "54a102d849145a4654d814bf7da250f3a6009bef680d581ee265aee213046967",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_gather_right_4",
+        "bounds": [
+          20,
+          33,
+          41,
+          63
+        ],
+        "sha256": "374daea468379026b8f2e4ac92c4496c7183a3039cb90d9e2c7a272f89ec5480",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_gather_right_5",
+        "bounds": [
+          21,
+          31,
+          38,
+          63
+        ],
+        "sha256": "fd7ff47cf3364d8d8c90fbe70e0575be8b12f860cbe2c374e5b6b5fa84d036ad",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      }
+    ],
+    "armed_use_item_down": [
+      {
+        "frame": "armed_use_item_down_0",
+        "bounds": [
+          21,
+          31,
+          47,
+          63
+        ],
+        "sha256": "227435b04500360813a8dba2553e2257fa6d62ef0f5922b19c1d732881805124",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 11
+      },
+      {
+        "frame": "armed_use_item_down_1",
+        "bounds": [
+          21,
+          31,
+          47,
+          63
+        ],
+        "sha256": "e2a9447a00b7b415d1f8acc2b9137b5a6983af81d81a414c4395646fd54f5bda",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 9
+      },
+      {
+        "frame": "armed_use_item_down_2",
+        "bounds": [
+          21,
+          31,
+          46,
+          63
+        ],
+        "sha256": "a5dcdb84040c00e66b989b97c6963e504ccb806147eac1c5f6981d30b644414e",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 10
+      },
+      {
+        "frame": "armed_use_item_down_3",
+        "bounds": [
+          21,
+          31,
+          46,
+          63
+        ],
+        "sha256": "38f9efb9cf5e9ba59ea91735d493fbfbf5932c3029a0d20668917a47607d355b",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 9
+      },
+      {
+        "frame": "armed_use_item_down_4",
+        "bounds": [
+          21,
+          31,
+          47,
+          63
+        ],
+        "sha256": "039b5de0f9e1dc8562b1b691bceafca9f30c36cc40c9d40a524ba0b620af7607",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 11
+      },
+      {
+        "frame": "armed_use_item_down_5",
+        "bounds": [
+          21,
+          31,
+          47,
+          63
+        ],
+        "sha256": "770bbce600230f0008367dd72c09cbe125f2a3262aca6c044823065fabcb9240",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 11
+      }
+    ],
+    "armed_use_item_up": [
+      {
+        "frame": "armed_use_item_up_0",
+        "bounds": [
+          21,
+          31,
+          47,
+          63
+        ],
+        "sha256": "e7f382346cae25eec2c24cad95a258cd75066771a6582946b01de5482bc0f4e1",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 10
+      },
+      {
+        "frame": "armed_use_item_up_1",
+        "bounds": [
+          21,
+          31,
+          47,
+          63
+        ],
+        "sha256": "85cc1d194d89a47f468304a1ba8a9d05cec2e9267a5b8569a19d51207fed1d04",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 10
+      },
+      {
+        "frame": "armed_use_item_up_2",
+        "bounds": [
+          21,
+          31,
+          47,
+          63
+        ],
+        "sha256": "12afd392f4bcf919ba4453325ff60f0e46a45e4eec24333200d93f284747fcc7",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 10
+      },
+      {
+        "frame": "armed_use_item_up_3",
+        "bounds": [
+          21,
+          31,
+          47,
+          63
+        ],
+        "sha256": "aada43f7f924f0fc482a15970cfe519999cd6ec3bb05ed8c535bdf333ba831b4",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 10
+      },
+      {
+        "frame": "armed_use_item_up_4",
+        "bounds": [
+          21,
+          31,
+          47,
+          63
+        ],
+        "sha256": "460307f52a06c3112752e700c1ae6a38c9251022efa7086d298ec20a6d016e6f",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 10
+      },
+      {
+        "frame": "armed_use_item_up_5",
+        "bounds": [
+          21,
+          31,
+          47,
+          63
+        ],
+        "sha256": "a8f3e2881692729a66ea1e4aa6d439e75f58b038ff35308ee3abf52f67c9ee82",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 10
+      }
+    ],
+    "armed_use_item_left": [
+      {
+        "frame": "armed_use_item_left_0",
+        "bounds": [
+          21,
+          31,
+          42,
+          63
+        ],
+        "sha256": "ceb6a0e98ab48816f14150ae034a2234198cf5e06d88ec0c65a87f59858f4080",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 15
+      },
+      {
+        "frame": "armed_use_item_left_1",
+        "bounds": [
+          21,
+          31,
+          42,
+          63
+        ],
+        "sha256": "0ef84468254eaadcc4e0f3b39afa973927e7c92bad56181e75f4b40917924c6c",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 16
+      },
+      {
+        "frame": "armed_use_item_left_2",
+        "bounds": [
+          21,
+          31,
+          42,
+          63
+        ],
+        "sha256": "842b74bb18c26e9925e97953440f6220ddde85596e84ae27b82e28678f098ef9",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 14
+      },
+      {
+        "frame": "armed_use_item_left_3",
+        "bounds": [
+          21,
+          31,
+          42,
+          63
+        ],
+        "sha256": "b7ab6812cf3da6bc747b1240857d3938e110197d8b01d9e6429fd696facd5c13",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 15
+      },
+      {
+        "frame": "armed_use_item_left_4",
+        "bounds": [
+          21,
+          31,
+          42,
+          63
+        ],
+        "sha256": "ec40d4c5e44610ca640d3870ca0736dbd5537df25091d936e3795aa16a0f2e8b",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 15
+      },
+      {
+        "frame": "armed_use_item_left_5",
+        "bounds": [
+          21,
+          31,
+          42,
+          63
+        ],
+        "sha256": "c6c7079a3a51cd173435095876e76796defc086f8e595ce444299a9391749601",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 16
+      }
+    ],
+    "armed_use_item_right": [
+      {
+        "frame": "armed_use_item_right_0",
+        "bounds": [
+          22,
+          31,
+          43,
+          63
+        ],
+        "sha256": "811bfa5b36d79cb501a2fa2f9f7b309f6dc3dfc3d38d9a8beacf1f55d2159c34",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 14
+      },
+      {
+        "frame": "armed_use_item_right_1",
+        "bounds": [
+          22,
+          31,
+          43,
+          63
+        ],
+        "sha256": "44407c52d8d34035d3b1794402c7fb065782aae9178575c4dc3d5a1a734e28e3",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 17
+      },
+      {
+        "frame": "armed_use_item_right_2",
+        "bounds": [
+          22,
+          31,
+          43,
+          63
+        ],
+        "sha256": "54fe232b74b708426473b22b6592686c52e79e7d2a8243ddbd796071f8b5334c",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 16
+      },
+      {
+        "frame": "armed_use_item_right_3",
+        "bounds": [
+          22,
+          31,
+          43,
+          63
+        ],
+        "sha256": "ff42215d48a48a4c5e07921d3b398612163af9cabdf25d9c654d274354cc3b84",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 16
+      },
+      {
+        "frame": "armed_use_item_right_4",
+        "bounds": [
+          22,
+          31,
+          43,
+          63
+        ],
+        "sha256": "576e5816ea84cd389034537de9c28cdd0ed334f597f46b92bb9abd6269041d91",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 16
+      },
+      {
+        "frame": "armed_use_item_right_5",
+        "bounds": [
+          22,
+          31,
+          43,
+          63
+        ],
+        "sha256": "dd41d36141f438a264809b012d80723d0f6c31688ea45497c7dca067e2a640a9",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 16
+      }
+    ],
+    "unarmed_use_item_down": [
+      {
+        "frame": "unarmed_use_item_down_0",
+        "bounds": [
+          20,
+          31,
+          43,
+          63
+        ],
+        "sha256": "d3bfbd74e3cb3b1ca422800667fc22ce7573f8c33efbd7411a4da4edd842ea72",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_use_item_down_1",
+        "bounds": [
+          20,
+          31,
+          42,
+          63
+        ],
+        "sha256": "060cc9b80af82b6957e842cb63f8f82971ad871642d94b9e37615979c620c600",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_use_item_down_2",
+        "bounds": [
+          19,
+          31,
+          41,
+          63
+        ],
+        "sha256": "0fe3e6c3360a627505c69187ccc364589dcbc514e4ef94fd318db6c7bfa5431b",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_use_item_down_3",
+        "bounds": [
+          19,
+          31,
+          40,
+          63
+        ],
+        "sha256": "f6a6da8748637f412c3bca4b3d6305aa4bf890a953732dbbbd58260782b66aae",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 1
+      },
+      {
+        "frame": "unarmed_use_item_down_4",
+        "bounds": [
+          18,
+          31,
+          40,
+          63
+        ],
+        "sha256": "db67b903cded62a1526d519edca7203df9a4d22baf5441e687294ce43485aecc",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_use_item_down_5",
+        "bounds": [
+          16,
+          31,
+          39,
+          63
+        ],
+        "sha256": "b06d950a8e6c09eeeca9a4d8426545a33ff659a71af4dc38999765781bc3ee04",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      }
+    ],
+    "unarmed_use_item_up": [
+      {
+        "frame": "unarmed_use_item_up_0",
+        "bounds": [
+          21,
+          31,
+          42,
+          63
+        ],
+        "sha256": "8311157b68ebcc774a1fff07c86088439eae22fcae0ce538f8f8478d5cf8c7c4",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_use_item_up_1",
+        "bounds": [
+          19,
+          31,
+          41,
+          63
+        ],
+        "sha256": "623dacc5f6e977812250f743a353ccdeddf2147e6b1bcde025ae81d928fcc770",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_use_item_up_2",
+        "bounds": [
+          19,
+          31,
+          41,
+          63
+        ],
+        "sha256": "b51df2364d5171aa5d5c1bc5d86396edd5020400fcf7434befb1a7ae322521dc",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_use_item_up_3",
+        "bounds": [
+          18,
+          31,
+          40,
+          63
+        ],
+        "sha256": "459acefd7cb10d933576b9f69e44ae91634b7dc1b4221c46888fb5a130630096",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_use_item_up_4",
+        "bounds": [
+          18,
+          31,
+          40,
+          63
+        ],
+        "sha256": "c753701f18d123eb17b0a5b96ed65c2a9931f97bd2ea120ca4f5bda802f6a368",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_use_item_up_5",
+        "bounds": [
+          17,
+          31,
+          39,
+          63
+        ],
+        "sha256": "a5ce85c86b9fab54d81346b0677977c5b6844e0221372daed463b2bd469cd765",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      }
+    ],
+    "unarmed_use_item_left": [
+      {
+        "frame": "unarmed_use_item_left_0",
+        "bounds": [
+          24,
+          31,
+          42,
+          63
+        ],
+        "sha256": "5975c7550a94a1376c5709421046589d0113bab70152878bfca26dfe1397cb00",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_use_item_left_1",
+        "bounds": [
+          23,
+          31,
+          42,
+          63
+        ],
+        "sha256": "eaa4a2e863272d2dbc8a46b77c275b0d102dc0b54964da6c449875b683cd811d",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_use_item_left_2",
+        "bounds": [
+          21,
+          31,
+          41,
+          63
+        ],
+        "sha256": "3f678ccc25e2aefbe2bc870d69d6792e0eb18455d030f666ef2ed8488db5e904",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_use_item_left_3",
+        "bounds": [
+          20,
+          31,
+          41,
+          63
+        ],
+        "sha256": "e605c5fad888b18010a9e0d210bdb603e19173e338b1780bc1319830e5b2ba80",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_use_item_left_4",
+        "bounds": [
+          20,
+          31,
+          40,
+          63
+        ],
+        "sha256": "1521259b70a4339cb73efd9d459dd1270ce57ace9dbab01d699f8566bfae954e",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_use_item_left_5",
+        "bounds": [
+          21,
+          31,
+          39,
+          63
+        ],
+        "sha256": "4b8cc708f674cd492b9ebd4d5273965a1926959061f193cb7ed8d12dced3dac1",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      }
+    ],
+    "unarmed_use_item_right": [
+      {
+        "frame": "unarmed_use_item_right_0",
+        "bounds": [
+          22,
+          31,
+          41,
+          63
+        ],
+        "sha256": "42eb082b52c7d144fe0c52f1f6f48ae4abb8360d237f0bf92cd24bb906eca292",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_use_item_right_1",
+        "bounds": [
+          21,
+          31,
+          40,
+          63
+        ],
+        "sha256": "29a6a86cbc920ead5d7e2b209a4e65f2722ff83b97a3992119eebb7f009a840b",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_use_item_right_2",
+        "bounds": [
+          20,
+          31,
+          40,
+          63
+        ],
+        "sha256": "4f2af004363ea25e3fb6d0360a8e29b6b0f49b43f0d96717a53161ad520f8573",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_use_item_right_3",
+        "bounds": [
+          19,
+          31,
+          40,
+          63
+        ],
+        "sha256": "a72cd1788353747499712906132be7736309cc6d2e6bfee55d2be9cbd8f09d0b",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      },
+      {
+        "frame": "unarmed_use_item_right_4",
+        "bounds": [
+          19,
+          31,
+          39,
+          63
+        ],
+        "sha256": "3769106d96bbbce4ad3b68b104cce4a64bc73a410750126263acecb187683b32",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 1
+      },
+      {
+        "frame": "unarmed_use_item_right_5",
+        "bounds": [
+          19,
+          31,
+          37,
+          63
+        ],
+        "sha256": "21158724f81378d0ff697652107f360d72a21ea98fd2a3986b484f3b56b05017",
+        "pivot": [
+          32,
+          64
+        ],
+        "frameMs": 83.33333333333333,
+        "brightWeaponPixels": 0
+      }
+    ],
+    "parry_miss_down": [
+      {
+        "frame": "parry_miss_down_0",
+        "bounds": [
+          29,
+          23,
+          51,
+          55
+        ],
+        "sha256": "b55e4f3b1bb830292f48765676511fa1e5a8af241a26f5422692fc78ff266e78",
+        "pivot": [
+          40,
+          56
+        ],
+        "frameMs": 70,
+        "brightWeaponPixels": 15
+      },
+      {
+        "frame": "parry_miss_down_1",
+        "bounds": [
+          29,
+          23,
+          50,
+          55
+        ],
+        "sha256": "4d9f0a9264e86a075b0a4a1322b84f8119a30baed6a65e20e78e85e18a633651",
+        "pivot": [
+          40,
+          56
+        ],
+        "frameMs": 70,
+        "brightWeaponPixels": 14
+      },
+      {
+        "frame": "parry_miss_down_2",
+        "bounds": [
+          28,
+          23,
+          50,
+          55
+        ],
+        "sha256": "f7c3f82e0fbcf75c891440e0dadfdcc4e03da5b4dd7412ddf527d563624c0a53",
+        "pivot": [
+          40,
+          56
+        ],
+        "frameMs": 70,
+        "brightWeaponPixels": 7
+      }
+    ],
+    "parry_miss_up": [
+      {
+        "frame": "parry_miss_up_0",
+        "bounds": [
+          29,
+          23,
+          51,
+          55
+        ],
+        "sha256": "8c99ed482fb4057e7719611c4064a45e7e9619cba58f80e6ad2353c8af65736a",
+        "pivot": [
+          40,
+          56
+        ],
+        "frameMs": 70,
+        "brightWeaponPixels": 7
+      },
+      {
+        "frame": "parry_miss_up_1",
+        "bounds": [
+          30,
+          24,
+          52,
+          55
+        ],
+        "sha256": "86c7e3f7d51ee15e875d9ed92afb1d71bef6d6b481aa56277013a80df8a2c625",
+        "pivot": [
+          40,
+          56
+        ],
+        "frameMs": 70,
+        "brightWeaponPixels": 5
+      },
+      {
+        "frame": "parry_miss_up_2",
+        "bounds": [
+          30,
+          24,
+          54,
+          55
+        ],
+        "sha256": "b767e7c02cd9d8b6836198ff6729b2506c814dbf8f04cab91c9a459f6ecb5545",
+        "pivot": [
+          40,
+          56
+        ],
+        "frameMs": 70,
+        "brightWeaponPixels": 9
+      }
+    ],
+    "parry_miss_left": [
+      {
+        "frame": "parry_miss_left_0",
+        "bounds": [
+          29,
+          23,
+          50,
+          55
+        ],
+        "sha256": "f9df707ba41a619b8b861340c2e70139698067733b0e9f1ddcfbedbf65e8c4ef",
+        "pivot": [
+          40,
+          56
+        ],
+        "frameMs": 70,
+        "brightWeaponPixels": 8
+      },
+      {
+        "frame": "parry_miss_left_1",
+        "bounds": [
+          27,
+          23,
+          49,
+          55
+        ],
+        "sha256": "5b61255e128c3adcefe3627985bb9854dfdf5ba807e6a43348e88830470da1ef",
+        "pivot": [
+          40,
+          56
+        ],
+        "frameMs": 70,
+        "brightWeaponPixels": 8
+      },
+      {
+        "frame": "parry_miss_left_2",
+        "bounds": [
+          30,
+          23,
+          50,
+          55
+        ],
+        "sha256": "76a2da9eaf3f77612b3d935cba1e19ceb7a3d04cd19429611ee95bd53708d5b1",
+        "pivot": [
+          40,
+          56
+        ],
+        "frameMs": 70,
+        "brightWeaponPixels": 8
+      }
+    ],
+    "parry_miss_right": [
+      {
+        "frame": "parry_miss_right_0",
+        "bounds": [
+          30,
+          23,
+          51,
+          55
+        ],
+        "sha256": "014c6a62e5586f5a53c5ca60c25ad245afa6e1a5752665f825f8449870deeca6",
+        "pivot": [
+          40,
+          56
+        ],
+        "frameMs": 70,
+        "brightWeaponPixels": 11
+      },
+      {
+        "frame": "parry_miss_right_1",
+        "bounds": [
+          31,
+          23,
+          53,
+          55
+        ],
+        "sha256": "9fa61d5170bf02992467084432ab4394f3a1bac5dbfd4695eefecf40b59c01c4",
+        "pivot": [
+          40,
+          56
+        ],
+        "frameMs": 70,
+        "brightWeaponPixels": 9
+      },
+      {
+        "frame": "parry_miss_right_2",
+        "bounds": [
+          31,
+          24,
+          49,
+          55
+        ],
+        "sha256": "78e1a55180221c112b51e8c0f51909aadce620d4e161de81d2a2d77f90b0ef85",
+        "pivot": [
+          40,
+          56
+        ],
+        "frameMs": 70,
+        "brightWeaponPixels": 8
+      }
+    ]
+  }
+}

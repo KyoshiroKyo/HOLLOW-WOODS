@@ -1,0 +1,2226 @@
+{
+  "masterSha256": "d75455e35e29f06e1bcfd41c349158b0548016c556f6d3e85c0ac2007a5eedac",
+  "masterSize": [
+    2592,
+    1152
+  ],
+  "verification": "RGBA interior exact; transparent perimeter; complete order",
+  "sequences": [
+    {
+      "id": 1,
+      "name": "Weapon on",
+      "folder": "01-weapon-on",
+      "durationMs": 1260,
+      "frames": [
+        {
+          "i": 0,
+          "file": "01-cell-000.png",
+          "durationMs": 70,
+          "sha256": "d8bf15ff35ed502c1706316ef03034c50194799ba6e2c350bf0de53cfa6b4b1b"
+        },
+        {
+          "i": 1,
+          "file": "02-cell-001.png",
+          "durationMs": 70,
+          "sha256": "2908a4dbf565a2709d6c548bbcebffaf6d9024e2600bb0382f68e6919a3bd853"
+        },
+        {
+          "i": 2,
+          "file": "03-cell-002.png",
+          "durationMs": 70,
+          "sha256": "9e38e3a1ba3eb5cc373d1eb5af897dd57f794e69c65049382fae62bfa66df705"
+        },
+        {
+          "i": 3,
+          "file": "04-cell-003.png",
+          "durationMs": 70,
+          "sha256": "27676e61b4541c7dab927bc92b6a8894cbb017c6fb418d1950d2a45359e869c9"
+        },
+        {
+          "i": 4,
+          "file": "05-cell-004.png",
+          "durationMs": 70,
+          "sha256": "a95cba9f91358fb9788cfc410ecd7aff65acfc3fba0ddd1cf6414915e3a19d58"
+        },
+        {
+          "i": 5,
+          "file": "06-cell-005.png",
+          "durationMs": 70,
+          "sha256": "f1ec06f2736f22c7bb1d0d7ae01c81b38db7608f08a6fb5b82c8daba838d0833"
+        },
+        {
+          "i": 6,
+          "file": "07-cell-006.png",
+          "durationMs": 70,
+          "sha256": "cac192aca46d9762fe88fc998c360ad793763cfa8f5a22ef45e34dce33cb054d"
+        },
+        {
+          "i": 7,
+          "file": "08-cell-007.png",
+          "durationMs": 70,
+          "sha256": "87ba47b8a57692eb17dfa2a9c56299f55b73efadc000f0b4e128f7d34896183a"
+        },
+        {
+          "i": 8,
+          "file": "09-cell-008.png",
+          "durationMs": 70,
+          "sha256": "7c6607c9342b1431c857cc230a26f4def56d4bdb51bc9e87fd53ff713ede7f5c"
+        },
+        {
+          "i": 9,
+          "file": "10-cell-009.png",
+          "durationMs": 70,
+          "sha256": "2fe7e885d40c135aed373346e2c97c2b0d52d0cc3d5f6c3502e4b4e235d0c2a1"
+        },
+        {
+          "i": 10,
+          "file": "11-cell-010.png",
+          "durationMs": 70,
+          "sha256": "57dc4f55fde8ee08791c0b15309b72b7f596a3da1be3741c214574ac16324d23"
+        },
+        {
+          "i": 11,
+          "file": "12-cell-011.png",
+          "durationMs": 70,
+          "sha256": "288dfd33c6c768978c92e07ce1dd652ea7cbedbcf65dd7e249dc73d98c4eda08"
+        },
+        {
+          "i": 12,
+          "file": "13-cell-012.png",
+          "durationMs": 70,
+          "sha256": "111cfb0fd427ab7b3d86013c4b3d1c249eb7976e4c9ae997571308e4b9ade678"
+        },
+        {
+          "i": 13,
+          "file": "14-cell-013.png",
+          "durationMs": 70,
+          "sha256": "9af1f54edbee77ef066bbefb30e9b679a834e3fc156500184f991219c16dbff5"
+        },
+        {
+          "i": 14,
+          "file": "15-cell-014.png",
+          "durationMs": 70,
+          "sha256": "b10bd60dc404b1bfb53d3fbfe74ec61e1074f6bbb64415f935a805b2be40ac21"
+        },
+        {
+          "i": 15,
+          "file": "16-cell-015.png",
+          "durationMs": 70,
+          "sha256": "c250ce1f1b3d5014b0bdfcc7e4481204edf551650c43ea86ff10d6f383f7b34a"
+        },
+        {
+          "i": 16,
+          "file": "17-cell-016.png",
+          "durationMs": 70,
+          "sha256": "4be41702f04c0ee5b148fe1927b95c296f6d1c2d5b282218d1413d4e9890ac7f"
+        },
+        {
+          "i": 17,
+          "file": "18-cell-017.png",
+          "durationMs": 70,
+          "sha256": "671a2f0b6e283b4abd49d64abe4f2b985575a9055e593cdfb44462495ddf1f54"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Weapon off",
+      "folder": "02-weapon-off",
+      "durationMs": 980,
+      "frames": [
+        {
+          "i": 18,
+          "file": "01-cell-018.png",
+          "durationMs": 70,
+          "sha256": "0af11d65134a8bc117da2152a01daf030d462059785b163892148778a34df089"
+        },
+        {
+          "i": 19,
+          "file": "02-cell-019.png",
+          "durationMs": 70,
+          "sha256": "e61d5fbfd4f1260f6163ccf3b60b64313214fbca935516b3b329024d12bb3cc4"
+        },
+        {
+          "i": 20,
+          "file": "03-cell-020.png",
+          "durationMs": 70,
+          "sha256": "4585fd22ff81d8a8656c8d229a3551d14e613937f94bf006bc6fe9aa29b2b29d"
+        },
+        {
+          "i": 21,
+          "file": "04-cell-021.png",
+          "durationMs": 70,
+          "sha256": "d42294b598f5dd08865298659f96863c3db739a4a3f971139d265ecb2baa24db"
+        },
+        {
+          "i": 22,
+          "file": "05-cell-022.png",
+          "durationMs": 70,
+          "sha256": "37f33f707bb57cd627419cd685753f5dcc5fc98ae030308b61f405bd49bda6fa"
+        },
+        {
+          "i": 23,
+          "file": "06-cell-023.png",
+          "durationMs": 70,
+          "sha256": "e1ea6d23fdabfde079089ebd52f16653cab7b5f01f7dd39d71a2c2dfa0402e8d"
+        },
+        {
+          "i": 24,
+          "file": "07-cell-024.png",
+          "durationMs": 70,
+          "sha256": "6ed3a40aba0c524cc832e7c8bbca059db5c2aac8b9794d4da8bd6bc9f8ffc96e"
+        },
+        {
+          "i": 25,
+          "file": "08-cell-025.png",
+          "durationMs": 70,
+          "sha256": "7cbc3131f3fda788d1601c63a5b0affa4b95933d22e4ef6bd4687e109f1e5afb"
+        },
+        {
+          "i": 26,
+          "file": "09-cell-026.png",
+          "durationMs": 70,
+          "sha256": "03d13f93f7b271bca735123f86253b48d6e6d6fb71b9a882a05fbc764676ad42"
+        },
+        {
+          "i": 27,
+          "file": "10-cell-027.png",
+          "durationMs": 70,
+          "sha256": "8001a24a17ec992186a4b974c86186fbed9b3b92421b273e624f326bce5e8e86"
+        },
+        {
+          "i": 28,
+          "file": "11-cell-028.png",
+          "durationMs": 70,
+          "sha256": "2679ebd732beb15ec6cafcf76237ff39f29daf656063ef871e662074d0e6ade8"
+        },
+        {
+          "i": 29,
+          "file": "12-cell-029.png",
+          "durationMs": 70,
+          "sha256": "00050cfbd47f21746aba526b8328dd34639edfaaa411b5424c9da735ac2128fd"
+        },
+        {
+          "i": 30,
+          "file": "13-cell-030.png",
+          "durationMs": 70,
+          "sha256": "1b2b4d50435c6d0a43989238967c410cc816213c8bec2b608d563bf88f250166"
+        },
+        {
+          "i": 31,
+          "file": "14-cell-031.png",
+          "durationMs": 70,
+          "sha256": "0e823074d7fda69deb579aebefa67bb6b1a12a006cf2d1241fa413e8ac1276e7"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Armed Idle",
+      "folder": "03-armed-idle",
+      "durationMs": 420,
+      "frames": [
+        {
+          "i": 32,
+          "file": "01-cell-032.png",
+          "durationMs": 70,
+          "sha256": "0b560750cefdfed16f849c1a64ae259a4ed43d5ea3bfff3ff1037e0a75db1be0"
+        },
+        {
+          "i": 33,
+          "file": "02-cell-033.png",
+          "durationMs": 70,
+          "sha256": "5e9bdae8f76165e7d94ec8585588088457bf438e8799e6f0c7d24ebcae7a0889"
+        },
+        {
+          "i": 34,
+          "file": "03-cell-034.png",
+          "durationMs": 70,
+          "sha256": "e0e34b88f2b369f0ad5cc1403f5f18aa7f984ff0f1fad943313441d75fc74ea4"
+        },
+        {
+          "i": 35,
+          "file": "04-cell-035.png",
+          "durationMs": 70,
+          "sha256": "967b9a542e05a917c2d3a13744c0f0215426a08ad6284ae141cee4ecffb3d8c4"
+        },
+        {
+          "i": 36,
+          "file": "05-cell-036.png",
+          "durationMs": 70,
+          "sha256": "8ce50907a71f873805108ac89500cda3451c581c2bd39a1b454be333341bc108"
+        },
+        {
+          "i": 37,
+          "file": "06-cell-037.png",
+          "durationMs": 70,
+          "sha256": "f49697b653eb0e18f76d6eda1c6b367eb25baaf23e7ee6d7cb6b625e3f731460"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Unarmed Idle",
+      "folder": "04-unarmed-idle",
+      "durationMs": 420,
+      "frames": [
+        {
+          "i": 38,
+          "file": "01-cell-038.png",
+          "durationMs": 70,
+          "sha256": "be8a6d7e85c7cd97cccfd0ba48f055286ea1b3f785642db8f3c0b1d7abc3452c"
+        },
+        {
+          "i": 39,
+          "file": "02-cell-039.png",
+          "durationMs": 70,
+          "sha256": "78910d18f37f21353ec04d743ec4a337608e428604ea37384c37d5535ecf7391"
+        },
+        {
+          "i": 40,
+          "file": "03-cell-040.png",
+          "durationMs": 70,
+          "sha256": "de308f81038d68c165a7c950dd96c35788cafbd81992ffa6ec2cd435fadd97e8"
+        },
+        {
+          "i": 41,
+          "file": "04-cell-041.png",
+          "durationMs": 70,
+          "sha256": "63166510bc6155c5830888ed775876836525bf7d96209fff292020a8d21fcb75"
+        },
+        {
+          "i": 42,
+          "file": "05-cell-042.png",
+          "durationMs": 70,
+          "sha256": "1377b86f8efe14781721f465668b20b7c6de4b4d654e25c252bf352a47f95f84"
+        },
+        {
+          "i": 43,
+          "file": "06-cell-043.png",
+          "durationMs": 70,
+          "sha256": "c93c6be4fa5abe2f752ef2daf9417d3b255149a70c209cd48cf990db05bb4e55"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Heavy Attack 1",
+      "folder": "05-heavy-attack-1",
+      "durationMs": 1330,
+      "frames": [
+        {
+          "i": 44,
+          "file": "01-cell-044.png",
+          "durationMs": 70,
+          "sha256": "3bc070c833f46c47c93e9e725ba6d85e96081fd2da16cdd589478dfec6244b31"
+        },
+        {
+          "i": 45,
+          "file": "02-cell-045.png",
+          "durationMs": 70,
+          "sha256": "cdb268b4c8957c75e853d1e1ce69188c2486258946976bfeae9830b5224e1cf5"
+        },
+        {
+          "i": 46,
+          "file": "03-cell-046.png",
+          "durationMs": 70,
+          "sha256": "fdb3575e6d5e4eb3bc8ba00bf7a9000e516c964c7d0d858d8bad1a3a0de8d295"
+        },
+        {
+          "i": 47,
+          "file": "04-cell-047.png",
+          "durationMs": 70,
+          "sha256": "79fb4fc34829e712e93749aec96e9cca1efea242a8401e582fb1499334a4b95b"
+        },
+        {
+          "i": 48,
+          "file": "05-cell-048.png",
+          "durationMs": 70,
+          "sha256": "6a0622052cb48aafd15db72bedaec45da594b19d36d222ccb9ac3f4070a94759"
+        },
+        {
+          "i": 49,
+          "file": "06-cell-049.png",
+          "durationMs": 70,
+          "sha256": "871d1dc209c3b03d4d0bb74d427c4fea074e56f3a1c02963f508e99c326b5b39"
+        },
+        {
+          "i": 50,
+          "file": "07-cell-050.png",
+          "durationMs": 70,
+          "sha256": "776afbcd68c0525daeaf38622df070dcaa25ea66c82bbe01f48666744761dcf4"
+        },
+        {
+          "i": 51,
+          "file": "08-cell-051.png",
+          "durationMs": 70,
+          "sha256": "2a13e10295bacd264e258245518878b3c1eb8560fec1aba4ca6391afdea72d6d"
+        },
+        {
+          "i": 52,
+          "file": "09-cell-052.png",
+          "durationMs": 70,
+          "sha256": "513fefed963bd6c4402c447d874aa8237ad9e0142a35bbfb6b35eafbb5e3d703"
+        },
+        {
+          "i": 53,
+          "file": "10-cell-053.png",
+          "durationMs": 70,
+          "sha256": "1d78534bfea1b9fadeda4cf7b29eb0023d3adca8b62d1fbec026693ac0e9a7f0"
+        },
+        {
+          "i": 54,
+          "file": "11-cell-054.png",
+          "durationMs": 70,
+          "sha256": "29106f968de014dc19eb22869f0c9470e8b7728abbb0b47e30e636b303aa15c6"
+        },
+        {
+          "i": 55,
+          "file": "12-cell-055.png",
+          "durationMs": 70,
+          "sha256": "3fe000cec1951bbe3cdca6f2355887850251d51137197837f497c326921c68d6"
+        },
+        {
+          "i": 56,
+          "file": "13-cell-056.png",
+          "durationMs": 70,
+          "sha256": "942fdb5fd853836cd30f6d810b243c221b3b28104cf95ed1fd4aab442f9f82c7"
+        },
+        {
+          "i": 57,
+          "file": "14-cell-057.png",
+          "durationMs": 70,
+          "sha256": "c3f7a65ea4b0a00d14c2e68926b8ec0d776180bab58ec43fa7a142c0f915b3fd"
+        },
+        {
+          "i": 58,
+          "file": "15-cell-058.png",
+          "durationMs": 70,
+          "sha256": "d8f347a52b3ada3de1d323b41451e0cea7d79400551bfee23d06ffb9bb49a6ea"
+        },
+        {
+          "i": 59,
+          "file": "16-cell-059.png",
+          "durationMs": 70,
+          "sha256": "5d69b7391d8cc04a327eb5fd04f99d5c868b7ef432cbde1306e2227ae820679d"
+        },
+        {
+          "i": 60,
+          "file": "17-cell-060.png",
+          "durationMs": 70,
+          "sha256": "88ccaf74fec609c38b03ba5eacc76aa8f42a66cc6c3017bd75e0a6ad5d81aa58"
+        },
+        {
+          "i": 61,
+          "file": "18-cell-061.png",
+          "durationMs": 70,
+          "sha256": "afc28018d7cef74e2ca213a257eeffd2263465e3937ff25384d367250f0dbe2f"
+        },
+        {
+          "i": 62,
+          "file": "19-cell-062.png",
+          "durationMs": 70,
+          "sha256": "d209b9a7d50c57dcb40a18027850e8714fe1a5445fb7072de7f357e8f2898884"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Heavy Attack 2",
+      "folder": "06-heavy-attack-2",
+      "durationMs": 560,
+      "frames": [
+        {
+          "i": 63,
+          "file": "01-cell-063.png",
+          "durationMs": 70,
+          "sha256": "7caa1a90dc1ebe85cb8f49318321b88ac221555bad38485d914f56cc1c4c37a8"
+        },
+        {
+          "i": 64,
+          "file": "02-cell-064.png",
+          "durationMs": 70,
+          "sha256": "c4a665d81538c13147ac36446f0a6e646b342b63bc4d2b27751a7f6bb129b585"
+        },
+        {
+          "i": 65,
+          "file": "03-cell-065.png",
+          "durationMs": 70,
+          "sha256": "fc08a4da8d31f95ec1b0561ab80485093c65374767abfe44b756b7e34ae06f40"
+        },
+        {
+          "i": 66,
+          "file": "04-cell-066.png",
+          "durationMs": 70,
+          "sha256": "0d6d7dd83d1ec529537a5b4902d949c3733d0d238c54a3e8a9d1cb6fb1986c9b"
+        },
+        {
+          "i": 67,
+          "file": "05-cell-067.png",
+          "durationMs": 70,
+          "sha256": "f2102727c9cf836c58628d47f96e6e13f13f09b5d66ad4d45403b9f9636d0b66"
+        },
+        {
+          "i": 68,
+          "file": "06-cell-068.png",
+          "durationMs": 70,
+          "sha256": "835316a974bc773f0e22138011e9870f34b459db19d17dd4a92387d063875a2a"
+        },
+        {
+          "i": 69,
+          "file": "07-cell-069.png",
+          "durationMs": 70,
+          "sha256": "5e968608bb0c44f611d9fa55dfcc1e23fb575de111e4655d3110e4564778a4c0"
+        },
+        {
+          "i": 70,
+          "file": "08-cell-070.png",
+          "durationMs": 70,
+          "sha256": "8cebd91d00e5fee003ff26940446b7543b53dfc02f942d3a02f4c1790a5eabc1"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Heavy Attack 3",
+      "folder": "07-heavy-attack-3",
+      "durationMs": 910,
+      "frames": [
+        {
+          "i": 71,
+          "file": "01-cell-071.png",
+          "durationMs": 70,
+          "sha256": "734a15dff1e5a5934059c44a9cc453ff947650f01d32bbe2190444dfeb90c909"
+        },
+        {
+          "i": 72,
+          "file": "02-cell-072.png",
+          "durationMs": 70,
+          "sha256": "aefd9e1e73b186bed2bfd57f93104c61ef04fed96ffb6b2197cfd4ee7a00785e"
+        },
+        {
+          "i": 73,
+          "file": "03-cell-073.png",
+          "durationMs": 70,
+          "sha256": "28cdec3e65a42fc1f14bb2f57a44db3fda3d08f5965518d76132ae301c90091d"
+        },
+        {
+          "i": 74,
+          "file": "04-cell-074.png",
+          "durationMs": 70,
+          "sha256": "e44456f50fb3a84f34c11ad4556b44adc9cba044378638e5bd524ad236a7a0db"
+        },
+        {
+          "i": 75,
+          "file": "05-cell-075.png",
+          "durationMs": 70,
+          "sha256": "952d2d5cbea21ccddd561ea5562de27de5bf2a2a245951eeef5e5cb55e307993"
+        },
+        {
+          "i": 76,
+          "file": "06-cell-076.png",
+          "durationMs": 70,
+          "sha256": "a3d12c52eea71e8201fdec159766a822ccdabf458beec3a80a7d543dfa8314c1"
+        },
+        {
+          "i": 77,
+          "file": "07-cell-077.png",
+          "durationMs": 70,
+          "sha256": "701b5185cd703e88c6e39af721301a96f781a945ace4d574d8f81c2959d8a68b"
+        },
+        {
+          "i": 78,
+          "file": "08-cell-078.png",
+          "durationMs": 70,
+          "sha256": "7bc1dd12180b11140f7b255ac4b9fbe1fdbf696d53b4815c199bddee8259b197"
+        },
+        {
+          "i": 79,
+          "file": "09-cell-079.png",
+          "durationMs": 70,
+          "sha256": "02ea727ae69975c362b714a23c0b4095e4122007b1fdb647536bbc1f36f74392"
+        },
+        {
+          "i": 80,
+          "file": "10-cell-080.png",
+          "durationMs": 70,
+          "sha256": "299c3d0f409ac8432d3e4426335057c25a0dd1d876d575962834fb25b05379dd"
+        },
+        {
+          "i": 81,
+          "file": "11-cell-081.png",
+          "durationMs": 70,
+          "sha256": "3c5829e261d8ac2b5fe62ef46f724d3cb967f657f90609aab1cdc59cc0356be9"
+        },
+        {
+          "i": 82,
+          "file": "12-cell-082.png",
+          "durationMs": 70,
+          "sha256": "85c40091fd29712bfeb1f079a2617aff404afd66980206218f65e71752702c10"
+        },
+        {
+          "i": 83,
+          "file": "13-cell-083.png",
+          "durationMs": 70,
+          "sha256": "8ca43886073274fbdfe48db1808864db6ccd20828a314e71a393ebc71b7f5135"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Attack 1",
+      "folder": "08-attack-1",
+      "durationMs": 630,
+      "frames": [
+        {
+          "i": 84,
+          "file": "01-cell-084.png",
+          "durationMs": 70,
+          "sha256": "b372f632d626314d05248221346fcf8da316c86e9df83743f939575dd4c92fb8"
+        },
+        {
+          "i": 85,
+          "file": "02-cell-085.png",
+          "durationMs": 70,
+          "sha256": "bf966ee20e0e228a4a1ca3c5a8291a90a49560cee270c43386443e161403a936"
+        },
+        {
+          "i": 86,
+          "file": "03-cell-086.png",
+          "durationMs": 70,
+          "sha256": "d63738b5c50872bb2a7b068b7278f00a66a5477322e57c7739dc905ed35b09ab"
+        },
+        {
+          "i": 87,
+          "file": "04-cell-087.png",
+          "durationMs": 70,
+          "sha256": "a1ec4584e7070dd9f08742b4c06df9c99118c2b35177169ad9d9b05ed10625be"
+        },
+        {
+          "i": 88,
+          "file": "05-cell-088.png",
+          "durationMs": 70,
+          "sha256": "c152344ad235ab8d06a62c3d52bdba4216a2cbf7ed51704a9af48bfa2960f8c7"
+        },
+        {
+          "i": 89,
+          "file": "06-cell-089.png",
+          "durationMs": 70,
+          "sha256": "f7012bf8569e91805f3f5ba898c0e8cf63a72f50c788fc9f1f6b58c03622a767"
+        },
+        {
+          "i": 90,
+          "file": "07-cell-090.png",
+          "durationMs": 70,
+          "sha256": "eec0cd5d2baa6ef679cd71d0f3d4fa2768aa17ed2f9e9c03e6e14593bee5af58"
+        },
+        {
+          "i": 91,
+          "file": "08-cell-091.png",
+          "durationMs": 70,
+          "sha256": "f279d922455d88a42ca53ac1ec9a41db1a894b64c3110059140d160df4fab2d7"
+        },
+        {
+          "i": 92,
+          "file": "09-cell-092.png",
+          "durationMs": 70,
+          "sha256": "667d7160f1b6b6d0c26b6859f8db12e416efbc238f29ed915733f92eaa9f3831"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Attack 2",
+      "folder": "09-attack-2",
+      "durationMs": 630,
+      "frames": [
+        {
+          "i": 93,
+          "file": "01-cell-093.png",
+          "durationMs": 70,
+          "sha256": "0297988e4914217fa07eff3b9b79fc390f1f0a45822776de5c905c27a76f5d68"
+        },
+        {
+          "i": 94,
+          "file": "02-cell-094.png",
+          "durationMs": 70,
+          "sha256": "b5bd50349ba9205e931358602155772c95728bcf2aacf9f57106e362d760cb05"
+        },
+        {
+          "i": 95,
+          "file": "03-cell-095.png",
+          "durationMs": 70,
+          "sha256": "a6924776cb4e99c9bace3bc11402b3a257ad56cd531d89cb613c5f0ccead426b"
+        },
+        {
+          "i": 96,
+          "file": "04-cell-096.png",
+          "durationMs": 70,
+          "sha256": "d93d098ad6366fdc4c635bc0a101c49cd942d78f696baeae3bc2033ed34e0143"
+        },
+        {
+          "i": 97,
+          "file": "05-cell-097.png",
+          "durationMs": 70,
+          "sha256": "9c2ec0f12a0588b7a1e9e94759a1ac3063e8639263fd2edcd174485119101e53"
+        },
+        {
+          "i": 98,
+          "file": "06-cell-098.png",
+          "durationMs": 70,
+          "sha256": "c3a13de8ed7b8632ad5059160e79eb1e8c7631ec70a6919df290eccac0cc9584"
+        },
+        {
+          "i": 99,
+          "file": "07-cell-099.png",
+          "durationMs": 70,
+          "sha256": "2092626cc9ecea3a1891a133b97f4648ac1d68c7d046482b7f568045ed2add4a"
+        },
+        {
+          "i": 100,
+          "file": "08-cell-100.png",
+          "durationMs": 70,
+          "sha256": "dd94288fa4afb5d58d496ffa223f7957240de5fccd341f3b986e9fa24da469fc"
+        },
+        {
+          "i": 101,
+          "file": "09-cell-101.png",
+          "durationMs": 70,
+          "sha256": "2202fbda89a473c3ee6a2c53ad4f08af38799a78fa70631d6cca67dffe199a1d"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Attack 3",
+      "folder": "10-attack-3",
+      "durationMs": 770,
+      "frames": [
+        {
+          "i": 102,
+          "file": "01-cell-102.png",
+          "durationMs": 70,
+          "sha256": "e0425f4609b8f68e9b33a83ef32631026078ffcc8302b31e4919e06ae25fe22b"
+        },
+        {
+          "i": 103,
+          "file": "02-cell-103.png",
+          "durationMs": 70,
+          "sha256": "c3178a9b01a60e8b577c47cd62482e01b5320a89e0da1c6a1363b02923a2ca79"
+        },
+        {
+          "i": 104,
+          "file": "03-cell-104.png",
+          "durationMs": 70,
+          "sha256": "77bac98f78e024e5a20330e9a3d6315cf236da3e069182f09e9854c416d889ff"
+        },
+        {
+          "i": 105,
+          "file": "04-cell-105.png",
+          "durationMs": 70,
+          "sha256": "383f686c7dfddea0072d73b5ff9f2063f4f17039ef5f1e5ebb15e7ca0cdccba2"
+        },
+        {
+          "i": 106,
+          "file": "05-cell-106.png",
+          "durationMs": 70,
+          "sha256": "9cebd878d88acb60acb9d169c6fddafd7caa1d1e61e83374329178cbe571a1f7"
+        },
+        {
+          "i": 107,
+          "file": "06-cell-107.png",
+          "durationMs": 70,
+          "sha256": "dbc7ca6f0bec0bde1aaf16d2f9d334d1b2fae07dcc0bdf97e68f50c923784a84"
+        },
+        {
+          "i": 108,
+          "file": "07-cell-108.png",
+          "durationMs": 70,
+          "sha256": "61da5f332bcaff472f813b30bf5065aaef8d8cfc76d133588239e9a2a206c8cb"
+        },
+        {
+          "i": 109,
+          "file": "08-cell-109.png",
+          "durationMs": 70,
+          "sha256": "cf8f341bfe3982e139258c2a9334edc99851049bec424156b7f9324129b4e019"
+        },
+        {
+          "i": 110,
+          "file": "09-cell-110.png",
+          "durationMs": 70,
+          "sha256": "5749330aa3950af14b76dca6b001ec505b56320bb97a257f8a4a3e344583e43a"
+        },
+        {
+          "i": 111,
+          "file": "10-cell-111.png",
+          "durationMs": 70,
+          "sha256": "5c6db5389551e9fcb2b12aef8de4ea22a5c5ba5f780d46c85bfce2eda5cc5dc9"
+        },
+        {
+          "i": 112,
+          "file": "11-cell-112.png",
+          "durationMs": 70,
+          "sha256": "84dc61e10365d1d321719ddbbf083405f5f7c675ba39940e52120cb16aeac79f"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Attack 4",
+      "folder": "11-attack-4",
+      "durationMs": 770,
+      "frames": [
+        {
+          "i": 113,
+          "file": "01-cell-113.png",
+          "durationMs": 70,
+          "sha256": "0f3ad3c97d21c1427f4528c3494fb02432b60f7cacf6bbc4c26b77c6a1a56bb5"
+        },
+        {
+          "i": 114,
+          "file": "02-cell-114.png",
+          "durationMs": 70,
+          "sha256": "e546152d1aeaef2c512de435b0a9c799777733302235d3ae118f4084919e3906"
+        },
+        {
+          "i": 115,
+          "file": "03-cell-115.png",
+          "durationMs": 70,
+          "sha256": "7ac24a987b5ea8cc54f8c7955ce619e36258a2096166a868dd4953eb1cf4bd6c"
+        },
+        {
+          "i": 116,
+          "file": "04-cell-116.png",
+          "durationMs": 70,
+          "sha256": "6f246c7c9a5e727d818065103e56db7f6f96e106af8c73ff68c1e402d59ba511"
+        },
+        {
+          "i": 117,
+          "file": "05-cell-117.png",
+          "durationMs": 70,
+          "sha256": "193dd832a903c44266ab1f3f1a98a6b2eae3478f89782eb07a81bded2c6a7422"
+        },
+        {
+          "i": 118,
+          "file": "06-cell-118.png",
+          "durationMs": 70,
+          "sha256": "9794944c23cb8f98d5e9ea376d423dc639f052db5fca435db7f258ea07b5e114"
+        },
+        {
+          "i": 119,
+          "file": "07-cell-119.png",
+          "durationMs": 70,
+          "sha256": "be255e5fed9cf667e7e774e55296f565b29ac7b5101cb13052f45588d88da85d"
+        },
+        {
+          "i": 120,
+          "file": "08-cell-120.png",
+          "durationMs": 70,
+          "sha256": "a30eb729f6adeba4c9860c1eb5cae94dac7ab768bf38b616ecec1e9c7b4b36ee"
+        },
+        {
+          "i": 121,
+          "file": "09-cell-121.png",
+          "durationMs": 70,
+          "sha256": "32f08f39a0f1b9bc942ba3b3f04debebc56f7e0a2f382363d9d976737167a160"
+        },
+        {
+          "i": 122,
+          "file": "10-cell-122.png",
+          "durationMs": 70,
+          "sha256": "f90046c6cbae36e342cfd45eb35a79621d88e24fa5c9ac7afd91ec045560c1f8"
+        },
+        {
+          "i": 123,
+          "file": "11-cell-123.png",
+          "durationMs": 70,
+          "sha256": "b35d0499b8de186d18724e6c05b42711e9e7b5661150e5830fc7a1eae66c7f32"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Armed Roll",
+      "folder": "12-armed-roll",
+      "durationMs": 840,
+      "frames": [
+        {
+          "i": 124,
+          "file": "01-cell-124.png",
+          "durationMs": 70,
+          "sha256": "c40c483a57a0e068304f5fd9e076d54de2f722a864b30f158b379fc78dd6b757"
+        },
+        {
+          "i": 125,
+          "file": "02-cell-125.png",
+          "durationMs": 70,
+          "sha256": "e58c4a1d809ea18c1098bd3e5aaec2b49e504ab97469aa9d8daa7548717e428d"
+        },
+        {
+          "i": 126,
+          "file": "03-cell-126.png",
+          "durationMs": 70,
+          "sha256": "02dde22a522235ffde0ff8975754f553dde24daa5aaa443337b3cf3fb8686a8b"
+        },
+        {
+          "i": 127,
+          "file": "04-cell-127.png",
+          "durationMs": 70,
+          "sha256": "5bd2d050482a6a7b17c979557f1a03f78704d7699894ed658f045ef7fc8eb899"
+        },
+        {
+          "i": 128,
+          "file": "05-cell-128.png",
+          "durationMs": 70,
+          "sha256": "1435ad6a3479d9eba6c071eb79d6571aede921458166f5ccfe4d5f86c046b272"
+        },
+        {
+          "i": 129,
+          "file": "06-cell-129.png",
+          "durationMs": 70,
+          "sha256": "6de8f24749a80aac695398757eba033f1a3d15627448a03be1a32b3cc5dd5285"
+        },
+        {
+          "i": 130,
+          "file": "07-cell-130.png",
+          "durationMs": 70,
+          "sha256": "7fbfeeb6b55c6cca5e53d73c969b30947b48149fad727d7235bfb17d1dcfffed"
+        },
+        {
+          "i": 131,
+          "file": "08-cell-131.png",
+          "durationMs": 70,
+          "sha256": "b39123b42fa59dcf34dbf72a4de5caadfe144f7c122ef2cd1d4dd947a1fb7e40"
+        },
+        {
+          "i": 132,
+          "file": "09-cell-132.png",
+          "durationMs": 70,
+          "sha256": "5659655fc58dee026ba8891008c58f4d59be72dc124eda36dc0f8dd68ff69f01"
+        },
+        {
+          "i": 133,
+          "file": "10-cell-133.png",
+          "durationMs": 70,
+          "sha256": "a8910797e5e12c907a1b81b43f8235aa04d7aaaba590edcdfc1c57ff8d7d6d75"
+        },
+        {
+          "i": 134,
+          "file": "11-cell-134.png",
+          "durationMs": 70,
+          "sha256": "74e802ea84a72d2715b0aa0f513e868d9b7f92ed40759ec43db29f7b1a04f1c9"
+        },
+        {
+          "i": 135,
+          "file": "12-cell-135.png",
+          "durationMs": 70,
+          "sha256": "018bfbff72cb4b2db3ea277b62fd9963f62cd11bf7f5001126a9b378bbd1643f"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Unarmed Roll",
+      "folder": "13-unarmed-roll",
+      "durationMs": 840,
+      "frames": [
+        {
+          "i": 136,
+          "file": "01-cell-136.png",
+          "durationMs": 70,
+          "sha256": "e6272905686a67f03a35591882941e6a5f88b4e966f629d73250694798ac5642"
+        },
+        {
+          "i": 137,
+          "file": "02-cell-137.png",
+          "durationMs": 70,
+          "sha256": "d66414d5faa4564d0c69b5925e88786f2ecef563a995529d9206d2bf41a11c16"
+        },
+        {
+          "i": 138,
+          "file": "03-cell-138.png",
+          "durationMs": 70,
+          "sha256": "d971f4d323f6e0a4c5f7db3df3ee566b9b6a4d9823ee1324844fc259fa3441fe"
+        },
+        {
+          "i": 139,
+          "file": "04-cell-139.png",
+          "durationMs": 70,
+          "sha256": "cfcb5802efb85e5b2a5a2d5ffca93ae3da37e18bc27ded026f9adafd0e32e887"
+        },
+        {
+          "i": 140,
+          "file": "05-cell-140.png",
+          "durationMs": 70,
+          "sha256": "0051057d312a8f41da8eca47e0f409b5a7a77835b0913d4d186a6f5ad87c17ab"
+        },
+        {
+          "i": 141,
+          "file": "06-cell-141.png",
+          "durationMs": 70,
+          "sha256": "a4034048650489f0b00664ecf95e4b3595101fbf613d8828ab48f87523c4f662"
+        },
+        {
+          "i": 142,
+          "file": "07-cell-142.png",
+          "durationMs": 70,
+          "sha256": "92fa7e6e7d02f078d755844f750e43f623164ad31bfce9ca567b834f94ce4be4"
+        },
+        {
+          "i": 143,
+          "file": "08-cell-143.png",
+          "durationMs": 70,
+          "sha256": "d915368e4299c12597516be6d3131f30e61225fe6777cda9f8ce0a5f471aa0f8"
+        },
+        {
+          "i": 144,
+          "file": "09-cell-144.png",
+          "durationMs": 70,
+          "sha256": "564d3a43c70f428e181ea79555b4591e25bc7bd346396c3cd87cc3cd49ea7302"
+        },
+        {
+          "i": 145,
+          "file": "10-cell-145.png",
+          "durationMs": 70,
+          "sha256": "c23cbfe77971483744e32413f7672a4a91418931149f6f8063b92718a84c6c11"
+        },
+        {
+          "i": 146,
+          "file": "11-cell-146.png",
+          "durationMs": 70,
+          "sha256": "f757dc193dae5565a6574b8c8006f342565b83b664613d8de152a38168f02a20"
+        },
+        {
+          "i": 147,
+          "file": "12-cell-147.png",
+          "durationMs": 70,
+          "sha256": "3b3fd6730121a57ba60923430220823112faf9313b4a02f5326d7c2d3fa5ec8e"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "name": "Unarmed Run",
+      "folder": "14-unarmed-run",
+      "durationMs": 840,
+      "frames": [
+        {
+          "i": 148,
+          "file": "01-cell-148.png",
+          "durationMs": 70,
+          "sha256": "368db3d8df9cad28ed1faf5c44bf727523fe9d85bb11c6a9da4129e43eeb78ed"
+        },
+        {
+          "i": 149,
+          "file": "02-cell-149.png",
+          "durationMs": 70,
+          "sha256": "1961b55bed9e32ead596896ab821b51381b3d402f9f0fecb2269cf16ce9d8781"
+        },
+        {
+          "i": 150,
+          "file": "03-cell-150.png",
+          "durationMs": 70,
+          "sha256": "017bd18e51b06fd301dc03f89d09ed95e9b6b3fd5c6b784cccf1f8fa364e912f"
+        },
+        {
+          "i": 151,
+          "file": "04-cell-151.png",
+          "durationMs": 70,
+          "sha256": "f519c540ec6d1a349d86a72eb79a196d3cadb6c3018fd77e714989875ec89507"
+        },
+        {
+          "i": 152,
+          "file": "05-cell-152.png",
+          "durationMs": 70,
+          "sha256": "706f7e5b40d8d50ff3f6527e5a08cd22393591bbad6848aa7ecbda6234f87ed2"
+        },
+        {
+          "i": 153,
+          "file": "06-cell-153.png",
+          "durationMs": 70,
+          "sha256": "d74f59b1f2a6fff557ebe10fba64cc19ce61fc56e49bcd3490352a25c510059e"
+        },
+        {
+          "i": 154,
+          "file": "07-cell-154.png",
+          "durationMs": 70,
+          "sha256": "c771eb4131e6d72e3068f7db5444fadff0d3c7242967d1b265d4a665b33df943"
+        },
+        {
+          "i": 155,
+          "file": "08-cell-155.png",
+          "durationMs": 70,
+          "sha256": "c20d1c8fb96f0af115e8f26e268f19230a2c6b864dfb6e49dff461bdc9d064ec"
+        },
+        {
+          "i": 156,
+          "file": "09-cell-156.png",
+          "durationMs": 70,
+          "sha256": "a29f633dcd462eed71a6cc23ae4a87a67ae882667e2c9202a682f201a2f93dde"
+        },
+        {
+          "i": 157,
+          "file": "10-cell-157.png",
+          "durationMs": 70,
+          "sha256": "a709271505bd240216cdeb547bc285359d7306f22517c61ccf5ffe9140409621"
+        },
+        {
+          "i": 158,
+          "file": "11-cell-158.png",
+          "durationMs": 70,
+          "sha256": "b1c644c869204124d7bb7423e1afd098eb7e814ff2580b3df36a78123af17048"
+        },
+        {
+          "i": 159,
+          "file": "12-cell-159.png",
+          "durationMs": 70,
+          "sha256": "cdfa37f1b1e610fb235ca440870a530784431926422bfbd6c4f7acf038f4cee5"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "name": "Armed Run",
+      "folder": "15-armed-run",
+      "durationMs": 840,
+      "frames": [
+        {
+          "i": 160,
+          "file": "01-cell-160.png",
+          "durationMs": 70,
+          "sha256": "98bffdf92749bcb1a87956f3ea6f766102ce0687112113fa03281bbc4b9c2761"
+        },
+        {
+          "i": 161,
+          "file": "02-cell-161.png",
+          "durationMs": 70,
+          "sha256": "357db00f3cf2272500718666c839f0990b59b40655b8bfa0992026f535f4a061"
+        },
+        {
+          "i": 162,
+          "file": "03-cell-162.png",
+          "durationMs": 70,
+          "sha256": "82c1b59c6dea5c4f9309c2d77ff27bfbed8b351c9a2dcaa885fb632ed8fe3587"
+        },
+        {
+          "i": 163,
+          "file": "04-cell-163.png",
+          "durationMs": 70,
+          "sha256": "1f16dba8caeb04ec54e60213c83de97ce96378cff90127133d8228a430576e51"
+        },
+        {
+          "i": 164,
+          "file": "05-cell-164.png",
+          "durationMs": 70,
+          "sha256": "4b96beaf503f8ff320b5ed9587780da7bb636c9ce627a8c97b455b11d13e8517"
+        },
+        {
+          "i": 165,
+          "file": "06-cell-165.png",
+          "durationMs": 70,
+          "sha256": "357fed3a28eca5eb4ec28036e05524a9e17011b38414e18c63953fcf04bc2f59"
+        },
+        {
+          "i": 166,
+          "file": "07-cell-166.png",
+          "durationMs": 70,
+          "sha256": "f47d49937bd6e6d45028bdd1096a0e19e680606f8f9de37e5ab7ac489c9421c0"
+        },
+        {
+          "i": 167,
+          "file": "08-cell-167.png",
+          "durationMs": 70,
+          "sha256": "ca78ec7c959792cacf73c62931a324b9320000f7597d309e713789276c8ac492"
+        },
+        {
+          "i": 168,
+          "file": "09-cell-168.png",
+          "durationMs": 70,
+          "sha256": "36f9141e1e01654afa2f069557a3ff4a420c9a4047ab7a189dc58bdbba75deac"
+        },
+        {
+          "i": 169,
+          "file": "10-cell-169.png",
+          "durationMs": 70,
+          "sha256": "0fd714a360624eed5e63ca8ff98b7b7bed3ce56684f5ec364398ee73f29161d6"
+        },
+        {
+          "i": 170,
+          "file": "11-cell-170.png",
+          "durationMs": 70,
+          "sha256": "344391ff6a42caa47f02beab56fc31f467db3274db7dfc048fc066f566c827b2"
+        },
+        {
+          "i": 171,
+          "file": "12-cell-171.png",
+          "durationMs": 70,
+          "sha256": "c02670123455c8f1f546ebdebe23ecee26a1b592405a04093a3099bee1957911"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "name": "Unarmed Jump",
+      "folder": "16-unarmed-jump",
+      "durationMs": 420,
+      "frames": [
+        {
+          "i": 172,
+          "file": "01-cell-172.png",
+          "durationMs": 70,
+          "sha256": "0f5db71e46944ea2caf777a0723d7d1d2281d775db8aa55d0d560b99fa17d2c5"
+        },
+        {
+          "i": 173,
+          "file": "02-cell-173.png",
+          "durationMs": 70,
+          "sha256": "41ff7e6902b629668ad39bf0ffc450ede4dc33c40b51b1b4ef2d9075eda800d7"
+        },
+        {
+          "i": 174,
+          "file": "03-cell-174.png",
+          "durationMs": 70,
+          "sha256": "2d68006c95b52aabd706b7bfaa35c1b422059da47006b95192621416bb679c8c"
+        },
+        {
+          "i": 175,
+          "file": "04-cell-175.png",
+          "durationMs": 70,
+          "sha256": "77848f5981842d3e76b6af36dee94875b638f80e556c6e1c6edc1af2ff2e73cf"
+        },
+        {
+          "i": 176,
+          "file": "05-cell-176.png",
+          "durationMs": 70,
+          "sha256": "64a0197a87a0e090164ebbc0998f43a1e6c80ab4ac23f3a6581ed68ac0bdc94c"
+        },
+        {
+          "i": 177,
+          "file": "06-cell-177.png",
+          "durationMs": 70,
+          "sha256": "ab1d744e42ab78bf30839bde46fb4807f85086fb9f3e98db2bdc775c80668f7e"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "name": "Unarmed Mid air",
+      "folder": "17-unarmed-mid-air",
+      "durationMs": 70,
+      "frames": [
+        {
+          "i": 178,
+          "file": "01-cell-178.png",
+          "durationMs": 70,
+          "sha256": "ab30e68647447187a117456719444d62c95496456bdff285fbba60994b23fbdd"
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "name": "Unarmed Fall light",
+      "folder": "18-unarmed-fall-light",
+      "durationMs": 420,
+      "frames": [
+        {
+          "i": 179,
+          "file": "01-cell-179.png",
+          "durationMs": 70,
+          "sha256": "27e36f7dddcb5a7aa282a4a0adffe07e1fd68342d4027040fe7bdc8df5d84efd"
+        },
+        {
+          "i": 180,
+          "file": "02-cell-180.png",
+          "durationMs": 70,
+          "sha256": "06d5599a61542b08225d1ab31ae0b093f91b9a7a857c7ba66ed238eacd81ccf4"
+        },
+        {
+          "i": 181,
+          "file": "03-cell-181.png",
+          "durationMs": 70,
+          "sha256": "2682817d0a73db53e3953b8dd55ba4b2ef6667590a4c735f0aa6be31999695da"
+        },
+        {
+          "i": 182,
+          "file": "04-cell-182.png",
+          "durationMs": 70,
+          "sha256": "a77ff0e358ad9e6b9249c27360fa568a3153c20edb8d9125045a5ed95c1725c2"
+        },
+        {
+          "i": 183,
+          "file": "05-cell-183.png",
+          "durationMs": 70,
+          "sha256": "0dd5278ec818bee470179e0e6e8dd36435f83fdbf30798919b2a65afc0273f26"
+        },
+        {
+          "i": 184,
+          "file": "06-cell-184.png",
+          "durationMs": 70,
+          "sha256": "a0a2dbb50b9a1e6103d0ed26cf8518afdd184dc1737d9d3d4f1a45285b43401e"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "name": "Unarmed Fall heavy",
+      "folder": "19-unarmed-fall-heavy",
+      "durationMs": 420,
+      "frames": [
+        {
+          "i": 185,
+          "file": "01-cell-185.png",
+          "durationMs": 70,
+          "sha256": "7f06cace675a3e0e88bf3fcac553e44a38a4f9708659357cb7a529ed385dc1b8"
+        },
+        {
+          "i": 186,
+          "file": "02-cell-186.png",
+          "durationMs": 70,
+          "sha256": "2d41d012050316ba48b5a81bbce544ba11600de2fdf586296509460871de927f"
+        },
+        {
+          "i": 187,
+          "file": "03-cell-187.png",
+          "durationMs": 70,
+          "sha256": "16b71d88024125ce236e2e6367075fcf3aeb87431ae946d7c9829508f16c7b9f"
+        },
+        {
+          "i": 188,
+          "file": "04-cell-188.png",
+          "durationMs": 70,
+          "sha256": "dcd1cf33732e077c51bbadbf8ed8e10d814824e8b3b3b425ce4902f10cd779b1"
+        },
+        {
+          "i": 189,
+          "file": "05-cell-189.png",
+          "durationMs": 70,
+          "sha256": "33858c932c9a248841bb892317235c65e90d55aa7b03b15583e810f0dd9e0cb4"
+        },
+        {
+          "i": 190,
+          "file": "06-cell-190.png",
+          "durationMs": 70,
+          "sha256": "f86d1cf024362fe9c6662c5846d778d1c10f738c98e59ca4f8307e6a3607c617"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "name": "Unarmed Land",
+      "folder": "20-unarmed-land",
+      "durationMs": 420,
+      "frames": [
+        {
+          "i": 191,
+          "file": "01-cell-191.png",
+          "durationMs": 70,
+          "sha256": "d3a152e7e7b0545a3654e80e1b160fd0445be8dd91c4a04cfd49f974f227f8f8"
+        },
+        {
+          "i": 192,
+          "file": "02-cell-192.png",
+          "durationMs": 70,
+          "sha256": "ed1e949a58844b6f27b98155249ce2112f1c0e8c6da047435b031b4d4ab7d3ce"
+        },
+        {
+          "i": 193,
+          "file": "03-cell-193.png",
+          "durationMs": 70,
+          "sha256": "7a387928a0f665362394269cf27681ac3a48251eb2fff9d3a1b76817c30a2924"
+        },
+        {
+          "i": 194,
+          "file": "04-cell-194.png",
+          "durationMs": 70,
+          "sha256": "fabae4952f536f41f5e16298c6fb61c2a86d4da84388f97eef12e02829566859"
+        },
+        {
+          "i": 195,
+          "file": "05-cell-195.png",
+          "durationMs": 70,
+          "sha256": "c23a7b8fbb9b4b189b9ac28712f90ede2783b4bd926938e0fd65f065a87eb788"
+        },
+        {
+          "i": 196,
+          "file": "06-cell-196.png",
+          "durationMs": 70,
+          "sha256": "f399f21fc81fbfdb002f65e91a499b116206265df802f109ab47eb1d744f7139"
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "name": "Armed Jump",
+      "folder": "21-armed-jump",
+      "durationMs": 420,
+      "frames": [
+        {
+          "i": 197,
+          "file": "01-cell-197.png",
+          "durationMs": 70,
+          "sha256": "6c62d146e34f49df7bc29da5beb53198ded76758bc509c39f76f0e42b194366e"
+        },
+        {
+          "i": 198,
+          "file": "02-cell-198.png",
+          "durationMs": 70,
+          "sha256": "65530bbdd95fca0e4527d50c2b3696d62bf46ec3fb1d02694702f941d281144c"
+        },
+        {
+          "i": 199,
+          "file": "03-cell-199.png",
+          "durationMs": 70,
+          "sha256": "f69b75702ab620797f8b48f7cc589e041bd55e9d833565cd18cc9f249e51b442"
+        },
+        {
+          "i": 200,
+          "file": "04-cell-200.png",
+          "durationMs": 70,
+          "sha256": "95b0bd596a487b0b62d12edabf6a39687ba2b071797fc9162f543d957f2574b1"
+        },
+        {
+          "i": 201,
+          "file": "05-cell-201.png",
+          "durationMs": 70,
+          "sha256": "288586cb930a54aa58fc047b9e9716f9e7236dfe88a9de21cf92241e3cc9d382"
+        },
+        {
+          "i": 202,
+          "file": "06-cell-202.png",
+          "durationMs": 70,
+          "sha256": "30e84a90dd46395e7ee77bbd0245bc982228167cfcc8530818596b6e549b4628"
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "name": "Armed Mid air",
+      "folder": "22-armed-mid-air",
+      "durationMs": 70,
+      "frames": [
+        {
+          "i": 203,
+          "file": "01-cell-203.png",
+          "durationMs": 70,
+          "sha256": "5640cde1deae2bc01b480efd40b0b1a3a133152c3b59a57bcb64fd6a2a51ed3f"
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "name": "Armed Fall light",
+      "folder": "23-armed-fall-light",
+      "durationMs": 420,
+      "frames": [
+        {
+          "i": 204,
+          "file": "01-cell-204.png",
+          "durationMs": 70,
+          "sha256": "de22d99512b9ff1c8051ab3873ba595194d02b8564466dfe172b01207a7d26a1"
+        },
+        {
+          "i": 205,
+          "file": "02-cell-205.png",
+          "durationMs": 70,
+          "sha256": "837408f02d742c9845ffb11c6df5e63f2cc7d9ac78f2890ba13003ed55d56662"
+        },
+        {
+          "i": 206,
+          "file": "03-cell-206.png",
+          "durationMs": 70,
+          "sha256": "b8d278eb1a87c09b1078b31a972ec546441d5b40a9649eec12197d4534e8dcfd"
+        },
+        {
+          "i": 207,
+          "file": "04-cell-207.png",
+          "durationMs": 70,
+          "sha256": "ef1e81eefaf8a551e2a4703b64e3b671cd0754b7844b9cc0960556fecd658ea0"
+        },
+        {
+          "i": 208,
+          "file": "05-cell-208.png",
+          "durationMs": 70,
+          "sha256": "6210914143671776a6fb7229a441259fa175dc09e6ea79ba13a5708b682be841"
+        },
+        {
+          "i": 209,
+          "file": "06-cell-209.png",
+          "durationMs": 70,
+          "sha256": "fb837ec41967f3fa8a4c7cb55e7cc1b9f29009e5110b612ab8f8ac0ad2c01b1e"
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "name": "Armed Fall heavy",
+      "folder": "24-armed-fall-heavy",
+      "durationMs": 420,
+      "frames": [
+        {
+          "i": 210,
+          "file": "01-cell-210.png",
+          "durationMs": 70,
+          "sha256": "b0a81c48834ab330a88c51b9b18439435e3784e6af5d52178deccb419ad90c08"
+        },
+        {
+          "i": 211,
+          "file": "02-cell-211.png",
+          "durationMs": 70,
+          "sha256": "dcd67fa211fe3a920d0821a89e7b6abe3a0bcf0e0d6e1dd2aed16e01ad0f333b"
+        },
+        {
+          "i": 212,
+          "file": "03-cell-212.png",
+          "durationMs": 70,
+          "sha256": "db34e1c034abf2a9243e465dde54c0b0d2c62e3b479edda2509226cb5e44dc6e"
+        },
+        {
+          "i": 213,
+          "file": "04-cell-213.png",
+          "durationMs": 70,
+          "sha256": "29dee1621cadb64c17e1a7600fdde2cbed5f7d4eaebbee9c31bb64f26c9e150e"
+        },
+        {
+          "i": 214,
+          "file": "05-cell-214.png",
+          "durationMs": 70,
+          "sha256": "be49e00f163b8f85368e3acf589ecaacecb2fec2772125780904982e2d663e88"
+        },
+        {
+          "i": 215,
+          "file": "06-cell-215.png",
+          "durationMs": 70,
+          "sha256": "2b6644b1e3ad68e27aed96c9cfb9a3b567aae57e09aaec04835a55555aa0b302"
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "name": "Armed Land",
+      "folder": "25-armed-land",
+      "durationMs": 420,
+      "frames": [
+        {
+          "i": 216,
+          "file": "01-cell-216.png",
+          "durationMs": 70,
+          "sha256": "a19fa8d0ca33682941821baeebbe1e026b0e1e16e9ff6e9382337b8d7bec5fe6"
+        },
+        {
+          "i": 217,
+          "file": "02-cell-217.png",
+          "durationMs": 70,
+          "sha256": "afa12322b83baa82aa8144e674fca23d674684e947852444ea4fb424d86997a2"
+        },
+        {
+          "i": 218,
+          "file": "03-cell-218.png",
+          "durationMs": 70,
+          "sha256": "464b0ea7fda5a59cd9e6ec6fb0dac90d8b18731aa998e1599771fe8fc7865b46"
+        },
+        {
+          "i": 219,
+          "file": "04-cell-219.png",
+          "durationMs": 70,
+          "sha256": "3c468f2f1fea9e0f059d9afd3ab477d17c3194d7eff571eadd19157744a184fd"
+        },
+        {
+          "i": 220,
+          "file": "05-cell-220.png",
+          "durationMs": 70,
+          "sha256": "cc30de2e0844051652bd91d5c4a84699413360e3cfb6c526befdcb8f0d270e96"
+        },
+        {
+          "i": 221,
+          "file": "06-cell-221.png",
+          "durationMs": 70,
+          "sha256": "c7ded772b49b31c40bd101299d4b41c75326827799803329e1d92f2833f46abc"
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "name": "Weapon Art",
+      "folder": "26-weapon-art",
+      "durationMs": 2450,
+      "frames": [
+        {
+          "i": 222,
+          "file": "01-cell-222.png",
+          "durationMs": 70,
+          "sha256": "42a59c213f04085bb169b7a45667276f971e7d140051ec1a83372f0e2a31ad10"
+        },
+        {
+          "i": 223,
+          "file": "02-cell-223.png",
+          "durationMs": 70,
+          "sha256": "025bcd2eef5e7f5906a8da16e5ec9d3a2e6a4c8c3775d27c63e77018d179bc63"
+        },
+        {
+          "i": 224,
+          "file": "03-cell-224.png",
+          "durationMs": 70,
+          "sha256": "e334dc68ebedcafb4b9ce7948c1fa7d022762d0645daf6dc83df5579addfbe40"
+        },
+        {
+          "i": 225,
+          "file": "04-cell-225.png",
+          "durationMs": 70,
+          "sha256": "339edd9fc2da9423f75ca1a5f60b4a8c86e98c8ae4f86945aabc37bb26c8ef4f"
+        },
+        {
+          "i": 226,
+          "file": "05-cell-226.png",
+          "durationMs": 70,
+          "sha256": "fb547a2e6f919ac63cbf27af3f363a6c442d755e2304d404c0936efebbd5ee7a"
+        },
+        {
+          "i": 227,
+          "file": "06-cell-227.png",
+          "durationMs": 70,
+          "sha256": "5b72dd2fce1bb3a0f3d1691badb7acf1c49cdea7873a54ff53e2152b330f6f04"
+        },
+        {
+          "i": 228,
+          "file": "07-cell-228.png",
+          "durationMs": 70,
+          "sha256": "3f170184c32c57231a914e8a5c114e7722e890af19af8d6628967016cfba211b"
+        },
+        {
+          "i": 229,
+          "file": "08-cell-229.png",
+          "durationMs": 70,
+          "sha256": "503800b787091d3a08e52d746bdc59daf690826d30cba6f8f18d8f4f541b545f"
+        },
+        {
+          "i": 230,
+          "file": "09-cell-230.png",
+          "durationMs": 70,
+          "sha256": "c72f4a3cd194adf5169d1b75e9101e8813b23fac16f818c94fd9a9a1016c6388"
+        },
+        {
+          "i": 231,
+          "file": "10-cell-231.png",
+          "durationMs": 70,
+          "sha256": "397a050ddd9438f58b7815104a7838fee271ecd0602af62c1a607071a6034860"
+        },
+        {
+          "i": 232,
+          "file": "11-cell-232.png",
+          "durationMs": 70,
+          "sha256": "01cf5c7428a13d694c70dd30bcac3933c7d2087eec076e98da30225f15f46b4d"
+        },
+        {
+          "i": 233,
+          "file": "12-cell-233.png",
+          "durationMs": 70,
+          "sha256": "8cfd6c4334a9898c81adfe3c8a05d74e4681f3b678a0b39efa33697fe44d7bd2"
+        },
+        {
+          "i": 234,
+          "file": "13-cell-234.png",
+          "durationMs": 70,
+          "sha256": "6ef1f211f91286038ace4b1f68544eae1b5e70cfcf4da1992ee2688289685e7d"
+        },
+        {
+          "i": 235,
+          "file": "14-cell-235.png",
+          "durationMs": 70,
+          "sha256": "56e24167292aae3997745b3a80882839f9283061a2f198ef0ffbf55625866ab8"
+        },
+        {
+          "i": 236,
+          "file": "15-cell-236.png",
+          "durationMs": 70,
+          "sha256": "c34acbd84789f482669370f0fc7872c2cdd15f8a605a1086cb40b918bee28a22"
+        },
+        {
+          "i": 237,
+          "file": "16-cell-237.png",
+          "durationMs": 70,
+          "sha256": "1aa4bc9219569ee19b125a884958be6b3d820774f3bd9e7dd5569f9e4813b8f1"
+        },
+        {
+          "i": 238,
+          "file": "17-cell-238.png",
+          "durationMs": 70,
+          "sha256": "fe9d607c6d2c3b95147a0a68a6bb4ba72ffb3654f52cced5b5e9a567971d4896"
+        },
+        {
+          "i": 239,
+          "file": "18-cell-239.png",
+          "durationMs": 70,
+          "sha256": "c0a1bcbe7bf1205ba380888243fd1487c442cb0d0c53549a49372bdf11c9b20e"
+        },
+        {
+          "i": 240,
+          "file": "19-cell-240.png",
+          "durationMs": 70,
+          "sha256": "b5cb72b0aa605b03685282b4327d073aff86898cf36b843d785907105c661681"
+        },
+        {
+          "i": 241,
+          "file": "20-cell-241.png",
+          "durationMs": 70,
+          "sha256": "ac631eac08a99869efd38b70d36bd20db213c36ddadb711a30d52376452d308f"
+        },
+        {
+          "i": 242,
+          "file": "21-cell-242.png",
+          "durationMs": 70,
+          "sha256": "56254595f44a32808563db20fadbc938497b7e0d491a84cad358f131b4aec1bb"
+        },
+        {
+          "i": 243,
+          "file": "22-cell-243.png",
+          "durationMs": 70,
+          "sha256": "8c341b8acbcc39526a5d9ff7841a840fc908cb32555dc96b4e5adb4ef61eef00"
+        },
+        {
+          "i": 244,
+          "file": "23-cell-244.png",
+          "durationMs": 70,
+          "sha256": "0af1ab1cc8ca468b9aad5e79421510e70e7030d01a586442df739e3b191359e0"
+        },
+        {
+          "i": 245,
+          "file": "24-cell-245.png",
+          "durationMs": 70,
+          "sha256": "3d40068fe3bee5ea4d4bf4939f67bbf637006ecb2d728d3b5a32234868b39eea"
+        },
+        {
+          "i": 246,
+          "file": "25-cell-246.png",
+          "durationMs": 70,
+          "sha256": "8797dc2acc5719552404c4331698789601a495dc4d82b69a5461f731f198d76b"
+        },
+        {
+          "i": 247,
+          "file": "26-cell-247.png",
+          "durationMs": 70,
+          "sha256": "a1a09a260ada79b5fea9bdcaef36ee94eaa921adcba681439d738ed0631559d1"
+        },
+        {
+          "i": 248,
+          "file": "27-cell-248.png",
+          "durationMs": 70,
+          "sha256": "3ef22c8934d983eaf8f7b0ccf9e57a128074871c22a168b6a089a62aebf5e4f8"
+        },
+        {
+          "i": 249,
+          "file": "28-cell-249.png",
+          "durationMs": 70,
+          "sha256": "4a031b0898ef652e8fd4399bb64e575cdd57f5c4320d0521d28e50d59367b7c5"
+        },
+        {
+          "i": 250,
+          "file": "29-cell-250.png",
+          "durationMs": 70,
+          "sha256": "7ec61633aa5a653a7eb808dc8529d6d19d8f099465cda9d6c7d3db17f629f4fb"
+        },
+        {
+          "i": 251,
+          "file": "30-cell-251.png",
+          "durationMs": 70,
+          "sha256": "af004b36acfd74d315c1838fc59d894a0413d55304e45d37b3fde6c84495abcf"
+        },
+        {
+          "i": 252,
+          "file": "31-cell-252.png",
+          "durationMs": 70,
+          "sha256": "3b3252b5bdaf1f6ed1eddfc0b17d5b9ded42c4508990a53cbaf07c79fd3fa3c0"
+        },
+        {
+          "i": 253,
+          "file": "32-cell-253.png",
+          "durationMs": 70,
+          "sha256": "f6d141805658c2195b5cc78d3a24e17e2e41b37c67e1f3cf56150c422dd5f159"
+        },
+        {
+          "i": 254,
+          "file": "33-cell-254.png",
+          "durationMs": 70,
+          "sha256": "204c818f3b6076ae2b082a3f82be3b4a143c9c17069401517dc74bbec3a4247e"
+        },
+        {
+          "i": 255,
+          "file": "34-cell-255.png",
+          "durationMs": 70,
+          "sha256": "8db7109c6fcd396c708570c034c15344918e110131ce8f87b85f76870b1bd6ae"
+        },
+        {
+          "i": 256,
+          "file": "35-cell-256.png",
+          "durationMs": 70,
+          "sha256": "7d0702df8de12c403393633b20a041d7bfcb3189b38a8823c8b6c5eff73ae140"
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "name": "Parry start",
+      "folder": "27-parry-start",
+      "durationMs": 420,
+      "frames": [
+        {
+          "i": 257,
+          "file": "01-cell-257.png",
+          "durationMs": 70,
+          "sha256": "09905787b9705cacb1f3374e684b6ec2d8e415b56e672ca03c6be08c158faf40"
+        },
+        {
+          "i": 258,
+          "file": "02-cell-258.png",
+          "durationMs": 70,
+          "sha256": "05367747dcb6c5f6cc890e8431692a9f019f8550192cb27bc01c9c390a19bb9c"
+        },
+        {
+          "i": 259,
+          "file": "03-cell-259.png",
+          "durationMs": 70,
+          "sha256": "9920843d4060e80bc84ced8f29035aabc85dbe115bf7bc03531e664b3410056a"
+        },
+        {
+          "i": 260,
+          "file": "04-cell-260.png",
+          "durationMs": 70,
+          "sha256": "393db226317011b7cb772d53a849314187b490bca6d940f103354f6933008067"
+        },
+        {
+          "i": 261,
+          "file": "05-cell-261.png",
+          "durationMs": 70,
+          "sha256": "89ed4f8e4311e963e4dfc651c330059ac6ceeeddc60f6f46b1913ed52f53464c"
+        },
+        {
+          "i": 262,
+          "file": "06-cell-262.png",
+          "durationMs": 70,
+          "sha256": "d98e30668ff918f2e8bcfea02e60ba477da5f89e25a6af42c11ded32044696a3"
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "name": "Parry",
+      "folder": "28-parry",
+      "durationMs": 1050,
+      "frames": [
+        {
+          "i": 263,
+          "file": "01-cell-263.png",
+          "durationMs": 70,
+          "sha256": "4161c76b79e5db5a442b1932a39c9350e34b650f12b47ad34047d9c0be658d3f"
+        },
+        {
+          "i": 264,
+          "file": "02-cell-264.png",
+          "durationMs": 70,
+          "sha256": "0c9f38ef4218d9b261afb71e2cb0d64e106423c45e0d1092d4d5d17047bfb301"
+        },
+        {
+          "i": 265,
+          "file": "03-cell-265.png",
+          "durationMs": 70,
+          "sha256": "00a3f841736f51ba6fda9dcfe57f6092d461b41dd283a2d2ec2ccc3e5d130c6c"
+        },
+        {
+          "i": 266,
+          "file": "04-cell-266.png",
+          "durationMs": 70,
+          "sha256": "8dc57d13c9095f7bb5b3c27c73254b428ab643302236813cee5300369d04736a"
+        },
+        {
+          "i": 267,
+          "file": "05-cell-267.png",
+          "durationMs": 70,
+          "sha256": "4c4269209148a98a363b62efe3e1eb92d40dc703fed89acb9b7fad2e530d05dc"
+        },
+        {
+          "i": 268,
+          "file": "06-cell-268.png",
+          "durationMs": 70,
+          "sha256": "bd697cdd2f25476d635fa14e480292c00ac65d33c4a5f3a78a77ac7142cda32e"
+        },
+        {
+          "i": 269,
+          "file": "07-cell-269.png",
+          "durationMs": 70,
+          "sha256": "af1ca9aa4c9e62c9f67557f1143d485ccd72ec4a2a5b4a5fa223d97e0e8d082f"
+        },
+        {
+          "i": 270,
+          "file": "08-cell-270.png",
+          "durationMs": 70,
+          "sha256": "299065e618d917e1a54180d963cc1cb2a999abd3a79a91502cb2d635a50ef3ec"
+        },
+        {
+          "i": 271,
+          "file": "09-cell-271.png",
+          "durationMs": 70,
+          "sha256": "577c0dcfc89c364ab916c9397dddaacaa3f3ecaec47c47c93caf819bc4c21831"
+        },
+        {
+          "i": 272,
+          "file": "10-cell-272.png",
+          "durationMs": 70,
+          "sha256": "5618d04dcc92d382fbbf9da70a955a5ea8431477b3cb443ae1089c922c996ca6"
+        },
+        {
+          "i": 273,
+          "file": "11-cell-273.png",
+          "durationMs": 70,
+          "sha256": "f28f5052b73fc3dd133df2bf56de99f647c8fd0fe27d8102958c81c3a6da4aa6"
+        },
+        {
+          "i": 274,
+          "file": "12-cell-274.png",
+          "durationMs": 70,
+          "sha256": "8d69bfef1479c388ca45ae95e4272afef4d0bc118f2bd4aa2440778f5e91c248"
+        },
+        {
+          "i": 275,
+          "file": "13-cell-275.png",
+          "durationMs": 70,
+          "sha256": "e6864749d35ead4186cc1fd5f33e3f32a5c0d9800c3f986d40eb608ec958f8ad"
+        },
+        {
+          "i": 276,
+          "file": "14-cell-276.png",
+          "durationMs": 70,
+          "sha256": "8c4bab568d4f98efcc46d34b21185502a195ee95f2f6a39f1ec55f0cfb13535e"
+        },
+        {
+          "i": 277,
+          "file": "15-cell-277.png",
+          "durationMs": 70,
+          "sha256": "222622a27e80514d3af6fb961d3791493884195eb14a8138885dd78842906b73"
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "name": "Parry miss",
+      "folder": "29-parry-miss",
+      "durationMs": 210,
+      "frames": [
+        {
+          "i": 278,
+          "file": "01-cell-278.png",
+          "durationMs": 70,
+          "sha256": "bc007faba8e99f7ca760bec0312f280dd3992e4977a3a193661b8090afa88ee1"
+        },
+        {
+          "i": 279,
+          "file": "02-cell-279.png",
+          "durationMs": 70,
+          "sha256": "729ceb38be3f718362d6618da74d7790809982fd16a6f442849ea65861d1a20c"
+        },
+        {
+          "i": 280,
+          "file": "03-cell-280.png",
+          "durationMs": 70,
+          "sha256": "448ddca40616184f9a1f5ea6077e55d2be9bd236fd4cefe100e6e3232f079cf5"
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "name": "Unarmed Hurt",
+      "folder": "30-unarmed-hurt",
+      "durationMs": 350,
+      "frames": [
+        {
+          "i": 281,
+          "file": "01-cell-281.png",
+          "durationMs": 70,
+          "sha256": "6d81eb53544a6aa24684024414874001acd47769a54eb971a5d612d481bfbe6c"
+        },
+        {
+          "i": 282,
+          "file": "02-cell-282.png",
+          "durationMs": 70,
+          "sha256": "d7ca7041661ee79e0b0c06fcd5d123e15eeef561d231e20940e44e87a3705949"
+        },
+        {
+          "i": 283,
+          "file": "03-cell-283.png",
+          "durationMs": 70,
+          "sha256": "ca18d0d8dc25191d8578775505e51ee6ae1f3ee697312abd9b15976cec0476ef"
+        },
+        {
+          "i": 284,
+          "file": "04-cell-284.png",
+          "durationMs": 70,
+          "sha256": "a4d473fe3a62f0376c9856461f8a39ccbfa7a9fd5ae980389deb786d2013fda0"
+        },
+        {
+          "i": 285,
+          "file": "05-cell-285.png",
+          "durationMs": 70,
+          "sha256": "f158f06968e680c6f931442bb14a2e4eb23ba272e0f485bae933abe4f23365f7"
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "name": "Armed Hurt",
+      "folder": "31-armed-hurt",
+      "durationMs": 350,
+      "frames": [
+        {
+          "i": 286,
+          "file": "01-cell-286.png",
+          "durationMs": 70,
+          "sha256": "9dc165640298146f1710012cda1acdac88496c795c3ac515e619e1b93c99362a"
+        },
+        {
+          "i": 287,
+          "file": "02-cell-287.png",
+          "durationMs": 70,
+          "sha256": "2ae741a986d7db885602b7dc8453ac6f16e42ecfb727ab965cdcb66ab1004068"
+        },
+        {
+          "i": 288,
+          "file": "03-cell-288.png",
+          "durationMs": 70,
+          "sha256": "86483b96729493a73bc1f7b014480c114b4bad90e3c0a5537c8653deda67f277"
+        },
+        {
+          "i": 289,
+          "file": "04-cell-289.png",
+          "durationMs": 70,
+          "sha256": "7570c54b704c8189b1c2796ad3899746e4748e3c0b52f750a63e820dbdf13849"
+        },
+        {
+          "i": 290,
+          "file": "05-cell-290.png",
+          "durationMs": 70,
+          "sha256": "7af878c4e562d391b9a8b27922449200b13cfaee01fdc36fce0843d2539bc417"
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "name": "Death",
+      "folder": "32-death",
+      "durationMs": 630,
+      "frames": [
+        {
+          "i": 291,
+          "file": "01-cell-291.png",
+          "durationMs": 70,
+          "sha256": "50b066a6486dc04dd9489bd04b6178e317dc91b4e87b5a3ea9dae9b821ca5409"
+        },
+        {
+          "i": 292,
+          "file": "02-cell-292.png",
+          "durationMs": 70,
+          "sha256": "74ebc7f1620efe4a5955591bf1a3bc4a8b465a8a6a8d3b3a6fe172eede35d7f8"
+        },
+        {
+          "i": 293,
+          "file": "03-cell-293.png",
+          "durationMs": 70,
+          "sha256": "975950bcc5242e41218423d3d7deb2347322f744c728784245d72cb9df7dbc3e"
+        },
+        {
+          "i": 294,
+          "file": "04-cell-294.png",
+          "durationMs": 70,
+          "sha256": "dd2954ef574b92412296d853c34bff744c01e823cd5c2a1537d917d43d93ed0f"
+        },
+        {
+          "i": 295,
+          "file": "05-cell-295.png",
+          "durationMs": 70,
+          "sha256": "aca5927885e7728982a245b290204ef652b4e9d18a71a409dc48f4d14b232b30"
+        },
+        {
+          "i": 296,
+          "file": "06-cell-296.png",
+          "durationMs": 70,
+          "sha256": "cadbd32dc305884bd9df69a015ba5612d775449c015978e0be392909cee656ab"
+        },
+        {
+          "i": 297,
+          "file": "07-cell-297.png",
+          "durationMs": 70,
+          "sha256": "52c48d9bfffbb36336beafa3d279d0cfa9b2a744afbcc2d213171ae74733f3d8"
+        },
+        {
+          "i": 298,
+          "file": "08-cell-298.png",
+          "durationMs": 70,
+          "sha256": "675d0e190f6046624c8847a0150a7cb20d9b9dbd7805cb21da09fcfd62b37152"
+        },
+        {
+          "i": 299,
+          "file": "09-cell-299.png",
+          "durationMs": 70,
+          "sha256": "0a62dcf07b8a5f17257c67dff5a9265ed5cdec8bf2930dba3ac71aed2532b42b"
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "name": "Unarmed Buff",
+      "folder": "33-unarmed-buff",
+      "durationMs": 840,
+      "frames": [
+        {
+          "i": 300,
+          "file": "01-cell-300.png",
+          "durationMs": 70,
+          "sha256": "5f7fd3fd3d66055f6603d69a9355dcc0f75844824d008f34c17fe253a4083e23"
+        },
+        {
+          "i": 301,
+          "file": "02-cell-301.png",
+          "durationMs": 70,
+          "sha256": "16502e318387a3429cd77212e69221e71603b1528e8be21ac4d555ac7e9f8f19"
+        },
+        {
+          "i": 302,
+          "file": "03-cell-302.png",
+          "durationMs": 70,
+          "sha256": "33283bb7bab7710bfcb69e2580908daffa39d671f601c6a40e9dadd87847c72f"
+        },
+        {
+          "i": 303,
+          "file": "04-cell-303.png",
+          "durationMs": 70,
+          "sha256": "28af071c2323a3acb44e79c17336d0ee9d038d776343c7526911f397c0283e63"
+        },
+        {
+          "i": 304,
+          "file": "05-cell-304.png",
+          "durationMs": 70,
+          "sha256": "5e2efc0f0f9e04ae7c15a96b914ec306545bcdf180a866fb3b88753be2567735"
+        },
+        {
+          "i": 305,
+          "file": "06-cell-305.png",
+          "durationMs": 70,
+          "sha256": "5f38540dd445a117329c8176132d0a32ac417ab5e1cc5b435ae6d87f0f173620"
+        },
+        {
+          "i": 306,
+          "file": "07-cell-306.png",
+          "durationMs": 70,
+          "sha256": "14f33ddc3b89fa4fce2373c878998e19d6f7fba77c8fb145b3dc285c4ae8416a"
+        },
+        {
+          "i": 307,
+          "file": "08-cell-307.png",
+          "durationMs": 70,
+          "sha256": "4b4ee39e29d5a44f4c82b6f80a206f46a6462984652eea65b4d5a11da8920f1e"
+        },
+        {
+          "i": 308,
+          "file": "09-cell-308.png",
+          "durationMs": 70,
+          "sha256": "cff216e52f62622d18cd1515ed78d30fcd51de9ad52b4b1b25bb567aeaa43d98"
+        },
+        {
+          "i": 309,
+          "file": "10-cell-309.png",
+          "durationMs": 70,
+          "sha256": "1b8732f442b76ff3f2b598d48a6646cd3cd74042ecab036747a1e548a3e672c8"
+        },
+        {
+          "i": 310,
+          "file": "11-cell-310.png",
+          "durationMs": 70,
+          "sha256": "e9bd7cf35543f60f5e510904b234e91add944b9b4feb2181b8ce26e5e45a7ade"
+        },
+        {
+          "i": 311,
+          "file": "12-cell-311.png",
+          "durationMs": 70,
+          "sha256": "339147e4c8e8d7fe4b2699de99cb4d4344bbd536bf6350e5f88a3f4fbd4dec9c"
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "name": "Armed Buff",
+      "folder": "34-armed-buff",
+      "durationMs": 840,
+      "frames": [
+        {
+          "i": 312,
+          "file": "01-cell-312.png",
+          "durationMs": 70,
+          "sha256": "b56ae5c6aa5ae376711d6c166ac4b636d365204cba088ce41eea6dd6c3e151a1"
+        },
+        {
+          "i": 313,
+          "file": "02-cell-313.png",
+          "durationMs": 70,
+          "sha256": "1297167428b7f077dddad37effc18c83ee69a57bb2b52a1068e8532ce31c6687"
+        },
+        {
+          "i": 314,
+          "file": "03-cell-314.png",
+          "durationMs": 70,
+          "sha256": "ea8596c8f95103a6653df265cd5dd8781f33d306161e64ce16826a29beb3d42f"
+        },
+        {
+          "i": 315,
+          "file": "04-cell-315.png",
+          "durationMs": 70,
+          "sha256": "6419dcb501639a87e9a5a6c3c850d0fcf193c982e2bec37dd9b0ae339b0a4b51"
+        },
+        {
+          "i": 316,
+          "file": "05-cell-316.png",
+          "durationMs": 70,
+          "sha256": "9f5984b819847ecdd837dcfc6a9b6434edada015e0d31e4738f9c35c2ae0b8ac"
+        },
+        {
+          "i": 317,
+          "file": "06-cell-317.png",
+          "durationMs": 70,
+          "sha256": "51d55e897d2b25d8e547f01d4206877c56bdfd491c4b0d7d47276f92e1bdb24b"
+        },
+        {
+          "i": 318,
+          "file": "07-cell-318.png",
+          "durationMs": 70,
+          "sha256": "9e1b31ef3580784511dcc88dd8802d106de860dd0dc5ff622cc17ce122c0b6a1"
+        },
+        {
+          "i": 319,
+          "file": "08-cell-319.png",
+          "durationMs": 70,
+          "sha256": "8833fc39568626c63e0bf89d2a4012657afc7b6128b79a672080652edebc326b"
+        },
+        {
+          "i": 320,
+          "file": "09-cell-320.png",
+          "durationMs": 70,
+          "sha256": "ff1ac99235ac16a1d3ef8667d49e57204ab0d243eb9186b68f1c36a57ab1442d"
+        },
+        {
+          "i": 321,
+          "file": "10-cell-321.png",
+          "durationMs": 70,
+          "sha256": "4ce41fbf32dfeea8ba20e0cd4a717fee4f9e22d1705d2fee54788eb1f041a761"
+        },
+        {
+          "i": 322,
+          "file": "11-cell-322.png",
+          "durationMs": 70,
+          "sha256": "e31d1414f05fbbdc1a074896beb9bb3e3eafece71a009adde06cb907d8e8bf32"
+        },
+        {
+          "i": 323,
+          "file": "12-cell-323.png",
+          "durationMs": 70,
+          "sha256": "0dadda38cd8ae31fcd30bee2ff0580c7b0e9a4072ca2c7499753ac7ad5e7a809"
+        }
+      ]
+    }
+  ]
+}

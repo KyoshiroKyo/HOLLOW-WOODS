@@ -2,7 +2,9 @@
 
 **21/11/2026 · 26 nhóm hoạt ảnh × 4 hướng · 6 K1/K2 · 4 K3-A · 8 K3-B · 8 K3-C**
 
-`4D` = PASS LOCAL — 4-DIR VERIFIED. Các chiều trạng thái được ghi theo thứ tự: Artwork validated / Runtime tested / Gameplay tested / Mirrored / Temporary fallback / Blocked / Not tested. Với các ô `4D`, giá trị là Có/Có/Có/Không/Không/Không/Không trong phạm vi từng nhóm đã nghiệm thu. Với `4D-AO`, artwork và runtime đạt PASS LOCAL — 4-DIR VERIFIED. Gameplay ghi ASSET/ANIMATION ONLY; các chiều Mirrored, Temporary fallback, Blocked và Not tested của phần artwork/runtime đều Không. Với các ô `Thiếu`, `Nguồn`, `Pha nguồn` hoặc `Ứng viên`, giá trị là Không/Không/Không/Không/Không/Không/Có đối với bản tích hợp K3. Mục Có ở phần nguồn ghi đúng clip tham chiếu đang có. Các nhóm OPEN có thể tiếp tục dùng key legacy hiện hành.
+**Full Conversion · 34 chuỗi nguồn / 324 frame đã đối chiếu.** Bảng phía dưới lưu phạm vi nghiệm thu K1–K3. Bảng 34 dòng mới ghi riêng frame và nhịp nguồn, texture/atlas, clip live và bản asset-only. Alias `wayfarer_*` và `satyr_*` của actor trỏ về artwork custom. Giữ bảng K1–K3 để đối chiếu phạm vi cũ. [Ma trận source parity và frame trace](V153_BLACK_KNIGHT_SOURCE_PARITY_REPORT.md)
+
+`4D` = PASS LOCAL — 4-DIR VERIFIED. Các chiều trạng thái được ghi theo thứ tự: Artwork validated / Runtime tested / Gameplay tested / Mirrored / Temporary fallback / Blocked / Not tested. Với các ô `4D`, giá trị là Có/Có/Có/Không/Không/Không/Không trong phạm vi từng nhóm đã nghiệm thu. Với `4D-AO`, artwork và runtime đạt PASS LOCAL — 4-DIR VERIFIED. Gameplay ghi ASSET/ANIMATION ONLY; các chiều Mirrored, Temporary fallback, Blocked và Not tested của phần artwork/runtime đều Không. Với các ô `Thiếu`, `Nguồn`, `Pha nguồn` hoặc `Ứng viên`, giá trị là Không/Không/Không/Không/Không/Không/Có đối với bản tích hợp K3. Mục Có ở phần nguồn ghi đúng clip tham chiếu đang có.
 
 | Animation | DOWN | UP | LEFT | RIGHT | Đối chiếu Source Library |
 |---|---|---|---|---|---|
