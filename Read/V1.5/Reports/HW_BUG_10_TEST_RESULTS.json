@@ -1,0 +1,150 @@
+{
+  "test1_banner_layout": {
+    "bannerY": 138,
+    "bannerTop": 111,
+    "bannerBottom": 165,
+    "clockBottom": 94,
+    "toastY": 205,
+    "gapClockToBanner": 17,
+    "gapBannerToToast": 40,
+    "overlapsClock": false,
+    "overlapsToast": false
+  },
+  "test2_banner_debounce": {
+    "hasPendingTimer": true,
+    "activeTitle": "L\u00c0NG BELLHOLLOW"
+  },
+  "test3_map_nodes_in_panel": {
+    "allInPanel": true,
+    "nodeChecks": [
+      {
+        "id": "abyssal_chasm",
+        "name": "V\u1ef1c Th\u1eb3m H\u01b0 Kh\u00f4ng",
+        "left": 185,
+        "right": 305,
+        "top": 285,
+        "bottom": 360,
+        "marginToPanelLeft": 35,
+        "marginToPanelRight": 825,
+        "inPanel": true
+      },
+      {
+        "id": "outer_woods",
+        "name": "R\u00eca R\u1eebng Ngo\u00e0i",
+        "left": 335,
+        "right": 460,
+        "top": 175,
+        "bottom": 250,
+        "marginToPanelLeft": 185,
+        "marginToPanelRight": 670,
+        "inPanel": true
+      },
+      {
+        "id": "fog_crossing",
+        "name": "L\u1ed1i M\u00f2n Xuy\u00ean S\u01b0\u01a1ng",
+        "left": 335,
+        "right": 460,
+        "top": 395,
+        "bottom": 470,
+        "marginToPanelLeft": 185,
+        "marginToPanelRight": 670,
+        "inPanel": true
+      },
+      {
+        "id": "crooked_path",
+        "name": "\u0110\u01b0\u1eddng M\u00f2n Quanh Co",
+        "left": 495,
+        "right": 630,
+        "top": 165,
+        "bottom": 235,
+        "marginToPanelLeft": 345,
+        "marginToPanelRight": 500,
+        "inPanel": true
+      },
+      {
+        "id": "bellhollow",
+        "name": "L\u00e0ng Bellhollow",
+        "left": 490,
+        "right": 635,
+        "top": 280,
+        "bottom": 365,
+        "marginToPanelLeft": 340,
+        "marginToPanelRight": 495,
+        "inPanel": true
+      },
+      {
+        "id": "sanctuary_farm",
+        "name": "N\u00f4ng Tr\u1ea1i Tr\u00fa \u1ea8n",
+        "left": 495,
+        "right": 630,
+        "top": 415,
+        "bottom": 485,
+        "marginToPanelLeft": 345,
+        "marginToPanelRight": 500,
+        "inPanel": true
+      },
+      {
+        "id": "deep_forest",
+        "name": "R\u1eebng S\u00e2u",
+        "left": 685,
+        "right": 815,
+        "top": 165,
+        "bottom": 240,
+        "marginToPanelLeft": 535,
+        "marginToPanelRight": 315,
+        "inPanel": true
+      },
+      {
+        "id": "silent_mire",
+        "name": "\u0110\u1ea7m L\u1ea7y S\u01b0\u01a1ng M\u00f9",
+        "left": 685,
+        "right": 815,
+        "top": 365,
+        "bottom": 445,
+        "marginToPanelLeft": 535,
+        "marginToPanelRight": 315,
+        "inPanel": true
+      },
+      {
+        "id": "ancient_rune_puzzle",
+        "name": "Mi\u1ebfu C\u1ed5 Ng\u1eef",
+        "left": 935,
+        "right": 1060,
+        "top": 220,
+        "bottom": 295,
+        "marginToPanelLeft": 785,
+        "marginToPanelRight": 70,
+        "inPanel": true
+      },
+      {
+        "id": "broken_bell_shrine",
+        "name": "Mi\u1ebfu Chu\u00f4ng Ph\u1ebf T\u00edch",
+        "left": 935,
+        "right": 1065,
+        "top": 370,
+        "bottom": 450,
+        "marginToPanelLeft": 785,
+        "marginToPanelRight": 65,
+        "inPanel": true
+      }
+    ]
+  },
+  "test4_beacon_non_overlap": {
+    "bellCanvasY": 280,
+    "beaconLabelY": 266,
+    "beaconLabelBottom": 273,
+    "bellTitleY": 288,
+    "gap": 15,
+    "overlaps": false
+  },
+  "test5_bridge_non_overlap": {
+    "mireRight": 815,
+    "shrineLeft": 935,
+    "bridgeLeft": 827,
+    "bridgeRight": 923,
+    "gapToMire": 12,
+    "gapToShrine": 12,
+    "overlapsMire": false,
+    "overlapsShrine": false
+  }
+}

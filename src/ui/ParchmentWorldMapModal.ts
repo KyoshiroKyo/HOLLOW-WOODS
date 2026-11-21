@@ -48,28 +48,28 @@ export class ParchmentWorldMapModal {
   public onOpen?: () => void;
   public onClose?: () => void;
 
-  // Sơ đồ topology 10 vùng đất lấy Làng Bellhollow (460, 280) làm trung tâm
+  // Sơ đồ topology 10 vùng đất lấy Làng Bellhollow làm trung tâm (BUG-033: Fit panel 980x600, không tràn lề)
   private readonly nodes: ParchmentMapNode[] = [
     {
-      id: 'bellhollow',
-      name: 'Làng Bellhollow',
-      subTitle: 'Vùng Lõi Bình Yên • Khu Dân Cư',
-      canvasX: 470,
-      canvasY: 280,
-      width: 140,
-      height: 90,
-      color: 0x3d301f,
-      borderColor: 0xd4af37, // Viền vàng hoàng kim
-      landmarks: ['Tháp Chuông Cổ', 'Bảng Tin Dị Thường', 'Lò Rèn Bram', 'Giếng Nước Cổ'],
-      clue: 'Nơi cư ngụ của dân làng. Lưỡi Chuông Đồng bảo vệ làng đã bị Kẻ Lắng Nghe đánh cắp.'
+      id: 'abyssal_chasm',
+      name: 'Vực Thẳm Hư Không',
+      subTitle: 'Vực Sâu Cổ Đại Cực Tây',
+      canvasX: 185,
+      canvasY: 285,
+      width: 120,
+      height: 75,
+      color: 0x17121b,
+      borderColor: 0x4d3b59,
+      landmarks: ['Rìa Vực Thẳm', 'Cổng Hư Vô'],
+      clue: 'Khe nứt không gian thăm thẳm dẫn tới cội nguồn tà ác của Màn Sương The Veil.'
     },
     {
       id: 'outer_woods',
       name: 'Rìa Rừng Ngoài',
       subTitle: 'Rừng Thưa Tây Bắc',
-      canvasX: 250,
-      canvasY: 180,
-      width: 130,
+      canvasX: 335,
+      canvasY: 175,
+      width: 125,
       height: 75,
       color: 0x242e20,
       borderColor: 0x5a7d52,
@@ -77,63 +77,76 @@ export class ParchmentWorldMapModal {
       clue: 'Trạm kiểm lâm bỏ hoang chứa rương quân lương và lối tắt thân cây đổ nối sang Đầm Lầy.'
     },
     {
-      id: 'crooked_path',
-      name: 'Đường Mòn Quanh Co',
-      subTitle: 'Tiền Tuyến Phía Bắc',
-      canvasX: 470,
-      canvasY: 160,
-      width: 130,
-      height: 65,
-      color: 0x2f281e,
-      borderColor: 0x7a6344,
-      landmarks: ['Ổ Đá Canh Gác', 'Biển Cảnh Báo'],
-      clue: 'Tuyến đường huyết mạch hiểm trở nối thẳng lên Rừng Sâu u tối.'
-    },
-    {
-      id: 'deep_forest',
-      name: 'Rừng Sâu',
-      subTitle: 'Lãnh Địa Cổ Thụ • Quái Vật',
-      canvasX: 690,
-      canvasY: 160,
-      width: 130,
-      height: 80,
-      color: 0x1b281f,
-      borderColor: 0x3e6848,
-      landmarks: ['Cột Vật Tổ Thì Thầm', 'Cổng Hư Không', 'Bụi Gai Đầm Lầy'],
-      clue: 'Cột vật tổ thì thầm cảnh báo lũ Kỵ Binh Hắc Ám và Sói Xương rình rập.'
-    },
-    {
       id: 'fog_crossing',
       name: 'Lối Mòn Xuyên Sương',
       subTitle: 'Cửa Ngõ Tây Nam',
-      canvasX: 230,
-      canvasY: 390,
-      width: 130,
-      height: 70,
+      canvasX: 335,
+      canvasY: 395,
+      width: 125,
+      height: 75,
       color: 0x22262d,
       borderColor: 0x5d6878,
       landmarks: ['Bờ Vực Sương Mù', 'Lửa Trại Tàn Tích'],
       clue: 'Điểm khởi đầu nơi người lữ khách lần đầu lạc bước vào Khu Rừng Rỗng.'
     },
     {
+      id: 'crooked_path',
+      name: 'Đường Mòn Quanh Co',
+      subTitle: 'Tiền Tuyến Phía Bắc',
+      canvasX: 495,
+      canvasY: 165,
+      width: 135,
+      height: 70,
+      color: 0x2f281e,
+      borderColor: 0x7a6344,
+      landmarks: ['Ổ Đá Canh Gác', 'Biển Cảnh Báo'],
+      clue: 'Tuyến đường huyết mạch hiểm trở nối thẳng lên Rừng Sâu u tối.'
+    },
+    {
+      id: 'bellhollow',
+      name: 'Làng Bellhollow',
+      subTitle: 'Vùng Lõi Bình Yên • Khu Dân Cư',
+      canvasX: 490,
+      canvasY: 280,
+      width: 145,
+      height: 85,
+      color: 0x3d301f,
+      borderColor: 0xd4af37, // Viền vàng hoàng kim
+      landmarks: ['Tháp Chuông Cổ', 'Bảng Tin Dị Thường', 'Lò Rèn Bram', 'Giếng Nước Cổ'],
+      clue: 'Nơi cư ngụ của dân làng. Lưỡi Chuông Đồng bảo vệ làng đã bị Kẻ Lắng Nghe đánh cắp.'
+    },
+    {
       id: 'sanctuary_farm',
       name: 'Nông Trại Trú Ẩn',
       subTitle: 'Nông Trại Thảo Dược Nam',
-      canvasX: 470,
-      canvasY: 410,
-      width: 130,
-      height: 65,
+      canvasX: 495,
+      canvasY: 415,
+      width: 135,
+      height: 70,
       color: 0x33281c,
       borderColor: 0x826945,
       landmarks: ['Vườn Thảo Dược Edda', 'Hàng Rào Gỗ'],
       clue: 'Vườn thuốc an lành thu hoạch Thảo Dược Quý chế tạo Cao Dược.'
     },
     {
+      id: 'deep_forest',
+      name: 'Rừng Sâu',
+      subTitle: 'Lãnh Địa Cổ Thụ • Quái Vật',
+      canvasX: 685,
+      canvasY: 165,
+      width: 130,
+      height: 75,
+      color: 0x1b281f,
+      borderColor: 0x3e6848,
+      landmarks: ['Cột Vật Tổ Thì Thầm', 'Cổng Hư Không', 'Bụi Gai Đầm Lầy'],
+      clue: 'Cột vật tổ thì thầm cảnh báo lũ Kỵ Binh Hắc Ám và Sói Xương rình rập.'
+    },
+    {
       id: 'silent_mire',
       name: 'Đầm Lầy Sương Mù',
       subTitle: 'Vùng Trũng Nước Đông Nam',
-      canvasX: 690,
-      canvasY: 340,
+      canvasX: 685,
+      canvasY: 365,
       width: 130,
       height: 80,
       color: 0x1d2e2b,
@@ -145,9 +158,9 @@ export class ParchmentWorldMapModal {
       id: 'ancient_rune_puzzle',
       name: 'Miếu Cổ Ngữ',
       subTitle: 'Ba Trụ Đá Thần Bí Đông',
-      canvasX: 860,
-      canvasY: 230,
-      width: 120,
+      canvasX: 935,
+      canvasY: 220,
+      width: 125,
       height: 75,
       color: 0x291f33,
       borderColor: 0x7d5ea6,
@@ -158,27 +171,14 @@ export class ParchmentWorldMapModal {
       id: 'broken_bell_shrine',
       name: 'Miếu Chuông Phế Tích',
       subTitle: 'Thánh Địa Phong Ấn Cuối Cùng',
-      canvasX: 860,
-      canvasY: 380,
-      width: 125,
+      canvasX: 935,
+      canvasY: 370,
+      width: 130,
       height: 80,
       color: 0x361c20,
       borderColor: 0xa8434f,
       landmarks: ['Quả Chuông Khổng Lồ', 'Tế Đàn Mạch Rễ', 'Đài Lửa Cổ Ngữ'],
       clue: 'Nơi ngủ say của Kẻ Nuốt Tiếng Chuông — Trùm tối thượng phong tỏa Khu Rừng Rỗng.'
-    },
-    {
-      id: 'abyssal_chasm',
-      name: 'Vực Thẳm Hư Không',
-      subTitle: 'Vực Sâu Cổ Đại Cực Tây',
-      canvasX: 90,
-      canvasY: 260,
-      width: 110,
-      height: 75,
-      color: 0x17121b,
-      borderColor: 0x4d3b59,
-      landmarks: ['Rìa Vực Thẳm', 'Cổng Hư Vô'],
-      clue: 'Khe nứt không gian thăm thẳm dẫn tới cội nguồn tà ác của Màn Sương The Veil.'
     }
   ];
 
@@ -422,29 +422,31 @@ export class ParchmentWorldMapModal {
     }
     this.contentContainer.add(roadGfx);
 
-    // 3. Vẽ chốt chặn Phong Ấn Rễ Cổ / Cầu Cây nối Đầm Lầy (E) -> Miếu Chuông (C)
-    const bridgeX = 790;
-    const bridgeY = 370;
+    // 3. Vẽ chốt chặn Phong Ấn Rễ Cổ / Cầu Cây nối Đầm Lầy (E) -> Miếu Chuông (C) (BUG-033: Tách biệt hoàn toàn, không đè node)
+    const bridgeX = 875;
+    const bridgeY = 405;
+    const bridgeW = 96;
+    const bridgeH = 32;
     const bridgeGfx = this.scene.add.graphics();
     const isBridgeUnlocked = bridgeSeal.isBroken;
 
     bridgeGfx.fillStyle(isBridgeUnlocked ? 0x0c2d18 : 0x2d0c10, 0.95);
-    bridgeGfx.fillRoundedRect(bridgeX - 60, bridgeY - 17, 120, 34, 5);
+    bridgeGfx.fillRoundedRect(bridgeX - bridgeW / 2, bridgeY - bridgeH / 2, bridgeW, bridgeH, 5);
     bridgeGfx.lineStyle(1.8, isBridgeUnlocked ? 0x2ecc71 : 0xe74c3c, 1.0);
-    bridgeGfx.strokeRoundedRect(bridgeX - 60, bridgeY - 17, 120, 34, 5);
+    bridgeGfx.strokeRoundedRect(bridgeX - bridgeW / 2, bridgeY - bridgeH / 2, bridgeW, bridgeH, 5);
 
-    const sealTitle = isBridgeUnlocked ? '🔓 CẦU CÂY ĐÃ HẠ' : '🔒 PHONG ẤN RỄ CỔ';
-    const sealDesc = isBridgeUnlocked ? 'Lối thông Miếu Chuông' : 'Cần Chìa Khóa Thanh Tẩy';
+    const sealTitle = isBridgeUnlocked ? '🔓 CẦU CÂY ĐÃ HẠ' : '🔒 PHONG ẤN RỄ';
+    const sealDesc = isBridgeUnlocked ? 'Lối thông Miếu Chuông' : 'Cần Chìa Khóa';
 
-    const sealTitleText = HDTextHelper.createText(this.scene, bridgeX, bridgeY - 6, sealTitle, {
-      fontSize: '9px',
+    const sealTitleText = HDTextHelper.createText(this.scene, bridgeX, bridgeY - 5, sealTitle, {
+      fontSize: '8.5px',
       fontStyle: 'bold',
       color: isBridgeUnlocked ? '#2ecc71' : '#ff7675',
       stroke: '#000000',
       strokeThickness: 2
     }).setOrigin(0.5, 0.5);
 
-    const sealDescText = HDTextHelper.createText(this.scene, bridgeX, bridgeY + 7, sealDesc, {
+    const sealDescText = HDTextHelper.createText(this.scene, bridgeX, bridgeY + 6, sealDesc, {
       fontSize: '7.5px',
       fontStyle: 'italic',
       color: isBridgeUnlocked ? '#a3e4d7' : '#f5b7b1'
@@ -453,13 +455,17 @@ export class ParchmentWorldMapModal {
     this.contentContainer.add([bridgeGfx, sealTitleText, sealDescText]);
 
     // 4. Vẽ từng Node Khu Vực & Xử lý Cơ Chế Sương Mù Khám Phá (Fog of War)
-    const beaconPoints: { x: number; y: number }[] = [];
+    let currentNodeObj: ParchmentMapNode | undefined;
     const pulsingObjects: Phaser.GameObjects.GameObject[] = [];
 
     for (const node of this.nodes) {
       const isVisited = this.playerState.hasVisitedZone(node.id);
       const isCurrentZone = (node.id === activeZoneId);
       const isTargetZone = (node.id === targetNodeId);
+
+      if (isCurrentZone) {
+        currentNodeObj = node;
+      }
 
       const nodeGfx = this.scene.add.graphics();
 
@@ -496,18 +502,13 @@ export class ParchmentWorldMapModal {
 
         // Danh sách địa danh tiêu biểu (Landmarks)
         const lmString = node.landmarks.slice(0, 2).map(l => `• ${l}`).join('\n');
-        const lmText = HDTextHelper.createText(this.scene, node.canvasX + 8, node.canvasY + 40, lmString, {
+        const lmText = HDTextHelper.createText(this.scene, node.canvasX + 8, node.canvasY + 41, lmString, {
           fontSize: '8.5px',
           color: '#c9b79c',
           lineSpacing: 1
         });
 
         this.contentContainer.add([nodeGfx, nameText, subText, lmText]);
-
-        // Nếu người chơi đang ở vùng này, đánh dấu điểm beacon
-        if (isCurrentZone) {
-          beaconPoints.push({ x: node.canvasX + node.width / 2, y: node.canvasY + node.height / 2 });
-        }
       } else {
         // ==========================================
         // VÙNG CHƯA KHÁM PHÁ (FOG OF WAR - PHỦ MỰC SƯƠNG)
@@ -541,19 +542,19 @@ export class ParchmentWorldMapModal {
         this.contentContainer.add([nodeGfx, fogIcon, fogTitle]);
       }
 
-      // Đánh dấu nổi bật phân khu mục tiêu tiếp theo (nhấp nháy nhẹ kèm nhãn tên chặng mục tiêu)
+      // BUG-033: Đánh dấu mục tiêu nhiệm vụ ở ĐÁY PHÍA DƯỚI node (không đè lên tên vùng hay vị trí hiện tại)
       if (isTargetZone) {
         const targetBadge = HDTextHelper.createText(
           this.scene,
           node.canvasX + node.width / 2,
-          node.canvasY - 12,
-          '🎯 MỤC TIÊU NHIỆM VỤ',
+          node.canvasY + node.height + 13,
+          isCurrentZone ? '🎯 MỤC TIÊU HIỆN TẠI' : '🎯 MỤC TIÊU KẾ TIẾP',
           {
-            fontSize: '9px',
+            fontSize: '8.5px',
             fontStyle: 'bold',
             color: '#f1c40f',
             backgroundColor: '#1b1208ee',
-            padding: { x: 5, y: 2 },
+            padding: { x: 6, y: 2 },
             stroke: '#000000',
             strokeThickness: 2
           }
@@ -564,35 +565,33 @@ export class ParchmentWorldMapModal {
       }
     }
 
-    // 5. Con trỏ định vị vị trí hiện tại của người chơi (Glowing Amber Beacon & Pixel Map Pin)
-    if (beaconPoints.length > 0) {
-      const pt = beaconPoints[0];
-      if (this.scene.textures.exists('ui_pack_map_pin')) {
-        const pinImg = this.scene.add.image(pt.x, pt.y - 12, 'ui_pack_map_pin');
-        pinImg.setDisplaySize(18, 28).setOrigin(0.5, 1);
-        this.contentContainer.add(pinImg);
-        pulsingObjects.push(pinImg);
-      } else {
-        const beaconGfx = this.scene.add.graphics();
-        beaconGfx.fillStyle(0xf39c12, 0.9);
-        beaconGfx.fillCircle(pt.x, pt.y, 6);
-        beaconGfx.lineStyle(2, 0xffffff, 1);
-        beaconGfx.strokeCircle(pt.x, pt.y, 6);
-        this.contentContainer.add(beaconGfx);
-        pulsingObjects.push(beaconGfx);
-      }
+    // 5. BUG-033: Con trỏ định vị vị trí hiện tại của người chơi đặt ở ĐỈNH PHÍA TRÊN node (hoàn toàn không đè Bellhollow hay nội dung node)
+    if (currentNodeObj) {
+      const topCenterX = currentNodeObj.canvasX + currentNodeObj.width / 2;
+      const topCenterY = currentNodeObj.canvasY;
 
-      const beaconLabel = HDTextHelper.createText(this.scene, pt.x, pt.y - 28, '📍 BẠN ĐANG Ở ĐÂY', {
+      // Điểm ghim beacon nhỏ xinh xắn ngay đỉnh node
+      const beaconGfx = this.scene.add.graphics();
+      beaconGfx.fillStyle(0xf39c12, 1);
+      beaconGfx.fillCircle(topCenterX, topCenterY - 1, 4.5);
+      beaconGfx.lineStyle(1.5, 0xffffff, 1);
+      beaconGfx.strokeCircle(topCenterX, topCenterY - 1, 4.5);
+      this.contentContainer.add(beaconGfx);
+      pulsingObjects.push(beaconGfx);
+
+      // Huy hiệu '📍 BẠN ĐANG Ở ĐÂY' đặt trang trọng phía trên đỉnh node
+      const beaconLabel = HDTextHelper.createText(this.scene, topCenterX, topCenterY - 14, '📍 BẠN ĐANG Ở ĐÂY', {
         fontSize: '9.5px',
         fontStyle: 'bold',
         color: '#f1c40f',
-        backgroundColor: '#1a1006dd',
-        padding: { x: 5, y: 2 },
+        backgroundColor: '#1a1006ee',
+        padding: { x: 6, y: 2 },
         stroke: '#000000',
         strokeThickness: 2
-      }).setOrigin(0.5, 1);
+      }).setOrigin(0.5, 0.5);
 
       this.contentContainer.add(beaconLabel);
+      pulsingObjects.push(beaconLabel);
     }
 
     // Hiệu ứng nhấp nháy phát sáng (Pulsing Animation) cho beacon và target badge

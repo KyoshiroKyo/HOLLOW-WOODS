@@ -76,9 +76,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   private zoneBannerBg!: Phaser.GameObjects.Graphics;
   private zoneTitleText!: Phaser.GameObjects.Text;
   private zoneSubtitleText!: Phaser.GameObjects.Text;
-  // C4-13-19: Bộ đệm thời gian chống nháy banner phân khu
+  // C4-13-19 & BUG-028: Bộ đệm thời gian chống nháy banner phân khu và hàng chờ chuyển vùng
   private lastBannerShownTime: number = 0;
   private lastBannerZoneTitle: string = '';
+  private zoneBannerTween?: Phaser.Tweens.Tween;
+  private pendingBannerTimer?: Phaser.Time.TimerEvent;
 
   // Bảng nhiệm vụ góc trên phải
   private questBg!: Phaser.GameObjects.Graphics;
@@ -530,8 +532,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     this.updateTimeWidget(1, 0, 'DAY', 0);
 
-    // 4. Banner tên phân khu có nền gỗ tối viền đồng xỉn co giãn động (V15-56: Tâm tại 640, 80 - tuyệt đối không đè popup toast 640, 175)
-    this.zoneBannerContainer = this.add.container(640, 80);
+    // 4. Banner tên phân khu có nền gỗ tối viền đồng xỉn co giãn động (BUG-028: Tâm tại 640, 138 - hoàn toàn nằm dưới HUD đồng hồ Y:16-94 và tách biệt khỏi popup toast Y:205)
+    this.zoneBannerContainer = this.add.container(640, 138);
     this.zoneBannerContainer.setDepth(8500);
     this.zoneBannerBg = this.add.graphics();
 
@@ -669,7 +671,14 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       if (this.dialogueContainer) { this.dialogueContainer.destroy(); this.dialogueContainer = undefined as any; }
       if (this.dialogueChoicesContainer) { this.dialogueChoicesContainer.destroy(); this.dialogueChoicesContainer = undefined as any; }
       if (this.promptContainer) { this.promptContainer.destroy(); this.promptContainer = undefined as any; }
-      if (this.zoneBannerContainer) { this.zoneBannerContainer.destroy(); this.zoneBannerContainer = undefined as any; }
+      if (this.pendingBannerTimer) { this.pendingBannerTimer.remove(); this.pendingBannerTimer = undefined; }
+      if (this.zoneBannerTween) { this.zoneBannerTween.stop(); this.zoneBannerTween = undefined; }
+      if (this.activePopupTween) { this.activePopupTween.stop(); this.activePopupTween = undefined; }
+      if (this.zoneBannerContainer) {
+        this.tweens.killTweensOf(this.zoneBannerContainer);
+        this.zoneBannerContainer.destroy();
+        this.zoneBannerContainer = undefined as any;
+      }
       if (this.bossSealContainer) { this.bossSealContainer.destroy(); this.bossSealContainer = undefined as any; }
       if (this.quickSlotContainer) { this.quickSlotContainer.destroy(); this.quickSlotContainer = undefined as any; }
       if (this.verticalTaskbarContainer) { this.verticalTaskbarContainer.destroy(); this.verticalTaskbarContainer = undefined as any; }
@@ -2687,9 +2696,30 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
   public showZoneBanner(atmosphere: ZoneAtmosphere, force: boolean = false): void {
     const now = performance.now();
-    if (!force && now - this.lastBannerShownTime < 4000 && this.lastBannerZoneTitle === atmosphere.titleVietnamese) {
+    // BUG-028: Chống nhấp nháy 2 banner liên tiếp khi đứng sát ranh giới (< 3500ms)
+    if (!force && now - this.lastBannerShownTime < 3500) {
+      if (this.lastBannerZoneTitle === atmosphere.titleVietnamese) {
+        return;
+      }
+      // Đứng sát ranh giới đổi zone liên tục: Lên lịch hoãn để hiện banner sau khi người chơi dừng ổn định
+      if (this.pendingBannerTimer) {
+        this.pendingBannerTimer.remove();
+      }
+      const remainingCooldown = Math.max(200, 3600 - (now - this.lastBannerShownTime));
+      this.pendingBannerTimer = this.time.delayedCall(remainingCooldown, () => {
+        this.pendingBannerTimer = undefined;
+        if (this.lastBannerZoneTitle !== atmosphere.titleVietnamese) {
+          this.showZoneBanner(atmosphere);
+        }
+      });
       return;
     }
+
+    if (this.pendingBannerTimer) {
+      this.pendingBannerTimer.remove();
+      this.pendingBannerTimer = undefined;
+    }
+
     this.lastBannerShownTime = now;
     this.lastBannerZoneTitle = atmosphere.titleVietnamese;
 
@@ -2700,7 +2730,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     // V14-P8-12: Tự động tính chiều rộng khung viền dựa theo độ dài thực tế của chữ + lề an toàn >= 32px mỗi bên
     const maxTextW = Math.max(this.zoneTitleText.width, this.zoneSubtitleText.width);
     const bannerW = Math.max(420, maxTextW + 64);
-    const bannerH = 58;
+    const bannerH = 54;
 
     this.zoneBannerBg.clear();
     // Nền gỗ tối bán trong suốt
@@ -2720,16 +2750,23 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.zoneBannerBg.fillRect(-bannerW / 2 + 3, bannerH / 2 - 5, 2, 2);
     this.zoneBannerBg.fillRect(bannerW / 2 - 5, bannerH / 2 - 5, 2, 2);
 
+    if (this.zoneBannerTween) {
+      this.zoneBannerTween.stop();
+      this.zoneBannerTween = undefined;
+    }
     this.tweens.killTweensOf(this.zoneBannerContainer);
     this.zoneBannerContainer.setAlpha(0);
 
-    this.tweens.add({
+    this.zoneBannerTween = this.tweens.add({
       targets: this.zoneBannerContainer,
       alpha: 1,
-      duration: 600,
-      hold: 2500,
+      duration: 500,
+      hold: 2400,
       yoyo: true,
-      ease: 'Power2'
+      ease: 'Power2',
+      onComplete: () => {
+        this.zoneBannerTween = undefined;
+      }
     });
   }
 
@@ -3289,9 +3326,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.activePopupTween = undefined;
     }
 
-    // V15-56: Tái sử dụng Text pooled đặt tại Y=175 trôi nhẹ lên Y=145, hoàn toàn tách biệt khỏi Zone Banner (Y=80)
+    // BUG-028: Tái sử dụng Text pooled đặt tại Y=205 trôi nhẹ lên Y=195 -> Y=185, hoàn toàn tách biệt khỏi Zone Banner (Y=138, đáy 165)
     if (!this.pooledPopupText) {
-      this.pooledPopupText = HDTextHelper.createText(this, 640, 175, '', {
+      this.pooledPopupText = HDTextHelper.createText(this, 640, 205, '', {
         fontSize: '15px',
         fontStyle: 'bold',
         color: '#2ecc71',
@@ -3304,7 +3341,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     const popup = this.pooledPopupText;
     popup.setText(msg);
-    popup.setPosition(640, 175);
+    popup.setPosition(640, 205);
     popup.setAlpha(1);
     popup.setVisible(true);
 
@@ -3316,14 +3353,14 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     this.activePopupTween = this.tweens.add({
       targets: popup,
-      y: 165,
+      y: 195,
       duration: 250,
       ease: 'Quad.easeOut',
       onComplete: () => {
         this.activePopupTween = this.tweens.add({
           targets: popup,
           alpha: 0,
-          y: 145,
+          y: 185,
           delay: holdDuration,
           duration: fadeDuration,
           ease: 'Quad.easeIn',
