@@ -42,6 +42,7 @@ export class PauseModal {
 
   // Hộp thoại phụ hướng dẫn phím (Controls Guide Sub-Modal)
   private guideOverlayContainer?: Phaser.GameObjects.Container;
+  private onKeydownH?: () => void;
 
   // Sliders và toggles tham chiếu
   private bgmSliderControl?: { container: Phaser.GameObjects.Container; setValue: (val: number) => void; getValue: () => number };
@@ -69,13 +70,14 @@ export class PauseModal {
     this.buildUI();
     this.container.setVisible(false);
 
-    // Lắng nghe phím H để mở hướng dẫn phím khi đang mở Pause Menu
+    // Lắng nghe phím H để mở hướng dẫn phím khi đang mở Pause Menu (lưu handler để gỡ khi destroy)
     if (this.scene.input && this.scene.input.keyboard) {
-      this.scene.input.keyboard.on('keydown-H', () => {
+      this.onKeydownH = () => {
         if (this.isOpen) {
           this.toggleGuideOverlay();
         }
-      });
+      };
+      this.scene.input.keyboard.on('keydown-H', this.onKeydownH);
     }
   }
 
@@ -603,6 +605,10 @@ export class PauseModal {
    * Dọn dẹp đối tượng hiển thị Modal tránh rò rỉ bộ nhớ
    */
   public destroy(): void {
+    if (this.onKeydownH && this.scene.input && this.scene.input.keyboard) {
+      this.scene.input.keyboard.off('keydown-H', this.onKeydownH);
+      this.onKeydownH = undefined;
+    }
     if (this.guideOverlayContainer) {
       this.guideOverlayContainer.destroy();
       this.guideOverlayContainer = undefined;

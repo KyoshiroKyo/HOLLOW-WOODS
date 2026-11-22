@@ -2941,8 +2941,8 @@
           "id": 9,
           "name": "ow_willow_trunk",
           "type": "wall",
-          "x": 1250,
-          "y": 890,
+          "x": 1205,
+          "y": 920,
           "width": 24,
           "height": 20,
           "visible": true,
@@ -3098,8 +3098,8 @@
           "id": 15,
           "name": "ow_ancient_willow",
           "type": "clue",
-          "x": 1260,
-          "y": 910,
+          "x": 1200,
+          "y": 915,
           "width": 36,
           "height": 30,
           "visible": true,
@@ -3315,38 +3315,6 @@
               "name": "hookArchetype",
               "type": "string",
               "value": "Survival Cache"
-            }
-          ]
-        },
-        {
-          "id": 22,
-          "name": "ow_lantern_checkpoint_1",
-          "type": "clue",
-          "x": 1220,
-          "y": 600,
-          "width": 18,
-          "height": 28,
-          "visible": true,
-          "properties": [
-            {
-              "name": "displayName",
-              "type": "string",
-              "value": "Trụ Đèn Bão Bìa Rừng"
-            },
-            {
-              "name": "promptText",
-              "type": "string",
-              "value": "[E] Thắp Sáng Trụ Đèn Bão"
-            },
-            {
-              "name": "actionId",
-              "type": "string",
-              "value": "ignite_lantern_checkpoint"
-            },
-            {
-              "name": "hookArchetype",
-              "type": "string",
-              "value": "Archaeological Clue"
             }
           ]
         },

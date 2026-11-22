@@ -114,11 +114,11 @@ export class JournalModal {
       tierDisplayName: 'Tầng 1 — Core World (Trung Tâm Làng)',
       canvasX: 175,
       canvasY: 140,
-      description: 'Ngôi làng trú ẩn an toàn của các cư dân còn sống sót. Nơi đặt Tháp Chuông Cổ, bàn chế tạo vật phẩm và nơi sinh sống của Trưởng Làng Thomas cùng Thầy Thuốc Neris.',
+      description: 'Ngôi làng trú ẩn an toàn của các cư dân còn sống sót. Nơi đặt Tháp Chuông Cổ, bàn chế tạo vật phẩm và nơi sinh sống của Bà Lão Edda cùng Thầy Thuốc Neris.',
       landmarks: [
         'Tháp Chuông Cổ Đại (The Great Bell)',
         'Bàn Chế Tạo Dụng Cụ & Thuốc [Phím I]',
-        'Nhà Trưởng Làng Thomas & Thầy Thuốc Neris',
+        'Nhà Bà Lão Edda & Thầy Thuốc Neris',
         'Giếng Nước Cổ & Bảng Cáo Thị Làng',
         'Cổng Đông Phong Ấn Dẫn Sang Rừng Cấm'
       ],
@@ -262,21 +262,21 @@ export class JournalModal {
     },
 
     // =========================================================================
-    // VÙNG MỞ RỘNG TƯƠNG LAI (CHƯA TRIỂN KHAI — LỘ TRÌNH V1.3)
+    // VÙNG MỞ RỘNG TƯƠNG LAI (CHƯA TRIỂN KHAI)
     // =========================================================================
     {
       id: 'the_depths',
       canonicalName: 'Vực Sâu Cổ Đại',
-      subTitle: 'The Ancient Depths (V1.3)',
+      subTitle: 'The Ancient Depths',
       tier: 'UNIMPLEMENTED',
-      tierDisplayName: 'Chưa Triển Khai (Lộ Trình V1.3)',
+      tierDisplayName: 'Chưa Triển Khai (Vùng Mở Rộng)',
       canvasX: 465,
       canvasY: 275,
-      description: 'Vết nứt địa chấn sâu thẳm dẫn xuống mạng lưới hang ngầm và di tích cổ xưa bị lãng quên. Khu vực đang nằm trong quy hoạch phát triển cho phiên bản V1.3.',
+      description: 'Vết nứt địa chấn sâu thẳm dẫn xuống mạng lưới hang ngầm và di tích cổ xưa bị lãng quên. Khu vực đang nằm trong quy hoạch phát triển.',
       landmarks: [
         'Khe Nứt Địa Chấn Phong Ấn',
         'Cổng Vòm Hầm Ngục Đang Đóng Kín',
-        'Biển Cảnh Báo Nguy Hiểm V1.3'
+        'Biển Cảnh Báo Nguy Hiểm'
       ],
       icon: '⏳',
       isImplemented: false
@@ -1300,9 +1300,10 @@ export class JournalModal {
       mapBg.lineBetween(mapCanvasX + 15, ly, mapCanvasX + mapCanvasW - 15, ly);
     }
 
-    // Header bản đồ: Tiêu đề + Thống kê khám phá
-    const exploredCount = this.mapNodes
-      .filter(n => n.id !== 'the_depths')
+    // Header bản đồ: Tiêu đề + Thống kê khám phá (HW-FIX-21: đếm động tổng số vùng thực tế)
+    const implementedNodes = this.mapNodes.filter(n => n.isImplemented);
+    const totalImplemented = implementedNodes.length;
+    const exploredCount = implementedNodes
       .filter(n => this.playerState.hasVisitedZone(n.id)).length;
 
     const mapTitle = HDTextHelper.createText(this.scene, mapCanvasX + 16, mapCanvasY + 12, '🗺 SƠ ĐỒ VÙNG BELLHOLLOW & KHU RỪNG RỖNG', {
@@ -1311,7 +1312,7 @@ export class JournalModal {
       color: '#f1c40f'
     });
 
-    const mapStats = HDTextHelper.createText(this.scene, mapCanvasX + mapCanvasW - 16, mapCanvasY + 12, `Đã Khai Mở: ${exploredCount}/9 Vùng`, {
+    const mapStats = HDTextHelper.createText(this.scene, mapCanvasX + mapCanvasW - 16, mapCanvasY + 12, `Đã Khai Mở: ${exploredCount}/${totalImplemented} Vùng`, {
       fontSize: '12px',
       fontStyle: 'bold',
       color: '#3498db'
@@ -1558,7 +1559,7 @@ export class JournalModal {
       statusText = '🔒 ĐANG KHÓA THEO CỐT TRUYỆN';
       statusColor = '#e74c3c';
     } else if (status === 'UNIMPLEMENTED') {
-      statusText = '⏳ CHƯA TRIỂN KHAI (V1.3)';
+      statusText = '⏳ CHƯA TRIỂN KHAI';
       statusColor = '#7f8c8d';
     }
 

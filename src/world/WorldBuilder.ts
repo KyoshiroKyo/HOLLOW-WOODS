@@ -996,8 +996,8 @@ export class WorldBuilder {
         // 5.3. Sân hiên lát đá trước Nhà Bà Lão Edda ở Đông Bắc (wx: 1100..1220, wy: 118..172)
         drawCobbleCourtyard(1160, 145, 60, 26, 'rounded_rect');
 
-        // 5.4. Sân đá Khu Xưởng Rèn & Lò Lửa Bram ở Đông Nam (wx: 1180..1310, wy: 345..405)
-        drawCobbleCourtyard(1245, 375, 65, 30, 'rounded_rect');
+        // 5.4. Sân đá Khu Xưởng Rèn & Lò Lửa Bram ở Đông Nam (wx: 1315..1380, wy: 430..465)
+        drawCobbleCourtyard(1348, 447, 65, 30, 'rounded_rect');
 
         // 5.5. Sân đá Trạm Gác Cổng Tây chỗ Garth (wx: 474..546, wy: 191..239)
         drawCobbleCourtyard(563, 196, 40, 23, 'oval');
@@ -5275,24 +5275,25 @@ export class WorldBuilder {
     this.createQuietForestBonfireOutpost(1470, 710);
 
     // 4. Thân Cây Cổ Thụ Đổ (Fallen Logs)
-    this.createFallenLog(1190, 670, 48, 12);  // Gần bãi cửa rừng
+    // HW-FIX-21: Dời thân cây đổ từ 1190 sang 1135 ôm sát mép Tây để giải phóng lòng đường khúc cua chữ S >= 72px
+    this.createFallenLog(1135, 670, 48, 12);  // Gần bãi cửa rừng
     this.createFallenLog(1475, 795, 54, -20); // Ven suối rừng
     this.createFallenLog(1220, 955, 62, 8);   // Bãi Liễu cổ thụ phía Nam
 
     // 5. Nơi Ẩn Nấp & Thân Cây Cổ Thụ Rỗng (Stealth Hiding Spots vs. Dark Horseman / The Listener)
     this.createDenseBush(1180, 650); // Bụi Rậm Khúc Cua Chữ S
     this.createHollowTree(1360, 620, 'Cây Rỗng Rừng Ven');
-    this.createDenseBush(1260, 800); // Bụi Rậm Bãi Rừng Thưa
-    this.createDenseBush(1420, 745); // Bụi Rậm Trạm Lửa Sir Vaelen (viền ngoài)
-    this.createHollowTree(1290, 900, 'Cây Rỗng Bãi Liễu');
+    // HW-FIX-21: Xóa bụi cản đường (1260, 800) và (1420, 745)
+    // HW-FIX-21: Dời Cây Rỗng Bãi Liễu sang sườn đồi tam giác giữa 2 nhánh đường (1305, 885)
+    this.createHollowTree(1305, 885, 'Cây Rỗng Bãi Liễu');
 
     // 6. V15-14: Quần thể Cụm Rừng Tự Nhiên (Organic Clusters) & Viền Rừng Ngoại Vi
-    // Cụm 1: Cụm Thông Cổ Thụ Ven Làng (Bìa Bắc - Tây Bắc)
+    // Cụm 1: Cụm Thông Cổ Thụ Ven Làng (Bìa Bắc - Tây Bắc) (HW-FIX-21: đá đặt hướng Tây dx: -15 để giải phóng khúc cua S)
     this.createOrganicTreeCluster(1145, 595, {
       primaryType: 'pine',
       subTrees: [{ dx: 25, dy: -10, type: 'pine' }],
       bushes: [{ dx: -12, dy: 14 }],
-      rocks: [{ dx: 18, dy: 15, w: 22, h: 14 }]
+      rocks: [{ dx: -15, dy: 15, w: 22, h: 14 }]
     });
     this.createTree(1280, 585, 'Cây Bìa Bắc Rừng Ven', true);
 
@@ -5303,19 +5304,19 @@ export class WorldBuilder {
       bushes: [{ dx: 14, dy: 10 }]
     });
 
-    // Cụm 3: Cụm Sồi Đại Thụ Bãi Trại Thợ Săn (V153-02B: Dời offset cây phụ từ (-26, 18) -> (28, 24) để giải phóng trục đường X=1360 xuống Xưởng Chuông)
-    this.createOrganicTreeCluster(1375, 855, {
+    // Cụm 3: Cụm Sồi Đại Thụ Bãi Trại Thợ Săn (HW-FIX-21: Dời sang x=1400 giải phóng hoàn toàn trục đường X=1360 xuống Xưởng Chuông >= 72px)
+    this.createOrganicTreeCluster(1400, 855, {
       primaryType: 'oak',
       subTrees: [{ dx: 28, dy: 24, type: 'oak' }],
       bushes: [{ dx: 16, dy: 12 }],
       rocks: [{ dx: 22, dy: 16, w: 22, h: 14 }]
     });
 
-    // Cụm 4: Cụm Liễu Đại Ngàn Ven Suối Phía Nam (1260, 890..950)
-    this.createOrganicTreeCluster(1255, 935, {
+    // Cụm 4: Cụm Liễu Đại Ngàn Ven Suối Phía Nam (HW-FIX-21: Dời sát mép Tây x=1215 giải phóng lòng đường Bãi Liễu >= 72px)
+    this.createOrganicTreeCluster(1215, 930, {
       primaryType: 'willow',
-      subTrees: [{ dx: 30, dy: -15, type: 'willow' }],
-      bushes: [{ dx: -14, dy: 10 }]
+      subTrees: [{ dx: -20, dy: -25, type: 'willow' }],
+      bushes: [{ dx: 14, dy: 10 }]
     });
 
     // Cụm 5: Cụm Cổ Thụ Viền Đông
@@ -5338,9 +5339,8 @@ export class WorldBuilder {
     this.createTree(1490, 880, 'Cây Sồi Ven Suối', true);
 
     // 7. Bụi Rậm & Đá Tảng Bờ Suối Cảnh Quan
-    this.createDenseBush(1180, 760);
+    // HW-FIX-21: Xóa bụi cản đường (1180, 760) và (1350, 780) để bảo đảm thông thoáng >= 72px
     this.createDenseBush(1235, 780);
-    this.createDenseBush(1350, 780);
     this.createDenseBush(1400, 890);
     // V153-02B: Dời bụi cảnh quan từ (1495, 745) sang (1520, 755) ôm sát bìa rừng Đông, tạo khoảng thoáng quanh bếp Sir Vaelen
     this.createDenseBush(1520, 755);
@@ -5641,7 +5641,7 @@ export class WorldBuilder {
 
     this.placeFootAnchoredSprite(cx + 34, cy + 16, 'rock_large_mossy_v14', 0.65);
     this.placeFootAnchoredSprite(cx + 28, cy - 18, SPRITE_PROP_CRATE_WEATHERED_V14, 0.65);
-    this.placeFootAnchoredSprite(cx + 16, cy + 24, 'prop_fallen_log_mossy_v14', 0.45);
+    // HW-FIX-21: Xóa cây lá đỏ/tím prop_fallen_log_mossy_v14 tại (cx + 16, cy + 24) = (1486, 734) dưới bếp Sir Vaelen để mở thoáng quanh bếp
 
     // 6. Hộp va chạm nhỏ chống bước đè lên tâm ngọn lửa
     this.createStaticBoxColliderCentered(cx, cy, 24, 16, 'Bếp Lửa Hồng Đá Cổ');

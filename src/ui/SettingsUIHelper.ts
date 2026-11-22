@@ -192,15 +192,25 @@ export class SettingsUIHelper {
       calculateValueFromPointer(pointer.x);
     });
 
-    scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
+    const onPointerMove = (pointer: Phaser.Input.Pointer) => {
       if (isDragging) {
         calculateValueFromPointer(pointer.x);
       }
-    });
+    };
 
-    scene.input.on('pointerup', () => {
+    const onPointerUp = () => {
       if (isDragging) {
         isDragging = false;
+      }
+    };
+
+    scene.input.on('pointermove', onPointerMove);
+    scene.input.on('pointerup', onPointerUp);
+
+    container.once('destroy', () => {
+      if (scene.input) {
+        scene.input.off('pointermove', onPointerMove);
+        scene.input.off('pointerup', onPointerUp);
       }
     });
 

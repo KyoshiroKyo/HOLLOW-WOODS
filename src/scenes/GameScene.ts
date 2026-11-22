@@ -128,6 +128,7 @@ export class GameScene extends Phaser.Scene {
   private fireflies: Firefly[] = [];
   private currentZoneId: ZoneId = 'fog_crossing';
   private previousZoneId: ZoneId = 'fog_crossing';
+  private onContextMenu: ((e: MouseEvent) => void) | null = null;
 
   // C4-13-16: Thời điểm kích hoạt gần nhất dòng suy nghĩ kể chuyện ở rào chắn phía Tây (cooldown 6 giây)
   private lastWestBarrierThoughtTime: number = 0;
@@ -427,9 +428,13 @@ export class GameScene extends Phaser.Scene {
     this.player.resetAllActionAndMotionStates();
     this.player.lastSafePosition = { x: spawnX, y: spawnY };
 
-    // V152-05: Chặn contextmenu mặc định của chuột phải trên canvas game để sử dụng cho Heavy Attack
+    // V152-05 / HW-FIX-21: Chặn contextmenu mặc định của chuột phải trên canvas game để sử dụng cho Heavy Attack (lưu handler để gỡ khi shutdown)
     if (this.game && this.game.canvas) {
-      this.game.canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+      if (this.onContextMenu) {
+        this.game.canvas.removeEventListener('contextmenu', this.onContextMenu);
+      }
+      this.onContextMenu = (e: MouseEvent) => e.preventDefault();
+      this.game.canvas.addEventListener('contextmenu', this.onContextMenu);
     }
 
     // C4-132-01: Lắng nghe sự kiện vung gậy của nhân vật để xử lý âm thanh cảnh báo và quét va chạm thực thể
@@ -842,6 +847,11 @@ export class GameScene extends Phaser.Scene {
 
     // Dọn dẹp âm thanh, thực thể, đồ họa & listener khi tắt scene (C4-13-09)
     this.events.once('shutdown', () => {
+      // HW-FIX-21: Gỡ listener contextmenu trên canvas khi GameScene shutdown
+      if (this.game && this.game.canvas && this.onContextMenu) {
+        this.game.canvas.removeEventListener('contextmenu', this.onContextMenu);
+        this.onContextMenu = null;
+      }
       this.audioManager.cleanupAudioLoops();
       this.audioManager.setHeartbeatActive(false);
       this.audioManager.stopAmbience();
@@ -1201,7 +1211,8 @@ export class GameScene extends Phaser.Scene {
           data.zoneId === 'ancient_ruins' ||
           (data.playerPos && data.playerPos.x >= 3200 && data.playerPos.x <= 4900 && data.playerPos.y >= 50 && data.playerPos.y <= 600)
         ) {
-          data.playerPos = { x: 2360, y: 720 };
+          // HW-FIX-21: Đưa nhân vật hồi sinh chuẩn xác về Trạm Lửa Rừng Tĩnh Lặng của Sir Vaelen (1420, 710)
+          data.playerPos = { x: 1420, y: 710 };
           data.zoneId = 'outer_woods';
           data.stats.health = 100;
           data.stats.stamina = 100;
@@ -1640,7 +1651,7 @@ export class GameScene extends Phaser.Scene {
     const clusters: Array<{ x: number; y: number; count: number; colors: number[]; radius: number; type: 'firefly' | 'ember' | 'spore' }> = [
       // 1. Tàn lửa bay nhẹ quanh Lửa Trại & Lò Rèn (Campfire & Forge Embers)
       { x: 860, y: 310, count: 5, colors: [0xff4400, 0xff7700, 0xffaa00, 0xffd700], radius: 24, type: 'ember' }, // Lửa Trại Bellhollow
-      { x: 1210, y: 360, count: 4, colors: [0xff3300, 0xff6600, 0xff9900, 0xffcc33], radius: 20, type: 'ember' }, // Lò Rèn Bram
+      { x: 1318, y: 408, count: 4, colors: [0xff3300, 0xff6600, 0xff9900, 0xffcc33], radius: 20, type: 'ember' }, // Lò Rèn Bram (HW-FIX-21: đồng bộ vị trí xưởng mới)
       { x: 1470, y: 710, count: 5, colors: [0xff5500, 0xff8811, 0xffaa22, 0xffe066], radius: 26, type: 'ember' }, // Trạm Lửa Sir Vaelen
       { x: 800, y: 750, count: 4, colors: [0xff4400, 0xff7700, 0xffb732], radius: 20, type: 'ember' }, // Bếp Lửa Sanctuary Farm
 

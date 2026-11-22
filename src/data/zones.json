@@ -2053,8 +2053,8 @@
         {
           "id": "ow_willow_trunk",
           "name": "Gốc Cây Liễu Cổ Thụ Phía Nam",
-          "x": 1250,
-          "y": 890,
+          "x": 1205,
+          "y": 920,
           "width": 24,
           "height": 20,
           "type": "wall",
@@ -2108,8 +2108,8 @@
           "id": "ow_ancient_willow",
           "name": "Cây Liễu Cổ Thụ Phía Nam",
           "type": "clue",
-          "x": 1260,
-          "y": 910,
+          "x": 1200,
+          "y": 915,
           "width": 36,
           "height": 30,
           "promptText": "[E] Quan Sát Cây Liễu Cổ Thụ",
@@ -2180,17 +2180,6 @@
           "height": 18,
           "promptText": "[E] Mở Rương Tiếp Tế Kiểm Lâm",
           "actionId": "open_ranger_outpost_chest"
-        },
-        {
-          "id": "ow_lantern_checkpoint_1",
-          "name": "Trụ Đèn Bão Bìa Rừng",
-          "type": "clue",
-          "x": 1220,
-          "y": 600,
-          "width": 18,
-          "height": 28,
-          "promptText": "[E] Thắp Sáng Trụ Đèn Bão",
-          "actionId": "ignite_lantern_checkpoint"
         },
         {
           "id": "shortcut_titan_trunk_outer",
@@ -2270,33 +2259,11 @@
           "actionId": "hide_tree_ow_north"
         },
         {
-          "id": "hide_bush_ow_clearing",
-          "name": "Bụi Rậm Bãi Rừng Thưa",
-          "type": "hiding_spot",
-          "x": 1260,
-          "y": 800,
-          "width": 32,
-          "height": 32,
-          "promptText": "[E] Ẩn Nấp Vào Bụi Rậm",
-          "actionId": "hide_bush_ow_clearing"
-        },
-        {
-          "id": "hide_bush_ow_bonfire",
-          "name": "Bụi Rậm Trạm Lửa Sir Vaelen",
-          "type": "hiding_spot",
-          "x": 1420,
-          "y": 745,
-          "width": 32,
-          "height": 32,
-          "promptText": "[E] Ẩn Nấp Vào Bụi Rậm",
-          "actionId": "hide_bush_ow_bonfire"
-        },
-        {
           "id": "hide_tree_ow_willow",
           "name": "Cây Rỗng Bãi Liễu",
           "type": "hiding_spot",
-          "x": 1290,
-          "y": 900,
+          "x": 1305,
+          "y": 885,
           "width": 32,
           "height": 32,
           "promptText": "[E] Ẩn Nấp Vào Cây Rỗng",

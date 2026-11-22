@@ -1027,7 +1027,8 @@ export class CraftingModal {
     const innerX = 18;
     const frameW = this.panelW - 36;
     const btnX = innerX + frameW - btnW - 14;
-    const btnY = 126 - btnH - 12;
+    // HW-FIX-21: Khớp chuẩn xác với frameH = 180 ở buildDetailPanel
+    const btnY = 180 - btnH - 12;
 
     this.detailCraftBtnBg.clear();
     if (!isLocked && canCraft) {
