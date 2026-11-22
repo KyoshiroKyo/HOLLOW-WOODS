@@ -358,6 +358,7 @@ export class GameScene extends Phaser.Scene {
 
     if (typeof window !== 'undefined') {
       (window as any).__SETTINGS_MANAGER__ = SettingsManager.getInstance();
+      (window as any).__GRAPHICS_QUALITY_SYSTEM__ = GraphicsQualitySystem.getInstance();
     }
 
     // 4. Khởi tạo Satyr tại điểm xuất phát hoặc điểm tải lưu
@@ -6495,7 +6496,7 @@ export class GameScene extends Phaser.Scene {
     // Hiệu ứng chao đảo ánh sáng khi dơi phục kích cắn trúng (tần số thấp êm dịu, giới hạn biên độ)
     if (this.batLanternFlickerTimer > 0) {
       this.batLanternFlickerTimer -= 16.6;
-      targetBaseRadius *= (0.82 + Math.sin(Date.now() * 0.008) * 0.18);
+      targetBaseRadius *= isReducedMotion ? 0.82 : (0.82 + Math.sin(Date.now() * 0.008) * 0.18);
     }
 
     // V1.5 (BƯỚC V15-06): Đảm bảo chuyển tiếp êm dịu: Khi người chơi bật đèn, uống thuốc/trà
@@ -6596,7 +6597,7 @@ export class GameScene extends Phaser.Scene {
     if (isLanternLit && this.currentLanternRadius > LANTERN_RADIUS_DIM + 3) {
       const qSettings = GraphicsQualitySystem.getInstance().getSettings();
       // Nhịp thở nhẹ nhàng (breathing subtle pulsation)
-      const breathing = qSettings.enableAmberFlicker
+      const breathing = (!isReducedMotion && qSettings.enableAmberFlicker)
         ? (Math.sin(this.time.now * 0.0035) * 0.012 + Math.cos(this.time.now * 0.006) * 0.008)
         : 0;
       const glowFactor = (this.currentLanternRadius - LANTERN_RADIUS_DIM) / (LANTERN_RADIUS_NORMAL - LANTERN_RADIUS_DIM);

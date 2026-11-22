@@ -2,33 +2,33 @@
   "test_1_outer_woods_day_comp35": {
     "vignetteActive": true,
     "heartbeatActive": true,
-    "bpm": 95,
+    "bpm": 94,
     "zone": "outer_woods",
     "detected": "outer_woods",
     "foot": {
       "x": 1200,
       "y": 600
     },
-    "comp": 35.025,
+    "comp": 35.430285000000005,
     "warmth": false,
     "phase": "DAY"
   },
   "test_2_outer_woods_day_comp15": {
-    "comp": 15.05,
+    "comp": 15.21014,
     "vignetteActive": true,
     "heartbeatActive": true,
     "bpm": 135,
     "phase": "DAY"
   },
   "test_3_outer_woods_night_comp35": {
-    "comp": 34.97,
+    "comp": 34.504645999999994,
     "vignetteActive": true,
     "heartbeatActive": true,
-    "bpm": 95,
+    "bpm": 96,
     "phase": "NIGHT"
   },
   "test_4_outer_woods_night_comp15": {
-    "comp": 14.945982,
+    "comp": 14.645742,
     "vignetteActive": true,
     "heartbeatActive": true,
     "bpm": 135,
@@ -68,15 +68,15 @@
       "zone": "outer_woods",
       "x": 1200,
       "y": 600,
-      "comp": 15.257725,
+      "comp": 15.64053,
       "isNearWarmth": false,
       "activeBefore": true
     },
     "midDiag": {
-      "compMid": 50.160145,
+      "compMid": 50.40532,
       "hbActiveAfter": false,
       "isMonsterChasingNearby": false,
-      "distToListener": 1136.4906843229082,
+      "distToListener": 1080.461367059534,
       "isWildlifeMonsterNear": false,
       "isAct5ChaseActive": false,
       "isSafeZoneOrCampfire": false,
@@ -101,12 +101,12 @@
     "pause_closed": true
   },
   "test_11_fow_breathing": {
-    "mean": 119.00467898181195,
-    "minR": 117.09455456426181,
-    "maxR": 120.60854541102438,
-    "maxStepDelta": 0.6459871345846864,
+    "mean": 134.28022862942183,
+    "minR": 132.0215401550066,
+    "maxR": 137.9119572432455,
+    "maxStepDelta": 0.3816834691718043,
     "erraticJumps": 0,
-    "amplitudeRatio": 0.029528173823313512,
+    "amplitudeRatio": 0.04386660008224226,
     "samplesCount": 30
   },
   "test_12_no_duplicate_vignette": {
@@ -116,11 +116,9 @@
     "hasRedDangerGraphics": true
   },
   "test_13_no_duplicate_popups": {
-    "totalPopups": 1,
-    "fractureCount": 1,
-    "popups": [
-      "\u26a0\ufe0f T\u00e2m tr\u00ed \u0111ang r\u1ea1n n\u1ee9t... H\u00e3y t\u00ecm \u00e1nh l\u1eeda ngay!"
-    ]
+    "totalPopups": 0,
+    "fractureCount": 0,
+    "popups": []
   },
   "test_14_camera_safety": {
     "realFlashesWhenRM": 0,
@@ -129,7 +127,7 @@
     "realShakesWhenOff": 1
   },
   "test_15_fow_performance": {
-    "redrawCount": 4,
+    "redrawCount": 3,
     "avgTimeMs": 0
   }
 }

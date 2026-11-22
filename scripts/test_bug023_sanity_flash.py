@@ -74,7 +74,10 @@ with sync_playwright() as pw:
             gs.currentZoneId = zoneId;
             gs.previousZoneId = zoneId;
             gs.playerState.setCurrentZone(zoneId);
-            gs.player.setPosition(x, y);
+            if (x !== undefined && y !== undefined) {
+                gs.player.setPosition(x, y);
+                if (gs.player.body) gs.player.body.reset(x, y);
+            }
         };
 
         window.__TEST_METRICS__ = {
@@ -144,6 +147,8 @@ with sync_playwright() as pw:
     def advance_frames(ms=300):
         page.wait_for_timeout(ms)
 
+    advance_frames(400)
+
     # ---------------------------------------------------------
     # TEST 1: Outer Woods ban ngày, composure 35
     # ---------------------------------------------------------
@@ -156,22 +161,26 @@ with sync_playwright() as pw:
         if (gs.timeSystem) gs.timeSystem.setTimeOfDay(60); // DAY
         gs.playerState.stats.composure = 35;
         return new Promise(resolve => {
-            setTimeout(() => {
-                const bpm = gs.audioManager.getHeartbeatBpm();
-                const foot = gs.player.getFootPosition();
-                const detected = gs.worldBuilder.detectCurrentZone(foot);
-                resolve({
-                    vignetteActive: uis.isPanicVignetteActive,
-                    heartbeatActive: gs.audioManager.isHeartbeatActive,
-                    bpm: bpm,
-                    zone: gs.currentZoneId,
-                    detected: detected,
-                    foot: foot,
-                    comp: gs.playerState.stats.composure,
-                    warmth: gs.survivalSystem?.isNearWarmth(gs.player.x, gs.player.y, gs.currentZoneId),
-                    phase: gs.timeSystem?.getCurrentPhase()
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    setTimeout(() => {
+                        const bpm = gs.audioManager.getHeartbeatBpm();
+                        const foot = gs.player.getFootPosition();
+                        const detected = gs.worldBuilder.detectCurrentZone(foot);
+                        resolve({
+                            vignetteActive: uis.isPanicVignetteActive,
+                            heartbeatActive: gs.audioManager.isHeartbeatActive,
+                            bpm: bpm,
+                            zone: gs.currentZoneId,
+                            detected: detected,
+                            foot: foot,
+                            comp: gs.playerState.stats.composure,
+                            warmth: gs.survivalSystem?.isNearWarmth(gs.player.x, gs.player.y, gs.currentZoneId),
+                            phase: gs.timeSystem?.getCurrentPhase()
+                        });
+                    }, 80);
                 });
-            }, 100);
+            });
         });
     }
     """)
@@ -194,15 +203,19 @@ with sync_playwright() as pw:
         if (gs.timeSystem) gs.timeSystem.setTimeOfDay(60); // DAY
         gs.playerState.stats.composure = 15;
         return new Promise(resolve => {
-            setTimeout(() => {
-                resolve({
-                    comp: gs.playerState.stats.composure,
-                    vignetteActive: uis.isPanicVignetteActive,
-                    heartbeatActive: gs.audioManager.isHeartbeatActive,
-                    bpm: gs.audioManager.getHeartbeatBpm(),
-                    phase: gs.timeSystem?.getCurrentPhase()
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    setTimeout(() => {
+                        resolve({
+                            comp: gs.playerState.stats.composure,
+                            vignetteActive: uis.isPanicVignetteActive,
+                            heartbeatActive: gs.audioManager.isHeartbeatActive,
+                            bpm: gs.audioManager.getHeartbeatBpm(),
+                            phase: gs.timeSystem?.getCurrentPhase()
+                        });
+                    }, 80);
                 });
-            }, 100);
+            });
         });
     }
     """)
@@ -225,15 +238,19 @@ with sync_playwright() as pw:
         if (gs.timeSystem) gs.timeSystem.setTimeOfDay(300); // NIGHT
         gs.playerState.stats.composure = 35;
         return new Promise(resolve => {
-            setTimeout(() => {
-                resolve({
-                    comp: gs.playerState.stats.composure,
-                    vignetteActive: uis.isPanicVignetteActive,
-                    heartbeatActive: gs.audioManager.isHeartbeatActive,
-                    bpm: gs.audioManager.getHeartbeatBpm(),
-                    phase: gs.timeSystem?.getCurrentPhase()
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    setTimeout(() => {
+                        resolve({
+                            comp: gs.playerState.stats.composure,
+                            vignetteActive: uis.isPanicVignetteActive,
+                            heartbeatActive: gs.audioManager.isHeartbeatActive,
+                            bpm: gs.audioManager.getHeartbeatBpm(),
+                            phase: gs.timeSystem?.getCurrentPhase()
+                        });
+                    }, 80);
                 });
-            }, 100);
+            });
         });
     }
     """)
@@ -255,15 +272,19 @@ with sync_playwright() as pw:
         if (gs.timeSystem) gs.timeSystem.setTimeOfDay(300); // NIGHT
         gs.playerState.stats.composure = 15;
         return new Promise(resolve => {
-            setTimeout(() => {
-                resolve({
-                    comp: gs.playerState.stats.composure,
-                    vignetteActive: uis.isPanicVignetteActive,
-                    heartbeatActive: gs.audioManager.isHeartbeatActive,
-                    bpm: gs.audioManager.getHeartbeatBpm(),
-                    phase: gs.timeSystem?.getCurrentPhase()
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    setTimeout(() => {
+                        resolve({
+                            comp: gs.playerState.stats.composure,
+                            vignetteActive: uis.isPanicVignetteActive,
+                            heartbeatActive: gs.audioManager.isHeartbeatActive,
+                            bpm: gs.audioManager.getHeartbeatBpm(),
+                            phase: gs.timeSystem?.getCurrentPhase()
+                        });
+                    }, 80);
                 });
-            }, 150);
+            });
         });
     }
     """)
@@ -434,49 +455,53 @@ with sync_playwright() as pw:
                 // Tinh thần hồi phục lên 50
                 gs.playerState.stats.composure = 50;
 
-                setTimeout(() => {
-                    const distToListener = (gs.listenerMonster && gs.listenerMonster.active)
-                      ? Math.hypot(gs.player.x - gs.listenerMonster.x, gs.player.y - gs.listenerMonster.y)
-                      : 99999;
-                    const isListenerNear = distToListener <= 260 && !gs.player.stats.isHiding;
-                    const isWildlifeMonsterNear = Boolean(gs.wildlifeSystem?.isMonsterNear(gs.player.x, gs.player.y, 220));
-                    const isMonsterChasingNearby = gs.isAct5ChaseActive || (gs.isBossFightActive && gs.currentZoneId === 'broken_bell_shrine') || isListenerNear || isWildlifeMonsterNear;
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        setTimeout(() => {
+                            const distToListener = (gs.listenerMonster && gs.listenerMonster.active)
+                              ? Math.hypot(gs.player.x - gs.listenerMonster.x, gs.player.y - gs.listenerMonster.y)
+                              : 99999;
+                            const isListenerNear = distToListener <= 260 && !gs.player.stats.isHiding;
+                            const isWildlifeMonsterNear = Boolean(gs.wildlifeSystem?.isMonsterNear(gs.player.x, gs.player.y, 220));
+                            const isMonsterChasingNearby = gs.isAct5ChaseActive || (gs.isBossFightActive && gs.currentZoneId === 'broken_bell_shrine') || isListenerNear || isWildlifeMonsterNear;
 
-                    const tweenStateMid = {
-                        hasTween: !!uis.activePanicFadeTween,
-                        isPlaying: uis.activePanicFadeTween?.isPlaying(),
-                        progress: uis.activePanicFadeTween?.progress
-                    };
-                    const hbActiveAfter = gs.audioManager.isHeartbeatActive;
-                    const midDiag = {
-                        compMid: gs.playerState.stats.composure,
-                        hbActiveAfter,
-                        isMonsterChasingNearby,
-                        distToListener,
-                        isWildlifeMonsterNear,
-                        isAct5ChaseActive: gs.isAct5ChaseActive,
-                        isSafeZoneOrCampfire: Boolean(gs.survivalSystem?.isNearWarmth(gs.player.x, gs.player.y, gs.currentZoneId)),
-                        isPanicVignetteActive: uis.isPanicVignetteActive
-                    };
+                            const tweenStateMid = {
+                                hasTween: !!uis.activePanicFadeTween,
+                                isPlaying: uis.activePanicFadeTween?.isPlaying(),
+                                progress: uis.activePanicFadeTween?.progress
+                            };
+                            const hbActiveAfter = gs.audioManager.isHeartbeatActive;
+                            const midDiag = {
+                                compMid: gs.playerState.stats.composure,
+                                hbActiveAfter,
+                                isMonsterChasingNearby,
+                                distToListener,
+                                isWildlifeMonsterNear,
+                                isAct5ChaseActive: gs.isAct5ChaseActive,
+                                isSafeZoneOrCampfire: Boolean(gs.survivalSystem?.isNearWarmth(gs.player.x, gs.player.y, gs.currentZoneId)),
+                                isPanicVignetteActive: uis.isPanicVignetteActive
+                            };
 
-                    setTimeout(() => {
-                        const activeAfter = uis.isPanicVignetteActive;
-                        const tweenStateEnd = {
-                            hasTween: !!uis.activePanicFadeTween,
-                            isPlaying: uis.activePanicFadeTween?.isPlaying(),
-                            progress: uis.activePanicFadeTween?.progress
-                        };
-                        resolve({
-                            diag,
-                            midDiag,
-                            activeBefore,
-                            tweenStateMid,
-                            hbActiveAfter,
-                            activeAfter,
-                            tweenStateEnd
-                        });
-                    }, 500);
-                }, 100);
+                            setTimeout(() => {
+                                const activeAfter = uis.isPanicVignetteActive;
+                                const tweenStateEnd = {
+                                    hasTween: !!uis.activePanicFadeTween,
+                                    isPlaying: uis.activePanicFadeTween?.isPlaying(),
+                                    progress: uis.activePanicFadeTween?.progress
+                                };
+                                resolve({
+                                    diag,
+                                    midDiag,
+                                    activeBefore,
+                                    tweenStateMid,
+                                    hbActiveAfter,
+                                    activeAfter,
+                                    tweenStateEnd
+                                });
+                            }, 400);
+                        }, 50);
+                    });
+                });
             }, 200);
         });
     }
@@ -516,23 +541,22 @@ with sync_playwright() as pw:
         window.__SET_TEST_ZONE__('outer_woods', 1200, 600);
         if (gs.timeSystem) gs.timeSystem.setTimeOfDay(60);
         gs.playerState.stats.composure = 15;
+        gs.currentLanternRadius = 134;
 
         return new Promise(resolve => {
-            // Chờ 350ms để lerp chuyển tiếp tầm nhìn ổn định vào mức 15
+            // Chờ 500ms để nhịp thở FOW ổn định hoàn toàn
             setTimeout(() => {
                 const samples = [];
-                let count = 0;
-                const interval = setInterval(() => {
+                const onPostUpdate = () => {
                     samples.push(gs.currentLanternRadius);
-                    count++;
-                    if (count >= 30) {
-                        clearInterval(interval);
+                    if (samples.length >= 30) {
+                        gs.events.off('postupdate', onPostUpdate);
                         let maxStepDelta = 0;
                         let erraticJumps = 0;
                         for (let i = 1; i < samples.length; i++) {
                             const d = Math.abs(samples[i] - samples[i - 1]);
                             if (d > maxStepDelta) maxStepDelta = d;
-                            if (d > 1.5) erraticJumps++; // Bước nhảy lớn bất thường (>1.5px trong 33ms)
+                            if (d > 1.5) erraticJumps++; // Bước nhảy lớn bất thường (>1.5px trong 1 frame)
                         }
                         const mean = samples.reduce((a, b) => a + b, 0) / samples.length;
                         const minR = Math.min(...samples);
@@ -549,8 +573,9 @@ with sync_playwright() as pw:
                             samplesCount: samples.length
                         });
                     }
-                }, 33);
-            }, 350);
+                };
+                gs.events.on('postupdate', onPostUpdate);
+            }, 650);
         });
     }
     """)
