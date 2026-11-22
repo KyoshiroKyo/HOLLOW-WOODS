@@ -5278,7 +5278,8 @@ export class WorldBuilder {
     // HW-FIX-21: Dời thân cây đổ từ 1190 sang 1135 ôm sát mép Tây để giải phóng lòng đường khúc cua chữ S >= 72px
     this.createFallenLog(1135, 670, 48, 12);  // Gần bãi cửa rừng
     this.createFallenLog(1475, 795, 54, -20); // Ven suối rừng
-    this.createFallenLog(1220, 955, 62, 8);   // Bãi Liễu cổ thụ phía Nam
+    // HW-MAP-28: Căn chỉnh thân cây mục bãi liễu ôm sát viền cỏ Nam (1215, 955), tạo ranh giới tự nhiên phía trên hàng rào gỗ mục
+    this.createFallenLog(1215, 955, 54, 6);   // Bãi Liễu cổ thụ phía Nam
 
     // 5. Nơi Ẩn Nấp & Thân Cây Cổ Thụ Rỗng (Stealth Hiding Spots vs. Dark Horseman / The Listener)
     // HW-MAP-27: Dời bụi rậm từ (1180, 650) sang ven đường phía Tây (1150, 655), giải phóng 100% tầm nhìn và lòng đường khúc cua S
@@ -5299,10 +5300,11 @@ export class WorldBuilder {
     this.createTree(1280, 585, 'Cây Bìa Bắc Rừng Ven', true);
 
     // Cụm 2: Cụm Cổ Thụ Bìa Tây Rừng Ven (giáp Sanctuary Farm)
+    // HW-MAP-28: Subtree lùi về dx: -15 mép rừng Tây (1115, 885) để giải phóng toàn bộ khoảng thở hành lang X: 1140..1180
     this.createOrganicTreeCluster(1130, 865, {
       primaryType: 'oak',
-      subTrees: [{ dx: 12, dy: 25, type: 'oak' }],
-      bushes: [{ dx: 14, dy: 10 }]
+      subTrees: [{ dx: -15, dy: 20, type: 'oak' }],
+      bushes: [{ dx: 10, dy: 14 }]
     });
 
     // Cụm 3: Cụm Sồi Đại Thụ Bãi Trại Thợ Săn (HW-FIX-21: Dời sang x=1400 giải phóng hoàn toàn trục đường X=1360 xuống Xưởng Chuông >= 72px)
@@ -5313,11 +5315,14 @@ export class WorldBuilder {
       rocks: [{ dx: 22, dy: 16, w: 22, h: 14 }]
     });
 
-    // Cụm 4: Cụm Liễu Đại Ngàn Ven Suối Phía Nam (HW-FIX-21: Dời sát mép Tây x=1215 giải phóng lòng đường Bãi Liễu >= 72px)
-    this.createOrganicTreeCluster(1215, 930, {
+    // Cụm 4: Cụm Liễu Đại Ngàn Ven Suối Phía Nam (HW-MAP-28: Tinh chỉnh bố cục hữu cơ bãi liễu)
+    // Cây Liễu Đại Thụ trung tâm đặt chuẩn tại (1200, 915) đồng bộ với ow_ancient_willow & ow_willow_trunk
+    // Cây phụ lùi sâu về bìa rừng Tây (1162, 897), bụi ôm gốc (1184, 923) và đá rêu (1218, 927) mở toang khoảng thở mặt cỏ phía Đông
+    this.createOrganicTreeCluster(1200, 915, {
       primaryType: 'willow',
-      subTrees: [{ dx: -20, dy: -25, type: 'willow' }],
-      bushes: [{ dx: 14, dy: 10 }]
+      subTrees: [{ dx: -38, dy: -18, type: 'willow' }],
+      bushes: [{ dx: -16, dy: 8 }, { dx: 14, dy: 6 }],
+      rocks: [{ dx: 18, dy: 12, w: 22, h: 14 }]
     });
 
     // Cụm 5: Cụm Cổ Thụ Viền Đông
@@ -5329,8 +5334,10 @@ export class WorldBuilder {
 
     // Cây viền chu vi đảm bảo cảnh quan khép kín
     this.createTree(1450, 650, 'Cây Cổ Thụ Rừng Ven', true);
-    this.createTree(1200, 985, 'Cây Cổ Thụ Viền Nam', true);
-    this.createTree(1260, 990, 'Cây Cổ Thụ Viền Nam', true);
+    // HW-MAP-28: Cây viền Tây Nam lùi về (1175, 995) ôm sát hàng rào gỗ mục, giải phóng không gian bãi cỏ Nam
+    this.createTree(1175, 995, 'Cây Cổ Thụ Viền Nam', true);
+    // HW-MAP-28: Cây viền Nam trung tâm đặt tại (1235, 1010) sát hàng rào boundary, loại bỏ tán cây che lấp tầm nhìn nhân vật tại (1283, 923)
+    this.createTree(1235, 1010, 'Cây Cổ Thụ Viền Nam', true);
     // V152-04: Biển chỉ dẫn nối liền sang phân khu Xưởng Chuông Bỏ Hoang (sub_bell_workshop)
     this.createStoneSign(1300, 985, 'XƯỞNG CHUÔNG BỎ HOANG ↓');
     this.createTree(1460, 985, 'Cây Cổ Thụ Viền Nam', true);
@@ -5346,7 +5353,10 @@ export class WorldBuilder {
     // V153-02B: Dời bụi cảnh quan từ (1495, 745) sang (1520, 755) ôm sát bìa rừng Đông, tạo khoảng thoáng quanh bếp Sir Vaelen
     this.createDenseBush(1520, 755);
     this.createDenseBush(1510, 830);
-    this.createDenseBush(1280, 970);
+    // HW-MAP-28: Bụi rậm viền Nam dời nép sát cụm đá và biển chỉ dẫn (1275, 990), giải phóng mặt đường Route 4
+    this.createDenseBush(1275, 990);
+    // HW-MAP-28: Khối đá rêu phong tự nhiên neo góc ranh giới phía Nam (1265, 985)
+    this.createRock(1265, 985, 28, 16);
 
     // V153-02B: Dời đá cảnh quan từ (1390, 765) sang (1415, 785) ôm sát mép suối tự nhiên, giải phóng ngã 3 rẽ
     this.createRock(1415, 785, 38, 22);

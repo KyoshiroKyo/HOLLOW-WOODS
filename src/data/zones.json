@@ -2053,10 +2053,10 @@
         {
           "id": "ow_willow_trunk",
           "name": "Gốc Cây Liễu Cổ Thụ Phía Nam",
-          "x": 1205,
-          "y": 920,
-          "width": 24,
-          "height": 20,
+          "x": 1190,
+          "y": 905,
+          "width": 20,
+          "height": 14,
           "type": "wall",
           "isSolid": true
         },
