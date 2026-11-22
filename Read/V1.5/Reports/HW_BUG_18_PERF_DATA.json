@@ -1,0 +1,61 @@
+{
+  "total_frames": 161,
+  "avg_fps": 8.36,
+  "avg_frame_time_ms": 119.66,
+  "p50_ms": 116.7,
+  "p95_ms": 166.8,
+  "p99_ms": 333.7,
+  "max_frame_time_ms": 417,
+  "spikes_count_gt_50ms": 156,
+  "spikes_percentage": 96.89,
+  "culling": {
+    "calls": 163,
+    "total_ms": 42.7,
+    "avg_ms_per_call": 0.262
+  },
+  "zone_rendering": {
+    "fog_crossing": 6,
+    "silent_mire": 1,
+    "bellhollow": 9,
+    "ancient_rune_puzzle": 1,
+    "broken_bell_shrine": 1,
+    "sub_bell_workshop": 1,
+    "sub_root_cellar": 1,
+    "sub_whispering_clearing": 1,
+    "sanctuary_farm": 6,
+    "outer_woods": 3
+  },
+  "round_snapshots": [
+    {
+      "gameObjects": 1184,
+      "physicsBodies": 8,
+      "tweens": 132,
+      "timers": 0,
+      "heapUsed": 250136735,
+      "heapTotal": 283281587
+    },
+    {
+      "gameObjects": 1184,
+      "physicsBodies": 8,
+      "tweens": 131,
+      "timers": 0,
+      "heapUsed": 258422238,
+      "heapTotal": 283844966
+    },
+    {
+      "gameObjects": 1184,
+      "physicsBodies": 8,
+      "tweens": 132,
+      "timers": 0,
+      "heapUsed": 249338161,
+      "heapTotal": 284146105
+    }
+  ],
+  "console_errors": [],
+  "page_errors": [],
+  "failed_requests": [
+    "GET http://127.0.0.1:5280/assets/audio/bgm/knights_quiet_fire.mp3 - net::ERR_ABORTED",
+    "GET http://127.0.0.1:5280/assets/audio/bgm/knights_quiet_fire.mp3 - net::ERR_ABORTED",
+    "GET http://127.0.0.1:5280/assets/audio/bgm/knights_quiet_fire.mp3 - net::ERR_ABORTED"
+  ]
+}
