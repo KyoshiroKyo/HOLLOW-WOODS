@@ -245,6 +245,8 @@ export class GameScene extends Phaser.Scene {
       this.isContinueMode = false;
       this.continueSaveData = null;
       this.isAct0IntroPending = true;
+      this.currentZoneId = 'fog_crossing';
+      this.previousZoneId = 'fog_crossing';
     }
 
     // C4-13-11: Tái lập trình toàn diện các biến trạng thái vòng đời GameScene để chống rò rỉ khi Restart / Reload
@@ -404,7 +406,11 @@ export class GameScene extends Phaser.Scene {
         });
       }
     } else {
-      // V15-48: Trò chơi mới (New Game) tại Lối Mòn Xuyên Sương (fog_crossing)
+      // V15-48 & HW-BUG-17: Trò chơi mới (New Game) hoặc Chơi lại (Restart) tại Lối Mòn Xuyên Sương (fog_crossing)
+      this.currentZoneId = initialZone.id;
+      this.previousZoneId = initialZone.id;
+      this.playerState.setCurrentZone(initialZone.id);
+      this.worldBuilder.setActiveZone(initialZone.id);
       // Đảm bảo vị trí xuất phát đặt tại lòng đường thoáng rộng (X: 120, Y: 195), không dính mép rào cản phía Tây
       if (this.currentZoneId === 'fog_crossing' && spawnX < 110) {
         spawnX = 120;

@@ -1,0 +1,242 @@
+{
+  "console_errors": [],
+  "page_errors": [],
+  "failed_requests": [],
+  "results": {
+    "test1": {
+      "pass": true,
+      "before": {
+        "zone": "fog_crossing",
+        "playerStateZone": "fog_crossing",
+        "posX": 120,
+        "posY": 195,
+        "cameraBounds": {
+          "type": 5,
+          "x": 0,
+          "y": 0,
+          "width": 1600,
+          "height": 1040
+        }
+      },
+      "after": {
+        "zone": "fog_crossing",
+        "playerStateZone": "fog_crossing",
+        "posX": 120,
+        "posY": 195,
+        "cameraBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 1600,
+          "height": 1040
+        },
+        "matchZone": true,
+        "matchStateZone": true,
+        "validPosition": true
+      }
+    },
+    "test2": {
+      "pass": true,
+      "data": {
+        "zone": "bellhollow",
+        "playerStateZone": "bellhollow",
+        "posX": 800,
+        "posY": 260,
+        "cameraBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 1600,
+          "height": 1040
+        },
+        "matchZone": true,
+        "matchStateZone": true,
+        "validPosition": true,
+        "hasVisitedBellhollow": true
+      }
+    },
+    "test3": {
+      "pass": true,
+      "data": {
+        "zone": "sanctuary_farm",
+        "playerStateZone": "sanctuary_farm",
+        "posX": 650,
+        "posY": 700,
+        "cameraBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 1600,
+          "height": 1040
+        },
+        "matchZone": true,
+        "matchStateZone": true,
+        "validPosition": true,
+        "hasVisitedFarm": true
+      }
+    },
+    "test4": {
+      "pass": true,
+      "before": {
+        "isOpen": true,
+        "activeZone": "sanctuary_farm",
+        "visitedZones": [
+          "fog_crossing",
+          "bellhollow",
+          "sanctuary_farm"
+        ],
+        "discoveredCount": 3,
+        "currentNodeId": "sanctuary_farm",
+        "currentNodeCanvasX": 495,
+        "currentNodeCanvasY": 415,
+        "beaconFound": true,
+        "beaconLabelText": "📍 BẠN ĐANG Ở ĐÂY",
+        "beaconX": 563,
+        "beaconY": 401
+      },
+      "after": {
+        "isOpen": true,
+        "activeZone": "sanctuary_farm",
+        "visitedZones": [
+          "fog_crossing",
+          "bellhollow",
+          "sanctuary_farm"
+        ],
+        "discoveredCount": 3,
+        "currentNodeId": "sanctuary_farm",
+        "currentNodeCanvasX": 495,
+        "currentNodeCanvasY": 415,
+        "beaconFound": true,
+        "beaconLabelText": "📍 BẠN ĐANG Ở ĐÂY",
+        "beaconX": 563,
+        "beaconY": 401
+      }
+    },
+    "test5": {
+      "pass": true,
+      "before": {
+        "flagsBefore": [
+          "entered_sanctuary_farm",
+          "farm_cleared"
+        ],
+        "visitedBefore": [
+          "fog_crossing",
+          "bellhollow",
+          "sanctuary_farm",
+          "outer_woods"
+        ],
+        "unlockedBefore": [
+          "fog_crossing",
+          "bellhollow",
+          "sanctuary_farm",
+          "outer_woods"
+        ]
+      },
+      "after": {
+        "flagsAfter": [
+          "entered_sanctuary_farm",
+          "farm_cleared"
+        ],
+        "visitedAfter": [
+          "fog_crossing",
+          "bellhollow",
+          "sanctuary_farm",
+          "outer_woods"
+        ],
+        "unlockedAfter": [
+          "fog_crossing",
+          "bellhollow",
+          "sanctuary_farm",
+          "outer_woods"
+        ],
+        "farmEnteredPreserved": true,
+        "outerWoodsVisitedPreserved": true
+      }
+    },
+    "test6": {
+      "pass": true,
+      "data": {
+        "zone": "fog_crossing",
+        "playerStateZone": "fog_crossing",
+        "posX": 120,
+        "posY": 195,
+        "visitedZones": [
+          "fog_crossing",
+          "bellhollow"
+        ],
+        "flagsCount": 0,
+        "isMapOpen": false,
+        "resetZoneMatch": true,
+        "resetPosMatch": true
+      }
+    },
+    "test7": {
+      "pass": true,
+      "data": {
+        "history": [
+          {
+            "step": "open_0",
+            "isOpen": true,
+            "hasTween": true
+          },
+          {
+            "step": "close_0",
+            "isOpen": false,
+            "hasTween": false
+          },
+          {
+            "step": "open_1",
+            "isOpen": true,
+            "hasTween": true
+          },
+          {
+            "step": "close_1",
+            "isOpen": false,
+            "hasTween": false
+          },
+          {
+            "step": "open_2",
+            "isOpen": true,
+            "hasTween": true
+          },
+          {
+            "step": "close_2",
+            "isOpen": false,
+            "hasTween": false
+          },
+          {
+            "step": "open_3",
+            "isOpen": true,
+            "hasTween": true
+          },
+          {
+            "step": "close_3",
+            "isOpen": false,
+            "hasTween": false
+          },
+          {
+            "step": "open_4",
+            "isOpen": true,
+            "hasTween": true
+          },
+          {
+            "step": "close_4",
+            "isOpen": false,
+            "hasTween": false
+          }
+        ],
+        "finalIsOpen": false,
+        "finalTweenCleaned": true
+      }
+    },
+    "test8": {
+      "pass": true,
+      "data": {
+        "quest1Id": "Q02_MEET_NERIS",
+        "subTitle1": "🎯 HỒI 1: THUỐC CỨU SINH MẠNG • Làng Chuông Cổ",
+        "badgeText1": "🎯 MỤC TIÊU KẾ TIẾP",
+        "quest2Id": "Q03_PREPARE_RESOURCES",
+        "subTitle2": "🎯 HỒI 2: CHUẨN BỊ VÀO RỪNG CẤM • Làng Chuông Cổ",
+        "badgeText2": "🎯 MỤC TIÊU KẾ TIẾP",
+        "dynamicUpdateWorking": true
+      }
+    }
+  }
+}
