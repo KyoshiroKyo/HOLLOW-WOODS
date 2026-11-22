@@ -81,6 +81,10 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
   private isTextInputFocused: boolean = false;
   private domListenersAttached: boolean = false;
   private isPhysicalShiftHeld: boolean = false;
+  private shiftExpiresAt: number = 0;
+  private blockedMovementStartTime: number = 0;
+  private static readonly SHIFT_WATCHDOG_TIMEOUT_MS = 600;
+  private static readonly BLOCKED_MOVEMENT_GUARDRAIL_MS = 250;
 
   private readonly boundKeyDown = (e: KeyboardEvent) => this.handleDOMKeyDown(e);
   private readonly boundKeyUp = (e: KeyboardEvent) => this.handleDOMKeyUp(e);
@@ -624,11 +628,22 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
   }
 
   private syncPhysicalShift(event: KeyboardEvent, isShiftDown = false): void {
+    const isIme = BlackKnightPlayer.isImeMovementPacket(event);
     const modifierShift = typeof event.getModifierState === 'function' ? event.getModifierState('Shift') : Boolean(event.shiftKey);
-    this.isPhysicalShiftHeld = isShiftDown || modifierShift;
-    if (!this.isPhysicalShiftHeld &&
-        (this.activePhysicalCodes.has('ShiftLeft') || this.activePhysicalCodes.has('ShiftRight') ||
-         Boolean(this.keyShift && this.keyShift.isDown) || Boolean(this.cursors && this.cursors.shift && this.cursors.shift.isDown))) {
+    const nowPerf = performance.now();
+
+    if (isShiftDown) {
+      this.isPhysicalShiftHeld = true;
+      this.shiftExpiresAt = nowPerf + BlackKnightPlayer.SHIFT_WATCHDOG_TIMEOUT_MS;
+    } else if (isIme) {
+      // Gói tin IME không được kích hoạt hay duy trì trạng thái Shift
+    } else if (modifierShift && (this.activePhysicalCodes.has('ShiftLeft') || this.activePhysicalCodes.has('ShiftRight'))) {
+      // Modifier chỉ có thể làm mới bộ đếm khi phím Shift vật lý đang thực sự được ghi nhận
+      this.isPhysicalShiftHeld = true;
+      this.shiftExpiresAt = nowPerf + BlackKnightPlayer.SHIFT_WATCHDOG_TIMEOUT_MS;
+    } else {
+      this.isPhysicalShiftHeld = false;
+      this.shiftExpiresAt = 0;
       this.releasePhysicalCode('ShiftLeft');
       this.releasePhysicalCode('ShiftRight');
     }
@@ -682,6 +697,12 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     this.movementHolds.delete(code);
     this.physicalKeyHeldForOneShot.delete(code);
     this.resetPhaserKeyForCode(code);
+    if (code === 'ShiftLeft' || code === 'ShiftRight') {
+      if (!this.activePhysicalCodes.has('ShiftLeft') && !this.activePhysicalCodes.has('ShiftRight')) {
+        this.isPhysicalShiftHeld = false;
+        this.shiftExpiresAt = 0;
+      }
+    }
   }
 
   public resetAllInputState(): void {
@@ -694,6 +715,8 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     this._wasMoving = false;
 
     this.isPhysicalShiftHeld = false;
+    this.shiftExpiresAt = 0;
+    this.blockedMovementStartTime = 0;
     this.activePhysicalCodes.clear();
     this.movementHolds.clear();
     this.physicalKeyHeldForOneShot.clear();
@@ -778,8 +801,12 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
 
     if (this.isMovementOrSprintCode(code)) {
       if (isShift) {
-        if (!isImePacket) this.activePhysicalCodes.add(code);
-        else event.stopImmediatePropagation();
+        if (!isImePacket) {
+          this.activePhysicalCodes.add(code);
+          this.shiftExpiresAt = performance.now() + BlackKnightPlayer.SHIFT_WATCHDOG_TIMEOUT_MS;
+        } else {
+          event.stopImmediatePropagation();
+        }
         return;
       }
 
@@ -859,6 +886,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     this.releasePhysicalCode(code);
     if (code === 'ShiftLeft' || code === 'ShiftRight') {
       this.isPhysicalShiftHeld = false;
+      this.shiftExpiresAt = 0;
       this.releasePhysicalCode('ShiftLeft');
       this.releasePhysicalCode('ShiftRight');
     }
@@ -1030,6 +1058,13 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       if (nowPerf < hold.expiresAt) continue;
       this.releasePhysicalCode(code);
     }
+    // HW-BUG-26B: Shift Watchdog Auto-Expiry
+    if (this.shiftExpiresAt > 0 && nowPerf >= this.shiftExpiresAt) {
+      this.shiftExpiresAt = 0;
+      this.isPhysicalShiftHeld = false;
+      this.releasePhysicalCode('ShiftLeft');
+      this.releasePhysicalCode('ShiftRight');
+    }
 
     // Xử lý di chuyển nếu không đang bị khóa hành động
     if (!this.isActionLocked()) {
@@ -1101,19 +1136,50 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     if (up) moveY -= 1;
     if (down) moveY += 1;
 
-    // C4-13-18 & C4-132-01 & C4-135-01 & HW-BUG-21B: Quản lý thể lực chạy nhanh & triệt tiêu phím Shift kẹt mồ côi
-    if (!this.isPhysicalShiftHeld &&
+    // HW-BUG-26B: Shift consensus & watchdog verification
+    const nowPerf = performance.now();
+    const isShiftTimeValid = this.shiftExpiresAt === 0 || nowPerf < this.shiftExpiresAt;
+    const isShiftPhysicallyActive = this.isPhysicalShiftHeld ||
+      this.isPhysicalCodeDown('ShiftLeft') ||
+      this.isPhysicalCodeDown('ShiftRight');
+
+    const shiftDown = isShiftPhysicallyActive && isShiftTimeValid;
+
+    if (!shiftDown &&
         (this.activePhysicalCodes.has('ShiftLeft') || this.activePhysicalCodes.has('ShiftRight') ||
          Boolean(this.keyShift && this.keyShift.isDown) || Boolean(this.cursors && this.cursors.shift && this.cursors.shift.isDown))) {
+      this.isPhysicalShiftHeld = false;
+      this.shiftExpiresAt = 0;
       this.releasePhysicalCode('ShiftLeft');
       this.releasePhysicalCode('ShiftRight');
     }
 
-    const shiftDown =
-      this.isPhysicalShiftHeld ||
-      this.isPhysicalCodeDown('ShiftLeft') ||
-      this.isPhysicalCodeDown('ShiftRight');
     const isMoving = moveX !== 0 || moveY !== 0;
+
+    // HW-BUG-26B: Collision Motion Guardrail
+    // Phát hiện va chạm vật cản theo hướng di chuyển (tránh trường hợp kẹt cản mà vẫn phát hoạt ảnh chạy dữ dội)
+    const body = this.body as Phaser.Physics.Arcade.Body;
+    const isBlockedX = (moveX < 0 && (body.blocked.left || body.touching.left)) ||
+                       (moveX > 0 && (body.blocked.right || body.touching.right));
+    const isBlockedY = (moveY < 0 && (body.blocked.up || body.touching.up)) ||
+                       (moveY > 0 && (body.blocked.down || body.touching.down));
+
+    const isCompletelyBlocked = isMoving && (
+      (moveX !== 0 && isBlockedX && (moveY === 0 || isBlockedY)) ||
+      (moveY !== 0 && isBlockedY && (moveX === 0 || isBlockedX))
+    );
+
+    if (isCompletelyBlocked) {
+      if (this.blockedMovementStartTime === 0) {
+        this.blockedMovementStartTime = nowPerf;
+      }
+    } else {
+      this.blockedMovementStartTime = 0;
+    }
+
+    const isBlockedLongEnough = this.blockedMovementStartTime > 0 &&
+      (nowPerf - this.blockedMovementStartTime > BlackKnightPlayer.BLOCKED_MOVEMENT_GUARDRAIL_MS);
+
     const wantsToSprint = shiftDown && isMoving;
 
     if (this.stats.stamina <= 0) {
@@ -1135,7 +1201,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       }
     }
 
-    const canSprint = wantsToSprint && !this._isStaminaExhausted && this.stats.stamina > 0;
+    const canSprint = wantsToSprint && !this._isStaminaExhausted && this.stats.stamina > 0 && !isBlockedLongEnough;
     this.stats.isSprinting = canSprint;
 
     const equipSys = EquipmentSystem.getInstance();
@@ -1155,7 +1221,6 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     const currentSpeed = baseSpeed * speedMultiplier * (dev.isEnabled ? dev.speedMultiplier : 1);
 
     // Chuẩn hóa vector di chuyển (tránh đi chéo chạy nhanh hơn và chống vọt lố vào vật cản)
-    const body = this.body as Phaser.Physics.Arcade.Body;
     if (dev.isEnabled) body.checkCollision.none = dev.isNoclip;
     if (moveX !== 0 || moveY !== 0) {
       if (moveX !== 0 && moveY !== 0) {
@@ -1186,6 +1251,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       this.playWalkOrRunAnim();
     } else {
       body.setVelocity(0, 0);
+      this.updateFacingDirection(0, 0);
       this.playIdleAnim();
     }
   }
@@ -1299,6 +1365,15 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     const wayfarerKey = `wayfarer_${action}_${this.facing}`;
     const satyrKey = `satyr_${action}_${this.facing}`;
     const targetKey = this.scene.anims.exists(wayfarerKey) ? wayfarerKey : satyrKey;
+
+    // HW-BUG-26B: Bất biến locomotion - Nếu isSprinting = false, TUYỆT ĐỐI KHÔNG phát hoạt ảnh run
+    if (!isRunning && targetKey.includes('_run_')) {
+      const walkTarget = targetKey.replace('_run_', '_walk_');
+      if (this.scene.anims.exists(walkTarget)) {
+        this.safePlayAnim(walkTarget, true);
+        return;
+      }
+    }
 
     const currentAnimKey = this.anims.currentAnim?.key;
     if (currentAnimKey === targetKey && this.anims.isPlaying) {
@@ -1510,6 +1585,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     this._isGathering = false;
     this._isInteracting = false;
     this._isUsingItem = false;
+    this.stats.isSprinting = false;
     this._actionLockTimestamp = 0;
     this.clearTint();
   }
@@ -1620,6 +1696,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     this._isAttacking = !heavy && !weaponArt;
     this._isHeavyAttacking = heavy;
     this._isWeaponArting = weaponArt;
+    this.stats.isSprinting = false;
     // Attacks use a scene-time watchdog, which pauses with their frames.
     this._actionLockTimestamp = 0;
     this.setVelocity(0, 0);
@@ -1779,6 +1856,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
 
     this._isWeaponDrawn = true;
     this._isParrying = true;
+    this.stats.isSprinting = false;
     this._actionLockTimestamp = 0;
     (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
 
@@ -1826,6 +1904,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
 
     this._isRolling = true;
     this._isInvulnerable = true;
+    this.stats.isSprinting = false;
     this._actionLockTimestamp = 0;
 
     // Lướt nhanh theo hướng đang nhìn
@@ -1861,6 +1940,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
 
     this._isWeaponDrawn = target;
     this._isTogglingWeapon = true;
+    this.stats.isSprinting = false;
     this._actionLockTimestamp = 0;
     (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
 
@@ -1906,6 +1986,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     this._isGathering = false;
     this._isInteracting = false;
     this._isUsingItem = false;
+    this.stats.isSprinting = false;
 
     const body = this.body as Phaser.Physics.Arcade.Body;
     if (knockbackVx !== undefined && knockbackVy !== undefined) {
@@ -2038,6 +2119,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     if (this.isActionLocked()) return false;
 
     this[state] = true;
+    this.stats.isSprinting = false;
     this._actionLockTimestamp = 0;
     this.setVelocity(0, 0);
     const posture = this._isWeaponDrawn ? 'armed' : 'unarmed';
