@@ -129,7 +129,7 @@ export function registerWayfarerAnimations(anims: Phaser.Animations.AnimationMan
     for (const [row, dir] of DIRECTIONS.entries()) {
       for (const prefix of ['wayfarer', 'satyr']) {
         const base = `${prefix}_${action}`;
-        const isMovement = ['idle', 'walk', 'run', 'unarmed_walk'].includes(action);
+        const isMovement = ['idle', 'walk', 'run', 'unarmed_walk', 'unarmed_run'].includes(action);
         const keys = row === 0 && !isMovement ? [base, `${base}_${dir}`] : [`${base}_${dir}`];
         for (const key of keys) {
           if (anims.exists(key)) anims.remove(key);

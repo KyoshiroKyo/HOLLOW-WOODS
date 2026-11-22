@@ -620,9 +620,11 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
   }
 
   private syncPhysicalShift(event: KeyboardEvent, isShiftDown = false): void {
-    this.isPhysicalShiftHeld = isShiftDown || event.getModifierState('Shift');
+    const modifierShift = typeof event.getModifierState === 'function' ? event.getModifierState('Shift') : Boolean(event.shiftKey);
+    this.isPhysicalShiftHeld = isShiftDown || modifierShift;
     if (!this.isPhysicalShiftHeld &&
-        (this.activePhysicalCodes.has('ShiftLeft') || this.activePhysicalCodes.has('ShiftRight'))) {
+        (this.activePhysicalCodes.has('ShiftLeft') || this.activePhysicalCodes.has('ShiftRight') ||
+         Boolean(this.keyShift && this.keyShift.isDown) || Boolean(this.cursors && this.cursors.shift && this.cursors.shift.isDown))) {
       this.releasePhysicalCode('ShiftLeft');
       this.releasePhysicalCode('ShiftRight');
     }
@@ -765,7 +767,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     const code = BlackKnightPlayer.resolvePhysicalCode(event);
     const isImePacket = BlackKnightPlayer.isImeMovementPacket(event);
     const isShift = code === 'ShiftLeft' || code === 'ShiftRight';
-    if (!isImePacket) this.syncPhysicalShift(event, isShift);
+    this.syncPhysicalShift(event, isShift);
     if (!code) return;
 
     if (BlackKnightPlayer.isGameControlCode(code)) event.preventDefault();
@@ -841,16 +843,21 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
 
     const code = BlackKnightPlayer.resolvePhysicalCode(event);
     const isImePacket = BlackKnightPlayer.isImeMovementPacket(event);
-    if (!isImePacket) this.syncPhysicalShift(event);
+    this.syncPhysicalShift(event);
     if (!code) return;
 
     if (BlackKnightPlayer.isGameControlCode(code)) event.preventDefault();
-    if (isImePacket && this.isMovementOrSprintCode(code)) {
+    if (isImePacket && this.isMovementOrSprintCode(code) && code !== 'ShiftLeft' && code !== 'ShiftRight') {
       // Do not let an IME packet reset the Phaser state of the real key.
       event.stopImmediatePropagation();
       return;
     }
     this.releasePhysicalCode(code);
+    if (code === 'ShiftLeft' || code === 'ShiftRight') {
+      this.isPhysicalShiftHeld = false;
+      this.releasePhysicalCode('ShiftLeft');
+      this.releasePhysicalCode('ShiftRight');
+    }
   }
 
   public consumeAction(action: OneShotAction): boolean {
@@ -1090,13 +1097,18 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     if (up) moveY -= 1;
     if (down) moveY += 1;
 
-    // C4-13-18 & C4-132-01 & C4-135-01: Quản lý thể lực chạy nhanh & chu trình Kiệt Sức (Exhaustion) chuẩn hóa
+    // C4-13-18 & C4-132-01 & C4-135-01 & HW-BUG-21B: Quản lý thể lực chạy nhanh & triệt tiêu phím Shift kẹt mồ côi
+    if (!this.isPhysicalShiftHeld &&
+        (this.activePhysicalCodes.has('ShiftLeft') || this.activePhysicalCodes.has('ShiftRight') ||
+         Boolean(this.keyShift && this.keyShift.isDown) || Boolean(this.cursors && this.cursors.shift && this.cursors.shift.isDown))) {
+      this.releasePhysicalCode('ShiftLeft');
+      this.releasePhysicalCode('ShiftRight');
+    }
+
     const shiftDown =
       this.isPhysicalShiftHeld ||
       this.isPhysicalCodeDown('ShiftLeft') ||
-      this.isPhysicalCodeDown('ShiftRight') ||
-      Boolean(this.keyShift && this.keyShift.isDown) ||
-      Boolean(this.cursors && this.cursors.shift && this.cursors.shift.isDown);
+      this.isPhysicalCodeDown('ShiftRight');
     const isMoving = moveX !== 0 || moveY !== 0;
     const wantsToSprint = shiftDown && isMoving;
 
@@ -1302,7 +1314,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     const previousAnim = this.anims.currentAnim;
     if (previousAnim && /_(walk|run)_/.test(previousAnim.key) && this.anims.currentFrame) {
       const phase = (this.anims.currentFrame.index - 1) / previousAnim.frames.length;
-      const frameIdx = Math.floor(phase * targetAnim.frames.length);
+      const frameIdx = Math.min(targetAnim.frames.length - 1, Math.max(0, Math.floor(phase * targetAnim.frames.length)));
       this.play(targetKey);
       this.anims.setCurrentFrame(targetAnim.frames[frameIdx]);
     } else {
