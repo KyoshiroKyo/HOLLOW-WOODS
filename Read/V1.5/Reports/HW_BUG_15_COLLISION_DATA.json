@@ -1,0 +1,36 @@
+{
+  "case_a": {
+    "pathOpen": true,
+    "northBlocked": true,
+    "gateCleared": true,
+    "pass": true
+  },
+  "case_b": {
+    "garthBypass": true,
+    "squareReached": true,
+    "bramCourtyardOpen": true,
+    "bramFootingBlocked": true,
+    "pass": true
+  },
+  "case_c": {
+    "inFarm": true,
+    "herbTerraceOpen": true,
+    "southFenceBlocked": true,
+    "pass": true
+  },
+  "case_d": {
+    "inOuterWoods": true,
+    "workshopEntered": true,
+    "pass": true
+  },
+  "case_e": {
+    "corridorOpen": true,
+    "eastGateBarrierHeld": true,
+    "noDuplicateColliders": true,
+    "beforeStaticBodies": 0,
+    "afterStaticBodies": 0,
+    "pass": true
+  },
+  "pageErrors": [],
+  "consoleErrors": []
+}
