@@ -4991,8 +4991,8 @@ export class WorldBuilder {
           id: 'env_knights_memorial_stele',
           name: 'Bia Đá Tưởng Niệm Kỵ Sĩ',
           type: 'clue',
-          x: 1250,
-          y: 720,
+          x: 1260,
+          y: 645,
           width: 36,
           height: 36,
           promptText: '[E] Đọc Bia Đá Tưởng Niệm Kỵ Sĩ',
@@ -5112,10 +5112,10 @@ export class WorldBuilder {
    * V1.5 - BƯỚC V15-19: Dựng các thực thể và đạo cụ Kể Chuyện Môi Trường (Environmental Storytelling)
    */
   private renderEnvironmentalStorytellingProps(): void {
-    // 1. Bia Đá Tưởng Niệm Kỵ Sĩ (outer_woods, 1250, 720)
-    const stele = this.safeAddImage(1250, 720, SPRITE_STONE_ALTAR);
-    stele.setDepth(720);
-    this.registerCullable(stele, 1250, 720, 60);
+    // 1. Bia Đá Tưởng Niệm Kỵ Sĩ (outer_woods, 1260, 645) - HW-MAP-27: Dời về hốc trang nghiêm ven đường râm mát dưới tán sồi
+    const stele = this.safeAddImage(1260, 645, SPRITE_STONE_ALTAR);
+    stele.setDepth(645);
+    this.registerCullable(stele, 1260, 645, 60);
 
     // 2. Trang Nhật Ký Ướt Sương của Thợ Đúc Chuông (sub_bell_workshop, 1420, 1200)
     const journalCrate = this.safeAddImage(1420, 1200, SPRITE_PROP_CRATE_WEATHERED_V14);
@@ -5281,7 +5281,8 @@ export class WorldBuilder {
     this.createFallenLog(1220, 955, 62, 8);   // Bãi Liễu cổ thụ phía Nam
 
     // 5. Nơi Ẩn Nấp & Thân Cây Cổ Thụ Rỗng (Stealth Hiding Spots vs. Dark Horseman / The Listener)
-    this.createDenseBush(1180, 650); // Bụi Rậm Khúc Cua Chữ S
+    // HW-MAP-27: Dời bụi rậm từ (1180, 650) sang ven đường phía Tây (1150, 655), giải phóng 100% tầm nhìn và lòng đường khúc cua S
+    this.createDenseBush(1150, 655); // Bụi Rậm Khúc Cua Chữ S (Ven đường)
     this.createHollowTree(1360, 620, 'Cây Rỗng Rừng Ven');
     // HW-FIX-21: Xóa bụi cản đường (1260, 800) và (1420, 745)
     // HW-FIX-21: Dời Cây Rỗng Bãi Liễu sang sườn đồi tam giác giữa 2 nhánh đường (1305, 885)
@@ -5363,6 +5364,23 @@ export class WorldBuilder {
     this.createGatheringNodeProp(1435, 635, 'iron', 'Phôi Sắt Cổ Trạm Kiểm Lâm');
     // 5. Nấm Rừng: Mọc cạnh thân cây cổ thụ đổ ven suối
     this.createGatheringNodeProp(1475, 805, 'mushroom', 'Nấm Rừng Thân Gỗ Mục');
+
+    // HW-MAP-27: Hàng rào gỗ mục ven rừng che chắn trực quan cho ranh giới vô hình ow_bound_bottom_left & farm_bound_right_bottom
+    // Đảm bảo không tạo thêm body vật lý (tận dụng collider ranh giới sẵn có) và không chắn lối xuống Xưởng Chuông (x >= 1320)
+    const southBorderFenceX = [1130, 1175, 1220, 1265];
+    for (const fx of southBorderFenceX) {
+      const fence = this.scene.add.image(fx, 1020, SPRITE_WOODEN_FENCE);
+      fence.setOrigin(0, 0.78);
+      fence.setDepth(1020);
+      this.registerCullable(fence, fx + 23, 1020, 40);
+    }
+    const westBorderFenceY = [920, 965];
+    for (const fy of westBorderFenceY) {
+      const fence = this.scene.add.image(1125, fy, SPRITE_WOODEN_FENCE);
+      fence.setOrigin(0, 0.78);
+      fence.setDepth(fy);
+      this.registerCullable(fence, 1125 + 23, fy, 40);
+    }
 
     // 8. Sương Mù Ranh Giới Nhẹ Nhàng (Boundary Mist)
     this.createOuterWoodsBoundaryFog();
