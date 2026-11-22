@@ -13,6 +13,7 @@ import {
   WAYFARER_FRAME_HEIGHT,
   WAYFARER_ORIGIN_X,
   WAYFARER_ORIGIN_Y,
+  WAYFARER_BASE_SCALE,
   WAYFARER_BODY_WIDTH,
   WAYFARER_BODY_HEIGHT,
   WAYFARER_BODY_OFFSET_X,
@@ -235,10 +236,12 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     // Hoạt ảnh mặc định ban đầu: The Mossbound Wayfarer đứng thở nhẹ hướng DOWN
     const defaultAnim = this.scene.anims.exists('wayfarer_idle_down') ? 'wayfarer_idle_down' : 'satyr_idle_down';
     this.play(defaultAnim);
+    this.syncBodyFootAnchor();
   }
 
   private syncBodyFootAnchor(): void {
     const body = this.body as Phaser.Physics.Arcade.Body;
+    if (!body) return;
     // Restore the standard origin when leaving an atlas with a custom VFX pivot.
     if (!this.frame.customPivot && (this.originX !== WAYFARER_ORIGIN_X || this.originY !== WAYFARER_ORIGIN_Y)) {
       this.setOrigin(WAYFARER_ORIGIN_X, WAYFARER_ORIGIN_Y);
@@ -259,14 +262,15 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
   }
 
   private getLocomotionArtworkScale(): number {
-    if (this.texture.key !== BLACK_KNIGHT_CONVERSION_MOTION_KEY) return 1;
+    const base = WAYFARER_BASE_SCALE;
+    if (this.texture.key !== BLACK_KNIGHT_CONVERSION_MOTION_KEY) return base;
     const key = this.anims.currentAnim?.key ?? '';
-    if (/^(wayfarer|satyr)_run_(down|up|left|right)$/.test(key)) return 0.8;
+    if (/^(wayfarer|satyr)_run_(down|up|left|right)$/.test(key)) return base * 0.8;
     if (/^(wayfarer|satyr)_unarmed_run_(down|up|left|right)$/.test(key)) {
       // The two six-frame unarmed passes were authored at different sizes.
-      return (this.anims.currentFrame?.index ?? 1) <= 6 ? 0.68 : 0.78;
+      return (this.anims.currentFrame?.index ?? 1) <= 6 ? base * 0.68 : base * 0.78;
     }
-    return 1;
+    return base;
   }
 
   private setupInput(): void {

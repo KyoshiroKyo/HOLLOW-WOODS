@@ -75,6 +75,7 @@ export const WAYFARER_FRAME_WIDTH = 64;
 export const WAYFARER_FRAME_HEIGHT = 64;
 export const WAYFARER_ORIGIN_X = 0.5;
 export const WAYFARER_ORIGIN_Y = 1.0; // V1.5-09: Chuẩn hóa điểm neo chân 100% tại đáy frame (y = 64/64 = 1.0)
+export const WAYFARER_BASE_SCALE = 1.50; // HW-BUG-22: Visual scale chuẩn hóa của Black Knight (3:2) tương quan với Sir Vaelen (47-48px) & Garth (53-54px)
 export const WAYFARER_BODY_WIDTH = 18;
 export const WAYFARER_BODY_HEIGHT = 12;
 export const WAYFARER_BODY_OFFSET_X = 23;
