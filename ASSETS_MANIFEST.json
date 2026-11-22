@@ -1,11 +1,11 @@
 {
-  "totalFiles": 250,
-  "totalBytes": 69443014,
+  "totalFiles": 269,
+  "totalBytes": 78105582,
   "categories": {
     "audio": [
       {
         "path": "public/assets/audio/ambience/ambience_crossing.mp3",
-        "size": 507529,
+        "size": 2771121,
         "ext": ".mp3"
       },
       {
@@ -20,7 +20,7 @@
       },
       {
         "path": "public/assets/audio/ambience/ambience_village.mp3",
-        "size": 35143,
+        "size": 1557211,
         "ext": ".mp3"
       },
       {
@@ -333,7 +333,7 @@
     "characters": [
       {
         "path": "public/assets/characters/black_knight/black_knight_armed_idle.json",
-        "size": 16183,
+        "size": 16880,
         "ext": ".json"
       },
       {
@@ -342,8 +342,88 @@
         "ext": ".png"
       },
       {
+        "path": "public/assets/characters/black_knight/black_knight_conversion_actions.json",
+        "size": 116370,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/characters/black_knight/black_knight_conversion_actions.png",
+        "size": 213006,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/black_knight/black_knight_conversion_air.json",
+        "size": 146658,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/characters/black_knight/black_knight_conversion_air.png",
+        "size": 282852,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/black_knight/black_knight_conversion_combat.json",
+        "size": 345283,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/characters/black_knight/black_knight_conversion_combat.png",
+        "size": 967763,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/black_knight/black_knight_conversion_motion.json",
+        "size": 140613,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/characters/black_knight/black_knight_conversion_motion.png",
+        "size": 472099,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/black_knight/black_knight_conversion_states.json",
+        "size": 233702,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/characters/black_knight/black_knight_conversion_states.png",
+        "size": 715692,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/black_knight/black_knight_core_combat.json",
+        "size": 46344,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/characters/black_knight/black_knight_core_combat.png",
+        "size": 111020,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/black_knight/black_knight_defense.json",
+        "size": 138631,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/characters/black_knight/black_knight_defense.png",
+        "size": 288641,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/black_knight/black_knight_extended_skills.json",
+        "size": 125940,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/characters/black_knight/black_knight_extended_skills.png",
+        "size": 313019,
+        "ext": ".png"
+      },
+      {
         "path": "public/assets/characters/black_knight/black_knight_movement.json",
-        "size": 77038,
+        "size": 81537,
         "ext": ".json"
       },
       {
@@ -425,6 +505,11 @@
         "path": "public/assets/characters/enemies/portrait_fallen_knight.png",
         "size": 2335,
         "ext": ".png"
+      },
+      {
+        "path": "public/assets/characters/mossbound_wayfarer.rar",
+        "size": 185541,
+        "ext": ".rar"
       },
       {
         "path": "public/assets/characters/mossbound_wayfarer/wayfarer_attack.png",
@@ -1054,7 +1139,7 @@
       },
       {
         "path": "public/assets/ui/fonts/OFL-NotoSans.txt",
-        "size": 4114,
+        "size": 4232,
         "ext": ".txt"
       },
       {
@@ -1216,12 +1301,22 @@
     "other": [
       {
         "path": "public/assets/atlases/hollow_props_atlas.json",
-        "size": 20799,
+        "size": 22037,
         "ext": ".json"
       },
       {
         "path": "public/assets/atlases/hollow_props_atlas.png",
         "size": 205344,
+        "ext": ".png"
+      },
+      {
+        "path": "public/assets/atlases/item_icons_atlas.json",
+        "size": 19794,
+        "ext": ".json"
+      },
+      {
+        "path": "public/assets/atlases/item_icons_atlas.png",
+        "size": 7388,
         "ext": ".png"
       },
       {
