@@ -1,0 +1,96 @@
+{
+  "all_stages_pass": true,
+  "stages": {
+    "stage1": {
+      "pass": true,
+      "trans": {
+        "zone": "bellhollow",
+        "playerStateZone": "bellhollow",
+        "hasVisitedBellhollow": true,
+        "posX": 490,
+        "posY": 195
+      },
+      "dialogue": {
+        "talkedToVillagers": true,
+        "eastGateUnlocked": true,
+        "currentQuest": "Q01_MEET_EDDA",
+        "worldMapCurrentZone": "bellhollow"
+      }
+    },
+    "stage2": {
+      "pass": true,
+      "edda": {
+        "talkedToEdda": true,
+        "currentQuest": "Q02_MEET_NERIS"
+      },
+      "neris": {
+        "talkedToNeris": true,
+        "currentQuest": "Q03_PREPARE_RESOURCES",
+        "poulticeCount": 0
+      },
+      "crafting": {
+        "benchFound": true,
+        "benchX": 1395,
+        "benchY": 455,
+        "modalOpenedSuccessfully": true
+      }
+    },
+    "stage3": {
+      "pass": true,
+      "farm": {
+        "zone": "sanctuary_farm",
+        "playerStateZone": "sanctuary_farm",
+        "hasVisitedFarm": true,
+        "posX": 650,
+        "posY": 580,
+        "isInsideCollider": false
+      },
+      "plot": {
+        "plotFound": true,
+        "plotId": "plot_1",
+        "promptText": "[E] Làm Đất Chuẩn Bị Luống Trồng"
+      },
+      "return": {
+        "zone": "bellhollow",
+        "playerStateZone": "bellhollow",
+        "posX": 650,
+        "posY": 520,
+        "isStuck": false
+      }
+    },
+    "stage4": {
+      "pass": true,
+      "vaelen": {
+        "vaelenFound": true,
+        "dist": 25,
+        "dialogueTriggered": true,
+        "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc"
+      },
+      "subWorkshop": {
+        "zone": "sub_bell_workshop",
+        "posX": 1360,
+        "posY": 1100,
+        "bounds": {
+          "x": 1120,
+          "y": 1040,
+          "width": 480,
+          "height": 400
+        }
+      },
+      "subReturn": {
+        "zone": "outer_woods",
+        "posX": 1360,
+        "posY": 960
+      },
+      "worldMap": {
+        "activeZone": "outer_woods",
+        "subTitle": "🎯 NHIỆM VỤ TIẾN TRÌNH: GIỮ LỬA TRONG SƯƠNG • Rừng Ngoại Vi",
+        "badgeFound": true,
+        "badgeText": "🎯 MỤC TIÊU HIỆN TẠI"
+      }
+    }
+  },
+  "console_errors": [],
+  "page_errors": [],
+  "failed_requests": []
+}
