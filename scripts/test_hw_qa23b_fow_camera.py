@@ -333,6 +333,7 @@ def main():
             const gs = window.__PHASER_GAME__.scene.getScene('GameScene');
             const sm = window.__SETTINGS_MANAGER__;
             sm.setReducedMotionEnabled(false);
+            if (sm.setLightMotionEnabled) sm.setLightMotionEnabled(true);
             if (window.__GRAPHICS_QUALITY_SYSTEM__) window.__GRAPHICS_QUALITY_SYSTEM__.setQuality('HIGH');
 
             window.__SET_TEST_ZONE__('outer_woods', 1200, 600);
@@ -377,6 +378,7 @@ def main():
             const gs = window.__PHASER_GAME__.scene.getScene('GameScene');
             const sm = window.__SETTINGS_MANAGER__;
             sm.setReducedMotionEnabled(false);
+            if (sm.setLightMotionEnabled) sm.setLightMotionEnabled(true);
             if (window.__GRAPHICS_QUALITY_SYSTEM__) window.__GRAPHICS_QUALITY_SYSTEM__.setQuality('HIGH');
 
             window.__SET_TEST_ZONE__('outer_woods', 1200, 600);
@@ -420,6 +422,7 @@ def main():
             const gs = window.__PHASER_GAME__.scene.getScene('GameScene');
             const sm = window.__SETTINGS_MANAGER__;
             sm.setReducedMotionEnabled(false);
+            if (sm.setLightMotionEnabled) sm.setLightMotionEnabled(true);
 
             window.__SET_TEST_ZONE__('outer_woods', 1470, 710);
             gs.playerState.stats.composure = 15;
@@ -603,6 +606,7 @@ def main():
             window.__QA_CAMERA_AUDIT__.realShakeCount = 0;
             if (gs.cameraSystem) gs.cameraSystem.lastShakeTimestamp = 0;
             sm.setReducedMotionEnabled(false);
+            if (sm.setLightMotionEnabled) sm.setLightMotionEnabled(true);
             gs.playerState.stats.composure = 10;
             gs.panicCameraShakeTimer = 1000;
             await new Promise(r => setTimeout(r, 200));
@@ -625,6 +629,7 @@ def main():
             window.__QA_CAMERA_AUDIT__.realShakeCount = 0;
             if (gs.cameraSystem) gs.cameraSystem.lastShakeTimestamp = 0;
             sm.setReducedMotionEnabled(false);
+            if (sm.setLightMotionEnabled) sm.setLightMotionEnabled(true);
             if (sm.isScreenShakeEnabled()) {
                 gs.cameraSystem.shake(250, 0.008);
             }
@@ -652,6 +657,7 @@ def main():
                 gs.cameraSystem.lastFlashTimestamp = 0;
             }
             sm.setReducedMotionEnabled(false);
+            if (sm.setLightMotionEnabled) sm.setLightMotionEnabled(true);
             gs.cameraSystem.shake(220, 0.012);
             gs.cameraSystem.flash(180, 160, 20, 20);
             await new Promise(r => setTimeout(r, 100));
@@ -674,6 +680,7 @@ def main():
 
             // RM OFF
             sm.setReducedMotionEnabled(false);
+            if (sm.setLightMotionEnabled) sm.setLightMotionEnabled(true);
             if (gs.cameraSystem) {
                 gs.cameraSystem.shake(150, 0.007);
             } else if (sm && sm.isScreenShakeEnabled()) {
@@ -692,6 +699,7 @@ def main():
                 gs.cameraSystem.lastFlashTimestamp = 0;
             }
             sm.setReducedMotionEnabled(false);
+            if (sm.setLightMotionEnabled) sm.setLightMotionEnabled(true);
 
             // Fire 5 flashes in rapid burst (< 50ms)
             for (let i = 0; i < 5; i++) {
@@ -745,6 +753,7 @@ def main():
             const uis = window.__PHASER_GAME__.scene.getScene('UIScene');
             const sm = window.__SETTINGS_MANAGER__;
             sm.setReducedMotionEnabled(false);
+            if (sm.setLightMotionEnabled) sm.setLightMotionEnabled(true);
 
             // Step 1: Low composure outside Outer Woods
             window.__SET_TEST_ZONE__('outer_woods', 1200, 600);
@@ -783,8 +792,10 @@ def main():
             // Step 6: 5x Rapid Reduced Motion Toggles
             sm.setReducedMotionEnabled(true);
             sm.setReducedMotionEnabled(false);
+            if (sm.setLightMotionEnabled) sm.setLightMotionEnabled(true);
             sm.setReducedMotionEnabled(true);
             sm.setReducedMotionEnabled(false);
+            if (sm.setLightMotionEnabled) sm.setLightMotionEnabled(true);
             sm.setReducedMotionEnabled(true);
             const step6_finalRM = sm.isReducedMotionPreferred();
 

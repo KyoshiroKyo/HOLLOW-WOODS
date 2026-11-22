@@ -318,6 +318,195 @@ export class SettingsUIHelper {
   }
 
   /**
+   * HW-FX-31: Tạo nút công tắc Bật/Tắt tổng quát với nhãn, mô tả và phản hồi hover mượt mà
+   */
+  public static createGenericToggle(
+    scene: Phaser.Scene,
+    x: number,
+    y: number,
+    label: string,
+    desc: string,
+    initialEnabled: boolean,
+    onToggle: (enabled: boolean) => void,
+    width: number = 440
+  ): { container: Phaser.GameObjects.Container; setEnabled: (val: boolean) => void } {
+    const container = scene.add.container(x, y);
+    let enabled = initialEnabled;
+
+    const btnBoxW = 120;
+    const btnBoxH = 24;
+    const btnX = width / 2 - btnBoxW / 2;
+
+    const labelTxt = HDTextHelper.createText(scene, -width / 2, -6, label, {
+      fontSize: '11.5px',
+      fontStyle: 'bold',
+      color: '#cbd5e1'
+    }).setOrigin(0, 0.5);
+
+    const descTxt = HDTextHelper.createText(scene, -width / 2, 12, desc, {
+      fontSize: '9.5px',
+      fontStyle: 'italic',
+      color: '#94a3b8'
+    }).setOrigin(0, 0.5);
+
+    const btnContainer = scene.add.container(btnX, 2);
+    const btnBg = scene.add.graphics();
+    const btnTxt = HDTextHelper.createText(scene, 0, 0, enabled ? '✔ ĐANG BẬT' : '✖ ĐÃ TẮT', {
+      fontSize: '11px',
+      fontStyle: 'bold',
+      color: enabled ? '#2ecc71' : '#e74c3c'
+    }).setOrigin(0.5, 0.5);
+
+    btnContainer.add([btnBg, btnTxt]);
+    btnContainer.setSize(btnBoxW, btnBoxH);
+    btnContainer.setInteractive(new Phaser.Geom.Rectangle(-btnBoxW / 2, -btnBoxH / 2, btnBoxW, btnBoxH), Phaser.Geom.Rectangle.Contains);
+    if (btnContainer.input) btnContainer.input.cursor = 'pointer';
+
+    const renderBtn = (isHover: boolean = false) => {
+      btnBg.clear();
+      const fill = enabled ? (isHover ? 0x1b3827 : 0x14281e) : (isHover ? 0x3d1c21 : 0x2b1418);
+      const stroke = enabled ? (isHover ? 0x2ecc71 : 0x27ae60) : (isHover ? 0xe74c3c : 0xc0392b);
+      btnBg.fillStyle(fill, 0.95);
+      btnBg.fillRoundedRect(-btnBoxW / 2, -btnBoxH / 2, btnBoxW, btnBoxH, 4);
+      btnBg.lineStyle(1.5, stroke, 0.95);
+      btnBg.strokeRoundedRect(-btnBoxW / 2, -btnBoxH / 2, btnBoxW, btnBoxH, 4);
+
+      btnTxt.setText(enabled ? '✔ ĐANG BẬT' : '✖ ĐÃ TẮT');
+      btnTxt.setColor(enabled ? '#2ecc71' : '#e74c3c');
+    };
+
+    renderBtn();
+
+    btnContainer.on('pointerover', () => renderBtn(true));
+    btnContainer.on('pointerout', () => renderBtn(false));
+    btnContainer.on('pointerdown', () => {
+      AudioManager.getInstance().playInteract();
+      enabled = !enabled;
+      renderBtn(true);
+      onToggle(enabled);
+    });
+
+    container.add([labelTxt, descTxt, btnContainer]);
+
+    return {
+      container,
+      setEnabled: (val: boolean) => {
+        enabled = val;
+        renderBtn();
+      }
+    };
+  }
+
+  /**
+   * HW-FX-31: Tạo bộ chọn 3 nấc Cường Độ Hoảng Sợ: Nhẹ / Chuẩn / Rõ
+   */
+  public static createIntensitySelector(
+    scene: Phaser.Scene,
+    x: number,
+    y: number,
+    label: string,
+    desc: string,
+    initialVal: 'LOW' | 'STANDARD' | 'HIGH',
+    onCycle: () => 'LOW' | 'STANDARD' | 'HIGH',
+    width: number = 440
+  ): { container: Phaser.GameObjects.Container; setValue: (val: 'LOW' | 'STANDARD' | 'HIGH') => void } {
+    const container = scene.add.container(x, y);
+    let currentVal = initialVal;
+
+    const btnBoxW = 120;
+    const btnBoxH = 24;
+    const btnX = width / 2 - btnBoxW / 2;
+
+    const labelTxt = HDTextHelper.createText(scene, -width / 2, -6, label, {
+      fontSize: '11.5px',
+      fontStyle: 'bold',
+      color: '#cbd5e1'
+    }).setOrigin(0, 0.5);
+
+    const descTxt = HDTextHelper.createText(scene, -width / 2, 12, desc, {
+      fontSize: '9.5px',
+      fontStyle: 'italic',
+      color: '#94a3b8'
+    }).setOrigin(0, 0.5);
+
+    const btnContainer = scene.add.container(btnX, 2);
+    const btnBg = scene.add.graphics();
+    const btnTxt = HDTextHelper.createText(scene, 0, 0, '', {
+      fontSize: '11px',
+      fontStyle: 'bold'
+    }).setOrigin(0.5, 0.5);
+
+    btnContainer.add([btnBg, btnTxt]);
+    btnContainer.setSize(btnBoxW, btnBoxH);
+    btnContainer.setInteractive(new Phaser.Geom.Rectangle(-btnBoxW / 2, -btnBoxH / 2, btnBoxW, btnBoxH), Phaser.Geom.Rectangle.Contains);
+    if (btnContainer.input) btnContainer.input.cursor = 'pointer';
+
+    const getLabel = (val: 'LOW' | 'STANDARD' | 'HIGH') => {
+      switch (val) {
+        case 'LOW': return '🌱 NHẸ';
+        case 'HIGH': return '🔥 RÕ';
+        case 'STANDARD':
+        default:
+          return '⚖️ CHUẨN';
+      }
+    };
+
+    const getColor = (val: 'LOW' | 'STANDARD' | 'HIGH') => {
+      switch (val) {
+        case 'LOW': return '#3498db';
+        case 'HIGH': return '#e74c3c';
+        case 'STANDARD':
+        default:
+          return '#f1c40f';
+      }
+    };
+
+    const getColors = (val: 'LOW' | 'STANDARD' | 'HIGH', isHover: boolean) => {
+      switch (val) {
+        case 'LOW':
+          return { fill: isHover ? 0x1a334d : 0x122436, stroke: isHover ? 0x3498db : 0x2980b9 };
+        case 'HIGH':
+          return { fill: isHover ? 0x3d1c21 : 0x2b1418, stroke: isHover ? 0xe74c3c : 0xc0392b };
+        case 'STANDARD':
+        default:
+          return { fill: isHover ? 0x3b3318 : 0x282310, stroke: isHover ? 0xf1c40f : 0xd4ac0d };
+      }
+    };
+
+    const renderBtn = (isHover: boolean = false) => {
+      btnBg.clear();
+      const c = getColors(currentVal, isHover);
+      btnBg.fillStyle(c.fill, 0.95);
+      btnBg.fillRoundedRect(-btnBoxW / 2, -btnBoxH / 2, btnBoxW, btnBoxH, 4);
+      btnBg.lineStyle(1.5, c.stroke, 0.95);
+      btnBg.strokeRoundedRect(-btnBoxW / 2, -btnBoxH / 2, btnBoxW, btnBoxH, 4);
+
+      btnTxt.setText(getLabel(currentVal));
+      btnTxt.setColor(getColor(currentVal));
+    };
+
+    renderBtn();
+
+    btnContainer.on('pointerover', () => renderBtn(true));
+    btnContainer.on('pointerout', () => renderBtn(false));
+    btnContainer.on('pointerdown', () => {
+      AudioManager.getInstance().playInteract();
+      currentVal = onCycle();
+      renderBtn(true);
+    });
+
+    container.add([labelTxt, descTxt, btnContainer]);
+
+    return {
+      container,
+      setValue: (val: 'LOW' | 'STANDARD' | 'HIGH') => {
+        currentVal = val;
+        renderBtn();
+      }
+    };
+  }
+
+  /**
    * Tạo Nút Xóa Bản Lưu an toàn với xác nhận 2 lần (2-Step Safe Confirmation)
    * Tránh hoàn toàn việc người chơi lỡ tay bấm nhầm xóa mất tiến trình.
    */

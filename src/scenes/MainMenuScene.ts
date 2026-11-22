@@ -393,11 +393,74 @@ export class MainMenuScene extends Phaser.Scene {
 
     const settings = SettingsManager.getInstance();
 
+    // --- HW-FX-31: Tab Bar: [ 🔊 ÂM LƯỢNG & TIẾN TRÌNH ] và [ 👁️ HÌNH ẢNH & TIẾP CẬN ] ---
+    let activeSettingsTab: 'AUDIO' | 'VISUALS' = 'AUDIO';
+
+    const tabAudioBtn = this.add.container(-140, -modalH / 2 + 86);
+    const tabAudioBg = this.add.graphics();
+    const tabAudioTxt = HDTextHelper.createText(this, 0, 0, '🔊 ÂM LƯỢNG & LƯU TRỮ', {
+      fontSize: '12px',
+      fontStyle: 'bold',
+      color: '#f1c40f'
+    }).setOrigin(0.5, 0.5);
+    tabAudioBtn.add([tabAudioBg, tabAudioTxt]);
+    tabAudioBtn.setSize(240, 26);
+    tabAudioBtn.setInteractive(new Phaser.Geom.Rectangle(-120, -13, 240, 26), Phaser.Geom.Rectangle.Contains);
+    if (tabAudioBtn.input) tabAudioBtn.input.cursor = 'pointer';
+
+    const tabVisualsBtn = this.add.container(140, -modalH / 2 + 86);
+    const tabVisualsBg = this.add.graphics();
+    const tabVisualsTxt = HDTextHelper.createText(this, 0, 0, '👁️ HÌNH ẢNH & TIẾP CẬN', {
+      fontSize: '12px',
+      fontStyle: 'bold',
+      color: '#94a3b8'
+    }).setOrigin(0.5, 0.5);
+    tabVisualsBtn.add([tabVisualsBg, tabVisualsTxt]);
+    tabVisualsBtn.setSize(240, 26);
+    tabVisualsBtn.setInteractive(new Phaser.Geom.Rectangle(-120, -13, 240, 26), Phaser.Geom.Rectangle.Contains);
+    if (tabVisualsBtn.input) tabVisualsBtn.input.cursor = 'pointer';
+
+    const renderTabs = () => {
+      tabAudioBg.clear();
+      const isAudio = activeSettingsTab === 'AUDIO';
+      tabAudioBg.fillStyle(isAudio ? 0x2b2210 : 0x141a24, 0.95);
+      tabAudioBg.fillRoundedRect(-120, -13, 240, 26, 4);
+      tabAudioBg.lineStyle(1.5, isAudio ? 0xf1c40f : 0x4a5568, 0.9);
+      tabAudioBg.strokeRoundedRect(-120, -13, 240, 26, 4);
+      tabAudioTxt.setColor(isAudio ? '#f1c40f' : '#94a3b8');
+
+      tabVisualsBg.clear();
+      const isVisuals = activeSettingsTab === 'VISUALS';
+      tabVisualsBg.fillStyle(isVisuals ? 0x2b2210 : 0x141a24, 0.95);
+      tabVisualsBg.fillRoundedRect(-120, -13, 240, 26, 4);
+      tabVisualsBg.lineStyle(1.5, isVisuals ? 0xf1c40f : 0x4a5568, 0.9);
+      tabVisualsBg.strokeRoundedRect(-120, -13, 240, 26, 4);
+      tabVisualsTxt.setColor(isVisuals ? '#f1c40f' : '#94a3b8');
+
+      audioTabGroup.setVisible(isAudio);
+      visualsTabGroup.setVisible(isVisuals);
+    };
+
+    tabAudioBtn.on('pointerdown', () => {
+      AudioManager.getInstance().playInteract();
+      activeSettingsTab = 'AUDIO';
+      renderTabs();
+    });
+
+    tabVisualsBtn.on('pointerdown', () => {
+      AudioManager.getInstance().playInteract();
+      activeSettingsTab = 'VISUALS';
+      renderTabs();
+    });
+
+    // --- TAB 1: ÂM LƯỢNG & TIẾN TRÌNH ---
+    const audioTabGroup = this.add.container(0, 0);
+
     // 1. THANH KÉO ÂM LƯỢNG NHẠC NỀN (BGM)
     const bgmSlider = SettingsUIHelper.createVolumeSlider(
       this,
       40,
-      -modalH / 2 + 96,
+      -modalH / 2 + 130,
       '🎵 Nhạc Nền (BGM):',
       settings.getMusicVolume(),
       (val) => settings.setMusicVolume(val),
@@ -408,7 +471,7 @@ export class MainMenuScene extends Phaser.Scene {
     const sfxSlider = SettingsUIHelper.createVolumeSlider(
       this,
       40,
-      -modalH / 2 + 134,
+      -modalH / 2 + 172,
       '🔊 Hiệu Ứng (SFX):',
       settings.getSfxVolume(),
       (val) => settings.setSfxVolume(val),
@@ -419,7 +482,7 @@ export class MainMenuScene extends Phaser.Scene {
     const masterSlider = SettingsUIHelper.createVolumeSlider(
       this,
       -10,
-      -modalH / 2 + 172,
+      -modalH / 2 + 214,
       '🎚️ Âm Lượng Tổng:',
       settings.getMasterVolume(),
       (val) => settings.setMasterVolume(val),
@@ -427,7 +490,7 @@ export class MainMenuScene extends Phaser.Scene {
     );
 
     // Nút Bật/Tắt Toàn Bộ Âm Thanh (Mute)
-    const muteBtnContainer = this.add.container(modalW / 2 - 95, -modalH / 2 + 172);
+    const muteBtnContainer = this.add.container(modalW / 2 - 95, -modalH / 2 + 214);
     const muteBtnBg = this.add.graphics();
     const muteBtnTxt = HDTextHelper.createText(this, 0, 0, settings.isMuted() ? '🔇 TẮT TIẾNG' : '🔊 BẬT TIẾNG', {
       fontSize: '11px',
@@ -461,23 +524,44 @@ export class MainMenuScene extends Phaser.Scene {
       renderMuteBtn(true);
     });
 
-    // Phân cách 2
-    const div2 = this.add.graphics();
-    div2.lineStyle(1, 0x3d2b18, 0.8);
-    div2.lineBetween(-modalW / 2 + 24, -modalH / 2 + 206, modalW / 2 - 24, -modalH / 2 + 206);
+    // Phân cách trong tab Audio
+    const divAudio = this.add.graphics();
+    divAudio.lineStyle(1, 0x3d2b18, 0.8);
+    divAudio.lineBetween(-modalW / 2 + 24, -modalH / 2 + 252, modalW / 2 - 24, -modalH / 2 + 252);
 
-    // 4. TÙY CHỌN RUNG MÀN HÌNH (SCREEN SHAKE)
-    const shakeToggle = SettingsUIHelper.createScreenShakeToggle(
+    const saveSectionLabel = HDTextHelper.createText(this, 0, -modalH / 2 + 280, 'QUẢN LÝ TIẾN TRÌNH LƯU TRỮ TRÒ CHƠI', {
+      fontSize: '11px',
+      fontStyle: 'bold',
+      color: '#e74c3c'
+    }).setOrigin(0.5, 0.5);
+
+    const clearSaveBtn = SettingsUIHelper.createSafeClearSaveButton(
       this,
       0,
-      -modalH / 2 + 236,
-      settings.isScreenShakeEnabled(),
-      (enabled) => settings.setScreenShakeEnabled(enabled),
-      540
+      -modalH / 2 + 322,
+      () => {
+        SaveManager.clearSave();
+        this.onSaveDataCleared();
+      },
+      380,
+      30
     );
 
-    // 5. CHẤT LƯỢNG ĐỒ HỌA (GRAPHICS QUALITY)
-    const gfxContainer = this.add.container(0, -modalH / 2 + 300);
+    audioTabGroup.add([
+      bgmSlider.container,
+      sfxSlider.container,
+      masterSlider.container,
+      muteBtnContainer,
+      divAudio,
+      saveSectionLabel,
+      clearSaveBtn
+    ]);
+
+    // --- TAB 2: HÌNH ẢNH & TIẾP CẬN ---
+    const visualsTabGroup = this.add.container(0, 0);
+
+    // 1. CHẤT LƯỢNG ĐỒ HỌA (GRAPHICS QUALITY)
+    const gfxContainer = this.add.container(0, -modalH / 2 + 125);
     const gfxLabel = HDTextHelper.createText(this, -270, 0, '🖥️ Mức Đồ Họa & Sương Mù:', {
       fontSize: '12px',
       fontStyle: 'bold',
@@ -533,29 +617,63 @@ export class MainMenuScene extends Phaser.Scene {
 
     gfxContainer.add([gfxLabel, gfxBtn]);
 
-    // Phân cách 3
-    const div3 = this.add.graphics();
-    div3.lineStyle(1, 0x3d2b18, 0.8);
-    div3.lineBetween(-modalW / 2 + 24, -modalH / 2 + 332, modalW / 2 - 24, -modalH / 2 + 332);
-
-    // 6. QUẢN LÝ BẢN LƯU (XÓA BẢN LƯU AN TOÀN 2 LẦN)
-    const saveSectionLabel = HDTextHelper.createText(this, 0, -modalH / 2 + 350, 'QUẢN LÝ TIẾN TRÌNH LƯU TRỮ TRÒ CHƠI', {
-      fontSize: '11px',
-      fontStyle: 'bold',
-      color: '#e74c3c'
-    }).setOrigin(0.5, 0.5);
-
-    const clearSaveBtn = SettingsUIHelper.createSafeClearSaveButton(
+    // 2. TÙY CHỌN RUNG MÀN HÌNH (SCREEN SHAKE)
+    const shakeToggle = SettingsUIHelper.createGenericToggle(
       this,
       0,
-      -modalH / 2 + 386,
-      () => {
-        SaveManager.clearSave();
-        this.onSaveDataCleared();
-      },
-      380,
-      30
+      -modalH / 2 + 175,
+      '📳 Rung Màn Hình (Screen Shake):',
+      'Rung giật camera khi nguy kịch hoặc bị quái vật tập kích.',
+      settings.isScreenShakeEnabled(),
+      (enabled) => settings.setScreenShakeEnabled(enabled),
+      540
     );
+
+    // 3. HIỆU ỨNG HOẢNG SỢ (PANIC VISUALS)
+    const panicToggle = SettingsUIHelper.createGenericToggle(
+      this,
+      0,
+      -modalH / 2 + 225,
+      '👁️ Hiệu Ứng Hoảng Sợ (Panic Visuals):',
+      'Sương tím & vệt đỏ kinh dị tâm lý khi Tinh Thần <40%.',
+      settings.isPanicEffectsEnabled(),
+      (enabled) => settings.setPanicEffectsEnabled(enabled),
+      540
+    );
+
+    // 4. DAO ĐỘNG ÁNH SÁNG (LIGHT MOTION)
+    const lightMotionToggle = SettingsUIHelper.createGenericToggle(
+      this,
+      0,
+      -modalH / 2 + 275,
+      '✨ Dao Động Ánh Sáng (Light Motion):',
+      'Nhịp thở FOW & đèn lồng (tự tắt khi Reduced Motion ON).',
+      settings.isRawLightMotionEnabled(),
+      (enabled) => settings.setLightMotionEnabled(enabled),
+      540
+    );
+
+    // 5. CƯỜNG ĐỘ HOẢNG SỢ (PANIC INTENSITY)
+    const intensitySelector = SettingsUIHelper.createIntensitySelector(
+      this,
+      0,
+      -modalH / 2 + 325,
+      '🎨 Cường Độ Hoảng Sợ (Intensity):',
+      'Độ đậm nhạt của lớp sương và viền trang trí.',
+      settings.getPanicIntensity(),
+      () => settings.cyclePanicIntensity(),
+      540
+    );
+
+    visualsTabGroup.add([
+      gfxContainer,
+      shakeToggle.container,
+      panicToggle.container,
+      lightMotionToggle.container,
+      intensitySelector.container
+    ]);
+
+    renderTabs();
 
     // Nút Đóng [ESC]
     const closeBtn = this.add.container(0, modalH / 2 - 34);
@@ -595,16 +713,10 @@ export class MainMenuScene extends Phaser.Scene {
       title,
       subTitle,
       div1,
-      bgmSlider.container,
-      sfxSlider.container,
-      masterSlider.container,
-      muteBtnContainer,
-      div2,
-      shakeToggle.container,
-      gfxContainer,
-      div3,
-      saveSectionLabel,
-      clearSaveBtn,
+      tabAudioBtn,
+      tabVisualsBtn,
+      audioTabGroup,
+      visualsTabGroup,
       closeBtn
     ]);
 

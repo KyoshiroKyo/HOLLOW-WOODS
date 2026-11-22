@@ -18,6 +18,9 @@ export interface GameSettings {
   screenFlashEnabled: boolean;
   reducedMotionEnabled: boolean;
   graphicsQuality: GraphicsQualityLevel;
+  panicEffectsEnabled: boolean;
+  lightMotionEnabled: boolean;
+  panicIntensity: 'LOW' | 'STANDARD' | 'HIGH';
 }
 
 export type SettingsChangeListener = (settings: GameSettings) => void;
@@ -35,7 +38,10 @@ export class SettingsManager {
     screenShakeEnabled: true,
     screenFlashEnabled: true,
     reducedMotionEnabled: false,
-    graphicsQuality: 'HIGH'
+    graphicsQuality: 'HIGH',
+    panicEffectsEnabled: true,
+    lightMotionEnabled: false,
+    panicIntensity: 'STANDARD'
   };
 
   private listeners: Set<SettingsChangeListener> = new Set();
@@ -111,6 +117,15 @@ export class SettingsManager {
     }
     if (typeof data.reducedMotionEnabled === 'boolean') {
       this.settings.reducedMotionEnabled = data.reducedMotionEnabled;
+    }
+    if (typeof data.panicEffectsEnabled === 'boolean') {
+      this.settings.panicEffectsEnabled = data.panicEffectsEnabled;
+    }
+    if (typeof data.lightMotionEnabled === 'boolean') {
+      this.settings.lightMotionEnabled = data.lightMotionEnabled;
+    }
+    if (data.panicIntensity && (data.panicIntensity === 'LOW' || data.panicIntensity === 'STANDARD' || data.panicIntensity === 'HIGH')) {
+      this.settings.panicIntensity = data.panicIntensity;
     }
     if (data.graphicsQuality && (data.graphicsQuality === 'HIGH' || data.graphicsQuality === 'MEDIUM' || data.graphicsQuality === 'LOW')) {
       this.settings.graphicsQuality = data.graphicsQuality as GraphicsQualityLevel;
@@ -303,6 +318,72 @@ export class SettingsManager {
     const next: GraphicsQualityLevel = current === 'HIGH' ? 'MEDIUM' : current === 'MEDIUM' ? 'LOW' : 'HIGH';
     this.setGraphicsQuality(next);
     return next;
+  }
+
+  // --- HW-FX-31: CÀI ĐẶT TIẾP CẬN & HIỆU ỨNG KINH DỊ TÂM LÝ ---
+
+  public isPanicEffectsEnabled(): boolean {
+    return this.settings.panicEffectsEnabled;
+  }
+
+  public setPanicEffectsEnabled(enabled: boolean): void {
+    if (this.settings.panicEffectsEnabled === enabled) return;
+    this.settings.panicEffectsEnabled = enabled;
+    this.scheduleSave();
+    this.notifyListeners();
+  }
+
+  public togglePanicEffects(): boolean {
+    this.setPanicEffectsEnabled(!this.settings.panicEffectsEnabled);
+    return this.settings.panicEffectsEnabled;
+  }
+
+  public isLightMotionEnabled(): boolean {
+    return this.settings.lightMotionEnabled && !this.isReducedMotionPreferred();
+  }
+
+  public isRawLightMotionEnabled(): boolean {
+    return this.settings.lightMotionEnabled;
+  }
+
+  public setLightMotionEnabled(enabled: boolean): void {
+    if (this.settings.lightMotionEnabled === enabled) return;
+    this.settings.lightMotionEnabled = enabled;
+    this.scheduleSave();
+    this.notifyListeners();
+  }
+
+  public toggleLightMotion(): boolean {
+    this.setLightMotionEnabled(!this.settings.lightMotionEnabled);
+    return this.settings.lightMotionEnabled;
+  }
+
+  public getPanicIntensity(): 'LOW' | 'STANDARD' | 'HIGH' {
+    return this.settings.panicIntensity;
+  }
+
+  public setPanicIntensity(intensity: 'LOW' | 'STANDARD' | 'HIGH'): void {
+    if (this.settings.panicIntensity === intensity) return;
+    this.settings.panicIntensity = intensity;
+    this.scheduleSave();
+    this.notifyListeners();
+  }
+
+  public cyclePanicIntensity(): 'LOW' | 'STANDARD' | 'HIGH' {
+    const current = this.settings.panicIntensity;
+    const next: 'LOW' | 'STANDARD' | 'HIGH' = current === 'LOW' ? 'STANDARD' : current === 'STANDARD' ? 'HIGH' : 'LOW';
+    this.setPanicIntensity(next);
+    return next;
+  }
+
+  public getPanicIntensityMultiplier(): number {
+    switch (this.settings.panicIntensity) {
+      case 'LOW': return 0.65;
+      case 'HIGH': return 1.35;
+      case 'STANDARD':
+      default:
+        return 1.0;
+    }
   }
 
   public onSettingsChange(callback: SettingsChangeListener): () => void {

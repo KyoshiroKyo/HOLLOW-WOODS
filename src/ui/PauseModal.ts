@@ -49,6 +49,9 @@ export class PauseModal {
   private sfxSliderControl?: { container: Phaser.GameObjects.Container; setValue: (val: number) => void; getValue: () => number };
   private masterSliderControl?: { container: Phaser.GameObjects.Container; setValue: (val: number) => void; getValue: () => number };
   private shakeToggleControl?: { container: Phaser.GameObjects.Container; setEnabled: (val: boolean) => void };
+  private panicToggleControl?: { container: Phaser.GameObjects.Container; setEnabled: (val: boolean) => void };
+  private lightMotionToggleControl?: { container: Phaser.GameObjects.Container; setEnabled: (val: boolean) => void };
+  private panicIntensityControl?: { container: Phaser.GameObjects.Container; setValue: (val: 'LOW' | 'STANDARD' | 'HIGH') => void };
   private muteBtnTxt?: Phaser.GameObjects.Text;
   private muteBtnBg?: Phaser.GameObjects.Graphics;
 
@@ -214,87 +217,98 @@ export class PauseModal {
     settingsBox.lineStyle(1, 0x3d4852, 0.7);
     settingsBox.strokeRoundedRect(modalX + 14, sBoxY, modalW - 28, sBoxH, 6);
 
-    const settingsTitle = HDTextHelper.createText(this.scene, 640, sBoxY + 14, '⚙️ CẤU HÌNH HỆ THỐNG & ÂM LƯỢNG', {
-      fontSize: '12px',
-      fontStyle: 'bold',
-      color: '#f1c40f',
-      stroke: '#000000',
-      strokeThickness: 2
-    }).setOrigin(0.5, 0.5);
-
     const settings = SettingsManager.getInstance();
 
-    // --- Mục Đồ Họa & Sương Mù ---
-    const graphicsLabel = HDTextHelper.createText(this.scene, modalX + 28, sBoxY + 36, '🖥️ Đồ Họa:', {
-      fontSize: '11.5px',
-      fontStyle: 'bold',
-      color: '#cbd5e1'
-    }).setOrigin(0, 0.5);
+    // --- HW-FX-31: Tab Bar: [ 🔊 ÂM LƯỢNG & TIẾN TRÌNH ] và [ 👁️ HÌNH ẢNH & TIẾP CẬN ] ---
+    let activeSettingsTab: 'AUDIO' | 'VISUALS' = 'AUDIO';
 
-    const graphicsBtnContainer = this.scene.add.container(modalX + 330, sBoxY + 36);
-    this.graphicsQualityBtnBg = this.scene.add.graphics();
-    this.graphicsQualityBtnText = HDTextHelper.createText(this.scene, 0, 0, '🌟 CAO (HIGH)', {
+    const tabAudioBtn = this.scene.add.container(modalX + 138, sBoxY + 15);
+    const tabAudioBg = this.scene.add.graphics();
+    const tabAudioTxt = HDTextHelper.createText(this.scene, 0, 0, '🔊 ÂM LƯỢNG', {
       fontSize: '11px',
       fontStyle: 'bold',
       color: '#f1c40f'
     }).setOrigin(0.5, 0.5);
-    graphicsBtnContainer.add([this.graphicsQualityBtnBg, this.graphicsQualityBtnText]);
-    graphicsBtnContainer.setSize(220, 22);
-    graphicsBtnContainer.setInteractive(new Phaser.Geom.Rectangle(-110, -11, 220, 22), Phaser.Geom.Rectangle.Contains);
-    if (graphicsBtnContainer.input) graphicsBtnContainer.input.cursor = 'pointer';
-    graphicsBtnContainer.on('pointerdown', () => {
-      GraphicsQualitySystem.getInstance().cycleQuality();
-      this.updateGraphicsQualityText();
+    tabAudioBtn.add([tabAudioBg, tabAudioTxt]);
+    tabAudioBtn.setSize(220, 22);
+    tabAudioBtn.setInteractive(new Phaser.Geom.Rectangle(-110, -11, 220, 22), Phaser.Geom.Rectangle.Contains);
+    if (tabAudioBtn.input) tabAudioBtn.input.cursor = 'pointer';
+
+    const tabVisualsBtn = this.scene.add.container(modalX + 374, sBoxY + 15);
+    const tabVisualsBg = this.scene.add.graphics();
+    const tabVisualsTxt = HDTextHelper.createText(this.scene, 0, 0, '👁️ HÌNH ẢNH & TIẾP CẬN', {
+      fontSize: '11px',
+      fontStyle: 'bold',
+      color: '#94a3b8'
+    }).setOrigin(0.5, 0.5);
+    tabVisualsBtn.add([tabVisualsBg, tabVisualsTxt]);
+    tabVisualsBtn.setSize(220, 22);
+    tabVisualsBtn.setInteractive(new Phaser.Geom.Rectangle(-110, -11, 220, 22), Phaser.Geom.Rectangle.Contains);
+    if (tabVisualsBtn.input) tabVisualsBtn.input.cursor = 'pointer';
+
+    const renderTabs = () => {
+      tabAudioBg.clear();
+      const isAudio = activeSettingsTab === 'AUDIO';
+      tabAudioBg.fillStyle(isAudio ? 0x2b2210 : 0x141a24, 0.95);
+      tabAudioBg.fillRoundedRect(-110, -11, 220, 22, 4);
+      tabAudioBg.lineStyle(1.5, isAudio ? 0xf1c40f : 0x4a5568, 0.9);
+      tabAudioBg.strokeRoundedRect(-110, -11, 220, 22, 4);
+      tabAudioTxt.setColor(isAudio ? '#f1c40f' : '#94a3b8');
+
+      tabVisualsBg.clear();
+      const isVisuals = activeSettingsTab === 'VISUALS';
+      tabVisualsBg.fillStyle(isVisuals ? 0x2b2210 : 0x141a24, 0.95);
+      tabVisualsBg.fillRoundedRect(-110, -11, 220, 22, 4);
+      tabVisualsBg.lineStyle(1.5, isVisuals ? 0xf1c40f : 0x4a5568, 0.9);
+      tabVisualsBg.strokeRoundedRect(-110, -11, 220, 22, 4);
+      tabVisualsTxt.setColor(isVisuals ? '#f1c40f' : '#94a3b8');
+
+      audioTabGroup.setVisible(isAudio);
+      visualsTabGroup.setVisible(isVisuals);
+    };
+
+    tabAudioBtn.on('pointerdown', () => {
+      AudioManager.getInstance().playInteract();
+      activeSettingsTab = 'AUDIO';
+      renderTabs();
     });
 
-    this.graphicsDescText = HDTextHelper.createText(this.scene, modalX + 28, sBoxY + 58, '', {
-      fontSize: '10px',
-      fontStyle: 'italic',
-      color: '#94a3b8'
-    }).setOrigin(0, 0.5);
+    tabVisualsBtn.on('pointerdown', () => {
+      AudioManager.getInstance().playInteract();
+      activeSettingsTab = 'VISUALS';
+      renderTabs();
+    });
 
-    // --- Mục Rung Màn Hình (Screen Shake Toggle) ---
-    this.shakeToggleControl = SettingsUIHelper.createScreenShakeToggle(
-      this.scene,
-      modalX + 260,
-      sBoxY + 84,
-      settings.isScreenShakeEnabled(),
-      (enabled) => settings.setScreenShakeEnabled(enabled),
-      modalW - 60
-    );
+    // --- TAB 1: ÂM LƯỢNG & TIẾN TRÌNH ---
+    const audioTabGroup = this.scene.add.container(0, 0);
 
-    // --- Phân cách ---
-    const divider = this.scene.add.graphics();
-    divider.lineStyle(1, 0x243142, 0.8);
-    divider.lineBetween(modalX + 24, sBoxY + 112, modalX + modalW - 24, sBoxY + 112);
-
-    // --- Thanh trượt Nhạc Nền (BGM Slider) ---
+    // Thanh trượt Nhạc Nền (BGM Slider)
     this.bgmSliderControl = SettingsUIHelper.createVolumeSlider(
       this.scene,
-      modalX + 320,
-      sBoxY + 132,
+      modalX + 310,
+      sBoxY + 52,
       '🎵 Nhạc Nền (BGM):',
       settings.getMusicVolume(),
       (val) => settings.setMusicVolume(val),
       { trackWidth: 160, fillColor: 0x3498db, labelWidth: 130 }
     );
 
-    // --- Thanh trượt Hiệu Ứng (SFX Slider) ---
+    // Thanh trượt Hiệu Ứng (SFX Slider)
     this.sfxSliderControl = SettingsUIHelper.createVolumeSlider(
       this.scene,
-      modalX + 320,
-      sBoxY + 164,
+      modalX + 310,
+      sBoxY + 88,
       '🔊 Hiệu Ứng (SFX):',
       settings.getSfxVolume(),
       (val) => settings.setSfxVolume(val),
       { trackWidth: 160, fillColor: 0xe67e22, labelWidth: 130 }
     );
 
-    // --- Âm Lượng Tổng & Nút Bật/Tắt Âm Thanh ---
+    // Âm Lượng Tổng & Nút Bật/Tắt Âm Thanh
     this.masterSliderControl = SettingsUIHelper.createVolumeSlider(
       this.scene,
-      modalX + 260,
-      sBoxY + 196,
+      modalX + 250,
+      sBoxY + 124,
       '🎚️ Âm Lượng Tổng:',
       settings.getMasterVolume(),
       (val) => settings.setMasterVolume(val),
@@ -302,7 +316,7 @@ export class PauseModal {
     );
 
     // Nút Mute
-    const muteBtnContainer = this.scene.add.container(modalX + modalW - 74, sBoxY + 196);
+    const muteBtnContainer = this.scene.add.container(modalX + modalW - 74, sBoxY + 124);
     this.muteBtnBg = this.scene.add.graphics();
     this.muteBtnTxt = HDTextHelper.createText(this.scene, 0, 0, settings.isMuted() ? '🔇 TẮT' : '🔊 BẬT', {
       fontSize: '11px',
@@ -337,11 +351,15 @@ export class PauseModal {
       renderMute(true);
     });
 
-    // --- Nút Xóa Bản Lưu An Toàn (Safe Clear Save với 2 lần xác nhận) ---
+    const dividerAudio = this.scene.add.graphics();
+    dividerAudio.lineStyle(1, 0x243142, 0.8);
+    dividerAudio.lineBetween(modalX + 24, sBoxY + 154, modalX + modalW - 24, sBoxY + 154);
+
+    // Nút Xóa Bản Lưu An Toàn
     const clearSaveBtn = SettingsUIHelper.createSafeClearSaveButton(
       this.scene,
       640,
-      sBoxY + 238,
+      sBoxY + 192,
       () => {
         SaveManager.clearSave();
         this.saveStatusText.setText('✔ Đã xóa toàn bộ tiến trình bản lưu!');
@@ -351,28 +369,129 @@ export class PauseModal {
       26
     );
 
-    // Ghi chú phím tắt
-    const tipText = HDTextHelper.createText(this.scene, 640, sBoxY + 276, '💡 Phím [F8]: Gỡ Kẹt Khẩn Cấp • [H]: Xem Hướng Dẫn Phím • [ESC]: Tiếp Tục', {
+    const tipTextAudio = HDTextHelper.createText(this.scene, 640, sBoxY + 246, '💡 Phím [F8]: Gỡ Kẹt Khẩn Cấp • [H]: Xem Phím • [ESC]: Tiếp Tục', {
       fontSize: '10.5px',
       fontStyle: 'italic',
       color: '#7f8c8d'
     }).setOrigin(0.5, 0.5);
+
+    audioTabGroup.add([
+      this.bgmSliderControl.container,
+      this.sfxSliderControl.container,
+      this.masterSliderControl.container,
+      muteBtnContainer,
+      dividerAudio,
+      clearSaveBtn,
+      tipTextAudio
+    ]);
+
+    // --- TAB 2: HÌNH ẢNH & TIẾP CẬN ---
+    const visualsTabGroup = this.scene.add.container(0, 0);
+
+    // 1. Mục Đồ Họa & Sương Mù
+    const graphicsLabel = HDTextHelper.createText(this.scene, modalX + 28, sBoxY + 44, '🖥️ Đồ Họa:', {
+      fontSize: '11px',
+      fontStyle: 'bold',
+      color: '#cbd5e1'
+    }).setOrigin(0, 0.5);
+
+    const graphicsBtnContainer = this.scene.add.container(modalX + 355, sBoxY + 44);
+    this.graphicsQualityBtnBg = this.scene.add.graphics();
+    this.graphicsQualityBtnText = HDTextHelper.createText(this.scene, 0, 0, '🌟 CAO (HIGH)', {
+      fontSize: '11px',
+      fontStyle: 'bold',
+      color: '#f1c40f'
+    }).setOrigin(0.5, 0.5);
+    graphicsBtnContainer.add([this.graphicsQualityBtnBg, this.graphicsQualityBtnText]);
+    graphicsBtnContainer.setSize(180, 22);
+    graphicsBtnContainer.setInteractive(new Phaser.Geom.Rectangle(-90, -11, 180, 22), Phaser.Geom.Rectangle.Contains);
+    if (graphicsBtnContainer.input) graphicsBtnContainer.input.cursor = 'pointer';
+    graphicsBtnContainer.on('pointerdown', () => {
+      GraphicsQualitySystem.getInstance().cycleQuality();
+      this.updateGraphicsQualityText();
+    });
+
+    this.graphicsDescText = HDTextHelper.createText(this.scene, modalX + 28, sBoxY + 62, '', {
+      fontSize: '9.5px',
+      fontStyle: 'italic',
+      color: '#94a3b8'
+    }).setOrigin(0, 0.5);
+
+    // 2. Rung Màn Hình (Screen Shake Toggle)
+    this.shakeToggleControl = SettingsUIHelper.createGenericToggle(
+      this.scene,
+      modalX + 250,
+      sBoxY + 90,
+      '📳 Rung Màn Hình (Screen Shake):',
+      'Rung giật camera khi nguy kịch hoặc bị tập kích.',
+      settings.isScreenShakeEnabled(),
+      (enabled) => settings.setScreenShakeEnabled(enabled),
+      modalW - 56
+    );
+
+    // 3. Hiệu ứng Hoảng Sợ (Panic Visuals Toggle)
+    this.panicToggleControl = SettingsUIHelper.createGenericToggle(
+      this.scene,
+      modalX + 250,
+      sBoxY + 132,
+      '👁️ Hiệu Ứng Hoảng Sợ (Panic Visuals):',
+      'Sương tím & vệt đỏ kinh dị tâm lý khi Tinh Thần <40%.',
+      settings.isPanicEffectsEnabled(),
+      (enabled) => settings.setPanicEffectsEnabled(enabled),
+      modalW - 56
+    );
+
+    // 4. Dao Động Ánh Sáng (Light Motion Toggle)
+    this.lightMotionToggleControl = SettingsUIHelper.createGenericToggle(
+      this.scene,
+      modalX + 250,
+      sBoxY + 174,
+      '✨ Dao Động Ánh Sáng (Light Motion):',
+      'Nhịp thở FOW & đèn lồng (tự tắt khi Reduced Motion ON).',
+      settings.isRawLightMotionEnabled(),
+      (enabled) => settings.setLightMotionEnabled(enabled),
+      modalW - 56
+    );
+
+    // 5. Cường Độ Hoảng Sợ (Panic Intensity Selector)
+    this.panicIntensityControl = SettingsUIHelper.createIntensitySelector(
+      this.scene,
+      modalX + 250,
+      sBoxY + 216,
+      '🎨 Cường Độ Hoảng Sợ (Intensity):',
+      'Độ đậm nhạt của lớp sương và viền hoảng sợ trang trí.',
+      settings.getPanicIntensity(),
+      () => settings.cyclePanicIntensity(),
+      modalW - 56
+    );
+
+    const tipTextVisuals = HDTextHelper.createText(this.scene, 640, sBoxY + 256, '💡 Reduced Motion ưu tiên cao nhất, chặn toàn bộ rung giật & dao động', {
+      fontSize: '10px',
+      fontStyle: 'italic',
+      color: '#7f8c8d'
+    }).setOrigin(0.5, 0.5);
+
+    visualsTabGroup.add([
+      graphicsLabel,
+      graphicsBtnContainer,
+      this.graphicsDescText,
+      this.shakeToggleControl.container,
+      this.panicToggleControl.container,
+      this.lightMotionToggleControl.container,
+      this.panicIntensityControl.container,
+      tipTextVisuals
+    ]);
+
+    renderTabs();
 
     const pauseElements: Phaser.GameObjects.GameObject[] = [
       overlay,
       ...(panelImg ? [panelImg] : []),
       box, title, closeBtn, this.saveStatusText,
       resumeBtn, saveBtn, reloadBtn, unstuckBtn, guideBtn, quitBtn,
-      settingsBox, settingsTitle,
-      graphicsLabel, graphicsBtnContainer, this.graphicsDescText,
-      this.shakeToggleControl.container,
-      divider,
-      this.bgmSliderControl.container,
-      this.sfxSliderControl.container,
-      this.masterSliderControl.container,
-      muteBtnContainer,
-      clearSaveBtn,
-      tipText
+      settingsBox,
+      tabAudioBtn, tabVisualsBtn,
+      audioTabGroup, visualsTabGroup
     ];
     this.container.add(pauseElements);
 
@@ -486,6 +605,15 @@ export class PauseModal {
     }
     if (this.shakeToggleControl) {
       this.shakeToggleControl.setEnabled(settings.isScreenShakeEnabled());
+    }
+    if (this.panicToggleControl) {
+      this.panicToggleControl.setEnabled(settings.isPanicEffectsEnabled());
+    }
+    if (this.lightMotionToggleControl) {
+      this.lightMotionToggleControl.setEnabled(settings.isRawLightMotionEnabled());
+    }
+    if (this.panicIntensityControl) {
+      this.panicIntensityControl.setValue(settings.getPanicIntensity());
     }
   }
 

@@ -131,6 +131,7 @@ def main():
             // Use SettingsManager
             const sm = window.__SETTINGS_MANAGER__;
             sm.settings.reducedMotionEnabled = false;
+            if (sm.setLightMotionEnabled) sm.setLightMotionEnabled(true);
 
             // Direct set quality on system
             const qSettings = gs.registry.get('graphics_quality') || {};
@@ -215,6 +216,7 @@ def main():
             const gs = window.__PHASER_GAME__.scene.getScene('GameScene');
             const sm = window.__SETTINGS_MANAGER__;
             sm.settings.reducedMotionEnabled = false;
+            if (sm.setLightMotionEnabled) sm.setLightMotionEnabled(true);
 
             // Set quality MEDIUM
             if (window.__GRAPHICS_QUALITY_SYSTEM__) {
@@ -290,6 +292,7 @@ def main():
 
             // Test with RM OFF
             sm.settings.reducedMotionEnabled = false;
+            if (sm.setLightMotionEnabled) sm.setLightMotionEnabled(true);
             window.__SET_TEST_ZONE__('outer_woods', 1200, 600);
             gs.player.setVelocity(0, 0);
             gs.playerState.stats.isLanternOn = true;
@@ -469,6 +472,7 @@ def main():
 
             // Phase A: Reduced Motion OFF
             sm.settings.reducedMotionEnabled = false;
+            if (sm.setLightMotionEnabled) sm.setLightMotionEnabled(true);
             gs.events.emit('lantern_flicker', { duration: 2500 });
             const targetEquilibrium = (gs.timeSystem ? gs.timeSystem.getVisionRadius(true) : 250) * 0.82;
             gs.currentLanternRadius = targetEquilibrium;
@@ -553,6 +557,7 @@ def main():
             const rm1 = sm.isReducedMotionPreferred();
 
             sm.setReducedMotionEnabled(false);
+            if (sm.setLightMotionEnabled) sm.setLightMotionEnabled(true);
             const rm2 = sm.isReducedMotionPreferred();
 
             sm.setReducedMotionEnabled(true);
@@ -598,6 +603,7 @@ def main():
 
             // 2. Switch OFF: Collect optical samples and measure frame time
             sm.setReducedMotionEnabled(false);
+            if (sm.setLightMotionEnabled) sm.setLightMotionEnabled(true);
             await new Promise(r => setTimeout(r, 100));
             const s2 = await window.__COLLECT_LANTERN_GLOW_SAMPLES__(25);
             const delta2 = Math.max(...s2.map(s => s.breathingFactor)) - Math.min(...s2.map(s => s.breathingFactor));

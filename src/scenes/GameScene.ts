@@ -1,10 +1,10 @@
 import { isVillageSanctuary } from '../world/ZoneSafety';
 import * as Phaser from 'phaser';
-import { 
-  SCENE_GAME, 
+import {
+  SCENE_GAME,
   SCENE_MAIN_MENU,
-  LANTERN_RADIUS_NORMAL, 
-  LANTERN_RADIUS_DIM 
+  LANTERN_RADIUS_NORMAL,
+  LANTERN_RADIUS_DIM
 } from '../config/Constants';
 import { BlackKnightPlayer } from '../entities/BlackKnightPlayer';
 import { registerBlackKnightAnimations } from '../animation/BlackKnightAnimations';
@@ -1841,10 +1841,10 @@ export class GameScene extends Phaser.Scene {
     }
 
     // Khóa điều khiển nếu Ending đang chạy hoặc UI modal mở
-    const isUIBusy = 
+    const isUIBusy =
       this.endingSystem.isEndingActive ||
-      this.dialogueSystem.isActive || 
-      this.craftingModal.isOpen || 
+      this.dialogueSystem.isActive ||
+      this.craftingModal.isOpen ||
       this.journalModal.isOpen ||
       (this.pauseModal && this.pauseModal.isOpen) ||
       (this.gameOverModal && this.gameOverModal.isOpen) ||
@@ -1996,9 +1996,9 @@ export class GameScene extends Phaser.Scene {
     const inDeepFog = this.currentZoneId === 'fog_crossing' || this.currentZoneId === 'silent_mire' || this.currentZoneId === 'deep_forest' || this.isAct5ChaseActive;
     const isPlayerMoving = Boolean(this.player && typeof this.player.isMoving === 'function' && this.player.isMoving());
     this.survivalSystem.update(
-      dt, 
-      this.player.x, 
-      this.player.y, 
+      dt,
+      this.player.x,
+      this.player.y,
       inDeepFog,
       this.timeSystem ? this.timeSystem.getCurrentPhase() : undefined,
       this.weatherSystem ? this.weatherSystem.isRaining() : false,
@@ -3751,8 +3751,8 @@ export class GameScene extends Phaser.Scene {
         // Trừ nhẹ 4 điểm Tinh Thần (Sanity)
         this.playerState.stats.composure = Math.max(0, this.playerState.stats.composure - 4);
         this.playerState.emit('stats_changed', this.playerState.stats);
-        this.playerState.emit('apparition_dissipated', { 
-          reason: hitByAttack ? 'attack' : (hitByLantern ? 'lantern' : 'proximity') 
+        this.playerState.emit('apparition_dissipated', {
+          reason: hitByAttack ? 'attack' : (hitByLantern ? 'lantern' : 'proximity')
         });
 
         if (this.uiScene) {
@@ -3818,7 +3818,7 @@ export class GameScene extends Phaser.Scene {
       this.whisperTrapSpawnTimer -= dt;
       if (this.whisperTrapSpawnTimer <= 0) {
         this.whisperTrapSpawnTimer = 35 + Math.random() * 15; // 35–50 giây
-        
+
         // Sinh đốm sáng lập lòe yếu ớt lệch khỏi đường mòn 110–165px
         const angle = Math.random() * Math.PI * 2;
         const dist = Phaser.Math.Between(110, 165);
@@ -4122,10 +4122,10 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    const isUIBusy = 
+    const isUIBusy =
       this.endingSystem.isEndingActive ||
-      this.dialogueSystem.isActive || 
-      this.craftingModal.isOpen || 
+      this.dialogueSystem.isActive ||
+      this.craftingModal.isOpen ||
       this.journalModal.isOpen;
 
     if (isUIBusy) return;
@@ -6463,22 +6463,24 @@ export class GameScene extends Phaser.Scene {
     }
     targetBaseRadius *= compScale;
 
-    // V1.5.4 (HW-FIX-23): Khôi phục nhịp thở chậm rãi, êm dịu của quầng sáng khi Tinh Thần suy giảm
+    // V1.5.4 (HW-FIX-23 & HW-FX-31): Khôi phục nhịp thở chậm rãi, êm dịu của quầng sáng khi Tinh Thần suy giảm
     // Tần số 0.25 Hz (chu kỳ 4 giây), sóng sin thuần túy không giật cục, triệt tiêu strobe
     let sanityRadiusMod = 1.0;
     let sanityGlowMod = 1.0;
     const isReducedMotion = SettingsManager.getInstance().isReducedMotionPreferred();
+    const isLightMotion = SettingsManager.getInstance().isLightMotionEnabled();
 
     const isSafeVillageZoneFow = isVillageSanctuary(this.currentZoneId) || this.currentZoneId === 'fog_crossing';
     const isNearWarmthFow = Boolean(this.survivalSystem && this.survivalSystem.isNearWarmth(this.player.x, this.player.y, this.currentZoneId));
     const isSanctuaryCampFow = CampSanctuarySystem.getInstance().isPlayerInSanctuary(this.player.x, this.player.y, this.currentZoneId);
     const isFowSafe = isSafeVillageZoneFow || isNearWarmthFow || isSanctuaryCampFow;
 
-    if (!isReducedMotion && !isFowSafe && composure < 45) {
+    // HW-FX-31: Chỉ kích hoạt dao động quầng sáng khi Tinh Thần < 40 và người chơi bật Light Motion (và không bật Reduced Motion)
+    if (!isReducedMotion && isLightMotion && !isFowSafe && composure < 40) {
       const breathPhase = Math.sin(this.time.now * 0.00157); // 0.25 Hz = 2*PI*0.25/1000 rad/ms
       if (composure >= 25) {
-        // 25..44: radius tối đa ±1% (0.01), glow alpha tối đa ±4% (0.04)
-        const t = (45 - composure) / 20;
+        // 25..39: radius tối đa ±1% (0.01), glow alpha tối đa ±4% (0.04)
+        const t = (40 - composure) / 15;
         sanityRadiusMod = 1.0 + breathPhase * (0.01 * t);
         sanityGlowMod = 1.0 + breathPhase * (0.04 * t);
       } else {
@@ -6597,7 +6599,7 @@ export class GameScene extends Phaser.Scene {
     if (isLanternLit && this.currentLanternRadius > LANTERN_RADIUS_DIM + 3) {
       const qSettings = GraphicsQualitySystem.getInstance().getSettings();
       // Nhịp thở nhẹ nhàng (breathing subtle pulsation)
-      const breathing = (!isReducedMotion && qSettings.enableAmberFlicker)
+      const breathing = (!isReducedMotion && isLightMotion && qSettings.enableAmberFlicker)
         ? (Math.sin(this.time.now * 0.0035) * 0.012 + Math.cos(this.time.now * 0.006) * 0.008)
         : 0;
       const glowFactor = (this.currentLanternRadius - LANTERN_RADIUS_DIM) / (LANTERN_RADIUS_NORMAL - LANTERN_RADIUS_DIM);

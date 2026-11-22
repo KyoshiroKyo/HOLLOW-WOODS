@@ -1,9 +1,9 @@
 {
   "test_1_high_rm_off": {
     "isRM": false,
-    "deltaScale": 0.007492838724570738,
-    "minScale": 0.99615577959425,
-    "maxScale": 1.0036486183188207,
+    "deltaScale": 0.006829183359440383,
+    "minScale": 0.9961136392320024,
+    "maxScale": 1.0029428225914427,
     "sampleCount": 25
   },
   "test_2_high_rm_on": {
@@ -15,16 +15,16 @@
     "isVisible": true,
     "sampleCount": 25,
     "diag": {
-      "firstRadius": 240.57285000000002,
-      "lastRadius": 246.81313106664683,
-      "firstScale": 1.6952868023437502,
-      "lastScale": 1.739261282985277,
+      "firstRadius": 236.797416,
+      "lastRadius": 243.48970519433735,
+      "firstScale": 1.6686817908749998,
+      "lastScale": 1.715841516291346,
       "breathingSetting": true
     }
   },
   "test_3_medium_rm_off": {
     "isRM": false,
-    "deltaScale": 0.0075828139663619565
+    "deltaScale": 0.007214257138693281
   },
   "test_4_medium_rm_on": {
     "isRM": true,
@@ -38,22 +38,22 @@
     "offState": {
       "glowVisible": false,
       "maskKey": "cached_light_mask_dim",
-      "radius": 236.77166076503534
+      "radius": 236.89821603060878
     },
     "onState": {
       "glowVisible": true,
       "maskKey": "cached_light_mask_normal",
-      "radius": 237.93542390923136
+      "radius": 238.58855742892675
     }
   },
   "test_7_composure_outer_woods": {
     "vigActive35": true,
     "hbActive35": true,
-    "bpm35": 95,
+    "bpm35": 94,
     "delta35": 0,
     "vigActive15": true,
     "hbActive15": true,
-    "bpm15": 134,
+    "bpm15": 135,
     "delta15": 0
   },
   "test_8_safe_zone_sir_vaelen": {
@@ -62,10 +62,10 @@
     "hbActive": false
   },
   "test_9_bat_attack_flicker": {
-    "deltaA": 15.146624745472849,
+    "deltaA": 19.50906744558887,
     "deltaB": 0,
     "timerInitial": 2500,
-    "timerAfter": 2168.000000000002,
+    "timerAfter": 2151.400000000002,
     "minB": 205,
     "maxB": 205
   },
@@ -80,12 +80,12 @@
   },
   "test_12_transition_and_fps": {
     "delta1": 0,
-    "delta2": 0.007025664721726943,
+    "delta2": 0.007163376066414151,
     "delta3": 0,
-    "frameTimeOn": 129.78999999985098,
-    "frameTimeOff": 155.4400000002235,
-    "fpsOn": 7.7047538331238785,
-    "fpsOff": 6.433350488925386,
-    "frameRatio": 0.8349845599566672
+    "frameTimeOn": 129.31999999999533,
+    "frameTimeOff": 127.13999999999069,
+    "fpsOn": 7.732755954222364,
+    "fpsOff": 7.865345288658748,
+    "frameRatio": 1.0171464527293126
   }
 }

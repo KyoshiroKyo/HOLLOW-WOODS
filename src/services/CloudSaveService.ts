@@ -2,7 +2,7 @@
  * HOLLOW WOODS V1.4 - CLOUD SAVE SERVICE (TYPESCRIPT)
  * Tích hợp hệ thống lưu tiến trình đám mây window.p2.storage kết hợp sao lưu cục bộ localStorage.
  * Tuân thủ nghiêm ngặt đặc tả P2Game SDK v1.1.
- * 
+ *
  * TIÊU CHUẨN KỸ THUẬT:
  * 1. Giới hạn dung lượng: Mỗi key luôn < 60 KB (trần an toàn dưới 64 KB/key, tối đa 32 keys).
  * 2. Phân chia key gọn nhẹ:
@@ -62,7 +62,7 @@ export interface CloudSavePayload {
   questFlags: Record<string, boolean> | string[];
   exploredZones: Record<string, boolean> | string[];
   unlockedShortcuts: string[];
-  
+
   // Dual-compatibility mapping for existing HOLLOW WOODS V1.4 state
   zoneId?: string;
   playerPos?: { x: number; y: number };
@@ -122,6 +122,12 @@ export interface GameSettingsData {
   musicVolume?: number;
   sfxVolume?: number;
   isMuted?: boolean;
+  screenShakeEnabled?: boolean;
+  screenFlashEnabled?: boolean;
+  reducedMotionEnabled?: boolean;
+  panicEffectsEnabled?: boolean;
+  lightMotionEnabled?: boolean;
+  panicIntensity?: 'LOW' | 'STANDARD' | 'HIGH';
   [key: string]: any;
 }
 
