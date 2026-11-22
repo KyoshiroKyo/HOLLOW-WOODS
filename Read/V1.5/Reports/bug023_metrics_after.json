@@ -1,33 +1,135 @@
 {
-  "mode": "after",
-  "res_high": {
-    "mean": 88.06436497836792,
-    "maxStepDelta": 2.522126097326719,
-    "signFlips": 0,
-    "min": 79.95275339273945,
-    "max": 96.0759950003379,
+  "test_1_outer_woods_day_comp35": {
+    "vignetteActive": true,
+    "heartbeatActive": true,
+    "bpm": 95,
+    "zone": "outer_woods",
+    "detected": "outer_woods",
+    "foot": {
+      "x": 1200,
+      "y": 600
+    },
+    "comp": 35.025,
+    "warmth": false,
+    "phase": "DAY"
+  },
+  "test_2_outer_woods_day_comp15": {
+    "comp": 15.05,
+    "vignetteActive": true,
+    "heartbeatActive": true,
+    "bpm": 135,
+    "phase": "DAY"
+  },
+  "test_3_outer_woods_night_comp35": {
+    "comp": 34.97,
+    "vignetteActive": true,
+    "heartbeatActive": true,
+    "bpm": 95,
+    "phase": "NIGHT"
+  },
+  "test_4_outer_woods_night_comp15": {
+    "comp": 14.945982,
+    "vignetteActive": true,
+    "heartbeatActive": true,
+    "bpm": 135,
+    "phase": "NIGHT"
+  },
+  "test_5_bellhollow_sanctuary": {
+    "dayVig": false,
+    "dayHb": false,
+    "dayZone": "bellhollow",
+    "nightVig": false,
+    "nightHb": false,
+    "nightZone": "bellhollow"
+  },
+  "test_6_sanctuary_farm": {
+    "dayVig": false,
+    "dayHb": false,
+    "dayZone": "sanctuary_farm",
+    "nightVig": false,
+    "nightHb": false,
+    "nightZone": "sanctuary_farm"
+  },
+  "test_7_sir_vaelen_campfire": {
+    "isNearWarmth": true,
+    "vignetteActive": false,
+    "heartbeatActive": false
+  },
+  "test_8_reduced_motion": {
+    "rmPreferredTrue": true,
+    "shakeWhenRM": false,
+    "flashWhenRM": false,
+    "rmPreferredFalse": false,
+    "shakeNormal": true,
+    "flashNormal": true
+  },
+  "test_9_composure_fadeout": {
+    "diag": {
+      "zone": "outer_woods",
+      "x": 1200,
+      "y": 600,
+      "comp": 15.257725,
+      "isNearWarmth": false,
+      "activeBefore": true
+    },
+    "midDiag": {
+      "compMid": 50.160145,
+      "hbActiveAfter": false,
+      "isMonsterChasingNearby": false,
+      "distToListener": 1136.4906843229082,
+      "isWildlifeMonsterNear": false,
+      "isAct5ChaseActive": false,
+      "isSafeZoneOrCampfire": false,
+      "isPanicVignetteActive": false
+    },
+    "activeBefore": true,
+    "tweenStateMid": {
+      "hasTween": true,
+      "isPlaying": true,
+      "progress": 0
+    },
+    "hbActiveAfter": false,
+    "activeAfter": false,
+    "tweenStateEnd": {
+      "hasTween": false,
+      "isPlaying": null,
+      "progress": null
+    }
+  },
+  "test_10_pause_resume": {
+    "pause_open": true,
+    "pause_closed": true
+  },
+  "test_11_fow_breathing": {
+    "mean": 119.00467898181195,
+    "minR": 117.09455456426181,
+    "maxR": 120.60854541102438,
+    "maxStepDelta": 0.6459871345846864,
+    "erraticJumps": 0,
+    "amplitudeRatio": 0.029528173823313512,
     "samplesCount": 30
   },
-  "res_low": {
-    "mean": 94.67399614411411,
-    "maxStepDelta": 1.0994616158059216,
-    "signFlips": 0,
-    "min": 93.79490979447282,
-    "max": 96.0759950003379,
-    "samplesCount": 30
-  },
-  "overlays_info": {
+  "test_12_no_duplicate_vignette": {
     "veilHasDistortionDrawn": false,
-    "uisPanicActive": false,
+    "uisPanicActive": true,
+    "hasPanicGraphics": true,
     "hasRedDangerGraphics": true
   },
-  "danger_flash_res": {
-    "hasTween": true,
-    "tweenDuration": 380
+  "test_13_no_duplicate_popups": {
+    "totalPopups": 1,
+    "fractureCount": 1,
+    "popups": [
+      "\u26a0\ufe0f T\u00e2m tr\u00ed \u0111ang r\u1ea1n n\u1ee9t... H\u00e3y t\u00ecm \u00e1nh l\u1eeda ngay!"
+    ]
   },
-  "f_cycle_res": {
-    "v40": false,
-    "v10": false,
-    "lanternOn": true
+  "test_14_camera_safety": {
+    "realFlashesWhenRM": 0,
+    "realShakesWhenRM": 0,
+    "realFlashesWhenOff": 1,
+    "realShakesWhenOff": 1
+  },
+  "test_15_fow_performance": {
+    "redrawCount": 4,
+    "avgTimeMs": 0
   }
 }

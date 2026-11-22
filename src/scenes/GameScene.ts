@@ -55,6 +55,7 @@ import { TORN_PAGES_REGISTRY } from '../data/tornPagesData';
 import { FallenKnightApparition } from '../entities/FallenKnightApparition';
 import { WhisperTrap } from '../entities/WhisperTrap';
 import { DeveloperModeManager } from '../debug/DeveloperModeManager';
+import { SettingsManager } from '../systems/SettingsManager';
 
 export interface PlantedResinFlare {
   id: string;
@@ -137,9 +138,8 @@ export class GameScene extends Phaser.Scene {
   // V152-03: Cooldown nhắc nhở 3s khi tiến sát Cổng Đông chưa mở (#11)
   private lastEastGateReminderTime: number = 0;
 
-  // V1.5 (BƯỚC V15-05 & V15-58C): Timer hiệu ứng rung camera, vi chấn và cảnh báo tâm trí
+  // V1.5 (BƯỚC V15-05 & V15-58C): Timer hiệu ứng rung camera, vi chấn tâm trí
   private panicCameraShakeTimer: number = 0;
-  private lastMindFractureWarningTime: number = 0;
 
   private keyQ!: Phaser.Input.Keyboard.Key;
   private key3!: Phaser.Input.Keyboard.Key;
@@ -355,6 +355,10 @@ export class GameScene extends Phaser.Scene {
         this.cloudSaveCleanup = undefined;
       }
     });
+
+    if (typeof window !== 'undefined') {
+      (window as any).__SETTINGS_MANAGER__ = SettingsManager.getInstance();
+    }
 
     // 4. Khởi tạo Satyr tại điểm xuất phát hoặc điểm tải lưu
     const initialZone = this.worldBuilder.getActiveZone();
@@ -2079,13 +2083,13 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    // V15-58C: Xử lý Nhịp Tim Web Audio động, viền hoảng loạn và micro-tremor camera theo Tinh Thần
-    const isDay = Boolean(this.timeSystem && this.timeSystem.getCurrentPhase() === 'DAY');
+    // V15-58C & V1.5.4 (HW-FIX-23): Xử lý Nhịp Tim Web Audio động, viền hoảng loạn và micro-tremor camera theo Tinh Thần
+    // Ban ngày (DAY) ngoài tự nhiên KHÔNG còn tự động xem là Safe Zone. Tinh Thần thấp tạo kinh dị cả NGÀY và ĐÊM!
     const isSafeVillageZone = isVillageSanctuary(this.currentZoneId) || this.currentZoneId === 'fog_crossing';
     const isNearWarmth = Boolean(this.survivalSystem && this.survivalSystem.isNearWarmth(this.player.x, this.player.y, this.currentZoneId));
     const isSanctuaryCamp = CampSanctuarySystem.getInstance().isPlayerInSanctuary(this.player.x, this.player.y, this.currentZoneId);
     const isBossArena = this.isBossFightActive && this.currentZoneId === 'broken_bell_shrine';
-    const isSafeZoneOrCampfire = !isBossArena && (isDay || isSafeVillageZone || isNearWarmth || isSanctuaryCamp);
+    const isSafeZoneOrCampfire = !isBossArena && (isSafeVillageZone || isNearWarmth || isSanctuaryCamp);
 
     const comp = this.playerState.stats.composure;
 
@@ -2097,27 +2101,19 @@ export class GameScene extends Phaser.Scene {
     const isWildlifeMonsterNear = Boolean(this.wildlifeSystem?.isMonsterNear(this.player.x, this.player.y, 220));
     const isMonsterChasingNearby = this.isAct5ChaseActive || isBossArena || isListenerNear || isWildlifeMonsterNear;
 
-    // Cập nhật nhịp tim Web Audio động (75 -> 135 BPM) và BGM ducking khi Tinh Thần < 20
+    // Cập nhật nhịp tim Web Audio động (75 -> 135 BPM) và BGM ducking khi Tinh Thần < 20 (Cả Ngày và Đêm)
     if (!this.isAct5ChaseActive) {
       this.audioManager.updateDynamicHeartbeat(comp, isMonsterChasingNearby, isSafeZoneOrCampfire);
     }
 
-    // Khi Tinh Thần < 15/100 ngoài khu an toàn: Thêm micro-tremor cực nhẹ cho camera & hiển thị cảnh báo tâm lý
+    // Khi Tinh Thần < 15/100 ngoài khu an toàn: Thêm micro-tremor cực nhẹ cho camera (UIScene độc quyền quản lý popup HUD)
     if (!isSafeZoneOrCampfire && comp < 15) {
       this.panicCameraShakeTimer += delta;
       const currentBpm = this.audioManager.getHeartbeatBpm() || 135;
       const shakeInterval = Math.round(60000 / currentBpm);
       if (this.panicCameraShakeTimer >= shakeInterval) {
         this.panicCameraShakeTimer = 0;
-        this.cameraSystem.shake(120, 0.0015); // Micro-tremor cực nhẹ
-      }
-
-      const now = time;
-      if (now - this.lastMindFractureWarningTime >= 18000) {
-        this.lastMindFractureWarningTime = now;
-        if (this.uiScene) {
-          this.uiScene.showPopupMessage('⚠️ Tâm trí đang rạn nứt... Hãy tìm ánh lửa ngay!');
-        }
+        this.cameraSystem.shake(120, 0.0015); // Micro-tremor cực nhẹ, tự động tắt nếu bật Reduced Motion
       }
     } else {
       this.panicCameraShakeTimer = 0;
@@ -3747,7 +3743,7 @@ export class GameScene extends Phaser.Scene {
         // Rung nhẹ camera 150ms
         if (this.cameraSystem) {
           this.cameraSystem.shake(150, 0.007);
-        } else {
+        } else if (SettingsManager.getInstance().isScreenShakeEnabled()) {
           this.cameras.main.shake(150, 0.007);
         }
 
@@ -3850,8 +3846,8 @@ export class GameScene extends Phaser.Scene {
       this.cameraSystem.flash(350, 8, 4, 12);
       this.cameraSystem.shake(350, 0.018);
     } else {
-      this.cameras.main.flash(350, 8, 4, 12);
-      this.cameras.main.shake(350, 0.018);
+      if (SettingsManager.getInstance().isScreenFlashEnabled()) this.cameras.main.flash(350, 8, 4, 12);
+      if (SettingsManager.getInstance().isScreenShakeEnabled()) this.cameras.main.shake(350, 0.018);
     }
 
     // 2. Phát âm thanh thì thầm méo mó rùng rợn & jumpscare stinger
@@ -6085,7 +6081,11 @@ export class GameScene extends Phaser.Scene {
 
       if (sealState.canBreak) {
         questSys.unlockBridge(this.playerState);
-        this.cameras.main.shake(450, 0.015);
+        if (this.cameraSystem) {
+          this.cameraSystem.shake(450, 0.015);
+        } else if (SettingsManager.getInstance().isScreenShakeEnabled()) {
+          this.cameras.main.shake(450, 0.015);
+        }
         this.audioManager.playBronzeBellToll();
         if (this.uiScene) {
           this.uiScene.showPopupMessage('🌟 CHÌA KHÓA THANH TẨY PHÁ BỎ PHONG ẤN RỄ CỔ!\nThân cây cổ thụ khổng lồ rền vang hạ xuống làm cầu vượt vực, thông lối sang Miếu Chuông Phế Tích (C)!');
@@ -6102,7 +6102,11 @@ export class GameScene extends Phaser.Scene {
         this.playerState.addItem('quest_corrupted_crest', 1);
         this.playerState.setFlag('corrupted_crest_obtained');
         this.playerState.setFlag('mire_root_seal_inspected');
-        this.cameras.main.shake(200, 0.008);
+        if (this.cameraSystem) {
+          this.cameraSystem.shake(200, 0.008);
+        } else if (SettingsManager.getInstance().isScreenShakeEnabled()) {
+          this.cameras.main.shake(200, 0.008);
+        }
         this.audioManager.playInteract();
         if (this.uiScene) {
           this.uiScene.showPopupMessage('⚔️ Bạn nhặt được [Huy Hiệu Kỵ Sĩ Sa Ngã] kẹt trong rễ cây cổ!\n🔒 Cây cầu bị khóa bởi Phong Ấn Rễ Cổ. Hãy tìm Sir Vaelen tại Trạm Lửa Rừng Tĩnh Lặng (hướng Tây) để tìm cách hóa giải.');
@@ -6458,9 +6462,35 @@ export class GameScene extends Phaser.Scene {
     }
     targetBaseRadius *= compScale;
 
-    // V1.5.3 (BUG-023 FIX): Triệt tiêu hoàn toàn compFlicker tần số cao (nguyên nhân gây chớp nháy FOW liên tục)
-    // Tầm nhìn đã được thu hẹp tự nhiên, êm dịu và ổn định qua compScale = getComposureVisionScale() ở trên.
-    // Quầng sáng giữ kích thước ổn định theo mức Tinh Thần, không dao động chu kỳ cao gây mỏi mắt/co giật thị giác.
+    // V1.5.4 (HW-FIX-23): Khôi phục nhịp thở chậm rãi, êm dịu của quầng sáng khi Tinh Thần suy giảm
+    // Tần số 0.25 Hz (chu kỳ 4 giây), sóng sin thuần túy không giật cục, triệt tiêu strobe
+    let sanityRadiusMod = 1.0;
+    let sanityGlowMod = 1.0;
+    const isReducedMotion = SettingsManager.getInstance().isReducedMotionPreferred();
+
+    const isSafeVillageZoneFow = isVillageSanctuary(this.currentZoneId) || this.currentZoneId === 'fog_crossing';
+    const isNearWarmthFow = Boolean(this.survivalSystem && this.survivalSystem.isNearWarmth(this.player.x, this.player.y, this.currentZoneId));
+    const isSanctuaryCampFow = CampSanctuarySystem.getInstance().isPlayerInSanctuary(this.player.x, this.player.y, this.currentZoneId);
+    const isFowSafe = isSafeVillageZoneFow || isNearWarmthFow || isSanctuaryCampFow;
+
+    if (!isReducedMotion && !isFowSafe && composure < 45) {
+      const breathPhase = Math.sin(this.time.now * 0.00157); // 0.25 Hz = 2*PI*0.25/1000 rad/ms
+      if (composure >= 25) {
+        // 25..44: radius tối đa ±1% (0.01), glow alpha tối đa ±4% (0.04)
+        const t = (45 - composure) / 20;
+        sanityRadiusMod = 1.0 + breathPhase * (0.01 * t);
+        sanityGlowMod = 1.0 + breathPhase * (0.04 * t);
+      } else {
+        // <25: radius tối đa ±2% (0.02), glow alpha tối đa ±7% (0.07)
+        const t = Math.min(1.0, (25 - Math.max(0, composure)) / 25);
+        const maxRadiusOsc = 0.01 + 0.01 * t; // 0.01 -> 0.02
+        const maxGlowOsc = 0.04 + 0.03 * t;   // 0.04 -> 0.07
+        sanityRadiusMod = 1.0 + breathPhase * maxRadiusOsc;
+        sanityGlowMod = 1.0 + breathPhase * maxGlowOsc;
+      }
+    }
+
+    targetBaseRadius *= sanityRadiusMod;
 
     // Hiệu ứng chao đảo ánh sáng khi dơi phục kích cắn trúng (tần số thấp êm dịu, giới hạn biên độ)
     if (this.batLanternFlickerTimer > 0) {
@@ -6570,8 +6600,8 @@ export class GameScene extends Phaser.Scene {
         ? (Math.sin(this.time.now * 0.0035) * 0.012 + Math.cos(this.time.now * 0.006) * 0.008)
         : 0;
       const glowFactor = (this.currentLanternRadius - LANTERN_RADIUS_DIM) / (LANTERN_RADIUS_NORMAL - LANTERN_RADIUS_DIM);
-      // Giới hạn độ sáng trần dịu mắt maxAlpha <= 0.24, tan biến mượt mà, không lóa mặt đất
-      const glowAlpha = Math.max(0.06, Math.min(0.24, (0.20 + breathing) * glowFactor));
+      // Giới hạn độ sáng trần dịu mắt maxAlpha <= 0.24, tan biến mượt mà, không lóa mặt đất (điều chế nhẹ bởi nhịp thở Tinh Thần)
+      const glowAlpha = Math.max(0.06, Math.min(0.24, (0.20 + breathing) * glowFactor * sanityGlowMod));
 
       const targetGlowScale = (radius * 2.0) / 512;
 

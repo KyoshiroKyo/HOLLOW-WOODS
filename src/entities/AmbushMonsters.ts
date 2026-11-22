@@ -116,7 +116,12 @@ export class MistBatAmbushEntity extends Phaser.Physics.Arcade.Sprite {
         playerState.modifyComposure(-15);
         playerState.emit('stats_changed', playerState.stats);
         if (SettingsManager.getInstance().isScreenShakeEnabled()) {
-          this.scene.cameras.main.shake(250, 0.008);
+          const camSys = (this.scene as any).cameraSystem;
+          if (camSys) {
+            camSys.shake(250, 0.008);
+          } else {
+            this.scene.cameras.main.shake(250, 0.008);
+          }
         }
 
         // Hiệu ứng chao đảo ánh sáng đèn lồng (Flicker 2.5s)
@@ -227,7 +232,14 @@ export class WanderingShadeEntity extends Phaser.Physics.Arcade.Sprite {
       }
       playerState.emit('stats_changed', playerState.stats);
       AudioManager.getInstance().playSampled('sanity_gasp', 0.85);
-      this.scene.cameras.main.flash(400, 60, 20, 80);
+      if (SettingsManager.getInstance().isScreenFlashEnabled()) {
+        const camSys = (this.scene as any).cameraSystem;
+        if (camSys) {
+          camSys.flash(400, 60, 20, 80);
+        } else {
+          this.scene.cameras.main.flash(400, 60, 20, 80);
+        }
+      }
       this.dissolve();
     }
   }
