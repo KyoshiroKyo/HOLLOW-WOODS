@@ -1,0 +1,77 @@
+{
+  "test1_core_routes": {
+    "fog_bellhollow": true,
+    "bellhollow_farm": true,
+    "bellhollow_outerwoods": true,
+    "farm_outerwoods": true
+  },
+  "test2_subzone_portal": {
+    "entered": true,
+    "exited": true,
+    "workshopPos": [
+      1360,
+      1131.2
+    ],
+    "returnPos": [
+      1360,
+      944.6
+    ]
+  },
+  "test3_circuit": {
+    "log": [
+      [
+        "Fog->Bellhollow",
+        "bellhollow"
+      ],
+      [
+        "Bellhollow->Farm",
+        "sanctuary_farm"
+      ],
+      [
+        "Farm->OuterWoods",
+        "outer_woods"
+      ],
+      [
+        "OuterWoods->Bellhollow",
+        "bellhollow"
+      ]
+    ],
+    "pass": true
+  },
+  "test4_oscillation": {
+    "cycles": [
+      {
+        "cycle": 1,
+        "southZone": "sanctuary_farm",
+        "northZone": "bellhollow"
+      },
+      {
+        "cycle": 2,
+        "southZone": "sanctuary_farm",
+        "northZone": "bellhollow"
+      },
+      {
+        "cycle": 3,
+        "southZone": "sanctuary_farm",
+        "northZone": "bellhollow"
+      }
+    ],
+    "pass": true
+  },
+  "test5_gated_route": {
+    "blockedFromEntering": true,
+    "finalZone": "bellhollow",
+    "playerPos": [
+      1468,
+      280
+    ]
+  },
+  "test6_save_continue": {
+    "posMatch": true,
+    "zoneMatch": true,
+    "followOk": true,
+    "pass": true
+  },
+  "pageErrors": [],
+  "consoleErrors": []
+}
