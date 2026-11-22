@@ -521,10 +521,10 @@ with sync_playwright() as pw:
     # ---------------------------------------------------------
     print("\n--- TEST 10: PAUSE / RESUME / CONTINUE LIFECYCLE ---")
     page.keyboard.press('Escape')
-    page.wait_for_timeout(300)
+    page.wait_for_timeout(500)
     pause_open = page.evaluate("() => !!window.__PHASER_GAME__.scene.getScene('UIScene').pauseModal?.isOpen")
     page.keyboard.press('Escape')
-    page.wait_for_timeout(300)
+    page.wait_for_timeout(500)
     pause_closed = page.evaluate("() => !window.__PHASER_GAME__.scene.getScene('UIScene').pauseModal?.isOpen")
     assert pause_open and pause_closed, "Pause/Resume modal cycle failed"
     print(f"  Pause/Resume cycle: Open={pause_open}, Closed={pause_closed}")

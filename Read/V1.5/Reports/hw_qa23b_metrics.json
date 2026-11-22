@@ -1,0 +1,122 @@
+{
+  "test_a1_comp15_day_two_cycles": {
+    "totalDurationMs": 9227.800000000745,
+    "sampleCount": 58,
+    "meanRadius": 153.2367363617267,
+    "minRadius": 152.13344222618045,
+    "maxRadius": 154.10976257491964,
+    "peakToPeak": 1.9763203487391934,
+    "amplitude": 0.9881601743695967,
+    "maxStepDelta": 0.3885820907576374,
+    "maxAlphaDelta": 0.0,
+    "peaksCount": 3,
+    "troughsCount": 3,
+    "cyclesDetected": 2,
+    "avgPeriodMs": 3963.1571428568236,
+    "measuredHz": 0.25232408505486476,
+    "durationPass": true,
+    "smoothPass": true,
+    "alphaPass": true,
+    "noCollapsePass": true,
+    "twoCyclesPass": true
+  },
+  "test_a2_comp35_night_two_cycles": {
+    "totalDurationMs": 9132.0,
+    "sampleCount": 63,
+    "meanRadius": 112.77079460185963,
+    "minRadius": 112.16196217007007,
+    "maxRadius": 113.28826455870403,
+    "peakToPeak": 1.1263023886339596,
+    "amplitude": 0.5631511943169798,
+    "maxStepDelta": 0.4260906734883321,
+    "maxAlphaDelta": 0.012217404423984585,
+    "peaksCount": 3,
+    "troughsCount": 2,
+    "cyclesDetected": 3,
+    "avgPeriodMs": 3894.3142857147113,
+    "measuredHz": 0.25678461640043854,
+    "durationPass": true,
+    "smoothPass": true,
+    "alphaPass": true,
+    "noCollapsePass": true,
+    "twoCyclesPass": true
+  },
+  "test_a3_safe_zone_oscillation_zero": {
+    "deltaRadius": 0.0,
+    "durationMs": 4646
+  },
+  "test_a4_reduced_motion_oscillation_zero": {
+    "deltaRadius": 0.0,
+    "durationMs": 4694.300000000745
+  },
+  "suite_b_fow_performance_abc": {
+    "perfA": {
+      "meanFrameTime": 153.86666666666667,
+      "p50FrameTime": 154.29999999701977,
+      "p95FrameTime": 178.40000000223517,
+      "minFrameTime": 19.800000000745058,
+      "maxFrameTime": 452.29999999701977,
+      "fps": 6.499133448873483,
+      "fowClearCount": 30,
+      "avgClearTimeMs": 0
+    },
+    "perfB": {
+      "meanFrameTime": 143.65666666664183,
+      "p50FrameTime": 142.70000000298023,
+      "p95FrameTime": 168.10000000149012,
+      "minFrameTime": 15.199999999254942,
+      "maxFrameTime": 387.19999999925494,
+      "fps": 6.961041371790423,
+      "fowClearCount": 25,
+      "avgClearTimeMs": 0
+    },
+    "perfC": {
+      "meanFrameTime": 143.58333333333334,
+      "p50FrameTime": 142.69999999925494,
+      "p95FrameTime": 161.10000000149012,
+      "minFrameTime": 115.59999999776483,
+      "maxFrameTime": 173.39999999850988,
+      "fps": 6.964596633778293,
+      "fowClearCount": 19,
+      "avgClearTimeMs": 0
+    },
+    "ratio_BA": 0.9336438474868403,
+    "ratio_CA": 0.9331672443674177,
+    "gpuStatus": "GPU NOT VERIFIED (Headless Chrome SwiftShader CPU software rasterizer)"
+  },
+  "suite_c_camera_audit": {
+    "c1": {
+      "rmOn": 0,
+      "rmOff": 1
+    },
+    "c2": {
+      "rmOn": 0,
+      "rmOff": 1
+    },
+    "c3": {
+      "rmOnFlashes": 0,
+      "rmOnShakes": 0,
+      "rmOffFlashes": 1,
+      "rmOffShakes": 1
+    },
+    "c4": {
+      "rmOn": 0,
+      "rmOff": 1
+    },
+    "c5": {
+      "throttledFlashes": 1,
+      "throttledShakes": 1
+    }
+  },
+  "suite_d_lifecycle_and_overlay": {
+    "step1_vigActive": true,
+    "step2_vigActive": false,
+    "step3_vigActive": true,
+    "step4_vigActive": false,
+    "step5_pauseOpen": true,
+    "step5_pauseClosed": true,
+    "vigGraphicsCount": 1,
+    "veilVigCount": 0,
+    "step6_finalRM": true
+  }
+}
