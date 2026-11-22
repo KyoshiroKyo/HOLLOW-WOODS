@@ -31,6 +31,33 @@
     "afterStaticBodies": 0,
     "pass": true
   },
+  "summary": {
+    "test_type": "Integration Test (collision boundary verification via staged checkpoints)",
+    "case_a_fog_bellhollow": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "case_b_bellhollow_village": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "case_c_bellhollow_farm": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "case_d_outer_woods": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "case_e_gating_save_continue": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "page_errors_count": 0,
+    "console_errors_count": 0,
+    "overall_pass": true,
+    "final_status": "PASS"
+  },
   "pageErrors": [],
   "consoleErrors": []
 }

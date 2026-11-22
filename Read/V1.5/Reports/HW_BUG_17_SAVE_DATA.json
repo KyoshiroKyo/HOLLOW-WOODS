@@ -1,4 +1,44 @@
 {
+  "summary": {
+    "test_type": "Integration Test (world state sync, save/continue & quest gating)",
+    "test1_fog_save_continue": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "test2_bellhollow_save_continue": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "test3_farm_save_continue": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "test4_world_map_modal_sync": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "test5_quest_gating_unlock": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "test6_scene_restart_clean_reset": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "test7_rapid_map_toggle": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "test8_dynamic_tracked_quest": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "page_errors_count": 0,
+    "console_errors_count": 0,
+    "failed_requests_count": 0,
+    "overall_pass": true,
+    "final_status": "PASS"
+  },
   "console_errors": [],
   "page_errors": [],
   "failed_requests": [],

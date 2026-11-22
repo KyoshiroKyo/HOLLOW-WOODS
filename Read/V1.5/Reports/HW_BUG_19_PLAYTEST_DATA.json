@@ -1,4 +1,6 @@
 {
+  "overall_pass": true,
+  "test_type": "Integration Test (checkpoint staging between progression milestones)",
   "all_stages_pass": true,
   "stages": {
     "stage1": {

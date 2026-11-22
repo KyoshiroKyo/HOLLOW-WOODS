@@ -33,37 +33,6 @@
     "eastCrossing": [
       {
         "player": {
-          "x": 452.8,
-          "y": 235,
-          "footX": 452.8,
-          "footY": 235,
-          "velX": 85,
-          "velY": 0,
-          "facing": "right"
-        },
-        "zone": {
-          "current": "fog_crossing",
-          "detected": "fog_crossing",
-          "active": "fog_crossing"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": -190,
-          "scrollY": -125,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": null,
-        "elapsedMs": 262
-      },
-      {
-        "player": {
           "x": 455.7,
           "y": 235,
           "footX": 455.7,
@@ -91,381 +60,7 @@
           "hasFollowTarget": true
         },
         "transitionsCount": null,
-        "elapsedMs": 488
-      },
-      {
-        "player": {
-          "x": 455.7,
-          "y": 235,
-          "footX": 455.7,
-          "footY": 235,
-          "velX": 85,
-          "velY": 0,
-          "facing": "right"
-        },
-        "zone": {
-          "current": "fog_crossing",
-          "detected": "fog_crossing",
-          "active": "fog_crossing"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": -190,
-          "scrollY": -125,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": null,
-        "elapsedMs": 728
-      },
-      {
-        "player": {
-          "x": 458.5,
-          "y": 235,
-          "footX": 458.5,
-          "footY": 235,
-          "velX": 85,
-          "velY": 0,
-          "facing": "right"
-        },
-        "zone": {
-          "current": "fog_crossing",
-          "detected": "fog_crossing",
-          "active": "fog_crossing"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": -190,
-          "scrollY": -125,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": null,
-        "elapsedMs": 942
-      },
-      {
-        "player": {
-          "x": 467,
-          "y": 235,
-          "footX": 467,
-          "footY": 235,
-          "velX": 85,
-          "velY": 0,
-          "facing": "right"
-        },
-        "zone": {
-          "current": "fog_crossing",
-          "detected": "fog_crossing",
-          "active": "fog_crossing"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": -189.9,
-          "scrollY": -125,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": null,
-        "elapsedMs": 1470
-      },
-      {
-        "player": {
-          "x": 481.2,
-          "y": 235,
-          "footX": 481.2,
-          "footY": 235,
-          "velX": 85,
-          "velY": 0,
-          "facing": "right"
-        },
-        "zone": {
-          "current": "fog_crossing",
-          "detected": "bellhollow",
-          "active": "fog_crossing"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": -187.1,
-          "scrollY": -125,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": null,
-        "elapsedMs": 1699
-      },
-      {
-        "player": {
-          "x": 495.3,
-          "y": 235,
-          "footX": 495.3,
-          "footY": 235,
-          "velX": 85,
-          "velY": 0,
-          "facing": "right"
-        },
-        "zone": {
-          "current": "bellhollow",
-          "detected": "bellhollow",
-          "active": "bellhollow"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": -182.7,
-          "scrollY": -125,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_bellhollow",
-        "elapsedMs": 2027
-      },
-      {
-        "player": {
-          "x": 513.8,
-          "y": 235,
-          "footX": 513.8,
-          "footY": 235,
-          "velX": 0,
-          "velY": 0,
-          "facing": "right"
-        },
-        "zone": {
-          "current": "bellhollow",
-          "detected": "bellhollow",
-          "active": "bellhollow"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": -172.6,
-          "scrollY": -125,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_bellhollow",
-        "elapsedMs": 2658
-      },
-      {
-        "player": {
-          "x": 513.8,
-          "y": 235,
-          "footX": 513.8,
-          "footY": 235,
-          "velX": 85,
-          "velY": 0,
-          "facing": "right"
-        },
-        "zone": {
-          "current": "bellhollow",
-          "detected": "bellhollow",
-          "active": "bellhollow"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": -164.4,
-          "scrollY": -125,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_bellhollow",
-        "elapsedMs": 2916
-      },
-      {
-        "player": {
-          "x": 522.3,
-          "y": 235,
-          "footX": 522.3,
-          "footY": 235,
-          "velX": 85,
-          "velY": 0,
-          "facing": "right"
-        },
-        "zone": {
-          "current": "bellhollow",
-          "detected": "bellhollow",
-          "active": "bellhollow"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": -161.3,
-          "scrollY": -125,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_bellhollow",
-        "elapsedMs": 3138
-      },
-      {
-        "player": {
-          "x": 532.2,
-          "y": 235,
-          "footX": 532.2,
-          "footY": 235,
-          "velX": 0,
-          "velY": 0,
-          "facing": "right"
-        },
-        "zone": {
-          "current": "bellhollow",
-          "detected": "bellhollow",
-          "active": "bellhollow"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": -154.2,
-          "scrollY": -125,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_bellhollow",
-        "elapsedMs": 3336
-      }
-    ],
-    "westCrossing": [
-      {
-        "player": {
-          "x": 523.7,
-          "y": 235,
-          "footX": 523.7,
-          "footY": 235,
-          "velX": -85,
-          "velY": 0,
-          "facing": "left"
-        },
-        "zone": {
-          "current": "bellhollow",
-          "detected": "bellhollow",
-          "active": "bellhollow"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": -149.3,
-          "scrollY": -125,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_bellhollow",
-        "elapsedMs": 242
-      },
-      {
-        "player": {
-          "x": 503.8,
-          "y": 235,
-          "footX": 503.8,
-          "footY": 235,
-          "velX": -85,
-          "velY": 0,
-          "facing": "left"
-        },
-        "zone": {
-          "current": "bellhollow",
-          "detected": "bellhollow",
-          "active": "bellhollow"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": -148.6,
-          "scrollY": -125,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_bellhollow",
-        "elapsedMs": 495
-      },
-      {
-        "player": {
-          "x": 492.5,
-          "y": 235,
-          "footX": 492.5,
-          "footY": 235,
-          "velX": -85,
-          "velY": 0,
-          "facing": "left"
-        },
-        "zone": {
-          "current": "bellhollow",
-          "detected": "bellhollow",
-          "active": "bellhollow"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": -148.6,
-          "scrollY": -125,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_bellhollow",
-        "elapsedMs": 721
+        "elapsedMs": 244
       },
       {
         "player": {
@@ -473,6 +68,504 @@
           "y": 235,
           "footX": 469.8,
           "footY": 235,
+          "velX": 85,
+          "velY": 0,
+          "facing": "right"
+        },
+        "zone": {
+          "current": "fog_crossing",
+          "detected": "fog_crossing",
+          "active": "fog_crossing"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": -189.6,
+          "scrollY": -125,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": null,
+        "elapsedMs": 554
+      },
+      {
+        "player": {
+          "x": 493.9,
+          "y": 235,
+          "footX": 493.9,
+          "footY": 235,
+          "velX": 85,
+          "velY": 0,
+          "facing": "right"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": -184.3,
+          "scrollY": -125,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_bellhollow",
+        "elapsedMs": 1302
+      },
+      {
+        "player": {
+          "x": 512.3,
+          "y": 235,
+          "footX": 512.3,
+          "footY": 235,
+          "velX": 85,
+          "velY": 0,
+          "facing": "right"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": -177.5,
+          "scrollY": -125,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_bellhollow",
+        "elapsedMs": 1548
+      },
+      {
+        "player": {
+          "x": 546.3,
+          "y": 235,
+          "footX": 546.3,
+          "footY": 235,
+          "velX": 0,
+          "velY": 0,
+          "facing": "right"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": -162,
+          "scrollY": -125,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_bellhollow",
+        "elapsedMs": 1771
+      },
+      {
+        "player": {
+          "x": 546.3,
+          "y": 235,
+          "footX": 546.3,
+          "footY": 235,
+          "velX": 0,
+          "velY": 0,
+          "facing": "right"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": -152,
+          "scrollY": -125,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_bellhollow",
+        "elapsedMs": 2056
+      },
+      {
+        "player": {
+          "x": 546.3,
+          "y": 235,
+          "footX": 546.3,
+          "footY": 235,
+          "velX": 85,
+          "velY": 0,
+          "facing": "right"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": -144,
+          "scrollY": -125,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_bellhollow",
+        "elapsedMs": 2444
+      },
+      {
+        "player": {
+          "x": 577.5,
+          "y": 235,
+          "footX": 577.5,
+          "footY": 235,
+          "velX": 85,
+          "velY": 0,
+          "facing": "right"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": -128.8,
+          "scrollY": -125,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_bellhollow",
+        "elapsedMs": 2709
+      },
+      {
+        "player": {
+          "x": 598.7,
+          "y": 235,
+          "footX": 598.7,
+          "footY": 235,
+          "velX": 85,
+          "velY": 0,
+          "facing": "right"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": -116.3,
+          "scrollY": -125,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_bellhollow",
+        "elapsedMs": 2973
+      },
+      {
+        "player": {
+          "x": 621.4,
+          "y": 235,
+          "footX": 621.4,
+          "footY": 235,
+          "velX": 85,
+          "velY": 0,
+          "facing": "right"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": -101.8,
+          "scrollY": -125,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_bellhollow",
+        "elapsedMs": 3232
+      },
+      {
+        "player": {
+          "x": 621.4,
+          "y": 235,
+          "footX": 621.4,
+          "footY": 235,
+          "velX": 0,
+          "velY": 0,
+          "facing": "right"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": -95,
+          "scrollY": -125,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_bellhollow",
+        "elapsedMs": 3405
+      }
+    ],
+    "westCrossing": [
+      {
+        "player": {
+          "x": 610.1,
+          "y": 235,
+          "footX": 610.1,
+          "footY": 235,
+          "velX": -85,
+          "velY": 0,
+          "facing": "left"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": -84.7,
+          "scrollY": -125,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_bellhollow",
+        "elapsedMs": 243
+      },
+      {
+        "player": {
+          "x": 587.4,
+          "y": 235,
+          "footX": 587.4,
+          "footY": 235,
+          "velX": -85,
+          "velY": 0,
+          "facing": "left"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": -80.6,
+          "scrollY": -125,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_bellhollow",
+        "elapsedMs": 466
+      },
+      {
+        "player": {
+          "x": 566.2,
+          "y": 235,
+          "footX": 566.2,
+          "footY": 235,
+          "velX": -85,
+          "velY": 0,
+          "facing": "left"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": -80.4,
+          "scrollY": -125,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_bellhollow",
+        "elapsedMs": 869
+      },
+      {
+        "player": {
+          "x": 535,
+          "y": 235,
+          "footX": 535,
+          "footY": 235,
+          "velX": -85,
+          "velY": 0,
+          "facing": "left"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": -81.3,
+          "scrollY": -125,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_bellhollow",
+        "elapsedMs": 1112
+      },
+      {
+        "player": {
+          "x": 515.2,
+          "y": 235,
+          "footX": 515.2,
+          "footY": 235,
+          "velX": -85,
+          "velY": 0,
+          "facing": "left"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": -85.6,
+          "scrollY": -125,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_bellhollow",
+        "elapsedMs": 1339
+      },
+      {
+        "player": {
+          "x": 495.3,
+          "y": 235,
+          "footX": 495.3,
+          "footY": 235,
+          "velX": -85,
+          "velY": 0,
+          "facing": "left"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": -92.9,
+          "scrollY": -125,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_bellhollow",
+        "elapsedMs": 1569
+      },
+      {
+        "player": {
+          "x": 476.9,
+          "y": 235,
+          "footX": 476.9,
+          "footY": 235,
           "velX": -85,
           "velY": 0,
           "facing": "left"
@@ -489,20 +582,20 @@
             "width": 1600,
             "height": 1040
           },
-          "scrollX": -149.1,
+          "scrollX": -102.3,
           "scrollY": -125,
           "zoom": 2.2,
           "rotation": 0,
           "hasFollowTarget": true
         },
         "transitionsCount": "to_bellhollow",
-        "elapsedMs": 981
+        "elapsedMs": 1797
       },
       {
         "player": {
-          "x": 445.8,
+          "x": 458.5,
           "y": 235,
-          "footX": 445.8,
+          "footX": 458.5,
           "footY": 235,
           "velX": -85,
           "velY": 0,
@@ -520,20 +613,20 @@
             "width": 1600,
             "height": 1040
           },
-          "scrollX": -153.6,
+          "scrollX": -113.4,
           "scrollY": -125,
           "zoom": 2.2,
           "rotation": 0,
           "hasFollowTarget": true
         },
         "transitionsCount": "to_fog_crossing",
-        "elapsedMs": 1278
+        "elapsedMs": 2037
       },
       {
         "player": {
-          "x": 434.4,
+          "x": 440.1,
           "y": 235,
-          "footX": 434.4,
+          "footX": 440.1,
           "footY": 235,
           "velX": 0,
           "velY": 0,
@@ -551,206 +644,20 @@
             "width": 1600,
             "height": 1040
           },
-          "scrollX": -160.5,
+          "scrollX": -125.9,
           "scrollY": -125,
           "zoom": 2.2,
           "rotation": 0,
           "hasFollowTarget": true
         },
         "transitionsCount": "to_fog_crossing",
-        "elapsedMs": 1495
+        "elapsedMs": 2286
       },
       {
         "player": {
-          "x": 434.4,
+          "x": 440.1,
           "y": 235,
-          "footX": 434.4,
-          "footY": 235,
-          "velX": -85,
-          "velY": 0,
-          "facing": "left"
-        },
-        "zone": {
-          "current": "fog_crossing",
-          "detected": "fog_crossing",
-          "active": "fog_crossing"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": -166,
-          "scrollY": -125,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_fog_crossing",
-        "elapsedMs": 1758
-      },
-      {
-        "player": {
-          "x": 410.3,
-          "y": 235,
-          "footX": 410.3,
-          "footY": 235,
-          "velX": -85,
-          "velY": 0,
-          "facing": "left"
-        },
-        "zone": {
-          "current": "fog_crossing",
-          "detected": "fog_crossing",
-          "active": "fog_crossing"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": -174,
-          "scrollY": -125,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_fog_crossing",
-        "elapsedMs": 2027
-      },
-      {
-        "player": {
-          "x": 387.7,
-          "y": 235,
-          "footX": 387.7,
-          "footY": 235,
-          "velX": -85,
-          "velY": 0,
-          "facing": "left"
-        },
-        "zone": {
-          "current": "fog_crossing",
-          "detected": "fog_crossing",
-          "active": "fog_crossing"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": -184.9,
-          "scrollY": -125,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_fog_crossing",
-        "elapsedMs": 2323
-      },
-      {
-        "player": {
-          "x": 374.9,
-          "y": 235,
-          "footX": 374.9,
-          "footY": 235,
-          "velX": -85,
-          "velY": 0,
-          "facing": "left"
-        },
-        "zone": {
-          "current": "fog_crossing",
-          "detected": "fog_crossing",
-          "active": "fog_crossing"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": -191.3,
-          "scrollY": -125,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_fog_crossing",
-        "elapsedMs": 2586
-      },
-      {
-        "player": {
-          "x": 342.3,
-          "y": 235,
-          "footX": 342.3,
-          "footY": 235,
-          "velX": -85,
-          "velY": 0,
-          "facing": "left"
-        },
-        "zone": {
-          "current": "fog_crossing",
-          "detected": "fog_crossing",
-          "active": "fog_crossing"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": -213.2,
-          "scrollY": -125,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_fog_crossing",
-        "elapsedMs": 2842
-      },
-      {
-        "player": {
-          "x": 321.1,
-          "y": 235,
-          "footX": 321.1,
-          "footY": 235,
-          "velX": -85,
-          "velY": 0,
-          "facing": "left"
-        },
-        "zone": {
-          "current": "fog_crossing",
-          "detected": "fog_crossing",
-          "active": "fog_crossing"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": -229.3,
-          "scrollY": -125,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_fog_crossing",
-        "elapsedMs": 3078
-      },
-      {
-        "player": {
-          "x": 321.1,
-          "y": 235,
-          "footX": 321.1,
+          "footX": 440.1,
           "footY": 235,
           "velX": 0,
           "velY": 0,
@@ -768,21 +675,114 @@
             "width": 1600,
             "height": 1040
           },
-          "scrollX": -236.7,
+          "scrollX": -136.9,
           "scrollY": -125,
           "zoom": 2.2,
           "rotation": 0,
           "hasFollowTarget": true
         },
         "transitionsCount": "to_fog_crossing",
-        "elapsedMs": 3211
+        "elapsedMs": 2523
+      },
+      {
+        "player": {
+          "x": 440.1,
+          "y": 235,
+          "footX": 440.1,
+          "footY": 235,
+          "velX": -85,
+          "velY": 0,
+          "facing": "left"
+        },
+        "zone": {
+          "current": "fog_crossing",
+          "detected": "fog_crossing",
+          "active": "fog_crossing"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": -145.9,
+          "scrollY": -125,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_fog_crossing",
+        "elapsedMs": 2759
+      },
+      {
+        "player": {
+          "x": 418.8,
+          "y": 235,
+          "footX": 418.8,
+          "footY": 235,
+          "velX": -85,
+          "velY": 0,
+          "facing": "left"
+        },
+        "zone": {
+          "current": "fog_crossing",
+          "detected": "fog_crossing",
+          "active": "fog_crossing"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": -156.2,
+          "scrollY": -125,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_fog_crossing",
+        "elapsedMs": 3005
+      },
+      {
+        "player": {
+          "x": 418.8,
+          "y": 235,
+          "footX": 418.8,
+          "footY": 235,
+          "velX": 0,
+          "velY": 0,
+          "facing": "left"
+        },
+        "zone": {
+          "current": "fog_crossing",
+          "detected": "fog_crossing",
+          "active": "fog_crossing"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": -161.1,
+          "scrollY": -125,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_fog_crossing",
+        "elapsedMs": 3127
       }
     ],
     "final": {
       "player": {
-        "x": 321.1,
+        "x": 418.8,
         "y": 235,
-        "footX": 321.1,
+        "footX": 418.8,
         "footY": 235,
         "velX": 0,
         "velY": 0,
@@ -800,7 +800,7 @@
           "width": 1600,
           "height": 1040
         },
-        "scrollX": -236.7,
+        "scrollX": -161.1,
         "scrollY": -125,
         "zoom": 2.2,
         "rotation": 0,
@@ -873,12 +873,12 @@
       {
         "player": {
           "x": 650,
-          "y": 520,
+          "y": 538.4,
           "footX": 650,
-          "footY": 520,
+          "footY": 538.4,
           "velX": 0,
           "velY": 0,
-          "facing": "left"
+          "facing": "down"
         },
         "zone": {
           "current": "bellhollow",
@@ -893,20 +893,82 @@
             "height": 1040
           },
           "scrollX": 10,
-          "scrollY": 160,
+          "scrollY": 160.6,
           "zoom": 2.2,
           "rotation": 0,
           "hasFollowTarget": true
         },
         "transitionsCount": "to_fog_crossing",
-        "elapsedMs": 197
+        "elapsedMs": 198
       },
       {
         "player": {
           "x": 650,
-          "y": 527.1,
+          "y": 538.4,
           "footX": 650,
-          "footY": 527.1,
+          "footY": 538.4,
+          "velX": 0,
+          "velY": 0,
+          "facing": "down"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": 10,
+          "scrollY": 161.2,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_fog_crossing",
+        "elapsedMs": 369
+      },
+      {
+        "player": {
+          "x": 650,
+          "y": 538.4,
+          "footX": 650,
+          "footY": 538.4,
+          "velX": 0,
+          "velY": 0,
+          "facing": "down"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": 10,
+          "scrollY": 162.2,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_fog_crossing",
+        "elapsedMs": 562
+      },
+      {
+        "player": {
+          "x": 650,
+          "y": 538.4,
+          "footX": 650,
+          "footY": 538.4,
           "velX": 0,
           "velY": 85,
           "facing": "down"
@@ -924,20 +986,20 @@
             "height": 1040
           },
           "scrollX": 10,
-          "scrollY": 160,
+          "scrollY": 162.6,
           "zoom": 2.2,
           "rotation": 0,
           "hasFollowTarget": true
         },
         "transitionsCount": "to_fog_crossing",
-        "elapsedMs": 409
+        "elapsedMs": 744
       },
       {
         "player": {
           "x": 650,
-          "y": 535.6,
+          "y": 546.9,
           "footX": 650,
-          "footY": 535.6,
+          "footY": 546.9,
           "velX": 0,
           "velY": 85,
           "facing": "down"
@@ -955,20 +1017,20 @@
             "height": 1040
           },
           "scrollX": 10,
-          "scrollY": 160.4,
+          "scrollY": 163.9,
           "zoom": 2.2,
           "rotation": 0,
           "hasFollowTarget": true
         },
         "transitionsCount": "to_fog_crossing",
-        "elapsedMs": 579
+        "elapsedMs": 920
       },
       {
         "player": {
           "x": 650,
-          "y": 551.2,
+          "y": 556.8,
           "footX": 650,
-          "footY": 551.2,
+          "footY": 556.8,
           "velX": 0,
           "velY": 85,
           "facing": "down"
@@ -986,51 +1048,20 @@
             "height": 1040
           },
           "scrollX": 10,
-          "scrollY": 163.2,
+          "scrollY": 166,
           "zoom": 2.2,
           "rotation": 0,
           "hasFollowTarget": true
         },
         "transitionsCount": "to_fog_crossing",
-        "elapsedMs": 754
+        "elapsedMs": 1102
       },
       {
         "player": {
           "x": 650,
-          "y": 559.7,
+          "y": 585.2,
           "footX": 650,
-          "footY": 559.7,
-          "velX": 0,
-          "velY": 85,
-          "facing": "down"
-        },
-        "zone": {
-          "current": "bellhollow",
-          "detected": "bellhollow",
-          "active": "bellhollow"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": 10,
-          "scrollY": 165.6,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_fog_crossing",
-        "elapsedMs": 923
-      },
-      {
-        "player": {
-          "x": 650,
-          "y": 567.5,
-          "footX": 650,
-          "footY": 567.5,
+          "footY": 585.2,
           "velX": 0,
           "velY": 85,
           "facing": "down"
@@ -1039,6 +1070,318 @@
           "current": "sanctuary_farm",
           "detected": "sanctuary_farm",
           "active": "sanctuary_farm"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": 10,
+          "scrollY": 176.4,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_sanctuary_farm",
+        "elapsedMs": 1278
+      },
+      {
+        "player": {
+          "x": 650,
+          "y": 593.7,
+          "footX": 650,
+          "footY": 593.7,
+          "velX": 0,
+          "velY": 85,
+          "facing": "down"
+        },
+        "zone": {
+          "current": "sanctuary_farm",
+          "detected": "sanctuary_farm",
+          "active": "sanctuary_farm"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": 10,
+          "scrollY": 180.9,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_sanctuary_farm",
+        "elapsedMs": 1448
+      },
+      {
+        "player": {
+          "x": 650,
+          "y": 593.7,
+          "footX": 650,
+          "footY": 593.7,
+          "velX": 0,
+          "velY": 0,
+          "facing": "down"
+        },
+        "zone": {
+          "current": "sanctuary_farm",
+          "detected": "sanctuary_farm",
+          "active": "sanctuary_farm"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": 10,
+          "scrollY": 185,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_sanctuary_farm",
+        "elapsedMs": 1595
+      }
+    ],
+    "northCrossing": [
+      {
+        "player": {
+          "x": 650,
+          "y": 583.7,
+          "footX": 650,
+          "footY": 583.7,
+          "velX": 0,
+          "velY": -85,
+          "facing": "up"
+        },
+        "zone": {
+          "current": "sanctuary_farm",
+          "detected": "sanctuary_farm",
+          "active": "sanctuary_farm"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": 10,
+          "scrollY": 193.9,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_sanctuary_farm",
+        "elapsedMs": 186
+      },
+      {
+        "player": {
+          "x": 650,
+          "y": 575.2,
+          "footX": 650,
+          "footY": 575.2,
+          "velX": 0,
+          "velY": -85,
+          "facing": "up"
+        },
+        "zone": {
+          "current": "sanctuary_farm",
+          "detected": "sanctuary_farm",
+          "active": "sanctuary_farm"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": 10,
+          "scrollY": 194.9,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_sanctuary_farm",
+        "elapsedMs": 371
+      },
+      {
+        "player": {
+          "x": 650,
+          "y": 555.4,
+          "footX": 650,
+          "footY": 555.4,
+          "velX": 0,
+          "velY": -85,
+          "facing": "up"
+        },
+        "zone": {
+          "current": "sanctuary_farm",
+          "detected": "bellhollow",
+          "active": "sanctuary_farm"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": 10,
+          "scrollY": 194.9,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_sanctuary_farm",
+        "elapsedMs": 561
+      },
+      {
+        "player": {
+          "x": 650,
+          "y": 545.5,
+          "footX": 650,
+          "footY": 545.5,
+          "velX": 0,
+          "velY": -85,
+          "facing": "up"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": 10,
+          "scrollY": 194.9,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_bellhollow_from_farm",
+        "elapsedMs": 737
+      },
+      {
+        "player": {
+          "x": 650,
+          "y": 524.3,
+          "footX": 650,
+          "footY": 524.3,
+          "velX": 0,
+          "velY": -85,
+          "facing": "up"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": 10,
+          "scrollY": 192.2,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_bellhollow_from_farm",
+        "elapsedMs": 918
+      },
+      {
+        "player": {
+          "x": 650,
+          "y": 512.9,
+          "footX": 650,
+          "footY": 512.9,
+          "velX": 0,
+          "velY": -85,
+          "facing": "up"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": 10,
+          "scrollY": 189.5,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_bellhollow_from_farm",
+        "elapsedMs": 1110
+      },
+      {
+        "player": {
+          "x": 650,
+          "y": 491.7,
+          "footX": 650,
+          "footY": 491.7,
+          "velX": 0,
+          "velY": -85,
+          "facing": "up"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": 10,
+          "scrollY": 181.7,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_bellhollow_from_farm",
+        "elapsedMs": 1369
+      },
+      {
+        "player": {
+          "x": 650,
+          "y": 470.4,
+          "footX": 650,
+          "footY": 470.4,
+          "velX": 0,
+          "velY": -85,
+          "facing": "up"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
         },
         "camera": {
           "bounds": {
@@ -1053,358 +1396,15 @@
           "rotation": 0,
           "hasFollowTarget": true
         },
-        "transitionsCount": "to_sanctuary_farm",
-        "elapsedMs": 1105
-      },
-      {
-        "player": {
-          "x": 650,
-          "y": 587.3,
-          "footX": 650,
-          "footY": 587.3,
-          "velX": 0,
-          "velY": 85,
-          "facing": "down"
-        },
-        "zone": {
-          "current": "sanctuary_farm",
-          "detected": "sanctuary_farm",
-          "active": "sanctuary_farm"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": 10,
-          "scrollY": 178.8,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_sanctuary_farm",
-        "elapsedMs": 1307
-      },
-      {
-        "player": {
-          "x": 650,
-          "y": 597.2,
-          "footX": 650,
-          "footY": 597.2,
-          "velX": 0,
-          "velY": 85,
-          "facing": "down"
-        },
-        "zone": {
-          "current": "sanctuary_farm",
-          "detected": "sanctuary_farm",
-          "active": "sanctuary_farm"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": 10,
-          "scrollY": 183.4,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_sanctuary_farm",
-        "elapsedMs": 1494
-      },
-      {
-        "player": {
-          "x": 650,
-          "y": 597.2,
-          "footX": 650,
-          "footY": 597.2,
-          "velX": 0,
-          "velY": 0,
-          "facing": "down"
-        },
-        "zone": {
-          "current": "sanctuary_farm",
-          "detected": "sanctuary_farm",
-          "active": "sanctuary_farm"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": 10,
-          "scrollY": 187.6,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_sanctuary_farm",
-        "elapsedMs": 1630
-      }
-    ],
-    "northCrossing": [
-      {
-        "player": {
-          "x": 650,
-          "y": 597.2,
-          "footX": 650,
-          "footY": 597.2,
-          "velX": 0,
-          "velY": -85,
-          "facing": "up"
-        },
-        "zone": {
-          "current": "sanctuary_farm",
-          "detected": "sanctuary_farm",
-          "active": "sanctuary_farm"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": 10,
-          "scrollY": 194.8,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_sanctuary_farm",
-        "elapsedMs": 172
-      },
-      {
-        "player": {
-          "x": 650,
-          "y": 577.4,
-          "footX": 650,
-          "footY": 577.4,
-          "velX": 0,
-          "velY": -85,
-          "facing": "up"
-        },
-        "zone": {
-          "current": "sanctuary_farm",
-          "detected": "sanctuary_farm",
-          "active": "sanctuary_farm"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": 10,
-          "scrollY": 197.7,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_sanctuary_farm",
-        "elapsedMs": 374
-      },
-      {
-        "player": {
-          "x": 650,
-          "y": 567.5,
-          "footX": 650,
-          "footY": 567.5,
-          "velX": 0,
-          "velY": -85,
-          "facing": "up"
-        },
-        "zone": {
-          "current": "sanctuary_farm",
-          "detected": "sanctuary_farm",
-          "active": "sanctuary_farm"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": 10,
-          "scrollY": 197.7,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_sanctuary_farm",
-        "elapsedMs": 549
-      },
-      {
-        "player": {
-          "x": 650,
-          "y": 546.3,
-          "footX": 650,
-          "footY": 546.3,
-          "velX": 0,
-          "velY": -85,
-          "facing": "up"
-        },
-        "zone": {
-          "current": "bellhollow",
-          "detected": "bellhollow",
-          "active": "bellhollow"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": 10,
-          "scrollY": 197.7,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
         "transitionsCount": "to_bellhollow_from_farm",
-        "elapsedMs": 741
+        "elapsedMs": 1566
       },
       {
         "player": {
           "x": 650,
-          "y": 536.3,
+          "y": 470.4,
           "footX": 650,
-          "footY": 536.3,
-          "velX": 0,
-          "velY": -85,
-          "facing": "up"
-        },
-        "zone": {
-          "current": "bellhollow",
-          "detected": "bellhollow",
-          "active": "bellhollow"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": 10,
-          "scrollY": 196.7,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_bellhollow_from_farm",
-        "elapsedMs": 918
-      },
-      {
-        "player": {
-          "x": 650,
-          "y": 515.1,
-          "footX": 650,
-          "footY": 515.1,
-          "velX": 0,
-          "velY": -85,
-          "facing": "up"
-        },
-        "zone": {
-          "current": "bellhollow",
-          "detected": "bellhollow",
-          "active": "bellhollow"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": 10,
-          "scrollY": 192.1,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_bellhollow_from_farm",
-        "elapsedMs": 1213
-      },
-      {
-        "player": {
-          "x": 650,
-          "y": 495.3,
-          "footX": 650,
-          "footY": 495.3,
-          "velX": 0,
-          "velY": -85,
-          "facing": "up"
-        },
-        "zone": {
-          "current": "bellhollow",
-          "detected": "bellhollow",
-          "active": "bellhollow"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": 10,
-          "scrollY": 184.5,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_bellhollow_from_farm",
-        "elapsedMs": 1396
-      },
-      {
-        "player": {
-          "x": 650,
-          "y": 476.8,
-          "footX": 650,
-          "footY": 476.8,
-          "velX": 0,
-          "velY": -85,
-          "facing": "up"
-        },
-        "zone": {
-          "current": "bellhollow",
-          "detected": "bellhollow",
-          "active": "bellhollow"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": 10,
-          "scrollY": 174.8,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_bellhollow_from_farm",
-        "elapsedMs": 1597
-      },
-      {
-        "player": {
-          "x": 650,
-          "y": 476.8,
-          "footX": 650,
-          "footY": 476.8,
+          "footY": 470.4,
           "velX": 0,
           "velY": 0,
           "facing": "up"
@@ -1422,21 +1422,21 @@
             "height": 1040
           },
           "scrollX": 10,
-          "scrollY": 170.2,
+          "scrollY": 166.4,
           "zoom": 2.2,
           "rotation": 0,
           "hasFollowTarget": true
         },
         "transitionsCount": "to_bellhollow_from_farm",
-        "elapsedMs": 1746
+        "elapsedMs": 1703
       }
     ],
     "final": {
       "player": {
         "x": 650,
-        "y": 476.8,
+        "y": 470.4,
         "footX": 650,
-        "footY": 476.8,
+        "footY": 470.4,
         "velX": 0,
         "velY": 0,
         "facing": "up"
@@ -1454,7 +1454,7 @@
           "height": 1040
         },
         "scrollX": 10,
-        "scrollY": 170.2,
+        "scrollY": 166.4,
         "zoom": 2.2,
         "rotation": 0,
         "hasFollowTarget": true
@@ -1500,9 +1500,9 @@
       {
         "player": {
           "x": 1210,
-          "y": 527.1,
+          "y": 529.9,
           "footX": 1210,
-          "footY": 527.1,
+          "footY": 529.9,
           "velX": 0,
           "velY": 85,
           "facing": "down"
@@ -1526,14 +1526,14 @@
           "hasFollowTarget": true
         },
         "transitionsCount": "to_bellhollow_from_farm",
-        "elapsedMs": 172
+        "elapsedMs": 174
       },
       {
         "player": {
           "x": 1210,
-          "y": 534.2,
+          "y": 538.4,
           "footX": 1210,
-          "footY": 534.2,
+          "footY": 538.4,
           "velX": 0,
           "velY": 85,
           "facing": "down"
@@ -1551,20 +1551,20 @@
             "height": 1040
           },
           "scrollX": 570,
-          "scrollY": 160.2,
+          "scrollY": 160.6,
           "zoom": 2.2,
           "rotation": 0,
           "hasFollowTarget": true
         },
         "transitionsCount": "to_bellhollow_from_farm",
-        "elapsedMs": 349
+        "elapsedMs": 423
       },
       {
         "player": {
           "x": 1210,
-          "y": 549.7,
+          "y": 558.2,
           "footX": 1210,
-          "footY": 549.7,
+          "footY": 558.2,
           "velX": 0,
           "velY": 85,
           "facing": "down"
@@ -1582,20 +1582,20 @@
             "height": 1040
           },
           "scrollX": 570,
-          "scrollY": 162.8,
+          "scrollY": 164.6,
           "zoom": 2.2,
           "rotation": 0,
           "hasFollowTarget": true
         },
         "transitionsCount": "to_bellhollow_from_farm",
-        "elapsedMs": 665
+        "elapsedMs": 617
       },
       {
         "player": {
           "x": 1210,
-          "y": 568.2,
+          "y": 569.6,
           "footX": 1210,
-          "footY": 568.2,
+          "footY": 569.6,
           "velX": 0,
           "velY": 85,
           "facing": "down"
@@ -1613,51 +1613,20 @@
             "height": 1040
           },
           "scrollX": 570,
-          "scrollY": 168.2,
+          "scrollY": 167.9,
           "zoom": 2.2,
           "rotation": 0,
           "hasFollowTarget": true
         },
         "transitionsCount": "to_bellhollow_from_farm",
-        "elapsedMs": 869
+        "elapsedMs": 799
       },
       {
         "player": {
           "x": 1210,
-          "y": 578.1,
+          "y": 590.8,
           "footX": 1210,
-          "footY": 578.1,
-          "velX": 0,
-          "velY": 85,
-          "facing": "down"
-        },
-        "zone": {
-          "current": "outer_woods",
-          "detected": "outer_woods",
-          "active": "outer_woods"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": 570,
-          "scrollY": 172,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_outer_woods",
-        "elapsedMs": 1108
-      },
-      {
-        "player": {
-          "x": 1210,
-          "y": 589.4,
-          "footX": 1210,
-          "footY": 589.4,
+          "footY": 590.8,
           "velX": 0,
           "velY": 85,
           "facing": "down"
@@ -1681,7 +1650,7 @@
           "hasFollowTarget": true
         },
         "transitionsCount": "to_outer_woods",
-        "elapsedMs": 1299
+        "elapsedMs": 1067
       },
       {
         "player": {
@@ -1712,7 +1681,7 @@
           "hasFollowTarget": true
         },
         "transitionsCount": "to_outer_woods",
-        "elapsedMs": 1490
+        "elapsedMs": 1255
       },
       {
         "player": {
@@ -1737,22 +1706,53 @@
             "height": 1040
           },
           "scrollX": 570,
-          "scrollY": 186.7,
+          "scrollY": 186.8,
           "zoom": 2.2,
           "rotation": 0,
           "hasFollowTarget": true
         },
         "transitionsCount": "to_outer_woods",
-        "elapsedMs": 1638
+        "elapsedMs": 1428
+      },
+      {
+        "player": {
+          "x": 1210,
+          "y": 602.2,
+          "footX": 1210,
+          "footY": 602.2,
+          "velX": 0,
+          "velY": 0,
+          "facing": "down"
+        },
+        "zone": {
+          "current": "outer_woods",
+          "detected": "outer_woods",
+          "active": "outer_woods"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": 570,
+          "scrollY": 195,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_outer_woods",
+        "elapsedMs": 1622
       }
     ],
     "northCrossing": [
       {
         "player": {
           "x": 1210,
-          "y": 589.4,
+          "y": 602.2,
           "footX": 1210,
-          "footY": 589.4,
+          "footY": 602.2,
           "velX": 0,
           "velY": -85,
           "facing": "up"
@@ -1770,20 +1770,20 @@
             "height": 1040
           },
           "scrollX": 570,
-          "scrollY": 193.7,
+          "scrollY": 198.5,
           "zoom": 2.2,
           "rotation": 0,
           "hasFollowTarget": true
         },
         "transitionsCount": "to_outer_woods",
-        "elapsedMs": 191
+        "elapsedMs": 182
       },
       {
         "player": {
           "x": 1210,
-          "y": 576.7,
+          "y": 578.1,
           "footX": 1210,
-          "footY": 576.7,
+          "footY": 578.1,
           "velX": 0,
           "velY": -85,
           "facing": "up"
@@ -1801,20 +1801,20 @@
             "height": 1040
           },
           "scrollX": 570,
-          "scrollY": 194.8,
+          "scrollY": 201.1,
           "zoom": 2.2,
           "rotation": 0,
           "hasFollowTarget": true
         },
         "transitionsCount": "to_outer_woods",
-        "elapsedMs": 369
+        "elapsedMs": 377
       },
       {
         "player": {
           "x": 1210,
-          "y": 563.9,
+          "y": 566.7,
           "footX": 1210,
-          "footY": 563.9,
+          "footY": 566.7,
           "velX": 0,
           "velY": -85,
           "facing": "up"
@@ -1832,20 +1832,20 @@
             "height": 1040
           },
           "scrollX": 570,
-          "scrollY": 194.8,
+          "scrollY": 201.1,
           "zoom": 2.2,
           "rotation": 0,
           "hasFollowTarget": true
         },
         "transitionsCount": "to_outer_woods",
-        "elapsedMs": 558
+        "elapsedMs": 579
       },
       {
         "player": {
           "x": 1210,
-          "y": 538.4,
+          "y": 541.2,
           "footX": 1210,
-          "footY": 538.4,
+          "footY": 541.2,
           "velX": 0,
           "velY": -85,
           "facing": "up"
@@ -1863,20 +1863,20 @@
             "height": 1040
           },
           "scrollX": 570,
-          "scrollY": 194.4,
+          "scrollY": 200.3,
           "zoom": 2.2,
           "rotation": 0,
           "hasFollowTarget": true
         },
         "transitionsCount": "to_bellhollow_from_ow",
-        "elapsedMs": 776
+        "elapsedMs": 805
       },
       {
         "player": {
           "x": 1210,
-          "y": 527.1,
+          "y": 529.9,
           "footX": 1210,
-          "footY": 527.1,
+          "footY": 529.9,
           "velX": 0,
           "velY": -85,
           "facing": "up"
@@ -1894,82 +1894,20 @@
             "height": 1040
           },
           "scrollX": 570,
-          "scrollY": 192.8,
+          "scrollY": 198.5,
           "zoom": 2.2,
           "rotation": 0,
           "hasFollowTarget": true
         },
         "transitionsCount": "to_bellhollow_from_ow",
-        "elapsedMs": 949
+        "elapsedMs": 994
       },
       {
         "player": {
           "x": 1210,
-          "y": 515.8,
+          "y": 517.2,
           "footX": 1210,
-          "footY": 515.8,
-          "velX": 0,
-          "velY": 0,
-          "facing": "up"
-        },
-        "zone": {
-          "current": "bellhollow",
-          "detected": "bellhollow",
-          "active": "bellhollow"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": 570,
-          "scrollY": 190.3,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_bellhollow_from_ow",
-        "elapsedMs": 1132
-      },
-      {
-        "player": {
-          "x": 1210,
-          "y": 515.8,
-          "footX": 1210,
-          "footY": 515.8,
-          "velX": 0,
-          "velY": 0,
-          "facing": "up"
-        },
-        "zone": {
-          "current": "bellhollow",
-          "detected": "bellhollow",
-          "active": "bellhollow"
-        },
-        "camera": {
-          "bounds": {
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1040
-          },
-          "scrollX": 570,
-          "scrollY": 186,
-          "zoom": 2.2,
-          "rotation": 0,
-          "hasFollowTarget": true
-        },
-        "transitionsCount": "to_bellhollow_from_ow",
-        "elapsedMs": 1337
-      },
-      {
-        "player": {
-          "x": 1210,
-          "y": 515.8,
-          "footX": 1210,
-          "footY": 515.8,
+          "footY": 517.2,
           "velX": 0,
           "velY": -85,
           "facing": "up"
@@ -1987,20 +1925,51 @@
             "height": 1040
           },
           "scrollX": 570,
-          "scrollY": 184.2,
+          "scrollY": 195.5,
           "zoom": 2.2,
           "rotation": 0,
           "hasFollowTarget": true
         },
         "transitionsCount": "to_bellhollow_from_ow",
-        "elapsedMs": 1519
+        "elapsedMs": 1158
       },
       {
         "player": {
           "x": 1210,
-          "y": 515.8,
+          "y": 494.5,
           "footX": 1210,
-          "footY": 515.8,
+          "footY": 494.5,
+          "velX": 0,
+          "velY": -85,
+          "facing": "up"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": 570,
+          "scrollY": 187.2,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_bellhollow_from_ow",
+        "elapsedMs": 1355
+      },
+      {
+        "player": {
+          "x": 1210,
+          "y": 481.7,
+          "footX": 1210,
+          "footY": 481.7,
           "velX": 0,
           "velY": 0,
           "facing": "up"
@@ -2018,21 +1987,52 @@
             "height": 1040
           },
           "scrollX": 570,
-          "scrollY": 182.6,
+          "scrollY": 181.9,
           "zoom": 2.2,
           "rotation": 0,
           "hasFollowTarget": true
         },
         "transitionsCount": "to_bellhollow_from_ow",
-        "elapsedMs": 1656
+        "elapsedMs": 1526
+      },
+      {
+        "player": {
+          "x": 1210,
+          "y": 481.7,
+          "footX": 1210,
+          "footY": 481.7,
+          "velX": 0,
+          "velY": 0,
+          "facing": "up"
+        },
+        "zone": {
+          "current": "bellhollow",
+          "detected": "bellhollow",
+          "active": "bellhollow"
+        },
+        "camera": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 1040
+          },
+          "scrollX": 570,
+          "scrollY": 177.1,
+          "zoom": 2.2,
+          "rotation": 0,
+          "hasFollowTarget": true
+        },
+        "transitionsCount": "to_bellhollow_from_ow",
+        "elapsedMs": 1672
       }
     ],
     "final": {
       "player": {
         "x": 1210,
-        "y": 515.8,
+        "y": 481.7,
         "footX": 1210,
-        "footY": 515.8,
+        "footY": 481.7,
         "velX": 0,
         "velY": 0,
         "facing": "up"
@@ -2050,7 +2050,7 @@
           "height": 1040
         },
         "scrollX": 570,
-        "scrollY": 182.6,
+        "scrollY": 177.1,
         "zoom": 2.2,
         "rotation": 0,
         "hasFollowTarget": true
@@ -2146,6 +2146,37 @@
     "zoneMatches": true,
     "boundsValid": true,
     "followOk": true
+  },
+  "summary": {
+    "test_type": "Integration Test (with stage_player checkpoints)",
+    "case_a_fog_bellhollow": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "case_b_bellhollow_farm": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "case_c_bellhollow_outerwoods": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "case_d_boundary_walk": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "case_e_seam_standing": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "case_f_save_continue": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "page_errors_count": 0,
+    "console_errors_count": 0,
+    "overall_pass": true,
+    "final_status": "PASS"
   },
   "pageErrors": [],
   "consoleErrors": []

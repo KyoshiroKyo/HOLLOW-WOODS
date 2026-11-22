@@ -2,14 +2,14 @@
   "console_errors": [],
   "page_errors": [],
   "failed_requests": [
-    "GET http://127.0.0.1:5269/assets/audio/bgm/beyond_the_hills.mp3 - net::ERR_ABORTED",
-    "GET http://127.0.0.1:5269/assets/audio/bgm/forgotten_orchard.mp3 - net::ERR_ABORTED"
+    "GET http://127.0.0.1:33447/assets/audio/bgm/beyond_the_hills.mp3 - net::ERR_ABORTED",
+    "GET http://127.0.0.1:33447/assets/audio/bgm/forgotten_orchard.mp3 - net::ERR_ABORTED"
   ],
   "culling_stats_default": {
     "zoom": 2.2,
-    "total": 741,
+    "total": 736,
     "visible": 170,
-    "culled": 571,
+    "culled": 566,
     "worldView": {
       "x": 509.0909090909091,
       "y": 96.36363636363637,
@@ -19,9 +19,9 @@
   },
   "culling_stats_zoom20": {
     "zoom": 2,
-    "total": 741,
+    "total": 736,
     "visible": 179,
-    "culled": 562,
+    "culled": 557,
     "worldView": {
       "x": 480,
       "y": 80,
@@ -31,9 +31,9 @@
   },
   "culling_stats_zoom25": {
     "zoom": 2.5,
-    "total": 741,
+    "total": 736,
     "visible": 159,
-    "culled": 582,
+    "culled": 577,
     "worldView": {
       "x": 544,
       "y": 116,
@@ -65,8 +65,8 @@
     "transparencyWorking": true
   },
   "zone_instances": {
-    "initialTotal": 1185,
-    "initialCullable": 741,
+    "initialTotal": 1180,
+    "initialCullable": 736,
     "renderedZonesStart": [
       "fog_crossing",
       "bellhollow",
@@ -81,11 +81,14 @@
       "sub_root_cellar",
       "sub_whispering_clearing"
     ],
-    "returnBellhollowTotal": 1187,
-    "returnBellhollowCullable": 741,
-    "secondReturnTotal": 1187,
-    "secondReturnCullable": 741,
-    "noDuplicateInstances": false,
+    "returnBellhollowTotal": 1182,
+    "returnBellhollowCullable": 736,
+    "secondReturnTotal": 1182,
+    "secondReturnCullable": 736,
+    "cullablesPreserved": true,
+    "repeatReturnStable": true,
+    "transientParticleDelta": 2,
+    "noDuplicateInstances": true,
     "noDuplicateCullables": true
   },
   "deferred_test": {
@@ -118,18 +121,59 @@
       "sub_whispering_clearing"
     ],
     "isSubWorkshopRendered": true,
-    "cullableAfter": 741,
-    "cullableAfterSecond": 741,
+    "cullableAfter": 736,
+    "cullableAfterSecond": 736,
     "idempotent": true
   },
   "lifecycle_test": {
-    "cullableBefore": 741,
-    "cullableAfterLoad": 741,
+    "cullableBefore": 736,
+    "cullableAfterLoad": 736,
     "match": true
   },
   "texture_check": {
     "totalTextures": 490,
     "missingUserCount": 0,
     "missingUserKeys": []
+  },
+  "summary": {
+    "test_type": "Integration Test (map rendering, culling and Y-sorting depth)",
+    "frustum_zoom_scaling": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "edda_house_depth": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "bram_smithy_depth": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "canopy_transparency": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "no_duplicate_instances": {
+      "pass": true,
+      "cullables_preserved": true,
+      "repeat_stable": true,
+      "status": "PASS"
+    },
+    "deferred_rendering_idempotent": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "save_load_match": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "texture_integrity": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "page_errors_count": 0,
+    "console_errors_count": 0,
+    "overall_pass": true,
+    "final_status": "PASS"
   }
 }

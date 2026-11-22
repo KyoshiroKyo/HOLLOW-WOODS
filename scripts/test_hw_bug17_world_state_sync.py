@@ -3,11 +3,17 @@ import sys
 import time
 import json
 import threading
+import socket
+import traceback
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-PORT = 5270
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(line_buffering=True)
+if hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(line_buffering=True)
+
 DIST_DIR = Path(__file__).resolve().parents[1] / 'dist'
 
 class Handler(SimpleHTTPRequestHandler):
@@ -16,7 +22,16 @@ class Handler(SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
 
+def get_free_port():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(('127.0.0.1', 0))
+        return s.getsockname()[1]
+
+PORT = get_free_port()
+httpd = None
+
 def run_server():
+    global httpd
     try:
         httpd = HTTPServer(('127.0.0.1', PORT), Handler)
         httpd.serve_forever()
@@ -30,8 +45,13 @@ print(f"[Server] Serving dist at http://127.0.0.1:{PORT}")
 VISUALS_DIR = 'Read/V1.5/Reports/Visuals/HW_BUG_17'
 os.makedirs(VISUALS_DIR, exist_ok=True)
 results = {}
+overall_pass = False
+exit_code = 1
 
-with sync_playwright() as pw:
+pw = None
+browser = None
+try:
+    pw = sync_playwright().start()
     chrome_path = "C:/Program Files/Google/Chrome/Application/chrome.exe"
     browser = pw.chromium.launch(
         executable_path=chrome_path,
@@ -526,24 +546,87 @@ with sync_playwright() as pw:
         'data': t8_data
     }
 
-    # Save summary data
+    # Evaluate criteria
+    all_tests_pass = all(results.get(f'test{i}', {}).get('pass') for i in range(1, 9))
+    no_fatal_errors = (len(page_errors) == 0)
+
+    overall_pass = (all_tests_pass and no_fatal_errors)
+
+    summary = {
+        'test_type': 'Integration Test (world state sync, save/continue & quest gating)',
+        'test1_fog_save_continue': {'pass': results['test1']['pass'], 'status': 'PASS' if results['test1']['pass'] else 'FAIL'},
+        'test2_bellhollow_save_continue': {'pass': results['test2']['pass'], 'status': 'PASS' if results['test2']['pass'] else 'FAIL'},
+        'test3_farm_save_continue': {'pass': results['test3']['pass'], 'status': 'PASS' if results['test3']['pass'] else 'FAIL'},
+        'test4_world_map_modal_sync': {'pass': results['test4']['pass'], 'status': 'PASS' if results['test4']['pass'] else 'FAIL'},
+        'test5_quest_gating_unlock': {'pass': results['test5']['pass'], 'status': 'PASS' if results['test5']['pass'] else 'FAIL'},
+        'test6_scene_restart_clean_reset': {'pass': results['test6']['pass'], 'status': 'PASS' if results['test6']['pass'] else 'FAIL'},
+        'test7_rapid_map_toggle': {'pass': results['test7']['pass'], 'status': 'PASS' if results['test7']['pass'] else 'FAIL'},
+        'test8_dynamic_tracked_quest': {'pass': results['test8']['pass'], 'status': 'PASS' if results['test8']['pass'] else 'FAIL'},
+        'page_errors_count': len(page_errors),
+        'console_errors_count': len(console_errors),
+        'failed_requests_count': len(failed_requests),
+        'overall_pass': overall_pass,
+        'final_status': 'PASS' if overall_pass else 'FAIL'
+    }
+
     summary_data = {
+        'summary': summary,
         'console_errors': console_errors,
         'page_errors': page_errors,
         'failed_requests': failed_requests,
         'results': results
     }
 
-    with open('Read/V1.5/Reports/HW_BUG_17_SAVE_DATA.json', 'w', encoding='utf-8') as f:
-        json.dump(summary_data, f, indent=2, ensure_ascii=False)
-    print("\nSaved telemetry data to Read/V1.5/Reports/HW_BUG_17_SAVE_DATA.json")
+    print("\n================ HW-BUG-17 VERIFICATION SUMMARY ================")
+    print(f"Test Type: Integration Test (world state sync & save persistence)")
+    for i in range(1, 9):
+        key = f"test{i}"
+        status_str = 'PASS' if results[key]['pass'] else 'FAIL'
+        print(f"Test {i}: {status_str}")
+    print(f"Page Errors: {len(page_errors)} | Failed Requests: {len(failed_requests)}")
+    print(f"OVERALL RESULT: {'PASS' if overall_pass else 'FAIL'}")
 
-    browser.close()
+    exit_code = 0 if overall_pass else 1
 
-print("\n--- HW-BUG-17 VERIFICATION SUMMARY ---")
-print(f"Console errors: {len(console_errors)}")
-print(f"Page errors: {len(page_errors)}")
-print(f"Failed requests (404): {len(failed_requests)}")
-for i in range(1, 9):
-    key = f"test{i}"
-    print(f"TEST {i} PASS: {results[key]['pass']}")
+except Exception as e:
+    print(f"\n[ERROR] Uncaught exception during HW-BUG-17 test execution: {e}")
+    traceback.print_exc()
+    summary_data = {
+        'exception': str(e),
+        'traceback': traceback.format_exc(),
+        'overall_pass': False,
+        'console_errors': console_errors,
+        'page_errors': page_errors,
+        'failed_requests': failed_requests,
+        'results': results
+    }
+    exit_code = 1
+
+finally:
+    try:
+        with open('Read/V1.5/Reports/HW_BUG_17_SAVE_DATA.json', 'w', encoding='utf-8') as f:
+            json.dump(summary_data, f, indent=2, ensure_ascii=False)
+        print("\nSaved telemetry data to Read/V1.5/Reports/HW_BUG_17_SAVE_DATA.json")
+    except Exception as save_err:
+        print(f"[ERROR] Failed to save world state JSON: {save_err}")
+
+    if browser:
+        try:
+            browser.close()
+        except Exception:
+            pass
+
+    if pw:
+        try:
+            pw.stop()
+        except Exception:
+            pass
+
+    if httpd:
+        try:
+            httpd.shutdown()
+        except Exception:
+            pass
+
+print(f"\n--- HW-BUG-17 FINISHED WITH EXIT CODE {exit_code} ---")
+sys.exit(exit_code)

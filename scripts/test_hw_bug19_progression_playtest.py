@@ -3,15 +3,18 @@ import sys
 import time
 import json
 import threading
+import socket
+import traceback
 
-sys.stdout.reconfigure(line_buffering=True)
-sys.stderr.reconfigure(line_buffering=True)
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(line_buffering=True)
+if hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(line_buffering=True)
 
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-PORT = 5295
 DIST_DIR = Path(__file__).resolve().parents[1] / 'dist'
 
 class Handler(SimpleHTTPRequestHandler):
@@ -20,7 +23,16 @@ class Handler(SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
 
+def get_free_port():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(('127.0.0.1', 0))
+        return s.getsockname()[1]
+
+PORT = get_free_port()
+httpd = None
+
 def run_server():
+    global httpd
     try:
         httpd = HTTPServer(('127.0.0.1', PORT), Handler)
         httpd.serve_forever()
@@ -33,8 +45,15 @@ print(f"[Playtest Server] Serving dist at http://127.0.0.1:{PORT}")
 
 VISUALS_DIR = 'Read/V1.5/Reports/Visuals/HW_BUG_19'
 os.makedirs(VISUALS_DIR, exist_ok=True)
+stages_results = {}
+summary_report = {}
+overall_pass = False
+exit_code = 1
 
-with sync_playwright() as pw:
+pw = None
+browser = None
+try:
+    pw = sync_playwright().start()
     chrome_path = "C:/Program Files/Google/Chrome/Application/chrome.exe"
     browser = pw.chromium.launch(
         executable_path=chrome_path,
@@ -537,8 +556,13 @@ with sync_playwright() as pw:
     # =========================================================================
     # SUMMARY & TELEMETRY EXPORT
     # =========================================================================
-    all_stages_pass = all(stages_results[k]['pass'] for k in stages_results)
+    all_stages_pass = all(stages_results.get(st, {}).get('pass', False) for st in ['stage1', 'stage2', 'stage3', 'stage4'])
+    no_fatal_errors = (len(page_errors) == 0)
+    overall_pass = all_stages_pass and no_fatal_errors
+
     summary_report = {
+        'overall_pass': overall_pass,
+        'test_type': "Integration Test (checkpoint staging between progression milestones)",
         'all_stages_pass': all_stages_pass,
         'stages': stages_results,
         'console_errors': console_errors,
@@ -546,15 +570,56 @@ with sync_playwright() as pw:
         'failed_requests': failed_requests
     }
 
-    with open('Read/V1.5/Reports/HW_BUG_19_PLAYTEST_DATA.json', 'w', encoding='utf-8') as f:
-        json.dump(summary_report, f, indent=2, ensure_ascii=False)
-    print("\nSaved playtest telemetry to Read/V1.5/Reports/HW_BUG_19_PLAYTEST_DATA.json")
+    print("\n================ HW-BUG-#19 PLAYTEST RESULTS ================")
+    print(f"Test Type: Integration Test (checkpoint staging between progression milestones)")
+    print(f"Console errors: {len(console_errors)}")
+    print(f"Page errors: {len(page_errors)}")
+    print(f"Failed requests (404): {len(failed_requests)}")
+    for st in ['stage1', 'stage2', 'stage3', 'stage4']:
+        print(f"{st.upper()} PASS: {stages_results.get(st, {}).get('pass', False)}")
+    print(f"OVERALL RESULT: {'PASS' if overall_pass else 'FAIL'}")
 
-    browser.close()
+    exit_code = 0 if overall_pass else 1
 
-print("\n================ HW-BUG-#19 PLAYTEST RESULTS ================")
-print(f"Console errors: {len(console_errors)}")
-print(f"Page errors: {len(page_errors)}")
-print(f"Failed requests (404): {len(failed_requests)}")
-for st in ['stage1', 'stage2', 'stage3', 'stage4']:
-    print(f"{st.upper()} PASS: {stages_results[st]['pass']}")
+except Exception as e:
+    print(f"\n[ERROR] Uncaught exception during HW-BUG-#19 test execution: {e}")
+    traceback.print_exc()
+    summary_report = {
+        'overall_pass': False,
+        'exception': str(e),
+        'traceback': traceback.format_exc(),
+        'stages': stages_results,
+        'console_errors': console_errors if 'console_errors' in locals() else [],
+        'page_errors': page_errors if 'page_errors' in locals() else [],
+        'failed_requests': failed_requests if 'failed_requests' in locals() else []
+    }
+    exit_code = 1
+
+finally:
+    try:
+        with open('Read/V1.5/Reports/HW_BUG_19_PLAYTEST_DATA.json', 'w', encoding='utf-8') as f:
+            json.dump(summary_report, f, indent=2, ensure_ascii=False)
+        print("\nSaved playtest telemetry to Read/V1.5/Reports/HW_BUG_19_PLAYTEST_DATA.json")
+    except Exception as save_err:
+        print(f"[ERROR] Failed to save playtest JSON: {save_err}")
+
+    if browser:
+        try:
+            browser.close()
+        except Exception:
+            pass
+
+    if pw:
+        try:
+            pw.stop()
+        except Exception:
+            pass
+
+    if httpd:
+        try:
+            httpd.shutdown()
+        except Exception:
+            pass
+
+print(f"\n--- HW-BUG-#19 FINISHED WITH EXIT CODE {exit_code} ---")
+sys.exit(exit_code)

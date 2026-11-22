@@ -3,11 +3,17 @@ import os
 import time
 import threading
 import json
+import socket
+import traceback
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-PORT = 5264
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(line_buffering=True)
+if hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(line_buffering=True)
+
 DIST_DIR = Path(__file__).resolve().parents[1] / 'dist'
 
 class Handler(SimpleHTTPRequestHandler):
@@ -16,11 +22,20 @@ class Handler(SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
 
+def get_free_port():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(('127.0.0.1', 0))
+        return s.getsockname()[1]
+
+PORT = get_free_port()
+httpd = None
+
 def run_server():
+    global httpd
     try:
         httpd = HTTPServer(('127.0.0.1', PORT), Handler)
         httpd.serve_forever()
-    except Exception as e:
+    except Exception:
         pass
 
 server_thread = threading.Thread(target=run_server, daemon=True)
@@ -29,8 +44,13 @@ print(f"[Server] Serving dist at http://127.0.0.1:{PORT}")
 
 os.makedirs('Read/V1.5/Reports/Visuals', exist_ok=True)
 results = {}
+overall_pass = False
+exit_code = 1
 
-with sync_playwright() as pw:
+pw = None
+browser = None
+try:
+    pw = sync_playwright().start()
     chrome_path = "C:/Program Files/Google/Chrome/Application/chrome.exe"
     browser = pw.chromium.launch(
         executable_path=chrome_path,
@@ -369,11 +389,106 @@ with sync_playwright() as pw:
         'followOk': f_follow_ok
     }
 
+    # Evaluate all test cases rigorously
+    case_a_pass = bool(
+        results.get('case_a', {}).get('crossedToBellhollow') and
+        results.get('case_a', {}).get('returnedToFog') and
+        results.get('case_a', {}).get('followMaintained') and
+        all(r == 0 for r in results.get('case_a', {}).get('cameraRotations', []))
+    )
+    case_b_pass = bool(
+        results.get('case_b', {}).get('crossedToFarm') and
+        results.get('case_b', {}).get('returnedToBellhollow') and
+        results.get('case_b', {}).get('followMaintained')
+    )
+    case_c_pass = bool(
+        results.get('case_c', {}).get('crossedToOuterWoods') and
+        results.get('case_c', {}).get('returnedToBellhollow') and
+        results.get('case_c', {}).get('followMaintained')
+    )
+    case_d_pass = bool(
+        results.get('case_d', {}).get('d1_clean') and
+        results.get('case_d', {}).get('d2_clean')
+    )
+    case_e_pass = bool(
+        results.get('case_e', {}).get('e1_stable') and
+        results.get('case_e', {}).get('e2_stable')
+    )
+    case_f_pass = bool(
+        results.get('case_f', {}).get('posMatches') and
+        results.get('case_f', {}).get('zoneMatches') and
+        results.get('case_f', {}).get('boundsValid') and
+        results.get('case_f', {}).get('followOk')
+    )
+    no_fatal_errors = (len(page_errors) == 0)
+
+    overall_pass = (case_a_pass and case_b_pass and case_c_pass and case_d_pass and case_e_pass and case_f_pass and no_fatal_errors)
+
+    summary = {
+        'test_type': 'Integration Test (with stage_player checkpoints)',
+        'case_a_fog_bellhollow': {'pass': case_a_pass, 'status': 'PASS' if case_a_pass else 'FAIL'},
+        'case_b_bellhollow_farm': {'pass': case_b_pass, 'status': 'PASS' if case_b_pass else 'FAIL'},
+        'case_c_bellhollow_outerwoods': {'pass': case_c_pass, 'status': 'PASS' if case_c_pass else 'FAIL'},
+        'case_d_boundary_walk': {'pass': case_d_pass, 'status': 'PASS' if case_d_pass else 'FAIL'},
+        'case_e_seam_standing': {'pass': case_e_pass, 'status': 'PASS' if case_e_pass else 'FAIL'},
+        'case_f_save_continue': {'pass': case_f_pass, 'status': 'PASS' if case_f_pass else 'FAIL'},
+        'page_errors_count': len(page_errors),
+        'console_errors_count': len(console_errors),
+        'overall_pass': overall_pass,
+        'final_status': 'PASS' if overall_pass else 'FAIL'
+    }
+
+    results['summary'] = summary
     results['pageErrors'] = page_errors
     results['consoleErrors'] = console_errors
 
-    with open("Read/V1.5/Reports/HW_BUG_13_CAMERA_DATA.json", "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=2, ensure_ascii=False)
-    print("\n[Playwright] HW-BUG-#13 Telemetry data written to Read/V1.5/Reports/HW_BUG_13_CAMERA_DATA.json")
+    print("\n================ HW-BUG-#13 VERIFICATION SUMMARY ================")
+    print(f"Test Type: Integration Test (boundary transitions via staged checkpoints)")
+    print(f"Case A (Fog Crossing <-> Bellhollow):  {'PASS' if case_a_pass else 'FAIL'}")
+    print(f"Case B (Bellhollow <-> Farm):          {'PASS' if case_b_pass else 'FAIL'}")
+    print(f"Case C (Bellhollow <-> Outer Woods):   {'PASS' if case_c_pass else 'FAIL'}")
+    print(f"Case D (Parallel Boundary Walk):       {'PASS' if case_d_pass else 'FAIL'}")
+    print(f"Case E (Seam Standing Stability):      {'PASS' if case_e_pass else 'FAIL'}")
+    print(f"Case F (Save / Continue At Boundary):  {'PASS' if case_f_pass else 'FAIL'}")
+    print(f"Page Errors: {len(page_errors)} | Console Errors: {len(console_errors)}")
+    print(f"OVERALL RESULT: {'PASS' if overall_pass else 'FAIL'}")
 
-print("\n--- HW-BUG-#13 TESTING COMPLETED ---")
+    exit_code = 0 if overall_pass else 1
+
+except Exception as e:
+    print(f"\n[ERROR] Uncaught exception during HW-BUG-#13 test execution: {e}")
+    traceback.print_exc()
+    results['exception'] = str(e)
+    results['traceback'] = traceback.format_exc()
+    results['overall_pass'] = False
+    exit_code = 1
+
+finally:
+    # Always save telemetry before exiting
+    try:
+        with open("Read/V1.5/Reports/HW_BUG_13_CAMERA_DATA.json", "w", encoding="utf-8") as f:
+            json.dump(results, f, indent=2, ensure_ascii=False)
+        print("\n[Playwright] HW-BUG-#13 Telemetry data written to Read/V1.5/Reports/HW_BUG_13_CAMERA_DATA.json")
+    except Exception as save_err:
+        print(f"[ERROR] Failed to save telemetry JSON: {save_err}")
+
+    if browser:
+        try:
+            browser.close()
+        except Exception:
+            pass
+
+    if pw:
+        try:
+            pw.stop()
+        except Exception:
+            pass
+
+    if httpd:
+        try:
+            httpd.shutdown()
+        except Exception:
+            pass
+
+print(f"\n--- HW-BUG-#13 FINISHED WITH EXIT CODE {exit_code} ---")
+sys.exit(exit_code)

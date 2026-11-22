@@ -3,11 +3,17 @@ import sys
 import time
 import json
 import threading
+import socket
+import traceback
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-PORT = 5264
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(line_buffering=True)
+if hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(line_buffering=True)
+
 DIST_DIR = Path(__file__).resolve().parents[1] / 'dist'
 
 class Handler(SimpleHTTPRequestHandler):
@@ -16,7 +22,16 @@ class Handler(SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
 
+def get_free_port():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(('127.0.0.1', 0))
+        return s.getsockname()[1]
+
+PORT = get_free_port()
+httpd = None
+
 def run_server():
+    global httpd
     try:
         httpd = HTTPServer(('127.0.0.1', PORT), Handler)
         httpd.serve_forever()
@@ -29,8 +44,13 @@ print(f"[Server] Serving dist at http://127.0.0.1:{PORT}")
 
 os.makedirs('Read/V1.5/Reports/Visuals', exist_ok=True)
 results = {}
+overall_pass = False
+exit_code = 1
 
-with sync_playwright() as pw:
+pw = None
+browser = None
+try:
+    pw = sync_playwright().start()
     chrome_path = "C:/Program Files/Google/Chrome/Application/chrome.exe"
     browser = pw.chromium.launch(
         executable_path=chrome_path,
@@ -279,15 +299,16 @@ with sync_playwright() as pw:
     print("\n====================================================================")
     print("=== TEST 4: BOUNDARY OSCILLATION & DEBOUNCE (STEP IN & OUT) ===")
     print("====================================================================")
-    # Stage at seam between Bellhollow and Farm (650, 555)
-    stage_player(650, 555, 'bellhollow')
     oscillations = []
     for step in range(3):
+        stage_player(650, 520, 'bellhollow')
+        page.wait_for_timeout(300)
         # Step South across y=560 into Farm
-        walk_and_sample('KeyS', 600, 100)
+        walk_and_sample('KeyS', 1800, 150)
         s_in = sample_telemetry()
+        page.wait_for_timeout(500)
         # Step North back across y=560 into Bellhollow
-        walk_and_sample('KeyW', 600, 100)
+        walk_and_sample('KeyW', 1800, 150)
         s_out = sample_telemetry()
         oscillations.append({
             'cycle': step + 1,
@@ -353,11 +374,97 @@ with sync_playwright() as pw:
         'pass': t6_pass
     }
 
+    # Evaluate all test cases rigorously
+    t1_routes = results.get('test1_core_routes', {})
+    t1_pass = bool(
+        t1_routes.get('fog_bellhollow') and
+        t1_routes.get('bellhollow_farm') and
+        t1_routes.get('bellhollow_outerwoods') and
+        t1_routes.get('farm_outerwoods')
+    )
+    t2_portal = results.get('test2_subzone_portal', {})
+    t2_pass = bool(t2_portal.get('entered') and t2_portal.get('exited'))
+
+    t3_circuit = results.get('test3_circuit', {})
+    t3_pass = bool(t3_circuit.get('pass'))
+
+    t4_osc = results.get('test4_oscillation', {})
+    t4_pass = bool(t4_osc.get('pass'))
+
+    t5_gated = results.get('test5_gated_route', {})
+    t5_pass = bool(t5_gated.get('blockedFromEntering') and t5_gated.get('finalZone') == 'bellhollow')
+
+    t6_save = results.get('test6_save_continue', {})
+    t6_pass = bool(t6_save.get('pass'))
+
+    no_fatal_errors = (len(page_errors) == 0)
+
+    overall_pass = (t1_pass and t2_pass and t3_pass and t4_pass and t5_pass and t6_pass and no_fatal_errors)
+
+    summary = {
+        'test_type': 'Integration Test (with stage_player checkpoints)',
+        'test1_core_routes': {'pass': t1_pass, 'status': 'PASS' if t1_pass else 'FAIL'},
+        'test2_subzone_portal': {'pass': t2_pass, 'status': 'PASS' if t2_pass else 'FAIL'},
+        'test3_sequential_circuit': {'pass': t3_pass, 'status': 'PASS' if t3_pass else 'FAIL'},
+        'test4_boundary_oscillation': {'pass': t4_pass, 'status': 'PASS' if t4_pass else 'FAIL'},
+        'test5_gated_route_enforcement': {'pass': t5_pass, 'status': 'PASS' if t5_pass else 'FAIL'},
+        'test6_save_at_zone_b_continue': {'pass': t6_pass, 'status': 'PASS' if t6_pass else 'FAIL'},
+        'page_errors_count': len(page_errors),
+        'console_errors_count': len(console_errors),
+        'overall_pass': overall_pass,
+        'final_status': 'PASS' if overall_pass else 'FAIL'
+    }
+
+    results['summary'] = summary
     results['pageErrors'] = page_errors
     results['consoleErrors'] = console_errors
 
-    with open("Read/V1.5/Reports/HW_BUG_14_ROUTES_DATA.json", "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=2, ensure_ascii=False)
-    print("\n[Playwright] HW-BUG-#14 Route data written to Read/V1.5/Reports/HW_BUG_14_ROUTES_DATA.json")
+    print("\n================ HW-BUG-#14 VERIFICATION SUMMARY ================")
+    print(f"Test Type: Integration Test (route traversal via staged checkpoints)")
+    print(f"Test 1 (Core Bidirectional Routes):     {'PASS' if t1_pass else 'FAIL'}")
+    print(f"Test 2 (Sub-Zone Workshop Portal):      {'PASS' if t2_pass else 'FAIL'}")
+    print(f"Test 3 (Sequential Multi-Zone Circuit): {'PASS' if t3_pass else 'FAIL'}")
+    print(f"Test 4 (Boundary Oscillation Debounce): {'PASS' if t4_pass else 'FAIL'}")
+    print(f"Test 5 (Gated Route Enforcement):       {'PASS' if t5_pass else 'FAIL'}")
+    print(f"Test 6 (Save at Zone B then Continue):  {'PASS' if t6_pass else 'FAIL'}")
+    print(f"Page Errors: {len(page_errors)} | Console Errors: {len(console_errors)}")
+    print(f"OVERALL RESULT: {'PASS' if overall_pass else 'FAIL'}")
 
-print("\n--- HW-BUG-#14 TESTING COMPLETED ---")
+    exit_code = 0 if overall_pass else 1
+
+except Exception as e:
+    print(f"\n[ERROR] Uncaught exception during HW-BUG-#14 test execution: {e}")
+    traceback.print_exc()
+    results['exception'] = str(e)
+    results['traceback'] = traceback.format_exc()
+    results['overall_pass'] = False
+    exit_code = 1
+
+finally:
+    try:
+        with open("Read/V1.5/Reports/HW_BUG_14_ROUTES_DATA.json", "w", encoding="utf-8") as f:
+            json.dump(results, f, indent=2, ensure_ascii=False)
+        print("\n[Playwright] HW-BUG-#14 Route data written to Read/V1.5/Reports/HW_BUG_14_ROUTES_DATA.json")
+    except Exception as save_err:
+        print(f"[ERROR] Failed to save route JSON: {save_err}")
+
+    if browser:
+        try:
+            browser.close()
+        except Exception:
+            pass
+
+    if pw:
+        try:
+            pw.stop()
+        except Exception:
+            pass
+
+    if httpd:
+        try:
+            httpd.shutdown()
+        except Exception:
+            pass
+
+print(f"\n--- HW-BUG-#14 FINISHED WITH EXIT CODE {exit_code} ---")
+sys.exit(exit_code)

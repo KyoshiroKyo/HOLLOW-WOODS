@@ -10,11 +10,11 @@
     "exited": true,
     "workshopPos": [
       1360,
-      1131.2
+      1129.8
     ],
     "returnPos": [
       1360,
-      944.6
+      946
     ]
   },
   "test3_circuit": {
@@ -71,6 +71,37 @@
     "zoneMatch": true,
     "followOk": true,
     "pass": true
+  },
+  "summary": {
+    "test_type": "Integration Test (with stage_player checkpoints)",
+    "test1_core_routes": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "test2_subzone_portal": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "test3_sequential_circuit": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "test4_boundary_oscillation": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "test5_gated_route_enforcement": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "test6_save_at_zone_b_continue": {
+      "pass": true,
+      "status": "PASS"
+    },
+    "page_errors_count": 0,
+    "console_errors_count": 0,
+    "overall_pass": true,
+    "final_status": "PASS"
   },
   "pageErrors": [],
   "consoleErrors": []

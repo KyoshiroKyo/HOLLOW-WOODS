@@ -3,11 +3,17 @@ import sys
 import time
 import json
 import threading
+import socket
+import traceback
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-PORT = 5264
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(line_buffering=True)
+if hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(line_buffering=True)
+
 DIST_DIR = Path(__file__).resolve().parents[1] / 'dist'
 
 class Handler(SimpleHTTPRequestHandler):
@@ -16,7 +22,16 @@ class Handler(SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
 
+def get_free_port():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(('127.0.0.1', 0))
+        return s.getsockname()[1]
+
+PORT = get_free_port()
+httpd = None
+
 def run_server():
+    global httpd
     try:
         httpd = HTTPServer(('127.0.0.1', PORT), Handler)
         httpd.serve_forever()
@@ -29,8 +44,13 @@ print(f"[Server] Serving dist at http://127.0.0.1:{PORT}")
 
 os.makedirs('Read/V1.5/Reports/Visuals', exist_ok=True)
 results = {}
+overall_pass = False
+exit_code = 1
 
-with sync_playwright() as pw:
+pw = None
+browser = None
+try:
+    pw = sync_playwright().start()
     chrome_path = "C:/Program Files/Google/Chrome/Application/chrome.exe"
     browser = pw.chromium.launch(
         executable_path=chrome_path,
@@ -350,11 +370,79 @@ with sync_playwright() as pw:
         'pass': case_e_pass
     }
 
+    # Evaluate all test cases rigorously
+    ca_pass = bool(results.get('case_a', {}).get('pass'))
+    cb_pass = bool(results.get('case_b', {}).get('pass'))
+    cc_pass = bool(results.get('case_c', {}).get('pass'))
+    cd_pass = bool(results.get('case_d', {}).get('pass'))
+    ce_pass = bool(results.get('case_e', {}).get('pass'))
+
+    no_fatal_errors = (len(page_errors) == 0)
+
+    overall_pass = (ca_pass and cb_pass and cc_pass and cd_pass and ce_pass and no_fatal_errors)
+
+    summary = {
+        'test_type': 'Integration Test (collision boundary verification via staged checkpoints)',
+        'case_a_fog_bellhollow': {'pass': ca_pass, 'status': 'PASS' if ca_pass else 'FAIL'},
+        'case_b_bellhollow_village': {'pass': cb_pass, 'status': 'PASS' if cb_pass else 'FAIL'},
+        'case_c_bellhollow_farm': {'pass': cc_pass, 'status': 'PASS' if cc_pass else 'FAIL'},
+        'case_d_outer_woods': {'pass': cd_pass, 'status': 'PASS' if cd_pass else 'FAIL'},
+        'case_e_gating_save_continue': {'pass': ce_pass, 'status': 'PASS' if ce_pass else 'FAIL'},
+        'page_errors_count': len(page_errors),
+        'console_errors_count': len(console_errors),
+        'overall_pass': overall_pass,
+        'final_status': 'PASS' if overall_pass else 'FAIL'
+    }
+
+    results['summary'] = summary
     results['pageErrors'] = page_errors
     results['consoleErrors'] = console_errors
 
-    with open("Read/V1.5/Reports/HW_BUG_15_COLLISION_DATA.json", "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=2, ensure_ascii=False)
-    print("\n[Playwright] HW-BUG-#15 Collision data written to Read/V1.5/Reports/HW_BUG_15_COLLISION_DATA.json")
+    print("\n================ HW-BUG-#15 VERIFICATION SUMMARY ================")
+    print(f"Test Type: Integration Test (collider regression across world zones)")
+    print(f"Case A (Fog Crossing & Entrance):       {'PASS' if ca_pass else 'FAIL'}")
+    print(f"Case B (Bellhollow Village Props/NPCs): {'PASS' if cb_pass else 'FAIL'}")
+    print(f"Case C (Bellhollow <-> Farm Fence):     {'PASS' if cc_pass else 'FAIL'}")
+    print(f"Case D (Outer Woods & Campfire):        {'PASS' if cd_pass else 'FAIL'}")
+    print(f"Case E (Valid Routes & Save/Continue):  {'PASS' if ce_pass else 'FAIL'}")
+    print(f"Page Errors: {len(page_errors)} | Console Errors: {len(console_errors)}")
+    print(f"OVERALL RESULT: {'PASS' if overall_pass else 'FAIL'}")
 
-print("\n--- HW-BUG-#15 TESTING COMPLETED ---")
+    exit_code = 0 if overall_pass else 1
+
+except Exception as e:
+    print(f"\n[ERROR] Uncaught exception during HW-BUG-#15 test execution: {e}")
+    traceback.print_exc()
+    results['exception'] = str(e)
+    results['traceback'] = traceback.format_exc()
+    results['overall_pass'] = False
+    exit_code = 1
+
+finally:
+    try:
+        with open("Read/V1.5/Reports/HW_BUG_15_COLLISION_DATA.json", "w", encoding="utf-8") as f:
+            json.dump(results, f, indent=2, ensure_ascii=False)
+        print("\n[Playwright] HW-BUG-#15 Collision data written to Read/V1.5/Reports/HW_BUG_15_COLLISION_DATA.json")
+    except Exception as save_err:
+        print(f"[ERROR] Failed to save collision JSON: {save_err}")
+
+    if browser:
+        try:
+            browser.close()
+        except Exception:
+            pass
+
+    if pw:
+        try:
+            pw.stop()
+        except Exception:
+            pass
+
+    if httpd:
+        try:
+            httpd.shutdown()
+        except Exception:
+            pass
+
+print(f"\n--- HW-BUG-#15 FINISHED WITH EXIT CODE {exit_code} ---")
+sys.exit(exit_code)
