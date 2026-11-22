@@ -1,0 +1,539 @@
+import os
+import sys
+import time
+import json
+import threading
+from http.server import SimpleHTTPRequestHandler, HTTPServer
+from pathlib import Path
+from playwright.sync_api import sync_playwright
+
+PORT = 5269
+DIST_DIR = Path(__file__).resolve().parents[1] / 'dist'
+
+class Handler(SimpleHTTPRequestHandler):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, directory=str(DIST_DIR), **kwargs)
+    def log_message(self, format, *args):
+        pass
+
+def run_server():
+    try:
+        httpd = HTTPServer(('127.0.0.1', PORT), Handler)
+        httpd.serve_forever()
+    except Exception:
+        pass
+
+server_thread = threading.Thread(target=run_server, daemon=True)
+server_thread.start()
+print(f"[Server] Serving dist at http://127.0.0.1:{PORT}")
+
+VISUALS_DIR = 'Read/V1.5/Reports/Visuals/HW_BUG_16'
+os.makedirs(VISUALS_DIR, exist_ok=True)
+results = {}
+
+with sync_playwright() as pw:
+    chrome_path = "C:/Program Files/Google/Chrome/Application/chrome.exe"
+    browser = pw.chromium.launch(
+        executable_path=chrome_path,
+        headless=True,
+        args=[
+            '--use-gl=angle',
+            '--use-angle=swiftshader',
+            '--enable-unsafe-swiftshader',
+            '--disable-dev-shm-usage',
+            '--no-sandbox'
+        ]
+    )
+    context = browser.new_context(viewport={'width': 1280, 'height': 720})
+    page = context.new_page()
+
+    console_errors = []
+    page_errors = []
+    failed_requests = []
+
+    page.on("console", lambda msg: console_errors.append(msg.text) if msg.type == "error" else None)
+    page.on("pageerror", lambda err: page_errors.append(str(err)))
+    page.on("requestfailed", lambda req: failed_requests.append(f"{req.method} {req.url} - {req.failure}"))
+
+    print(f"[Playwright] Loading game from http://127.0.0.1:{PORT}/?dev=1 ...")
+    start_load_time = time.time()
+    page.goto(f"http://127.0.0.1:{PORT}/?dev=1", wait_until='domcontentloaded')
+    page.wait_for_function("() => window.__PHASER_GAME__?.scene?.isActive('MainMenuScene')", timeout=35000)
+    print(f"[Playwright] MainMenuScene active after {(time.time() - start_load_time)*1000:.1f}ms")
+
+    # Start New Game
+    print("[Playwright] Starting New Game...")
+    page.evaluate("() => { const mm = window.__PHASER_GAME__.scene.getScene('MainMenuScene'); mm.startNewGame(); }")
+    page.wait_for_function("() => window.__PHASER_GAME__?.scene?.isActive('GameScene') && window.__PHASER_GAME__?.scene?.getScene('GameScene')?.player", timeout=30000)
+    print("[Playwright] GameScene active!")
+    time.sleep(1.5)
+
+    # Flush all deferred zones so background timers don't add async noise
+    page.evaluate("""() => {
+        const scene = window.__PHASER_GAME__.scene.getScene('GameScene');
+        const wb = scene.worldBuilder;
+        while (wb.pendingDeferredZones && wb.pendingDeferredZones.length > 0) {
+            const z = wb.pendingDeferredZones.shift();
+            wb.ensureZoneRendered(z);
+        }
+        // Warm up interaction outline singletons
+        if (typeof scene.handleInteractions === 'function') {
+            scene.handleInteractions();
+        }
+    }""")
+
+    def stage_player(x, y, zone_id):
+        return page.evaluate(f"""() => {{
+            const gs = window.__PHASER_GAME__.scene.getScene('GameScene');
+            gs.noclip = false;
+            gs.worldBuilder.ensureZoneRendered('{zone_id}');
+            gs.worldBuilder.setActiveZone('{zone_id}');
+            gs.currentZoneId = '{zone_id}';
+            gs.previousZoneId = '{zone_id}';
+            gs.playerState.setCurrentZone('{zone_id}');
+            gs.player.setPosition({x}, {y});
+            if (gs.player.body) {{
+                gs.player.body.reset({x}, {y});
+                gs.player.body.setVelocity(0, 0);
+            }}
+            const zone = gs.worldBuilder.zones.get('{zone_id}');
+            if (zone && gs.cameraSystem) {{
+                gs.cameraSystem.setWorldBounds(zone.bounds);
+            }}
+            gs.cameras.main.centerOn({x}, {y});
+            gs.cameras.main.preRender();
+            gs.worldBuilder.updateCameraCulling(gs.cameras.main);
+            gs.update(0, 16);
+            return {{
+                playerX: gs.player.x,
+                playerY: gs.player.y,
+                camX: gs.cameras.main.scrollX,
+                camY: gs.cameras.main.scrollY,
+                currentZone: gs.currentZoneId
+            }};
+        }}""")
+
+    # -------------------------------------------------------------
+    # PART 1: Baseline Culling & Zoom Tests with preRender sync
+    # -------------------------------------------------------------
+    print("\n--- PART 1: Baseline Culling & Zoom Tests ---")
+    stage_player(800, 260, 'bellhollow')
+
+    culling_stats_default = page.evaluate("""() => {
+        const scene = window.__PHASER_GAME__.scene.getScene('GameScene');
+        const cam = scene.cameras.main;
+        cam.setZoom(2.2);
+        cam.preRender();
+        scene.worldBuilder.updateCameraCulling(cam);
+        const stats = scene.worldBuilder.getCullableStats();
+        return {
+            zoom: cam.zoom,
+            total: stats.total,
+            visible: stats.visible,
+            culled: stats.culled,
+            worldView: { x: cam.worldView.x, y: cam.worldView.y, width: cam.worldView.width, height: cam.worldView.height }
+        };
+    }""")
+    print(f"Default Zoom ({culling_stats_default['zoom']}): total={culling_stats_default['total']}, visible={culling_stats_default['visible']}, culled={culling_stats_default['culled']}")
+
+    # Zoom change to 2.0 (wider viewport)
+    culling_stats_zoom20 = page.evaluate("""() => {
+        const scene = window.__PHASER_GAME__.scene.getScene('GameScene');
+        const cam = scene.cameras.main;
+        cam.setZoom(2.0);
+        cam.preRender();
+        scene.worldBuilder.updateCameraCulling(cam);
+        const stats = scene.worldBuilder.getCullableStats();
+        return {
+            zoom: cam.zoom,
+            total: stats.total,
+            visible: stats.visible,
+            culled: stats.culled,
+            worldView: { x: cam.worldView.x, y: cam.worldView.y, width: cam.worldView.width, height: cam.worldView.height }
+        };
+    }""")
+    print(f"Zoom 2.0: total={culling_stats_zoom20['total']}, visible={culling_stats_zoom20['visible']}, culled={culling_stats_zoom20['culled']}")
+
+    # Zoom change to 2.5 (narrower viewport)
+    culling_stats_zoom25 = page.evaluate("""() => {
+        const scene = window.__PHASER_GAME__.scene.getScene('GameScene');
+        const cam = scene.cameras.main;
+        cam.setZoom(2.5);
+        cam.preRender();
+        scene.worldBuilder.updateCameraCulling(cam);
+        const stats = scene.worldBuilder.getCullableStats();
+        return {
+            zoom: cam.zoom,
+            total: stats.total,
+            visible: stats.visible,
+            culled: stats.culled,
+            worldView: { x: cam.worldView.x, y: cam.worldView.y, width: cam.worldView.width, height: cam.worldView.height }
+        };
+    }""")
+    print(f"Zoom 2.5: total={culling_stats_zoom25['total']}, visible={culling_stats_zoom25['visible']}, culled={culling_stats_zoom25['culled']}")
+
+    # Restore default zoom 2.2
+    page.evaluate("""() => {
+        const scene = window.__PHASER_GAME__.scene.getScene('GameScene');
+        scene.cameras.main.setZoom(2.2);
+        scene.cameras.main.preRender();
+        scene.worldBuilder.updateCameraCulling(scene.cameras.main);
+    }""")
+
+    # -------------------------------------------------------------
+    # PART 2: Depth & Y-Sorting Verification
+    # -------------------------------------------------------------
+    print("\n--- PART 2: Depth & Y-Sorting Verification ---")
+    depth_edda_house = page.evaluate("""() => {
+        const scene = window.__PHASER_GAME__.scene.getScene('GameScene');
+        const player = scene.player;
+
+        // Position player in front of Edda's house (y=150)
+        player.setPosition(1160, 150);
+        player.body.reset(1160, 150);
+        scene.update(0, 16);
+        const frontDepth = player.depth;
+
+        let houseObj = null;
+        scene.children.each(child => {
+            if (child.texture && (child.texture.key.includes('house_elder_edda') || child.texture.key.includes('house_edda'))) {
+                houseObj = child;
+            }
+        });
+        const houseDepth = houseObj ? houseObj.depth : null;
+
+        // Position player behind Edda's house roof (y=110)
+        player.setPosition(1160, 110);
+        player.body.reset(1160, 110);
+        scene.update(0, 16);
+        const behindDepth = player.depth;
+
+        return {
+            houseDepth,
+            frontPlayerY: 150,
+            frontPlayerDepth: frontDepth,
+            playerInFrontOfHouse: houseDepth !== null ? frontDepth > houseDepth : null,
+            behindPlayerY: 110,
+            behindPlayerDepth: behindDepth,
+            playerBehindHouse: houseDepth !== null ? behindDepth < houseDepth : null
+        };
+    }""")
+    print(f"Edda House Depth Test: {depth_edda_house}")
+
+    # Bram Smithy Depth Test
+    depth_bram_smithy = page.evaluate("""() => {
+        const scene = window.__PHASER_GAME__.scene.getScene('GameScene');
+        const player = scene.player;
+
+        player.setPosition(1373, 445);
+        player.body.reset(1373, 445);
+        scene.update(0, 16);
+        const frontDepth = player.depth;
+
+        let smithyObj = null;
+        scene.children.each(child => {
+            if (child.texture && child.texture.key.includes('smithy_workshop_bram')) {
+                smithyObj = child;
+            }
+        });
+        const smithyDepth = smithyObj ? smithyObj.depth : null;
+
+        return {
+            smithyDepth,
+            playerY: 445,
+            playerDepth: frontDepth,
+            playerInFrontOfSmithy: smithyDepth !== null ? frontDepth > smithyDepth : null
+        };
+    }""")
+    print(f"Bram Smithy Depth Test: {depth_bram_smithy}")
+
+    # Tree Canopy Depth & Transparency Lerp Test in Bellhollow
+    tree_depth_test = page.evaluate("""() => {
+        const scene = window.__PHASER_GAME__.scene.getScene('GameScene');
+        const player = scene.player;
+        const trees = scene.worldBuilder.treeCanopyGroup.getChildren();
+        if (trees.length === 0) return { error: 'No trees in canopy group' };
+
+        // Find a tree at Bellhollow south rim (y >= 540)
+        let testTree = trees.find(t => t.x >= 700 && t.x <= 900 && t.y >= 540);
+        if (!testTree) testTree = trees[0];
+
+        // Ensure tree is active and visible in camera
+        scene.cameras.main.centerOn(testTree.x, testTree.y);
+        scene.cameras.main.preRender();
+        scene.worldBuilder.updateCameraCulling(scene.cameras.main);
+
+        // Move player directly under this tree's canopy
+        player.setPosition(testTree.x, testTree.y - 25);
+        player.body.reset(testTree.x, testTree.y - 25);
+
+        // Run 25 frames of update to allow lerp to smoothly transition to 0.35
+        for (let i = 0; i < 25; i++) {
+            scene.worldBuilder.updateCanopyTransparency(player.x, player.y);
+        }
+        const alphaUnder = Math.round(testTree.alpha * 100) / 100;
+
+        // Move player far away
+        player.setPosition(testTree.x + 300, testTree.y + 300);
+        player.body.reset(testTree.x + 300, testTree.y + 300);
+        for (let i = 0; i < 25; i++) {
+            scene.worldBuilder.updateCanopyTransparency(player.x, player.y);
+        }
+        const alphaAway = Math.round(testTree.alpha * 100) / 100;
+
+        return {
+            treeX: testTree.x,
+            treeY: testTree.y,
+            treeDepth: testTree.depth,
+            alphaUnder,
+            alphaAway,
+            transparencyWorking: alphaUnder <= 0.40 && alphaAway >= 0.95
+        };
+    }""")
+    print(f"Tree Canopy Depth & Transparency Test: {tree_depth_test}")
+
+    # -------------------------------------------------------------
+    # PART 3: Zone Leave & Return Instance Integrity
+    # -------------------------------------------------------------
+    print("\n--- PART 3: Zone Transition & Instance Count Integrity ---")
+    zone_instances = page.evaluate("""() => {
+        const scene = window.__PHASER_GAME__.scene.getScene('GameScene');
+        const countChildren = () => scene.children.getChildren().length;
+        const getCullableCount = () => scene.worldBuilder.getCullableStats().total;
+
+        stagePlayerHelper = (x, y, zoneId) => {
+            scene.worldBuilder.ensureZoneRendered(zoneId);
+            scene.worldBuilder.setActiveZone(zoneId);
+            scene.currentZoneId = zoneId;
+            scene.player.setPosition(x, y);
+            scene.player.body.reset(x, y);
+            scene.update(0, 16);
+            if (typeof scene.handleInteractions === 'function') {
+                scene.handleInteractions();
+            }
+        };
+
+        stagePlayerHelper(800, 300, 'bellhollow');
+        const initialTotal = countChildren();
+        const initialCullable = getCullableCount();
+        const renderedZonesStart = Array.from(scene.worldBuilder.renderedZones);
+
+        // Move to Sanctuary Farm
+        stagePlayerHelper(650, 700, 'sanctuary_farm');
+        const farmTotal = countChildren();
+        const farmCullable = getCullableCount();
+
+        // Move back to Bellhollow
+        stagePlayerHelper(800, 300, 'bellhollow');
+        const returnBellhollowTotal = countChildren();
+        const returnBellhollowCullable = getCullableCount();
+
+        // Move to Outer Woods
+        stagePlayerHelper(1250, 650, 'outer_woods');
+        const outerTotal = countChildren();
+        const outerCullable = getCullableCount();
+
+        // Move back to Bellhollow again
+        stagePlayerHelper(800, 300, 'bellhollow');
+        const secondReturnTotal = countChildren();
+        const secondReturnCullable = getCullableCount();
+
+        return {
+            initialTotal,
+            initialCullable,
+            renderedZonesStart,
+            returnBellhollowTotal,
+            returnBellhollowCullable,
+            secondReturnTotal,
+            secondReturnCullable,
+            noDuplicateInstances: (returnBellhollowTotal === initialTotal) && (secondReturnTotal === initialTotal),
+            noDuplicateCullables: (returnBellhollowCullable === initialCullable) && (secondReturnCullable === initialCullable)
+        };
+    }""")
+    print(f"Zone Return Integrity Test: {zone_instances}")
+
+    # -------------------------------------------------------------
+    # PART 4: Deferred Zone Rendering & Restoration
+    # -------------------------------------------------------------
+    print("\n--- PART 4: Deferred Zone Rendering ---")
+    deferred_test = page.evaluate("""() => {
+        const scene = window.__PHASER_GAME__.scene.getScene('GameScene');
+        const wb = scene.worldBuilder;
+
+        const renderedBefore = Array.from(wb.renderedZones);
+        wb.ensureZoneRendered('sub_bell_workshop');
+        const renderedAfter = Array.from(wb.renderedZones);
+
+        const isSubWorkshopRendered = wb.renderedZones.has('sub_bell_workshop');
+        const cullableAfter = wb.getCullableStats().total;
+
+        // Calling ensureZoneRendered again should be an idempotent no-op
+        wb.ensureZoneRendered('sub_bell_workshop');
+        const cullableAfterSecond = wb.getCullableStats().total;
+
+        return {
+            renderedBefore,
+            renderedAfter,
+            isSubWorkshopRendered,
+            cullableAfter,
+            cullableAfterSecond,
+            idempotent: cullableAfter === cullableAfterSecond
+        };
+    }""")
+    print(f"Deferred Zone Test: {deferred_test}")
+
+    # -------------------------------------------------------------
+    # PART 5: Save/Continue & Restart Lifecycle
+    # -------------------------------------------------------------
+    print("\n--- PART 5: Save/Continue & Restart Lifecycle ---")
+    lifecycle_test = page.evaluate("""() => {
+        const scene = window.__PHASER_GAME__.scene.getScene('GameScene');
+        const cullableBefore = scene.worldBuilder.getCullableStats().total;
+
+        scene.handleSaveManual();
+        scene.handleLoadCheckpoint();
+        scene.update(0, 16);
+
+        const cullableAfterLoad = scene.worldBuilder.getCullableStats().total;
+
+        return {
+            cullableBefore,
+            cullableAfterLoad,
+            match: cullableBefore === cullableAfterLoad
+        };
+    }""")
+    print(f"Save/Load Lifecycle Test: {lifecycle_test}")
+
+    # -------------------------------------------------------------
+    # PART 6: Texture Integrity Check
+    # -------------------------------------------------------------
+    print("\n--- PART 6: Texture Integrity Check ---")
+    texture_check = page.evaluate("""() => {
+        const scene = window.__PHASER_GAME__.scene.getScene('GameScene');
+        const tm = scene.textures;
+        const allKeys = Object.keys(tm.list);
+
+        const missingUserKeys = [];
+        allKeys.forEach(k => {
+            if (k === '__MISSING') return;
+            const tex = tm.get(k);
+            if (!tex || tex.key === '__MISSING') {
+                missingUserKeys.push(k);
+            }
+        });
+
+        return {
+            totalTextures: allKeys.length,
+            missingUserCount: missingUserKeys.length,
+            missingUserKeys
+        };
+    }""")
+    print(f"Texture Check: {texture_check}")
+
+    # -------------------------------------------------------------
+    # PART 7: Visual Capture at Key Map Coordinates
+    # -------------------------------------------------------------
+    print("\n--- PART 7: Capturing Visual Proofs ---")
+
+    # 1. Bellhollow Bram Workshop (1373, 432)
+    stage_player(1333, 477, 'bellhollow')
+    time.sleep(0.5)
+    path_bram = f"{VISUALS_DIR}/hw_bug16_bellhollow_bram_workshop.png"
+    page.screenshot(path=path_bram)
+    print(f"Saved visual: {path_bram}")
+
+    # 2. Bellhollow Plaza Center (800, 260)
+    stage_player(800, 260, 'bellhollow')
+    time.sleep(0.5)
+    path_plaza = f"{VISUALS_DIR}/hw_bug16_bellhollow_plaza.png"
+    page.screenshot(path=path_plaza)
+    print(f"Saved visual: {path_plaza}")
+
+    # 3. Sanctuary Farm (700, 680)
+    stage_player(700, 680, 'sanctuary_farm')
+    time.sleep(0.5)
+    path_farm = f"{VISUALS_DIR}/hw_bug16_sanctuary_farm.png"
+    page.screenshot(path=path_farm)
+    print(f"Saved visual: {path_farm}")
+
+    # 4. Outer Woods (1210, 620)
+    stage_player(1210, 620, 'outer_woods')
+    time.sleep(0.5)
+    path_woods = f"{VISUALS_DIR}/hw_bug16_outer_woods.png"
+    page.screenshot(path=path_woods)
+    print(f"Saved visual: {path_woods}")
+
+    # 5. Seam Bellhollow <-> Farm (650, 560)
+    stage_player(650, 560, 'bellhollow')
+    time.sleep(0.5)
+    path_seam = f"{VISUALS_DIR}/hw_bug16_seam_bellhollow_farm.png"
+    page.screenshot(path=path_seam)
+    print(f"Saved visual: {path_seam}")
+
+    # 6. Sub Bell Workshop (1360, 1150)
+    stage_player(1360, 1150, 'sub_bell_workshop')
+    time.sleep(0.5)
+    path_workshop = f"{VISUALS_DIR}/hw_bug16_sub_bell_workshop.png"
+    page.screenshot(path=path_workshop)
+    print(f"Saved visual: {path_workshop}")
+
+    # 7. Zoom Comparison: Plaza at 2.0x vs 2.5x
+    stage_player(800, 260, 'bellhollow')
+    page.evaluate("""() => {
+        const scene = window.__PHASER_GAME__.scene.getScene('GameScene');
+        scene.cameras.main.setZoom(2.0);
+        scene.cameras.main.preRender();
+        scene.worldBuilder.updateCameraCulling(scene.cameras.main);
+        scene.update(0, 16);
+    }""")
+    time.sleep(0.5)
+    path_zoom20 = f"{VISUALS_DIR}/hw_bug16_zoom_20_plaza.png"
+    page.screenshot(path=path_zoom20)
+    print(f"Saved visual: {path_zoom20}")
+
+    page.evaluate("""() => {
+        const scene = window.__PHASER_GAME__.scene.getScene('GameScene');
+        scene.cameras.main.setZoom(2.5);
+        scene.cameras.main.preRender();
+        scene.worldBuilder.updateCameraCulling(scene.cameras.main);
+        scene.update(0, 16);
+    }""")
+    time.sleep(0.5)
+    path_zoom25 = f"{VISUALS_DIR}/hw_bug16_zoom_25_plaza.png"
+    page.screenshot(path=path_zoom25)
+    print(f"Saved visual: {path_zoom25}")
+
+    # Compile report data
+    report_data = {
+        'console_errors': console_errors,
+        'page_errors': page_errors,
+        'failed_requests': failed_requests,
+        'culling_stats_default': culling_stats_default,
+        'culling_stats_zoom20': culling_stats_zoom20,
+        'culling_stats_zoom25': culling_stats_zoom25,
+        'depth_edda_house': depth_edda_house,
+        'depth_bram_smithy': depth_bram_smithy,
+        'tree_depth_test': tree_depth_test,
+        'zone_instances': zone_instances,
+        'deferred_test': deferred_test,
+        'lifecycle_test': lifecycle_test,
+        'texture_check': texture_check
+    }
+
+    with open('Read/V1.5/Reports/HW_BUG_16_RENDER_DATA.json', 'w', encoding='utf-8') as f:
+        json.dump(report_data, f, indent=2, ensure_ascii=False)
+    print("\nSaved telemetry data to Read/V1.5/Reports/HW_BUG_16_RENDER_DATA.json")
+
+    browser.close()
+
+print("\n--- VERIFICATION SUMMARY ---")
+print(f"Console errors: {len(console_errors)}")
+print(f"Page errors: {len(page_errors)}")
+print(f"Missing user textures: {texture_check['missingUserCount']}")
+print(f"Edda house depth PASS: {depth_edda_house.get('playerInFrontOfHouse') and depth_edda_house.get('playerBehindHouse')}")
+print(f"Bram smithy depth PASS: {depth_bram_smithy.get('playerInFrontOfSmithy')}")
+print(f"Canopy transparency PASS: {tree_depth_test.get('transparencyWorking')}")
+print(f"No duplicate instances PASS: {zone_instances.get('noDuplicateInstances') and zone_instances.get('noDuplicateCullables')}")
+print(f"Deferred rendering idempotent PASS: {deferred_test.get('idempotent')}")
+print(f"Save/Load match PASS: {lifecycle_test.get('match')}")
+print(f"Frustum Zoom Scaling PASS: {culling_stats_zoom20['visible'] >= culling_stats_default['visible'] >= culling_stats_zoom25['visible']}")
