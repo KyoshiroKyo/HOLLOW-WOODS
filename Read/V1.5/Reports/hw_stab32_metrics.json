@@ -1,5 +1,5 @@
 {
-  "timestamp": 1795438503.9643059,
+  "timestamp": 1795441438.409846,
   "total": 15,
   "passed": 15,
   "failed": 0,
@@ -15,7 +15,7 @@
       "test": 2,
       "name": "Part A2: Hold Shift+W for 3s -> Continuous Sprint & Stamina Drain (7 Fields Logged)",
       "passed": true,
-      "details": "allSprinting=True, lastSpd=140, stamina=46.5"
+      "details": "allSprinting=True, lastSpd=140, stamina=36.4"
     },
     {
       "test": 3,

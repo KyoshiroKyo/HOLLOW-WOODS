@@ -1,9 +1,9 @@
 {
   "test_1_high_rm_off": {
     "isRM": false,
-    "deltaScale": 0.0077268721321850364,
-    "minScale": 0.9960543570928941,
-    "maxScale": 1.0037812292250792,
+    "deltaScale": 0.006571437805656721,
+    "minScale": 0.9966462409396515,
+    "maxScale": 1.0032176787453082,
     "sampleCount": 25
   },
   "test_2_high_rm_on": {
@@ -15,16 +15,16 @@
     "isVisible": true,
     "sampleCount": 25,
     "diag": {
-      "firstRadius": 239.0984,
-      "lastRadius": 245.59163112714103,
-      "firstScale": 1.6848965375,
-      "lastScale": 1.7306535255990718,
+      "firstRadius": 240.26595,
+      "lastRadius": 246.5781967426079,
+      "firstScale": 1.69312411640625,
+      "lastScale": 1.7376057301705652,
       "breathingSetting": true
     }
   },
   "test_3_medium_rm_off": {
     "isRM": false,
-    "deltaScale": 0.006598029774327108
+    "deltaScale": 0.006947673667341503
   },
   "test_4_medium_rm_on": {
     "isRM": true,
@@ -62,7 +62,7 @@
     "hbActive": false
   },
   "test_9_bat_attack_flicker": {
-    "deltaA": 18.63102466177068,
+    "deltaA": 19.054673304071997,
     "deltaB": 0,
     "timerInitial": 2500,
     "timerAfter": 2151.400000000002,
@@ -80,12 +80,12 @@
   },
   "test_12_transition_and_fps": {
     "delta1": 0,
-    "delta2": 0.0072053217414783655,
+    "delta2": 0.00575583680094327,
     "delta3": 0,
-    "frameTimeOn": 139.31000000014902,
-    "frameTimeOff": 146.7199999999255,
-    "fpsOn": 7.178235589684375,
-    "fpsOff": 6.815703380592337,
-    "frameRatio": 0.9494956379513342
+    "frameTimeOn": 147.23999999994413,
+    "frameTimeOff": 147.95,
+    "fpsOn": 6.791632708505701,
+    "fpsOff": 6.7590402162892875,
+    "frameRatio": 0.9952010814460571
   }
 }

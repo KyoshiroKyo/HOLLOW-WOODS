@@ -1924,6 +1924,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     const w = 1280;
     const h = 720;
 
+    // Classic V15-06 reference cc40bed060b8: static dread grows from 30 to 0.
+    // The original FOW vision factor remains in VeilSystem; no extra radius multiplier.
+    const classicTendrilFactor = Phaser.Math.Clamp((30 - composure) / 30, 0, 1);
+
     // 1. Mép xanh tím than ngoài rìa (0x100b1c)
     const edgeColor = 0x100b1c;
     const baseEdgeAlpha = (0.05 + t * 0.12) * intensityMultiplier;
@@ -1948,11 +1952,34 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.panicVignetteGraphics.fillRect(w - l.inset - l.thick, l.inset + l.thick, l.thick, h - (l.inset + l.thick) * 2);
     }
 
+    // Restore V15-06's oppressive visual constriction at <30% composure.
+    // Static bands: no high-frequency pulsing, no duplicate VeilSystem overlay.
+    // Exact classic geometry: 36 -> 140 px and 80 -> 260 px corner reach.
+    if (composure < 30) {
+      const classicThickness = Math.round(
+        Phaser.Math.Linear(36, 140, classicTendrilFactor) * intensityMultiplier
+      );
+      const classicAlpha = Phaser.Math.Clamp(
+        (0.45 + 0.42 * classicTendrilFactor) * intensityMultiplier, 0, 0.92
+      );
+      this.panicVignetteGraphics.fillStyle(0x120617, classicAlpha);
+      this.panicVignetteGraphics.fillRect(0, 0, w, classicThickness);
+      this.panicVignetteGraphics.fillRect(0, h - classicThickness, w, classicThickness);
+      this.panicVignetteGraphics.fillRect(0, 0, classicThickness, h);
+      this.panicVignetteGraphics.fillRect(w - classicThickness, 0, classicThickness, h);
+    }
+
     // 2. Sương tím bốn góc màn hình (0x24143f & 0x271039) — Thiết kế bo mềm nhiều lớp (Organic Curved Fans)
     const baseCornerSize = Math.round((60 + t * 85) * intensityMultiplier);
-    const dynamicCorner = (isReducedMotion || !isLightMotion)
-      ? baseCornerSize
-      : Math.round(baseCornerSize + pulseFactor * (10 + t * 14));
+    // Restore V15-06's 80 -> 260 px corner reach, keeping today's soft organic shape.
+    const classicCornerSize = composure < 30
+      ? Math.round(Phaser.Math.Linear(80, 260, classicTendrilFactor) * intensityMultiplier)
+      : 0;
+    const dynamicCorner = Math.max(classicCornerSize,
+      (isReducedMotion || !isLightMotion)
+        ? baseCornerSize
+        : Math.round(baseCornerSize + pulseFactor * (10 + t * 14))
+    );
 
     // Lớp 1: Sương tím tối ngoài rìa (0x24143f)
     const mist1Alpha = Math.min(0.65, (0.10 + t * 0.24 + pulseFactor * 0.06 * t) * intensityMultiplier);

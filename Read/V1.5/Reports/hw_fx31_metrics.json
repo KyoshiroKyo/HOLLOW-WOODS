@@ -12,27 +12,27 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 85.26316696941632,
+    "currentLanternRadius": 74.64283149336855,
     "veilDistortionDrawn": false
   },
   "test_2_comp_40": {
-    "composure": 40.44537499999999,
+    "composure": 40.09508,
     "zoneId": "outer_woods",
     "isPanicVignetteActive": false,
     "hasPanicGraphics": true,
     "panicAlpha": 1,
     "isHeartbeatActive": true,
-    "heartbeatBpm": 84,
+    "heartbeatBpm": 85,
     "panicEffectsEnabled": true,
     "lightMotionEnabled": true,
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 105.30639977258227,
+    "currentLanternRadius": 95.82344758182788,
     "veilDistortionDrawn": false
   },
   "test_3_comp_39": {
-    "composure": 39.26522,
+    "composure": 39.412870000000005,
     "zoneId": "outer_woods",
     "isPanicVignetteActive": true,
     "hasPanicGraphics": true,
@@ -44,11 +44,11 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 110.66163261544634,
+    "currentLanternRadius": 101.96367117529931,
     "veilDistortionDrawn": false
   },
   "test_4_comp_25": {
-    "composure": 25.40785,
+    "composure": 25.517935,
     "zoneId": "outer_woods",
     "isPanicVignetteActive": true,
     "hasPanicGraphics": true,
@@ -60,11 +60,11 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 126.70143498350662,
+    "currentLanternRadius": 117.54554484854619,
     "veilDistortionDrawn": false
   },
   "test_5_comp_20": {
-    "composure": 20.405314999999998,
+    "composure": 20.32027,
     "zoneId": "outer_woods",
     "isPanicVignetteActive": true,
     "hasPanicGraphics": true,
@@ -76,11 +76,11 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 127.5003708051856,
+    "currentLanternRadius": 118.49113498432725,
     "veilDistortionDrawn": false
   },
   "test_6_comp_10": {
-    "composure": 10.412845,
+    "composure": 10.5505,
     "zoneId": "outer_woods",
     "isPanicVignetteActive": true,
     "hasPanicGraphics": true,
@@ -92,11 +92,11 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 128.4523907705334,
+    "currentLanternRadius": 120.59507294796803,
     "veilDistortionDrawn": false
   },
   "test_7_comp_0": {
-    "composure": 0.4028550000000012,
+    "composure": 0.2326800000000001,
     "zoneId": "outer_woods",
     "isPanicVignetteActive": true,
     "hasPanicGraphics": true,
@@ -108,11 +108,11 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 114.91013163197682,
+    "currentLanternRadius": 115.88864289233757,
     "veilDistortionDrawn": false
   },
   "test_8_day_horror": {
-    "composure": 20.592980000000004,
+    "composure": 20.70056,
     "zoneId": "outer_woods",
     "isPanicVignetteActive": true,
     "hasPanicGraphics": true,
@@ -124,11 +124,11 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 118.21505192986511,
+    "currentLanternRadius": 116.62164329236717,
     "veilDistortionDrawn": false
   },
   "test_9_night_horror": {
-    "composure": 20.387795,
+    "composure": 20.42783,
     "zoneId": "outer_woods",
     "isPanicVignetteActive": true,
     "hasPanicGraphics": true,
@@ -140,11 +140,11 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 111.26048432181449,
+    "currentLanternRadius": 110.33224760153516,
     "veilDistortionDrawn": false
   },
   "test_10_bellhollow": {
-    "composure": 10.40782,
+    "composure": 10.422805,
     "zoneId": "bellhollow",
     "isPanicVignetteActive": false,
     "hasPanicGraphics": true,
@@ -156,11 +156,11 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 103.43725729893399,
+    "currentLanternRadius": 102.90415148232141,
     "veilDistortionDrawn": false
   },
   "test_11_sanctuary_farm": {
-    "composure": 10.43284,
+    "composure": 10.622979999999998,
     "zoneId": "sanctuary_farm",
     "isPanicVignetteActive": false,
     "hasPanicGraphics": true,
@@ -172,11 +172,11 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 98.83528916159158,
+    "currentLanternRadius": 97.39926401011579,
     "veilDistortionDrawn": false
   },
   "test_12_sir_vaelen": {
-    "composure": 12.073744000000001,
+    "composure": 11.257024,
     "zoneId": "outer_woods",
     "isPanicVignetteActive": false,
     "hasPanicGraphics": true,
@@ -188,12 +188,12 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 96.74665654400002,
+    "currentLanternRadius": 96.49890510483843,
     "veilDistortionDrawn": false
   },
   "test_13_panic_toggle": {
     "off": {
-      "composure": 10.63801,
+      "composure": 10.6405,
       "zoneId": "outer_woods",
       "isPanicVignetteActive": false,
       "hasPanicGraphics": true,
@@ -205,11 +205,11 @@
       "rawLightMotionEnabled": true,
       "panicIntensity": "STANDARD",
       "reducedMotion": false,
-      "currentLanternRadius": 97.42005437967097,
+      "currentLanternRadius": 97.08507554289066,
       "veilDistortionDrawn": false
     },
     "on": {
-      "composure": 12.511989999999997,
+      "composure": 12.469434999999997,
       "zoneId": "outer_woods",
       "isPanicVignetteActive": true,
       "hasPanicGraphics": true,
@@ -221,13 +221,13 @@
       "rawLightMotionEnabled": true,
       "panicIntensity": "STANDARD",
       "reducedMotion": false,
-      "currentLanternRadius": 102.18929059434328,
+      "currentLanternRadius": 101.71216741498473,
       "veilDistortionDrawn": false
     }
   },
   "test_14_light_motion_toggle": {
     "off": {
-      "composure": 12.511989999999997,
+      "composure": 12.469434999999997,
       "zoneId": "outer_woods",
       "isPanicVignetteActive": true,
       "hasPanicGraphics": true,
@@ -239,11 +239,11 @@
       "rawLightMotionEnabled": false,
       "panicIntensity": "STANDARD",
       "reducedMotion": false,
-      "currentLanternRadius": 102.18929059434328,
+      "currentLanternRadius": 101.71216741498473,
       "veilDistortionDrawn": false
     },
     "on": {
-      "composure": 12.511989999999997,
+      "composure": 12.469434999999997,
       "zoneId": "outer_woods",
       "isPanicVignetteActive": true,
       "hasPanicGraphics": true,
@@ -255,13 +255,13 @@
       "rawLightMotionEnabled": true,
       "panicIntensity": "STANDARD",
       "reducedMotion": false,
-      "currentLanternRadius": 102.18929059434328,
+      "currentLanternRadius": 101.71216741498473,
       "veilDistortionDrawn": false
     }
   },
   "test_15_reduced_motion": {
     "rm_on": {
-      "composure": 12.929829999999997,
+      "composure": 13.049919999999997,
       "zoneId": "outer_woods",
       "isPanicVignetteActive": true,
       "hasPanicGraphics": true,
@@ -273,11 +273,11 @@
       "rawLightMotionEnabled": true,
       "panicIntensity": "STANDARD",
       "reducedMotion": true,
-      "currentLanternRadius": 103.86087986137943,
+      "currentLanternRadius": 104.21180352939543,
       "veilDistortionDrawn": false
     },
     "rm_off": {
-      "composure": 13.920639999999995,
+      "composure": 14.273349999999995,
       "zoneId": "outer_woods",
       "isPanicVignetteActive": true,
       "hasPanicGraphics": true,
@@ -289,7 +289,7 @@
       "rawLightMotionEnabled": true,
       "panicIntensity": "STANDARD",
       "reducedMotion": false,
-      "currentLanternRadius": 108.20920740505788,
+      "currentLanternRadius": 109.41581727703141,
       "veilDistortionDrawn": false
     }
   },
