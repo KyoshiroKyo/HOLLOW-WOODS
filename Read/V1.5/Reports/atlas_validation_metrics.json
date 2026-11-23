@@ -1,0 +1,120 @@
+{
+  "total_atlases": 12,
+  "total_frames_checked": 2055,
+  "issues_found": [
+    {
+      "atlas": "hollow_props_atlas.json",
+      "type": "EMPTY_TRANSPARENT_FRAMES",
+      "count": 1,
+      "samples": [
+        "cliff_face_western_v14"
+      ]
+    }
+  ],
+  "foot_telemetry_summary": {
+    "movement": {
+      "armed_idle_right": {
+        "frame_count": 6,
+        "max_foot_delta": 0
+      },
+      "armed_run_down": {
+        "frame_count": 6,
+        "max_foot_delta": 5
+      },
+      "armed_run_left": {
+        "frame_count": 6,
+        "max_foot_delta": 5
+      },
+      "armed_run_right": {
+        "frame_count": 6,
+        "max_foot_delta": 4
+      },
+      "armed_run_up": {
+        "frame_count": 6,
+        "max_foot_delta": 4
+      },
+      "armed_walk_down": {
+        "frame_count": 6,
+        "max_foot_delta": 0
+      },
+      "armed_walk_left": {
+        "frame_count": 6,
+        "max_foot_delta": 0
+      },
+      "armed_walk_right": {
+        "frame_count": 6,
+        "max_foot_delta": 0
+      },
+      "armed_walk_up": {
+        "frame_count": 6,
+        "max_foot_delta": 0
+      },
+      "unarmed_idle_down": {
+        "frame_count": 6,
+        "max_foot_delta": 0
+      },
+      "unarmed_idle_left": {
+        "frame_count": 6,
+        "max_foot_delta": 0
+      },
+      "unarmed_idle_right": {
+        "frame_count": 6,
+        "max_foot_delta": 0
+      },
+      "unarmed_idle_up": {
+        "frame_count": 6,
+        "max_foot_delta": 0
+      },
+      "unarmed_run_down": {
+        "frame_count": 6,
+        "max_foot_delta": 6
+      },
+      "unarmed_run_left": {
+        "frame_count": 6,
+        "max_foot_delta": 4
+      },
+      "unarmed_run_right": {
+        "frame_count": 6,
+        "max_foot_delta": 4
+      },
+      "unarmed_run_up": {
+        "frame_count": 6,
+        "max_foot_delta": 4
+      },
+      "unarmed_walk_down": {
+        "frame_count": 6,
+        "max_foot_delta": 0
+      },
+      "unarmed_walk_left": {
+        "frame_count": 6,
+        "max_foot_delta": 0
+      },
+      "unarmed_walk_right": {
+        "frame_count": 6,
+        "max_foot_delta": 0
+      },
+      "unarmed_walk_up": {
+        "frame_count": 6,
+        "max_foot_delta": 0
+      }
+    },
+    "idle": {
+      "armed_idle_down": {
+        "frame_count": 6,
+        "max_foot_delta": 0
+      },
+      "armed_idle_left": {
+        "frame_count": 6,
+        "max_foot_delta": 0
+      },
+      "armed_idle_right": {
+        "frame_count": 6,
+        "max_foot_delta": 0
+      },
+      "armed_idle_up": {
+        "frame_count": 6,
+        "max_foot_delta": 0
+      }
+    }
+  }
+}

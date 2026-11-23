@@ -1,0 +1,3554 @@
+{
+  "summary": {
+    "total_maps": 17,
+    "total_zones": 17,
+    "total_tiled_objects": 272,
+    "total_zone_elements": 298,
+    "total_discrepancies": 85,
+    "discrepancies_by_type": {
+      "COORDINATE_OR_SIZE_MISMATCH": 51,
+      "PRESENT_IN_ZONES_MISSING_IN_TILED": 30,
+      "PRESENT_IN_TILED_MISSING_IN_ZONES": 4
+    }
+  },
+  "zones_comparison": {
+    "abyssal_chasm": {
+      "map_objects_count": 9,
+      "zone_elements_count": 9,
+      "discrepancies_count": 1,
+      "discrepancies": [
+        {
+          "zone_id": "abyssal_chasm",
+          "element_id": "ac_chasm_void",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 2000,
+            "y": -1050,
+            "w": 480,
+            "h": 160
+          },
+          "tiled_data": {
+            "x": 2000,
+            "y": -946,
+            "w": 480,
+            "h": 56,
+            "tiled_id": 6
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 104,
+            "dw": 0,
+            "dh": 104
+          }
+        }
+      ]
+    },
+    "ancient_rune_puzzle": {
+      "map_objects_count": 4,
+      "zone_elements_count": 4,
+      "discrepancies_count": 0,
+      "discrepancies": []
+    },
+    "bellhollow": {
+      "map_objects_count": 30,
+      "zone_elements_count": 32,
+      "discrepancies_count": 15,
+      "discrepancies": [
+        {
+          "zone_id": "bellhollow",
+          "element_id": "fence_top",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 480,
+            "y": 6,
+            "w": 1120,
+            "h": 32
+          },
+          "tiled_data": {
+            "x": 480,
+            "y": 10,
+            "w": 1120,
+            "h": 24,
+            "tiled_id": 1
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 4,
+            "dw": 0,
+            "dh": 8
+          }
+        },
+        {
+          "zone_id": "bellhollow",
+          "element_id": "fence_bottom_west",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 480,
+            "y": 536,
+            "w": 130,
+            "h": 32
+          },
+          "tiled_data": {
+            "x": 480,
+            "y": 540,
+            "w": 130,
+            "h": 24,
+            "tiled_id": 2
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 4,
+            "dw": 0,
+            "dh": 8
+          }
+        },
+        {
+          "zone_id": "bellhollow",
+          "element_id": "fence_bottom_mid",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 710,
+            "y": 536,
+            "w": 440,
+            "h": 32
+          },
+          "tiled_data": {
+            "x": 710,
+            "y": 540,
+            "w": 440,
+            "h": 24,
+            "tiled_id": 3
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 4,
+            "dw": 0,
+            "dh": 8
+          }
+        },
+        {
+          "zone_id": "bellhollow",
+          "element_id": "fence_bottom_east",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1270,
+            "y": 536,
+            "w": 330,
+            "h": 32
+          },
+          "tiled_data": {
+            "x": 1270,
+            "y": 540,
+            "w": 330,
+            "h": 24,
+            "tiled_id": 4
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 4,
+            "dw": 0,
+            "dh": 8
+          }
+        },
+        {
+          "zone_id": "bellhollow",
+          "element_id": "bell_bound_west_top",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 450,
+            "y": 6,
+            "w": 32,
+            "h": 194,
+            "category": "collider",
+            "name": "Biên Tây Bắc Làng"
+          }
+        },
+        {
+          "zone_id": "bellhollow",
+          "element_id": "bell_bound_west_bottom",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 450,
+            "y": 320,
+            "w": 32,
+            "h": 248,
+            "category": "collider",
+            "name": "Biên Tây Nam Làng"
+          }
+        },
+        {
+          "zone_id": "bellhollow",
+          "element_id": "bell_bound_east_top",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 1598,
+            "y": 6,
+            "w": 32,
+            "h": 194,
+            "category": "collider",
+            "name": "Biên Đông Bắc Làng"
+          }
+        },
+        {
+          "zone_id": "bellhollow",
+          "element_id": "bell_bound_east_bottom",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 1598,
+            "y": 360,
+            "w": 32,
+            "h": 208,
+            "category": "collider",
+            "name": "Biên Đông Nam Làng"
+          }
+        },
+        {
+          "zone_id": "bellhollow",
+          "element_id": "npc_garth",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 540,
+            "y": 205,
+            "w": 32,
+            "h": 32
+          },
+          "tiled_data": {
+            "x": 540,
+            "y": 190,
+            "w": 24,
+            "h": 34,
+            "tiled_id": 21
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 15,
+            "dw": 8,
+            "dh": 2
+          }
+        },
+        {
+          "zone_id": "bellhollow",
+          "element_id": "npc_edda",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1160,
+            "y": 160,
+            "w": 32,
+            "h": 32
+          },
+          "tiled_data": {
+            "x": 1160,
+            "y": 160,
+            "w": 24,
+            "h": 34,
+            "tiled_id": 22
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 0,
+            "dw": 8,
+            "dh": 2
+          }
+        },
+        {
+          "zone_id": "bellhollow",
+          "element_id": "npc_neris",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 570,
+            "y": 460,
+            "w": 32,
+            "h": 32
+          },
+          "tiled_data": {
+            "x": 570,
+            "y": 460,
+            "w": 24,
+            "h": 34,
+            "tiled_id": 23
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 0,
+            "dw": 8,
+            "dh": 2
+          }
+        },
+        {
+          "zone_id": "bellhollow",
+          "element_id": "npc_bram",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1333,
+            "y": 477,
+            "w": 32,
+            "h": 32
+          },
+          "tiled_data": {
+            "x": 1333,
+            "y": 462,
+            "w": 24,
+            "h": 34,
+            "tiled_id": 24
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 15,
+            "dw": 8,
+            "dh": 2
+          }
+        },
+        {
+          "zone_id": "bellhollow",
+          "element_id": "npc_finn",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 909,
+            "y": 231,
+            "w": 32,
+            "h": 32
+          },
+          "tiled_data": {
+            "x": 909,
+            "y": 216,
+            "w": 24,
+            "h": 34,
+            "tiled_id": 25
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 15,
+            "dw": 8,
+            "dh": 2
+          }
+        },
+        {
+          "zone_id": "bellhollow",
+          "tiled_id": 9,
+          "element_name": "crafting_bench",
+          "type": "PRESENT_IN_TILED_MISSING_IN_ZONES",
+          "tiled_data": {
+            "x": 1375,
+            "y": 449,
+            "w": 40,
+            "h": 12,
+            "type": "wall",
+            "layer": "Objects_Collision"
+          }
+        },
+        {
+          "zone_id": "bellhollow",
+          "tiled_id": 26,
+          "element_name": "npc_campfire_knight",
+          "type": "PRESENT_IN_TILED_MISSING_IN_ZONES",
+          "tiled_data": {
+            "x": 825,
+            "y": 310,
+            "w": 24,
+            "h": 34,
+            "type": "npc",
+            "layer": "Objects_Interactables"
+          }
+        }
+      ]
+    },
+    "broken_bell_shrine": {
+      "map_objects_count": 13,
+      "zone_elements_count": 13,
+      "discrepancies_count": 0,
+      "discrepancies": []
+    },
+    "crooked_path": {
+      "map_objects_count": 26,
+      "zone_elements_count": 28,
+      "discrepancies_count": 7,
+      "discrepancies": [
+        {
+          "zone_id": "crooked_path",
+          "element_id": "gather_wood_cp_1",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1740,
+            "y": 355,
+            "w": 32,
+            "h": 32
+          },
+          "tiled_data": {
+            "x": 2060,
+            "y": 210,
+            "w": 32,
+            "h": 32,
+            "tiled_id": 19
+          },
+          "delta": {
+            "dx": 320,
+            "dy": 145,
+            "dw": 0,
+            "dh": 0
+          }
+        },
+        {
+          "zone_id": "crooked_path",
+          "element_id": "gather_iron_cp_1",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 1805,
+            "y": 295,
+            "w": 32,
+            "h": 32,
+            "category": "interactable",
+            "name": "Phôi Sắt Cổ Cầu Đá"
+          }
+        },
+        {
+          "zone_id": "crooked_path",
+          "element_id": "gather_mushroom_cp_1",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 2280,
+            "y": 390,
+            "w": 32,
+            "h": 32,
+            "category": "interactable",
+            "name": "Nấm Rừng Vực Rễ"
+          }
+        },
+        {
+          "zone_id": "crooked_path",
+          "element_id": "hide_bush_cp_entrance",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 1710,
+            "y": 390,
+            "w": 32,
+            "h": 32,
+            "category": "interactable",
+            "name": "Bụi Rậm Cửa Lối Mòn"
+          }
+        },
+        {
+          "zone_id": "crooked_path",
+          "element_id": "hide_bush_cp_sentinel",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 2040,
+            "y": 280,
+            "w": 32,
+            "h": 32,
+            "category": "interactable",
+            "name": "Bụi Rậm Đá Canh Gác"
+          }
+        },
+        {
+          "zone_id": "crooked_path",
+          "tiled_id": 7,
+          "element_name": "cp_collapsed_bridge_blocker",
+          "type": "PRESENT_IN_TILED_MISSING_IN_ZONES",
+          "tiled_data": {
+            "x": 1775,
+            "y": 295,
+            "w": 36,
+            "h": 29,
+            "type": "ruins",
+            "layer": "Objects_Collision"
+          }
+        },
+        {
+          "zone_id": "crooked_path",
+          "tiled_id": 17,
+          "element_name": "collapsed_shrine_bridge",
+          "type": "PRESENT_IN_TILED_MISSING_IN_ZONES",
+          "tiled_data": {
+            "x": 1760,
+            "y": 280,
+            "w": 48,
+            "h": 48,
+            "type": "clue",
+            "layer": "Objects_Interactables"
+          }
+        }
+      ]
+    },
+    "deep_forest": {
+      "map_objects_count": 22,
+      "zone_elements_count": 27,
+      "discrepancies_count": 5,
+      "discrepancies": [
+        {
+          "zone_id": "deep_forest",
+          "element_id": "gather_resin_df_1",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 2120,
+            "y": -180,
+            "w": 32,
+            "h": 32,
+            "category": "interactable",
+            "name": "Nhựa Thông Cổ Thụ"
+          }
+        },
+        {
+          "zone_id": "deep_forest",
+          "element_id": "gather_herbs_df_1",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 1980,
+            "y": -170,
+            "w": 32,
+            "h": 32,
+            "category": "interactable",
+            "name": "Thảo Dược Búi Rễ"
+          }
+        },
+        {
+          "zone_id": "deep_forest",
+          "element_id": "gather_wood_df_1",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 1880,
+            "y": -195,
+            "w": 32,
+            "h": 32,
+            "category": "interactable",
+            "name": "Cành Gỗ Khô Rừng Sâu"
+          }
+        },
+        {
+          "zone_id": "deep_forest",
+          "element_id": "gather_iron_df_1",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 2110,
+            "y": -330,
+            "w": 32,
+            "h": 32,
+            "category": "interactable",
+            "name": "Phôi Sắt Cổ Cột Vật Tổ"
+          }
+        },
+        {
+          "zone_id": "deep_forest",
+          "element_id": "gather_mushroom_df_1",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 2130,
+            "y": -350,
+            "w": 32,
+            "h": 32,
+            "category": "interactable",
+            "name": "Nấm Dạ Quang Thân Đại Thụ"
+          }
+        }
+      ]
+    },
+    "drowned_mire_depths": {
+      "map_objects_count": 8,
+      "zone_elements_count": 8,
+      "discrepancies_count": 0,
+      "discrepancies": []
+    },
+    "fog_crossing": {
+      "map_objects_count": 10,
+      "zone_elements_count": 12,
+      "discrepancies_count": 4,
+      "discrepancies": [
+        {
+          "zone_id": "fog_crossing",
+          "element_id": "bound_left",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 0,
+            "y": 0,
+            "w": 32,
+            "h": 360
+          },
+          "tiled_data": {
+            "x": 0,
+            "y": 0,
+            "w": 20,
+            "h": 360,
+            "tiled_id": 3
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 0,
+            "dw": 12,
+            "dh": 0
+          }
+        },
+        {
+          "zone_id": "fog_crossing",
+          "element_id": "fog_bound_right_top",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 448,
+            "y": 0,
+            "w": 32,
+            "h": 100,
+            "category": "collider",
+            "name": "fog_bound_right_top"
+          }
+        },
+        {
+          "zone_id": "fog_crossing",
+          "element_id": "fog_bound_right_bottom",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 448,
+            "y": 260,
+            "w": 32,
+            "h": 100,
+            "category": "collider",
+            "name": "fog_bound_right_bottom"
+          }
+        },
+        {
+          "zone_id": "fog_crossing",
+          "element_id": "to_bellhollow",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 460,
+            "y": 200,
+            "w": 20,
+            "h": 60
+          },
+          "tiled_data": {
+            "x": 460,
+            "y": 100,
+            "w": 20,
+            "h": 160,
+            "tiled_id": 10
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 100,
+            "dw": 0,
+            "dh": 100
+          }
+        }
+      ]
+    },
+    "outer_woods": {
+      "map_objects_count": 27,
+      "zone_elements_count": 34,
+      "discrepancies_count": 13,
+      "discrepancies": [
+        {
+          "zone_id": "outer_woods",
+          "element_id": "ow_bound_bottom_left",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1120,
+            "y": 1020,
+            "w": 200,
+            "h": 32
+          },
+          "tiled_data": {
+            "x": 1120,
+            "y": 1020,
+            "w": 200,
+            "h": 20,
+            "tiled_id": 1
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 0,
+            "dw": 0,
+            "dh": 12
+          }
+        },
+        {
+          "zone_id": "outer_woods",
+          "element_id": "ow_bound_bottom_right",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1400,
+            "y": 1020,
+            "w": 200,
+            "h": 32
+          },
+          "tiled_data": {
+            "x": 1400,
+            "y": 1020,
+            "w": 200,
+            "h": 20,
+            "tiled_id": 2
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 0,
+            "dw": 0,
+            "dh": 12
+          }
+        },
+        {
+          "zone_id": "outer_woods",
+          "element_id": "ow_bound_right_top",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1580,
+            "y": 560,
+            "w": 32,
+            "h": 100
+          },
+          "tiled_data": {
+            "x": 1580,
+            "y": 560,
+            "w": 20,
+            "h": 160,
+            "tiled_id": 3
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 0,
+            "dw": 12,
+            "dh": 60
+          }
+        },
+        {
+          "zone_id": "outer_woods",
+          "element_id": "ow_bound_right_bottom",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1580,
+            "y": 840,
+            "w": 32,
+            "h": 200
+          },
+          "tiled_data": {
+            "x": 1580,
+            "y": 840,
+            "w": 20,
+            "h": 200,
+            "tiled_id": 4
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 0,
+            "dw": 12,
+            "dh": 0
+          }
+        },
+        {
+          "zone_id": "outer_woods",
+          "element_id": "gather_wood_ow_1",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1190,
+            "y": 675,
+            "w": 32,
+            "h": 32
+          },
+          "tiled_data": {
+            "x": 1240,
+            "y": 660,
+            "w": 32,
+            "h": 32,
+            "tiled_id": 16
+          },
+          "delta": {
+            "dx": 50,
+            "dy": 15,
+            "dw": 0,
+            "dh": 0
+          }
+        },
+        {
+          "zone_id": "outer_woods",
+          "element_id": "gather_resin_ow_1",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1170,
+            "y": 630,
+            "w": 32,
+            "h": 32
+          },
+          "tiled_data": {
+            "x": 1360,
+            "y": 630,
+            "w": 32,
+            "h": 32,
+            "tiled_id": 17
+          },
+          "delta": {
+            "dx": 190,
+            "dy": 0,
+            "dw": 0,
+            "dh": 0
+          }
+        },
+        {
+          "zone_id": "outer_woods",
+          "element_id": "quiet_forest_bonfire",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 1470,
+            "y": 710,
+            "w": 36,
+            "h": 30,
+            "category": "interactable",
+            "name": "Bếp Lửa Hồng Rừng Tĩnh Lặng"
+          }
+        },
+        {
+          "zone_id": "outer_woods",
+          "element_id": "gather_iron_ow_1",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 1435,
+            "y": 635,
+            "w": 32,
+            "h": 32,
+            "category": "interactable",
+            "name": "Phôi Sắt Cổ Trạm Kiểm Lâm"
+          }
+        },
+        {
+          "zone_id": "outer_woods",
+          "element_id": "gather_mushroom_ow_1",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 1475,
+            "y": 805,
+            "w": 32,
+            "h": 32,
+            "category": "interactable",
+            "name": "Nấm Rừng Thân Gỗ Mục"
+          }
+        },
+        {
+          "zone_id": "outer_woods",
+          "element_id": "hide_tree_ow_north",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 1360,
+            "y": 620,
+            "w": 32,
+            "h": 32,
+            "category": "interactable",
+            "name": "Cây Rỗng Rừng Ven"
+          }
+        },
+        {
+          "zone_id": "outer_woods",
+          "element_id": "hide_tree_ow_willow",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 1305,
+            "y": 885,
+            "w": 32,
+            "h": 32,
+            "category": "interactable",
+            "name": "Cây Rỗng Bãi Liễu"
+          }
+        },
+        {
+          "zone_id": "outer_woods",
+          "element_id": "sign_sub_bell_workshop",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 1300,
+            "y": 985,
+            "w": 28,
+            "h": 28,
+            "category": "interactable",
+            "name": "Biển Chỉ Dẫn: Xưởng Chuông Bỏ Hoang ↓"
+          }
+        },
+        {
+          "zone_id": "outer_woods",
+          "element_id": "npc_campfire_knight",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 1435,
+            "y": 710,
+            "w": 32,
+            "h": 32,
+            "category": "npc",
+            "name": "Sir Vaelen — Kỵ Sĩ Trầm Mặc"
+          }
+        }
+      ]
+    },
+    "sanctuary_farm": {
+      "map_objects_count": 15,
+      "zone_elements_count": 15,
+      "discrepancies_count": 7,
+      "discrepancies": [
+        {
+          "zone_id": "sanctuary_farm",
+          "element_id": "farm_bound_bottom_left",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 480,
+            "y": 1020,
+            "w": 300,
+            "h": 32
+          },
+          "tiled_data": {
+            "x": 480,
+            "y": 1020,
+            "w": 300,
+            "h": 20,
+            "tiled_id": 1
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 0,
+            "dw": 0,
+            "dh": 12
+          }
+        },
+        {
+          "zone_id": "sanctuary_farm",
+          "element_id": "farm_bound_bottom_right",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 840,
+            "y": 1020,
+            "w": 280,
+            "h": 32
+          },
+          "tiled_data": {
+            "x": 840,
+            "y": 1020,
+            "w": 280,
+            "h": 20,
+            "tiled_id": 2
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 0,
+            "dw": 0,
+            "dh": 12
+          }
+        },
+        {
+          "zone_id": "sanctuary_farm",
+          "element_id": "farm_bound_left",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 448,
+            "y": 560,
+            "w": 32,
+            "h": 480
+          },
+          "tiled_data": {
+            "x": 480,
+            "y": 560,
+            "w": 20,
+            "h": 480,
+            "tiled_id": 3
+          },
+          "delta": {
+            "dx": 32,
+            "dy": 0,
+            "dw": 12,
+            "dh": 0
+          }
+        },
+        {
+          "zone_id": "sanctuary_farm",
+          "element_id": "farm_bound_right_top",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1100,
+            "y": 560,
+            "w": 32,
+            "h": 120
+          },
+          "tiled_data": {
+            "x": 1100,
+            "y": 560,
+            "w": 20,
+            "h": 120,
+            "tiled_id": 4
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 0,
+            "dw": 12,
+            "dh": 0
+          }
+        },
+        {
+          "zone_id": "sanctuary_farm",
+          "element_id": "farm_bound_right_bottom",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1100,
+            "y": 820,
+            "w": 32,
+            "h": 220
+          },
+          "tiled_data": {
+            "x": 1100,
+            "y": 820,
+            "w": 20,
+            "h": 220,
+            "tiled_id": 5
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 0,
+            "dw": 12,
+            "dh": 0
+          }
+        },
+        {
+          "zone_id": "sanctuary_farm",
+          "element_id": "farm_barn_wall",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 540,
+            "y": 680,
+            "w": 100,
+            "h": 50
+          },
+          "tiled_data": {
+            "x": 540,
+            "y": 712,
+            "w": 100,
+            "h": 18,
+            "tiled_id": 6
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 32,
+            "dw": 0,
+            "dh": 32
+          }
+        },
+        {
+          "zone_id": "sanctuary_farm",
+          "element_id": "farm_processing_bench",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 702,
+            "y": 629,
+            "w": 36,
+            "h": 24
+          },
+          "tiled_data": {
+            "x": 685,
+            "y": 630,
+            "w": 36,
+            "h": 24,
+            "tiled_id": 9
+          },
+          "delta": {
+            "dx": 17,
+            "dy": 1,
+            "dw": 0,
+            "dh": 0
+          }
+        }
+      ]
+    },
+    "silent_mire": {
+      "map_objects_count": 38,
+      "zone_elements_count": 46,
+      "discrepancies_count": 16,
+      "discrepancies": [
+        {
+          "zone_id": "silent_mire",
+          "element_id": "sm_bound_left_bridge_top",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 2880,
+            "y": 400,
+            "w": 30,
+            "h": 10,
+            "category": "collider",
+            "name": "sm_bound_left_bridge_top"
+          }
+        },
+        {
+          "zone_id": "silent_mire",
+          "element_id": "sm_bound_left_bottom",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 2880,
+            "y": 460,
+            "w": 30,
+            "h": 250
+          },
+          "tiled_data": {
+            "x": 2880,
+            "y": 400,
+            "w": 30,
+            "h": 310,
+            "tiled_id": 6
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 60,
+            "dw": 0,
+            "dh": 60
+          }
+        },
+        {
+          "zone_id": "silent_mire",
+          "element_id": "sm_water_west",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 3020,
+            "y": 380,
+            "w": 220,
+            "h": 110
+          },
+          "tiled_data": {
+            "x": 3020,
+            "y": 451,
+            "w": 220,
+            "h": 39,
+            "tiled_id": 9
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 71,
+            "dw": 0,
+            "dh": 71
+          }
+        },
+        {
+          "zone_id": "silent_mire",
+          "element_id": "sm_water_north",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 3180,
+            "y": 140,
+            "w": 200,
+            "h": 80
+          },
+          "tiled_data": {
+            "x": 3180,
+            "y": 180,
+            "w": 200,
+            "h": 40,
+            "tiled_id": 10
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 40,
+            "dw": 0,
+            "dh": 40
+          }
+        },
+        {
+          "zone_id": "silent_mire",
+          "element_id": "sm_water_south",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 3600,
+            "y": 430,
+            "w": 240,
+            "h": 120
+          },
+          "tiled_data": {
+            "x": 3600,
+            "y": 508,
+            "w": 240,
+            "h": 42,
+            "tiled_id": 11
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 78,
+            "dw": 0,
+            "dh": 78
+          }
+        },
+        {
+          "zone_id": "silent_mire",
+          "element_id": "sm_monolith_1",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 3220,
+            "y": 200,
+            "w": 44,
+            "h": 40
+          },
+          "tiled_data": {
+            "x": 3220,
+            "y": 226,
+            "w": 44,
+            "h": 14,
+            "tiled_id": 12
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 26,
+            "dw": 0,
+            "dh": 26
+          }
+        },
+        {
+          "zone_id": "silent_mire",
+          "element_id": "sm_monolith_2",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 3720,
+            "y": 390,
+            "w": 48,
+            "h": 42
+          },
+          "tiled_data": {
+            "x": 3720,
+            "y": 417,
+            "w": 48,
+            "h": 15,
+            "tiled_id": 13
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 27,
+            "dw": 0,
+            "dh": 27
+          }
+        },
+        {
+          "zone_id": "silent_mire",
+          "element_id": "mire_water_north_deep",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 3200,
+            "y": 140,
+            "w": 170,
+            "h": 80
+          },
+          "tiled_data": {
+            "x": 3200,
+            "y": 185,
+            "w": 170,
+            "h": 35,
+            "tiled_id": 15
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 45,
+            "dw": 0,
+            "dh": 45
+          }
+        },
+        {
+          "zone_id": "silent_mire",
+          "element_id": "mire_water_south_deep",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 3200,
+            "y": 335,
+            "w": 170,
+            "h": 95
+          },
+          "tiled_data": {
+            "x": 3200,
+            "y": 397,
+            "w": 170,
+            "h": 33,
+            "tiled_id": 16
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 62,
+            "dw": 0,
+            "dh": 62
+          }
+        },
+        {
+          "zone_id": "silent_mire",
+          "element_id": "gather_resin_sm_1",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 3920,
+            "y": 230,
+            "w": 32,
+            "h": 32,
+            "category": "interactable",
+            "name": "Nhựa Thông Đầm Lầy"
+          }
+        },
+        {
+          "zone_id": "silent_mire",
+          "element_id": "gather_herbs_sm_1",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 3060,
+            "y": 330,
+            "w": 32,
+            "h": 32,
+            "category": "interactable",
+            "name": "Thảo Dược Ven Nước"
+          }
+        },
+        {
+          "zone_id": "silent_mire",
+          "element_id": "gather_wood_sm_1",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 3720,
+            "y": 360,
+            "w": 32,
+            "h": 32,
+            "category": "interactable",
+            "name": "Cành Gỗ Khô Đầm Lầy"
+          }
+        },
+        {
+          "zone_id": "silent_mire",
+          "element_id": "gather_iron_sm_1",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 3230,
+            "y": 210,
+            "w": 32,
+            "h": 32,
+            "category": "interactable",
+            "name": "Phôi Sắt Cổ Cự Thạch"
+          }
+        },
+        {
+          "zone_id": "silent_mire",
+          "element_id": "gather_mushroom_sm_1",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 3050,
+            "y": 245,
+            "w": 32,
+            "h": 32,
+            "category": "interactable",
+            "name": "Nấm Mục Đầm Lầy"
+          }
+        },
+        {
+          "zone_id": "silent_mire",
+          "element_id": "sm_hide_bush_north",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 3480,
+            "y": 190,
+            "w": 32,
+            "h": 32,
+            "category": "interactable",
+            "name": "Bụi Rậm Gò Bắc"
+          }
+        },
+        {
+          "zone_id": "silent_mire",
+          "element_id": "sm_hide_tree_titan",
+          "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+          "zone_data": {
+            "x": 3560,
+            "y": 175,
+            "w": 32,
+            "h": 32,
+            "category": "interactable",
+            "name": "Gốc Cổ Thụ Liễu Héo Tàn"
+          }
+        }
+      ]
+    },
+    "sub_bell_workshop": {
+      "map_objects_count": 14,
+      "zone_elements_count": 14,
+      "discrepancies_count": 7,
+      "discrepancies": [
+        {
+          "zone_id": "sub_bell_workshop",
+          "element_id": "bw_bound_top_left",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1120,
+            "y": 1040,
+            "w": 200,
+            "h": 32
+          },
+          "tiled_data": {
+            "x": 1120,
+            "y": 1040,
+            "w": 200,
+            "h": 20,
+            "tiled_id": 1
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 0,
+            "dw": 0,
+            "dh": 12
+          }
+        },
+        {
+          "zone_id": "sub_bell_workshop",
+          "element_id": "bw_bound_top_right",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1400,
+            "y": 1040,
+            "w": 200,
+            "h": 32
+          },
+          "tiled_data": {
+            "x": 1400,
+            "y": 1040,
+            "w": 180,
+            "h": 20,
+            "tiled_id": 2
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 0,
+            "dw": 20,
+            "dh": 12
+          }
+        },
+        {
+          "zone_id": "sub_bell_workshop",
+          "element_id": "bw_bound_bottom",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1120,
+            "y": 1408,
+            "w": 480,
+            "h": 32
+          },
+          "tiled_data": {
+            "x": 1120,
+            "y": 1420,
+            "w": 480,
+            "h": 20,
+            "tiled_id": 3
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 12,
+            "dw": 0,
+            "dh": 12
+          }
+        },
+        {
+          "zone_id": "sub_bell_workshop",
+          "element_id": "bw_bound_left",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1120,
+            "y": 1040,
+            "w": 32,
+            "h": 400
+          },
+          "tiled_data": {
+            "x": 1120,
+            "y": 1040,
+            "w": 20,
+            "h": 400,
+            "tiled_id": 4
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 0,
+            "dw": 12,
+            "dh": 0
+          }
+        },
+        {
+          "zone_id": "sub_bell_workshop",
+          "element_id": "bw_bound_right",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1568,
+            "y": 1040,
+            "w": 32,
+            "h": 400
+          },
+          "tiled_data": {
+            "x": 1580,
+            "y": 1040,
+            "w": 20,
+            "h": 400,
+            "tiled_id": 5
+          },
+          "delta": {
+            "dx": 12,
+            "dy": 0,
+            "dw": 12,
+            "dh": 0
+          }
+        },
+        {
+          "zone_id": "sub_bell_workshop",
+          "element_id": "bw_forge_table",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1300,
+            "y": 1180,
+            "w": 80,
+            "h": 40
+          },
+          "tiled_data": {
+            "x": 1300,
+            "y": 1206,
+            "w": 80,
+            "h": 14,
+            "tiled_id": 6
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 26,
+            "dw": 0,
+            "dh": 26
+          }
+        },
+        {
+          "zone_id": "sub_bell_workshop",
+          "element_id": "bw_scrap_pile",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1440,
+            "y": 1220,
+            "w": 60,
+            "h": 50
+          },
+          "tiled_data": {
+            "x": 1440,
+            "y": 1252,
+            "w": 60,
+            "h": 18,
+            "tiled_id": 7
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 32,
+            "dw": 0,
+            "dh": 32
+          }
+        }
+      ]
+    },
+    "sub_root_cellar": {
+      "map_objects_count": 17,
+      "zone_elements_count": 17,
+      "discrepancies_count": 3,
+      "discrepancies": [
+        {
+          "zone_id": "sub_root_cellar",
+          "element_id": "rc_central_pillar",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 760,
+            "y": 1200,
+            "w": 80,
+            "h": 60
+          },
+          "tiled_data": {
+            "x": 760,
+            "y": 1239,
+            "w": 80,
+            "h": 21,
+            "tiled_id": 7
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 39,
+            "dw": 0,
+            "dh": 39
+          }
+        },
+        {
+          "zone_id": "sub_root_cellar",
+          "element_id": "rc_spring_pool",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 900,
+            "y": 1260,
+            "w": 60,
+            "h": 40
+          },
+          "tiled_data": {
+            "x": 900,
+            "y": 1286,
+            "w": 60,
+            "h": 14,
+            "tiled_id": 8
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 26,
+            "dw": 0,
+            "dh": 26
+          }
+        },
+        {
+          "zone_id": "sub_root_cellar",
+          "element_id": "rc_mushrooms_cluster",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 590,
+            "y": 1170,
+            "w": 40,
+            "h": 40
+          },
+          "tiled_data": {
+            "x": 590,
+            "y": 1196,
+            "w": 40,
+            "h": 14,
+            "tiled_id": 9
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 26,
+            "dw": 0,
+            "dh": 26
+          }
+        }
+      ]
+    },
+    "sub_whispering_clearing": {
+      "map_objects_count": 16,
+      "zone_elements_count": 16,
+      "discrepancies_count": 7,
+      "discrepancies": [
+        {
+          "zone_id": "sub_whispering_clearing",
+          "element_id": "wc_pillar_1",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1740,
+            "y": -250,
+            "w": 36,
+            "h": 48
+          },
+          "tiled_data": {
+            "x": 1740,
+            "y": -219,
+            "w": 36,
+            "h": 17,
+            "tiled_id": 7
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 31,
+            "dw": 0,
+            "dh": 31
+          }
+        },
+        {
+          "zone_id": "sub_whispering_clearing",
+          "element_id": "wc_pillar_2",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1840,
+            "y": -150,
+            "w": 36,
+            "h": 48
+          },
+          "tiled_data": {
+            "x": 1840,
+            "y": -119,
+            "w": 36,
+            "h": 17,
+            "tiled_id": 8
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 31,
+            "dw": 0,
+            "dh": 31
+          }
+        },
+        {
+          "zone_id": "sub_whispering_clearing",
+          "element_id": "wc_pillar_3",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1940,
+            "y": -250,
+            "w": 36,
+            "h": 48
+          },
+          "tiled_data": {
+            "x": 1940,
+            "y": -219,
+            "w": 36,
+            "h": 17,
+            "tiled_id": 9
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 31,
+            "dw": 0,
+            "dh": 31
+          }
+        },
+        {
+          "zone_id": "sub_whispering_clearing",
+          "element_id": "wc_curved_tree_nw",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1680,
+            "y": -290,
+            "w": 44,
+            "h": 44
+          },
+          "tiled_data": {
+            "x": 1680,
+            "y": -261,
+            "w": 44,
+            "h": 15,
+            "tiled_id": 10
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 29,
+            "dw": 0,
+            "dh": 29
+          }
+        },
+        {
+          "zone_id": "sub_whispering_clearing",
+          "element_id": "wc_curved_tree_ne",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 2000,
+            "y": -290,
+            "w": 44,
+            "h": 44
+          },
+          "tiled_data": {
+            "x": 2000,
+            "y": -261,
+            "w": 44,
+            "h": 15,
+            "tiled_id": 11
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 29,
+            "dw": 0,
+            "dh": 29
+          }
+        },
+        {
+          "zone_id": "sub_whispering_clearing",
+          "element_id": "wc_curved_tree_sw",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 1680,
+            "y": -90,
+            "w": 44,
+            "h": 44
+          },
+          "tiled_data": {
+            "x": 1680,
+            "y": -61,
+            "w": 44,
+            "h": 15,
+            "tiled_id": 12
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 29,
+            "dw": 0,
+            "dh": 29
+          }
+        },
+        {
+          "zone_id": "sub_whispering_clearing",
+          "element_id": "wc_curved_tree_se",
+          "type": "COORDINATE_OR_SIZE_MISMATCH",
+          "zone_data": {
+            "x": 2000,
+            "y": -90,
+            "w": 44,
+            "h": 44
+          },
+          "tiled_data": {
+            "x": 2000,
+            "y": -61,
+            "w": 44,
+            "h": 15,
+            "tiled_id": 13
+          },
+          "delta": {
+            "dx": 0,
+            "dy": 29,
+            "dw": 0,
+            "dh": 29
+          }
+        }
+      ]
+    },
+    "sunken_crypt_ruins": {
+      "map_objects_count": 7,
+      "zone_elements_count": 7,
+      "discrepancies_count": 0,
+      "discrepancies": []
+    },
+    "veil_origin_cavern": {
+      "map_objects_count": 8,
+      "zone_elements_count": 8,
+      "discrepancies_count": 0,
+      "discrepancies": []
+    },
+    "whispering_grove_sanctum": {
+      "map_objects_count": 8,
+      "zone_elements_count": 8,
+      "discrepancies_count": 0,
+      "discrepancies": []
+    }
+  },
+  "target_objects": {
+    "gather_wood_ow_1": {
+      "status": "EDITOR DATA STALE",
+      "in_zones": true,
+      "zone_coords": "(1190, 675) [32x32]",
+      "in_tiled": true,
+      "tiled_coords": "(1240, 660) [32x32]",
+      "wb_matches_count": 0,
+      "notes": "Coord diff: Zone(1190, 675) vs Tiled(1240, 660)"
+    },
+    "gather_resin_ow_1": {
+      "status": "EDITOR DATA STALE",
+      "in_zones": true,
+      "zone_coords": "(1170, 630) [32x32]",
+      "in_tiled": true,
+      "tiled_coords": "(1360, 630) [32x32]",
+      "wb_matches_count": 0,
+      "notes": "Coord diff: Zone(1170, 630) vs Tiled(1360, 630)"
+    },
+    "ow_bound_bottom_left": {
+      "status": "INTENTIONAL RUNTIME OVERRIDE",
+      "in_zones": true,
+      "zone_coords": "(1120, 1020) [200x32]",
+      "in_tiled": true,
+      "tiled_coords": "(1120, 1020) [200x20]",
+      "wb_matches_count": 1,
+      "notes": "Active boundary collider. Zone: 200x32, Tiled: 200x20. HW-MAP-27 added visual fence props to prevent invisible wall confusion."
+    },
+    "ow_bound_right_top": {
+      "status": "INTENTIONAL RUNTIME OVERRIDE",
+      "in_zones": true,
+      "zone_coords": "(1580, 560) [32x100]",
+      "in_tiled": true,
+      "tiled_coords": "(1580, 560) [20x160]",
+      "wb_matches_count": 0,
+      "notes": "Active boundary collider. Zone: 32x100, Tiled: 20x160. HW-MAP-27 added visual fence props to prevent invisible wall confusion."
+    },
+    "ow_willow_trunk": {
+      "status": "INTENTIONAL RUNTIME OVERRIDE",
+      "in_zones": true,
+      "zone_coords": "(1190, 905) [20x14]",
+      "in_tiled": true,
+      "tiled_coords": "(1190, 905) [20x14]",
+      "wb_matches_count": 1,
+      "notes": "HW-MAP-28 precisely synced between outer_woods.json, zones.json, and WorldBuilder.ts at (1190, 905, 20x14)"
+    },
+    "env_knights_memorial_stele": {
+      "status": "INTENTIONAL RUNTIME OVERRIDE",
+      "in_zones": true,
+      "zone_coords": "(1260, 645) [36x36]",
+      "in_tiled": true,
+      "tiled_coords": "(1260, 645) [36x36]",
+      "wb_matches_count": 1,
+      "notes": "HW-MAP-27 relocated to (1260, 645) in outer_woods.json, zones.json and WorldBuilder.ts"
+    },
+    "hide_bush_ow_s_curve": {
+      "status": "INTENTIONAL RUNTIME OVERRIDE",
+      "in_zones": true,
+      "zone_coords": "(1150, 655) [36x36]",
+      "in_tiled": true,
+      "tiled_coords": "(1150, 655) [36x36]",
+      "wb_matches_count": 0,
+      "notes": "HW-MAP-27 relocated to (1150, 655) in outer_woods.json, zones.json and WorldBuilder.ts to free S-curve pathway"
+    },
+    "to_bell_workshop": {
+      "status": "INTENTIONAL RUNTIME OVERRIDE",
+      "in_zones": true,
+      "zone_coords": "(None, None) [0x0]",
+      "in_tiled": true,
+      "tiled_coords": "(1320, 1000) [80x40]",
+      "wb_matches_count": 0,
+      "notes": "Transition to sub_bell_workshop at (1320, 1000) with guide sign at (1300, 985). Road corridor X=1360 clear >= 72px."
+    },
+    "sign_sub_bell_workshop": {
+      "status": "INTENTIONAL RUNTIME OVERRIDE",
+      "in_zones": true,
+      "zone_coords": "(1300, 985) [28x28]",
+      "in_tiled": false,
+      "tiled_coords": null,
+      "wb_matches_count": 0,
+      "notes": "Transition to sub_bell_workshop at (1320, 1000) with guide sign at (1300, 985). Road corridor X=1360 clear >= 72px."
+    }
+  },
+  "discrepancies": [
+    {
+      "zone_id": "abyssal_chasm",
+      "element_id": "ac_chasm_void",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 2000,
+        "y": -1050,
+        "w": 480,
+        "h": 160
+      },
+      "tiled_data": {
+        "x": 2000,
+        "y": -946,
+        "w": 480,
+        "h": 56,
+        "tiled_id": 6
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 104,
+        "dw": 0,
+        "dh": 104
+      }
+    },
+    {
+      "zone_id": "bellhollow",
+      "element_id": "fence_top",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 480,
+        "y": 6,
+        "w": 1120,
+        "h": 32
+      },
+      "tiled_data": {
+        "x": 480,
+        "y": 10,
+        "w": 1120,
+        "h": 24,
+        "tiled_id": 1
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 4,
+        "dw": 0,
+        "dh": 8
+      }
+    },
+    {
+      "zone_id": "bellhollow",
+      "element_id": "fence_bottom_west",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 480,
+        "y": 536,
+        "w": 130,
+        "h": 32
+      },
+      "tiled_data": {
+        "x": 480,
+        "y": 540,
+        "w": 130,
+        "h": 24,
+        "tiled_id": 2
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 4,
+        "dw": 0,
+        "dh": 8
+      }
+    },
+    {
+      "zone_id": "bellhollow",
+      "element_id": "fence_bottom_mid",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 710,
+        "y": 536,
+        "w": 440,
+        "h": 32
+      },
+      "tiled_data": {
+        "x": 710,
+        "y": 540,
+        "w": 440,
+        "h": 24,
+        "tiled_id": 3
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 4,
+        "dw": 0,
+        "dh": 8
+      }
+    },
+    {
+      "zone_id": "bellhollow",
+      "element_id": "fence_bottom_east",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1270,
+        "y": 536,
+        "w": 330,
+        "h": 32
+      },
+      "tiled_data": {
+        "x": 1270,
+        "y": 540,
+        "w": 330,
+        "h": 24,
+        "tiled_id": 4
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 4,
+        "dw": 0,
+        "dh": 8
+      }
+    },
+    {
+      "zone_id": "bellhollow",
+      "element_id": "bell_bound_west_top",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 450,
+        "y": 6,
+        "w": 32,
+        "h": 194,
+        "category": "collider",
+        "name": "Biên Tây Bắc Làng"
+      }
+    },
+    {
+      "zone_id": "bellhollow",
+      "element_id": "bell_bound_west_bottom",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 450,
+        "y": 320,
+        "w": 32,
+        "h": 248,
+        "category": "collider",
+        "name": "Biên Tây Nam Làng"
+      }
+    },
+    {
+      "zone_id": "bellhollow",
+      "element_id": "bell_bound_east_top",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 1598,
+        "y": 6,
+        "w": 32,
+        "h": 194,
+        "category": "collider",
+        "name": "Biên Đông Bắc Làng"
+      }
+    },
+    {
+      "zone_id": "bellhollow",
+      "element_id": "bell_bound_east_bottom",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 1598,
+        "y": 360,
+        "w": 32,
+        "h": 208,
+        "category": "collider",
+        "name": "Biên Đông Nam Làng"
+      }
+    },
+    {
+      "zone_id": "bellhollow",
+      "element_id": "npc_garth",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 540,
+        "y": 205,
+        "w": 32,
+        "h": 32
+      },
+      "tiled_data": {
+        "x": 540,
+        "y": 190,
+        "w": 24,
+        "h": 34,
+        "tiled_id": 21
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 15,
+        "dw": 8,
+        "dh": 2
+      }
+    },
+    {
+      "zone_id": "bellhollow",
+      "element_id": "npc_edda",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1160,
+        "y": 160,
+        "w": 32,
+        "h": 32
+      },
+      "tiled_data": {
+        "x": 1160,
+        "y": 160,
+        "w": 24,
+        "h": 34,
+        "tiled_id": 22
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 0,
+        "dw": 8,
+        "dh": 2
+      }
+    },
+    {
+      "zone_id": "bellhollow",
+      "element_id": "npc_neris",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 570,
+        "y": 460,
+        "w": 32,
+        "h": 32
+      },
+      "tiled_data": {
+        "x": 570,
+        "y": 460,
+        "w": 24,
+        "h": 34,
+        "tiled_id": 23
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 0,
+        "dw": 8,
+        "dh": 2
+      }
+    },
+    {
+      "zone_id": "bellhollow",
+      "element_id": "npc_bram",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1333,
+        "y": 477,
+        "w": 32,
+        "h": 32
+      },
+      "tiled_data": {
+        "x": 1333,
+        "y": 462,
+        "w": 24,
+        "h": 34,
+        "tiled_id": 24
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 15,
+        "dw": 8,
+        "dh": 2
+      }
+    },
+    {
+      "zone_id": "bellhollow",
+      "element_id": "npc_finn",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 909,
+        "y": 231,
+        "w": 32,
+        "h": 32
+      },
+      "tiled_data": {
+        "x": 909,
+        "y": 216,
+        "w": 24,
+        "h": 34,
+        "tiled_id": 25
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 15,
+        "dw": 8,
+        "dh": 2
+      }
+    },
+    {
+      "zone_id": "bellhollow",
+      "tiled_id": 9,
+      "element_name": "crafting_bench",
+      "type": "PRESENT_IN_TILED_MISSING_IN_ZONES",
+      "tiled_data": {
+        "x": 1375,
+        "y": 449,
+        "w": 40,
+        "h": 12,
+        "type": "wall",
+        "layer": "Objects_Collision"
+      }
+    },
+    {
+      "zone_id": "bellhollow",
+      "tiled_id": 26,
+      "element_name": "npc_campfire_knight",
+      "type": "PRESENT_IN_TILED_MISSING_IN_ZONES",
+      "tiled_data": {
+        "x": 825,
+        "y": 310,
+        "w": 24,
+        "h": 34,
+        "type": "npc",
+        "layer": "Objects_Interactables"
+      }
+    },
+    {
+      "zone_id": "crooked_path",
+      "element_id": "gather_wood_cp_1",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1740,
+        "y": 355,
+        "w": 32,
+        "h": 32
+      },
+      "tiled_data": {
+        "x": 2060,
+        "y": 210,
+        "w": 32,
+        "h": 32,
+        "tiled_id": 19
+      },
+      "delta": {
+        "dx": 320,
+        "dy": 145,
+        "dw": 0,
+        "dh": 0
+      }
+    },
+    {
+      "zone_id": "crooked_path",
+      "element_id": "gather_iron_cp_1",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 1805,
+        "y": 295,
+        "w": 32,
+        "h": 32,
+        "category": "interactable",
+        "name": "Phôi Sắt Cổ Cầu Đá"
+      }
+    },
+    {
+      "zone_id": "crooked_path",
+      "element_id": "gather_mushroom_cp_1",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 2280,
+        "y": 390,
+        "w": 32,
+        "h": 32,
+        "category": "interactable",
+        "name": "Nấm Rừng Vực Rễ"
+      }
+    },
+    {
+      "zone_id": "crooked_path",
+      "element_id": "hide_bush_cp_entrance",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 1710,
+        "y": 390,
+        "w": 32,
+        "h": 32,
+        "category": "interactable",
+        "name": "Bụi Rậm Cửa Lối Mòn"
+      }
+    },
+    {
+      "zone_id": "crooked_path",
+      "element_id": "hide_bush_cp_sentinel",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 2040,
+        "y": 280,
+        "w": 32,
+        "h": 32,
+        "category": "interactable",
+        "name": "Bụi Rậm Đá Canh Gác"
+      }
+    },
+    {
+      "zone_id": "crooked_path",
+      "tiled_id": 7,
+      "element_name": "cp_collapsed_bridge_blocker",
+      "type": "PRESENT_IN_TILED_MISSING_IN_ZONES",
+      "tiled_data": {
+        "x": 1775,
+        "y": 295,
+        "w": 36,
+        "h": 29,
+        "type": "ruins",
+        "layer": "Objects_Collision"
+      }
+    },
+    {
+      "zone_id": "crooked_path",
+      "tiled_id": 17,
+      "element_name": "collapsed_shrine_bridge",
+      "type": "PRESENT_IN_TILED_MISSING_IN_ZONES",
+      "tiled_data": {
+        "x": 1760,
+        "y": 280,
+        "w": 48,
+        "h": 48,
+        "type": "clue",
+        "layer": "Objects_Interactables"
+      }
+    },
+    {
+      "zone_id": "deep_forest",
+      "element_id": "gather_resin_df_1",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 2120,
+        "y": -180,
+        "w": 32,
+        "h": 32,
+        "category": "interactable",
+        "name": "Nhựa Thông Cổ Thụ"
+      }
+    },
+    {
+      "zone_id": "deep_forest",
+      "element_id": "gather_herbs_df_1",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 1980,
+        "y": -170,
+        "w": 32,
+        "h": 32,
+        "category": "interactable",
+        "name": "Thảo Dược Búi Rễ"
+      }
+    },
+    {
+      "zone_id": "deep_forest",
+      "element_id": "gather_wood_df_1",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 1880,
+        "y": -195,
+        "w": 32,
+        "h": 32,
+        "category": "interactable",
+        "name": "Cành Gỗ Khô Rừng Sâu"
+      }
+    },
+    {
+      "zone_id": "deep_forest",
+      "element_id": "gather_iron_df_1",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 2110,
+        "y": -330,
+        "w": 32,
+        "h": 32,
+        "category": "interactable",
+        "name": "Phôi Sắt Cổ Cột Vật Tổ"
+      }
+    },
+    {
+      "zone_id": "deep_forest",
+      "element_id": "gather_mushroom_df_1",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 2130,
+        "y": -350,
+        "w": 32,
+        "h": 32,
+        "category": "interactable",
+        "name": "Nấm Dạ Quang Thân Đại Thụ"
+      }
+    },
+    {
+      "zone_id": "fog_crossing",
+      "element_id": "bound_left",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 360
+      },
+      "tiled_data": {
+        "x": 0,
+        "y": 0,
+        "w": 20,
+        "h": 360,
+        "tiled_id": 3
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 0,
+        "dw": 12,
+        "dh": 0
+      }
+    },
+    {
+      "zone_id": "fog_crossing",
+      "element_id": "fog_bound_right_top",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 448,
+        "y": 0,
+        "w": 32,
+        "h": 100,
+        "category": "collider",
+        "name": "fog_bound_right_top"
+      }
+    },
+    {
+      "zone_id": "fog_crossing",
+      "element_id": "fog_bound_right_bottom",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 448,
+        "y": 260,
+        "w": 32,
+        "h": 100,
+        "category": "collider",
+        "name": "fog_bound_right_bottom"
+      }
+    },
+    {
+      "zone_id": "fog_crossing",
+      "element_id": "to_bellhollow",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 460,
+        "y": 200,
+        "w": 20,
+        "h": 60
+      },
+      "tiled_data": {
+        "x": 460,
+        "y": 100,
+        "w": 20,
+        "h": 160,
+        "tiled_id": 10
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 100,
+        "dw": 0,
+        "dh": 100
+      }
+    },
+    {
+      "zone_id": "outer_woods",
+      "element_id": "ow_bound_bottom_left",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1120,
+        "y": 1020,
+        "w": 200,
+        "h": 32
+      },
+      "tiled_data": {
+        "x": 1120,
+        "y": 1020,
+        "w": 200,
+        "h": 20,
+        "tiled_id": 1
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 0,
+        "dw": 0,
+        "dh": 12
+      }
+    },
+    {
+      "zone_id": "outer_woods",
+      "element_id": "ow_bound_bottom_right",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1400,
+        "y": 1020,
+        "w": 200,
+        "h": 32
+      },
+      "tiled_data": {
+        "x": 1400,
+        "y": 1020,
+        "w": 200,
+        "h": 20,
+        "tiled_id": 2
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 0,
+        "dw": 0,
+        "dh": 12
+      }
+    },
+    {
+      "zone_id": "outer_woods",
+      "element_id": "ow_bound_right_top",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1580,
+        "y": 560,
+        "w": 32,
+        "h": 100
+      },
+      "tiled_data": {
+        "x": 1580,
+        "y": 560,
+        "w": 20,
+        "h": 160,
+        "tiled_id": 3
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 0,
+        "dw": 12,
+        "dh": 60
+      }
+    },
+    {
+      "zone_id": "outer_woods",
+      "element_id": "ow_bound_right_bottom",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1580,
+        "y": 840,
+        "w": 32,
+        "h": 200
+      },
+      "tiled_data": {
+        "x": 1580,
+        "y": 840,
+        "w": 20,
+        "h": 200,
+        "tiled_id": 4
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 0,
+        "dw": 12,
+        "dh": 0
+      }
+    },
+    {
+      "zone_id": "outer_woods",
+      "element_id": "gather_wood_ow_1",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1190,
+        "y": 675,
+        "w": 32,
+        "h": 32
+      },
+      "tiled_data": {
+        "x": 1240,
+        "y": 660,
+        "w": 32,
+        "h": 32,
+        "tiled_id": 16
+      },
+      "delta": {
+        "dx": 50,
+        "dy": 15,
+        "dw": 0,
+        "dh": 0
+      }
+    },
+    {
+      "zone_id": "outer_woods",
+      "element_id": "gather_resin_ow_1",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1170,
+        "y": 630,
+        "w": 32,
+        "h": 32
+      },
+      "tiled_data": {
+        "x": 1360,
+        "y": 630,
+        "w": 32,
+        "h": 32,
+        "tiled_id": 17
+      },
+      "delta": {
+        "dx": 190,
+        "dy": 0,
+        "dw": 0,
+        "dh": 0
+      }
+    },
+    {
+      "zone_id": "outer_woods",
+      "element_id": "quiet_forest_bonfire",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 1470,
+        "y": 710,
+        "w": 36,
+        "h": 30,
+        "category": "interactable",
+        "name": "Bếp Lửa Hồng Rừng Tĩnh Lặng"
+      }
+    },
+    {
+      "zone_id": "outer_woods",
+      "element_id": "gather_iron_ow_1",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 1435,
+        "y": 635,
+        "w": 32,
+        "h": 32,
+        "category": "interactable",
+        "name": "Phôi Sắt Cổ Trạm Kiểm Lâm"
+      }
+    },
+    {
+      "zone_id": "outer_woods",
+      "element_id": "gather_mushroom_ow_1",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 1475,
+        "y": 805,
+        "w": 32,
+        "h": 32,
+        "category": "interactable",
+        "name": "Nấm Rừng Thân Gỗ Mục"
+      }
+    },
+    {
+      "zone_id": "outer_woods",
+      "element_id": "hide_tree_ow_north",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 1360,
+        "y": 620,
+        "w": 32,
+        "h": 32,
+        "category": "interactable",
+        "name": "Cây Rỗng Rừng Ven"
+      }
+    },
+    {
+      "zone_id": "outer_woods",
+      "element_id": "hide_tree_ow_willow",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 1305,
+        "y": 885,
+        "w": 32,
+        "h": 32,
+        "category": "interactable",
+        "name": "Cây Rỗng Bãi Liễu"
+      }
+    },
+    {
+      "zone_id": "outer_woods",
+      "element_id": "sign_sub_bell_workshop",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 1300,
+        "y": 985,
+        "w": 28,
+        "h": 28,
+        "category": "interactable",
+        "name": "Biển Chỉ Dẫn: Xưởng Chuông Bỏ Hoang ↓"
+      }
+    },
+    {
+      "zone_id": "outer_woods",
+      "element_id": "npc_campfire_knight",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 1435,
+        "y": 710,
+        "w": 32,
+        "h": 32,
+        "category": "npc",
+        "name": "Sir Vaelen — Kỵ Sĩ Trầm Mặc"
+      }
+    },
+    {
+      "zone_id": "sanctuary_farm",
+      "element_id": "farm_bound_bottom_left",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 480,
+        "y": 1020,
+        "w": 300,
+        "h": 32
+      },
+      "tiled_data": {
+        "x": 480,
+        "y": 1020,
+        "w": 300,
+        "h": 20,
+        "tiled_id": 1
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 0,
+        "dw": 0,
+        "dh": 12
+      }
+    },
+    {
+      "zone_id": "sanctuary_farm",
+      "element_id": "farm_bound_bottom_right",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 840,
+        "y": 1020,
+        "w": 280,
+        "h": 32
+      },
+      "tiled_data": {
+        "x": 840,
+        "y": 1020,
+        "w": 280,
+        "h": 20,
+        "tiled_id": 2
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 0,
+        "dw": 0,
+        "dh": 12
+      }
+    },
+    {
+      "zone_id": "sanctuary_farm",
+      "element_id": "farm_bound_left",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 448,
+        "y": 560,
+        "w": 32,
+        "h": 480
+      },
+      "tiled_data": {
+        "x": 480,
+        "y": 560,
+        "w": 20,
+        "h": 480,
+        "tiled_id": 3
+      },
+      "delta": {
+        "dx": 32,
+        "dy": 0,
+        "dw": 12,
+        "dh": 0
+      }
+    },
+    {
+      "zone_id": "sanctuary_farm",
+      "element_id": "farm_bound_right_top",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1100,
+        "y": 560,
+        "w": 32,
+        "h": 120
+      },
+      "tiled_data": {
+        "x": 1100,
+        "y": 560,
+        "w": 20,
+        "h": 120,
+        "tiled_id": 4
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 0,
+        "dw": 12,
+        "dh": 0
+      }
+    },
+    {
+      "zone_id": "sanctuary_farm",
+      "element_id": "farm_bound_right_bottom",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1100,
+        "y": 820,
+        "w": 32,
+        "h": 220
+      },
+      "tiled_data": {
+        "x": 1100,
+        "y": 820,
+        "w": 20,
+        "h": 220,
+        "tiled_id": 5
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 0,
+        "dw": 12,
+        "dh": 0
+      }
+    },
+    {
+      "zone_id": "sanctuary_farm",
+      "element_id": "farm_barn_wall",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 540,
+        "y": 680,
+        "w": 100,
+        "h": 50
+      },
+      "tiled_data": {
+        "x": 540,
+        "y": 712,
+        "w": 100,
+        "h": 18,
+        "tiled_id": 6
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 32,
+        "dw": 0,
+        "dh": 32
+      }
+    },
+    {
+      "zone_id": "sanctuary_farm",
+      "element_id": "farm_processing_bench",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 702,
+        "y": 629,
+        "w": 36,
+        "h": 24
+      },
+      "tiled_data": {
+        "x": 685,
+        "y": 630,
+        "w": 36,
+        "h": 24,
+        "tiled_id": 9
+      },
+      "delta": {
+        "dx": 17,
+        "dy": 1,
+        "dw": 0,
+        "dh": 0
+      }
+    },
+    {
+      "zone_id": "silent_mire",
+      "element_id": "sm_bound_left_bridge_top",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 2880,
+        "y": 400,
+        "w": 30,
+        "h": 10,
+        "category": "collider",
+        "name": "sm_bound_left_bridge_top"
+      }
+    },
+    {
+      "zone_id": "silent_mire",
+      "element_id": "sm_bound_left_bottom",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 2880,
+        "y": 460,
+        "w": 30,
+        "h": 250
+      },
+      "tiled_data": {
+        "x": 2880,
+        "y": 400,
+        "w": 30,
+        "h": 310,
+        "tiled_id": 6
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 60,
+        "dw": 0,
+        "dh": 60
+      }
+    },
+    {
+      "zone_id": "silent_mire",
+      "element_id": "sm_water_west",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 3020,
+        "y": 380,
+        "w": 220,
+        "h": 110
+      },
+      "tiled_data": {
+        "x": 3020,
+        "y": 451,
+        "w": 220,
+        "h": 39,
+        "tiled_id": 9
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 71,
+        "dw": 0,
+        "dh": 71
+      }
+    },
+    {
+      "zone_id": "silent_mire",
+      "element_id": "sm_water_north",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 3180,
+        "y": 140,
+        "w": 200,
+        "h": 80
+      },
+      "tiled_data": {
+        "x": 3180,
+        "y": 180,
+        "w": 200,
+        "h": 40,
+        "tiled_id": 10
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 40,
+        "dw": 0,
+        "dh": 40
+      }
+    },
+    {
+      "zone_id": "silent_mire",
+      "element_id": "sm_water_south",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 3600,
+        "y": 430,
+        "w": 240,
+        "h": 120
+      },
+      "tiled_data": {
+        "x": 3600,
+        "y": 508,
+        "w": 240,
+        "h": 42,
+        "tiled_id": 11
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 78,
+        "dw": 0,
+        "dh": 78
+      }
+    },
+    {
+      "zone_id": "silent_mire",
+      "element_id": "sm_monolith_1",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 3220,
+        "y": 200,
+        "w": 44,
+        "h": 40
+      },
+      "tiled_data": {
+        "x": 3220,
+        "y": 226,
+        "w": 44,
+        "h": 14,
+        "tiled_id": 12
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 26,
+        "dw": 0,
+        "dh": 26
+      }
+    },
+    {
+      "zone_id": "silent_mire",
+      "element_id": "sm_monolith_2",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 3720,
+        "y": 390,
+        "w": 48,
+        "h": 42
+      },
+      "tiled_data": {
+        "x": 3720,
+        "y": 417,
+        "w": 48,
+        "h": 15,
+        "tiled_id": 13
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 27,
+        "dw": 0,
+        "dh": 27
+      }
+    },
+    {
+      "zone_id": "silent_mire",
+      "element_id": "mire_water_north_deep",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 3200,
+        "y": 140,
+        "w": 170,
+        "h": 80
+      },
+      "tiled_data": {
+        "x": 3200,
+        "y": 185,
+        "w": 170,
+        "h": 35,
+        "tiled_id": 15
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 45,
+        "dw": 0,
+        "dh": 45
+      }
+    },
+    {
+      "zone_id": "silent_mire",
+      "element_id": "mire_water_south_deep",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 3200,
+        "y": 335,
+        "w": 170,
+        "h": 95
+      },
+      "tiled_data": {
+        "x": 3200,
+        "y": 397,
+        "w": 170,
+        "h": 33,
+        "tiled_id": 16
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 62,
+        "dw": 0,
+        "dh": 62
+      }
+    },
+    {
+      "zone_id": "silent_mire",
+      "element_id": "gather_resin_sm_1",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 3920,
+        "y": 230,
+        "w": 32,
+        "h": 32,
+        "category": "interactable",
+        "name": "Nhựa Thông Đầm Lầy"
+      }
+    },
+    {
+      "zone_id": "silent_mire",
+      "element_id": "gather_herbs_sm_1",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 3060,
+        "y": 330,
+        "w": 32,
+        "h": 32,
+        "category": "interactable",
+        "name": "Thảo Dược Ven Nước"
+      }
+    },
+    {
+      "zone_id": "silent_mire",
+      "element_id": "gather_wood_sm_1",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 3720,
+        "y": 360,
+        "w": 32,
+        "h": 32,
+        "category": "interactable",
+        "name": "Cành Gỗ Khô Đầm Lầy"
+      }
+    },
+    {
+      "zone_id": "silent_mire",
+      "element_id": "gather_iron_sm_1",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 3230,
+        "y": 210,
+        "w": 32,
+        "h": 32,
+        "category": "interactable",
+        "name": "Phôi Sắt Cổ Cự Thạch"
+      }
+    },
+    {
+      "zone_id": "silent_mire",
+      "element_id": "gather_mushroom_sm_1",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 3050,
+        "y": 245,
+        "w": 32,
+        "h": 32,
+        "category": "interactable",
+        "name": "Nấm Mục Đầm Lầy"
+      }
+    },
+    {
+      "zone_id": "silent_mire",
+      "element_id": "sm_hide_bush_north",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 3480,
+        "y": 190,
+        "w": 32,
+        "h": 32,
+        "category": "interactable",
+        "name": "Bụi Rậm Gò Bắc"
+      }
+    },
+    {
+      "zone_id": "silent_mire",
+      "element_id": "sm_hide_tree_titan",
+      "type": "PRESENT_IN_ZONES_MISSING_IN_TILED",
+      "zone_data": {
+        "x": 3560,
+        "y": 175,
+        "w": 32,
+        "h": 32,
+        "category": "interactable",
+        "name": "Gốc Cổ Thụ Liễu Héo Tàn"
+      }
+    },
+    {
+      "zone_id": "sub_bell_workshop",
+      "element_id": "bw_bound_top_left",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1120,
+        "y": 1040,
+        "w": 200,
+        "h": 32
+      },
+      "tiled_data": {
+        "x": 1120,
+        "y": 1040,
+        "w": 200,
+        "h": 20,
+        "tiled_id": 1
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 0,
+        "dw": 0,
+        "dh": 12
+      }
+    },
+    {
+      "zone_id": "sub_bell_workshop",
+      "element_id": "bw_bound_top_right",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1400,
+        "y": 1040,
+        "w": 200,
+        "h": 32
+      },
+      "tiled_data": {
+        "x": 1400,
+        "y": 1040,
+        "w": 180,
+        "h": 20,
+        "tiled_id": 2
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 0,
+        "dw": 20,
+        "dh": 12
+      }
+    },
+    {
+      "zone_id": "sub_bell_workshop",
+      "element_id": "bw_bound_bottom",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1120,
+        "y": 1408,
+        "w": 480,
+        "h": 32
+      },
+      "tiled_data": {
+        "x": 1120,
+        "y": 1420,
+        "w": 480,
+        "h": 20,
+        "tiled_id": 3
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 12,
+        "dw": 0,
+        "dh": 12
+      }
+    },
+    {
+      "zone_id": "sub_bell_workshop",
+      "element_id": "bw_bound_left",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1120,
+        "y": 1040,
+        "w": 32,
+        "h": 400
+      },
+      "tiled_data": {
+        "x": 1120,
+        "y": 1040,
+        "w": 20,
+        "h": 400,
+        "tiled_id": 4
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 0,
+        "dw": 12,
+        "dh": 0
+      }
+    },
+    {
+      "zone_id": "sub_bell_workshop",
+      "element_id": "bw_bound_right",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1568,
+        "y": 1040,
+        "w": 32,
+        "h": 400
+      },
+      "tiled_data": {
+        "x": 1580,
+        "y": 1040,
+        "w": 20,
+        "h": 400,
+        "tiled_id": 5
+      },
+      "delta": {
+        "dx": 12,
+        "dy": 0,
+        "dw": 12,
+        "dh": 0
+      }
+    },
+    {
+      "zone_id": "sub_bell_workshop",
+      "element_id": "bw_forge_table",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1300,
+        "y": 1180,
+        "w": 80,
+        "h": 40
+      },
+      "tiled_data": {
+        "x": 1300,
+        "y": 1206,
+        "w": 80,
+        "h": 14,
+        "tiled_id": 6
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 26,
+        "dw": 0,
+        "dh": 26
+      }
+    },
+    {
+      "zone_id": "sub_bell_workshop",
+      "element_id": "bw_scrap_pile",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1440,
+        "y": 1220,
+        "w": 60,
+        "h": 50
+      },
+      "tiled_data": {
+        "x": 1440,
+        "y": 1252,
+        "w": 60,
+        "h": 18,
+        "tiled_id": 7
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 32,
+        "dw": 0,
+        "dh": 32
+      }
+    },
+    {
+      "zone_id": "sub_root_cellar",
+      "element_id": "rc_central_pillar",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 760,
+        "y": 1200,
+        "w": 80,
+        "h": 60
+      },
+      "tiled_data": {
+        "x": 760,
+        "y": 1239,
+        "w": 80,
+        "h": 21,
+        "tiled_id": 7
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 39,
+        "dw": 0,
+        "dh": 39
+      }
+    },
+    {
+      "zone_id": "sub_root_cellar",
+      "element_id": "rc_spring_pool",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 900,
+        "y": 1260,
+        "w": 60,
+        "h": 40
+      },
+      "tiled_data": {
+        "x": 900,
+        "y": 1286,
+        "w": 60,
+        "h": 14,
+        "tiled_id": 8
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 26,
+        "dw": 0,
+        "dh": 26
+      }
+    },
+    {
+      "zone_id": "sub_root_cellar",
+      "element_id": "rc_mushrooms_cluster",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 590,
+        "y": 1170,
+        "w": 40,
+        "h": 40
+      },
+      "tiled_data": {
+        "x": 590,
+        "y": 1196,
+        "w": 40,
+        "h": 14,
+        "tiled_id": 9
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 26,
+        "dw": 0,
+        "dh": 26
+      }
+    },
+    {
+      "zone_id": "sub_whispering_clearing",
+      "element_id": "wc_pillar_1",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1740,
+        "y": -250,
+        "w": 36,
+        "h": 48
+      },
+      "tiled_data": {
+        "x": 1740,
+        "y": -219,
+        "w": 36,
+        "h": 17,
+        "tiled_id": 7
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 31,
+        "dw": 0,
+        "dh": 31
+      }
+    },
+    {
+      "zone_id": "sub_whispering_clearing",
+      "element_id": "wc_pillar_2",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1840,
+        "y": -150,
+        "w": 36,
+        "h": 48
+      },
+      "tiled_data": {
+        "x": 1840,
+        "y": -119,
+        "w": 36,
+        "h": 17,
+        "tiled_id": 8
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 31,
+        "dw": 0,
+        "dh": 31
+      }
+    },
+    {
+      "zone_id": "sub_whispering_clearing",
+      "element_id": "wc_pillar_3",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1940,
+        "y": -250,
+        "w": 36,
+        "h": 48
+      },
+      "tiled_data": {
+        "x": 1940,
+        "y": -219,
+        "w": 36,
+        "h": 17,
+        "tiled_id": 9
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 31,
+        "dw": 0,
+        "dh": 31
+      }
+    },
+    {
+      "zone_id": "sub_whispering_clearing",
+      "element_id": "wc_curved_tree_nw",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1680,
+        "y": -290,
+        "w": 44,
+        "h": 44
+      },
+      "tiled_data": {
+        "x": 1680,
+        "y": -261,
+        "w": 44,
+        "h": 15,
+        "tiled_id": 10
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 29,
+        "dw": 0,
+        "dh": 29
+      }
+    },
+    {
+      "zone_id": "sub_whispering_clearing",
+      "element_id": "wc_curved_tree_ne",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 2000,
+        "y": -290,
+        "w": 44,
+        "h": 44
+      },
+      "tiled_data": {
+        "x": 2000,
+        "y": -261,
+        "w": 44,
+        "h": 15,
+        "tiled_id": 11
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 29,
+        "dw": 0,
+        "dh": 29
+      }
+    },
+    {
+      "zone_id": "sub_whispering_clearing",
+      "element_id": "wc_curved_tree_sw",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 1680,
+        "y": -90,
+        "w": 44,
+        "h": 44
+      },
+      "tiled_data": {
+        "x": 1680,
+        "y": -61,
+        "w": 44,
+        "h": 15,
+        "tiled_id": 12
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 29,
+        "dw": 0,
+        "dh": 29
+      }
+    },
+    {
+      "zone_id": "sub_whispering_clearing",
+      "element_id": "wc_curved_tree_se",
+      "type": "COORDINATE_OR_SIZE_MISMATCH",
+      "zone_data": {
+        "x": 2000,
+        "y": -90,
+        "w": 44,
+        "h": 44
+      },
+      "tiled_data": {
+        "x": 2000,
+        "y": -61,
+        "w": 44,
+        "h": 15,
+        "tiled_id": 13
+      },
+      "delta": {
+        "dx": 0,
+        "dy": 29,
+        "dw": 0,
+        "dh": 29
+      }
+    }
+  ]
+}

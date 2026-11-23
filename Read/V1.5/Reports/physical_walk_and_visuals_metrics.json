@@ -1,0 +1,947 @@
+{
+  "part_d_physical_walk": {
+    "route_1_forward": {
+      "route_id": "route_1",
+      "name": "Route 1: North Entry <-> Hunter Camp (S-Curve)",
+      "direction": "FORWARD",
+      "classification": "ROUTE PHYSICALLY TRAVERSED",
+      "all_reached": true,
+      "distance_px": 293.3,
+      "blocked_time_ms": 0,
+      "final_pos": [
+        1324.1,
+        744.7
+      ],
+      "waypoints_summary": [
+        {
+          "waypointIndex": 1,
+          "target": [
+            1170,
+            625
+          ],
+          "endPosition": [
+            1175.7,
+            618.6
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 8.5
+        },
+        {
+          "waypointIndex": 2,
+          "target": [
+            1165,
+            685
+          ],
+          "endPosition": [
+            1165.9,
+            679.5
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 5.6
+        },
+        {
+          "waypointIndex": 3,
+          "target": [
+            1210,
+            725
+          ],
+          "endPosition": [
+            1204.2,
+            719
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 8.4
+        },
+        {
+          "waypointIndex": 4,
+          "target": [
+            1260,
+            745
+          ],
+          "endPosition": [
+            1252.5,
+            741.5
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 8.3
+        },
+        {
+          "waypointIndex": 5,
+          "target": [
+            1330,
+            745
+          ],
+          "endPosition": [
+            1324.1,
+            744.7
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 5.9
+        }
+      ]
+    },
+    "route_1_reverse": {
+      "route_id": "route_1",
+      "name": "Route 1: North Entry <-> Hunter Camp (S-Curve)",
+      "direction": "REVERSE",
+      "classification": "ROUTE PHYSICALLY TRAVERSED",
+      "all_reached": true,
+      "distance_px": 296.7,
+      "blocked_time_ms": 0,
+      "final_pos": [
+        1204.8,
+        585.7
+      ],
+      "waypoints_summary": [
+        {
+          "waypointIndex": 1,
+          "target": [
+            1260,
+            745
+          ],
+          "endPosition": [
+            1261.7,
+            745
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 1.7
+        },
+        {
+          "waypointIndex": 2,
+          "target": [
+            1210,
+            725
+          ],
+          "endPosition": [
+            1210.4,
+            725.1
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 0.4
+        },
+        {
+          "waypointIndex": 3,
+          "target": [
+            1165,
+            685
+          ],
+          "endPosition": [
+            1165.4,
+            685.4
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 0.6
+        },
+        {
+          "waypointIndex": 4,
+          "target": [
+            1170,
+            625
+          ],
+          "endPosition": [
+            1170.1,
+            623.9
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 1.1
+        },
+        {
+          "waypointIndex": 5,
+          "target": [
+            1210,
+            580
+          ],
+          "endPosition": [
+            1204.8,
+            585.7
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 7.7
+        }
+      ]
+    },
+    "route_2_forward": {
+      "route_id": "route_2",
+      "name": "Route 2: Camp <-> Junction <-> Sir Vaelen Interaction Spot",
+      "direction": "FORWARD",
+      "classification": "ROUTE PHYSICALLY TRAVERSED",
+      "all_reached": true,
+      "distance_px": 115,
+      "blocked_time_ms": 0,
+      "final_pos": [
+        1433.3,
+        728.2
+      ],
+      "waypoints_summary": [
+        {
+          "waypointIndex": 1,
+          "target": [
+            1360,
+            755
+          ],
+          "endPosition": [
+            1360,
+            755
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 0
+        },
+        {
+          "waypointIndex": 2,
+          "target": [
+            1410,
+            755
+          ],
+          "endPosition": [
+            1401.7,
+            755
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 8.3
+        },
+        {
+          "waypointIndex": 3,
+          "target": [
+            1435,
+            730
+          ],
+          "endPosition": [
+            1427,
+            736
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 10
+        },
+        {
+          "waypointIndex": 4,
+          "target": [
+            1435,
+            726
+          ],
+          "endPosition": [
+            1433.3,
+            728.2
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 2.8
+        }
+      ]
+    },
+    "route_2_reverse": {
+      "route_id": "route_2",
+      "name": "Route 2: Camp <-> Junction <-> Sir Vaelen Interaction Spot",
+      "direction": "REVERSE",
+      "classification": "ROUTE PHYSICALLY TRAVERSED",
+      "all_reached": true,
+      "distance_px": 108.3,
+      "blocked_time_ms": 0,
+      "final_pos": [
+        1339.5,
+        748.2
+      ],
+      "waypoints_summary": [
+        {
+          "waypointIndex": 1,
+          "target": [
+            1435,
+            730
+          ],
+          "endPosition": [
+            1435,
+            726
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 4
+        },
+        {
+          "waypointIndex": 2,
+          "target": [
+            1410,
+            755
+          ],
+          "endPosition": [
+            1413.2,
+            751.2
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 5
+        },
+        {
+          "waypointIndex": 3,
+          "target": [
+            1360,
+            755
+          ],
+          "endPosition": [
+            1360,
+            755
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 0
+        },
+        {
+          "waypointIndex": 4,
+          "target": [
+            1330,
+            745
+          ],
+          "endPosition": [
+            1339.5,
+            748.2
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 10
+        }
+      ]
+    },
+    "route_3_forward": {
+      "route_id": "route_3",
+      "name": "Route 3: Junction <-> Bell Workshop corridor",
+      "direction": "FORWARD",
+      "classification": "ROUTE PHYSICALLY TRAVERSED",
+      "all_reached": true,
+      "distance_px": 263.3,
+      "blocked_time_ms": 0,
+      "final_pos": [
+        1360,
+        991.7
+      ],
+      "waypoints_summary": [
+        {
+          "waypointIndex": 1,
+          "target": [
+            1360,
+            760
+          ],
+          "endPosition": [
+            1356.8,
+            758.4
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 3.5
+        },
+        {
+          "waypointIndex": 2,
+          "target": [
+            1360,
+            840
+          ],
+          "endPosition": [
+            1359.9,
+            838.4
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 1.6
+        },
+        {
+          "waypointIndex": 3,
+          "target": [
+            1360,
+            920
+          ],
+          "endPosition": [
+            1360,
+            910
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 10
+        },
+        {
+          "waypointIndex": 4,
+          "target": [
+            1360,
+            980
+          ],
+          "endPosition": [
+            1360,
+            971.7
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 8.3
+        },
+        {
+          "waypointIndex": 5,
+          "target": [
+            1360,
+            1000
+          ],
+          "endPosition": [
+            1360,
+            991.7
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 8.3
+        }
+      ]
+    },
+    "route_3_reverse": {
+      "route_id": "route_3",
+      "name": "Route 3: Junction <-> Bell Workshop corridor",
+      "direction": "REVERSE",
+      "classification": "ROUTE PHYSICALLY TRAVERSED",
+      "all_reached": true,
+      "distance_px": 265,
+      "blocked_time_ms": 0,
+      "final_pos": [
+        1334.3,
+        748.1
+      ],
+      "waypoints_summary": [
+        {
+          "waypointIndex": 1,
+          "target": [
+            1360,
+            980
+          ],
+          "endPosition": [
+            1360,
+            988.3
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 8.3
+        },
+        {
+          "waypointIndex": 2,
+          "target": [
+            1360,
+            920
+          ],
+          "endPosition": [
+            1360,
+            926.7
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 6.7
+        },
+        {
+          "waypointIndex": 3,
+          "target": [
+            1360,
+            840
+          ],
+          "endPosition": [
+            1360,
+            846.7
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 6.7
+        },
+        {
+          "waypointIndex": 4,
+          "target": [
+            1360,
+            760
+          ],
+          "endPosition": [
+            1360,
+            766.7
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 6.7
+        },
+        {
+          "waypointIndex": 5,
+          "target": [
+            1330,
+            745
+          ],
+          "endPosition": [
+            1334.3,
+            748.1
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 5.3
+        }
+      ]
+    },
+    "route_4_forward": {
+      "route_id": "route_4",
+      "name": "Route 4: Willow Clearing & Forest Edge",
+      "direction": "FORWARD",
+      "classification": "ROUTE PHYSICALLY TRAVERSED",
+      "all_reached": true,
+      "distance_px": 236.7,
+      "blocked_time_ms": 0,
+      "final_pos": [
+        1243.6,
+        924.8
+      ],
+      "waypoints_summary": [
+        {
+          "waypointIndex": 1,
+          "target": [
+            1270,
+            745
+          ],
+          "endPosition": [
+            1280,
+            745
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 10
+        },
+        {
+          "waypointIndex": 2,
+          "target": [
+            1265,
+            820
+          ],
+          "endPosition": [
+            1265.9,
+            815.3
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 4.8
+        },
+        {
+          "waypointIndex": 3,
+          "target": [
+            1260,
+            910
+          ],
+          "endPosition": [
+            1260.6,
+            900.1
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 9.9
+        },
+        {
+          "waypointIndex": 4,
+          "target": [
+            1240,
+            930
+          ],
+          "endPosition": [
+            1243.6,
+            924.8
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 6.3
+        }
+      ]
+    },
+    "route_4_reverse": {
+      "route_id": "route_4",
+      "name": "Route 4: Willow Clearing & Forest Edge",
+      "direction": "REVERSE",
+      "classification": "ROUTE PHYSICALLY TRAVERSED",
+      "all_reached": true,
+      "distance_px": 233.3,
+      "blocked_time_ms": 0,
+      "final_pos": [
+        1320.3,
+        746.6
+      ],
+      "waypoints_summary": [
+        {
+          "waypointIndex": 1,
+          "target": [
+            1260,
+            910
+          ],
+          "endPosition": [
+            1254.1,
+            915.9
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 8.3
+        },
+        {
+          "waypointIndex": 2,
+          "target": [
+            1265,
+            820
+          ],
+          "endPosition": [
+            1264.3,
+            826.4
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 6.5
+        },
+        {
+          "waypointIndex": 3,
+          "target": [
+            1270,
+            745
+          ],
+          "endPosition": [
+            1269.3,
+            754.9
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 10
+        },
+        {
+          "waypointIndex": 4,
+          "target": [
+            1330,
+            745
+          ],
+          "endPosition": [
+            1320.3,
+            746.6
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 9.8
+        }
+      ]
+    },
+    "route_5_forward": {
+      "route_id": "route_5",
+      "name": "Route 5: Willow Edge Loop -> Workshop Corridor",
+      "direction": "FORWARD",
+      "classification": "ROUTE PHYSICALLY TRAVERSED",
+      "all_reached": true,
+      "distance_px": 131.7,
+      "blocked_time_ms": 0,
+      "final_pos": [
+        1353,
+        993.1
+      ],
+      "waypoints_summary": [
+        {
+          "waypointIndex": 1,
+          "target": [
+            1270,
+            940
+          ],
+          "endPosition": [
+            1268.5,
+            939.5
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 1.6
+        },
+        {
+          "waypointIndex": 2,
+          "target": [
+            1300,
+            950
+          ],
+          "endPosition": [
+            1298.5,
+            949.5
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 1.6
+        },
+        {
+          "waypointIndex": 3,
+          "target": [
+            1340,
+            980
+          ],
+          "endPosition": [
+            1338.8,
+            979.1
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 1.5
+        },
+        {
+          "waypointIndex": 4,
+          "target": [
+            1360,
+            1000
+          ],
+          "endPosition": [
+            1353,
+            993.1
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 9.8
+        }
+      ]
+    },
+    "route_5_reverse": {
+      "route_id": "route_5",
+      "name": "Route 5: Willow Edge Loop -> Workshop Corridor",
+      "direction": "REVERSE",
+      "classification": "ROUTE PHYSICALLY TRAVERSED",
+      "all_reached": true,
+      "distance_px": 140,
+      "blocked_time_ms": 0,
+      "final_pos": [
+        1241,
+        930.4
+      ],
+      "waypoints_summary": [
+        {
+          "waypointIndex": 1,
+          "target": [
+            1340,
+            980
+          ],
+          "endPosition": [
+            1345.9,
+            985.9
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 8.3
+        },
+        {
+          "waypointIndex": 2,
+          "target": [
+            1300,
+            950
+          ],
+          "endPosition": [
+            1306.5,
+            955.1
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 8.2
+        },
+        {
+          "waypointIndex": 3,
+          "target": [
+            1270,
+            940
+          ],
+          "endPosition": [
+            1278.7,
+            943.6
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 9.5
+        },
+        {
+          "waypointIndex": 4,
+          "target": [
+            1240,
+            930
+          ],
+          "endPosition": [
+            1241,
+            930.4
+          ],
+          "reached": true,
+          "blockedTimeMs": 0,
+          "distRemaining": 1.1
+        }
+      ]
+    }
+  },
+  "part_e_visual_composition": {
+    "ow_1187_621": {
+      "name": "S-Curve Entrance & Pine Trees",
+      "x": 1187,
+      "y": 621,
+      "f9_off_file": "ow_1187_621_f9_off.png",
+      "f9_on_file": "ow_1187_621_f9_on.png",
+      "occlusion_data": {
+        "overlappingTreesCount": 1,
+        "overlappingTrees": [
+          {
+            "type": "tree_mist_pine",
+            "pos": [
+              1170,
+              585
+            ],
+            "alpha": 1,
+            "depth": 585
+          }
+        ]
+      }
+    },
+    "ow_1283_923": {
+      "name": "Southern Clearing & Willow Approach",
+      "x": 1283,
+      "y": 923,
+      "f9_off_file": "ow_1283_923_f9_off.png",
+      "f9_on_file": "ow_1283_923_f9_on.png",
+      "occlusion_data": {
+        "overlappingTreesCount": 0,
+        "overlappingTrees": []
+      }
+    },
+    "ow_willow_1200_915": {
+      "name": "Ancient Weeping Willow Landmark",
+      "x": 1200,
+      "y": 915,
+      "f9_off_file": "ow_willow_1200_915_f9_off.png",
+      "f9_on_file": "ow_willow_1200_915_f9_on.png",
+      "occlusion_data": {
+        "overlappingTreesCount": 2,
+        "overlappingTrees": [
+          {
+            "type": "tree_weeping_willow",
+            "pos": [
+              1200,
+              915
+            ],
+            "alpha": 0.35,
+            "depth": 915
+          },
+          {
+            "type": "tree_weeping_willow",
+            "pos": [
+              1162,
+              897
+            ],
+            "alpha": 1,
+            "depth": 897
+          }
+        ]
+      }
+    },
+    "ow_hollow_tree_1305_885": {
+      "name": "Willow Hollow Tree Hiding Spot",
+      "x": 1305,
+      "y": 885,
+      "f9_off_file": "ow_hollow_tree_1305_885_f9_off.png",
+      "f9_on_file": "ow_hollow_tree_1305_885_f9_on.png",
+      "occlusion_data": {
+        "overlappingTreesCount": 1,
+        "overlappingTrees": [
+          {
+            "type": "hollow_props_atlas",
+            "pos": [
+              1305,
+              885
+            ],
+            "alpha": 0.35,
+            "depth": 885
+          }
+        ]
+      }
+    },
+    "ow_signpost_1300_985": {
+      "name": "Bell Workshop Descent Signpost",
+      "x": 1300,
+      "y": 985,
+      "f9_off_file": "ow_signpost_1300_985_f9_off.png",
+      "f9_on_file": "ow_signpost_1300_985_f9_on.png",
+      "occlusion_data": {
+        "overlappingTreesCount": 0,
+        "overlappingTrees": []
+      }
+    }
+  },
+  "interactables_tested": {
+    "env_knights_memorial_stele": {
+      "found": true,
+      "coords": {
+        "x": 1260,
+        "y": 645
+      },
+      "actionFired": true
+    },
+    "hide_bush_ow_s_curve": {
+      "found": true,
+      "coords": {
+        "x": 1150,
+        "y": 655
+      },
+      "actionFired": true
+    },
+    "ow_ancient_willow": {
+      "found": true,
+      "coords": {
+        "x": 1200,
+        "y": 915
+      },
+      "actionFired": true
+    },
+    "hide_tree_ow_willow": {
+      "found": true,
+      "coords": {
+        "x": 1305,
+        "y": 885
+      },
+      "actionFired": true
+    },
+    "sign_sub_bell_workshop": {
+      "found": true,
+      "coords": {
+        "x": 1300,
+        "y": 985
+      },
+      "actionFired": true
+    },
+    "gather_wood_ow_1": {
+      "found": true,
+      "coords": {
+        "x": 1190,
+        "y": 675
+      },
+      "actionFired": true
+    },
+    "gather_resin_ow_1": {
+      "found": true,
+      "coords": {
+        "x": 1170,
+        "y": 630
+      },
+      "actionFired": true
+    },
+    "npc_campfire_knight": {
+      "found": true,
+      "coords": {
+        "x": 1435,
+        "y": 710
+      },
+      "actionFired": true
+    }
+  },
+  "summary": {},
+  "transition_workshop": {
+    "found": true,
+    "triggerRect": {
+      "x": 1320,
+      "y": 1000,
+      "width": 80,
+      "height": 40
+    },
+    "targetSpawn": {
+      "x": 1360,
+      "y": 1100
+    },
+    "status": "active"
+  }
+}
