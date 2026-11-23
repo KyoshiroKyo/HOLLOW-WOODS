@@ -1,5 +1,5 @@
 {
-  "timestamp": 1795402364.710571,
+  "timestamp": 1795438503.9643059,
   "total": 15,
   "passed": 15,
   "failed": 0,
@@ -13,9 +13,9 @@
     },
     {
       "test": 2,
-      "name": "Part A2: Hold Shift+W for 3s -> Continuous Sprint & Stamina Drain",
+      "name": "Part A2: Hold Shift+W for 3s -> Continuous Sprint & Stamina Drain (7 Fields Logged)",
       "passed": true,
-      "details": "isSprinting=True, spd=140, stamina=50.4"
+      "details": "allSprinting=True, lastSpd=140, stamina=46.5"
     },
     {
       "test": 3,
@@ -61,21 +61,21 @@
     },
     {
       "test": 10,
-      "name": "Part C1: QA Settings Write Isolates From Retail Keys",
+      "name": "Part C1: Pure Storage Key Resolution (QA vs Retail Separation)",
       "passed": true,
-      "details": "Retail(vol=0.9, panic=True) vs QA(vol=0.35, panic=False)"
+      "details": "Settings(hollow_woods_settings vs hollow_woods_qa_settings), Save(hollow_woods_v1_savegame vs hollow_woods_qa_v1_savegame)"
     },
     {
       "test": 11,
-      "name": "Part C2: Retail Settings Write Isolates From QA Keys",
+      "name": "Part C2: SettingsManager Writes to Retail Keys & Never QA Keys",
       "passed": true,
-      "details": "Retail(vol=0.75) vs QA(vol=0.35)"
+      "details": "retailMain=0.42, retailLegacy=0.42, qaExists=False"
     },
     {
       "test": 12,
-      "name": "Part C3: ReloadFromStorage Preserves Independent States",
+      "name": "Part C3: QA Cloud Isolation & Runtime Override Removal Verified",
       "passed": true,
-      "details": "QA(vol=0.35) vs Retail(vol=0.75)"
+      "details": "noRuntimeOverride=True, schema=3, isQa=False"
     },
     {
       "test": 13,

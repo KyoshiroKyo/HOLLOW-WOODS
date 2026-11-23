@@ -19,7 +19,7 @@
  * 8. Vòng đời SDK: Gắn p2.onBeforeUnload() và p2.auth.onChange() chống mất tiến trình khi đóng tab hoặc mới đăng nhập.
  */
 
-import { GRAPHICS_QUALITY_KEY, QA_BUILD, QA_SAVE_KEY, QA_SETTINGS_KEY, isQABuild } from '../debug/DevSessionPolicy';
+import { GRAPHICS_QUALITY_KEY, QA_BUILD, QA_SAVE_KEY, QA_SETTINGS_KEY } from '../debug/DevSessionPolicy';
 
 export const SAVE_VERSION = "1.4";
 export const MAX_KEY_BYTES = 64 * 1024; // 65,536 bytes - Giới hạn 64 KB theo đặc tả SDK v1.1
@@ -541,7 +541,7 @@ export function bindCloudSaveLifecycle(getCurrentGameStateFn: () => any): () => 
  * Lưu cấu hình người chơi vào key hw_settings
  */
 export async function saveSettings(settings: GameSettingsData): Promise<CloudSaveResult> {
-  const isQa = isQABuild();
+  const isQa = QA_BUILD;
   const p2 = !isQa && typeof window !== 'undefined' ? window.p2 : undefined;
   const payload: GameSettingsData = {
     updatedAt: Date.now(),
@@ -583,7 +583,7 @@ export async function saveSettings(settings: GameSettingsData): Promise<CloudSav
  * Tải cấu hình người chơi từ Cloud / Local
  */
 export async function loadSettings(): Promise<GameSettingsData | null> {
-  const isQa = isQABuild();
+  const isQa = QA_BUILD;
   const p2 = !isQa && typeof window !== 'undefined' ? window.p2 : undefined;
   let localSettings: GameSettingsData | null = null;
   let cloudSettings: GameSettingsData | null = null;
@@ -653,4 +653,13 @@ export class CloudSaveService {
   public async loadSettings(): Promise<GameSettingsData | null> {
     return loadSettings();
   }
+}
+
+if (typeof window !== 'undefined') {
+  (window as any).__CLOUD_SAVE_SERVICE__ = {
+    saveSettings,
+    loadSettings,
+    saveGameNow,
+    loadGameProgress
+  };
 }

@@ -156,7 +156,7 @@ def main():
             gs.player.playIdle();
         }""")
         page.evaluate("() => { const canvas = document.querySelector('canvas'); if (canvas) canvas.focus(); }")
-        time.sleep(0.1)
+        time.sleep(0.3)
 
         # Hold Shift + KeyA against the tree / rock collider at x=1145
         page.keyboard.down('ShiftLeft')
@@ -167,13 +167,13 @@ def main():
         st_early = get_state()
         print(f"  Early contact (<150ms): spd={st_early['speed']}, sprint={st_early['isSprinting']}, anim={st_early['animKey']}")
 
-        # Hold for 650ms (> 250ms guardrail threshold after contacting at 1145)
-        time.sleep(0.65)
+        # Hold for 800ms (> 250ms guardrail threshold after contacting at 1145)
+        time.sleep(0.8)
         st_blocked = get_state()
         page.keyboard.up('KeyA')
         page.keyboard.up('ShiftLeft')
         time.sleep(0.1)
-        print(f"  Blocked >250ms guardrail: spd={st_blocked['speed']}, sprint={st_blocked['isSprinting']}, anim={st_blocked['animKey']}, frame={st_blocked['frameName']}, x={st_blocked['x']}, touching={st_blocked['bodyTouching']}, blocked={st_blocked['bodyBlocked']}")
+        print(f"  Blocked >250ms guardrail: spd={st_blocked['speed']}, sprint={st_blocked['isSprinting']}, anim={st_blocked['animKey']}, frame={st_blocked['frameName']}, x={st_blocked['x']}, blockStart={st_blocked['blockedMovementStartTime']}, touching={st_blocked['bodyTouching']}, blocked={st_blocked['bodyBlocked']}")
 
         assert st_blocked['isSprinting'] == False, "Collision Guardrail must force isSprinting=False when blocked"
         assert 'walk_left' in (st_blocked['animKey'] or ''), f"Animation must downgrade to walk_left, got {st_blocked['animKey']}"

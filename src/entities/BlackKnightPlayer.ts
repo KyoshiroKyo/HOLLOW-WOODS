@@ -80,8 +80,9 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
   private isComposingInTextInput: boolean = false;
   private isTextInputFocused: boolean = false;
   private domListenersAttached: boolean = false;
-  private isPhysicalShiftHeld: boolean = false;
-  private shiftExpiresAt: number = 0;
+  public isPhysicalShiftHeld: boolean = false;
+  public shiftExpiresAt: number = 0;
+  public lastModifierShift: boolean = false;
   private blockedMovementStartTime: number = 0;
   private static readonly SHIFT_WATCHDOG_TIMEOUT_MS = 600;
   private static readonly BLOCKED_MOVEMENT_GUARDRAIL_MS = 250;
@@ -635,6 +636,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     }
 
     const modifierShift = typeof event.getModifierState === 'function' ? event.getModifierState('Shift') : Boolean(event.shiftKey);
+    this.lastModifierShift = modifierShift;
     const nowPerf = performance.now();
 
     if (isShiftDown) {
@@ -724,7 +726,9 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
 
     this.isPhysicalShiftHeld = false;
     this.shiftExpiresAt = 0;
+    this.lastModifierShift = false;
     this.blockedMovementStartTime = 0;
+    this.stats.isSprinting = false;
     this.activePhysicalCodes.clear();
     this.movementHolds.clear();
     this.physicalKeyHeldForOneShot.clear();
@@ -1213,6 +1217,20 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
 
     const canSprint = wantsToSprint && !this._isStaminaExhausted && this.stats.stamina > 0 && !isBlockedLongEnough;
     this.stats.isSprinting = canSprint;
+
+    // HW-STAB-34: Khi đang di chuyển liên tục, gia hạn hold timer cho các phím di chuyển phần cứng đã xác nhận
+    if (isMoving) {
+      for (const hold of this.movementHolds.values()) {
+        if (hold.confirmed) {
+          hold.expiresAt = nowPerf + 2000;
+        }
+      }
+    }
+
+    // HW-STAB-34: Khi đang chạy nước rút hợp lệ, duy trì watchdog Shift không bị timeout giữa chừng
+    if (canSprint && this.isPhysicalShiftHeld) {
+      this.shiftExpiresAt = nowPerf + BlackKnightPlayer.SHIFT_WATCHDOG_TIMEOUT_MS;
+    }
 
     const equipSys = EquipmentSystem.getInstance();
     const sprintSpeed = PLAYER_SPRINT_SPEED * equipSys.getSprintSpeedMultiplier();

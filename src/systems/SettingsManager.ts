@@ -8,7 +8,7 @@
 import { AudioManager } from '../audio/AudioManager';
 import { GraphicsQualitySystem, GraphicsQualityLevel } from './GraphicsQualitySystem';
 import { saveSettings, loadSettings, GameSettingsData } from '../services/CloudSaveService';
-import { QA_SETTINGS_KEY, isQABuild } from '../debug/DevSessionPolicy';
+import { QA_BUILD, QA_SETTINGS_KEY, resolveSettingsStorageKey } from '../debug/DevSessionPolicy';
 
 export interface GameSettings {
   masterVolume: number;
@@ -81,13 +81,13 @@ export class SettingsManager {
   }
 
   /**
-   * Nạp từ LocalStorage đồng bộ lúc khởi động (HW-STAB-32: Cách ly QA và Retail)
+   * Nạp từ LocalStorage đồng bộ lúc khởi động (HW-STAB-32 & HW-STAB-34: Cách ly QA và Retail)
    */
   private loadFromLocalStorage(): void {
     if (typeof localStorage === 'undefined') return;
 
     try {
-      const isQa = isQABuild();
+      const isQa = QA_BUILD;
       const raw = isQa
         ? localStorage.getItem(QA_SETTINGS_KEY)
         : (localStorage.getItem(SettingsManager.LOCAL_PREFIX_KEY) || localStorage.getItem(SettingsManager.STORAGE_KEY));
@@ -157,13 +157,13 @@ export class SettingsManager {
   }
 
   /**
-   * Lưu cài đặt vào LocalStorage và lên Cloud (debounced, HW-STAB-32: Cách ly QA và Retail)
+   * Lưu cài đặt vào LocalStorage và lên Cloud (debounced, HW-STAB-32 & HW-STAB-34: Cách ly QA và Retail)
    */
   private scheduleSave(): void {
     if (typeof localStorage !== 'undefined') {
       try {
         const json = JSON.stringify(this.settings);
-        if (isQABuild()) {
+        if (QA_BUILD) {
           localStorage.setItem(QA_SETTINGS_KEY, json);
         } else {
           localStorage.setItem(SettingsManager.LOCAL_PREFIX_KEY, json);
@@ -209,7 +209,7 @@ export class SettingsManager {
     if (typeof localStorage !== 'undefined') {
       try {
         const json = JSON.stringify(this.settings);
-        if (isQABuild()) {
+        if (QA_BUILD) {
           localStorage.setItem(QA_SETTINGS_KEY, json);
         } else {
           localStorage.setItem(SettingsManager.LOCAL_PREFIX_KEY, json);
@@ -228,6 +228,13 @@ export class SettingsManager {
   }
 
   // --- GETTERS & SETTERS ---
+
+  /**
+   * HW-STAB-34: Hàm thuần trả về storage key cấu hình tương ứng với chế độ QA hoặc Retail
+   */
+  public static resolveKey(isQa: boolean = QA_BUILD): string {
+    return resolveSettingsStorageKey(isQa);
+  }
 
   public getSettings(): Readonly<GameSettings> {
     return { ...this.settings };
