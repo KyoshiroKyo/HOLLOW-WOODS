@@ -29,6 +29,7 @@ import { QuickCraftSidebar } from '../ui/QuickCraftSidebar';
 import { CampSanctuarySystem } from '../systems/CampSanctuarySystem';
 import { QuestSystem } from '../systems/QuestSystem';
 import { SettingsManager } from '../systems/SettingsManager';
+import { lerpColor } from '../systems/TimeSystem';
 import type { GameScene } from './GameScene';
 
 const RUNNING_LABELS = {
@@ -1813,26 +1814,17 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.redrawStats(); // V152-06A: Cập nhật thể lực mượt mà theo thời gian thực khi chạy/hồi
   }
 
-  /**
-   * HW-FX-31 (KHÔI PHỤC HIỆU ỨNG KINH DỊ TÂM LÝ & TÙY CHỌN TIẾP CẬN):
-   * Quản lý tập trung lớp hiển thị Hoảng Sợ & Bất An (Panic Vignette) trên panicVignetteGraphics (depth: 900)
-   *
-   * 4 TRẠNG THÁI THEO NGƯỠNG TINH THẦN (< 40%):
-   * A. NORMAL (40..100): Tắt hoàn toàn, trong trẻo, không viền, không sương tím, không vệt đỏ.
-   * B. UNEASE (25..39): Bốn góc xuất hiện sương tím rất nhẹ (0x24143f), mép tối xanh tím than nhẹ (0x100b1c).
-   * C. PANIC (15..24): Sương tím rõ nét hơn (0x271039), mép tối ép vào vừa phải, tâm màn hình thông thoáng.
-   * D. CRITICAL (0..14): Bốn góc tím sẫm sâu, xuất hiện vệt đỏ thẫm huyết dụ (0x581b2c) cách điệu ở mép.
-   *
-   * QUY TẮC AN TOÀN & BẢO MẬT QUANG HỌC:
-   * - Phím tắt/công tắc: Tôn trọng tuyệt đối Panic Visuals Toggle (ON/OFF), Light Motion Toggle (ON/OFF), và Reduced Motion.
-   * - Reduced Motion có ưu tiên cao nhất: Dù Light Motion ON, Reduced Motion vẫn triệt tiêu 100% dao động thời gian (hiển thị tĩnh).
-   * - Tự động dịu dần (smooth fade-out 280ms) và biến mất khi Tinh Thần >= 40 hoặc đứng trong Safe Zone.
-   */
   private updatePanicVignette(time: number = 0): void {
     if (!this.panicVignetteGraphics || !this.playerState) return;
 
     const sm = SettingsManager.getInstance();
     const isPanicEnabled = sm.isPanicEffectsEnabled();
+    const isLightMotion = sm.isLightMotionEnabled();
+    if (!isPanicEnabled && this.activeRedDangerTween) {
+      this.activeRedDangerTween.stop();
+      this.activeRedDangerTween = undefined;
+      this.redDangerGraphics.clear();
+    }
 
     const stats = this.playerState.stats;
     const composure = stats.composure;
@@ -1853,38 +1845,30 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     // Kiểm tra điều kiện trong trận Boss Miếu Chuông Phế Tích
     const isBossFight = gameScene?.isBossFightActive && currentZone === 'broken_bell_shrine';
-    // HW-FX-31 & HW-STAB-32: Ngưỡng an toàn là khi tắt Panic Visuals (!isPanicEnabled), hoặc đạt ngưỡng tâm lý an toàn (Boss >= 50, thường >= 40), hoặc Safe Zone
-    const isSafeState = !isPanicEnabled || (isBossFight
-      ? (composure >= 50)
-      : (isProtectedZone || composure >= 40));
+    const panicThreshold = isBossFight ? 50 : 40;
+    const isSafeState = !isPanicEnabled || (!isBossFight && isProtectedZone) || composure >= panicThreshold;
 
     if (isSafeState) {
-      if (this.isPanicVignetteActive) {
-        this.isPanicVignetteActive = false;
-        const isReducedMotion = sm.isReducedMotionPreferred();
-        if (isReducedMotion) {
-          if (this.activePanicFadeTween) {
-            this.activePanicFadeTween.stop();
-            this.activePanicFadeTween = undefined;
-          }
+      if (!isPanicEnabled || !isLightMotion) {
+        if (this.isPanicVignetteActive || this.activePanicFadeTween) {
+          this.activePanicFadeTween?.stop();
+          this.activePanicFadeTween = undefined;
           this.panicVignetteGraphics.clear();
           this.panicVignetteGraphics.setAlpha(1);
-        } else if (!this.activePanicFadeTween) {
-          this.activePanicFadeTween = this.tweens.add({
-            targets: this.panicVignetteGraphics,
-            alpha: 0,
-            duration: 280,
-            ease: 'Quad.easeOut',
-            onComplete: () => {
-              if (this.panicVignetteGraphics) {
-                this.panicVignetteGraphics.clear();
-                this.panicVignetteGraphics.setAlpha(1);
-              }
-              this.activePanicFadeTween = undefined;
-            }
-          });
         }
+      } else if (this.isPanicVignetteActive) {
+        this.activePanicFadeTween = this.tweens.add({
+          targets: this.panicVignetteGraphics,
+          alpha: 0,
+          duration: 280,
+          ease: 'Quad.easeOut',
+          onComplete: () => {
+            this.panicVignetteGraphics?.clear().setAlpha(1);
+            this.activePanicFadeTween = undefined;
+          }
+        });
       }
+      this.isPanicVignetteActive = false;
       return;
     }
 
@@ -1898,140 +1882,50 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.isPanicVignetteActive = true;
     this.panicVignetteGraphics.clear();
 
-    const isReducedMotion = sm.isReducedMotionPreferred();
-    const isLightMotion = sm.isLightMotionEnabled();
-    const intensityMultiplier = sm.getPanicIntensityMultiplier();
+    // V15-06 (cc40bed060b8): original UI palette and pulse levels, blended
+    // over two Sanity points at each threshold to avoid sudden changes.
+    const fear = Phaser.Math.SmoothStep(25 - composure, 0, 2);
+    const dread = Phaser.Math.SmoothStep(10 - composure, 0, 2);
+    const pulseBase = Phaser.Math.Linear(Phaser.Math.Linear(0.10, 0.22, fear), 0.40, dread);
+    const pulseAmp = Phaser.Math.Linear(Phaser.Math.Linear(0.04, 0.09, fear), 0.18, dread);
+    const edgeColor = lerpColor(lerpColor(0x120b18, 0x240d24, fear), 0x3d0b16, dread);
 
-    // HW-FX-31: Nhịp thở chậm rãi, êm dịu (0.35 Hz). Nếu Light Motion OFF hoặc Reduced Motion ON: pulseFactor = 0 (hiển thị tĩnh)
-    const pulseFactor = (!isReducedMotion && isLightMotion)
-      ? Math.pow(Math.max(0, Math.sin(time * 0.0022)), 2)
-      : 0;
-
-    // Chuẩn hóa hệ số hoảng loạn t in [0, 1] theo 3 bậc phân cấp:
-    // 25..39: UNEASE       [0.05..0.35]
-    // 15..24: PANIC        [0.35..0.75]
-    // 0..14:  CRITICAL     [0.75..1.0]
-    let t = 0;
-    if (composure < 15) {
-      t = 0.75 + (0.25 * (15 - Math.max(0, composure))) / 15;
-    } else if (composure < 25) {
-      t = 0.35 + (0.40 * (25 - composure)) / 10;
-    } else {
-      t = 0.05 + (0.30 * (40 - composure)) / 15;
-    }
-    t = Math.max(0, Math.min(1.0, t));
-
+    // BUG-023: one slow phase at all Sanity levels, with half the original swing.
+    const breath = isLightMotion ? Math.sin(time * 0.0022) * 0.5 : 0;
+    const pulse = Math.max(0.04, pulseBase + pulseAmp * breath);
+    const visibility = Phaser.Math.SmoothStep(panicThreshold - composure, 0, 2);
+    const intensity = sm.getPanicIntensityMultiplier();
     const w = 1280;
     const h = 720;
+    const g = this.panicVignetteGraphics;
 
-    // Classic V15-06 reference cc40bed060b8: static dread grows from 30 to 0.
-    // The original FOW vision factor remains in VeilSystem; no extra radius multiplier.
-    const classicTendrilFactor = Phaser.Math.Clamp((30 - composure) / 30, 0, 1);
-
-    // 1. Mép xanh tím than ngoài rìa (0x100b1c)
-    const edgeColor = 0x100b1c;
-    const baseEdgeAlpha = (0.05 + t * 0.12) * intensityMultiplier;
-    const edgePulseAlpha = Math.min(0.68, baseEdgeAlpha + pulseFactor * (0.02 + t * 0.04));
-
-    const edgeLayers = [
-      { inset: 0, thick: Math.round((12 + t * 8) * intensityMultiplier), alphaMult: 1.15 },
-      { inset: Math.round((12 + t * 8) * intensityMultiplier), thick: Math.round((14 + t * 10) * intensityMultiplier), alphaMult: 0.75 },
-      { inset: Math.round((26 + t * 18) * intensityMultiplier), thick: Math.round((16 + t * 12) * intensityMultiplier), alphaMult: 0.38 }
+    // Original five bands. The strongest band is only 14 px wide, and
+    // inner bands fade toward the play area as in V15-06.
+    const layers = [
+      { inset: 0, thick: 14, alphaMult: 1.4 },
+      { inset: 14, thick: 20, alphaMult: 1.0 },
+      { inset: 34, thick: 26, alphaMult: 0.65 },
+      { inset: 60, thick: 32, alphaMult: 0.35 },
+      { inset: 92, thick: 38, alphaMult: 0.15 }
     ];
-
-    for (const l of edgeLayers) {
-      const alpha = Math.min(0.80, edgePulseAlpha * l.alphaMult);
-      this.panicVignetteGraphics.fillStyle(edgeColor, alpha);
-      // Top
-      this.panicVignetteGraphics.fillRect(l.inset, l.inset, w - l.inset * 2, l.thick);
-      // Bottom
-      this.panicVignetteGraphics.fillRect(l.inset, h - l.inset - l.thick, w - l.inset * 2, l.thick);
-      // Left
-      this.panicVignetteGraphics.fillRect(l.inset, l.inset + l.thick, l.thick, h - (l.inset + l.thick) * 2);
-      // Right
-      this.panicVignetteGraphics.fillRect(w - l.inset - l.thick, l.inset + l.thick, l.thick, h - (l.inset + l.thick) * 2);
+    for (const { inset, thick, alphaMult } of layers) {
+      g.fillStyle(edgeColor, Math.min(0.72, pulse * alphaMult * intensity) * visibility);
+      g.fillRect(inset, inset, w - inset * 2, thick);
+      g.fillRect(inset, h - inset - thick, w - inset * 2, thick);
+      g.fillRect(inset, inset + thick, thick, h - (inset + thick) * 2);
+      g.fillRect(w - inset - thick, inset + thick, thick, h - (inset + thick) * 2);
     }
 
-    // Restore V15-06's oppressive visual constriction at <30% composure.
-    // Static bands: no high-frequency pulsing, no duplicate VeilSystem overlay.
-    // Exact classic geometry: 36 -> 140 px and 80 -> 260 px corner reach.
     if (composure < 30) {
-      const classicThickness = Math.round(
-        Phaser.Math.Linear(36, 140, classicTendrilFactor) * intensityMultiplier
-      );
-      const classicAlpha = Phaser.Math.Clamp(
-        (0.45 + 0.42 * classicTendrilFactor) * intensityMultiplier, 0, 0.92
-      );
-      this.panicVignetteGraphics.fillStyle(0x120617, classicAlpha);
-      this.panicVignetteGraphics.fillRect(0, 0, w, classicThickness);
-      this.panicVignetteGraphics.fillRect(0, h - classicThickness, w, classicThickness);
-      this.panicVignetteGraphics.fillRect(0, 0, classicThickness, h);
-      this.panicVignetteGraphics.fillRect(w - classicThickness, 0, classicThickness, h);
-    }
-
-    // 2. Sương tím bốn góc màn hình (0x24143f & 0x271039) — Thiết kế bo mềm nhiều lớp (Organic Curved Fans)
-    const baseCornerSize = Math.round((60 + t * 85) * intensityMultiplier);
-    // Restore V15-06's 80 -> 260 px corner reach, keeping today's soft organic shape.
-    const classicCornerSize = composure < 30
-      ? Math.round(Phaser.Math.Linear(80, 260, classicTendrilFactor) * intensityMultiplier)
-      : 0;
-    const dynamicCorner = Math.max(classicCornerSize,
-      (isReducedMotion || !isLightMotion)
-        ? baseCornerSize
-        : Math.round(baseCornerSize + pulseFactor * (10 + t * 14))
-    );
-
-    // Lớp 1: Sương tím tối ngoài rìa (0x24143f)
-    const mist1Alpha = Math.min(0.65, (0.10 + t * 0.24 + pulseFactor * 0.06 * t) * intensityMultiplier);
-    this.drawCornerMist(0, 0, dynamicCorner, 0x24143f, mist1Alpha, 'TL');
-    this.drawCornerMist(w, 0, dynamicCorner, 0x24143f, mist1Alpha, 'TR');
-    this.drawCornerMist(0, h, dynamicCorner, 0x24143f, mist1Alpha, 'BL');
-    this.drawCornerMist(w, h, dynamicCorner, 0x24143f, mist1Alpha, 'BR');
-
-    // Lớp 2: Sương tím ấm hơn ở giữa (0x271039)
-    const midCorner = Math.round(dynamicCorner * 0.72);
-    const mist2Alpha = Math.min(0.72, (0.16 + t * 0.28 + pulseFactor * 0.08 * t) * intensityMultiplier);
-    this.drawCornerMist(0, 0, midCorner, 0x271039, mist2Alpha, 'TL');
-    this.drawCornerMist(w, 0, midCorner, 0x271039, mist2Alpha, 'TR');
-    this.drawCornerMist(0, h, midCorner, 0x271039, mist2Alpha, 'BL');
-    this.drawCornerMist(w, h, midCorner, 0x271039, mist2Alpha, 'BR');
-
-    // Lớp 3: Tâm điểm xanh tím than sẫm ở 4 góc (0x100b1c)
-    const coreCorner = Math.round(dynamicCorner * 0.45);
-    const coreAlpha = Math.min(0.80, (0.24 + t * 0.32) * intensityMultiplier);
-    this.drawCornerMist(0, 0, coreCorner, 0x100b1c, coreAlpha, 'TL');
-    this.drawCornerMist(w, 0, coreCorner, 0x100b1c, coreAlpha, 'TR');
-    this.drawCornerMist(0, h, coreCorner, 0x100b1c, coreAlpha, 'BL');
-    this.drawCornerMist(w, h, coreCorner, 0x100b1c, coreAlpha, 'BR');
-
-    // 3. VỆT ĐỎ THẪM KHI HOẢNG LOẠN (0x581b2c) — Chỉ kích hoạt tại CRITICAL PANIC (composure < 15)
-    if (composure < 15) {
-      const redFactor = (15 - Math.max(0, composure)) / 15;
-      const redAlpha = Math.min(0.48, (0.14 + redFactor * 0.24 + pulseFactor * 0.05) * intensityMultiplier);
-      const crimsonColor = 0x581b2c;
-
-      this.panicVignetteGraphics.fillStyle(crimsonColor, redAlpha);
-
-      // Các vệt hữu cơ cách điệu mờ dần ở 4 mép màn hình:
-      // Mép trên:
-      this.panicVignetteGraphics.fillRect(280, 0, 160, Math.round(16 + redFactor * 8));
-      this.panicVignetteGraphics.fillRect(840, 0, 180, Math.round(15 + redFactor * 8));
-      // Mép dưới:
-      this.panicVignetteGraphics.fillRect(320, h - Math.round(16 + redFactor * 8), 180, Math.round(16 + redFactor * 8));
-      this.panicVignetteGraphics.fillRect(780, h - Math.round(18 + redFactor * 8), 160, Math.round(18 + redFactor * 8));
-      // Mép trái:
-      this.panicVignetteGraphics.fillRect(0, 220, Math.round(16 + redFactor * 8), 140);
-      this.panicVignetteGraphics.fillRect(0, 420, Math.round(15 + redFactor * 8), 150);
-      // Mép phải:
-      this.panicVignetteGraphics.fillRect(w - Math.round(16 + redFactor * 8), 200, Math.round(16 + redFactor * 8), 150);
-      this.panicVignetteGraphics.fillRect(w - Math.round(15 + redFactor * 8), 410, Math.round(15 + redFactor * 8), 140);
-
-      // Điểm nhấn đỏ nhẹ ở 4 góc sương tím
-      const redCorner = Math.round(coreCorner * 0.70);
-      this.drawCornerMist(0, 0, redCorner, crimsonColor, redAlpha * 0.85, 'TL');
-      this.drawCornerMist(w, 0, redCorner, crimsonColor, redAlpha * 0.85, 'TR');
-      this.drawCornerMist(0, h, redCorner, crimsonColor, redAlpha * 0.85, 'BL');
-      this.drawCornerMist(w, h, redCorner, crimsonColor, redAlpha * 0.85, 'BR');
+      const tendrilFactor = Phaser.Math.Clamp((30 - composure) / 30, 0, 1);
+      const cornerSize = Math.round(Phaser.Math.Linear(70, 240, tendrilFactor));
+      const cornerVisibility = Phaser.Math.SmoothStep(30 - composure, 0, 2);
+      const cornerAlpha = Math.min(0.75, (0.45 + pulse * 0.42 * tendrilFactor) * intensity);
+      g.fillStyle(0x0e0513, cornerAlpha * cornerVisibility);
+      g.fillTriangle(0, 0, cornerSize, 0, 0, cornerSize);
+      g.fillTriangle(w, 0, w - cornerSize, 0, w, cornerSize);
+      g.fillTriangle(0, h, cornerSize, h, 0, h - cornerSize);
+      g.fillTriangle(w, h, w - cornerSize, h, w, h - cornerSize);
     }
 
     // Cảnh báo HUD khi bước vào các ngưỡng nguy hiểm (quản lý tập trung, cooldown rõ ràng)
@@ -2052,35 +1946,6 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   /**
-   * HW-FX-31: Vẽ quạt sương góc bo tròn hữu cơ (Organic Corner Mist Fan)
-   * Sử dụng 3 tam giác ghép tạo đường viền tròn mềm mại, không gây giật cạnh sắc
-   */
-  private drawCornerMist(
-    cx: number,
-    cy: number,
-    r: number,
-    color: number,
-    alpha: number,
-    corner: 'TL' | 'TR' | 'BL' | 'BR'
-  ): void {
-    if (r <= 0 || alpha <= 0 || !this.panicVignetteGraphics) return;
-    this.panicVignetteGraphics.fillStyle(color, alpha);
-
-    const sx = corner === 'TL' || corner === 'BL' ? 1 : -1;
-    const sy = corner === 'TL' || corner === 'TR' ? 1 : -1;
-
-    const x0 = cx, y0 = cy;
-    const x1 = cx + r * sx, y1 = cy;
-    const x2 = cx + r * 0.85 * sx, y2 = cy + r * 0.45 * sy;
-    const x3 = cx + r * 0.45 * sx, y3 = cy + r * 0.85 * sy;
-    const x4 = cx, y4 = cy + r * sy;
-
-    this.panicVignetteGraphics.fillTriangle(x0, y0, x1, y1, x2, y2);
-    this.panicVignetteGraphics.fillTriangle(x0, y0, x2, y2, x3, y3);
-    this.panicVignetteGraphics.fillTriangle(x0, y0, x3, y3, x4, y4);
-  }
-
-  /**
    * V1.5 (BƯỚC V15-06): Tính toán hệ số tầm nhìn theo Bình Tâm (1.0 khi >= 50%, giảm dần về 0.45 khi chạm 0%)
    */
   public getComposureVisionFactor(): number {
@@ -2094,7 +1959,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
    * Sử dụng tween mượt mà trên redDangerGraphics riêng biệt, triệt tiêu hoàn toàn nhấp nháy strobe đỏ-đen.
    */
   public triggerRedDangerVignetteFlash(): void {
-    if (!this.redDangerGraphics) return;
+    const settings = SettingsManager.getInstance();
+    if (!this.redDangerGraphics || !settings.isPanicEffectsEnabled()) return;
     const g = this.redDangerGraphics;
     const w = 1280;
     const h = 720;
@@ -2124,8 +1990,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     g.fillTriangle(0, h, cSize, h, 0, h - cSize);
     g.fillTriangle(w, h, w - cSize, h, w, h - cSize);
 
-    const isReducedMotion = SettingsManager.getInstance().isReducedMotionPreferred();
-    const duration = isReducedMotion ? 180 : 380;
+    const duration = settings.isReducedMotionPreferred() ? 180 : 380;
 
     this.activeRedDangerTween = this.tweens.add({
       targets: g,
