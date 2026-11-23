@@ -12,11 +12,11 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 89.51345812841586,
+    "currentLanternRadius": 85.26316696941632,
     "veilDistortionDrawn": false
   },
   "test_2_comp_40": {
-    "composure": 40.46027000000001,
+    "composure": 40.44537499999999,
     "zoneId": "outer_woods",
     "isPanicVignetteActive": false,
     "hasPanicGraphics": true,
@@ -28,11 +28,11 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 107.09702037148816,
+    "currentLanternRadius": 105.30639977258227,
     "veilDistortionDrawn": false
   },
   "test_3_comp_39": {
-    "composure": 39.30774,
+    "composure": 39.26522,
     "zoneId": "outer_woods",
     "isPanicVignetteActive": true,
     "hasPanicGraphics": true,
@@ -44,11 +44,11 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 111.12851587722228,
+    "currentLanternRadius": 110.66163261544634,
     "veilDistortionDrawn": false
   },
   "test_4_comp_25": {
-    "composure": 25.417825,
+    "composure": 25.40785,
     "zoneId": "outer_woods",
     "isPanicVignetteActive": true,
     "hasPanicGraphics": true,
@@ -60,11 +60,11 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 125.50719527486153,
+    "currentLanternRadius": 126.70143498350662,
     "veilDistortionDrawn": false
   },
   "test_5_comp_20": {
-    "composure": 20.45537,
+    "composure": 20.405314999999998,
     "zoneId": "outer_woods",
     "isPanicVignetteActive": true,
     "hasPanicGraphics": true,
@@ -76,11 +76,11 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 126.19505862645975,
+    "currentLanternRadius": 127.5003708051856,
     "veilDistortionDrawn": false
   },
   "test_6_comp_10": {
-    "composure": 10.44535,
+    "composure": 10.412845,
     "zoneId": "outer_woods",
     "isPanicVignetteActive": true,
     "hasPanicGraphics": true,
@@ -92,11 +92,11 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 123.9326782994771,
+    "currentLanternRadius": 128.4523907705334,
     "veilDistortionDrawn": false
   },
   "test_7_comp_0": {
-    "composure": 0.4578299999999999,
+    "composure": 0.4028550000000012,
     "zoneId": "outer_woods",
     "isPanicVignetteActive": true,
     "hasPanicGraphics": true,
@@ -108,11 +108,11 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 111.1039343940184,
+    "currentLanternRadius": 114.91013163197682,
     "veilDistortionDrawn": false
   },
   "test_8_day_horror": {
-    "composure": 20.30273,
+    "composure": 20.592980000000004,
     "zoneId": "outer_woods",
     "isPanicVignetteActive": true,
     "hasPanicGraphics": true,
@@ -124,11 +124,11 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 113.61606245618701,
+    "currentLanternRadius": 118.21505192986511,
     "veilDistortionDrawn": false
   },
   "test_9_night_horror": {
-    "composure": 20.600435,
+    "composure": 20.387795,
     "zoneId": "outer_woods",
     "isPanicVignetteActive": true,
     "hasPanicGraphics": true,
@@ -140,15 +140,15 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 103.85859907283964,
+    "currentLanternRadius": 111.26048432181449,
     "veilDistortionDrawn": false
   },
   "test_10_bellhollow": {
-    "composure": 10.42033,
+    "composure": 10.40782,
     "zoneId": "bellhollow",
     "isPanicVignetteActive": false,
     "hasPanicGraphics": true,
-    "panicAlpha": 0.3773469387755102,
+    "panicAlpha": 1,
     "isHeartbeatActive": false,
     "heartbeatBpm": 75,
     "panicEffectsEnabled": true,
@@ -156,11 +156,11 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 96.3137741740041,
+    "currentLanternRadius": 103.43725729893399,
     "veilDistortionDrawn": false
   },
   "test_11_sanctuary_farm": {
-    "composure": 10.440354999999998,
+    "composure": 10.43284,
     "zoneId": "sanctuary_farm",
     "isPanicVignetteActive": false,
     "hasPanicGraphics": true,
@@ -172,11 +172,11 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 93.31053814426231,
+    "currentLanternRadius": 98.83528916159158,
     "veilDistortionDrawn": false
   },
   "test_12_sir_vaelen": {
-    "composure": 11.409088,
+    "composure": 12.073744000000001,
     "zoneId": "outer_woods",
     "isPanicVignetteActive": false,
     "hasPanicGraphics": true,
@@ -188,12 +188,12 @@
     "rawLightMotionEnabled": true,
     "panicIntensity": "STANDARD",
     "reducedMotion": false,
-    "currentLanternRadius": 93.14735890680156,
+    "currentLanternRadius": 96.74665654400002,
     "veilDistortionDrawn": false
   },
   "test_13_panic_toggle": {
     "off": {
-      "composure": 10.62049,
+      "composure": 10.63801,
       "zoneId": "outer_woods",
       "isPanicVignetteActive": false,
       "hasPanicGraphics": true,
@@ -205,11 +205,11 @@
       "rawLightMotionEnabled": true,
       "panicIntensity": "STANDARD",
       "reducedMotion": false,
-      "currentLanternRadius": 94.1345894904553,
+      "currentLanternRadius": 97.42005437967097,
       "veilDistortionDrawn": false
     },
     "on": {
-      "composure": 11.861439999999998,
+      "composure": 12.511989999999997,
       "zoneId": "outer_woods",
       "isPanicVignetteActive": true,
       "hasPanicGraphics": true,
@@ -221,13 +221,13 @@
       "rawLightMotionEnabled": true,
       "panicIntensity": "STANDARD",
       "reducedMotion": false,
-      "currentLanternRadius": 99.01740219308971,
+      "currentLanternRadius": 102.18929059434328,
       "veilDistortionDrawn": false
     }
   },
   "test_14_light_motion_toggle": {
     "off": {
-      "composure": 11.861439999999998,
+      "composure": 12.511989999999997,
       "zoneId": "outer_woods",
       "isPanicVignetteActive": true,
       "hasPanicGraphics": true,
@@ -239,11 +239,11 @@
       "rawLightMotionEnabled": false,
       "panicIntensity": "STANDARD",
       "reducedMotion": false,
-      "currentLanternRadius": 99.01740219308971,
+      "currentLanternRadius": 102.18929059434328,
       "veilDistortionDrawn": false
     },
     "on": {
-      "composure": 11.861439999999998,
+      "composure": 12.511989999999997,
       "zoneId": "outer_woods",
       "isPanicVignetteActive": true,
       "hasPanicGraphics": true,
@@ -255,13 +255,13 @@
       "rawLightMotionEnabled": true,
       "panicIntensity": "STANDARD",
       "reducedMotion": false,
-      "currentLanternRadius": 99.01740219308971,
+      "currentLanternRadius": 102.18929059434328,
       "veilDistortionDrawn": false
     }
   },
   "test_15_reduced_motion": {
     "rm_on": {
-      "composure": 12.321834999999998,
+      "composure": 12.929829999999997,
       "zoneId": "outer_woods",
       "isPanicVignetteActive": true,
       "hasPanicGraphics": true,
@@ -273,11 +273,11 @@
       "rawLightMotionEnabled": true,
       "panicIntensity": "STANDARD",
       "reducedMotion": true,
-      "currentLanternRadius": 101.23851386278932,
+      "currentLanternRadius": 103.86087986137943,
       "veilDistortionDrawn": false
     },
     "rm_off": {
-      "composure": 13.034919999999998,
+      "composure": 13.920639999999995,
       "zoneId": "outer_woods",
       "isPanicVignetteActive": true,
       "hasPanicGraphics": true,
@@ -289,7 +289,7 @@
       "rawLightMotionEnabled": true,
       "panicIntensity": "STANDARD",
       "reducedMotion": false,
-      "currentLanternRadius": 105.19520570835218,
+      "currentLanternRadius": 108.20920740505788,
       "veilDistortionDrawn": false
     }
   },
@@ -333,7 +333,7 @@
     "uisPanicActive": true
   },
   "test_25_fow_performance": {
-    "elapsedMs": 0.10000000009313226,
+    "elapsedMs": 0.19999999925494194,
     "fastPass": true
   }
 }

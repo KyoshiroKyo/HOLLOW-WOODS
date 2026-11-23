@@ -561,7 +561,7 @@ export class MainMenuScene extends Phaser.Scene {
     const visualsTabGroup = this.add.container(0, 0);
 
     // 1. CHẤT LƯỢNG ĐỒ HỌA (GRAPHICS QUALITY)
-    const gfxContainer = this.add.container(0, -modalH / 2 + 125);
+    const gfxContainer = this.add.container(0, -modalH / 2 + 120);
     const gfxLabel = HDTextHelper.createText(this, -270, 0, '🖥️ Mức Đồ Họa & Sương Mù:', {
       fontSize: '12px',
       fontStyle: 'bold',
@@ -617,11 +617,27 @@ export class MainMenuScene extends Phaser.Scene {
 
     gfxContainer.add([gfxLabel, gfxBtn]);
 
-    // 2. TÙY CHỌN RUNG MÀN HÌNH (SCREEN SHAKE)
+    // 2. TÙY CHỌN GIẢM CHUYỂN ĐỘNG (REDUCED MOTION)
+    const reducedMotionToggle = SettingsUIHelper.createGenericToggle(
+      this,
+      0,
+      -modalH / 2 + 165,
+      '♿ Giảm Chuyển Động (Reduced Motion):',
+      'Tắt rung giật & dao động thị giác để bảo vệ mắt.',
+      settings.isReducedMotionEnabled(),
+      (enabled) => {
+        settings.setReducedMotionEnabled(enabled);
+        shakeToggle.setEnabled(settings.isScreenShakeEnabled());
+        lightMotionToggle.setEnabled(settings.isRawLightMotionEnabled());
+      },
+      540
+    );
+
+    // 3. TÙY CHỌN RUNG MÀN HÌNH (SCREEN SHAKE)
     const shakeToggle = SettingsUIHelper.createGenericToggle(
       this,
       0,
-      -modalH / 2 + 175,
+      -modalH / 2 + 210,
       '📳 Rung Màn Hình (Screen Shake):',
       'Rung giật camera khi nguy kịch hoặc bị quái vật tập kích.',
       settings.isScreenShakeEnabled(),
@@ -629,11 +645,11 @@ export class MainMenuScene extends Phaser.Scene {
       540
     );
 
-    // 3. HIỆU ỨNG HOẢNG SỢ (PANIC VISUALS)
+    // 4. HIỆU ỨNG HOẢNG SỢ (PANIC VISUALS)
     const panicToggle = SettingsUIHelper.createGenericToggle(
       this,
       0,
-      -modalH / 2 + 225,
+      -modalH / 2 + 255,
       '👁️ Hiệu Ứng Hoảng Sợ (Panic Visuals):',
       'Sương tím & vệt đỏ kinh dị tâm lý khi Tinh Thần <40%.',
       settings.isPanicEffectsEnabled(),
@@ -641,11 +657,11 @@ export class MainMenuScene extends Phaser.Scene {
       540
     );
 
-    // 4. DAO ĐỘNG ÁNH SÁNG (LIGHT MOTION)
+    // 5. DAO ĐỘNG ÁNH SÁNG (LIGHT MOTION)
     const lightMotionToggle = SettingsUIHelper.createGenericToggle(
       this,
       0,
-      -modalH / 2 + 275,
+      -modalH / 2 + 300,
       '✨ Dao Động Ánh Sáng (Light Motion):',
       'Nhịp thở FOW & đèn lồng (tự tắt khi Reduced Motion ON).',
       settings.isRawLightMotionEnabled(),
@@ -653,11 +669,11 @@ export class MainMenuScene extends Phaser.Scene {
       540
     );
 
-    // 5. CƯỜNG ĐỘ HOẢNG SỢ (PANIC INTENSITY)
+    // 6. CƯỜNG ĐỘ HOẢNG SỢ (PANIC INTENSITY)
     const intensitySelector = SettingsUIHelper.createIntensitySelector(
       this,
       0,
-      -modalH / 2 + 325,
+      -modalH / 2 + 345,
       '🎨 Cường Độ Hoảng Sợ (Intensity):',
       'Độ đậm nhạt của lớp sương và viền trang trí.',
       settings.getPanicIntensity(),
@@ -667,6 +683,7 @@ export class MainMenuScene extends Phaser.Scene {
 
     visualsTabGroup.add([
       gfxContainer,
+      reducedMotionToggle.container,
       shakeToggle.container,
       panicToggle.container,
       lightMotionToggle.container,

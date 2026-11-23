@@ -1,9 +1,9 @@
 {
   "test_1_high_rm_off": {
     "isRM": false,
-    "deltaScale": 0.006829183359440383,
-    "minScale": 0.9961136392320024,
-    "maxScale": 1.0029428225914427,
+    "deltaScale": 0.0077268721321850364,
+    "minScale": 0.9960543570928941,
+    "maxScale": 1.0037812292250792,
     "sampleCount": 25
   },
   "test_2_high_rm_on": {
@@ -15,16 +15,16 @@
     "isVisible": true,
     "sampleCount": 25,
     "diag": {
-      "firstRadius": 236.797416,
-      "lastRadius": 243.48970519433735,
-      "firstScale": 1.6686817908749998,
-      "lastScale": 1.715841516291346,
+      "firstRadius": 239.0984,
+      "lastRadius": 245.59163112714103,
+      "firstScale": 1.6848965375,
+      "lastScale": 1.7306535255990718,
       "breathingSetting": true
     }
   },
   "test_3_medium_rm_off": {
     "isRM": false,
-    "deltaScale": 0.007214257138693281
+    "deltaScale": 0.006598029774327108
   },
   "test_4_medium_rm_on": {
     "isRM": true,
@@ -38,18 +38,18 @@
     "offState": {
       "glowVisible": false,
       "maskKey": "cached_light_mask_dim",
-      "radius": 236.89821603060878
+      "radius": 236.77166076503534
     },
     "onState": {
       "glowVisible": true,
       "maskKey": "cached_light_mask_normal",
-      "radius": 238.58855742892675
+      "radius": 237.93542390923136
     }
   },
   "test_7_composure_outer_woods": {
     "vigActive35": true,
     "hbActive35": true,
-    "bpm35": 94,
+    "bpm35": 95,
     "delta35": 0,
     "vigActive15": true,
     "hbActive15": true,
@@ -62,7 +62,7 @@
     "hbActive": false
   },
   "test_9_bat_attack_flicker": {
-    "deltaA": 19.50906744558887,
+    "deltaA": 18.63102466177068,
     "deltaB": 0,
     "timerInitial": 2500,
     "timerAfter": 2151.400000000002,
@@ -80,12 +80,12 @@
   },
   "test_12_transition_and_fps": {
     "delta1": 0,
-    "delta2": 0.007163376066414151,
+    "delta2": 0.0072053217414783655,
     "delta3": 0,
-    "frameTimeOn": 129.31999999999533,
-    "frameTimeOff": 127.13999999999069,
-    "fpsOn": 7.732755954222364,
-    "fpsOff": 7.865345288658748,
-    "frameRatio": 1.0171464527293126
+    "frameTimeOn": 139.31000000014902,
+    "frameTimeOff": 146.7199999999255,
+    "fpsOn": 7.178235589684375,
+    "fpsOff": 6.815703380592337,
+    "frameRatio": 0.9494956379513342
   }
 }

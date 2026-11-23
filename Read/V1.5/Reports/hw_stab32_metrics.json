@@ -1,0 +1,100 @@
+{
+  "timestamp": 1795402364.710571,
+  "total": 15,
+  "passed": 15,
+  "failed": 0,
+  "all_passed": true,
+  "results": [
+    {
+      "test": 1,
+      "name": "Part A1: Hold Shift 1000ms -> Press W -> Sprint Active",
+      "passed": true,
+      "details": "isSprinting=True, spd=140, anim=wayfarer_run_up"
+    },
+    {
+      "test": 2,
+      "name": "Part A2: Hold Shift+W for 3s -> Continuous Sprint & Stamina Drain",
+      "passed": true,
+      "details": "isSprinting=True, spd=140, stamina=50.4"
+    },
+    {
+      "test": 3,
+      "name": "Part A3: Release Shift while holding W -> Return to Walk",
+      "passed": true,
+      "details": "isSprinting=False, spd=85, anim=wayfarer_walk_up"
+    },
+    {
+      "test": 4,
+      "name": "Part A4: EVKey Swallowed Keyup Defense (Modifier False Clears Shift)",
+      "passed": true,
+      "details": "isShiftHeld=False, hasShiftCode=False"
+    },
+    {
+      "test": 5,
+      "name": "Part A5: Fake IME Process Event Cannot Activate Shift or Sprint",
+      "passed": true,
+      "details": "isShiftHeld=False, hasShiftCode=False"
+    },
+    {
+      "test": 6,
+      "name": "Part B1: Boss Fight Composure 10 + Panic ON -> Vignette Active",
+      "passed": true,
+      "details": "panicEnabled=True, isPanicActive=True"
+    },
+    {
+      "test": 7,
+      "name": "Part B2: Boss Fight Composure 10 + Panic OFF -> Vignette Inactive",
+      "passed": true,
+      "details": "panicEnabled=False, isPanicActive=False"
+    },
+    {
+      "test": 8,
+      "name": "Part B3: Mid-Boss Fight Dynamic Toggle (ON -> Active, OFF -> Inactive)",
+      "passed": true,
+      "details": "onActive=True, offActive=False"
+    },
+    {
+      "test": 9,
+      "name": "Part B4: Boss Special Threshold 50 Preserved (55=Safe, 45=Active)",
+      "passed": true,
+      "details": "comp55Active=False, comp45Active=True"
+    },
+    {
+      "test": 10,
+      "name": "Part C1: QA Settings Write Isolates From Retail Keys",
+      "passed": true,
+      "details": "Retail(vol=0.9, panic=True) vs QA(vol=0.35, panic=False)"
+    },
+    {
+      "test": 11,
+      "name": "Part C2: Retail Settings Write Isolates From QA Keys",
+      "passed": true,
+      "details": "Retail(vol=0.75) vs QA(vol=0.35)"
+    },
+    {
+      "test": 12,
+      "name": "Part C3: ReloadFromStorage Preserves Independent States",
+      "passed": true,
+      "details": "QA(vol=0.35) vs Retail(vol=0.75)"
+    },
+    {
+      "test": 13,
+      "name": "Part D1: PauseModal Contains Reduced Motion Toggle Control",
+      "passed": true,
+      "details": "hasControl=True, value=False"
+    },
+    {
+      "test": 14,
+      "name": "Part D2: Reduced Motion ON Blocks Shake & Light Motion Immediately",
+      "passed": true,
+      "details": "rmPref=True, shakeBlocked=True, lightBlocked=True"
+    },
+    {
+      "test": 15,
+      "name": "Part D3: MainMenuScene Settings Modal Supports Reduced Motion Toggle",
+      "passed": true,
+      "details": "toggledOff=False, toggledOn=True"
+    }
+  ],
+  "console_errors": []
+}

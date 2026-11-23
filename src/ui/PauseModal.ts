@@ -48,6 +48,7 @@ export class PauseModal {
   private bgmSliderControl?: { container: Phaser.GameObjects.Container; setValue: (val: number) => void; getValue: () => number };
   private sfxSliderControl?: { container: Phaser.GameObjects.Container; setValue: (val: number) => void; getValue: () => number };
   private masterSliderControl?: { container: Phaser.GameObjects.Container; setValue: (val: number) => void; getValue: () => number };
+  private reducedMotionToggleControl?: { container: Phaser.GameObjects.Container; setEnabled: (val: boolean) => void };
   private shakeToggleControl?: { container: Phaser.GameObjects.Container; setEnabled: (val: boolean) => void };
   private panicToggleControl?: { container: Phaser.GameObjects.Container; setEnabled: (val: boolean) => void };
   private lightMotionToggleControl?: { container: Phaser.GameObjects.Container; setEnabled: (val: boolean) => void };
@@ -389,13 +390,13 @@ export class PauseModal {
     const visualsTabGroup = this.scene.add.container(0, 0);
 
     // 1. Mục Đồ Họa & Sương Mù
-    const graphicsLabel = HDTextHelper.createText(this.scene, modalX + 28, sBoxY + 44, '🖥️ Đồ Họa:', {
+    const graphicsLabel = HDTextHelper.createText(this.scene, modalX + 28, sBoxY + 38, '🖥️ Đồ Họa:', {
       fontSize: '11px',
       fontStyle: 'bold',
       color: '#cbd5e1'
     }).setOrigin(0, 0.5);
 
-    const graphicsBtnContainer = this.scene.add.container(modalX + 355, sBoxY + 44);
+    const graphicsBtnContainer = this.scene.add.container(modalX + 355, sBoxY + 38);
     this.graphicsQualityBtnBg = this.scene.add.graphics();
     this.graphicsQualityBtnText = HDTextHelper.createText(this.scene, 0, 0, '🌟 CAO (HIGH)', {
       fontSize: '11px',
@@ -411,17 +412,32 @@ export class PauseModal {
       this.updateGraphicsQualityText();
     });
 
-    this.graphicsDescText = HDTextHelper.createText(this.scene, modalX + 28, sBoxY + 62, '', {
-      fontSize: '9.5px',
+    this.graphicsDescText = HDTextHelper.createText(this.scene, modalX + 28, sBoxY + 54, '', {
+      fontSize: '9px',
       fontStyle: 'italic',
       color: '#94a3b8'
     }).setOrigin(0, 0.5);
 
-    // 2. Rung Màn Hình (Screen Shake Toggle)
+    // 2. Giảm Chuyển Động (Reduced Motion Toggle)
+    this.reducedMotionToggleControl = SettingsUIHelper.createGenericToggle(
+      this.scene,
+      modalX + 250,
+      sBoxY + 78,
+      '♿ Giảm Chuyển Động (Reduced Motion):',
+      'Tắt rung giật & dao động thị giác để bảo vệ mắt.',
+      settings.isReducedMotionEnabled(),
+      (enabled) => {
+        settings.setReducedMotionEnabled(enabled);
+        this.updateVolumeTexts();
+      },
+      modalW - 56
+    );
+
+    // 3. Rung Màn Hình (Screen Shake Toggle)
     this.shakeToggleControl = SettingsUIHelper.createGenericToggle(
       this.scene,
       modalX + 250,
-      sBoxY + 90,
+      sBoxY + 118,
       '📳 Rung Màn Hình (Screen Shake):',
       'Rung giật camera khi nguy kịch hoặc bị tập kích.',
       settings.isScreenShakeEnabled(),
@@ -429,11 +445,11 @@ export class PauseModal {
       modalW - 56
     );
 
-    // 3. Hiệu ứng Hoảng Sợ (Panic Visuals Toggle)
+    // 4. Hiệu ứng Hoảng Sợ (Panic Visuals Toggle)
     this.panicToggleControl = SettingsUIHelper.createGenericToggle(
       this.scene,
       modalX + 250,
-      sBoxY + 132,
+      sBoxY + 158,
       '👁️ Hiệu Ứng Hoảng Sợ (Panic Visuals):',
       'Sương tím & vệt đỏ kinh dị tâm lý khi Tinh Thần <40%.',
       settings.isPanicEffectsEnabled(),
@@ -441,11 +457,11 @@ export class PauseModal {
       modalW - 56
     );
 
-    // 4. Dao Động Ánh Sáng (Light Motion Toggle)
+    // 5. Dao Động Ánh Sáng (Light Motion Toggle)
     this.lightMotionToggleControl = SettingsUIHelper.createGenericToggle(
       this.scene,
       modalX + 250,
-      sBoxY + 174,
+      sBoxY + 198,
       '✨ Dao Động Ánh Sáng (Light Motion):',
       'Nhịp thở FOW & đèn lồng (tự tắt khi Reduced Motion ON).',
       settings.isRawLightMotionEnabled(),
@@ -453,11 +469,11 @@ export class PauseModal {
       modalW - 56
     );
 
-    // 5. Cường Độ Hoảng Sợ (Panic Intensity Selector)
+    // 6. Cường Độ Hoảng Sợ (Panic Intensity Selector)
     this.panicIntensityControl = SettingsUIHelper.createIntensitySelector(
       this.scene,
       modalX + 250,
-      sBoxY + 216,
+      sBoxY + 238,
       '🎨 Cường Độ Hoảng Sợ (Intensity):',
       'Độ đậm nhạt của lớp sương và viền hoảng sợ trang trí.',
       settings.getPanicIntensity(),
@@ -465,7 +481,7 @@ export class PauseModal {
       modalW - 56
     );
 
-    const tipTextVisuals = HDTextHelper.createText(this.scene, 640, sBoxY + 256, '💡 Reduced Motion ưu tiên cao nhất, chặn toàn bộ rung giật & dao động', {
+    const tipTextVisuals = HDTextHelper.createText(this.scene, 640, sBoxY + 276, '💡 Reduced Motion ưu tiên cao nhất, chặn toàn bộ rung giật & dao động', {
       fontSize: '10px',
       fontStyle: 'italic',
       color: '#7f8c8d'
@@ -475,6 +491,7 @@ export class PauseModal {
       graphicsLabel,
       graphicsBtnContainer,
       this.graphicsDescText,
+      this.reducedMotionToggleControl.container,
       this.shakeToggleControl.container,
       this.panicToggleControl.container,
       this.lightMotionToggleControl.container,
@@ -602,6 +619,9 @@ export class PauseModal {
     }
     if (this.sfxSliderControl) {
       this.sfxSliderControl.setValue(settings.getSfxVolume());
+    }
+    if (this.reducedMotionToggleControl) {
+      this.reducedMotionToggleControl.setEnabled(settings.isReducedMotionEnabled());
     }
     if (this.shakeToggleControl) {
       this.shakeToggleControl.setEnabled(settings.isScreenShakeEnabled());

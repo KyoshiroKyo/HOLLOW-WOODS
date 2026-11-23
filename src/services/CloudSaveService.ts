@@ -19,7 +19,7 @@
  * 8. Vòng đời SDK: Gắn p2.onBeforeUnload() và p2.auth.onChange() chống mất tiến trình khi đóng tab hoặc mới đăng nhập.
  */
 
-import { GRAPHICS_QUALITY_KEY, QA_BUILD, QA_SAVE_KEY, QA_SETTINGS_KEY } from '../debug/DevSessionPolicy';
+import { GRAPHICS_QUALITY_KEY, QA_BUILD, QA_SAVE_KEY, QA_SETTINGS_KEY, isQABuild } from '../debug/DevSessionPolicy';
 
 export const SAVE_VERSION = "1.4";
 export const MAX_KEY_BYTES = 64 * 1024; // 65,536 bytes - Giới hạn 64 KB theo đặc tả SDK v1.1
@@ -541,7 +541,8 @@ export function bindCloudSaveLifecycle(getCurrentGameStateFn: () => any): () => 
  * Lưu cấu hình người chơi vào key hw_settings
  */
 export async function saveSettings(settings: GameSettingsData): Promise<CloudSaveResult> {
-  const p2 = !QA_BUILD && typeof window !== 'undefined' ? window.p2 : undefined;
+  const isQa = isQABuild();
+  const p2 = !isQa && typeof window !== 'undefined' ? window.p2 : undefined;
   const payload: GameSettingsData = {
     updatedAt: Date.now(),
     graphicsQuality: settings.graphicsQuality || (typeof localStorage !== 'undefined' ? localStorage.getItem(GRAPHICS_QUALITY_KEY) || 'HIGH' : 'HIGH'),
@@ -554,7 +555,7 @@ export async function saveSettings(settings: GameSettingsData): Promise<CloudSav
 
   try {
     if (typeof localStorage !== 'undefined') {
-      localStorage.setItem(QA_BUILD ? QA_SETTINGS_KEY : `${LOCAL_PREFIX}settings`, JSON.stringify(payload));
+      localStorage.setItem(isQa ? QA_SETTINGS_KEY : `${LOCAL_PREFIX}settings`, JSON.stringify(payload));
     }
   } catch (e) {
     console.warn('[CloudSaveService] LocalStorage settings warning:', e);
@@ -582,13 +583,16 @@ export async function saveSettings(settings: GameSettingsData): Promise<CloudSav
  * Tải cấu hình người chơi từ Cloud / Local
  */
 export async function loadSettings(): Promise<GameSettingsData | null> {
-  const p2 = !QA_BUILD && typeof window !== 'undefined' ? window.p2 : undefined;
+  const isQa = isQABuild();
+  const p2 = !isQa && typeof window !== 'undefined' ? window.p2 : undefined;
   let localSettings: GameSettingsData | null = null;
   let cloudSettings: GameSettingsData | null = null;
 
   try {
     if (typeof localStorage !== 'undefined') {
-      const raw = localStorage.getItem(QA_BUILD ? QA_SETTINGS_KEY : `${LOCAL_PREFIX}settings`);
+      const raw = isQa
+        ? localStorage.getItem(QA_SETTINGS_KEY)
+        : (localStorage.getItem(`${LOCAL_PREFIX}settings`) || localStorage.getItem('hollow_woods_settings') || localStorage.getItem('hw_settings'));
       if (raw) localSettings = JSON.parse(raw);
     }
   } catch {}

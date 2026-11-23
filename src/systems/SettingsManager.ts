@@ -8,6 +8,7 @@
 import { AudioManager } from '../audio/AudioManager';
 import { GraphicsQualitySystem, GraphicsQualityLevel } from './GraphicsQualitySystem';
 import { saveSettings, loadSettings, GameSettingsData } from '../services/CloudSaveService';
+import { QA_SETTINGS_KEY, isQABuild } from '../debug/DevSessionPolicy';
 
 export interface GameSettings {
   masterVolume: number;
@@ -80,13 +81,16 @@ export class SettingsManager {
   }
 
   /**
-   * Nạp từ LocalStorage đồng bộ lúc khởi động
+   * Nạp từ LocalStorage đồng bộ lúc khởi động (HW-STAB-32: Cách ly QA và Retail)
    */
   private loadFromLocalStorage(): void {
     if (typeof localStorage === 'undefined') return;
 
     try {
-      const raw = localStorage.getItem(SettingsManager.LOCAL_PREFIX_KEY) || localStorage.getItem(SettingsManager.STORAGE_KEY);
+      const isQa = isQABuild();
+      const raw = isQa
+        ? localStorage.getItem(QA_SETTINGS_KEY)
+        : (localStorage.getItem(SettingsManager.LOCAL_PREFIX_KEY) || localStorage.getItem(SettingsManager.STORAGE_KEY));
       if (raw) {
         const data = JSON.parse(raw);
         this.mergeSettings(data);
@@ -153,14 +157,18 @@ export class SettingsManager {
   }
 
   /**
-   * Lưu cài đặt vào LocalStorage và lên Cloud (debounced)
+   * Lưu cài đặt vào LocalStorage và lên Cloud (debounced, HW-STAB-32: Cách ly QA và Retail)
    */
   private scheduleSave(): void {
     if (typeof localStorage !== 'undefined') {
       try {
         const json = JSON.stringify(this.settings);
-        localStorage.setItem(SettingsManager.LOCAL_PREFIX_KEY, json);
-        localStorage.setItem(SettingsManager.STORAGE_KEY, json);
+        if (isQABuild()) {
+          localStorage.setItem(QA_SETTINGS_KEY, json);
+        } else {
+          localStorage.setItem(SettingsManager.LOCAL_PREFIX_KEY, json);
+          localStorage.setItem(SettingsManager.STORAGE_KEY, json);
+        }
       } catch (e) {
         console.warn('[SettingsManager] Lỗi ghi cấu hình localStorage:', e);
       }
@@ -179,6 +187,44 @@ export class SettingsManager {
         });
       } catch {}
     }, 1000);
+  }
+
+  /**
+   * Tải lại cấu hình từ LocalStorage (hỗ trợ chuyển đổi môi trường kiểm thử QA/Retail)
+   */
+  public reloadFromStorage(): void {
+    this.loadFromLocalStorage();
+    this.applyToSystems();
+    this.notifyListeners();
+  }
+
+  /**
+   * Lưu lập tức cài đặt và xả bộ đếm chờ
+   */
+  public async flushSaveAsync(): Promise<void> {
+    if (this.saveDebounceTimer !== null) {
+      window.clearTimeout(this.saveDebounceTimer);
+      this.saveDebounceTimer = null;
+    }
+    if (typeof localStorage !== 'undefined') {
+      try {
+        const json = JSON.stringify(this.settings);
+        if (isQABuild()) {
+          localStorage.setItem(QA_SETTINGS_KEY, json);
+        } else {
+          localStorage.setItem(SettingsManager.LOCAL_PREFIX_KEY, json);
+          localStorage.setItem(SettingsManager.STORAGE_KEY, json);
+        }
+      } catch (e) {
+        console.warn('[SettingsManager] Lỗi ghi cấu hình localStorage:', e);
+      }
+    }
+    try {
+      await saveSettings({
+        ...this.settings,
+        updatedAt: Date.now()
+      });
+    } catch {}
   }
 
   // --- GETTERS & SETTERS ---

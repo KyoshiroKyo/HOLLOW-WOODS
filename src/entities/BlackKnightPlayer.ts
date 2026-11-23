@@ -629,19 +629,27 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
 
   private syncPhysicalShift(event: KeyboardEvent, isShiftDown = false): void {
     const isIme = BlackKnightPlayer.isImeMovementPacket(event);
+    if (isIme) {
+      // Gói tin IME không được kích hoạt hay duy trì trạng thái Shift
+      return;
+    }
+
     const modifierShift = typeof event.getModifierState === 'function' ? event.getModifierState('Shift') : Boolean(event.shiftKey);
     const nowPerf = performance.now();
 
     if (isShiftDown) {
       this.isPhysicalShiftHeld = true;
+      this.activePhysicalCodes.add('ShiftLeft');
       this.shiftExpiresAt = nowPerf + BlackKnightPlayer.SHIFT_WATCHDOG_TIMEOUT_MS;
-    } else if (isIme) {
-      // Gói tin IME không được kích hoạt hay duy trì trạng thái Shift
-    } else if (modifierShift && (this.activePhysicalCodes.has('ShiftLeft') || this.activePhysicalCodes.has('ShiftRight'))) {
-      // Modifier chỉ có thể làm mới bộ đếm khi phím Shift vật lý đang thực sự được ghi nhận
+    } else if (modifierShift) {
+      // HW-STAB-32: Đánh giá modifier state hợp lệ trên sự kiện bàn phím mới (non-IME).
+      // Cho phép tái hợp lệ hóa Shift khi người chơi giữ Shift từ trước (vd: giữ Shift 1000ms rồi mới bấm W).
       this.isPhysicalShiftHeld = true;
+      this.activePhysicalCodes.add('ShiftLeft');
       this.shiftExpiresAt = nowPerf + BlackKnightPlayer.SHIFT_WATCHDOG_TIMEOUT_MS;
     } else {
+      // modifierShift = false trên sự kiện bàn phím thực (non-IME): phím Shift chắc chắn đã được nhả
+      // (Bảo vệ chống trường hợp EVKey nuốt mất sự kiện keyup của Shift)
       this.isPhysicalShiftHeld = false;
       this.shiftExpiresAt = 0;
       this.releasePhysicalCode('ShiftLeft');
@@ -1136,9 +1144,13 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     if (up) moveY -= 1;
     if (down) moveY += 1;
 
-    // HW-BUG-26B: Shift consensus & watchdog verification
+    const isMoving = moveX !== 0 || moveY !== 0;
+
+    // HW-BUG-26B & HW-STAB-32: Shift consensus & watchdog verification
     const nowPerf = performance.now();
-    const isShiftTimeValid = this.shiftExpiresAt === 0 || nowPerf < this.shiftExpiresAt;
+    // Khi đang di chuyển (isMoving = true), watchdog 600ms bảo vệ chống phím Shift bị kẹt do EVKey nuốt keyup.
+    // Khi đứng yên (isMoving = false), không tự hủy phím Shift đang giữ để người chơi chuẩn bị chạy.
+    const isShiftTimeValid = !isMoving || this.shiftExpiresAt === 0 || nowPerf < this.shiftExpiresAt;
     const isShiftPhysicallyActive = this.isPhysicalShiftHeld ||
       this.isPhysicalCodeDown('ShiftLeft') ||
       this.isPhysicalCodeDown('ShiftRight');
@@ -1153,8 +1165,6 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       this.releasePhysicalCode('ShiftLeft');
       this.releasePhysicalCode('ShiftRight');
     }
-
-    const isMoving = moveX !== 0 || moveY !== 0;
 
     // HW-BUG-26B: Collision Motion Guardrail
     // Phát hiện va chạm vật cản theo hướng di chuyển (tránh trường hợp kẹt cản mà vẫn phát hoạt ảnh chạy dữ dội)

@@ -1853,10 +1853,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     // Kiểm tra điều kiện trong trận Boss Miếu Chuông Phế Tích
     const isBossFight = gameScene?.isBossFightActive && currentZone === 'broken_bell_shrine';
-    // HW-FX-31: Ngưỡng an toàn là composure >= 40 (hoặc Boss >= 50, hoặc Safe Zone, hoặc khi tắt Panic Visuals)
-    const isSafeState = isBossFight
+    // HW-FX-31 & HW-STAB-32: Ngưỡng an toàn là khi tắt Panic Visuals (!isPanicEnabled), hoặc đạt ngưỡng tâm lý an toàn (Boss >= 50, thường >= 40), hoặc Safe Zone
+    const isSafeState = !isPanicEnabled || (isBossFight
       ? (composure >= 50)
-      : (isProtectedZone || composure >= 40 || !isPanicEnabled);
+      : (isProtectedZone || composure >= 40));
 
     if (isSafeState) {
       if (this.isPanicVignetteActive) {

@@ -9,26 +9,26 @@
       "x": 1200,
       "y": 600
     },
-    "comp": 35.162605000000006,
+    "comp": 35.05,
     "warmth": false,
     "phase": "DAY"
   },
   "test_2_outer_woods_day_comp15": {
-    "comp": 15.26267,
+    "comp": 15.130035000000001,
     "vignetteActive": true,
     "heartbeatActive": true,
-    "bpm": 134,
+    "bpm": 135,
     "phase": "DAY"
   },
   "test_3_outer_woods_night_comp35": {
-    "comp": 34.627748,
+    "comp": 34.627724,
     "vignetteActive": true,
     "heartbeatActive": true,
     "bpm": 96,
     "phase": "NIGHT"
   },
   "test_4_outer_woods_night_comp15": {
-    "comp": 14.507712000000001,
+    "comp": 14.60364,
     "vignetteActive": true,
     "heartbeatActive": true,
     "bpm": 135,
@@ -68,15 +68,15 @@
       "zone": "outer_woods",
       "x": 1200,
       "y": 600,
-      "comp": 15.1326,
+      "comp": 15.280190000000001,
       "isNearWarmth": false,
       "activeBefore": true
     },
     "midDiag": {
-      "compMid": 50.265215,
+      "compMid": 50.277715,
       "hbActiveAfter": false,
       "isMonsterChasingNearby": false,
-      "distToListener": 1097.8837562528408,
+      "distToListener": 1099.730250751036,
       "isWildlifeMonsterNear": false,
       "isAct5ChaseActive": false,
       "isSafeZoneOrCampfire": false,
@@ -101,12 +101,12 @@
     "pause_closed": true
   },
   "test_11_fow_breathing": {
-    "mean": 136.61930877,
-    "minR": 131.71607505,
-    "maxR": 141.35670990000006,
-    "maxStepDelta": 0.36988875000002963,
+    "mean": 134.06395966057735,
+    "minR": 131.9414733,
+    "maxR": 137.51533402457648,
+    "maxStepDelta": 0.30652768156446086,
     "erraticJumps": 0,
-    "amplitudeRatio": 0.07056568311460397,
+    "amplitudeRatio": 0.04157613081612943,
     "samplesCount": 30
   },
   "test_12_no_duplicate_vignette": {
@@ -129,7 +129,7 @@
     "realShakesWhenOff": 1
   },
   "test_15_fow_performance": {
-    "redrawCount": 5,
+    "redrawCount": 0,
     "avgTimeMs": 0
   }
 }
