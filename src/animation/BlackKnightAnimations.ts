@@ -15,7 +15,7 @@ import conversionClips from './BlackKnightConversion.json';
 
 const DIRECTIONS = ['down', 'up', 'left', 'right'] as const;
 const ARMED_IDLE_FRAMES_PER_DIRECTION = 6;
-const ARMED_IDLE_FRAME_MS = 70;
+const ARMED_IDLE_FRAME_MS = 160; // HW-TASK-3: 160ms (~6.25 FPS) for natural idle bobbing
 
 export const CORE_COMBAT_FRAMES = 6;
 // Atlas indices are zero-based. AnimationFrame.index in Phaser is one-based.
@@ -67,7 +67,7 @@ interface ArtistAction {
 const MOVEMENT_CLIPS: Readonly<Record<string, Clip>> = {
   walk: { prefix: 'armed_walk', frameMs: 170 },
   run: { prefix: 'armed_run', frameMs: 140 },
-  unarmed_idle: { frameMs: 70 },
+  unarmed_idle: { frameMs: 160 }, // HW-TASK-3: 160ms (~6.25 FPS) matching armed idle
   unarmed_walk: { frameMs: 170 },
   unarmed_run: { frameMs: 140 },
 };
