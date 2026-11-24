@@ -3441,7 +3441,7 @@ export class WorldBuilder {
   /**
    * Cụm đạo cụ làng (thùng gỗ, kiện hàng, đống củi) tạo sức sống quanh các công trình.
    */
-  private createVillagePropCluster(x: number, y: number, type: 'barrels' | 'firewood'): void {
+  private createVillagePropCluster(x: number, y: number, type: 'barrels' | 'firewood', withCollider: boolean = true): void {
     const g = this.scene.add.graphics();
     g.fillStyle(0x0a0e0c, 0.45);
     g.fillEllipse(x, y + 6, 24, 8);
@@ -3466,7 +3466,9 @@ export class WorldBuilder {
     this.registerCullable(g, x, y, 30);
 
     // C4-13-17: Bổ sung hộp va chạm chân cụm thùng gỗ & đống củi làng
-    this.createStaticBoxColliderCentered(x, y + 2, 20, 12, 'Cụm Vật Phẩm Làng');
+    if (withCollider) {
+      this.createStaticBoxColliderCentered(x, y + 2, 20, 12, 'Cụm Vật Phẩm Làng');
+    }
   }
 
   /**
@@ -5224,7 +5226,8 @@ export class WorldBuilder {
 
     // 7. Cụm thùng gỗ, bao tải nông sản, đống củi và thùng dụng cụ
     this.createVillagePropCluster(515, 725, 'barrels');
-    this.createVillagePropCluster(650, 715, 'firewood');
+    // HW-TASK-1: Giữ nguyên đồ họa đống củi tại (650, 715), loại bỏ collider cản trở lối đi tại (648, 741)
+    this.createVillagePropCluster(650, 715, 'firewood', false);
     this.placeFootAnchoredSprite(623, 722, SPRITE_PROP_CRATE_WEATHERED_V14, 0.7);
 
     // 9. Cây ăn trái & rặng cây xanh tự nhiên bao quanh (chừa trống hoàn toàn 4 ô đất 760..840, 640..690)
