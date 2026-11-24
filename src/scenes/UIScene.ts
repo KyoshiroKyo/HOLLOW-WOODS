@@ -1882,13 +1882,14 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.isPanicVignetteActive = true;
     this.panicVignetteGraphics.clear();
 
-    // V15-06 (cc40bed060b8): original UI palette and pulse levels, blended
-    // over two Sanity points at each threshold to avoid sudden changes.
-    const fear = Phaser.Math.SmoothStep(25 - composure, 0, 2);
-    const dread = Phaser.Math.SmoothStep(10 - composure, 0, 2);
+    // V15-06 & QA (0ceffa5): original UI palette and pulse levels, blended
+    // over Sanity points at each threshold to avoid sudden changes.
+    const fear = Phaser.Math.SmoothStep(30 - composure, 0, 3);
+    const dread = Phaser.Math.SmoothStep(15 - composure, 0, 3);
     const pulseBase = Phaser.Math.Linear(Phaser.Math.Linear(0.10, 0.22, fear), 0.40, dread);
     const pulseAmp = Phaser.Math.Linear(Phaser.Math.Linear(0.04, 0.09, fear), 0.18, dread);
-    const edgeColor = lerpColor(lerpColor(0x120b18, 0x240d24, fear), 0x3d0b16, dread);
+    // Bảng màu viền mép QA gốc: 0x0f040d (<45) -> 0x1c0612 (<30) -> 0x2e0610 (<15)
+    const edgeColor = lerpColor(lerpColor(0x0f040d, 0x1c0612, fear), 0x2e0610, dread);
 
     // BUG-023: one slow phase at all Sanity levels, with half the original swing.
     const breath = isLightMotion ? Math.sin(time * 0.0022) * 0.5 : 0;
@@ -1916,16 +1917,47 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       g.fillRect(w - inset - thick, inset + thick, thick, h - (inset + thick) * 2);
     }
 
-    if (composure < 30) {
-      const tendrilFactor = Phaser.Math.Clamp((30 - composure) / 30, 0, 1);
-      const cornerSize = Math.round(Phaser.Math.Linear(70, 240, tendrilFactor));
-      const cornerVisibility = Phaser.Math.SmoothStep(30 - composure, 0, 2);
-      const cornerAlpha = Math.min(0.75, (0.45 + pulse * 0.42 * tendrilFactor) * intensity);
-      g.fillStyle(0x0e0513, cornerAlpha * cornerVisibility);
-      g.fillTriangle(0, 0, cornerSize, 0, 0, cornerSize);
-      g.fillTriangle(w, 0, w - cornerSize, 0, w, cornerSize);
-      g.fillTriangle(0, h, cornerSize, h, 0, h - cornerSize);
-      g.fillTriangle(w, h, w - cornerSize, h, w, h - cornerSize);
+    // HW-TASK-2 / Classic Sanity 2.1: Phục hồi hình học ba tầng tam giác đa sắc từ QA (0ceffa5)
+    // Tầng 1: Outer Crimson (0x280712)
+    // Tầng 2: Mid Crimson-Black (0x18030b)
+    // Tầng 3: Deep Corner Void (0x0a0105)
+    // Thay thế 1 tam giác phẳng đơn sắc bằng cấu trúc 3 tầng quang học có chiều sâu,
+    // kết hợp SmoothStep chống pop-in, tôn trọng Reduced Motion và Light Motion.
+    if (composure < 38) {
+      const tProg = Phaser.Math.Clamp((38 - composure) / 28, 0, 1);
+      const tendrilFactor = Math.pow(tProg, 0.72);
+      const cornerVisibility = Phaser.Math.SmoothStep(38 - composure, 0, 2);
+
+      // Độ vươn góc tái tạo chuẩn xác QA (từ 75px lên 225px tại Sanity 11 và tối đa 245px tại Sanity 0)
+      const baseCorner = Math.round(Phaser.Math.Linear(75, 245, tendrilFactor));
+      const pulseCorner = isLightMotion ? baseCorner + Math.round(pulse * 18 * tendrilFactor) : baseCorner;
+
+      // Tầng 1: Quầng đỏ thẫm ngoài cùng (Outer Crimson Glow - 0x280712)
+      const c1Size = pulseCorner;
+      const c1Alpha = Math.min(0.60, (0.18 + tendrilFactor * 0.36) * intensity) * cornerVisibility;
+      g.fillStyle(0x280712, c1Alpha);
+      g.fillTriangle(0, 0, c1Size, 0, 0, c1Size);
+      g.fillTriangle(w, 0, w - c1Size, 0, w, c1Size);
+      g.fillTriangle(0, h, c1Size, h, 0, h - c1Size);
+      g.fillTriangle(w, h, w - c1Size, h, w, h - c1Size);
+
+      // Tầng 2: Khối bóng tối đỏ đen thẫm (Mid Crimson-Black - 0x18030b, 72% size)
+      const c2Size = Math.round(pulseCorner * 0.72);
+      const c2Alpha = Math.min(0.80, (0.30 + tendrilFactor * 0.48) * intensity) * cornerVisibility;
+      g.fillStyle(0x18030b, c2Alpha);
+      g.fillTriangle(0, 0, c2Size, 0, 0, c2Size);
+      g.fillTriangle(w, 0, w - c2Size, 0, w, c2Size);
+      g.fillTriangle(0, h, c2Size, h, 0, h - c2Size);
+      g.fillTriangle(w, h, w - c2Size, h, w, h - c2Size);
+
+      // Tầng 3: Tâm điểm đen sâu thẳm ở 4 góc (Deep Corner Void - 0x0a0105, 45% size)
+      const c3Size = Math.round(pulseCorner * 0.45);
+      const c3Alpha = Math.min(0.96, (0.45 + tendrilFactor * 0.50) * intensity) * cornerVisibility;
+      g.fillStyle(0x0a0105, c3Alpha);
+      g.fillTriangle(0, 0, c3Size, 0, 0, c3Size);
+      g.fillTriangle(w, 0, w - c3Size, 0, w, c3Size);
+      g.fillTriangle(0, h, c3Size, h, 0, h - c3Size);
+      g.fillTriangle(w, h, w - c3Size, h, w, h - c3Size);
     }
 
     // Cảnh báo HUD khi bước vào các ngưỡng nguy hiểm (quản lý tập trung, cooldown rõ ràng)
