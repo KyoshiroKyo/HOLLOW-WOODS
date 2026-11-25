@@ -1,0 +1,16 @@
+{
+  "before": {
+    "bugReproduced_FlashOffEmittedFlash": true,
+    "bugReproduced_ReducedMotionEmittedFlash": true,
+    "flashCount_FlashOff": 1,
+    "flashCount_ReducedMotion": 1,
+    "camFlashCalls": 0,
+    "notices1": 1,
+    "notices2": 1,
+    "composureDelta1": -5,
+    "undestroyedBeforeEchoDestroy": 2,
+    "undestroyedAfterEchoDestroy": 2
+  },
+  "page_errors": [],
+  "console_errors": []
+}

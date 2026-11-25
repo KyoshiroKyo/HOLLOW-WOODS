@@ -1,0 +1,58 @@
+{
+  "a_results": {
+    "a01": {
+      "flashDelta": 0,
+      "compDelta": -5,
+      "noticeCount": 1
+    },
+    "a02": {
+      "flashDelta": 1,
+      "compDelta": -5,
+      "noticeCount": 1,
+      "dupGaze": true,
+      "flashAddedOnReTrigger": 1,
+      "undestroyedBeforeCleanup": 1,
+      "undestroyedAfterEchoDestroy": 0
+    },
+    "a03": {
+      "flashDelta": 0,
+      "compDelta": -5,
+      "noticeCount": 1
+    },
+    "a04": {
+      "off": 0,
+      "on": 1,
+      "offAgain": 0,
+      "rmOn": 0
+    },
+    "a05": {
+      "callAfterDestroy": false,
+      "undestroyedAfterAllDespawns": 0,
+      "preShutdownFlashCreated": true
+    },
+    "camFlashCalls": 0
+  },
+  "a06_sanity": {
+    "activeLow": true,
+    "veilDrawn": false,
+    "activeHigh": false
+  },
+  "bug023_regression": {
+    "exit_code": 0,
+    "duration_s": 26.25,
+    "stdout_tail": "  T14 Camera Execution: When RM ON (Flashes=0, Shakes=0) | When RM OFF (Flashes=1, Shakes=1)\n  [PASS] Test 14: Reduced Motion triệt tiêu 100% camera flash/shake thực thi.\n\n--- TEST 15: FOW REDRAW PERFORMANCE & STABILITY ---\n  T15 FOW Performance: RedrawCount in 500ms = 1, AvgTime = 0.0000ms\n  [PASS] Test 15: FOW giữ nguyên dirty-checking tối ưu, GPU stamp nhanh và ổn định.\n\n[Console Errors]: 0\n\n[QA] ALL 15 REGRESSION TESTS PASSED! Metrics saved to bug023_metrics_11a.json",
+    "stderr_tail": ""
+  },
+  "assertions": {
+    "A01_flash_off_suppressed_and_gameplay_preserved": true,
+    "A02_flash_on_emits_single_and_replaces_cleanly": true,
+    "A03_reduced_motion_on_suppressed": true,
+    "A04_runtime_toggle": true,
+    "A05_despawn_and_shutdown_clean": true,
+    "A06_sanity21_and_bug023_pass": true,
+    "zero_runtime_errors": true
+  },
+  "overall_pass": true,
+  "page_errors": [],
+  "console_errors": []
+}

@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import { SPRITE_THE_ECHO } from '../config/Constants';
 import { PlayerState } from '../state/PlayerState';
+import { SettingsManager } from '../systems/SettingsManager';
 import { EchoSpec } from '../types';
 
 /**
@@ -19,6 +20,9 @@ export class TheEcho extends Phaser.GameObjects.Container {
   private auraGfx: Phaser.GameObjects.Graphics;
   private spriteObj?: Phaser.GameObjects.Image;
   private floatTween?: Phaser.Tweens.Tween;
+  private gazeFlashGfx?: Phaser.GameObjects.Graphics;
+  private gazeFlashTween?: Phaser.Tweens.Tween;
+  private dissolveTween?: Phaser.Tweens.Tween;
 
   constructor(scene: Phaser.Scene, spec: EchoSpec) {
     super(scene, spec.x, spec.y);
@@ -64,12 +68,26 @@ export class TheEcho extends Phaser.GameObjects.Container {
     scene.add.existing(this);
   }
 
+  private clearGazeFlash(): void {
+    if (this.gazeFlashTween) {
+      this.gazeFlashTween.stop();
+      this.gazeFlashTween.remove();
+      this.gazeFlashTween = undefined;
+    }
+    if (this.gazeFlashGfx) {
+      if (this.gazeFlashGfx.scene) {
+        this.gazeFlashGfx.destroy();
+      }
+      this.gazeFlashGfx = undefined;
+    }
+  }
+
   /**
    * V1.4 - P8-03: Kiểm tra tương tác ánh nhìn (Direct Gaze Interaction)
    * The Echo chỉ làm giảm nhẹ 5 điểm Tĩnh Tâm (-5 Composure) nếu người chơi nhìn trực diện vào nó khi đèn lồng đang TẮT.
    */
   public checkDirectGaze(playerX: number, playerY: number, playerFacing: string, isLanternLit: boolean): boolean {
-    if (this.isDissolved) return false;
+    if (this.isDissolved || !this.active || !this.scene || !this.scene.sys?.isActive?.()) return false;
     // Nếu đèn lồng đang BẬT, ánh sáng bảo vệ tâm trí người chơi -> không bị trừ Tĩnh Tâm
     if (isLanternLit) return false;
 
@@ -105,18 +123,22 @@ export class TheEcho extends Phaser.GameObjects.Container {
     // Giảm nhẹ đúng 5 điểm Tĩnh Tâm (-5 Composure) khi nhìn trực diện trong bóng tối
     PlayerState.getInstance().modifyComposure(-5);
 
-    // Hiệu ứng rùng mình thoáng qua
-    if (this.scene) {
+    // Hiệu ứng rùng mình thoáng qua — tuân thủ Screen Flash & Reduced Motion trong SettingsManager
+    if (this.scene && this.scene.sys?.isActive?.() && SettingsManager.getInstance().isScreenFlashEnabled()) {
+      this.clearGazeFlash();
       const flash = this.scene.add.graphics();
       flash.fillStyle(0x2c3e50, 0.22);
       flash.fillRect(0, 0, 1280, 720);
       flash.setScrollFactor(0);
       flash.setDepth(9999);
-      this.scene.tweens.add({
+      this.gazeFlashGfx = flash;
+      this.gazeFlashTween = this.scene.tweens.add({
         targets: flash,
         alpha: 0,
         duration: 300,
-        onComplete: () => flash.destroy()
+        onComplete: () => {
+          this.clearGazeFlash();
+        }
       });
     }
 
@@ -173,7 +195,7 @@ export class TheEcho extends Phaser.GameObjects.Container {
     });
 
     // Tween phân rã thành làn sương khói mờ ảo
-    this.scene.tweens.add({
+    this.dissolveTween = this.scene.tweens.add({
       targets: this,
       alpha: 0,
       scaleX: 1.85,
@@ -181,6 +203,8 @@ export class TheEcho extends Phaser.GameObjects.Container {
       duration: 650,
       ease: 'Power2',
       onComplete: () => {
+        this.dissolveTween = undefined;
+        if (!this.active || !this.scene || !this.scene.sys?.isActive?.()) return;
         if (callback) {
           callback(this.spec.message);
         }
@@ -197,6 +221,12 @@ export class TheEcho extends Phaser.GameObjects.Container {
   }
 
   public destroy(fromScene?: boolean): void {
+    this.clearGazeFlash();
+    if (this.dissolveTween) {
+      this.dissolveTween.stop();
+      this.dissolveTween.remove();
+      this.dissolveTween = undefined;
+    }
     if (this.floatTween) {
       this.floatTween.stop();
       this.floatTween = undefined;

@@ -1,0 +1,136 @@
+{
+  "test_1_outer_woods_day_comp35": {
+    "vignetteActive": true,
+    "heartbeatActive": true,
+    "bpm": 95,
+    "zone": "outer_woods",
+    "detected": "outer_woods",
+    "foot": {
+      "x": 1200,
+      "y": 600
+    },
+    "comp": 35.192620000000005,
+    "warmth": false,
+    "phase": "DAY"
+  },
+  "test_2_outer_woods_day_comp15": {
+    "comp": 15.367729999999998,
+    "vignetteActive": true,
+    "heartbeatActive": true,
+    "bpm": 134,
+    "phase": "DAY"
+  },
+  "test_3_outer_woods_night_comp35": {
+    "comp": 34.465652,
+    "vignetteActive": true,
+    "heartbeatActive": true,
+    "bpm": 96,
+    "phase": "NIGHT"
+  },
+  "test_4_outer_woods_night_comp15": {
+    "comp": 14.468586,
+    "vignetteActive": true,
+    "heartbeatActive": true,
+    "bpm": 135,
+    "phase": "NIGHT"
+  },
+  "test_5_bellhollow_sanctuary": {
+    "dayVig": false,
+    "dayHb": false,
+    "dayZone": "bellhollow",
+    "nightVig": false,
+    "nightHb": false,
+    "nightZone": "bellhollow"
+  },
+  "test_6_sanctuary_farm": {
+    "dayVig": false,
+    "dayHb": false,
+    "dayZone": "sanctuary_farm",
+    "nightVig": false,
+    "nightHb": false,
+    "nightZone": "sanctuary_farm"
+  },
+  "test_7_sir_vaelen_campfire": {
+    "isNearWarmth": true,
+    "vignetteActive": false,
+    "heartbeatActive": false
+  },
+  "test_8_reduced_motion": {
+    "rmPreferredTrue": true,
+    "shakeWhenRM": false,
+    "flashWhenRM": false,
+    "rmPreferredFalse": false,
+    "shakeNormal": true,
+    "flashNormal": true
+  },
+  "test_9_composure_fadeout": {
+    "diag": {
+      "zone": "outer_woods",
+      "x": 1200,
+      "y": 600,
+      "comp": 15.290255,
+      "isNearWarmth": false,
+      "activeBefore": true
+    },
+    "midDiag": {
+      "compMid": 50.34275,
+      "hbActiveAfter": false,
+      "isMonsterChasingNearby": false,
+      "distToListener": 1088.5672451758549,
+      "isWildlifeMonsterNear": false,
+      "isAct5ChaseActive": false,
+      "isSafeZoneOrCampfire": false,
+      "isPanicVignetteActive": false
+    },
+    "activeBefore": true,
+    "tweenStateMid": {
+      "hasTween": false,
+      "isPlaying": null,
+      "progress": null
+    },
+    "hbActiveAfter": false,
+    "activeAfter": false,
+    "tweenStateEnd": {
+      "hasTween": false,
+      "isPlaying": null,
+      "progress": null
+    }
+  },
+  "test_10_pause_resume": {
+    "pause_open": true,
+    "pause_closed": true
+  },
+  "test_11_fow_breathing": {
+    "mean": 134.00761313392266,
+    "minR": 131.9125752,
+    "maxR": 137.54854774471656,
+    "maxStepDelta": 0.32621252066780926,
+    "erraticJumps": 0,
+    "amplitudeRatio": 0.042057107151697165,
+    "samplesCount": 30
+  },
+  "test_12_no_duplicate_vignette": {
+    "veilHasDistortionDrawn": false,
+    "uisPanicActive": true,
+    "hasPanicGraphics": true,
+    "hasRedDangerGraphics": true
+  },
+  "test_13_no_duplicate_popups": {
+    "totalPopups": 2,
+    "fractureCount": 1,
+    "popups": [
+      "\u26a0\ufe0f T\u00e2m tr\u00ed \u0111ang r\u1ea1n n\u1ee9t... H\u00e3y t\u00ecm \u00e1nh l\u1eeda ngay!",
+      "\u2699\ufe0f T\u1ef0 \u0110\u1ed8NG T\u1ed0I \u01afU \u0110\u1ed2 H\u1eccA [LOW]: \u0110\u00e3 k\u00edch ho\u1ea1t b\u1ed9 \u0111\u1ec7m \u00e1nh s\u00e1ng 0.35x \u0111\u1ec3 \u1ed5n \u0111\u1ecbnh 60 FPS!"
+    ]
+  },
+  "test_14_camera_safety": {
+    "realFlashesWhenRM": 0,
+    "realShakesWhenRM": 0,
+    "realFlashesWhenOff": 1,
+    "realShakesWhenOff": 1
+  },
+  "test_15_fow_performance": {
+    "redrawCount": 1,
+    "avgTimeMs": 0
+  }
+}
