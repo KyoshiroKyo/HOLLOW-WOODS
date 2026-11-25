@@ -969,6 +969,27 @@ export class GameScene extends Phaser.Scene {
         this.uiScene.events.off('ui_toggle_lantern', onUIToggleLantern);
         this.uiScene.events.off('ui_throw_lure', onUIThrowLure);
       }
+      // HW-H4-05: Gỡ các listener sự kiện gameplay tự đăng ký trên scene.events khi restart/load checkpoint
+      const customSceneEvents = [
+        'lantern_flicker',
+        'wildlife_spooked',
+        'skull_wolf_defeated',
+        'shadow_crow_alarm',
+        'shadow_crow_defeated',
+        'shadow_eyes_drain',
+        'shadow_eyes_vanished',
+        'behemoth_slam_warning',
+        'shadow_behemoth_defeated',
+        'fallen_knight_defeated',
+        'dread_horseman_defeated',
+        'hooded_knight_powerup_start',
+        'hooded_knight_interrupted',
+        'hooded_knight_defeated',
+        'world_event_triggered',
+      ];
+      for (const ev of customSceneEvents) {
+        this.events.removeAllListeners(ev);
+      }
     });
 
     // Cài đặt các phím tắt

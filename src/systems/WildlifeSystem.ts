@@ -41,6 +41,9 @@ export class WildlifeSystem {
   private lastScoutSpawnTime: number = 0;
   private lastAmbushHitTime: number = 0;
   private currentZoneId: string = '';
+  private readonly onScoutWhistleHandler: (data: { x: number; y: number; playerX: number; playerY: number }) => void;
+  private readonly onPlayerAmbushHitHandler: () => void;
+  private readonly onShadowCrowAlarmHandler: (data: { x: number; y: number; isNight?: boolean; soundRadius?: number }) => void;
 
   // Giới hạn số lượng (Spawn Cap) để tối ưu WebGL 60 FPS
   public static readonly MAX_CROWS_PER_ZONE = 8;
@@ -176,7 +179,7 @@ export class WildlifeSystem {
     WildlifeSystem.instance = this;
 
     // Lắng nghe tín hiệu tiếng huýt sáo của Goblin Scout để kích động đàn Sói Xương
-    this.scene.events.on('scout_whistle', (data: { x: number; y: number; playerX: number; playerY: number }) => {
+    this.onScoutWhistleHandler = (data: { x: number; y: number; playerX: number; playerY: number }) => {
       for (const wolf of this.skullWolves) {
         if (wolf.active && !wolf.isDefeated) {
           const moveX = data.playerX > wolf.x ? 95 : -95;
@@ -184,15 +187,17 @@ export class WildlifeSystem {
           wolf.setVelocity(moveX, moveY);
         }
       }
-    });
+    };
+    this.scene.events.on('scout_whistle', this.onScoutWhistleHandler);
 
     // Lắng nghe va chạm phục kích để kích hoạt Grace Period 45s
-    this.scene.events.on('player_ambush_hit', () => {
+    this.onPlayerAmbushHitHandler = () => {
       this.lastAmbushHitTime = this.scene.time.now;
-    });
+    };
+    this.scene.events.on('player_ambush_hit', this.onPlayerAmbushHitHandler);
 
     // V1.5 - BƯỚC V15-08: Lắng nghe tiếng quạ bóng tối báo động để kích động đàn Sói Xương gần đó kéo tới
-    this.scene.events.on('shadow_crow_alarm', (data: { x: number; y: number; isNight?: boolean; soundRadius?: number }) => {
+    this.onShadowCrowAlarmHandler = (data: { x: number; y: number; isNight?: boolean; soundRadius?: number }) => {
       const radius = data.soundRadius ?? (data.isNight ? 360 : 240);
       for (const wolf of this.skullWolves) {
         if (wolf.active && !wolf.isDefeated) {
@@ -204,7 +209,8 @@ export class WildlifeSystem {
           }
         }
       }
-    });
+    };
+    this.scene.events.on('shadow_crow_alarm', this.onShadowCrowAlarmHandler);
   }
 
   public static getInstance(scene?: Phaser.Scene): WildlifeSystem {
@@ -805,6 +811,11 @@ export class WildlifeSystem {
   }
 
   public destroy(): void {
+    if (this.scene?.events) {
+      this.scene.events.off('scout_whistle', this.onScoutWhistleHandler);
+      this.scene.events.off('player_ambush_hit', this.onPlayerAmbushHitHandler);
+      this.scene.events.off('shadow_crow_alarm', this.onShadowCrowAlarmHandler);
+    }
     this.clearEntities();
     WildlifeSystem.instance = null;
   }

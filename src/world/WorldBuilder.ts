@@ -5561,7 +5561,7 @@ export class WorldBuilder {
     const cy = y;
     const cauldron = this.safeAddImage(cx, cy + 10, SPRITE_PROP_CAULDRON_TRIPOD_V15);
     cauldron.setOrigin(0.5, 0.90);
-    cauldron.setDepth(cy + 2);
+    cauldron.setDepth(cy + 10);
     this.registerCullable(cauldron, cx, cy, 40);
 
     // Hơi nước thuốc thảo dược bốc lên mờ ảo
@@ -5569,7 +5569,7 @@ export class WorldBuilder {
     steam.fillStyle(0x80cbc4, 0.35);
     steam.fillCircle(cx, cy - 18, 4);
     steam.fillCircle(cx + 2, y - 24, 5);
-    steam.setDepth(cy + 3);
+    steam.setDepth(cy + 11);
     this.registerCullable(steam, cx, cy - 20, 20);
 
     if (this.scene.tweens) {
@@ -5596,7 +5596,7 @@ export class WorldBuilder {
     const cy = y;
     const chest = this.safeAddImage(cx, cy + 6, SPRITE_PROP_CHEST_BRONZE_V15);
     chest.setOrigin(0.5, 0.88);
-    chest.setDepth(cy + 2);
+    chest.setDepth(cy + 6);
     this.registerCullable(chest, cx, cy, 36);
 
     this.createStaticBoxColliderCentered(cx, cy + 2, 26, 14, 'Rương Gỗ Đai Đồng');
@@ -5611,7 +5611,7 @@ export class WorldBuilder {
     const cy = y;
     const chest = this.safeAddImage(cx, cy + 6, SPRITE_PROP_CHEST_BRONZE_V15);
     chest.setOrigin(0.5, 0.88);
-    chest.setDepth(cy + 2);
+    chest.setDepth(cy + 6);
     this.registerCullable(chest, cx, cy, 36);
 
     // Hitbox chân đế rương chỉ 20×8px sát đáy
