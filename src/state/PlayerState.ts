@@ -157,6 +157,9 @@ export class PlayerState extends Phaser.Events.EventEmitter {
     this.timeOfDay = 0;
     this.equippedSlots = { body: null, feet: null, back: null, charm: null };
     this.storageChest.clear();
+    this.campfireLevel = 1;
+    this.campfireFuel = 180;
+    this.activeWeapon = 'wpn_walking_staff';
     this.memoryAwakeningStage = 0;
     this.villageTrustScore = 50;
     this.storyFlags.clear();
@@ -726,6 +729,26 @@ export class PlayerState extends Phaser.Events.EventEmitter {
     if (lore) {
       this.unlockedLore.push(lore as LoreEntry);
       this.emit('lore_unlocked', lore);
+    }
+  }
+
+  /**
+   * HW-H4-08: Khôi phục danh sách bản ghi ký ức từ dữ liệu SaveData.
+   */
+  public restoreUnlockedLore(loreIds?: string[]): void {
+    const validIds = Array.isArray(loreIds)
+      ? loreIds.filter((id): id is string => typeof id === 'string' && id.trim().length > 0)
+      : [];
+    if (validIds.length === 0) {
+      this.unlockedLore = [loreData.loreEntries[0] as LoreEntry];
+      return;
+    }
+    this.unlockedLore = [];
+    for (const id of validIds) {
+      this.unlockLore(id.trim());
+    }
+    if (this.unlockedLore.length === 0) {
+      this.unlockedLore = [loreData.loreEntries[0] as LoreEntry];
     }
   }
 

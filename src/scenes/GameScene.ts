@@ -30,7 +30,7 @@ import { PuzzleSystem } from '../systems/PuzzleSystem';
 import { EndingSystem } from '../systems/EndingSystem';
 import { SaveManager, SaveData } from '../systems/SaveManager';
 import { SafeSpawnResolver } from '../systems/SafeSpawnResolver';
-import { bindCloudSaveLifecycle, scheduleDebouncedSave } from '../services/CloudSaveService';
+import { bindCloudSaveLifecycle, cancelPendingGameSave, scheduleDebouncedSave } from '../services/CloudSaveService';
 import { AudioManager, TerrainType } from '../audio/AudioManager';
 import { ZoneConnectionRegistry } from '../world/ZoneConnectionRegistry';
 import { WorldGatingSystem } from '../world/WorldGatingSystem';
@@ -1264,6 +1264,7 @@ export class GameScene extends Phaser.Scene {
    */
   public handleRestartGame(): void {
     this.isGameOverPending = false;
+    cancelPendingGameSave();
     this.audioManager.stopAll();
     this.playerState.reset();
     if (this.uiScene) {
@@ -2671,7 +2672,11 @@ export class GameScene extends Phaser.Scene {
   }
 
   private updateAct0Progression(): void {
-    if (this.isAct0IntroPending && !this.act0TutorialDone && this.player.x >= 280) {
+    const canCompleteAct0 =
+      this.currentZoneId === 'fog_crossing' &&
+      !this.playerState.isQuestTaskCompleted('Q00_WAKE_UP', 't2') &&
+      this.playerState.currentQuestId === 'Q01_MEET_EDDA';
+    if (this.isAct0IntroPending && !this.act0TutorialDone && canCompleteAct0 && this.player.x >= 280) {
       this.act0TutorialDone = true;
       if (this.act0EchoGfx) {
         this.tweens.add({

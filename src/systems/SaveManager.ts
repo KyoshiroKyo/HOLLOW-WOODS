@@ -674,7 +674,12 @@ export class SaveManager {
     state.dayCount = data.dayCount ?? 1;
     state.timeOfDay = data.timeOfDay ?? 0;
     if (data.equippedSlots) {
-      state.equippedSlots = { ...data.equippedSlots };
+      state.equippedSlots = {
+        body: data.equippedSlots.body ?? null,
+        feet: data.equippedSlots.feet ?? null,
+        back: data.equippedSlots.back ?? null,
+        charm: data.equippedSlots.charm ?? null
+      };
     }
     state.storageChest.clear();
     const loadedChest = (data.storageChestInventory && Array.isArray(data.storageChestInventory))
@@ -709,6 +714,9 @@ export class SaveManager {
         state.observeCreature(sp as any);
       }
     }
+
+    // HW-H4-08: Khôi phục đầy đủ các bản ghi ký ức (unlockedLoreIds) đã mở từ SaveData
+    state.restoreUnlockedLore(data.unlockedLoreIds);
 
     // V1.4 - P8-04: Phục hồi vùng lưu dự phòng an toàn legacyExtraData
     state.legacyExtraData = data.legacyExtraData ? { ...data.legacyExtraData } : undefined;
@@ -762,8 +770,8 @@ export class SaveManager {
 
   public static clearSave(): void {
     try {
+      cancelPendingGameSave();
       if (QA_BUILD) {
-        cancelPendingGameSave();
         localStorage.removeItem(QA_SAVE_KEY);
         return;
       }

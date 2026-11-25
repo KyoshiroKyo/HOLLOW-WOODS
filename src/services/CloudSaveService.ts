@@ -166,17 +166,20 @@ export function migrateSaveSchema(rawData: any): CloudSavePayload | null {
   const daysSurvived: number = Math.max(1, Math.floor(Number(p.daysSurvived ?? rawData.dayCount ?? 1)));
   const timeOfDay: number = Math.max(0, Math.min(360, Number(p.timeOfDay ?? rawData.timeOfDay ?? 0)));
 
-  // Inventory: đồng bộ mảng cặp [itemId, count]
+  // Inventory: đồng bộ mảng cặp [itemId, count] & chuẩn hóa ID kế thừa
   let inventory: [string, number][] = [];
   if (Array.isArray(rawData.inventory)) {
     for (const item of rawData.inventory) {
       if (Array.isArray(item) && item.length >= 2 && typeof item[0] === 'string') {
+        let key = item[0].trim();
+        if (key === 'quest_corrupted_knight_crest') key = 'quest_corrupted_crest';
         const count = Number(item[1]);
-        if (!isNaN(count) && count > 0) {
-          inventory.push([item[0].trim(), Math.floor(count)]);
+        if (key && !isNaN(count) && count > 0) {
+          inventory.push([key, Math.floor(count)]);
         }
       } else if (item && typeof item === 'object') {
-        const key = item.id || item.itemId;
+        let key = item.id || item.itemId;
+        if (key === 'quest_corrupted_knight_crest') key = 'quest_corrupted_crest';
         const count = Number(item.count);
         if (key && !isNaN(count) && count > 0) {
           inventory.push([String(key).trim(), Math.floor(count)]);
@@ -240,10 +243,21 @@ export function migrateSaveSchema(rawData: any): CloudSavePayload | null {
   if (Array.isArray(rawChest)) {
     for (const item of rawChest) {
       if (Array.isArray(item) && item.length >= 2 && typeof item[0] === 'string') {
+        let key = item[0].trim();
+        if (key === 'quest_corrupted_knight_crest') key = 'quest_corrupted_crest';
         const count = Number(item[1]);
-        if (!isNaN(count) && count > 0) {
-          storageChest.push([item[0].trim(), Math.floor(count)]);
+        if (key && !isNaN(count) && count > 0) {
+          storageChest.push([key, Math.floor(count)]);
         }
+      }
+    }
+  } else if (rawChest && typeof rawChest === 'object') {
+    for (const [rawKey, val] of Object.entries(rawChest)) {
+      let key = rawKey.trim();
+      if (key === 'quest_corrupted_knight_crest') key = 'quest_corrupted_crest';
+      const count = Number(val);
+      if (key.length > 0 && !isNaN(count) && count > 0) {
+        storageChest.push([key, Math.floor(count)]);
       }
     }
   }
@@ -339,8 +353,9 @@ export async function saveGameNow(gameState: any): Promise<CloudSaveResult> {
     return { ok: false, reason: 'INVALID_STATE' };
   }
 
+  cancelPendingGameSave();
+
   if (QA_BUILD) {
-    cancelPendingGameSave();
     try {
       localStorage.setItem(QA_SAVE_KEY, JSON.stringify(payload));
       return { ok: true, source: 'local' };
