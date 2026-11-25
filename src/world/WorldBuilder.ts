@@ -6741,8 +6741,8 @@ export class WorldBuilder {
     const { bounds } = zone;
 
     // 1. Biển Báo & Cột Mốc Định Hướng (Signs & Landmark Markers)
-    this.createStoneSign(2940, 300, 'ĐẦM LẦY TĨNH LẶNG');
-    this.createStoneMarker(2900, 250); // Cột đá mốc Tây Bắc
+    this.createStoneSign(2945, 374, 'ĐẦM LẦY TĨNH LẶNG');
+    this.createStoneMarker(2900, 222); // Cột đá mốc Tây Bắc
     this.createStoneMarker(2900, 370); // Cột đá mốc Tây Nam
     this.createStoneMarker(3960, 230); // Cột đá mốc Đông Bắc
     this.createStoneMarker(3960, 370); // Cột đá mốc Đông Nam
@@ -6763,7 +6763,7 @@ export class WorldBuilder {
     // V15-40: Đã gỡ bỏ createSunkenMireShrine(3520, 280) vì trùng lặp đè lên Bệ Thờ Trung Tâm (createStoneAltar).
     // V1.4 Blueprint: Cầu Thân Cây Đổ (Metroidvania-lite Shortcut Bridge phía Đầm Lầy tại 2880, 420)
     this.createFallenTitanTrunkShortcut(2880, 420, 50);
-    this.createDeadTitanWillow(3560, 160);
+    this.createDeadTitanWillow(3596, 162);
     this.createShrineGateWard(3960, 280);
 
     // 6. Cụm Lau Sậy & Cỏ Lác Đầm Lầy (Cattails & Marsh Reeds)
@@ -6778,7 +6778,7 @@ export class WorldBuilder {
     this.createHollowTree(3080, 260, 'Hốc Cây Liễu Mục (Chỗ trốn)');
     this.createDenseBush(3320, 340); // Cụm lau sậy dày đầm lầy
     this.createDenseBush(3480, 190); // Bụi rậm gò Bắc
-    this.createHollowTree(3560, 175, 'Gốc Cổ Thụ Liễu Héo Tàn');
+    this.createHollowTree(3596, 182, 'Gốc Cổ Thụ Liễu Héo Tàn');
     this.createDenseBush(3760, 320); // Bụi cỏ lác rậm rạp phía Đông
 
     // Bụi rậm cảnh quan đầm lầy
@@ -6875,10 +6875,13 @@ export class WorldBuilder {
     });
 
     // V1.5 (BƯỚC V15-03): Gộp rặng cây viền Silent Mire thành các thanh collider liền mạch, xóa bỏ 28 ô vuông rời rạc
-    this.createStaticBoxCollider(bounds.x + 40, 125, bounds.width - 80, 35, 'Rặng Cây Khô Viền Bắc Silent Mire');
-    this.createStaticBoxCollider(bounds.x + 40, 665, bounds.width - 80, 35, 'Rặng Cây Khô Viền Nam Silent Mire');
+    // Chừa khe lối vào Hầm Mộ Cổ Ngữ (x=3495..3565) và Đầm Lầy Chìm (x=3335..3425)
+    this.createStaticBoxCollider(bounds.x + 40, 125, 3495 - (bounds.x + 40), 35, 'Rặng Cây Khô Viền Bắc Tây Silent Mire');
+    this.createStaticBoxCollider(3565, 125, bounds.x + bounds.width - 40 - 3565, 35, 'Rặng Cây Khô Viền Bắc Đông Silent Mire');
+    this.createStaticBoxCollider(bounds.x + 40, 665, 3335 - (bounds.x + 40), 35, 'Rặng Cây Khô Viền Nam Tây Silent Mire');
+    this.createStaticBoxCollider(3425, 665, bounds.x + bounds.width - 40 - 3425, 35, 'Rặng Cây Khô Viền Nam Đông Silent Mire');
     this.createStaticBoxCollider(2895, bounds.y + 40, 35, Math.max(20, 150 - (bounds.y + 40)), 'Rặng Cây Khô Viền Tây Bắc Silent Mire');
-    this.createStaticBoxCollider(2895, 235, 35, 30, 'Rặng Cây Khô Viền Tây Giữa Silent Mire');
+    this.createStaticBoxCollider(2895, 215, 35, 15, 'Rặng Cây Khô Viền Tây Giữa Silent Mire');
     // Preserve the tree line below the bridge opening (x=2880–2916, y=410–450).
     this.createStaticBoxCollider(2895, 452, 35, bounds.y + bounds.height - 40 - 452, 'Rặng Cây Khô Viền Tây Nam Silent Mire');
     this.createStaticBoxCollider(3955, bounds.y + 40, 35, 235 - (bounds.y + 40), 'Rặng Cây Khô Viền Đông Bắc Silent Mire');
@@ -6935,7 +6938,7 @@ export class WorldBuilder {
     this.createAncientRuneStele(3460, 290);
 
     // 4. Bốn Đỉnh Đá Nghi Thức (Ancient Stone Braziers) tại 4 góc sân
-    this.createAncientBrazier(3380, 260); // Tây
+    this.createAncientBrazier(3368, 250); // Tây
     this.createAncientBrazier(3660, 260); // Đông
     this.createAncientBrazier(3460, 370); // Tây Nam
     this.createAncientBrazier(3580, 370); // Đông Nam

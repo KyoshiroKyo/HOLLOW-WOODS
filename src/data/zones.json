@@ -1008,9 +1008,9 @@
         {
           "id": "sm_bound_left_top_2",
           "x": 2880,
-          "y": 240,
+          "y": 215,
           "width": 30,
-          "height": 20,
+          "height": 15,
           "type": "boundary",
           "isSolid": true
         },
@@ -1097,8 +1097,8 @@
         },
         {
           "id": "sm_dead_titan_willow_col",
-          "x": 3540,
-          "y": 150,
+          "x": 3578,
+          "y": 154,
           "width": 44,
           "height": 26,
           "type": "tree_trunk",
@@ -1387,9 +1387,9 @@
           "barrierType": "open",
           "triggerRect": {
             "x": 2880,
-            "y": 260,
+            "y": 240,
             "width": 20,
-            "height": 140
+            "height": 160
           },
           "targetSpawn": {
             "x": 2820,
@@ -1412,7 +1412,7 @@
             "x": 2880,
             "y": 160,
             "width": 20,
-            "height": 80
+            "height": 55
           },
           "targetSpawn": {
             "x": 2800,
@@ -1420,7 +1420,7 @@
           },
           "returnPoint": {
             "x": 2920,
-            "y": 200
+            "y": 188
           },
           "displayLabel": "Lối mòn Tây Bắc lên Rừng Sâu",
           "description": "Lối mòn Tây Bắc lên Rừng Sâu"
@@ -1489,7 +1489,7 @@
           },
           "returnPoint": {
             "x": 3380,
-            "y": 700
+            "y": 680
           },
           "displayLabel": "Tiến vào Đầm Lầy Chìm",
           "description": "Lối cầu ván gỗ dẫn xuống vực nước sâu tử khí"
@@ -3739,7 +3739,7 @@
           },
           "targetSpawn": {
             "x": 3380,
-            "y": 700
+            "y": 680
           },
           "returnPoint": {
             "x": 3380,
