@@ -1,0 +1,44 @@
+{
+  "bug15": {
+    "exit_code": 0,
+    "duration_s": 60.29,
+    "stdout_tail": "Test Type: Integration Test (collider regression across world zones)\nCase A (Fog Crossing & Entrance):       PASS\nCase B (Bellhollow Village Props/NPCs): PASS\nCase C (Bellhollow <-> Farm Fence):     PASS\nCase D (Outer Woods & Campfire):        PASS\nCase E (Valid Routes & Save/Continue):  PASS\nPage Errors: 0 | Console Errors: 0 | Failed Requests: 0 | HTTP Errors: 0 | Aborted Audio Transitions: 5\nOVERALL RESULT: PASS\n\n[Playwright] HW-BUG-#15 Collision data written to Read/V1.5/Reports/HW_BUG_15_COLLISION_DATA.json\n\n--- HW-BUG-#15 FINISHED WITH EXIT CODE 0 ---",
+    "stderr_tail": ""
+  },
+  "cloud_local_priority": {
+    "exit_code": 0,
+    "stdout": "CLOUD_LOCAL_PRIORITY_PASS",
+    "stderr": ""
+  },
+  "negative_http_404_bug16": {
+    "expected_nonzero": true,
+    "exit_code": 1,
+    "stdout_tail": "Save/Load Object Match:        PASS\nMissing User Textures:         0 (PASS)\nPage Errors: 0 | Console Errors: 1 | Failed Requests: 0 | HTTP Errors: 1 | Aborted Audio Transitions: 2\nOVERALL RESULT: FAIL\n\nSaved telemetry data to C:/Users/Kyoshiro/.gemini/antigravity/brain/dc0f9c86-d78f-43b6-895c-34fe12680156/scratch/neg16.json\n\n--- HW-BUG-#16 FINISHED WITH EXIT CODE 1 ---"
+  },
+  "depleted_nodes_e2e": {
+    "pass": true,
+    "before": {
+      "saveOk": true,
+      "d1": true,
+      "d2": true
+    },
+    "after_continue": {
+      "d1": true,
+      "d2": true,
+      "n1Visible": false,
+      "n1Available": false
+    },
+    "after_restart": {
+      "d1": false,
+      "d2": false
+    }
+  },
+  "production_sha256": {
+    "src\\state\\PlayerState.ts": "074AF4187810CF7DB0E782AC2CA1280114AB53AF1E409362ECFA7857DAE206D3",
+    "src\\systems\\SaveManager.ts": "7D637A1959449F6DAE19E189D7771386CEE3F84EE058E5177FD805425BFB0606",
+    "src\\services\\CloudSaveService.ts": "4CF6A9887F8CD69F5FED710FB06C5355480FB2598954A38A568186551BD64EF2",
+    "src\\scenes\\GameScene.ts": "86A3156ECF025251A7E86E725CD80A00616471BCAF9A0873320DD04207B79DF3"
+  },
+  "git_diff_check_exit": 0,
+  "scripts_temp_files": []
+}

@@ -1,0 +1,72 @@
+{
+  "cloud_local_priority": {
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "node:internal/modules/package_json_reader:301\n  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);\n        ^\n\nError [ERR_MODULE_NOT_FOUND]: Cannot find package 'esbuild' imported from C:\\Users\\Kyoshiro\\.gemini\\antigravity\\brain\\dc0f9c86-d78f-43b6-895c-34fe12680156\\scratch\\test_cloud_priority.mjs\n    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)\n    at packageResolve (node:internal/modules/esm/resolve:784:25)\n    at moduleResolve (node:internal/modules/esm/resolve:873:18)\n    at defaultResolve (node:internal/modules/esm/resolve:1006:11)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)\n    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)\n    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)\n    at #resolve (node:internal/modules/esm/loader:690:17)\n    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)\n    at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33) {\n  code: 'ERR_MODULE_NOT_FOUND'\n}\n\nNode.js v26.7.0"
+  },
+  "runs": [
+    {
+      "script": "scripts\\test_hw_bug13_camera_stability.py",
+      "exit_code": 0,
+      "duration_s": 48.12,
+      "stdout_tail": "Case C (Bellhollow <-> Outer Woods):   PASS\nCase D (Parallel Boundary Walk):       PASS\nCase E (Seam Standing Stability):      PASS\nCase F (Save / Continue At Boundary):  PASS\nPage Errors: 0 | Console Errors: 0 | Failed Requests: 0 | HTTP Errors: 0 | Aborted Audio Transitions: 1\nOVERALL RESULT: PASS\n\n[Playwright] HW-BUG-#13 Telemetry data written to Read/V1.5/Reports/HW_BUG_13_CAMERA_DATA.json\n\n--- HW-BUG-#13 FINISHED WITH EXIT CODE 0 ---",
+      "stderr_tail": ""
+    },
+    {
+      "script": "scripts\\test_hw_bug14_route_integrity.py",
+      "exit_code": 0,
+      "duration_s": 74.05,
+      "stdout_tail": "Test 3 (Sequential Multi-Zone Circuit): PASS\nTest 4 (Boundary Oscillation Debounce): PASS\nTest 5 (Gated Route Enforcement):       PASS\nTest 6 (Save at Zone B then Continue):  PASS\nPage Errors: 0 | Console Errors: 0 | Failed Requests: 0 | HTTP Errors: 0 | Aborted Audio Transitions: 6\nOVERALL RESULT: PASS\n\n[Playwright] HW-BUG-#14 Route data written to Read/V1.5/Reports/HW_BUG_14_ROUTES_DATA.json\n\n--- HW-BUG-#14 FINISHED WITH EXIT CODE 0 ---",
+      "stderr_tail": ""
+    },
+    {
+      "script": "scripts\\test_hw_bug15_collision_regression.py",
+      "exit_code": 1,
+      "duration_s": 57.2,
+      "stdout_tail": "Case B (Bellhollow Village Props/NPCs): PASS\nCase C (Bellhollow <-> Farm Fence):     PASS\nCase D (Outer Woods & Campfire):        PASS\nCase E (Valid Routes & Save/Continue):  FAIL\nPage Errors: 0 | Console Errors: 0 | Failed Requests: 0 | HTTP Errors: 0 | Aborted Audio Transitions: 5\nOVERALL RESULT: FAIL\n\n[Playwright] HW-BUG-#15 Collision data written to Read/V1.5/Reports/HW_BUG_15_COLLISION_DATA.json\n\n--- HW-BUG-#15 FINISHED WITH EXIT CODE 1 ---",
+      "stderr_tail": ""
+    },
+    {
+      "script": "scripts\\test_hw_bug16_map_rendering.py",
+      "exit_code": 0,
+      "duration_s": 24.73,
+      "stdout_tail": "No Duplicate Instances:        PASS (Cullables=True, RepeatStable=True)\nDeferred Rendering Idempotent: PASS\nSave/Load Object Match:        PASS\nMissing User Textures:         0 (PASS)\nPage Errors: 0 | Console Errors: 0 | Failed Requests: 0 | HTTP Errors: 0 | Aborted Audio Transitions: 2\nOVERALL RESULT: PASS\n\nSaved telemetry data to Read/V1.5/Reports/HW_BUG_16_RENDER_DATA.json\n\n--- HW-BUG-#16 FINISHED WITH EXIT CODE 0 ---",
+      "stderr_tail": ""
+    },
+    {
+      "script": "scripts\\test_hw_bug18_perf_benchmark.py",
+      "exit_code": 0,
+      "duration_s": 37.15,
+      "stdout_tail": "Culling Active:       172 calls (PASS)\nZone Ensure Calls:    {'fog_crossing': 6, 'silent_mire': 1, 'bellhollow': 9, 'ancient_rune_puzzle': 1, 'broken_bell_shrine': 1, 'sub_bell_workshop': 1, 'sub_root_cellar': 1, 'sub_whispering_clearing': 1, 'sanctuary_farm': 6, 'outer_woods': 3} calls (PASS)\nAverage FPS (CPU):    8.76 FPS [SwiftShader CPU Software Rasterizer]\nGPU Verification:     GPU NOT VERIFIED (Headless Chromium SwiftShader CPU software rasterizer)\nPage Errors:          0 | Console Errors: 0 | Failed Requests: 0 | HTTP Errors: 0 | Aborted Audio Transitions: 3\nOVERALL RESULT:       PASS\n\nSaved telemetry data to Read/V1.5/Reports/HW_BUG_18_PERF_DATA.json\n\n--- HW-BUG-#18 FINISHED WITH EXIT CODE 0 ---",
+      "stderr_tail": ""
+    },
+    {
+      "script": "scripts\\test_hw_bug19_progression_playtest.py",
+      "exit_code": 0,
+      "duration_s": 24.13,
+      "stdout_tail": "Failed requests (404): 0\nSTAGE1 PASS: True\nSTAGE2 PASS: True\nSTAGE3 PASS: True\nSTAGE4 PASS: True\nOVERALL RESULT: PASS\n\nSaved playtest telemetry to Read/V1.5/Reports/HW_BUG_19_PLAYTEST_DATA.json\n\n--- HW-BUG-#19 FINISHED WITH EXIT CODE 0 ---",
+      "stderr_tail": ""
+    },
+    {
+      "script": "tests\\hw_bug_26b_walkrun_fix_verification.py",
+      "exit_code": 0,
+      "duration_s": 22.03,
+      "stdout_tail": "  Post-Parry walk: spd=85, isSprinting=False, anim=wayfarer_walk_up\n  [PASS] All combat actions enforce isSprinting=False and return to Walk.\n\n--- [TEST 5] Save Schema 3 & P2Game Integrity ---\n  Save state check: saveSchemaVersion=3, isSprinting=False\n  [PASS] Save Schema 3, zero errors, and game state serialization intact.\n\n=======================================================\n=== HW-BUG-26B: ALL 5 VERIFICATION SUITES PASSED 100% (Staged integration) ===\n=======================================================",
+      "stderr_tail": ""
+    }
+  ],
+  "negative_checks": [
+    {
+      "name": "negative_pageerror_bug12",
+      "expected_nonzero": true,
+      "exit_code": 1,
+      "stdout_tail": "[Playwright] Final regression screenshot saved to C:/Users/Kyoshiro/.gemini/antigravity/brain/dc0f9c86-d78f-43b6-895c-34fe12680156/scratch/neg12.png\n\n================ HW-BUG-#12 SUMMARY (Staged integration (locomotion scaling, input routing, combat smoke & loader checks)) ================\nPart D Prelim: False | Part A: True | Part B: True | Part C: True | Part D Details: False\nPageErrors=1, ConsoleErrors=1, FailedRequests=0\nOVERALL RESULT: FAIL"
+    },
+    {
+      "name": "negative_badge_false_bug19",
+      "expected_nonzero": true,
+      "exit_code": 1,
+      "stdout_tail": "STAGE4 PASS: False\nOVERALL RESULT: FAIL\n\nSaved playtest telemetry to C:/Users/Kyoshiro/.gemini/antigravity/brain/dc0f9c86-d78f-43b6-895c-34fe12680156/scratch/neg19.json\n\n--- HW-BUG-#19 FINISHED WITH EXIT CODE 1 ---"
+    }
+  ]
+}

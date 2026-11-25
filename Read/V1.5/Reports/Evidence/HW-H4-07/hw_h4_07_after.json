@@ -1,0 +1,1237 @@
+{
+  "mode": "STAGED-INTEGRATION-AFTER",
+  "cases": {
+    "2A_after_hooded_knight_deep_forest": {
+      "natural_spawn": {
+        "zoneId": "deep_forest",
+        "isBossFightActive": false,
+        "isDead": false,
+        "player": {
+          "x": 2080,
+          "y": -140,
+          "hp": 86,
+          "maxHp": 100,
+          "composure": 88.14693500000021,
+          "stamina": 100,
+          "lanternOn": false,
+          "isHiding": false,
+          "memoryStage": 1
+        },
+        "currentQuestId": "Q01_MEET_EDDA",
+        "storyQuestId": "Q01_MEET_EDDA",
+        "flags": [
+          "bellhollow_intro_done",
+          "east_gate_unlocked",
+          "tutorial_done",
+          "visited_deep_forest"
+        ],
+        "inventory": {
+          "wpn_walking_staff": 1,
+          "wpn_iron_spear": 1,
+          "item_noise_lure": 5,
+          "item_resin_flare": 5,
+          "item_lantern_oil": 3,
+          "item_herbal_poultice": 5
+        },
+        "dialogueActive": false,
+        "mireWarden": null,
+        "hoodedKnight": {
+          "exists": true,
+          "active": true,
+          "visible": true,
+          "alpha": 1,
+          "x": 2340,
+          "y": -190,
+          "hp": 10,
+          "maxHp": 10,
+          "state": "idle",
+          "isDefeated": false,
+          "hasRecognized": false,
+          "anim": "hooded_knight_idle"
+        },
+        "fallenKnights": [
+          {
+            "x": 2076,
+            "y": -145,
+            "state": "chase",
+            "hp": 4,
+            "maxHp": 4,
+            "active": true,
+            "defeated": false
+          },
+          {
+            "x": 2230,
+            "y": -175,
+            "state": "pray",
+            "hp": 4,
+            "maxHp": 4,
+            "active": true,
+            "defeated": false
+          },
+          {
+            "x": 2450,
+            "y": -175,
+            "state": "pray",
+            "hp": 4,
+            "maxHp": 4,
+            "active": true,
+            "defeated": false
+          }
+        ],
+        "listener": {
+          "active": true,
+          "x": 2199,
+          "y": 234,
+          "aiState": "PATROL",
+          "body": {
+            "w": 22,
+            "h": 14
+          }
+        },
+        "activeEcho": null,
+        "apparitions": []
+      },
+      "after_walk_intro": {
+        "zoneId": "deep_forest",
+        "isBossFightActive": false,
+        "isDead": false,
+        "player": {
+          "x": 2099,
+          "y": -159,
+          "hp": 72,
+          "maxHp": 100,
+          "composure": 77.49490500000049,
+          "stamina": 100,
+          "lanternOn": false,
+          "isHiding": false,
+          "memoryStage": 2
+        },
+        "currentQuestId": "Q01_MEET_EDDA",
+        "storyQuestId": "Q01_MEET_EDDA",
+        "flags": [
+          "bellhollow_intro_done",
+          "east_gate_unlocked",
+          "tutorial_done",
+          "visited_deep_forest"
+        ],
+        "inventory": {
+          "wpn_walking_staff": 1,
+          "wpn_iron_spear": 1,
+          "item_noise_lure": 5,
+          "item_resin_flare": 5,
+          "item_lantern_oil": 3,
+          "item_herbal_poultice": 5
+        },
+        "dialogueActive": true,
+        "mireWarden": null,
+        "hoodedKnight": {
+          "exists": true,
+          "active": true,
+          "visible": true,
+          "alpha": 1,
+          "x": 2316,
+          "y": -187,
+          "hp": 10,
+          "maxHp": 10,
+          "state": "stagger",
+          "isDefeated": false,
+          "hasRecognized": true,
+          "anim": "hooded_knight_stagger"
+        },
+        "fallenKnights": [
+          {
+            "x": 2093,
+            "y": -153,
+            "state": "attack",
+            "hp": 4,
+            "maxHp": 4,
+            "active": true,
+            "defeated": false
+          },
+          {
+            "x": 2230,
+            "y": -175,
+            "state": "pray",
+            "hp": 4,
+            "maxHp": 4,
+            "active": true,
+            "defeated": false
+          },
+          {
+            "x": 2450,
+            "y": -175,
+            "state": "pray",
+            "hp": 4,
+            "maxHp": 4,
+            "active": true,
+            "defeated": false
+          }
+        ],
+        "listener": {
+          "active": true,
+          "x": 2169,
+          "y": 232,
+          "aiState": "PATROL",
+          "body": {
+            "w": 22,
+            "h": 14
+          }
+        },
+        "activeEcho": null,
+        "apparitions": []
+      },
+      "post_intro": {
+        "zoneId": "deep_forest",
+        "isBossFightActive": false,
+        "isDead": false,
+        "player": {
+          "x": 2099,
+          "y": -159,
+          "hp": 72,
+          "maxHp": 100,
+          "composure": 70.7646000000011,
+          "stamina": 100,
+          "lanternOn": false,
+          "isHiding": false,
+          "memoryStage": 2
+        },
+        "currentQuestId": "Q01_MEET_EDDA",
+        "storyQuestId": "Q01_MEET_EDDA",
+        "flags": [
+          "bellhollow_intro_done",
+          "choice_hooded_knight_resolve",
+          "east_gate_unlocked",
+          "tutorial_done",
+          "visited_deep_forest"
+        ],
+        "inventory": {
+          "wpn_walking_staff": 1,
+          "wpn_iron_spear": 1,
+          "item_noise_lure": 5,
+          "item_resin_flare": 5,
+          "item_lantern_oil": 3,
+          "item_herbal_poultice": 5
+        },
+        "dialogueActive": false,
+        "mireWarden": null,
+        "hoodedKnight": {
+          "exists": true,
+          "active": true,
+          "visible": true,
+          "alpha": 1,
+          "x": 2316,
+          "y": -187,
+          "hp": 10,
+          "maxHp": 10,
+          "state": "stagger",
+          "isDefeated": false,
+          "hasRecognized": true,
+          "anim": "hooded_knight_stagger"
+        },
+        "fallenKnights": [
+          {
+            "x": 2093,
+            "y": -153,
+            "state": "vulnerable",
+            "hp": 4,
+            "maxHp": 4,
+            "active": true,
+            "defeated": false
+          },
+          {
+            "x": 2230,
+            "y": -175,
+            "state": "pray",
+            "hp": 4,
+            "maxHp": 4,
+            "active": true,
+            "defeated": false
+          },
+          {
+            "x": 2450,
+            "y": -175,
+            "state": "pray",
+            "hp": 4,
+            "maxHp": 4,
+            "active": true,
+            "defeated": false
+          }
+        ],
+        "listener": {
+          "active": true,
+          "x": 2135,
+          "y": 231,
+          "aiState": "PATROL",
+          "body": {
+            "w": 22,
+            "h": 14
+          }
+        },
+        "activeEcho": null,
+        "apparitions": []
+      },
+      "after_defeat_2s": {
+        "zoneId": "deep_forest",
+        "isBossFightActive": false,
+        "isDead": false,
+        "player": {
+          "x": 2282,
+          "y": -187,
+          "hp": 72,
+          "maxHp": 100,
+          "composure": 69.02590999999988,
+          "stamina": 100,
+          "lanternOn": true,
+          "isHiding": false,
+          "memoryStage": 2
+        },
+        "currentQuestId": "Q01_MEET_EDDA",
+        "storyQuestId": "Q01_MEET_EDDA",
+        "flags": [
+          "bellhollow_intro_done",
+          "boss_hooded_knight_defeated",
+          "choice_hooded_knight_farewell",
+          "choice_hooded_knight_resolve",
+          "east_gate_unlocked",
+          "tutorial_done",
+          "visited_deep_forest"
+        ],
+        "inventory": {
+          "wpn_walking_staff": 1,
+          "wpn_iron_spear": 1,
+          "item_noise_lure": 5,
+          "item_resin_flare": 5,
+          "item_lantern_oil": 3,
+          "item_herbal_poultice": 5,
+          "quest_corrupted_crest": 1
+        },
+        "dialogueActive": false,
+        "mireWarden": null,
+        "hoodedKnight": null,
+        "fallenKnights": [
+          {
+            "x": 2315,
+            "y": -192,
+            "state": "attack",
+            "hp": 4,
+            "maxHp": 4,
+            "active": true,
+            "defeated": false
+          },
+          {
+            "x": 2389,
+            "y": -207,
+            "state": "chase",
+            "hp": 4,
+            "maxHp": 4,
+            "active": true,
+            "defeated": false
+          },
+          {
+            "x": 2248,
+            "y": -189,
+            "state": "attack",
+            "hp": 4,
+            "maxHp": 4,
+            "active": true,
+            "defeated": false
+          }
+        ],
+        "listener": {
+          "active": true,
+          "x": 2009,
+          "y": 223,
+          "aiState": "PATROL",
+          "body": {
+            "w": 22,
+            "h": 14
+          }
+        },
+        "activeEcho": null,
+        "apparitions": []
+      },
+      "in_crooked_path": {
+        "zoneId": "crooked_path",
+        "isBossFightActive": false,
+        "isDead": false,
+        "player": {
+          "x": 2080,
+          "y": 23,
+          "hp": 72,
+          "maxHp": 100,
+          "composure": 72.14829799999964,
+          "stamina": 100,
+          "lanternOn": true,
+          "isHiding": false,
+          "memoryStage": 2
+        },
+        "currentQuestId": "Q04_ANCIENT_RUNES",
+        "storyQuestId": "Q04_ANCIENT_RUNES",
+        "flags": [
+          "bellhollow_intro_done",
+          "boss_hooded_knight_defeated",
+          "choice_hooded_knight_farewell",
+          "choice_hooded_knight_resolve",
+          "east_gate_unlocked",
+          "main_quest_reached:Q04_ANCIENT_RUNES",
+          "tutorial_done",
+          "visited_deep_forest"
+        ],
+        "inventory": {
+          "wpn_walking_staff": 1,
+          "wpn_iron_spear": 1,
+          "item_noise_lure": 5,
+          "item_resin_flare": 5,
+          "item_lantern_oil": 3,
+          "item_herbal_poultice": 5,
+          "quest_corrupted_crest": 1
+        },
+        "dialogueActive": false,
+        "mireWarden": null,
+        "hoodedKnight": null,
+        "fallenKnights": [
+          {
+            "x": 2360,
+            "y": 240,
+            "state": "pray",
+            "hp": 4,
+            "maxHp": 4,
+            "active": true,
+            "defeated": false
+          }
+        ],
+        "listener": {
+          "active": true,
+          "x": 1980,
+          "y": 222,
+          "aiState": "ALERT",
+          "body": {
+            "w": 22,
+            "h": 14
+          }
+        },
+        "activeEcho": null,
+        "apparitions": []
+      },
+      "returned_deep_forest": {
+        "zoneId": "deep_forest",
+        "isBossFightActive": false,
+        "isDead": false,
+        "player": {
+          "x": 2080,
+          "y": -79,
+          "hp": 58,
+          "maxHp": 100,
+          "composure": 69.61261199999917,
+          "stamina": 100,
+          "lanternOn": true,
+          "isHiding": false,
+          "memoryStage": 2
+        },
+        "currentQuestId": "Q04_ANCIENT_RUNES",
+        "storyQuestId": "Q04_ANCIENT_RUNES",
+        "flags": [
+          "bellhollow_intro_done",
+          "boss_hooded_knight_defeated",
+          "choice_hooded_knight_farewell",
+          "choice_hooded_knight_resolve",
+          "east_gate_unlocked",
+          "main_quest_reached:Q04_ANCIENT_RUNES",
+          "tutorial_done",
+          "visited_deep_forest"
+        ],
+        "inventory": {
+          "wpn_walking_staff": 1,
+          "wpn_iron_spear": 1,
+          "item_noise_lure": 5,
+          "item_resin_flare": 5,
+          "item_lantern_oil": 3,
+          "item_herbal_poultice": 5,
+          "quest_corrupted_crest": 1
+        },
+        "dialogueActive": false,
+        "mireWarden": null,
+        "hoodedKnight": null,
+        "fallenKnights": [
+          {
+            "x": 2067,
+            "y": -111,
+            "state": "vulnerable",
+            "hp": 4,
+            "maxHp": 4,
+            "active": true,
+            "defeated": false
+          }
+        ],
+        "listener": {
+          "active": true,
+          "x": 2294,
+          "y": -424,
+          "aiState": "ALERT",
+          "body": {
+            "w": 22,
+            "h": 14
+          }
+        },
+        "activeEcho": null,
+        "apparitions": []
+      },
+      "reload_continue": {
+        "zoneId": "deep_forest",
+        "isBossFightActive": false,
+        "isDead": false,
+        "player": {
+          "x": 2080,
+          "y": -1,
+          "hp": 58,
+          "maxHp": 100,
+          "composure": 69.88307999999918,
+          "stamina": 100,
+          "lanternOn": true,
+          "isHiding": false,
+          "memoryStage": 2
+        },
+        "currentQuestId": "Q04_ANCIENT_RUNES",
+        "storyQuestId": "Q04_ANCIENT_RUNES",
+        "flags": [
+          "bellhollow_intro_done",
+          "boss_hooded_knight_defeated",
+          "choice_hooded_knight_farewell",
+          "choice_hooded_knight_resolve",
+          "east_gate_unlocked",
+          "main_quest_reached:Q04_ANCIENT_RUNES",
+          "tutorial_done",
+          "visited_deep_forest"
+        ],
+        "inventory": {
+          "wpn_walking_staff": 1,
+          "wpn_iron_spear": 1,
+          "item_noise_lure": 5,
+          "item_resin_flare": 5,
+          "item_lantern_oil": 3,
+          "item_herbal_poultice": 5,
+          "quest_corrupted_crest": 1
+        },
+        "dialogueActive": false,
+        "mireWarden": null,
+        "hoodedKnight": null,
+        "fallenKnights": [
+          {
+            "x": 2073,
+            "y": -34,
+            "state": "attack",
+            "hp": 4,
+            "maxHp": 4,
+            "active": true,
+            "defeated": false
+          }
+        ],
+        "listener": {
+          "active": true,
+          "x": 2187,
+          "y": 234,
+          "aiState": "PATROL",
+          "body": {
+            "w": 22,
+            "h": 14
+          }
+        },
+        "activeEcho": null,
+        "apparitions": []
+      },
+      "errors": [],
+      "http_errors": []
+    },
+    "2B_after_ancient_rune_puzzle": {
+      "undefeated_spawn": {
+        "zoneId": "ancient_rune_puzzle",
+        "isBossFightActive": false,
+        "isDead": false,
+        "player": {
+          "x": 3460,
+          "y": 280,
+          "hp": 100,
+          "maxHp": 100,
+          "composure": 98.46871600000014,
+          "stamina": 100,
+          "lanternOn": false,
+          "isHiding": false,
+          "memoryStage": 2
+        },
+        "currentQuestId": "Q01_MEET_EDDA",
+        "storyQuestId": "Q01_MEET_EDDA",
+        "flags": [
+          "bellhollow_intro_done",
+          "east_gate_unlocked",
+          "tutorial_done",
+          "visited_ancient_rune_puzzle"
+        ],
+        "inventory": {
+          "wpn_walking_staff": 1,
+          "wpn_iron_spear": 1,
+          "item_noise_lure": 5,
+          "item_resin_flare": 5,
+          "item_lantern_oil": 3,
+          "item_herbal_poultice": 5
+        },
+        "dialogueActive": true,
+        "mireWarden": null,
+        "hoodedKnight": {
+          "exists": true,
+          "active": true,
+          "visible": true,
+          "alpha": 1,
+          "x": 3590,
+          "y": 290,
+          "hp": 10,
+          "maxHp": 10,
+          "state": "stagger",
+          "isDefeated": false,
+          "hasRecognized": true,
+          "anim": "hooded_knight_stagger"
+        },
+        "fallenKnights": [],
+        "listener": {
+          "active": true,
+          "x": 2300,
+          "y": 240,
+          "aiState": "PATROL",
+          "body": {
+            "w": 22,
+            "h": 14
+          }
+        },
+        "activeEcho": null,
+        "apparitions": []
+      },
+      "defeated_flag_blocks_spawn": {
+        "zoneId": "ancient_rune_puzzle",
+        "isBossFightActive": false,
+        "isDead": false,
+        "player": {
+          "x": 3460,
+          "y": 280,
+          "hp": 100,
+          "maxHp": 100,
+          "composure": 98.46882400000013,
+          "stamina": 100,
+          "lanternOn": false,
+          "isHiding": false,
+          "memoryStage": 1
+        },
+        "currentQuestId": "Q01_MEET_EDDA",
+        "storyQuestId": "Q01_MEET_EDDA",
+        "flags": [
+          "bellhollow_intro_done",
+          "boss_hooded_knight_defeated",
+          "east_gate_unlocked",
+          "tutorial_done",
+          "visited_ancient_rune_puzzle"
+        ],
+        "inventory": {
+          "wpn_walking_staff": 1,
+          "wpn_iron_spear": 1,
+          "item_noise_lure": 5,
+          "item_resin_flare": 5,
+          "item_lantern_oil": 3,
+          "item_herbal_poultice": 5
+        },
+        "dialogueActive": false,
+        "mireWarden": null,
+        "hoodedKnight": null,
+        "fallenKnights": [],
+        "listener": {
+          "active": true,
+          "x": 2200,
+          "y": 234,
+          "aiState": "PATROL",
+          "body": {
+            "w": 22,
+            "h": 14
+          }
+        },
+        "activeEcho": null,
+        "apparitions": []
+      },
+      "errors": [],
+      "http_errors": []
+    },
+    "3_after_entities": {
+      "echo_init": {
+        "zoneId": "crooked_path",
+        "isBossFightActive": false,
+        "isDead": false,
+        "player": {
+          "x": 1720,
+          "y": 220,
+          "hp": 100,
+          "maxHp": 100,
+          "composure": 90.8691260000001,
+          "stamina": 100,
+          "lanternOn": false,
+          "isHiding": false,
+          "memoryStage": 1
+        },
+        "currentQuestId": "Q04_ANCIENT_RUNES",
+        "storyQuestId": "Q04_ANCIENT_RUNES",
+        "flags": [
+          "bellhollow_intro_done",
+          "east_gate_unlocked",
+          "main_quest_reached:Q04_ANCIENT_RUNES",
+          "tutorial_done",
+          "visited_crooked_path"
+        ],
+        "inventory": {
+          "wpn_walking_staff": 1,
+          "wpn_iron_spear": 1,
+          "item_noise_lure": 5,
+          "item_resin_flare": 5,
+          "item_lantern_oil": 3,
+          "item_herbal_poultice": 5
+        },
+        "dialogueActive": false,
+        "mireWarden": null,
+        "hoodedKnight": null,
+        "fallenKnights": [
+          {
+            "x": 2360,
+            "y": 240,
+            "state": "pray",
+            "hp": 4,
+            "maxHp": 4,
+            "active": true,
+            "defeated": false
+          }
+        ],
+        "listener": {
+          "active": true,
+          "x": 2288,
+          "y": 240,
+          "aiState": "ALERT",
+          "body": {
+            "w": 22,
+            "h": 14
+          }
+        },
+        "activeEcho": {
+          "x": 1860,
+          "y": 216,
+          "dissolved": false,
+          "hasBody": false,
+          "visible": true,
+          "alpha": 0.5
+        },
+        "apparitions": []
+      },
+      "echo_visible_midwalk": {
+        "zoneId": "crooked_path",
+        "isBossFightActive": false,
+        "isDead": false,
+        "player": {
+          "x": 1772,
+          "y": 220,
+          "hp": 100,
+          "maxHp": 100,
+          "composure": 77.24862400000015,
+          "stamina": 100,
+          "lanternOn": false,
+          "isHiding": false,
+          "memoryStage": 1
+        },
+        "currentQuestId": "Q04_ANCIENT_RUNES",
+        "storyQuestId": "Q04_ANCIENT_RUNES",
+        "flags": [
+          "bellhollow_intro_done",
+          "east_gate_unlocked",
+          "main_quest_reached:Q04_ANCIENT_RUNES",
+          "tutorial_done",
+          "visited_crooked_path"
+        ],
+        "inventory": {
+          "wpn_walking_staff": 1,
+          "wpn_iron_spear": 1,
+          "item_noise_lure": 5,
+          "item_resin_flare": 5,
+          "item_lantern_oil": 3,
+          "item_herbal_poultice": 5
+        },
+        "dialogueActive": false,
+        "mireWarden": null,
+        "hoodedKnight": null,
+        "fallenKnights": [
+          {
+            "x": 2360,
+            "y": 240,
+            "state": "pray",
+            "hp": 4,
+            "maxHp": 4,
+            "active": true,
+            "defeated": false
+          }
+        ],
+        "listener": {
+          "active": true,
+          "x": 2230,
+          "y": 240,
+          "aiState": "ALERT",
+          "body": {
+            "w": 22,
+            "h": 14
+          }
+        },
+        "activeEcho": {
+          "x": 1860,
+          "y": 220,
+          "dissolved": false,
+          "hasBody": false,
+          "visible": true,
+          "alpha": 0.03
+        },
+        "apparitions": []
+      },
+      "echo_dissolved": {
+        "zoneId": "crooked_path",
+        "isBossFightActive": false,
+        "isDead": false,
+        "player": {
+          "x": 1867,
+          "y": 220,
+          "hp": 100,
+          "maxHp": 100,
+          "composure": 68.07771800000025,
+          "stamina": 100,
+          "lanternOn": false,
+          "isHiding": false,
+          "memoryStage": 2
+        },
+        "currentQuestId": "Q04_ANCIENT_RUNES",
+        "storyQuestId": "Q04_ANCIENT_RUNES",
+        "flags": [
+          "bellhollow_intro_done",
+          "east_gate_unlocked",
+          "main_quest_reached:Q04_ANCIENT_RUNES",
+          "tutorial_done",
+          "visited_crooked_path"
+        ],
+        "inventory": {
+          "wpn_walking_staff": 1,
+          "wpn_iron_spear": 1,
+          "item_noise_lure": 5,
+          "item_resin_flare": 5,
+          "item_lantern_oil": 3,
+          "item_herbal_poultice": 5
+        },
+        "dialogueActive": false,
+        "mireWarden": null,
+        "hoodedKnight": null,
+        "fallenKnights": [
+          {
+            "x": 2360,
+            "y": 240,
+            "state": "pray",
+            "hp": 4,
+            "maxHp": 4,
+            "active": true,
+            "defeated": false
+          }
+        ],
+        "listener": {
+          "active": true,
+          "x": 2121,
+          "y": 240,
+          "aiState": "ALERT",
+          "body": {
+            "w": 22,
+            "h": 14
+          }
+        },
+        "activeEcho": null,
+        "apparitions": []
+      },
+      "apparition_spawned_low_comp": {
+        "zoneId": "crooked_path",
+        "isBossFightActive": false,
+        "isDead": false,
+        "player": {
+          "x": 1867,
+          "y": 220,
+          "hp": 97.8983199999995,
+          "maxHp": 100,
+          "composure": 18.318656000000008,
+          "stamina": 100,
+          "lanternOn": false,
+          "isHiding": false,
+          "memoryStage": 2
+        },
+        "currentQuestId": "Q04_ANCIENT_RUNES",
+        "storyQuestId": "Q04_ANCIENT_RUNES",
+        "flags": [
+          "bellhollow_intro_done",
+          "east_gate_unlocked",
+          "main_quest_reached:Q04_ANCIENT_RUNES",
+          "tutorial_done",
+          "visited_crooked_path"
+        ],
+        "inventory": {
+          "wpn_walking_staff": 1,
+          "wpn_iron_spear": 1,
+          "item_noise_lure": 5,
+          "item_resin_flare": 5,
+          "item_lantern_oil": 3,
+          "item_herbal_poultice": 5
+        },
+        "dialogueActive": false,
+        "mireWarden": null,
+        "hoodedKnight": null,
+        "fallenKnights": [
+          {
+            "x": 2360,
+            "y": 240,
+            "state": "pray",
+            "hp": 4,
+            "maxHp": 4,
+            "active": true,
+            "defeated": false
+          }
+        ],
+        "listener": {
+          "active": true,
+          "x": 1948,
+          "y": 234,
+          "aiState": "CHASE",
+          "body": {
+            "w": 22,
+            "h": 14
+          }
+        },
+        "activeEcho": null,
+        "apparitions": [
+          {
+            "x": 1788,
+            "y": 60,
+            "active": true,
+            "visible": true,
+            "hasBody": false,
+            "alpha": 0.58
+          }
+        ]
+      },
+      "apparition_after_lantern_f": {
+        "zoneId": "crooked_path",
+        "isBossFightActive": false,
+        "isDead": false,
+        "player": {
+          "x": 1813,
+          "y": 211,
+          "hp": 72.7857449999995,
+          "maxHp": 100,
+          "composure": 6.050768000000002,
+          "stamina": 100,
+          "lanternOn": true,
+          "isHiding": false,
+          "memoryStage": 2
+        },
+        "currentQuestId": "Q04_ANCIENT_RUNES",
+        "storyQuestId": "Q04_ANCIENT_RUNES",
+        "flags": [
+          "bellhollow_intro_done",
+          "east_gate_unlocked",
+          "main_quest_reached:Q04_ANCIENT_RUNES",
+          "tutorial_done",
+          "visited_crooked_path"
+        ],
+        "inventory": {
+          "wpn_walking_staff": 1,
+          "wpn_iron_spear": 1,
+          "item_noise_lure": 5,
+          "item_resin_flare": 5,
+          "item_lantern_oil": 3,
+          "item_herbal_poultice": 5
+        },
+        "dialogueActive": false,
+        "mireWarden": null,
+        "hoodedKnight": null,
+        "fallenKnights": [
+          {
+            "x": 2360,
+            "y": 240,
+            "state": "pray",
+            "hp": 4,
+            "maxHp": 4,
+            "active": true,
+            "defeated": false
+          }
+        ],
+        "listener": {
+          "active": true,
+          "x": 1827,
+          "y": 213,
+          "aiState": "CHASE",
+          "body": {
+            "w": 22,
+            "h": 14
+          }
+        },
+        "activeEcho": null,
+        "apparitions": [
+          {
+            "x": 1788,
+            "y": 60,
+            "active": true,
+            "visible": true,
+            "hasBody": false,
+            "alpha": 0.74
+          }
+        ]
+      },
+      "listener_chase": {
+        "zoneId": "crooked_path",
+        "isBossFightActive": false,
+        "isDead": false,
+        "player": {
+          "x": 2260,
+          "y": 240,
+          "hp": 86,
+          "maxHp": 100,
+          "composure": 84.07169199999983,
+          "stamina": 83,
+          "lanternOn": true,
+          "isHiding": false,
+          "memoryStage": 2
+        },
+        "currentQuestId": "Q04_ANCIENT_RUNES",
+        "storyQuestId": "Q04_ANCIENT_RUNES",
+        "flags": [
+          "bellhollow_intro_done",
+          "east_gate_unlocked",
+          "main_quest_reached:Q04_ANCIENT_RUNES",
+          "tutorial_done",
+          "visited_crooked_path"
+        ],
+        "inventory": {
+          "wpn_walking_staff": 1,
+          "wpn_iron_spear": 1,
+          "item_noise_lure": 5,
+          "item_resin_flare": 5,
+          "item_lantern_oil": 3,
+          "item_herbal_poultice": 5
+        },
+        "dialogueActive": false,
+        "mireWarden": null,
+        "hoodedKnight": null,
+        "fallenKnights": [
+          {
+            "x": 2294,
+            "y": 240,
+            "state": "attack",
+            "hp": 4,
+            "maxHp": 4,
+            "active": true,
+            "defeated": false
+          }
+        ],
+        "listener": {
+          "active": true,
+          "x": 1913,
+          "y": 217,
+          "aiState": "CHASE",
+          "body": {
+            "w": 22,
+            "h": 14
+          }
+        },
+        "activeEcho": null,
+        "apparitions": []
+      },
+      "listener_after_safe_zone_entry": {
+        "zoneId": "bellhollow",
+        "isBossFightActive": false,
+        "isDead": false,
+        "player": {
+          "x": 1579,
+          "y": 280,
+          "hp": 86,
+          "maxHp": 100,
+          "composure": 86.7787809999996,
+          "stamina": 97,
+          "lanternOn": true,
+          "isHiding": false,
+          "memoryStage": 2
+        },
+        "currentQuestId": "Q04_ANCIENT_RUNES",
+        "storyQuestId": "Q04_ANCIENT_RUNES",
+        "flags": [
+          "bellhollow_intro_done",
+          "east_gate_unlocked",
+          "main_quest_reached:Q04_ANCIENT_RUNES",
+          "tutorial_done",
+          "visited_crooked_path"
+        ],
+        "inventory": {
+          "wpn_walking_staff": 1,
+          "wpn_iron_spear": 1,
+          "item_noise_lure": 5,
+          "item_resin_flare": 5,
+          "item_lantern_oil": 3,
+          "item_herbal_poultice": 5
+        },
+        "dialogueActive": false,
+        "mireWarden": null,
+        "hoodedKnight": null,
+        "fallenKnights": [],
+        "listener": {
+          "active": true,
+          "x": 1933,
+          "y": 222,
+          "aiState": "PATROL",
+          "body": {
+            "w": 22,
+            "h": 14
+          }
+        },
+        "activeEcho": null,
+        "apparitions": []
+      },
+      "errors": [],
+      "http_errors": []
+    },
+    "1B_after_mire_warden_regression": {
+      "spawn": {
+        "zoneId": "broken_bell_shrine",
+        "isBossFightActive": true,
+        "isDead": false,
+        "player": {
+          "x": 4073,
+          "y": 310,
+          "hp": 100,
+          "maxHp": 100,
+          "composure": 95.77653700000025,
+          "stamina": 100,
+          "lanternOn": false,
+          "isHiding": false,
+          "memoryStage": 1
+        },
+        "currentQuestId": "Q06_RETRIEVE_CLAPPER",
+        "storyQuestId": "Q06_RETRIEVE_CLAPPER",
+        "flags": [
+          "bellhollow_intro_done",
+          "east_gate_unlocked",
+          "mire_pillars_solved",
+          "mire_puzzle_solved",
+          "mire_root_seal_broken",
+          "shrine_bridge_lowered",
+          "shrine_unlocked",
+          "tutorial_done",
+          "visited_silent_mire"
+        ],
+        "inventory": {
+          "wpn_walking_staff": 1,
+          "wpn_iron_spear": 1,
+          "item_noise_lure": 5,
+          "item_resin_flare": 5,
+          "item_lantern_oil": 3,
+          "item_herbal_poultice": 5
+        },
+        "dialogueActive": false,
+        "mireWarden": {
+          "active": true,
+          "visible": true,
+          "x": 4485,
+          "y": 247,
+          "hp": 100,
+          "phase": 1,
+          "isStaggered": false,
+          "isShieldBroken": false,
+          "state": "STALK",
+          "anim": "anim_boss_wetlands_walk"
+        },
+        "hoodedKnight": null,
+        "fallenKnights": [],
+        "listener": {
+          "active": true,
+          "x": 2132,
+          "y": 230,
+          "aiState": "PATROL",
+          "body": {
+            "w": 22,
+            "h": 14
+          }
+        },
+        "activeEcho": null,
+        "apparitions": []
+      },
+      "after_defeat": {
+        "zoneId": "broken_bell_shrine",
+        "isBossFightActive": false,
+        "isDead": false,
+        "player": {
+          "x": 4382,
+          "y": 281,
+          "hp": 100,
+          "maxHp": 100,
+          "composure": 98.53286800000012,
+          "stamina": 100,
+          "lanternOn": false,
+          "isHiding": false,
+          "memoryStage": 1
+        },
+        "currentQuestId": "Q06_RETRIEVE_CLAPPER",
+        "storyQuestId": "Q06_RETRIEVE_CLAPPER",
+        "flags": [
+          "bellhollow_intro_done",
+          "boss_mire_warden_defeated",
+          "clapper_collected",
+          "east_gate_unlocked",
+          "mire_pillars_solved",
+          "mire_puzzle_solved",
+          "mire_root_seal_broken",
+          "root_seal_restored",
+          "shrine_bridge_lowered",
+          "shrine_unlocked",
+          "title_purifier_of_mist",
+          "tutorial_done",
+          "visited_silent_mire"
+        ],
+        "inventory": {
+          "wpn_walking_staff": 1,
+          "wpn_iron_spear": 1,
+          "item_noise_lure": 5,
+          "item_resin_flare": 5,
+          "item_lantern_oil": 3,
+          "item_herbal_poultice": 5,
+          "relic_heart_of_roots": 2,
+          "quest_bronze_clapper": 1
+        },
+        "dialogueActive": false,
+        "mireWarden": {
+          "active": true,
+          "visible": true,
+          "x": 4414,
+          "y": 281,
+          "hp": 0,
+          "phase": 1,
+          "isStaggered": false,
+          "isShieldBroken": true,
+          "state": "DEFEATED",
+          "anim": "anim_boss_wetlands_death"
+        },
+        "hoodedKnight": null,
+        "fallenKnights": [],
+        "listener": {
+          "active": true,
+          "x": 2137,
+          "y": 300,
+          "aiState": "PATROL",
+          "body": {
+            "w": 22,
+            "h": 14
+          }
+        },
+        "activeEcho": null,
+        "apparitions": []
+      },
+      "errors": [],
+      "http_errors": []
+    }
+  }
+}

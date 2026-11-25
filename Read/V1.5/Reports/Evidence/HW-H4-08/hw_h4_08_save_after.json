@@ -1,0 +1,201 @@
+{
+  "test_type": "Staged integration + Save/Continue E2E + Legacy V1.3/V1.4",
+  "before_save": {
+    "saveOk": true,
+    "zone": "bellhollow",
+    "x": 820,
+    "y": 260,
+    "hp": 77,
+    "stamina": 64,
+    "composure": 42,
+    "lanternOil": 53,
+    "isLanternOn": true,
+    "activeWeapon": "wpn_iron_spear",
+    "equippedSlots": {
+      "body": "eqp_moss_cloak",
+      "feet": "eqp_trail_boots",
+      "back": null,
+      "charm": null
+    },
+    "chestIron": 4,
+    "wood": 9,
+    "crest": 1,
+    "loreIds": [
+      "lore_three_rules",
+      "lore_herbalist_note",
+      "lore_wayfarer_inner_journal",
+      "lore_mire_warden_memory",
+      "lore_runestones"
+    ],
+    "flags": [
+      "boss_hooded_knight_defeated",
+      "boss_mire_warden_defeated",
+      "choice_hooded_knight_resolve",
+      "east_gate_unlocked",
+      "harvested_res_dry_wood",
+      "main_quest_reached:Q02_MEET_NERIS",
+      "main_quest_reached:Q03_PREPARE_RESOURCES",
+      "talked_to_edda",
+      "talked_to_garth",
+      "talked_to_neris"
+    ],
+    "storyFlags": [
+      "choice_hooded_knight_resolve"
+    ],
+    "currentQuestId": "Q03_PREPARE_RESOURCES",
+    "visitedZones": [
+      "bellhollow",
+      "fog_crossing",
+      "outer_woods",
+      "sanctuary_farm"
+    ],
+    "unlockedZones": [
+      "bellhollow",
+      "crooked_path",
+      "fog_crossing",
+      "outer_woods",
+      "sanctuary_farm"
+    ],
+    "campfireLevel": 2,
+    "campfireFuel": 250,
+    "settings": {
+      "masterVolume": 0.45,
+      "musicVolume": 0.35,
+      "sfxVolume": 0.55,
+      "isMuted": false,
+      "screenShakeEnabled": false,
+      "screenFlashEnabled": false,
+      "reducedMotionEnabled": true,
+      "graphicsQuality": "MEDIUM",
+      "panicEffectsEnabled": false,
+      "lightMotionEnabled": true,
+      "panicIntensity": "STANDARD"
+    }
+  },
+  "after_continue": {
+    "isContinueMode": true,
+    "zone": "bellhollow",
+    "x": 820,
+    "y": 260,
+    "hp": 82,
+    "stamina": 81,
+    "composure": 47,
+    "lanternOil": 53,
+    "isLanternOn": true,
+    "playerLanternOn": true,
+    "activeWeapon": "wpn_iron_spear",
+    "equippedSlots": {
+      "body": "eqp_moss_cloak",
+      "feet": "eqp_trail_boots",
+      "back": null,
+      "charm": null
+    },
+    "chestIron": 4,
+    "wood": 9,
+    "crest": 1,
+    "loreIds": [
+      "lore_three_rules",
+      "lore_herbalist_note",
+      "lore_wayfarer_inner_journal",
+      "lore_mire_warden_memory",
+      "lore_runestones"
+    ],
+    "hasHoodedBoss": true,
+    "hasMireBoss": true,
+    "hasGarth": true,
+    "storyFlags": [
+      "choice_hooded_knight_resolve"
+    ],
+    "currentQuestId": "Q03_PREPARE_RESOURCES",
+    "visitedZones": [
+      "bellhollow",
+      "fog_crossing",
+      "outer_woods",
+      "sanctuary_farm"
+    ],
+    "unlockedZones": [
+      "bellhollow",
+      "crooked_path",
+      "fog_crossing",
+      "outer_woods",
+      "sanctuary_farm"
+    ],
+    "campfireLevel": 2,
+    "campfireFuel": 249,
+    "settings": {
+      "masterVolume": 0.45,
+      "musicVolume": 0.35,
+      "sfxVolume": 0.55,
+      "isMuted": false,
+      "screenShakeEnabled": false,
+      "screenFlashEnabled": false,
+      "reducedMotionEnabled": true,
+      "graphicsQuality": "MEDIUM",
+      "panicEffectsEnabled": false,
+      "lightMotionEnabled": true,
+      "panicIntensity": "STANDARD"
+    }
+  },
+  "after_lantern_off_continue": {
+    "stateLantern": false,
+    "playerLantern": false
+  },
+  "after_restart": {
+    "isContinueMode": false,
+    "zone": "fog_crossing",
+    "activeWeapon": "wpn_walking_staff",
+    "campfireLevel": 1,
+    "campfireFuel": 179,
+    "flagsCount": 0,
+    "equippedSlots": {
+      "body": null,
+      "feet": null,
+      "back": null,
+      "charm": null
+    },
+    "currentQuestId": "Q01_MEET_EDDA"
+  },
+  "after_new_game_post_debounce": {
+    "isContinueMode": false,
+    "zone": "fog_crossing",
+    "activeWeapon": "wpn_walking_staff",
+    "campfireLevel": 1,
+    "campfireFuel": 177,
+    "flagsCount": 0,
+    "hasStaleSaveInLocalStorage": false,
+    "settingsIntact": true
+  },
+  "after_legacy_v13": {
+    "zone": "bellhollow",
+    "x": 800,
+    "y": 296,
+    "hp": 86,
+    "isLanternOn": true,
+    "crest": 1,
+    "oldCrest": 0,
+    "wood": 4,
+    "garthFlag": true,
+    "currentQuestId": "Q02_MEET_NERIS",
+    "loreIds": [
+      "lore_three_rules",
+      "lore_runestones"
+    ],
+    "chestHerbs": 3
+  },
+  "assertions": {
+    "continue_zone_pos": true,
+    "continue_stats_close": true,
+    "continue_lantern_on": true,
+    "continue_lantern_off": true,
+    "continue_inventory_equip_chest": true,
+    "continue_quest_boss_npc": true,
+    "continue_zones_campfire": true,
+    "continue_lore_restored": true,
+    "settings_persisted": true,
+    "restart_clean_reset": true,
+    "new_game_clean_and_no_stale_debounce": true,
+    "legacy_v13_compat": true,
+    "zero_runtime_errors": true
+  },
+  "overall_pass": true
+}

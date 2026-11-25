@@ -1,0 +1,78 @@
+{
+  "static": {
+    "verify_zero_404_assets": {
+      "exit": 0,
+      "tail": "\n------------------------------------------------------------------------\nKẾT QUẢ KIỂM TRA: 212 HỢP LỆ, 0 THIẾU (404)\n------------------------------------------------------------------------\n🎉 100% TÀI NGUYÊN ĐỀU TỒN TẠI VẬT LÝ TRONG PUBLIC/ — ĐẠT CHUẨN ZERO 404!\n"
+    },
+    "verify_content_registry": {
+      "exit": 0,
+      "tail": "[ALIAS RESOLUTION] Hợp nhất Trà An Thần / Herbal Tea: PASS (4/4 ALIAS TRỎ ĐÚNG HW-ITM-FOOD-000001)\n[V1.3 COMPATIBILITY] Bảo toàn 10 vật phẩm gốc V1.3: PASS (10/10 ITEMS TỒN TẠI NGUYÊN VẸN)\n\n======================================================================\n   TẤT CẢ CÁC BÀI KIỂM THỬ CONTENT REGISTRY ĐẠT CHUẨN 100%!\n======================================================================"
+    },
+    "mossbound_wayfarer_rar_in_public": true,
+    "mossbound_wayfarer_rar_in_dist": true
+  },
+  "playwright": {
+    "ck1_newgame": {
+      "zone": "fog_crossing",
+      "x": 120,
+      "y": 195,
+      "weapon": "wpn_walking_staff"
+    },
+    "ck2_dialogue": {
+      "opened": true,
+      "talkedGarth": false,
+      "eastGateUnlocked": true
+    },
+    "ck3_craft": {
+      "afterKeyC": false,
+      "isOpenViaApi": true,
+      "beforePoultice": 0,
+      "afterPoultice": 0,
+      "craftedCall": false
+    },
+    "ck4_map": {
+      "openedWithN": true,
+      "afterKeyM": false
+    },
+    "ck5_farm": {
+      "zone": "sanctuary_farm",
+      "x": 683,
+      "y": 750
+    },
+    "ck67_outer_lantern_sanity": {
+      "zone": "outer_woods",
+      "lanternOnAfterF": true,
+      "staminaAfterF": 94,
+      "isPanicVignetteActive": true,
+      "veilDistortionDrawn": false,
+      "sanityCleared": true
+    },
+    "ck8_hooded_knight": {
+      "exists": true,
+      "active": true,
+      "x": 2340,
+      "y": -190,
+      "inDeepForestBounds": true
+    },
+    "ck9_mire_warden": {
+      "isBossFightActive": false,
+      "mireWardenActive": false,
+      "pillarsCount": 0
+    },
+    "ck10_continue_settings": {
+      "isContinueMode": true,
+      "zone": "broken_bell_shrine",
+      "reducedMotion": true,
+      "screenFlash": false
+    },
+    "ck11_ending": {
+      "isEndingActive": true,
+      "currentEndingType": "fog_loop_ending",
+      "flashCallsWithRM": 0,
+      "shakeCallsWithRM": 0
+    },
+    "page_errors": [],
+    "console_errors": [],
+    "http_errors": []
+  }
+}

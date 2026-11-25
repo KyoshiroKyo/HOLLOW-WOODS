@@ -1,0 +1,81 @@
+{
+  "runs": [
+    {
+      "script": "scripts\\test_hw_bug12_hotfix_regression.py",
+      "exit_code": 0,
+      "duration_s": 16.42,
+      "stdout_tail": "[Part D Results Summary]:\n - All Required Audio Cached & Decoded: True (Expected: True)\n - Startup Element Hidden: True (Expected: True)\n - Startup Element Error: False (Expected: False)\n\n[Playwright] Regression data successfully written to Read/V1.5/Reports/HW_BUG_12_REGRESSION_DATA.json\n[Playwright] Final regression screenshot saved to Read/V1.5/Reports/Visuals/hw_bug12_final_regression.png\n\n================ HW-BUG-#12 SUMMARY (Staged integration (locomotion scaling, input routing, combat smoke & loader checks)) ================\nPart D Prelim: True | Part A: True | Part B: True | Part C: True | Part D Details: True\nPageErrors=0, ConsoleErrors=0, FailedRequests=0\nOVERALL RESULT: PASS",
+      "stderr_tail": ""
+    },
+    {
+      "script": "scripts\\test_hw_bug13_camera_stability.py",
+      "exit_code": 1,
+      "duration_s": 50.08,
+      "stdout_tail": "Case A (Fog Crossing <-> Bellhollow):  PASS\nCase B (Bellhollow <-> Farm):          PASS\nCase C (Bellhollow <-> Outer Woods):   PASS\nCase D (Parallel Boundary Walk):       PASS\nCase E (Seam Standing Stability):      PASS\nCase F (Save / Continue At Boundary):  PASS\nPage Errors: 0 | Console Errors: 0\nOVERALL RESULT: FAIL\n\n[Playwright] HW-BUG-#13 Telemetry data written to Read/V1.5/Reports/HW_BUG_13_CAMERA_DATA.json\n\n--- HW-BUG-#13 FINISHED WITH EXIT CODE 1 ---",
+      "stderr_tail": ""
+    },
+    {
+      "script": "scripts\\test_hw_bug14_route_integrity.py",
+      "exit_code": 1,
+      "duration_s": 77.93,
+      "stdout_tail": "Test 1 (Core Bidirectional Routes):     PASS\nTest 2 (Sub-Zone Workshop Portal):      PASS\nTest 3 (Sequential Multi-Zone Circuit): PASS\nTest 4 (Boundary Oscillation Debounce): PASS\nTest 5 (Gated Route Enforcement):       PASS\nTest 6 (Save at Zone B then Continue):  PASS\nPage Errors: 0 | Console Errors: 0\nOVERALL RESULT: FAIL\n\n[Playwright] HW-BUG-#14 Route data written to Read/V1.5/Reports/HW_BUG_14_ROUTES_DATA.json\n\n--- HW-BUG-#14 FINISHED WITH EXIT CODE 1 ---",
+      "stderr_tail": ""
+    },
+    {
+      "script": "scripts\\test_hw_bug15_collision_regression.py",
+      "exit_code": 1,
+      "duration_s": 58.51,
+      "stdout_tail": "Test Type: Integration Test (collider regression across world zones)\nCase A (Fog Crossing & Entrance):       PASS\nCase B (Bellhollow Village Props/NPCs): PASS\nCase C (Bellhollow <-> Farm Fence):     PASS\nCase D (Outer Woods & Campfire):        PASS\nCase E (Valid Routes & Save/Continue):  PASS\nPage Errors: 0 | Console Errors: 0\nOVERALL RESULT: FAIL\n\n[Playwright] HW-BUG-#15 Collision data written to Read/V1.5/Reports/HW_BUG_15_COLLISION_DATA.json\n\n--- HW-BUG-#15 FINISHED WITH EXIT CODE 1 ---",
+      "stderr_tail": ""
+    },
+    {
+      "script": "scripts\\test_hw_bug16_map_rendering.py",
+      "exit_code": 1,
+      "duration_s": 25.19,
+      "stdout_tail": "Bram Smithy Footing Depth:     PASS\nCanopy Transparency Lerp:      PASS\nNo Duplicate Instances:        PASS (Cullables=True, RepeatStable=True)\nDeferred Rendering Idempotent: PASS\nSave/Load Object Match:        PASS\nMissing User Textures:         0 (PASS)\nPage Errors: 0 | Console Errors: 0\nOVERALL RESULT: FAIL\n\nSaved telemetry data to Read/V1.5/Reports/HW_BUG_16_RENDER_DATA.json\n\n--- HW-BUG-#16 FINISHED WITH EXIT CODE 1 ---",
+      "stderr_tail": ""
+    },
+    {
+      "script": "scripts\\test_hw_bug17_world_state_sync.py",
+      "exit_code": 0,
+      "duration_s": 25.34,
+      "stdout_tail": "Test 3: PASS\nTest 4: PASS\nTest 5: PASS\nTest 6: PASS\nTest 7: PASS\nTest 8: PASS\nPage Errors: 0 | Failed Requests: 0\nOVERALL RESULT: PASS\n\nSaved telemetry data to Read/V1.5/Reports/HW_BUG_17_SAVE_DATA.json\n\n--- HW-BUG-17 FINISHED WITH EXIT CODE 0 ---",
+      "stderr_tail": ""
+    },
+    {
+      "script": "scripts\\test_hw_bug18_perf_benchmark.py",
+      "exit_code": 1,
+      "duration_s": 38.63,
+      "stdout_tail": "Frames Sampled:       160 (PASS)\nCamera Culling Time:  0.213 ms/call (PASS)\nCulling Active:       158 calls (PASS)\nZone Ensure Calls:    {'fog_crossing': 6, 'silent_mire': 1, 'bellhollow': 9, 'ancient_rune_puzzle': 1, 'broken_bell_shrine': 1, 'sub_bell_workshop': 1, 'sub_root_cellar': 1, 'sub_whispering_clearing': 1, 'sanctuary_farm': 6, 'outer_woods': 3} calls (PASS)\nAverage FPS (CPU):    8.35 FPS [SwiftShader CPU Software Rasterizer]\nGPU Verification:     GPU NOT VERIFIED (Headless Chromium SwiftShader CPU software rasterizer)\nPage Errors:          0 | Console Errors: 0\nOVERALL RESULT:       FAIL\n\nSaved telemetry data to Read/V1.5/Reports/HW_BUG_18_PERF_DATA.json\n\n--- HW-BUG-#18 FINISHED WITH EXIT CODE 1 ---",
+      "stderr_tail": ""
+    },
+    {
+      "script": "scripts\\test_hw_bug19_progression_playtest.py",
+      "exit_code": 0,
+      "duration_s": 30.89,
+      "stdout_tail": "Console errors: 0\nPage errors: 0\nFailed requests (404): 0\nSTAGE1 PASS: True\nSTAGE2 PASS: True\nSTAGE3 PASS: True\nSTAGE4 PASS: True\nOVERALL RESULT: PASS\n\nSaved playtest telemetry to Read/V1.5/Reports/HW_BUG_19_PLAYTEST_DATA.json\n\n--- HW-BUG-#19 FINISHED WITH EXIT CODE 0 ---",
+      "stderr_tail": ""
+    },
+    {
+      "script": "tests\\hw_bug_26b_walkrun_fix_verification.py",
+      "exit_code": 0,
+      "duration_s": 22.47,
+      "stdout_tail": "  Post-Roll walk: spd=85, isSprinting=False, anim=wayfarer_walk_up\n  Parry: isActionLocked=True, isSprinting=False, anim=wayfarer_parry_up\n  Post-Parry walk: spd=85, isSprinting=False, anim=wayfarer_walk_up\n  [PASS] All combat actions enforce isSprinting=False and return to Walk.\n\n--- [TEST 5] Save Schema 3 & P2Game Integrity ---\n  Save state check: saveSchemaVersion=3, isSprinting=False\n  [PASS] Save Schema 3, zero errors, and game state serialization intact.\n\n=======================================================\n=== HW-BUG-26B: ALL 5 VERIFICATION SUITES PASSED 100% (Staged integration) ===\n=======================================================",
+      "stderr_tail": ""
+    }
+  ],
+  "negative_checks": [
+    {
+      "name": "negative_pageerror_bug12",
+      "expected_nonzero": true,
+      "exit_code": 1,
+      "stdout_tail": "[Playwright] Final regression screenshot saved to C:/Users/Kyoshiro/.gemini/antigravity/brain/dc0f9c86-d78f-43b6-895c-34fe12680156/scratch/neg12.png\n\n================ HW-BUG-#12 SUMMARY (Staged integration (locomotion scaling, input routing, combat smoke & loader checks)) ================\nPart D Prelim: False | Part A: True | Part B: True | Part C: True | Part D Details: False\nPageErrors=1, ConsoleErrors=1, FailedRequests=0\nOVERALL RESULT: FAIL"
+    },
+    {
+      "name": "negative_badge_false_bug19",
+      "expected_nonzero": true,
+      "exit_code": 1,
+      "stdout_tail": "STAGE4 PASS: False\nOVERALL RESULT: FAIL\n\nSaved playtest telemetry to Read/V1.5/Reports/HW_BUG_19_PLAYTEST_DATA.json\n\n--- HW-BUG-#19 FINISHED WITH EXIT CODE 1 ---"
+    }
+  ]
+}

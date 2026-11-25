@@ -75,3 +75,30 @@ Dùng mã trong INDEX R10. Hàng **OPEN** của batch khác giữ ở chủ sở
 | HW-CS21-01 đến HW-CS21-06 (BUG-055 .. BUG-060) | Nghiệm thu Classic Sanity 2.1, Collider Nông Trại, Idle 160ms, và chẩn đoán bàn giao Codex. [Báo cáo](HW_CS21_QA_05_PERFORMANCE_AND_FINAL_REGRESSION_REPORT.md). |
 | LEG-R8-03 và phần frame BUG-032 | Registry CLOSED-VERIFIED local tại 04C-K1. Hoạt ảnh combat và Hurt/Death chuyển K2/K3 theo ma trận. |
 | Các mã LEG-R8 khác | Kế thừa từng trạng thái và owner trong INDEX R10. |
+
+---
+
+## Hydro High V4 — V1.5.4 QA Candidate Status Sync (HW-H4-00 → HW-H4-09)
+
+> Đồng bộ trạng thái nghiệm thu sau kiểm tra `HW-H4-09` (**Release Gate: `CONDITIONAL GO`** — QA Candidate nội bộ; giữ nguyên `FIXED-PENDING-OWNER` cho tới khi Owner playtest thực tế và không tự đóng các mục `PARTIAL` / `OPEN` / `BLOCKED` / `DEFERRED`). Báo cáo chi tiết: [HW_H4_09_FINAL_STABILITY_REPORT.md](HW_H4_09_FINAL_STABILITY_REPORT.md).
+
+| ID | Mức | Trạng thái (`HW-H4-09`) | Tóm tắt kỹ thuật & Bằng chứng |
+| --- | :---: | --- | --- |
+| `BUG-HW-CS21-01` | P2 | `FIXED-PENDING-OWNER` | `EndingSystem.triggerTheFirstTollFinale()` guard qua `SettingsManager` (`HW-H4-01`, tái xác nhận `task-23706`). |
+| `HW-H4-03` (Silent Mire / Crypt / Depths) | P1 | `FIXED-PENDING-OWNER` | Thông hành lang `Crooked Path <-> Silent Mire`, `Rune Puzzle -> Crypt`, `Silent Mire -> Depths`; giữ khóa an toàn khi chưa đủ flag ([HW_H4_03](HW_H4_03_WORLD_COLLISION_REPORT.md)). |
+| `HW-H4-05` (Listener Leak & Y-Depth) | P1 | `FIXED-PENDING-OWNER` | Chặn rò rỉ `+18` scene listeners khi `handleLoadCheckpoint()` và căn Y-depth vạc thuốc / rương đồng ([HW_H4_05](HW_H4_05_RENDER_LIFECYCLE_REPORT.md)). |
+| `HW-H4-06` (WebGL GPU Perf) | P1 | `FIXED-PENDING-OWNER` | UI Texture Baking, Dirty Checking, World Node Culling, Cached Shadows & DepthSort Guard — GTX 1070 Ti D3D11 đạt `59.55–60.05 FPS` VSync / `173.45 FPS` Uncapped ([HW_H4_06](HW_H4_06_PERFORMANCE_REPORT.md)). |
+| `HW-H4-08` (5 Save/Reset/Legacy Defects) | P0/P1 | `FIXED-PENDING-OWNER` | Phục hồi `unlockedLoreIds`, reset vũ khí/lửa trại trong `PlayerState.reset()`, hủy debounced save prod-mode, tương thích V1.3 chest/crest, guard `updateAct0Progression()`, `13/13` E2E + `depletedNodes` + `CLOUD_LOCAL_PRIORITY_PASS` ([HW_H4_08](HW_H4_08_SAVE_AND_TEST_INTEGRITY_REPORT.md)). |
+| `HW-CS21-06` & `#12..#19` Harnesses | P2 | `FIXED-PENDING-OWNER` | Bổ sung `exit code`, `http_errors`, phân loại `ERR_ABORTED` luồng BGM, `staticBodies.size`, negative fail-fast `3/3 exit=1` (`HW-H4-08-R1`). |
+| `H4-NEW-01` (WildlifeSystem Coords) | P0/P1 | `PARTIAL` | Đã sửa `FALLEN_KNIGHT_HABITATS` & `HOODED_KNIGHT_HABITATS` ([HW_H4_07](HW_H4_07_BOSS_PROGRESSION_REPORT.md)); các bảng `SKULL_WOLF`, `SHADOW_*`, `DREAD_HORSEMAN`, `ZONE_HABITATS` vẫn `OPEN`. |
+| `H4-NEW-02` / `OPEN-03` | P0/P2 | `PARTIAL` | Đã chặn Hooded Knight hồi sinh khi có cờ `boss_hooded_knight_defeated`; hủy thoại hậu chiến bằng `ESC` chưa emit `'dialogue_completed'`. |
+| `HOTFIX-B2` | P0/Env | `PARTIAL` (`BLOCKED` env) | Playwright IME packet/blur/watchdog PASS `5/5`; còn chờ test hook vật lý EVKey/UniKey trên Windows thật của Owner. |
+| `H4-NEW-03` / `OPEN-01` | P1 | `OPEN` | Mire Warden cộng đúp `relic_heart_of_roots x2` & gán sớm `clapper_collected`. |
+| `OPEN-02` | P1 | `OPEN` | Nhánh Stage 6 vào `broken_bell_shrine` thiếu `mire_pillars_solved \|\| mire_puzzle_solved` không kích hoạt Mire Warden. |
+| `H4-NEW-04` | P1 | `OPEN` | Phím `[C]` tự mở/đóng ngay `CraftingModal` (`afterKeyC: false`); `[I]` mở `CraftingModal`. |
+| `H4-NEW-05` | P1 | `OPEN` | Xung đột `[M]` (Mute Audio thắng World Map; dùng `[N]` mở map). |
+| `H4-NEW-06` | P1 | `OPEN` | `AudioManager.setupAutoplayUnlock()` gỡ 5 `window` listener thiếu `{ capture: true }`. |
+| `H4-NEW-07` | P1/P2 | `OPEN` | `mossbound_wayfarer.rar` (185.5 KB) còn trong `public/assets/characters/` & lọt vào `dist/`; lệch version `1.5.2`/`1.5.1`/`1.4.0`. |
+| `H4-NEW-08`, `H4-NEW-09`, `HW-H4-03-AUDIT` | P2 | `OPEN` | `MireWardenBoss.triggerSonicRoar()` chưa guard timer; `TheEcho` flash chưa check `SettingsManager`; `to_abyssal_chasm` hụt `2 px` & script V1.4.0 cũ. |
+| `BUG-024`, `BUG-033` | P1/P2 | `BLOCKED` | Hosted P2Game CDN Range 206 (`BUG-024`) và Owner nghiệm thu World Map / 5 expansion zones (`BUG-033`). |
+| `HW-CS21-04` (`BUG-058`), `HW-CS21-05` (`BUG-059`) | P2 | `DEFERRED` | Bảo toàn và giữ riêng cho Codex xử lý Scale Pop & HD Consistency. |

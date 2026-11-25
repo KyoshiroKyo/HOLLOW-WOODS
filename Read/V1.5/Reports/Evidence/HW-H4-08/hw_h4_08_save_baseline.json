@@ -1,0 +1,201 @@
+{
+  "before_save": {
+    "saveOk": true,
+    "zone": "bellhollow",
+    "x": 820,
+    "y": 260,
+    "stats": {
+      "health": 77,
+      "maxHealth": 100,
+      "stamina": 64,
+      "maxStamina": 100,
+      "lanternOil": 53,
+      "maxLanternOil": 100,
+      "composure": 42,
+      "maxComposure": 100,
+      "isLanternOn": true,
+      "isSprinting": false,
+      "isHiding": false,
+      "moisture": 18,
+      "temperature": 61
+    },
+    "activeWeapon": "wpn_iron_spear",
+    "equippedSlots": {
+      "body": "eqp_moss_cloak",
+      "feet": null,
+      "back": null,
+      "charm": "eqp_bell_ward_charm"
+    },
+    "wood": 9,
+    "crest": 1,
+    "loreIds": [
+      "lore_three_rules",
+      "lore_herbalist_note",
+      "lore_wayfarer_inner_journal",
+      "lore_mire_warden_memory"
+    ],
+    "flagsCount": 9,
+    "storyFlags": [
+      "choice_hooded_knight_resolve"
+    ],
+    "currentQuestId": "Q03_PREPARE_RESOURCES",
+    "visitedZones": [
+      "fog_crossing",
+      "bellhollow",
+      "sanctuary_farm",
+      "outer_woods"
+    ],
+    "unlockedZones": [
+      "fog_crossing",
+      "bellhollow",
+      "sanctuary_farm",
+      "outer_woods",
+      "crooked_path"
+    ],
+    "campfireLevel": 2,
+    "campfireFuel": 111,
+    "settings": {
+      "masterVolume": 0.45,
+      "musicVolume": 0.7,
+      "sfxVolume": 0.85,
+      "isMuted": false,
+      "screenShakeEnabled": false,
+      "screenFlashEnabled": false,
+      "reducedMotionEnabled": true,
+      "graphicsQuality": "MEDIUM",
+      "panicEffectsEnabled": true,
+      "lightMotionEnabled": false,
+      "panicIntensity": "STANDARD"
+    }
+  },
+  "after_continue": {
+    "isContinueMode": true,
+    "zone": "bellhollow",
+    "x": 820,
+    "y": 260,
+    "stats": {
+      "health": 77.90002666666663,
+      "maxHealth": 100,
+      "stamina": 67.10509200000004,
+      "maxStamina": 100,
+      "lanternOil": 53,
+      "maxLanternOil": 100,
+      "composure": 42.900026666666705,
+      "maxComposure": 100,
+      "isLanternOn": true,
+      "isSprinting": false,
+      "isHiding": false,
+      "moisture": 15.749933333333319,
+      "temperature": 62.68755
+    },
+    "playerLanternOn": true,
+    "activeWeapon": "wpn_iron_spear",
+    "equippedSlots": {
+      "body": "eqp_moss_cloak",
+      "feet": null,
+      "back": null,
+      "charm": "eqp_bell_ward_charm"
+    },
+    "wood": 9,
+    "crest": 1,
+    "loreIds": [
+      "lore_three_rules"
+    ],
+    "flagsHasBoss": true,
+    "flagsHasGarth": true,
+    "storyFlags": [
+      "choice_hooded_knight_resolve"
+    ],
+    "currentQuestId": "Q01_MEET_EDDA",
+    "visitedZones": [
+      "fog_crossing",
+      "bellhollow",
+      "sanctuary_farm",
+      "outer_woods"
+    ],
+    "unlockedZones": [
+      "fog_crossing",
+      "bellhollow",
+      "sanctuary_farm",
+      "outer_woods",
+      "crooked_path"
+    ],
+    "campfireLevel": 1,
+    "campfireFuel": 110.77499333333334,
+    "settings": {
+      "masterVolume": 0.45,
+      "musicVolume": 0.7,
+      "sfxVolume": 0.85,
+      "isMuted": false,
+      "screenShakeEnabled": false,
+      "screenFlashEnabled": false,
+      "reducedMotionEnabled": true,
+      "graphicsQuality": "MEDIUM",
+      "panicEffectsEnabled": true,
+      "lightMotionEnabled": false,
+      "panicIntensity": "STANDARD"
+    }
+  },
+  "after_new_game": {
+    "isContinueMode": false,
+    "zone": "fog_crossing",
+    "x": 120,
+    "y": 195,
+    "activeWeapon": "wpn_iron_spear",
+    "campfireLevel": 1,
+    "campfireFuel": 110.26630333333334,
+    "loreIds": [
+      "lore_three_rules"
+    ],
+    "equippedSlots": {
+      "body": null,
+      "feet": null,
+      "back": null,
+      "charm": null
+    },
+    "flagsCount": 0,
+    "hasSaveInStorage": false,
+    "settings": {
+      "masterVolume": 0.45,
+      "musicVolume": 0.7,
+      "sfxVolume": 0.85,
+      "isMuted": false,
+      "screenShakeEnabled": false,
+      "screenFlashEnabled": false,
+      "reducedMotionEnabled": true,
+      "graphicsQuality": "MEDIUM",
+      "panicEffectsEnabled": true,
+      "lightMotionEnabled": false,
+      "panicIntensity": "STANDARD"
+    }
+  },
+  "after_legacy_v13": {
+    "zone": "bellhollow",
+    "x": 800,
+    "y": 296,
+    "stats": {
+      "health": 82.56666666666663,
+      "maxHealth": 100,
+      "stamina": 78.95500000000003,
+      "maxStamina": 100,
+      "lanternOil": 55,
+      "maxLanternOil": 100,
+      "composure": 66.56666666666663,
+      "maxComposure": 100,
+      "isLanternOn": true,
+      "isSprinting": false,
+      "isHiding": false,
+      "moisture": 0,
+      "temperature": 81.0625
+    },
+    "crest": 1,
+    "oldCrest": 0,
+    "wood": 4,
+    "garthFlag": true,
+    "loreIds": [
+      "lore_three_rules"
+    ],
+    "chestHerbs": 0
+  },
+  "errors": []
+}
