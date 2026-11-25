@@ -45,9 +45,22 @@ export class InventorySystem {
   private nodes: {
     spec: ResourceNodeSpec;
     visual: Phaser.GameObjects.Container;
+    bobTween?: Phaser.Tweens.Tween;
     available: boolean;
     respawnTimer?: Phaser.Time.TimerEvent;
   }[] = [];
+
+  private static ensureShadowTexture(scene: Phaser.Scene): string {
+    const key = 'hw_world_node_shadow_v1';
+    if (scene.textures && !scene.textures.exists(key)) {
+      const g = scene.make.graphics({ x: 0, y: 0 }, false);
+      g.fillStyle(0x000000, 0.25);
+      g.fillEllipse(8, 4, 12, 4);
+      g.generateTexture(key, 16, 8);
+      g.destroy();
+    }
+    return key;
+  }
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -141,11 +154,12 @@ export class InventorySystem {
 
     const container = this.scene.add.container(spec.x, spec.y);
 
-    // C4-13-06 & V15-12: Bóng đổ mặt đất đen mờ mịn (alpha 0.25) ôm sát vật phẩm
-    const baseGfx = this.scene.add.graphics();
-    baseGfx.fillStyle(0x000000, 0.25);
-    baseGfx.fillEllipse(0, 5, 12, 4);
-    container.add(baseGfx);
+    // C4-13-06 & V15-12: Bóng đổ mặt đất đen mờ mịn (alpha 0.25) dùng shared cached texture thay Graphics rời rạc
+    if (this.scene.textures) {
+      const shadowKey = InventorySystem.ensureShadowTexture(this.scene);
+      const baseShadow = this.scene.add.image(0, 5, shadowKey).setOrigin(0.5, 0.5);
+      container.add(baseShadow);
+    }
 
     let bobTarget: Phaser.GameObjects.GameObject = container;
     if (this.scene.textures && this.scene.textures.exists(spriteKey)) {
@@ -165,9 +179,10 @@ export class InventorySystem {
 
     container.setDepth(spec.y);
 
-    // Hiệu ứng nhấp nhô nhẹ cho icon (giữ bóng mặt đất cố định)
+    // Hiệu ứng nhấp nhô nhẹ cho icon (giữ bóng mặt đất cố định, sẽ pause khi nằm ngoài camera)
+    let bobTween: Phaser.Tweens.Tween | undefined;
     if (this.scene.tweens) {
-      this.scene.tweens.add({
+      bobTween = this.scene.tweens.add({
         targets: bobTarget,
         y: bobTarget === container ? spec.y - 2 : -3,
         duration: 1100,
@@ -177,7 +192,50 @@ export class InventorySystem {
       });
     }
 
-    this.nodes.push({ spec, visual: container, available: true });
+    this.nodes.push({ spec, visual: container, bobTween, available: true });
+  }
+
+  /**
+   * Ẩn toàn bộ node tài nguyên và tạm dừng tween bobbing khi ở ngoài khung nhìn camera (HW-H4-06)
+   */
+  public updateCameraCulling(camera: Phaser.Cameras.Scene2D.Camera, margin: number = 160): void {
+    if (!camera || !camera.worldView) return;
+    const view = camera.worldView;
+    const minX = view.x - margin;
+    const maxX = view.right + margin;
+    const minY = view.y - margin;
+    const maxY = view.bottom + margin;
+
+    for (let i = 0; i < this.nodes.length; i++) {
+      const node = this.nodes[i];
+      if (!node.available || this.playerState.isNodeDepleted(node.spec.id)) {
+        if (node.visual.visible) node.visual.setVisible(false);
+        if (node.visual.active) node.visual.setActive(false);
+        if (node.bobTween && node.bobTween.isPlaying()) node.bobTween.pause();
+        continue;
+      }
+
+      const isInside = (
+        node.spec.x >= minX &&
+        node.spec.x <= maxX &&
+        node.spec.y >= minY &&
+        node.spec.y <= maxY
+      );
+
+      if (node.visual.visible !== isInside) {
+        node.visual.setVisible(isInside);
+      }
+      if (node.visual.active !== isInside) {
+        node.visual.setActive(isInside);
+      }
+      if (node.bobTween) {
+        if (isInside && node.bobTween.isPaused()) {
+          node.bobTween.resume();
+        } else if (!isInside && !node.bobTween.isPaused()) {
+          node.bobTween.pause();
+        }
+      }
+    }
   }
 
   /**

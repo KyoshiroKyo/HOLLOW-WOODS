@@ -18,16 +18,22 @@ import { CraftingSystem, CraftingRecipe } from '../systems/CraftingSystem';
 import { PlayerState } from '../state/PlayerState';
 import { AudioManager } from '../audio/AudioManager';
 import { HDTextHelper } from '../utils/HDTextHelper';
+import {
+  HUDIconGenerator,
+  UI_TEX_QC_SLOT_HOVER,
+  UI_TEX_QC_SLOT_IDLE,
+  UI_TEX_QC_SLOT_READY
+} from '../utils/HUDIconGenerator';
 import itemsData from '../data/items.json';
 import { ItemIconHelper } from '../utils/ItemIconHelper';
 
 export interface PinnedRecipeSlot {
   container: Phaser.GameObjects.Container;
-  bg: Phaser.GameObjects.Graphics;
+  bg: Phaser.GameObjects.Image;
   slotImg?: Phaser.GameObjects.Image;
   icon: Phaser.GameObjects.Text;
   iconImg?: Phaser.GameObjects.Image;
-  readyDot: Phaser.GameObjects.Graphics;
+  readyDot: Phaser.GameObjects.Image;
   zone: Phaser.GameObjects.Zone;
 }
 
@@ -91,10 +97,31 @@ export class QuickCraftSidebar {
     });
   }
 
+  private static ensureBakedTex(
+    scene: Phaser.Scene,
+    key: string,
+    w: number,
+    h: number,
+    draw: (g: Phaser.GameObjects.Graphics) => void
+  ): string {
+    if (!scene.textures.exists(key)) {
+      const g = scene.make.graphics({ x: 0, y: 0 }, false);
+      draw(g);
+      g.generateTexture(key, w, h);
+      g.destroy();
+      if (scene.textures.exists(key)) {
+        scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
+      }
+    }
+    return key;
+  }
+
   /**
    * Khởi tạo giao diện Thanh Ghim Nhanh và Thẻ Nổi Flyout Card
    */
   private create(): void {
+    HUDIconGenerator.generateUIFrameTextures(this.scene);
+
     // 1. Container chính tại x: 37, y: 502 (liền mạch dưới cụm nút hệ thống kết thúc tại y: 394)
     this.container = this.scene.add.container(37, 502);
     this.container.setDepth(8000);
@@ -102,32 +129,53 @@ export class QuickCraftSidebar {
     const barW = QuickCraftSidebar.BAR_WIDTH;
     const barH = 196;
 
-    // Nẹp liên kết gỗ chạm khắc phía trên (Carved Wood Header Link at y = -barH/2 - 5)
-    const headerDivider = this.scene.add.graphics();
-    headerDivider.fillStyle(0x2d1e12, 0.95);
-    headerDivider.fillRoundedRect(-barW / 2 + 2, -barH / 2 - 12, barW - 4, 10, 2);
-    headerDivider.lineStyle(1.2, 0x5c4224, 0.9);
-    headerDivider.strokeRoundedRect(-barW / 2 + 2, -barH / 2 - 12, barW - 4, 10, 2);
-    headerDivider.fillStyle(0xd4af37, 0.95);
-    headerDivider.fillCircle(0, -barH / 2 - 7, 2.5);
-    this.container.add(headerDivider);
+    // Nẹp liên kết gỗ + Nền cột gỗ tối viền đồng được cache thành 1 texture Image duy nhất
+    const frameW = barW + 6;
+    const frameH = barH + 18; // chứa cả headerDivider từ -barH/2 - 12 đến +barH/2
+    const frameTexKey = QuickCraftSidebar.ensureBakedTex(
+      this.scene,
+      'ui_hw_qc_frame_v1',
+      frameW,
+      frameH,
+      (g) => {
+        const cx = frameW / 2;
+        const barCenterY = 15 + barH / 2; // chừa 15px phía trên cho headerDivider
+        // Header divider
+        g.fillStyle(0x2d1e12, 0.95);
+        g.fillRoundedRect(cx - barW / 2 + 2, barCenterY - barH / 2 - 12, barW - 4, 10, 2);
+        g.lineStyle(1.2, 0x5c4224, 0.9);
+        g.strokeRoundedRect(cx - barW / 2 + 2, barCenterY - barH / 2 - 12, barW - 4, 10, 2);
+        g.fillStyle(0xd4af37, 0.95);
+        g.fillCircle(cx, barCenterY - barH / 2 - 7, 2.5);
+        // Main column bg
+        g.fillStyle(0x140e09, 0.94);
+        g.fillRoundedRect(cx - barW / 2, barCenterY - barH / 2, barW, barH, 6);
+        g.lineStyle(1.5, 0x5c4224, 0.9);
+        g.strokeRoundedRect(cx - barW / 2, barCenterY - barH / 2, barW, barH, 6);
+        g.lineStyle(1, 0x8c6d3b, 0.35);
+        g.strokeRoundedRect(cx - barW / 2 + 1.5, barCenterY - barH / 2 + 1.5, barW - 3, barH - 3, 5);
+        g.fillStyle(0xb89058, 0.9);
+        g.fillRect(cx - barW / 2 + 3, barCenterY - barH / 2 + 3, 2, 2);
+        g.fillRect(cx + barW / 2 - 5, barCenterY - barH / 2 + 3, 2, 2);
+        g.fillRect(cx - barW / 2 + 3, barCenterY + barH / 2 - 5, 2, 2);
+        g.fillRect(cx + barW / 2 - 5, barCenterY + barH / 2 - 5, 2, 2);
+      }
+    );
+    const frameImg = this.scene.add.image(0, frameH / 2 - (15 + barH / 2), frameTexKey);
+    this.container.add(frameImg);
 
-    // Nền cột gỗ tối viền đồng nẹp đinh
-    const bg = this.scene.add.graphics();
-    bg.fillStyle(0x140e09, 0.94);
-    bg.fillRoundedRect(-barW / 2, -barH / 2, barW, barH, 6);
-    bg.lineStyle(1.5, 0x5c4224, 0.9);
-    bg.strokeRoundedRect(-barW / 2, -barH / 2, barW, barH, 6);
-    bg.lineStyle(1, 0x8c6d3b, 0.35);
-    bg.strokeRoundedRect(-barW / 2 + 1.5, -barH / 2 + 1.5, barW - 3, barH - 3, 5);
-
-    // 4 đinh tán đồng góc
-    bg.fillStyle(0xb89058, 0.9);
-    bg.fillRect(-barW / 2 + 3, -barH / 2 + 3, 2, 2);
-    bg.fillRect(barW / 2 - 5, -barH / 2 + 3, 2, 2);
-    bg.fillRect(-barW / 2 + 3, barH / 2 - 5, 2, 2);
-    bg.fillRect(barW / 2 - 5, barH / 2 - 5, 2, 2);
-    this.container.add(bg);
+    const readyDotTexKey = QuickCraftSidebar.ensureBakedTex(
+      this.scene,
+      'ui_hw_qc_ready_dot_v1',
+      10,
+      10,
+      (g) => {
+        g.fillStyle(0x2ecc71, 1.0);
+        g.fillCircle(5, 5, 3);
+        g.lineStyle(1, 0x140e09, 0.9);
+        g.strokeCircle(5, 5, 3);
+      }
+    );
 
     // 2. Nút cuộn Lên [▲]
     this.upBtn = this.createScrollButton(0, -barH / 2 + 11, '▲', () => this.scrollUp());
@@ -149,9 +197,8 @@ export class QuickCraftSidebar {
         slotContainer.add(slotImg);
       }
 
-      const slotBg = this.scene.add.graphics();
-      // Nền ô gỗ viền giấy da sáng
-      this.drawSlotBg(slotBg, false, false);
+      const slotBg = this.scene.add.image(0, 0, UI_TEX_QC_SLOT_IDLE);
+      slotBg.setDisplaySize(slotSize, slotSize);
       slotContainer.add(slotBg);
 
       // Icon thành phẩm Pixel Art (BUG-025)
@@ -166,7 +213,8 @@ export class QuickCraftSidebar {
       slotContainer.add(iconText);
 
       // Chấm báo sẵn sàng chế tạo (Ready Status Dot) ở góc trên phải
-      const readyDot = this.scene.add.graphics();
+      const readyDot = this.scene.add.image(slotSize / 2 - 4, -slotSize / 2 + 4, readyDotTexKey);
+      readyDot.setVisible(false);
       slotContainer.add(readyDot);
 
       // Vùng tương tác chuột
@@ -250,35 +298,12 @@ export class QuickCraftSidebar {
   }
 
   /**
-   * Vẽ nền ô công thức ghim (V15-FIX-08: Tối ưu bộ đệm trạng thái chống vẽ lặp vô ích)
+   * Vẽ nền ô công thức ghim (dùng texture cache Image thay vì Graphics)
    */
-  private drawSlotBg(g: Phaser.GameObjects.Graphics, hover: boolean, canCraft: boolean): void {
-    const stateKey = `${hover}_${canCraft}`;
-    if ((g as any)._cachedSlotState === stateKey) {
-      return;
-    }
-    (g as any)._cachedSlotState = stateKey;
-    const size = QuickCraftSidebar.SLOT_SIZE;
-    g.clear();
-
-    if (hover) {
-      g.fillStyle(0x2d1f14, 0.98);
-      g.fillRoundedRect(-size / 2, -size / 2, size, size, 4);
-      g.lineStyle(1.8, 0xf39c12, 1.0);
-      g.strokeRoundedRect(-size / 2, -size / 2, size, size, 4);
-      // Nền giấy da sáng bên trong
-      g.fillStyle(0xf7f0dd, 0.98);
-      g.fillRoundedRect(-size / 2 + 2, -size / 2 + 2, size - 4, size - 4, 3);
-    } else {
-      g.fillStyle(0x18110b, 0.92);
-      g.fillRoundedRect(-size / 2, -size / 2, size, size, 4);
-      g.lineStyle(1.2, canCraft ? 0x2ecc71 : 0x5c4224, canCraft ? 0.9 : 0.85);
-      g.strokeRoundedRect(-size / 2, -size / 2, size, size, 4);
-      // Nền giấy da sáng ấm bên trong
-      g.fillStyle(canCraft ? 0xeadecc : 0xdfd3b6, 0.92);
-      g.fillRoundedRect(-size / 2 + 2, -size / 2 + 2, size - 4, size - 4, 3);
-      g.lineStyle(0.8, 0x8c7853, 0.35);
-      g.strokeRoundedRect(-size / 2 + 2, -size / 2 + 2, size - 4, size - 4, 3);
+  private drawSlotBg(img: Phaser.GameObjects.Image, hover: boolean, canCraft: boolean): void {
+    const texKey = hover ? UI_TEX_QC_SLOT_HOVER : (canCraft ? UI_TEX_QC_SLOT_READY : UI_TEX_QC_SLOT_IDLE);
+    if (img.texture?.key !== texKey) {
+      img.setTexture(texKey);
     }
   }
 
@@ -287,18 +312,24 @@ export class QuickCraftSidebar {
    */
   private createScrollButton(x: number, y: number, label: string, onClick: () => void): Phaser.GameObjects.Container {
     const c = this.scene.add.container(x, y);
-    const bg = this.scene.add.graphics();
     const btnW = 32;
     const btnH = 14;
+    const pad = 2;
 
-    const drawBtn = (hover: boolean) => {
-      bg.clear();
-      bg.fillStyle(hover ? 0x3d2b1a : 0x1d140d, 0.95);
-      bg.fillRoundedRect(-btnW / 2, -btnH / 2, btnW, btnH, 3);
-      bg.lineStyle(1, hover ? 0xf1c40f : 0x5c4224, 0.9);
-      bg.strokeRoundedRect(-btnW / 2, -btnH / 2, btnW, btnH, 3);
-    };
-    drawBtn(false);
+    const idleKey = QuickCraftSidebar.ensureBakedTex(this.scene, 'ui_hw_qc_scroll_idle_v1', btnW + pad * 2, btnH + pad * 2, (g) => {
+      g.fillStyle(0x1d140d, 0.95);
+      g.fillRoundedRect(pad, pad, btnW, btnH, 3);
+      g.lineStyle(1, 0x5c4224, 0.9);
+      g.strokeRoundedRect(pad, pad, btnW, btnH, 3);
+    });
+    const hoverKey = QuickCraftSidebar.ensureBakedTex(this.scene, 'ui_hw_qc_scroll_hover_v1', btnW + pad * 2, btnH + pad * 2, (g) => {
+      g.fillStyle(0x3d2b1a, 0.95);
+      g.fillRoundedRect(pad, pad, btnW, btnH, 3);
+      g.lineStyle(1, 0xf1c40f, 0.9);
+      g.strokeRoundedRect(pad, pad, btnW, btnH, 3);
+    });
+
+    const bg = this.scene.add.image(0, 0, idleKey);
 
     const txt = HDTextHelper.createText(this.scene, 0, 0, label, {
       fontSize: '8px',
@@ -308,11 +339,11 @@ export class QuickCraftSidebar {
 
     const zone = this.scene.add.zone(0, 0, btnW, btnH).setInteractive({ useHandCursor: true });
     zone.on('pointerover', () => {
-      drawBtn(true);
+      bg.setTexture(hoverKey);
       txt.setColor('#f1c40f');
     });
     zone.on('pointerout', () => {
-      drawBtn(false);
+      bg.setTexture(idleKey);
       txt.setColor('#baa892');
     });
     zone.on('pointerdown', () => {
@@ -351,12 +382,8 @@ export class QuickCraftSidebar {
           this.drawSlotBg(slot.bg, false, canCraft);
 
           // Chấm báo sẵn sàng màu xanh ngọc / vàng sáng
-          slot.readyDot.clear();
-          if (canCraft) {
-            slot.readyDot.fillStyle(0x2ecc71, 1.0);
-            slot.readyDot.fillCircle(QuickCraftSidebar.SLOT_SIZE / 2 - 4, -QuickCraftSidebar.SLOT_SIZE / 2 + 4, 3);
-            slot.readyDot.lineStyle(1, 0x140e09, 0.9);
-            slot.readyDot.strokeCircle(QuickCraftSidebar.SLOT_SIZE / 2 - 4, -QuickCraftSidebar.SLOT_SIZE / 2 + 4, 3);
+          if (slot.readyDot.visible !== canCraft) {
+            slot.readyDot.setVisible(canCraft);
           }
         } else {
           slot.container.setVisible(false);

@@ -1016,6 +1016,7 @@ export class GameScene extends Phaser.Scene {
 
     // C4-12-29: Cập nhật culling ngay khi khởi tạo xong thế giới
     this.worldBuilder.updateCameraCulling(this.cameras.main);
+    this.updateEntityCameraCulling();
 
     // 14. Xử lý mở đầu Act 0 hoặc hiển thị tiếp tục
     // V152-00: Đảm bảo camera chính luôn được resetFX và fadeIn rõ ràng sau khi khởi tạo xong, không bao giờ kẹt lớp phủ đen
@@ -6711,6 +6712,11 @@ export class GameScene extends Phaser.Scene {
         if (flare.flameGfx && flare.flameGfx.visible !== isInside) flare.flameGfx.setVisible(isInside);
         if (flare.glowGfx && flare.glowGfx.visible !== isInside) flare.glowGfx.setVisible(isInside);
       }
+    }
+
+    // 4. Tạm ẩn hiển thị & tạm dừng tween của node tài nguyên ngoài khung nhìn camera
+    if (this.inventorySystem) {
+      this.inventorySystem.updateCameraCulling(cam, margin);
     }
   }
 

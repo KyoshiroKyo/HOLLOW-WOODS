@@ -178,7 +178,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
   private _wasMoving: boolean = false;
 
   // Lớp hiển thị đồ họa trực quan của chiếc đèn lồng hổ phách (C4-12-07 Lantern Overlay)
-  private lanternOverlayGfx: Phaser.GameObjects.Graphics | null = null;
+  private lanternOverlayImg: Phaser.GameObjects.Image | null = null;
   private footShadowGfx: Phaser.GameObjects.Graphics | null = null;
   private lastLanternToggleTime: number = 0;
 
@@ -234,9 +234,23 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     this.syncFootShadow();
     scene.events.on(Phaser.Scenes.Events.POST_UPDATE, this.syncFootShadow, this);
 
-    // Khởi tạo lớp đồ họa đèn lồng trực quan gắn trên nhân vật
-    this.lanternOverlayGfx = scene.add.graphics();
-    this.lanternOverlayGfx.setDepth(this.depth + 1);
+    // Khởi tạo lớp đồ họa đèn lồng trực quan gắn trên nhân vật (cached texture -> zero per-frame clear/fillCircle)
+    const lanternTexKey = 'hw_lantern_aura_soft_v1';
+    if (!scene.textures.exists(lanternTexKey)) {
+      const g = scene.make.graphics({ x: 0, y: 0 }, false);
+      g.fillStyle(0xf39c12, 0.02);
+      g.fillCircle(66, 66, 64);
+      g.fillStyle(0xf1c40f, 0.038);
+      g.fillCircle(66, 66, 44);
+      g.fillStyle(0xffe082, 0.065);
+      g.fillCircle(66, 66, 26);
+      g.generateTexture(lanternTexKey, 132, 132);
+      g.destroy();
+    }
+    this.lanternOverlayImg = scene.add.image(x, y - 10, lanternTexKey);
+    this.lanternOverlayImg.setOrigin(0.5, 0.5);
+    this.lanternOverlayImg.setDepth(this.depth - 1);
+    this.lanternOverlayImg.setVisible(false);
 
     // Hoạt ảnh mặc định ban đầu: The Mossbound Wayfarer đứng thở nhẹ hướng DOWN
     const defaultAnim = this.scene.anims.exists('wayfarer_idle_down') ? 'wayfarer_idle_down' : 'satyr_idle_down';
@@ -1111,8 +1125,14 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     // Arcade applies movement to the sprite in the scene's post-update.
     if (this.footShadowGfx) {
       this.footShadowGfx.setPosition(this.x, this.y);
-      this.footShadowGfx.setDepth(this.depth - 1);
-      this.footShadowGfx.setVisible(this.visible && !this.stats.isHiding && !this._isDead);
+      const targetShadowDepth = this.depth - 1;
+      if (this.footShadowGfx.depth !== targetShadowDepth) {
+        this.footShadowGfx.setDepth(targetShadowDepth);
+      }
+      const shouldBeVisible = this.visible && !this.stats.isHiding && !this._isDead;
+      if (this.footShadowGfx.visible !== shouldBeVisible) {
+        this.footShadowGfx.setVisible(shouldBeVisible);
+      }
     }
   }
 
@@ -2325,36 +2345,31 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
    * - Trạng thái BẬT (ON): Đốm lửa sống động bập bùng và quầng sáng hổ phách đồng tâm chính xác trên đầu gậy.
    */
   public updateLanternVisual(): void {
-    if (!this.lanternOverlayGfx) return;
+    if (!this.lanternOverlayImg) return;
 
     // V15-54: Tự động tắt và xóa quầng sáng nếu không bật, Thể Lực < 5, nhân vật đã chết hoặc đang ẩn nấp
     if (!this.stats.isLanternOn || this.stats.stamina < 5 || this._isDead || this.stats.isHiding) {
-      this.lanternOverlayGfx.clear();
+      if (this.lanternOverlayImg.visible) {
+        this.lanternOverlayImg.setVisible(false);
+      }
       return;
     }
 
     const lx = Math.round(this.x);
     const ly = Math.round(this.y - 10);
 
-    // V15-54: Xóa bỏ hoàn toàn sprite đèn lồng cầm tay và khối hình tròn đặc đè lên người nhân vật.
-    // Thay thế bằng Vòng Sáng Ấm Dịu (Soft Radial Warm Aura) — tán sáng mờ dần đều, không viền cứng.
-    this.lanternOverlayGfx.clear();
-    this.lanternOverlayGfx.setDepth(this.depth - 1); // Đặt dịu nhẹ phía dưới / quanh người
+    // V15-54: Quầng sáng Vòng Sáng Ấm Dịu dựng từ texture cache sẵn (zero clear/fillCircle mỗi frame)
+    if (!this.lanternOverlayImg.visible) {
+      this.lanternOverlayImg.setVisible(true);
+    }
+    this.lanternOverlayImg.setPosition(lx, ly);
+    const targetOverlayDepth = this.depth - 1;
+    if (this.lanternOverlayImg.depth !== targetOverlayDepth) {
+      this.lanternOverlayImg.setDepth(targetOverlayDepth); // Chỉ gọi setDepth khi đổi tầng Y để tránh ép sort cả DisplayList
+    }
 
     const time = this.scene.time ? this.scene.time.now : performance.now();
-    const flicker = Math.sin(time * 0.005) * 0.015;
-
-    // Lớp 1: Tán sáng ngoài cùng (bán kính 64px, alpha 0.02)
-    this.lanternOverlayGfx.fillStyle(0xf39c12, Math.max(0.01, 0.02 + flicker));
-    this.lanternOverlayGfx.fillCircle(lx, ly, 64);
-
-    // Lớp 2: Quầng sáng trung gian (bán kính 44px, alpha 0.038)
-    this.lanternOverlayGfx.fillStyle(0xf1c40f, Math.max(0.015, 0.038 + flicker));
-    this.lanternOverlayGfx.fillCircle(lx, ly, 44);
-
-    // Lớp 3: Hào quang ấm áp cốt lõi (bán kính 26px, alpha 0.065)
-    this.lanternOverlayGfx.fillStyle(0xffe082, Math.max(0.025, 0.065 + flicker));
-    this.lanternOverlayGfx.fillCircle(lx, ly, 26);
+    this.lanternOverlayImg.setAlpha(0.88 + Math.sin(time * 0.005) * 0.12);
   }
 
   public destroy(fromScene?: boolean): void {
@@ -2364,9 +2379,9 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     if (this.scene && this.scene.input) {
       this.scene.input.off('pointerdown', this.boundPointerDown);
     }
-    if (this.lanternOverlayGfx) {
-      this.lanternOverlayGfx.destroy();
-      this.lanternOverlayGfx = null;
+    if (this.lanternOverlayImg) {
+      this.lanternOverlayImg.destroy();
+      this.lanternOverlayImg = null;
     }
     if (this.footShadowGfx) {
       this.footShadowGfx.destroy();
