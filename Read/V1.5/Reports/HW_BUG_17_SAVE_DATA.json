@@ -1,6 +1,6 @@
 {
   "summary": {
-    "test_type": "Integration Test (world state sync, save/continue & quest gating)",
+    "test_type": "Staged integration (world state sync, save/continue & quest gating)",
     "test1_fog_save_continue": {
       "pass": true,
       "status": "PASS"
@@ -202,6 +202,8 @@
           "bellhollow"
         ],
         "flagsCount": 0,
+        "clearedOldFlag": true,
+        "activeWeapon": "wpn_walking_staff",
         "isMapOpen": false,
         "resetZoneMatch": true,
         "resetPosMatch": true

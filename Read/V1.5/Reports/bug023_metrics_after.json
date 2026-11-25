@@ -9,26 +9,26 @@
       "x": 1200,
       "y": 600
     },
-    "comp": 35.150079999999996,
+    "comp": 35.245175,
     "warmth": false,
     "phase": "DAY"
   },
   "test_2_outer_woods_day_comp15": {
-    "comp": 15.160089999999999,
+    "comp": 15.285229999999999,
     "vignetteActive": true,
     "heartbeatActive": true,
-    "bpm": 135,
+    "bpm": 134,
     "phase": "DAY"
   },
   "test_3_outer_woods_night_comp35": {
-    "comp": 34.51361599999999,
+    "comp": 34.576646,
     "vignetteActive": true,
     "heartbeatActive": true,
     "bpm": 96,
     "phase": "NIGHT"
   },
   "test_4_outer_woods_night_comp15": {
-    "comp": 14.735802,
+    "comp": 14.414508,
     "vignetteActive": true,
     "heartbeatActive": true,
     "bpm": 135,
@@ -68,15 +68,15 @@
       "zone": "outer_woods",
       "x": 1200,
       "y": 600,
-      "comp": 15.485415,
+      "comp": 15.24521,
       "isNearWarmth": false,
       "activeBefore": true
     },
     "midDiag": {
-      "compMid": 50.31277,
+      "compMid": 50.290245,
       "hbActiveAfter": false,
       "isMonsterChasingNearby": false,
-      "distToListener": 1100.7460513724936,
+      "distToListener": 1095.2072968588511,
       "isWildlifeMonsterNear": false,
       "isAct5ChaseActive": false,
       "isSafeZoneOrCampfire": false,
@@ -84,9 +84,9 @@
     },
     "activeBefore": true,
     "tweenStateMid": {
-      "hasTween": true,
-      "isPlaying": true,
-      "progress": 0
+      "hasTween": false,
+      "isPlaying": null,
+      "progress": null
     },
     "hbActiveAfter": false,
     "activeAfter": false,
@@ -101,12 +101,12 @@
     "pause_closed": true
   },
   "test_11_fow_breathing": {
-    "mean": 134.65890722341882,
-    "minR": 132.2536698,
-    "maxR": 138.79271833996754,
-    "maxStepDelta": 0.37896121460886434,
+    "mean": 137.38413591000005,
+    "minR": 131.96465415,
+    "maxR": 142.90518375000002,
+    "maxStepDelta": 0.4045387500000288,
     "erraticJumps": 0,
-    "amplitudeRatio": 0.048560089152649116,
+    "amplitudeRatio": 0.07963459192382392,
     "samplesCount": 30
   },
   "test_12_no_duplicate_vignette": {
@@ -116,11 +116,10 @@
     "hasRedDangerGraphics": true
   },
   "test_13_no_duplicate_popups": {
-    "totalPopups": 2,
+    "totalPopups": 1,
     "fractureCount": 1,
     "popups": [
-      "\u26a0\ufe0f T\u00e2m tr\u00ed \u0111ang r\u1ea1n n\u1ee9t... H\u00e3y t\u00ecm \u00e1nh l\u1eeda ngay!",
-      "\u2699\ufe0f T\u1ef0 \u0110\u1ed8NG T\u1ed0I \u01afU \u0110\u1ed2 H\u1eccA [LOW]: \u0110\u00e3 k\u00edch ho\u1ea1t b\u1ed9 \u0111\u1ec7m \u00e1nh s\u00e1ng 0.35x \u0111\u1ec3 \u1ed5n \u0111\u1ecbnh 60 FPS!"
+      "\u26a0\ufe0f T\u00e2m tr\u00ed \u0111ang r\u1ea1n n\u1ee9t... H\u00e3y t\u00ecm \u00e1nh l\u1eeda ngay!"
     ]
   },
   "test_14_camera_safety": {
@@ -130,7 +129,7 @@
     "realShakesWhenOff": 1
   },
   "test_15_fow_performance": {
-    "redrawCount": 3,
+    "redrawCount": 2,
     "avgTimeMs": 0
   }
 }

@@ -54,7 +54,13 @@ pw = None
 browser = None
 try:
     pw = sync_playwright().start()
-    chrome_path = "C:/Program Files/Google/Chrome/Application/chrome.exe"
+    browser_candidates = [
+        "C:/Program Files/Google/Chrome/Application/chrome.exe",
+        "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe",
+        "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+        "C:/Program Files/Microsoft/Edge/Application/msedge.exe",
+    ]
+    chrome_path = next((p for p in browser_candidates if os.path.exists(p)), None)
     browser = pw.chromium.launch(
         executable_path=chrome_path,
         headless=True,
@@ -392,7 +398,7 @@ try:
             playerStateZone: gs.playerState.getCurrentZone(),
             posX: Math.round(gs.player.x),
             posY: Math.round(gs.player.y),
-            isStuck: false
+            isStuck: !(gs.currentZoneId === 'bellhollow' && gs.player.y <= 540)
         };
     }""")
     print(f"Stage 3 Return to Bellhollow: {st3_return}")
@@ -402,7 +408,8 @@ try:
         st3_farm['hasVisitedFarm'] and
         (not st3_farm['isInsideCollider']) and
         plot_interact['plotFound'] and
-        st3_return['zone'] == 'bellhollow'
+        st3_return['zone'] == 'bellhollow' and
+        (not st3_return['isStuck'])
     )
     stages_results['stage3'] = {
         'pass': stage3_pass,
@@ -541,7 +548,8 @@ try:
         vaelen_interact['dialogueTriggered'] and
         sub_workshop['zone'] == 'sub_bell_workshop' and
         sub_return['zone'] == 'outer_woods' and
-        map_route['activeZone'] == 'outer_woods'
+        map_route['activeZone'] == 'outer_woods' and
+        map_route['badgeFound']
     )
     stages_results['stage4'] = {
         'pass': stage4_pass,
@@ -557,17 +565,18 @@ try:
     # SUMMARY & TELEMETRY EXPORT
     # =========================================================================
     all_stages_pass = all(stages_results.get(st, {}).get('pass', False) for st in ['stage1', 'stage2', 'stage3', 'stage4'])
-    no_fatal_errors = (len(page_errors) == 0)
+    local_failed_requests = [r for r in failed_requests if 'p2game' not in r]
+    no_fatal_errors = (len(page_errors) == 0 and len(console_errors) == 0 and len(local_failed_requests) == 0)
     overall_pass = all_stages_pass and no_fatal_errors
 
     summary_report = {
         'overall_pass': overall_pass,
-        'test_type': "Integration Test (checkpoint staging between progression milestones)",
+        'test_type': "Staged integration (checkpoint staging between progression milestones)",
         'all_stages_pass': all_stages_pass,
         'stages': stages_results,
         'console_errors': console_errors,
         'page_errors': page_errors,
-        'failed_requests': failed_requests
+        'failed_requests': local_failed_requests
     }
 
     print("\n================ HW-BUG-#19 PLAYTEST RESULTS ================")

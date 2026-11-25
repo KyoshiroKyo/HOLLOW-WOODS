@@ -52,7 +52,13 @@ pw = None
 browser = None
 try:
     pw = sync_playwright().start()
-    chrome_path = "C:/Program Files/Google/Chrome/Application/chrome.exe"
+    browser_candidates = [
+        "C:/Program Files/Google/Chrome/Application/chrome.exe",
+        "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe",
+        "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+        "C:/Program Files/Microsoft/Edge/Application/msedge.exe",
+    ]
+    chrome_path = next((p for p in browser_candidates if os.path.exists(p)), None)
     browser = pw.chromium.launch(
         executable_path=chrome_path,
         headless=True,
@@ -452,6 +458,8 @@ try:
             posY: Math.round(gs.player.y),
             visitedZones: ps.getVisitedZones(),
             flagsCount: ps.flags.size,
+            clearedOldFlag: !ps.hasFlag('farm_cleared') && !ps.hasFlag('entered_sanctuary_farm'),
+            activeWeapon: ps.getActiveWeapon(),
             isMapOpen: gs.uiScene.getParchmentWorldMapModal().isOpen,
             resetZoneMatch: gs.currentZoneId === 'fog_crossing',
             resetPosMatch: gs.player.x >= 110 && gs.player.x <= 130 && gs.player.y >= 185 && gs.player.y <= 205
@@ -459,7 +467,15 @@ try:
     }""")
     print(f"Test 6 After Restart: {t6_after}")
     results['test6'] = {
-        'pass': t6_after['resetZoneMatch'] and t6_after['resetPosMatch'] and (not t6_after['isMapOpen']),
+        'pass': (
+            t6_after['resetZoneMatch'] and
+            t6_after['resetPosMatch'] and
+            (not t6_after['isMapOpen']) and
+            t6_after['clearedOldFlag'] and
+            t6_after['flagsCount'] == 0 and
+            set(t6_after['visitedZones']) == {'fog_crossing', 'bellhollow'} and
+            t6_after['activeWeapon'] == 'wpn_walking_staff'
+        ),
         'data': t6_after
     }
 
@@ -548,12 +564,13 @@ try:
 
     # Evaluate criteria
     all_tests_pass = all(results.get(f'test{i}', {}).get('pass') for i in range(1, 9))
-    no_fatal_errors = (len(page_errors) == 0)
+    local_failed_requests = [r for r in failed_requests if 'p2game' not in r]
+    no_fatal_errors = (len(page_errors) == 0 and len(console_errors) == 0 and len(local_failed_requests) == 0)
 
     overall_pass = (all_tests_pass and no_fatal_errors)
 
     summary = {
-        'test_type': 'Integration Test (world state sync, save/continue & quest gating)',
+        'test_type': 'Staged integration (world state sync, save/continue & quest gating)',
         'test1_fog_save_continue': {'pass': results['test1']['pass'], 'status': 'PASS' if results['test1']['pass'] else 'FAIL'},
         'test2_bellhollow_save_continue': {'pass': results['test2']['pass'], 'status': 'PASS' if results['test2']['pass'] else 'FAIL'},
         'test3_farm_save_continue': {'pass': results['test3']['pass'], 'status': 'PASS' if results['test3']['pass'] else 'FAIL'},
@@ -563,6 +580,8 @@ try:
         'test7_rapid_map_toggle': {'pass': results['test7']['pass'], 'status': 'PASS' if results['test7']['pass'] else 'FAIL'},
         'test8_dynamic_tracked_quest': {'pass': results['test8']['pass'], 'status': 'PASS' if results['test8']['pass'] else 'FAIL'},
         'page_errors_count': len(page_errors),
+        'console_errors_count': len(console_errors),
+        'failed_requests_count': len(local_failed_requests),
         'console_errors_count': len(console_errors),
         'failed_requests_count': len(failed_requests),
         'overall_pass': overall_pass,

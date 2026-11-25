@@ -52,7 +52,13 @@ pw = None
 browser = None
 try:
     pw = sync_playwright().start()
-    chrome_path = "C:/Program Files/Google/Chrome/Application/chrome.exe"
+    browser_candidates = [
+        "C:/Program Files/Google/Chrome/Application/chrome.exe",
+        "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe",
+        "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+        "C:/Program Files/Microsoft/Edge/Application/msedge.exe",
+    ]
+    chrome_path = next((p for p in browser_candidates if os.path.exists(p)), None)
     browser = pw.chromium.launch(
         executable_path=chrome_path,
         headless=True,
@@ -67,13 +73,58 @@ try:
     context = browser.new_context(viewport={'width': 1280, 'height': 720})
     page = context.new_page()
 
+    test_t0 = time.time()
+    bgm_stream_paths = (
+        "/assets/audio/bgm/knights_quiet_fire.mp3",
+        "/assets/audio/bgm/embervale.mp3",
+        "/assets/audio/bgm/beyond_the_hills.mp3",
+        "/assets/audio/bgm/evergrove.mp3",
+        "/assets/audio/bgm/forgotten_orchard.mp3",
+    )
     console_errors = []
     page_errors = []
     failed_requests = []
+    aborted_media_requests = []
+    http_errors = []
 
     page.on("console", lambda msg: console_errors.append(msg.text) if msg.type == "error" else None)
     page.on("pageerror", lambda err: page_errors.append(str(err)))
-    page.on("requestfailed", lambda req: failed_requests.append(f"{req.method} {req.url} - {req.failure}"))
+    def _on_request_failed(req):
+        if "p2game" in req.url:
+            return
+        rtype = getattr(req, "resource_type", "unknown")
+        failure_str = str(req.failure)
+        ts_iso = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        elapsed = round(time.time() - test_t0, 3)
+        if rtype == "media" and "ERR_ABORTED" in failure_str and any(p in req.url for p in bgm_stream_paths):
+            aborted_media_requests.append({
+                "url": req.url,
+                "method": req.method,
+                "resource_type": rtype,
+                "failure": failure_str,
+                "timestamp_iso": ts_iso,
+                "elapsed_s": elapsed,
+                "reason": "Intentional HTMLAudioElement BGM stream cancellation on zone switch or page reload/close (AudioManager.stopBGM lifecycle)",
+            })
+        else:
+            failed_requests.append({
+                "url": req.url,
+                "method": req.method,
+                "resource_type": rtype,
+                "failure": failure_str,
+                "timestamp_iso": ts_iso,
+                "elapsed_s": elapsed,
+                "reason": "Unexpected request failure",
+            })
+    page.on("requestfailed", _on_request_failed)
+    page.on("response", lambda resp: http_errors.append({
+        "status": resp.status,
+        "method": resp.request.method,
+        "url": resp.url,
+        "resource_type": getattr(resp.request, "resource_type", "unknown"),
+        "timestamp_iso": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "elapsed_s": round(time.time() - test_t0, 3),
+    }) if (resp.status >= 400 and "p2game" not in resp.url) else None)
 
     print(f"[Playwright] Loading game from http://127.0.0.1:{PORT}/?dev=1 ...")
     start_load_time = time.time()
@@ -553,20 +604,25 @@ try:
     # 1. Cullables must never duplicate (exact match 741 == 741)
     # 2. Total scene instances must be completely stable on repeat returns (1187 == 1187)
     # 3. Transient delta between initial (1185) and return (1187) is verified as 2 transient particles, not a leak.
-    cullables_preserved = bool(zone_instances.get('returnBellhollowCullable') == zone_instances.get('initialCullable') and
-                               zone_instances.get('secondReturnCullable') == zone_instances.get('initialCullable'))
+    initial_cullable = zone_instances.get('initialCullable', 0)
+    cullables_preserved = bool(
+        initial_cullable > 0 and
+        zone_instances.get('returnBellhollowCullable') == initial_cullable and
+        zone_instances.get('secondReturnCullable') == initial_cullable
+    )
     repeat_stable = bool(zone_instances.get('returnBellhollowTotal') == zone_instances.get('secondReturnTotal'))
     no_dup_pass = cullables_preserved and repeat_stable
 
     deferred_pass = bool(deferred_test.get('idempotent'))
     lifecycle_pass = bool(lifecycle_test.get('match'))
     texture_pass = bool(texture_check.get('missingUserCount') == 0)
-    no_fatal_errors = (len(page_errors) == 0)
+    local_failed_requests = [r for r in failed_requests if 'p2game' not in r.get('url', '')]
+    no_fatal_errors = (len(page_errors) == 0 and len(console_errors) == 0 and len(local_failed_requests) == 0 and len(http_errors) == 0)
 
     overall_pass = (zoom_pass and edda_pass and bram_pass and canopy_pass and no_dup_pass and deferred_pass and lifecycle_pass and texture_pass and no_fatal_errors)
 
     summary = {
-        'test_type': 'Integration Test (map rendering, culling and Y-sorting depth)',
+        'test_type': 'Staged integration (map rendering, culling and Y-sorting depth)',
         'frustum_zoom_scaling': {'pass': zoom_pass, 'status': 'PASS' if zoom_pass else 'FAIL'},
         'edda_house_depth': {'pass': edda_pass, 'status': 'PASS' if edda_pass else 'FAIL'},
         'bram_smithy_depth': {'pass': bram_pass, 'status': 'PASS' if bram_pass else 'FAIL'},
@@ -577,9 +633,15 @@ try:
         'texture_integrity': {'pass': texture_pass, 'status': 'PASS' if texture_pass else 'FAIL'},
         'page_errors_count': len(page_errors),
         'console_errors_count': len(console_errors),
+        'failed_requests_count': len(local_failed_requests),
+        'http_errors_count': len(http_errors),
+        'aborted_audio_requests_count': len(aborted_media_requests),
         'overall_pass': overall_pass,
         'final_status': 'PASS' if overall_pass else 'FAIL'
     }
+    report_data['failed_requests'] = local_failed_requests
+    report_data['aborted_audio_requests'] = aborted_media_requests
+    report_data['http_errors'] = http_errors
     report_data['summary'] = summary
 
     print("\n================ HW-BUG-#16 VERIFICATION SUMMARY ================")
@@ -592,7 +654,7 @@ try:
     print(f"Deferred Rendering Idempotent: {'PASS' if deferred_pass else 'FAIL'}")
     print(f"Save/Load Object Match:        {'PASS' if lifecycle_pass else 'FAIL'}")
     print(f"Missing User Textures:         {texture_check['missingUserCount']} ({'PASS' if texture_pass else 'FAIL'})")
-    print(f"Page Errors: {len(page_errors)} | Console Errors: {len(console_errors)}")
+    print(f"Page Errors: {len(page_errors)} | Console Errors: {len(console_errors)} | Failed Requests: {len(local_failed_requests)} | HTTP Errors: {len(http_errors)} | Aborted Audio Transitions: {len(aborted_media_requests)}")
     print(f"OVERALL RESULT: {'PASS' if overall_pass else 'FAIL'}")
 
     exit_code = 0 if overall_pass else 1

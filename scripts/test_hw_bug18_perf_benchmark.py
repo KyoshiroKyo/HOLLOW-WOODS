@@ -52,7 +52,13 @@ pw = None
 browser = None
 try:
     pw = sync_playwright().start()
-    chrome_path = "C:/Program Files/Google/Chrome/Application/chrome.exe"
+    browser_candidates = [
+        "C:/Program Files/Google/Chrome/Application/chrome.exe",
+        "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe",
+        "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+        "C:/Program Files/Microsoft/Edge/Application/msedge.exe",
+    ]
+    chrome_path = next((p for p in browser_candidates if os.path.exists(p)), None)
     browser = pw.chromium.launch(
         executable_path=chrome_path,
         headless=True,
@@ -68,13 +74,58 @@ try:
     context = browser.new_context(viewport={'width': 1280, 'height': 720})
     page = context.new_page()
 
+    test_t0 = time.time()
+    bgm_stream_paths = (
+        "/assets/audio/bgm/knights_quiet_fire.mp3",
+        "/assets/audio/bgm/embervale.mp3",
+        "/assets/audio/bgm/beyond_the_hills.mp3",
+        "/assets/audio/bgm/evergrove.mp3",
+        "/assets/audio/bgm/forgotten_orchard.mp3",
+    )
     console_errors = []
     page_errors = []
     failed_requests = []
+    aborted_media_requests = []
+    http_errors = []
 
     page.on("console", lambda msg: console_errors.append(msg.text) if msg.type == "error" else None)
     page.on("pageerror", lambda err: page_errors.append(str(err)))
-    page.on("requestfailed", lambda req: failed_requests.append(f"{req.method} {req.url} - {req.failure}"))
+    def _on_request_failed(req):
+        if "p2game" in req.url:
+            return
+        rtype = getattr(req, "resource_type", "unknown")
+        failure_str = str(req.failure)
+        ts_iso = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        elapsed = round(time.time() - test_t0, 3)
+        if rtype == "media" and "ERR_ABORTED" in failure_str and any(p in req.url for p in bgm_stream_paths):
+            aborted_media_requests.append({
+                "url": req.url,
+                "method": req.method,
+                "resource_type": rtype,
+                "failure": failure_str,
+                "timestamp_iso": ts_iso,
+                "elapsed_s": elapsed,
+                "reason": "Intentional HTMLAudioElement BGM stream cancellation on zone switch or page reload/close (AudioManager.stopBGM lifecycle)",
+            })
+        else:
+            failed_requests.append({
+                "url": req.url,
+                "method": req.method,
+                "resource_type": rtype,
+                "failure": failure_str,
+                "timestamp_iso": ts_iso,
+                "elapsed_s": elapsed,
+                "reason": "Unexpected request failure",
+            })
+    page.on("requestfailed", _on_request_failed)
+    page.on("response", lambda resp: http_errors.append({
+        "status": resp.status,
+        "method": resp.request.method,
+        "url": resp.url,
+        "resource_type": getattr(resp.request, "resource_type", "unknown"),
+        "timestamp_iso": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "elapsed_s": round(time.time() - test_t0, 3),
+    }) if (resp.status >= 400 and "p2game" not in resp.url) else None)
 
     print(f"[Playwright] Loading game from http://127.0.0.1:{PORT}/?dev=1 ...")
     start_load_time = time.time()
@@ -278,16 +329,17 @@ try:
         ensure_zone_active = bool(len(ez_calls) > 0 and sum(ez_calls.values()) > 0)
     else:
         ensure_zone_active = bool(ez_calls > 0)
-    no_fatal_errors = bool(len(page_errors) == 0)
+    local_failed_requests = [r for r in failed_requests if 'p2game' not in r.get('url', '')]
+    no_fatal_errors = bool(len(page_errors) == 0 and len(console_errors) == 0 and len(local_failed_requests) == 0 and len(http_errors) == 0)
 
     # Note: Environment is SwiftShader CPU rasterizer, so 60 FPS target applies only to hardware GPU
-    gpu_status = "GPU NOT VERIFIED (Headless Chrome SwiftShader CPU software rasterizer)"
-    fps_status = "ENVIRONMENT_CONSTRAINED (SwiftShader CPU software rasterizer ~6-8 FPS; 60 FPS target applies to hardware GPU)"
+    gpu_status = "GPU NOT VERIFIED (Headless Chromium SwiftShader CPU software rasterizer)"
+    fps_status = "ENVIRONMENT_CONSTRAINED (SwiftShader CPU software rasterizer; 60 FPS target applies to hardware GPU)"
 
     overall_pass = (frames_sampled_ok and culling_active and culling_fast and ensure_zone_active and no_fatal_errors)
 
     summary = {
-        'test_type': 'Performance Benchmark Profiling (SwiftShader CPU Environment)',
+        'test_type': 'Staged integration (performance benchmark profiling under SwiftShader)',
         'frames_sampled_ok': {'pass': frames_sampled_ok, 'count': count, 'status': 'PASS' if frames_sampled_ok else 'FAIL'},
         'culling_overhead_ok': {'pass': culling_fast, 'avg_ms': avg_culling_ms, 'status': 'PASS' if culling_fast else 'FAIL'},
         'culling_active': {'pass': culling_active, 'calls': culling_calls, 'status': 'PASS' if culling_active else 'FAIL'},
@@ -296,6 +348,9 @@ try:
         'fps_environment_status': fps_status,
         'page_errors_count': len(page_errors),
         'console_errors_count': len(console_errors),
+        'failed_requests_count': len(local_failed_requests),
+        'http_errors_count': len(http_errors),
+        'aborted_audio_requests_count': len(aborted_media_requests),
         'overall_pass': overall_pass,
         'final_status': 'PASS' if overall_pass else 'FAIL'
     }
@@ -321,7 +376,9 @@ try:
         'round_snapshots': round_snapshots,
         'console_errors': console_errors,
         'page_errors': page_errors,
-        'failed_requests': failed_requests,
+        'failed_requests': local_failed_requests,
+        'http_errors': http_errors,
+        'aborted_audio_requests': aborted_media_requests,
         'gpu_status': gpu_status
     }
 
@@ -333,7 +390,7 @@ try:
     print(f"Zone Ensure Calls:    {metrics['ensureZoneCalls']} calls ({'PASS' if ensure_zone_active else 'FAIL'})")
     print(f"Average FPS (CPU):    {avg_fps:.2f} FPS [SwiftShader CPU Software Rasterizer]")
     print(f"GPU Verification:     {gpu_status}")
-    print(f"Page Errors:          {len(page_errors)} | Console Errors: {len(console_errors)}")
+    print(f"Page Errors:          {len(page_errors)} | Console Errors: {len(console_errors)} | Failed Requests: {len(local_failed_requests)} | HTTP Errors: {len(http_errors)} | Aborted Audio Transitions: {len(aborted_media_requests)}")
     print(f"OVERALL RESULT:       {'PASS' if overall_pass else 'FAIL'}")
 
     exit_code = 0 if overall_pass else 1

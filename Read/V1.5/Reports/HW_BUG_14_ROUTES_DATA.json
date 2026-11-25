@@ -10,11 +10,11 @@
     "exited": true,
     "workshopPos": [
       1360,
-      1129.8
+      1153.8
     ],
     "returnPos": [
       1360,
-      946
+      964.4
     ]
   },
   "test3_circuit": {
@@ -70,10 +70,11 @@
     "posMatch": true,
     "zoneMatch": true,
     "followOk": true,
+    "boundsContainPlayer": true,
     "pass": true
   },
   "summary": {
-    "test_type": "Integration Test (with stage_player checkpoints)",
+    "test_type": "Staged integration (route & transition integrity with stage_player checkpoints)",
     "test1_core_routes": {
       "pass": true,
       "status": "PASS"
@@ -100,9 +101,70 @@
     },
     "page_errors_count": 0,
     "console_errors_count": 0,
+    "failed_requests_count": 0,
+    "http_errors_count": 0,
+    "aborted_audio_requests_count": 6,
     "overall_pass": true,
     "final_status": "PASS"
   },
   "pageErrors": [],
-  "consoleErrors": []
+  "consoleErrors": [],
+  "failedRequests": [],
+  "httpErrors": [],
+  "abortedAudioRequests": [
+    {
+      "url": "http://127.0.0.1:27963/assets/audio/bgm/beyond_the_hills.mp3",
+      "method": "GET",
+      "resource_type": "media",
+      "failure": "net::ERR_ABORTED",
+      "timestamp_iso": "2026-11-25T15:38:12Z",
+      "elapsed_s": 29.041,
+      "reason": "Intentional HTMLAudioElement BGM stream cancellation on zone switch or page reload/close (AudioManager.stopBGM lifecycle)"
+    },
+    {
+      "url": "http://127.0.0.1:27963/assets/audio/bgm/beyond_the_hills.mp3",
+      "method": "GET",
+      "resource_type": "media",
+      "failure": "net::ERR_ABORTED",
+      "timestamp_iso": "2026-11-25T15:38:17Z",
+      "elapsed_s": 34.28,
+      "reason": "Intentional HTMLAudioElement BGM stream cancellation on zone switch or page reload/close (AudioManager.stopBGM lifecycle)"
+    },
+    {
+      "url": "http://127.0.0.1:27963/assets/audio/bgm/beyond_the_hills.mp3",
+      "method": "GET",
+      "resource_type": "media",
+      "failure": "net::ERR_ABORTED",
+      "timestamp_iso": "2026-11-25T15:38:20Z",
+      "elapsed_s": 37.136,
+      "reason": "Intentional HTMLAudioElement BGM stream cancellation on zone switch or page reload/close (AudioManager.stopBGM lifecycle)"
+    },
+    {
+      "url": "http://127.0.0.1:27963/assets/audio/bgm/forgotten_orchard.mp3",
+      "method": "GET",
+      "resource_type": "media",
+      "failure": "net::ERR_ABORTED",
+      "timestamp_iso": "2026-11-25T15:38:22Z",
+      "elapsed_s": 39.579,
+      "reason": "Intentional HTMLAudioElement BGM stream cancellation on zone switch or page reload/close (AudioManager.stopBGM lifecycle)"
+    },
+    {
+      "url": "http://127.0.0.1:27963/assets/audio/bgm/beyond_the_hills.mp3",
+      "method": "GET",
+      "resource_type": "media",
+      "failure": "net::ERR_ABORTED",
+      "timestamp_iso": "2026-11-25T15:38:24Z",
+      "elapsed_s": 41.216,
+      "reason": "Intentional HTMLAudioElement BGM stream cancellation on zone switch or page reload/close (AudioManager.stopBGM lifecycle)"
+    },
+    {
+      "url": "http://127.0.0.1:27963/assets/audio/bgm/beyond_the_hills.mp3",
+      "method": "GET",
+      "resource_type": "media",
+      "failure": "net::ERR_ABORTED",
+      "timestamp_iso": "2026-11-25T15:38:33Z",
+      "elapsed_s": 49.89,
+      "reason": "Intentional HTMLAudioElement BGM stream cancellation on zone switch or page reload/close (AudioManager.stopBGM lifecycle)"
+    }
+  ]
 }

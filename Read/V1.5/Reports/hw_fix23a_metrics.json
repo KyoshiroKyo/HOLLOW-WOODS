@@ -1,9 +1,9 @@
 {
   "test_1_high_rm_off": {
     "isRM": false,
-    "deltaScale": 0.006571437805656721,
-    "minScale": 0.9966462409396515,
-    "maxScale": 1.0032176787453082,
+    "deltaScale": 0.006906082888467058,
+    "minScale": 0.9961128704843605,
+    "maxScale": 1.0030189533728275,
     "sampleCount": 25
   },
   "test_2_high_rm_on": {
@@ -15,16 +15,16 @@
     "isVisible": true,
     "sampleCount": 25,
     "diag": {
-      "firstRadius": 240.26595,
-      "lastRadius": 246.5781967426079,
-      "firstScale": 1.69312411640625,
-      "lastScale": 1.7376057301705652,
+      "firstRadius": 238.978,
+      "lastRadius": 245.43612144441124,
+      "firstScale": 1.68404809375,
+      "lastScale": 1.7295576683035856,
       "breathingSetting": true
     }
   },
   "test_3_medium_rm_off": {
     "isRM": false,
-    "deltaScale": 0.006947673667341503
+    "deltaScale": 0.007056625445063469
   },
   "test_4_medium_rm_on": {
     "isRM": true,
@@ -49,7 +49,7 @@
   "test_7_composure_outer_woods": {
     "vigActive35": true,
     "hbActive35": true,
-    "bpm35": 95,
+    "bpm35": 94,
     "delta35": 0,
     "vigActive15": true,
     "hbActive15": true,
@@ -62,7 +62,7 @@
     "hbActive": false
   },
   "test_9_bat_attack_flicker": {
-    "deltaA": 19.054673304071997,
+    "deltaA": 11.54879248782251,
     "deltaB": 0,
     "timerInitial": 2500,
     "timerAfter": 2151.400000000002,
@@ -80,12 +80,12 @@
   },
   "test_12_transition_and_fps": {
     "delta1": 0,
-    "delta2": 0.00575583680094327,
+    "delta2": 0.006542725246013625,
     "delta3": 0,
-    "frameTimeOn": 147.23999999994413,
-    "frameTimeOff": 147.95,
-    "fpsOn": 6.791632708505701,
-    "fpsOff": 6.7590402162892875,
-    "frameRatio": 0.9952010814460571
+    "frameTimeOn": 132.75999999996276,
+    "frameTimeOff": 120.75,
+    "fpsOn": 7.532389273879787,
+    "fpsOff": 8.281573498964804,
+    "frameRatio": 1.0994616977222589
   }
 }

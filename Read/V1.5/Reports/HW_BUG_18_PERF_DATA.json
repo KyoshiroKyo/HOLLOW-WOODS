@@ -1,90 +1,119 @@
 {
   "summary": {
-    "test_type": "Performance Benchmark Profiling (SwiftShader CPU Environment)",
+    "test_type": "Staged integration (performance benchmark profiling under SwiftShader)",
     "frames_sampled_ok": {
       "pass": true,
-      "count": 160,
+      "count": 170,
       "status": "PASS"
     },
     "culling_overhead_ok": {
       "pass": true,
-      "avg_ms": 0.1962500000372529,
+      "avg_ms": 0.22616279055905897,
       "status": "PASS"
     },
     "culling_active": {
       "pass": true,
-      "calls": 160,
+      "calls": 172,
       "status": "PASS"
     },
     "zone_rendering_active": {
       "pass": true,
       "status": "PASS"
     },
-    "gpu_status": "GPU NOT VERIFIED (Headless Chrome SwiftShader CPU software rasterizer)",
-    "fps_environment_status": "ENVIRONMENT_CONSTRAINED (SwiftShader CPU software rasterizer ~6-8 FPS; 60 FPS target applies to hardware GPU)",
+    "gpu_status": "GPU NOT VERIFIED (Headless Chromium SwiftShader CPU software rasterizer)",
+    "fps_environment_status": "ENVIRONMENT_CONSTRAINED (SwiftShader CPU software rasterizer; 60 FPS target applies to hardware GPU)",
     "page_errors_count": 0,
     "console_errors_count": 0,
+    "failed_requests_count": 0,
+    "http_errors_count": 0,
+    "aborted_audio_requests_count": 3,
     "overall_pass": true,
     "final_status": "PASS"
   },
-  "total_frames": 160,
-  "avg_fps": 8.48,
-  "avg_frame_time_ms": 117.91,
+  "total_frames": 170,
+  "avg_fps": 8.76,
+  "avg_frame_time_ms": 114.11,
   "p50_ms": 116.7,
-  "p95_ms": 166.9,
-  "p99_ms": 350.3,
-  "max_frame_time_ms": 400.3,
-  "spikes_count_gt_50ms": 154,
-  "spikes_percentage": 96.25,
+  "p95_ms": 150.2,
+  "p99_ms": 333.6,
+  "max_frame_time_ms": 383.7,
+  "spikes_count_gt_50ms": 166,
+  "spikes_percentage": 97.65,
   "culling": {
-    "calls": 160,
-    "total_ms": 31.4,
-    "avg_ms_per_call": 0.196
+    "calls": 172,
+    "total_ms": 38.9,
+    "avg_ms_per_call": 0.226
   },
   "zone_rendering": {
     "fog_crossing": 6,
-    "bellhollow": 9,
     "silent_mire": 1,
+    "bellhollow": 9,
     "ancient_rune_puzzle": 1,
     "broken_bell_shrine": 1,
     "sub_bell_workshop": 1,
     "sub_root_cellar": 1,
-    "sanctuary_farm": 6,
     "sub_whispering_clearing": 1,
+    "sanctuary_farm": 6,
     "outer_woods": 3
   },
   "round_snapshots": [
     {
-      "gameObjects": 1179,
+      "gameObjects": 1194,
+      "physicsBodies": 8,
+      "tweens": 133,
+      "timers": 0,
+      "heapUsed": 258601321,
+      "heapTotal": 283993181
+    },
+    {
+      "gameObjects": 1194,
       "physicsBodies": 8,
       "tweens": 132,
       "timers": 0,
-      "heapUsed": 248599298,
-      "heapTotal": 283552026
+      "heapUsed": 256109346,
+      "heapTotal": 284817822
     },
     {
-      "gameObjects": 1179,
+      "gameObjects": 1194,
       "physicsBodies": 8,
-      "tweens": 131,
+      "tweens": 133,
       "timers": 0,
-      "heapUsed": 250834184,
-      "heapTotal": 284115416
-    },
-    {
-      "gameObjects": 1179,
-      "physicsBodies": 8,
-      "tweens": 132,
-      "timers": 0,
-      "heapUsed": 249975830,
-      "heapTotal": 284678638
+      "heapUsed": 256540311,
+      "heapTotal": 284855951
     }
   ],
   "console_errors": [],
   "page_errors": [],
-  "failed_requests": [
-    "GET http://127.0.0.1:34179/assets/audio/bgm/knights_quiet_fire.mp3 - net::ERR_ABORTED",
-    "GET http://127.0.0.1:34179/assets/audio/bgm/knights_quiet_fire.mp3 - net::ERR_ABORTED",
-    "GET http://127.0.0.1:34179/assets/audio/bgm/knights_quiet_fire.mp3 - net::ERR_ABORTED"
+  "failed_requests": [],
+  "http_errors": [],
+  "aborted_audio_requests": [
+    {
+      "url": "http://127.0.0.1:28734/assets/audio/bgm/knights_quiet_fire.mp3",
+      "method": "GET",
+      "resource_type": "media",
+      "failure": "net::ERR_ABORTED",
+      "timestamp_iso": "2026-11-25T15:40:40Z",
+      "elapsed_s": 20.779,
+      "reason": "Intentional HTMLAudioElement BGM stream cancellation on zone switch or page reload/close (AudioManager.stopBGM lifecycle)"
+    },
+    {
+      "url": "http://127.0.0.1:28734/assets/audio/bgm/knights_quiet_fire.mp3",
+      "method": "GET",
+      "resource_type": "media",
+      "failure": "net::ERR_ABORTED",
+      "timestamp_iso": "2026-11-25T15:40:45Z",
+      "elapsed_s": 26.482,
+      "reason": "Intentional HTMLAudioElement BGM stream cancellation on zone switch or page reload/close (AudioManager.stopBGM lifecycle)"
+    },
+    {
+      "url": "http://127.0.0.1:28734/assets/audio/bgm/knights_quiet_fire.mp3",
+      "method": "GET",
+      "resource_type": "media",
+      "failure": "net::ERR_ABORTED",
+      "timestamp_iso": "2026-11-25T15:40:53Z",
+      "elapsed_s": 33.876,
+      "reason": "Intentional HTMLAudioElement BGM stream cancellation on zone switch or page reload/close (AudioManager.stopBGM lifecycle)"
+    }
   ],
-  "gpu_status": "GPU NOT VERIFIED (Headless Chrome SwiftShader CPU software rasterizer)"
+  "gpu_status": "GPU NOT VERIFIED (Headless Chromium SwiftShader CPU software rasterizer)"
 }

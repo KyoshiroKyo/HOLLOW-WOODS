@@ -1,15 +1,12 @@
 {
   "console_errors": [],
   "page_errors": [],
-  "failed_requests": [
-    "GET http://127.0.0.1:33447/assets/audio/bgm/beyond_the_hills.mp3 - net::ERR_ABORTED",
-    "GET http://127.0.0.1:33447/assets/audio/bgm/forgotten_orchard.mp3 - net::ERR_ABORTED"
-  ],
+  "failed_requests": [],
   "culling_stats_default": {
     "zoom": 2.2,
-    "total": 736,
+    "total": 747,
     "visible": 170,
-    "culled": 566,
+    "culled": 577,
     "worldView": {
       "x": 509.0909090909091,
       "y": 96.36363636363637,
@@ -19,9 +16,9 @@
   },
   "culling_stats_zoom20": {
     "zoom": 2,
-    "total": 736,
-    "visible": 179,
-    "culled": 557,
+    "total": 747,
+    "visible": 180,
+    "culled": 567,
     "worldView": {
       "x": 480,
       "y": 80,
@@ -31,9 +28,9 @@
   },
   "culling_stats_zoom25": {
     "zoom": 2.5,
-    "total": 736,
+    "total": 747,
     "visible": 159,
-    "culled": 577,
+    "culled": 588,
     "worldView": {
       "x": 544,
       "y": 116,
@@ -65,8 +62,8 @@
     "transparencyWorking": true
   },
   "zone_instances": {
-    "initialTotal": 1180,
-    "initialCullable": 736,
+    "initialTotal": 1194,
+    "initialCullable": 747,
     "renderedZonesStart": [
       "fog_crossing",
       "bellhollow",
@@ -81,10 +78,10 @@
       "sub_root_cellar",
       "sub_whispering_clearing"
     ],
-    "returnBellhollowTotal": 1182,
-    "returnBellhollowCullable": 736,
-    "secondReturnTotal": 1182,
-    "secondReturnCullable": 736,
+    "returnBellhollowTotal": 1196,
+    "returnBellhollowCullable": 747,
+    "secondReturnTotal": 1196,
+    "secondReturnCullable": 747,
     "cullablesPreserved": true,
     "repeatReturnStable": true,
     "transientParticleDelta": 2,
@@ -121,22 +118,43 @@
       "sub_whispering_clearing"
     ],
     "isSubWorkshopRendered": true,
-    "cullableAfter": 736,
-    "cullableAfterSecond": 736,
+    "cullableAfter": 747,
+    "cullableAfterSecond": 747,
     "idempotent": true
   },
   "lifecycle_test": {
-    "cullableBefore": 736,
-    "cullableAfterLoad": 736,
+    "cullableBefore": 747,
+    "cullableAfterLoad": 747,
     "match": true
   },
   "texture_check": {
-    "totalTextures": 490,
+    "totalTextures": 531,
     "missingUserCount": 0,
     "missingUserKeys": []
   },
+  "aborted_audio_requests": [
+    {
+      "url": "http://127.0.0.1:28496/assets/audio/bgm/beyond_the_hills.mp3",
+      "method": "GET",
+      "resource_type": "media",
+      "failure": "net::ERR_ABORTED",
+      "timestamp_iso": "2026-11-25T15:40:14Z",
+      "elapsed_s": 20.274,
+      "reason": "Intentional HTMLAudioElement BGM stream cancellation on zone switch or page reload/close (AudioManager.stopBGM lifecycle)"
+    },
+    {
+      "url": "http://127.0.0.1:28496/assets/audio/bgm/forgotten_orchard.mp3",
+      "method": "GET",
+      "resource_type": "media",
+      "failure": "net::ERR_ABORTED",
+      "timestamp_iso": "2026-11-25T15:40:16Z",
+      "elapsed_s": 22.485,
+      "reason": "Intentional HTMLAudioElement BGM stream cancellation on zone switch or page reload/close (AudioManager.stopBGM lifecycle)"
+    }
+  ],
+  "http_errors": [],
   "summary": {
-    "test_type": "Integration Test (map rendering, culling and Y-sorting depth)",
+    "test_type": "Staged integration (map rendering, culling and Y-sorting depth)",
     "frustum_zoom_scaling": {
       "pass": true,
       "status": "PASS"
@@ -173,6 +191,9 @@
     },
     "page_errors_count": 0,
     "console_errors_count": 0,
+    "failed_requests_count": 0,
+    "http_errors_count": 0,
+    "aborted_audio_requests_count": 2,
     "overall_pass": true,
     "final_status": "PASS"
   }

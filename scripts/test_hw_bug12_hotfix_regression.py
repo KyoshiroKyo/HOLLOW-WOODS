@@ -3,12 +3,20 @@ import os
 import time
 import threading
 import json
+import socket
+import traceback
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-PORT = 5263
+def get_free_port():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(('127.0.0.1', 0))
+        return s.getsockname()[1]
+
+PORT = get_free_port()
 DIST_DIR = Path(__file__).resolve().parents[1] / 'dist'
+httpd = None
 
 class Handler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
@@ -17,11 +25,9 @@ class Handler(SimpleHTTPRequestHandler):
         pass
 
 def run_server():
-    try:
-        httpd = HTTPServer(('127.0.0.1', PORT), Handler)
-        httpd.serve_forever()
-    except Exception as e:
-        pass
+    global httpd
+    httpd = HTTPServer(('127.0.0.1', PORT), Handler)
+    httpd.serve_forever()
 
 server_thread = threading.Thread(target=run_server, daemon=True)
 server_thread.start()
@@ -29,9 +35,20 @@ print(f"[Server] Serving dist at http://127.0.0.1:{PORT}")
 
 os.makedirs('Read/V1.5/Reports/Visuals', exist_ok=True)
 results = {}
+overall_pass = False
+exit_code = 1
+pw = None
+browser = None
 
-with sync_playwright() as pw:
-    chrome_path = "C:/Program Files/Google/Chrome/Application/chrome.exe"
+try:
+    pw = sync_playwright().start()
+    browser_candidates = [
+        "C:/Program Files/Google/Chrome/Application/chrome.exe",
+        "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe",
+        "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+        "C:/Program Files/Microsoft/Edge/Application/msedge.exe",
+    ]
+    chrome_path = next((p for p in browser_candidates if os.path.exists(p)), None)
     browser = pw.chromium.launch(
         executable_path=chrome_path,
         headless=True,
@@ -47,7 +64,11 @@ with sync_playwright() as pw:
     page = context.new_page()
 
     console_errors = []
+    page_errors = []
+    failed_requests = []
     page.on("console", lambda msg: console_errors.append(msg.text) if msg.type == "error" else None)
+    page.on("pageerror", lambda err: page_errors.append(str(err)))
+    page.on("requestfailed", lambda req: failed_requests.append(f"{req.method} {req.url} - {req.failure}") if "p2game" not in req.url else None)
 
     print(f"[Playwright] Loading game from http://127.0.0.1:{PORT}/?dev=1 ...")
     start_load_time = time.time()
@@ -513,14 +534,136 @@ with sync_playwright() as pw:
     print(f" - Startup Element Error: {part_d_results['startupElementError']} (Expected: False)")
     results['part_d_details'] = part_d_results
 
-    # Save artifact json
+    # =========================================================================
+    # COMPOSITE HARD-FAIL VERDICT & EXIT CODE (HW-H4-08)
+    # =========================================================================
+    part_d_loader_pass = bool(
+        part_d_prelim.get('startupHidden') is True and
+        part_d_prelim.get('startupState') != 'error' and
+        part_d_prelim.get('hasDaggerSlash') is True and
+        part_d_prelim.get('hasAudioMaster') is True and
+        (part_d_prelim.get('audioCacheKeysCount') or 0) > 0
+    )
+
+    walk_armed = list(part_a_results.get('walkArmed', {}).values())
+    walk_unarmed = list(part_a_results.get('walkUnarmed', {}).values())
+    run_armed = list(part_a_results.get('runArmed', {}).values())
+    run_unarmed = list(part_a_results.get('runUnarmed', {}).values())
+    sc = part_a_results.get('shadowCheck', {})
+
+    part_a_pass = bool(
+        part_a_results.get('actorCount') == 1 and
+        len(part_a_results.get('animationRegistries', {})) == 4 and
+        len(walk_armed) == 4 and len(walk_unarmed) == 4 and
+        len(run_armed) == 4 and len(run_unarmed) == 4 and
+        all(abs(v.get('scaleX', 0) - 1.5) < 0.01 and abs(v.get('scaleX', 0) - v.get('scaleY', -1)) < 1e-4 and max(v.get('shadowDeltaX', 99), v.get('shadowDeltaY', 99)) == 0 for v in walk_armed) and
+        all(abs(v.get('scaleX', 0) - 1.5) < 0.01 and abs(v.get('scaleX', 0) - v.get('scaleY', -1)) < 1e-4 and max(v.get('shadowDeltaX', 99), v.get('shadowDeltaY', 99)) == 0 for v in walk_unarmed) and
+        all(abs(v.get('scaleX', 0) - 1.2) < 0.01 and abs(v.get('scaleX', 0) - v.get('scaleY', -1)) < 1e-4 and max(v.get('shadowDeltaX', 99), v.get('shadowDeltaY', 99)) == 0 for v in run_armed) and
+        all(1.0 <= v.get('scaleX', 0) <= 1.25 and abs(v.get('scaleX', 0) - v.get('scaleY', -1)) < 1e-4 and max(v.get('shadowDeltaX', 99), v.get('shadowDeltaY', 99)) == 0 for v in run_unarmed) and
+        abs(sc.get('runScale', 0) - 1.2) < 0.01 and
+        abs(sc.get('walkScale', 0) - 1.5) < 0.01 and
+        abs(sc.get('idleScale', 0) - 1.5) < 0.01 and
+        sc.get('idleShadowVisible') is True and
+        sc.get('idleShadowDeltaX') == 0 and sc.get('idleShadowDeltaY') == 0
+    )
+
+    part_b_pass = bool(
+        part_b_results.get('normalKeyHold', {}).get('velYBefore', 0) < 0 and
+        part_b_results.get('normalKeyHold', {}).get('isWActive') is True and
+        part_b_results.get('blurReset', {}).get('isWActiveAfterBlur') is False and
+        part_b_results.get('blurReset', {}).get('holdsCountAfterBlur') == 0 and
+        part_b_results.get('blurReset', {}).get('velYAfterBlur') == 0 and
+        part_b_results.get('focusRecovery', {}).get('velXAfterFocus', 0) > 0 and
+        part_b_results.get('focusRecovery', {}).get('velXAfterRelease') == 0 and
+        part_b_results.get('imePacketSeparation', {}).get('stillHeldAfterImeKeyup') is True and
+        part_b_results.get('imePacketSeparation', {}).get('releasedAfterRealKeyup') is True and
+        part_b_results.get('textInputShield', {}).get('isPhaserKeyboardDisabled') is True and
+        part_b_results.get('textInputShield', {}).get('isPhaserKeyboardRestored') is True
+    )
+
+    cs = part_c_results.get('combatSmoke', {})
+    aa = part_c_results.get('animationFrameAudit', {})
+    sc_counters = part_c_results.get('snapshotCounters', {})
+    part_c_pass = bool(
+        sc_counters.get('areMetricsDistinguished') is True and
+        aa.get('missingFramesCount') == 0 and
+        aa.get('satyrSheetFramesCount') == 0 and
+        (aa.get('totalRegisteredAnims') or 0) > 0 and
+        bool(cs.get('lightAttackAnim')) and
+        bool(cs.get('heavyAttackAnim')) and
+        bool(cs.get('rollAnim')) and
+        cs.get('isRollingTriggered') is True
+    )
+
+    part_d_details_pass = bool(
+        part_d_results.get('allRequiredAudioDecoded') is True and
+        part_d_results.get('startupElementHidden') is True and
+        part_d_results.get('startupElementError') is False
+    )
+
+    no_fatal_errors = (len(page_errors) == 0 and len(console_errors) == 0 and len(failed_requests) == 0)
+    overall_pass = bool(
+        part_d_loader_pass and part_a_pass and part_b_pass and
+        part_c_pass and part_d_details_pass and no_fatal_errors
+    )
+
+    results['summary'] = {
+        'test_type': 'Staged integration (locomotion scaling, input routing, combat smoke & loader checks)',
+        'part_d_loader': {'pass': part_d_loader_pass},
+        'part_a': {'pass': part_a_pass},
+        'part_b': {'pass': part_b_pass},
+        'part_c': {'pass': part_c_pass},
+        'part_d_details': {'pass': part_d_details_pass},
+        'page_errors_count': len(page_errors),
+        'console_errors_count': len(console_errors),
+        'failed_requests_count': len(failed_requests),
+        'overall_pass': overall_pass,
+        'final_status': 'PASS' if overall_pass else 'FAIL'
+    }
+    results['pageErrors'] = page_errors
+    results['consoleErrors'] = console_errors
+    results['failedRequests'] = failed_requests
+
     with open("Read/V1.5/Reports/HW_BUG_12_REGRESSION_DATA.json", "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
     print("\n[Playwright] Regression data successfully written to Read/V1.5/Reports/HW_BUG_12_REGRESSION_DATA.json")
 
-    # Take screenshot of clean gameplay state
     screenshot_path = "Read/V1.5/Reports/Visuals/hw_bug12_final_regression.png"
     page.screenshot(path=screenshot_path)
     print(f"[Playwright] Final regression screenshot saved to {screenshot_path}")
 
-print("\n--- ALL HW-BUG-#12 REGRESSION CHECKS COMPLETED ---")
+    print(f"\n================ HW-BUG-#12 SUMMARY ({results['summary']['test_type']}) ================")
+    print(f"Part D Prelim: {part_d_loader_pass} | Part A: {part_a_pass} | Part B: {part_b_pass} | Part C: {part_c_pass} | Part D Details: {part_d_details_pass}")
+    print(f"PageErrors={len(page_errors)}, ConsoleErrors={len(console_errors)}, FailedRequests={len(failed_requests)}")
+    print(f"OVERALL RESULT: {'PASS' if overall_pass else 'FAIL'}")
+    exit_code = 0 if overall_pass else 1
+
+except Exception as e:
+    print(f"\n[ERROR] Uncaught exception during HW-BUG-#12 test execution: {e}")
+    traceback.print_exc()
+    results['exception'] = str(e)
+    results['overall_pass'] = False
+    try:
+        with open("Read/V1.5/Reports/HW_BUG_12_REGRESSION_DATA.json", "w", encoding="utf-8") as f:
+            json.dump(results, f, indent=2, ensure_ascii=False)
+    except Exception:
+        pass
+    exit_code = 1
+finally:
+    try:
+        if browser:
+            browser.close()
+    except Exception:
+        pass
+    try:
+        if pw:
+            pw.stop()
+    except Exception:
+        pass
+    try:
+        if httpd:
+            httpd.shutdown()
+    except Exception:
+        pass
+
+sys.exit(exit_code)

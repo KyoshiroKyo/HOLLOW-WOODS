@@ -51,7 +51,13 @@ pw = None
 browser = None
 try:
     pw = sync_playwright().start()
-    chrome_path = "C:/Program Files/Google/Chrome/Application/chrome.exe"
+    browser_candidates = [
+        "C:/Program Files/Google/Chrome/Application/chrome.exe",
+        "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe",
+        "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+        "C:/Program Files/Microsoft/Edge/Application/msedge.exe",
+    ]
+    chrome_path = next((p for p in browser_candidates if os.path.exists(p)), None)
     browser = pw.chromium.launch(
         executable_path=chrome_path,
         headless=True,
@@ -66,10 +72,57 @@ try:
     context = browser.new_context(viewport={'width': 1280, 'height': 720})
     page = context.new_page()
 
+    test_t0 = time.time()
+    bgm_stream_paths = (
+        "/assets/audio/bgm/knights_quiet_fire.mp3",
+        "/assets/audio/bgm/embervale.mp3",
+        "/assets/audio/bgm/beyond_the_hills.mp3",
+        "/assets/audio/bgm/evergrove.mp3",
+        "/assets/audio/bgm/forgotten_orchard.mp3",
+    )
     console_errors = []
     page.on("console", lambda msg: console_errors.append(msg.text) if msg.type == "error" else None)
     page_errors = []
     page.on("pageerror", lambda err: page_errors.append(str(err)))
+    failed_requests = []
+    aborted_media_requests = []
+    http_errors = []
+    def _on_request_failed(req):
+        if "p2game" in req.url:
+            return
+        rtype = getattr(req, "resource_type", "unknown")
+        failure_str = str(req.failure)
+        ts_iso = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        elapsed = round(time.time() - test_t0, 3)
+        if rtype == "media" and "ERR_ABORTED" in failure_str and any(p in req.url for p in bgm_stream_paths):
+            aborted_media_requests.append({
+                "url": req.url,
+                "method": req.method,
+                "resource_type": rtype,
+                "failure": failure_str,
+                "timestamp_iso": ts_iso,
+                "elapsed_s": elapsed,
+                "reason": "Intentional HTMLAudioElement BGM stream cancellation on zone switch or page reload/close (AudioManager.stopBGM lifecycle)",
+            })
+        else:
+            failed_requests.append({
+                "url": req.url,
+                "method": req.method,
+                "resource_type": rtype,
+                "failure": failure_str,
+                "timestamp_iso": ts_iso,
+                "elapsed_s": elapsed,
+                "reason": "Unexpected request failure",
+            })
+    page.on("requestfailed", _on_request_failed)
+    page.on("response", lambda resp: http_errors.append({
+        "status": resp.status,
+        "method": resp.request.method,
+        "url": resp.url,
+        "resource_type": getattr(resp.request, "resource_type", "unknown"),
+        "timestamp_iso": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "elapsed_s": round(time.time() - test_t0, 3),
+    }) if (resp.status >= 400 and "p2game" not in resp.url) else None)
 
     print(f"[Playwright] Loading game from http://127.0.0.1:{PORT}/?dev=1 ...")
     start_load_time = time.time()
@@ -420,12 +473,12 @@ try:
         results.get('case_f', {}).get('boundsValid') and
         results.get('case_f', {}).get('followOk')
     )
-    no_fatal_errors = (len(page_errors) == 0)
+    no_fatal_errors = (len(page_errors) == 0 and len(console_errors) == 0 and len(failed_requests) == 0 and len(http_errors) == 0)
 
     overall_pass = (case_a_pass and case_b_pass and case_c_pass and case_d_pass and case_e_pass and case_f_pass and no_fatal_errors)
 
     summary = {
-        'test_type': 'Integration Test (with stage_player checkpoints)',
+        'test_type': 'Staged integration (camera boundary verification with stage_player checkpoints)',
         'case_a_fog_bellhollow': {'pass': case_a_pass, 'status': 'PASS' if case_a_pass else 'FAIL'},
         'case_b_bellhollow_farm': {'pass': case_b_pass, 'status': 'PASS' if case_b_pass else 'FAIL'},
         'case_c_bellhollow_outerwoods': {'pass': case_c_pass, 'status': 'PASS' if case_c_pass else 'FAIL'},
@@ -434,6 +487,9 @@ try:
         'case_f_save_continue': {'pass': case_f_pass, 'status': 'PASS' if case_f_pass else 'FAIL'},
         'page_errors_count': len(page_errors),
         'console_errors_count': len(console_errors),
+        'failed_requests_count': len(failed_requests),
+        'http_errors_count': len(http_errors),
+        'aborted_audio_requests_count': len(aborted_media_requests),
         'overall_pass': overall_pass,
         'final_status': 'PASS' if overall_pass else 'FAIL'
     }
@@ -441,6 +497,9 @@ try:
     results['summary'] = summary
     results['pageErrors'] = page_errors
     results['consoleErrors'] = console_errors
+    results['failedRequests'] = failed_requests
+    results['httpErrors'] = http_errors
+    results['abortedAudioRequests'] = aborted_media_requests
 
     print("\n================ HW-BUG-#13 VERIFICATION SUMMARY ================")
     print(f"Test Type: Integration Test (boundary transitions via staged checkpoints)")
@@ -450,7 +509,7 @@ try:
     print(f"Case D (Parallel Boundary Walk):       {'PASS' if case_d_pass else 'FAIL'}")
     print(f"Case E (Seam Standing Stability):      {'PASS' if case_e_pass else 'FAIL'}")
     print(f"Case F (Save / Continue At Boundary):  {'PASS' if case_f_pass else 'FAIL'}")
-    print(f"Page Errors: {len(page_errors)} | Console Errors: {len(console_errors)}")
+    print(f"Page Errors: {len(page_errors)} | Console Errors: {len(console_errors)} | Failed Requests: {len(failed_requests)} | HTTP Errors: {len(http_errors)} | Aborted Audio Transitions: {len(aborted_media_requests)}")
     print(f"OVERALL RESULT: {'PASS' if overall_pass else 'FAIL'}")
 
     exit_code = 0 if overall_pass else 1
