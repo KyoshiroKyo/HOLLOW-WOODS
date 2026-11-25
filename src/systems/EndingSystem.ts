@@ -25,6 +25,7 @@ import { PlayerState } from '../state/PlayerState';
 import { AudioManager } from '../audio/AudioManager';
 import { HDTextHelper } from '../utils/HDTextHelper';
 import { SaveManager } from './SaveManager';
+import { SettingsManager } from './SettingsManager';
 import loreData from '../data/lore.json';
 
 export type EndingType = 'true_ending' | 'sacrifice_ending' | 'fog_loop_ending';
@@ -288,10 +289,24 @@ export class EndingSystem {
     const endingConfig = EndingSystem.ENDING_CONFIGS[endingType];
 
     // GIAI ĐOẠN 1: TIẾNG CHUÔNG ĐỒNG ĐẦU TIÊN (THE FIRST TOLL)
-    cam.shake(1200, 0.02);
-    cam.flash(1200, 255, 255, 255);
-    if (this.uiScene) {
-      this.uiScene.cameras.main.flash(1200, 255, 255, 255);
+    const settings = SettingsManager.getInstance();
+    const camSys = gameScene?.cameraSystem;
+    if (settings.isScreenShakeEnabled()) {
+      if (camSys && typeof camSys.shake === 'function') {
+        camSys.shake(400, 0.015);
+      } else {
+        cam.shake(400, 0.015);
+      }
+    }
+    if (settings.isScreenFlashEnabled()) {
+      if (camSys && typeof camSys.flash === 'function') {
+        camSys.flash(360, 180, 175, 165);
+      } else {
+        cam.flash(360, 180, 175, 165);
+      }
+      if (this.uiScene) {
+        this.uiScene.cameras.main.flash(360, 180, 175, 165);
+      }
     }
 
     // Phát âm thanh chuông tương ứng với kết thúc
