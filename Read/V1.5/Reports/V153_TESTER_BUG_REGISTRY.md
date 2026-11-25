@@ -100,6 +100,7 @@ Dùng mã trong INDEX R10. Hàng **OPEN** của batch khác giữ ở chủ sở
 | `H4-NEW-06` | P1 | `OPEN` | `AudioManager.setupAutoplayUnlock()` gỡ 5 `window` listener thiếu `{ capture: true }`. |
 | `H4-NEW-07` | P1/P2 | `OPEN` | `mossbound_wayfarer.rar` (185.5 KB) còn trong `public/assets/characters/` & lọt vào `dist/`; lệch version `1.5.2`/`1.5.1`/`1.4.0`. |
 | `H4-NEW-09` (The Echo Screen Flash) | P0/P2 | `FIXED-PENDING-OWNER` | `TheEcho.checkDirectGaze()` đã kiểm tra `SettingsManager.getInstance().isScreenFlashEnabled()`, chống flash trùng và dọn `gazeFlashGfx`/`gazeFlashTween` khi despawn/shutdown; A01–A06 & 15/15 `BUG-023` PASS ([HW_H4_11A](HW_H4_11A_ECHO_SCREEN_FLASH_REPORT.md)). |
-| `H4-NEW-08`, `HW-H4-03-AUDIT` | P2 | `OPEN` | `MireWardenBoss.triggerSonicRoar()` chưa guard timer; `to_abyssal_chasm` hụt `2 px` & script V1.4.0 cũ. |
+| `H4-NEW-08` (Mire Warden Sonic Roar Timer Lifecycle) | P1 | `FIXED-PENDING-OWNER` | `MireWardenBoss.triggerSonicRoar()` theo dõi & hủy `sonicRoarWaveTimer`/`sonicRoarHitTimer`/`sonicRoarEndTimer` + `sonicShockGfx` khi `defeat()`, `destroy()`, `shutdown`; `GameScene.init()`/`shutdown` reset `mireWardenBoss` & `isBossFightActive`; `B01–B10` `10/10 PASS` ([HW_H4_11B](HW_H4_11B_MIRE_WARDEN_TIMER_REPORT.md)). |
+| `HW-H4-03-AUDIT` | P2 | `OPEN` | `to_abyssal_chasm` hụt `2 px` & script V1.4.0 cũ. |
 | `BUG-024`, `BUG-033` | P1/P2 | `BLOCKED` | Hosted P2Game CDN Range 206 (`BUG-024`) và Owner nghiệm thu World Map / 5 expansion zones (`BUG-033`). |
 | `HW-CS21-04` (`BUG-058`), `HW-CS21-05` (`BUG-059`) | P2 | `DEFERRED` | Bảo toàn và giữ riêng cho Codex xử lý Scale Pop & HD Consistency. |

@@ -291,6 +291,20 @@ export class GameScene extends Phaser.Scene {
       this.whisperTrap = null;
     }
     this.whisperTrapSpawnTimer = 38.0;
+
+    // HW-H4-11B: Reset trạng thái đấu trùm Mire Warden khi init/restart GameScene
+    if (this.mireWardenBoss) {
+      this.mireWardenBoss.destroy();
+      this.mireWardenBoss = null;
+    }
+    this.isBossFightActive = false;
+    this.bossResonanceTimer = 0;
+    this.bossContactCooldownTimer = 0;
+    this.runePillarTargets = [];
+    this.brazierTargets = [];
+    this.bossArenaBarrier = null;
+    this.bossArenaEchoes = [];
+    BossEncounterSystem.getInstance().reset();
   }
 
   public create(): void {
@@ -917,6 +931,30 @@ export class GameScene extends Phaser.Scene {
       if (this.wildlifeSystem) {
         this.wildlifeSystem.destroy();
       }
+      if (this.mireWardenBoss) {
+        this.mireWardenBoss.destroy();
+        this.mireWardenBoss = null;
+      }
+      this.isBossFightActive = false;
+      this.bossResonanceTimer = 0;
+      this.bossContactCooldownTimer = 0;
+      if (this.bossArenaBarrier) {
+        this.bossArenaBarrier.destroy();
+        this.bossArenaBarrier = null;
+      }
+      for (const echo of this.bossArenaEchoes) {
+        echo.destroy();
+      }
+      this.bossArenaEchoes = [];
+      for (const p of this.runePillarTargets) {
+        p.graphics?.destroy();
+      }
+      this.runePillarTargets = [];
+      for (const b of this.brazierTargets) {
+        b.graphics?.destroy();
+      }
+      this.brazierTargets = [];
+      BossEncounterSystem.getInstance().reset();
       if (this.worldEventSystem) {
         this.worldEventSystem.destroy();
       }

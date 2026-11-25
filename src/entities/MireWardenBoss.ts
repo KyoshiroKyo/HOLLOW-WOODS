@@ -68,6 +68,10 @@ export class MireWardenBoss extends Phaser.GameObjects.Container {
   private lastInvulnerableTime: number = 0;
   public sonicAttackTimer: number = 6000;
   public isRoaring: boolean = false;
+  private sonicRoarWaveTimer?: Phaser.Time.TimerEvent;
+  private sonicRoarHitTimer?: Phaser.Time.TimerEvent;
+  private sonicRoarEndTimer?: Phaser.Time.TimerEvent;
+  private sonicShockGfx?: Phaser.GameObjects.Graphics;
 
   // V15-46: Lớp khiên phong ấn và Sinh Lực thực chiến của Boss
   public isShieldBroken: boolean = false;
@@ -133,6 +137,38 @@ export class MireWardenBoss extends Phaser.GameObjects.Container {
 
     this.drawBossBody();
     this.setVisible(false);
+
+    scene.events.once(Phaser.Scenes.Events.SHUTDOWN, this.onSceneShutdown, this);
+  }
+
+  private isEntityAndSceneActive(): boolean {
+    return !!(this.active && this.scene && this.scene.sys?.isActive?.());
+  }
+
+  private onSceneShutdown(): void {
+    this.cleanupSonicRoar();
+  }
+
+  private clearTimerEvent(timer?: Phaser.Time.TimerEvent): undefined {
+    if (!timer) return undefined;
+    if (this.scene?.time) {
+      this.scene.time.removeEvent(timer);
+    }
+    timer.remove(false);
+    return undefined;
+  }
+
+  private cleanupSonicRoar(): void {
+    this.sonicRoarWaveTimer = this.clearTimerEvent(this.sonicRoarWaveTimer);
+    this.sonicRoarHitTimer = this.clearTimerEvent(this.sonicRoarHitTimer);
+    this.sonicRoarEndTimer = this.clearTimerEvent(this.sonicRoarEndTimer);
+    if (this.sonicShockGfx) {
+      if (this.sonicShockGfx.scene) {
+        this.sonicShockGfx.destroy();
+      }
+      this.sonicShockGfx = undefined;
+    }
+    this.isRoaring = false;
   }
 
   /**
@@ -177,6 +213,7 @@ export class MireWardenBoss extends Phaser.GameObjects.Container {
       duration: 1200,
       ease: 'Back.easeOut',
       onComplete: () => {
+        if (!this.isEntityAndSceneActive() || this.currentState === 'DEFEATED') return;
         this.currentState = 'STALK';
         this.drawBossBody();
       }
@@ -384,28 +421,43 @@ export class MireWardenBoss extends Phaser.GameObjects.Container {
    * V15-45: Kích hoạt đòn gầm sóng âm (Sonic Shockwave) lan tỏa
    */
   public triggerSonicRoar(onHitPlayerCallback?: () => void): void {
-    if (this.isStaggered || this.currentState === 'DEFEATED' || this.isRoaring) return;
+    if (
+      this.isStaggered ||
+      this.currentState === 'DEFEATED' ||
+      this.isRoaring ||
+      !this.isEntityAndSceneActive()
+    ) {
+      return;
+    }
 
+    this.cleanupSonicRoar();
     this.isRoaring = true;
     const body = this.body as Phaser.Physics.Arcade.Body;
     if (body) body.setVelocity(0, 0);
 
     // Chạy hoạt ảnh đòn gầm tấn công 2 (anim_boss_wetlands_attack2)
-    this.bossSprite.play('anim_boss_wetlands_attack2', true);
+    if (this.bossSprite?.scene) {
+      this.bossSprite.play('anim_boss_wetlands_attack2', true);
+    }
 
     // Vẽ sóng âm lan tỏa
     const shockGfx = this.scene.add.graphics();
     shockGfx.setDepth(this.y + 15);
+    this.sonicShockGfx = shockGfx;
     const originX = this.x;
     const originY = this.y - 10;
 
     let currentRadius = 15;
     const maxRadius = 150;
 
-    this.scene.time.addEvent({
+    this.sonicRoarWaveTimer = this.scene.time.addEvent({
       delay: 20,
       repeat: 25,
       callback: () => {
+        if (!this.isEntityAndSceneActive() || this.currentState === 'DEFEATED' || !this.isRoaring || !shockGfx.scene) {
+          this.cleanupSonicRoar();
+          return;
+        }
         currentRadius += (maxRadius - 15) / 25;
         shockGfx.clear();
         const alpha = Math.max(0, 1 - (currentRadius / maxRadius));
@@ -416,17 +468,31 @@ export class MireWardenBoss extends Phaser.GameObjects.Container {
       }
     });
 
-    this.scene.time.delayedCall(500, () => {
+    this.sonicRoarHitTimer = this.scene.time.delayedCall(500, () => {
+      this.sonicRoarHitTimer = undefined;
+      if (!this.isEntityAndSceneActive() || this.currentState === 'DEFEATED' || !this.isRoaring) {
+        return;
+      }
       if (typeof onHitPlayerCallback === 'function') {
         onHitPlayerCallback();
       }
     });
 
-    this.scene.time.delayedCall(900, () => {
-      shockGfx.destroy();
+    this.sonicRoarEndTimer = this.scene.time.delayedCall(900, () => {
+      this.sonicRoarEndTimer = undefined;
+      this.sonicRoarWaveTimer = this.clearTimerEvent(this.sonicRoarWaveTimer);
+      if (this.sonicShockGfx) {
+        if (this.sonicShockGfx.scene) {
+          this.sonicShockGfx.destroy();
+        }
+        this.sonicShockGfx = undefined;
+      }
       this.isRoaring = false;
+      if (!this.isEntityAndSceneActive()) {
+        return;
+      }
       this.sonicAttackTimer = 7500 + Math.random() * 2000;
-      if (!this.isStaggered && this.currentState !== 'DEFEATED') {
+      if (!this.isStaggered && this.currentState !== 'DEFEATED' && this.bossSprite?.scene) {
         this.currentState = this.phase === 2 ? 'ENSHROUDED' : 'STALK';
         this.bossSprite.play('anim_boss_wetlands_idle', true);
       }
@@ -476,8 +542,10 @@ export class MireWardenBoss extends Phaser.GameObjects.Container {
       alpha: 0,
       duration: 600,
       onComplete: () => {
-        this.auraGfx.clear();
-        this.auraGfx.alpha = 1;
+        if (this.auraGfx && this.auraGfx.scene) {
+          this.auraGfx.clear();
+          this.auraGfx.alpha = 1;
+        }
       }
     });
 
@@ -514,6 +582,7 @@ export class MireWardenBoss extends Phaser.GameObjects.Container {
       yoyo: true,
       repeat: 1,
       onComplete: () => {
+        if (!this.isEntityAndSceneActive() || this.currentState === 'DEFEATED') return;
         this.currentState = 'ENSHROUDED';
         this.drawBossBody();
       }
@@ -525,21 +594,44 @@ export class MireWardenBoss extends Phaser.GameObjects.Container {
    */
   public defeat(): void {
     this.currentState = 'DEFEATED';
+    this.cleanupSonicRoar();
     this.isStaggered = false;
-    this.staggerIndicatorContainer.setVisible(false);
+    if (this.staggerIndicatorContainer?.scene) {
+      this.staggerIndicatorContainer.setVisible(false);
+    }
 
     const body = this.body as Phaser.Physics.Arcade.Body;
     if (body) body.setVelocity(0, 0);
 
     // V15-42: Chạy trọn vẹn hoạt ảnh tử trận (Death animation 33 frames) của SHADOW Series
-    this.bossSprite.play('anim_boss_wetlands_death', true);
+    if (this.bossSprite?.scene) {
+      this.bossSprite.play('anim_boss_wetlands_death', true);
+    }
 
-    this.scene.tweens.add({
-      targets: this,
-      alpha: 0.8,
-      duration: 3200,
-      ease: 'Power2'
-    });
+    if (this.isEntityAndSceneActive()) {
+      this.scene.tweens.add({
+        targets: this,
+        alpha: 0.8,
+        duration: 3200,
+        ease: 'Power2'
+      });
+    }
+  }
+
+  public destroy(fromScene?: boolean): void {
+    this.cleanupSonicRoar();
+    if (this.scene) {
+      this.scene.events?.off(Phaser.Scenes.Events.SHUTDOWN, this.onSceneShutdown, this);
+      this.scene.tweens?.killTweensOf(this);
+      if (this.auraGfx) {
+        this.scene.tweens?.killTweensOf(this.auraGfx);
+      }
+      if (this.invulnerableContainer) {
+        this.scene.tweens?.killTweensOf(this.invulnerableContainer);
+      }
+    }
+    this.removeAllListeners();
+    super.destroy(fromScene);
   }
 
   /**

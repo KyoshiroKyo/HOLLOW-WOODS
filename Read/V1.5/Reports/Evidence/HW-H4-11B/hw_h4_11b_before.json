@@ -1,0 +1,134 @@
+{
+  "mode": "before",
+  "timestamp": "2026-11-26T00:14:21",
+  "passedCount": 2,
+  "totalCount": 6,
+  "overallPass": false,
+  "results": [
+    {
+      "case": "B01",
+      "desc": "Sonic Roar active boss normal flow",
+      "classification": "STAGED-INTEGRATION",
+      "pass": false,
+      "timersCreated": 3,
+      "timersActiveAfter": 0,
+      "waveTicks": 26,
+      "undestroyedGfx": 0,
+      "playerHpAfter": 100,
+      "playerComposureAfter": 85,
+      "bossIsRoaringAfter": false,
+      "bossSonicTimerReset": 9010.842780098446,
+      "diag": {
+        "start": {
+          "dist": 50,
+          "canDamage": true,
+          "isRolling": true
+        },
+        "after": {
+          "distAfter": 33.59748106490302,
+          "canDamage": true
+        }
+      },
+      "pageErrors": [],
+      "consoleErrors": [],
+      "probeErrors": []
+    },
+    {
+      "case": "B02",
+      "desc": "Boss destroyed mid Sonic Roar",
+      "classification": "STAGED-INTEGRATION",
+      "pass": false,
+      "timersCreated": 3,
+      "activeTimersBeforeDestroy": 3,
+      "activeTimersRightAfterDestroy": 3,
+      "undestroyedGfxRightAfterDestroy": 1,
+      "ticksAtDestroy": 6,
+      "ticksAfterDestroy": 20,
+      "hitCallbacksAfterDestroy": 1,
+      "delayedCallbacksExecuted": [
+        "delayed_500",
+        "delayed_900"
+      ],
+      "undestroyedGfxFinal": 0,
+      "pageErrors": [
+        "Cannot read properties of undefined (reading 'play')"
+      ],
+      "consoleErrors": [],
+      "probeErrors": [
+        "delayed_900:TypeError: Cannot read properties of undefined (reading 'play')"
+      ]
+    },
+    {
+      "case": "B03",
+      "desc": "Boss defeated mid Sonic Roar",
+      "classification": "STAGED-INTEGRATION",
+      "pass": false,
+      "timersCreated": 3,
+      "activeTimersRightAfterDefeat": 3,
+      "undestroyedGfxRightAfterDefeat": 1,
+      "isRoaringAfterDefeat": true,
+      "ticksAtDefeat": 6,
+      "ticksAfterDefeat": 20,
+      "hitCallbacksAfterDefeat": 1,
+      "delayedCallbacksExecuted": [
+        "delayed_500",
+        "delayed_900"
+      ],
+      "undestroyedGfxFinal": 0,
+      "bossStateFinal": "DEFEATED",
+      "pageErrors": [],
+      "consoleErrors": [],
+      "probeErrors": []
+    },
+    {
+      "case": "B04",
+      "desc": "GameScene shutdown before Sonic Roar callbacks fire",
+      "classification": "STAGED-INTEGRATION",
+      "pass": true,
+      "gameSceneActiveAfter": false,
+      "ticksAfterShutdown": 0,
+      "hitCallbacksAfterShutdown": 0,
+      "delayedCallbacksAfterShutdown": [],
+      "sonicTimersActive": 0,
+      "undestroyedGfx": 0,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "probeErrors": []
+    },
+    {
+      "case": "B05",
+      "desc": "Restart GameScene mid Sonic Roar",
+      "classification": "STAGED-INTEGRATION",
+      "pass": false,
+      "afterRestart": {
+        "gameSceneActive": true,
+        "zoneId": "fog_crossing",
+        "isBossFightActive": true,
+        "mireWardenBossIsNull": false,
+        "mireWardenBossActive": false,
+        "oldBossActive": false,
+        "hitCalls": 0,
+        "ticksAfterRestart": 0,
+        "undestroyedGfx": 0,
+        "probeErrors": []
+      },
+      "pageErrors": [],
+      "consoleErrors": []
+    },
+    {
+      "case": "B06",
+      "desc": "Multiple valid Sonic Roar triggers + duplicate guard while roaring",
+      "classification": "STAGED-INTEGRATION",
+      "pass": true,
+      "timersRightAfterDoubleCall": 3,
+      "hitAfterCycle1": 1,
+      "activeAfterCycle1": 0,
+      "hitTotalAfter2Cycles": 2,
+      "timersCreatedTotal": 6,
+      "sonicTimersActive": 0,
+      "undestroyedGfx": 0,
+      "pageErrors": [],
+      "consoleErrors": []
+    }
+  ]
+}
