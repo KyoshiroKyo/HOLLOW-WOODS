@@ -31,6 +31,7 @@ import { QuestSystem } from '../systems/QuestSystem';
 import { SettingsManager } from '../systems/SettingsManager';
 import { lerpColor } from '../systems/TimeSystem';
 import type { GameScene } from './GameScene';
+import { BlackKnightPlayer } from '../entities/BlackKnightPlayer';
 
 const RUNNING_LABELS = {
   normal: { text: 'Bình thường', color: '#C8CFC2' },
@@ -834,7 +835,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.updateQuestTracker();
     this.updateQuickSlotCounts();
 
-    // Lắng nghe phím số [1]..[8], [Q], [F], [C], [I], [J], [ESC] để chọn ô và thực thi nhanh (V15-50)
+    // Lắng nghe phím số [1]..[8], [Q], [F] và tập trung hóa toàn bộ toggle UI ([C], [I], [Tab], [J], [B], [N], [M], [ESC])
     if (this.input.keyboard) {
       const numKeyNames = ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT'];
       for (let i = 0; i < 8; i++) {
@@ -853,59 +854,58 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         this.selectQuickSlot(4);
         this.events.emit('ui_toggle_lantern');
       });
-      // V15-44 & HW-H4-12A: Quản lý duy nhất phím tắt [C] tập trung tại UIScene (chống trùng listener, repeat & Phaser queue replay)
-      let lastKeyCEvent: KeyboardEvent | undefined;
-      this.input.keyboard.on('keydown-C', (event?: KeyboardEvent) => {
-        if (event) {
-          if (event === lastKeyCEvent || event.repeat) return;
-          lastKeyCEvent = event;
+
+      const seenShortcutEvents = new WeakSet<KeyboardEvent>();
+      const handleShortcut = (event: KeyboardEvent) => {
+        if (seenShortcutEvents.has(event) || event.repeat) return;
+        if (event.ctrlKey || event.altKey || event.metaKey) return;
+        if (BlackKnightPlayer.isTextInputOrComposing(event)) return;
+        const code = BlackKnightPlayer.resolvePhysicalCode(event);
+        if (!code) return;
+
+        if (code === 'KeyC' || code === 'KeyI' || code === 'Tab') {
+          seenShortcutEvents.add(event);
+          if (code === 'Tab') event.preventDefault();
+          if (this.gameOverModal && this.gameOverModal.isOpen) return;
+          if (this.isDialogueActive) return;
+          if (this.craftingModal && this.craftingModal.isOpen) {
+            this.craftingModal.close();
+            return;
+          }
+          if (this.journalModal && this.journalModal.isOpen) this.journalModal.close();
+          if (this.tornPageModal && this.tornPageModal.isOpen) this.tornPageModal.close();
+          if (this.equipmentModal && this.equipmentModal.isOpen) this.equipmentModal.close();
+          this.selectQuickSlot(5);
+          this.toggleCrafting();
+        } else if (code === 'KeyJ') {
+          seenShortcutEvents.add(event);
+          if (this.gameOverModal && this.gameOverModal.isOpen) return;
+          if (this.isDialogueActive) return;
+          if (this.journalModal && this.journalModal.isOpen) {
+            this.journalModal.close();
+            return;
+          }
+          if (this.craftingModal && this.craftingModal.isOpen) this.craftingModal.close();
+          if (this.tornPageModal && this.tornPageModal.isOpen) this.tornPageModal.close();
+          if (this.equipmentModal && this.equipmentModal.isOpen) this.equipmentModal.close();
+          this.selectQuickSlot(6);
+          this.toggleJournal();
+        } else if (code === 'Escape') {
+          seenShortcutEvents.add(event);
+          this.handleESC();
+        } else if (code === 'KeyB') {
+          seenShortcutEvents.add(event);
+          if (this.gameOverModal && this.gameOverModal.isOpen) return;
+          this.toggleEquipment();
+        } else if (code === 'KeyN') {
+          seenShortcutEvents.add(event);
+          this.toggleMiniMap();
+        } else if (code === 'KeyM') {
+          seenShortcutEvents.add(event);
+          this.toggleWorldMap();
         }
-        if (this.gameOverModal && this.gameOverModal.isOpen) return;
-        if (this.isDialogueActive) return;
-        if (this.craftingModal && this.craftingModal.isOpen) {
-          this.craftingModal.close();
-          return;
-        }
-        if (this.journalModal && this.journalModal.isOpen) this.journalModal.close();
-        if (this.tornPageModal && this.tornPageModal.isOpen) this.tornPageModal.close();
-        this.selectQuickSlot(5);
-        this.toggleCrafting();
-      });
-      this.input.keyboard.on('keydown-I', () => {
-        if (this.isDialogueActive) return;
-        if (this.craftingModal && this.craftingModal.isOpen) {
-          this.craftingModal.close();
-          return;
-        }
-        if (this.journalModal && this.journalModal.isOpen) this.journalModal.close();
-        if (this.tornPageModal && this.tornPageModal.isOpen) this.tornPageModal.close();
-        this.selectQuickSlot(5);
-        this.toggleCrafting();
-      });
-      this.input.keyboard.on('keydown-J', () => {
-        if (this.isDialogueActive) return;
-        if (this.journalModal && this.journalModal.isOpen) {
-          this.journalModal.close();
-          return;
-        }
-        if (this.craftingModal && this.craftingModal.isOpen) this.craftingModal.close();
-        if (this.tornPageModal && this.tornPageModal.isOpen) this.tornPageModal.close();
-        this.selectQuickSlot(6);
-        this.toggleJournal();
-      });
-      this.input.keyboard.on('keydown-ESC', () => {
-        this.handleESC();
-      });
-      this.input.keyboard.on('keydown-B', () => {
-        if (this.gameOverModal && this.gameOverModal.isOpen) return;
-        this.toggleEquipment();
-      });
-      this.input.keyboard.on('keydown-N', () => {
-        this.toggleMiniMap();
-      });
-      this.input.keyboard.on('keydown-M', () => {
-        this.toggleWorldMap();
-      });
+      };
+      this.input.keyboard.on('keydown', handleShortcut);
     }
   }
 
@@ -3080,6 +3080,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   }
 
   public handleModalOpened(): void {
+    const gameScene = this.scene.get('GameScene') as any;
+    if (gameScene && gameScene.player && typeof gameScene.player.resetAllInputState === 'function') {
+      gameScene.player.resetAllInputState();
+    }
     if (this.quickCraftSidebar) this.quickCraftSidebar.hideFlyout();
     this.setHUDVisible(false);
     this.setDialogueActive(true);
@@ -3127,7 +3131,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.lastModalCloseTime = Date.now();
       return;
     }
-    if (this.craftingModal && this.craftingModal.isOpen) { this.craftingModal.close(); return; }
+    if (this.craftingModal && this.craftingModal.isOpen) {
+      if (this.craftingModal.clearSearchIfActive()) return;
+      this.craftingModal.close();
+      return;
+    }
     if (this.journalModal && this.journalModal.isOpen) { this.journalModal.close(); return; }
     if (this.tornPageModal && this.tornPageModal.isOpen) { this.tornPageModal.close(); return; }
     if (this.equipmentModal && this.equipmentModal.isOpen) { this.equipmentModal.close(); return; }
@@ -3135,6 +3143,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.campfireModal && this.campfireModal.isOpen) { this.campfireModal.close(); return; }
     if (this.cauldronModal && this.cauldronModal.isOpen) { this.cauldronModal.close(); return; }
     if (this.parchmentWorldMapModal && this.parchmentWorldMapModal.isOpen) { this.parchmentWorldMapModal.close(); return; }
+    if (this.pauseModal && this.pauseModal.isOpen) { this.pauseModal.close(); return; }
 
     const now = Date.now();
     if (now - (this.lastModalCloseTime || 0) < 250) return;

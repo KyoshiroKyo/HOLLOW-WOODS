@@ -93,6 +93,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
 
   private readonly boundKeyDown = (e: KeyboardEvent) => this.handleDOMKeyDown(e);
   private readonly boundKeyUp = (e: KeyboardEvent) => this.handleDOMKeyUp(e);
+  private readonly boundPreventDefaultBubble = (e: KeyboardEvent) => this.handleBubblePreventDefault(e);
   private readonly boundCompositionStart = (e: CompositionEvent) => this.handleDOMCompositionStart(e);
   private readonly boundCompositionEnd = (e: CompositionEvent) => this.handleDOMCompositionEnd(e);
   private readonly boundWindowBlur = () => this.resetAllInputState();
@@ -387,8 +388,11 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       case 'KeyE':
       case 'KeyF':
       case 'KeyQ':
+      case 'KeyC':
       case 'KeyI':
       case 'KeyJ':
+      case 'KeyB':
+      case 'KeyN':
       case 'KeyM':
       case 'KeyK':
       case 'KeyR':
@@ -411,11 +415,36 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     switch (rawKey) {
       case 'w':
       case 'ư':
+      case 'ừ':
+      case 'ứ':
+      case 'ử':
+      case 'ữ':
+      case 'ự':
       case 'ă':
+      case 'ằ':
+      case 'ắ':
+      case 'ẳ':
+      case 'ẵ':
+      case 'ặ':
       case 'ơ':
+      case 'ờ':
+      case 'ớ':
+      case 'ở':
+      case 'ỡ':
+      case 'ợ':
         return 'KeyW';
       case 'a':
       case 'â':
+      case 'ầ':
+      case 'ấ':
+      case 'ẩ':
+      case 'ẫ':
+      case 'ậ':
+      case 'á':
+      case 'à':
+      case 'ả':
+      case 'ã':
+      case 'ạ':
         return 'KeyA';
       case 's':
         return 'KeyS';
@@ -424,12 +453,33 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
         return 'KeyD';
       case 'e':
       case 'ê':
+      case 'ề':
+      case 'ế':
+      case 'ể':
+      case 'ễ':
+      case 'ệ':
+      case 'é':
+      case 'è':
+      case 'ẻ':
+      case 'ẽ':
+      case 'ẹ':
         return 'KeyE';
       case 'f':
         return 'KeyF';
       case 'q':
         return 'KeyQ';
+      case 'c':
+        return 'KeyC';
+      case 'b':
+        return 'KeyB';
+      case 'n':
+        return 'KeyN';
       case 'i':
+      case 'í':
+      case 'ì':
+      case 'ỉ':
+      case 'ĩ':
+      case 'ị':
         return 'KeyI';
       case 'j':
         return 'KeyJ';
@@ -477,6 +527,12 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
         return 'KeyF';
       case 81:
         return 'KeyQ';
+      case 67:
+        return 'KeyC';
+      case 66:
+        return 'KeyB';
+      case 78:
+        return 'KeyN';
       case 73:
         return 'KeyI';
       case 74:
@@ -529,8 +585,11 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       case 'KeyE':
       case 'KeyF':
       case 'KeyQ':
+      case 'KeyC':
       case 'KeyI':
       case 'KeyJ':
+      case 'KeyB':
+      case 'KeyN':
       case 'KeyM':
       case 'KeyK':
       case 'KeyR':
@@ -596,10 +655,12 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     }
 
     window.addEventListener('keydown', this.boundKeyDown, { capture: true, passive: false });
+    window.addEventListener('keydown', this.boundPreventDefaultBubble, { capture: false, passive: false });
     window.addEventListener('keyup', this.boundKeyUp, { capture: true, passive: false });
     window.addEventListener('compositionstart', this.boundCompositionStart, { capture: true });
     window.addEventListener('compositionend', this.boundCompositionEnd, { capture: true });
     window.addEventListener('blur', this.boundWindowBlur);
+    window.addEventListener('pagehide', this.boundWindowBlur);
     this.scene.game.canvas.addEventListener('blur', this.boundWindowBlur);
     this.scene.game.canvas.addEventListener('pointercancel', this.boundWindowBlur);
     window.addEventListener('focus', this.boundWindowFocus);
@@ -619,10 +680,12 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
   public cleanupDOMListeners(): void {
     if (typeof window !== 'undefined' && this.domListenersAttached) {
       window.removeEventListener('keydown', this.boundKeyDown, { capture: true });
+      window.removeEventListener('keydown', this.boundPreventDefaultBubble, { capture: false });
       window.removeEventListener('keyup', this.boundKeyUp, { capture: true });
       window.removeEventListener('compositionstart', this.boundCompositionStart, { capture: true });
       window.removeEventListener('compositionend', this.boundCompositionEnd, { capture: true });
       window.removeEventListener('blur', this.boundWindowBlur);
+      window.removeEventListener('pagehide', this.boundWindowBlur);
       this.scene?.game?.canvas?.removeEventListener('blur', this.boundWindowBlur);
       this.scene?.game?.canvas?.removeEventListener('pointercancel', this.boundWindowBlur);
       window.removeEventListener('focus', this.boundWindowFocus);
@@ -636,7 +699,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     if (BlackKnightPlayer.activeDOMListenerOwner === this) {
       BlackKnightPlayer.activeDOMListenerOwner = null;
     }
-    this.movementHolds.clear();
+    this.resetAllInputState();
   }
 
   private isMovementOrSprintCode(code: string): boolean {
@@ -654,16 +717,25 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     );
   }
 
+  private static hasHardwarePhysicalCode(event: KeyboardEvent, resolvedCode: string | null): boolean {
+    if (!resolvedCode || !event.code) return false;
+    if (event.code === resolvedCode) return true;
+    return (
+      (event.code === 'NumpadEnter' && resolvedCode === 'Enter') ||
+      (event.code === 'Numpad1' && resolvedCode === 'Digit1') ||
+      (event.code === 'Numpad2' && resolvedCode === 'Digit2')
+    );
+  }
+
   private static isImeMovementPacket(event: KeyboardEvent): boolean {
     return event.keyCode === 229 || event.keyCode === 231 || event.key === 'Process' ||
       (!event.code && event.keyCode === 0) ||
       (event.isComposing && (!event.code || event.keyCode === 0));
   }
 
-  private syncPhysicalShift(event: KeyboardEvent, isShiftDown = false): void {
-    const isIme = BlackKnightPlayer.isImeMovementPacket(event);
-    if (isIme) {
-      // Gói tin IME không được kích hoạt hay duy trì trạng thái Shift
+  private syncPhysicalShift(event: KeyboardEvent, isShiftDown = false, isSyntheticPacket = false): void {
+    if (isSyntheticPacket) {
+      // Chỉ bỏ qua gói ký tự tổng hợp (VK_PACKET không có event.code), vẫn cho phép event.code thật dưới IME 229 đồng bộ Shift
       return;
     }
 
@@ -831,21 +903,25 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       (gameScene && gameScene.dialogueSystem && gameScene.dialogueSystem.isActive)
     );
 
+    const code = BlackKnightPlayer.resolvePhysicalCode(event);
+    const hasHardwareCode = BlackKnightPlayer.hasHardwarePhysicalCode(event, code);
+
     if (isUIBusy) {
+      if (code && this.isMovementOrSprintCode(code)) {
+        this.releasePhysicalCode(code);
+      }
       return;
     }
 
-    const code = BlackKnightPlayer.resolvePhysicalCode(event);
     const isImePacket = BlackKnightPlayer.isImeMovementPacket(event);
+    const isSyntheticPacket = isImePacket && !hasHardwareCode;
     const isShift = code === 'ShiftLeft' || code === 'ShiftRight';
-    this.syncPhysicalShift(event, isShift);
+    this.syncPhysicalShift(event, isShift, isSyntheticPacket);
     if (!code) return;
-
-    if (BlackKnightPlayer.isGameControlCode(code)) event.preventDefault();
 
     if (this.isMovementOrSprintCode(code)) {
       if (isShift) {
-        if (!isImePacket) {
+        if (!isSyntheticPacket) {
           this.activePhysicalCodes.add(code);
           this.shiftExpiresAt = performance.now() + BlackKnightPlayer.SHIFT_WATCHDOG_TIMEOUT_MS;
         } else {
@@ -854,9 +930,9 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
         return;
       }
 
-      // A packet can refresh movement, but cannot downgrade a known hardware
-      // hold or set the Shift modifier. Keep a finite fallback if events stop.
-      const confirmed = !isImePacket || this.movementHolds.get(code)?.confirmed === true;
+      // Preserve hardware confirmation when event.code is present even if Windows IME wraps keyCode=229.
+      // Pure synthetic VK_PACKET/codeless packets get a finite 450ms hold so they cannot stick forever.
+      const confirmed = hasHardwareCode || !isImePacket || this.movementHolds.get(code)?.confirmed === true;
       const expiresAt = performance.now() + (confirmed ? 2000 : 450);
       this.movementHolds.set(code, { confirmed, expiresAt });
       this.activePhysicalCodes.add(code);
@@ -887,12 +963,6 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       this.pendingOneShotActions.add('weapon_toggle');
     } else if (code === 'KeyQ') {
       this.pendingOneShotActions.add('throw_lure');
-    } else if (code === 'KeyI' || code === 'Tab') {
-      this.pendingOneShotActions.add('craft');
-    } else if (code === 'KeyJ') {
-      this.pendingOneShotActions.add('journal');
-    } else if (code === 'Escape') {
-      this.pendingOneShotActions.add('pause');
     } else if (code === 'Digit1') {
       this.pendingOneShotActions.add('poultice');
     } else if (code === 'Digit2') {
@@ -903,10 +973,26 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       this.pendingOneShotActions.add('mute');
     }
 
-    if ((isImePacket || event.isComposing || !event.code) && typeof window !== 'undefined') {
+    if ((isSyntheticPacket || event.isComposing || !hasHardwareCode) && typeof window !== 'undefined') {
       window.setTimeout(() => {
         this.physicalKeyHeldForOneShot.delete(code);
       }, 180);
+    }
+  }
+
+  private handleBubblePreventDefault(event: KeyboardEvent): void {
+    if (this.isEditableTextContext(event.target) || this.isComposingInTextInput) return;
+    const code = BlackKnightPlayer.resolvePhysicalCode(event);
+    if (
+      code === 'Tab' ||
+      code === 'Space' ||
+      code === 'ArrowUp' ||
+      code === 'ArrowDown' ||
+      code === 'ArrowLeft' ||
+      code === 'ArrowRight'
+    ) {
+      // Thực hiện preventDefault ở pha bubble sau Phaser KeyboardManager để không làm rơi phím UI/Dialogue mà vẫn chặn cuộn trang/chuyển focus Tab
+      event.preventDefault();
     }
   }
 
@@ -917,13 +1003,21 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     }
 
     const code = BlackKnightPlayer.resolvePhysicalCode(event);
+    const hasHardwareCode = BlackKnightPlayer.hasHardwarePhysicalCode(event, code);
     const isImePacket = BlackKnightPlayer.isImeMovementPacket(event);
-    this.syncPhysicalShift(event);
+    const isSyntheticPacket = isImePacket && !hasHardwareCode;
+    this.syncPhysicalShift(event, false, isSyntheticPacket);
     if (!code) return;
 
-    if (BlackKnightPlayer.isGameControlCode(code)) event.preventDefault();
-    if (isImePacket && this.isMovementOrSprintCode(code) && code !== 'ShiftLeft' && code !== 'ShiftRight') {
-      // Do not let an IME packet reset the Phaser state of the real key.
+    if (
+      isSyntheticPacket &&
+      this.isMovementOrSprintCode(code) &&
+      code !== 'ShiftLeft' &&
+      code !== 'ShiftRight' &&
+      this.movementHolds.get(code)?.confirmed === true
+    ) {
+      // Only skip synthetic VK_PACKET keyup when a confirmed physical hold is active.
+      // When event.code IS present (even under Windows IME keyCode=229) or hold is unconfirmed, release cleanly!
       event.stopImmediatePropagation();
       return;
     }

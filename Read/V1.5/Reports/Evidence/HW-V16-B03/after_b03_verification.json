@@ -1,0 +1,1869 @@
+{
+  "meta": {
+    "task": "HW-V16-B03",
+    "physical_evkey_status": "PHYSICAL EVKEY NOT RUN (headless Chromium Playwright synthetic/DOM events only)",
+    "timestamp": "2026-11-27T02:23:30"
+  },
+  "checks": {
+    "wasd_4dir_walk_85": {
+      "passed": true,
+      "samples": {
+        "KeyW": {
+          "x": 120,
+          "y": 192.2,
+          "vx": 0,
+          "vy": -85,
+          "spd": 85,
+          "scaleX": 1.5,
+          "scaleY": 1.5,
+          "texScaleMode": 1,
+          "nearestEnum": 1,
+          "codes": [
+            "KeyW"
+          ],
+          "shiftHeld": false,
+          "sprinting": false,
+          "craftingOpen": false,
+          "searchQuery": "",
+          "journalOpen": false,
+          "equipOpen": false,
+          "pauseOpen": false,
+          "campfireOpen": false,
+          "cauldronOpen": false,
+          "chestOpen": false,
+          "dialogueOpen": false
+        },
+        "KeyD": {
+          "x": 122.8,
+          "y": 190.8,
+          "vx": 85,
+          "vy": 0,
+          "spd": 85,
+          "scaleX": 1.5,
+          "scaleY": 1.5,
+          "texScaleMode": 1,
+          "nearestEnum": 1,
+          "codes": [
+            "KeyD"
+          ],
+          "shiftHeld": false,
+          "sprinting": false,
+          "craftingOpen": false,
+          "searchQuery": "",
+          "journalOpen": false,
+          "equipOpen": false,
+          "pauseOpen": false,
+          "campfireOpen": false,
+          "cauldronOpen": false,
+          "chestOpen": false,
+          "dialogueOpen": false
+        },
+        "KeyS": {
+          "x": 124.3,
+          "y": 197.8,
+          "vx": 0,
+          "vy": 85,
+          "spd": 85,
+          "scaleX": 1.5,
+          "scaleY": 1.5,
+          "texScaleMode": 1,
+          "nearestEnum": 1,
+          "codes": [
+            "KeyS"
+          ],
+          "shiftHeld": false,
+          "sprinting": false,
+          "craftingOpen": false,
+          "searchQuery": "",
+          "journalOpen": false,
+          "equipOpen": false,
+          "pauseOpen": false,
+          "campfireOpen": false,
+          "cauldronOpen": false,
+          "chestOpen": false,
+          "dialogueOpen": false
+        },
+        "KeyA": {
+          "x": 108.7,
+          "y": 202.1,
+          "vx": -85,
+          "vy": 0,
+          "spd": 85,
+          "scaleX": 1.5,
+          "scaleY": 1.5,
+          "texScaleMode": 1,
+          "nearestEnum": 1,
+          "codes": [
+            "KeyA"
+          ],
+          "shiftHeld": false,
+          "sprinting": false,
+          "craftingOpen": false,
+          "searchQuery": "",
+          "journalOpen": false,
+          "equipOpen": false,
+          "pauseOpen": false,
+          "campfireOpen": false,
+          "cauldronOpen": false,
+          "chestOpen": false,
+          "dialogueOpen": false
+        }
+      },
+      "after_release": {
+        "x": 100.2,
+        "y": 202.1,
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      }
+    },
+    "diagonal_sequential_release_and_sprint_140": {
+      "passed": true,
+      "diag": {
+        "x": 126,
+        "y": 201,
+        "vx": 60.1,
+        "vy": 60.1,
+        "spd": 85,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [
+          "KeyS",
+          "KeyD"
+        ],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      },
+      "only_d": {
+        "x": 134,
+        "y": 209,
+        "vx": 85,
+        "vy": 0,
+        "spd": 85,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [
+          "KeyD"
+        ],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      },
+      "sprint_d": {
+        "x": 160.3,
+        "y": 209,
+        "vx": 140,
+        "vy": 0,
+        "spd": 140,
+        "scaleX": 1.14,
+        "scaleY": 1.14,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [
+          "KeyD",
+          "ShiftLeft"
+        ],
+        "shiftHeld": true,
+        "sprinting": true,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      },
+      "stopped": {
+        "x": 178.9,
+        "y": 209,
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      }
+    },
+    "b01_scale_1.14_and_b02_nearest_preserved": {
+      "passed": true,
+      "diag": {
+        "x": 126,
+        "y": 201,
+        "vx": 60.1,
+        "vy": 60.1,
+        "spd": 85,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [
+          "KeyS",
+          "KeyD"
+        ],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      },
+      "sprint": {
+        "x": 160.3,
+        "y": 209,
+        "vx": 140,
+        "vy": 0,
+        "spd": 140,
+        "scaleX": 1.14,
+        "scaleY": 1.14,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [
+          "KeyD",
+          "ShiftLeft"
+        ],
+        "shiftHeld": true,
+        "sprinting": true,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      }
+    },
+    "synthetic_ime_229_hold_past_450ms_and_release": {
+      "passed": true,
+      "early_180ms": {
+        "x": 120,
+        "y": 206.3,
+        "vx": 0,
+        "vy": 85,
+        "spd": 85,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [
+          "KeyS"
+        ],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      },
+      "mid_650ms": {
+        "x": 120,
+        "y": 251.7,
+        "vx": 0,
+        "vy": 85,
+        "spd": 85,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [
+          "KeyS"
+        ],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      },
+      "after_keyup_229": {
+        "x": 120,
+        "y": 261.6,
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      }
+    },
+    "synthetic_ime_229_short_release_no_stick": {
+      "passed": true,
+      "move": {
+        "x": 120,
+        "y": 195,
+        "vx": 85,
+        "vy": 0,
+        "spd": 85,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [
+          "KeyD"
+        ],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      },
+      "stop": {
+        "x": 131.3,
+        "y": 195,
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      }
+    },
+    "synthetic_vk_packet_telex_char_mapping": {
+      "passed": true,
+      "ư": {
+        "down": {
+          "x": 120,
+          "y": 195,
+          "vx": 0,
+          "vy": -85,
+          "spd": 85,
+          "scaleX": 1.5,
+          "scaleY": 1.5,
+          "texScaleMode": 1,
+          "nearestEnum": 1,
+          "codes": [
+            "KeyW"
+          ],
+          "shiftHeld": false,
+          "sprinting": false,
+          "craftingOpen": false,
+          "searchQuery": "",
+          "journalOpen": false,
+          "equipOpen": false,
+          "pauseOpen": false,
+          "campfireOpen": false,
+          "cauldronOpen": false,
+          "chestOpen": false,
+          "dialogueOpen": false
+        },
+        "up": {
+          "x": 120,
+          "y": 185.1,
+          "vx": 0,
+          "vy": 0,
+          "spd": 0,
+          "scaleX": 1.5,
+          "scaleY": 1.5,
+          "texScaleMode": 1,
+          "nearestEnum": 1,
+          "codes": [],
+          "shiftHeld": false,
+          "sprinting": false,
+          "craftingOpen": false,
+          "searchQuery": "",
+          "journalOpen": false,
+          "equipOpen": false,
+          "pauseOpen": false,
+          "campfireOpen": false,
+          "cauldronOpen": false,
+          "chestOpen": false,
+          "dialogueOpen": false
+        },
+        "expected": "KeyW"
+      },
+      "đ": {
+        "down": {
+          "x": 120,
+          "y": 185.1,
+          "vx": 85,
+          "vy": 0,
+          "spd": 85,
+          "scaleX": 1.5,
+          "scaleY": 1.5,
+          "texScaleMode": 1,
+          "nearestEnum": 1,
+          "codes": [
+            "KeyD"
+          ],
+          "shiftHeld": false,
+          "sprinting": false,
+          "craftingOpen": false,
+          "searchQuery": "",
+          "journalOpen": false,
+          "equipOpen": false,
+          "pauseOpen": false,
+          "campfireOpen": false,
+          "cauldronOpen": false,
+          "chestOpen": false,
+          "dialogueOpen": false
+        },
+        "up": {
+          "x": 129.9,
+          "y": 185.1,
+          "vx": 0,
+          "vy": 0,
+          "spd": 0,
+          "scaleX": 1.5,
+          "scaleY": 1.5,
+          "texScaleMode": 1,
+          "nearestEnum": 1,
+          "codes": [],
+          "shiftHeld": false,
+          "sprinting": false,
+          "craftingOpen": false,
+          "searchQuery": "",
+          "journalOpen": false,
+          "equipOpen": false,
+          "pauseOpen": false,
+          "campfireOpen": false,
+          "cauldronOpen": false,
+          "chestOpen": false,
+          "dialogueOpen": false
+        },
+        "expected": "KeyD"
+      },
+      "á": {
+        "down": {
+          "x": 129.9,
+          "y": 185.1,
+          "vx": -85,
+          "vy": 0,
+          "spd": 85,
+          "scaleX": 1.5,
+          "scaleY": 1.5,
+          "texScaleMode": 1,
+          "nearestEnum": 1,
+          "codes": [
+            "KeyA"
+          ],
+          "shiftHeld": false,
+          "sprinting": false,
+          "craftingOpen": false,
+          "searchQuery": "",
+          "journalOpen": false,
+          "equipOpen": false,
+          "pauseOpen": false,
+          "campfireOpen": false,
+          "cauldronOpen": false,
+          "chestOpen": false,
+          "dialogueOpen": false
+        },
+        "up": {
+          "x": 118.6,
+          "y": 185.1,
+          "vx": 0,
+          "vy": 0,
+          "spd": 0,
+          "scaleX": 1.5,
+          "scaleY": 1.5,
+          "texScaleMode": 1,
+          "nearestEnum": 1,
+          "codes": [],
+          "shiftHeld": false,
+          "sprinting": false,
+          "craftingOpen": false,
+          "searchQuery": "",
+          "journalOpen": false,
+          "equipOpen": false,
+          "pauseOpen": false,
+          "campfireOpen": false,
+          "cauldronOpen": false,
+          "chestOpen": false,
+          "dialogueOpen": false
+        },
+        "expected": "KeyA"
+      }
+    },
+    "canvas_composition_does_not_block_or_stick": {
+      "passed": true,
+      "move": {
+        "x": 120,
+        "y": 195,
+        "vx": 0,
+        "vy": 85,
+        "spd": 85,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [
+          "KeyS"
+        ],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      },
+      "stop": {
+        "x": 120,
+        "y": 213.4,
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      }
+    },
+    "alt_tab_blur_cleanup_and_resume": {
+      "passed": true,
+      "pre_blur": {
+        "x": 134,
+        "y": 195,
+        "vx": 140,
+        "vy": 0,
+        "spd": 140,
+        "scaleX": 1.14,
+        "scaleY": 1.14,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [
+          "ShiftLeft",
+          "KeyD"
+        ],
+        "shiftHeld": true,
+        "sprinting": true,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      },
+      "post_blur": {
+        "x": 134,
+        "y": 195,
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      },
+      "resumed": {
+        "x": 141.1,
+        "y": 195,
+        "vx": 85,
+        "vy": 0,
+        "spd": 85,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [
+          "KeyD"
+        ],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      }
+    },
+    "pagehide_cleanup": {
+      "passed": true,
+      "post_pagehide": {
+        "x": 120,
+        "y": 195,
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      }
+    },
+    "modal_single_toggles_C_I_Tab_J_B": {
+      "passed": true,
+      "C_crafting": {
+        "open_ok": true,
+        "close_ok": true,
+        "st1": {
+          "craftingOpen": true,
+          "pauseOpen": false
+        },
+        "st2": {
+          "craftingOpen": false,
+          "pauseOpen": false
+        }
+      },
+      "I_crafting": {
+        "open_ok": true,
+        "close_ok": true,
+        "st1": {
+          "craftingOpen": true,
+          "pauseOpen": false
+        },
+        "st2": {
+          "craftingOpen": false,
+          "pauseOpen": false
+        }
+      },
+      "Tab_crafting": {
+        "open_ok": true,
+        "close_ok": true,
+        "st1": {
+          "craftingOpen": true,
+          "pauseOpen": false
+        },
+        "st2": {
+          "craftingOpen": false,
+          "pauseOpen": false
+        }
+      },
+      "J_journal": {
+        "open_ok": true,
+        "close_ok": true,
+        "st1": {
+          "journalOpen": true,
+          "pauseOpen": false
+        },
+        "st2": {
+          "journalOpen": false,
+          "pauseOpen": false
+        }
+      },
+      "B_equipment": {
+        "open_ok": true,
+        "close_ok": true,
+        "st1": {
+          "equipOpen": true,
+          "pauseOpen": false
+        },
+        "st2": {
+          "equipOpen": false,
+          "pauseOpen": false
+        }
+      }
+    },
+    "movement_cleared_on_modal_and_search_typing_esc": {
+      "passed": true,
+      "while_moving": {
+        "x": 120,
+        "y": 197.8,
+        "vx": 0,
+        "vy": 85,
+        "spd": 85,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [
+          "KeyS"
+        ],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      },
+      "after_modal_open": {
+        "x": 120,
+        "y": 197.8,
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": true,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      },
+      "during_typing": {
+        "x": 120,
+        "y": 197.8,
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": true,
+        "searchQuery": "wasd",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      },
+      "after_esc1": {
+        "x": 120,
+        "y": 197.8,
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": true,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      },
+      "after_esc2": {
+        "x": 120,
+        "y": 197.8,
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      }
+    },
+    "overlay_modals_esc_does_not_open_pause": {
+      "passed": true,
+      "campfire": {
+        "opened": true,
+        "closed_cleanly": true
+      },
+      "cauldron": {
+        "opened": true,
+        "closed_cleanly": true
+      },
+      "chest": {
+        "opened": true,
+        "closed_cleanly": true
+      }
+    },
+    "pause_modal_esc_toggle": {
+      "passed": true,
+      "p_open": {
+        "x": 120,
+        "y": 195,
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": true,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      },
+      "p_close": {
+        "x": 120,
+        "y": 195,
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      }
+    },
+    "ime_229_modal_shortcut_keyJ": {
+      "passed": true,
+      "open": {
+        "x": 120,
+        "y": 195,
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": true,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      },
+      "close": {
+        "x": 120,
+        "y": 195,
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      }
+    },
+    "dialogue_blocks_movement_and_esc_cancels": {
+      "passed": true,
+      "dlg_open": {
+        "x": 120,
+        "y": 196.4,
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": true
+      },
+      "dlg_closed": {
+        "x": 120,
+        "y": 196.4,
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      }
+    },
+    "continuous_780ms_movement_and_clean_stop": {
+      "passed": true,
+      "vx_samples": [
+        85,
+        85,
+        85,
+        85,
+        85,
+        85
+      ],
+      "after_release": {
+        "x": 131.3,
+        "y": 195,
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "scaleX": 1.5,
+        "scaleY": 1.5,
+        "texScaleMode": 1,
+        "nearestEnum": 1,
+        "codes": [],
+        "shiftHeld": false,
+        "sprinting": false,
+        "craftingOpen": false,
+        "searchQuery": "",
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false,
+        "campfireOpen": false,
+        "cauldronOpen": false,
+        "chestOpen": false,
+        "dialogueOpen": false
+      }
+    },
+    "zero_page_errors": {
+      "passed": true,
+      "count": 0,
+      "errors": []
+    },
+    "zero_console_errors": {
+      "passed": true,
+      "count": 0,
+      "errors": []
+    }
+  },
+  "event_trace": [
+    {
+      "t": 12540,
+      "type": "keydown",
+      "code": "KeyW",
+      "key": "w",
+      "keyCode": 87,
+      "target": "CANVAS"
+    },
+    {
+      "t": 12882,
+      "type": "keyup",
+      "code": "KeyW",
+      "key": "w",
+      "keyCode": 87,
+      "target": "CANVAS"
+    },
+    {
+      "t": 13460,
+      "type": "keydown",
+      "code": "KeyD",
+      "key": "d",
+      "keyCode": 68,
+      "target": "CANVAS"
+    },
+    {
+      "t": 13825,
+      "type": "keyup",
+      "code": "KeyD",
+      "key": "d",
+      "keyCode": 68,
+      "target": "CANVAS"
+    },
+    {
+      "t": 14509,
+      "type": "keydown",
+      "code": "KeyS",
+      "key": "s",
+      "keyCode": 83,
+      "target": "CANVAS"
+    },
+    {
+      "t": 15223,
+      "type": "keyup",
+      "code": "KeyS",
+      "key": "s",
+      "keyCode": 83,
+      "target": "CANVAS"
+    },
+    {
+      "t": 15427,
+      "type": "keydown",
+      "code": "KeyA",
+      "key": "a",
+      "keyCode": 65,
+      "target": "CANVAS"
+    },
+    {
+      "t": 15836,
+      "type": "keyup",
+      "code": "KeyA",
+      "key": "a",
+      "keyCode": 65,
+      "target": "CANVAS"
+    },
+    {
+      "t": 16462,
+      "type": "keydown",
+      "code": "KeyS",
+      "key": "s",
+      "keyCode": 83,
+      "target": "CANVAS"
+    },
+    {
+      "t": 16467,
+      "type": "keydown",
+      "code": "KeyD",
+      "key": "d",
+      "keyCode": 68,
+      "target": "CANVAS"
+    },
+    {
+      "t": 16696,
+      "type": "keyup",
+      "code": "KeyS",
+      "key": "s",
+      "keyCode": 83,
+      "target": "CANVAS"
+    },
+    {
+      "t": 16870,
+      "type": "keydown",
+      "code": "ShiftLeft",
+      "key": "Shift",
+      "keyCode": 16,
+      "target": "CANVAS"
+    },
+    {
+      "t": 17074,
+      "type": "keyup",
+      "code": "KeyD",
+      "key": "D",
+      "keyCode": 68,
+      "target": "CANVAS"
+    },
+    {
+      "t": 17083,
+      "type": "keyup",
+      "code": "ShiftLeft",
+      "key": "Shift",
+      "keyCode": 16,
+      "target": "CANVAS"
+    },
+    {
+      "t": 17396,
+      "type": "keydown",
+      "code": "KeyS",
+      "key": "Process",
+      "keyCode": 229,
+      "target": "WINDOW"
+    },
+    {
+      "t": 18112,
+      "type": "keyup",
+      "code": "KeyS",
+      "key": "Process",
+      "keyCode": 229,
+      "target": "WINDOW"
+    },
+    {
+      "t": 18392,
+      "type": "keydown",
+      "code": "KeyD",
+      "key": "Process",
+      "keyCode": 229,
+      "target": "WINDOW"
+    },
+    {
+      "t": 18537,
+      "type": "keyup",
+      "code": "KeyD",
+      "key": "Process",
+      "keyCode": 229,
+      "target": "WINDOW"
+    },
+    {
+      "t": 18824,
+      "type": "keydown",
+      "code": "",
+      "key": "ư",
+      "keyCode": 231,
+      "target": "WINDOW"
+    },
+    {
+      "t": 18996,
+      "type": "keyup",
+      "code": "",
+      "key": "ư",
+      "keyCode": 231,
+      "target": "WINDOW"
+    },
+    {
+      "t": 19119,
+      "type": "keydown",
+      "code": "",
+      "key": "đ",
+      "keyCode": 231,
+      "target": "WINDOW"
+    },
+    {
+      "t": 19291,
+      "type": "keyup",
+      "code": "",
+      "key": "đ",
+      "keyCode": 231,
+      "target": "WINDOW"
+    },
+    {
+      "t": 19410,
+      "type": "keydown",
+      "code": "",
+      "key": "á",
+      "keyCode": 231,
+      "target": "WINDOW"
+    },
+    {
+      "t": 19633,
+      "type": "keyup",
+      "code": "",
+      "key": "á",
+      "keyCode": 231,
+      "target": "WINDOW"
+    },
+    {
+      "t": 19905,
+      "type": "compositionstart",
+      "code": "",
+      "key": "",
+      "keyCode": 0,
+      "target": "WINDOW"
+    },
+    {
+      "t": 19909,
+      "type": "keydown",
+      "code": "KeyS",
+      "key": "s",
+      "keyCode": 83,
+      "target": "CANVAS"
+    },
+    {
+      "t": 20077,
+      "type": "compositionend",
+      "code": "",
+      "key": "",
+      "keyCode": 0,
+      "target": "WINDOW"
+    },
+    {
+      "t": 20092,
+      "type": "keyup",
+      "code": "KeyS",
+      "key": "s",
+      "keyCode": 83,
+      "target": "CANVAS"
+    },
+    {
+      "t": 20389,
+      "type": "keydown",
+      "code": "ShiftLeft",
+      "key": "Shift",
+      "keyCode": 16,
+      "target": "CANVAS"
+    },
+    {
+      "t": 20400,
+      "type": "keydown",
+      "code": "KeyD",
+      "key": "D",
+      "keyCode": 68,
+      "target": "CANVAS"
+    },
+    {
+      "t": 20577,
+      "type": "keyup",
+      "code": "KeyD",
+      "key": "D",
+      "keyCode": 68,
+      "target": "CANVAS"
+    },
+    {
+      "t": 20583,
+      "type": "keyup",
+      "code": "ShiftLeft",
+      "key": "Shift",
+      "keyCode": 16,
+      "target": "CANVAS"
+    },
+    {
+      "t": 20734,
+      "type": "keydown",
+      "code": "KeyD",
+      "key": "d",
+      "keyCode": 68,
+      "target": "CANVAS"
+    },
+    {
+      "t": 20913,
+      "type": "keyup",
+      "code": "KeyD",
+      "key": "d",
+      "keyCode": 68,
+      "target": "CANVAS"
+    },
+    {
+      "t": 21187,
+      "type": "keydown",
+      "code": "KeyS",
+      "key": "s",
+      "keyCode": 83,
+      "target": "CANVAS"
+    },
+    {
+      "t": 21343,
+      "type": "keyup",
+      "code": "KeyS",
+      "key": "s",
+      "keyCode": 83,
+      "target": "CANVAS"
+    },
+    {
+      "t": 21606,
+      "type": "keydown",
+      "code": "KeyC",
+      "key": "c",
+      "keyCode": 67,
+      "target": "CANVAS"
+    },
+    {
+      "t": 21707,
+      "type": "keyup",
+      "code": "KeyC",
+      "key": "c",
+      "keyCode": 67,
+      "target": "CANVAS"
+    },
+    {
+      "t": 21878,
+      "type": "keydown",
+      "code": "KeyC",
+      "key": "c",
+      "keyCode": 67,
+      "target": "CANVAS"
+    },
+    {
+      "t": 21882,
+      "type": "keyup",
+      "code": "KeyC",
+      "key": "c",
+      "keyCode": 67,
+      "target": "CANVAS"
+    },
+    {
+      "t": 22177,
+      "type": "keydown",
+      "code": "KeyI",
+      "key": "i",
+      "keyCode": 73,
+      "target": "CANVAS"
+    },
+    {
+      "t": 22205,
+      "type": "keyup",
+      "code": "KeyI",
+      "key": "i",
+      "keyCode": 73,
+      "target": "CANVAS"
+    },
+    {
+      "t": 22382,
+      "type": "keydown",
+      "code": "KeyI",
+      "key": "i",
+      "keyCode": 73,
+      "target": "CANVAS"
+    },
+    {
+      "t": 22388,
+      "type": "keyup",
+      "code": "KeyI",
+      "key": "i",
+      "keyCode": 73,
+      "target": "CANVAS"
+    },
+    {
+      "t": 22711,
+      "type": "keydown",
+      "code": "Tab",
+      "key": "Tab",
+      "keyCode": 9,
+      "target": "CANVAS"
+    },
+    {
+      "t": 22735,
+      "type": "keyup",
+      "code": "Tab",
+      "key": "Tab",
+      "keyCode": 9,
+      "target": "CANVAS"
+    },
+    {
+      "t": 22909,
+      "type": "keydown",
+      "code": "Tab",
+      "key": "Tab",
+      "keyCode": 9,
+      "target": "CANVAS"
+    },
+    {
+      "t": 22914,
+      "type": "keyup",
+      "code": "Tab",
+      "key": "Tab",
+      "keyCode": 9,
+      "target": "CANVAS"
+    },
+    {
+      "t": 23223,
+      "type": "keydown",
+      "code": "KeyJ",
+      "key": "j",
+      "keyCode": 74,
+      "target": "CANVAS"
+    },
+    {
+      "t": 23499,
+      "type": "keyup",
+      "code": "KeyJ",
+      "key": "j",
+      "keyCode": 74,
+      "target": "CANVAS"
+    },
+    {
+      "t": 23681,
+      "type": "keydown",
+      "code": "KeyJ",
+      "key": "j",
+      "keyCode": 74,
+      "target": "CANVAS"
+    },
+    {
+      "t": 23684,
+      "type": "keyup",
+      "code": "KeyJ",
+      "key": "j",
+      "keyCode": 74,
+      "target": "CANVAS"
+    },
+    {
+      "t": 23994,
+      "type": "keydown",
+      "code": "KeyB",
+      "key": "b",
+      "keyCode": 66,
+      "target": "CANVAS"
+    },
+    {
+      "t": 24350,
+      "type": "keyup",
+      "code": "KeyB",
+      "key": "b",
+      "keyCode": 66,
+      "target": "CANVAS"
+    },
+    {
+      "t": 24526,
+      "type": "keydown",
+      "code": "KeyB",
+      "key": "b",
+      "keyCode": 66,
+      "target": "CANVAS"
+    },
+    {
+      "t": 24533,
+      "type": "keyup",
+      "code": "KeyB",
+      "key": "b",
+      "keyCode": 66,
+      "target": "CANVAS"
+    },
+    {
+      "t": 24866,
+      "type": "keydown",
+      "code": "KeyS",
+      "key": "s",
+      "keyCode": 83,
+      "target": "CANVAS"
+    },
+    {
+      "t": 25150,
+      "type": "keydown",
+      "code": "KeyC",
+      "key": "c",
+      "keyCode": 67,
+      "target": "CANVAS"
+    },
+    {
+      "t": 25184,
+      "type": "keyup",
+      "code": "KeyC",
+      "key": "c",
+      "keyCode": 67,
+      "target": "CANVAS"
+    },
+    {
+      "t": 25519,
+      "type": "keyup",
+      "code": "KeyS",
+      "key": "s",
+      "keyCode": 83,
+      "target": "CANVAS"
+    },
+    {
+      "t": 25526,
+      "type": "keydown",
+      "code": "KeyW",
+      "key": "w",
+      "keyCode": 87,
+      "target": "CANVAS"
+    },
+    {
+      "t": 25562,
+      "type": "keyup",
+      "code": "KeyW",
+      "key": "w",
+      "keyCode": 87,
+      "target": "CANVAS"
+    },
+    {
+      "t": 25563,
+      "type": "keydown",
+      "code": "KeyA",
+      "key": "a",
+      "keyCode": 65,
+      "target": "CANVAS"
+    },
+    {
+      "t": 25593,
+      "type": "keyup",
+      "code": "KeyA",
+      "key": "a",
+      "keyCode": 65,
+      "target": "CANVAS"
+    },
+    {
+      "t": 25595,
+      "type": "keydown",
+      "code": "KeyS",
+      "key": "s",
+      "keyCode": 83,
+      "target": "CANVAS"
+    },
+    {
+      "t": 25639,
+      "type": "keyup",
+      "code": "KeyS",
+      "key": "s",
+      "keyCode": 83,
+      "target": "CANVAS"
+    },
+    {
+      "t": 25640,
+      "type": "keydown",
+      "code": "KeyD",
+      "key": "d",
+      "keyCode": 68,
+      "target": "CANVAS"
+    },
+    {
+      "t": 25684,
+      "type": "keyup",
+      "code": "KeyD",
+      "key": "d",
+      "keyCode": 68,
+      "target": "CANVAS"
+    },
+    {
+      "t": 26069,
+      "type": "keydown",
+      "code": "Escape",
+      "key": "Escape",
+      "keyCode": 27,
+      "target": "CANVAS"
+    },
+    {
+      "t": 26085,
+      "type": "keyup",
+      "code": "Escape",
+      "key": "Escape",
+      "keyCode": 27,
+      "target": "CANVAS"
+    },
+    {
+      "t": 26432,
+      "type": "keydown",
+      "code": "Escape",
+      "key": "Escape",
+      "keyCode": 27,
+      "target": "CANVAS"
+    },
+    {
+      "t": 26440,
+      "type": "keyup",
+      "code": "Escape",
+      "key": "Escape",
+      "keyCode": 27,
+      "target": "CANVAS"
+    },
+    {
+      "t": 27173,
+      "type": "keydown",
+      "code": "Escape",
+      "key": "Escape",
+      "keyCode": 27,
+      "target": "CANVAS"
+    },
+    {
+      "t": 27177,
+      "type": "keyup",
+      "code": "Escape",
+      "key": "Escape",
+      "keyCode": 27,
+      "target": "CANVAS"
+    },
+    {
+      "t": 27682,
+      "type": "keydown",
+      "code": "Escape",
+      "key": "Escape",
+      "keyCode": 27,
+      "target": "CANVAS"
+    },
+    {
+      "t": 27686,
+      "type": "keyup",
+      "code": "Escape",
+      "key": "Escape",
+      "keyCode": 27,
+      "target": "CANVAS"
+    },
+    {
+      "t": 28282,
+      "type": "keydown",
+      "code": "Escape",
+      "key": "Escape",
+      "keyCode": 27,
+      "target": "CANVAS"
+    },
+    {
+      "t": 28292,
+      "type": "keyup",
+      "code": "Escape",
+      "key": "Escape",
+      "keyCode": 27,
+      "target": "CANVAS"
+    },
+    {
+      "t": 28622,
+      "type": "keydown",
+      "code": "Escape",
+      "key": "Escape",
+      "keyCode": 27,
+      "target": "CANVAS"
+    },
+    {
+      "t": 28671,
+      "type": "keyup",
+      "code": "Escape",
+      "key": "Escape",
+      "keyCode": 27,
+      "target": "CANVAS"
+    },
+    {
+      "t": 28842,
+      "type": "keydown",
+      "code": "Escape",
+      "key": "Escape",
+      "keyCode": 27,
+      "target": "CANVAS"
+    },
+    {
+      "t": 28852,
+      "type": "keyup",
+      "code": "Escape",
+      "key": "Escape",
+      "keyCode": 27,
+      "target": "CANVAS"
+    },
+    {
+      "t": 29181,
+      "type": "keydown",
+      "code": "KeyJ",
+      "key": "Process",
+      "keyCode": 229,
+      "target": "WINDOW"
+    },
+    {
+      "t": 29336,
+      "type": "keydown",
+      "code": "Escape",
+      "key": "Escape",
+      "keyCode": 27,
+      "target": "CANVAS"
+    },
+    {
+      "t": 29341,
+      "type": "keyup",
+      "code": "Escape",
+      "key": "Escape",
+      "keyCode": 27,
+      "target": "CANVAS"
+    },
+    {
+      "t": 29629,
+      "type": "keydown",
+      "code": "KeyS",
+      "key": "s",
+      "keyCode": 83,
+      "target": "CANVAS"
+    },
+    {
+      "t": 30456,
+      "type": "keyup",
+      "code": "KeyS",
+      "key": "s",
+      "keyCode": 83,
+      "target": "CANVAS"
+    },
+    {
+      "t": 30468,
+      "type": "keydown",
+      "code": "Enter",
+      "key": "Enter",
+      "keyCode": 13,
+      "target": "CANVAS"
+    },
+    {
+      "t": 30488,
+      "type": "keyup",
+      "code": "Enter",
+      "key": "Enter",
+      "keyCode": 13,
+      "target": "CANVAS"
+    },
+    {
+      "t": 30682,
+      "type": "keydown",
+      "code": "Escape",
+      "key": "Escape",
+      "keyCode": 27,
+      "target": "CANVAS"
+    },
+    {
+      "t": 30686,
+      "type": "keyup",
+      "code": "Escape",
+      "key": "Escape",
+      "keyCode": 27,
+      "target": "CANVAS"
+    },
+    {
+      "t": 31184,
+      "type": "keydown",
+      "code": "KeyD",
+      "key": "d",
+      "keyCode": 68,
+      "target": "CANVAS"
+    },
+    {
+      "t": 32139,
+      "type": "keyup",
+      "code": "KeyD",
+      "key": "d",
+      "keyCode": 68,
+      "target": "CANVAS"
+    }
+  ],
+  "page_errors": [],
+  "console_errors": []
+}

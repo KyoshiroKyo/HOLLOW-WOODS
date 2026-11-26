@@ -138,9 +138,19 @@ export class CraftingModal {
     });
   }
 
+  public clearSearchIfActive(): boolean {
+    if (this.isOpen && this.searchQuery.length > 0) {
+      this.searchQuery = '';
+      this.updateSearchDisplay();
+      this.refreshGrid();
+      return true;
+    }
+    return false;
+  }
+
   /**
-   * Thiết lập bộ lắng nghe bàn phím hỗ trợ toggle modal [I], [C], [ESC], [TAB]
-   * và gõ tìm kiếm ký tự trực tiếp vào Search Bar
+   * Thiết lập bộ lắng nghe bàn phím gõ tìm kiếm ký tự trực tiếp vào Search Bar
+   * (Các phím toggle [I]/[C]/[TAB]/[J]/[ESC] được định tuyến tập trung 1 lần tại UIScene)
    */
   private setupKeyboardListeners(): void {
     if (!this.scene.input || !this.scene.input.keyboard) return;
@@ -151,35 +161,12 @@ export class CraftingModal {
       this.keyHandlers.push({ event, fn });
     };
 
-    addKey('keydown-I', () => this.toggle());
-    addKey('keydown-J', () => {
-      if (this.isOpen) {
-        this.close();
-        const ui = this.scene as any;
-        if (ui && typeof ui.toggleJournal === 'function') {
-          ui.toggleJournal();
-        }
-      }
-    });
-    addKey('keydown-TAB', (e: KeyboardEvent) => {
-      e.preventDefault();
-      this.toggle();
-    });
-    addKey('keydown-ESC', () => {
-      if (this.isOpen) {
-        if (this.searchQuery.length > 0) {
-          this.searchQuery = '';
-          this.updateSearchDisplay();
-          this.refreshGrid();
-        } else {
-          this.close();
-        }
-      }
-    });
-
-    // Lắng nghe gõ ký tự tìm kiếm khi bảng chế tạo đang mở
+    // Lắng nghe gõ ký tự tìm kiếm khi bảng chế tạo đang mở (chống Phaser queue replay & repeat)
+    const seenSearchEvents = new WeakSet<KeyboardEvent>();
     addKey('keydown', (event: KeyboardEvent) => {
       if (!this.isOpen) return;
+      if (seenSearchEvents.has(event) || event.repeat) return;
+      seenSearchEvents.add(event);
 
       // Không chặn các phím điều hướng hệ thống
       if (event.key === 'Escape' || event.key === 'Tab') return;

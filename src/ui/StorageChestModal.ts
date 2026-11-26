@@ -56,13 +56,7 @@ export class StorageChestModal {
     this.buildUI();
     this.container.setVisible(false);
 
-    // Lắng nghe phím ESC để đóng
-    if (scene.input && scene.input.keyboard) {
-      this.onEscKeyHandler = () => {
-        if (this.isOpen) this.close();
-      };
-      scene.input.keyboard.on('keydown-ESC', this.onEscKeyHandler);
-    }
+    // ESC đóng modal được điều phối tập trung tại UIScene.handleESC() (HW-V16-B03)
 
     // Lắng nghe cập nhật rương và túi đồ (V15-27: có handler để gỡ khi destroy)
     this.onChestUpdatedHandler = () => {

@@ -40,12 +40,7 @@ export class CauldronModal {
     this.buildUI();
     this.container.setVisible(false);
 
-    if (scene.input && scene.input.keyboard) {
-      this.onEscKeyHandler = () => {
-        if (this.isOpen) this.close();
-      };
-      scene.input.keyboard.on('keydown-ESC', this.onEscKeyHandler);
-    }
+    // ESC đóng modal được điều phối tập trung tại UIScene.handleESC() (HW-V16-B03)
 
     this.onInventoryChangedHandler = () => {
       if (this.isOpen) this.refreshView();

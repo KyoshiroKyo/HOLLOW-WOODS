@@ -60,17 +60,7 @@ export class EquipmentModal {
     this.buildUI();
     this.container.setVisible(false);
 
-    // Lắng nghe phím ESC & B để đóng/mở (V15-27: có handler để gỡ khi destroy)
-    if (scene.input && scene.input.keyboard) {
-      this.onEscKeyHandler = () => {
-        if (this.isOpen) this.close();
-      };
-      this.onBKeyHandler = () => {
-        this.toggle();
-      };
-      scene.input.keyboard.on('keydown-ESC', this.onEscKeyHandler);
-      scene.input.keyboard.on('keydown-B', this.onBKeyHandler);
-    }
+    // Toggle [B] & [ESC] được định tuyến tập trung 1 lần tại UIScene để tránh double-toggle.
 
     // Lắng nghe sự kiện thay đổi trang bị hoặc túi đồ (V15-27: có handler để gỡ khi destroy)
     this.onEquipmentChangedHandler = () => {

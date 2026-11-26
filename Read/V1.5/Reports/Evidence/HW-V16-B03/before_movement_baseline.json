@@ -1,0 +1,186 @@
+{
+  "tests": {
+    "ime_229_with_code_hold_and_release": {
+      "early_150ms": {
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "codes": [
+          "KeyW"
+        ],
+        "shiftHeld": false,
+        "craftingOpen": false,
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false
+      },
+      "mid_600ms": {
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "codes": [],
+        "shiftHeld": false,
+        "craftingOpen": false,
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false
+      },
+      "after_keyup_229": {
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "codes": [],
+        "shiftHeld": false,
+        "craftingOpen": false,
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false
+      }
+    },
+    "toggle_KeyJ_journal": {
+      "after_1st_press": {
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "codes": [],
+        "shiftHeld": false,
+        "craftingOpen": false,
+        "journalOpen": true,
+        "equipOpen": false,
+        "pauseOpen": false
+      },
+      "after_2nd_press": {
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "codes": [],
+        "shiftHeld": false,
+        "craftingOpen": false,
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false
+      }
+    },
+    "toggle_KeyI_crafting": {
+      "after_1st_press": {
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "codes": [],
+        "shiftHeld": false,
+        "craftingOpen": true,
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false
+      },
+      "after_2nd_press": {
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "codes": [],
+        "shiftHeld": false,
+        "craftingOpen": false,
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false
+      }
+    },
+    "toggle_KeyB_equipment": {
+      "after_1st_press": {
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "codes": [],
+        "shiftHeld": false,
+        "craftingOpen": false,
+        "journalOpen": false,
+        "equipOpen": true,
+        "pauseOpen": false
+      },
+      "after_2nd_press": {
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "codes": [],
+        "shiftHeld": false,
+        "craftingOpen": false,
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false
+      }
+    },
+    "toggle_Tab_crafting": {
+      "after_1st_press": {
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "codes": [],
+        "shiftHeld": false,
+        "craftingOpen": true,
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false
+      },
+      "after_2nd_press": {
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "codes": [],
+        "shiftHeld": false,
+        "craftingOpen": true,
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false
+      }
+    },
+    "toggle_KeyC_crafting": {
+      "after_1st_press": {
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "codes": [],
+        "shiftHeld": false,
+        "craftingOpen": false,
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false
+      },
+      "after_2nd_press": {
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "codes": [],
+        "shiftHeld": false,
+        "craftingOpen": true,
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false
+      }
+    },
+    "blur_while_moving": {
+      "moving": {
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "codes": [],
+        "shiftHeld": false,
+        "craftingOpen": true,
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false
+      },
+      "blurred": {
+        "vx": 0,
+        "vy": 0,
+        "spd": 0,
+        "codes": [],
+        "shiftHeld": false,
+        "craftingOpen": true,
+        "journalOpen": false,
+        "equipOpen": false,
+        "pauseOpen": false
+      }
+    }
+  },
+  "errors": []
+}

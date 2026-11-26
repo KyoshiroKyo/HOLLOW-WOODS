@@ -357,26 +357,13 @@ export class JournalModal {
     this.buildUI();
     this.container.setVisible(false);
 
-    // Lắng nghe phím bấm J, ESC và số 1, 2, 3 chuyển tab (V15-27: quản lý keyHandlers gỡ khi destroy)
+    // Lắng nghe phím số 1..4 & điều hướng (phím toggle J/I/ESC tập trung tại UIScene để tránh bật/tắt kép)
     const kb = scene.input?.keyboard;
     if (kb) {
       const addKey = (key: string, fn: any) => {
         kb.on(key, fn);
         this.keyHandlers.push({ key, fn });
       };
-      addKey('keydown-J', () => this.toggle());
-      addKey('keydown-I', () => {
-        if (this.isOpen) {
-          this.close();
-          const ui = this.scene as any;
-          if (ui && typeof ui.toggleCrafting === 'function') {
-            ui.toggleCrafting();
-          }
-        }
-      });
-      addKey('keydown-ESC', () => {
-        if (this.isOpen) this.close();
-      });
       addKey('keydown-ONE', () => {
         if (this.isOpen) {
           this.currentTab = 'quest';
