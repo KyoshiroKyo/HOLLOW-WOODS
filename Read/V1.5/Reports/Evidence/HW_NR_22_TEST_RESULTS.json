@@ -1,0 +1,68 @@
+{
+  "console_errors": [],
+  "page_errors": [],
+  "failed_requests": [],
+  "gpu_renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "tests": {
+    "act0_movement_and_player_scale": {
+      "pos_before": {
+        "x": 120,
+        "y": 195,
+        "sx": 1.5,
+        "sy": 1.5,
+        "tex": "black_knight_armed_idle",
+        "lantern": true
+      },
+      "pos_after": {
+        "x": 162.49999999999991,
+        "y": 195,
+        "sx": 1.5,
+        "sy": 1.5
+      },
+      "moved_x": 42.5,
+      "idle_scale": 1.5,
+      "move_scale": 1.5
+    },
+    "world_map": {
+      "open": true,
+      "nodeCount": 10
+    },
+    "journal": {
+      "open": true
+    },
+    "performance_and_memory": {
+      "highPerf": {
+        "samples": 119,
+        "avgFps": 59.95,
+        "avgMs": 16.68,
+        "p95Ms": 16.8,
+        "maxMs": 16.9
+      },
+      "mediumPerf": {
+        "samples": 119,
+        "avgFps": 59.96,
+        "avgMs": 16.68,
+        "p95Ms": 16.8,
+        "maxMs": 16.9
+      },
+      "memBeforeMB": 241.24,
+      "memAfterMB": 246.15,
+      "memDeltaMB": 4.91,
+      "activeScenes": [
+        "GameScene",
+        "UIScene"
+      ],
+      "pixelArt": true,
+      "roundPixels": true,
+      "texturesCount": 584
+    }
+  },
+  "screenshots": [
+    "G:\\HOLLOW WOODS\\Read\\V1.5\\Reports\\Visuals\\HW-NR-22\\01_main_menu.png",
+    "G:\\HOLLOW WOODS\\Read\\V1.5\\Reports\\Visuals\\HW-NR-22\\02_act0_fog_crossing.png",
+    "G:\\HOLLOW WOODS\\Read\\V1.5\\Reports\\Visuals\\HW-NR-22\\03_bellhollow_dialogue.png",
+    "G:\\HOLLOW WOODS\\Read\\V1.5\\Reports\\Visuals\\HW-NR-22\\04_world_map_ui.png",
+    "G:\\HOLLOW WOODS\\Read\\V1.5\\Reports\\Visuals\\HW-NR-22\\05_journal_lore.png",
+    "G:\\HOLLOW WOODS\\Read\\V1.5\\Reports\\Visuals\\HW-NR-22\\06_classic_sanity_low.png"
+  ]
+}
