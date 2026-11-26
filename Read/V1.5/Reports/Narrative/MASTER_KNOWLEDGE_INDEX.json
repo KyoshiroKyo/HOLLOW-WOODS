@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "2.0",
+  "checkpointMission": "HW-NARRATIVE-00H",
+  "generatedAt": "2026-11-26T17:30:00+07:00",
+  "project": {
+    "name": "HOLLOW WOODS",
+    "studio": "KYOSHIRO STUDIO",
+    "baselineSubtitle": "THE FOG THAT REMEMBERS",
+    "trailerSubtitle": "THE UNBROKEN OATH",
+    "engine": "Phaser 4.2.1 + TypeScript 5.5 + Vite 5.4",
+    "logicalCanvas": "640x360",
+    "viewport": "1280x720"
+  },
+  "gitBaseline": {
+    "branch": "feat/v1.5.3-ag-world-polish",
+    "head": "11d91dd545b8bbaa8bb7e16e4587ddd12bfa233d",
+    "productionSourceModifiedBy00AThrough00H": false,
+    "preExistingUncommittedSrcFix": [
+      "src/entities/BlackKnightPlayer.ts",
+      "src/scenes/UIScene.ts",
+      "src/ui/CraftingModal.ts",
+      "src/ui/JournalModal.ts"
+    ],
+    "deferredToCodex": ["BUG-058", "BUG-059"]
+  },
+  "primarySources": {
+    "masterGameBibleUnified": {
+      "path": "HW/Trailer/HOLLOW_WOODS_MASTER_GAME_BIBLE_UNIFIED.docx",
+      "bytes": 112394,
+      "sha256": "27a70c2fc7387a56590f192115e6d5ce47d72927f88f0e8ea679068c2228f7b4",
+      "chapters": 18,
+      "tables": 20
+    },
+    "handoverV2Zip": {
+      "path": "HW/Trailer/HOLLOW_WOODS_NARRATIVE_HANDOVER_V2.zip",
+      "bytes": 37750,
+      "sha256": "81ca70ccfdad0c4c9f79cab651fab3258a54fefaa02d549f6be39edc5e3a9806"
+    },
+    "blackKnightV2RecoveredBackup": {
+      "path": "HOLLOW_WOODS_EXPORT/Backups/BLACK_KNIGHT_V2_RECOVERED_20261126_162326.zip",
+      "bytes": 13005408,
+      "sha256": "8fef3b3b618ccb1db86a5b69eb4eac25dea34911fa1e971df57d341526805553",
+      "libraryPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/",
+      "libraryFiles": 194
+    }
+  },
+  "missionStatuses": {
+    "HW-NARRATIVE-00A": "PASS",
+    "HW-NARRATIVE-00B": "PASS",
+    "HW-NARRATIVE-00C": "PASS",
+    "HW-NARRATIVE-00D": "PASS",
+    "HW-NARRATIVE-00E": "PASS",
+    "HW-NARRATIVE-00F": "PASS",
+    "HW-NARRATIVE-00G": "PASS",
+    "HW-NARRATIVE-00H": "PASS"
+  },
+  "runtimeManifestCounts": {
+    "zones": 17,
+    "dialogueKeys": 59,
+    "loreEntries": 29,
+    "items": 43,
+    "recipes": 18,
+    "saveSchemaVersion": 3,
+    "mainRoute": "A -> E -> B -> D -> F -> E -> C -> A",
+    "audioRuntimeFiles": 65,
+    "exportArchivesTotal": 98
+  },
+  "canonSummary": {
+    "approved": [
+      "CHAR-K01: Meliodas (supersedes Drager; reveal-gated)",
+      "CHAR-K02: Lord Blackwood & The Wolf Lord",
+      "TECH-K14: Stable IDs, Save Schema 3, 7-stage mainRoute, determineEndingType thresholds"
+    ],
+    "acceptedCharacterOnly": [
+      "Sir Vaelen (baseline kept; teacher-student/friend links PROPOSED)",
+      "Sir Mordric (PROPOSED Dark Knight; OQ-04 HoodedKnightBoss conflict open)",
+      "Sir Roderick (PROPOSED The Crimson Knight)",
+      "Sir Aldemar (PROPOSED The Ashen Knight)",
+      "The Headless Warden (PROPOSED mounted boss direction)"
+    ],
+    "coreConflicts": ["C01 (NAR-003/OQ-03)", "C02 (NAR-010/OQ-06)", "C03 (NAR-014/OQ-04)", "C04 (NAR-002/OQ-20)", "C05 (NAR-001/NAR-024/OQ-02)"],
+    "openQuestionsCount": 22,
+    "openQuestionsIds": [
+      "OQ-01", "OQ-02", "OQ-03", "OQ-04", "OQ-05", "OQ-06", "OQ-07", "OQ-08", "OQ-09",
+      "OQ-10", "OQ-11", "OQ-12", "OQ-13", "OQ-14", "OQ-15", "OQ-16", "OQ-17", "OQ-18", "OQ-19", "OQ-20",
+      "OQ-K04", "OQ-K06"
+    ]
+  },
+  "documentsIndex": {
+    "knowledgeIndexMd": "Read/V1.5/Reports/Narrative/PROJECT_KNOWLEDGE_INDEX.md",
+    "knowledgeIndexBackup": "Backups/steps/backup_hw_narrative_00h/PROJECT_KNOWLEDGE_INDEX.md",
+    "ingestionReport": "Read/V1.5/Reports/HW_NARRATIVE_00A_INGESTION_REPORT.md",
+    "finalSyncReport": "Read/V1.5/Reports/HW_NARRATIVE_00_FINAL_SYNCHRONIZATION_REPORT.md",
+    "masterLoreRegistry": "Read/V1.5/Reports/Narrative/MASTER_LORE_REGISTRY.md",
+    "characterRegistry": "Read/V1.5/Reports/Narrative/CHARACTER_REGISTRY.md",
+    "characterRelationships": "Read/V1.5/Reports/Narrative/CHARACTER_RELATIONSHIPS.md",
+    "canonRegistry": "Read/V1.5/Reports/Narrative/CANON_DECISION_REGISTRY.md",
+    "conflictReport": "Read/V1.5/Reports/Narrative/NARRATIVE_CONFLICT_REPORT.md",
+    "worldRegistry": "Read/V1.5/Reports/Narrative/WORLD_AND_MAP_REGISTRY.md",
+    "worldTopology": "Read/V1.5/Reports/Narrative/WORLD_TOPOLOGY.json",
+    "worldReconstructionPlan": "Read/V1.5/Reports/Narrative/WORLD_RECONSTRUCTION_PRIORITY_PLAN.md",
+    "dialogueRegistry": "Read/V1.5/Reports/Narrative/DIALOGUE_REGISTRY.md",
+    "questRegistry": "Read/V1.5/Reports/Narrative/QUEST_IMPACT_REGISTRY.md",
+    "sourceImpactMatrix": "Read/V1.5/Reports/Narrative/SOURCE_IMPACT_MATRIX.md",
+    "trailerReference": "Read/V1.5/Reports/HW_TRAILER_VISUAL_AND_AUDIO_REFERENCE_REPORT.md",
+    "assetLicenseReport": "Read/V1.5/Reports/HW_ASSET_LICENSE_REPORT.md",
+    "newKnightEvaluation": "Read/V1.5/Reports/HW_NEW_KNIGHT_ASSET_EVALUATION_REPORT.md",
+    "headlessWardenPlan": "Read/V1.5/Reports/Narrative/HEADLESS_WARDEN_ASSET_SPECIFICATION.md",
+    "meliodasVisualPlan": "Read/V1.5/Reports/Narrative/MELIODAS_VISUAL_REFERENCE_PLAN.md",
+    "openingCutscenePlan": "Read/V1.5/Reports/Narrative/OPENING_CUTSCENE_IMPLEMENTATION_PLAN.md",
+    "audioIntegrationPlan": "Read/V1.5/Reports/Narrative/AUDIO_INTEGRATION_PLAN.md",
+    "ownerDecisionsRequired": "Read/V1.5/Reports/Narrative/OWNER_DECISIONS_REQUIRED.md",
+    "ownerLoreDecisionsLegacy": "Read/V1.5/Reports/Narrative/OWNER_LORE_DECISIONS_REQUIRED.md",
+    "developmentExecutionQueue": "Read/V1.5/Reports/Narrative/DEVELOPMENT_EXECUTION_QUEUE.md",
+    "narrativeResidueRegistry": "Read/V1.5/Reports/Narrative/NARRATIVE_RESIDUE_REGISTRY.md",
+    "narrativeReplacementMatrix": "Read/V1.5/Reports/Narrative/NARRATIVE_REPLACEMENT_MATRIX.md",
+    "fullNarrativeReconstructionRoadmap": "Read/V1.5/Reports/Narrative/FULL_NARRATIVE_RECONSTRUCTION_ROADMAP.md",
+    "narrativeAcceptanceTestPlan": "Read/V1.5/Reports/Narrative/NARRATIVE_ACCEPTANCE_TEST_PLAN.md",
+    "narrativeRegressionTestPlan": "Read/V1.5/Reports/Narrative/NARRATIVE_REGRESSION_TEST_PLAN.md"
+  },
+  "readiness": {
+    "worldReconstruction": "READY (Pilot LAB-01 verified ~60 FPS; W20-B..F executable; 17 zones audited)",
+    "characterReconstruction": "PARTIAL-READY (Meliodas BK V2 100% recovered; Headless Warden ART-K01 spec ready; awaiting OQ-04/05/07/K04/13 & BUG-058/059 Codex queue)",
+    "narrativeReconstruction": "BLOCKED-ON-OWNER (Audited 100% incl. Residue Registry; blocked strictly on Owner sign-off for OQ-01..09 before editing text/code)"
+  }
+}

@@ -1,0 +1,387 @@
+{
+  "schemaVersion": "HW-WORLD-TOPOLOGY-2026-11-26",
+  "mission": "HW-NARRATIVE-00C",
+  "verifiedAgainstCommit": "11d91dd545b8bbaa8bb7e16e4587ddd12bfa233d",
+  "summary": {
+    "zonesInZonesJson": 17,
+    "transitionsInZonesJson": 41,
+    "zoneNodesInRegistry": 10,
+    "connectionsInRegistry": 24,
+    "zonesInWorldMapUI": 10,
+    "missingRegistryAndUiZones": [
+      "sub_root_cellar",
+      "sub_whispering_clearing",
+      "abyssal_chasm",
+      "drowned_mire_depths",
+      "whispering_grove_sanctum",
+      "sunken_crypt_ruins",
+      "veil_origin_cavern"
+    ],
+    "totalLiveColliders": 329,
+    "boundsOverlapPairs": 6,
+    "oobTransitions": 3,
+    "colliderTransitionOverlaps": 14,
+    "oneWayTransitions": 1,
+    "spawnColliderOverlaps": 1,
+    "mispackedFallenLogInstances": 20,
+    "wasdProbeResults": {
+      "passed": 2,
+      "failed": 3,
+      "total": 5
+    }
+  },
+  "mainQuestTopology": [
+    "A:bellhollow",
+    "E:silent_mire",
+    "B:outer_woods",
+    "D:sub_bell_workshop_and_sub_root_cellar",
+    "F:deep_forest",
+    "B_or_A:forge_purification_key",
+    "E:silent_mire_seal_and_bridge",
+    "C:broken_bell_shrine",
+    "A:bellhollow_first_toll"
+  ],
+  "zones": [
+    {
+      "id": "fog_crossing",
+      "name": "Fog Crossing",
+      "titleVietnamese": "Lối Mòn Xuyên Sương",
+      "tier": "LAYER_1_CORE",
+      "inZoneConnectionRegistry": true,
+      "inWorldMapUI": true,
+      "bounds": { "x": 0, "y": 0, "width": 480, "height": 360 },
+      "defaultSpawn": { "x": 120, "y": 195 },
+      "atmosphere": { "fogColor": 1184274, "fogAlpha": 0.75, "ambientLight": 0.4, "ambientColor": 1118481 },
+      "liveColliders": 18,
+      "npcs": [],
+      "bosses": [],
+      "outgoingTransitions": [
+        { "id": "to_bellhollow", "toZone": "bellhollow", "barrierType": "open", "triggerRect": { "x": 460, "y": 200, "width": 20, "height": 60 }, "targetSpawn": { "x": 520, "y": 260 }, "inRegistry": true }
+      ]
+    },
+    {
+      "id": "bellhollow",
+      "name": "Bellhollow",
+      "titleVietnamese": "Làng Chuông Cổ",
+      "tier": "LAYER_1_CORE",
+      "inZoneConnectionRegistry": true,
+      "inWorldMapUI": true,
+      "bounds": { "x": 480, "y": -200, "width": 1120, "height": 960 },
+      "defaultSpawn": { "x": 560, "y": 260 },
+      "atmosphere": { "fogColor": 2236962, "fogAlpha": 0.22, "ambientLight": 0.8, "ambientColor": 1315860 },
+      "liveColliders": 92,
+      "npcs": ["npc_garth", "npc_edda", "npc_neris", "npc_bram", "npc_finn"],
+      "bosses": [],
+      "outgoingTransitions": [
+        { "id": "to_fog_crossing", "toZone": "fog_crossing", "barrierType": "open", "triggerRect": { "x": 480, "y": 200, "width": 20, "height": 120 }, "targetSpawn": { "x": 440, "y": 180 }, "inRegistry": true },
+        { "id": "to_sanctuary_farm", "toZone": "sanctuary_farm", "barrierType": "open", "triggerRect": { "x": 610, "y": 535, "width": 100, "height": 25 }, "targetSpawn": { "x": 650, "y": 580 }, "inRegistry": true },
+        { "id": "to_outer_woods", "toZone": "outer_woods", "barrierType": "open", "triggerRect": { "x": 1150, "y": 535, "width": 120, "height": 25 }, "targetSpawn": { "x": 1210, "y": 580 }, "inRegistry": true },
+        { "id": "to_crooked_path", "toZone": "crooked_path", "barrierType": "gate", "triggerRect": { "x": 1580, "y": 200, "width": 20, "height": 160 }, "targetSpawn": { "x": 1640, "y": 280 }, "inRegistry": true }
+      ]
+    },
+    {
+      "id": "sanctuary_farm",
+      "name": "Sanctuary Farm",
+      "titleVietnamese": "Nông Trại Trú Ẩn",
+      "tier": "LAYER_1_CORE",
+      "inZoneConnectionRegistry": true,
+      "inWorldMapUI": true,
+      "bounds": { "x": 480, "y": 560, "width": 640, "height": 480 },
+      "defaultSpawn": { "x": 650, "y": 620 },
+      "atmosphere": { "fogColor": 2236962, "fogAlpha": 0.18, "ambientLight": 0.86, "ambientColor": 1315860 },
+      "liveColliders": 42,
+      "npcs": [],
+      "bosses": [],
+      "outgoingTransitions": [
+        { "id": "to_bellhollow_from_farm", "toZone": "bellhollow", "barrierType": "open", "triggerRect": { "x": 610, "y": 560, "width": 100, "height": 20 }, "targetSpawn": { "x": 650, "y": 510 }, "inRegistry": true },
+        { "id": "to_outer_woods_from_farm", "toZone": "outer_woods", "barrierType": "open", "triggerRect": { "x": 1100, "y": 680, "width": 20, "height": 140 }, "targetSpawn": { "x": 1140, "y": 750 }, "inRegistry": true },
+        { "id": "to_root_cellar", "toZone": "sub_root_cellar", "barrierType": "open", "triggerRect": { "x": 780, "y": 1000, "width": 60, "height": 40 }, "targetSpawn": { "x": 800, "y": 1100 }, "inRegistry": false }
+      ]
+    },
+    {
+      "id": "outer_woods",
+      "name": "Outer Woods",
+      "titleVietnamese": "Rừng Ngoại Vi",
+      "tier": "LAYER_1_CORE",
+      "inZoneConnectionRegistry": true,
+      "inWorldMapUI": true,
+      "bounds": { "x": 1120, "y": 560, "width": 480, "height": 480 },
+      "defaultSpawn": { "x": 1210, "y": 620 },
+      "atmosphere": { "fogColor": 1644830, "fogAlpha": 0.35, "ambientLight": 0.65, "ambientColor": 986895 },
+      "liveColliders": 51,
+      "npcs": ["npc_campfire_knight"],
+      "bosses": ["DreadHorsemanEntity (wildlife habitat)"],
+      "outgoingTransitions": [
+        { "id": "to_bellhollow_from_ow", "toZone": "bellhollow", "barrierType": "open", "triggerRect": { "x": 1150, "y": 560, "width": 120, "height": 20 }, "targetSpawn": { "x": 1210, "y": 510 }, "inRegistry": true },
+        { "id": "to_farm_from_ow", "toZone": "sanctuary_farm", "barrierType": "open", "triggerRect": { "x": 1120, "y": 680, "width": 20, "height": 140 }, "targetSpawn": { "x": 1080, "y": 750 }, "inRegistry": true },
+        { "id": "to_crooked_path_from_ow", "toZone": "crooked_path", "barrierType": "open", "triggerRect": { "x": 1560, "y": 720, "width": 40, "height": 120 }, "targetSpawn": { "x": 1640, "y": 500 }, "inRegistry": true },
+        { "id": "to_bell_workshop", "toZone": "sub_bell_workshop", "barrierType": "open", "triggerRect": { "x": 1320, "y": 1000, "width": 80, "height": 40 }, "targetSpawn": { "x": 1360, "y": 1100 }, "inRegistry": true },
+        { "id": "to_silent_mire_via_shortcut", "toZone": "silent_mire", "barrierType": "shortcut", "triggerRect": { "x": 1560, "y": 670, "width": 36, "height": 40 }, "targetSpawn": { "x": 2920, "y": 420 }, "inRegistry": false }
+      ]
+    },
+    {
+      "id": "sub_bell_workshop",
+      "name": "Abandoned Bell Workshop",
+      "titleVietnamese": "Xưởng Chuông Bỏ Hoang",
+      "tier": "LAYER_1_CORE",
+      "inZoneConnectionRegistry": true,
+      "inWorldMapUI": false,
+      "bounds": { "x": 1120, "y": 1040, "width": 480, "height": 400 },
+      "defaultSpawn": { "x": 1360, "y": 1100 },
+      "atmosphere": { "fogColor": 2039064, "fogAlpha": 0.65, "ambientLight": 0.45, "ambientColor": 13408580 },
+      "liveColliders": 13,
+      "npcs": [],
+      "bosses": [],
+      "outgoingTransitions": [
+        { "id": "to_outer_woods_from_bw", "toZone": "outer_woods", "barrierType": "open", "triggerRect": { "x": 1320, "y": 1040, "width": 80, "height": 30 }, "targetSpawn": { "x": 1360, "y": 980 }, "inRegistry": true }
+      ]
+    },
+    {
+      "id": "sub_root_cellar",
+      "name": "Root Cellar",
+      "titleVietnamese": "Hầm Rễ Cổ",
+      "tier": "LAYER_1_CORE",
+      "inZoneConnectionRegistry": false,
+      "inWorldMapUI": false,
+      "bounds": { "x": 480, "y": 1040, "width": 640, "height": 400 },
+      "defaultSpawn": { "x": 800, "y": 1100 },
+      "atmosphere": { "fogColor": 1186324, "fogAlpha": 0.7, "ambientLight": 0.35, "ambientColor": 4482645 },
+      "liveColliders": 11,
+      "npcs": [],
+      "bosses": [],
+      "outgoingTransitions": [
+        { "id": "to_farm_from_cellar", "toZone": "sanctuary_farm", "barrierType": "open", "triggerRect": { "x": 780, "y": 1040, "width": 60, "height": 30 }, "targetSpawn": { "x": 800, "y": 980 }, "inRegistry": false },
+        { "id": "to_veil_origin_cavern", "toZone": "veil_origin_cavern", "barrierType": "open", "triggerRect": { "x": 760, "y": 1420, "width": 80, "height": 24 }, "targetSpawn": { "x": 800, "y": 1500 }, "inRegistry": false, "oobWarning": "+4px Y" }
+      ]
+    },
+    {
+      "id": "crooked_path",
+      "name": "The Crooked Path",
+      "titleVietnamese": "Đường Mòn Quanh Co",
+      "tier": "LAYER_2_FRONTIER",
+      "inZoneConnectionRegistry": true,
+      "inWorldMapUI": true,
+      "bounds": { "x": 1600, "y": 0, "width": 1280, "height": 640 },
+      "defaultSpawn": { "x": 1660, "y": 280 },
+      "atmosphere": { "fogColor": 1119504, "fogAlpha": 0.58, "ambientLight": 0.38, "ambientColor": 789516 },
+      "liveColliders": 40,
+      "npcs": [],
+      "bosses": ["TheListener (2300,240)", "FallenKnightEntity", "DreadHorsemanEntity"],
+      "outgoingTransitions": [
+        { "id": "to_bellhollow_from_cp", "toZone": "bellhollow", "barrierType": "gate", "triggerRect": { "x": 1600, "y": 220, "width": 20, "height": 140 }, "targetSpawn": { "x": 1540, "y": 280 }, "inRegistry": true },
+        { "id": "to_outer_woods_from_cp", "toZone": "outer_woods", "barrierType": "open", "triggerRect": { "x": 1600, "y": 440, "width": 40, "height": 120 }, "targetSpawn": { "x": 1540, "y": 780 }, "inRegistry": true },
+        { "id": "to_deep_forest", "toZone": "deep_forest", "barrierType": "open", "triggerRect": { "x": 2000, "y": 10, "width": 160, "height": 35 }, "targetSpawn": { "x": 2080, "y": -80 }, "inRegistry": true },
+        { "id": "to_silent_mire", "toZone": "silent_mire", "barrierType": "dense_thorns", "triggerRect": { "x": 2860, "y": 240, "width": 20, "height": 160 }, "targetSpawn": { "x": 2940, "y": 320 }, "inRegistry": true }
+      ]
+    },
+    {
+      "id": "deep_forest",
+      "name": "Deep Forest",
+      "titleVietnamese": "Rừng Sâu",
+      "tier": "LAYER_2_FRONTIER",
+      "inZoneConnectionRegistry": true,
+      "inWorldMapUI": true,
+      "bounds": { "x": 1600, "y": -640, "width": 1280, "height": 640 },
+      "defaultSpawn": { "x": 2080, "y": -80 },
+      "atmosphere": { "fogColor": 594960, "fogAlpha": 0.78, "ambientLight": 0.25, "ambientColor": 463117 },
+      "liveColliders": 48,
+      "npcs": [],
+      "bosses": ["HoodedKnightBoss (2340,-190)", "FallenKnightEntity (2040,-200)"],
+      "outgoingTransitions": [
+        { "id": "to_crooked_path_from_df", "toZone": "crooked_path", "barrierType": "open", "triggerRect": { "x": 2010, "y": -25, "width": 140, "height": 25 }, "targetSpawn": { "x": 2080, "y": 60 }, "inRegistry": true },
+        { "id": "to_silent_mire_from_df", "toZone": "silent_mire", "barrierType": "dense_thorns", "triggerRect": { "x": 2855, "y": -310, "width": 25, "height": 100 }, "targetSpawn": { "x": 2920, "y": 200 }, "inRegistry": true },
+        { "id": "to_whispering_clearing", "toZone": "sub_whispering_clearing", "barrierType": "open", "triggerRect": { "x": 1810, "y": -45, "width": 60, "height": 25 }, "targetSpawn": { "x": 1840, "y": -180 }, "inRegistry": false },
+        { "id": "to_abyssal_chasm", "toZone": "abyssal_chasm", "barrierType": "rune_void_gate", "triggerRect": { "x": 2210, "y": -640, "width": 60, "height": 16 }, "targetSpawn": { "x": 2240, "y": -700 }, "inRegistry": false, "bugNote": "HW-H4-03-AUDIT blocked at y=-618" }
+      ]
+    },
+    {
+      "id": "sub_whispering_clearing",
+      "name": "Whispering Clearing",
+      "titleVietnamese": "Khoảng Trống Thì Thầm",
+      "tier": "LAYER_2_FRONTIER",
+      "inZoneConnectionRegistry": false,
+      "inWorldMapUI": false,
+      "bounds": { "x": 1600, "y": -360, "width": 370, "height": 360 },
+      "defaultSpawn": { "x": 1840, "y": -180 },
+      "atmosphere": { "fogColor": 1709352, "fogAlpha": 0.8, "ambientLight": 0.35, "ambientColor": 5917306 },
+      "liveColliders": 14,
+      "npcs": [],
+      "bosses": [],
+      "outgoingTransitions": [
+        { "id": "to_deep_forest_from_wc", "toZone": "deep_forest", "barrierType": "open", "triggerRect": { "x": 1800, "y": -350, "width": 80, "height": 30 }, "targetSpawn": { "x": 1840, "y": -80 }, "inRegistry": false },
+        { "id": "to_crooked_path_from_wc", "toZone": "crooked_path", "barrierType": "open", "triggerRect": { "x": 1800, "y": -30, "width": 80, "height": 30 }, "targetSpawn": { "x": 1840, "y": 60 }, "inRegistry": false, "oneWay": true },
+        { "id": "to_whispering_grove_sanctum", "toZone": "whispering_grove_sanctum", "barrierType": "open", "triggerRect": { "x": 1800, "y": -360, "width": 80, "height": 24 }, "targetSpawn": { "x": 1600, "y": -420 }, "inRegistry": false }
+      ]
+    },
+    {
+      "id": "whispering_grove_sanctum",
+      "name": "Sanctum of the Elder Grove",
+      "titleVietnamese": "Thánh Địa Cây Đại Ngàn",
+      "tier": "LAYER_2_FRONTIER",
+      "inZoneConnectionRegistry": false,
+      "inWorldMapUI": false,
+      "bounds": { "x": 1120, "y": -800, "width": 960, "height": 440 },
+      "defaultSpawn": { "x": 1600, "y": -420 },
+      "atmosphere": { "fogColor": 3030308, "fogAlpha": 0.35, "ambientLight": 0.55, "ambientColor": 5597999 },
+      "liveColliders": 22,
+      "npcs": [],
+      "bosses": [],
+      "outgoingTransitions": [
+        { "id": "to_whispering_clearing_from_wgs", "toZone": "sub_whispering_clearing", "barrierType": "open", "triggerRect": { "x": 1560, "y": -400, "width": 80, "height": 30 }, "targetSpawn": { "x": 1840, "y": -310 }, "inRegistry": false }
+      ]
+    },
+    {
+      "id": "silent_mire",
+      "name": "Silent Mire",
+      "titleVietnamese": "Đầm Lầy Tĩnh Lặng",
+      "tier": "LAYER_3_FORBIDDEN",
+      "inZoneConnectionRegistry": true,
+      "inWorldMapUI": true,
+      "bounds": { "x": 2880, "y": 100, "width": 1120, "height": 640 },
+      "defaultSpawn": { "x": 2960, "y": 320 },
+      "atmosphere": { "fogColor": 1383446, "fogAlpha": 0.75, "ambientLight": 0.25, "ambientColor": 986900 },
+      "liveColliders": 58,
+      "npcs": [],
+      "bosses": ["ShadowBehemothBoss (780,280)"],
+      "outgoingTransitions": [
+        { "id": "to_crooked_path_from_sm", "toZone": "crooked_path", "barrierType": "open", "triggerRect": { "x": 2880, "y": 240, "width": 20, "height": 160 }, "targetSpawn": { "x": 2820, "y": 280 }, "inRegistry": true },
+        { "id": "to_deep_forest_from_sm", "toZone": "deep_forest", "barrierType": "open", "triggerRect": { "x": 2880, "y": 160, "width": 20, "height": 55 }, "targetSpawn": { "x": 2800, "y": -260 }, "inRegistry": true },
+        { "id": "to_rune_puzzle", "toZone": "ancient_rune_puzzle", "barrierType": "open", "triggerRect": { "x": 3365, "y": 220, "width": 25, "height": 80 }, "targetSpawn": { "x": 3390, "y": 260 }, "inRegistry": true },
+        { "id": "to_shrine", "toZone": "broken_bell_shrine", "barrierType": "rune_ward", "triggerRect": { "x": 3980, "y": 240, "width": 20, "height": 160 }, "targetSpawn": { "x": 4050, "y": 280 }, "inRegistry": true },
+        { "id": "to_drowned_mire_depths", "toZone": "drowned_mire_depths", "barrierType": "open", "triggerRect": { "x": 3340, "y": 720, "width": 80, "height": 24 }, "targetSpawn": { "x": 3380, "y": 780 }, "inRegistry": false, "oobWarning": "+4px Y / W05 fail" },
+        { "id": "to_outer_woods_via_shortcut", "toZone": "outer_woods", "barrierType": "shortcut", "triggerRect": { "x": 2880, "y": 410, "width": 36, "height": 40 }, "targetSpawn": { "x": 1540, "y": 700 }, "inRegistry": false }
+      ]
+    },
+    {
+      "id": "ancient_rune_puzzle",
+      "name": "Ancient Rune Puzzle",
+      "titleVietnamese": "Khu Vực Câu Đố Cổ Ngữ",
+      "tier": "LAYER_3_FORBIDDEN",
+      "inZoneConnectionRegistry": true,
+      "inWorldMapUI": true,
+      "bounds": { "x": 3350, "y": 150, "width": 350, "height": 280 },
+      "defaultSpawn": { "x": 3380, "y": 260 },
+      "atmosphere": { "fogColor": 1119504, "fogAlpha": 0.65, "ambientLight": 0.38, "ambientColor": 789516 },
+      "liveColliders": 13,
+      "npcs": [],
+      "bosses": ["HoodedKnightBoss (3590,290 optional habitat)"],
+      "outgoingTransitions": [
+        { "id": "to_silent_mire_from_puzzle", "toZone": "silent_mire", "barrierType": "open", "triggerRect": { "x": 3310, "y": 220, "width": 25, "height": 80 }, "targetSpawn": { "x": 3300, "y": 260 }, "inRegistry": true, "oobWarning": "-40px X" },
+        { "id": "to_sunken_crypt_ruins", "toZone": "sunken_crypt_ruins", "barrierType": "open", "triggerRect": { "x": 3500, "y": 150, "width": 60, "height": 24 }, "targetSpawn": { "x": 3600, "y": -100 }, "inRegistry": false }
+      ]
+    },
+    {
+      "id": "broken_bell_shrine",
+      "name": "The Broken Bell Shrine",
+      "titleVietnamese": "Miếu Chuông Phế Tích",
+      "tier": "LAYER_3_FORBIDDEN",
+      "inZoneConnectionRegistry": true,
+      "inWorldMapUI": true,
+      "bounds": { "x": 4000, "y": 0, "width": 960, "height": 600 },
+      "defaultSpawn": { "x": 4080, "y": 280 },
+      "atmosphere": { "fogColor": 2496790, "fogAlpha": 0.82, "ambientLight": 0.28, "ambientColor": 1904918 },
+      "liveColliders": 33,
+      "npcs": [],
+      "bosses": ["BossMireWarden (4500,240)", "ShadowBehemothBoss (920,300)"],
+      "outgoingTransitions": [
+        { "id": "to_silent_mire_from_shrine", "toZone": "silent_mire", "barrierType": "open", "triggerRect": { "x": 4000, "y": 220, "width": 20, "height": 140 }, "targetSpawn": { "x": 3940, "y": 320 }, "inRegistry": true }
+      ]
+    },
+    {
+      "id": "abyssal_chasm",
+      "name": "The Abyssal Chasm",
+      "titleVietnamese": "Vực Sâu Bóng Tối",
+      "tier": "LAYER_3_FORBIDDEN",
+      "inZoneConnectionRegistry": false,
+      "inWorldMapUI": true,
+      "bounds": { "x": 1600, "y": -1280, "width": 1280, "height": 640 },
+      "defaultSpawn": { "x": 2240, "y": -700 },
+      "atmosphere": { "fogColor": 1312796, "fogAlpha": 0.85, "ambientLight": 0.15, "ambientColor": 1312796 },
+      "liveColliders": 18,
+      "npcs": [],
+      "bosses": [],
+      "outgoingTransitions": [
+        { "id": "to_deep_forest_from_ac", "toZone": "deep_forest", "barrierType": "open", "triggerRect": { "x": 2200, "y": -680, "width": 80, "height": 30 }, "targetSpawn": { "x": 2240, "y": -600 }, "inRegistry": false }
+      ]
+    },
+    {
+      "id": "drowned_mire_depths",
+      "name": "The Drowned Mire Depths",
+      "titleVietnamese": "Đầm Lầy Chìm",
+      "tier": "LAYER_3_FORBIDDEN",
+      "inZoneConnectionRegistry": false,
+      "inWorldMapUI": false,
+      "bounds": { "x": 2880, "y": 740, "width": 1120, "height": 640 },
+      "defaultSpawn": { "x": 3380, "y": 800 },
+      "atmosphere": { "fogColor": 1582107, "fogAlpha": 0.8, "ambientLight": 0.22, "ambientColor": 1582107 },
+      "liveColliders": 12,
+      "npcs": [],
+      "bosses": [],
+      "outgoingTransitions": [
+        { "id": "to_silent_mire_from_dmd", "toZone": "silent_mire", "barrierType": "open", "triggerRect": { "x": 3340, "y": 740, "width": 80, "height": 30 }, "targetSpawn": { "x": 3380, "y": 680 }, "inRegistry": false }
+      ]
+    },
+    {
+      "id": "sunken_crypt_ruins",
+      "name": "The Sunken Crypt of Runes",
+      "titleVietnamese": "Hầm Mộ Cổ Ngữ",
+      "tier": "LAYER_3_FORBIDDEN",
+      "inZoneConnectionRegistry": false,
+      "inWorldMapUI": false,
+      "bounds": { "x": 3350, "y": -640, "width": 1130, "height": 640 },
+      "defaultSpawn": { "x": 3600, "y": -100 },
+      "atmosphere": { "fogColor": 1711140, "fogAlpha": 0.7, "ambientLight": 0.18, "ambientColor": 1711140 },
+      "liveColliders": 11,
+      "npcs": [],
+      "bosses": [],
+      "outgoingTransitions": [
+        { "id": "to_rune_puzzle_from_scr", "toZone": "ancient_rune_puzzle", "barrierType": "open", "triggerRect": { "x": 3560, "y": -60, "width": 80, "height": 30 }, "targetSpawn": { "x": 3520, "y": 180 }, "inRegistry": false }
+      ]
+    },
+    {
+      "id": "veil_origin_cavern",
+      "name": "The Veil's Heart Cavern",
+      "titleVietnamese": "Hang Cội Rễ Hư Vô",
+      "tier": "LAYER_3_FORBIDDEN",
+      "inZoneConnectionRegistry": false,
+      "inWorldMapUI": false,
+      "bounds": { "x": 480, "y": 1440, "width": 1120, "height": 640 },
+      "defaultSpawn": { "x": 800, "y": 1500 },
+      "atmosphere": { "fogColor": 986132, "fogAlpha": 0.9, "ambientLight": 0.12, "ambientColor": 986132 },
+      "liveColliders": 13,
+      "npcs": [],
+      "bosses": [],
+      "outgoingTransitions": [
+        { "id": "to_root_cellar_from_voc", "toZone": "sub_root_cellar", "barrierType": "open", "triggerRect": { "x": 760, "y": 1460, "width": 80, "height": 30 }, "targetSpawn": { "x": 800, "y": 1400 }, "inRegistry": false }
+      ]
+    }
+  ],
+  "verifiedDefects": {
+    "boundsOverlaps": [
+      ["bellhollow", "sanctuary_farm", "640x200"],
+      ["bellhollow", "outer_woods", "480x200"],
+      ["silent_mire", "ancient_rune_puzzle", "350x280"],
+      ["deep_forest", "sub_whispering_clearing", "370x360"],
+      ["deep_forest", "whispering_grove_sanctum", "480x280"],
+      ["abyssal_chasm", "whispering_grove_sanctum", "480x160"]
+    ],
+    "oobTransitions": [
+      "silent_mire -> to_drowned_mire_depths (+4px Y)",
+      "ancient_rune_puzzle -> to_silent_mire_from_puzzle (-40px X)",
+      "sub_root_cellar -> to_veil_origin_cavern (+4px Y)"
+    ],
+    "oneWayTransitions": [
+      "sub_whispering_clearing -> crooked_path"
+    ],
+    "spawnColliderOverlaps": [
+      "whispering_grove_sanctum defaultSpawn (1600,-420) inside df_bound_left"
+    ],
+    "wasdProbes": [
+      { "id": "W01_bellhollow_main_road_east", "pass": false, "blockedAt": [791.5, 250] },
+      { "id": "W02_deep_forest_to_abyssal_chasm_unlocked", "pass": false, "blockedAtY": -618 },
+      { "id": "W03_outer_woods_south_trail", "pass": true },
+      { "id": "W04_fog_crossing_orphan_tree_1_collision", "pass": true, "note": "orphan collider (160,100) vs tree art (160,65)" },
+      { "id": "W05_silent_mire_to_drowned_depths", "pass": false, "blockedAtY": 734.4 }
+    ]
+  }
+}
