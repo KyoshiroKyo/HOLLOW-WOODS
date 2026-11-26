@@ -533,6 +533,19 @@ export class GameScene extends Phaser.Scene {
       }
       CampSanctuarySystem.getInstance().onDialogueEnd();
     };
+    this.events.on('dialogue_completed', (completedPayload: any) => {
+      if (completedPayload?.onCompleteFlag === 'garth_lantern_rewarded') {
+        this.playerState.completeQuestTask('SQ09_BROKEN_LANTERN', 't2');
+        this.playerState.completeQuestTask('SQ09_BROKEN_LANTERN', 't3');
+        if (this.uiScene) {
+          this.uiScene.showPopupMessage('🏮 Garth đã nhận lại kỷ vật người em trai và truyền dạy chiến thuật đối phó Kỵ Binh!');
+        }
+      } else if (completedPayload?.onCompleteFlag === 'neris_flower_rewarded') {
+        if (this.uiScene) {
+          this.uiScene.showPopupMessage('🌿 Neris đã nhận Hoa Mạch Rễ và sắc thành công Trà An Thần Thượng Hạng!');
+        }
+      }
+    });
     this.inventorySystem = new InventorySystem(this);
     this.endingSystem = new EndingSystem(this);
 
@@ -4699,14 +4712,6 @@ export class GameScene extends Phaser.Scene {
               const hasBrokenLantern = this.playerState.getItemCount('item_broken_patrol_lantern') > 0 || this.playerState.hasFlag('has_broken_lantern');
               if (hasBrokenLantern && !this.playerState.hasFlag('garth_lantern_rewarded')) {
                 dKey = 'garth_broken_lantern_complete';
-                this.playerState.setFlag('garth_lantern_rewarded');
-                this.playerState.completeQuestTask('SQ09_BROKEN_LANTERN', 't2');
-                this.playerState.completeQuestTask('SQ09_BROKEN_LANTERN', 't3');
-                this.playerState.addItem('item_lantern_oil', 2);
-                this.playerState.addVillageTrust(3);
-                if (this.uiScene) {
-                  this.uiScene.showPopupMessage('🏮 Garth đã nhận lại kỷ vật người em trai và truyền dạy chiến thuật đối phó Kỵ Binh!');
-                }
               } else if (this.playerState.hasFlag('inspected_echo_pillar') && !this.playerState.hasFlag('garth_patrol_rewarded')) {
                 dKey = 'garth_quest_clearing_patrol';
                 this.playerState.setFlag('garth_patrol_rewarded');
@@ -4758,12 +4763,6 @@ export class GameScene extends Phaser.Scene {
               const hasRootFlower = this.playerState.getItemCount('item_root_flower') > 0 || this.playerState.hasFlag('has_root_flower');
               if (hasRootFlower && !this.playerState.hasFlag('neris_flower_rewarded')) {
                 dKey = 'neris_root_flower_complete';
-                this.playerState.setFlag('neris_flower_rewarded');
-                this.playerState.addItem('food_calming_tea', 2);
-                this.playerState.addVillageTrust(3);
-                if (this.uiScene) {
-                  this.uiScene.showPopupMessage('🌿 Neris đã nhận Hoa Mạch Rễ và sắc thành công Trà An Thần Thượng Hạng!');
-                }
               } else if (this.playerState.hasFlag('has_rare_roots') && !this.playerState.hasFlag('neris_tea_rewarded')) {
                 dKey = 'neris_quest_cellar_tea';
                 this.playerState.setFlag('neris_tea_rewarded');

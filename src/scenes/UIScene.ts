@@ -3855,57 +3855,26 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.setDialogueActive(false);
   }
 
+  private choiceRenderItems: Array<{ draw: (highlighted: boolean) => void }> = [];
+
   /**
-   * V1.5 - V15-16 & V15-25: Hiển thị các nút Lựa Chọn Hội Thoại (Interactive Dialogue Choices)
-   * Nổi trang nhã ngay phía trên hộp thoại chính, hỗ trợ click chuột hoặc phím số [1], [2], [3]
+   * V1.5 - V15-16 & HW-V16-A05: Hiển thị các nút Lựa Chọn Hội Thoại (1–5 choices, wrap tiếng Việt & highlight phím/chuột)
    */
-  public showChoices(choices: Array<{ text: string; index: number }>, onSelect: (index: number) => void): void {
+  public showChoices(choices: Array<{ text: string; index: number }>, onSelect: (index: number) => void, initialHighlight: number = 0): void {
     if (!this.dialogueChoicesContainer) {
-      this.dialogueChoicesContainer = this.add.container(640, DIALOGUE_BOTTOM - DIALOGUE_HEIGHT - 20);
+      this.dialogueChoicesContainer = this.add.container(640, DIALOGUE_BOTTOM - DIALOGUE_HEIGHT - 16);
       this.dialogueChoicesContainer.setDepth(9100);
     }
 
     this.dialogueChoicesContainer.removeAll(true);
     this.dialogueChoicesContainer.setVisible(true);
+    this.choiceRenderItems = [];
 
     const btnWidth = 920;
-    const btnHeight = 36;
     const spacing = 8;
-    const totalCount = choices.length;
+    let choiceClicked = false;
 
-    choices.forEach((choice, i) => {
-      // Xếp từ dưới lên trên hướng về phía đỉnh hộp thoại
-      const yOffset = -((totalCount - 1 - i) * (btnHeight + spacing)) - 14;
-
-      const btnContainer = this.add.container(0, yOffset);
-
-      const bg = this.add.graphics();
-      const drawBtn = (isHover: boolean) => {
-        bg.clear();
-        bg.fillStyle(isHover ? 0x261a12 : 0x140f0c, isHover ? 0.98 : 0.94);
-        bg.fillRoundedRect(-btnWidth / 2, -btnHeight / 2, btnWidth, btnHeight, 6);
-        bg.lineStyle(isHover ? 2 : 1.5, isHover ? 0xf1c40f : 0x7a5e35, 1);
-        bg.strokeRoundedRect(-btnWidth / 2, -btnHeight / 2, btnWidth, btnHeight, 6);
-        bg.lineStyle(0.5, 0x4a361e, 0.7);
-        bg.strokeRoundedRect(-btnWidth / 2 + 1.5, -btnHeight / 2 + 1.5, btnWidth - 3, btnHeight - 3, 5);
-      };
-      drawBtn(false);
-
-      bg.setInteractive(
-        new Phaser.Geom.Rectangle(-btnWidth / 2, -btnHeight / 2, btnWidth, btnHeight),
-        Phaser.Geom.Rectangle.Contains
-      );
-      if (bg.input) {
-        bg.input.cursor = 'pointer';
-      }
-
-      bg.on('pointerover', () => drawBtn(true));
-      bg.on('pointerout', () => drawBtn(false));
-      bg.on('pointerdown', () => {
-        AudioManager.getInstance().playUISelect();
-        onSelect(choice.index);
-      });
-
+    const measured = choices.map((choice) => {
       const keyBadge = HDTextHelper.createText(this, -btnWidth / 2 + 18, 0, `[${choice.index + 1}]`, {
         fontSize: '15px',
         fontStyle: 'bold',
@@ -3915,11 +3884,64 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       const choiceText = HDTextHelper.createText(this, -btnWidth / 2 + 56, 0, choice.text, {
         fontSize: '15px',
         color: '#f5eedc',
+        wordWrap: { width: btnWidth - 76, useAdvancedWrap: true },
+        lineSpacing: 4,
         padding: { left: 4, right: 8, top: 2, bottom: 2 }
       }).setOrigin(0, 0.5);
 
+      const btnHeight = Math.max(36, Math.ceil(choiceText.height) + 14);
+      return { choice, keyBadge, choiceText, btnHeight };
+    });
+
+    // Xếp từ dưới lên trên sao cho không bao giờ chồng đè hay vượt mép trên 720p
+    let cursorBottomY = -8;
+    for (let i = measured.length - 1; i >= 0; i--) {
+      const { choice, keyBadge, choiceText, btnHeight } = measured[i];
+      const centerY = cursorBottomY - btnHeight / 2;
+      cursorBottomY -= btnHeight + spacing;
+
+      const btnContainer = this.add.container(0, centerY);
+      const bg = this.add.graphics();
+      const drawBtn = (isHighlighted: boolean) => {
+        bg.clear();
+        bg.fillStyle(isHighlighted ? 0x261a12 : 0x140f0c, isHighlighted ? 0.98 : 0.94);
+        bg.fillRoundedRect(-btnWidth / 2, -btnHeight / 2, btnWidth, btnHeight, 6);
+        bg.lineStyle(isHighlighted ? 2 : 1.5, isHighlighted ? 0xf1c40f : 0x7a5e35, 1);
+        bg.strokeRoundedRect(-btnWidth / 2, -btnHeight / 2, btnWidth, btnHeight, 6);
+        bg.lineStyle(0.5, 0x4a361e, 0.7);
+        bg.strokeRoundedRect(-btnWidth / 2 + 1.5, -btnHeight / 2 + 1.5, btnWidth - 3, btnHeight - 3, 5);
+        choiceText.setColor(isHighlighted ? '#fff6db' : '#f5eedc');
+      };
+
+      this.choiceRenderItems[i] = { draw: drawBtn };
+
+      bg.setInteractive(
+        new Phaser.Geom.Rectangle(-btnWidth / 2, -btnHeight / 2, btnWidth, btnHeight),
+        Phaser.Geom.Rectangle.Contains
+      );
+      if (bg.input) {
+        bg.input.cursor = 'pointer';
+      }
+
+      bg.on('pointerover', () => this.highlightChoice(i));
+      bg.on('pointerout', () => drawBtn(false));
+      bg.on('pointerdown', () => {
+        if (choiceClicked) return;
+        choiceClicked = true;
+        AudioManager.getInstance().playUISelect();
+        onSelect(choice.index);
+      });
+
       btnContainer.add([bg, keyBadge, choiceText]);
       this.dialogueChoicesContainer!.add(btnContainer);
+    }
+
+    this.highlightChoice(initialHighlight);
+  }
+
+  public highlightChoice(index: number): void {
+    this.choiceRenderItems.forEach((item, idx) => {
+      item.draw(idx === index);
     });
   }
 
@@ -3927,6 +3949,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
    * V1.5 - V15-16: Ẩn và dọn dẹp các nút lựa chọn hội thoại
    */
   public hideChoices(): void {
+    this.choiceRenderItems = [];
     if (this.dialogueChoicesContainer) {
       this.dialogueChoicesContainer.removeAll(true);
       this.dialogueChoicesContainer.setVisible(false);

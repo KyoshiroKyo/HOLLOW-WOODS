@@ -1,0 +1,160 @@
+{
+  "tests": {
+    "A05-T01": {
+      "status": "PASS",
+      "detail": {
+        "state": "CLOSED",
+        "isActive": false
+      }
+    },
+    "A05-T08": {
+      "status": "PASS",
+      "detail": {
+        "enteredState": "WAITING_FOR_CHOICE",
+        "afterEsc": {
+          "state": "CLOSED",
+          "isActive": false,
+          "trust": 50,
+          "flagPromised": false,
+          "flagAccepted": false
+        }
+      }
+    },
+    "A05-T09": {
+      "status": "PASS",
+      "detail": {
+        "midState": "RESPONSE",
+        "afterEscResponse": {
+          "state": "CLOSED",
+          "trust": 50,
+          "flagPromised": false,
+          "flagAccepted": false
+        }
+      }
+    },
+    "A05-T02": {
+      "status": "PASS",
+      "detail": {
+        "trust": 53,
+        "flagPromised": true,
+        "flagAccepted": true,
+        "marker": true
+      }
+    },
+    "A05-T03": {
+      "status": "PASS",
+      "detail": {
+        "choiceCount": 3,
+        "after": {
+          "talkedEdda": true,
+          "promiseBell": true,
+          "trust": 56,
+          "portraitOk": true
+        }
+      }
+    },
+    "A05-T05": {
+      "status": "PASS",
+      "detail": {
+        "talkedEdda": true,
+        "promiseBell": true,
+        "trust": 56,
+        "portraitOk": true
+      }
+    },
+    "A05-T04": {
+      "status": "PASS",
+      "detail": {
+        "count": 5,
+        "minY": 216,
+        "maxBottom": 414,
+        "noOverlap": true
+      }
+    },
+    "A05-T06": {
+      "status": "PASS",
+      "detail": {
+        "arrowHighlightIndex": 4,
+        "after": {
+          "trust": 57,
+          "watcherFlag": true,
+          "q1Accepted": true
+        }
+      }
+    },
+    "A05-T07": {
+      "status": "PASS",
+      "detail": {
+        "trustBefore": 56,
+        "trustAfter": 57
+      }
+    },
+    "A05-T10": {
+      "status": "PASS",
+      "detail": {
+        "reopenedAndCompletedSafely": true
+      }
+    },
+    "A05-T11": {
+      "status": "PASS",
+      "detail": {
+        "first": 60,
+        "afterRepeats": 60
+      }
+    },
+    "A05-T12": {
+      "status": "PASS",
+      "detail": {
+        "firstCharms": 1,
+        "afterRepeatCharms": 1
+      }
+    },
+    "A05-T15": {
+      "status": "PASS",
+      "detail": {
+        "heal1": {
+          "hp": 100,
+          "trust": 61
+        },
+        "heal2": {
+          "hp": 100,
+          "comp": 100,
+          "trust": 61
+        }
+      }
+    },
+    "A05-T13": {
+      "status": "PASS",
+      "detail": {
+        "trust": 61,
+        "charms": 1,
+        "hasTrustMarker": true,
+        "hasRewardMarker": true,
+        "eastGateUnlocked": true
+      }
+    },
+    "A05-T14": {
+      "status": "PASS",
+      "detail": {
+        "eastGateUnlocked": true
+      }
+    },
+    "A05-T16": {
+      "status": "PASS",
+      "detail": {
+        "verifiedAll7NPCs": true
+      }
+    },
+    "A05-T17": {
+      "status": "PASS",
+      "detail": {
+        "state": "CLOSED",
+        "isActive": false,
+        "dialogueOpenUI": false
+      }
+    }
+  },
+  "consoleErrors": [],
+  "pageErrors": [],
+  "failedRequests": []
+}
