@@ -404,6 +404,7 @@ export class PlayerState extends Phaser.Events.EventEmitter {
       this.emit('flag_set', flag);
       this.checkQuestProgression(flag);
       this.checkAndEmitUnlockEvents();
+      this.reconcileIdentityRevealState({ emitEvent: true });
     }
   }
 
@@ -769,12 +770,35 @@ export class PlayerState extends Phaser.Events.EventEmitter {
     }
     if (clamped >= 3) {
       this.unlockLore('lore_memory_chapter_4');
-      if (this.canRevealPlayerIdentity()) {
-        this.unlockLore('lore_wayfarer_inner_journal');
-      }
+      this.reconcileIdentityRevealState({ emitEvent: true });
     }
 
     this.emit('memory_awakening_changed', clamped);
+  }
+
+  /**
+   * HW-V16-A06-R1: Đồng bộ hóa trạng thái Tiết Lộ Danh Tính khi chứng cứ đến trước/sau Stage 3 hoặc nạp Save cũ.
+   * Không tự nâng Memory Stage, không cộng Trust/thưởng, và chỉ phát sự kiện identity_revealed đúng 1 lần.
+   */
+  public reconcileIdentityRevealState(options: { emitEvent?: boolean } = {}): boolean {
+    if (!this.canRevealPlayerIdentity()) {
+      return false;
+    }
+
+    this.unlockLore('lore_wayfarer_inner_journal');
+
+    const alreadyNotified =
+      this.flags.has('identity_revealed_notified') ||
+      this.storyFlags.has('identity_revealed_notified');
+
+    if (!alreadyNotified) {
+      this.flags.add('identity_revealed_notified');
+      if (options.emitEvent !== false) {
+        this.emit('identity_revealed', this.getIdentityStatusSnapshot());
+      }
+    }
+
+    return true;
   }
 
   public hasIdentityEvidence(approvedRules?: ReadonlyArray<ApprovedEvidenceRule>): boolean {

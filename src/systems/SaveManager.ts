@@ -721,6 +721,9 @@ export class SaveManager {
     // V1.4 - P8-04: Phục hồi vùng lưu dự phòng an toàn legacyExtraData
     state.legacyExtraData = data.legacyExtraData ? { ...data.legacyExtraData } : undefined;
 
+    // HW-V16-A06-R1: Đồng bộ Nhật ký & Danh tính cho save đã đủ Stage 3 + Approved Evidence mà không nâng Stage hay phát popup lặp
+    state.reconcileIdentityRevealState({ emitEvent: false });
+
     state.emit('stats_changed', state.stats);
     state.emit('inventory_changed', {});
     state.emit('quest_changed', state.getCurrentQuest());

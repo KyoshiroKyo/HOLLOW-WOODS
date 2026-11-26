@@ -1,8 +1,8 @@
-# HW-V16-A06 — EVIDENCE DECISION MATRIX (`PENDING OWNER DECISION`)
+# HW-V16-A06 — EVIDENCE DECISION MATRIX (`OWNER APPROVED — 2026-11-27`)
 
 - **Dự án:** HOLLOW WOODS (`V1.6.0 — THE UNBROKEN OATH`)
-- **Nhiệm vụ:** `HW-V16-A06 — Journal, Torn Pages, Memory & Identity Reveal` (`§6 EVIDENCE RULE GATE`)
-- **Trạng thái tài liệu:** **`PROPOSED / CANDIDATE MATRIX — PENDING OWNER APPROVAL`** *(Không tự coi là Canon chính thức; chưa kích hoạt điều kiện chưa duyệt trong runtime).*
+- **Nhiệm vụ:** `HW-V16-A06` → `HW-V16-A06-R1 — Approved Identity Evidence Implementation` (`§4–§6`)
+- **Trạng thái tài liệu:** **`OWNER APPROVED — 2026-11-27`** (`OPTION 1 APPROVED & IMPLEMENTED IN HW-V16-A06-R1`) — giữ nguyên ngưỡng Ending (`50 / 3 / 65`) và Save Schema `3`.
 
 ---
 
@@ -35,18 +35,18 @@
 
 ## 3. Đề Xuất Công Thức Chính & Công Thức Phụ Trình Owner Phê Duyệt
 
-### Phương Án Đề Xuất 1 (Recommended — Song Song Tuyến Chính `Q05` & Tuyến Phụ `SQ08`)
+### Phương Án Đề Xuất 1 (OWNER APPROVED — 2026-11-27 — Song Song Tuyến Chính `Q05` & Tuyến Phụ `SQ08`)
 
-1. **Điều kiện nâng `Memory Stage = 3` không ép `SQ08` (Chờ Owner duyệt trước khi sửa `GameScene` / `QuestSystem`):**
-   - **Đường chính:** Khi rèn thành công `[Chìa Khóa Thanh Tẩy]` với Sir Vaelen (`vaelen_forge_purification_key`) **hoặc** phá Phong Ấn Rễ Cổ (`unlockBridge` / `mire_root_seal_broken`), nâng tối thiểu lên `Stage 3` *(nếu chưa ở Stage 3)* — giúp người chơi đi thuần tuyến chính vẫn đủ điều kiện `Stage >= 3` cho `true_ending` (`comp >= 50, stage >= 3, trust >= 65`).
-   - **Đường phụ:** Giữ `campfire_knight_q3_complete` (`SQ08`, `GameScene.ts:4842`) giữ nguyên khả năng nâng `Stage = 3`.
-2. **Điều kiện `hasIdentityEvidence(state)` đề xuất nạp vào `APPROVED_IDENTITY_EVIDENCE_RULES`:**
+1. **Điều kiện nâng `Memory Stage = 3` không ép `SQ08` (`GAME-IMPLEMENTED` trong `HW-V16-A06-R1`):**
+   - **Đường chính:** Khi rèn thành công `[Chìa Khóa Thanh Tẩy]` với Sir Vaelen (`GameScene.ts`: `vaelen_forge_purification_key`) **hoặc** phá Phong Ấn Rễ Cổ (`QuestSystem.ts`: `unlockBridge` / `mire_root_seal_broken`), gọi `setMemoryAwakeningStage(3)` nếu chưa đạt Stage 3 — giúp người chơi đi thuần tuyến chính vẫn đủ điều kiện `Stage >= 3` cho `true_ending` (`comp >= 50, stage >= 3, trust >= 65`).
+   - **Đường phụ:** Giữ `campfire_knight_q3_complete` (`SQ08`, `GameScene.ts`) nâng `Stage = 3` nếu chưa đạt.
+2. **Điều kiện `hasIdentityEvidence(state)` đã nạp vào `APPROVED_IDENTITY_EVIDENCE_RULES` (`IdentityRevealResolver.ts`):**
    - **Con đường Chính (`MAIN_PATH_Q05`):**
-     `(vaelen_mold_quest_assigned && (purification_key_crafted || mire_root_seal_broken)) && (inspected_knights_memorial_stele || collected_note_inspect_knights_memorial_stele || collected_note_read_black_knight_stele)`
+     `vaelen_mold_quest_assigned && (purification_key_crafted || mire_root_seal_broken) && (inspected_knights_memorial_stele || collected_note_inspect_knights_memorial_stele || collected_note_read_black_knight_stele)`
    - **HOẶC Con đường Phụ (`SIDE_PATH_SQ08`):**
      `campfire_knight_q3_completed && boss_hooded_knight_defeated`
 
-> **Lưu ý kiểm soát:** Nếu Owner chọn **Phương Án Đề Xuất 1**, `IdentityRevealResolver.ts` chỉ cần đăng ký đúng `2` rule object vào mảng `APPROVED_IDENTITY_EVIDENCE_RULES` và thêm nhánh nâng Stage `3` ở điểm rèn chìa/mở cầu chính tuyến — không cần sửa kiến trúc HUD, Journal, Dialogue, Ending hay Save Schema 3.
+> **Trạng thái nghiệm thu `HW-V16-A06-R1` (`2026-11-27`):** Owner đã phê duyệt chính thức Phương Án 1 (`OWNER APPROVED — 2026-11-27`). `APPROVED_IDENTITY_EVIDENCE_RULES` đã kích hoạt đúng 2 rule nêu trên kèm đồng bộ chứng cứ đến trước/sau Stage 3 và bản lưu cũ (`Case A–D`) trên nhánh `feat/v1.6-a06-r1-identity-evidence`.
 
 ---
 

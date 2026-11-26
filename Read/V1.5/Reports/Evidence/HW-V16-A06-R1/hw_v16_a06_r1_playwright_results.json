@@ -1,0 +1,310 @@
+{
+  "tests": {
+    "saveAfterMainReveal": true,
+    "garthReverence": {
+      "isActive": true,
+      "key": "garth_black_knight_reverence"
+    },
+    "liveEndingWithReveal": {
+      "determined": "true_ending",
+      "displayIdentity": {
+        "isRevealed": true,
+        "memoryStage": 3,
+        "hudBadge": "⚔️ Meliodas Blackwood",
+        "plainName": "Meliodas Blackwood",
+        "chronicleTitle": "Meliodas Blackwood",
+        "subtitle": "The Wolf Lord"
+      }
+    }
+  },
+  "consoleErrors": [],
+  "pageErrors": [],
+  "screenshots": {
+    "01_STAGE2_UNREVEALED.png": {
+      "stage": 2,
+      "flags": [
+        "east_gate_unlocked",
+        "vaelen_mold_quest_assigned",
+        "inspected_knights_memorial_stele"
+      ],
+      "quest": "Q01_MEET_EDDA",
+      "snapshot": {
+        "memoryStage": 2,
+        "hasEvidence": false,
+        "identityRevealed": false,
+        "matchedEvidenceRuleIds": [],
+        "npcRecognition": "VAELEN_CREST_Q05",
+        "loreUnlockedIds": [
+          "lore_three_rules",
+          "lore_memory_chapter_1",
+          "lore_memory_chapter_2",
+          "lore_black_knight_chronicle",
+          "lore_memory_chapter_3"
+        ],
+        "questCompleted": {
+          "q05MireSolved": false,
+          "q06ClapperRetrieved": false,
+          "sq08Completed": false
+        },
+        "displayIdentity": {
+          "isRevealed": false,
+          "memoryStage": 2,
+          "hudBadge": "🌲 Lữ Khách Rêu Phong",
+          "plainName": "Lữ Khách Rêu Phong",
+          "chronicleTitle": "Tàn Tích Kỵ Sĩ",
+          "subtitle": "The Mossbound Wayfarer"
+        }
+      },
+      "hudText": "🌲 Lữ Khách Rêu Phong"
+    },
+    "02_STAGE3_NO_EVIDENCE.png": {
+      "stage": 3,
+      "flags": [
+        "talked_to_villagers",
+        "talked_to_edda",
+        "talked_to_neris",
+        "east_gate_unlocked",
+        "has_bell_mold",
+        "has_rune_fragment",
+        "vaelen_mold_quest_assigned",
+        "has_purification_key",
+        "purification_key_crafted",
+        "purification_key_received"
+      ],
+      "quest": "Q03_PREPARE_RESOURCES",
+      "snapshot": {
+        "memoryStage": 3,
+        "hasEvidence": false,
+        "identityRevealed": false,
+        "matchedEvidenceRuleIds": [],
+        "npcRecognition": "VAELEN_CREST_Q05",
+        "loreUnlockedIds": [
+          "lore_three_rules",
+          "lore_herbalist_note",
+          "lore_memory_chapter_1",
+          "lore_memory_chapter_2",
+          "lore_black_knight_chronicle",
+          "lore_memory_chapter_3",
+          "lore_memory_chapter_4"
+        ],
+        "questCompleted": {
+          "q05MireSolved": false,
+          "q06ClapperRetrieved": false,
+          "sq08Completed": false
+        },
+        "displayIdentity": {
+          "isRevealed": false,
+          "memoryStage": 3,
+          "hudBadge": "🌲 Lữ Khách Rêu Phong",
+          "plainName": "Lữ Khách Rêu Phong",
+          "chronicleTitle": "Tàn Tích Kỵ Sĩ",
+          "subtitle": "The Mossbound Wayfarer"
+        }
+      },
+      "hudText": "🌲 Lữ Khách Rêu Phong",
+      "popupText": "🔔 Một tiếng chuông đồng mơ hồ ngân vang từ phía Đông màn sương...",
+      "hasInnerJournal": false
+    },
+    "03_MAIN_PATH_Q05_REVEAL.png": {
+      "stage": 3,
+      "flags": [
+        "talked_to_villagers",
+        "talked_to_edda",
+        "talked_to_neris",
+        "east_gate_unlocked",
+        "has_bell_mold",
+        "has_rune_fragment",
+        "vaelen_mold_quest_assigned",
+        "has_purification_key",
+        "purification_key_crafted",
+        "purification_key_received",
+        "collected_note_read_black_knight_stele",
+        "identity_revealed_notified"
+      ],
+      "quest": "Q03_PREPARE_RESOURCES",
+      "snapshot": {
+        "memoryStage": 3,
+        "hasEvidence": true,
+        "identityRevealed": true,
+        "matchedEvidenceRuleIds": [
+          "MAIN_PATH_Q05"
+        ],
+        "npcRecognition": "FULL_REVEAL",
+        "loreUnlockedIds": [
+          "lore_three_rules",
+          "lore_herbalist_note",
+          "lore_memory_chapter_1",
+          "lore_memory_chapter_2",
+          "lore_black_knight_chronicle",
+          "lore_memory_chapter_3",
+          "lore_memory_chapter_4",
+          "lore_wayfarer_inner_journal"
+        ],
+        "questCompleted": {
+          "q05MireSolved": false,
+          "q06ClapperRetrieved": false,
+          "sq08Completed": false
+        },
+        "displayIdentity": {
+          "isRevealed": true,
+          "memoryStage": 3,
+          "hudBadge": "⚔️ Meliodas Blackwood",
+          "plainName": "Meliodas Blackwood",
+          "chronicleTitle": "Meliodas Blackwood",
+          "subtitle": "The Wolf Lord"
+        }
+      },
+      "hudText": "⚔️ Meliodas Blackwood",
+      "popupText": "⚙️ TỰ ĐỘNG TỐI ƯU ĐỒ HỌA [MEDIUM]: Đã kích hoạt bộ đệm ánh sáng 0.5x để ổn định 60 FPS!",
+      "hasInnerJournal": true
+    },
+    "05_JOURNAL_IDENTITY_REVEALED.png": {
+      "stage": 3,
+      "flags": [
+        "talked_to_villagers",
+        "talked_to_edda",
+        "talked_to_neris",
+        "east_gate_unlocked",
+        "has_bell_mold",
+        "has_rune_fragment",
+        "vaelen_mold_quest_assigned",
+        "has_purification_key",
+        "purification_key_crafted",
+        "purification_key_received",
+        "collected_note_read_black_knight_stele",
+        "identity_revealed_notified"
+      ],
+      "quest": "Q03_PREPARE_RESOURCES",
+      "snapshot": {
+        "memoryStage": 3,
+        "hasEvidence": true,
+        "identityRevealed": true,
+        "matchedEvidenceRuleIds": [
+          "MAIN_PATH_Q05"
+        ],
+        "npcRecognition": "FULL_REVEAL",
+        "loreUnlockedIds": [
+          "lore_three_rules",
+          "lore_herbalist_note",
+          "lore_memory_chapter_1",
+          "lore_memory_chapter_2",
+          "lore_black_knight_chronicle",
+          "lore_memory_chapter_3",
+          "lore_memory_chapter_4",
+          "lore_wayfarer_inner_journal"
+        ],
+        "questCompleted": {
+          "q05MireSolved": false,
+          "q06ClapperRetrieved": false,
+          "sq08Completed": false
+        },
+        "displayIdentity": {
+          "isRevealed": true,
+          "memoryStage": 3,
+          "hudBadge": "⚔️ Meliodas Blackwood",
+          "plainName": "Meliodas Blackwood",
+          "chronicleTitle": "Meliodas Blackwood",
+          "subtitle": "The Wolf Lord"
+        }
+      },
+      "selectedLoreId": "lore_wayfarer_inner_journal"
+    },
+    "06_CONTINUE_AFTER_REVEAL.png": {
+      "stage": 3,
+      "flags": [
+        "talked_to_villagers",
+        "talked_to_edda",
+        "talked_to_neris",
+        "east_gate_unlocked",
+        "has_bell_mold",
+        "has_rune_fragment",
+        "vaelen_mold_quest_assigned",
+        "has_purification_key",
+        "purification_key_crafted",
+        "purification_key_received",
+        "collected_note_read_black_knight_stele",
+        "identity_revealed_notified"
+      ],
+      "quest": "Q03_PREPARE_RESOURCES",
+      "snapshot": {
+        "memoryStage": 3,
+        "hasEvidence": true,
+        "identityRevealed": true,
+        "matchedEvidenceRuleIds": [
+          "MAIN_PATH_Q05"
+        ],
+        "npcRecognition": "FULL_REVEAL",
+        "loreUnlockedIds": [
+          "lore_three_rules",
+          "lore_herbalist_note",
+          "lore_memory_chapter_1",
+          "lore_memory_chapter_2",
+          "lore_black_knight_chronicle",
+          "lore_memory_chapter_3",
+          "lore_memory_chapter_4",
+          "lore_wayfarer_inner_journal"
+        ],
+        "questCompleted": {
+          "q05MireSolved": false,
+          "q06ClapperRetrieved": false,
+          "sq08Completed": false
+        },
+        "displayIdentity": {
+          "isRevealed": true,
+          "memoryStage": 3,
+          "hudBadge": "⚔️ Meliodas Blackwood",
+          "plainName": "Meliodas Blackwood",
+          "chronicleTitle": "Meliodas Blackwood",
+          "subtitle": "The Wolf Lord"
+        }
+      },
+      "hudText": "⚔️ Meliodas Blackwood",
+      "popupText": "🔥 Hơi ấm lửa trại đang xoa dịu vết thương và tâm trí..."
+    },
+    "04_SIDE_PATH_SQ08_REVEAL.png": {
+      "stage": 3,
+      "flags": [
+        "east_gate_unlocked",
+        "campfire_knight_q3_accepted",
+        "boss_hooded_knight_defeated",
+        "campfire_knight_q3_completed",
+        "identity_revealed_notified"
+      ],
+      "quest": "Q01_MEET_EDDA",
+      "snapshot": {
+        "memoryStage": 3,
+        "hasEvidence": true,
+        "identityRevealed": true,
+        "matchedEvidenceRuleIds": [
+          "SIDE_PATH_SQ08"
+        ],
+        "npcRecognition": "FULL_REVEAL",
+        "loreUnlockedIds": [
+          "lore_three_rules",
+          "lore_memory_chapter_1",
+          "lore_memory_chapter_2",
+          "lore_black_knight_chronicle",
+          "lore_memory_chapter_3",
+          "lore_memory_chapter_4",
+          "lore_wayfarer_inner_journal"
+        ],
+        "questCompleted": {
+          "q05MireSolved": false,
+          "q06ClapperRetrieved": false,
+          "sq08Completed": true
+        },
+        "displayIdentity": {
+          "isRevealed": true,
+          "memoryStage": 3,
+          "hudBadge": "⚔️ Meliodas Blackwood",
+          "plainName": "Meliodas Blackwood",
+          "chronicleTitle": "Meliodas Blackwood",
+          "subtitle": "The Wolf Lord"
+        }
+      },
+      "hudText": "⚔️ Meliodas Blackwood",
+      "popupText": "🔔 Một tiếng chuông đồng mơ hồ ngân vang từ phía Đông màn sương...",
+      "hasInnerJournal": true
+    }
+  }
+}

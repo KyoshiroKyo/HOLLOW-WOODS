@@ -702,7 +702,15 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     };
     const onInventoryChanged = () => this.updateQuickSlotCounts();
     const onEquipmentChanged = () => this.updateBottomBarEquipment();
-    const onMemoryAwakened = () => this.redrawStats();
+    const onMemoryAwakened = () => {
+      this.redrawStats();
+      if (this.journalModal?.isOpen) this.journalModal.refresh();
+    };
+    const onIdentityRevealed = () => {
+      this.redrawStats();
+      if (this.journalModal?.isOpen) this.journalModal.refresh();
+      this.showPopupMessage('⚔️ KHÔI PHỤC DANH TÍNH: Bạn là Meliodas Blackwood — The Wolf Lord!');
+    };
 
     this.playerState.on('stats_changed', onStatsChanged);
     this.playerState.on('quest_changed', onQuestChanged);
@@ -710,6 +718,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.playerState.on('inventory_changed', onInventoryChanged);
     this.playerState.on('equipment_changed', onEquipmentChanged);
     this.playerState.on('memory_awakening_changed', onMemoryAwakened);
+    this.playerState.on('identity_revealed', onIdentityRevealed);
 
     this.events.once('shutdown', () => {
       this.playerState.off('stats_changed', onStatsChanged);
@@ -718,6 +727,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.playerState.off('inventory_changed', onInventoryChanged);
       this.playerState.off('equipment_changed', onEquipmentChanged);
       this.playerState.off('memory_awakening_changed', onMemoryAwakened);
+      this.playerState.off('identity_revealed', onIdentityRevealed);
       // C4-13-09: Dọn dẹp triệt để tweens, timer events và keyboard listeners khi tắt/chuyển scene
       this.tweens.killAll();
       this.time.removeAllEvents();
@@ -3407,9 +3417,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.handleModalOpened();
     this.setInteractionPrompt(null);
 
+    const wasRevealedBeforeStow = this.playerState.canRevealPlayerIdentity();
     const modal = this.getTornPageModal();
     modal.onStow = (stowedEntry) => {
-      if (stowedEntry.loreId) {
+      const revealedNow = !wasRevealedBeforeStow && this.playerState.canRevealPlayerIdentity();
+      if (stowedEntry.loreId && !revealedNow) {
         this.showPopupMessage(`📜 Đã cất vào Sổ Tay [J]: "${stowedEntry.title}"`);
       }
       if (onStowCallback) onStowCallback();
