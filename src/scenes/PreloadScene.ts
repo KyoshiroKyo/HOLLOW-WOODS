@@ -931,9 +931,26 @@ export class PreloadScene extends Phaser.Scene {
     // HW-V14-ATLAS: Đồng bộ hóa Texture Atlas & thiết lập NEAREST Filter cho toàn bộ Tilemap & Atlas (chống lem viền pixel)
     AtlasTextureResolver.syncTextures(this);
 
-    // BUG-025: Thiết lập NEAREST Filter cho Item Icons Atlas chống nhòe mờ biểu tượng
-    if (this.textures.exists(ATLAS_ITEM_ICONS_KEY)) {
-      this.textures.get(ATLAS_ITEM_ICONS_KEY).setFilter(Phaser.Textures.FilterMode.NEAREST);
+    // BUG-025 & BUG-059: Thiết lập NEAREST Filter cho Item Icons & toàn bộ Black Knight V2 atlases chống nội suy làm nhòe pixel
+    const nearestTextureKeys = [
+      ATLAS_ITEM_ICONS_KEY,
+      BLACK_KNIGHT_ARMED_IDLE_KEY,
+      BLACK_KNIGHT_MOVEMENT_KEY,
+      BLACK_KNIGHT_CORE_COMBAT_KEY,
+      BLACK_KNIGHT_DEFENSE_KEY,
+      BLACK_KNIGHT_EXTENDED_SKILLS_KEY,
+      BLACK_KNIGHT_CONVERSION_ACTIONS_KEY,
+      BLACK_KNIGHT_CONVERSION_AIR_KEY,
+      BLACK_KNIGHT_CONVERSION_COMBAT_KEY,
+      BLACK_KNIGHT_CONVERSION_STATES_KEY,
+      BLACK_KNIGHT_CONVERSION_MOTION_KEY,
+      SATYR_PORTRAIT_KEY,
+      WAYFARER_PORTRAIT_KEY,
+    ];
+    for (const texKey of nearestTextureKeys) {
+      if (this.textures.exists(texKey)) {
+        this.textures.get(texKey).setFilter(Phaser.Textures.FilterMode.NEAREST);
+      }
     }
 
     // V14-P8-14B: Đăng ký 2 hoạt ảnh chuẩn của Hiệp Sĩ Canh Lửa (anim_campfire_knight_pray và anim_campfire_knight_idle)

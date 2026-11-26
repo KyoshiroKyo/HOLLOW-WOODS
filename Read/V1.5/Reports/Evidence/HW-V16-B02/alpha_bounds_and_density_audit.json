@@ -1,0 +1,527 @@
+{
+  "sequences": [
+    {
+      "label": "idle_down_up_left",
+      "atlas": "black_knight_armed_idle",
+      "prefix": "armed_idle_",
+      "directions": {
+        "down": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 29.5,
+          "avgWorldHeightPx": 44.25,
+          "avgOpaqueTexels": 392.5,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "up": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 29.83,
+          "avgWorldHeightPx": 44.75,
+          "avgOpaqueTexels": 382.5,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "left": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 30.0,
+          "avgWorldHeightPx": 45.0,
+          "avgOpaqueTexels": 466.3,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        }
+      }
+    },
+    {
+      "label": "idle_right",
+      "atlas": "black_knight_movement",
+      "prefix": "armed_idle_",
+      "directions": {
+        "right": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 30.67,
+          "avgWorldHeightPx": 46.0,
+          "avgOpaqueTexels": 340.0,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        }
+      }
+    },
+    {
+      "label": "walk_armed",
+      "atlas": "black_knight_movement",
+      "prefix": "armed_walk_",
+      "directions": {
+        "down": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 31.33,
+          "avgWorldHeightPx": 47.0,
+          "avgOpaqueTexels": 402.3,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "up": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 31.0,
+          "avgWorldHeightPx": 46.5,
+          "avgOpaqueTexels": 381.3,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "left": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 31.5,
+          "avgWorldHeightPx": 47.25,
+          "avgOpaqueTexels": 415.5,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "right": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 31.0,
+          "avgWorldHeightPx": 46.5,
+          "avgOpaqueTexels": 380.3,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        }
+      }
+    },
+    {
+      "label": "run_armed_conversion_active",
+      "atlas": "black_knight_conversion_motion",
+      "prefix": "armed_run_sequence_",
+      "directions": {
+        "down": {
+          "cell": "84x72",
+          "pivotY": 0.875,
+          "avgRawHeightPx": 39.0,
+          "avgWorldHeightPx": 44.46,
+          "avgOpaqueTexels": 648.8,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -2.19
+        },
+        "up": {
+          "cell": "84x72",
+          "pivotY": 0.875,
+          "avgRawHeightPx": 40.92,
+          "avgWorldHeightPx": 46.65,
+          "avgOpaqueTexels": 658.4,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -2.85
+        },
+        "left": {
+          "cell": "84x72",
+          "pivotY": 0.875,
+          "avgRawHeightPx": 38.75,
+          "avgWorldHeightPx": 44.18,
+          "avgOpaqueTexels": 687.1,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -2.47
+        },
+        "right": {
+          "cell": "84x72",
+          "pivotY": 0.875,
+          "avgRawHeightPx": 38.92,
+          "avgWorldHeightPx": 44.37,
+          "avgOpaqueTexels": 659.0,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -2.85
+        }
+      }
+    },
+    {
+      "label": "run_armed_k2_fallback_ref",
+      "atlas": "black_knight_movement",
+      "prefix": "armed_run_",
+      "directions": {
+        "down": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 30.17,
+          "avgWorldHeightPx": 45.25,
+          "avgOpaqueTexels": 421.3,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -4.5
+        },
+        "up": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 30.5,
+          "avgWorldHeightPx": 45.75,
+          "avgOpaqueTexels": 372.8,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -4.0
+        },
+        "left": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 27.83,
+          "avgWorldHeightPx": 41.75,
+          "avgOpaqueTexels": 419.5,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -4.75
+        },
+        "right": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 27.83,
+          "avgWorldHeightPx": 41.75,
+          "avgOpaqueTexels": 323.2,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -3.5
+        }
+      }
+    },
+    {
+      "label": "unarmed_idle",
+      "atlas": "black_knight_movement",
+      "prefix": "unarmed_idle_",
+      "directions": {
+        "down": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 31.67,
+          "avgWorldHeightPx": 47.5,
+          "avgOpaqueTexels": 415.8,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "up": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 31.67,
+          "avgWorldHeightPx": 47.5,
+          "avgOpaqueTexels": 384.8,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "left": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 31.5,
+          "avgWorldHeightPx": 47.25,
+          "avgOpaqueTexels": 332.8,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "right": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 32.0,
+          "avgWorldHeightPx": 48.0,
+          "avgOpaqueTexels": 322.3,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        }
+      }
+    },
+    {
+      "label": "unarmed_walk",
+      "atlas": "black_knight_movement",
+      "prefix": "unarmed_walk_",
+      "directions": {
+        "down": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 31.83,
+          "avgWorldHeightPx": 47.75,
+          "avgOpaqueTexels": 413.8,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "up": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 31.5,
+          "avgWorldHeightPx": 47.25,
+          "avgOpaqueTexels": 397.5,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "left": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 31.67,
+          "avgWorldHeightPx": 47.5,
+          "avgOpaqueTexels": 345.8,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "right": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 31.33,
+          "avgWorldHeightPx": 47.0,
+          "avgOpaqueTexels": 320.2,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        }
+      }
+    },
+    {
+      "label": "run_unarmed_conversion_active",
+      "atlas": "black_knight_conversion_motion",
+      "prefix": "unarmed_run_sequence_",
+      "directions": {
+        "down": {
+          "cell": "84x72",
+          "pivotY": 0.875,
+          "avgRawHeightPx": 43.5,
+          "avgWorldHeightPx": 45.49,
+          "avgOpaqueTexels": 813.4,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -2.46
+        },
+        "up": {
+          "cell": "84x72",
+          "pivotY": 0.875,
+          "avgRawHeightPx": 45.0,
+          "avgWorldHeightPx": 47.05,
+          "avgOpaqueTexels": 797.8,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -3.26
+        },
+        "left": {
+          "cell": "84x72",
+          "pivotY": 0.875,
+          "avgRawHeightPx": 43.42,
+          "avgWorldHeightPx": 45.47,
+          "avgOpaqueTexels": 810.8,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -2.82
+        },
+        "right": {
+          "cell": "84x72",
+          "pivotY": 0.875,
+          "avgRawHeightPx": 43.92,
+          "avgWorldHeightPx": 45.99,
+          "avgOpaqueTexels": 798.2,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -2.64
+        }
+      }
+    },
+    {
+      "label": "run_unarmed_k2_fallback_ref",
+      "atlas": "black_knight_movement",
+      "prefix": "unarmed_run_",
+      "directions": {
+        "down": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 30.0,
+          "avgWorldHeightPx": 45.0,
+          "avgOpaqueTexels": 362.3,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -4.5
+        },
+        "up": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 29.67,
+          "avgWorldHeightPx": 44.5,
+          "avgOpaqueTexels": 340.0,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -4.0
+        },
+        "left": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 28.0,
+          "avgWorldHeightPx": 42.0,
+          "avgOpaqueTexels": 311.2,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -3.5
+        },
+        "right": {
+          "cell": "64x64",
+          "pivotY": 1.0,
+          "avgRawHeightPx": 27.83,
+          "avgWorldHeightPx": 41.75,
+          "avgOpaqueTexels": 323.8,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -3.5
+        }
+      }
+    },
+    {
+      "label": "attack_core",
+      "atlas": "black_knight_core_combat",
+      "prefix": "attack_",
+      "directions": {
+        "down": {
+          "cell": "64x64",
+          "pivotY": 1,
+          "avgRawHeightPx": 32.0,
+          "avgWorldHeightPx": 48.0,
+          "avgOpaqueTexels": 423.8,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "up": {
+          "cell": "64x64",
+          "pivotY": 1,
+          "avgRawHeightPx": 31.67,
+          "avgWorldHeightPx": 47.5,
+          "avgOpaqueTexels": 425.2,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "left": {
+          "cell": "64x64",
+          "pivotY": 1,
+          "avgRawHeightPx": 31.67,
+          "avgWorldHeightPx": 47.5,
+          "avgOpaqueTexels": 389.2,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "right": {
+          "cell": "64x64",
+          "pivotY": 1,
+          "avgRawHeightPx": 31.67,
+          "avgWorldHeightPx": 47.5,
+          "avgOpaqueTexels": 389.2,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        }
+      }
+    },
+    {
+      "label": "heavy_attack_core",
+      "atlas": "black_knight_core_combat",
+      "prefix": "heavy_attack_",
+      "directions": {
+        "down": {
+          "cell": "64x64",
+          "pivotY": 1,
+          "avgRawHeightPx": 31.33,
+          "avgWorldHeightPx": 47.0,
+          "avgOpaqueTexels": 435.3,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "up": {
+          "cell": "64x64",
+          "pivotY": 1,
+          "avgRawHeightPx": 32.17,
+          "avgWorldHeightPx": 48.25,
+          "avgOpaqueTexels": 437.8,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "left": {
+          "cell": "64x64",
+          "pivotY": 1,
+          "avgRawHeightPx": 32.67,
+          "avgWorldHeightPx": 49.0,
+          "avgOpaqueTexels": 431.7,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "right": {
+          "cell": "64x64",
+          "pivotY": 1,
+          "avgRawHeightPx": 32.5,
+          "avgWorldHeightPx": 48.75,
+          "avgOpaqueTexels": 449.2,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        }
+      }
+    },
+    {
+      "label": "parry_defense",
+      "atlas": "black_knight_defense",
+      "prefix": "parry_",
+      "directions": {
+        "down": {
+          "cell": "64x64",
+          "pivotY": 1,
+          "avgRawHeightPx": 31.83,
+          "avgWorldHeightPx": 47.75,
+          "avgOpaqueTexels": 447.8,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "up": {
+          "cell": "64x64",
+          "pivotY": 1,
+          "avgRawHeightPx": 32.17,
+          "avgWorldHeightPx": 48.25,
+          "avgOpaqueTexels": 429.2,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "left": {
+          "cell": "64x64",
+          "pivotY": 1,
+          "avgRawHeightPx": 31.67,
+          "avgWorldHeightPx": 47.5,
+          "avgOpaqueTexels": 363.5,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "right": {
+          "cell": "64x64",
+          "pivotY": 1,
+          "avgRawHeightPx": 32.0,
+          "avgWorldHeightPx": 48.0,
+          "avgOpaqueTexels": 366.5,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        }
+      }
+    },
+    {
+      "label": "roll_defense",
+      "atlas": "black_knight_defense",
+      "prefix": "roll_",
+      "directions": {
+        "down": {
+          "cell": "64x64",
+          "pivotY": 1,
+          "avgRawHeightPx": 26.0,
+          "avgWorldHeightPx": 39.0,
+          "avgOpaqueTexels": 392.0,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "up": {
+          "cell": "64x64",
+          "pivotY": 1,
+          "avgRawHeightPx": 26.17,
+          "avgWorldHeightPx": 39.25,
+          "avgOpaqueTexels": 371.0,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -2.75
+        },
+        "left": {
+          "cell": "64x64",
+          "pivotY": 1,
+          "avgRawHeightPx": 27.0,
+          "avgWorldHeightPx": 40.5,
+          "avgOpaqueTexels": 359.3,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        },
+        "right": {
+          "cell": "64x64",
+          "pivotY": 1,
+          "avgRawHeightPx": 26.17,
+          "avgWorldHeightPx": 39.25,
+          "avgOpaqueTexels": 333.8,
+          "softAlphaPct": 0.0,
+          "avgFootAnchorDeltaPx": -1.5
+        }
+      }
+    }
+  ]
+}

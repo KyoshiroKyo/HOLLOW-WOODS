@@ -1,0 +1,174 @@
+{
+  "runtimeDir": "public/assets/characters/black_knight",
+  "authoritativeLatest": "Asset_Art/Meliodas_Blackwood/01_LATEST_ARTWORK",
+  "files": [
+    {
+      "file": "black_knight_armed_idle.json",
+      "sizeBytes": 16880,
+      "runtimeSha256": "204bd6c3c1643c4564aada8727541123bc1cdc21460901b84350c90dee735405",
+      "latestArtworkPath": null,
+      "latestArtworkSha256": null,
+      "exactBinaryMatch": null
+    },
+    {
+      "file": "black_knight_armed_idle.png",
+      "sizeBytes": 26670,
+      "runtimeSha256": "ff47e472f4c50bae5970fd6022633a2037f53bc04e8b3e4876c7d5bcd6ec092c",
+      "latestArtworkPath": null,
+      "latestArtworkSha256": null,
+      "exactBinaryMatch": null
+    },
+    {
+      "file": "black_knight_conversion_actions.json",
+      "sizeBytes": 116370,
+      "runtimeSha256": "3a1a6a785a278d059a4e7db07a2667088285745f17972d38eda8c2a3e3f83546",
+      "latestArtworkPath": "Atlases_Latest/Conversion_34Seq_6bb15b80/black_knight_conversion_actions.json",
+      "latestArtworkSha256": "f257d0377abe0fee2b5094dc110f48a4643c8c754b9bb3ebe6a6de21ca61ac9f",
+      "exactBinaryMatch": false
+    },
+    {
+      "file": "black_knight_conversion_actions.png",
+      "sizeBytes": 213006,
+      "runtimeSha256": "4774f891abd3264814637e7377af03f12a4f32597f2e47c83ac0f2ae3d725a27",
+      "latestArtworkPath": "Atlases_Latest/Conversion_34Seq_6bb15b80/black_knight_conversion_actions.png",
+      "latestArtworkSha256": "4774f891abd3264814637e7377af03f12a4f32597f2e47c83ac0f2ae3d725a27",
+      "exactBinaryMatch": true
+    },
+    {
+      "file": "black_knight_conversion_air.json",
+      "sizeBytes": 146658,
+      "runtimeSha256": "47c91b3d7b93972804cb8db78846e237257239cb05bdc303e33ecf825e025c08",
+      "latestArtworkPath": "Atlases_Latest/Conversion_34Seq_6bb15b80/black_knight_conversion_air.json",
+      "latestArtworkSha256": "b4308e577546e44c5b1285be3529e54959e0298ade80dca4540329b78fea60c9",
+      "exactBinaryMatch": false
+    },
+    {
+      "file": "black_knight_conversion_air.png",
+      "sizeBytes": 282852,
+      "runtimeSha256": "a6523927bf5d225f3d8d5485f9b5282b16ef24cd1184bc985aa2c17dac40f3f6",
+      "latestArtworkPath": "Atlases_Latest/Conversion_34Seq_6bb15b80/black_knight_conversion_air.png",
+      "latestArtworkSha256": "a6523927bf5d225f3d8d5485f9b5282b16ef24cd1184bc985aa2c17dac40f3f6",
+      "exactBinaryMatch": true
+    },
+    {
+      "file": "black_knight_conversion_combat.json",
+      "sizeBytes": 345283,
+      "runtimeSha256": "a376cd4883f3f297a7610bd55bd76fcb4ebeadffa7b3696ddd173526bf358d03",
+      "latestArtworkPath": "Atlases_Latest/Conversion_34Seq_6bb15b80/black_knight_conversion_combat.json",
+      "latestArtworkSha256": "4f99d9fe5b309bfbf2bbfddf8ed46cb54ae260695695b5c2bf7161f6cb8957d1",
+      "exactBinaryMatch": false
+    },
+    {
+      "file": "black_knight_conversion_combat.png",
+      "sizeBytes": 967763,
+      "runtimeSha256": "1d83488a54d545f2bd764d10e54e319a14a5867306a536bbd1a472d6df22240c",
+      "latestArtworkPath": "Atlases_Latest/Conversion_34Seq_6bb15b80/black_knight_conversion_combat.png",
+      "latestArtworkSha256": "1d83488a54d545f2bd764d10e54e319a14a5867306a536bbd1a472d6df22240c",
+      "exactBinaryMatch": true
+    },
+    {
+      "file": "black_knight_conversion_motion.json",
+      "sizeBytes": 140613,
+      "runtimeSha256": "b93672ea8f6ca371658dc1aed69a00812f181b7aadcad4b9685edc76be25e22a",
+      "latestArtworkPath": "Atlases_Latest/Conversion_34Seq_6bb15b80/black_knight_conversion_motion.json",
+      "latestArtworkSha256": "2f9bbba2a9b1beb1367b9418b18853fd3b2bea7b01b81d48e15a80626a34e902",
+      "exactBinaryMatch": false
+    },
+    {
+      "file": "black_knight_conversion_motion.png",
+      "sizeBytes": 472099,
+      "runtimeSha256": "3ea692c586431d737bcd93dceb3525a5c02591029b4993a2f63778da402e2da0",
+      "latestArtworkPath": "Atlases_Latest/Conversion_34Seq_6bb15b80/black_knight_conversion_motion.png",
+      "latestArtworkSha256": "3ea692c586431d737bcd93dceb3525a5c02591029b4993a2f63778da402e2da0",
+      "exactBinaryMatch": true
+    },
+    {
+      "file": "black_knight_conversion_states.json",
+      "sizeBytes": 233702,
+      "runtimeSha256": "265b182e62f9d7cc6a2fcdc6bc6c8a9debdce125883eb1ba1b71be15caea9883",
+      "latestArtworkPath": "Atlases_Latest/Conversion_34Seq_6bb15b80/black_knight_conversion_states.json",
+      "latestArtworkSha256": "ae179e8d6be36d11b70c073e981d69294ef9f58798e448adc9a99b264eab24f6",
+      "exactBinaryMatch": false
+    },
+    {
+      "file": "black_knight_conversion_states.png",
+      "sizeBytes": 715692,
+      "runtimeSha256": "a8ce11dc4f35bc4605d8a6b73f12378202cbaf769c6367da6380f1c73622bf9a",
+      "latestArtworkPath": "Atlases_Latest/Conversion_34Seq_6bb15b80/black_knight_conversion_states.png",
+      "latestArtworkSha256": "a8ce11dc4f35bc4605d8a6b73f12378202cbaf769c6367da6380f1c73622bf9a",
+      "exactBinaryMatch": true
+    },
+    {
+      "file": "black_knight_core_combat.json",
+      "sizeBytes": 46344,
+      "runtimeSha256": "3ae8caf364ea88b1f50695db46d21f9705a851d9bf4defb7126964dab8123213",
+      "latestArtworkPath": "Atlases_Latest/K3_Combat_Defense_Skills/black_knight_core_combat.json",
+      "latestArtworkSha256": "24a80fdece9b739b69a43aa21d5d10077f342617b7c024211e4eae84819e352d",
+      "exactBinaryMatch": false
+    },
+    {
+      "file": "black_knight_core_combat.png",
+      "sizeBytes": 111020,
+      "runtimeSha256": "5126a4a490f84f1b31437fe110dfdeecebd184e07a4075b7531c9f4596c633fd",
+      "latestArtworkPath": "Atlases_Latest/K3_Combat_Defense_Skills/black_knight_core_combat.png",
+      "latestArtworkSha256": "5126a4a490f84f1b31437fe110dfdeecebd184e07a4075b7531c9f4596c633fd",
+      "exactBinaryMatch": true
+    },
+    {
+      "file": "black_knight_defense.json",
+      "sizeBytes": 138631,
+      "runtimeSha256": "c9f2a44397829da60dfab0c1973a90c0e2088758fa7e9e8d738a3906043664a7",
+      "latestArtworkPath": "Atlases_Latest/K3_Combat_Defense_Skills/black_knight_defense.json",
+      "latestArtworkSha256": "d65e678b9c6e457197c6339db2f139efef4ac97b41022e2531b9420ab118f7e2",
+      "exactBinaryMatch": false
+    },
+    {
+      "file": "black_knight_defense.png",
+      "sizeBytes": 288641,
+      "runtimeSha256": "4e1f5fb8e294363860a31723097e551342c5b6009033ed05c0b3badaca0acaad",
+      "latestArtworkPath": "Atlases_Latest/K3_Combat_Defense_Skills/black_knight_defense.png",
+      "latestArtworkSha256": "4e1f5fb8e294363860a31723097e551342c5b6009033ed05c0b3badaca0acaad",
+      "exactBinaryMatch": true
+    },
+    {
+      "file": "black_knight_extended_skills.json",
+      "sizeBytes": 125940,
+      "runtimeSha256": "252bf77154e3bdb65f5799cb5bf70cb5cb6c79bd8f4f9bfa02185ea7ce52144b",
+      "latestArtworkPath": "Atlases_Latest/K3_Combat_Defense_Skills/black_knight_extended_skills.json",
+      "latestArtworkSha256": "06da44db2d6e8f23ea2e9af726cc0c2c5f07b86c42d34bdf17db367f8bd23df7",
+      "exactBinaryMatch": false
+    },
+    {
+      "file": "black_knight_extended_skills.png",
+      "sizeBytes": 313019,
+      "runtimeSha256": "236e8c1fdcd5dd28ccd9b6ef3b011951e3594414f5658234cd6c9cef872049e2",
+      "latestArtworkPath": "Atlases_Latest/K3_Combat_Defense_Skills/black_knight_extended_skills.png",
+      "latestArtworkSha256": "236e8c1fdcd5dd28ccd9b6ef3b011951e3594414f5658234cd6c9cef872049e2",
+      "exactBinaryMatch": true
+    },
+    {
+      "file": "black_knight_movement.json",
+      "sizeBytes": 81537,
+      "runtimeSha256": "5acbdda5fbad6577f88575253d9e2d5b8f54f6268b10fb2ece55e1c2fec152e1",
+      "latestArtworkPath": "Atlases_Latest/K2_V2_5feed142/black_knight_movement.json",
+      "latestArtworkSha256": "16dd9e42f65b4dfa96e35a25cd38d0fe5885adc98c4d5601fa8888421f9f461f",
+      "exactBinaryMatch": false
+    },
+    {
+      "file": "black_knight_movement.png",
+      "sizeBytes": 167801,
+      "runtimeSha256": "17279d83290fa349855066381f557548e08df31b123fe1c745b29017a2a14d8f",
+      "latestArtworkPath": "Atlases_Latest/K2_V2_5feed142/black_knight_movement.png",
+      "latestArtworkSha256": "17279d83290fa349855066381f557548e08df31b123fe1c745b29017a2a14d8f",
+      "exactBinaryMatch": true
+    },
+    {
+      "file": "black_knight_portrait.png",
+      "sizeBytes": 2809,
+      "runtimeSha256": "96dfc9fca1bcff39ec4ad972d3616c62a86832ab58ce0826c830ebe69182e507",
+      "latestArtworkPath": "Portraits_Menu_Cover/black_knight_portrait.png",
+      "latestArtworkSha256": "96dfc9fca1bcff39ec4ad972d3616c62a86832ab58ce0826c830ebe69182e507",
+      "exactBinaryMatch": true
+    }
+  ]
+}

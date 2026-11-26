@@ -1,0 +1,108 @@
+{
+  "bugId": "BUG-059",
+  "taskId": "HW-V16-B02",
+  "status": "PARTIAL \u2014 SOURCE_ART_ASSET_GAP",
+  "note": "No artwork mapping altered because 01_LATEST_ARTWORK has no Conversion-tier (84x72 / ~40-46px) Idle/Walk frames, and downgrading Conversion Run (12f) to K2 V2 (6f) violates V153 parity and B01 calibration.",
+  "before": {
+    "armed_idle_down_up_left": {
+      "atlas": "black_knight_armed_idle",
+      "version": "K1_0b16b7d4",
+      "cell": "64x64",
+      "scale": 1.5,
+      "filterMode": "NEAREST (implicit pixelArt:true)"
+    },
+    "armed_idle_right": {
+      "atlas": "black_knight_movement",
+      "version": "K2_V2_5feed142",
+      "cell": "64x64",
+      "scale": 1.5,
+      "filterMode": "NEAREST (implicit pixelArt:true)"
+    },
+    "armed_walk": {
+      "atlas": "black_knight_movement",
+      "version": "K2_V2_5feed142",
+      "cell": "64x64",
+      "scale": 1.5,
+      "filterMode": "NEAREST (implicit pixelArt:true)"
+    },
+    "armed_run": {
+      "atlas": "black_knight_conversion_motion",
+      "version": "Conversion_34Seq_6bb15b80",
+      "cell": "84x72",
+      "scale": 1.14,
+      "filterMode": "NEAREST (implicit pixelArt:true)"
+    },
+    "unarmed_idle": {
+      "atlas": "black_knight_movement",
+      "version": "K2_V2_5feed142",
+      "cell": "64x64",
+      "scale": 1.5,
+      "filterMode": "NEAREST (implicit pixelArt:true)"
+    },
+    "unarmed_walk": {
+      "atlas": "black_knight_movement",
+      "version": "K2_V2_5feed142",
+      "cell": "64x64",
+      "scale": 1.5,
+      "filterMode": "NEAREST (implicit pixelArt:true)"
+    },
+    "unarmed_run": {
+      "atlas": "black_knight_conversion_motion",
+      "version": "Conversion_34Seq_6bb15b80",
+      "cell": "84x72",
+      "scale": "0.99 / 1.11",
+      "filterMode": "NEAREST (implicit pixelArt:true)"
+    }
+  },
+  "after": {
+    "armed_idle_down_up_left": {
+      "atlas": "black_knight_armed_idle",
+      "version": "K1_0b16b7d4",
+      "cell": "64x64",
+      "scale": 1.5,
+      "filterMode": "NEAREST (explicit FilterMode.NEAREST enforced in PreloadScene)"
+    },
+    "armed_idle_right": {
+      "atlas": "black_knight_movement",
+      "version": "K2_V2_5feed142",
+      "cell": "64x64",
+      "scale": 1.5,
+      "filterMode": "NEAREST (explicit FilterMode.NEAREST enforced in PreloadScene)"
+    },
+    "armed_walk": {
+      "atlas": "black_knight_movement",
+      "version": "K2_V2_5feed142",
+      "cell": "64x64",
+      "scale": 1.5,
+      "filterMode": "NEAREST (explicit FilterMode.NEAREST enforced in PreloadScene)"
+    },
+    "armed_run": {
+      "atlas": "black_knight_conversion_motion",
+      "version": "Conversion_34Seq_6bb15b80",
+      "cell": "84x72",
+      "scale": 1.14,
+      "filterMode": "NEAREST (explicit FilterMode.NEAREST enforced in PreloadScene)"
+    },
+    "unarmed_idle": {
+      "atlas": "black_knight_movement",
+      "version": "K2_V2_5feed142",
+      "cell": "64x64",
+      "scale": 1.5,
+      "filterMode": "NEAREST (explicit FilterMode.NEAREST enforced in PreloadScene)"
+    },
+    "unarmed_walk": {
+      "atlas": "black_knight_movement",
+      "version": "K2_V2_5feed142",
+      "cell": "64x64",
+      "scale": 1.5,
+      "filterMode": "NEAREST (explicit FilterMode.NEAREST enforced in PreloadScene)"
+    },
+    "unarmed_run": {
+      "atlas": "black_knight_conversion_motion",
+      "version": "Conversion_34Seq_6bb15b80",
+      "cell": "84x72",
+      "scale": "0.99 / 1.11",
+      "filterMode": "NEAREST (explicit FilterMode.NEAREST enforced in PreloadScene)"
+    }
+  }
+}
