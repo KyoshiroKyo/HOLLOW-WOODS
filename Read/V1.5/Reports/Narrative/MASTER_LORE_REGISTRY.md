@@ -84,8 +84,8 @@ Kiểm tra trực tiếp cấu trúc `src/data/lore.json` ghi nhận đúng `29`
 | `loreEntries` | `lore_memory_chapter_1` | *HỒI ỨC I: KẺ LỮ HÀNH MẤT TRÍ TRONG SƯƠNG* | `GAME-IMPLEMENTED` — Cần kiểm điểm tỉnh dậy & tiếng chuông/lời gọi (`DLG-003`, `NAR-001`) |
 | `loreEntries` | `lore_memory_chapter_2` | *HỒI ỨC II: MANH MỐI XƯỞNG CHUÔNG & VĂN BIA CỔ* | `GAME-IMPLEMENTED` — **Rủi ro `I-01`:** mở sớm tại `stage 1` |
 | `loreEntries` | `lore_memory_chapter_3` | *HỒI ỨC III: TIẾNG GỌI THE ECHO & KẺ SA NGÃ* | `GAME-IMPLEMENTED` — Liên quan `NAR-001/014` (`OQ-02/04`) |
-| `loreEntries` | `lore_memory_chapter_4` | *HỒI ỨC IV: ĐẠI THỨC TỈNH — CHÂN TƯỚNG HIỆP SĨ ĐEN* | `GAME-IMPLEMENTED` — **`CONFLICT 01 / 04`** (tự phong ấn & chân tướng Chỉ Huy) |
-| `loreEntries` | `lore_wayfarer_inner_journal` | *NHẬT KÝ LỮ KHÁCH: LỜI THỀ TRONG RÊU PHONG* | `GAME-IMPLEMENTED` — **`CONFLICT 01 / I-01`** (chứa lời giải tự phong ấn ở `stage ≥ 2`) |
+| `loreEntries` | `lore_memory_chapter_4` | *HỒI ỨC IV: THỨC TỈNH — MELIODAS BLACKWOOD* | `GAME-IMPLEMENTED` — **`A06` Display-Gated (`REDACTED` khi chưa đủ Stage `3` + Approved Evidence)** |
+| `loreEntries` | `lore_wayfarer_inner_journal` | *NHẬT KÝ LỮ KHÁCH: LỜI THỀ TRONG RÊU PHONG* | `GAME-IMPLEMENTED` — **`A06` Fixed (`PlayerState:610/770` & `EvilKnights:1002` leak closed; Legacy Save `REDACTED` an toàn)** |
 | `loreEntries` | `lore_knights_memorial_stele` | *BIA ĐÁ TƯỞNG NIỆM ĐOÀN KỴ SĨ* | `GAME-IMPLEMENTED` — Đối chiếu `tornPagesData.ts` (`Sir Valen`, `12` kỵ sĩ) |
 | `loreEntries` | `lore_bellmaker_dew_journal` | *TRANG NHẬT KÝ ƯỚT SƯƠNG: HỢP KIM NGÂN VANG* | `GAME-IMPLEMENTED` — Tương thích main route |
 | `loreEntries` | `lore_broken_sword_mire` | *THANH KIẾM GÃY BÊN BỜ ĐẦM LẦY* | `GAME-IMPLEMENTED` — Kiểm tra liên hệ kỵ sĩ khi duyệt |

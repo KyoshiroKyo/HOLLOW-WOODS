@@ -999,7 +999,6 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
       ps.addItem('quest_corrupted_crest', 1);
     }
     ps.setFlag('boss_hooded_knight_defeated');
-    ps.unlockLore('lore_wayfarer_inner_journal');
 
     const gameScene = this.scene as any;
     if (gameScene.dialogueSystem?.startDialogue) {

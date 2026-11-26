@@ -335,14 +335,14 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     });
     this.statCardBg = this.add.image(202, 50, statCardTexKey).setDepth(8050);
 
-    // Tên nhân vật chính hiển thị góc trên trái (V14-P8-15B: Đồng bộ theo memoryAwakeningStage)
-    const isAwakened = (this.playerState.memoryAwakeningStage >= 3);
-    this.playerNameText = HDTextHelper.createText(this, 26, 15, isAwakened ? '⚔️ Meliodas Blackwood' : '🌲 Lữ Khách Rêu Phong', {
+    // Tên nhân vật chính hiển thị góc trên trái (HW-V16-A06: Thống nhất qua IdentityRevealResolver)
+    const identity = this.playerState.getPlayerDisplayIdentity();
+    this.playerNameText = HDTextHelper.createText(this, 26, 15, identity.hudBadge, {
       fontSize: '11.5px',
       fontStyle: 'bold',
-      color: isAwakened ? '#ffc048' : '#e5a93c',
-      stroke: isAwakened ? '#3d1a04' : '#000000',
-      strokeThickness: isAwakened ? 3 : 2
+      color: identity.isRevealed ? '#ffc048' : '#e5a93c',
+      stroke: identity.isRevealed ? '#3d1a04' : '#000000',
+      strokeThickness: identity.isRevealed ? 3 : 2
     }).setDepth(8053);
 
     this.statBarsGraphics = this.add.graphics();
@@ -1057,22 +1057,13 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     // V1.4: Cập nhật 2 huy hiệu trạng thái phụ (Độ Ẩm & Thân Nhiệt)
     this.updateStatusBadges(stats.moisture ?? 0, stats.temperature ?? 80);
 
-    // V14-P8-15B & DEC-LOCK-07: Cập nhật danh hiệu người chơi khi thức tỉnh ký ức (Stage 3: Meliodas Blackwood)
+    // HW-V16-A06 & DEC-LOCK-07: Cập nhật danh hiệu người chơi qua IdentityRevealResolver thống nhất
     if (this.playerNameText) {
-      if (this.playerState.memoryAwakeningStage >= 3) {
-        const title = '⚔️ Meliodas Blackwood';
-        if (this.playerNameText.text !== title) {
-          this.playerNameText.setText(title);
-          this.playerNameText.setColor('#ffc048');
-          this.playerNameText.setStroke('#3d1a04', 3);
-        }
-      } else {
-        const title = '🌲 Lữ Khách Rêu Phong';
-        if (this.playerNameText.text !== title) {
-          this.playerNameText.setText(title);
-          this.playerNameText.setColor('#e5a93c');
-          this.playerNameText.setStroke('#000000', 2);
-        }
+      const identity = this.playerState.getPlayerDisplayIdentity();
+      if (this.playerNameText.text !== identity.hudBadge) {
+        this.playerNameText.setText(identity.hudBadge);
+        this.playerNameText.setColor(identity.isRevealed ? '#ffc048' : '#e5a93c');
+        this.playerNameText.setStroke(identity.isRevealed ? '#3d1a04' : '#000000', identity.isRevealed ? 3 : 2);
       }
     }
   }

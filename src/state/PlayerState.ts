@@ -4,6 +4,17 @@ import loreData from '../data/lore.json';
 import { PlayerStats, HerbPlotData, HerbPlotStage, CropType, ZoneId, BestiaryEntry, BestiarySpecies } from '../types';
 import { WorldGatingSystem } from '../world/WorldGatingSystem';
 import { ZoneConnectionRegistry } from '../world/ZoneConnectionRegistry';
+import {
+  hasIdentityEvidence as resolveHasIdentityEvidence,
+  canRevealPlayerIdentity as resolveCanRevealPlayerIdentity,
+  getPlayerDisplayIdentity as resolvePlayerDisplayIdentity,
+  getNpcRecognitionLevel as resolveNpcRecognitionLevel,
+  getIdentityStatusSnapshot as resolveIdentityStatusSnapshot,
+  ApprovedEvidenceRule,
+  PlayerDisplayIdentity,
+  IdentityStatusSnapshot,
+  NpcRecognitionLevel
+} from '../systems/IdentityRevealResolver';
 
 const MAIN_QUEST_IDS = loreData.questLog.map(quest => quest.id);
 const MAIN_QUEST_IDS_LATEST_FIRST = [...MAIN_QUEST_IDS].reverse();
@@ -607,18 +618,6 @@ export class PlayerState extends Phaser.Events.EventEmitter {
       this.flags.add('mire_puzzle_solved');
       this.advanceStoryQuest('Q06_RETRIEVE_CLAPPER');
       this.unlockLore('lore_runestones');
-    } else if (
-      flag === 'choice_knight_empathy' ||
-      flag === 'choice_knight_silent_understanding' ||
-      flag === 'choice_black_knight_vow' ||
-      flag === 'choice_black_knight_silent_bond' ||
-      flag === 'choice_hooded_knight_resolve' ||
-      flag === 'choice_hooded_knight_plea' ||
-      flag === 'choice_hooded_knight_farewell' ||
-      flag === 'boss_hooded_knight_defeated' ||
-      flag === 'campfire_knight_q3_completed'
-    ) {
-      this.unlockLore('lore_wayfarer_inner_journal');
     }
   }
 
@@ -767,14 +766,35 @@ export class PlayerState extends Phaser.Events.EventEmitter {
     }
     if (clamped >= 2) {
       this.unlockLore('lore_memory_chapter_3');
-      this.unlockLore('lore_wayfarer_inner_journal');
     }
     if (clamped >= 3) {
       this.unlockLore('lore_memory_chapter_4');
-      this.unlockLore('lore_wayfarer_inner_journal');
+      if (this.canRevealPlayerIdentity()) {
+        this.unlockLore('lore_wayfarer_inner_journal');
+      }
     }
 
     this.emit('memory_awakening_changed', clamped);
+  }
+
+  public hasIdentityEvidence(approvedRules?: ReadonlyArray<ApprovedEvidenceRule>): boolean {
+    return resolveHasIdentityEvidence(this, approvedRules);
+  }
+
+  public canRevealPlayerIdentity(approvedRules?: ReadonlyArray<ApprovedEvidenceRule>): boolean {
+    return resolveCanRevealPlayerIdentity(this, approvedRules);
+  }
+
+  public getPlayerDisplayIdentity(approvedRules?: ReadonlyArray<ApprovedEvidenceRule>): PlayerDisplayIdentity {
+    return resolvePlayerDisplayIdentity(this, approvedRules);
+  }
+
+  public getNpcRecognitionLevel(approvedRules?: ReadonlyArray<ApprovedEvidenceRule>): NpcRecognitionLevel {
+    return resolveNpcRecognitionLevel(this, approvedRules);
+  }
+
+  public getIdentityStatusSnapshot(approvedRules?: ReadonlyArray<ApprovedEvidenceRule>): IdentityStatusSnapshot {
+    return resolveIdentityStatusSnapshot(this, approvedRules);
   }
 
   /**
@@ -785,7 +805,9 @@ export class PlayerState extends Phaser.Events.EventEmitter {
     this.unlockLore('lore_memory_chapter_2');
     this.unlockLore('lore_memory_chapter_3');
     this.unlockLore('lore_memory_chapter_4');
-    this.unlockLore('lore_wayfarer_inner_journal');
+    if (this.canRevealPlayerIdentity()) {
+      this.unlockLore('lore_wayfarer_inner_journal');
+    }
   }
 
   // --- V1.4: Sổ Tay Sinh Vật (Bestiary Ecosystem) ---

@@ -1,0 +1,380 @@
+﻿diff --git a/src/entities/EvilKnights.ts b/src/entities/EvilKnights.ts
+index b97dca8..4140604 100644
+--- a/src/entities/EvilKnights.ts
++++ b/src/entities/EvilKnights.ts
+@@ -999,7 +999,6 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
+       ps.addItem('quest_corrupted_crest', 1);
+     }
+     ps.setFlag('boss_hooded_knight_defeated');
+-    ps.unlockLore('lore_wayfarer_inner_journal');
+ 
+     const gameScene = this.scene as any;
+     if (gameScene.dialogueSystem?.startDialogue) {
+diff --git a/src/scenes/GameScene.ts b/src/scenes/GameScene.ts
+index c8eea22..1aa5903 100644
+--- a/src/scenes/GameScene.ts
++++ b/src/scenes/GameScene.ts
+@@ -4299,8 +4299,8 @@ export class GameScene extends Phaser.Scene {
+ 
+       // V14-P8-15A: Tự động nâng memoryAwakeningStage lên 1 khi khám phá Xưởng Chuông Bỏ Hoang
+       if (trans.toZone === 'sub_bell_workshop' && this.playerState.memoryAwakeningStage < 1) {
+-        this.playerState.memoryAwakeningStage = 1;
+-        this.playerState.unlockLore('lore_black_knight_chronicle');
++        this.playerState.setMemoryAwakeningStage(1);
++        this.events.emit('memory_awakening_stage_changed', 1);
+         if (this.uiScene) {
+           this.uiScene.showPopupMessage('🗡️ [THỨC TỈNH KÝ ỨC - GIAI ĐOẠN 1]: Khám phá Xưởng Chuông Bỏ Hoang gợi lại dư ảnh về một lời thề cổ xưa!');
+         }
+@@ -4389,8 +4389,8 @@ export class GameScene extends Phaser.Scene {
+ 
+     // V14-P8-15A: Tự động nâng memoryAwakeningStage lên 1 khi khám phá Xưởng Chuông Bỏ Hoang
+     if (trans.toZone === 'sub_bell_workshop' && this.playerState.memoryAwakeningStage < 1) {
+-      this.playerState.memoryAwakeningStage = 1;
+-      this.playerState.unlockLore('lore_black_knight_chronicle');
++      this.playerState.setMemoryAwakeningStage(1);
++      this.events.emit('memory_awakening_stage_changed', 1);
+       if (this.uiScene) {
+         this.uiScene.showPopupMessage('🗡️ [THỨC TỈNH KÝ ỨC - GIAI ĐOẠN 1]: Khám phá Xưởng Chuông Bỏ Hoang gợi lại dư ảnh về một lời thề cổ xưa!');
+       }
+@@ -4720,7 +4720,7 @@ export class GameScene extends Phaser.Scene {
+                 if (this.uiScene) {
+                   this.uiScene.showPopupMessage('🎁 Garth đã tặng bạn: Ủng Đi Rừng (Trail Boots)! Giảm 30% tiếng ồn bước chân.');
+                 }
+-              } else if (this.playerState.memoryAwakeningStage >= 3 && this.playerState.isEastGateUnlocked()) {
++              } else if (this.playerState.canRevealPlayerIdentity() && this.playerState.isEastGateUnlocked()) {
+                 dKey = 'garth_black_knight_reverence';
+               } else if (!this.playerState.hasFlag('talked_to_villagers')) {
+                 dKey = 'garth_warning';
+@@ -4740,7 +4740,7 @@ export class GameScene extends Phaser.Scene {
+                 dKey = 'edda_quest_bell_memory';
+                 this.playerState.setFlag('edda_mold_rewarded');
+                 this.playerState.completeQuestTask('SQ02_BELL_MEMORY', 't2');
+-              } else if (this.playerState.memoryAwakeningStage >= 3 && this.playerState.isEastGateUnlocked()) {
++              } else if (this.playerState.canRevealPlayerIdentity() && this.playerState.isEastGateUnlocked()) {
+                 dKey = 'edda_black_knight_reverence';
+               } else if (!this.playerState.hasFlag('talked_to_edda')) {
+                 dKey = 'edda_intro';
+@@ -4767,7 +4767,7 @@ export class GameScene extends Phaser.Scene {
+                 dKey = 'neris_quest_cellar_tea';
+                 this.playerState.setFlag('neris_tea_rewarded');
+                 this.playerState.completeQuestTask('SQ03_CELLAR_TEA', 't3');
+-              } else if (this.playerState.memoryAwakeningStage >= 3 && this.playerState.isEastGateUnlocked()) {
++              } else if (this.playerState.canRevealPlayerIdentity() && this.playerState.isEastGateUnlocked()) {
+                 dKey = 'neris_black_knight_reverence';
+               } else if (!this.playerState.hasFlag('talked_to_neris')) {
+                 dKey = 'neris_intro';
+@@ -4791,13 +4791,13 @@ export class GameScene extends Phaser.Scene {
+                 dKey = 'bram_quest_runed_iron';
+                 this.playerState.setFlag('bram_iron_rewarded');
+                 this.playerState.completeQuestTask('SQ01_RUNED_IRON', 't2');
+-              } else if (this.playerState.memoryAwakeningStage >= 3) {
++              } else if (this.playerState.canRevealPlayerIdentity()) {
+                 dKey = 'bram_black_knight_reverence';
+               } else {
+                 dKey = 'bram_chat';
+               }
+             } else if (npc.spec.id === 'npc_finn') {
+-              if (this.playerState.memoryAwakeningStage >= 3) {
++              if (this.playerState.canRevealPlayerIdentity()) {
+                 dKey = 'finn_black_knight_reverence';
+               } else {
+                 dKey = 'finn_rumors';
+@@ -4838,9 +4838,8 @@ export class GameScene extends Phaser.Scene {
+                   this.playerState.completeQuestTask('SQ08_PURIFY_FALLEN', 't3');
+                   this.playerState.setFlag('campfire_knight_q3_completed');
+ 
+-                  // V14-P8-15B: Nâng tiến trình Thức Tỉnh Ký Ức lên Giai đoạn 3 (Chân tướng Hiệp Sĩ Đen)
++                  // V14-P8-15B & HW-V16-A06: Nâng tiến trình Ký Ức lên Stage 3, giữ nguyên Reveal Gate (Stage >= 3 AND Approved Evidence)
+                   this.playerState.setMemoryAwakeningStage(3);
+-                  this.playerState.unlockLore('lore_wayfarer_inner_journal');
+                   this.events.emit('memory_awakening_stage_changed', 3);
+                   this.events.emit('memory_awakening_completed');
+                   if (this.uiScene) {
+@@ -4878,8 +4877,8 @@ export class GameScene extends Phaser.Scene {
+                   this.playerState.completeQuestTask('SQ06_KEEP_FIRE', 't3');
+                   this.playerState.setFlag('campfire_knight_q1_completed');
+                   if (this.playerState.memoryAwakeningStage < 1) {
+-                    this.playerState.memoryAwakeningStage = 1;
+-                    this.playerState.unlockLore('lore_black_knight_chronicle');
++                    this.playerState.setMemoryAwakeningStage(1);
++                    this.events.emit('memory_awakening_stage_changed', 1);
+                   }
+                   if (this.playerState.campfireLevel < 2) {
+                     this.playerState.campfireLevel = 2;
+diff --git a/src/scenes/UIScene.ts b/src/scenes/UIScene.ts
+index 057f06c..1a687a4 100644
+--- a/src/scenes/UIScene.ts
++++ b/src/scenes/UIScene.ts
+@@ -335,14 +335,14 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
+     });
+     this.statCardBg = this.add.image(202, 50, statCardTexKey).setDepth(8050);
+ 
+-    // Tên nhân vật chính hiển thị góc trên trái (V14-P8-15B: Đồng bộ theo memoryAwakeningStage)
+-    const isAwakened = (this.playerState.memoryAwakeningStage >= 3);
+-    this.playerNameText = HDTextHelper.createText(this, 26, 15, isAwakened ? '⚔️ Meliodas Blackwood' : '🌲 Lữ Khách Rêu Phong', {
++    // Tên nhân vật chính hiển thị góc trên trái (HW-V16-A06: Thống nhất qua IdentityRevealResolver)
++    const identity = this.playerState.getPlayerDisplayIdentity();
++    this.playerNameText = HDTextHelper.createText(this, 26, 15, identity.hudBadge, {
+       fontSize: '11.5px',
+       fontStyle: 'bold',
+-      color: isAwakened ? '#ffc048' : '#e5a93c',
+-      stroke: isAwakened ? '#3d1a04' : '#000000',
+-      strokeThickness: isAwakened ? 3 : 2
++      color: identity.isRevealed ? '#ffc048' : '#e5a93c',
++      stroke: identity.isRevealed ? '#3d1a04' : '#000000',
++      strokeThickness: identity.isRevealed ? 3 : 2
+     }).setDepth(8053);
+ 
+     this.statBarsGraphics = this.add.graphics();
+@@ -1057,22 +1057,13 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
+     // V1.4: Cập nhật 2 huy hiệu trạng thái phụ (Độ Ẩm & Thân Nhiệt)
+     this.updateStatusBadges(stats.moisture ?? 0, stats.temperature ?? 80);
+ 
+-    // V14-P8-15B & DEC-LOCK-07: Cập nhật danh hiệu người chơi khi thức tỉnh ký ức (Stage 3: Meliodas Blackwood)
++    // HW-V16-A06 & DEC-LOCK-07: Cập nhật danh hiệu người chơi qua IdentityRevealResolver thống nhất
+     if (this.playerNameText) {
+-      if (this.playerState.memoryAwakeningStage >= 3) {
+-        const title = '⚔️ Meliodas Blackwood';
+-        if (this.playerNameText.text !== title) {
+-          this.playerNameText.setText(title);
+-          this.playerNameText.setColor('#ffc048');
+-          this.playerNameText.setStroke('#3d1a04', 3);
+-        }
+-      } else {
+-        const title = '🌲 Lữ Khách Rêu Phong';
+-        if (this.playerNameText.text !== title) {
+-          this.playerNameText.setText(title);
+-          this.playerNameText.setColor('#e5a93c');
+-          this.playerNameText.setStroke('#000000', 2);
+-        }
++      const identity = this.playerState.getPlayerDisplayIdentity();
++      if (this.playerNameText.text !== identity.hudBadge) {
++        this.playerNameText.setText(identity.hudBadge);
++        this.playerNameText.setColor(identity.isRevealed ? '#ffc048' : '#e5a93c');
++        this.playerNameText.setStroke(identity.isRevealed ? '#3d1a04' : '#000000', identity.isRevealed ? 3 : 2);
+       }
+     }
+   }
+diff --git a/src/state/PlayerState.ts b/src/state/PlayerState.ts
+index 4b891c6..817f3ab 100644
+--- a/src/state/PlayerState.ts
++++ b/src/state/PlayerState.ts
+@@ -4,6 +4,17 @@ import loreData from '../data/lore.json';
+ import { PlayerStats, HerbPlotData, HerbPlotStage, CropType, ZoneId, BestiaryEntry, BestiarySpecies } from '../types';
+ import { WorldGatingSystem } from '../world/WorldGatingSystem';
+ import { ZoneConnectionRegistry } from '../world/ZoneConnectionRegistry';
++import {
++  hasIdentityEvidence as resolveHasIdentityEvidence,
++  canRevealPlayerIdentity as resolveCanRevealPlayerIdentity,
++  getPlayerDisplayIdentity as resolvePlayerDisplayIdentity,
++  getNpcRecognitionLevel as resolveNpcRecognitionLevel,
++  getIdentityStatusSnapshot as resolveIdentityStatusSnapshot,
++  ApprovedEvidenceRule,
++  PlayerDisplayIdentity,
++  IdentityStatusSnapshot,
++  NpcRecognitionLevel
++} from '../systems/IdentityRevealResolver';
+ 
+ const MAIN_QUEST_IDS = loreData.questLog.map(quest => quest.id);
+ const MAIN_QUEST_IDS_LATEST_FIRST = [...MAIN_QUEST_IDS].reverse();
+@@ -607,18 +618,6 @@ export class PlayerState extends Phaser.Events.EventEmitter {
+       this.flags.add('mire_puzzle_solved');
+       this.advanceStoryQuest('Q06_RETRIEVE_CLAPPER');
+       this.unlockLore('lore_runestones');
+-    } else if (
+-      flag === 'choice_knight_empathy' ||
+-      flag === 'choice_knight_silent_understanding' ||
+-      flag === 'choice_black_knight_vow' ||
+-      flag === 'choice_black_knight_silent_bond' ||
+-      flag === 'choice_hooded_knight_resolve' ||
+-      flag === 'choice_hooded_knight_plea' ||
+-      flag === 'choice_hooded_knight_farewell' ||
+-      flag === 'boss_hooded_knight_defeated' ||
+-      flag === 'campfire_knight_q3_completed'
+-    ) {
+-      this.unlockLore('lore_wayfarer_inner_journal');
+     }
+   }
+ 
+@@ -767,16 +766,37 @@ export class PlayerState extends Phaser.Events.EventEmitter {
+     }
+     if (clamped >= 2) {
+       this.unlockLore('lore_memory_chapter_3');
+-      this.unlockLore('lore_wayfarer_inner_journal');
+     }
+     if (clamped >= 3) {
+       this.unlockLore('lore_memory_chapter_4');
+-      this.unlockLore('lore_wayfarer_inner_journal');
++      if (this.canRevealPlayerIdentity()) {
++        this.unlockLore('lore_wayfarer_inner_journal');
++      }
+     }
+ 
+     this.emit('memory_awakening_changed', clamped);
+   }
+ 
++  public hasIdentityEvidence(approvedRules?: ReadonlyArray<ApprovedEvidenceRule>): boolean {
++    return resolveHasIdentityEvidence(this, approvedRules);
++  }
++
++  public canRevealPlayerIdentity(approvedRules?: ReadonlyArray<ApprovedEvidenceRule>): boolean {
++    return resolveCanRevealPlayerIdentity(this, approvedRules);
++  }
++
++  public getPlayerDisplayIdentity(approvedRules?: ReadonlyArray<ApprovedEvidenceRule>): PlayerDisplayIdentity {
++    return resolvePlayerDisplayIdentity(this, approvedRules);
++  }
++
++  public getNpcRecognitionLevel(approvedRules?: ReadonlyArray<ApprovedEvidenceRule>): NpcRecognitionLevel {
++    return resolveNpcRecognitionLevel(this, approvedRules);
++  }
++
++  public getIdentityStatusSnapshot(approvedRules?: ReadonlyArray<ApprovedEvidenceRule>): IdentityStatusSnapshot {
++    return resolveIdentityStatusSnapshot(this, approvedRules);
++  }
++
+   /**
+    * Mở khóa trọn vẹn 4 Chương Hồi Ức trong Sổ Tay [J]
+    */
+@@ -785,7 +805,9 @@ export class PlayerState extends Phaser.Events.EventEmitter {
+     this.unlockLore('lore_memory_chapter_2');
+     this.unlockLore('lore_memory_chapter_3');
+     this.unlockLore('lore_memory_chapter_4');
+-    this.unlockLore('lore_wayfarer_inner_journal');
++    if (this.canRevealPlayerIdentity()) {
++      this.unlockLore('lore_wayfarer_inner_journal');
++    }
+   }
+ 
+   // --- V1.4: Sổ Tay Sinh Vật (Bestiary Ecosystem) ---
+diff --git a/src/systems/EndingSystem.ts b/src/systems/EndingSystem.ts
+index 55c72dd..4b25b54 100644
+--- a/src/systems/EndingSystem.ts
++++ b/src/systems/EndingSystem.ts
+@@ -26,6 +26,7 @@ import { AudioManager } from '../audio/AudioManager';
+ import { HDTextHelper } from '../utils/HDTextHelper';
+ import { SaveManager } from './SaveManager';
+ import { SettingsManager } from './SettingsManager';
++import { getEndingDisplayLines } from './IdentityRevealResolver';
+ import loreData from '../data/lore.json';
+ 
+ export type EndingType = 'true_ending' | 'sacrifice_ending' | 'fog_loop_ending';
+@@ -482,17 +483,18 @@ export class EndingSystem {
+       });
+     });
+ 
+-    // 4. Các dòng văn tự sự cảm xúc (Narrative Lines: Y = 268 -> 336)
++    // 4. Các dòng văn tự sự cảm xúc (Narrative Lines: Y = 268 -> 336, đồng bộ qua Reveal Gate)
+     let textDelay = 600;
+     const startY = 268;
+     const stepY = 23;
++    const displayLines = getEndingDisplayLines(endingType, config.narrativeLines, this.playerState);
+ 
+-    config.narrativeLines.forEach((line, idx) => {
++    displayLines.forEach((line, idx) => {
+       target.time.delayedCall(textDelay, () => {
+         const lineObj = HDTextHelper.createText(target, 640, startY + (idx * stepY), line, {
+           fontSize: '13.5px',
+-          fontStyle: idx === config.narrativeLines.length - 1 ? 'italic' : 'normal',
+-          color: idx === config.narrativeLines.length - 1 ? config.accentColorHex : '#ecf0f1',
++          fontStyle: idx === displayLines.length - 1 ? 'italic' : 'normal',
++          color: idx === displayLines.length - 1 ? config.accentColorHex : '#ecf0f1',
+           align: 'center',
+           stroke: '#000000',
+           strokeThickness: 2
+@@ -788,10 +790,7 @@ export class EndingSystem {
+     else if (trustScore >= 40) trustLabel = 'Hòa Thuận';
+ 
+     const stage = this.playerState.memoryAwakeningStage;
+-    let stageTitle = 'Lữ Khách Rêu Phong';
+-    if (stage >= 3) stageTitle = 'Meliodas Blackwood';
+-    else if (stage >= 2) stageTitle = 'Tàn Tích Kỵ Sĩ';
+-    else if (stage >= 1) stageTitle = 'Manh Mối Xưởng Chuông';
++    const stageTitle = this.playerState.getPlayerDisplayIdentity().chronicleTitle;
+ 
+     const unlockedLoreCount = this.playerState.unlockedLore.length;
+     const totalLoreCount = (loreData.loreEntries ? loreData.loreEntries.length : 24);
+diff --git a/src/ui/JournalModal.ts b/src/ui/JournalModal.ts
+index 1be2a3f..bb2858d 100644
+--- a/src/ui/JournalModal.ts
++++ b/src/ui/JournalModal.ts
+@@ -31,6 +31,7 @@ import { ZoneConnectionRegistry } from '../world/ZoneConnectionRegistry';
+ import { AudioManager } from '../audio/AudioManager';
+ import { QuestSystem } from '../systems/QuestSystem';
+ import { ItemTooltipHelper } from './ItemTooltipHelper';
++import { projectLoreEntryForDisplay } from '../systems/IdentityRevealResolver';
+ import {
+   PORTRAIT_SKULL_WOLF,
+   PORTRAIT_SHADOW_BIG_BOSS,
+@@ -921,7 +922,7 @@ export class JournalModal {
+ 
+     let rowY = my + 94;
+     for (let i = startIdx; i < endIdx; i++) {
+-      const item = list[i];
++      const { entry: item, status: itemStatus } = projectLoreEntryForDisplay(list[i], this.playerState);
+       const isSel = i === this.currentLoreIndex;
+       const isMemoryChapter = item.id.startsWith('lore_memory_chapter_') || item.id === 'lore_black_knight_chronicle' || item.id === 'lore_wayfarer_inner_journal';
+       const isEcho = item.id.includes('echo');
+@@ -934,14 +935,15 @@ export class JournalModal {
+       cardBg.lineStyle(1.5, isSel ? 0xf39c12 : (isMemoryChapter ? 0x9c7a28 : (isEcho ? 0x3498db : 0x4a3c22)), 0.85);
+       cardBg.strokeRoundedRect(mx + 30, rowY, cardW, cardH, 6);
+ 
+-      const marker = isSel ? '▶ ' : (isMemoryChapter ? '⚔️ ' : (isEcho ? '✨ ' : '• '));
++      const marker = isSel ? '▶ ' : (itemStatus === 'REDACTED' ? '🔒 ' : (isMemoryChapter ? '⚔️ ' : (isEcho ? '✨ ' : '• ')));
+       const shortTitle = item.title.length > 28 ? item.title.substring(0, 26) + '...' : item.title;
+       const titleTxt = HDTextHelper.createText(this.scene, mx + 42, rowY + 8, `${marker}${shortTitle}`, {
+         fontSize: '12px',
+         fontStyle: (isSel || isMemoryChapter || isEcho) ? 'bold' : 'normal',
+         color: isSel ? '#f39c12' : (isMemoryChapter ? '#ffc048' : (isEcho ? '#88ccff' : '#ecf0f1'))
+       });
+-      const authorTxt = HDTextHelper.createText(this.scene, mx + 42, rowY + 26, `Bởi: ${item.author}`, {
++      const authorSuffix = itemStatus === 'REDACTED' ? ' [Che danh tính]' : '';
++      const authorTxt = HDTextHelper.createText(this.scene, mx + 42, rowY + 26, `Bởi: ${item.author}${authorSuffix}`, {
+         fontSize: '10px',
+         color: isMemoryChapter ? '#f5cd79' : (isEcho ? '#74b9ff' : '#95a5a6')
+       });
+@@ -967,13 +969,13 @@ export class JournalModal {
+     }
+ 
+     // --- TRANG PHẢI: CHI TIẾT NỘI DUNG MẢNH KÝ ỨC ĐƯỢC CHỌN ---
+-    const entry = list[this.currentLoreIndex];
++    const { entry, status: entryStatus } = projectLoreEntryForDisplay(list[this.currentLoreIndex], this.playerState);
+     const isEntryMemory = entry.id.startsWith('lore_memory_chapter_') || entry.id === 'lore_black_knight_chronicle' || entry.id === 'lore_wayfarer_inner_journal';
+     const rightX = mx + mw / 2 + 25;
+     const rightW = mw / 2 - 45;
+ 
+     const isEntryEcho = entry.id.includes('echo');
+-    const rTitle = HDTextHelper.createText(this.scene, rightX, my + 66, (isEntryMemory ? '⚔️ ' : (isEntryEcho ? '✨ ' : '')) + entry.title, {
++    const rTitle = HDTextHelper.createText(this.scene, rightX, my + 66, (entryStatus === 'REDACTED' ? '🔒 ' : (isEntryMemory ? '⚔️ ' : (isEntryEcho ? '✨ ' : ''))) + entry.title, {
+       fontSize: '14.5px',
+       fontStyle: 'bold',
+       color: isEntryMemory ? '#ffc048' : (isEntryEcho ? '#88ccff' : '#d4af37'),
+@@ -982,10 +984,11 @@ export class JournalModal {
+       wordWrap: { width: rightW }
+     });
+ 
+-    const rAuthor = HDTextHelper.createText(this.scene, rightX, rTitle.y + rTitle.height + 6, `Ghi lại bởi: ${entry.author}`, {
++    const statusTag = entryStatus === 'REDACTED' ? ' [REDACTED]' : (entryStatus === 'REVEALED' ? ' [REVEALED]' : '');
++    const rAuthor = HDTextHelper.createText(this.scene, rightX, rTitle.y + rTitle.height + 6, `Ghi lại bởi: ${entry.author}${statusTag}`, {
+       fontSize: '12px',
+       fontStyle: 'italic',
+-      color: isEntryMemory ? '#f5cd79' : '#95a5a6'
++      color: entryStatus === 'REDACTED' ? '#e67e22' : (isEntryMemory ? '#f5cd79' : '#95a5a6')
+     });
+ 
+     const rContent = HDTextHelper.createText(this.scene, rightX, rAuthor.y + rAuthor.height + 10, entry.content, {
+diff --git a/src/ui/TornPageModal.ts b/src/ui/TornPageModal.ts
+index 6503807..9d33c56 100644
+--- a/src/ui/TornPageModal.ts
++++ b/src/ui/TornPageModal.ts
+@@ -791,8 +791,8 @@ export class TornPageModal {
+     // 2. Ghi nhận cờ đã thu thập / đọc để đổi trạng thái prompt trên bản đồ
+     this.playerState.setFlag('collected_note_' + entry.id);
+ 
+-    // 3. Nếu là trang nhật ký cốt truyện thức tỉnh ký ức Hiệp Sĩ Đen
+-    if (typeof entry.memoryAwakeningStage === 'number' && entry.memoryAwakeningStage > 0) {
++    // 3. Nếu là trang nhật ký cốt truyện thức tỉnh ký ức (chỉ kích hoạt lần đầu đọc)
++    if (!this.isAlreadyCollected && typeof entry.memoryAwakeningStage === 'number' && entry.memoryAwakeningStage > 0) {
+       if (this.playerState.memoryAwakeningStage < entry.memoryAwakeningStage) {
+         this.playerState.setMemoryAwakeningStage(entry.memoryAwakeningStage);
+       }

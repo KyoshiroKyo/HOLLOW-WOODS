@@ -1,0 +1,502 @@
+{
+  "tests": {
+    "A06-T01": {
+      "mode": "REAL",
+      "status": "PASS",
+      "detail": {
+        "menu": {
+          "textCount": 51,
+          "hasSpoiler": false
+        },
+        "game": {
+          "hudName": "🌲 Lữ Khách Rêu Phong",
+          "stage": 0,
+          "identityRevealed": false,
+          "unlockedLore": [
+            "lore_three_rules"
+          ],
+          "plainName": "Lữ Khách Rêu Phong"
+        }
+      }
+    },
+    "A06-T02": {
+      "mode": "REAL",
+      "status": "PASS",
+      "detail": {
+        "hudName": "🌲 Lữ Khách Rêu Phong",
+        "stage": 1,
+        "revealed": false,
+        "unlockedIds": [
+          "lore_three_rules",
+          "lore_memory_chapter_1",
+          "lore_memory_chapter_2",
+          "lore_black_knight_chronicle"
+        ],
+        "hasMeliodasInJournal": false,
+        "hasInnerJournalUnlocked": false
+      }
+    },
+    "A06-T03": {
+      "mode": "REAL",
+      "status": "PASS",
+      "detail": {
+        "hudName": "🌲 Lữ Khách Rêu Phong",
+        "stage": 2,
+        "revealed": false,
+        "unlockedIds": [
+          "lore_three_rules",
+          "lore_memory_chapter_1",
+          "lore_memory_chapter_2",
+          "lore_black_knight_chronicle",
+          "lore_memory_chapter_3"
+        ],
+        "hasInnerJournal": false,
+        "hasCh3": true,
+        "hasMeliodasInJournal": false,
+        "chronicleTitle": "Tàn Tích Kỵ Sĩ"
+      }
+    },
+    "A06-T04": {
+      "mode": "REAL",
+      "status": "PASS",
+      "detail": {
+        "state": {
+          "stage": 3,
+          "hasEvidence": false,
+          "revealed": false,
+          "hudName": "🌲 Lữ Khách Rêu Phong",
+          "chronicleTitle": "Tàn Tích Kỵ Sĩ",
+          "hasRedactedTag": true,
+          "hasMeliodasInJournal": false,
+          "hasInnerJournalUnlocked": false
+        },
+        "npcs": {
+          "canReveal": false,
+          "pickedKeys": {},
+          "anyReverence": false
+        }
+      }
+    },
+    "A06-T07": {
+      "mode": "REAL",
+      "status": "PASS",
+      "detail": {
+        "afterFirst": {
+          "stage": 1,
+          "comp": 65,
+          "collected": true
+        },
+        "afterSecond": {
+          "isAlreadyCollected": true,
+          "stage": 0,
+          "comp": 65
+        },
+        "stageAfterJournal": 0
+      }
+    },
+    "A06-T08": {
+      "mode": "REAL",
+      "status": "PASS",
+      "detail": {
+        "0": {
+          "saveKey": "hollow_woods_backup_slot_1",
+          "schemaVersion": 3,
+          "stage": 0,
+          "trust": 68,
+          "quest": "Q05_SOLVE_MIRE",
+          "hudName": "🌲 Lữ Khách Rêu Phong",
+          "unlockedLoreIds": [
+            "lore_three_rules"
+          ],
+          "revealed": false
+        },
+        "1": {
+          "saveKey": "hollow_woods_backup_slot_1",
+          "schemaVersion": 3,
+          "stage": 1,
+          "trust": 68,
+          "quest": "Q05_SOLVE_MIRE",
+          "hudName": "🌲 Lữ Khách Rêu Phong",
+          "unlockedLoreIds": [
+            "lore_three_rules",
+            "lore_memory_chapter_1",
+            "lore_memory_chapter_2",
+            "lore_black_knight_chronicle"
+          ],
+          "revealed": false
+        },
+        "2": {
+          "saveKey": "hollow_woods_backup_slot_1",
+          "schemaVersion": 3,
+          "stage": 2,
+          "trust": 68,
+          "quest": "Q05_SOLVE_MIRE",
+          "hudName": "🌲 Lữ Khách Rêu Phong",
+          "unlockedLoreIds": [
+            "lore_three_rules",
+            "lore_memory_chapter_1",
+            "lore_memory_chapter_2",
+            "lore_black_knight_chronicle",
+            "lore_memory_chapter_3"
+          ],
+          "revealed": false
+        },
+        "3": {
+          "saveKey": "hollow_woods_backup_slot_1",
+          "schemaVersion": 3,
+          "stage": 3,
+          "trust": 68,
+          "quest": "Q05_SOLVE_MIRE",
+          "hudName": "🌲 Lữ Khách Rêu Phong",
+          "unlockedLoreIds": [
+            "lore_three_rules",
+            "lore_memory_chapter_1",
+            "lore_memory_chapter_2",
+            "lore_black_knight_chronicle",
+            "lore_memory_chapter_3",
+            "lore_memory_chapter_4"
+          ],
+          "revealed": false
+        }
+      }
+    },
+    "A06-T09": {
+      "mode": "REAL",
+      "status": "PASS",
+      "detail": {
+        "preservedIds": [
+          "lore_three_rules",
+          "lore_memory_chapter_1",
+          "lore_memory_chapter_2",
+          "lore_memory_chapter_3",
+          "lore_wayfarer_inner_journal"
+        ],
+        "innerPreserved": true,
+        "hudName": "🌲 Lữ Khách Rêu Phong",
+        "hasRedactedTag": true,
+        "hasMeliodasLeak": false,
+        "crestCount": 1,
+        "questId": "Q05_SOLVE_MIRE"
+      }
+    },
+    "A06-T10": {
+      "mode": "REAL",
+      "status": "PASS",
+      "detail": {
+        "lineCount": 23,
+        "hasMeliodas": false,
+        "hasChronicleTitleNeutral": true
+      }
+    },
+    "A06-T11": {
+      "mode": "REAL",
+      "status": "PASS",
+      "detail": {
+        "fog_loop_ending": 8,
+        "sacrifice_ending": 7,
+        "true_ending": 1
+      }
+    },
+    "A06-T05": {
+      "mode": "SIMULATED_RESOLVER_CONTRACT (REAL_RUNTIME=PARTIAL_FAIL_CLOSED)",
+      "status": "PASS_SIMULATED / PARTIAL_RUNTIME",
+      "detail": {
+        "rows": [
+          {
+            "stage": 3,
+            "hasEvidenceInput": true,
+            "sq08Done": false,
+            "realProductionRevealed": false,
+            "simulatedContractRevealed": true,
+            "simulatedDisplayName": "Meliodas Blackwood"
+          },
+          {
+            "stage": 3,
+            "hasEvidenceInput": true,
+            "sq08Done": true,
+            "realProductionRevealed": false,
+            "simulatedContractRevealed": true,
+            "simulatedDisplayName": "Meliodas Blackwood"
+          }
+        ]
+      }
+    },
+    "A06-T06": {
+      "mode": "SIMULATED_RESOLVER_CONTRACT (REAL_RUNTIME=PARTIAL_NO_MAIN_STAGE3_TRIGGER)",
+      "status": "PASS_SIMULATED / PARTIAL_RUNTIME",
+      "detail": {
+        "mainRouteRowWithoutSQ08": {
+          "stage": 3,
+          "hasEvidenceInput": true,
+          "sq08Done": false,
+          "realProductionRevealed": false,
+          "simulatedContractRevealed": true,
+          "simulatedDisplayName": "Meliodas Blackwood"
+        }
+      }
+    }
+  },
+  "matrix16": [
+    {
+      "stage": 0,
+      "hasEvidenceInput": false,
+      "sq08Done": false,
+      "realProductionRevealed": false,
+      "simulatedContractRevealed": false,
+      "simulatedDisplayName": "Lữ Khách Rêu Phong"
+    },
+    {
+      "stage": 0,
+      "hasEvidenceInput": false,
+      "sq08Done": true,
+      "realProductionRevealed": false,
+      "simulatedContractRevealed": false,
+      "simulatedDisplayName": "Lữ Khách Rêu Phong"
+    },
+    {
+      "stage": 0,
+      "hasEvidenceInput": true,
+      "sq08Done": false,
+      "realProductionRevealed": false,
+      "simulatedContractRevealed": false,
+      "simulatedDisplayName": "Lữ Khách Rêu Phong"
+    },
+    {
+      "stage": 0,
+      "hasEvidenceInput": true,
+      "sq08Done": true,
+      "realProductionRevealed": false,
+      "simulatedContractRevealed": false,
+      "simulatedDisplayName": "Lữ Khách Rêu Phong"
+    },
+    {
+      "stage": 1,
+      "hasEvidenceInput": false,
+      "sq08Done": false,
+      "realProductionRevealed": false,
+      "simulatedContractRevealed": false,
+      "simulatedDisplayName": "Lữ Khách Rêu Phong"
+    },
+    {
+      "stage": 1,
+      "hasEvidenceInput": false,
+      "sq08Done": true,
+      "realProductionRevealed": false,
+      "simulatedContractRevealed": false,
+      "simulatedDisplayName": "Lữ Khách Rêu Phong"
+    },
+    {
+      "stage": 1,
+      "hasEvidenceInput": true,
+      "sq08Done": false,
+      "realProductionRevealed": false,
+      "simulatedContractRevealed": false,
+      "simulatedDisplayName": "Lữ Khách Rêu Phong"
+    },
+    {
+      "stage": 1,
+      "hasEvidenceInput": true,
+      "sq08Done": true,
+      "realProductionRevealed": false,
+      "simulatedContractRevealed": false,
+      "simulatedDisplayName": "Lữ Khách Rêu Phong"
+    },
+    {
+      "stage": 2,
+      "hasEvidenceInput": false,
+      "sq08Done": false,
+      "realProductionRevealed": false,
+      "simulatedContractRevealed": false,
+      "simulatedDisplayName": "Lữ Khách Rêu Phong"
+    },
+    {
+      "stage": 2,
+      "hasEvidenceInput": false,
+      "sq08Done": true,
+      "realProductionRevealed": false,
+      "simulatedContractRevealed": false,
+      "simulatedDisplayName": "Lữ Khách Rêu Phong"
+    },
+    {
+      "stage": 2,
+      "hasEvidenceInput": true,
+      "sq08Done": false,
+      "realProductionRevealed": false,
+      "simulatedContractRevealed": false,
+      "simulatedDisplayName": "Lữ Khách Rêu Phong"
+    },
+    {
+      "stage": 2,
+      "hasEvidenceInput": true,
+      "sq08Done": true,
+      "realProductionRevealed": false,
+      "simulatedContractRevealed": false,
+      "simulatedDisplayName": "Lữ Khách Rêu Phong"
+    },
+    {
+      "stage": 3,
+      "hasEvidenceInput": false,
+      "sq08Done": false,
+      "realProductionRevealed": false,
+      "simulatedContractRevealed": false,
+      "simulatedDisplayName": "Lữ Khách Rêu Phong"
+    },
+    {
+      "stage": 3,
+      "hasEvidenceInput": false,
+      "sq08Done": true,
+      "realProductionRevealed": false,
+      "simulatedContractRevealed": false,
+      "simulatedDisplayName": "Lữ Khách Rêu Phong"
+    },
+    {
+      "stage": 3,
+      "hasEvidenceInput": true,
+      "sq08Done": false,
+      "realProductionRevealed": false,
+      "simulatedContractRevealed": true,
+      "simulatedDisplayName": "Meliodas Blackwood"
+    },
+    {
+      "stage": 3,
+      "hasEvidenceInput": true,
+      "sq08Done": true,
+      "realProductionRevealed": false,
+      "simulatedContractRevealed": true,
+      "simulatedDisplayName": "Meliodas Blackwood"
+    }
+  ],
+  "ending16": [
+    {
+      "stage": 0,
+      "comp": 49,
+      "trust": 64,
+      "endingType": "fog_loop_ending",
+      "chronicleTitle": "Lữ Khách Rêu Phong",
+      "revealed": false
+    },
+    {
+      "stage": 0,
+      "comp": 49,
+      "trust": 65,
+      "endingType": "fog_loop_ending",
+      "chronicleTitle": "Lữ Khách Rêu Phong",
+      "revealed": false
+    },
+    {
+      "stage": 0,
+      "comp": 50,
+      "trust": 64,
+      "endingType": "fog_loop_ending",
+      "chronicleTitle": "Lữ Khách Rêu Phong",
+      "revealed": false
+    },
+    {
+      "stage": 0,
+      "comp": 50,
+      "trust": 65,
+      "endingType": "fog_loop_ending",
+      "chronicleTitle": "Lữ Khách Rêu Phong",
+      "revealed": false
+    },
+    {
+      "stage": 1,
+      "comp": 49,
+      "trust": 64,
+      "endingType": "fog_loop_ending",
+      "chronicleTitle": "Manh Mối Xưởng Chuông",
+      "revealed": false
+    },
+    {
+      "stage": 1,
+      "comp": 49,
+      "trust": 65,
+      "endingType": "fog_loop_ending",
+      "chronicleTitle": "Manh Mối Xưởng Chuông",
+      "revealed": false
+    },
+    {
+      "stage": 1,
+      "comp": 50,
+      "trust": 64,
+      "endingType": "fog_loop_ending",
+      "chronicleTitle": "Manh Mối Xưởng Chuông",
+      "revealed": false
+    },
+    {
+      "stage": 1,
+      "comp": 50,
+      "trust": 65,
+      "endingType": "fog_loop_ending",
+      "chronicleTitle": "Manh Mối Xưởng Chuông",
+      "revealed": false
+    },
+    {
+      "stage": 2,
+      "comp": 49,
+      "trust": 64,
+      "endingType": "sacrifice_ending",
+      "chronicleTitle": "Tàn Tích Kỵ Sĩ",
+      "revealed": false
+    },
+    {
+      "stage": 2,
+      "comp": 49,
+      "trust": 65,
+      "endingType": "sacrifice_ending",
+      "chronicleTitle": "Tàn Tích Kỵ Sĩ",
+      "revealed": false
+    },
+    {
+      "stage": 2,
+      "comp": 50,
+      "trust": 64,
+      "endingType": "sacrifice_ending",
+      "chronicleTitle": "Tàn Tích Kỵ Sĩ",
+      "revealed": false
+    },
+    {
+      "stage": 2,
+      "comp": 50,
+      "trust": 65,
+      "endingType": "sacrifice_ending",
+      "chronicleTitle": "Tàn Tích Kỵ Sĩ",
+      "revealed": false
+    },
+    {
+      "stage": 3,
+      "comp": 49,
+      "trust": 64,
+      "endingType": "sacrifice_ending",
+      "chronicleTitle": "Tàn Tích Kỵ Sĩ",
+      "revealed": false
+    },
+    {
+      "stage": 3,
+      "comp": 49,
+      "trust": 65,
+      "endingType": "sacrifice_ending",
+      "chronicleTitle": "Tàn Tích Kỵ Sĩ",
+      "revealed": false
+    },
+    {
+      "stage": 3,
+      "comp": 50,
+      "trust": 64,
+      "endingType": "sacrifice_ending",
+      "chronicleTitle": "Tàn Tích Kỵ Sĩ",
+      "revealed": false
+    },
+    {
+      "stage": 3,
+      "comp": 50,
+      "trust": 65,
+      "endingType": "true_ending",
+      "chronicleTitle": "Tàn Tích Kỵ Sĩ",
+      "revealed": false
+    }
+  ],
+  "consoleErrors": [],
+  "pageErrors": [],
+  "failedRequests": []
+}

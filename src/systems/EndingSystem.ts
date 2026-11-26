@@ -26,6 +26,7 @@ import { AudioManager } from '../audio/AudioManager';
 import { HDTextHelper } from '../utils/HDTextHelper';
 import { SaveManager } from './SaveManager';
 import { SettingsManager } from './SettingsManager';
+import { getEndingDisplayLines } from './IdentityRevealResolver';
 import loreData from '../data/lore.json';
 
 export type EndingType = 'true_ending' | 'sacrifice_ending' | 'fog_loop_ending';
@@ -482,17 +483,18 @@ export class EndingSystem {
       });
     });
 
-    // 4. Các dòng văn tự sự cảm xúc (Narrative Lines: Y = 268 -> 336)
+    // 4. Các dòng văn tự sự cảm xúc (Narrative Lines: Y = 268 -> 336, đồng bộ qua Reveal Gate)
     let textDelay = 600;
     const startY = 268;
     const stepY = 23;
+    const displayLines = getEndingDisplayLines(endingType, config.narrativeLines, this.playerState);
 
-    config.narrativeLines.forEach((line, idx) => {
+    displayLines.forEach((line, idx) => {
       target.time.delayedCall(textDelay, () => {
         const lineObj = HDTextHelper.createText(target, 640, startY + (idx * stepY), line, {
           fontSize: '13.5px',
-          fontStyle: idx === config.narrativeLines.length - 1 ? 'italic' : 'normal',
-          color: idx === config.narrativeLines.length - 1 ? config.accentColorHex : '#ecf0f1',
+          fontStyle: idx === displayLines.length - 1 ? 'italic' : 'normal',
+          color: idx === displayLines.length - 1 ? config.accentColorHex : '#ecf0f1',
           align: 'center',
           stroke: '#000000',
           strokeThickness: 2
@@ -788,10 +790,7 @@ export class EndingSystem {
     else if (trustScore >= 40) trustLabel = 'Hòa Thuận';
 
     const stage = this.playerState.memoryAwakeningStage;
-    let stageTitle = 'Lữ Khách Rêu Phong';
-    if (stage >= 3) stageTitle = 'Meliodas Blackwood';
-    else if (stage >= 2) stageTitle = 'Tàn Tích Kỵ Sĩ';
-    else if (stage >= 1) stageTitle = 'Manh Mối Xưởng Chuông';
+    const stageTitle = this.playerState.getPlayerDisplayIdentity().chronicleTitle;
 
     const unlockedLoreCount = this.playerState.unlockedLore.length;
     const totalLoreCount = (loreData.loreEntries ? loreData.loreEntries.length : 24);

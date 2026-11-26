@@ -4299,8 +4299,8 @@ export class GameScene extends Phaser.Scene {
 
       // V14-P8-15A: Tự động nâng memoryAwakeningStage lên 1 khi khám phá Xưởng Chuông Bỏ Hoang
       if (trans.toZone === 'sub_bell_workshop' && this.playerState.memoryAwakeningStage < 1) {
-        this.playerState.memoryAwakeningStage = 1;
-        this.playerState.unlockLore('lore_black_knight_chronicle');
+        this.playerState.setMemoryAwakeningStage(1);
+        this.events.emit('memory_awakening_stage_changed', 1);
         if (this.uiScene) {
           this.uiScene.showPopupMessage('🗡️ [THỨC TỈNH KÝ ỨC - GIAI ĐOẠN 1]: Khám phá Xưởng Chuông Bỏ Hoang gợi lại dư ảnh về một lời thề cổ xưa!');
         }
@@ -4389,8 +4389,8 @@ export class GameScene extends Phaser.Scene {
 
     // V14-P8-15A: Tự động nâng memoryAwakeningStage lên 1 khi khám phá Xưởng Chuông Bỏ Hoang
     if (trans.toZone === 'sub_bell_workshop' && this.playerState.memoryAwakeningStage < 1) {
-      this.playerState.memoryAwakeningStage = 1;
-      this.playerState.unlockLore('lore_black_knight_chronicle');
+      this.playerState.setMemoryAwakeningStage(1);
+      this.events.emit('memory_awakening_stage_changed', 1);
       if (this.uiScene) {
         this.uiScene.showPopupMessage('🗡️ [THỨC TỈNH KÝ ỨC - GIAI ĐOẠN 1]: Khám phá Xưởng Chuông Bỏ Hoang gợi lại dư ảnh về một lời thề cổ xưa!');
       }
@@ -4720,7 +4720,7 @@ export class GameScene extends Phaser.Scene {
                 if (this.uiScene) {
                   this.uiScene.showPopupMessage('🎁 Garth đã tặng bạn: Ủng Đi Rừng (Trail Boots)! Giảm 30% tiếng ồn bước chân.');
                 }
-              } else if (this.playerState.memoryAwakeningStage >= 3 && this.playerState.isEastGateUnlocked()) {
+              } else if (this.playerState.canRevealPlayerIdentity() && this.playerState.isEastGateUnlocked()) {
                 dKey = 'garth_black_knight_reverence';
               } else if (!this.playerState.hasFlag('talked_to_villagers')) {
                 dKey = 'garth_warning';
@@ -4740,7 +4740,7 @@ export class GameScene extends Phaser.Scene {
                 dKey = 'edda_quest_bell_memory';
                 this.playerState.setFlag('edda_mold_rewarded');
                 this.playerState.completeQuestTask('SQ02_BELL_MEMORY', 't2');
-              } else if (this.playerState.memoryAwakeningStage >= 3 && this.playerState.isEastGateUnlocked()) {
+              } else if (this.playerState.canRevealPlayerIdentity() && this.playerState.isEastGateUnlocked()) {
                 dKey = 'edda_black_knight_reverence';
               } else if (!this.playerState.hasFlag('talked_to_edda')) {
                 dKey = 'edda_intro';
@@ -4767,7 +4767,7 @@ export class GameScene extends Phaser.Scene {
                 dKey = 'neris_quest_cellar_tea';
                 this.playerState.setFlag('neris_tea_rewarded');
                 this.playerState.completeQuestTask('SQ03_CELLAR_TEA', 't3');
-              } else if (this.playerState.memoryAwakeningStage >= 3 && this.playerState.isEastGateUnlocked()) {
+              } else if (this.playerState.canRevealPlayerIdentity() && this.playerState.isEastGateUnlocked()) {
                 dKey = 'neris_black_knight_reverence';
               } else if (!this.playerState.hasFlag('talked_to_neris')) {
                 dKey = 'neris_intro';
@@ -4791,13 +4791,13 @@ export class GameScene extends Phaser.Scene {
                 dKey = 'bram_quest_runed_iron';
                 this.playerState.setFlag('bram_iron_rewarded');
                 this.playerState.completeQuestTask('SQ01_RUNED_IRON', 't2');
-              } else if (this.playerState.memoryAwakeningStage >= 3) {
+              } else if (this.playerState.canRevealPlayerIdentity()) {
                 dKey = 'bram_black_knight_reverence';
               } else {
                 dKey = 'bram_chat';
               }
             } else if (npc.spec.id === 'npc_finn') {
-              if (this.playerState.memoryAwakeningStage >= 3) {
+              if (this.playerState.canRevealPlayerIdentity()) {
                 dKey = 'finn_black_knight_reverence';
               } else {
                 dKey = 'finn_rumors';
@@ -4838,9 +4838,8 @@ export class GameScene extends Phaser.Scene {
                   this.playerState.completeQuestTask('SQ08_PURIFY_FALLEN', 't3');
                   this.playerState.setFlag('campfire_knight_q3_completed');
 
-                  // V14-P8-15B: Nâng tiến trình Thức Tỉnh Ký Ức lên Giai đoạn 3 (Chân tướng Hiệp Sĩ Đen)
+                  // V14-P8-15B & HW-V16-A06: Nâng tiến trình Ký Ức lên Stage 3, giữ nguyên Reveal Gate (Stage >= 3 AND Approved Evidence)
                   this.playerState.setMemoryAwakeningStage(3);
-                  this.playerState.unlockLore('lore_wayfarer_inner_journal');
                   this.events.emit('memory_awakening_stage_changed', 3);
                   this.events.emit('memory_awakening_completed');
                   if (this.uiScene) {
@@ -4878,8 +4877,8 @@ export class GameScene extends Phaser.Scene {
                   this.playerState.completeQuestTask('SQ06_KEEP_FIRE', 't3');
                   this.playerState.setFlag('campfire_knight_q1_completed');
                   if (this.playerState.memoryAwakeningStage < 1) {
-                    this.playerState.memoryAwakeningStage = 1;
-                    this.playerState.unlockLore('lore_black_knight_chronicle');
+                    this.playerState.setMemoryAwakeningStage(1);
+                    this.events.emit('memory_awakening_stage_changed', 1);
                   }
                   if (this.playerState.campfireLevel < 2) {
                     this.playerState.campfireLevel = 2;

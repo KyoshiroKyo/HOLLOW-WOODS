@@ -31,6 +31,7 @@ import { ZoneConnectionRegistry } from '../world/ZoneConnectionRegistry';
 import { AudioManager } from '../audio/AudioManager';
 import { QuestSystem } from '../systems/QuestSystem';
 import { ItemTooltipHelper } from './ItemTooltipHelper';
+import { projectLoreEntryForDisplay } from '../systems/IdentityRevealResolver';
 import {
   PORTRAIT_SKULL_WOLF,
   PORTRAIT_SHADOW_BIG_BOSS,
@@ -921,7 +922,7 @@ export class JournalModal {
 
     let rowY = my + 94;
     for (let i = startIdx; i < endIdx; i++) {
-      const item = list[i];
+      const { entry: item, status: itemStatus } = projectLoreEntryForDisplay(list[i], this.playerState);
       const isSel = i === this.currentLoreIndex;
       const isMemoryChapter = item.id.startsWith('lore_memory_chapter_') || item.id === 'lore_black_knight_chronicle' || item.id === 'lore_wayfarer_inner_journal';
       const isEcho = item.id.includes('echo');
@@ -934,14 +935,15 @@ export class JournalModal {
       cardBg.lineStyle(1.5, isSel ? 0xf39c12 : (isMemoryChapter ? 0x9c7a28 : (isEcho ? 0x3498db : 0x4a3c22)), 0.85);
       cardBg.strokeRoundedRect(mx + 30, rowY, cardW, cardH, 6);
 
-      const marker = isSel ? '▶ ' : (isMemoryChapter ? '⚔️ ' : (isEcho ? '✨ ' : '• '));
+      const marker = isSel ? '▶ ' : (itemStatus === 'REDACTED' ? '🔒 ' : (isMemoryChapter ? '⚔️ ' : (isEcho ? '✨ ' : '• ')));
       const shortTitle = item.title.length > 28 ? item.title.substring(0, 26) + '...' : item.title;
       const titleTxt = HDTextHelper.createText(this.scene, mx + 42, rowY + 8, `${marker}${shortTitle}`, {
         fontSize: '12px',
         fontStyle: (isSel || isMemoryChapter || isEcho) ? 'bold' : 'normal',
         color: isSel ? '#f39c12' : (isMemoryChapter ? '#ffc048' : (isEcho ? '#88ccff' : '#ecf0f1'))
       });
-      const authorTxt = HDTextHelper.createText(this.scene, mx + 42, rowY + 26, `Bởi: ${item.author}`, {
+      const authorSuffix = itemStatus === 'REDACTED' ? ' [Che danh tính]' : '';
+      const authorTxt = HDTextHelper.createText(this.scene, mx + 42, rowY + 26, `Bởi: ${item.author}${authorSuffix}`, {
         fontSize: '10px',
         color: isMemoryChapter ? '#f5cd79' : (isEcho ? '#74b9ff' : '#95a5a6')
       });
@@ -967,13 +969,13 @@ export class JournalModal {
     }
 
     // --- TRANG PHẢI: CHI TIẾT NỘI DUNG MẢNH KÝ ỨC ĐƯỢC CHỌN ---
-    const entry = list[this.currentLoreIndex];
+    const { entry, status: entryStatus } = projectLoreEntryForDisplay(list[this.currentLoreIndex], this.playerState);
     const isEntryMemory = entry.id.startsWith('lore_memory_chapter_') || entry.id === 'lore_black_knight_chronicle' || entry.id === 'lore_wayfarer_inner_journal';
     const rightX = mx + mw / 2 + 25;
     const rightW = mw / 2 - 45;
 
     const isEntryEcho = entry.id.includes('echo');
-    const rTitle = HDTextHelper.createText(this.scene, rightX, my + 66, (isEntryMemory ? '⚔️ ' : (isEntryEcho ? '✨ ' : '')) + entry.title, {
+    const rTitle = HDTextHelper.createText(this.scene, rightX, my + 66, (entryStatus === 'REDACTED' ? '🔒 ' : (isEntryMemory ? '⚔️ ' : (isEntryEcho ? '✨ ' : ''))) + entry.title, {
       fontSize: '14.5px',
       fontStyle: 'bold',
       color: isEntryMemory ? '#ffc048' : (isEntryEcho ? '#88ccff' : '#d4af37'),
@@ -982,10 +984,11 @@ export class JournalModal {
       wordWrap: { width: rightW }
     });
 
-    const rAuthor = HDTextHelper.createText(this.scene, rightX, rTitle.y + rTitle.height + 6, `Ghi lại bởi: ${entry.author}`, {
+    const statusTag = entryStatus === 'REDACTED' ? ' [REDACTED]' : (entryStatus === 'REVEALED' ? ' [REVEALED]' : '');
+    const rAuthor = HDTextHelper.createText(this.scene, rightX, rTitle.y + rTitle.height + 6, `Ghi lại bởi: ${entry.author}${statusTag}`, {
       fontSize: '12px',
       fontStyle: 'italic',
-      color: isEntryMemory ? '#f5cd79' : '#95a5a6'
+      color: entryStatus === 'REDACTED' ? '#e67e22' : (isEntryMemory ? '#f5cd79' : '#95a5a6')
     });
 
     const rContent = HDTextHelper.createText(this.scene, rightX, rAuthor.y + rAuthor.height + 10, entry.content, {

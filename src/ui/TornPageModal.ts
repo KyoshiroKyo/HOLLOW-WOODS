@@ -791,8 +791,8 @@ export class TornPageModal {
     // 2. Ghi nhận cờ đã thu thập / đọc để đổi trạng thái prompt trên bản đồ
     this.playerState.setFlag('collected_note_' + entry.id);
 
-    // 3. Nếu là trang nhật ký cốt truyện thức tỉnh ký ức Hiệp Sĩ Đen
-    if (typeof entry.memoryAwakeningStage === 'number' && entry.memoryAwakeningStage > 0) {
+    // 3. Nếu là trang nhật ký cốt truyện thức tỉnh ký ức (chỉ kích hoạt lần đầu đọc)
+    if (!this.isAlreadyCollected && typeof entry.memoryAwakeningStage === 'number' && entry.memoryAwakeningStage > 0) {
       if (this.playerState.memoryAwakeningStage < entry.memoryAwakeningStage) {
         this.playerState.setMemoryAwakeningStage(entry.memoryAwakeningStage);
       }

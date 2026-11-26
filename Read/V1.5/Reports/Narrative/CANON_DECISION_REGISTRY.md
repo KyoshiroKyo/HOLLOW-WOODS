@@ -1,6 +1,6 @@
 # HOLLOW WOODS — CANON DECISION REGISTRY (`HW-V16-A01 LOCKED`)
 
-- **Mission History:** `HW-NARRATIVE-00B` → `HW-V16-A01` (Canon Lock) → **`HW-V16-A02` (`LEGACY LORE CLEANUP IMPLEMENTED`)** (`2026-11-26`)
+- **Mission History:** `HW-NARRATIVE-00B` → `HW-V16-A01` (Canon Lock) → `HW-V16-A02` → `HW-V16-A03/A04/A05` → **`HW-V16-A06` (`MEMORY & IDENTITY REVEAL GATES SYNCHRONIZED — PARTIAL PENDING EVIDENCE LOCK`)** (`2026-11-26`)
 - **Primary Decision Matrix:** [HW_CANON_OWNER_DECISION_MATRIX.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Narrative/HW_CANON_OWNER_DECISION_MATRIX.md) (`22` Owner-Authorized IDs + `1` Reserved `DEC-LOCK-14`) | **A02 Report:** [HW_V16_A02_LEGACY_LORE_IMPLEMENTATION_REPORT.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/V16/HW_V16_A02_LEGACY_LORE_IMPLEMENTATION_REPORT.md)
 - **References:** `HOLLOW_WOODS_MASTER_GAME_BIBLE_UNIFIED.docx`, `HOLLOW WOODS V1.6 — Technical Implementation Bible · Roadmap 3.0.docx`, `HOLLOW_WOODS_HEADLESS_WARDEN_V3_2_DESIGN_CODE_HANDOVER.docx`
 
@@ -17,8 +17,8 @@
 
 | Decision ID | Chủ đề & Khóa `DEC-LOCK-*` | Canon Status | Implementation Status | Chi tiết & Ràng buộc |
 | :--- | :--- | :---: | :---: | :--- |
-| **`CHAR-K01`** | Đổi tên thật NVC: **`Drager` → `Meliodas Blackwood`** (`DEC-LOCK-01/07`) | **`CANON-APPROVED`** (`Drager` `SUPERSEDED`) | `IMPLEMENTATION-PENDING` | Ẩn ở Menu & đầu game (`The Mossbound Wayfarer — Lữ Khách Rêu Phong`); chỉ reveal ở `Memory Stage >= 3` + chứng cứ phù hợp (không ép `SQ08`). |
-| **`CHAR-K02`** | Danh hiệu **`Lord Blackwood`**, **`The Wolf Lord`**, Người Thầy & **Tổng Chỉ Huy** ẩn (`DEC-LOCK-01/07`) | **`CANON-APPROVED`** | `IMPLEMENTATION-PENDING` | Meliodas từng là Người Thầy & Tổng Chỉ Huy dìu dắt `Vaelen & Mordric`; giấu kín cho tới Reveal Gate. |
+| **`CHAR-K01`** | Đổi tên thật NVC: **`Drager` → `Meliodas Blackwood`** (`DEC-LOCK-01/07`) | **`CANON-APPROVED`** (`Drager` `SUPERSEDED`) | **`PARTIAL` (`A06` Fail-Closed Gate Implemented)** | Ẩn ở Menu, Stage `0–2` & Stage `3` thiếu Approved Evidence qua `IdentityRevealResolver.ts`; chờ Owner duyệt quy tắc chứng cứ ở [HW_V16_A06_EVIDENCE_DECISION_MATRIX.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/V16/HW_V16_A06_EVIDENCE_DECISION_MATRIX.md). |
+| **`CHAR-K02`** | Danh hiệu **`Lord Blackwood`**, **`The Wolf Lord`**, Người Thầy & **Tổng Chỉ Huy** ẩn (`DEC-LOCK-01/07`) | **`CANON-APPROVED`** | **`PARTIAL` (`A06` Fail-Closed Gate Implemented)** | Đã chặn leak tại `PlayerState:610–622, 770`, `EvilKnights:1002`, HUD, villagers, Journal (`REDACTED`) & Ending display. |
 | **`CHAR-K03`** | Tuyến Kỵ Sĩ: **`Vaelen`**, **`Mordric = Dark Knight / HoodedKnightBoss`**, **`Roderick`**, **`Aldemar`** (`DEC-LOCK-09..13`) | **`CANON-APPROVED`** (`Vaelen`/`Mordric` base) & **`APPROVED-WITH-LIMITATIONS`** (`Roderick`/`Aldemar`) | `Vaelen` & `HoodedKnightBoss` baseline; đổi display/thoại `IMPLEMENTATION-PENDING` | `Sir Mordric` = `HoodedKnightBoss` (giữ runtime ID/class/texture/quest/`quest_corrupted_crest`). Số phận cuối `Vaelen`/`Mordric` & tiểu sử/sprite/vị trí `Roderick`/`Aldemar` còn mở. |
 | **`CHAR-K04`** | Boss **`The Headless Warden`** (`CHAR-006`, `DEC-LOCK-14`) | **`RESERVED / DEFERRED`** | `DEFERRED` (Excluded from V1.6) | Phát triển độc lập ở `HW-Design` (`V3.2`); hoãn `D06/D07/E06`; cấm entity/AI/spawn/placeholder runtime. |
 | **`NAR-K05`** | Nguồn mất trí nhớ & lời cầu cứu (`DEC-LOCK-02/03/04/05/19`) | **`CANON-APPROVED`** | `IMPLEMENTATION-PENDING` (`A02`) | Thay tự phong ấn/`Algiz`/tái sinh bằng **biến cố xuyên thời gian bí ẩn** (giữ `Algiz` không liên quan Lore); lời gọi `UNKNOWN`; không chốt số năm; `Làng Sương Mù = Bellhollow`; Edda nắm truyền khẩu/cảm nhận. |
