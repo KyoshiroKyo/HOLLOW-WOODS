@@ -1,0 +1,112 @@
+{
+  "tests": {
+    "A03-T01": {
+      "status": "PASS",
+      "detail": {
+        "zone": "fog_crossing",
+        "quest": "Q01_MEET_EDDA",
+        "memoryStage": 0,
+        "hudIdentity": "",
+        "journalUnlockedIds": [
+          "lore_three_rules"
+        ],
+        "journalText": "[{\"id\":\"lore_three_rules\",\"act\":1,\"title\":\"BA QUY TẮC BẰNG MÁU CỦA LÀNG BELLHOLLOW\",\"author\":\"Edda – Người Giữ Chuông\",\"content\":\"1. Đừng bao giờ trả lời khi khu rừng gọi đúng tên mình. Đó không phải người quen, mà là Kẻ Lắng Nghe đang mượn giọng người thân để dụ dỗ bạn bước chệch khỏi đường mòn.\\n\\n2. Đừng đi theo chiếc đèn thứ hai xuất hiện trong sương mù. Chiếc đèn đó không có người cầm, nó chỉ lập lòe để kéo bạn vào những hố bùn không đáy.\\n\\n3. Tuyệt đối không rung chuông khi màn sương đã vượt qua hàng rào làng. Tiếng chuông khi ấy không xua đuổi tai ương, mà sẽ biến thành lời hiệu triệu dẫn lũ thực thể tràn vào nhà bạn.\"}]",
+        "posX": 120,
+        "posY": 195
+      }
+    },
+    "A03-T02": {
+      "status": "PASS",
+      "detail": {
+        "memoryStage": 0,
+        "spoilersFound": [],
+        "unlockedLoreIds": [
+          "lore_three_rules"
+        ]
+      }
+    },
+    "A03-T03": {
+      "status": "PASS",
+      "detail": {
+        "lanternOn": true,
+        "state": {
+          "zone": "bellhollow",
+          "x": 510,
+          "y": 195,
+          "q00Done": true,
+          "memoryStage": 2
+        }
+      }
+    },
+    "A03-T04": {
+      "status": "PASS",
+      "detail": {
+        "talkedToVillagers": true,
+        "q01T1Done": true,
+        "quest": "Q01_MEET_EDDA"
+      }
+    },
+    "A03-T05": {
+      "status": "PASS",
+      "detail": {
+        "post": {
+          "talkedToEdda": true,
+          "flagChoice3": true,
+          "quest": "Q02_MEET_NERIS",
+          "threeRulesUnlocked": true,
+          "spoilers": []
+        },
+        "canonicalOk": true
+      }
+    },
+    "A03-T06": {
+      "status": "PASS",
+      "detail": {
+        "talkedToNeris": true,
+        "healthAfter": 100,
+        "maxHealth": 100,
+        "composureAfter": 100,
+        "maxComposure": 100,
+        "poultices": 1,
+        "quest": "Q03_PREPARE_RESOURCES",
+        "eastGateUnlocked": true,
+        "herbalNoteUnlocked": true
+      }
+    },
+    "A03-T07": {
+      "status": "PASS",
+      "detail": {
+        "garth_warning": 3,
+        "edda_intro": 3,
+        "neris_intro": 3,
+        "edda_bell_shatter_secret": 2
+      }
+    },
+    "A03-T08": {
+      "status": "PASS",
+      "detail": {
+        "checkedLines": 21,
+        "maxTextH": 54,
+        "overflows": []
+      }
+    },
+    "A03-T09": {
+      "status": "PASS",
+      "detail": {
+        "saveOk": true,
+        "hasSave": true,
+        "restored": {
+          "quest": "Q03_PREPARE_RESOURCES",
+          "talkedVillagers": true,
+          "talkedEdda": true,
+          "talkedNeris": true,
+          "poultices": 2,
+          "eastGateUnlocked": true
+        }
+      }
+    }
+  },
+  "consoleErrors": [],
+  "pageErrors": [],
+  "failedRequests": []
+}

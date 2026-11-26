@@ -1,0 +1,41 @@
+﻿diff --git a/src/data/dialogues.json b/src/data/dialogues.json
+index 4ac592e..1d0a912 100644
+--- a/src/data/dialogues.json
++++ b/src/data/dialogues.json
+@@ -145,13 +145,13 @@
+       "opensEastGate": true,
+       "lines": [
+         "Khuôn mặt này... ánh nhìn này... Đã bao nhiêu mùa trôi qua kể từ khi có một kẻ sống sót bước ra từ Màn Sương Rừng Sâu?",
+-        "Chiếc áo choàng vương rêu xanh... Ngươi là một Lữ Khách bước ra từ sương mù rêu phong sao? Nghe như một âm vang vọng lại từ bờ bên kia ranh giới.",
++        "Chiếc áo choàng vương rêu xanh... Ngươi là Lữ Khách Rêu Phong vừa bước ra từ màn sương sao? Dáng vẻ ngươi giống như một dư âm còn sót lại giữa ranh giới sương mù.",
+         "Ở làng Bellhollow này, nếu ngươi muốn sống sót qua đêm nay, hãy khắc cốt ghi tâm BA QUY TẮC BẰNG MÁU:",
+         "QUY TẮC 1: Đừng bao giờ trả lời khi khu rừng cất tiếng gọi đúng họ tên mình. Đó không phải người quen, mà là Kẻ Lắng Nghe đang mượn giọng.",
+         "QUY TẮC 2: Đừng đi theo chiếc đèn thứ hai xuất hiện trong sương mù. Chiếc đèn đó không có người cầm.",
+         "QUY TẮC 3: Tuyệt đối không rung chuông khi màn sương đã vượt qua hàng rào làng.",
+-        "Trái tim của ngôi làng là Quả Chuông Cổ, nhưng Lưỡi Chuông Đồng đã bị đánh cắp mang sâu vào Miếu Chuông Phế Tích.",
+-        "Nếu ngươi muốn tìm đường trở về thế giới của mình, hãy tìm lại Lưỡi Chuông Đồng cho ta!",
++        "Trái tim của ngôi làng là Đại Hồng Chung cổ xưa — tiếng ngân của nó từng đẩy lùi màn sương, nhưng Lưỡi Chuông Đồng đã thất lạc sâu về phía Miếu Chuông Phế Tích.",
++        "Nếu ngươi muốn vén màn sương và tìm câu trả lời cho bước chân mình, hãy tìm lại Lưỡi Chuông Đồng cho làng!",
+         "Ta sẽ báo cho Garth mở Cổng Đông. Nếu còn bị thương, hãy ghé chỗ Neris trước khi lên đường!"
+       ],
+       "choices": [
+@@ -168,8 +168,8 @@
+           "setFlag": "lore_curious_bell_secret"
+         },
+         {
+-          "text": "[Trầm ngâm] \"Ranh giới bên kia... dường như ta không còn nhớ mình là ai nữa.\"",
+-          "responseLine": "Màn sương đã tước đoạt ký ức của ngươi... Nhưng đừng sợ, từng bước chân vào rừng sâu sẽ đánh thức lại con người thật của ngươi.",
++          "text": "[Trầm ngâm] \"Trong màn sương ấy... dường như ta không còn nhớ mình là ai nữa.\"",
++          "responseLine": "Màn sương che khuất nhiều dấu vết, nhưng ta không dám chắc điều gì đã cướp đi ký ức của ngươi... Hãy thận trọng bước tiếp, từng chặng đường phía trước có thể sẽ hé lộ điều ngươi tìm kiếm.",
+           "trustDelta": 2,
+           "setFlag": "wayfarer_lost_identity"
+         }
+@@ -228,7 +228,7 @@
+         },
+         {
+           "text": "[Hỏi về Mạch Rễ] \"Đại Mạch Rễ xuất phát từ đâu mà có sức mạnh tà ác đến vậy?\"",
+-          "responseLine": "Nó là gốc rễ của khu rừng cổ xưa, bị oán niệm và bóng tối tha hóa sau khi ranh giới giữa hai thế giới bị phá vỡ.",
++          "responseLine": "Nó là gốc rễ của khu rừng cổ xưa, bị oán niệm và bóng tối tha hóa sau khi màn sương The Veil tràn qua ranh giới thung lũng.",
+           "trustDelta": 1
+         }
+       ]
