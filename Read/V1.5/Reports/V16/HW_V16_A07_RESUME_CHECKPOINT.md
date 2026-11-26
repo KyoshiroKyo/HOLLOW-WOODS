@@ -1,9 +1,9 @@
 # HW-V16-A07-RESUME — QUOTA INTERRUPTION CHECKPOINT REPORT
 
 - **Mission ID:** `HW-V16-A07 — QUEST PROGRESSION & MULTIPLE ENDINGS` (`Recovery: HW-V16-A07-RESUME`)
-- **Mode:** `CHECKPOINT RECOVERY` (`PARTIAL / INTERRUPTED`)
-- **Branch:** `feat/v1.5.3-ag-world-polish`
-- **Local HEAD = Origin Before Checkpoint:** `5fdd4e496150456f06f859d3177d6e34059e2ba5` (`HW-V16-A06`)
+- **Mode:** `CHECKPOINT RECOVERY` (`PRESERVED — WAITING FOR GPT ACCEPTANCE OF HW-V16-A06-R1`)
+- **Branch:** `feat/v1.5.3-ag-world-polish` (`A06-R1 isolated on feat/v1.6-a06-r1-identity-evidence @ fc5bf1d5f849f694a6b92e270ef747b2f2914246`)
+- **Origin Before A07 Interruption:** `5fdd4e496150456f06f859d3177d6e34059e2ba5` (`HW-V16-A06`)
 - **Pre-existing Index Preserved:** `297` staged `Pixel_Art/` renames (untouched) + `327` pre-existing unstaged `Pixel_Art/` deletions (untouched)
 
 ---
@@ -33,13 +33,16 @@ Các hạng mục sau đã được thực hiện trước khi gián đoạn và
 
 ---
 
-## 3. Dependency & A06 Evidence Approval Gate Status
+## 3. Dependency & Post-`A06-R1` Gate Status (Updated `2026-11-27`)
 
 - **A03 / A04 / A05:** **`PASS`** (đã commit & push trên `feat/v1.5.3-ag-world-polish`).
-- **A06 Evidence Approval Gate (`src/systems/IdentityRevealResolver.ts:86`):**
-  - Kiểm tra trực tiếp xác nhận `export const APPROVED_IDENTITY_EVIDENCE_RULES: ReadonlyArray<ApprovedEvidenceRule> = [];` — **Vẫn giữ fail-closed `PARTIAL`**.
-  - **Phương án 1 trong [HW_V16_A06_EVIDENCE_DECISION_MATRIX.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/V16/HW_V16_A06_EVIDENCE_DECISION_MATRIX.md) CHƯA được Owner xác nhận** và **KHÔNG** được tự kích hoạt trong `A07`.
-  - [CANON_DECISION_REGISTRY.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Narrative/CANON_DECISION_REGISTRY.md) vẫn ghi nhận `CHAR-K01 / CHAR-K02` là `PARTIAL (A06 Fail-Closed Gate Implemented)`.
+- **A06-R1 (`OWNER APPROVED OPTION 1`):** **`PASS — IMPLEMENTED & PUSHED ON ISOLATED BRANCH`**
+  - **Branch / Worktree cô lập:** `feat/v1.6-a06-r1-identity-evidence` (`G:/HOLLOW_WOODS_A06_R1`)
+  - **Commit SHA = Remote SHA (`origin/feat/v1.6-a06-r1-identity-evidence`):** `fc5bf1d5f849f694a6b92e270ef747b2f2914246`
+  - **Nội dung đã nghiệm thu:** Kích hoạt `MAIN_PATH_Q05` + `SIDE_PATH_SQ08` trong `APPROVED_IDENTITY_EVIDENCE_RULES`, `reconcileIdentityRevealState`, Stage 3 tuyến chính tại `vaelen_forge_purification_key` & `unlockBridge()`, `npm run check` (`exit 0`), `verify:data` (`15/15 PASS`), `npm run build` (`exit 0`), `verify_v16_a06_r1_identity_evidence.mjs` (`24/24 PASS`), Playwright E2E thực tế (`0` console/page errors, `6/6` ảnh runtime).
+  - **Trạng thái cổng A07:** **CHỜ GPT NGHIỆM THU `HW-V16-A06-R1`** — **KHÔNG** tự tiếp tục `A07`, `A08`, `A09`, hoặc `A10` trước khi có lệnh mở tiếp theo.
+- **Hiện trạng bảo toàn 6 tệp `A07` tại `G:\HOLLOW WOODS` (`feat/v1.5.3-ag-world-polish`):**
+  - Toàn bộ `4` tệp `src/` đã sửa (`GameScene.ts`, `PlayerState.ts`, `BossEncounterSystem.ts`, `WorldGatingSystem.ts`), `2` tệp A07 chưa track (`verify_v16_a07_quest_and_endings.mjs`, `HW_V16_A07_ENDING_APPROVAL_DRAFT.md`), và `297` staged `Pixel_Art/` renames vẫn nguyên vẹn chưa bị commit nhầm.
 
 ---
 
@@ -74,6 +77,7 @@ Các hạng mục sau đã được thực hiện trước khi gián đoạn và
 3. **[Step 4 — Reports & Registries]:** Viết `Read/V1.5/Reports/V16/HW_V16_A07_QUEST_ENDINGS_REPORT.md` và cập nhật `QUEST_IMPACT_REGISTRY.md` / `CANON_DECISION_REGISTRY.md` phản ánh đúng trạng thái `§4` đã sửa và giữ nguyên `A06` Option 1 ở trạng thái chờ duyệt.
 4. **[Step 5 — Final Checkpoint Commit]:** Chỉ sau khi mọi kiểm thử bước 2–3 PASS, cô lập commit đúng phạm vi A07 với message `feat(narrative): stabilize quest progression and ending compatibility [HW-V16-A07]`, push và xác minh Remote SHA.
 
-### Safe Resume Point
-- Tiếp tục **ngay tại bước 2/5** của `HW-V16-A07`: chạy `npm run check && verify:data && test_v15_60 && test_v153_save_schema3 && verify_v15_16 && test_v15_59 && test_v15_38 && verify_v16_a07_quest_and_endings.mjs && npm run build`, sau đó chạy `scratch/test_hw_v16_a07.py`.
-- **Không** chạy lại backup, **không** revert `src/scenes/GameScene.ts`, `src/state/PlayerState.ts`, `src/systems/BossEncounterSystem.ts`, `src/world/WorldGatingSystem.ts`, và **không** tự ý mở khóa `APPROVED_IDENTITY_EVIDENCE_RULES` trước khi Owner chốt Matrix của `A06`.
+### Safe Resume Point (After GPT Acceptance of `HW-V16-A06-R1`)
+- **Bước đồng bộ trước khi chạy bước 2/5 của `HW-V16-A07`:** Merge/đồng bộ `origin/feat/v1.6-a06-r1-identity-evidence` (`fc5bf1d5f849f694a6b92e270ef747b2f2914246`) vào nhánh `A07` sao cho giữ nguyên cả `4` tệp `src/` A07 (`BossEncounterSystem.ts`, `WorldGatingSystem.ts`, `PlayerState.ts`, `GameScene.ts`) lẫn logic `A06-R1` (`IdentityRevealResolver.ts`, `QuestSystem.ts`, `SaveManager.ts`, `UIScene.ts`, `reconcileIdentityRevealState`, `promoteToMemoryStage3`).
+- Tiếp tục **tại bước 2/5** của `HW-V16-A07`: chạy `npm run check`, `verify:data`, `test_v15_60`, `test_v153_save_schema3`, `verify_v15_16`, `test_v15_59`, `test_v15_38`, `verify_v16_a06_r1_identity_evidence.mjs`, `verify_v16_a07_quest_and_endings.mjs`, `npm run build`, sau đó chạy Playwright `test_hw_v16_a07.py`.
+- **Không** chạy lại backup A07, **không** revert `src/scenes/GameScene.ts`, `src/state/PlayerState.ts`, `src/systems/BossEncounterSystem.ts`, `src/world/WorldGatingSystem.ts`.
