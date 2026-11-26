@@ -41,7 +41,7 @@ export class VeilSystem {
   private nextWhisperTime: number = 0;
 
   private whispers: string[] = [
-    '“Satyr... quay lại đi... con đường về nhà ở phía sau...”',
+    '“Quay lại đi… con đường ngươi tìm kiếm vẫn còn ở phía sau…”',
     '“Đừng nghe bà lão... tiếng chuông sẽ giết chết tất cả...”',
     '“Có kẻ đang thở ngay sau gáy ngươi...”',
     '“Khu rừng nhớ rõ ngươi... ngươi đã từng ở đây...”',

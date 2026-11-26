@@ -2640,12 +2640,12 @@
             {
               "name": "displayName",
               "type": "string",
-              "value": "Văn Bia Cổ Hiệp Sĩ Đen"
+              "value": "Văn Bia Cổ Đoàn Kỵ Sĩ"
             },
             {
               "name": "promptText",
               "type": "string",
-              "value": "[E] Đọc Văn Bia Cổ Hiệp Sĩ Đen"
+              "value": "[E] Đọc Văn Bia Cổ Đoàn Kỵ Sĩ"
             },
             {
               "name": "actionId",

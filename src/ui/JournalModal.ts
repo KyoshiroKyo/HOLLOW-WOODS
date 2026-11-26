@@ -906,7 +906,7 @@ export class JournalModal {
     }
 
     // --- TRANG TRÁI: DANH SÁCH CÁC BẢN GHI KÝ ỨC ---
-    const leftTitle = HDTextHelper.createText(this.scene, mx + 30, my + 66, '📜 BIÊN NIÊN KÝ ỨC HIỆP SĨ ĐEN & CỔ THƯ:', {
+    const leftTitle = HDTextHelper.createText(this.scene, mx + 30, my + 66, '📜 BIÊN NIÊN KÝ ỨC & CỔ THƯ BELLHOLLOW:', {
       fontSize: '13px',
       fontStyle: 'bold',
       color: '#d4af37'

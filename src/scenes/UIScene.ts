@@ -337,7 +337,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     // Tên nhân vật chính hiển thị góc trên trái (V14-P8-15B: Đồng bộ theo memoryAwakeningStage)
     const isAwakened = (this.playerState.memoryAwakeningStage >= 3);
-    this.playerNameText = HDTextHelper.createText(this, 26, 15, isAwakened ? '⚔️ Hiệp Sĩ Đen (Black Knight)' : '🌲 The Mossbound Wayfarer', {
+    this.playerNameText = HDTextHelper.createText(this, 26, 15, isAwakened ? '⚔️ Meliodas Blackwood' : '🌲 Lữ Khách Rêu Phong', {
       fontSize: '11.5px',
       fontStyle: 'bold',
       color: isAwakened ? '#ffc048' : '#e5a93c',
@@ -1057,17 +1057,17 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     // V1.4: Cập nhật 2 huy hiệu trạng thái phụ (Độ Ẩm & Thân Nhiệt)
     this.updateStatusBadges(stats.moisture ?? 0, stats.temperature ?? 80);
 
-    // V14-P8-15B: Cập nhật danh hiệu người chơi khi thức tỉnh ký ức (Giai đoạn 3: Hiệp Sĩ Đen)
+    // V14-P8-15B & DEC-LOCK-07: Cập nhật danh hiệu người chơi khi thức tỉnh ký ức (Stage 3: Meliodas Blackwood)
     if (this.playerNameText) {
       if (this.playerState.memoryAwakeningStage >= 3) {
-        const title = '⚔️ Hiệp Sĩ Đen (Black Knight)';
+        const title = '⚔️ Meliodas Blackwood';
         if (this.playerNameText.text !== title) {
           this.playerNameText.setText(title);
           this.playerNameText.setColor('#ffc048');
           this.playerNameText.setStroke('#3d1a04', 3);
         }
       } else {
-        const title = '🌲 The Mossbound Wayfarer';
+        const title = '🌲 Lữ Khách Rêu Phong';
         if (this.playerNameText.text !== title) {
           this.playerNameText.setText(title);
           this.playerNameText.setColor('#e5a93c');
@@ -3815,7 +3815,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         else if (speaker.includes('Canh Lửa') || speaker.includes('Vaelen')) {
           key = this.textures.exists('portrait_campfire_knight') ? 'portrait_campfire_knight' : 'portrait_campfire_knight.png';
         }
-        else if (speaker.includes('Trùm Mũ') && this.textures.exists('portrait_hooded_knight')) {
+        else if ((speaker.includes('Trùm Mũ') || speaker.includes('Mordric') || speaker.includes('Kỵ Sĩ Bóng Tối')) && this.textures.exists('portrait_hooded_knight')) {
           key = 'portrait_hooded_knight';
         }
         else if (this.textures.exists('wayfarer_portrait')) key = 'wayfarer_portrait';

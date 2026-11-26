@@ -3,7 +3,7 @@
 - **Mission IDs:** `HW-NR-01` → Locked by **`HW-V16-A01 — MASTER CANON LOCK & OWNER AUTHORIZATION`**
 - **Project:** `HOLLOW WOODS — THE UNBROKEN OATH` (`Target: V1.6.0`) — `KYOSHIRO STUDIO`
 - **Approval Date:** `2026-11-26`
-- **Summary:** **`23` Total IDs** — **`22` Owner-Authorized** (`CANON-APPROVED` / `APPROVED-FOR-PREPARATION` / `APPROVED-WITH-LIMITATIONS` / `TRAILER-ONLY` Isolation Rules) + **`1` Reserved** (`DEC-LOCK-14` `CHAR-006`). **Production Code Status:** `0` changes applied in `A01` (`IMPLEMENTATION-PENDING` starting in `A02+`).
+- **Summary:** **`23` Total IDs** — **`22` Owner-Authorized** + **`1` Reserved** (`DEC-LOCK-14` `CHAR-006`). **A02 Sync (`2026-11-26`):** `DEC-LOCK-01..05, 07..10, 15, 19` đã triển khai cleanup Lore & chống spoil trong **`HW-V16-A02`** (`21` tệp `src/`, `0` legacy residue trong `dist/`); các phần mở rộng thoại `A03–A05`, Evidence Reveal Resolver `A06`, Ending copy mới `A07`, Opening `A08/A09` & Audio `B06` vẫn ở hàng đợi `IMPLEMENTATION-PENDING`.
 
 ---
 

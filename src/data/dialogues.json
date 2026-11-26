@@ -630,8 +630,8 @@
           "setFlag": "choice_knight_pledge_fire"
         },
         {
-          "text": "[Hỏi về kỵ sĩ] \"Bộ giáp đen mà ngươi vừa nhắc tới... có phải thuộc về một vị chỉ huy năm xưa?\"",
-          "responseLine": "(Sir Vaelen thở dài nghẹn ngào)... Đúng vậy. Vị Tổng Chỉ Huy huyền thoại đã một mình dẫn đầu đội tiên phong phá vòng vây sương mù, rồi biệt tích...",
+          "text": "[Hỏi về kỵ sĩ] \"Bộ giáp đen mà ngươi vừa nhắc tới... có phải thuộc về một kỵ sĩ năm xưa?\"",
+          "responseLine": "(Sir Vaelen thở dài nghẹn ngào)... Đúng vậy. Người từng dìu dắt chúng ta — vị thủ lĩnh đoàn kỵ sĩ năm xưa đã bước vào màn sương sau khi nghe một tiếng gọi lạ, rồi biệt tích...",
           "trustDelta": 2,
           "setFlag": "lore_curious_black_knight"
         },
@@ -659,9 +659,9 @@
       "lines": [
         "(Sir Vaelen ném một cành củi khô vào đống lửa, ánh mắt đỏ hoe ngấn lệ)...",
         "Đêm trước ngày xuất chinh năm ấy, toàn đoàn kỵ sĩ giáp bạc đứng nghiêm trang trước quảng trường Bellhollow.",
-        "Ta đã quỳ xin được đi tiên phong cùng ngài ấy... Nhưng vị Chỉ Huy Hiệp Sĩ Đen đã đặt bàn tay thép lên vai ta, nghiêm giọng ra lệnh:",
+        "Ta đã quỳ xin được đi cùng người ấy... Nhưng vị thủ lĩnh đáng kính của Đoàn Kỵ Sĩ Hắc Lang đã đặt bàn tay thép lên vai ta, nghiêm giọng căn dặn:",
         "'Ngươi là người có ý chí kiên định nhất đoàn. Ngươi phải ở lại giữ chốt làng, bảo vệ ngọn lửa thiêng này! Nếu ngọn lửa hậu phương lụi tàn, Bellhollow sẽ sụp đổ trước khi chúng ta kịp phá vỡ màn sương trở về.'",
-        "Ta đã tuân lệnh ngài ấy... Ta đã ở lại! Nhưng từng đêm trôi qua, từng người đồng đội ngã xuống trong tiếng gầm rú ngoài sương lạnh... Nỗi đau của kẻ ở lại gặm nhấm tâm can ta từng nhịp thở!"
+        "Ta đã tuân theo lời căn dặn ấy... Ta đã ở lại! Nhưng từng mùa sương trôi qua, từng người đồng đội ngã xuống trong tiếng gầm rú ngoài sương lạnh... Nỗi đau của kẻ ở lại gặm nhấm tâm can ta từng nhịp thở!"
       ],
       "choices": [
         {
@@ -672,7 +672,7 @@
         },
         {
           "text": "[Trầm mặc thấu hiểu] \"Gánh nặng của người ở lại luôn đau đớn hơn kẻ ra đi... Ta hiểu nỗi dằn vặt đó.\"",
-          "responseLine": "Ánh mắt của ngươi... giống hệt ánh nhìn của vị chỉ huy đêm hôm ấy...",
+          "responseLine": "Dáng đứng của ngươi khiến ta nhớ đến một người từ rất lâu trước đây...",
           "trustDelta": 2,
           "setFlag": "choice_knight_silent_understanding"
         }
@@ -731,9 +731,9 @@
       "portrait": "portrait_campfire_knight",
       "lines": [
         "Phôi Sắt Cổ Ngữ này... và cả nét chữ trên mảnh nhật ký cháy sém này nữa! Đúng là nét bút của trung úy kỵ sĩ rồi!",
-        "(Hiệp sĩ nghẹn ngào đọc trang nhật ký)... 'Bóng tối The Veil quá mạnh... Chỉ huy đã bị tà khí nuốt chửng linh hồn, trở thành bóng ma trùm mũ canh giữ cổ tự... Ai tìm thấy di ngôn này, xin hãy giải thoát cho ngài ấy...'",
-        "Trời ơi... Vị chỉ huy đáng kính của chúng ta đã biến thành Hooded Knight Boss bị sương đen sai khiến!",
-        "Hỡi lữ khách! Xin ngươi hãy giúp ta hoàn thành tâm nguyện đau đớn này: Tiến sâu vào cấm địa Rừng Sâu, đánh bại ngài ấy để giải thoát linh hồn, và mang 'Huy Hiệu Hiệp Sĩ Tha Hóa' về đây để ta thanh tẩy bên ngọn lửa!"
+        "(Hiệp sĩ nghẹn ngào đọc trang nhật ký)... 'Bóng tối The Veil quá mạnh... Sir Mordric đã bị tà khí nuốt chửng lý trí, trở thành bóng ma trùm mũ canh giữ phế tích rừng sâu... Ai tìm thấy di ngôn này, xin hãy giải thoát cho người bạn cũ của ta...'",
+        "Trời ơi... Ta từng có một người bạn, chúng ta đã cùng gìn giữ một lời thề — vậy mà nay Mordric lại bị màn sương đen sai khiến dưới lớp mũ trùm kia sao!",
+        "Hỡi lữ khách! Xin ngươi hãy giúp ta hoàn thành tâm nguyện đau đớn này: Tiến sâu vào cấm địa Rừng Sâu, đánh bại Kỵ Sĩ Trùm Mũ để giải thoát linh hồn Sir Mordric, và mang 'Huy Hiệu Hiệp Sĩ Tha Hóa' về đây để ta thanh tẩy bên ngọn lửa!"
       ],
       "onCompleteFlag": "campfire_knight_q3_accepted",
       "nextQuestId": "SQ08_PURIFY_FALLEN",
@@ -744,7 +744,7 @@
       "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
       "portrait": "portrait_campfire_knight",
       "lines": [
-        "Chỉ Huy Hiệp Sĩ Trùm Mũ mang sức mạnh hắc ám khủng khiếp. Khi ngài ấy tụ năng lượng tà khí màu xanh thẫm, hãy nhanh tay vung gậy gỗ hoặc đâm giáo [Chuột trái / Phím Space] để ngắt chiêu khiến ngài bị choáng váng!",
+        "Kỵ Sĩ Trùm Mũ — người bạn cũ Sir Mordric của ta — đang mang sức mạnh hắc ám khủng khiếp. Khi hắn tụ năng lượng tà khí màu xanh thẫm, hãy nhanh tay bật Vòng Sáng Hộ Tâm [F] hoặc tấn công [Chuột trái / Space] để ngắt chiêu khiến hắn bị choáng váng!",
         "Hãy cẩn trọng từng nhịp thở, và mang Huy Hiệu Hiệp Sĩ Tha Hóa trở về an toàn nhé!"
       ],
       "choices": [
@@ -753,7 +753,7 @@
           "nextDialogueKey": "campfire_knight_rest_blessing"
         },
         {
-          "text": "[Lên đường] \"Ta sẽ tiến vào Rừng Sâu để giải thoát cho vị Chỉ Huy.\""
+          "text": "[Lên đường] \"Ta sẽ tiến vào Rừng Sâu để giải thoát cho người bạn cũ của ngươi.\""
         }
       ]
     },
@@ -762,22 +762,22 @@
       "portrait": "portrait_campfire_knight",
       "lines": [
         "Chiếc huy hiệu này... tà khí đen ngòm đang bốc hơi khi tiếp xúc với ánh lửa thiêng Trạm Lửa Rừng Tĩnh Lặng!",
-        "(Sir Vaelen chăm chú nhìn vết khắc biểu tượng trên mặt huy hiệu, rồi ngẩng đầu bàng hoàng nhìn sâu vào mắt bạn)...",
-        "Không thể nào... Đây là Quân Huy Tổng Chỉ Huy! Vết chém chéo đặc trưng và phong ấn bóng tối này... Người đứng trước mặt ta bấy lâu nay...",
-        "(Sir Vaelen buông gươm, quỳ một gối phủ phục xuống nền đất trước mặt bạn với sự tôn kính tột cùng)...",
-        "Thần... xin kính cẩn bái kiến Ngài, Chỉ Huy Hiệp Sĩ Đen (The Black Knight)! Năm xưa chính ngài đã tự phong ấn ký ức để bảo vệ linh hồn khỏi lời nguyền The Veil... Giờ đây ngài đã thức tỉnh và trở về giải cứu chúng thần!",
-        "Huy hiệu đã được thanh tẩy hoàn toàn thành Bùa Hộ Thân Hiệp Sĩ. Xin trao lại bảo vật này cho ngài, cùng danh hiệu chân chính vốn thuộc về ngài!"
+        "(Sir Vaelen chăm chú nhìn vết khắc biểu tượng Sói trên mặt huy hiệu, rồi ngẩng đầu bàng hoàng nhìn sâu vào mắt bạn)...",
+        "Không thể nào... Đây là Quân Huy của Đoàn Kỵ Sĩ Hắc Lang! Vết chém chéo đặc trưng này... Người thầy và Tổng Chỉ Huy đã dìu dắt cả ta lẫn Mordric năm xưa...",
+        "(Sir Vaelen buông gươm, quỳ một gối xuống nền đất trước mặt bạn với sự tôn kính sâu sắc)...",
+        "Thưa Người Thầy — Lord Meliodas Blackwood (The Wolf Lord)... Năm xưa ngài bước vào màn sương theo lời cầu cứu từ rừng già, để rồi biến cố xuyên thời gian khiến ngài lạc mất ký ức tới tận hôm nay!",
+        "Huy hiệu đã được thanh tẩy hoàn toàn thành Bùa Hộ Thân Hiệp Sĩ. Xin trao lại bảo vật này cho ngài — Fides Ultra Tenebras!"
       ],
       "choices": [
         {
-          "text": "[Tiếp nhận sứ mệnh] \"Đứng lên đi, người anh em. Lời thề của chúng ta sẽ được hoàn tất khi Đại Hồng Chung ngân vang!\"",
-          "responseLine": "(Sir Vaelen đứng dậy, hai mắt sáng ngời ý chí kiên định)... Xin tuân lệnh Tổng Chỉ Huy! Thần sẽ bảo vệ ngọn lửa này đến hơi thở cuối cùng!",
+          "text": "[Tiếp nhận sứ mệnh] \"Đứng lên đi, Vaelen. Lời thề của chúng ta sẽ được hoàn tất khi Đại Hồng Chung ngân vang!\"",
+          "responseLine": "(Sir Vaelen đứng dậy, hai mắt sáng ngời ý chí kiên định)... Xin tuân lệnh Người Thầy! Ta sẽ bảo vệ ngọn lửa này đến hơi thở cuối cùng!",
           "trustDelta": 3,
           "setFlag": "choice_black_knight_vow"
         },
         {
-          "text": "[Trầm mặc thấu hiểu] (Đỡ người đồng đội đứng dậy, siết chặt chiếc bùa hộ thân trong lòng bàn tay)",
-          "responseLine": "Đại kỳ hiệp sĩ một lần nữa tung bay trong tim chúng thần!",
+          "text": "[Trầm mặc thấu hiểu] (Đỡ người học trò cũ đứng dậy, siết chặt chiếc bùa hộ thân trong lòng bàn tay)",
+          "responseLine": "Lời thề Hắc Lang một lần nữa rực sáng trong tim chúng ta!",
           "trustDelta": 2,
           "setFlag": "choice_black_knight_silent_bond"
         }
@@ -788,17 +788,17 @@
       "healPlayer": true
     },
     "hooded_knight_encounter_intro": {
-      "speaker": "Bóng Ma Hiệp Sĩ Trùm Mũ",
+      "speaker": "Kỵ Sĩ Trùm Mũ",
       "portrait": "portrait_hooded_knight",
       "lines": [
         "(Thanh đại kiếm phủ tà khí cắm phập xuống nền đất rêu, đôi mắt đỏ rực dưới lớp mũ trùm khẽ rung lên khi nhìn vào bạn)...",
-        "Kẻ nào dám bước vào cấm địa tử linh... Khoan đã... Dáng đứng đó... Vết chém chéo trên bao kiếm gỗ...",
-        "Chỉ... Chỉ huy?! Có phải ngài không?!... KHÔNG! Màn sương đen... nó đang siết chặt tim ta!... Lưỡi kiếm này không nghe theo ta nữa!",
-        "Mau lùi lại, Chỉ huy! Đừng để thanh kiếm năm xưa ngài trao cho ta... phải nhuốm máu người!"
+        "Kẻ nào dám bước vào cấm địa tử linh... Khoan đã... Bộ giáp ấy… thật quen thuộc. Vết chém chéo trên bao kiếm gỗ…",
+        "Nhưng ngươi thực sự là ai?... KHÔNG! Màn sương đen... nó đang siết chặt tim ta!... Lưỡi kiếm này không nghe theo ta nữa!",
+        "Mau lùi lại! Đừng để thanh kiếm này phải nhuốm máu thêm một lần nữa!"
       ],
       "choices": [
         {
-          "text": "[Quyết tâm] \"Hãy tha thứ cho ta, người anh em. Ta sẽ vung kiếm giải thoát cho linh hồn ngươi!\"",
+          "text": "[Quyết tâm] \"Hãy tha thứ cho ta, người bạn cũ. Ta sẽ vung kiếm giải thoát cho linh hồn ngươi!\"",
           "responseLine": "A a a... Giết ta đi... Giải thoát cho ta...",
           "trustDelta": 2,
           "setFlag": "choice_hooded_knight_resolve"
@@ -812,19 +812,19 @@
       ]
     },
     "hooded_knight_encounter_defeat": {
-      "speaker": "Bóng Ma Hiệp Sĩ Trùm Mũ",
+      "speaker": "Sir Mordric — Kỵ Sĩ Bóng Tối",
       "portrait": "portrait_hooded_knight",
       "lines": [
         "(Thanh kiếm đen gãy vụn, luồng tà khí bốc hơi để lộ ánh nhìn thanh thản trong làn sương sớm)...",
-        "Cảm ơn ngài... Chỉ huy... Cuối cùng ta cũng thoát khỏi sự giam cầm của bóng tối...",
-        "Ta nhớ ra rồi... Năm xưa, khi Màn Sương The Veil xâm lấn tâm trí cả đoàn quân, chính ngài đã quyết định tự phong ấn ký ức và linh hồn của mình vào Trái Tim Mạch Rễ...",
-        "Ngài đã nói: 'Nếu ta bị tha hóa, ngôi làng sẽ diệt vong. Ta phải phong ấn chính mình để tái sinh như một kẻ lữ hành bình thường, bắt đầu lại từ đầu khi thời cơ đến...'",
-        "Bảo vật Huy Hiệu Chỉ Huy... xin trao lại cho ngài... Hãy mang nó về bên ngọn lửa Bellhollow... và giải thoát cho toàn bộ khu rừng..."
+        "Cảm ơn người... Thì ra là ngài... Dấu ấn Hắc Lang trên giáp và kiếm pháp ấy không thể nhầm lẫn được...",
+        "Năm xưa, khi ngài nghe lời cầu cứu bước vào màn sương và biến mất không dấu vết... bóng tối dần nuốt lấy những người còn ở lại...",
+        "Ta — Sir Mordric — đã mang theo nỗi oán trách và lời thề rạn vỡ suốt bao mùa sương... Giờ đây cuối cùng ta cũng được giải thoát...",
+        "Huy Hiệu Kỵ Sĩ Tha Hóa... xin trao lại cho ngài... Hãy mang nó về bên ngọn lửa của Sir Vaelen... và giữ lấy lời thề cho Bellhollow..."
       ],
       "choices": [
         {
-          "text": "[Tiễn biệt] \"Hãy yên nghỉ trong ánh sáng, người chiến hữu kiên cường. Ta sẽ hoàn thành lời thề của chúng ta.\"",
-          "responseLine": "Vĩnh biệt... người thủ lĩnh vĩ đại của chúng tôi...",
+          "text": "[Tiễn biệt] \"Hãy yên nghỉ trong ánh sáng, Sir Mordric. Ta sẽ hoàn thành lời thề của chúng ta.\"",
+          "responseLine": "Vĩnh biệt... người thầy năm xưa của chúng tôi...",
           "trustDelta": 3,
           "setFlag": "choice_hooded_knight_farewell"
         }
@@ -837,7 +837,7 @@
       "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
       "portrait": "portrait_campfire_knight",
       "lines": [
-        "Kính chào Chỉ Huy Hiệp Sĩ Đen! Thanh gươm của thần và ngọn lửa Trạm Lửa Rừng Tĩnh Lặng này sẽ mãi mãi phục vụ theo mệnh lệnh của ngài.",
+        "Kính chào Lord Meliodas Blackwood! Thanh gươm của ta và ngọn lửa Trạm Lửa Rừng Tĩnh Lặng này sẽ luôn sát cánh cùng lời thề Hắc Lang.",
         "Xin ngài hãy mở Sổ Tay [J] mục Ký Ức để xem lại toàn bộ 4 Chương Hồi Ức đã được phục hồi trọn vẹn!"
       ],
       "choices": [
@@ -886,40 +886,40 @@
       "speaker": "Garth – Người Gác Cổng",
       "portrait": "portrait_garth",
       "lines": [
-        "Trời đất ơi... Kẻ Lữ Hành mà tôi từng nghi ngờ khi ngài bước ra từ màn sương... lại chính là vị Chỉ Huy Hiệp Sĩ Đen huyền thoại năm xưa sao?!",
-        "Xin tha thứ cho sự lỗ mãng trước đây của tôi! Cổng làng Bellhollow từ nay sẽ luôn mở rộng cung nghênh bước chân ngài. Ngài chính là niềm hy vọng duy nhất để xua tan màn sương The Veil này!"
+        "Trời đất ơi... Lữ Khách Rêu Phong mà tôi từng nghi ngờ khi ngài bước ra từ màn sương... lại chính là Lord Meliodas Blackwood — The Wolf Lord trong truyền thuyết sao?!",
+        "Xin tha thứ cho sự lỗ mãng trước đây của tôi! Cổng làng Bellhollow từ nay sẽ luôn mở rộng cung nghênh bước chân ngài. Ngài chính là niềm hy vọng lớn nhất để xua tan màn sương The Veil này!"
       ]
     },
     "edda_black_knight_reverence": {
       "speaker": "Bà Edda – Người Giữ Chuông",
       "portrait": "portrait_edda",
       "lines": [
-        "Ta đã cảm nhận được điều này ngay từ khi ngài mang chiếc lưỡi chuông đồng trở về... Khí phách kiên định không hề khuất phục trước bóng tối.",
-        "Hỡi vị Hiệp Sĩ Đen của Bellhollow, lời nguyền trăm năm đang dần tan biến dưới từng nhát kiếm và Vòng Sáng Hộ Tâm dẫn lối của ngài. Thần linh và linh hồn tổ tiên sẽ luôn che chở cho ngài!"
+        "Ta đã cảm nhận được điều quen thuộc ấy ngay từ khi ngài bước qua làn sương với Vòng Sáng Hộ Tâm... Khí phách kiên định không hề khuất phục trước bóng tối.",
+        "Hỡi Lord Meliodas Blackwood, màn sương lạnh bao mùa qua đang dần tan biến dưới từng nhát kiếm và lời thề của ngài. Nguyện ánh sáng Đại Hồng Chung luôn soi lối cho ngài!"
       ]
     },
     "neris_black_knight_reverence": {
       "speaker": "Neris – Thảo Dược Sư",
       "portrait": "portrait_neris",
       "lines": [
-        "Gió rừng và mạch rễ cổ đại đang reo vang những lời thì thầm hân hoan... Chúng nói rằng vị Hộ Vệ Vĩ Đại trong bộ giáp đen đã thức tỉnh.",
-        "Thưa Hiệp Sĩ Đen, các loại thảo dược và trà tễ của con bé này sẽ luôn sẵn sàng tiếp thêm sinh lực cho ngài bất cứ lúc nào ngài cần."
+        "Gió rừng và mạch rễ cổ đại đang reo vang những lời thì thầm hân hoan... Chúng nói rằng The Wolf Lord năm xưa đã tìm lại được ký ức của mình.",
+        "Thưa ngài Meliodas, các loại thảo dược và trà tễ của con bé này sẽ luôn sẵn sàng tiếp thêm sinh lực cho ngài bất cứ lúc nào ngài cần."
       ]
     },
     "bram_black_knight_reverence": {
       "speaker": "Bram – Thợ Rèn Làng",
       "portrait": "portrait_blacksmith",
       "lines": [
-        "Haha! Tôi biết ngay mà! Chỉ có một đại kiếm sư đích thực như vị Hiệp Sĩ Đen năm xưa mới có thể vung lưỡi gươm nặng trịch đó nhẹ nhàng như gió thoảng!",
-        "Thật vinh dự cho xưởng rèn tồi tàn này khi được phục vụ và tu bổ vũ khí cho ngài, thưa Chỉ Huy! Bất cứ thỏi sắt hay khuôn chuông nào ngài cần, Bram này xin dốc hết sức mình!"
+        "Haha! Tôi biết ngay mà! Chỉ có một đại kiếm sư đích thực như Lord Blackwood năm xưa mới có thể vung lưỡi gươm nặng trịch đó nhẹ nhàng như gió thoảng!",
+        "Thật vinh dự cho xưởng rèn tồi tàn này khi được phục vụ và tu bổ vũ khí cho ngài, thưa ngài Meliodas! Bất cứ thỏi sắt hay khuôn chuông nào ngài cần, Bram này xin dốc hết sức mình!"
       ]
     },
     "finn_black_knight_reverence": {
       "speaker": "Finn – Cậu Bé Tinh Nghịch",
       "portrait": "portrait_finn",
       "lines": [
-        "Oa! Anh Wayfarer... không phải, ngài chính là Ngài Hiệp Sĩ Đen trong truyền thuyết mà chú Garth hay kể sao?! Tuyệt vời quá đi mất!",
-        "Sau này lớn lên, em nhất định cũng sẽ rèn luyện thật giỏi và gia nhập đoàn hiệp sĩ để cùng ngài bảo vệ tháp chuông làng Bellhollow!"
+        "Oa! Anh Wayfarer... không phải, ngài chính là Ngài Meliodas Blackwood — Lang Chủ trong những câu chuyện mà chú Garth hay kể sao?! Tuyệt vời quá đi mất!",
+        "Sau này lớn lên, em nhất định cũng sẽ rèn luyện thật giỏi để cùng bảo vệ tháp chuông làng Bellhollow!"
       ]
     },
     "garth_guide_to_mire": {

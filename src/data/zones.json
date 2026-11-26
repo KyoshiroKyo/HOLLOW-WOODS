@@ -3003,13 +3003,13 @@
         },
         {
           "id": "inspect_black_knight_stele",
-          "name": "Văn Bia Cổ Hiệp Sĩ Đen",
+          "name": "Văn Bia Cổ Đoàn Kỵ Sĩ",
           "type": "clue",
           "x": 1400,
           "y": 1180,
           "width": 36,
           "height": 36,
-          "promptText": "[E] Đọc Văn Bia Cổ Hiệp Sĩ Đen",
+          "promptText": "[E] Đọc Văn Bia Cổ Đoàn Kỵ Sĩ",
           "actionId": "read_black_knight_stele"
         },
         {
@@ -3614,7 +3614,7 @@
           "prompt": "Đọc bia đá khắc cổ ngữ",
           "loreId": "lore_abyssal_warning",
           "title": "Bia Đá Cổ Ngữ Hiệp Sĩ",
-          "content": "Chớ nhìn quá lâu vào Khe Nứt Cội Nguồn... Nơi đây từng là nơi ngài Chỉ Huy dẫn quân tinh nhuệ chặn đứng đợt sương đầu tiên."
+          "content": "Chớ nhìn quá lâu vào Khe Nứt Cội Nguồn... Nơi đây từng chứng kiến đoàn kỵ sĩ năm xưa đứng vững chặn đứng đợt sương đầu tiên."
         },
         {
           "id": "knight_corpse_cache",
@@ -4173,10 +4173,10 @@
           "type": "lore",
           "x": 1040,
           "y": 1760,
-          "prompt": "Đọc bức huyết thư phong ấn",
+          "prompt": "Đọc bức thư sương mù cổ xưa",
           "loreId": "lore_veil_commander_epistle",
-          "title": "Huyết Thư Của Chỉ Huy Hiệp Sĩ Đen",
-          "content": "Ta — Chỉ Huy Hiệp Sĩ Đen — xin tự phong ấn ký ức và bản ngã của mình vào chiếc chuông cổ, để linh hồn ta mãi mãi làm mồi nhử giam cầm The Veil dưới lòng đất..."
+          "title": "Bức Thư Sương Mù Cổ Xưa",
+          "content": "Lời cầu cứu từ rừng già lại vang lên qua tầng sương dày... Ta bước theo tiếng gọi mà không biết cơn dị biến này sẽ đưa ta trôi dạt tới thời đại nào, chỉ giữ lại lời thề bảo vệ Bellhollow."
         },
         {
           "id": "veil_heart_altar",

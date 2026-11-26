@@ -182,7 +182,7 @@ export class WorldGatingSystem {
       tier: 'LAYER_3_FORBIDDEN',
       conditionType: 'flag_required',
       requiredFlag: 'clapper_collected',
-      lockedReasonVietnamese: 'Cổng Hầm Mộ Chìm bị khóa chặt bởi bia mộ Hiệp Sĩ Đen!',
+      lockedReasonVietnamese: 'Cổng Hầm Mộ Chìm bị khóa chặt bởi phong ấn cổ ngữ rễ cây!',
       hintVietnamese: 'Khôi phục quả chuông tại Miếu Chuông để phá vỡ phong ấn hầm mộ.'
     });
 

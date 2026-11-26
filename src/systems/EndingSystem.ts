@@ -75,10 +75,10 @@ export class EndingSystem {
       bgGradientBottom: 0x090d14,
       borderTint: 0xf39c12,
       narrativeLines: [
-        'Hồi chuông thứ bảy ngân vang, chấn động tầng mây u ám đã giam cầm thung lũng suốt hàng trăm năm.',
-        'Nhờ sự thức tỉnh trọn vẹn của Chỉ Huy Hiệp Sĩ Đen và niềm tin tuyệt đối từ dân làng Bellhollow, Mạch Rễ cổ đã được thanh tẩy.',
+        'Hồi chuông thứ bảy ngân vang, chấn động tầng mây u ám đã giam cầm thung lũng suốt bao mùa sương lạnh.',
+        'Nhờ sự thức tỉnh trọn vẹn của Meliodas Blackwood — The Wolf Lord và niềm tin tuyệt đối từ dân làng Bellhollow, Mạch Rễ cổ đã được thanh tẩy.',
         'Những tia nắng ban mai đầu tiên sưởi ấm vùng đất rêu phong. Ngôi làng mở rộng cổng đón ánh sáng mới.',
-        'Vị hiệp sĩ không rời đi. Chàng tháo giáp trụ, ở lại bên đống lửa ấm, trở thành người bảo hộ vĩnh cửu cho sự sống nơi đây.'
+        'Vị hiệp sĩ không rời đi. Ông tháo giáp trụ, ở lại bên đống lửa ấm, trở thành người bảo hộ cho sự sống nơi đây.'
       ]
     },
     sacrifice_ending: {
@@ -94,9 +94,9 @@ export class EndingSystem {
       bgGradientBottom: 0x060c14,
       borderTint: 0x3498db,
       narrativeLines: [
-        'Chỉ Huy Hiệp Sĩ Đen đã nhớ lại tất cả, nhưng khoảng cách vô hình với dân làng khiến lời nguyền không thể hóa giải trọn vẹn.',
-        'Để bảo vệ Bellhollow khỏi sự diệt vong, chàng lữ khách một mình tiến vào tâm chấn đại mạch ngầm, cắm gươm và đặt ngọn đèn rực cháy.',
-        'Dùng chính linh hồn và thân xác làm vật tế, chàng khóa chặt khe nứt The Veil từ bên trong, biến mình thành pho tượng rêu phong vĩnh cửu.',
+        'Meliodas Blackwood đã nhớ lại cội nguồn và lời thề năm xưa, nhưng khoảng cách vô hình với dân làng khiến lời nguyền không thể hóa giải trọn vẹn.',
+        'Để bảo vệ Bellhollow khỏi sự diệt vong, người lữ khách một mình tiến vào tâm chấn đại mạch ngầm, cắm gươm và thắp sáng Vòng Sáng Hộ Tâm rực cháy.',
+        'Dùng chính linh hồn và thân xác làm vật tế, ông khóa chặt khe nứt The Veil từ bên trong, giữ lại bình yên cho thung lũng.',
         'Màn sương làng tan đi, người dân được cứu... Nhưng không một ai biết tên người đã lặng lẽ gánh chịu bóng tối thay cho họ.'
       ]
     },
@@ -114,7 +114,7 @@ export class EndingSystem {
       borderTint: 0x8e44ad,
       narrativeLines: [
         'Tiếng chuông ngân lên trong vội vã khi tâm trí lữ khách vẫn còn chìm trong màn sương mờ mịt của quá khứ.',
-        'Thiếu đi sức mạnh thức tỉnh của Chỉ Huy Hiệp Sĩ Đen, thanh âm đồng đúc chỉ xua tan lớp sương trên bề mặt trong giây lát.',
+        'Chưa kịp nhớ lại cội nguồn và gắn kết lời thề năm xưa, thanh âm đồng đúc chỉ xua tan lớp sương trên bề mặt trong giây lát.',
         'Một tiếng rạn chát chúa vang lên — vết nứt trên Đại Hồng Chung toác rộng. Sương mù tím tái cuộn trào trở lại từ vực sâu.',
         'Kẻ lữ hành lại ngã gục, mất đi ký ức vừa chớm nở... Khu rừng thở dài tái lập vòng lặp, chờ đợi một sự thức tỉnh thực sự.'
       ]
@@ -788,8 +788,8 @@ export class EndingSystem {
     else if (trustScore >= 40) trustLabel = 'Hòa Thuận';
 
     const stage = this.playerState.memoryAwakeningStage;
-    let stageTitle = 'Kẻ Lữ Hành Rêu Phong';
-    if (stage >= 3) stageTitle = 'Chỉ Huy Hiệp Sĩ Đen';
+    let stageTitle = 'Lữ Khách Rêu Phong';
+    if (stage >= 3) stageTitle = 'Meliodas Blackwood';
     else if (stage >= 2) stageTitle = 'Tàn Tích Kỵ Sĩ';
     else if (stage >= 1) stageTitle = 'Manh Mối Xưởng Chuông';
 
@@ -1015,30 +1015,27 @@ export class EndingSystem {
     g.fillStyle(0xebf5fb, 0.95);
     g.fillEllipse(riftX, riftY, 150, 60);
 
-    // Hình bóng con đường nhựa quốc lộ ven rừng và đèn pha ô tô thế giới hiện đại
-    g.fillStyle(0x1a252f, 1);
+    // Dư ảnh Dark Fantasy: hình bóng lối mòn cổ và ánh lửa Hộ Tâm giữa màn sương (DEC-LOCK-08)
+    g.fillStyle(0x1f241b, 1);
     g.fillRect(riftX - 70, riftY - 18, 140, 36);
 
-    // Đèn pha ô tô rực rỡ màu vàng kim
-    g.fillStyle(0xf1c40f, 0.35);
-    g.fillCircle(riftX - 35, riftY, 16);
-    g.fillCircle(riftX + 35, riftY, 16);
+    // Ánh vàng hổ phách dịu ấm nơi lối mòn cổ
+    g.fillStyle(0xc8963e, 0.32);
+    g.fillCircle(riftX, riftY, 22);
 
-    g.fillStyle(0xfff9c4, 1.0);
-    g.fillCircle(riftX - 35, riftY, 8);
-    g.fillCircle(riftX + 35, riftY, 8);
+    g.fillStyle(0xe8dfc8, 0.85);
+    g.fillCircle(riftX, riftY, 9);
 
-    // Lời thoại Lữ Hành thảng thốt chuẩn HD 1280×720 tại Y = 580 (Zoom 1.0 cố định)
-    // Satyr: “Ánh đèn pha ô tô... quốc lộ ven rừng?! Thế giới của mình... con đường về nhà có thật!”
+    // Lời dẫn Lữ Khách chuẩn HD 1280×720 tại Y = 580 (loại bỏ văn cảnh hiện đại theo DEC-LOCK-08)
     const riftDialogue = HDTextHelper.createText(
       target,
       640,
       580,
-      'Satyr: “Ánh đèn pha ô tô... quốc lộ ven rừng?! Thế giới của mình... con đường về nhà có thật!”', 
+      '“Giữa những tầng sương, một lối mòn quen thuộc dần hiện ra.”',
       {
         fontSize: '18px',
         fontStyle: 'italic',
-        color: '#58d68d',
+        color: '#c8cfc2',
         backgroundColor: '#0a0e14f0',
         padding: { x: 28, y: 14 },
         stroke: '#000000',

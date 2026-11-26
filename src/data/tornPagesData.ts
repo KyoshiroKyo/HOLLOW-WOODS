@@ -246,7 +246,7 @@ export const TORN_PAGES_REGISTRY: Record<string, TornPageEntry> = {
     ancientRune: 'ᛏ',
     pages: [
       '"Màn sương ngưng tụ từ rễ đại ngàn... Cần một hợp kim đặc biệt để tiếng chuông xuyên thủng The Veil. Phôi sắt khắc cổ ngữ Rad là chìa khóa duy nhất."',
-      '"Năm xưa, vị Chỉ Huy Hiệp Sĩ Đen đã mang thanh đại kiếm của mình đến lò rèn này để tôi luyện cùng chuông đồng. Ánh mắt ngài kiên định như ngọn núi... Liệu ngài có còn sống sót giữa đầm lầy sâu thẳm?"'
+      '"Năm xưa, một kỵ sĩ giáp đen rêu phong đã mang thanh đại kiếm của mình đến lò rèn này để tôi luyện cùng chuông đồng. Ánh mắt người đó kiên định như ngọn núi... Liệu họ có từng trở về từ màn sương sâu thẳm?"'
     ],
     memoryAwakeningStage: 1,
     composureBonus: 15
@@ -296,8 +296,8 @@ export const TORN_PAGES_REGISTRY: Record<string, TornPageEntry> = {
     author: 'Văn Bia Cổ Xưởng Chuông',
     ancientRune: 'ᛋ',
     pages: [
-      'Nơi an nghỉ của 12 hiệp sĩ danh dự đã ngã xuống bảo vệ phòng tuyến Bellhollow trong Mùa Sương đầu tiên: Sir Cedric, Sir Valen, Sir Rowen, Sir Gareth, Sir Alistair...\n\nTên của vị Tổng Chỉ Huy ở đầu văn bia đã bị một vết chém sâu cào mòn có chủ ý.',
-      'Dưới chân bia đá có khắc dòng chữ nhỏ bằng máu khô:\n\n"Dù thân xác chôn vùi trong sương lạnh, lời thề giữ ngọn lửa sẽ mãi trường tồn. Chỉ Huy sẽ trở lại khi Đại Hồng Chung vang hồi thứ bảy."'
+      'Nơi an nghỉ của 12 hiệp sĩ danh dự đã ngã xuống bảo vệ phòng tuyến Bellhollow trong Mùa Sương đầu tiên: Sir Cedric, Sir Vaelen, Sir Rowen, Sir Gareth, Sir Alistair...\n\nTên của người thủ lĩnh Đoàn Kỵ Sĩ Hắc Lang ở đầu văn bia đã bị một vết chém sâu cào mòn có chủ ý.',
+      'Dưới chân bia đá có khắc dòng chữ nhỏ:\n\n"Fides Ultra Tenebras — Dù thân xác chôn vùi trong sương lạnh, lời thề giữ ngọn lửa sẽ mãi trường tồn."'
     ],
     memoryAwakeningStage: 1,
     composureBonus: 15
@@ -308,12 +308,12 @@ export const TORN_PAGES_REGISTRY: Record<string, TornPageEntry> = {
     id: 'read_black_knight_stele',
     loreId: 'lore_black_knight_chronicle',
     variant: 'stele',
-    title: 'VĂN BIA CỔ: LỜI THỀ HIỆP SĨ ĐEN',
+    title: 'VĂN BIA CỔ: LỜI THỀ HẮC LANG',
     author: 'Khắc Đá Phế Tích Cổ',
     ancientRune: 'ᛋ',
     pages: [
-      '"Hiệp Sĩ Đen — vị chỉ huy duy nhất năm xưa dám tiến vào tâm điểm Mạch Rễ để phong ấn lời nguyền và chấp nhận đánh đổi toàn bộ ký ức của chính mình."',
-      '"Chừng nào ngọn đèn bão còn soi lối và tiếng chuông còn đọng lại trong tim người lữ khách, bóng đêm sẽ không bao giờ chiến thắng."'
+      '"Theo tiếng cầu cứu từ rừng già, người dẫn dắt Đoàn Kỵ Sĩ Hắc Lang năm xưa đã bước vào tầng sương sâu không lối về, chỉ để lại lời thề bảo vệ Bellhollow."',
+      '"Chừng nào Vòng Sáng Hộ Tâm [F] còn soi lối và tiếng chuông còn đọng lại trong tim người lữ khách, bóng đêm sẽ không bao giờ chiến thắng."'
     ],
     memoryAwakeningStage: 1,
     composureBonus: 20
@@ -344,7 +344,7 @@ export const TORN_PAGES_REGISTRY: Record<string, TornPageEntry> = {
     ancientRune: 'ᚺ',
     pages: [
       '"Khi tiếng chuông vỡ câm lặng, Màn Sương The Veil sẽ nuốt chửng tất cả những gì rừng già từng chở che... Chỉ có tiếng ngân đầu tiên của Lưỡi Chuông Đồng mới có thể tái lập vòng phong ấn che chở cho Bellhollow."',
-      '"Người lữ khách mang ngọn đèn bão trong tay... Hãy lắng nghe lời thì thầm của đất đá và hoàn thành đại nghiệp đúc chuông để xua tan màn đêm vĩnh hằng."'
+      '"Người lữ khách mang Vòng Sáng Hộ Tâm trong tim... Hãy lắng nghe lời thì thầm của đất đá và hoàn thành đại nghiệp đúc chuông để xua tan màn đêm vĩnh hằng."'
     ],
     composureBonus: 15
   },

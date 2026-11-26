@@ -927,12 +927,12 @@ export class PlayerState extends Phaser.Events.EventEmitter {
       species: 'hooded_knight',
       contentId: 'HW-MON-BOSS-000002',
       runtimeKey: 'boss_hooded_knight',
-      nameVi: 'Chỉ Huy Hiệp Sĩ Trùm Mũ (Hooded Knight Boss)',
-      nameEn: 'Hooded Knight Commander',
-      roleVi: 'Thủ lĩnh tà phái hiệp sĩ & Trùm trấn giữ tàn tích',
+      nameVi: 'Sir Mordric — Kỵ Sĩ Bóng Tối (Kỵ Sĩ Trùm Mũ)',
+      nameEn: 'Sir Mordric — The Dark Knight',
+      roleVi: 'Kỵ sĩ sa ngã & Trùm trấn giữ tàn tích Rừng Sâu',
       habitatVi: 'Ngưỡng cửa Rừng Sâu & Tàn tích Đền Cổ',
-      behaviorVi: 'Đại tướng hiệp sĩ sa ngã với sức mạnh hắc ám vượt trội. Hắn tích tụ luồng khí đen quanh cơ thể trước khi tung ra nhát chém cuồng nộ quét sạch mọi chướng ngại phía trước.',
-      counterVi: 'Áp sát rọi Đèn Lồng [F] cường độ cao hoặc ném Đuốc Nhựa Thông để ngắt chiêu tích tụ tà khí, đẩy Boss vào trạng thái Choáng Váng (Stagger) nhận gấp đôi sát thương.',
+      behaviorVi: 'Chiến binh giáp đen sa ngã mang luồng khí hắc ám nặng nề. Hắn tích tụ bóng tối quanh thanh đại kiếm trước khi tung nhát chém cuồng nộ quét ngang phía trước.',
+      counterVi: 'Áp sát bật Vòng Sáng Hộ Tâm [F] cường độ cao hoặc ném Đuốc Nhựa Thông để ngắt chiêu tích tụ tà khí, đẩy đối thủ vào trạng thái Choáng Váng (Stagger) nhận gấp đôi sát thương.',
       observed: false
     });
   }

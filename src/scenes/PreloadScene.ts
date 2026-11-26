@@ -139,7 +139,7 @@ export class PreloadScene extends Phaser.Scene {
   // V15-21: Bộ sưu tập Mẹo Sinh Tồn & Mảnh Truyền Thuyết Rừng Sương
   private static readonly LORE_TIPS: string[] = [
     'Khi màn đêm buông xuống, lũ quái vật trong sương trở nên hung hãn hơn gấp bội — hãy giữ chặt ánh lửa của bạn.',
-    'Đừng bao giờ bước chệch khỏi con đường mòn khi ngọn đèn lồng chưa được châm đầy dầu thông.',
+    'Đừng bao giờ bước chệch khỏi con đường mòn khi Vòng Sáng Hộ Tâm [F] chưa sẵn sàng dẫn lối giữa màn sương.',
     'Ba Quy Tắc Bằng Máu của Bà Lão Edda là bức tường thành duy nhất ngăn tâm trí bạn sụp đổ trước Kẻ Lắng Nghe.',
     'Dùng gậy gỗ hoặc vũ khí khua rậm vào bụi cây có thể làm lộ diện các dược thảo quý và hạt nhựa thông ẩn giấu.',
     'Khi chỉ số Bình Tâm tụt xuống mức báo động, màn sương sẽ co thắt tầm nhìn và đánh thức những ảo ảnh kinh hoàng.',

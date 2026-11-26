@@ -1,0 +1,122 @@
+{
+  "tests": {
+    "A02_T03_MAIN_MENU": {
+      "result": {
+        "hasOldCommanderSpoiler": false,
+        "hasEarlyMeliodas": false,
+        "hasNeutralOpening": true,
+        "hasAuraTerm": true,
+        "hasFogSubtitle": true
+      },
+      "pass": true
+    },
+    "A02_T03_EARLY_HUD": {
+      "result": {
+        "stage": 0,
+        "hudTitle": "🌲 Lữ Khách Rêu Phong",
+        "noEarlyBlackKnight": true,
+        "zone": null
+      },
+      "pass": true
+    },
+    "A02_T03_STAGE1_JOURNAL": {
+      "result": {
+        "stage": 1,
+        "hudTitleAtStage1": "🌲 Lữ Khách Rêu Phong",
+        "journalHasOldTitle": false,
+        "journalHasNewTitle": true,
+        "chronicleTitle": "VĂN BIA CỔ: LỜI THỀ ĐOÀN KỴ SĨ HẮC LANG",
+        "chronicleHasSelfSeal": false,
+        "chronicleHasHacLang": true
+      },
+      "pass": true
+    },
+    "A02_T04_VAELEN": {
+      "result": {
+        "q2Speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
+        "q2CallsHoodedCommander": false,
+        "q2NamesMordric": true,
+        "q2KeepNextQuest": true,
+        "q3HasSelfSeal": false,
+        "q3HasMeliodas": true,
+        "q3KeepReward": true,
+        "portraitVisible": true,
+        "portraitTex": "portrait_campfire_knight"
+      },
+      "pass": true
+    },
+    "A02_T04_MORDRIC": {
+      "result": {
+        "introSpeaker": "Kỵ Sĩ Trùm Mũ",
+        "introHasCommander": false,
+        "defSpeaker": "Sir Mordric — Kỵ Sĩ Bóng Tối",
+        "defHasSelfSealOrRebirth": false,
+        "defHasMordric": true,
+        "defKeepPayload": true,
+        "portraitVisible": true,
+        "portraitTex": "portrait_hooded_knight"
+      },
+      "pass": true
+    },
+    "A02_T08_T10_STAGE3_ENDING": {
+      "result": {
+        "hudTitleStage3": "⚔️ Meliodas Blackwood",
+        "innerHasAlgizSelfSeal": false,
+        "innerHasMeliodas": true,
+        "bestiaryNameVi": "Sir Mordric — Kỵ Sĩ Bóng Tối (Kỵ Sĩ Trùm Mũ)",
+        "bestiaryNoCommander": true,
+        "endingTrue": "true_ending",
+        "endingSacrifice": "sacrifice_ending",
+        "endingFogLoop": "fog_loop_ending"
+      },
+      "pass": true
+    },
+    "A02_T09_SAVE_STAGES": {
+      "result": {
+        "beforeCount": 5,
+        "beforeTrust": 62,
+        "stages": [
+          {
+            "stage": 0,
+            "loreCount": 7,
+            "woodAfter": 5,
+            "trustAfter": 62,
+            "hasEddaFlag": true
+          },
+          {
+            "stage": 1,
+            "loreCount": 7,
+            "woodAfter": 5,
+            "trustAfter": 62,
+            "hasEddaFlag": true
+          },
+          {
+            "stage": 2,
+            "loreCount": 7,
+            "woodAfter": 5,
+            "trustAfter": 62,
+            "hasEddaFlag": true
+          },
+          {
+            "stage": 3,
+            "loreCount": 7,
+            "woodAfter": 5,
+            "trustAfter": 62,
+            "hasEddaFlag": true
+          }
+        ]
+      },
+      "pass": true
+    }
+  },
+  "console_errors": [],
+  "page_errors": [],
+  "http_errors": [],
+  "summary": {
+    "total_runtime_suites": 7,
+    "passed_runtime_suites": 7,
+    "console_error_count": 0,
+    "page_error_count": 0,
+    "http_error_count": 0
+  }
+}

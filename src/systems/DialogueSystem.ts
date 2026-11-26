@@ -154,7 +154,7 @@ export class DialogueSystem {
       else if (this.currentPayload.speaker.includes('Bram') || this.currentPayload.speaker.includes('Thợ Rèn')) portraitKey = 'portrait_blacksmith';
       else if (this.currentPayload.speaker.includes('Finn')) portraitKey = 'portrait_finn';
       else if (this.currentPayload.speaker.includes('Canh Lửa') || this.currentPayload.speaker.includes('Vaelen')) portraitKey = 'portrait_campfire_knight';
-      else if (this.currentPayload.speaker.includes('Trùm Mũ')) portraitKey = 'portrait_hooded_knight';
+      else if (this.currentPayload.speaker.includes('Trùm Mũ') || this.currentPayload.speaker.includes('Mordric') || this.currentPayload.speaker.includes('Kỵ Sĩ Bóng Tối')) portraitKey = 'portrait_hooded_knight';
       else if (this.currentPayload.speaker.includes('Wayfarer') || this.currentPayload.speaker.includes('Lữ Khách')) portraitKey = 'wayfarer_portrait';
       else portraitKey = 'wayfarer_portrait';
     }

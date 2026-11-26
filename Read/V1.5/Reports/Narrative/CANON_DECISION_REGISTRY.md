@@ -1,7 +1,7 @@
 # HOLLOW WOODS — CANON DECISION REGISTRY (`HW-V16-A01 LOCKED`)
 
-- **Mission History:** `HW-NARRATIVE-00B` → **`HW-V16-A01 — MASTER CANON LOCK & OWNER AUTHORIZATION`** (`2026-11-26`)
-- **Primary Decision Matrix:** [HW_CANON_OWNER_DECISION_MATRIX.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Narrative/HW_CANON_OWNER_DECISION_MATRIX.md) (`22` Owner-Authorized IDs + `1` Reserved `DEC-LOCK-14`)
+- **Mission History:** `HW-NARRATIVE-00B` → `HW-V16-A01` (Canon Lock) → **`HW-V16-A02` (`LEGACY LORE CLEANUP IMPLEMENTED`)** (`2026-11-26`)
+- **Primary Decision Matrix:** [HW_CANON_OWNER_DECISION_MATRIX.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Narrative/HW_CANON_OWNER_DECISION_MATRIX.md) (`22` Owner-Authorized IDs + `1` Reserved `DEC-LOCK-14`) | **A02 Report:** [HW_V16_A02_LEGACY_LORE_IMPLEMENTATION_REPORT.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/V16/HW_V16_A02_LEGACY_LORE_IMPLEMENTATION_REPORT.md)
 - **References:** `HOLLOW_WOODS_MASTER_GAME_BIBLE_UNIFIED.docx`, `HOLLOW WOODS V1.6 — Technical Implementation Bible · Roadmap 3.0.docx`, `HOLLOW_WOODS_HEADLESS_WARDEN_V3_2_DESIGN_CODE_HANDOVER.docx`
 
 ---

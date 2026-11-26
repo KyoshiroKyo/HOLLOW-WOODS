@@ -799,19 +799,19 @@ export class GameScene extends Phaser.Scene {
     });
     this.events.on('hooded_knight_powerup_start', () => {
       if (this.uiScene) {
-        this.uiScene.showPopupMessage('⚠️ CHỈ HUY HIỆP SĨ ĐANG TỤ TÀ KHÍ! Áp sát rọi Đèn Lồng [F] để phá chiêu!');
+        this.uiScene.showPopupMessage('⚠️ KỴ SĨ TRÙM MŨ ĐANG TỤ TÀ KHÍ! Áp sát bật Vòng Sáng Hộ Tâm [F] để phá chiêu!');
       }
     });
     this.events.on('hooded_knight_interrupted', () => {
       this.cameraSystem.shake(180, 0.01);
       if (this.uiScene) {
-        this.uiScene.showPopupMessage('⚡ ĐÃ PHÁ CHIÊU! Chỉ Huy Hiệp Sĩ bị Choáng Váng (Stagger), nhận x2 sát thương!');
+        this.uiScene.showPopupMessage('⚡ ĐÃ PHÁ CHIÊU! Kỵ Sĩ Trùm Mũ bị Choáng Váng (Stagger), nhận x2 sát thương!');
       }
     });
     this.events.on('hooded_knight_defeated', () => {
       this.playerState.setFlag('boss_hooded_knight_defeated');
       if (this.uiScene) {
-        this.uiScene.showPopupMessage('👑 CHỈ HUY HIỆP SĨ TRÙM MŨ ĐÃ BỊ HẠ GỤC! Thu được Huy Hiệu Hiệp Sĩ Tha Hóa!');
+        this.uiScene.showPopupMessage('👑 KỴ SĨ TRÙM MŨ (SIR MORDRIC) ĐÃ BỊ HẠ GỤC! Thu được Huy Hiệu Hiệp Sĩ Tha Hóa!');
       }
     });
 
@@ -2420,11 +2420,11 @@ export class GameScene extends Phaser.Scene {
             this.player.setPosition(this.player.x + Math.cos(pushAngle) * 55, this.player.y + Math.sin(pushAngle) * 55);
             this.player.playHurt();
             if (this.playerState.stats.health <= 0) {
-              this.triggerPlayerDeath('Gục ngã trước nhát chém cuồng bạo của Chỉ Huy Hiệp Sĩ...');
+              this.triggerPlayerDeath('Gục ngã trước nhát chém cuồng bạo của Kỵ Sĩ Trùm Mũ...');
               return;
             }
             if (this.uiScene) {
-              this.uiScene.showPopupMessage('⚠️ NHÁT CHÉM TÀ ÁC TỪ CHỈ HUY HIỆP SĨ! Rọi Đèn Lồng [F] ngắt chiêu của hắn!');
+              this.uiScene.showPopupMessage('⚠️ NHÁT CHÉM TÀ ÁC TỪ KỴ SĨ TRÙM MŨ! Bật Vòng Sáng Hộ Tâm [F] ngắt chiêu của hắn!');
             }
           }
         }
@@ -3137,11 +3137,11 @@ export class GameScene extends Phaser.Scene {
           hoodedBoss.takeDamage(dmg);
           if (this.uiScene) {
             if (hoodedBoss.isVulnerable) {
-              this.uiScene.showPopupMessage(`⚡ ĐÒN PHẢN KÍCH CHOÁNG VÁNG! Sát thương x2 (-${dmg * 2} HP) lên Chỉ Huy Hiệp Sĩ!`);
+              this.uiScene.showPopupMessage(`⚡ ĐÒN PHẢN KÍCH CHOÁNG VÁNG! Sát thương x2 (-${dmg * 2} HP) lên Kỵ Sĩ Trùm Mũ!`);
             } else if (hoodedBoss.currentHp <= 0) {
-              this.uiScene.showPopupMessage('👑 CHỈ HUY HIỆP SĨ TRÙM MŨ ĐÃ BỊ TIÊU DIỆT! Thu nhận Huy Hiệu Hiệp Sĩ Tha Hóa!');
+              this.uiScene.showPopupMessage('👑 KỴ SĨ TRÙM MŨ ĐÃ BỊ TIÊU DIỆT! Thu nhận Huy Hiệu Hiệp Sĩ Tha Hóa!');
             } else {
-              this.uiScene.showPopupMessage(`Đòn ${weaponDef.name} chém vào Chỉ Huy Hiệp Sĩ! (-${dmg} HP)`);
+              this.uiScene.showPopupMessage(`Đòn ${weaponDef.name} chém vào Kỵ Sĩ Trùm Mũ! (-${dmg} HP)`);
             }
           }
         }
@@ -4289,7 +4289,7 @@ export class GameScene extends Phaser.Scene {
         this.playerState.memoryAwakeningStage = 1;
         this.playerState.unlockLore('lore_black_knight_chronicle');
         if (this.uiScene) {
-          this.uiScene.showPopupMessage('🗡️ [THỨC TỈNH KÝ ỨC - GIAI ĐOẠN 1]: Khám phá Xưởng Chuông Bỏ Hoang gợi lại tàn ảnh về Hiệp Sĩ Đen!');
+          this.uiScene.showPopupMessage('🗡️ [THỨC TỈNH KÝ ỨC - GIAI ĐOẠN 1]: Khám phá Xưởng Chuông Bỏ Hoang gợi lại dư ảnh về một lời thề cổ xưa!');
         }
       }
 
@@ -4379,7 +4379,7 @@ export class GameScene extends Phaser.Scene {
       this.playerState.memoryAwakeningStage = 1;
       this.playerState.unlockLore('lore_black_knight_chronicle');
       if (this.uiScene) {
-        this.uiScene.showPopupMessage('🗡️ [THỨC TỈNH KÝ ỨC - GIAI ĐOẠN 1]: Khám phá Xưởng Chuông Bỏ Hoang gợi lại tàn ảnh về Hiệp Sĩ Đen!');
+        this.uiScene.showPopupMessage('🗡️ [THỨC TỈNH KÝ ỨC - GIAI ĐOẠN 1]: Khám phá Xưởng Chuông Bỏ Hoang gợi lại dư ảnh về một lời thề cổ xưa!');
       }
     }
 
@@ -4846,7 +4846,7 @@ export class GameScene extends Phaser.Scene {
                   this.events.emit('memory_awakening_completed');
                   if (this.uiScene) {
                     this.uiScene.redrawStats();
-                    this.uiScene.showPopupMessage('⚔️ THỨC TỈNH KÝ ỨC: Bạn chính là Chỉ Huy Hiệp Sĩ Đen (The Black Knight)!');
+                    this.uiScene.showPopupMessage('⚔️ THỨC TỈNH KÝ ỨC: Ký ức về Meliodas Blackwood — The Wolf Lord dần thức tỉnh!');
                   }
                 } else {
                   dKey = 'campfire_knight_q3_reminder';
@@ -5423,7 +5423,7 @@ export class GameScene extends Phaser.Scene {
       if (isFirstTime) {
         this.playerState.setFlag('inspected_knights_memorial_stele');
         this.playerState.modifyComposure(15);
-        this.uiScene?.showPopupMessage('⚔️ [BIA ĐÁ ĐOÀN KỴ SĨ]: Nơi an nghỉ của 12 hiệp sĩ danh dự... Nhìn vết chém cào mòn tên vị Chỉ Huy, lòng quả cảm bừng sáng (+15 Tinh Thần)!');
+        this.uiScene?.showPopupMessage('⚔️ [BIA ĐÁ ĐOÀN KỴ SĨ]: Nơi an nghỉ của 12 hiệp sĩ danh dự... Nhìn vết chém sâu cào mòn tên thủ lĩnh trên đầu văn bia, lòng quả cảm bừng sáng (+15 Tinh Thần)!');
       } else {
         this.uiScene?.showPopupMessage('⚔️ [BIA ĐÁ ĐOÀN KỴ SĨ]: "Dù thân xác chôn vùi trong sương lạnh, lời thề giữ ngọn lửa sẽ mãi trường tồn."');
       }
@@ -5541,7 +5541,7 @@ export class GameScene extends Phaser.Scene {
         this.playerState.setFlag('inspected_stone_chessboard');
         this.playerState.addItem('res_dry_wood', 2);
         this.playerState.modifyComposure(15);
-        this.uiScene?.showPopupMessage('♟️ [BÀN CỜ ĐÁ CỦA HAI KỴ SĨ]: Kỷ vật tình bạn giữa Sir Vaelen và Hooded Knight. Nhặt 2 Gỗ Khô (+15 Bình Tâm)!');
+        this.uiScene?.showPopupMessage('♟️ [BÀN CỜ ĐÁ CỦA HAI KỴ SĨ]: Kỷ vật tình bạn giữa Sir Vaelen và Sir Mordric năm xưa. Nhặt 2 Gỗ Khô (+15 Bình Tâm)!');
       } else {
         this.uiScene?.showPopupMessage('♟️ [BÀN CỜ ĐÁ]: Ván cờ thứ 142 dang dở của hai người đồng đội trước giờ xuất chinh.');
       }

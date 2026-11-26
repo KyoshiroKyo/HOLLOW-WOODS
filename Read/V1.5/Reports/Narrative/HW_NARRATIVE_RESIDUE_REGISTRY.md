@@ -1,18 +1,14 @@
-# HW-NR-02 — LEGACY NARRATIVE RESIDUE REGISTRY (`UNLOCKED FOR HW-V16-A02`)
+# HW-NR-02 — LEGACY NARRATIVE RESIDUE REGISTRY (`CLEANED & SYNCED IN HW-V16-A02`)
 
-- **Mission ID:** `HW-NR-02` → Replacement Decisions Locked by **`HW-V16-A01`** (`2026-11-26`)
+- **Mission ID:** `HW-NR-02` → `HW-V16-A01` (Canon Lock) → **`HW-V16-A02` (`LEGACY LORE CLEANED & VERIFIED`)**
 - **Project:** `HOLLOW WOODS` — `KYOSHIRO STUDIO`
-- **Mode:** Audit Baseline Preserved + Mapped for **`HW-V16-A02 — APPROVED LEGACY LORE CLEANUP & NARRATIVE IMPLEMENTATION`** (`0` runtime edits performed in `A01`)
-- **Dependencies:** [HW_MASTER_CANON_LOCK.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Narrative/HW_MASTER_CANON_LOCK.md), [HW_CANON_OWNER_DECISION_MATRIX.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Narrative/HW_CANON_OWNER_DECISION_MATRIX.md)
-- **Inventory JSON:** [HW_LEGACY_DIALOGUE_INVENTORY.json](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Narrative/HW_LEGACY_DIALOGUE_INVENTORY.json)
+- **Mode:** Production Cleanup Completed (`21` files under `src/` updated, `dist/` rebuilt with **`0` active legacy residue hits**, `Backups/steps/backup_hw_v16_a02/` preserved)
+- **A02 Report & Evidence:** [HW_V16_A02_LEGACY_LORE_IMPLEMENTATION_REPORT.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/V16/HW_V16_A02_LEGACY_LORE_IMPLEMENTATION_REPORT.md) | [hw_v16_a02_verification.json](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Evidence/HW-V16-A02/hw_v16_a02_verification.json)
 
-> **`HW-V16-A01` Cleanup Authorization Summary (`READY FOR A02`):**
-> - **`DEC-LOCK-02`:** Thay thuyết tự phong ấn ký ức / `Algiz` / tái sinh gắn với nguồn gốc mất trí nhớ bằng biến cố xuyên thời gian bí ẩn; **giữ nguyên** các rune `Algiz` không liên quan Lore bị thay thế.
-> - **`DEC-LOCK-03` & `05`:** Nguồn lời cầu cứu giữ `UNKNOWN`; giữ bí ẩn quan hệ nhân quả với 7 hồi chuông.
-> - **`DEC-LOCK-04`:** Bỏ toàn bộ `"hàng trăm năm"` / số thế hệ chưa duyệt; thống nhất `Làng Sương Mù = Bellhollow`.
-> - **`DEC-LOCK-07` & `01`:** Ẩn `Meliodas` & `Tổng Chỉ Huy` tại Menu và giai đoạn đầu (`The Mossbound Wayfarer — Lữ Khách Rêu Phong`); chỉ reveal ở `Memory Stage >= 3` + chứng cứ phù hợp (không ép `SQ08`).
-> - **`DEC-LOCK-08` & `15`:** Xóa bỏ toàn bộ bối cảnh hiện đại (`ô tô`, `đèn pha`, `quốc lộ`, `Satyr:` hiển thị người chơi); giữ nguyên ID kỹ thuật (`lore_satyr_journal`, `SatyrPlayer.ts`, `satyr_*`) và backup lịch sử.
-> - **`DEC-LOCK-09` & `10`:** Sửa hiển thị `HoodedKnightBoss` thành `Sir Mordric — The Dark Knight` theo mốc hợp lý và giữ 100% runtime ID/class/texture/quest/save flags/`quest_corrupted_crest`; sửa Vaelen `q2`/`q3` (`A04`).
+> **`HW-V16-A02` Execution Status (`VERIFIED`):**
+> - **Đã thay thế (`REPLACED`):** Bối cảnh hiện đại (`ô tô`, `đèn pha`, `quốc lộ`, `Satyr:`) tại `EndingSystem.ts` & `VeilSystem.ts`; thuyết tự phong ấn/`Algiz` mất trí nhớ & tái sinh tại `lore.json`, `dialogues.json`, `zones.json`, `tornPagesData.ts`; spoil `Chỉ Huy Hiệp Sĩ Đen` sớm tại `MainMenuScene.ts`, `JournalModal.ts`, `GameScene.ts`, `UIScene.ts`, `EvilKnights.ts`, `WorldGatingSystem.ts`; mâu thuẫn `Vaelen q2/q3` & `HoodedKnightBoss = Sir Mordric` (`EvilKnights`, `PlayerState`, `items.json`, `ItemTooltipHelper.ts`, `content_registry.json`, `registryData.ts`, `GameScene.ts`, `DialogueSystem.ts`); `"hàng trăm năm"`, `"Sir Valen"`, `"dầu thông"`/`"ngọn đèn bão"`.
+> - **Bảo toàn kỹ thuật (`KEEP-TECHNICAL`):** `lore_satyr_journal`, `SatyrPlayer.ts`, `satyr_*`, `boss_hooded_knight`, `quest_corrupted_crest`, `veil_commander_epistle` ID, `knight_commander_defeated`, `59/59` dialogue keys, `Save Schema 3`.
+> - **Hoàn thiện ở bước sau (`DEFERRED TO A03–A07`):** Evidence gate chi tiết cho Identity Reveal (`A06/B07`), viết lại nguyên văn Trailer V12.2 (`A03–A05`), Ending copy mới & quest expansion (`A07`).
 
 ---
 

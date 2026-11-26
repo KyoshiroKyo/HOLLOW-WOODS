@@ -794,7 +794,7 @@ export class MainMenuScene extends Phaser.Scene {
       -modalH / 2 + 82,
       '✦ DỊ CẢNH RỪNG SƯƠNG (THE FOG THAT REMEMBERS) ✦\n' +
       'Đại Hồng Chung Bellhollow nứt đôi khiến mạch rễ tha hóa trỗi dậy, giam cầm thung lũng trong Màn Sương Ký Ức vĩnh cửu.\n' +
-      'Ngươi — Chỉ huy Hiệp Sĩ Đen mang mảnh ký ức ngủ vùi — thắp sáng Đèn Lồng Hổ Phách để giữ vững Bình Tâm, giải mã cổ ngữ,\n' +
+      'Một kẻ lữ hành mất ký ức tỉnh dậy giữa màn sương — thắp sáng Vòng Sáng Hộ Tâm [F] để giữ vững Bình Tâm, giải mã cổ ngữ,\n' +
       'và quyết định vận mệnh thung lũng qua 3 Kết Thúc: Bình Minh Của Tiếng Chuông, Người Canh Gác Vĩnh Hằng, hoặc Màn Đêm Vĩnh Cửu.',
       {
         fontSize: '11px',

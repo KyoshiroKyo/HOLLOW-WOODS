@@ -820,7 +820,7 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
         this.scene.events.emit('memory_awakening_stage_changed', 2);
       }
 
-      // Tên trùm khựng lại trong bàng hoàng nhận diện thân phận Chỉ Huy
+      // Tên trùm khựng lại khi nhận thấy bộ giáp và đường kiếm quen thuộc (DEC-LOCK-07/09)
       this.bossState = 'stagger';
       this.stateTimer = 2200;
       this.attackCooldown = 2500;
@@ -830,13 +830,13 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
       this.scene.events.emit('hooded_knight_commander_recognition', {
         bossX: this.x,
         bossY: this.y,
-        text: 'Không thể nào... Hơi thở bóng tối trên bộ giáp đen ấy... Ngài chính là Chỉ Huy Hiệp Sĩ Đen?! Sao ngài lại quay mũi kiếm về phía chúng tôi?'
+        text: 'Bộ giáp ấy… thật quen thuộc. Vết chém chéo trên bao kiếm… Nhưng ngươi thực sự là ai?'
       });
 
       if (gameScene.dialogueSystem?.startDialogue) {
         gameScene.dialogueSystem.startDialogue('hooded_knight_encounter_intro');
       } else if (gameScene.uiScene?.showPopupMessage) {
-        gameScene.uiScene.showPopupMessage('⚔️ Hooded Knight bàng hoàng: “Hơi thở bóng tối ấy... Ngài chính là Chỉ Huy Hiệp Sĩ Đen?! Sao ngài lại quay kiếm về phía chúng tôi?!”');
+        gameScene.uiScene.showPopupMessage('⚔️ Kỵ Sĩ Trùm Mũ khựng lại: “Bộ giáp ấy… thật quen thuộc. Nhưng ngươi thực sự là ai?”');
       }
       return;
     }
