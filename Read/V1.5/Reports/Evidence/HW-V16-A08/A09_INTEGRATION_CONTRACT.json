@@ -1,0 +1,52 @@
+{
+  "contractVersion": "1.0-preprod",
+  "ownerTask": "HW-V16-A09",
+  "preparedBy": "HW-V16-A08",
+  "runtimeModifiedInA08": false,
+  "entrypoints": {
+    "mainMenuNewGame": {
+      "file": "src/scenes/MainMenuScene.ts",
+      "symbol": "MainMenuScene.startNewGame()",
+      "currentBehavior": "this.scene.start(SCENE_GAME, { isContinue: false })",
+      "a09Contract": "Play Opening Cutscene sequence ONLY when starting New Game (isContinue === false) and player/debug flag has not disabled intro."
+    },
+    "mainMenuContinueGame": {
+      "file": "src/scenes/MainMenuScene.ts",
+      "symbol": "MainMenuScene.continueGame()",
+      "currentBehavior": "this.scene.start(SCENE_GAME, { isContinue: true, saveData })",
+      "a09Contract": "MUST bypass Opening Cutscene completely when isContinue === true."
+    }
+  },
+  "requiredControlsAndFallbacks": {
+    "skipControl": {
+      "keys": ["ESC", "SPACE", "ENTER"],
+      "button": "Visible [BỎ QUA / SKIP] pill after 1.0s hold/fade",
+      "onSkip": "Stop video/timeline cleanly, ramp down cutscene audio within 250ms, restore AudioManager focus, transition smoothly into GameScene.startAct0Intro() at Fog Crossing."
+    },
+    "mediaErrorFallback": {
+      "trigger": "video element error, timeout (>3s load stall), or unsupported codec in headless/low-spec Chromium",
+      "behavior": "Fail-safe immediate fallback to stylized in-engine cold-mist caption card / fadeIn into GameScene.startAct0Intro() with zero black screen or softlock."
+    },
+    "subtitleIntegration": {
+      "vttSource": "HOLLOW_WOODS_OPENING_CINEMATIC_V1_SUBTITLES_VI.vtt",
+      "rendering": "Must remain legible over 16:9 dark letterbox bar at bottom-center without clipping Vietnamese diacritics."
+    },
+    "reducedMotionSupport": {
+      "settingsKey": "SettingsManager.getInstance().isReducedMotionEnabled() / isReducedMotionPreferred()",
+      "behavior": "Disable pan/zoom camera shakes, use static keyframe crossfades (>=400ms soft dissolve) instead of fast motion or bright flashes."
+    },
+    "audioSettingsSync": {
+      "settingsManager": "SettingsManager.ts (masterVolume, musicVolume, sfxVolume, isMuted)",
+      "behavior": "Cutscene media/overlay audio MUST multiply by effective AudioManager volume and respect isMuted immediately; never leak playing audio into GameScene after skip or completion."
+    },
+    "controlHandoff": {
+      "targetScene": "GameScene",
+      "targetHook": "startAct0Intro() -> Fog Crossing (120, 195)",
+      "constraints": [
+        "PlayerState.memoryAwakeningStage remains 0 on New Game arrival.",
+        "HUD remains neutral: '🌲 Lữ Khách Rêu Phong'.",
+        "Zero Save Schema changes (CURRENT_SCHEMA_VERSION stays 3)."
+      ]
+    }
+  }
+}

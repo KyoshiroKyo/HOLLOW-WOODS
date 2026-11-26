@@ -1,0 +1,63 @@
+{
+  "taskId": "HW-V16-A08",
+  "status": "PREPRODUCTION_COMPLETE_PRODUCTION_PENDING",
+  "ownerApprovalRequired": true,
+  "dependencyStatus": {
+    "A03_PrologueBellhollow": "PASS",
+    "A04_VaelenMordric": "PASS",
+    "A05_BranchingDialogue": "PASS",
+    "A06_IdentityRevealGate": "PASS_FAIL_CLOSED_PLUS_R1_IMPLEMENTED_ON_ISOLATION_BRANCH",
+    "A07_QuestEndings": "PRESERVED_IN_WORKTREE_WAITING_FOR_ACCEPTANCE"
+  },
+  "canonLock": "DEC-LOCK-20 (Hybrid Cinematic, 28s target including live gameplay transition)",
+  "artSourcesVerified": [
+    {
+      "path": "Asset_Art/Meliodas_Blackwood/01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_idle_armed_4dir.png",
+      "dimensions": "384x256",
+      "classification": "01_LATEST_ARTWORK (Black Knight V2)"
+    },
+    {
+      "path": "Asset_Art/Meliodas_Blackwood/01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_walk_armed_4dir.png",
+      "dimensions": "384x256",
+      "classification": "01_LATEST_ARTWORK (Black Knight V2)"
+    },
+    {
+      "path": "Asset_Art/Meliodas_Blackwood/01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_idle_unarmed_4dir.png",
+      "dimensions": "384x256",
+      "classification": "01_LATEST_ARTWORK (Black Knight V2)"
+    },
+    {
+      "path": "Asset_Art/Meliodas_Blackwood/01_LATEST_ARTWORK/Portraits_Menu_Cover/hollow_woods_black_knight_cover.png",
+      "dimensions": "1280x720",
+      "classification": "01_LATEST_ARTWORK"
+    },
+    {
+      "path": "Asset_Art/Meliodas_Blackwood/02_CURRENT_RUNTIME/",
+      "classification": "Compatibility reference only — untouched"
+    }
+  ],
+  "prohibitedSourcesExcluded": [
+    "Asset_Art/Meliodas_Blackwood/03_LEGACY_ARCHIVE/*",
+    "CHAR-006 / The Headless Warden",
+    "V12.2 raw 60s full soundtrack loop",
+    "Mattz Art packs",
+    "Knight_2 / Knight_3 promoted as Canon characters"
+  ],
+  "candidateOutputSpecificationPendingApproval": {
+    "masterArchiveCandidate": {
+      "fileName": "HOLLOW_WOODS_OPENING_CINEMATIC_V1_MASTER.mp4",
+      "candidateProfile": "4K 60fps candidate (only if native vector/pixel-integer upscale workflow approved — NOT claiming native 4K)",
+      "status": "NOT_PRODUCED_PENDING_OWNER_APPROVAL"
+    },
+    "runtimeGameReadyCandidate": {
+      "fileName": "HOLLOW_WOODS_OPENING_CINEMATIC_V1_GAME_READY.mp4",
+      "candidateProfile": "1080p (1920x1080) 30fps or 60fps, H.264 MP4 (yuv420p), size/bitrate benchmarked before A09",
+      "status": "NOT_PRODUCED_PENDING_OWNER_APPROVAL"
+    },
+    "subtitleCandidate": {
+      "fileName": "HOLLOW_WOODS_OPENING_CINEMATIC_V1_SUBTITLES_VI.vtt",
+      "status": "PREPRODUCTION_DRAFT_GENERATED"
+    },
+    "exportDirectoryOutsideRuntime": "HOLLOW_WOODS_EXPORT/Cinematics/Opening_V1/ (do NOT copy into public/assets/ until A09)"
+  }
+}

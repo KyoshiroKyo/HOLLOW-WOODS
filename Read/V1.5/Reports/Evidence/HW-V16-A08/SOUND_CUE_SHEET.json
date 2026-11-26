@@ -1,0 +1,76 @@
+{
+  "taskId": "HW-V16-A08",
+  "status": "PREPRODUCTION_PENDING_OWNER_APPROVAL",
+  "targetDurationSec": 28,
+  "tracks": {
+    "ambientTrack": {
+      "status": "CANDIDATE_FROM_VERIFIED_RUNTIME",
+      "sourceFile": "public/assets/audio/ambience/ambience_crossing.mp3",
+      "sizeBytes": 2771121,
+      "licenseStatus": "EXISTING_RUNTIME_VERIFIED",
+      "cues": [
+        { "id": "AMB_CS01_04", "startSec": 0.0, "endSec": 19.0, "gainDb": -22, "note": "Cold forest mist drone across past memory sequence" },
+        { "id": "AMB_CS05_06", "startSec": 19.0, "endSec": 28.0, "gainDb": -19, "note": "Crossfade smoothly into live Fog Crossing zone ambience" }
+      ]
+    },
+    "musicTrack": {
+      "status": "PENDING_OWNER_APPROVAL",
+      "stemsAvailable": false,
+      "v12_2FullMixNote": "HW/Trailer/Video Game Trailer/v12/HOLLOW_WOODS_V12_2_CINEMATIC_SOUNDTRACK.mp3 (01:00.00, 48kHz) is full stereo mixdown without separate DAW stems; FORBIDDEN to loop raw trailer soundtrack in gameplay (AUD-K12).",
+      "runtimeFallbackCandidate": "public/assets/audio/bgm/knights_quiet_fire.mp3",
+      "sizeBytes": 7764636,
+      "plannedStemTarget": "bgm_prologue_memory (Piano D-F-E-A motif, -20 LUFS target, zero stem claims before DAW handover)",
+      "cues": [
+        { "id": "MUS_CS01_02", "startSec": 0.0, "endSec": 9.0, "note": "Sparse D-F-E-A motif fade-in under Knight silhouette & Black Wolf crest" },
+        { "id": "MUS_CS03_04", "startSec": 9.0, "endSec": 19.0, "note": "Suspended low string pad as Knight steps into mist" },
+        { "id": "MUS_CS05_06", "startSec": 19.0, "endSec": 28.0, "note": "Taper cleanly before GameScene control handoff" }
+      ]
+    },
+    "sfxTrack": {
+      "status": "CANDIDATE_WITH_BELL_EDIT_REQUIRED",
+      "cues": [
+        {
+          "id": "SFX_CS02_EMBLEM",
+          "timeSec": 4.4,
+          "source": "public/assets/audio/sfx/v14/rune_shift.wav (or soft cloth/leather rustle)",
+          "note": "Subtle low resonance; no jarring stinger"
+        },
+        {
+          "id": "SFX_CS03_UNKNOWN_CALL",
+          "timeSec": 9.5,
+          "source": "public/assets/audio/sfx/v14/ghost_whisper.wav (heavily filtered) + public/assets/audio/sfx/v14/bell_toll_low.wav (edited short 2.6-2.8s sfx_bell_short_fade)",
+          "note": "Must use short tail fade (2.6-2.8s), NOT raw 11.222s bell loop (NAR-029); keep caller identity UNKNOWN"
+        },
+        {
+          "id": "SFX_CS04_MIST_SWEEP",
+          "timeSec": 14.5,
+          "source": "public/assets/audio/ambience/ambience_forest.mp3 (bandpass swell) + public/assets/audio/sfx/v14/footstep_leaves_1.mp3",
+          "note": "Soft mist rush without jumpscare or flash"
+        },
+        {
+          "id": "SFX_CS05_LANTERN_WAKE",
+          "timeSec": 21.0,
+          "source": "public/assets/audio/sfx/lantern_toggle.mp3",
+          "note": "Warm lantern ignition hint as wayfarer awakens at Fog Crossing"
+        }
+      ]
+    },
+    "narrationTrack": {
+      "status": "PENDING_OWNER_APPROVAL",
+      "voiceTalent": "UNDECIDED (Option A: Subtle Vietnamese narration VO + text | Option B: Silent caption cards + text blip mirroring V12.2)",
+      "timingReference": "Synced to CS01..CS06 (6 short lines, 28s total, zero spoilers)"
+    },
+    "subtitleTrack": {
+      "status": "PREPRODUCTION_DRAFT",
+      "file": "Read/V1.5/Reports/Evidence/HW-V16-A08/HOLLOW_WOODS_OPENING_CINEMATIC_V1_SUBTITLES_VI.vtt",
+      "language": "vi",
+      "englishCandidateProvided": true
+    }
+  },
+  "audioLimits": {
+    "loudnessTargetLufs": "-20.0 to -18.0 LUFS",
+    "truePeakMaxDbtp": "-1.0 dBTP",
+    "clippingAllowed": false,
+    "audioManagerModifiedInA08": false
+  }
+}
