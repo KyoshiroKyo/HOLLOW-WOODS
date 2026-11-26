@@ -1,0 +1,37 @@
+{
+  "task": "HW-ASSET-03 Phase B",
+  "search_keywords": [
+    "Black Knight",
+    "Black_Knight",
+    "BlackKnight",
+    "Black Knight V2",
+    "Black_Knight_V2",
+    "BlackKnightV2",
+    "Black Knight 2.0",
+    "Mossbound Wayfarer"
+  ],
+  "status": "NOT FOUND / UNVERIFIED",
+  "findings": {
+    "v1_master_source": {
+      "name": "Black Knight V1.0",
+      "author": "Fellor",
+      "release_date": "2025-09-22 / 2026-07-08",
+      "archive": "HOLLOW_WOODS_EXPORT/Pixel_Art/Rar/Characters/Black Knight.zip",
+      "size_bytes": 1434810,
+      "master_image": "Black_Knight_All_In_One_New.png",
+      "resolution": "64x64 per frame"
+    },
+    "v2_searched_locations": [
+      "G:\\HOLLOW WOODS (working tree, git history, all branches)",
+      "G:\\Backup",
+      "G:\\Backups",
+      "HOLLOW_WOODS_EXPORT archives"
+    ],
+    "v2_occurrences": 0,
+    "closest_matches": [
+      "Banner_v2.png (web promotional graphic on itch.io)",
+      "Banner_v22.png (web promotional graphic on itch.io)"
+    ]
+  },
+  "owner_protection_compliance": "PASS - Did not rename V1 to V2, did not fabricate fake V2 sprites."
+}
