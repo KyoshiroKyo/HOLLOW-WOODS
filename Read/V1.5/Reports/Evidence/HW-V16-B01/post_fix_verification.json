@@ -1,0 +1,109 @@
+{
+  "cases": {
+    "armed_walk_run_down": {
+      "events": 53,
+      "armed_run_scales": [
+        1.14
+      ],
+      "unarmed_p1_scales": [],
+      "unarmed_p2_scales": [],
+      "violations": [],
+      "passed": true
+    },
+    "unarmed_walk_run_down": {
+      "events": 87,
+      "armed_run_scales": [],
+      "unarmed_p1_scales": [
+        0.99
+      ],
+      "unarmed_p2_scales": [
+        1.11
+      ],
+      "violations": [],
+      "passed": true
+    },
+    "armed_walk_run_up": {
+      "events": 39,
+      "armed_run_scales": [
+        1.14
+      ],
+      "unarmed_p1_scales": [],
+      "unarmed_p2_scales": [],
+      "violations": [],
+      "passed": true
+    },
+    "unarmed_walk_run_up": {
+      "events": 41,
+      "armed_run_scales": [],
+      "unarmed_p1_scales": [
+        0.99
+      ],
+      "unarmed_p2_scales": [
+        1.11
+      ],
+      "violations": [],
+      "passed": true
+    },
+    "armed_walk_run_left": {
+      "events": 38,
+      "armed_run_scales": [
+        1.14
+      ],
+      "unarmed_p1_scales": [],
+      "unarmed_p2_scales": [],
+      "violations": [],
+      "passed": true
+    },
+    "unarmed_walk_run_left": {
+      "events": 40,
+      "armed_run_scales": [],
+      "unarmed_p1_scales": [
+        0.99
+      ],
+      "unarmed_p2_scales": [
+        1.11
+      ],
+      "violations": [],
+      "passed": true
+    },
+    "armed_walk_run_right": {
+      "events": 38,
+      "armed_run_scales": [
+        1.14
+      ],
+      "unarmed_p1_scales": [],
+      "unarmed_p2_scales": [],
+      "violations": [],
+      "passed": true
+    },
+    "unarmed_walk_run_right": {
+      "events": 40,
+      "armed_run_scales": [],
+      "unarmed_p1_scales": [
+        0.99
+      ],
+      "unarmed_p2_scales": [
+        1.11
+      ],
+      "violations": [],
+      "passed": true
+    },
+    "combat_defense_to_run": {
+      "events": 53,
+      "armed_run_scales": [
+        1.14
+      ],
+      "unarmed_p1_scales": [],
+      "unarmed_p2_scales": [],
+      "violations": [],
+      "passed": true
+    }
+  },
+  "invariants": {
+    "cameraZoom": 2.2,
+    "idleFrameRate": 6.25,
+    "idleMsPerFrame": 160,
+    "unarmedIdleMsPerFrame": 160
+  },
+  "errors": []
+}

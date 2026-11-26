@@ -1,0 +1,371 @@
+{
+  "newgame_immediate_run": [
+    {
+      "tag": "START",
+      "anim": "wayfarer_run_right",
+      "f": 1,
+      "fname": "armed_run_sequence_right_0",
+      "tex": "black_knight_conversion_motion",
+      "sx": 1.2,
+      "oy": 0.875,
+      "dh": 86.4,
+      "camZ": 2.2
+    },
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_run_right",
+      "f": 1,
+      "fname": "armed_run_sequence_right_0",
+      "tex": "black_knight_conversion_motion",
+      "sx": 1.2,
+      "oy": 0.875,
+      "dh": 86.4,
+      "camZ": 2.2
+    },
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_run_right",
+      "f": 1,
+      "fname": "armed_run_sequence_right_0",
+      "tex": "black_knight_conversion_motion",
+      "sx": 1.2,
+      "oy": 0.875,
+      "dh": 86.4,
+      "camZ": 2.2
+    },
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_run_right",
+      "f": 1,
+      "fname": "armed_run_sequence_right_0",
+      "tex": "black_knight_conversion_motion",
+      "sx": 1.2,
+      "oy": 0.875,
+      "dh": 86.4,
+      "camZ": 2.2
+    },
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_run_right",
+      "f": 1,
+      "fname": "armed_run_sequence_right_0",
+      "tex": "black_knight_conversion_motion",
+      "sx": 1.2,
+      "oy": 0.875,
+      "dh": 86.4,
+      "camZ": 2.2
+    },
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_run_right",
+      "f": 1,
+      "fname": "armed_run_sequence_right_0",
+      "tex": "black_knight_conversion_motion",
+      "sx": 1.2,
+      "oy": 0.875,
+      "dh": 86.4,
+      "camZ": 2.2
+    },
+    {
+      "tag": "UPDATE",
+      "anim": "wayfarer_run_right",
+      "f": 2,
+      "fname": "armed_run_sequence_right_1",
+      "tex": "black_knight_conversion_motion",
+      "sx": 1.2,
+      "oy": 0.875,
+      "dh": 86.4,
+      "camZ": 2.2
+    },
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_run_right",
+      "f": 2,
+      "fname": "armed_run_sequence_right_1",
+      "tex": "black_knight_conversion_motion",
+      "sx": 1.2,
+      "oy": 0.875,
+      "dh": 86.4,
+      "camZ": 2.2
+    },
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_run_right",
+      "f": 2,
+      "fname": "armed_run_sequence_right_1",
+      "tex": "black_knight_conversion_motion",
+      "sx": 1.2,
+      "oy": 0.875,
+      "dh": 86.4,
+      "camZ": 2.2
+    },
+    {
+      "tag": "START",
+      "anim": "wayfarer_idle_right",
+      "f": 1,
+      "fname": "armed_idle_right_0",
+      "tex": "black_knight_movement",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    },
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_idle_right",
+      "f": 1,
+      "fname": "armed_idle_right_0",
+      "tex": "black_knight_movement",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    }
+  ],
+  "roll_to_run_armed": [
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_idle_right",
+      "f": 1,
+      "fname": "armed_idle_right_0",
+      "tex": "black_knight_movement",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    },
+    {
+      "tag": "START",
+      "anim": "wayfarer_roll_right",
+      "f": 1,
+      "fname": "roll_right_0",
+      "tex": "black_knight_defense",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    },
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_roll_right",
+      "f": 1,
+      "fname": "roll_right_0",
+      "tex": "black_knight_defense",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    },
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_roll_right",
+      "f": 1,
+      "fname": "roll_right_0",
+      "tex": "black_knight_defense",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    },
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_roll_right",
+      "f": 1,
+      "fname": "roll_right_0",
+      "tex": "black_knight_defense",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    },
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_roll_right",
+      "f": 1,
+      "fname": "roll_right_0",
+      "tex": "black_knight_defense",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    },
+    {
+      "tag": "UPDATE",
+      "anim": "wayfarer_roll_right",
+      "f": 2,
+      "fname": "roll_right_1",
+      "tex": "black_knight_defense",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    },
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_roll_right",
+      "f": 2,
+      "fname": "roll_right_1",
+      "tex": "black_knight_defense",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    },
+    {
+      "tag": "UPDATE",
+      "anim": "wayfarer_roll_right",
+      "f": 3,
+      "fname": "roll_right_2",
+      "tex": "black_knight_defense",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    },
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_roll_right",
+      "f": 3,
+      "fname": "roll_right_2",
+      "tex": "black_knight_defense",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    },
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_roll_right",
+      "f": 3,
+      "fname": "roll_right_2",
+      "tex": "black_knight_defense",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    }
+  ],
+  "attack_to_run_armed": [
+    {
+      "tag": "UPDATE",
+      "anim": "wayfarer_roll_right",
+      "f": 4,
+      "fname": "roll_right_3",
+      "tex": "black_knight_defense",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    },
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_roll_right",
+      "f": 4,
+      "fname": "roll_right_3",
+      "tex": "black_knight_defense",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    },
+    {
+      "tag": "UPDATE",
+      "anim": "wayfarer_roll_right",
+      "f": 5,
+      "fname": "roll_right_4",
+      "tex": "black_knight_defense",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    },
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_roll_right",
+      "f": 5,
+      "fname": "roll_right_4",
+      "tex": "black_knight_defense",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    },
+    {
+      "tag": "UPDATE",
+      "anim": "wayfarer_roll_right",
+      "f": 6,
+      "fname": "roll_right_5",
+      "tex": "black_knight_defense",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    },
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_roll_right",
+      "f": 6,
+      "fname": "roll_right_5",
+      "tex": "black_knight_defense",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    },
+    {
+      "tag": "START",
+      "anim": "wayfarer_idle_right",
+      "f": 1,
+      "fname": "armed_idle_right_0",
+      "tex": "black_knight_movement",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    },
+    {
+      "tag": "START",
+      "anim": "wayfarer_walk_up",
+      "f": 1,
+      "fname": "armed_walk_up_0",
+      "tex": "black_knight_movement",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    },
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_walk_up",
+      "f": 1,
+      "fname": "armed_walk_up_0",
+      "tex": "black_knight_movement",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    },
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_walk_up",
+      "f": 1,
+      "fname": "armed_walk_up_0",
+      "tex": "black_knight_movement",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    },
+    {
+      "tag": "PRERENDER",
+      "anim": "wayfarer_walk_up",
+      "f": 1,
+      "fname": "armed_walk_up_0",
+      "tex": "black_knight_movement",
+      "sx": 1.5,
+      "oy": 1,
+      "dh": 96,
+      "camZ": 2.2
+    }
+  ]
+}

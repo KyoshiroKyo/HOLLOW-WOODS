@@ -76,6 +76,11 @@ export const WAYFARER_FRAME_HEIGHT = 64;
 export const WAYFARER_ORIGIN_X = 0.5;
 export const WAYFARER_ORIGIN_Y = 1.0; // V1.5-09: Chuẩn hóa điểm neo chân 100% tại đáy frame (y = 64/64 = 1.0)
 export const WAYFARER_BASE_SCALE = 1.50; // HW-BUG-22: Visual scale chuẩn hóa của Black Knight (3:2) tương quan với Sir Vaelen (47-48px) & Garth (53-54px)
+// HW-V16-B01 (BUG-058): Normalized artwork multipliers for 84x72 / 80x72 conversion motion clips relative to WAYFARER_BASE_SCALE
+export const WAYFARER_ARMED_RUN_SCALE_RATIO = 0.76; // 1.14 world scale (~44.9px avg height matching idle/walk)
+export const WAYFARER_UNARMED_RUN_PASS1_SCALE_RATIO = 0.66; // 0.99 world scale (frames 1..6: ~46.1px avg height)
+export const WAYFARER_UNARMED_RUN_PASS2_SCALE_RATIO = 0.74; // 1.11 world scale (frames 7..12: ~45.9px avg height, eliminates 1.02->1.17 pop)
+export const WAYFARER_CONVERSION_ROLL_SCALE_RATIO = 0.75; // 1.125 world scale for 80x72 conversion roll frames
 export const WAYFARER_BODY_WIDTH = 18;
 export const WAYFARER_BODY_HEIGHT = 12;
 export const WAYFARER_BODY_OFFSET_X = 23;

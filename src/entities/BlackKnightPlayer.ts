@@ -14,6 +14,10 @@ import {
   WAYFARER_ORIGIN_X,
   WAYFARER_ORIGIN_Y,
   WAYFARER_BASE_SCALE,
+  WAYFARER_ARMED_RUN_SCALE_RATIO,
+  WAYFARER_UNARMED_RUN_PASS1_SCALE_RATIO,
+  WAYFARER_UNARMED_RUN_PASS2_SCALE_RATIO,
+  WAYFARER_CONVERSION_ROLL_SCALE_RATIO,
   WAYFARER_BODY_WIDTH,
   WAYFARER_BODY_HEIGHT,
   WAYFARER_BODY_OFFSET_X,
@@ -219,9 +223,8 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       body.setOffset(WAYFARER_BODY_OFFSET_X, WAYFARER_BODY_OFFSET_Y);
       body.setCollideWorldBounds(true);
       this.on(Phaser.Animations.Events.ANIMATION_START, this.syncBodyFootAnchor, this);
-      this.on(Phaser.Animations.Events.ANIMATION_UPDATE, () => {
-        if (this.texture.key === BLACK_KNIGHT_CONVERSION_MOTION_KEY) this.syncBodyFootAnchor();
-      });
+      this.on(Phaser.Animations.Events.ANIMATION_UPDATE, this.syncBodyFootAnchor, this);
+      this.on(Phaser.Animations.Events.ANIMATION_REPEAT, this.syncBodyFootAnchor, this);
     }
 
     // Khởi tạo phím điều khiển
@@ -284,10 +287,25 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     const base = WAYFARER_BASE_SCALE;
     if (this.texture.key !== BLACK_KNIGHT_CONVERSION_MOTION_KEY) return base;
     const key = this.anims.currentAnim?.key ?? '';
-    if (/^(wayfarer|satyr)_run_(down|up|left|right)$/.test(key)) return base * 0.8;
-    if (/^(wayfarer|satyr)_unarmed_run_(down|up|left|right)$/.test(key)) {
-      // The two six-frame unarmed passes were authored at different sizes.
-      return (this.anims.currentFrame?.index ?? 1) <= 6 ? base * 0.68 : base * 0.78;
+    const frameName = this.frame?.name ?? '';
+    if (/^(wayfarer|satyr)_(run|armed_run_sequence)_(down|up|left|right)$/.test(key) ||
+      frameName.startsWith('armed_run_sequence_')) {
+      return base * WAYFARER_ARMED_RUN_SCALE_RATIO;
+    }
+    if (/^(wayfarer|satyr)_(unarmed_run|unarmed_run_sequence)_(down|up|left|right)$/.test(key) ||
+      frameName.startsWith('unarmed_run_sequence_')) {
+      // The two six-frame unarmed passes were authored at different sizes; match both to walk/idle height.
+      let frameIndex = this.anims.currentFrame?.index ?? 0;
+      if (frameIndex <= 0) {
+        const match = /_(\d+)$/.exec(frameName);
+        frameIndex = match ? Number(match[1]) + 1 : 1;
+      }
+      return frameIndex <= 6
+        ? base * WAYFARER_UNARMED_RUN_PASS1_SCALE_RATIO
+        : base * WAYFARER_UNARMED_RUN_PASS2_SCALE_RATIO;
+    }
+    if (frameName.startsWith('armed_roll_sequence_') || frameName.startsWith('unarmed_roll_sequence_')) {
+      return base * WAYFARER_CONVERSION_ROLL_SCALE_RATIO;
     }
     return base;
   }
@@ -1391,10 +1409,12 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       const fallbackIdle = this.getIdleAnimationKey();
       if (fallbackIdle && key !== fallbackIdle) {
         this.play(fallbackIdle, true);
+        this.syncBodyFootAnchor();
       }
       return false;
     }
     this.play(key, ignoreIfPlaying);
+    this.syncBodyFootAnchor();
     return true;
   }
 
@@ -1442,11 +1462,11 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     if (previousAnim && /_(walk|run)_/.test(previousAnim.key) && this.anims.currentFrame) {
       const phase = (this.anims.currentFrame.index - 1) / previousAnim.frames.length;
       const frameIdx = Math.min(targetAnim.frames.length - 1, Math.max(0, Math.floor(phase * targetAnim.frames.length)));
-      this.play(targetKey);
-      this.anims.setCurrentFrame(targetAnim.frames[frameIdx]);
+      this.play({ key: targetKey, startFrame: frameIdx });
     } else {
       this.play(targetKey, true);
     }
+    this.syncBodyFootAnchor();
   }
 
   public playIdle(): void {
