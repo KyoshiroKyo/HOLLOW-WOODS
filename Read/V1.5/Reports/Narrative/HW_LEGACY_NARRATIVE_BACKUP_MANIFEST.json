@@ -1,0 +1,555 @@
+{
+  "schemaVersion": "1.0",
+  "mission": "HW-NR-03",
+  "createdAt": "2026-11-26T17:42:00+07:00",
+  "gitBaseline": {
+    "branch": "feat/v1.5.3-ag-world-polish",
+    "head": "11d91dd545b8bbaa8bb7e16e4587ddd12bfa233d",
+    "productionSourceModified": false
+  },
+  "approvalGateCheck": {
+    "hwNr01Approved": false,
+    "approvedDecisionsCount": 0,
+    "note": "HW_CANON_OWNER_DECISION_MATRIX.md still holds 23 unapproved Owner decisions (DEC-LOCK-01..23). Per HW-NR-03 rule (\"Chi xu ly cac Residue ID da duoc duyet\" & \"Neu noi dung thay the chua san sang, giu nguyen noi dung hien hanh\"), runtime strings remain preserved verbatim while full SHA-256 backups are created."
+  },
+  "dragerRuntimeScan": {
+    "pattern": "drager (case-insensitive)",
+    "filesScanned": "src/ + public/assets/ + index.html",
+    "occurrencesFound": 0
+  },
+  "backupDirectory": "Backups/steps/backup_hw_nr_03/",
+  "backedUpFilesCount": 24,
+  "backedUpFiles": [
+    {
+      "relativePath": "index.html",
+      "backupPath": "Backups/steps/backup_hw_nr_03/index.html",
+      "bytes": 2653,
+      "sha256": "d1c8a1dcfad5eb5880d78efc16d7e1a4f14817f3e415a7286e5f761951f37f22"
+    },
+    {
+      "relativePath": "src/data/dialogues.json",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/data/dialogues.json",
+      "bytes": 69155,
+      "sha256": "de156b7323c14e5ed6bab3f730ca3513e8934c3d982d12dadd6fb9df3ab73eda"
+    },
+    {
+      "relativePath": "src/data/lore.json",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/data/lore.json",
+      "bytes": 35645,
+      "sha256": "754774958353ad1e6d12fa99432e0a1aa5235bb6ae16791083fd6d964a4303cb"
+    },
+    {
+      "relativePath": "src/data/quests.json",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/data/quests.json",
+      "bytes": 9659,
+      "sha256": "b3d923752571d5b9e478021091ec8aa97981cb220693d3607bcf9aa05c9cca1f"
+    },
+    {
+      "relativePath": "src/data/tornPagesData.ts",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/data/tornPagesData.ts",
+      "bytes": 21882,
+      "sha256": "30f3a00433db35c54e2d6eac5fd66ad0325760d556a1eac9199d256bc1c1f146"
+    },
+    {
+      "relativePath": "src/data/items.json",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/data/items.json",
+      "bytes": 24033,
+      "sha256": "c81ffd0008077ba313123fe86be839cc8e71479df7e230c2cb37f21cf81458f2"
+    },
+    {
+      "relativePath": "src/data/zones.json",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/data/zones.json",
+      "bytes": 119183,
+      "sha256": "a0901db270485c3e718f5e81ed0ced4f0230ec0ae3a14e101af4916be119f40e"
+    },
+    {
+      "relativePath": "src/data/content_registry.json",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/data/content_registry.json",
+      "bytes": 51638,
+      "sha256": "2a40762e535c6b001cd2438014f1b99caf3dcea9b454038c1b031ed7617ecb19"
+    },
+    {
+      "relativePath": "src/data/maps/veil_origin_cavern.json",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/data/maps/veil_origin_cavern.json",
+      "bytes": 110241,
+      "sha256": "17de13e9364df142c4a10920283848d1b2d1e0732979c7dbe46a105e0cb5bf94"
+    },
+    {
+      "relativePath": "src/data/maps/sub_bell_workshop.json",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/data/maps/sub_bell_workshop.json",
+      "bytes": 41122,
+      "sha256": "9f5801bfc3d902d5911bc212c261fffed30fd4605fec9a6da18a911206f422a5"
+    },
+    {
+      "relativePath": "src/registry/registryData.ts",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/registry/registryData.ts",
+      "bytes": 48678,
+      "sha256": "d28054253987c8b7e8378490975df029e4ce31bb7423d31bfa5851555a4b3620"
+    },
+    {
+      "relativePath": "src/scenes/MainMenuScene.ts",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/scenes/MainMenuScene.ts",
+      "bytes": 44400,
+      "sha256": "1b38ffd8a0bafd1c3e26cdfc9f1512aa701da2a227ae3a5e31c4b6da720f3b53"
+    },
+    {
+      "relativePath": "src/scenes/PreloadScene.ts",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/scenes/PreloadScene.ts",
+      "bytes": 49795,
+      "sha256": "d7d1d0bb53055b0eac6ee6a568ae98b557121b0a37c0899812fd089bc82cb3cb"
+    },
+    {
+      "relativePath": "src/scenes/GameScene.ts",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/scenes/GameScene.ts",
+      "bytes": 326762,
+      "sha256": "1bafe4ffa16dc72f92f79b1a494cf7304c419c6d8c9718819ea9459e172ddf77"
+    },
+    {
+      "relativePath": "src/scenes/UIScene.ts",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/scenes/UIScene.ts",
+      "bytes": 171467,
+      "sha256": "037472d70cd46ff1d2f9efd5ce60cf438b88bbb0937b869307f90366bd6755b3"
+    },
+    {
+      "relativePath": "src/systems/EndingSystem.ts",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/systems/EndingSystem.ts",
+      "bytes": 44768,
+      "sha256": "a8b8d82f1fa989b8906eb0231c1b73b5bd1c0faca94976a5fcf39961307225b3"
+    },
+    {
+      "relativePath": "src/systems/VeilSystem.ts",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/systems/VeilSystem.ts",
+      "bytes": 25894,
+      "sha256": "9911b784cb8f62f61c15466f78b41174c3b3a4d01e73752d05bbf59bdb388532"
+    },
+    {
+      "relativePath": "src/systems/EchoSystem.ts",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/systems/EchoSystem.ts",
+      "bytes": 4230,
+      "sha256": "0884d7ace23bcaae3234bf76f9ea66057126e565d5681a2a33520fe2f1147429"
+    },
+    {
+      "relativePath": "src/systems/DialogueSystem.ts",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/systems/DialogueSystem.ts",
+      "bytes": 15902,
+      "sha256": "7e6eba744f7a3314d0b0ff34434eb748ae073c0f5aea691ca543b0c026006f29"
+    },
+    {
+      "relativePath": "src/entities/EvilKnights.ts",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/entities/EvilKnights.ts",
+      "bytes": 35677,
+      "sha256": "501b51e398dfe6cd727d263baf374fcc5e3b3e0b63fd159c02896298894a7ebb"
+    },
+    {
+      "relativePath": "src/state/PlayerState.ts",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/state/PlayerState.ts",
+      "bytes": 41935,
+      "sha256": "074af4187810cf7db0e782ac2ca1280114ab53af1e409362ecfa7857dae206d3"
+    },
+    {
+      "relativePath": "src/ui/JournalModal.ts",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/ui/JournalModal.ts",
+      "bytes": 70854,
+      "sha256": "404a6b8e52912b9676d00d85adbdb24da2b6b66efc78cf7ec519863b83cac7de"
+    },
+    {
+      "relativePath": "src/ui/ItemTooltipHelper.ts",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/ui/ItemTooltipHelper.ts",
+      "bytes": 16701,
+      "sha256": "1d7bc258544d82d5e8fac108879f4debe876def5587956f0de7c261c8644ce03"
+    },
+    {
+      "relativePath": "src/world/WorldGatingSystem.ts",
+      "backupPath": "Backups/steps/backup_hw_nr_03/src/world/WorldGatingSystem.ts",
+      "bytes": 18585,
+      "sha256": "15b3f142b460355853b275308873fc3f9805b5bba9700b6fa0af3f9a7f8720f5"
+    }
+  ],
+  "residueSnapshotsCount": 32,
+  "residueSnapshots": [
+    {
+      "residueId": "NR2-011",
+      "filePath": "src/data/dialogues.json",
+      "key": "campfire_knight_q2_complete",
+      "classification": "CONFLICT",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-05",
+      "canonDecisionRef": "DEC-LOCK-10 (OQ-06)",
+      "oldTextVerbatim": "{\"lines\": [\"Phôi Sắt Cổ Ngữ này... và cả nét chữ trên mảnh nhật ký cháy sém này nữa! Đúng là nét bút của trung úy kỵ sĩ rồi!\", \"(Hiệp sĩ nghẹn ngào đọc trang nhật ký)... 'Bóng tối The Veil quá mạnh... Chỉ huy đã bị tà khí nuốt chửng linh hồn, trở thành bóng ma trùm mũ canh giữ cổ tự... Ai tìm thấy di ngôn này, xin hãy giải thoát cho ngài ấy...'\", \"Trời ơi... Vị chỉ huy đáng kính của chúng ta đã biến thành Hooded Knight Boss bị sương đen sai khiến!\", \"Hỡi lữ khách! Xin ngươi hãy giúp ta hoàn thành tâm nguyện đau đớn này: Tiến sâu vào cấm địa Rừng Sâu, đánh bại ngài ấy để giải thoát linh hồn, và mang 'Huy Hiệu Hiệp Sĩ Tha Hóa' về đây để ta thanh tẩy bên ngọn lửa!\"], \"nextQuestId\": \"SQ08_PURIFY_FALLEN\", \"onCompleteFlag\": \"campfire_knight_q3_accepted\", \"portrait\": \"portrait_campfire_knight\", \"rewardCount\": 2, \"rewardItem\": \"res_tree_resin\", \"speaker\": \"Sir Vaelen — Kỵ Sĩ Trầm Mặc\"}",
+      "oldTextSha256": "cd5652277d23a0294f3ffb17f0254b73b4459d16194465a4ee6c8ddd086e149d"
+    },
+    {
+      "residueId": "NR2-012a",
+      "filePath": "src/data/dialogues.json",
+      "key": "campfire_knight_intro",
+      "classification": "CONFLICT",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-05",
+      "canonDecisionRef": "DEC-LOCK-01 / 11 (OQ-01/11)",
+      "oldTextVerbatim": "{\"choices\": [{\"responseLine\": \"Đa tạ người lữ khách hào hiệp! Ngọn lửa này bừng sáng sẽ bảo bọc cho người qua đường và toàn thể dân làng Bellhollow.\", \"setFlag\": \"choice_knight_pledge_fire\", \"text\": \"[Đồng ý giúp] \\\"Ta sẽ tìm gỗ khô và nhựa cây tiếp lửa cho ngọn lửa này.\\\"\", \"trustDelta\": 3}, {\"responseLine\": \"(Sir Vaelen thở dài nghẹn ngào)... Đúng vậy. Vị Tổng Chỉ Huy huyền thoại đã một mình dẫn đầu đội tiên phong phá vòng vây sương mù, rồi biệt tích...\", \"setFlag\": \"lore_curious_black_knight\", \"text\": \"[Hỏi về kỵ sĩ] \\\"Bộ giáp đen mà ngươi vừa nhắc tới... có phải thuộc về một vị chỉ huy năm xưa?\\\"\", \"trustDelta\": 2}, {\"nextDialogueKey\": \"campfire_knight_comrade_bond\", \"text\": \"[Hỏi về lời thề] \\\"Vì sao giữa màn sương đen này, chỉ có một mình ngươi ở lại giữ ngọn lửa trại?\\\"\"}, {\"nextDialogueKey\": \"campfire_knight_rest_blessing\", \"text\": \"[Đặt vũ khí xuống & Nghỉ ngơi bên đốm lửa]\"}, {\"responseLine\": \"Sự tĩnh lặng của ngươi khiến ta thấy an tâm lạ kỳ. Hãy nghỉ ngơi lấy sức trước khi bước vào rừng sâu.\", \"setFlag\": \"wayfarer_silent_fire_watcher\", \"text\": \"[Trầm mặc] (Lặng lẽ ngồi xuống sưởi tay bên đốm lửa ấm, ngắm nhìn tàn than bay lên trời đêm)\", \"trustDelta\": 1}], \"lines\": [\"Chào mừng, lữ khách. Hãy dừng chân nghỉ ngơi bên đốm lửa này một lát... Bạn đang ở một nơi an toàn rồi. Không ai phán xét một kẻ lữ hành mệt mỏi cần chút hơi ấm giữa khu rừng sương lạnh này đâu.\", \"Khoan đã... Bộ giáp đen đó... và cách ngươi tỏa ra vòng sáng ấm dịu... ta ngỡ người đó đã tan biến trong màn sương từ lâu rồi... Không, có lẽ ta nhìn nhầm trong ánh lửa chập chờn.\", \"Ta là Sir Vaelen — Kỵ Sĩ Trầm Mặc, người canh giữ Trạm Lửa Rừng Tĩnh Lặng này. Đoàn kỵ sĩ giáp bạc năm xưa đã tiến sâu vào rừng để bảo vệ làng, nhưng màn sương đen The Veil đã nuốt chửng tất cả...\", \"Giờ đây, ngọn lửa này là thành trì duy nhất giữ cho tâm trí của chúng ta không bị tà khí xâm chiếm.\", \"Nhưng than củi đang cạn dần. Bạn có thể giúp ta gom 2 Gỗ Khô và 2 Nhựa Cây quanh bìa rừng để tiếp lửa nâng cấp Bếp Lửa Hồng lên Cấp 2 không? Đồng thời hãy trinh sát bìa Rừng Ngoài xem lũ quái vật có động tĩnh gì không.\"], \"nextQuestId\": \"SQ06_KEEP_FIRE\", \"onCompleteFlag\": \"campfire_knight_q1_accepted\", \"portrait\": \"portrait_campfire_knight\", \"speaker\": \"Sir Vaelen — Kỵ Sĩ Trầm Mặc\"}",
+      "oldTextSha256": "3033848f313d3875fe8bfe48b9ecdef7381af3ac9379de3dfe5cf4549f2bd86b"
+    },
+    {
+      "residueId": "NR2-012b",
+      "filePath": "src/data/dialogues.json",
+      "key": "campfire_knight_comrade_bond",
+      "classification": "CONFLICT",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-05",
+      "canonDecisionRef": "DEC-LOCK-01 / 11 (OQ-01/05)",
+      "oldTextVerbatim": "{\"choices\": [{\"responseLine\": \"(Sir Vaelen nghẹn ngào cúi đầu)... Tạ ơn người lữ khách! Lời nói của ngươi như tiếp thêm sinh mệnh cho thanh gươm già cỗi này.\", \"setFlag\": \"choice_knight_empathy\", \"text\": \"[Thấu cảm & Động viên] \\\"Ngươi đã hoàn thành xuất sắc mệnh lệnh. Nhờ ngọn lửa của ngươi mà lối mòn ven rừng vẫn còn hơi ấm đến hôm nay.\\\"\", \"trustDelta\": 3}, {\"responseLine\": \"Ánh mắt của ngươi... giống hệt ánh nhìn của vị chỉ huy đêm hôm ấy...\", \"setFlag\": \"choice_knight_silent_understanding\", \"text\": \"[Trầm mặc thấu hiểu] \\\"Gánh nặng của người ở lại luôn đau đớn hơn kẻ ra đi... Ta hiểu nỗi dằn vặt đó.\\\"\", \"trustDelta\": 2}], \"lines\": [\"(Sir Vaelen ném một cành củi khô vào đống lửa, ánh mắt đỏ hoe ngấn lệ)...\", \"Đêm trước ngày xuất chinh năm ấy, toàn đoàn kỵ sĩ giáp bạc đứng nghiêm trang trước quảng trường Bellhollow.\", \"Ta đã quỳ xin được đi tiên phong cùng ngài ấy... Nhưng vị Chỉ Huy Hiệp Sĩ Đen đã đặt bàn tay thép lên vai ta, nghiêm giọng ra lệnh:\", \"'Ngươi là người có ý chí kiên định nhất đoàn. Ngươi phải ở lại giữ chốt làng, bảo vệ ngọn lửa thiêng này! Nếu ngọn lửa hậu phương lụi tàn, Bellhollow sẽ sụp đổ trước khi chúng ta kịp phá vỡ màn sương trở về.'\", \"Ta đã tuân lệnh ngài ấy... Ta đã ở lại! Nhưng từng đêm trôi qua, từng người đồng đội ngã xuống trong tiếng gầm rú ngoài sương lạnh... Nỗi đau của kẻ ở lại gặm nhấm tâm can ta từng nhịp thở!\"], \"portrait\": \"portrait_campfire_knight\", \"speaker\": \"Sir Vaelen — Kỵ Sĩ Trầm Mặc\"}",
+      "oldTextSha256": "795545d6d6c172eb7eadcf5e52fbc46662ea1319f8715c3ff3d5ec794312283c"
+    },
+    {
+      "residueId": "NR2-012c",
+      "filePath": "src/data/dialogues.json",
+      "key": "campfire_knight_q3_reminder",
+      "classification": "CONFLICT",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-05",
+      "canonDecisionRef": "DEC-LOCK-01 / 09",
+      "oldTextVerbatim": "{\"choices\": [{\"nextDialogueKey\": \"campfire_knight_rest_blessing\", \"text\": \"[Đặt vũ khí xuống & Nghỉ ngơi bên đốm lửa]\"}, {\"text\": \"[Lên đường] \\\"Ta sẽ tiến vào Rừng Sâu để giải thoát cho vị Chỉ Huy.\\\"\"}], \"lines\": [\"Chỉ Huy Hiệp Sĩ Trùm Mũ mang sức mạnh hắc ám khủng khiếp. Khi ngài ấy tụ năng lượng tà khí màu xanh thẫm, hãy nhanh tay vung gậy gỗ hoặc đâm giáo [Chuột trái / Phím Space] để ngắt chiêu khiến ngài bị choáng váng!\", \"Hãy cẩn trọng từng nhịp thở, và mang Huy Hiệu Hiệp Sĩ Tha Hóa trở về an toàn nhé!\"], \"portrait\": \"portrait_campfire_knight\", \"speaker\": \"Sir Vaelen — Kỵ Sĩ Trầm Mặc\"}",
+      "oldTextSha256": "2960f8afdad8752f38123c46c1efc11d43d1ab5278968480d75cd9c371c3faed"
+    },
+    {
+      "residueId": "NR2-012d",
+      "filePath": "src/data/dialogues.json",
+      "key": "campfire_knight_q3_complete",
+      "classification": "CONFLICT",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-05",
+      "canonDecisionRef": "DEC-LOCK-02 / 07 / 10 (OQ-03/06/20b)",
+      "oldTextVerbatim": "{\"choices\": [{\"responseLine\": \"(Sir Vaelen đứng dậy, hai mắt sáng ngời ý chí kiên định)... Xin tuân lệnh Tổng Chỉ Huy! Thần sẽ bảo vệ ngọn lửa này đến hơi thở cuối cùng!\", \"setFlag\": \"choice_black_knight_vow\", \"text\": \"[Tiếp nhận sứ mệnh] \\\"Đứng lên đi, người anh em. Lời thề của chúng ta sẽ được hoàn tất khi Đại Hồng Chung ngân vang!\\\"\", \"trustDelta\": 3}, {\"responseLine\": \"Đại kỳ hiệp sĩ một lần nữa tung bay trong tim chúng thần!\", \"setFlag\": \"choice_black_knight_silent_bond\", \"text\": \"[Trầm mặc thấu hiểu] (Đỡ người đồng đội đứng dậy, siết chặt chiếc bùa hộ thân trong lòng bàn tay)\", \"trustDelta\": 2}], \"healPlayer\": true, \"lines\": [\"Chiếc huy hiệu này... tà khí đen ngòm đang bốc hơi khi tiếp xúc với ánh lửa thiêng Trạm Lửa Rừng Tĩnh Lặng!\", \"(Sir Vaelen chăm chú nhìn vết khắc biểu tượng trên mặt huy hiệu, rồi ngẩng đầu bàng hoàng nhìn sâu vào mắt bạn)...\", \"Không thể nào... Đây là Quân Huy Tổng Chỉ Huy! Vết chém chéo đặc trưng và phong ấn bóng tối này... Người đứng trước mặt ta bấy lâu nay...\", \"(Sir Vaelen buông gươm, quỳ một gối phủ phục xuống nền đất trước mặt bạn với sự tôn kính tột cùng)...\", \"Thần... xin kính cẩn bái kiến Ngài, Chỉ Huy Hiệp Sĩ Đen (The Black Knight)! Năm xưa chính ngài đã tự phong ấn ký ức để bảo vệ linh hồn khỏi lời nguyền The Veil... Giờ đây ngài đã thức tỉnh và trở về giải cứu chúng thần!\", \"Huy hiệu đã được thanh tẩy hoàn toàn thành Bùa Hộ Thân Hiệp Sĩ. Xin trao lại bảo vật này cho ngài, cùng danh hiệu chân chính vốn thuộc về ngài!\"], \"onCompleteFlag\": \"campfire_knight_q3_completed\", \"portrait\": \"portrait_campfire_knight\", \"rewardCount\": 1, \"rewardItem\": \"eqp_bell_ward_charm\", \"speaker\": \"Sir Vaelen — Kỵ Sĩ Trầm Mặc\"}",
+      "oldTextSha256": "30f32ee3c1dd6adda4bd1f05bbeab4bee799da7eff943ec022ecb68de72658fa"
+    },
+    {
+      "residueId": "NR2-012e",
+      "filePath": "src/data/dialogues.json",
+      "key": "campfire_knight_idle_talk",
+      "classification": "CONFLICT",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-05",
+      "canonDecisionRef": "DEC-LOCK-01 / 07 (OQ-20b)",
+      "oldTextVerbatim": "{\"choices\": [{\"nextDialogueKey\": \"campfire_knight_rest_blessing\", \"text\": \"[Đặt vũ khí xuống & Nghỉ ngơi bên đốm lửa]\"}, {\"text\": \"[Trầm mặc ngắm lửa] \\\"Cảm ơn người anh em, hãy cùng ta canh giữ ngọn lửa này.\\\"\"}], \"healPlayer\": true, \"lines\": [\"Kính chào Chỉ Huy Hiệp Sĩ Đen! Thanh gươm của thần và ngọn lửa Trạm Lửa Rừng Tĩnh Lặng này sẽ mãi mãi phục vụ theo mệnh lệnh của ngài.\", \"Xin ngài hãy mở Sổ Tay [J] mục Ký Ức để xem lại toàn bộ 4 Chương Hồi Ức đã được phục hồi trọn vẹn!\"], \"portrait\": \"portrait_campfire_knight\", \"speaker\": \"Sir Vaelen — Kỵ Sĩ Trầm Mặc\"}",
+      "oldTextSha256": "93d84621ee2acdf547195d7e7745dddcc674d0d7b5cf619ece68a34de0122257"
+    },
+    {
+      "residueId": "NR2-013a",
+      "filePath": "src/data/dialogues.json",
+      "key": "hooded_knight_encounter_intro",
+      "classification": "CONFLICT",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-05",
+      "canonDecisionRef": "DEC-LOCK-09 / 17 (OQ-04/17)",
+      "oldTextVerbatim": "{\"choices\": [{\"responseLine\": \"A a a... Giết ta đi... Giải thoát cho ta...\", \"setFlag\": \"choice_hooded_knight_resolve\", \"text\": \"[Quyết tâm] \\\"Hãy tha thứ cho ta, người anh em. Ta sẽ vung kiếm giải thoát cho linh hồn ngươi!\\\"\", \"trustDelta\": 2}, {\"responseLine\": \"Lời thề... Bellhollow... Quá muộn rồi... Ta không kiểm soát được nữa!\", \"setFlag\": \"choice_hooded_knight_plea\", \"text\": \"[Thức tỉnh] \\\"Kìm nén tà khí lại! Nhớ lại lời thề bảo vệ Bellhollow năm xưa!\\\"\", \"trustDelta\": 3}], \"lines\": [\"(Thanh đại kiếm phủ tà khí cắm phập xuống nền đất rêu, đôi mắt đỏ rực dưới lớp mũ trùm khẽ rung lên khi nhìn vào bạn)...\", \"Kẻ nào dám bước vào cấm địa tử linh... Khoan đã... Dáng đứng đó... Vết chém chéo trên bao kiếm gỗ...\", \"Chỉ... Chỉ huy?! Có phải ngài không?!... KHÔNG! Màn sương đen... nó đang siết chặt tim ta!... Lưỡi kiếm này không nghe theo ta nữa!\", \"Mau lùi lại, Chỉ huy! Đừng để thanh kiếm năm xưa ngài trao cho ta... phải nhuốm máu người!\"], \"portrait\": \"portrait_hooded_knight\", \"speaker\": \"Bóng Ma Hiệp Sĩ Trùm Mũ\"}",
+      "oldTextSha256": "15353d586eee91c94dfdad513248457add3ca6a4f7a25f25540af53886f82167"
+    },
+    {
+      "residueId": "NR2-013b",
+      "filePath": "src/data/dialogues.json",
+      "key": "hooded_knight_encounter_defeat",
+      "classification": "CONFLICT",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-05",
+      "canonDecisionRef": "DEC-LOCK-02 / 09 (OQ-03/04)",
+      "oldTextVerbatim": "{\"choices\": [{\"responseLine\": \"Vĩnh biệt... người thủ lĩnh vĩ đại của chúng tôi...\", \"setFlag\": \"choice_hooded_knight_farewell\", \"text\": \"[Tiễn biệt] \\\"Hãy yên nghỉ trong ánh sáng, người chiến hữu kiên cường. Ta sẽ hoàn thành lời thề của chúng ta.\\\"\", \"trustDelta\": 3}], \"lines\": [\"(Thanh kiếm đen gãy vụn, luồng tà khí bốc hơi để lộ ánh nhìn thanh thản trong làn sương sớm)...\", \"Cảm ơn ngài... Chỉ huy... Cuối cùng ta cũng thoát khỏi sự giam cầm của bóng tối...\", \"Ta nhớ ra rồi... Năm xưa, khi Màn Sương The Veil xâm lấn tâm trí cả đoàn quân, chính ngài đã quyết định tự phong ấn ký ức và linh hồn của mình vào Trái Tim Mạch Rễ...\", \"Ngài đã nói: 'Nếu ta bị tha hóa, ngôi làng sẽ diệt vong. Ta phải phong ấn chính mình để tái sinh như một kẻ lữ hành bình thường, bắt đầu lại từ đầu khi thời cơ đến...'\", \"Bảo vật Huy Hiệu Chỉ Huy... xin trao lại cho ngài... Hãy mang nó về bên ngọn lửa Bellhollow... và giải thoát cho toàn bộ khu rừng...\"], \"onCompleteFlag\": \"boss_hooded_knight_defeated\", \"portrait\": \"portrait_hooded_knight\", \"rewardCount\": 1, \"rewardItem\": \"quest_corrupted_crest\", \"speaker\": \"Bóng Ma Hiệp Sĩ Trùm Mũ\"}",
+      "oldTextSha256": "35056ed8c3ec56834eefeefd7ac06edbee4d361e5ba5d1f66379436928e6147f"
+    },
+    {
+      "residueId": "NR2-015a",
+      "filePath": "src/data/dialogues.json",
+      "key": "edda_black_knight_reverence",
+      "classification": "CONFLICT",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-04",
+      "canonDecisionRef": "DEC-LOCK-04 / 07 (OQ-08)",
+      "oldTextVerbatim": "{\"lines\": [\"Ta đã cảm nhận được điều này ngay từ khi ngài mang chiếc lưỡi chuông đồng trở về... Khí phách kiên định không hề khuất phục trước bóng tối.\", \"Hỡi vị Hiệp Sĩ Đen của Bellhollow, lời nguyền trăm năm đang dần tan biến dưới từng nhát kiếm và Vòng Sáng Hộ Tâm dẫn lối của ngài. Thần linh và linh hồn tổ tiên sẽ luôn che chở cho ngài!\"], \"portrait\": \"portrait_edda\", \"speaker\": \"Bà Edda – Người Giữ Chuông\"}",
+      "oldTextSha256": "bd8ab90f534041391afe621851f6e677622ed7a4c4be747dc420c1b4cf7fcc2d"
+    },
+    {
+      "residueId": "NR2-015b",
+      "filePath": "src/data/dialogues.json",
+      "key": "garth_black_knight_reverence",
+      "classification": "REWRITE",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-04",
+      "canonDecisionRef": "DEC-LOCK-01 / 07",
+      "oldTextVerbatim": "{\"lines\": [\"Trời đất ơi... Kẻ Lữ Hành mà tôi từng nghi ngờ khi ngài bước ra từ màn sương... lại chính là vị Chỉ Huy Hiệp Sĩ Đen huyền thoại năm xưa sao?!\", \"Xin tha thứ cho sự lỗ mãng trước đây của tôi! Cổng làng Bellhollow từ nay sẽ luôn mở rộng cung nghênh bước chân ngài. Ngài chính là niềm hy vọng duy nhất để xua tan màn sương The Veil này!\"], \"portrait\": \"portrait_garth\", \"speaker\": \"Garth – Người Gác Cổng\"}",
+      "oldTextSha256": "3b0cbc194b10357d72deceb4972b4ac0ee7261bebf962123e188e4991e5b6ed9"
+    },
+    {
+      "residueId": "NR2-015c",
+      "filePath": "src/data/dialogues.json",
+      "key": "neris_black_knight_reverence",
+      "classification": "REWRITE",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-04",
+      "canonDecisionRef": "DEC-LOCK-01 / 07",
+      "oldTextVerbatim": "{\"lines\": [\"Gió rừng và mạch rễ cổ đại đang reo vang những lời thì thầm hân hoan... Chúng nói rằng vị Hộ Vệ Vĩ Đại trong bộ giáp đen đã thức tỉnh.\", \"Thưa Hiệp Sĩ Đen, các loại thảo dược và trà tễ của con bé này sẽ luôn sẵn sàng tiếp thêm sinh lực cho ngài bất cứ lúc nào ngài cần.\"], \"portrait\": \"portrait_neris\", \"speaker\": \"Neris – Thảo Dược Sư\"}",
+      "oldTextSha256": "9722b5ac1ff50ce7a71c87bef8c1dcf697623715ae44a5c57f5e8557d44ade72"
+    },
+    {
+      "residueId": "NR2-015d",
+      "filePath": "src/data/dialogues.json",
+      "key": "bram_black_knight_reverence",
+      "classification": "REWRITE",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-04",
+      "canonDecisionRef": "DEC-LOCK-01 / 07",
+      "oldTextVerbatim": "{\"lines\": [\"Haha! Tôi biết ngay mà! Chỉ có một đại kiếm sư đích thực như vị Hiệp Sĩ Đen năm xưa mới có thể vung lưỡi gươm nặng trịch đó nhẹ nhàng như gió thoảng!\", \"Thật vinh dự cho xưởng rèn tồi tàn này khi được phục vụ và tu bổ vũ khí cho ngài, thưa Chỉ Huy! Bất cứ thỏi sắt hay khuôn chuông nào ngài cần, Bram này xin dốc hết sức mình!\"], \"portrait\": \"portrait_blacksmith\", \"speaker\": \"Bram – Thợ Rèn Làng\"}",
+      "oldTextSha256": "0b29996075f89aef25236942df10aa5d2816064ecb315622a2cc9a3b0f980786"
+    },
+    {
+      "residueId": "NR2-015e",
+      "filePath": "src/data/dialogues.json",
+      "key": "finn_black_knight_reverence",
+      "classification": "REWRITE",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-04",
+      "canonDecisionRef": "DEC-LOCK-01 / 07",
+      "oldTextVerbatim": "{\"lines\": [\"Oa! Anh Wayfarer... không phải, ngài chính là Ngài Hiệp Sĩ Đen trong truyền thuyết mà chú Garth hay kể sao?! Tuyệt vời quá đi mất!\", \"Sau này lớn lên, em nhất định cũng sẽ rèn luyện thật giỏi và gia nhập đoàn hiệp sĩ để cùng ngài bảo vệ tháp chuông làng Bellhollow!\"], \"portrait\": \"portrait_finn\", \"speaker\": \"Finn – Cậu Bé Tinh Nghịch\"}",
+      "oldTextSha256": "3b192fff65a5cb5c0b6726b02c1260225b915d0fd04ee24057e198b8945f00f9"
+    },
+    {
+      "residueId": "NR2-007a",
+      "filePath": "src/data/lore.json",
+      "key": "lore_wayfarer_inner_journal",
+      "classification": "CONFLICT",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-03",
+      "canonDecisionRef": "DEC-LOCK-02 (OQ-03)",
+      "oldTextVerbatim": "{\"act\": 4, \"author\": \"Lữ Khách Rêu Phong (Chỉ Huy Hiệp Sĩ Đen)\", \"content\": \"Từng mảnh ký ức như dòng nước ấm chảy qua lớp băng giá của thời gian...\\n\\nTa nhớ lại rồi. Đêm hôm đó, trước khi The Veil nuốt chửng lý trí của ta, ta đã quỳ gối trước Mạch Rễ cổ thụ, dùng Cổ Ngữ Algiz phong ấn toàn bộ ký ức của chính mình. Ta không thể để một Chỉ Huy bị biến chất quay lại tàn sát những sinh linh mà ta đã thề bảo vệ.\\n\\nTa đã chọn quên đi tất cả, chấp nhận thức giấc giữa sương mù rêu phong như một kẻ vô danh. Nhưng ngọn lửa của Sir Vaelen — Kỵ Sĩ Trầm Mặc, chén thuốc thảo mộc của Neris, sự tận tụy của Bram, lòng dũng cảm của Garth và đôi tai của bé Finn... tất cả đã thắp sáng lại con đường mà ta từng đi.\\n\\nLời thề bảo vệ Bellhollow chưa bao giờ tắt. Ta sẽ đưa Lưỡi Chuông Đồng trở về đỉnh tháp, hàn gắn Đại Hồng Chung và gióng lên hồi chuông giải phóng vĩnh hằng!\", \"id\": \"lore_wayfarer_inner_journal\", \"title\": \"NHẬT KÝ LỮ KHÁCH: LỜI THỀ TRONG RÊU PHONG\"}",
+      "oldTextSha256": "0a659e3b1bfeaf8e61f1abf70800486f4767dd2c03add4e4c6d8f8462cd1342b"
+    },
+    {
+      "residueId": "NR2-008a",
+      "filePath": "src/data/lore.json",
+      "key": "lore_memory_chapter_3",
+      "classification": "CONFLICT",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-03",
+      "canonDecisionRef": "DEC-LOCK-01/02/07",
+      "oldTextVerbatim": "{\"act\": 3, \"author\": \"Tàn Dư Ký Ức Bản Thể\", \"content\": \"Khi chạm trán ảo ảnh The Echo và đối mặt với Hiệp Sĩ Trùm Trùm Đầu (Hooded Knight Boss) nơi rừng sâu, sự thật bàng hoàng hé lộ. Tên trùm khựng lại trong bàng hoàng trước đường kiếm và chiếc áo choàng bóng tối của ta: 'Chỉ Huy Hiệp Sĩ Đen?! Sao ngài lại quay mũi kiếm về phía chúng tôi?'. Những kỵ binh sa ngã từng là thuộc hạ trung kiên nhất dưới trướng ta trước khi bị màn sương The Veil tha hóa và nuốt trọn linh hồn. Trận chiến sinh tử không chỉ để sinh tồn, mà là nhát kiếm giải thoát cho những người đồng đội cũ khỏi cơn ác mộng vĩnh hằng.\", \"id\": \"lore_memory_chapter_3\", \"title\": \"HỒI ỨC III: TIẾNG GỌI THE ECHO & KẺ SA NGÃ\"}",
+      "oldTextSha256": "ddac45141bdd534072c4824e0f8c8cf511d98d2d2f97be24822c0af9f57f3b8d"
+    },
+    {
+      "residueId": "NR2-008b",
+      "filePath": "src/data/lore.json",
+      "key": "lore_memory_chapter_4",
+      "classification": "CONFLICT",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-03",
+      "canonDecisionRef": "DEC-LOCK-01/02/07",
+      "oldTextVerbatim": "{\"act\": 4, \"author\": \"Hiệp Sĩ Đen (Black Knight)\", \"content\": \"Khi cầm trên tay Huy Hiệu Hiệp Sĩ Tha Hóa và đứng trước ngọn lửa ấm Trạm Lửa Rừng Tĩnh Lặng, Sir Vaelen — Kỵ Sĩ Trầm Mặc đã quỳ gối phủ phục trước ta: 'Mừng ngài trở về, thưa Chỉ Huy Hiệp Sĩ Đen!'. Ký Ức cuối cùng bừng sáng: Ta chính là vị Chỉ Huy huyền thoại đã tự tay xóa đi ký ức của chính mình để tránh bị tâm ma The Veil làm tha hóa, chấp nhận trở thành Kẻ Lữ Hành vô danh để một ngày nào đó quay lại nhổ tận gốc rễ lời nguyền. Giờ đây, thanh gươm bóng tối đã tìm lại chủ nhân chân chính. Vòng Sáng Hộ Tâm quanh ta không còn chỉ để soi đường, mà là ngọn lửa dẫn lối giải thoát toàn bộ Khu Rừng Rỗng.\", \"id\": \"lore_memory_chapter_4\", \"title\": \"HỒI ỨC IV: ĐẠI THỨC TỈNH — CHÂN TƯỚNG HIỆP SĨ ĐEN\"}",
+      "oldTextSha256": "9afa726638dce23cd03fb0143589a203dcdb8291c7472a8092ef6681cd3b0ba6"
+    },
+    {
+      "residueId": "NR2-008c",
+      "filePath": "src/data/lore.json",
+      "key": "lore_black_knight_chronicle",
+      "classification": "CONFLICT",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-03",
+      "canonDecisionRef": "DEC-LOCK-02/07",
+      "oldTextVerbatim": "{\"act\": 2, \"author\": \"Văn Bia Cổ Xưởng Chuông\", \"content\": \"Những dòng chữ khắc sâu trên phiến đá cổ kể lại: Khi thảm họa Màn Sương The Veil bùng phát từ lòng đất, 'Hiệp Sĩ Đen (Black Knight)' — vị chỉ huy duy nhất năm xưa dám tiến vào tâm điểm Mạch Rễ để phong ấn lời nguyền và đánh đổi toàn bộ ký ức của mình. Ngài đã biến mất vào sương sâu trong bộ giáp đen rêu phong, chỉ để lại thanh kiếm và Vòng Sáng Hộ Tâm dẫn lối cho người kế tục...\", \"id\": \"lore_black_knight_chronicle\", \"title\": \"VĂN BIA CỔ: HIỆP SĨ ĐEN VÀ PHONG ẤN ĐẠI MẠCH RỄ\"}",
+      "oldTextSha256": "2953127a11d35f7b5de84b6f90ced3e05671297dc0b1ff9ba62c4cc7b6713e5b"
+    },
+    {
+      "residueId": "NR2-003a",
+      "filePath": "src/data/lore.json",
+      "key": "lore_knights_memorial_stele",
+      "classification": "REWRITE/CONFLICT",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-03",
+      "canonDecisionRef": "DEC-LOCK-01/06",
+      "oldTextVerbatim": "{\"act\": 2, \"author\": \"Văn Bia Cổ Xưởng Chuông\", \"content\": \"Nơi an nghỉ của 12 hiệp sĩ danh dự đã ngã xuống bảo vệ phòng tuyến Bellhollow trong Mùa Sương đầu tiên: Sir Cedric, Sir Valen, Sir Rowen, Sir Gareth, Sir Alistair...\\n\\nTên của vị Tổng Chỉ Huy ở đầu văn bia đã bị một vết chém sâu cào mòn có chủ ý. Dưới chân bia đá có khắc dòng chữ nhỏ: 'Dù thân xác chôn vùi trong sương lạnh, lời thề giữ ngọn lửa sẽ mãi trường tồn.'\", \"id\": \"lore_knights_memorial_stele\", \"title\": \"BIA ĐÁ TƯỞNG NIỆM ĐOÀN KỴ SĨ\"}",
+      "oldTextSha256": "7526e4370e2bd3d657c59eeb51d3115f919c20350acc4d79075ec8a6852b53c2"
+    },
+    {
+      "residueId": "NR2-014b",
+      "filePath": "src/data/lore.json",
+      "key": "SQ08_PURIFY_FALLEN",
+      "classification": "CONFLICT",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-05",
+      "canonDecisionRef": "DEC-LOCK-09 (OQ-04)",
+      "oldTextVerbatim": "{\"act\": 4, \"category\": \"side\", \"description\": \"Tiến sâu vào Rừng Sâu, đánh bại Chỉ Huy Hiệp Sĩ Trùm Mũ (Hooded Knight Boss) bị bóng tối điều khiển và mang Huy Hiệu Hiệp Sĩ Tha Hóa trở về bên bếp lửa cho Sir Vaelen — Kỵ Sĩ Trầm Mặc để thanh tẩy.\", \"id\": \"SQ08_PURIFY_FALLEN\", \"tasks\": [{\"done\": false, \"id\": \"t1\", \"text\": \"Vượt qua Đầm Lầy Tĩnh Lặng tiến sâu vào cấm địa Rừng Sâu\"}, {\"done\": false, \"id\": \"t2\", \"text\": \"Đánh bại Chỉ Huy Hiệp Sĩ Trùm Mũ (Hooded Knight Boss)\"}, {\"done\": false, \"id\": \"t3\", \"text\": \"Mang Huy Hiệu Hiệp Sĩ Tha Hóa về Trạm Lửa Rừng Tĩnh Lặng để Sir Vaelen thanh tẩy\"}], \"title\": \"NHIỆM VỤ TIẾN TRÌNH: GIẢI THOÁT CHO NHỮNG KẺ THA HÓA\"}",
+      "oldTextSha256": "03edd434e7f360e3086c197e4f5bdb820d0d6b2bfdc07b63ca7fa90143aa1e1a"
+    },
+    {
+      "residueId": "NR2-016a",
+      "filePath": "src/data/lore.json",
+      "key": "lore_ending_true",
+      "classification": "CONFLICT/REWRITE",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-08",
+      "canonDecisionRef": "DEC-LOCK-04/18",
+      "oldTextVerbatim": "{\"act\": 6, \"author\": \"Biên Niên Sử Bellhollow Mới\", \"content\": \"Khi Lưỡi Chuông Đồng được gắn trở lại và hồi chuông thứ bảy của Đại Hồng Chung ngân vang dội khắp thung lũng, ánh sáng bình minh ấm áp sau hàng trăm năm đã xuyên thủng tầng mây mù The Veil...\\n\\nNhờ sự thức tỉnh toàn vẹn của Chỉ Huy Hiệp Sĩ Đen và sự gắn kết bền chặt, tin cậy sâu sắc từ những người dân làng Bellhollow (Edda, Neris, Garth, Bram và Finn), Mạch Rễ cổ đã được thanh tẩy hoàn toàn. Màn sương vĩnh cửu tan biến, để lại mặt đất màu mỡ và bầu trời xanh ngát. Người anh hùng không rời đi, mà ở lại làm người bảo hộ bình yên cho Bellhollow – một vùng đất hồi sinh từ tro tàn.\", \"id\": \"lore_ending_true\", \"title\": \"KẾT THÚC I: BÌNH MINH CỦA TIẾNG CHUÔNG (TRUE ENDING)\"}",
+      "oldTextSha256": "afad34e13e6e77a6cf252dba53eb2ee196e152c34e8685174bce359965a37d74"
+    },
+    {
+      "residueId": "NR2-016b",
+      "filePath": "src/data/lore.json",
+      "key": "lore_ending_sacrifice",
+      "classification": "CONFLICT/REWRITE",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-08",
+      "canonDecisionRef": "DEC-LOCK-18",
+      "oldTextVerbatim": "{\"act\": 6, \"author\": \"Lời Nguyện Cầu Khắc Trên Đá\", \"content\": \"Nhớ lại danh xưng và trách nhiệm năm xưa của Chỉ Huy Hiệp Sĩ Đen, nhưng giữa sự xa cách và thiếu vắng niềm tin trọn vẹn từ dân làng, người lữ hành hiểu rằng không thể cùng lúc giữ lấy cả sinh mạng lẫn sự an toàn cho ngôi làng...\\n\\nChàng hiệp sĩ bước vào tâm chấn Mạch Rễ, cắm thanh kiếm và phóng thích toàn bộ hào quang Vòng Sáng Hộ Tâm rực sáng vào khe nứt thời đại, dùng chính thân xác và linh hồn mình để phong tỏa hoàn toàn lối thoát của The Veil. Màn sương ngoài thung lũng tan đi, làng Bellhollow được cứu thoát; nhưng sâu trong rừng cấm vĩnh viễn lưu lại một pho tượng hiệp sĩ phủ đầy rêu phong, lặng lẽ canh giữ cõi vĩnh hằng.\", \"id\": \"lore_ending_sacrifice\", \"title\": \"KẾT THÚC II: NGƯỜI CANH GÁC VĨNH HẰNG (BITTERSWEET ENDING)\"}",
+      "oldTextSha256": "1724d272e38982c7c58607558e2f64f762b34cb30f0fa9fe861d4a86c1b6d178"
+    },
+    {
+      "residueId": "NR2-016c",
+      "filePath": "src/data/lore.json",
+      "key": "lore_ending_fog_loop",
+      "classification": "CONFLICT/REWRITE",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-08",
+      "canonDecisionRef": "DEC-LOCK-18",
+      "oldTextVerbatim": "{\"act\": 6, \"author\": \"Tiếng Vọng Trong Sương Lạnh\", \"content\": \"Hồi chuông gióng lên trong vội vã khi tâm trí lữ khách chưa tìm lại được cội nguồn thân phận. Thiếu đi ý chí kiên định của Chỉ Huy Hiệp Sĩ Đen và sự thấu hiểu bí mật cội rễ, âm thanh của Đại Hồng Chung chỉ có thể xua tan lớp sương bề mặt trong chốc lát...\\n\\nChẳng bao lâu sau, một vết nứt mới lại toác ra trên thân chuông đồng. Tiếng chuông nghẹn lại rồi lịm dần, và những làn sương mù tím tái lạnh lẽo lại cuộn trào từ đáy vực, bao trùm Bellhollow. Kẻ lữ hành lại ngã xuống trong cơn mê sảng... Khu rừng lại tái sinh vòng lặp, chờ đợi một ngày người tìm thấy đầy đủ mọi mảnh ghép ký ức để phá tan lời nguyền.\", \"id\": \"lore_ending_fog_loop\", \"title\": \"KẾT THÚC III: VÒNG LẶP CỦA SƯƠNG MÙ (FOG LOOP ENDING)\"}",
+      "oldTextSha256": "59ae733a74d635d94e8536f471cd4c2d9a46110146762acca2a4aa262d22429e"
+    },
+    {
+      "residueId": "NR2-001",
+      "filePath": "src/systems/EndingSystem.ts",
+      "key": "triggerTimeRiftSequence:L1037",
+      "classification": "REMOVE FROM RUNTIME",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-02",
+      "canonDecisionRef": "DEC-LOCK-08",
+      "oldTextVerbatim": "      'Satyr: “Ánh đèn pha ô tô... quốc lộ ven rừng?! Thế giới của mình... con đường về nhà có thật!”', ",
+      "oldTextSha256": "8d84f7b3632e97e818f3a5dc3c933f32cfdb62abe336537ea75c0d636dffc924"
+    },
+    {
+      "residueId": "NR2-002",
+      "filePath": "src/systems/VeilSystem.ts",
+      "key": "whispers[0]:L44",
+      "classification": "REPLACE",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-02",
+      "canonDecisionRef": "DEC-LOCK-08",
+      "oldTextVerbatim": "    '“Satyr... quay lại đi... con đường về nhà ở phía sau...”',",
+      "oldTextSha256": "05ba0f3463733442dd7784d8fc8bb155681958ad28d8f7f4a3dc51c780e08eef"
+    },
+    {
+      "residueId": "NR2-003b",
+      "filePath": "src/data/tornPagesData.ts",
+      "key": "inspect_knights_memorial_stele:L299-300",
+      "classification": "REWRITE/CONFLICT",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-03",
+      "canonDecisionRef": "DEC-LOCK-01/06",
+      "oldTextVerbatim": "      'Nơi an nghỉ của 12 hiệp sĩ danh dự đã ngã xuống bảo vệ phòng tuyến Bellhollow trong Mùa Sương đầu tiên: Sir Cedric, Sir Valen, Sir Rowen, Sir Gareth, Sir Alistair...\\n\\nTên của vị Tổng Chỉ Huy ở đầu văn bia đã bị một vết chém sâu cào mòn có chủ ý.',\n      'Dưới chân bia đá có khắc dòng chữ nhỏ bằng máu khô:\\n\\n\"Dù thân xác chôn vùi trong sương lạnh, lời thề giữ ngọn lửa sẽ mãi trường tồn. Chỉ Huy sẽ trở lại khi Đại Hồng Chung vang hồi thứ bảy.\"'",
+      "oldTextSha256": "602a6f965c2c705576e134f7247988e05aa0a43969894e197515997831c5ab40"
+    },
+    {
+      "residueId": "NR2-004",
+      "filePath": "src/scenes/MainMenuScene.ts",
+      "key": "showChronicleAndGuideModal:L795-798",
+      "classification": "REWRITE",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-02",
+      "canonDecisionRef": "DEC-LOCK-07",
+      "oldTextVerbatim": "      '✦ DỊ CẢNH RỪNG SƯƠNG (THE FOG THAT REMEMBERS) ✦\\n' +\n      'Đại Hồng Chung Bellhollow nứt đôi khiến mạch rễ tha hóa trỗi dậy, giam cầm thung lũng trong Màn Sương Ký Ức vĩnh cửu.\\n' +\n      'Ngươi — Chỉ huy Hiệp Sĩ Đen mang mảnh ký ức ngủ vùi — thắp sáng Đèn Lồng Hổ Phách để giữ vững Bình Tâm, giải mã cổ ngữ,\\n' +\n      'và quyết định vận mệnh thung lũng qua 3 Kết Thúc: Bình Minh Của Tiếng Chuông, Người Canh Gác Vĩnh Hằng, hoặc Màn Đêm Vĩnh Cửu.',",
+      "oldTextSha256": "42b95af3278df3bee4d33fc74f88194aacf95ad8e5c45792d9dca45740c75d20"
+    },
+    {
+      "residueId": "NR2-005a",
+      "filePath": "src/scenes/PreloadScene.ts",
+      "key": "LORE_TIPS[1]:L142",
+      "classification": "REWRITE",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-06",
+      "canonDecisionRef": "AI_IRON_RULES",
+      "oldTextVerbatim": "    'Đừng bao giờ bước chệch khỏi con đường mòn khi ngọn đèn lồng chưa được châm đầy dầu thông.',",
+      "oldTextSha256": "a1a97911d3dc2a38e4020193715802dd5f38d266127f37fc1db1c6097b38e2a7"
+    },
+    {
+      "residueId": "NR2-007b",
+      "filePath": "src/data/zones.json",
+      "key": "veil_commander_epistle:L4178-4179",
+      "classification": "CONFLICT",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-03",
+      "canonDecisionRef": "DEC-LOCK-02 (OQ-03)",
+      "oldTextVerbatim": "          \"title\": \"Huyết Thư Của Chỉ Huy Hiệp Sĩ Đen\",\n          \"content\": \"Ta — Chỉ Huy Hiệp Sĩ Đen — xin tự phong ấn ký ức và bản ngã của mình vào chiếc chuông cổ, để linh hồn ta mãi mãi làm mồi nhử giam cầm The Veil dưới lòng đất...\"",
+      "oldTextSha256": "a860e285eb167382d4b1c86f9841de9996cb617c5f21026085f6e06a3e378388"
+    },
+    {
+      "residueId": "NR2-010a",
+      "filePath": "src/scenes/GameScene.ts",
+      "key": "AwakeningPopups:L4292,4382,4849",
+      "classification": "CONFLICT",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-02",
+      "canonDecisionRef": "DEC-LOCK-01/07",
+      "oldTextVerbatim": "          this.uiScene.showPopupMessage('🗡️ [THỨC TỈNH KÝ ỨC - GIAI ĐOẠN 1]: Khám phá Xưởng Chuông Bỏ Hoang gợi lại tàn ảnh về Hiệp Sĩ Đen!');\n        this.uiScene.showPopupMessage('🗡️ [THỨC TỈNH KÝ ỨC - GIAI ĐOẠN 1]: Khám phá Xưởng Chuông Bỏ Hoang gợi lại tàn ảnh về Hiệp Sĩ Đen!');\n                    this.uiScene.showPopupMessage('⚔️ THỨC TỈNH KÝ ỨC: Bạn chính là Chỉ Huy Hiệp Sĩ Đen (The Black Knight)!');",
+      "oldTextSha256": "596c1dc735d510cabaef04063dc73c01f6b2fc7b27bbe27f90ebb710bda012d6"
+    },
+    {
+      "residueId": "NR2-010b",
+      "filePath": "src/scenes/UIScene.ts",
+      "key": "playerNameText:L1063",
+      "classification": "REWRITE",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-02",
+      "canonDecisionRef": "DEC-LOCK-07",
+      "oldTextVerbatim": "        const title = '⚔️ Hiệp Sĩ Đen (Black Knight)';",
+      "oldTextSha256": "b40fec62beaa8ebd8657927d1f8e6413d8be7999ee3b883fa019206bd1798375"
+    },
+    {
+      "residueId": "NR2-013c",
+      "filePath": "src/entities/EvilKnights.ts",
+      "key": "hooded_commander_recognition:L833,839",
+      "classification": "CONFLICT",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-05",
+      "canonDecisionRef": "DEC-LOCK-09 (OQ-04)",
+      "oldTextVerbatim": "        text: 'Không thể nào... Hơi thở bóng tối trên bộ giáp đen ấy... Ngài chính là Chỉ Huy Hiệp Sĩ Đen?! Sao ngài lại quay mũi kiếm về phía chúng tôi?'\n        gameScene.uiScene.showPopupMessage('⚔️ Hooded Knight bàng hoàng: “Hơi thở bóng tối ấy... Ngài chính là Chỉ Huy Hiệp Sĩ Đen?! Sao ngài lại quay kiếm về phía chúng tôi?!”');",
+      "oldTextSha256": "39ee87edbc3ab791b7f49697cf1841d89ccb13f51512b7f36c8eddc77a9d8fd5"
+    },
+    {
+      "residueId": "NR2-016d",
+      "filePath": "src/systems/EndingSystem.ts",
+      "key": "ENDING_CONFIGS:L78-79,97,117,792",
+      "classification": "CONFLICT/REWRITE",
+      "canonApprovalStatus": "UNAPPROVED_PENDING_OWNER_HW_NR_01",
+      "actionTakenInNR03": "PRESERVED_IN_RUNTIME_AND_BACKED_UP",
+      "deferredToTask": "NR-REC-08",
+      "canonDecisionRef": "DEC-LOCK-04/18",
+      "oldTextVerbatim": "        'Hồi chuông thứ bảy ngân vang, chấn động tầng mây u ám đã giam cầm thung lũng suốt hàng trăm năm.',\n        'Nhờ sự thức tỉnh trọn vẹn của Chỉ Huy Hiệp Sĩ Đen và niềm tin tuyệt đối từ dân làng Bellhollow, Mạch Rễ cổ đã được thanh tẩy.',\n        'Chỉ Huy Hiệp Sĩ Đen đã nhớ lại tất cả, nhưng khoảng cách vô hình với dân làng khiến lời nguyền không thể hóa giải trọn vẹn.',\n        'Thiếu đi sức mạnh thức tỉnh của Chỉ Huy Hiệp Sĩ Đen, thanh âm đồng đúc chỉ xua tan lớp sương trên bề mặt trong giây lát.',\n    if (stage >= 3) stageTitle = 'Chỉ Huy Hiệp Sĩ Đen';",
+      "oldTextSha256": "d9570c09f02f3a6fb674483fe37fdcbe08633b167ed90bea3ebf2415784c6dad"
+    }
+  ]
+}
