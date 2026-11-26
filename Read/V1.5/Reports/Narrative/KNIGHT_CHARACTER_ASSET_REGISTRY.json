@@ -1,0 +1,238 @@
+{
+  "schemaVersion": "1.0.0",
+  "mission": "HW-NR-15-R1 — KNIGHT ORDER VISUAL QUALITY GATE",
+  "supersedes": [
+    "HW-NR-12",
+    "HW-NR-13",
+    "HW-NR-14",
+    "HW-NR-15 AG EXECUTION"
+  ],
+  "policy": {
+    "assetPriority": "EXISTING_ASSET_FIRST",
+    "allowProceduralGeometricArt": false,
+    "allowUnlicensedAssets": false,
+    "force64x64OverDetail": false
+  },
+  "codexReserved": [
+    "BUG-058 Scale Pop (BlackKnightPlayer.ts getLocomotionArtworkScale)",
+    "BUG-059 HD Consistency (Idle/Walk 30px vs Run 41px)",
+    "Black Knight V2 runtime verification",
+    "Animation pipeline",
+    "Texture filtering",
+    "Player visual regression"
+  ],
+  "characters": [
+    {
+      "id": "01",
+      "canonId": "CHAR-001",
+      "name": "Lord Meliodas Blackwood",
+      "title": "The Wolf Lord",
+      "approvalStatus": "READY FOR OWNER REVIEW",
+      "classification": "EXISTING_RUNTIME",
+      "provenanceReport": "Read/V1.5/Reports/HW_CHAR_01_R2_CODEX_BLACK_KNIGHT_V2_RECOVERY.md",
+      "sourceAsset": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/ALL_In_One_NEW/Black_Knight_All_In_One_New.png",
+      "verifiedLibraryPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/05_Atlases/",
+      "runtimeAtlases": [
+        "black_knight_armed_idle",
+        "black_knight_movement",
+        "black_knight_core_combat",
+        "black_knight_defense",
+        "black_knight_extended_skills",
+        "black_knight_conversion_actions",
+        "black_knight_conversion_air",
+        "black_knight_conversion_combat",
+        "black_knight_conversion_motion",
+        "black_knight_conversion_states"
+      ],
+      "portrait": "public/assets/characters/black_knight/black_knight_portrait.png",
+      "rejectedLegacyComparison": [
+        "public/assets/characters/mossbound_wayfarer/wayfarer_idle.png"
+      ],
+      "metrics": {
+        "cellPx": "64x64 (conversion: 80x72, 84x72, 112x72, 80x80)",
+        "runtimeScale": 1.5,
+        "worldHeightPx": "42.0-46.5 (idle/walk), 40.8-51.6 (run at 1.2x)",
+        "origin": [0.5, 1.0],
+        "idleFrameMs": 160,
+        "directions": ["down", "up", "left", "right"],
+        "animationsAvailable": "34 Fellor sequences mapped across 10 atlases (0 empty frames)"
+      },
+      "licenseStatus": "VERIFIED_COMMERCIAL_OK (Fellor / BitBlast Studio + Codex V2)",
+      "qualityGateNotes": "SHA-256 10/10 match vs Meliodas_Blackwood/05_Atlases; BUG-058 & BUG-059 reserved for Codex."
+    },
+    {
+      "id": "02",
+      "canonId": "CHAR-002",
+      "name": "Sir Vaelen",
+      "title": "The Silent Knight",
+      "approvalStatus": "READY FOR OWNER REVIEW",
+      "classification": "CONVERTED_RUNTIME",
+      "sourceAsset": "HOLLOW_WOODS_EXPORT/Pixel_Art/Characters/Knights/2D_SL_Knight/",
+      "runtimeAssets": [
+        "public/assets/characters/npcs/campfire_knight_idle_sheet.png",
+        "public/assets/characters/npcs/campfire_knight_pray_sheet.png"
+      ],
+      "portrait": "public/assets/characters/npcs/portrait_campfire_knight.png",
+      "metrics": {
+        "cellPx": "64x64",
+        "runtimeScale": 1.0,
+        "worldHeightPx": "46.0-47.0",
+        "origin": [0.5, 1.0],
+        "directions": ["right/front-angle (stationary NPC)"],
+        "animationsAvailable": ["anim_campfire_knight_idle (8f)", "anim_campfire_knight_pray (12f)"]
+      },
+      "licenseStatus": "VERIFIED_COMMERCIAL_OK (2D_SL_Knight license.txt)",
+      "qualityGateNotes": "Keep static bonfire NPC unchanged; NEEDS_CONVERSION applies only if upgraded to 4-dir roaming companion."
+    },
+    {
+      "id": "03",
+      "canonId": "CHAR-003",
+      "name": "Sir Mordric",
+      "title": "The Dark Knight",
+      "approvalStatus": "NEEDS ARTWORK",
+      "classification": "ASSET_MISSING_OR_SHARED_REF",
+      "provisionalSharedRef": [
+        "public/assets/characters/bosses/hooded_knight_sheet.png",
+        "HOLLOW_WOODS_EXPORT/Pixel_Art/Rar/Monsters/Hooded Knight Sprites.zip"
+      ],
+      "portrait": "public/assets/characters/bosses/portrait_hooded_knight.png (HoodedKnightBoss ref only)",
+      "metrics": {
+        "cellPx": "160x160 (HoodedKnightBoss ref)",
+        "runtimeScale": 1.0,
+        "worldHeightPx": "71.0 (standing), 64-123 (actions)",
+        "origin": [0.5, 1.0],
+        "directions": ["side-view 1-dir + flipX (Hooded ref)"],
+        "animationsAvailable": ["idle (8f)", "powerup", "attack", "run-idle transition"]
+      },
+      "licenseStatus": "UNVERIFIED_IN_ZIP (Hooded Knight Sprites.zip has no License.txt)",
+      "qualityGateNotes": "Blocked on Owner Decision DEC-LOCK-09 (merge with HoodedKnightBoss vs dedicated Dark Knight sprite & verified license)."
+    },
+    {
+      "id": "04",
+      "canonId": "CHAR-004",
+      "name": "Sir Roderick",
+      "title": "The Crimson Knight",
+      "approvalStatus": "NEEDS CONVERSION",
+      "classification": "CANDIDATE_NEEDS_CONVERSION",
+      "selectionReport": "Read/V1.5/Reports/Narrative/HW_NR_12_R3_RODERICK_ASSET_SELECTION.md",
+      "candidates": [
+        {
+          "rank": 1,
+          "name": "Heavy_Knight_Free",
+          "path": "HOLLOW_WOODS_EXPORT/Pixel_Art/Characters/Knights/Heavy_Knight_Free/",
+          "cellPx": "208x112",
+          "bodyHeightPx": 60,
+          "targetScaleForParity": 0.78,
+          "directions": ["side-view right only"],
+          "animationsAvailable": ["idle", "walk", "run", "jump", "light_attack", "hurt", "death"],
+          "licenseStatus": "VERIFIED_COMMERCIAL_OK (Art by Jahnu)",
+          "gap": "Side-View only; needs Top-Down 4-dir conversion."
+        },
+        {
+          "rank": 2,
+          "name": "Lantern_Knight (DarkFantasy_FREE_Starter)",
+          "path": "HOLLOW_WOODS_EXPORT/Pixel_Art/14_New_Downloaded_Packs/Dark_Fantasy/DarkFantasy_Starter/DarkFantasy_FREE_Starter/Characters/Lantern_Knight/",
+          "cellPx": "128x128",
+          "bodyHeightPx": 90,
+          "targetScaleForParity": 0.5,
+          "directions": ["down ONLY in free pack"],
+          "animationsAvailable": ["idle", "walk", "attack", "block", "hurt", "death"],
+          "licenseStatus": "VERIFIED_COMMERCIAL_OK (+AI Disclosure, Dubular)",
+          "gap": "Missing up/left/right directions + needs Crimson cloak/plume recolor."
+        },
+        {
+          "rank": 3,
+          "name": "BentoPack Dark Fantasy Knight (3D FBX)",
+          "path": "HOLLOW_WOODS_EXPORT/Pixel_Art/Rar/Characters/dark-fantasy-knight-free-knight.zip",
+          "cellPx": "3D FBX (517,488 tris)",
+          "directions": ["3D rig (306+7 clips)"],
+          "licenseStatus": "VERIFIED_COMMERCIAL_OK (+AI Disclosure, pack-bundling rule)",
+          "gap": "Blender not installed on workstation + needs Crimson cape mesh/shader."
+        }
+      ],
+      "portrait": null,
+      "rejectedPrototypes": [
+        "HOLLOW_WOODS_EXPORT/Pixel_Art/Characters/Prototypes/Sir_Roderick/roderick_topdown_prototype_sheet.png",
+        "HOLLOW_WOODS_EXPORT/Pixel_Art/Characters/Prototypes/Sir_Roderick/roderick_portrait_64x64.png"
+      ],
+      "qualityGateNotes": "Old HW-NR-12 blockout REJECTED. No zero-edit drop-in candidate exists; awaiting Owner choice of candidate path."
+    },
+    {
+      "id": "05",
+      "canonId": "CHAR-005",
+      "name": "Sir Aldemar",
+      "title": "The Ashen Knight",
+      "approvalStatus": "NEEDS CONVERSION",
+      "classification": "CANDIDATE_NEEDS_CONVERSION",
+      "selectionReport": "Read/V1.5/Reports/Narrative/HW_NR_13_R1_ALDEMAR_ASSET_SELECTION.md",
+      "candidates": [
+        {
+          "rank": 1,
+          "name": "Maxime_Nourry_Knight",
+          "path": "HOLLOW_WOODS_EXPORT/Pixel_Art/Characters/Knights/Maxime_Nourry_Knight/",
+          "cellPx": "90x90",
+          "bodyHeightPx": 44,
+          "targetScaleForParity": 1.0,
+          "directions": ["side-view right only"],
+          "animationsAvailable": ["idle/attack/roll sheets (greyfx/whitefx)", "rest", "drink", "death1", "death2"],
+          "licenseStatus": "VERIFIED_COMMERCIAL_OK (Maxime Nourry)",
+          "gap": "Side-View only; usable directly ONLY as static seated/rest NPC unless 4-dir Top-Down authored."
+        },
+        {
+          "rank": 2,
+          "name": "Lantern_Knight (DarkFantasy_FREE_Starter)",
+          "path": "HOLLOW_WOODS_EXPORT/Pixel_Art/14_New_Downloaded_Packs/Dark_Fantasy/DarkFantasy_Starter/DarkFantasy_FREE_Starter/Characters/Lantern_Knight/",
+          "cellPx": "128x128",
+          "bodyHeightPx": 90,
+          "targetScaleForParity": 0.5,
+          "directions": ["down ONLY in free pack"],
+          "animationsAvailable": ["idle", "walk", "attack", "block", "hurt", "death"],
+          "licenseStatus": "VERIFIED_COMMERCIAL_OK (+AI Disclosure, Dubular)",
+          "gap": "Missing up/left/right directions + needs Slate-Ash palette recolor (#485E60) & distinct silhouette."
+        },
+        {
+          "rank": 3,
+          "name": "CraftPix Knight_1",
+          "path": "HOLLOW_WOODS_EXPORT/Pixel_Art/Rar/Characters/knight-character-sprites-pixel-art.zip",
+          "cellPx": "86px / 128x128",
+          "bodyHeightPx": 64,
+          "targetScaleForParity": 0.73,
+          "directions": ["side-view right only"],
+          "animationsAvailable": ["Idle", "Walk", "Run", "Run+Attack", "Attack 1-3", "Defend", "Protect", "Hurt", "Jump", "Dead"],
+          "licenseStatus": "VERIFIED_FREE_TERMS (CraftPix Free License)",
+          "gap": "Side-View only + bright arcade outlines requiring desaturation and Top-Down authoring."
+        }
+      ],
+      "portrait": null,
+      "rejectedPrototypes": [
+        "HOLLOW_WOODS_EXPORT/Pixel_Art/Characters/Prototypes/Sir_Aldemar/aldemar_topdown_prototype_sheet.png",
+        "HOLLOW_WOODS_EXPORT/Pixel_Art/Characters/Prototypes/Sir_Aldemar/aldemar_portrait_64x64.png"
+      ],
+      "qualityGateNotes": "Old HW-NR-13 blockout REJECTED. Mystic_Autumn_Knights excluded (no license, opaque RGB checkerboard, text labels). Darkplates absent from repo."
+    },
+    {
+      "id": "06",
+      "canonId": "CHAR-006",
+      "name": "The Headless Warden",
+      "title": "Mounted Spectral Warden",
+      "approvalStatus": "ASSET NOT FOUND",
+      "classification": "CONCEPT_ONLY",
+      "selectionReport": "Read/V1.5/Reports/Narrative/HW_NR_14_R1_HEADLESS_WARDEN_REVIEW.md",
+      "conceptAsset": "HW/Trailer/Bảng thiết kế Hiệp sĩ Vô diện Hollow Woods.png",
+      "protectedReferenceOnly": "public/assets/characters/enemies/dread_horseman_sheet.png (Dread Horseman — DO NOT RENAME OR REUSE)",
+      "portrait": null,
+      "rejectedPrototypes": [
+        "HOLLOW_WOODS_EXPORT/Pixel_Art/Characters/Bosses/The_Headless_Warden/headless_warden_master_sheet.png",
+        "HOLLOW_WOODS_EXPORT/Pixel_Art/Characters/Bosses/The_Headless_Warden/headless_warden_portrait_64x64.png"
+      ],
+      "metrics": {
+        "targetCellPx": "128x128 or 160x160 (ART-K01)",
+        "targetWorldHeightPx": "72-100",
+        "directions": [],
+        "animationsAvailable": []
+      },
+      "licenseStatus": "OPTION_A_B_C_NOT_FEASIBLE (PixelHorse_V1.0 lacks license & duplicates Dread Horseman; BentoPack lacks horse & Blender unavailable; Mattz Art forbidden)",
+      "qualityGateNotes": "Old HW-NR-14 code-drawn blockout REJECTED. Requires custom pixel artist commission or new licensed mounted dark-fantasy asset pack."
+    }
+  ]
+}
