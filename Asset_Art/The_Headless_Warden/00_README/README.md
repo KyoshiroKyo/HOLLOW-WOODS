@@ -1,0 +1,3 @@
+# CHAR-006 — The Headless Warden
+
+Art archive only. V3.2 Original is the sole approved art authority. R4 is OWNER-REJECTED. R5 is a pending equipment study, not approved gameplay art. No animation, integration or gameplay changes are authorized. This commit contains four R5 equipment and VFX PNGs and status documentation only. Historical packs, source artwork, conversion scripts, HTML Studio, Word files and QA are in the local partial handover; remote archive of these is pending transport and license review. No third-party commercial references are included in this commit. Do not merge into gameplay. No R6 authorization.

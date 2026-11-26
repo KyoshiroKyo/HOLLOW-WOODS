@@ -1,0 +1,22 @@
+{
+  "character": "CHAR-006",
+  "art_authority": "V3.2 Original — OWNER-APPROVED",
+  "versions": {
+    "V3.2 Original": "OWNER-APPROVED; binary archive pending",
+    "B01": "OWNER-ACCEPTED technical audit; archive pending",
+    "B02": "TECHNICAL PROTOTYPE; archive pending",
+    "R1": "TECHNICAL PROTOTYPE; archive pending",
+    "R2": "PARTIAL / REVISE; archive pending",
+    "R3": "PARTIAL / REVISE; archive pending",
+    "R4": "OWNER-REJECTED; archive pending",
+    "R5": "PENDING OWNER REVIEW / PARTIAL; four equipment PNGs archived"
+  },
+  "rejected": "Soulfire Reaper V3.3",
+  "gate": "B ONLY",
+  "gameplay_style": "BLOCKED",
+  "runtime_scale": "BLOCKED",
+  "gate_c": "LOCKED",
+  "gate_d": "LOCKED",
+  "r6": "NOT AUTHORIZED",
+  "git_archive": "PARTIAL"
+}
