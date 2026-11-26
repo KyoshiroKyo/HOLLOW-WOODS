@@ -214,9 +214,39 @@
       "id": "06",
       "canonId": "CHAR-006",
       "name": "The Headless Warden",
+      "vietnameseName": "Kỵ Sĩ Vô Diện",
       "title": "Mounted Spectral Warden",
-      "approvalStatus": "ASSET NOT FOUND",
-      "classification": "CONCEPT_ONLY",
+      "approvalStatus": "DEFERRED BY OWNER (HW-V16-00R2)",
+      "artDirection": "OWNER-APPROVED V3.2",
+      "pixelArtPreview": "PENDING FINAL REVIEW",
+      "animationProduction": "ON HOLD",
+      "narrativeStatus": "DRAFT",
+      "runtimeIntegration": "DEFERRED BY OWNER",
+      "spawnAuthorized": false,
+      "releaseDependency": "OPTIONAL / DEFERRED",
+      "classification": "CONCEPT_ONLY_ON_HOLD",
+      "roadmapAdjustment": {
+        "D06": "DEFERRED BY OWNER",
+        "D07": "DEFERRED BY OWNER",
+        "D08": "CONTINUE — EXCLUDE HEADLESS WARDEN",
+        "E06": "DEFERRED BY OWNER",
+        "E07": "CONTINUE — EXISTING ENEMIES AND BOSSES ONLY",
+        "DEC-LOCK-14": "RESERVED / PENDING OWNER APPROVAL"
+      },
+      "reservedCandidateZones": [
+        "sunken_crypt_ruins (UNAPPROVED REFERENCE ONLY)",
+        "whispering_grove_sanctum (UNAPPROVED REFERENCE ONLY)",
+        "veil_origin_cavern (UNAPPROVED REFERENCE ONLY)"
+      ],
+      "futureActivationGates": [
+        "GATE W01 — Final Pixel Art Preview",
+        "GATE W02 — Runtime Scale & Anchor Verification",
+        "GATE W03 — Mounted, Dismounted & Warhorse Animation",
+        "GATE W04 — Soulfire VFX & Texture Atlas",
+        "GATE W05 — Canon, Dialogue & Character Identity",
+        "GATE W06 — Zone, Encounter & Gameplay Design",
+        "GATE W07 — Owner Integration Authorization"
+      ],
       "selectionReport": "Read/V1.5/Reports/Narrative/HW_NR_14_R1_HEADLESS_WARDEN_REVIEW.md",
       "conceptAsset": "HW/Trailer/Bảng thiết kế Hiệp sĩ Vô diện Hollow Woods.png",
       "protectedReferenceOnly": "public/assets/characters/enemies/dread_horseman_sheet.png (Dread Horseman — DO NOT RENAME OR REUSE)",
@@ -226,13 +256,13 @@
         "HOLLOW_WOODS_EXPORT/Pixel_Art/Characters/Bosses/The_Headless_Warden/headless_warden_portrait_64x64.png"
       ],
       "metrics": {
-        "targetCellPx": "128x128 or 160x160 (ART-K01)",
+        "targetCellPx": "128x128 or 160x160 (ART-K01 / V3.2)",
         "targetWorldHeightPx": "72-100",
         "directions": [],
         "animationsAvailable": []
       },
       "licenseStatus": "OPTION_A_B_C_NOT_FEASIBLE (PixelHorse_V1.0 lacks license & duplicates Dread Horseman; BentoPack lacks horse & Blender unavailable; Mattz Art forbidden)",
-      "qualityGateNotes": "Old HW-NR-14 code-drawn blockout REJECTED. Requires custom pixel artist commission or new licensed mounted dark-fantasy asset pack."
+      "qualityGateNotes": "Deferred by Owner under HW-V16-00R2; old HW-NR-14 code-drawn blockout REJECTED. All V3.1/V3.2 specs preserved; strict runtime exclusion enforced until GATE W01-W07 pass."
     }
   ]
 }

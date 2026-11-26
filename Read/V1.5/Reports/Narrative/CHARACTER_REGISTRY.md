@@ -61,13 +61,16 @@
 - **Asset:** Ứng viên `ASSET-K04` (`Maxime Nourry 64×64` — chưa xác minh đủ license & góc nhìn top-down).
 - **Trạng thái:** **Canon:** `ACCEPTED CHARACTER` (tiểu sử `PROPOSED`). **Implementation:** `IMPLEMENTATION-PENDING`.
 
-### `CHAR-006` — The Headless Warden (`Kỵ Sĩ Không Đầu`)
-- **Danh tính:** `The Headless Warden` (`CHAR-K04`, `ART-K01`).
-- **Quá khứ & Vai trò (`PROPOSED`):** Boss cưỡi ngựa không đầu do Owner yêu cầu bổ sung hướng phát triển; ý tưởng có thể là người gác di tích giữ lời thề nhưng thân phận, lore, encounter & quest hoàn toàn `PROPOSED`.
-- **Quan hệ:** Chưa xác định liên hệ với Đoàn Hắc Lang; **KHÔNG tự đồng nhất** với `DreadHorsemanEntity` hoặc kỵ sĩ mất tích `Elian`.
-- **Bí mật / Giới hạn:** Chờ Owner duyệt lore & vị trí bản đồ (`OQ-15`, `Ch. 16` #9).
+### `CHAR-006` — The Headless Warden (`Kỵ Sĩ Vô Diện` — `HW-V16-00R2 HOLD`)
+- **Trạng thái Chính Thức (`HW-V16-00R2`):**
+  - `CHARACTER ID`: `CHAR-006` | `ART DIRECTION`: **`OWNER-APPROVED V3.2`** | `PIXEL ART PREVIEW`: **`PENDING FINAL REVIEW`**
+  - `ANIMATION PRODUCTION`: **`ON HOLD`** | `NARRATIVE`: **`DRAFT`** | `RUNTIME INTEGRATION`: **`DEFERRED BY OWNER`**
+  - `SPAWN`: **`NOT AUTHORIZED`** | `RELEASE DEPENDENCY`: **`OPTIONAL / DEFERRED`**
+- **Danh tính & Quyền mở lại (`GATE W01–W07`):** `The Headless Warden` (`CHAR-K04`, `ART-K01`). Chỉ mở lại sau khi Owner ký lần lượt `GATE W01` (Final Pixel Art Preview) → `W02` (Runtime Scale & Anchor) → `W03` (Mounted/Dismounted/Warhorse Animation) → `W04` (Soulfire VFX & Texture Atlas) → `W05` (Canon, Dialogue & Identity) → `W06` (Zone, Encounter & Gameplay) → `W07` (Owner Integration Authorization).
+- **Quá khứ, Vai trò & Reserved World Design:** Khu vực tham khảo tương lai: *`Sunken Crypt Ruins`*, *`Whispering Grove Sanctum`*, *`Veil Origin Cavern`* (**chưa phê duyệt địa điểm nào**; cấm tự tạo zone ID, arena, collider vô hình hay khóa đường; giữ nguyên main route).
+- **Quan hệ & Cách ly Runtime (`STRICT RUNTIME EXCLUSION`):** Cấm tạo `HeadlessWardenBoss`, đăng ký entity, spawn point, boss AI, skill, quest, reward, Save flags, thoại/ký ức chưa duyệt, marker World Map, đưa preview vào `public/assets/`, **cấm dùng `DreadHorsemanEntity` thay thế**, và cấm tự sinh spritesheet. Không gắn `Elian` (`CHAR-012`) hay Đoàn Hắc Lang khi chưa ký Canon.
 - **Asset:** **Đặc tả nguyên bản `ART-K01`:** Ngựa giáp đồng hoa văn rễ, áo choàng đỏ rượu hai tà, linh hỏa xanh bạc tách lớp overlay trong suốt, canvas `128×128` hoặc `160×160` 4 hướng top-down (đối chiếu concept `HW\Trailer\Bảng thiết kế Hiệp sĩ Vô diện Hollow Woods.png`). **CẤM mua/trace/rip** pack trả phí `ASSET-K11` (`Mattz Art — Headless Horseman`).
-- **Trạng thái:** **Canon:** Hướng boss Owner chấp nhận; danh xưng, lore, kỹ năng `PROPOSED`. **Implementation:** `IMPLEMENTATION-PENDING` (chưa tạo spritesheet).
+- **Trạng thái:** **Canon:** `ART DIRECTION OWNER-APPROVED V3.2`; lore/identity `DRAFT`; `DEC-LOCK-14` `RESERVED`. **Implementation:** **`DEFERRED BY OWNER`** (`D06/D07/E06` ON HOLD; **0** runtime integration, bảo toàn toàn bộ hồ sơ V3.1/V3.2 & `ART-K01` không ghi đè/xóa).
 
 ---
 

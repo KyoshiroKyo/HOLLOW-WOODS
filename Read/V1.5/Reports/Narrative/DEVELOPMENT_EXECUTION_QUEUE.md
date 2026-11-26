@@ -61,22 +61,22 @@
 - **Test cần chạy:** `npm run check`, `HW-CS21-04` animation frame diagnostics, `test_v15_25` / walk-run QA.
 - **Điểm dừng:** **HARD STOP** & bàn giao contact sheet + FPS audit.
 
-### `TASK-B02` (Sản Xuất Nguyên Bản Sprite Sandbox `The Headless Warden` & Dàn Kỵ Sĩ Mới)
-- **Mục tiêu duy nhất:** Dựng spritesheet pixel art `128×128` 4 hướng nguyên bản (`ART-K01`) cho `The Headless Warden` trong sandbox (`0` gắn vào gameplay chính) và dựng prototype `Sir Roderick` / `Sir Aldemar` sau khi có quyết định bản quyền.
+### `TASK-B02` (Sản Xuất Nguyên Bản Sprite Sandbox Dàn Kỵ Sĩ Mới — *`The Headless Warden` DEFERRED PER `HW-V16-00R2`*)
+- **Mục tiêu duy nhất:** Dựng prototype `Sir Roderick` / `Sir Aldemar` sau khi có quyết định bản quyền. **Riêng `The Headless Warden` (`CHAR-006` / `D06–D07`) đang `DEFERRED BY OWNER` theo `HW-V16-00R2`** (chờ `GATE W01–W07`), giữ nguyên hồ sơ V3.1/V3.2 và không chặn các nhiệm vụ khác.
 - **Agent phụ trách:** **AG** (quản lý sandbox, packing atlas, contact sheet QA) / Họa sĩ (`pixel art` gốc).
-- **Dependencies:** `OQ-HW-BOSS`, `OQ-K04`, `OQ-04`, `OQ-05`, `OQ-07`.
-- **Phạm vi file:** Chỉ xuất vào `HOLLOW_WOODS_EXPORT/Pixel_Art/Characters/Bosses/` & báo cáo visual (chưa chạm `src/`).
+- **Dependencies:** `OQ-K04`, `OQ-04`, `OQ-05`, `OQ-07` (`DEC-LOCK-14` & `GATE W01–W07` cho `The Headless Warden`).
+- **Phạm vi file:** Chỉ xuất vào `HOLLOW_WOODS_EXPORT/Pixel_Art/Characters/` & báo cáo visual (chưa chạm `src/`, không đưa preview vào `public/assets/`).
 - **Hệ thống được bảo vệ:** `DreadHorsemanEntity`, `HoodedKnightBoss`, `Mattz Art` blacklist (cấm trace).
-- **Tiêu chí nghiệm thu:** Đạt đủ `4` tiêu chuẩn QA ở [HEADLESS_WARDEN_ASSET_SPECIFICATION.md §4.1](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Narrative/HEADLESS_WARDEN_ASSET_SPECIFICATION.md).
+- **Tiêu chí nghiệm thu:** Đạt đủ tiêu chuẩn QA asset cho từng nhân vật được duyệt; `The Headless Warden` giữ nguyên `DEFERRED BY OWNER` (không đánh `PASS`/`FAIL`).
 - **Test cần chạy:** Python alpha/grid/anchor/clipping validator + visual inspection `1:1` cạnh Meliodas.
 - **Điểm dừng:** Trình contact sheet cho Owner duyệt trước khi viết Entity runtime (`TASK-B03`).
 
-### `TASK-B03` (Tích Hợp Runtime Entity Kỵ Sĩ / Boss Mới — *Conditional*)
-- **Mục tiêu duy nhất:** Triển khai class/AI cho `The Headless Warden`, `Sir Roderick`, `Sir Aldemar` (hoặc điều chỉnh `HoodedKnightBoss` nếu `OQ-04` sáp nhập Mordric).
+### `TASK-B03` (Tích Hợp Runtime Entity Kỵ Sĩ / Boss Được Duyệt — *Exclude Headless Warden*)
+- **Mục tiêu duy nhất:** Điều chỉnh `HoodedKnightBoss` nếu `OQ-04` sáp nhập Mordric và tích hợp `Sir Roderick` / `Sir Aldemar` khi được duyệt (`D08`). **CẤM tạo `HeadlessWardenBoss`, spawn, AI, skill hay thay bằng `Dread Horseman` (`E06 DEFERRED BY OWNER`)** cho tới khi đủ `GATE W01–W07`.
 - **Agent phụ trách:** **Codex**
-- **Dependencies:** `TASK-B02` duyệt + `OQ-04/13/14/15/16`.
-- **Phạm vi file:** `src/entities/EvilKnights.ts` (hoặc module boss mới), `src/systems/BossEncounterSystem.ts`, `src/systems/WildlifeSystem.ts`, `src/scenes/PreloadScene.ts`, `src/config/Constants.ts`.
-- **Hệ thống được bảo vệ:** Main Route `7` stages, `BossMireWarden`, `SQ06–09`, `60 FPS`.
+- **Dependencies:** `TASK-B02` duyệt + `OQ-04/13/15/16` (loại trừ `Headless Warden`).
+- **Phạm vi file:** `src/entities/EvilKnights.ts` (hoặc module được duyệt), `src/systems/BossEncounterSystem.ts`, `src/systems/WildlifeSystem.ts`, `src/scenes/PreloadScene.ts`, `src/config/Constants.ts`.
+- **Hệ thống được bảo vệ:** Main Route `7` stages, `BossMireWarden`, `SQ06–09`, `60 FPS`, cách ly runtime `CHAR-006`.
 - **Tiêu chí nghiệm thu:** Zero 404, combat/telegraph chuẩn, không softlock `SQ08` hay `quest_corrupted_crest`.
 - **Test cần chạy:** `npm run check`, `verify_zero_404_assets.mjs`, boss lifecycle & save/load test.
 - **Điểm dừng:** **HARD STOP**.
