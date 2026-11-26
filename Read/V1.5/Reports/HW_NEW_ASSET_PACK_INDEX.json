@@ -1,0 +1,292 @@
+[
+  {
+    "name": "EPIC RPG World Pack - [FREE Demo]Ancient Ruins",
+    "archive_file": "EPIC RPG World Pack - [FREE Demo]Ancient Ruins.zip",
+    "archive_path": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\Rar\\World\\EPIC RPG World Pack - [FREE Demo]Ancient Ruins.zip",
+    "size_bytes": 649215,
+    "extracted_to": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\14_New_Downloaded_Packs\\Environment/Ancient_Ruins",
+    "total_files": 45,
+    "png_count": 32,
+    "map_files": [
+      "EPIC RPG World Pack - [FREE Demo]Ancient Ruins - Copia/TiledMap Editor/Ancient Ruins-Tileset-wall-8.tsx",
+      "EPIC RPG World Pack - [FREE Demo]Ancient Ruins - Copia/TiledMap Editor/Ancient Ruins-wall-8-rule.tmx",
+      "EPIC RPG World Pack - [FREE Demo]Ancient Ruins - Copia/TiledMap Editor/Terrain - Ancient Ruins.tsx",
+      "EPIC RPG World Pack - [FREE Demo]Ancient Ruins - Copia/TiledMap Editor/TiledMap Editor Example Demo- Ancient Ruins.tmx",
+      "EPIC RPG World Pack - [FREE Demo]Ancient Ruins - Copia/TiledMap Editor/Tileset-Animated Terrains-8 frames--.tsx"
+    ],
+    "license_files": [],
+    "tile_size_estimated": "32x32"
+  },
+  {
+    "name": "EPIC RPG World Pack-[FREE Demo]Grass Land 2.0",
+    "archive_file": "EPIC RPG World Pack-[FREE Demo]Grass Land 2.0.zip",
+    "archive_path": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\Rar\\World\\EPIC RPG World Pack-[FREE Demo]Grass Land 2.0.zip",
+    "size_bytes": 355755,
+    "extracted_to": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\14_New_Downloaded_Packs\\Environment/Grass_Land_2_0",
+    "total_files": 7,
+    "png_count": 2,
+    "map_files": [
+      "EPIC RPG World Pack - [FREE Demo]Grass Land 2.0-REWORK/TiledMap Editor/sample map demo.tmx",
+      "EPIC RPG World Pack - [FREE Demo]Grass Land 2.0-REWORK/TiledMap Editor/Tilesets/Tilesets and props Demo.tsx"
+    ],
+    "license_files": [],
+    "tile_size_estimated": "32x32"
+  },
+  {
+    "name": "Pixel Art Top Down - Basic v1.2.3_2",
+    "archive_file": "Pixel Art Top Down - Basic v1.2.3_2.zip",
+    "archive_path": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\Rar\\World\\Pixel Art Top Down - Basic v1.2.3_2.zip",
+    "size_bytes": 2622004,
+    "extracted_to": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\14_New_Downloaded_Packs\\Environment/Pixel_Art_Top_Down_Basic",
+    "total_files": 17,
+    "png_count": 12,
+    "map_files": [],
+    "license_files": [],
+    "tile_size_estimated": "16x16 / 32x32"
+  },
+  {
+    "name": "Plants",
+    "archive_file": "Plants.zip",
+    "archive_path": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\Rar\\World\\Plants.zip",
+    "size_bytes": 95675,
+    "extracted_to": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\14_New_Downloaded_Packs\\Environment/Plants",
+    "total_files": 3,
+    "png_count": 3,
+    "map_files": [],
+    "license_files": [],
+    "tile_size_estimated": "16x16 / 32x32"
+  },
+  {
+    "name": "Pixel Valley - Revamp",
+    "archive_file": "Pixel Valley - Revamp.zip",
+    "archive_path": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\Rar\\World\\Pixel Valley - Revamp.zip",
+    "size_bytes": 419559,
+    "extracted_to": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\14_New_Downloaded_Packs\\Environment/Pixel_Valley_Revamp",
+    "total_files": 13,
+    "png_count": 12,
+    "map_files": [],
+    "license_files": [],
+    "tile_size_estimated": "16x16 / 32x32"
+  },
+  {
+    "name": "tf_jungle",
+    "archive_file": "tf_jungle.zip",
+    "archive_path": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\Rar\\World\\tf_jungle.zip",
+    "size_bytes": 224662,
+    "extracted_to": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\14_New_Downloaded_Packs\\Environment/TF_Jungle",
+    "total_files": 17,
+    "png_count": 13,
+    "map_files": [],
+    "license_files": [
+      "readme.txt"
+    ],
+    "tile_size_estimated": "16x16 / 32x32"
+  },
+  {
+    "name": "DarkFantasy_FREE_Starter",
+    "archive_file": "DarkFantasy_FREE_Starter.zip",
+    "archive_path": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\Rar\\World\\DarkFantasy_FREE_Starter.zip",
+    "size_bytes": 336339,
+    "extracted_to": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\14_New_Downloaded_Packs\\Dark_Fantasy/DarkFantasy_Starter",
+    "total_files": 123,
+    "png_count": 113,
+    "map_files": [
+      "DarkFantasy_FREE_Starter/Exterior/16px/Terrain/Autotiles/Tiled/grass_over_dirt.tsx",
+      "DarkFantasy_FREE_Starter/Exterior/48px/Terrain/Autotiles/Tiled/grass_over_dirt.tsx"
+    ],
+    "license_files": [
+      "DarkFantasy_FREE_Starter/LICENSE.txt",
+      "DarkFantasy_FREE_Starter/README.txt"
+    ],
+    "tile_size_estimated": "16x16 / 32x32"
+  },
+  {
+    "name": "RF_Catacombs_v1.0",
+    "archive_file": "RF_Catacombs_v1.0.zip",
+    "archive_path": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\Rar\\World\\RF_Catacombs_v1.0.zip",
+    "size_bytes": 524607,
+    "extracted_to": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\14_New_Downloaded_Packs\\Dark_Fantasy/RF_Catacombs",
+    "total_files": 28,
+    "png_count": 19,
+    "map_files": [],
+    "license_files": [
+      "public-license.txt"
+    ],
+    "tile_size_estimated": "32x32"
+  },
+  {
+    "name": "tf_darkdimension",
+    "archive_file": "tf_darkdimension.zip",
+    "archive_path": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\Rar\\World\\tf_darkdimension.zip",
+    "size_bytes": 183040,
+    "extracted_to": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\14_New_Downloaded_Packs\\Dark_Fantasy/TF_DarkDimension",
+    "total_files": 17,
+    "png_count": 16,
+    "map_files": [],
+    "license_files": [
+      "readme.txt"
+    ],
+    "tile_size_estimated": "16x16 / 32x32"
+  },
+  {
+    "name": "tf_darkdimension_updated2020",
+    "archive_file": "tf_darkdimension_updated2020.zip",
+    "archive_path": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\Rar\\World\\tf_darkdimension_updated2020.zip",
+    "size_bytes": 211524,
+    "extracted_to": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\14_New_Downloaded_Packs\\Dark_Fantasy/TF_DarkDimension_Updated2020",
+    "total_files": 21,
+    "png_count": 20,
+    "map_files": [],
+    "license_files": [
+      "readme.txt"
+    ],
+    "tile_size_estimated": "16x16 / 32x32"
+  },
+  {
+    "name": "Houses_Pack",
+    "archive_file": "Houses_Pack.zip",
+    "archive_path": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\Rar\\World\\Houses_Pack.zip",
+    "size_bytes": 748124,
+    "extracted_to": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\14_New_Downloaded_Packs\\Buildings/Houses_Pack",
+    "total_files": 3,
+    "png_count": 1,
+    "map_files": [],
+    "license_files": [
+      "public-license.txt"
+    ],
+    "tile_size_estimated": "32x32"
+  },
+  {
+    "name": "Serene_Village_revamped_v1.9",
+    "archive_file": "Serene_Village_revamped_v1.9.zip",
+    "archive_path": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\Rar\\World\\Serene_Village_revamped_v1.9.zip",
+    "size_bytes": 637207,
+    "extracted_to": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\14_New_Downloaded_Packs\\Buildings/Serene_Village_Revamped",
+    "total_files": 36,
+    "png_count": 22,
+    "map_files": [],
+    "license_files": [],
+    "tile_size_estimated": "32x32"
+  },
+  {
+    "name": "Atelier Magicae - RPGMZ Extras",
+    "archive_file": "Atelier Magicae - RPGMZ Extras.zip",
+    "archive_path": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\Rar\\World\\Atelier Magicae - RPGMZ Extras.zip",
+    "size_bytes": 1337924,
+    "extracted_to": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\14_New_Downloaded_Packs\\Buildings/Atelier_Magicae_Extras",
+    "total_files": 3,
+    "png_count": 1,
+    "map_files": [],
+    "license_files": [],
+    "tile_size_estimated": "32x32"
+  },
+  {
+    "name": "Dead Swamp",
+    "archive_file": "Dead Swamp.zip",
+    "archive_path": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\Rar\\World\\Dead Swamp.zip",
+    "size_bytes": 122810,
+    "extracted_to": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\14_New_Downloaded_Packs\\Swamp_Caves/Dead_Swamp",
+    "total_files": 15,
+    "png_count": 13,
+    "map_files": [],
+    "license_files": [
+      "Dead Swamp/README.txt"
+    ],
+    "tile_size_estimated": "16x16 / 32x32"
+  },
+  {
+    "name": "mangrove-swamp-topdown-pack-free-sampler",
+    "archive_file": "mangrove-swamp-topdown-pack-free-sampler.zip",
+    "archive_path": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\Rar\\World\\mangrove-swamp-topdown-pack-free-sampler.zip",
+    "size_bytes": 1807042,
+    "extracted_to": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\14_New_Downloaded_Packs\\Swamp_Caves/Mangrove_Swamp",
+    "total_files": 8,
+    "png_count": 5,
+    "map_files": [],
+    "license_files": [
+      "README.md",
+      "LICENSE.txt"
+    ],
+    "tile_size_estimated": "16x16 / 32x32"
+  },
+  {
+    "name": "Kauzz Cave Tiles",
+    "archive_file": "Kauzz Cave Tiles.zip",
+    "archive_path": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\Rar\\World\\Kauzz Cave Tiles.zip",
+    "size_bytes": 161192,
+    "extracted_to": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\14_New_Downloaded_Packs\\Swamp_Caves/Kauzz_Cave_Tiles",
+    "total_files": 12,
+    "png_count": 10,
+    "map_files": [],
+    "license_files": [],
+    "tile_size_estimated": "16x16 / 32x32"
+  },
+  {
+    "name": "RPGW_Caves_v2.1",
+    "archive_file": "RPGW_Caves_v2.1.zip",
+    "archive_path": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\Rar\\World\\RPGW_Caves_v2.1.zip",
+    "size_bytes": 2660749,
+    "extracted_to": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\14_New_Downloaded_Packs\\Swamp_Caves/RPGW_Caves",
+    "total_files": 16,
+    "png_count": 6,
+    "map_files": [],
+    "license_files": [
+      "_license.txt"
+    ],
+    "tile_size_estimated": "32x32"
+  },
+  {
+    "name": "tf_ashlands",
+    "archive_file": "tf_ashlands.zip",
+    "archive_path": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\Rar\\World\\tf_ashlands.zip",
+    "size_bytes": 3452393,
+    "extracted_to": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\14_New_Downloaded_Packs\\Swamp_Caves/TF_Ashlands",
+    "total_files": 17,
+    "png_count": 16,
+    "map_files": [],
+    "license_files": [
+      "readme.txt"
+    ],
+    "tile_size_estimated": "16x16 / 32x32"
+  },
+  {
+    "name": "tf_atlantis_2",
+    "archive_file": "tf_atlantis_2.zip",
+    "archive_path": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\Rar\\World\\tf_atlantis_2.zip",
+    "size_bytes": 2084449,
+    "extracted_to": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\14_New_Downloaded_Packs\\Swamp_Caves/TF_Atlantis_2",
+    "total_files": 23,
+    "png_count": 22,
+    "map_files": [],
+    "license_files": [
+      "readme.txt"
+    ],
+    "tile_size_estimated": "16x16 / 32x32"
+  },
+  {
+    "name": "tf_atlantis_updated2020",
+    "archive_file": "tf_atlantis_updated2020.zip",
+    "archive_path": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\Rar\\World\\tf_atlantis_updated2020.zip",
+    "size_bytes": 875296,
+    "extracted_to": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\14_New_Downloaded_Packs\\Swamp_Caves/TF_Atlantis_Updated2020",
+    "total_files": 32,
+    "png_count": 31,
+    "map_files": [],
+    "license_files": [
+      "readme.txt"
+    ],
+    "tile_size_estimated": "16x16 / 32x32"
+  },
+  {
+    "name": "Pocket Inventory Series #2 Pixel Map_2",
+    "archive_file": "Pocket Inventory Series #2 Pixel Map_2.zip",
+    "archive_path": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\Rar\\UI_UX\\Pocket Inventory Series #2 Pixel Map_2.zip",
+    "size_bytes": 4826342,
+    "extracted_to": "G:\\HOLLOW WOODS\\HOLLOW_WOODS_EXPORT\\Pixel_Art\\14_New_Downloaded_Packs\\World_Map_UI/Pocket_Inventory_Map_2",
+    "total_files": 286,
+    "png_count": 249,
+    "map_files": [],
+    "license_files": [],
+    "tile_size_estimated": "16x16 / 32x32"
+  }
+]

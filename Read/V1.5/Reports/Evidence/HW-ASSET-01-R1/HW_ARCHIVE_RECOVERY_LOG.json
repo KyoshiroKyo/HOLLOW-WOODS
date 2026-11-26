@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0",
+  "executedAt": "2026-11-26T07:30:55.063977",
+  "backupRoot": "G:\\HOLLOW_WOODS_EXPORT\\BACKUP_HW_ASSET_01_20261126_065034",
+  "policy": "NON-OVERWRITING RECOVERY OF 3 RAR ARCHIVES MOVED TO 99_UNCLASSIFIED; BACKUP PRESERVED",
+  "actions": [
+    {
+      "fileName": "ForgottenMemories.rar",
+      "originalPath": "Pixel_Art/ForgottenMemories.rar",
+      "movedPath": "Pixel_Art/99_Unclassified/Archives_Pending_Inspection/ForgottenMemories.rar",
+      "backupPath": "G:\\HOLLOW_WOODS_EXPORT\\BACKUP_HW_ASSET_01_20261126_065034\\Pixel_Art\\ForgottenMemories.rar",
+      "backupSize": 536733,
+      "backupSha256": "c05171b4069af8358c60307199c509ade8088bf544675f3d6f35bc236e5d3bf4",
+      "conflictAtOriginal": false,
+      "statusBeforeRecovery": "MOVED",
+      "actionTaken": "RESTORED_TO_ORIGINAL_PATH_VIA_NON_OVERWRITE_MOVE",
+      "postRecoverySha256": "c05171b4069af8358c60307199c509ade8088bf544675f3d6f35bc236e5d3bf4",
+      "postRecoverySize": 536733,
+      "finalStatus": "RECOVERED"
+    },
+    {
+      "fileName": "Ramses Free Package_2.rar",
+      "originalPath": "Pixel_Art/Ramses Free Package_2.rar",
+      "movedPath": "Pixel_Art/99_Unclassified/Archives_Pending_Inspection/Ramses Free Package_2.rar",
+      "backupPath": "G:\\HOLLOW_WOODS_EXPORT\\BACKUP_HW_ASSET_01_20261126_065034\\Pixel_Art\\Ramses Free Package_2.rar",
+      "backupSize": 18504,
+      "backupSha256": "885440eb3011638c2676b6879881e851af32303bf82aaa9df2a18c4d06106676",
+      "conflictAtOriginal": false,
+      "statusBeforeRecovery": "MOVED",
+      "actionTaken": "RESTORED_TO_ORIGINAL_PATH_VIA_NON_OVERWRITE_MOVE",
+      "postRecoverySha256": "885440eb3011638c2676b6879881e851af32303bf82aaa9df2a18c4d06106676",
+      "postRecoverySize": 18504,
+      "finalStatus": "RECOVERED"
+    },
+    {
+      "fileName": "Resurrected RPG 1.1.rar",
+      "originalPath": "Pixel_Art/Resurrected RPG 1.1.rar",
+      "movedPath": "Pixel_Art/99_Unclassified/Archives_Pending_Inspection/Resurrected RPG 1.1.rar",
+      "backupPath": "G:\\HOLLOW_WOODS_EXPORT\\BACKUP_HW_ASSET_01_20261126_065034\\Pixel_Art\\Resurrected RPG 1.1.rar",
+      "backupSize": 656129,
+      "backupSha256": "2151da0ca017ae5b20ccc760e94ad2d72cc6c563b5f5bb51994c33c354e59e6e",
+      "conflictAtOriginal": false,
+      "statusBeforeRecovery": "MOVED",
+      "actionTaken": "RESTORED_TO_ORIGINAL_PATH_VIA_NON_OVERWRITE_MOVE",
+      "postRecoverySha256": "2151da0ca017ae5b20ccc760e94ad2d72cc6c563b5f5bb51994c33c354e59e6e",
+      "postRecoverySize": 656129,
+      "finalStatus": "RECOVERED"
+    }
+  ]
+}

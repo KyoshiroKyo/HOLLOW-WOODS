@@ -1,0 +1,297 @@
+# HW-ASSET-01 — BÁO CÁO TÀI NGUYÊN TRÙNG LẶP & BIẾN THỂ (DUPLICATE ASSETS REPORT)
+
+- **Ngày tạo:** `2026-11-26 06:54:08`
+- **Nguyên tắc:** Tuyệt đối **KHÔNG xóa** tệp nào; mọi bản trùng và biến thể đều được giữ nguyên để Owner quyết định.
+
+## 1. SOURCE AND RUNTIME COPY (Bản gốc khớp 100% SHA-256 với bản Runtime trong `public/assets/`)
+
+Tổng số nhóm khớp SHA-256 giữa nguồn & runtime: **30** nhóm (đây là bản sao hợp lệ giữa kho nguồn và runtime, KHÔNG phải rác dư thừa).
+
+- `98138c284fe3...` (8646 B):
+  - `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Bundle_Copy/Sprite Sheet/Attack 1.png` (`pixel_art`)
+  - `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Primary/Sprite Sheet/Attack 1.png` (`pixel_art`)
+  - `public/assets/characters/bosses/wetlands_boss/boss_wetlands_attack1.png` (`public_assets`)
+- `23b13a259f20...` (4819 B):
+  - `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Bundle_Copy/Sprite Sheet/Attack 2.png` (`pixel_art`)
+  - `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Primary/Sprite Sheet/Attack 2.png` (`pixel_art`)
+  - `public/assets/characters/bosses/wetlands_boss/boss_wetlands_attack2.png` (`public_assets`)
+- `2b5ddd0a7030...` (5343 B):
+  - `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Bundle_Copy/Sprite Sheet/idle.png` (`pixel_art`)
+  - `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Primary/Sprite Sheet/idle.png` (`pixel_art`)
+  - `public/assets/characters/bosses/wetlands_boss/boss_wetlands_idle.png` (`public_assets`)
+- `dd3987e6b191...` (10692 B):
+  - `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Bundle_Copy/Sprite Sheet/new/death.png` (`pixel_art`)
+  - `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Primary/Sprite Sheet/new/death.png` (`pixel_art`)
+  - `public/assets/characters/bosses/wetlands_boss/boss_wetlands_death.png` (`public_assets`)
+- `32cf8f6d1643...` (638 B):
+  - `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Bundle_Copy/Sprite Sheet/new/hit.png` (`pixel_art`)
+  - `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Primary/Sprite Sheet/new/hit.png` (`pixel_art`)
+  - `public/assets/characters/bosses/wetlands_boss/boss_wetlands_hit.png` (`public_assets`)
+- `cece79bb369d...` (6802 B):
+  - `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Bundle_Copy/Sprite Sheet/walk.png` (`pixel_art`)
+  - `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Primary/Sprite Sheet/walk.png` (`pixel_art`)
+  - `public/assets/characters/bosses/wetlands_boss/boss_wetlands_walk.png` (`public_assets`)
+- `3302e0f8abe7...` (1157 B):
+  - `Pixel_Art/05_Vegetation/Trees/Updated_Trees/Birch.png` (`pixel_art`)
+  - `public/assets/environment/trees/tree_weeping_willow.png` (`public_assets`)
+- `7db6876aae64...` (1126 B):
+  - `Pixel_Art/05_Vegetation/Trees/Updated_Trees/Oak.png` (`pixel_art`)
+  - `public/assets/environment/trees/tree_mossy_oak_grand.png` (`public_assets`)
+- `631052d6a0e2...` (3771 B):
+  - `Pixel_Art/07_World_Objects/Bridges_And_Gates/SHADOW_Void_Gate/SHADOW Series - Abyssal Gate.png` (`pixel_art`)
+  - `public/assets/environment/v14/props/structure_abyssal_gate_v14.png` (`public_assets`)
+- `6af1baab52a5...` (23949 B):
+  - `Sound_Effects/04_Combat_SFX/Impact/8bit_16bit_Pack/Blow 1V2.mp3` (`sound_effects`)
+  - `public/assets/audio/sfx/attack_swing.mp3` (`public_assets`)
+- `89cb74a8e38b...` (66532 B):
+  - `Sound_Effects/04_Combat_SFX/Impact/8bit_16bit_Pack/Boss hit 1.wav` (`sound_effects`)
+  - `public/assets/audio/sfx/player_death.wav` (`public_assets`)
+- `b8691ae64b87...` (55574 B):
+  - `Sound_Effects/04_Combat_SFX/Impact/8bit_16bit_Pack/Hit damage 1.wav` (`sound_effects`)
+  - `public/assets/audio/sfx/hurt.wav` (`public_assets`)
+- `7e23f0502c45...` (50336 B):
+  - `Sound_Effects/07_World_SFX/Interactions/8bit_16bit_Pack/Bubble 1.wav` (`sound_effects`)
+  - `public/assets/audio/sfx/heal_poultice.wav` (`public_assets`)
+- `bf5d4ac76124...` (50462 B):
+  - `Sound_Effects/07_World_SFX/Interactions/8bit_16bit_Pack/Bubble heavy 1.wav` (`sound_effects`)
+  - `public/assets/audio/sfx/oil_refill.wav` (`public_assets`)
+- `d7873fa909ca...` (117670 B):
+  - `Sound_Effects/08_UI_SFX/Click/8bit_16bit_Pack/Cancel 1.wav` (`sound_effects`)
+  - `public/assets/audio/sfx/ui_cancel.wav` (`public_assets`)
+- `fefaa39d59c6...` (117670 B):
+  - `Sound_Effects/08_UI_SFX/Click/8bit_16bit_Pack/Confirm 1.wav` (`sound_effects`)
+  - `public/assets/audio/sfx/craft_success.wav` (`public_assets`)
+  - `public/assets/audio/sfx/ui_confirm.wav` (`public_assets`)
+- `877d5f31a2ca...` (117670 B):
+  - `Sound_Effects/08_UI_SFX/Click/8bit_16bit_Pack/Select 1.wav` (`sound_effects`)
+  - `public/assets/audio/sfx/interact.wav` (`public_assets`)
+  - `public/assets/audio/sfx/ui_select.wav` (`public_assets`)
+- `9e93d763149a...` (147254 B):
+  - `Sound_Effects/08_UI_SFX/Inventory/8bit_16bit_Pack/Big Egg collect 1.wav` (`sound_effects`)
+  - `public/assets/audio/sfx/quest_update.wav` (`public_assets`)
+- `d60ac0f8c5d1...` (147254 B):
+  - `Sound_Effects/08_UI_SFX/Inventory/8bit_16bit_Pack/Fruit collect 1.wav` (`sound_effects`)
+  - `public/assets/audio/sfx/herb_gather.wav` (`public_assets`)
+- `6ce89ab68d74...` (119864 B):
+  - `Sound_Effects/08_UI_SFX/Notification/8bit_16bit_Pack/Text 1.wav` (`sound_effects`)
+  - `public/assets/audio/dialogue/dialogue_text_blip.wav` (`public_assets`)
+- `ebc2def79348...` (117766 B):
+  - `Sound_Effects/09_Voice_Dialogue/NPCs/Super_Dialogue_Audio_Pack_v1/3 - Greeting/Female/Karen Cenon/greeting_2_karen.wav` (`sound_effects`)
+  - `public/assets/audio/dialogue/dialogue_edda.wav` (`public_assets`)
+- `2c2670f46510...` (113154 B):
+  - `Sound_Effects/09_Voice_Dialogue/NPCs/Super_Dialogue_Audio_Pack_v1/3 - Greeting/Female/Meghan Christian/greeting_10_meghan.wav` (`sound_effects`)
+  - `public/assets/audio/dialogue/dialogue_neris.wav` (`public_assets`)
+- `d3e4a0ed780e...` (113502 B):
+  - `Sound_Effects/09_Voice_Dialogue/NPCs/Super_Dialogue_Audio_Pack_v1/3 - Greeting/Male/Alex Brodie/greeting_2_alex.wav` (`sound_effects`)
+  - `public/assets/audio/dialogue/dialogue_bram.wav` (`public_assets`)
+- `d489f3b98887...` (134314 B):
+  - `Sound_Effects/09_Voice_Dialogue/NPCs/Super_Dialogue_Audio_Pack_v1/3 - Greeting/Male/Ian Lampert/greeting_10_ian.wav` (`sound_effects`)
+  - `public/assets/audio/dialogue/dialogue_finn.wav` (`public_assets`)
+- `e363f387129d...` (109854 B):
+  - `Sound_Effects/09_Voice_Dialogue/NPCs/Super_Dialogue_Audio_Pack_v1/3 - Greeting/Male/Sean Lenhart/greeting_2_sean.wav` (`sound_effects`)
+  - `public/assets/audio/dialogue/dialogue_garth.wav` (`public_assets`)
+- `97549922178a...` (7764636 B):
+  - `Sound_Effects/The Knight’s Quiet Fire/A Quiet Hearth - Gates of Vortalania.mp3` (`sound_effects`)
+  - `public/assets/audio/bgm/knights_quiet_fire.mp3` (`public_assets`)
+- `a160bc0e135a...` (7449077 B):
+  - `Sound_Effects/The Knight’s Quiet Fire/Beyond the Hills - Gates of Vortalania.mp3` (`sound_effects`)
+  - `public/assets/audio/bgm/beyond_the_hills.mp3` (`public_assets`)
+- `983a30d96439...` (7119934 B):
+  - `Sound_Effects/The Knight’s Quiet Fire/Embervale - Gates of Vortalania.mp3` (`sound_effects`)
+  - `public/assets/audio/bgm/embervale.mp3` (`public_assets`)
+- `e5efce4f8317...` (8000783 B):
+  - `Sound_Effects/The Knight’s Quiet Fire/Evergrove - Gates of Vortalania.mp3` (`sound_effects`)
+  - `public/assets/audio/bgm/evergrove.mp3` (`public_assets`)
+- `d72ec3af4a62...` (7802253 B):
+  - `Sound_Effects/The Knight’s Quiet Fire/Forgotten Orchard - Gates of Vortalania.mp3` (`sound_effects`)
+  - `public/assets/audio/bgm/forgotten_orchard.mp3` (`public_assets`)
+
+## 2. EXACT DUPLICATE (Trùng SHA-256 nội bộ trong cùng kho nguồn hoặc cùng runtime)
+
+- Tổng số nhóm trùng nội dung thực (không tính AppleDouble macOS): **35** nhóm.
+- Ngoài ra có **631** tệp metadata AppleDouble `._*` / `.DS_Store` (gom về `Sound_Effects/99_Unclassified/_macos_metadata/`) trùng hash theo kích thước 4 KB / 120 B.
+
+- **[SOURCE EXACT DUPLICATE]** `a17606276416...` (507532 B):
+  - `Pixel_Art/01_Characters/Knights/Archives/2D_SL_Knight_v1.0_3.zip`
+  - `Pixel_Art/01_Characters/Knights/Archives/GandalfHardcore_2D_SL_Knight_v1.0.zip`
+- **[SOURCE EXACT DUPLICATE]** `8a43555e48d7...` (13140 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Portraits/Eleonore/Eleonore1.png`
+  - `Pixel_Art/01_Characters/Portraits/Portraits_v1/Portraits/Eleonore/Eleonore1.png`
+- **[SOURCE EXACT DUPLICATE]** `7d02ca0d59d3...` (6070 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Portraits/Eleonore/Eleonore2.png`
+  - `Pixel_Art/01_Characters/Portraits/Portraits_v1/Portraits/Eleonore/Eleonore2.png`
+- **[SOURCE EXACT DUPLICATE]** `ea03f9d9f7ba...` (3080 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Portraits/Joanna/JoannaDarcIII.png`
+  - `Pixel_Art/01_Characters/Portraits/Portraits_v1/Portraits/Joanna/JoannaDarcIII.png`
+- **[SOURCE EXACT DUPLICATE]** `ccd5003ba03e...` (9133 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Portraits/Joanna/JoannaPortrait1(NOBG)1.png`
+  - `Pixel_Art/01_Characters/Portraits/Portraits_v1/Portraits/Joanna/JoannaPortrait1(NOBG)1.png`
+- **[SOURCE EXACT DUPLICATE]** `dea7e29786f9...` (10322 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Portraits/Joanna/JoannaPortrait1(NOBG)3.png`
+  - `Pixel_Art/01_Characters/Portraits/Portraits_v1/Portraits/Joanna/JoannaPortrait1(NOBG)3.png`
+- **[SOURCE EXACT DUPLICATE]** `6b13b74947e1...` (10349 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Portraits/Joanna/JoannaPortrait1(NOBG)4.png`
+  - `Pixel_Art/01_Characters/Portraits/Portraits_v1/Portraits/Joanna/JoannaPortrait1(NOBG)4.png`
+- **[SOURCE EXACT DUPLICATE]** `aece004d0a2d...` (9660 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Portraits/Joanna/JoannaPortrait1.png`
+  - `Pixel_Art/01_Characters/Portraits/Portraits_v1/Portraits/Joanna/JoannaPortrait1.png`
+- **[SOURCE EXACT DUPLICATE]** `6d6f58555742...` (10886 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Portraits/Joanna/JoannaPortrait3.png`
+  - `Pixel_Art/01_Characters/Portraits/Portraits_v1/Portraits/Joanna/JoannaPortrait3.png`
+- **[SOURCE EXACT DUPLICATE]** `097e8c46a41b...` (2256 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Idle1.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Idle1.png`
+- **[SOURCE EXACT DUPLICATE]** `6fd93b91debf...` (2205 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Idle2.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Idle2.png`
+- **[SOURCE EXACT DUPLICATE]** `77bb2d87c424...` (2065 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Idle3.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Idle3.png`
+- **[SOURCE EXACT DUPLICATE]** `253a89a11a03...` (2023 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Idle4.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Idle4.png`
+- **[SOURCE EXACT DUPLICATE]** `914c48179242...` (2189 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Idle5.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Idle5.png`
+- **[SOURCE EXACT DUPLICATE]** `41e516f74f83...` (2261 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Idle6.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Idle6.png`
+- **[SOURCE EXACT DUPLICATE]** `c9aead138722...` (2269 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Idle7.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Idle7.png`
+- **[SOURCE EXACT DUPLICATE]** `3a53ccd4ed28...` (2224 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Idle8.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Idle8.png`
+- **[SOURCE EXACT DUPLICATE]** `53ae1c42e23c...` (2307 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Idle9.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Idle9.png`
+- **[SOURCE EXACT DUPLICATE]** `44cac8cc6718...` (130 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Shadow/Shadow1.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Shadow/Shadow2.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Shadow/Shadow9.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Shadow/Shadow1.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Shadow/Shadow2.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Shadow/Shadow9.png`
+- **[SOURCE EXACT DUPLICATE]** `723e066a713b...` (130 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Shadow/Shadow3.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Shadow/Shadow4.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Shadow/Shadow7.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Shadow/Shadow8.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Shadow/Shadow3.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Shadow/Shadow4.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Shadow/Shadow7.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Shadow/Shadow8.png`
+- **[SOURCE EXACT DUPLICATE]** `3bffcecbd468...` (130 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Shadow/Shadow5.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Shadow/Shadow6.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Shadow/Shadow5.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Shadow/Shadow6.png`
+- **[SOURCE EXACT DUPLICATE]** `20b81d8b9830...` (1363 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Joanna/Idle/Idle1.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Joanna/Idle/Idle1.png`
+- **[SOURCE EXACT DUPLICATE]** `8e73a5ecdbb1...` (1361 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Joanna/Idle/Idle2.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Joanna/Idle/Idle2.png`
+- **[SOURCE EXACT DUPLICATE]** `7ab713cf24fe...` (1374 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Joanna/Idle/Idle3.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Joanna/Idle/Idle3.png`
+- **[SOURCE EXACT DUPLICATE]** `53fdbdadb8fa...` (1354 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Joanna/Idle/Idle4.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Joanna/Idle/Idle4.png`
+- **[SOURCE EXACT DUPLICATE]** `a98028e27417...` (1300 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Joanna/Idle/Idle5.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Joanna/Idle/Idle5.png`
+- **[SOURCE EXACT DUPLICATE]** `10d835e1a535...` (1307 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Joanna/Idle/Idle6.png`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Joanna/Idle/Idle6.png`
+- **[SOURCE EXACT DUPLICATE]** `cc84ed43748f...` (154 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Root_Metadata/Contact.txt`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Contact.txt`
+- **[SOURCE EXACT DUPLICATE]** `fe17ba9f2e13...` (193 B):
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Root_Metadata/License.txt`
+  - `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/License.txt`
+- **[SOURCE EXACT DUPLICATE]** `aa83e0ec57fe...` (440095 B):
+  - `Pixel_Art/01_Characters/NPCs/GandalfHardcore/GandalfHardcore Character Asset Pack.zip`
+  - `Pixel_Art/01_Characters/NPCs/GandalfHardcore/GandalfHardcore FREE Character Asset Pack.zip`
+- **[SOURCE EXACT DUPLICATE]** `3f3b726b160f...` (73039 B):
+  - `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Bundle_Copy/SHADOW Series - The Shadowed Wetlands Boss.aseprite`
+  - `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Primary/SHADOW Series - The Shadowed Wetlands Boss.aseprite`
+- **[SOURCE EXACT DUPLICATE]** `33523e60e5a2...` (2579 B):
+  - `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Bundle_Copy/Sprite Sheet/new/Pre-Attack 3.png`
+  - `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Primary/Sprite Sheet/new/Pre-Attack 3.png`
+- **[SOURCE EXACT DUPLICATE]** `5ee23df14479...` (110942 B):
+  - `Pixel_Art/03_Creatures/Monsters/Pixel_Bat_Pig_Spider_Worms/Png/Vamphare.png`
+  - `Pixel_Art/03_Creatures/Monsters/Pixel_Bat_Pig_Spider_Worms/Vamphare/VampireRabbit_Source_Original.png`
+- **[SOURCE EXACT DUPLICATE]** `f30253075678...` (3952575 B):
+  - `Pixel_Art/09_UI_UX/Panels/Humble Gift - Paper UI System.zip`
+  - `Pixel_Art/09_UI_UX/Panels/Humble Gift - Paper UI System_v1.1.zip`
+- **[RUNTIME-INTERNAL DUPLICATE]** `08b5834d53de...` (2771121 B):
+  - `public/assets/audio/ambience/ambience_crossing.mp3`
+  - `public/assets/audio/sfx/v14/footstep_leaves_1.mp3`
+
+## 3. SAME NAME DIFFERENT CONTENT / VERSIONED / ANIMATION / VISUAL VARIANT
+
+Phát hiện **18** nhóm cùng tên tệp nhưng khác SHA-256 (phân biệt rõ giữa bản sao/biến thể đồ họa và file trùng tên khác gói):
+
+- **`attack.png`** — Phân loại: **SAME NAME DIFFERENT CONTENT** (3 phiên bản SHA-256):
+  - `c78a61465c41...` (35477 B, dims=520x260): `Pixel_Art/01_Characters/NPCs/town-folk-2-free-v1.0/characters/errand_boy/attack.png`
+  - `e84b265ab5e2...` (47130 B, dims=504x252): `Pixel_Art/01_Characters/NPCs/town-folk-2-free-v1.0/characters/night_watchman/attack.png`
+  - `cd1877bf4c89...` (37188 B, dims=496x248): `Pixel_Art/01_Characters/NPCs/town-folk-2-free-v1.0/characters/potter/attack.png`
+- **`death.png`** — Phân loại: **SAME NAME DIFFERENT CONTENT** (2 phiên bản SHA-256):
+  - `fa839f60bba9...` (6168 B, dims=256x128): `Pixel_Art/01_Characters/Knights/2D_SL_Knight_v1.0_3/Death.png`
+  - `dd3987e6b191...` (10692 B, dims=8151x87): `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Bundle_Copy/Sprite Sheet/new/death.png`, `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Primary/Sprite Sheet/new/death.png`
+- **`end-attack 3.png`** — Phân loại: **ANIMATION VARIANT / VISUAL VARIANT** (2 phiên bản SHA-256):
+  - `676f38fe1176...` (4457 B, dims=1235x87): `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Bundle_Copy/Sprite Sheet/new/end-Attack 3.png`
+  - `886cc73da518...` (5505 B, dims=1729x87): `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Primary/Sprite Sheet/new/end-Attack 3.png`
+- **`forest-asset-pack.aseprite`** — Phân loại: **SAME NAME DIFFERENT CONTENT** (2 phiên bản SHA-256):
+  - `c47b4d808550...` (7880 B, dims=-): `Pixel_Art/05_Vegetation/Trees/Forest_Asset_Pack/Forest-Asset-Pack.aseprite`
+  - `8a2a819c4d56...` (2123 B, dims=-): `Pixel_Art/05_Vegetation/Trees/Updated_Trees/Forest-Asset-Pack.aseprite`
+- **`hit.png`** — Phân loại: **SAME NAME DIFFERENT CONTENT** (2 phiên bản SHA-256):
+  - `761ab36c5787...` (344 B, dims=192x128): `Pixel_Art/03_Creatures/Entities/SHADOW Series - Hallokin (free)/png (free)/hit.png`
+  - `32cf8f6d1643...` (638 B, dims=247x87): `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Bundle_Copy/Sprite Sheet/new/hit.png`, `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Primary/Sprite Sheet/new/hit.png`
+- **`idle.png`** — Phân loại: **SAME NAME DIFFERENT CONTENT** (4 phiên bản SHA-256):
+  - `881248b6c2c7...` (9213 B, dims=256x256): `Pixel_Art/01_Characters/Knights/2D_SL_Knight_v1.0_3/Idle.png`
+  - `82b5cc0b6e74...` (1632 B, dims=1152x128): `Pixel_Art/03_Creatures/Entities/SHADOW Series - Hallokin (free)/png (free)/idle.png`
+  - `70ca6a69b2c8...` (2694 B, dims=1662x161): `Pixel_Art/03_Creatures/Entities/SHADOW Series - Shadeflit (Free)/idle.png`
+  - `2b5ddd0a7030...` (5343 B, dims=3458x87): `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Bundle_Copy/Sprite Sheet/idle.png`, `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Primary/Sprite Sheet/idle.png`
+- **`idle1.png`** — Phân loại: **SAME NAME DIFFERENT CONTENT** (2 phiên bản SHA-256):
+  - `097e8c46a41b...` (2256 B, dims=64x64): `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Idle1.png`, `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Idle1.png`
+  - `20b81d8b9830...` (1363 B, dims=64x64): `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Joanna/Idle/Idle1.png`, `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Joanna/Idle/Idle1.png`
+- **`idle2.png`** — Phân loại: **SAME NAME DIFFERENT CONTENT** (2 phiên bản SHA-256):
+  - `6fd93b91debf...` (2205 B, dims=64x64): `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Idle2.png`, `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Idle2.png`
+  - `8e73a5ecdbb1...` (1361 B, dims=64x64): `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Joanna/Idle/Idle2.png`, `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Joanna/Idle/Idle2.png`
+- **`idle3.png`** — Phân loại: **SAME NAME DIFFERENT CONTENT** (2 phiên bản SHA-256):
+  - `77bb2d87c424...` (2065 B, dims=64x64): `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Idle3.png`, `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Idle3.png`
+  - `7ab713cf24fe...` (1374 B, dims=64x64): `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Joanna/Idle/Idle3.png`, `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Joanna/Idle/Idle3.png`
+- **`idle4.png`** — Phân loại: **SAME NAME DIFFERENT CONTENT** (2 phiên bản SHA-256):
+  - `253a89a11a03...` (2023 B, dims=64x64): `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Idle4.png`, `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Idle4.png`
+  - `53fdbdadb8fa...` (1354 B, dims=64x64): `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Joanna/Idle/Idle4.png`, `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Joanna/Idle/Idle4.png`
+- **`idle5.png`** — Phân loại: **SAME NAME DIFFERENT CONTENT** (2 phiên bản SHA-256):
+  - `914c48179242...` (2189 B, dims=64x64): `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Idle5.png`, `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Idle5.png`
+  - `a98028e27417...` (1300 B, dims=64x64): `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Joanna/Idle/Idle5.png`, `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Joanna/Idle/Idle5.png`
+- **`idle6.png`** — Phân loại: **SAME NAME DIFFERENT CONTENT** (2 phiên bản SHA-256):
+  - `41e516f74f83...` (2261 B, dims=64x64): `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Eleonore/Idle/Idle6.png`, `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Eleonore/Idle/Idle6.png`
+  - `10d835e1a535...` (1307 B, dims=64x64): `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Primary/Sprites/Joanna/Idle/Idle6.png`, `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/Sprites/Joanna/Idle/Idle6.png`
+- **`jump.png`** — Phân loại: **SAME NAME DIFFERENT CONTENT** (2 phiên bản SHA-256):
+  - `23fa569eeb7b...` (12072 B, dims=256x256): `Pixel_Art/01_Characters/Knights/2D_SL_Knight_v1.0_3/Jump.png`
+  - `2924e8ba3298...` (950 B, dims=576x128): `Pixel_Art/03_Creatures/Entities/SHADOW Series - Hallokin (free)/png (free)/jump.png`
+- **`license.txt`** — Phân loại: **SAME NAME DIFFERENT CONTENT** (4 phiên bản SHA-256):
+  - `fe17ba9f2e13...` (193 B, dims=-): `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Root_Metadata/License.txt`, `Pixel_Art/01_Characters/Knights/EleonoreAndJoanna/Extracted_Duplicate/License.txt`
+  - `a2a32655b6f1...` (604 B, dims=-): `Pixel_Art/01_Characters/Knights/2D_SL_Knight_v1.0_3/license.txt`
+  - `28a4f69b5f6c...` (525 B, dims=-): `Pixel_Art/Black Knight/License.txt`
+  - `e16d71c52c26...` (1033 B, dims=-): `Pixel_Art/01_Characters/NPCs/town-folk-2-free-v1.0/LICENSE.txt`
+- **`mid-attack 3.png`** — Phân loại: **SAME NAME DIFFERENT CONTENT** (2 phiên bản SHA-256):
+  - `95dc0e705e1d...` (765 B, dims=247x87): `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Bundle_Copy/Sprite Sheet/new/mid-Attack 3.png`
+  - `1a323f15b84f...` (2069 B, dims=988x87): `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Primary/Sprite Sheet/new/mid-Attack 3.png`
+- **`readme.txt`** — Phân loại: **SAME NAME DIFFERENT CONTENT** (2 phiên bản SHA-256):
+  - `10a6913b833d...` (328 B, dims=-): `Pixel_Art/01_Characters/NPCs/SmithNPC/ReadMe.txt`
+  - `8cc89c3aef40...` (862 B, dims=-): `Pixel_Art/01_Characters/NPCs/town-folk-2-free-v1.0/README.txt`
+- **`run.png`** — Phân loại: **SAME NAME DIFFERENT CONTENT** (3 phiên bản SHA-256):
+  - `c7c3af57a4d5...` (11282 B, dims=256x256): `Pixel_Art/01_Characters/Knights/2D_SL_Knight_v1.0_3/Run.png`
+  - `c3c310535459...` (1279 B, dims=768x128): `Pixel_Art/03_Creatures/Entities/SHADOW Series - Hallokin (free)/png (free)/run.png`
+  - `6707be769338...` (2798 B, dims=1662x161): `Pixel_Art/03_Creatures/Entities/SHADOW Series - Shadeflit (Free)/run.png`
+- **`walk.png`** — Phân loại: **SAME NAME DIFFERENT CONTENT** (4 phiên bản SHA-256):
+  - `cece79bb369d...` (6802 B, dims=3458x87): `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Bundle_Copy/Sprite Sheet/walk.png`, `Pixel_Art/02_Bosses/Mire_Warden/Wetlands_Boss_Primary/Sprite Sheet/walk.png`
+  - `451b39cabe33...` (46970 B, dims=520x260): `Pixel_Art/01_Characters/NPCs/town-folk-2-free-v1.0/characters/errand_boy/walk.png`
+  - `3188c03f8d22...` (39982 B, dims=504x252): `Pixel_Art/01_Characters/NPCs/town-folk-2-free-v1.0/characters/night_watchman/walk.png`
+  - `a90861080e3c...` (44705 B, dims=496x248): `Pixel_Art/01_Characters/NPCs/town-folk-2-free-v1.0/characters/potter/walk.png`

@@ -1,0 +1,52 @@
+{
+  "pack_name": "Resurrected RPG 1.1",
+  "author": "Immunity (https://immunitys.itch.io/resurected-rpg-tile)",
+  "archive_source": "HOLLOW_WOODS_EXPORT/Pixel_Art/Rar/World/Resurrected RPG 1.1.rar",
+  "archive_size_bytes": 656129,
+  "destination_library": "HOLLOW_WOODS_EXPORT/Pixel_Art/13_Tileset_Packs/Resurrected_RPG/",
+  "files": [
+    {
+      "name": "Grass.png",
+      "size": "1024x512",
+      "desc": "Base terrain tiles, paths, dirt, clods",
+      "current_game_usage": "AVAILABLE BUT UNUSED"
+    },
+    {
+      "name": "Grass 2 layer.png",
+      "size": "1024x512",
+      "desc": "Layered ground terrain",
+      "current_game_usage": "AVAILABLE BUT UNUSED"
+    },
+    {
+      "name": "Plants.png",
+      "size": "1024x1024",
+      "desc": "Large trees, tree canopies, foliage, bushes, flowers",
+      "current_game_usage": "AVAILABLE BUT UNUSED"
+    },
+    {
+      "name": "PlantShadow.png",
+      "size": "512x512",
+      "desc": "Tree and shrub shadow overlays",
+      "current_game_usage": "AVAILABLE BUT UNUSED"
+    },
+    {
+      "name": "Props.png",
+      "size": "512x512",
+      "desc": "Shrines, stone lanterns, ruins, pots, chests",
+      "current_game_usage": "AVAILABLE BUT UNUSED"
+    },
+    {
+      "name": "Wall.png",
+      "size": "2048x1024",
+      "desc": "Ruined stone walls, pillars, stairs, arches",
+      "current_game_usage": "AVAILABLE BUT UNUSED"
+    },
+    {
+      "name": "portal-Sheet.png",
+      "size": "3264x112",
+      "desc": "Animated stone portal (29 frames, 112x112)",
+      "current_game_usage": "AVAILABLE BUT UNUSED"
+    }
+  ],
+  "gameplay_integration_recommendation": "HIGH PRIORITY - Recommended as primary environmental tileset for Outer Woods & Deep Forest."
+}
