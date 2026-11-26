@@ -853,8 +853,14 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         this.selectQuickSlot(4);
         this.events.emit('ui_toggle_lantern');
       });
-      // V15-44: Xử lý phím tắt toggle giao diện không bị chặn bởi isAnyModalOpen
-      this.input.keyboard.on('keydown-C', () => {
+      // V15-44 & HW-H4-12A: Quản lý duy nhất phím tắt [C] tập trung tại UIScene (chống trùng listener, repeat & Phaser queue replay)
+      let lastKeyCEvent: KeyboardEvent | undefined;
+      this.input.keyboard.on('keydown-C', (event?: KeyboardEvent) => {
+        if (event) {
+          if (event === lastKeyCEvent || event.repeat) return;
+          lastKeyCEvent = event;
+        }
+        if (this.gameOverModal && this.gameOverModal.isOpen) return;
         if (this.isDialogueActive) return;
         if (this.craftingModal && this.craftingModal.isOpen) {
           this.craftingModal.close();

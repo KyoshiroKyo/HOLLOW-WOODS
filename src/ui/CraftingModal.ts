@@ -151,7 +151,6 @@ export class CraftingModal {
       this.keyHandlers.push({ event, fn });
     };
 
-    addKey('keydown-C', () => this.toggle());
     addKey('keydown-I', () => this.toggle());
     addKey('keydown-J', () => {
       if (this.isOpen) {

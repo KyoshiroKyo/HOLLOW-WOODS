@@ -95,7 +95,7 @@ Dùng mã trong INDEX R10. Hàng **OPEN** của batch khác giữ ở chủ sở
 | `HOTFIX-B2` | P0/Env | `PARTIAL` (`BLOCKED` env) | Playwright IME packet/blur/watchdog PASS `5/5`; còn chờ test hook vật lý EVKey/UniKey trên Windows thật của Owner. |
 | `H4-NEW-03` / `OPEN-01` | P1 | `OPEN` | Mire Warden cộng đúp `relic_heart_of_roots x2` & gán sớm `clapper_collected`. |
 | `OPEN-02` | P1 | `OPEN` | Nhánh Stage 6 vào `broken_bell_shrine` thiếu `mire_pillars_solved \|\| mire_puzzle_solved` không kích hoạt Mire Warden. |
-| `H4-NEW-04` | P1 | `OPEN` | Phím `[C]` tự mở/đóng ngay `CraftingModal` (`afterKeyC: false`); `[I]` mở `CraftingModal`. |
+| `H4-NEW-04` (CraftingModal Key `[C]` Double-Toggle) | P1 | `FIXED-PENDING-OWNER` | Loại bỏ listener `C` trùng/cạnh tranh ở `CraftingModal.ts:154`, `JournalModal.ts:376`, `BlackKnightPlayer.ts:872`; tập trung duy nhất tại `UIScene.ts:857` kèm chống `event.repeat` & replay `KeyboardEvent` trong hàng đợi Phaser; `C01–C12` `12/12 PASS` + `SMOKE_UI PASS` ([HW_H4_12A](HW_H4_12A_CRAFTING_INPUT_REPORT.md)). |
 | `H4-NEW-05` | P1 | `OPEN` | Xung đột `[M]` (Mute Audio thắng World Map; dùng `[N]` mở map). |
 | `H4-NEW-06` | P1 | `OPEN` | `AudioManager.setupAutoplayUnlock()` gỡ 5 `window` listener thiếu `{ capture: true }`. |
 | `H4-NEW-07` | P1/P2 | `OPEN` | `mossbound_wayfarer.rar` (185.5 KB) còn trong `public/assets/characters/` & lọt vào `dist/`; lệch version `1.5.2`/`1.5.1`/`1.4.0`. |

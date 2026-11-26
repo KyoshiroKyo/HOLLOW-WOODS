@@ -1,0 +1,1327 @@
+{
+  "mode": "after",
+  "timestamp": "2026-11-26T01:12:56",
+  "passedCount": 12,
+  "totalCount": 12,
+  "overallPass": true,
+  "results": [
+    {
+      "case": "C01",
+      "desc": "Press C once when CraftingModal closed (real Playwright keyboard.press)",
+      "classification": "REAL-KEYBOARD-INTEGRATION",
+      "pass": true,
+      "afterKeyC": true,
+      "craftingVisible": true,
+      "isAnyModalOpen": true,
+      "focusTag": "CANVAS",
+      "listenersInit": {
+        "uiKeydownC": 1,
+        "uiKeydownI": 3,
+        "gsKeydownC": 0
+      },
+      "probe": {
+        "domEvents": [
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": false,
+            "at": 13618.79999999702
+          }
+        ],
+        "calls": [
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 13619.099999997765,
+            "listenerCount": 1,
+            "isOpen": false
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 13619.39999999851,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:36044)",
+              "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 13619.699999999255,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:61854/assets/index-FGtorazy.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "CraftingModal.open",
+            "at": 13619.79999999702,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.open (eval at evaluate (:370:30), <anonymous>:54:17)",
+              "at mt.toggle (http://127.0.0.1:61854/assets/index-FGtorazy.js:301:29469)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:50:35)"
+            ]
+          }
+        ],
+        "toggleCount": 1,
+        "openCount": 1,
+        "closeCount": 0,
+        "uiToggleCraftingCount": 1
+      },
+      "screenshot": "G:\\HOLLOW WOODS\\Read\\V1.5\\Reports\\Evidence\\HW-H4-12A\\after_c01_after_keyC.png",
+      "pageErrors": [],
+      "consoleErrors": []
+    },
+    {
+      "case": "C02",
+      "desc": "Press C once when CraftingModal open closes cleanly & unlocks gameplay input",
+      "classification": "REAL-KEYBOARD-INTEGRATION",
+      "pass": true,
+      "beforeOpen": true,
+      "afterOpen": false,
+      "probe": {
+        "domEvents": [
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": false,
+            "at": 12851.39999999851
+          }
+        ],
+        "calls": [
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 12851.800000000745,
+            "listenerCount": 1,
+            "isOpen": true
+          },
+          {
+            "name": "CraftingModal.close",
+            "at": 12852.199999999255,
+            "isOpenBeforeOrNow": true,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.close (eval at evaluate (:370:30), <anonymous>:59:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:35855)",
+              "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+            ]
+          }
+        ],
+        "toggleCount": 0,
+        "openCount": 0,
+        "closeCount": 1,
+        "uiToggleCraftingCount": 0
+      },
+      "gameplayMoveAfterClose": {
+        "before": {
+          "x": 800,
+          "y": 300
+        },
+        "after": {
+          "x": 826.916666666666,
+          "y": 300
+        },
+        "movedRight": true
+      },
+      "pageErrors": [],
+      "consoleErrors": []
+    },
+    {
+      "case": "C03",
+      "desc": "Hold KeyC / repeat:true keydown events do not re-toggle modal",
+      "classification": "REAL-KEYBOARD-PLUS-DISPATCHED-REPEAT",
+      "pass": true,
+      "afterHold": true,
+      "probe": {
+        "domEvents": [
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": false,
+            "at": 10728.400000002235
+          },
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": true,
+            "at": 11178.800000000745
+          },
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": true,
+            "at": 11178.900000002235
+          },
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": true,
+            "at": 11178.900000002235
+          },
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": true,
+            "at": 11179.10000000149
+          },
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": true,
+            "at": 11179.20000000298
+          },
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": true,
+            "at": 11179.300000000745
+          }
+        ],
+        "calls": [
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10728.70000000298,
+            "listenerCount": 1,
+            "isOpen": false
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10729.5,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:36044)",
+              "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10729.70000000298,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:61854/assets/index-FGtorazy.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "CraftingModal.open",
+            "at": 10729.800000000745,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.open (eval at evaluate (:370:30), <anonymous>:54:17)",
+              "at mt.toggle (http://127.0.0.1:61854/assets/index-FGtorazy.js:301:29469)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:50:35)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 11178.70000000298,
+            "listenerCount": 1,
+            "isOpen": true
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 11178.800000000745,
+            "listenerCount": 1,
+            "isOpen": true
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 11178.900000002235,
+            "listenerCount": 1,
+            "isOpen": true
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 11178.900000002235,
+            "listenerCount": 1,
+            "isOpen": true
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 11178.900000002235,
+            "listenerCount": 1,
+            "isOpen": true
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 11178.900000002235,
+            "listenerCount": 1,
+            "isOpen": true
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 11178.900000002235,
+            "listenerCount": 1,
+            "isOpen": true
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 11178.900000002235,
+            "listenerCount": 1,
+            "isOpen": true
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 11179.10000000149,
+            "listenerCount": 1,
+            "isOpen": true
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 11179.20000000298,
+            "listenerCount": 1,
+            "isOpen": true
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 11179.20000000298,
+            "listenerCount": 1,
+            "isOpen": true
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 11179.20000000298,
+            "listenerCount": 1,
+            "isOpen": true
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 11179.20000000298,
+            "listenerCount": 1,
+            "isOpen": true
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 11179.20000000298,
+            "listenerCount": 1,
+            "isOpen": true
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 11179.20000000298,
+            "listenerCount": 1,
+            "isOpen": true
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 11179.20000000298,
+            "listenerCount": 1,
+            "isOpen": true
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 11179.20000000298,
+            "listenerCount": 1,
+            "isOpen": true
+          }
+        ],
+        "toggleCount": 1,
+        "openCount": 1,
+        "closeCount": 0,
+        "uiToggleCraftingCount": 1
+      },
+      "pageErrors": [],
+      "consoleErrors": []
+    },
+    {
+      "case": "C04",
+      "desc": "Open CraftingModal via mouse click on Vertical Taskbar button",
+      "classification": "REAL-MOUSE-INTEGRATION",
+      "pass": true,
+      "afterMouse": true,
+      "probe": {
+        "domEvents": [],
+        "calls": [
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10996,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at Object.action (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:49214)",
+              "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:51774)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10996.20000000298,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:61854/assets/index-FGtorazy.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "CraftingModal.open",
+            "at": 10996.300000000745,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.open (eval at evaluate (:370:30), <anonymous>:54:17)",
+              "at mt.toggle (http://127.0.0.1:61854/assets/index-FGtorazy.js:301:29469)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:50:35)"
+            ]
+          }
+        ],
+        "toggleCount": 1,
+        "openCount": 1,
+        "closeCount": 0,
+        "uiToggleCraftingCount": 1
+      },
+      "pageErrors": [],
+      "consoleErrors": []
+    },
+    {
+      "case": "C05",
+      "desc": "Close CraftingModal with ESC and mouse Close [X] button",
+      "classification": "REAL-INPUT-INTEGRATION",
+      "pass": true,
+      "afterEscOpen": false,
+      "afterCloseBtnOpen": false,
+      "gameplayMoveAfter": {
+        "before": {
+          "x": 800,
+          "y": 300
+        },
+        "after": {
+          "x": 828.3333333333326,
+          "y": 300
+        },
+        "movedRight": true
+      },
+      "pageErrors": [],
+      "consoleErrors": []
+    },
+    {
+      "case": "C06",
+      "desc": "Open Journal/Inventory [J] then press [C] switches cleanly to CraftingModal",
+      "classification": "REAL-KEYBOARD-INTEGRATION",
+      "pass": true,
+      "journalOpenBeforeC": true,
+      "journalOpenAfterC": false,
+      "craftingOpenAfterC": true,
+      "probe": {
+        "domEvents": [
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": false,
+            "at": 11442.60000000149
+          }
+        ],
+        "calls": [
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 11442.900000002235,
+            "listenerCount": 1,
+            "isOpen": false
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 11448.300000000745,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:36044)",
+              "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 11448.5,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:61854/assets/index-FGtorazy.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "CraftingModal.open",
+            "at": 11448.70000000298,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.open (eval at evaluate (:370:30), <anonymous>:54:17)",
+              "at mt.toggle (http://127.0.0.1:61854/assets/index-FGtorazy.js:301:29469)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:50:35)"
+            ]
+          }
+        ],
+        "toggleCount": 1,
+        "openCount": 1,
+        "closeCount": 0,
+        "uiToggleCraftingCount": 1
+      },
+      "pageErrors": [],
+      "consoleErrors": []
+    },
+    {
+      "case": "C07",
+      "desc": "10 open/close cycles via real KeyC",
+      "classification": "REAL-KEYBOARD-INTEGRATION",
+      "pass": true,
+      "cyclesPassed": 10,
+      "states": [
+        {
+          "cycle": 1,
+          "opened": true,
+          "closed": true
+        },
+        {
+          "cycle": 2,
+          "opened": true,
+          "closed": true
+        },
+        {
+          "cycle": 3,
+          "opened": true,
+          "closed": true
+        },
+        {
+          "cycle": 4,
+          "opened": true,
+          "closed": true
+        },
+        {
+          "cycle": 5,
+          "opened": true,
+          "closed": true
+        },
+        {
+          "cycle": 6,
+          "opened": true,
+          "closed": true
+        },
+        {
+          "cycle": 7,
+          "opened": true,
+          "closed": true
+        },
+        {
+          "cycle": 8,
+          "opened": true,
+          "closed": true
+        },
+        {
+          "cycle": 9,
+          "opened": true,
+          "closed": true
+        },
+        {
+          "cycle": 10,
+          "opened": true,
+          "closed": true
+        }
+      ],
+      "calls": [
+        {
+          "name": "UIScene.kb.emit(keydown-C)",
+          "at": 10541.800000000745,
+          "listenerCount": 1,
+          "isOpen": false
+        },
+        {
+          "name": "UIScene.toggleCrafting",
+          "at": 10542.400000002235,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+            "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:36044)",
+            "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+          ]
+        },
+        {
+          "name": "CraftingModal.toggle",
+          "at": 10542.60000000149,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+            "at el.toggleCrafting (http://127.0.0.1:61854/assets/index-FGtorazy.js:317:13038)",
+            "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+          ]
+        },
+        {
+          "name": "CraftingModal.open",
+          "at": 10542.800000000745,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.open (eval at evaluate (:370:30), <anonymous>:54:17)",
+            "at mt.toggle (http://127.0.0.1:61854/assets/index-FGtorazy.js:301:29469)",
+            "at cm.toggle (eval at evaluate (:370:30), <anonymous>:50:35)"
+          ]
+        },
+        {
+          "name": "UIScene.kb.emit(keydown-C)",
+          "at": 11033.60000000149,
+          "listenerCount": 1,
+          "isOpen": true
+        },
+        {
+          "name": "CraftingModal.close",
+          "at": 11033.699999999255,
+          "isOpenBeforeOrNow": true,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.close (eval at evaluate (:370:30), <anonymous>:59:17)",
+            "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:35855)",
+            "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+          ]
+        },
+        {
+          "name": "UIScene.kb.emit(keydown-C)",
+          "at": 11270.10000000149,
+          "listenerCount": 1,
+          "isOpen": false
+        },
+        {
+          "name": "UIScene.toggleCrafting",
+          "at": 11270.199999999255,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+            "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:36044)",
+            "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+          ]
+        },
+        {
+          "name": "CraftingModal.toggle",
+          "at": 11270.5,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+            "at el.toggleCrafting (http://127.0.0.1:61854/assets/index-FGtorazy.js:317:13038)",
+            "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+          ]
+        },
+        {
+          "name": "CraftingModal.open",
+          "at": 11270.5,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.open (eval at evaluate (:370:30), <anonymous>:54:17)",
+            "at mt.toggle (http://127.0.0.1:61854/assets/index-FGtorazy.js:301:29469)",
+            "at cm.toggle (eval at evaluate (:370:30), <anonymous>:50:35)"
+          ]
+        },
+        {
+          "name": "UIScene.kb.emit(keydown-C)",
+          "at": 11517.199999999255,
+          "listenerCount": 1,
+          "isOpen": true
+        },
+        {
+          "name": "CraftingModal.close",
+          "at": 11517.199999999255,
+          "isOpenBeforeOrNow": true,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.close (eval at evaluate (:370:30), <anonymous>:59:17)",
+            "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:35855)",
+            "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+          ]
+        },
+        {
+          "name": "UIScene.kb.emit(keydown-C)",
+          "at": 11990.199999999255,
+          "listenerCount": 1,
+          "isOpen": false
+        },
+        {
+          "name": "UIScene.toggleCrafting",
+          "at": 11990.300000000745,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+            "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:36044)",
+            "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+          ]
+        },
+        {
+          "name": "CraftingModal.toggle",
+          "at": 11990.5,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+            "at el.toggleCrafting (http://127.0.0.1:61854/assets/index-FGtorazy.js:317:13038)",
+            "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+          ]
+        },
+        {
+          "name": "CraftingModal.open",
+          "at": 11990.60000000149,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.open (eval at evaluate (:370:30), <anonymous>:54:17)",
+            "at mt.toggle (http://127.0.0.1:61854/assets/index-FGtorazy.js:301:29469)",
+            "at cm.toggle (eval at evaluate (:370:30), <anonymous>:50:35)"
+          ]
+        },
+        {
+          "name": "UIScene.kb.emit(keydown-C)",
+          "at": 12417.800000000745,
+          "listenerCount": 1,
+          "isOpen": true
+        },
+        {
+          "name": "CraftingModal.close",
+          "at": 12417.900000002235,
+          "isOpenBeforeOrNow": true,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.close (eval at evaluate (:370:30), <anonymous>:59:17)",
+            "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:35855)",
+            "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+          ]
+        },
+        {
+          "name": "UIScene.kb.emit(keydown-C)",
+          "at": 12652.699999999255,
+          "listenerCount": 1,
+          "isOpen": false
+        },
+        {
+          "name": "UIScene.toggleCrafting",
+          "at": 12652.699999999255,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+            "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:36044)",
+            "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+          ]
+        },
+        {
+          "name": "CraftingModal.toggle",
+          "at": 12653,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+            "at el.toggleCrafting (http://127.0.0.1:61854/assets/index-FGtorazy.js:317:13038)",
+            "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+          ]
+        },
+        {
+          "name": "CraftingModal.open",
+          "at": 12653,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.open (eval at evaluate (:370:30), <anonymous>:54:17)",
+            "at mt.toggle (http://127.0.0.1:61854/assets/index-FGtorazy.js:301:29469)",
+            "at cm.toggle (eval at evaluate (:370:30), <anonymous>:50:35)"
+          ]
+        },
+        {
+          "name": "UIScene.kb.emit(keydown-C)",
+          "at": 12899.60000000149,
+          "listenerCount": 1,
+          "isOpen": true
+        },
+        {
+          "name": "CraftingModal.close",
+          "at": 12899.699999999255,
+          "isOpenBeforeOrNow": true,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.close (eval at evaluate (:370:30), <anonymous>:59:17)",
+            "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:35855)",
+            "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+          ]
+        },
+        {
+          "name": "UIScene.kb.emit(keydown-C)",
+          "at": 13185.199999999255,
+          "listenerCount": 1,
+          "isOpen": false
+        },
+        {
+          "name": "UIScene.toggleCrafting",
+          "at": 13185.300000000745,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+            "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:36044)",
+            "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+          ]
+        },
+        {
+          "name": "CraftingModal.toggle",
+          "at": 13185.5,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+            "at el.toggleCrafting (http://127.0.0.1:61854/assets/index-FGtorazy.js:317:13038)",
+            "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+          ]
+        },
+        {
+          "name": "CraftingModal.open",
+          "at": 13185.60000000149,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.open (eval at evaluate (:370:30), <anonymous>:54:17)",
+            "at mt.toggle (http://127.0.0.1:61854/assets/index-FGtorazy.js:301:29469)",
+            "at cm.toggle (eval at evaluate (:370:30), <anonymous>:50:35)"
+          ]
+        },
+        {
+          "name": "UIScene.kb.emit(keydown-C)",
+          "at": 13445.300000000745,
+          "listenerCount": 1,
+          "isOpen": true
+        },
+        {
+          "name": "CraftingModal.close",
+          "at": 13445.300000000745,
+          "isOpenBeforeOrNow": true,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.close (eval at evaluate (:370:30), <anonymous>:59:17)",
+            "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:35855)",
+            "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+          ]
+        },
+        {
+          "name": "UIScene.kb.emit(keydown-C)",
+          "at": 13687.199999999255,
+          "listenerCount": 1,
+          "isOpen": false
+        },
+        {
+          "name": "UIScene.toggleCrafting",
+          "at": 13687.300000000745,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+            "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:36044)",
+            "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+          ]
+        },
+        {
+          "name": "CraftingModal.toggle",
+          "at": 13687.60000000149,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+            "at el.toggleCrafting (http://127.0.0.1:61854/assets/index-FGtorazy.js:317:13038)",
+            "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+          ]
+        },
+        {
+          "name": "CraftingModal.open",
+          "at": 13687.699999999255,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.open (eval at evaluate (:370:30), <anonymous>:54:17)",
+            "at mt.toggle (http://127.0.0.1:61854/assets/index-FGtorazy.js:301:29469)",
+            "at cm.toggle (eval at evaluate (:370:30), <anonymous>:50:35)"
+          ]
+        },
+        {
+          "name": "UIScene.kb.emit(keydown-C)",
+          "at": 13944.60000000149,
+          "listenerCount": 1,
+          "isOpen": true
+        },
+        {
+          "name": "CraftingModal.close",
+          "at": 13944.60000000149,
+          "isOpenBeforeOrNow": true,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.close (eval at evaluate (:370:30), <anonymous>:59:17)",
+            "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:35855)",
+            "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+          ]
+        },
+        {
+          "name": "UIScene.kb.emit(keydown-C)",
+          "at": 14175.300000000745,
+          "listenerCount": 1,
+          "isOpen": false
+        },
+        {
+          "name": "UIScene.toggleCrafting",
+          "at": 14175.5,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+            "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:36044)",
+            "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+          ]
+        },
+        {
+          "name": "CraftingModal.toggle",
+          "at": 14175.800000000745,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+            "at el.toggleCrafting (http://127.0.0.1:61854/assets/index-FGtorazy.js:317:13038)",
+            "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+          ]
+        },
+        {
+          "name": "CraftingModal.open",
+          "at": 14175.800000000745,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.open (eval at evaluate (:370:30), <anonymous>:54:17)",
+            "at mt.toggle (http://127.0.0.1:61854/assets/index-FGtorazy.js:301:29469)",
+            "at cm.toggle (eval at evaluate (:370:30), <anonymous>:50:35)"
+          ]
+        },
+        {
+          "name": "UIScene.kb.emit(keydown-C)",
+          "at": 14423.800000000745,
+          "listenerCount": 1,
+          "isOpen": true
+        },
+        {
+          "name": "CraftingModal.close",
+          "at": 14423.900000002235,
+          "isOpenBeforeOrNow": true,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.close (eval at evaluate (:370:30), <anonymous>:59:17)",
+            "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:35855)",
+            "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+          ]
+        },
+        {
+          "name": "UIScene.kb.emit(keydown-C)",
+          "at": 14660.800000000745,
+          "listenerCount": 1,
+          "isOpen": false
+        },
+        {
+          "name": "UIScene.toggleCrafting",
+          "at": 14660.900000002235,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+            "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:36044)",
+            "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+          ]
+        },
+        {
+          "name": "CraftingModal.toggle",
+          "at": 14661.300000000745,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+            "at el.toggleCrafting (http://127.0.0.1:61854/assets/index-FGtorazy.js:317:13038)",
+            "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+          ]
+        },
+        {
+          "name": "CraftingModal.open",
+          "at": 14661.400000002235,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.open (eval at evaluate (:370:30), <anonymous>:54:17)",
+            "at mt.toggle (http://127.0.0.1:61854/assets/index-FGtorazy.js:301:29469)",
+            "at cm.toggle (eval at evaluate (:370:30), <anonymous>:50:35)"
+          ]
+        },
+        {
+          "name": "UIScene.kb.emit(keydown-C)",
+          "at": 14914.900000002235,
+          "listenerCount": 1,
+          "isOpen": true
+        },
+        {
+          "name": "CraftingModal.close",
+          "at": 14915,
+          "isOpenBeforeOrNow": true,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.close (eval at evaluate (:370:30), <anonymous>:59:17)",
+            "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:35855)",
+            "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+          ]
+        },
+        {
+          "name": "UIScene.kb.emit(keydown-C)",
+          "at": 15142.300000000745,
+          "listenerCount": 1,
+          "isOpen": false
+        },
+        {
+          "name": "UIScene.toggleCrafting",
+          "at": 15142.5,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+            "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:36044)",
+            "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+          ]
+        },
+        {
+          "name": "CraftingModal.toggle",
+          "at": 15142.60000000149,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+            "at el.toggleCrafting (http://127.0.0.1:61854/assets/index-FGtorazy.js:317:13038)",
+            "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+          ]
+        },
+        {
+          "name": "CraftingModal.open",
+          "at": 15142.699999999255,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.open (eval at evaluate (:370:30), <anonymous>:54:17)",
+            "at mt.toggle (http://127.0.0.1:61854/assets/index-FGtorazy.js:301:29469)",
+            "at cm.toggle (eval at evaluate (:370:30), <anonymous>:50:35)"
+          ]
+        },
+        {
+          "name": "UIScene.kb.emit(keydown-C)",
+          "at": 15488.5,
+          "listenerCount": 1,
+          "isOpen": true
+        },
+        {
+          "name": "CraftingModal.close",
+          "at": 15488.60000000149,
+          "isOpenBeforeOrNow": true,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.close (eval at evaluate (:370:30), <anonymous>:59:17)",
+            "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:35855)",
+            "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+          ]
+        },
+        {
+          "name": "UIScene.kb.emit(keydown-C)",
+          "at": 15724,
+          "listenerCount": 1,
+          "isOpen": false
+        },
+        {
+          "name": "UIScene.toggleCrafting",
+          "at": 15724,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+            "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:36044)",
+            "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+          ]
+        },
+        {
+          "name": "CraftingModal.toggle",
+          "at": 15724.199999999255,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+            "at el.toggleCrafting (http://127.0.0.1:61854/assets/index-FGtorazy.js:317:13038)",
+            "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+          ]
+        },
+        {
+          "name": "CraftingModal.open",
+          "at": 15724.199999999255,
+          "isOpenBeforeOrNow": false,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.open (eval at evaluate (:370:30), <anonymous>:54:17)",
+            "at mt.toggle (http://127.0.0.1:61854/assets/index-FGtorazy.js:301:29469)",
+            "at cm.toggle (eval at evaluate (:370:30), <anonymous>:50:35)"
+          ]
+        },
+        {
+          "name": "UIScene.kb.emit(keydown-C)",
+          "at": 16004,
+          "listenerCount": 1,
+          "isOpen": true
+        },
+        {
+          "name": "CraftingModal.close",
+          "at": 16004.10000000149,
+          "isOpenBeforeOrNow": true,
+          "stack": [
+            "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+            "at cm.close (eval at evaluate (:370:30), <anonymous>:59:17)",
+            "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:35855)",
+            "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+          ]
+        }
+      ],
+      "probeSummary": {
+        "openCount": 10,
+        "closeCount": 10,
+        "toggleCount": 10
+      },
+      "pageErrors": [],
+      "consoleErrors": []
+    },
+    {
+      "case": "C08",
+      "desc": "Cross-mode open mouse/close KeyC and open KeyC/close mouse",
+      "classification": "REAL-INPUT-INTEGRATION",
+      "pass": true,
+      "openMouse": true,
+      "closeKeyC": true,
+      "openKeyC": true,
+      "closeMouse": true,
+      "pageErrors": [],
+      "consoleErrors": []
+    },
+    {
+      "case": "C09",
+      "desc": "Crafting transaction succeeds when materials sufficient",
+      "classification": "STAGED-INTEGRATION",
+      "pass": true,
+      "craftResult": {
+        "modalOpen": true,
+        "oilBefore": 0,
+        "oilAfter": 1,
+        "resultCount": 1,
+        "ingBefore": {
+          "res_tree_resin": 4,
+          "res_dry_wood": 4
+        },
+        "ingAfter": {
+          "res_tree_resin": 3,
+          "res_dry_wood": 3
+        },
+        "ingredientsDeducted": true
+      },
+      "closedAfterC": true,
+      "pageErrors": [],
+      "consoleErrors": []
+    },
+    {
+      "case": "C10",
+      "desc": "Insufficient materials crafting blocked with zero inventory mutation",
+      "classification": "STAGED-INTEGRATION",
+      "pass": true,
+      "result": {
+        "modalOpen": true,
+        "oilAfter": 0,
+        "invUnchanged": true
+      },
+      "pageErrors": [],
+      "consoleErrors": []
+    },
+    {
+      "case": "C11",
+      "desc": "Pause/Resume and window blur/focus keep KeyC crafting toggle working cleanly",
+      "classification": "REAL-KEYBOARD-INTEGRATION",
+      "pass": true,
+      "pauseOpened": true,
+      "pauseClosed": true,
+      "craftingOpenAfterC": true,
+      "probe": {
+        "domEvents": [
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": false,
+            "at": 12056.39999999851
+          }
+        ],
+        "calls": [
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 12056.5,
+            "listenerCount": 1,
+            "isOpen": false
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 12057.199999999255,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:36044)",
+              "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 12057.5,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:61854/assets/index-FGtorazy.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "CraftingModal.open",
+            "at": 12057.599999997765,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.open (eval at evaluate (:370:30), <anonymous>:54:17)",
+              "at mt.toggle (http://127.0.0.1:61854/assets/index-FGtorazy.js:301:29469)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:50:35)"
+            ]
+          }
+        ],
+        "toggleCount": 1,
+        "openCount": 1,
+        "closeCount": 0,
+        "uiToggleCraftingCount": 1
+      },
+      "pageErrors": [],
+      "consoleErrors": []
+    },
+    {
+      "case": "C12",
+      "desc": "Restart GameScene & UIScene does not accumulate keydown-C listeners",
+      "classification": "REAL-KEYBOARD-INTEGRATION",
+      "pass": true,
+      "listenersRun1": {
+        "uiKeydownC": 1,
+        "uiKeydownI": 3,
+        "gsKeydownC": 0
+      },
+      "listenersRun2": {
+        "uiKeydownC": 1,
+        "uiKeydownI": 3,
+        "gsKeydownC": 0
+      },
+      "listenersRun3": {
+        "uiKeydownC": 1,
+        "uiKeydownI": 3,
+        "gsKeydownC": 0
+      },
+      "craftingOpenAfterC": true,
+      "probe": {
+        "domEvents": [
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": false,
+            "at": 15588.099999997765
+          }
+        ],
+        "calls": [
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 15588.800000000745,
+            "listenerCount": 1,
+            "isOpen": false
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 15589.199999999255,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:61854/assets/index-FGtorazy.js:316:36044)",
+              "at s.emit (http://127.0.0.1:61854/assets/vendor-phaser-CUeKjumc.js:1:1331)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 15589.5,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:61854/assets/index-FGtorazy.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "CraftingModal.open",
+            "at": 15589.699999999255,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.open (eval at evaluate (:370:30), <anonymous>:54:17)",
+              "at mt.toggle (http://127.0.0.1:61854/assets/index-FGtorazy.js:301:29469)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:50:35)"
+            ]
+          }
+        ],
+        "toggleCount": 1,
+        "openCount": 1,
+        "closeCount": 0,
+        "uiToggleCraftingCount": 1
+      },
+      "pageErrors": [],
+      "consoleErrors": []
+    }
+  ],
+  "smokeUI": {
+    "pass": true,
+    "quickbarIdxAfterDigit2": 0,
+    "equipOpenB": true,
+    "journalOpenJ": true,
+    "worldMapOpenN": true,
+    "worldMapOpenM_H4_NEW_05_unmodified": false,
+    "pauseOpenEsc": true,
+    "pauseClosedEsc": true,
+    "h406Preserved": {
+      "hasQuickCraftSidebar": true,
+      "hasStatCardBakedTex": true,
+      "hasQuickSlotBgTex": true
+    },
+    "pageErrors": [],
+    "consoleErrors": []
+  }
+}

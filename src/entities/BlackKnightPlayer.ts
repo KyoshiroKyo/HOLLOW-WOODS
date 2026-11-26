@@ -869,7 +869,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       this.pendingOneShotActions.add('weapon_toggle');
     } else if (code === 'KeyQ') {
       this.pendingOneShotActions.add('throw_lure');
-    } else if (code === 'KeyI' || code === 'Tab' || code === 'KeyC') {
+    } else if (code === 'KeyI' || code === 'Tab') {
       this.pendingOneShotActions.add('craft');
     } else if (code === 'KeyJ') {
       this.pendingOneShotActions.add('journal');

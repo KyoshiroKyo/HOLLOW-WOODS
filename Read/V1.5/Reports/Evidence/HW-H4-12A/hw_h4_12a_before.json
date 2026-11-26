@@ -1,0 +1,1431 @@
+{
+  "mode": "before",
+  "timestamp": "2026-11-26T00:50:01",
+  "passedCount": 3,
+  "totalCount": 6,
+  "overallPass": false,
+  "results": [
+    {
+      "case": "C01",
+      "desc": "Press C once when CraftingModal closed (real Playwright keyboard.press)",
+      "classification": "REAL-KEYBOARD-INTEGRATION",
+      "pass": false,
+      "afterKeyC": false,
+      "craftingVisible": false,
+      "isAnyModalOpen": false,
+      "focusTag": "CANVAS",
+      "listenersInit": {
+        "uiKeydownC": 3,
+        "uiKeydownI": 3,
+        "gsKeydownC": 0
+      },
+      "probe": {
+        "domEvents": [
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": false,
+            "at": 12448.79999999702
+          }
+        ],
+        "calls": [
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 12449,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 12449.5,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.open",
+            "at": 12449.599999997765,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.open (eval at evaluate (:370:30), <anonymous>:54:17)",
+              "at mt.toggle (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:29502)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:50:35)"
+            ]
+          },
+          {
+            "name": "CraftingModal.close",
+            "at": 12517.199999999255,
+            "isOpenBeforeOrNow": true,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.close (eval at evaluate (:370:30), <anonymous>:59:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35764)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          }
+        ],
+        "toggleCount": 1,
+        "openCount": 1,
+        "closeCount": 1,
+        "uiToggleCraftingCount": 0
+      },
+      "screenshot": "G:\\HOLLOW WOODS\\Read\\V1.5\\Reports\\Evidence\\HW-H4-12A\\before_c01_after_keyC.png",
+      "pageErrors": [],
+      "consoleErrors": []
+    },
+    {
+      "case": "C02",
+      "desc": "Press C once when CraftingModal open closes cleanly & unlocks gameplay input",
+      "classification": "REAL-KEYBOARD-INTEGRATION",
+      "pass": true,
+      "beforeOpen": true,
+      "afterOpen": false,
+      "probe": {
+        "domEvents": [
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": false,
+            "at": 10833.099999997765
+          }
+        ],
+        "calls": [
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10833.5,
+            "listenerCount": 3,
+            "isOpen": true
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10833.699999999255,
+            "isOpenBeforeOrNow": true,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.close",
+            "at": 10833.89999999851,
+            "isOpenBeforeOrNow": true,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.close (eval at evaluate (:370:30), <anonymous>:59:17)",
+              "at mt.toggle (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:29489)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:50:35)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10837.29999999702,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10837.5,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          }
+        ],
+        "toggleCount": 2,
+        "openCount": 0,
+        "closeCount": 1,
+        "uiToggleCraftingCount": 1
+      },
+      "gameplayMoveAfterClose": {
+        "before": {
+          "x": 800,
+          "y": 300
+        },
+        "after": {
+          "x": 807.0833333333331,
+          "y": 300
+        },
+        "movedRight": true
+      },
+      "pageErrors": [],
+      "consoleErrors": []
+    },
+    {
+      "case": "C03",
+      "desc": "Hold KeyC / repeat:true keydown events do not re-toggle modal",
+      "classification": "REAL-KEYBOARD-PLUS-DISPATCHED-REPEAT",
+      "pass": false,
+      "afterHold": false,
+      "probe": {
+        "domEvents": [
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": false,
+            "at": 10715
+          },
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": true,
+            "at": 10792.10000000149
+          },
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": true,
+            "at": 10792.70000000298
+          },
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": true,
+            "at": 10793.400000002235
+          },
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": true,
+            "at": 10794.20000000298
+          },
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": true,
+            "at": 10795.10000000149
+          },
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": true,
+            "at": 10796.10000000149
+          }
+        ],
+        "calls": [
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10715.20000000298,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10715.60000000149,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.open",
+            "at": 10715.800000000745,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.open (eval at evaluate (:370:30), <anonymous>:54:17)",
+              "at mt.toggle (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:29502)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:50:35)"
+            ]
+          },
+          {
+            "name": "CraftingModal.close",
+            "at": 10783.10000000149,
+            "isOpenBeforeOrNow": true,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.close (eval at evaluate (:370:30), <anonymous>:59:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35764)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10791.400000002235,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10791.5,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10791.70000000298,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10791.900000002235,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10792.20000000298,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10792.20000000298,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10792.300000000745,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10792.400000002235,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10792.400000002235,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10792.400000002235,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10792.5,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10792.5,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10792.5,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10792.5,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10792.60000000149,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10792.60000000149,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10792.70000000298,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10792.800000000745,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10792.800000000745,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10792.900000002235,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10792.900000002235,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10792.900000002235,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10793,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10793.10000000149,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10793.10000000149,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10793.10000000149,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10793.20000000298,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10793.20000000298,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10793.20000000298,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10793.300000000745,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10793.300000000745,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10793.400000002235,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10793.5,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10793.5,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10793.60000000149,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10793.60000000149,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10793.70000000298,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10793.70000000298,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10793.70000000298,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10793.800000000745,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10793.800000000745,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10793.800000000745,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10793.900000002235,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10793.900000002235,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10793.900000002235,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10793.900000002235,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10794,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10794.10000000149,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10794.10000000149,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10794.10000000149,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10794.10000000149,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10794.20000000298,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10794.20000000298,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10794.300000000745,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10794.400000002235,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10794.400000002235,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10794.5,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10794.5,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10794.5,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10794.5,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10794.5,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10794.60000000149,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10794.60000000149,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10794.60000000149,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10794.60000000149,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10794.70000000298,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10794.70000000298,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10794.70000000298,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10794.800000000745,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10794.800000000745,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10794.900000002235,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10794.900000002235,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10795,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10795,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10795,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10795,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10795.10000000149,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10795.10000000149,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10795.20000000298,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10795.20000000298,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10795.20000000298,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10795.300000000745,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10795.300000000745,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10795.300000000745,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10795.300000000745,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10795.400000002235,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10795.5,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10795.5,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10795.5,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10795.5,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10795.5,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10795.60000000149,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10795.60000000149,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10795.60000000149,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10795.70000000298,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10795.70000000298,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10795.70000000298,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10795.70000000298,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10795.800000000745,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10795.900000002235,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 10795.900000002235,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10795.900000002235,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10796,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35953)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10796,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          }
+        ],
+        "toggleCount": 53,
+        "openCount": 1,
+        "closeCount": 1,
+        "uiToggleCraftingCount": 26
+      },
+      "pageErrors": [],
+      "consoleErrors": []
+    },
+    {
+      "case": "C04",
+      "desc": "Open CraftingModal via mouse click on Vertical Taskbar button",
+      "classification": "REAL-MOUSE-INTEGRATION",
+      "pass": true,
+      "afterMouse": true,
+      "probe": {
+        "domEvents": [],
+        "calls": [
+          {
+            "name": "UIScene.toggleCrafting",
+            "at": 10127.300000000745,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:69:17)",
+              "at Object.action (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:49123)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:51683)"
+            ]
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 10127.400000002235,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at el.toggleCrafting (http://127.0.0.1:48845/assets/index-BT-nbxak.js:317:13038)",
+              "at uis.toggleCrafting (eval at evaluate (:370:30), <anonymous>:70:37)"
+            ]
+          },
+          {
+            "name": "CraftingModal.open",
+            "at": 10127.5,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.open (eval at evaluate (:370:30), <anonymous>:54:17)",
+              "at mt.toggle (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:29502)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:50:35)"
+            ]
+          }
+        ],
+        "toggleCount": 1,
+        "openCount": 1,
+        "closeCount": 0,
+        "uiToggleCraftingCount": 1
+      },
+      "pageErrors": [],
+      "consoleErrors": []
+    },
+    {
+      "case": "C05",
+      "desc": "Close CraftingModal with ESC and mouse Close [X] button",
+      "classification": "REAL-INPUT-INTEGRATION",
+      "pass": true,
+      "afterEscOpen": false,
+      "afterCloseBtnOpen": false,
+      "gameplayMoveAfter": {
+        "before": {
+          "x": 800,
+          "y": 300
+        },
+        "after": {
+          "x": 824.0833333333327,
+          "y": 300
+        },
+        "movedRight": true
+      },
+      "pageErrors": [],
+      "consoleErrors": []
+    },
+    {
+      "case": "C06",
+      "desc": "Open Journal/Inventory [J] then press [C] switches cleanly to CraftingModal",
+      "classification": "REAL-KEYBOARD-INTEGRATION",
+      "pass": false,
+      "journalOpenBeforeC": true,
+      "journalOpenAfterC": false,
+      "craftingOpenAfterC": false,
+      "probe": {
+        "domEvents": [
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "repeat": false,
+            "at": 11187.099999997765
+          }
+        ],
+        "calls": [
+          {
+            "name": "UIScene.kb.emit(keydown-C)",
+            "at": 11187.29999999702,
+            "listenerCount": 3,
+            "isOpen": false
+          },
+          {
+            "name": "CraftingModal.toggle",
+            "at": 11187.79999999702,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:49:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:5981)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          },
+          {
+            "name": "CraftingModal.open",
+            "at": 11187.89999999851,
+            "isOpenBeforeOrNow": false,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.open (eval at evaluate (:370:30), <anonymous>:54:17)",
+              "at mt.toggle (http://127.0.0.1:48845/assets/index-BT-nbxak.js:301:29502)",
+              "at cm.toggle (eval at evaluate (:370:30), <anonymous>:50:35)"
+            ]
+          },
+          {
+            "name": "CraftingModal.close",
+            "at": 11228.599999997765,
+            "isOpenBeforeOrNow": true,
+            "stack": [
+              "at record (eval at evaluate (:370:30), <anonymous>:32:28)",
+              "at cm.close (eval at evaluate (:370:30), <anonymous>:59:17)",
+              "at initialize.<anonymous> (http://127.0.0.1:48845/assets/index-BT-nbxak.js:316:35764)",
+              "at s.emit (http://127.0.0.1:48845/assets/vendor-phaser-CUeKjumc.js:1:1764)"
+            ]
+          }
+        ],
+        "toggleCount": 1,
+        "openCount": 1,
+        "closeCount": 1,
+        "uiToggleCraftingCount": 0
+      },
+      "pageErrors": [],
+      "consoleErrors": []
+    }
+  ]
+}

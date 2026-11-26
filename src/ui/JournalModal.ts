@@ -373,15 +373,6 @@ export class JournalModal {
           }
         }
       });
-      addKey('keydown-C', () => {
-        if (this.isOpen) {
-          this.close();
-          const ui = this.scene as any;
-          if (ui && typeof ui.toggleCrafting === 'function') {
-            ui.toggleCrafting();
-          }
-        }
-      });
       addKey('keydown-ESC', () => {
         if (this.isOpen) this.close();
       });
