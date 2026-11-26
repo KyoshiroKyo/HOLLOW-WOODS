@@ -4846,7 +4846,7 @@ export class GameScene extends Phaser.Scene {
                   this.events.emit('memory_awakening_completed');
                   if (this.uiScene) {
                     this.uiScene.redrawStats();
-                    this.uiScene.showPopupMessage('⚔️ THỨC TỈNH KÝ ỨC: Ký ức về Meliodas Blackwood — The Wolf Lord dần thức tỉnh!');
+                    this.uiScene.showPopupMessage('⚔️ THỨC TỈNH KÝ ỨC: Mảnh ký ức về Quân Huy Đoàn Kỵ Sĩ Hắc Lang đã khép lại!');
                   }
                 } else {
                   dKey = 'campfire_knight_q3_reminder';

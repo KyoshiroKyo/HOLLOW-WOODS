@@ -1,20 +1,20 @@
 # HOLLOW WOODS — DIALOGUE REGISTRY (`59` LIVE KEYS vs `DLG-001–035` / `NAR-001–030`)
 
-- **Mission:** `HW-NARRATIVE-00D` → Canon Status Synced by **`HW-V16-A01`** (`2026-11-26`)
+- **Mission:** `HW-NARRATIVE-00D` → Canon Status Synced by **`HW-V16-A01`** (`2026-11-26`) → Act 0/I & Knight Continuity Updated by **`HW-V16-A02 / A03 / A04`**
 - **Primary Sources Verified:**
-  - `src/data/dialogues.json` (`995` lines, Root key `dialogues`, **`59/59` keys verified** — giữ baseline cho tới `HW-V16-A02..A05`)
+  - `src/data/dialogues.json` (`59/59` keys verified — đã gỡ tàn dư Isekai/sương gây mất trí nhớ tại `edda_intro` trong `A03`, và gỡ reveal sớm `Meliodas`/lời tiễn biệt chốt tử tại `campfire_knight_q3_complete`, `campfire_knight_idle_talk`, `hooded_knight_encounter_intro/defeat` trong `A04`)
   - `src/systems/DialogueSystem.ts` (`432` lines)
   - `src/scenes/GameScene.ts` (`7,404` lines), `src/scenes/MainMenuScene.ts` (`1,185` lines)
   - [PROJECT_KNOWLEDGE_INDEX.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Narrative/PROJECT_KNOWLEDGE_INDEX.md), [CANON_DECISION_REGISTRY.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Narrative/CANON_DECISION_REGISTRY.md), [HW_CANON_OWNER_DECISION_MATRIX.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Narrative/HW_CANON_OWNER_DECISION_MATRIX.md)
 
 ---
 
-## 1. Phân Loại Trạng Thái Thoại & Đối Chiếu Quy Mô (`Post HW-V16-A01`)
+## 1. Phân Loại Trạng Thái Thoại & Đối Chiếu Quy Mô (`Post HW-V16-A04`)
 
-| Nhóm thoại | Nguồn | Số lượng | Canon / Prep Status (`A01`) | Runtime Status & Ghi chú áp dụng |
+| Nhóm thoại | Nguồn | Số lượng | Canon / Prep Status (`A04`) | Runtime Status & Ghi chú áp dụng |
 | :--- | :--- | :---: | :--- | :--- |
-| **Thoại Runtime Hiện Hành** | `src/data/dialogues.json` | **`59` keys** | `GAME-IMPLEMENTED` (Cần dọn tàn dư `DEC-LOCK-01..10`) | Chưa sửa trong `A01`; các điểm `C01–C04` (`campfire_knight_q2/q3`, `hooded_knight_*`, `edda_black_knight_reverence`) sẵn sàng cho **`A02` / `A04`**. |
-| **Thoại Trailer V11.x–V12.2** | `Unified Ch. 08 & Ch. 17` (`DLG-006/007/009/012–015/031–034`) | `13` mục | **`APPROVED-FOR-PREPARATION`** (`DEC-LOCK-17`) | Chuẩn bị ngữ cảnh & điều kiện ở `A03–A05`; **cấm tích hợp nguyên văn hoặc đổi Menu subtitle/Branding khi chưa duyệt từng nhóm**. |
+| **Thoại Runtime Hiện Hành** | `src/data/dialogues.json` | **`59` keys** | `REFINED BY A02–A04` (`DEC-LOCK-01..11, 16, 19`) | `edda_intro`, `campfire_knight_q2/q3_complete`, `hooded_knight_encounter_*`, `vaelen_examine_crest_and_seek_mold` đã trung tính hóa an toàn trước khi `A06` hoàn thiện full Evidence Resolver. |
+| **Thoại Trailer V11.x–V12.2** | `Unified Ch. 08 & Ch. 17` (`DLG-006/007/009/012–015/031–034`) | `13` mục | **`APPROVED-FOR-PREPARATION`** (`DEC-LOCK-17`) | Đã lập hồ sơ `DRAFT` chi tiết cho `DLG-006/007` (`HW-V16-A03`) và `DLG-009/012–015` (`HW-V16-A04`); **chưa** tích hợp nguyên văn khi chưa có chữ ký duyệt từng nhóm của Owner. |
 | **Thoại Dẫn Truyện V9 / Cũ** | `Unified Ch. 17` (`DLG-001–005/010–011/016–018/030`) | `11` mục | `SUPERSEDED` / `TRAILER-ONLY` | Tham chiếu lịch sử; lời dẫn Opening `CS01–CS06` chờ duyệt ở `A08` (`DEC-LOCK-20`). |
 | **Nhánh Lựa Chọn Đề Xuất** | `Unified Ch. 08 Table 04 & Table 17` (`DLG-P01–P06`) | `6+` mục | **`CANON-APPROVED`** (Kiến trúc bán tuyến tính `DEC-LOCK-18`) | Chuẩn bị & triển khai parser + once-guard `trust`/`reward` ở `A05`; không tách thành tuyến nhiệm vụ chính mới. |
 | **Thoại Chưa Có Văn Bản Mới** | `DLG-008/020–023/028/029` | `7` mục | `BASELINE PRESERVED` | Ba quy tắc Edda, Echo, Elian giữ baseline; `Fallen/Listener/Satyr` không có key thoại riêng (`Satyr` giữ `TRAILER-ONLY`). |
@@ -61,10 +61,10 @@ Kiểm tra trực tiếp bằng script trên `src/data/dialogues.json` (`count =
 | :--- | :--- | :--- | :--- |
 | **`campfire_knight_intro`** | Sir Vaelen (`5` lines, `5` choices, `SQ06`) | Chứa từ khóa `chỉ huy` khi hỏi về đoàn kỵ sĩ. *(Lưu ý UI: node này có **`5` choices**, trong khi phím tắt `DialogueSystem.ts:75–80` chỉ gán phím `1–3`).* | `NAR-005/009`, `I-03` |
 | **`campfire_knight_comrade_bond`** | Sir Vaelen (`5` lines, `2` choices) | Nhắc lệnh `chỉ huy` ở lại giữ lửa. | `NAR-005/010`, `OQ-01` |
-| **`campfire_knight_q2_complete`** | Sir Vaelen (`4` lines, `0` choices, `SQ08`) | `L1–L3`: Tin rằng **"`Chỉ huy` đã bị tà khí nuốt chửng linh hồn, trở thành `Hooded Knight Boss`"** và nhờ giải thoát lấy huy hiệu. | **`CONFLICT C02`**, `NAR-010`, `DLG-026`, `OQ-06` |
-| **`campfire_knight_q3_complete`** | Sir Vaelen (`6` lines, `2` choices, `eqp_bell_ward_charm`) | `L2`, `L4`: Xác nhận Quân Huy Tổng Chỉ Huy, bái kiến **"Chỉ Huy Hiệp Sĩ Đen"** và khẳng định **"tự phong ấn ký ức để bảo vệ linh hồn"** + popup `GameScene.ts:4849`. | **`CONFLICT C01/C02/C04`**, `NAR-003/010`, `DLG-027` |
-| **`hooded_knight_encounter_intro`** | Bóng Ma Hiệp Sĩ Trùm Mũ (`4` lines, `2` choices) | `L2–L3`: **"Chỉ... Chỉ huy?! Có phải ngài không?!"** — gọi thẳng chức `Chỉ huy` trước cả khi xong `q3`. | **`CONFLICT C03/C04`**, `NAR-014/015`, `DLG-025`, `OQ-04` |
-| **`hooded_knight_encounter_defeat`** | Bóng Ma Hiệp Sĩ Trùm Mũ (`5` lines, `1` choice, `quest_corrupted_crest ×1`) | `L1–L3`: Nêu trọn vẹn lời giải **"tự phong ấn ký ức và linh hồn vào Trái Tim Mạch Rễ... phong ấn chính mình để tái sinh..."**. | **`CONFLICT C01/C03`**, `NAR-003/014`, `DLG-025`, `OQ-03/04` |
+| **`campfire_knight_q2_complete`** | Sir Vaelen (`4` lines, `0` choices, `SQ08`) | **[UPDATED A02+A04]** `V03`: Nhận ra bạn cũ `Sir Mordric` (`HoodedKnightBoss`), không nhầm là Tổng Chỉ Huy; dùng *"ngăn chặn Kỵ Sĩ Trùm Mũ đang giam giữ Sir Mordric trong bóng tối"* (không kết luận số phận). | `CONFLICT C02` **RESOLVED** |
+| **`campfire_knight_q3_complete`** | Sir Vaelen (`6` lines, `2` choices, `eqp_bell_ward_charm`) | **[UPDATED A02+A04]** Nhận ra dấu ấn Hắc Lang & bậc thầy qua Quân Huy mà **không** ép spoil `Lord Meliodas Blackwood` trước `A06`; choices dùng xưng hô trung tính, giữ nguyên `rewardItem` & flags. | `CONFLICT C01/C02/C04` **RESOLVED** *(Full Evidence Resolver -> `A06`)* |
+| **`hooded_knight_encounter_intro`** | Kỵ Sĩ Trùm Mũ (`4` lines, `2` choices) | **[UPDATED A02+A04]** Nhận ra giáp/vết chém quen thuộc trên bao kiếm; choices bỏ xưng hô `"người bạn cũ"` và bỏ `"giết ta đi"`. | `CONFLICT C03/C04` **RESOLVED** |
+| **`hooded_knight_encounter_defeat`** | Sir Mordric — Kỵ Sĩ Bóng Tối (`5` lines, `1` choice, `quest_corrupted_crest ×1`) | **[UPDATED A02+A04]** Thể hiện mâu thuẫn lời thề vs hoàn cảnh; bỏ *"yên nghỉ / vĩnh biệt / giải thoát"*, không chốt chết hay hồi sinh, giữ nguyên rơi `quest_corrupted_crest` & flag boss. | `CONFLICT C01/C03` **RESOLVED** |
 | **`edda_black_knight_reverence`** | Bà Edda (`2` lines, `0` choices, `stage ≥ 3`) | `L1`: Gọi *"Hỡi vị Hiệp Sĩ Đen của Bellhollow, lời nguyền trăm năm..."* (liên quan mốc thời gian `OQ-08`). | `NAR-004`, `OQ-08` |
 | **`vaelen_examine_crest_and_seek_mold`** | Sir Vaelen (`4` lines, `0` choices, `Q05_SOLVE_MIRE`) | `L2`: Nhắc phong ấn vật lý Rễ Cổ & `Chìa Khóa Thanh Tẩy` (tương thích main route, KHÔNG thuộc mâu thuẫn tự phong ấn ký ức). | Tương thích Main Route |
 

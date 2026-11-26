@@ -733,7 +733,7 @@
         "Phôi Sắt Cổ Ngữ này... và cả nét chữ trên mảnh nhật ký cháy sém này nữa! Đúng là nét bút của trung úy kỵ sĩ rồi!",
         "(Hiệp sĩ nghẹn ngào đọc trang nhật ký)... 'Bóng tối The Veil quá mạnh... Sir Mordric đã bị tà khí nuốt chửng lý trí, trở thành bóng ma trùm mũ canh giữ phế tích rừng sâu... Ai tìm thấy di ngôn này, xin hãy giải thoát cho người bạn cũ của ta...'",
         "Trời ơi... Ta từng có một người bạn, chúng ta đã cùng gìn giữ một lời thề — vậy mà nay Mordric lại bị màn sương đen sai khiến dưới lớp mũ trùm kia sao!",
-        "Hỡi lữ khách! Xin ngươi hãy giúp ta hoàn thành tâm nguyện đau đớn này: Tiến sâu vào cấm địa Rừng Sâu, đánh bại Kỵ Sĩ Trùm Mũ để giải thoát linh hồn Sir Mordric, và mang 'Huy Hiệu Hiệp Sĩ Tha Hóa' về đây để ta thanh tẩy bên ngọn lửa!"
+        "Hỡi lữ khách! Xin ngươi hãy giúp ta hoàn thành tâm nguyện đau đớn này: Tiến sâu vào cấm địa Rừng Sâu, ngăn chặn Kỵ Sĩ Trùm Mũ đang giam giữ Sir Mordric trong bóng tối, và mang 'Huy Hiệu Hiệp Sĩ Tha Hóa' về đây để ta thanh tẩy bên ngọn lửa!"
       ],
       "onCompleteFlag": "campfire_knight_q3_accepted",
       "nextQuestId": "SQ08_PURIFY_FALLEN",
@@ -753,7 +753,7 @@
           "nextDialogueKey": "campfire_knight_rest_blessing"
         },
         {
-          "text": "[Lên đường] \"Ta sẽ tiến vào Rừng Sâu để giải thoát cho người bạn cũ của ngươi.\""
+          "text": "[Lên đường] \"Ta sẽ tiến vào Rừng Sâu để đối mặt với người bạn cũ của ngươi.\""
         }
       ]
     },
@@ -763,20 +763,20 @@
       "lines": [
         "Chiếc huy hiệu này... tà khí đen ngòm đang bốc hơi khi tiếp xúc với ánh lửa thiêng Trạm Lửa Rừng Tĩnh Lặng!",
         "(Sir Vaelen chăm chú nhìn vết khắc biểu tượng Sói trên mặt huy hiệu, rồi ngẩng đầu bàng hoàng nhìn sâu vào mắt bạn)...",
-        "Không thể nào... Đây là Quân Huy của Đoàn Kỵ Sĩ Hắc Lang! Vết chém chéo đặc trưng này... Người thầy và Tổng Chỉ Huy đã dìu dắt cả ta lẫn Mordric năm xưa...",
+        "Không thể nào... Đây là Quân Huy của Đoàn Kỵ Sĩ Hắc Lang! Vết chém chéo đặc trưng này... Chỉ có người thầy năm xưa từng dẫn dắt cả ta lẫn Mordric mới mang dấu ấn ấy...",
         "(Sir Vaelen buông gươm, quỳ một gối xuống nền đất trước mặt bạn với sự tôn kính sâu sắc)...",
-        "Thưa Người Thầy — Lord Meliodas Blackwood (The Wolf Lord)... Năm xưa ngài bước vào màn sương theo lời cầu cứu từ rừng già, để rồi biến cố xuyên thời gian khiến ngài lạc mất ký ức tới tận hôm nay!",
+        "Dấu ấn và khí chất ấy không thể nhầm lẫn... Cho dù màn sương và thời gian có che lấp ký ức của người, lời thề năm xưa giữa chúng ta vẫn chưa từng tắt!",
         "Huy hiệu đã được thanh tẩy hoàn toàn thành Bùa Hộ Thân Hiệp Sĩ. Xin trao lại bảo vật này cho ngài — Fides Ultra Tenebras!"
       ],
       "choices": [
         {
-          "text": "[Tiếp nhận sứ mệnh] \"Đứng lên đi, Vaelen. Lời thề của chúng ta sẽ được hoàn tất khi Đại Hồng Chung ngân vang!\"",
-          "responseLine": "(Sir Vaelen đứng dậy, hai mắt sáng ngời ý chí kiên định)... Xin tuân lệnh Người Thầy! Ta sẽ bảo vệ ngọn lửa này đến hơi thở cuối cùng!",
+          "text": "[Tiếp nhận sứ mệnh] \"Đứng lên đi, hiệp sĩ. Lời thề bảo vệ Bellhollow vẫn sẽ tiếp tục khi Đại Hồng Chung ngân vang!\"",
+          "responseLine": "(Sir Vaelen đứng dậy, hai mắt sáng ngời ý chí kiên định)... Ta sẽ bảo vệ ngọn lửa này đến hơi thở cuối cùng, sát cánh cùng lời thề của ngài!",
           "trustDelta": 3,
           "setFlag": "choice_black_knight_vow"
         },
         {
-          "text": "[Trầm mặc thấu hiểu] (Đỡ người học trò cũ đứng dậy, siết chặt chiếc bùa hộ thân trong lòng bàn tay)",
+          "text": "[Trầm mặc thấu hiểu] (Đỡ Sir Vaelen đứng dậy, siết chặt chiếc bùa hộ thân trong lòng bàn tay)",
           "responseLine": "Lời thề Hắc Lang một lần nữa rực sáng trong tim chúng ta!",
           "trustDelta": 2,
           "setFlag": "choice_black_knight_silent_bond"
@@ -798,14 +798,14 @@
       ],
       "choices": [
         {
-          "text": "[Quyết tâm] \"Hãy tha thứ cho ta, người bạn cũ. Ta sẽ vung kiếm giải thoát cho linh hồn ngươi!\"",
-          "responseLine": "A a a... Giết ta đi... Giải thoát cho ta...",
+          "text": "[Quyết tâm] \"Hạ kiếm xuống đi! Nếu màn sương còn kiểm soát ngươi, ta buộc phải chặn ngươi lại!\"",
+          "responseLine": "Không... Ta không thể buông kiếm... Lời thề này đã vặn xoắn mất rồi...",
           "trustDelta": 2,
           "setFlag": "choice_hooded_knight_resolve"
         },
         {
           "text": "[Thức tỉnh] \"Kìm nén tà khí lại! Nhớ lại lời thề bảo vệ Bellhollow năm xưa!\"",
-          "responseLine": "Lời thề... Bellhollow... Quá muộn rồi... Ta không kiểm soát được nữa!",
+          "responseLine": "Lời thề... Bellhollow... Tại sao tất cả chỉ còn lại màn sương này?!",
           "trustDelta": 3,
           "setFlag": "choice_hooded_knight_plea"
         }
@@ -815,16 +815,16 @@
       "speaker": "Sir Mordric — Kỵ Sĩ Bóng Tối",
       "portrait": "portrait_hooded_knight",
       "lines": [
-        "(Thanh kiếm đen gãy vụn, luồng tà khí bốc hơi để lộ ánh nhìn thanh thản trong làn sương sớm)...",
-        "Cảm ơn người... Thì ra là ngài... Dấu ấn Hắc Lang trên giáp và kiếm pháp ấy không thể nhầm lẫn được...",
-        "Năm xưa, khi ngài nghe lời cầu cứu bước vào màn sương và biến mất không dấu vết... bóng tối dần nuốt lấy những người còn ở lại...",
-        "Ta — Sir Mordric — đã mang theo nỗi oán trách và lời thề rạn vỡ suốt bao mùa sương... Giờ đây cuối cùng ta cũng được giải thoát...",
-        "Huy Hiệu Kỵ Sĩ Tha Hóa... xin trao lại cho ngài... Hãy mang nó về bên ngọn lửa của Sir Vaelen... và giữ lấy lời thề cho Bellhollow..."
+        "(Lưỡi kiếm nặng nề buông xuống, luồng tà khí quanh chiếc mũ trùm khẽ giãn ra trong khoảnh khắc ngắn ngủi)...",
+        "Cảm ơn người... Dấu ấn Hắc Lang trên giáp và thế kiếm ấy... quả thực không thể nhầm lẫn...",
+        "Năm xưa, khi ngài bước vào màn sương rồi biệt tích... ta vẫn tự hỏi lời thề năm ấy rốt cuộc còn giữ được bao nhiêu nghĩa giữa cảnh hoang tàn này...",
+        "Ta — Sir Mordric — đã kẹt giữa oán trách và lời thề rạn vỡ suốt bao mùa sương... Sức lực này đã cạn, nhưng màn sương vẫn chưa tan...",
+        "Huy Hiệu Kỵ Sĩ Tha Hóa... xin trao lại... Hãy mang nó về bên ngọn lửa của Sir Vaelen... và giữ lấy lời thề cho Bellhollow..."
       ],
       "choices": [
         {
-          "text": "[Tiễn biệt] \"Hãy yên nghỉ trong ánh sáng, Sir Mordric. Ta sẽ hoàn thành lời thề của chúng ta.\"",
-          "responseLine": "Vĩnh biệt... người thầy năm xưa của chúng tôi...",
+          "text": "[Khắc ghi] \"Hãy giữ lại chút bình tĩnh trong sương, Sir Mordric. Ta sẽ mang lời thề với Bellhollow đi đến cùng.\"",
+          "responseLine": "Vậy thì hãy bước tiếp đi... Kẻ mang dấu ấn Hắc Lang... Đừng để ánh lửa tàn...",
           "trustDelta": 3,
           "setFlag": "choice_hooded_knight_farewell"
         }
@@ -837,8 +837,8 @@
       "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
       "portrait": "portrait_campfire_knight",
       "lines": [
-        "Kính chào Lord Meliodas Blackwood! Thanh gươm của ta và ngọn lửa Trạm Lửa Rừng Tĩnh Lặng này sẽ luôn sát cánh cùng lời thề Hắc Lang.",
-        "Xin ngài hãy mở Sổ Tay [J] mục Ký Ức để xem lại toàn bộ 4 Chương Hồi Ức đã được phục hồi trọn vẹn!"
+        "Thanh gươm của ta và ngọn lửa Trạm Lửa Rừng Tĩnh Lặng này sẽ luôn sát cánh cùng lời thề Hắc Lang bảo vệ Bellhollow.",
+        "Xin hãy mở Sổ Tay [J] mục Ký Ức để xem lại các trang ghi chép vừa được khôi phục!"
       ],
       "choices": [
         {
@@ -846,7 +846,7 @@
           "nextDialogueKey": "campfire_knight_rest_blessing"
         },
         {
-          "text": "[Trầm mặc ngắm lửa] \"Cảm ơn người anh em, hãy cùng ta canh giữ ngọn lửa này.\""
+          "text": "[Trầm mặc ngắm lửa] \"Cảm ơn hiệp sĩ, hãy cùng giữ cho ngọn lửa này không lụi tàn.\""
         }
       ],
       "healPlayer": true
@@ -943,7 +943,7 @@
       "portrait": "portrait_campfire_knight",
       "lines": [
         "(Sir Vaelen đón lấy chiếc Huy Hiệu Kỵ Sĩ Sa Ngã, tay run rẩy chạm vào vết nứt đen)... Huy hiệu này... ngươi tìm thấy nó ở bờ Đầm Lầy Tĩnh Lặng (E) ư?!",
-        "Đây chính là ấn chương của Đội Kỵ Sĩ Hộ Vệ năm xưa. Phong Ấn Rễ Cổ ở đầm lầy chính là kết giới mà chúng ta từng dựng lên để ngăn tà khí tràn vào Miếu Chuông.",
+        "Đây chính là ấn chương của Đoàn Kỵ Sĩ Hắc Lang năm xưa... Nhìn dấu ấn này bên ngọn lửa, trong ta chợt dâng lên cảm giác quen thuộc khó tả. Nhưng trước hết, Phong Ấn Rễ Cổ ở đầm lầy chính là kết giới ngăn tà khí tràn vào Miếu Chuông.",
         "Để phá vỡ phong ấn ấy và hạ thân cây làm cầu thông sang Miếu Chuông (C), ngươi cần 'Chìa Khóa Thanh Tẩy'. Nhưng chiếc chìa khóa gốc đã thất lạc khi xưởng rèn sụp đổ.",
         "Hãy tiến về hướng Nam vào Xưởng Chuông Bỏ Hoang & Hầm Rễ Cổ (D). Ở đó có cất giữ 'Khuôn Đúc Đồng Cổ'. Sau khi tìm thấy khuôn đúc, hãy tiến lên Rừng Sâu tìm Mảnh Cổ Ngữ rồi mang về đây, ta sẽ luyện thành Chìa Khóa Thanh Tẩy cho ngươi!"
       ],

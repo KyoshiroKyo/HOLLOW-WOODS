@@ -1,0 +1,80 @@
+{
+  "tests": {
+    "A04-T01": {
+      "status": "PASS",
+      "detail": {
+        "speaker": "Sir Vaelen — Kỵ Sĩ Trầm Mặc",
+        "spoilers": [],
+        "memoryStage": 0
+      }
+    },
+    "A04-T02": {
+      "status": "PASS",
+      "detail": {
+        "hasMordric": true
+      }
+    },
+    "A04-T03": {
+      "status": "PASS",
+      "detail": {
+        "neutralUntilA06": true,
+        "hasBlackWolfOrder": true
+      }
+    },
+    "A04-T04": {
+      "status": "PASS",
+      "detail": {
+        "hasCrest": true,
+        "sq08Accepted": false,
+        "memoryStage": 0,
+        "assignedFlag": true,
+        "quest": "Q05_SOLVE_MIRE"
+      }
+    },
+    "A04-T05": {
+      "status": "PASS",
+      "detail": {
+        "introSpeaker": "Kỵ Sĩ Trùm Mũ",
+        "defeatSpeaker": "Sir Mordric — Kỵ Sĩ Bóng Tối",
+        "violations": []
+      }
+    },
+    "A04-T06": {
+      "status": "PASS",
+      "detail": {
+        "fateViolationsFound": []
+      }
+    },
+    "A04-T07": {
+      "status": "PASS",
+      "detail": {
+        "vaelenPortrait": "portrait_campfire_knight",
+        "mordricIntroPortrait": "portrait_hooded_knight",
+        "mordricDefeatPortrait": "portrait_hooded_knight"
+      }
+    },
+    "A04-T08": {
+      "status": "PASS",
+      "detail": {
+        "crestCount": 1,
+        "charmCount": 1,
+        "bossDefeatedFlag": true,
+        "q3DoneFlag": true,
+        "farewellFlag": true,
+        "vowFlag": true
+      }
+    },
+    "A04-T09": {
+      "status": "PASS",
+      "detail": {
+        "quest": "Q05_SOLVE_MIRE",
+        "charmCount": 1,
+        "bossDefeated": true,
+        "vaelenAssignedQ05": true
+      }
+    }
+  },
+  "consoleErrors": [],
+  "pageErrors": [],
+  "failedRequests": []
+}
