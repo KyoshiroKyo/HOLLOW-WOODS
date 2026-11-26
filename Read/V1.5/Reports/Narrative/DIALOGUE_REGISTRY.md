@@ -1,23 +1,23 @@
 # HOLLOW WOODS — DIALOGUE REGISTRY (`59` LIVE KEYS vs `DLG-001–035` / `NAR-001–030`)
 
-- **Mission:** `HW-NARRATIVE-00D — DIALOGUE, QUEST & SOURCE IMPACT AUDIT` (`READ-ONLY`)
+- **Mission:** `HW-NARRATIVE-00D` → Canon Status Synced by **`HW-V16-A01`** (`2026-11-26`)
 - **Primary Sources Verified:**
-  - `src/data/dialogues.json` (`995` lines, Root key `dialogues`, **`59/59` keys verified** — khớp 100% số lượng audit trong Unified Edition Ch. 17)
+  - `src/data/dialogues.json` (`995` lines, Root key `dialogues`, **`59/59` keys verified** — giữ baseline cho tới `HW-V16-A02..A05`)
   - `src/systems/DialogueSystem.ts` (`432` lines)
   - `src/scenes/GameScene.ts` (`7,404` lines), `src/scenes/MainMenuScene.ts` (`1,185` lines)
-  - [PROJECT_KNOWLEDGE_INDEX.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Narrative/PROJECT_KNOWLEDGE_INDEX.md), [CANON_DECISION_REGISTRY.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Narrative/CANON_DECISION_REGISTRY.md), [NARRATIVE_CONFLICT_REPORT.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Narrative/NARRATIVE_CONFLICT_REPORT.md)
+  - [PROJECT_KNOWLEDGE_INDEX.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Narrative/PROJECT_KNOWLEDGE_INDEX.md), [CANON_DECISION_REGISTRY.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Narrative/CANON_DECISION_REGISTRY.md), [HW_CANON_OWNER_DECISION_MATRIX.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Narrative/HW_CANON_OWNER_DECISION_MATRIX.md)
 
 ---
 
-## 1. Phân Loại Trạng Thái Thoại & Đối Chiếu Quy Mô
+## 1. Phân Loại Trạng Thái Thoại & Đối Chiếu Quy Mô (`Post HW-V16-A01`)
 
-| Nhóm thoại | Nguồn | Số lượng | Trạng thái | Ghi chú áp dụng |
+| Nhóm thoại | Nguồn | Số lượng | Canon / Prep Status (`A01`) | Runtime Status & Ghi chú áp dụng |
 | :--- | :--- | :---: | :--- | :--- |
-| **Thoại Runtime Hiện Hành** | `src/data/dialogues.json` | **`59` keys** | `GAME-IMPLEMENTED` | Khớp đúng `59` keys từ audit cũ (`10` Garth, `9` Edda, `9` Neris, `6` Bram, `5` Finn, `17` Vaelen, `2` Hooded Knight, `1` Wayfarer `clapper_found`). |
-| **Thoại Trailer V11.x–V12.2** | `Unified Ch. 08 & Ch. 17` (`DLG-006/007/009/012–015/019/031–034`) | `13` mục | **`TRAILER-ONLY`** (`DLG-K07`) | Giữ nguyên văn từ tài liệu; **KHÔNG** tự đưa vào `dialogues.json` khi chưa chốt `OQ-17`. |
-| **Thoại Dẫn Truyện V9 / Cũ** | `Unified Ch. 17` (`DLG-001–005/010–011/016–018/030`) | `11` mục | `SUPERSEDED` / `TRAILER-ONLY` / `CONFLICT` | Dùng làm tham chiếu lịch sử; `V12.2` nguyên văn một số shot narration vẫn `UNKNOWN` (`OQ-20`). |
-| **Nhánh Lựa Chọn Đề Xuất** | `Unified Ch. 08 Table 04 & Table 17` (`DLG-P01–P06`) | `6+` mục | **`PROPOSED`** | Cần `DialogueChoice` mở rộng condition/one-time (`DialogueSystem.ts` hiện chưa có `condition` field). |
-| **Thoại Chưa Có Văn Bản Mới** | `DLG-008/020–023/028/029` | `7` mục | `BASELINE PRESERVED` / `UNKNOWN` | Ba quy tắc Edda, Echo, Elian giữ nguyên baseline; `Fallen/Listener/Satyr` không có key thoại riêng trong `59` keys. |
+| **Thoại Runtime Hiện Hành** | `src/data/dialogues.json` | **`59` keys** | `GAME-IMPLEMENTED` (Cần dọn tàn dư `DEC-LOCK-01..10`) | Chưa sửa trong `A01`; các điểm `C01–C04` (`campfire_knight_q2/q3`, `hooded_knight_*`, `edda_black_knight_reverence`) sẵn sàng cho **`A02` / `A04`**. |
+| **Thoại Trailer V11.x–V12.2** | `Unified Ch. 08 & Ch. 17` (`DLG-006/007/009/012–015/031–034`) | `13` mục | **`APPROVED-FOR-PREPARATION`** (`DEC-LOCK-17`) | Chuẩn bị ngữ cảnh & điều kiện ở `A03–A05`; **cấm tích hợp nguyên văn hoặc đổi Menu subtitle/Branding khi chưa duyệt từng nhóm**. |
+| **Thoại Dẫn Truyện V9 / Cũ** | `Unified Ch. 17` (`DLG-001–005/010–011/016–018/030`) | `11` mục | `SUPERSEDED` / `TRAILER-ONLY` | Tham chiếu lịch sử; lời dẫn Opening `CS01–CS06` chờ duyệt ở `A08` (`DEC-LOCK-20`). |
+| **Nhánh Lựa Chọn Đề Xuất** | `Unified Ch. 08 Table 04 & Table 17` (`DLG-P01–P06`) | `6+` mục | **`CANON-APPROVED`** (Kiến trúc bán tuyến tính `DEC-LOCK-18`) | Chuẩn bị & triển khai parser + once-guard `trust`/`reward` ở `A05`; không tách thành tuyến nhiệm vụ chính mới. |
+| **Thoại Chưa Có Văn Bản Mới** | `DLG-008/020–023/028/029` | `7` mục | `BASELINE PRESERVED` | Ba quy tắc Edda, Echo, Elian giữ baseline; `Fallen/Listener/Satyr` không có key thoại riêng (`Satyr` giữ `TRAILER-ONLY`). |
 
 ---
 

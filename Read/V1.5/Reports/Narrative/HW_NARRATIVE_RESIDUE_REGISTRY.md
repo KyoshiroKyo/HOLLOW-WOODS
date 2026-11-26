@@ -1,10 +1,18 @@
-# HW-NR-02 — LEGACY NARRATIVE RESIDUE REGISTRY
+# HW-NR-02 — LEGACY NARRATIVE RESIDUE REGISTRY (`UNLOCKED FOR HW-V16-A02`)
 
-- **Mission ID:** `HW-NR-02 — LEGACY NARRATIVE RESIDUE AUDIT`
+- **Mission ID:** `HW-NR-02` → Replacement Decisions Locked by **`HW-V16-A01`** (`2026-11-26`)
 - **Project:** `HOLLOW WOODS` — `KYOSHIRO STUDIO`
-- **Mode:** `READ-ONLY SOURCE AUDIT` (`0` sửa text/code, `0` xóa dữ liệu lịch sử, `0` global search-and-replace)
+- **Mode:** Audit Baseline Preserved + Mapped for **`HW-V16-A02 — APPROVED LEGACY LORE CLEANUP & NARRATIVE IMPLEMENTATION`** (`0` runtime edits performed in `A01`)
 - **Dependencies:** [HW_MASTER_CANON_LOCK.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Narrative/HW_MASTER_CANON_LOCK.md), [HW_CANON_OWNER_DECISION_MATRIX.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Narrative/HW_CANON_OWNER_DECISION_MATRIX.md)
 - **Inventory JSON:** [HW_LEGACY_DIALOGUE_INVENTORY.json](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Narrative/HW_LEGACY_DIALOGUE_INVENTORY.json)
+
+> **`HW-V16-A01` Cleanup Authorization Summary (`READY FOR A02`):**
+> - **`DEC-LOCK-02`:** Thay thuyết tự phong ấn ký ức / `Algiz` / tái sinh gắn với nguồn gốc mất trí nhớ bằng biến cố xuyên thời gian bí ẩn; **giữ nguyên** các rune `Algiz` không liên quan Lore bị thay thế.
+> - **`DEC-LOCK-03` & `05`:** Nguồn lời cầu cứu giữ `UNKNOWN`; giữ bí ẩn quan hệ nhân quả với 7 hồi chuông.
+> - **`DEC-LOCK-04`:** Bỏ toàn bộ `"hàng trăm năm"` / số thế hệ chưa duyệt; thống nhất `Làng Sương Mù = Bellhollow`.
+> - **`DEC-LOCK-07` & `01`:** Ẩn `Meliodas` & `Tổng Chỉ Huy` tại Menu và giai đoạn đầu (`The Mossbound Wayfarer — Lữ Khách Rêu Phong`); chỉ reveal ở `Memory Stage >= 3` + chứng cứ phù hợp (không ép `SQ08`).
+> - **`DEC-LOCK-08` & `15`:** Xóa bỏ toàn bộ bối cảnh hiện đại (`ô tô`, `đèn pha`, `quốc lộ`, `Satyr:` hiển thị người chơi); giữ nguyên ID kỹ thuật (`lore_satyr_journal`, `SatyrPlayer.ts`, `satyr_*`) và backup lịch sử.
+> - **`DEC-LOCK-09` & `10`:** Sửa hiển thị `HoodedKnightBoss` thành `Sir Mordric — The Dark Knight` theo mốc hợp lý và giữ 100% runtime ID/class/texture/quest/save flags/`quest_corrupted_crest`; sửa Vaelen `q2`/`q3` (`A04`).
 
 ---
 
