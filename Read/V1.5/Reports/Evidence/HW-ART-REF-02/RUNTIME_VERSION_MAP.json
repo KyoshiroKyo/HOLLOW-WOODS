@@ -1,0 +1,63 @@
+{
+  "mission": "HW-ART-REF-02",
+  "character": "Meliodas Blackwood (CHAR-001 / Black Knight V2)",
+  "baselineHead": "94d346fb1793dcf5042590896646e7f6d3e5b225",
+  "runtimeCheckpointRef": "f35da6d3867cc8c9714cfd293406c490d752e8c4",
+  "importantRuntimeNote": "DO NOT classify Codex K1 (0b16b7d4) as UNUSED: black_knight_armed_idle (K1 0b16b7d4) is actively loaded in runtime for Armed Idle down, up, and left directions; only Armed Idle right pulls from black_knight_movement (K2 V2 5feed142).",
+  "atlases": {
+    "black_knight_armed_idle": {
+      "sourceCommit": "0b16b7d4e531607de8bc98053f07a995367b3666",
+      "versionTag": "K1_ArmedIdle",
+      "runtimeUsage": "PARTIAL_ACTIVE: supplies armed_idle_{down,up,left}_{0..5}; armed_idle_right overridden by K2 V2 black_knight_movement"
+    },
+    "black_knight_movement": {
+      "sourceCommit": "5feed142c9861b12ac0473ae535d8877c2faf814",
+      "versionTag": "K2_V2_UnifiedMovement",
+      "runtimeUsage": "ACTIVE: supplies armed_idle_right, armed_walk, armed_run fallback, unarmed_idle, unarmed_walk, unarmed_run fallback (supersedes K2 V1 4f6eb7e2)"
+    },
+    "black_knight_core_combat": {
+      "sourceCommit": "0a927c226587a3f82957b06183138ecf9f9a6fe2",
+      "versionTag": "K3_CoreCombat",
+      "runtimeUsage": "ACTIVE: supplies 6-frame attack, heavy_attack, attack_combo"
+    },
+    "black_knight_defense": {
+      "sourceCommit": "6a64978d09b0f9f88c96b85f509a1c34ec097fe3",
+      "versionTag": "K3_Defense",
+      "runtimeUsage": "ACTIVE: supplies parry, parry_success, roll, unarmed_roll, weapon_on, weapon_off, hurt, unarmed_hurt, death + reference animations"
+    },
+    "black_knight_extended_skills": {
+      "sourceCommit": "d383c52bd88d2b265db373e5b362cbf19a547d71",
+      "versionTag": "K3_ExtendedSkills",
+      "runtimeUsage": "ACTIVE: supplies armed_buff, unarmed_buff, thrust, ground_slam, flame_stream, fire_wave, aerial_somersault, weapon_art (Weapon Art has approved gameplay entry)"
+    },
+    "black_knight_conversion_actions": {
+      "sourceCommit": "6bb15b80479f1206e2eaba878cd5903434f63ea4",
+      "versionTag": "Conversion_34Seq",
+      "runtimeUsage": "ACTIVE: 6f interact/gather/use_item + 3f parry_miss (5/34 PASS live includes parry_miss)"
+    },
+    "black_knight_conversion_air": {
+      "sourceCommit": "6bb15b80479f1206e2eaba878cd5903434f63ea4",
+      "versionTag": "Conversion_34Seq",
+      "runtimeUsage": "ASSET_ONLY: 10 side-scroller/air archived sequences (6f/1f)"
+    },
+    "black_knight_conversion_combat": {
+      "sourceCommit": "6bb15b80479f1206e2eaba878cd5903434f63ea4",
+      "versionTag": "Conversion_34Seq",
+      "runtimeUsage": "ASSET_ONLY_AND_QA_PARITY: full Fellor frame-count sequences (19/8/13 heavy, 9/9/11/11 light, 35 weapon_art)"
+    },
+    "black_knight_conversion_motion": {
+      "sourceCommit": "6bb15b80479f1206e2eaba878cd5903434f63ea4",
+      "versionTag": "Conversion_34Seq",
+      "runtimeUsage": "ACTIVE_RUN_OVERRIDE_AND_ROLL: armed_run_sequence (12f -> overrides live 'run') & unarmed_run_sequence (12f -> overrides live 'unarmed_run'); armed_roll_sequence / unarmed_roll_sequence (12f ASSET-ONLY)"
+    },
+    "black_knight_conversion_states": {
+      "sourceCommit": "6bb15b80479f1206e2eaba878cd5903434f63ea4",
+      "versionTag": "Conversion_34Seq",
+      "runtimeUsage": "ASSET_ONLY_FULL_SEQUENCES: weapon_on (18f), weapon_off (14f), parry_success (15f), death (9f), unarmed_buff (12f), armed_buff (12f)"
+    }
+  },
+  "legacyFallbacksSeparateFromMeliodasV2": [
+    "public/assets/characters/mossbound_wayfarer/* (V1.5.2 Wayfarer fallback sheets)",
+    "public/assets/characters/satyr/satyr_portrait.png (Legacy Satyr / Robot comparison fallback — NOT latest Meliodas artwork)"
+  ]
+}

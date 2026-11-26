@@ -1,0 +1,2735 @@
+{
+  "mission": "HW-ART-REF-02",
+  "generatedAtUtc": "2026-11-26T16:15:16.725347+00:00",
+  "destinationRoot": "G:\\HOLLOW WOODS\\Asset_Art\\Meliodas_Blackwood",
+  "summaryCounts": {
+    "LATEST_ARTWORK": 86,
+    "CURRENT_RUNTIME": 38,
+    "LEGACY": 78,
+    "METADATA_AND_DOCS": 18
+  },
+  "files": [
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Animations_GIF/codex_k2_runtime_gifs/armed_run-gameplay.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/04_Animations/codex_k2_runtime_gifs/armed_run-gameplay.gif",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_ANIMATION_PREVIEW_GIF",
+      "sourceVersion": "Meliodas Blackwood V2 4-Dir & K2 Runtime Previews",
+      "sizeBytes": 147410,
+      "sha256": "0574d1ba6acf47060594ca06e1aad9d690ef6b0e40ed8c2666347978cece3bbd",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Animations_GIF/codex_k2_runtime_gifs/armed_walk-gameplay.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/04_Animations/codex_k2_runtime_gifs/armed_walk-gameplay.gif",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_ANIMATION_PREVIEW_GIF",
+      "sourceVersion": "Meliodas Blackwood V2 4-Dir & K2 Runtime Previews",
+      "sizeBytes": 143974,
+      "sha256": "46bb014238eacb66ecce7061e1f07da7e58fe6bce52b9b56fd948024e309702e",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Animations_GIF/codex_k2_runtime_gifs/unarmed_idle-gameplay.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/04_Animations/codex_k2_runtime_gifs/unarmed_idle-gameplay.gif",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_ANIMATION_PREVIEW_GIF",
+      "sourceVersion": "Meliodas Blackwood V2 4-Dir & K2 Runtime Previews",
+      "sizeBytes": 147424,
+      "sha256": "00545771606ee11ba8ba4bbf793ee274e5ff4b84391c8cd1852fa0f1c90d4bf1",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Animations_GIF/codex_k2_runtime_gifs/unarmed_run-gameplay.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/04_Animations/codex_k2_runtime_gifs/unarmed_run-gameplay.gif",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_ANIMATION_PREVIEW_GIF",
+      "sourceVersion": "Meliodas Blackwood V2 4-Dir & K2 Runtime Previews",
+      "sizeBytes": 145204,
+      "sha256": "e480add72d8ddad7f1754a693bf09e657b4d22b14b51207b45a84509b0367f1e",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Animations_GIF/codex_k2_runtime_gifs/unarmed_walk-gameplay.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/04_Animations/codex_k2_runtime_gifs/unarmed_walk-gameplay.gif",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_ANIMATION_PREVIEW_GIF",
+      "sourceVersion": "Meliodas Blackwood V2 4-Dir & K2 Runtime Previews",
+      "sizeBytes": 140772,
+      "sha256": "983244fd9dea0f227364e6d4a421c80b7b1507f6421943f1d48fba4a4611c565",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Animations_GIF/meliodas_buff_armed_12f_4dir.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/04_Animations/meliodas_buff_armed_12f_4dir.gif",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_ANIMATION_PREVIEW_GIF",
+      "sourceVersion": "Meliodas Blackwood V2 4-Dir & K2 Runtime Previews",
+      "sizeBytes": 83492,
+      "sha256": "bb47124a112d114fe1c7e652b6af27bb867dbe95a27ce9a2b36f06dbd47d9c13",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Animations_GIF/meliodas_death_9f_4dir.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/04_Animations/meliodas_death_9f_4dir.gif",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_ANIMATION_PREVIEW_GIF",
+      "sourceVersion": "Meliodas Blackwood V2 4-Dir & K2 Runtime Previews",
+      "sizeBytes": 32245,
+      "sha256": "61eeb6bb689ee93e5e6f7ab45f09f341b84dbb275c125d0d25e43aa3eb10de41",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Animations_GIF/meliodas_heavy_attack_1_4dir.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/04_Animations/meliodas_heavy_attack_1_4dir.gif",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_ANIMATION_PREVIEW_GIF",
+      "sourceVersion": "Meliodas Blackwood V2 4-Dir & K2 Runtime Previews",
+      "sizeBytes": 108308,
+      "sha256": "43522c0046a89563032de4c2d99a151415991dc0654d4275798248a0ade7a34e",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Animations_GIF/meliodas_idle_armed_4dir.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/04_Animations/meliodas_idle_armed_4dir.gif",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_ANIMATION_PREVIEW_GIF",
+      "sourceVersion": "Meliodas Blackwood V2 4-Dir & K2 Runtime Previews",
+      "sizeBytes": 20645,
+      "sha256": "2222f442bd01f8326ab32ed8d8ba92c49f783a32a8496e55e159e01c508470a3",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Animations_GIF/meliodas_idle_unarmed_4dir.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/04_Animations/meliodas_idle_unarmed_4dir.gif",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_ANIMATION_PREVIEW_GIF",
+      "sourceVersion": "Meliodas Blackwood V2 4-Dir & K2 Runtime Previews",
+      "sizeBytes": 20644,
+      "sha256": "c935fd9461051c14e6a39b81a95f02f36bb084f104546a92e2eda633545ddc50",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Animations_GIF/meliodas_light_attack_1_4dir.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/04_Animations/meliodas_light_attack_1_4dir.gif",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_ANIMATION_PREVIEW_GIF",
+      "sourceVersion": "Meliodas Blackwood V2 4-Dir & K2 Runtime Previews",
+      "sizeBytes": 36741,
+      "sha256": "cad68d2d045aed373a786e65bb9699c40e94f3eb78d0dee6b177ec270a45240e",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Animations_GIF/meliodas_parry_success_15f_4dir.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/04_Animations/meliodas_parry_success_15f_4dir.gif",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_ANIMATION_PREVIEW_GIF",
+      "sourceVersion": "Meliodas Blackwood V2 4-Dir & K2 Runtime Previews",
+      "sizeBytes": 89524,
+      "sha256": "9be1b3217799499af7bfc3dd85081c42bf1259f65ad2ecb159dbc7774f4d5058",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Animations_GIF/meliodas_roll_armed_12f_4dir.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/04_Animations/meliodas_roll_armed_12f_4dir.gif",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_ANIMATION_PREVIEW_GIF",
+      "sourceVersion": "Meliodas Blackwood V2 4-Dir & K2 Runtime Previews",
+      "sizeBytes": 63680,
+      "sha256": "1dc442199fefdb7d8bb661b51659f94504f1f592c09c062b4bc3968daa9263ca",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Animations_GIF/meliodas_run_armed_12f_4dir.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/04_Animations/meliodas_run_armed_12f_4dir.gif",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_ANIMATION_PREVIEW_GIF",
+      "sourceVersion": "Meliodas Blackwood V2 4-Dir & K2 Runtime Previews",
+      "sizeBytes": 65725,
+      "sha256": "730087e0bdc891be35e96b8570ef9e056e48673efa767ed9bb8a2d99b2323f42",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Animations_GIF/meliodas_run_unarmed_12f_4dir.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/04_Animations/meliodas_run_unarmed_12f_4dir.gif",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_ANIMATION_PREVIEW_GIF",
+      "sourceVersion": "Meliodas Blackwood V2 4-Dir & K2 Runtime Previews",
+      "sizeBytes": 70319,
+      "sha256": "8de2afe82f59258e184d95a08f7df6fd8426d885f4a6fd4a3ba4febaa1765e1c",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Animations_GIF/meliodas_walk_armed_4dir.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/04_Animations/meliodas_walk_armed_4dir.gif",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_ANIMATION_PREVIEW_GIF",
+      "sourceVersion": "Meliodas Blackwood V2 4-Dir & K2 Runtime Previews",
+      "sizeBytes": 21025,
+      "sha256": "1b43117ade67e348a7dc1eac511dff24202504da1c363cc425b591bf0e30f39c",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Animations_GIF/meliodas_walk_unarmed_4dir.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/04_Animations/meliodas_walk_unarmed_4dir.gif",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_ANIMATION_PREVIEW_GIF",
+      "sourceVersion": "Meliodas Blackwood V2 4-Dir & K2 Runtime Previews",
+      "sizeBytes": 20862,
+      "sha256": "274e16832f3068e27e29286a23adf51d1bbc3703ba2dfcb5967896b7a2a79a95",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Animations_GIF/meliodas_weapon_art_35f_4dir.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/04_Animations/meliodas_weapon_art_35f_4dir.gif",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_ANIMATION_PREVIEW_GIF",
+      "sourceVersion": "Meliodas Blackwood V2 4-Dir & K2 Runtime Previews",
+      "sizeBytes": 181527,
+      "sha256": "9eac9cfc530dd54339f0a8318890bca1df1cae13b782f9785b087eae3943d171",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Atlases_Latest/Conversion_34Seq_6bb15b80/black_knight_conversion_actions.json",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/08_V153_6bb15b80_Conversion34Seq/black_knight_conversion_actions.json",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_CANON_CONVERSION_34SEQ",
+      "sourceVersion": "Codex Conversion 34-Seq (6bb15b80)",
+      "sizeBytes": 110195,
+      "sha256": "f257d0377abe0fee2b5094dc110f48a4643c8c754b9bb3ebe6a6de21ca61ac9f",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Atlases_Latest/Conversion_34Seq_6bb15b80/black_knight_conversion_actions.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/08_V153_6bb15b80_Conversion34Seq/black_knight_conversion_actions.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_CANON_CONVERSION_34SEQ",
+      "sourceVersion": "Codex Conversion 34-Seq (6bb15b80)",
+      "sizeBytes": 213006,
+      "sha256": "4774f891abd3264814637e7377af03f12a4f32597f2e47c83ac0f2ae3d725a27",
+      "png": {
+        "width": 960,
+        "height": 832,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Atlases_Latest/Conversion_34Seq_6bb15b80/black_knight_conversion_air.json",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/08_V153_6bb15b80_Conversion34Seq/black_knight_conversion_air.json",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_CANON_CONVERSION_34SEQ",
+      "sourceVersion": "Codex Conversion 34-Seq (6bb15b80)",
+      "sizeBytes": 138734,
+      "sha256": "b4308e577546e44c5b1285be3529e54959e0298ade80dca4540329b78fea60c9",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Atlases_Latest/Conversion_34Seq_6bb15b80/black_knight_conversion_air.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/08_V153_6bb15b80_Conversion34Seq/black_knight_conversion_air.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_CANON_CONVERSION_34SEQ",
+      "sourceVersion": "Codex Conversion 34-Seq (6bb15b80)",
+      "sizeBytes": 282852,
+      "sha256": "a6523927bf5d225f3d8d5485f9b5282b16ef24cd1184bc985aa2c17dac40f3f6",
+      "png": {
+        "width": 960,
+        "height": 1440,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Atlases_Latest/Conversion_34Seq_6bb15b80/black_knight_conversion_combat.json",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/08_V153_6bb15b80_Conversion34Seq/black_knight_conversion_combat.json",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_CANON_CONVERSION_34SEQ",
+      "sourceVersion": "Codex Conversion 34-Seq (6bb15b80)",
+      "sizeBytes": 327201,
+      "sha256": "4f99d9fe5b309bfbf2bbfddf8ed46cb54ae260695695b5c2bf7161f6cb8957d1",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Atlases_Latest/Conversion_34Seq_6bb15b80/black_knight_conversion_combat.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/08_V153_6bb15b80_Conversion34Seq/black_knight_conversion_combat.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_CANON_CONVERSION_34SEQ",
+      "sourceVersion": "Codex Conversion 34-Seq (6bb15b80)",
+      "sizeBytes": 967763,
+      "sha256": "1d83488a54d545f2bd764d10e54e319a14a5867306a536bbd1a472d6df22240c",
+      "png": {
+        "width": 2016,
+        "height": 2016,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Atlases_Latest/Conversion_34Seq_6bb15b80/black_knight_conversion_motion.json",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/08_V153_6bb15b80_Conversion34Seq/black_knight_conversion_motion.json",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_CANON_CONVERSION_34SEQ",
+      "sourceVersion": "Codex Conversion 34-Seq (6bb15b80)",
+      "sizeBytes": 133051,
+      "sha256": "2f9bbba2a9b1beb1367b9418b18853fd3b2bea7b01b81d48e15a80626a34e902",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Atlases_Latest/Conversion_34Seq_6bb15b80/black_knight_conversion_motion.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/08_V153_6bb15b80_Conversion34Seq/black_knight_conversion_motion.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_CANON_CONVERSION_34SEQ",
+      "sourceVersion": "Codex Conversion 34-Seq (6bb15b80)",
+      "sizeBytes": 472099,
+      "sha256": "3ea692c586431d737bcd93dceb3525a5c02591029b4993a2f63778da402e2da0",
+      "png": {
+        "width": 1008,
+        "height": 1152,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Atlases_Latest/Conversion_34Seq_6bb15b80/black_knight_conversion_states.json",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/08_V153_6bb15b80_Conversion34Seq/black_knight_conversion_states.json",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_CANON_CONVERSION_34SEQ",
+      "sourceVersion": "Codex Conversion 34-Seq (6bb15b80)",
+      "sizeBytes": 221114,
+      "sha256": "ae179e8d6be36d11b70c073e981d69294ef9f58798e448adc9a99b264eab24f6",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Atlases_Latest/Conversion_34Seq_6bb15b80/black_knight_conversion_states.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/08_V153_6bb15b80_Conversion34Seq/black_knight_conversion_states.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_CANON_CONVERSION_34SEQ",
+      "sourceVersion": "Codex Conversion 34-Seq (6bb15b80)",
+      "sizeBytes": 715692,
+      "sha256": "a8ce11dc4f35bc4605d8a6b73f12378202cbaf769c6367da6380f1c73622bf9a",
+      "png": {
+        "width": 1344,
+        "height": 1944,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Atlases_Latest/K2_V2_5feed142/black_knight_movement.json",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/06_V153_5feed142_K2v2_UnifiedMovement/black_knight_movement.json",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_CANON_MOVEMENT",
+      "sourceVersion": "Codex K2 V2 Unified Movement (5feed142)",
+      "sizeBytes": 77038,
+      "sha256": "16dd9e42f65b4dfa96e35a25cd38d0fe5885adc98c4d5601fa8888421f9f461f",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Atlases_Latest/K2_V2_5feed142/black_knight_movement.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/06_V153_5feed142_K2v2_UnifiedMovement/black_knight_movement.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_CANON_MOVEMENT",
+      "sourceVersion": "Codex K2 V2 Unified Movement (5feed142)",
+      "sizeBytes": 167801,
+      "sha256": "17279d83290fa349855066381f557548e08df31b123fe1c745b29017a2a14d8f",
+      "png": {
+        "width": 896,
+        "height": 576,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Atlases_Latest/K3_Combat_Defense_Skills/black_knight_core_combat.json",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/07_V153_K3_CombatDefenseSkills/black_knight_core_combat.json",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_CANON_COMBAT_DEFENSE_SKILLS",
+      "sourceVersion": "Codex K3 (0a927c22 / 6a64978d / d383c52b)",
+      "sizeBytes": 43641,
+      "sha256": "24a80fdece9b739b69a43aa21d5d10077f342617b7c024211e4eae84819e352d",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Atlases_Latest/K3_Combat_Defense_Skills/black_knight_core_combat.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/07_V153_K3_CombatDefenseSkills/black_knight_core_combat.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_CANON_COMBAT_DEFENSE_SKILLS",
+      "sourceVersion": "Codex K3 (0a927c22 / 6a64978d / d383c52b)",
+      "sizeBytes": 111020,
+      "sha256": "5126a4a490f84f1b31437fe110dfdeecebd184e07a4075b7531c9f4596c633fd",
+      "png": {
+        "width": 768,
+        "height": 384,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Atlases_Latest/K3_Combat_Defense_Skills/black_knight_defense.json",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/07_V153_K3_CombatDefenseSkills/black_knight_defense.json",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_CANON_COMBAT_DEFENSE_SKILLS",
+      "sourceVersion": "Codex K3 (0a927c22 / 6a64978d / d383c52b)",
+      "sizeBytes": 130552,
+      "sha256": "d65e678b9c6e457197c6339db2f139efef4ac97b41022e2531b9420ab118f7e2",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Atlases_Latest/K3_Combat_Defense_Skills/black_knight_defense.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/07_V153_K3_CombatDefenseSkills/black_knight_defense.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_CANON_COMBAT_DEFENSE_SKILLS",
+      "sourceVersion": "Codex K3 (0a927c22 / 6a64978d / d383c52b)",
+      "sizeBytes": 288641,
+      "sha256": "4e1f5fb8e294363860a31723097e551342c5b6009033ed05c0b3badaca0acaad",
+      "png": {
+        "width": 768,
+        "height": 1152,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Atlases_Latest/K3_Combat_Defense_Skills/black_knight_extended_skills.json",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/07_V153_K3_CombatDefenseSkills/black_knight_extended_skills.json",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_CANON_COMBAT_DEFENSE_SKILLS",
+      "sourceVersion": "Codex K3 (0a927c22 / 6a64978d / d383c52b)",
+      "sizeBytes": 118757,
+      "sha256": "06da44db2d6e8f23ea2e9af726cc0c2c5f07b86c42d34bdf17db367f8bd23df7",
+      "png": null
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Atlases_Latest/K3_Combat_Defense_Skills/black_knight_extended_skills.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/07_V153_K3_CombatDefenseSkills/black_knight_extended_skills.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_CANON_COMBAT_DEFENSE_SKILLS",
+      "sourceVersion": "Codex K3 (0a927c22 / 6a64978d / d383c52b)",
+      "sizeBytes": 313019,
+      "sha256": "236e8c1fdcd5dd28ccd9b6ef3b011951e3594414f5658234cd6c9cef872049e2",
+      "png": {
+        "width": 1344,
+        "height": 1152,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Contact_Sheets/HW_CHAR_01_R2/BLACK_KNIGHT_CODEX_CANDIDATES.png",
+      "sourceRelPath": "Read/V1.5/Reports/Visuals/HW-CHAR-01-R2/BLACK_KNIGHT_CODEX_CANDIDATES.png",
+      "category": "LATEST_ARTWORK",
+      "status": "RECOVERY_CONTACT_AND_COMPARISON",
+      "sourceVersion": "HW-CHAR-01-R2 Recovery Visuals",
+      "sizeBytes": 63817,
+      "sha256": "ac8e246dbf41a6e5f4ffb9e225d34f0d01ef58e2265bd8465e98aafd15e439de",
+      "png": {
+        "width": 1680,
+        "height": 1080,
+        "mode": "RGB"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Contact_Sheets/HW_CHAR_01_R2/BLACK_KNIGHT_V1_ORIGINAL.png",
+      "sourceRelPath": "Read/V1.5/Reports/Visuals/HW-CHAR-01-R2/BLACK_KNIGHT_V1_ORIGINAL.png",
+      "category": "LATEST_ARTWORK",
+      "status": "RECOVERY_CONTACT_AND_COMPARISON",
+      "sourceVersion": "HW-CHAR-01-R2 Recovery Visuals",
+      "sizeBytes": 106160,
+      "sha256": "d8b21e3d359f6d5cc0c6b0953c91df891f578d86f38bb643a5450db671d879ab",
+      "png": {
+        "width": 1600,
+        "height": 1020,
+        "mode": "RGB"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Contact_Sheets/HW_CHAR_01_R2/BLACK_KNIGHT_V1_V2_RUNTIME_COMPARISON.png",
+      "sourceRelPath": "Read/V1.5/Reports/Visuals/HW-CHAR-01-R2/BLACK_KNIGHT_V1_V2_RUNTIME_COMPARISON.png",
+      "category": "LATEST_ARTWORK",
+      "status": "RECOVERY_CONTACT_AND_COMPARISON",
+      "sourceVersion": "HW-CHAR-01-R2 Recovery Visuals",
+      "sizeBytes": 85480,
+      "sha256": "3c2160ddf2570ebb388a1ed276894bbb1137df3bd1314657b417db5d4662ec92",
+      "png": {
+        "width": 1680,
+        "height": 960,
+        "mode": "RGB"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Contact_Sheets/HW_CHAR_01_R2/MELIODAS_BLACKWOOD_ANIMATION_CONTACT_SHEET.png",
+      "sourceRelPath": "Read/V1.5/Reports/Visuals/HW-CHAR-01-R2/MELIODAS_BLACKWOOD_ANIMATION_CONTACT_SHEET.png",
+      "category": "LATEST_ARTWORK",
+      "status": "RECOVERY_CONTACT_AND_COMPARISON",
+      "sourceVersion": "HW-CHAR-01-R2 Recovery Visuals",
+      "sizeBytes": 267667,
+      "sha256": "709f88901178ec3186f0fd2e48dece2e1075b16aff4cb0c3bade961442d97b49",
+      "png": {
+        "width": 1680,
+        "height": 1340,
+        "mode": "RGB"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Contact_Sheets/HW_CHAR_01_R2/MELIODAS_BLACKWOOD_RECOVERED_OVERVIEW.png",
+      "sourceRelPath": "Read/V1.5/Reports/Visuals/HW-CHAR-01-R2/MELIODAS_BLACKWOOD_RECOVERED_OVERVIEW.png",
+      "category": "LATEST_ARTWORK",
+      "status": "RECOVERY_CONTACT_AND_COMPARISON",
+      "sourceVersion": "HW-CHAR-01-R2 Recovery Visuals",
+      "sizeBytes": 115387,
+      "sha256": "600adbbc535a0deddc6e6489d49edca48b2e0a3b554ada216bf9382fc54e645d",
+      "png": {
+        "width": 1680,
+        "height": 960,
+        "mode": "RGB"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Contact_Sheets/V153_Source_Parity/actions-contact.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/08_Documentation/Visuals/V153_BLACK_KNIGHT_SOURCE_PARITY/actions-contact.png",
+      "category": "LATEST_ARTWORK",
+      "status": "QA_CONTACT_SHEET",
+      "sourceVersion": "V153 Source Parity Contact Sheets (6bb15b80)",
+      "sizeBytes": 240127,
+      "sha256": "6b40fd91e3625c1094d48a97fb9c199b639cb45871289b13b5d7c69108c456d0",
+      "png": {
+        "width": 826,
+        "height": 3048,
+        "mode": "RGB"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Contact_Sheets/V153_Source_Parity/air-contact.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/08_Documentation/Visuals/V153_BLACK_KNIGHT_SOURCE_PARITY/air-contact.png",
+      "category": "LATEST_ARTWORK",
+      "status": "QA_CONTACT_SHEET",
+      "sourceVersion": "V153 Source Parity Contact Sheets (6bb15b80)",
+      "sizeBytes": 317627,
+      "sha256": "c23a88034ee3b3136be6c3d1d40019c9f2fb4e85dd28b516a96d2d75e2cc7ef9",
+      "png": {
+        "width": 826,
+        "height": 4344,
+        "mode": "RGB"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Contact_Sheets/V153_Source_Parity/combat-contact.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/08_Documentation/Visuals/V153_BLACK_KNIGHT_SOURCE_PARITY/combat-contact.png",
+      "category": "LATEST_ARTWORK",
+      "status": "QA_CONTACT_SHEET",
+      "sourceVersion": "V153 Source Parity Contact Sheets (6bb15b80)",
+      "sizeBytes": 978541,
+      "sha256": "aa47c938eecaf35feb415b66f07a0260cc7ce1cb238b6fece315047ea0bb06b0",
+      "png": {
+        "width": 4074,
+        "height": 3480,
+        "mode": "RGB"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Contact_Sheets/V153_Source_Parity/motion-contact.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/08_Documentation/Visuals/V153_BLACK_KNIGHT_SOURCE_PARITY/motion-contact.png",
+      "category": "LATEST_ARTWORK",
+      "status": "QA_CONTACT_SHEET",
+      "sourceVersion": "V153 Source Parity Contact Sheets (6bb15b80)",
+      "sizeBytes": 461379,
+      "sha256": "34b7315178165f440cdd2c38ffced22fecac471382046146c742ad0043903b34",
+      "png": {
+        "width": 1498,
+        "height": 1752,
+        "mode": "RGB"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Contact_Sheets/V153_Source_Parity/states-contact.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/08_Documentation/Visuals/V153_BLACK_KNIGHT_SOURCE_PARITY/states-contact.png",
+      "category": "LATEST_ARTWORK",
+      "status": "QA_CONTACT_SHEET",
+      "sourceVersion": "V153 Source Parity Contact Sheets (6bb15b80)",
+      "sizeBytes": 702390,
+      "sha256": "1339c4dd25ce8b55db0694d731dcbaf18a948555c0b68a78ec1a2404515951c4",
+      "png": {
+        "width": 2170,
+        "height": 2616,
+        "mode": "RGB"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Portraits_Menu_Cover/black_knight_portrait.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/06_Portraits/black_knight_portrait.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_PORTRAIT_OR_COVER",
+      "sourceVersion": "Black Knight V2 Portrait / Cover Art",
+      "sizeBytes": 2809,
+      "sha256": "96dfc9fca1bcff39ec4ad972d3616c62a86832ab58ce0826c830ebe69182e507",
+      "png": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Portraits_Menu_Cover/hollow_woods_black_knight_cover.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/06_Portraits/hollow_woods_black_knight_cover.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_PORTRAIT_OR_COVER",
+      "sourceVersion": "Black Knight V2 Portrait / Cover Art",
+      "sizeBytes": 29951,
+      "sha256": "53fb1c0935af201f9e82c92efa4d0ba3331ea4e9246e45ea2ef78fb0f6179006",
+      "png": {
+        "width": 1280,
+        "height": 720,
+        "mode": "RGB"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Portraits_Menu_Cover/menu_ui/black_knight_button.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/06_Portraits/menu_ui/black_knight_button.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_MENU_ARTWORK",
+      "sourceVersion": "Black Knight Menu UI Art (public/assets/ui/menu parity)",
+      "sizeBytes": 607,
+      "sha256": "afa6ca9f85f9f9b6691e7083fdf7b66780e3ba3703c00bf52ded0aee81c79c21",
+      "png": {
+        "width": 416,
+        "height": 64,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Portraits_Menu_Cover/menu_ui/black_knight_button_hover.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/06_Portraits/menu_ui/black_knight_button_hover.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_MENU_ARTWORK",
+      "sourceVersion": "Black Knight Menu UI Art (public/assets/ui/menu parity)",
+      "sizeBytes": 637,
+      "sha256": "a0360a38a69dc82cd5dcb5bc0524c3e41c499b2ccce10a0de3cf470f9bf18d0f",
+      "png": {
+        "width": 416,
+        "height": 64,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Portraits_Menu_Cover/menu_ui/black_knight_cinematic.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/06_Portraits/menu_ui/black_knight_cinematic.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_MENU_ARTWORK",
+      "sourceVersion": "Black Knight Menu UI Art (public/assets/ui/menu parity)",
+      "sizeBytes": 195091,
+      "sha256": "9445a7ebb4f1edb6a983b58915c093aa2dc38269f16b66e859fa6d8927ab7fcc",
+      "png": {
+        "width": 1920,
+        "height": 1440,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Portraits_Menu_Cover/menu_ui/black_knight_fallback.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/06_Portraits/menu_ui/black_knight_fallback.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_MENU_ARTWORK",
+      "sourceVersion": "Black Knight Menu UI Art (public/assets/ui/menu parity)",
+      "sizeBytes": 15439,
+      "sha256": "bbb15af3821f50fdab1b6266df6ebc12e2e6df4b8118d039c3a3705a440e46ee",
+      "png": {
+        "width": 640,
+        "height": 360,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Portraits_Menu_Cover/menu_ui/black_knight_woodland.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/06_Portraits/menu_ui/black_knight_woodland.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_MENU_ARTWORK",
+      "sourceVersion": "Black Knight Menu UI Art (public/assets/ui/menu parity)",
+      "sizeBytes": 26179,
+      "sha256": "e9248070118385db2b9833efc6bb92a939e049665df64080c228945189b30595",
+      "png": {
+        "width": 640,
+        "height": 360,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Portraits_Menu_Cover/portrait-dialogue_ref.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/06_Portraits/portrait-dialogue_ref.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_PORTRAIT_OR_COVER",
+      "sourceVersion": "Black Knight V2 Portrait / Cover Art",
+      "sizeBytes": 214494,
+      "sha256": "256fdd8857277f6d0839d3ee9bd8e616b927b8b0f681ed478b0b67da0eb6088a",
+      "png": {
+        "width": 1280,
+        "height": 720,
+        "mode": "RGB"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_buff_armed_12f_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_buff_armed_12f_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 132586,
+      "sha256": "db7307f271b8d069132f2c2c948780a6ae52c156410e8303f2cfb245bb08be63",
+      "png": {
+        "width": 960,
+        "height": 288,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_buff_unarmed_12f_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_buff_unarmed_12f_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 131232,
+      "sha256": "8dcf19c624fe5ab99ab34db7e5b73c889f133a015f0b7b26b7f4f6d01dd2654a",
+      "png": {
+        "width": 960,
+        "height": 288,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_death_9f_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_death_9f_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 45153,
+      "sha256": "560900ffc7a397e1f2e4ba4a524b6506d00aacafb9d2e51d70d66df4360b137e",
+      "png": {
+        "width": 720,
+        "height": 288,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_fire_wave_ext_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_fire_wave_ext_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 44298,
+      "sha256": "5c5a547cf2572383b5216d148b37b38f45a5a5b75911d4a18d8361d0296f21ee",
+      "png": {
+        "width": 672,
+        "height": 320,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_gather_armed_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_gather_armed_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 32344,
+      "sha256": "48d517c36c0569d52fefcc84fd68a932b61a0f31749d568c6abd26e91320e301",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_ground_slam_ext_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_ground_slam_ext_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 36021,
+      "sha256": "8e02779747ca5b2c971bc499f19bd27f9b409709bd60c3610e0f126ab7d903ba",
+      "png": {
+        "width": 672,
+        "height": 288,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_heavy_attack_1_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_heavy_attack_1_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 177166,
+      "sha256": "f7b794d35165a5e9fa7f69bd3e0b90449dba2cff9d0cc055b1bd7d1fae33ab24",
+      "png": {
+        "width": 2128,
+        "height": 288,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_heavy_attack_2_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_heavy_attack_2_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 57597,
+      "sha256": "792d316ef5167f100aaa4d3013b00f12f48a3b74d0f293269f4150ec95b5478d",
+      "png": {
+        "width": 896,
+        "height": 288,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_heavy_attack_3_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_heavy_attack_3_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 116626,
+      "sha256": "3c3bd170e659602f7c1bb1d9983b43dea4ec311ce160672fb18d16afca0bb42e",
+      "png": {
+        "width": 1456,
+        "height": 288,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_hurt_armed_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_hurt_armed_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 35186,
+      "sha256": "db7663755fc791ca20daf61a445d781ed697e5f58e40329aa6ee074b8067ecf6",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_hurt_unarmed_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_hurt_unarmed_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 32224,
+      "sha256": "64e77a25bcba1b7a68e3da1a98a1ed0e027c4618bc7237145a99737ccd2094c1",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_idle_armed_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_idle_armed_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 32164,
+      "sha256": "58bbbc3aa62369c6f3f4921a6a5db8227bedb9172f15deec8c84c027402c9fc3",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_idle_unarmed_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_idle_unarmed_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 29992,
+      "sha256": "16e86ddaacae17835c9cbd63ed39ee08eb46935993cfdabd9f372c7f69a05939",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_interact_armed_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_interact_armed_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 34294,
+      "sha256": "800cd8cd463b51f2596b3cc014e763a73635d83f3e9b662905dc78f08a1568cd",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_jump_armed_archived_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_jump_armed_archived_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 32273,
+      "sha256": "794bf7597d27b6b73c438eccb5513107764b3824c35b90e49f2c5723dcc96e8c",
+      "png": {
+        "width": 480,
+        "height": 320,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_light_attack_1_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_light_attack_1_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 54743,
+      "sha256": "fe2f418d9af96c030c06d7f7c88712e57e11a033cb2696ee46e2ed0284b7e4aa",
+      "png": {
+        "width": 1008,
+        "height": 288,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_light_attack_2_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_light_attack_2_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 53552,
+      "sha256": "12498e1bf38e639f8a8df638aff996af19908a3f436f0b50833c6ce9b9f9e20e",
+      "png": {
+        "width": 1008,
+        "height": 288,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_light_attack_3_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_light_attack_3_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 102887,
+      "sha256": "b55f6c34035977de14a534a950218e1f0bd172b41afaa7f6846b1bf132df0308",
+      "png": {
+        "width": 1232,
+        "height": 288,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_light_attack_4_thrust_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_light_attack_4_thrust_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 104658,
+      "sha256": "43eb99b6f738a5da2596f1526a01723dac9aa5fe1d5335331d5bab638803119c",
+      "png": {
+        "width": 1232,
+        "height": 288,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_parry_miss_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_parry_miss_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 16297,
+      "sha256": "6a0e2d0a9d540b89e6bf2ec2e6db4e87d63d324f7f74d88c4d04a6ca5ab41cd7",
+      "png": {
+        "width": 240,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_parry_start_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_parry_start_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 34480,
+      "sha256": "42888ab1fc7a5008a06edc554bf9a3325daaa59b991a14b6014689fc9977fa51",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_parry_success_15f_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_parry_success_15f_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 139779,
+      "sha256": "6d9af1f3681bdc2a9ab9cf264c2faa719d434e1d539d0b99b1fe4c63db765c75",
+      "png": {
+        "width": 1680,
+        "height": 288,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_roll_armed_12f_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_roll_armed_12f_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 109909,
+      "sha256": "4f3a6babf0a16894545f6648b4be096f0956868837174994b18e6f4dd97737e5",
+      "png": {
+        "width": 960,
+        "height": 288,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_roll_unarmed_12f_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_roll_unarmed_12f_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 118124,
+      "sha256": "a0221cbe244d6b5c71edfcb103ef92d154380b06c03de278294ff2d9918f8054",
+      "png": {
+        "width": 960,
+        "height": 288,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_run_armed_12f_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_run_armed_12f_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 113015,
+      "sha256": "d454aef9cb41f88c2228e90a8618845cda4390a71e75842f1258e8392fbc2934",
+      "png": {
+        "width": 1008,
+        "height": 288,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_run_unarmed_12f_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_run_unarmed_12f_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 130315,
+      "sha256": "9602976cfaa8d422f110d03ab6609b13d0dff208df0c6075e33c796d1f8c8f54",
+      "png": {
+        "width": 1008,
+        "height": 288,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_use_item_armed_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_use_item_armed_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 32704,
+      "sha256": "488e02c1b98ea43571abd812d99284d30f16aed827f6cfa1918dae730a58f08b",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_walk_armed_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_walk_armed_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 32788,
+      "sha256": "7ea3a750892fea45d9b58fcc8b20b336db2387206506f65f7bc5abaec531b406",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_walk_unarmed_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_walk_unarmed_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 31486,
+      "sha256": "de72719a6dadf96d116531c9a7f73ea1749d59b5fafaf98d876c16ab828c02fc",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_weapon_art_35f_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_weapon_art_35f_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 296022,
+      "sha256": "1dbd86fc3f3ed5184d49035fd48465d0c96d2d4d4195bb601efa8673e8c36696",
+      "png": {
+        "width": 3920,
+        "height": 288,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_weapon_off_14f_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_weapon_off_14f_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 109298,
+      "sha256": "21952dd23a4cd7caadf57f6a2e79664bffaf364e5107432b59eb702e7e2509fa",
+      "png": {
+        "width": 1120,
+        "height": 288,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "01_LATEST_ARTWORK/Spritesheets_4Dir/meliodas_weapon_on_18f_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/03_Sprites/meliodas_weapon_on_18f_4dir.png",
+      "category": "LATEST_ARTWORK",
+      "status": "LATEST_EXTRACTED_4DIR_SPRITESHEET",
+      "sourceVersion": "Extracted Lossless from K2 V2 / K3 / Conversion (5feed142..6bb15b80)",
+      "sizeBytes": 145382,
+      "sha256": "8b34b09826e8fb2d221ccec7a77a6312bd7780672ccf86069a95a944a38e6083",
+      "png": {
+        "width": 1440,
+        "height": 288,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/RUNTIME_USAGE_NOTES.md",
+      "sourceRelPath": "GENERATED_BY_HW_ART_REF_02",
+      "category": "CURRENT_RUNTIME",
+      "status": "GENERATED_DOCS",
+      "sourceVersion": "HW-ART-REF-02",
+      "sizeBytes": 1537,
+      "sha256": "26316191185b1c6c57e4219947f7f4c6be5981e0988a85cb4250c181c789abf3",
+      "png": null
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/RUNTIME_VERSION_MAP.json",
+      "sourceRelPath": "GENERATED_BY_HW_ART_REF_02",
+      "category": "CURRENT_RUNTIME",
+      "status": "GENERATED_METADATA",
+      "sourceVersion": "HW-ART-REF-02",
+      "sizeBytes": 3712,
+      "sha256": "6abfd555266609fa2505059e60d30088f454a7cf112407823907d6b385faa4be",
+      "png": null
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_characters_black_knight/black_knight_armed_idle.json",
+      "sourceRelPath": "public/assets/characters/black_knight/black_knight_armed_idle.json",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE",
+      "sourceVersion": "Codex K1 (0b16b7d4) — PARTIAL ACTIVE (down/up/left Armed Idle)",
+      "sizeBytes": 16880,
+      "sha256": "204bd6c3c1643c4564aada8727541123bc1cdc21460901b84350c90dee735405",
+      "png": null
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_characters_black_knight/black_knight_armed_idle.png",
+      "sourceRelPath": "public/assets/characters/black_knight/black_knight_armed_idle.png",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE",
+      "sourceVersion": "Codex K1 (0b16b7d4) — PARTIAL ACTIVE (down/up/left Armed Idle)",
+      "sizeBytes": 26670,
+      "sha256": "ff47e472f4c50bae5970fd6022633a2037f53bc04e8b3e4876c7d5bcd6ec092c",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_characters_black_knight/black_knight_conversion_actions.json",
+      "sourceRelPath": "public/assets/characters/black_knight/black_knight_conversion_actions.json",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE",
+      "sourceVersion": "Codex Conversion 34-Seq (6bb15b80)",
+      "sizeBytes": 116370,
+      "sha256": "3a1a6a785a278d059a4e7db07a2667088285745f17972d38eda8c2a3e3f83546",
+      "png": null
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_characters_black_knight/black_knight_conversion_actions.png",
+      "sourceRelPath": "public/assets/characters/black_knight/black_knight_conversion_actions.png",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE",
+      "sourceVersion": "Codex Conversion 34-Seq (6bb15b80)",
+      "sizeBytes": 213006,
+      "sha256": "4774f891abd3264814637e7377af03f12a4f32597f2e47c83ac0f2ae3d725a27",
+      "png": {
+        "width": 960,
+        "height": 832,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_characters_black_knight/black_knight_conversion_air.json",
+      "sourceRelPath": "public/assets/characters/black_knight/black_knight_conversion_air.json",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE",
+      "sourceVersion": "Codex Conversion 34-Seq (6bb15b80)",
+      "sizeBytes": 146658,
+      "sha256": "47c91b3d7b93972804cb8db78846e237257239cb05bdc303e33ecf825e025c08",
+      "png": null
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_characters_black_knight/black_knight_conversion_air.png",
+      "sourceRelPath": "public/assets/characters/black_knight/black_knight_conversion_air.png",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE",
+      "sourceVersion": "Codex Conversion 34-Seq (6bb15b80)",
+      "sizeBytes": 282852,
+      "sha256": "a6523927bf5d225f3d8d5485f9b5282b16ef24cd1184bc985aa2c17dac40f3f6",
+      "png": {
+        "width": 960,
+        "height": 1440,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_characters_black_knight/black_knight_conversion_combat.json",
+      "sourceRelPath": "public/assets/characters/black_knight/black_knight_conversion_combat.json",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE",
+      "sourceVersion": "Codex Conversion 34-Seq (6bb15b80)",
+      "sizeBytes": 345283,
+      "sha256": "a376cd4883f3f297a7610bd55bd76fcb4ebeadffa7b3696ddd173526bf358d03",
+      "png": null
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_characters_black_knight/black_knight_conversion_combat.png",
+      "sourceRelPath": "public/assets/characters/black_knight/black_knight_conversion_combat.png",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE",
+      "sourceVersion": "Codex Conversion 34-Seq (6bb15b80)",
+      "sizeBytes": 967763,
+      "sha256": "1d83488a54d545f2bd764d10e54e319a14a5867306a536bbd1a472d6df22240c",
+      "png": {
+        "width": 2016,
+        "height": 2016,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_characters_black_knight/black_knight_conversion_motion.json",
+      "sourceRelPath": "public/assets/characters/black_knight/black_knight_conversion_motion.json",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE",
+      "sourceVersion": "Codex Conversion 34-Seq (6bb15b80)",
+      "sizeBytes": 140613,
+      "sha256": "b93672ea8f6ca371658dc1aed69a00812f181b7aadcad4b9685edc76be25e22a",
+      "png": null
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_characters_black_knight/black_knight_conversion_motion.png",
+      "sourceRelPath": "public/assets/characters/black_knight/black_knight_conversion_motion.png",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE",
+      "sourceVersion": "Codex Conversion 34-Seq (6bb15b80)",
+      "sizeBytes": 472099,
+      "sha256": "3ea692c586431d737bcd93dceb3525a5c02591029b4993a2f63778da402e2da0",
+      "png": {
+        "width": 1008,
+        "height": 1152,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_characters_black_knight/black_knight_conversion_states.json",
+      "sourceRelPath": "public/assets/characters/black_knight/black_knight_conversion_states.json",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE",
+      "sourceVersion": "Codex Conversion 34-Seq (6bb15b80)",
+      "sizeBytes": 233702,
+      "sha256": "265b182e62f9d7cc6a2fcdc6bc6c8a9debdce125883eb1ba1b71be15caea9883",
+      "png": null
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_characters_black_knight/black_knight_conversion_states.png",
+      "sourceRelPath": "public/assets/characters/black_knight/black_knight_conversion_states.png",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE",
+      "sourceVersion": "Codex Conversion 34-Seq (6bb15b80)",
+      "sizeBytes": 715692,
+      "sha256": "a8ce11dc4f35bc4605d8a6b73f12378202cbaf769c6367da6380f1c73622bf9a",
+      "png": {
+        "width": 1344,
+        "height": 1944,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_characters_black_knight/black_knight_core_combat.json",
+      "sourceRelPath": "public/assets/characters/black_knight/black_knight_core_combat.json",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE",
+      "sourceVersion": "Codex K3 (0a927c22 / 6a64978d / d383c52b)",
+      "sizeBytes": 46344,
+      "sha256": "3ae8caf364ea88b1f50695db46d21f9705a851d9bf4defb7126964dab8123213",
+      "png": null
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_characters_black_knight/black_knight_core_combat.png",
+      "sourceRelPath": "public/assets/characters/black_knight/black_knight_core_combat.png",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE",
+      "sourceVersion": "Codex K3 (0a927c22 / 6a64978d / d383c52b)",
+      "sizeBytes": 111020,
+      "sha256": "5126a4a490f84f1b31437fe110dfdeecebd184e07a4075b7531c9f4596c633fd",
+      "png": {
+        "width": 768,
+        "height": 384,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_characters_black_knight/black_knight_defense.json",
+      "sourceRelPath": "public/assets/characters/black_knight/black_knight_defense.json",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE",
+      "sourceVersion": "Codex K3 (0a927c22 / 6a64978d / d383c52b)",
+      "sizeBytes": 138631,
+      "sha256": "c9f2a44397829da60dfab0c1973a90c0e2088758fa7e9e8d738a3906043664a7",
+      "png": null
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_characters_black_knight/black_knight_defense.png",
+      "sourceRelPath": "public/assets/characters/black_knight/black_knight_defense.png",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE",
+      "sourceVersion": "Codex K3 (0a927c22 / 6a64978d / d383c52b)",
+      "sizeBytes": 288641,
+      "sha256": "4e1f5fb8e294363860a31723097e551342c5b6009033ed05c0b3badaca0acaad",
+      "png": {
+        "width": 768,
+        "height": 1152,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_characters_black_knight/black_knight_extended_skills.json",
+      "sourceRelPath": "public/assets/characters/black_knight/black_knight_extended_skills.json",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE",
+      "sourceVersion": "Codex K3 (0a927c22 / 6a64978d / d383c52b)",
+      "sizeBytes": 125940,
+      "sha256": "252bf77154e3bdb65f5799cb5bf70cb5cb6c79bd8f4f9bfa02185ea7ce52144b",
+      "png": null
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_characters_black_knight/black_knight_extended_skills.png",
+      "sourceRelPath": "public/assets/characters/black_knight/black_knight_extended_skills.png",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE",
+      "sourceVersion": "Codex K3 (0a927c22 / 6a64978d / d383c52b)",
+      "sizeBytes": 313019,
+      "sha256": "236e8c1fdcd5dd28ccd9b6ef3b011951e3594414f5658234cd6c9cef872049e2",
+      "png": {
+        "width": 1344,
+        "height": 1152,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_characters_black_knight/black_knight_movement.json",
+      "sourceRelPath": "public/assets/characters/black_knight/black_knight_movement.json",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE",
+      "sourceVersion": "Codex K2 V2 (5feed142) — Movement + right Armed Idle",
+      "sizeBytes": 81537,
+      "sha256": "5acbdda5fbad6577f88575253d9e2d5b8f54f6268b10fb2ece55e1c2fec152e1",
+      "png": null
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_characters_black_knight/black_knight_movement.png",
+      "sourceRelPath": "public/assets/characters/black_knight/black_knight_movement.png",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE",
+      "sourceVersion": "Codex K2 V2 (5feed142) — Movement + right Armed Idle",
+      "sizeBytes": 167801,
+      "sha256": "17279d83290fa349855066381f557548e08df31b123fe1c745b29017a2a14d8f",
+      "png": {
+        "width": 896,
+        "height": 576,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_characters_black_knight/black_knight_portrait.png",
+      "sourceRelPath": "public/assets/characters/black_knight/black_knight_portrait.png",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE",
+      "sourceVersion": "Black Knight V2 Portrait",
+      "sizeBytes": 2809,
+      "sha256": "96dfc9fca1bcff39ec4ad972d3616c62a86832ab58ce0826c830ebe69182e507",
+      "png": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_ui_menu/black_knight_button.png",
+      "sourceRelPath": "public/assets/ui/menu/black_knight_button.png",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE_MENU",
+      "sourceVersion": "Main Menu Black Knight UI",
+      "sizeBytes": 607,
+      "sha256": "afa6ca9f85f9f9b6691e7083fdf7b66780e3ba3703c00bf52ded0aee81c79c21",
+      "png": {
+        "width": 416,
+        "height": 64,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_ui_menu/black_knight_button_hover.png",
+      "sourceRelPath": "public/assets/ui/menu/black_knight_button_hover.png",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE_MENU",
+      "sourceVersion": "Main Menu Black Knight UI",
+      "sizeBytes": 637,
+      "sha256": "a0360a38a69dc82cd5dcb5bc0524c3e41c499b2ccce10a0de3cf470f9bf18d0f",
+      "png": {
+        "width": 416,
+        "height": 64,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_ui_menu/black_knight_cinematic.png",
+      "sourceRelPath": "public/assets/ui/menu/black_knight_cinematic.png",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE_MENU",
+      "sourceVersion": "Main Menu Black Knight UI",
+      "sizeBytes": 195091,
+      "sha256": "9445a7ebb4f1edb6a983b58915c093aa2dc38269f16b66e859fa6d8927ab7fcc",
+      "png": {
+        "width": 1920,
+        "height": 1440,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_ui_menu/black_knight_fallback.png",
+      "sourceRelPath": "public/assets/ui/menu/black_knight_fallback.png",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE_MENU",
+      "sourceVersion": "Main Menu Black Knight UI",
+      "sizeBytes": 15439,
+      "sha256": "bbb15af3821f50fdab1b6266df6ebc12e2e6df4b8118d039c3a3705a440e46ee",
+      "png": {
+        "width": 640,
+        "height": 360,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/public_assets_ui_menu/black_knight_woodland.png",
+      "sourceRelPath": "public/assets/ui/menu/black_knight_woodland.png",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_ACTIVE_MENU",
+      "sourceVersion": "Main Menu Black Knight UI",
+      "sizeBytes": 26179,
+      "sha256": "e9248070118385db2b9833efc6bb92a939e049665df64080c228945189b30595",
+      "png": {
+        "width": 640,
+        "height": 360,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/runtime_code_and_registry/BlackKnightAnimations.ts",
+      "sourceRelPath": "src/animation/BlackKnightAnimations.ts",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_SOURCE_REFERENCE",
+      "sourceVersion": "Current HEAD (94d346fb / f35da6d3)",
+      "sizeBytes": 5890,
+      "sha256": "c7a718c030df8972689ccdce4b14d42e44e921c68ae493be96d052e465a52894",
+      "png": null
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/runtime_code_and_registry/BlackKnightConversion.json",
+      "sourceRelPath": "src/animation/BlackKnightConversion.json",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_SOURCE_REFERENCE",
+      "sourceVersion": "Current HEAD (94d346fb / f35da6d3)",
+      "sizeBytes": 11368,
+      "sha256": "1c1f2c5ba9979981343729bc9cc90dd6c1a0b9c12a1888aecb742a0eca7e5427",
+      "png": null
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/runtime_code_and_registry/BlackKnightPlayer.ts",
+      "sourceRelPath": "src/entities/BlackKnightPlayer.ts",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_SOURCE_REFERENCE",
+      "sourceVersion": "Current HEAD (94d346fb / f35da6d3)",
+      "sizeBytes": 99397,
+      "sha256": "bf90eff229ae6499a83d971b1b586d77da3f6e40cc7866181f84fd47b0f1a723",
+      "png": null
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/runtime_code_and_registry/black_knight_animations.json",
+      "sourceRelPath": "src/data/black_knight_animations.json",
+      "category": "CURRENT_RUNTIME",
+      "status": "RUNTIME_SOURCE_REFERENCE",
+      "sourceVersion": "Current HEAD (94d346fb / f35da6d3)",
+      "sizeBytes": 3796,
+      "sha256": "9845cb0648906b428ceeb3b75070fefd27632d4b600e9d7eebb5b6a3d56c3047",
+      "png": null
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/runtime_code_and_registry/scripts/extract_black_knight_wayfarer.mjs",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/07_Runtime_Reference/scripts/extract_black_knight_wayfarer.mjs",
+      "category": "CURRENT_RUNTIME",
+      "status": "PIPELINE_SCRIPT_REFERENCE",
+      "sourceVersion": "Codex Packing & QA Scripts (11d91dd5 baseline)",
+      "sizeBytes": 7544,
+      "sha256": "aa413ecbf14d3b5db82a486d6cef971b2a03f24a64cc1bcbd9cf8673b8b003f8",
+      "png": null
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/runtime_code_and_registry/scripts/pack_v153_black_knight_armed_idle.py",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/07_Runtime_Reference/scripts/pack_v153_black_knight_armed_idle.py",
+      "category": "CURRENT_RUNTIME",
+      "status": "PIPELINE_SCRIPT_REFERENCE",
+      "sourceVersion": "Codex Packing & QA Scripts (11d91dd5 baseline)",
+      "sizeBytes": 6365,
+      "sha256": "c81289b74d46f133cd9708ad7f5ff3a6095d059682e845416e45caa4e84d5637",
+      "png": null
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/runtime_code_and_registry/scripts/pack_v153_black_knight_conversion.py",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/07_Runtime_Reference/scripts/pack_v153_black_knight_conversion.py",
+      "category": "CURRENT_RUNTIME",
+      "status": "PIPELINE_SCRIPT_REFERENCE",
+      "sourceVersion": "Codex Packing & QA Scripts (11d91dd5 baseline)",
+      "sizeBytes": 9746,
+      "sha256": "97503dc7a0da0c7e666a10ccb566f04ff7a858a5012e3ae4dc3b66ae130b409d",
+      "png": null
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/runtime_code_and_registry/scripts/pack_v153_black_knight_movement.py",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/07_Runtime_Reference/scripts/pack_v153_black_knight_movement.py",
+      "category": "CURRENT_RUNTIME",
+      "status": "PIPELINE_SCRIPT_REFERENCE",
+      "sourceVersion": "Codex Packing & QA Scripts (11d91dd5 baseline)",
+      "sizeBytes": 8093,
+      "sha256": "b0e468a0e5fcd848a84229b9515c0e97eff396bc34d2c503b1f8dab0c4bcc432",
+      "png": null
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/runtime_code_and_registry/scripts/qa_v153_black_knight_combat.py",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/07_Runtime_Reference/scripts/qa_v153_black_knight_combat.py",
+      "category": "CURRENT_RUNTIME",
+      "status": "PIPELINE_SCRIPT_REFERENCE",
+      "sourceVersion": "Codex Packing & QA Scripts (11d91dd5 baseline)",
+      "sizeBytes": 15774,
+      "sha256": "b918735b793f78278e00d6192cd0bfb224baacaffd82fa55e1315674d893349d",
+      "png": null
+    },
+    {
+      "destRelPath": "02_CURRENT_RUNTIME/runtime_code_and_registry/scripts/qa_v153_black_knight_source_parity.py",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/07_Runtime_Reference/scripts/qa_v153_black_knight_source_parity.py",
+      "category": "CURRENT_RUNTIME",
+      "status": "PIPELINE_SCRIPT_REFERENCE",
+      "sourceVersion": "Codex Packing & QA Scripts (11d91dd5 baseline)",
+      "sizeBytes": 18480,
+      "sha256": "3addd6806120fc326f3281335134f5123e29799b7e5eba9753ec9502f07f2625",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/ALL_In_One_NEW/Black_Knight_All_In_One_New.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/ALL_In_One_NEW/Black_Knight_All_In_One_New.png",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 142078,
+      "sha256": "d75455e35e29f06e1bcfd41c349158b0548016c556f6d3e85c0ac2007a5eedac",
+      "png": {
+        "width": 2592,
+        "height": 1152,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/License.txt",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/License.txt",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 511,
+      "sha256": "e3862f61aa30db3db13e0dc22ccb053076d1d8b76e3a2899bad9cb297789203a",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/Preview_GIFs/BK_heavy_attack.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/Preview_GIFs/BK_heavy_attack.gif",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 105353,
+      "sha256": "fadfaed46563b0ad32fbfa082b7644da2fdd2157d9b267bb44408c9efefd7c20",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/Preview_GIFs/BK_hurt.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/Preview_GIFs/BK_hurt.gif",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 35913,
+      "sha256": "1972fe70c3b72fa75cfe9e74f8371087f2c0ad3cd43ec2488fe83c0287268293",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/Preview_GIFs/BK_light_attack.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/Preview_GIFs/BK_light_attack.gif",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 109358,
+      "sha256": "80e92815cc3999cf68476193da68bcbf0411eb497c191853dbf13718222aa0b7",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/Preview_GIFs/BK_parry.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/Preview_GIFs/BK_parry.gif",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 64966,
+      "sha256": "d008d9ff05cb8c9516f8875256470ebce43522f3062bf267915c787b211f574e",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/Preview_GIFs/BK_unarmed_buff.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/Preview_GIFs/BK_unarmed_buff.gif",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 31557,
+      "sha256": "bd1a31636e19ff17f0d953420728ce80d7b676b8dee546e6ac7ff40c7fa61d29",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/Preview_GIFs/BK_unarmed_idle.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/Preview_GIFs/BK_unarmed_idle.gif",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 10819,
+      "sha256": "fa6fe6f6f5bf386eaed21d76d147a7e1984dcb55bba789c0caebe100c3084527",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/Preview_GIFs/BK_unarmed_jump.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/Preview_GIFs/BK_unarmed_jump.gif",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 58967,
+      "sha256": "6c1e1506ec1782f032b44aa466f7de267f930ece4eb6ea19ed766c554e241852",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/Preview_GIFs/BK_unarmed_roll.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/Preview_GIFs/BK_unarmed_roll.gif",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 24950,
+      "sha256": "84d5c29a381794d7fefc545fd426607769fb999c4cf67dcac28d1fe305c45a99",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/Preview_GIFs/BK_unarmed_run.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/Preview_GIFs/BK_unarmed_run.gif",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 27947,
+      "sha256": "356cda26e0f21bb237ca042828cab61a345793a5df4ffdd8bce283c6f6388bb5",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/Preview_GIFs/BK_weapon_art.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/Preview_GIFs/BK_weapon_art.gif",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 98375,
+      "sha256": "8c743ab724cb1be4327ba5fae441dc8c35f00ee86ce4bcda26016ef3ec09ee4f",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/Preview_GIFs/BK_weapon_buff.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/Preview_GIFs/BK_weapon_buff.gif",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 34283,
+      "sha256": "f47a45c239bacc9263aa903a7643df6b5c8aee4dda00abb73761ddf276007936",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/Preview_GIFs/BK_weapon_idle.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/Preview_GIFs/BK_weapon_idle.gif",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 15089,
+      "sha256": "0d301a8d8d2bc8c817b45d9211b8a6aa8bf7a7d0e27bf931a6bff25ef8321c16",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/Preview_GIFs/BK_weapon_jump.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/Preview_GIFs/BK_weapon_jump.gif",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 61289,
+      "sha256": "605768df49a8ace4dfbf93008996525f45e50b38d4c139be1831dc60473b08a0",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/Preview_GIFs/BK_weapon_on-off.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/Preview_GIFs/BK_weapon_on-off.gif",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 63420,
+      "sha256": "9eca37439790be5b1d8112c8d8bcba4e1182c9932fe24457bc2fd3f62725681c",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/Preview_GIFs/BK_weapon_roll.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/Preview_GIFs/BK_weapon_roll.gif",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 25564,
+      "sha256": "cfbbea450ae13917a603f5a3a613f3c6f486384df6d08e1a6c3e568c0601b889",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/Preview_GIFs/BK_weapon_run.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/Preview_GIFs/BK_weapon_run.gif",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 27801,
+      "sha256": "87f48052da0b3500fd02f424cfc6af0d62b3d7415284878e7399d00e81e17a7c",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/Read me.txt",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/Read me.txt",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 1540,
+      "sha256": "69e216de9369f7a7b9d783488fccfd87142dc5b79cd14368235e6db3e2f62069",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/WEB_Images/Banner.aseprite",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/WEB_Images/Banner.aseprite",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 2296,
+      "sha256": "325a3b34e51e9a77d0769c5e02e4727fa8e0a7f06ad43fbb62b34be95ba7d1b7",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/WEB_Images/Banner.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/WEB_Images/Banner.png",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 10309,
+      "sha256": "b8875c52e81a951f9756842d325b2ece224c628b67f9190053f2452d6863de52",
+      "png": {
+        "width": 1152,
+        "height": 576,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/WEB_Images/Banner_v2.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/WEB_Images/Banner_v2.png",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 3146,
+      "sha256": "e00eb9b4d4cceac79b5704bbe420d9cb4916c1f59ea91dcb1a5393b6fdd1d0be",
+      "png": {
+        "width": 128,
+        "height": 64,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/WEB_Images/Banner_v22.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/WEB_Images/Banner_v22.png",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 3799,
+      "sha256": "26c5dcec8ab6dc8d48bba07758f77d421d2fc943eba2496ebc75b9ce5c4600d2",
+      "png": {
+        "width": 256,
+        "height": 128,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/WEB_Images/Banner_v4.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/WEB_Images/Banner_v4.png",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 5235,
+      "sha256": "722ae64ca08e9242615c786ea8be7896f4a933da4c1fc5414e502a7e4d87d20c",
+      "png": {
+        "width": 512,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/WEB_Images/Cover_GIF/Black_Knight_Art.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/WEB_Images/Cover_GIF/Black_Knight_Art.gif",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 201132,
+      "sha256": "005b410e730d414bff816d043312d04695a32f41abac665624cd0c667476cb2e",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/WEB_Images/Cover_GIF/Black_Knight_Art_With_Light.gif",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/WEB_Images/Cover_GIF/Black_Knight_Art_With_Light.gif",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 408611,
+      "sha256": "ed376a44c2029624ae1ab45f1f567ebb578f54a56d331d8b4bdaa18ca897be34",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/WEB_Images/WEB_BG.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/WEB_Images/WEB_BG.png",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 41984,
+      "sha256": "41127f16adcf2a0ef4b5b89fb74839e361ba309b5749144ef0d57e6d28c577dd",
+      "png": {
+        "width": 1920,
+        "height": 1080,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/WEB_Images/knight.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/WEB_Images/knight.png",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 38344,
+      "sha256": "1a792dec778e20f6c4d66387725051ec1c241733b9c3e83ef3c778b4c7f78f23",
+      "png": {
+        "width": 1920,
+        "height": 1080,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/Black_Knight_V1_0_Fellor/WEB_Images/knight_no_text.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/01_Original_Black_Knight/WEB_Images/knight_no_text.png",
+      "category": "LEGACY",
+      "status": "LEGACY_ORIGINAL_SOURCE_V1_0",
+      "sourceVersion": "Fellor / BitBlast Studio V1.0 (cb8ba12b)",
+      "sizeBytes": 35936,
+      "sha256": "5b3c96f048ad01436b46b378a7afa4039d2a06bb109b92e9ab046a5dbc13e291",
+      "png": {
+        "width": 1920,
+        "height": 1080,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/K1_ArmedIdle_0b16b7d4/black_knight_armed_idle.json",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/04_V153_0b16b7d4_K1_ArmedIdle/black_knight_armed_idle.json",
+      "category": "LEGACY",
+      "status": "PARTIAL_RUNTIME_ACTIVE_ARMED_IDLE",
+      "sourceVersion": "Codex K1 Armed Idle (0b16b7d4) — down/up/left STILL USED IN RUNTIME; right superseded by K2 V2",
+      "sizeBytes": 16183,
+      "sha256": "9f2fd1ee078d818198e0a49a8ffa9dc29558a0013a2baf65ec12675aed81af7d",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/K1_ArmedIdle_0b16b7d4/black_knight_armed_idle.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/04_V153_0b16b7d4_K1_ArmedIdle/black_knight_armed_idle.png",
+      "category": "LEGACY",
+      "status": "PARTIAL_RUNTIME_ACTIVE_ARMED_IDLE",
+      "sourceVersion": "Codex K1 Armed Idle (0b16b7d4) — down/up/left STILL USED IN RUNTIME; right superseded by K2 V2",
+      "sizeBytes": 26670,
+      "sha256": "ff47e472f4c50bae5970fd6022633a2037f53bc04e8b3e4876c7d5bcd6ec092c",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/K2_V1_Movement_4f6eb7e2/black_knight_movement.json",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/05_V153_4f6eb7e2_K2v1_Movement/black_knight_movement.json",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_BY_K2_V2",
+      "sourceVersion": "Codex K2 V1 Movement (4f6eb7e2) — superseded by 5feed142",
+      "sizeBytes": 68018,
+      "sha256": "ae080a3295f753c8a77caf7c854c0f09ab15a809a1b709cfea28851318ac6f1a",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/K2_V1_Movement_4f6eb7e2/black_knight_movement.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/05_V153_4f6eb7e2_K2v1_Movement/black_knight_movement.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_BY_K2_V2",
+      "sourceVersion": "Codex K2 V1 Movement (4f6eb7e2) — superseded by 5feed142",
+      "sizeBytes": 151606,
+      "sha256": "2b57a5307881ee1df10e0e38bc9423e1595b66641a0a683f5f280e5ef83c8861",
+      "png": {
+        "width": 768,
+        "height": 704,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/K2_V1_Movement_4f6eb7e2/black_knight_movement_k2v1_4f6eb7e2.json",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/05_Atlases/historical_versions/black_knight_movement_k2v1_4f6eb7e2.json",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_BY_K2_V2",
+      "sourceVersion": "Codex K2 V1 Movement Archive (4f6eb7e2)",
+      "sizeBytes": 68018,
+      "sha256": "ae080a3295f753c8a77caf7c854c0f09ab15a809a1b709cfea28851318ac6f1a",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/K2_V1_Movement_4f6eb7e2/black_knight_movement_k2v1_4f6eb7e2.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/05_Atlases/historical_versions/black_knight_movement_k2v1_4f6eb7e2.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_BY_K2_V2",
+      "sourceVersion": "Codex K2 V1 Movement Archive (4f6eb7e2)",
+      "sizeBytes": 151606,
+      "sha256": "2b57a5307881ee1df10e0e38bc9423e1595b66641a0a683f5f280e5ef83c8861",
+      "png": {
+        "width": 768,
+        "height": 704,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_4_Wayfarer_Base_cb8ba12b/legacy_v14_wayfarer_portrait.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/06_Portraits/legacy_v14_wayfarer_portrait.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_4",
+      "sourceVersion": "Wayfarer V1.4 Portrait (cb8ba12b)",
+      "sizeBytes": 4976,
+      "sha256": "4f5131db3557693a24aa9a46b2f038ccaf008d7a2d79f43acda095da2dab54eb",
+      "png": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_4_Wayfarer_Base_cb8ba12b/wayfarer_animation_manifest.json",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/01_V14_cb8ba12b_Wayfarer_Base/wayfarer_animation_manifest.json",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_4",
+      "sourceVersion": "Wayfarer V1.4 Base (cb8ba12b)",
+      "sizeBytes": 16796,
+      "sha256": "3011641cde1d8d568996c28c18b655846d42c7dddf0e591d91a5408b7e0286b5",
+      "png": null
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_4_Wayfarer_Base_cb8ba12b/wayfarer_attack.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/01_V14_cb8ba12b_Wayfarer_Base/wayfarer_attack.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_4",
+      "sourceVersion": "Wayfarer V1.4 Base (cb8ba12b)",
+      "sizeBytes": 25238,
+      "sha256": "23db4d216eaef9fb51f0f6ec3ae77781c2e9d0684333467ff4357e170c6a5dc2",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_4_Wayfarer_Base_cb8ba12b/wayfarer_death.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/01_V14_cb8ba12b_Wayfarer_Base/wayfarer_death.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_4",
+      "sourceVersion": "Wayfarer V1.4 Base (cb8ba12b)",
+      "sizeBytes": 16825,
+      "sha256": "4a346248ad9f9b8b57f28c6c0a2ed1afdd875e316329f05f4357fd1be4ddbab0",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_4_Wayfarer_Base_cb8ba12b/wayfarer_gather.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/01_V14_cb8ba12b_Wayfarer_Base/wayfarer_gather.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_4",
+      "sourceVersion": "Wayfarer V1.4 Base (cb8ba12b)",
+      "sizeBytes": 12692,
+      "sha256": "39f302bca8d71384afe3c727d0dc418f8f06197edde9ab73186e6f6bd0a7935f",
+      "png": {
+        "width": 256,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_4_Wayfarer_Base_cb8ba12b/wayfarer_hurt.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/01_V14_cb8ba12b_Wayfarer_Base/wayfarer_hurt.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_4",
+      "sourceVersion": "Wayfarer V1.4 Base (cb8ba12b)",
+      "sizeBytes": 7067,
+      "sha256": "328cd6b7ec50d6e325c257a32c12bfe8046672f5022b98e680a5741441da658f",
+      "png": {
+        "width": 192,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_4_Wayfarer_Base_cb8ba12b/wayfarer_idle.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/01_V14_cb8ba12b_Wayfarer_Base/wayfarer_idle.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_4",
+      "sourceVersion": "Wayfarer V1.4 Base (cb8ba12b)",
+      "sizeBytes": 11464,
+      "sha256": "06766ff49e74a2823dc3de3e1058d10b76fd099ef681e824a3eedf0ee13e8561",
+      "png": {
+        "width": 256,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_4_Wayfarer_Base_cb8ba12b/wayfarer_interact.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/01_V14_cb8ba12b_Wayfarer_Base/wayfarer_interact.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_4",
+      "sourceVersion": "Wayfarer V1.4 Base (cb8ba12b)",
+      "sizeBytes": 12701,
+      "sha256": "04136ec89d9527d891f5a96faa7f1ae030c3a123a98391813a8c54c7b63c84e6",
+      "png": {
+        "width": 256,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_4_Wayfarer_Base_cb8ba12b/wayfarer_portrait.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/01_V14_cb8ba12b_Wayfarer_Base/wayfarer_portrait.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_4",
+      "sourceVersion": "Wayfarer V1.4 Base (cb8ba12b)",
+      "sizeBytes": 4976,
+      "sha256": "4f5131db3557693a24aa9a46b2f038ccaf008d7a2d79f43acda095da2dab54eb",
+      "png": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_4_Wayfarer_Base_cb8ba12b/wayfarer_run.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/01_V14_cb8ba12b_Wayfarer_Base/wayfarer_run.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_4",
+      "sourceVersion": "Wayfarer V1.4 Base (cb8ba12b)",
+      "sizeBytes": 22098,
+      "sha256": "a7bed633b881747e711f5efde3cedad6f82ba10c8e69b35858ac699d5a884efb",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_4_Wayfarer_Base_cb8ba12b/wayfarer_sprite_preview.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/01_V14_cb8ba12b_Wayfarer_Base/wayfarer_sprite_preview.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_4",
+      "sourceVersion": "Wayfarer V1.4 Base (cb8ba12b)",
+      "sizeBytes": 142580,
+      "sha256": "0251c8f2f300ec5b3f5e55b99a4b5ca44806909ef0dc5dfc0cedbb803fe5a996",
+      "png": {
+        "width": 1248,
+        "height": 876,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_4_Wayfarer_Base_cb8ba12b/wayfarer_use_item.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/01_V14_cb8ba12b_Wayfarer_Base/wayfarer_use_item.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_4",
+      "sourceVersion": "Wayfarer V1.4 Base (cb8ba12b)",
+      "sizeBytes": 12931,
+      "sha256": "88dcc060dcc066c0fe9a2d3415447934b86042a97bc90f7444fe164f9a33eaba",
+      "png": {
+        "width": 256,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_4_Wayfarer_Base_cb8ba12b/wayfarer_walk.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/01_V14_cb8ba12b_Wayfarer_Base/wayfarer_walk.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_4",
+      "sourceVersion": "Wayfarer V1.4 Base (cb8ba12b)",
+      "sizeBytes": 22320,
+      "sha256": "5a36292ec0cc11b5a12db2cc259aba8de683ed80fc895020981f68ca841731d8",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_2_CombatStates_b5eaa612/preview_wayfarer_4dir.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/03_V152_b5eaa612_CombatStates/preview_wayfarer_4dir.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5_2",
+      "sourceVersion": "Wayfarer V1.5.2 Combat States (b5eaa612)",
+      "sizeBytes": 67216,
+      "sha256": "5fd794fdb252562108e9aa8cb025298e0d61dfca61c37fae747590689b0e450d",
+      "png": {
+        "width": 384,
+        "height": 1024,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_2_CombatStates_b5eaa612/wayfarer_attack.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/03_V152_b5eaa612_CombatStates/wayfarer_attack.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5_2",
+      "sourceVersion": "Wayfarer V1.5.2 Combat States (b5eaa612)",
+      "sizeBytes": 24228,
+      "sha256": "2546e1dc748094503d7477011b7dc8cad8f6801513cbc8d13c28c1dd871d5ec7",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_2_CombatStates_b5eaa612/wayfarer_buff.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/03_V152_b5eaa612_CombatStates/wayfarer_buff.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5_2",
+      "sourceVersion": "Wayfarer V1.5.2 Combat States (b5eaa612)",
+      "sizeBytes": 22085,
+      "sha256": "003d105d171e930c817a4fc2a2d154470fe0968fd5e01f51b80a772a76acec7d",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_2_CombatStates_b5eaa612/wayfarer_death.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/03_V152_b5eaa612_CombatStates/wayfarer_death.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5_2",
+      "sourceVersion": "Wayfarer V1.5.2 Combat States (b5eaa612)",
+      "sizeBytes": 14777,
+      "sha256": "0c558c8c97e58ec903af4d78e74abbd0a77c018449e2c61f635bbdb4d03d7850",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_2_CombatStates_b5eaa612/wayfarer_gather.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/03_V152_b5eaa612_CombatStates/wayfarer_gather.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5_2",
+      "sourceVersion": "Wayfarer V1.5.2 Combat States (b5eaa612)",
+      "sizeBytes": 7816,
+      "sha256": "a123e614325814c30bb1022d3350f5d053848ac58406b8b93a27228a5e3596f1",
+      "png": {
+        "width": 256,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_2_CombatStates_b5eaa612/wayfarer_heavy_attack.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/03_V152_b5eaa612_CombatStates/wayfarer_heavy_attack.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5_2",
+      "sourceVersion": "Wayfarer V1.5.2 Combat States (b5eaa612)",
+      "sizeBytes": 23988,
+      "sha256": "cf191dfd31c82df7c1ed32e39a03435a5bca97b295167656438b7961389225f7",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_2_CombatStates_b5eaa612/wayfarer_hurt.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/03_V152_b5eaa612_CombatStates/wayfarer_hurt.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5_2",
+      "sourceVersion": "Wayfarer V1.5.2 Combat States (b5eaa612)",
+      "sizeBytes": 5270,
+      "sha256": "a49a8eb68b0183a7261d65069e72a48838d896584cc16cffb4d716d447c68ab2",
+      "png": {
+        "width": 192,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_2_CombatStates_b5eaa612/wayfarer_idle.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/03_V152_b5eaa612_CombatStates/wayfarer_idle.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5_2",
+      "sourceVersion": "Wayfarer V1.5.2 Combat States (b5eaa612)",
+      "sizeBytes": 7513,
+      "sha256": "0cd245a63bb8d827b696ca9967569900f873c590339fa49fcb66b56a2bdfb864",
+      "png": {
+        "width": 256,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_2_CombatStates_b5eaa612/wayfarer_interact.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/03_V152_b5eaa612_CombatStates/wayfarer_interact.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5_2",
+      "sourceVersion": "Wayfarer V1.5.2 Combat States (b5eaa612)",
+      "sizeBytes": 5621,
+      "sha256": "f30060ccd0d09a17b4205fae835a0ab8d2caa19d0027b247d1b0b23d54105888",
+      "png": {
+        "width": 256,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_2_CombatStates_b5eaa612/wayfarer_parry.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/03_V152_b5eaa612_CombatStates/wayfarer_parry.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5_2",
+      "sourceVersion": "Wayfarer V1.5.2 Combat States (b5eaa612)",
+      "sizeBytes": 15016,
+      "sha256": "039e7cb62794a9dc3adea307c5a38da883171d24bafa6d2f20df3d5dda5e256c",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_2_CombatStates_b5eaa612/wayfarer_portrait.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/03_V152_b5eaa612_CombatStates/wayfarer_portrait.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5_2",
+      "sourceVersion": "Wayfarer V1.5.2 Combat States (b5eaa612)",
+      "sizeBytes": 4976,
+      "sha256": "4f5131db3557693a24aa9a46b2f038ccaf008d7a2d79f43acda095da2dab54eb",
+      "png": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_2_CombatStates_b5eaa612/wayfarer_roll.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/03_V152_b5eaa612_CombatStates/wayfarer_roll.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5_2",
+      "sourceVersion": "Wayfarer V1.5.2 Combat States (b5eaa612)",
+      "sizeBytes": 13440,
+      "sha256": "d06f9b851214ee3ebc2186be37da80f493e80ac8eee7534b5b07cbf64efe59d2",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_2_CombatStates_b5eaa612/wayfarer_run.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/03_V152_b5eaa612_CombatStates/wayfarer_run.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5_2",
+      "sourceVersion": "Wayfarer V1.5.2 Combat States (b5eaa612)",
+      "sizeBytes": 11407,
+      "sha256": "f079aa5bff3ed0abda962b2aec2965838d4bd879c4a6b3a84e1a1ad9ea493055",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_2_CombatStates_b5eaa612/wayfarer_unarmed_idle.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/03_V152_b5eaa612_CombatStates/wayfarer_unarmed_idle.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5_2",
+      "sourceVersion": "Wayfarer V1.5.2 Combat States (b5eaa612)",
+      "sizeBytes": 6141,
+      "sha256": "d0a6ab2183c0ca62eb791207199b972121b840a35a818885af32179febac812f",
+      "png": {
+        "width": 256,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_2_CombatStates_b5eaa612/wayfarer_unarmed_roll.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/03_V152_b5eaa612_CombatStates/wayfarer_unarmed_roll.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5_2",
+      "sourceVersion": "Wayfarer V1.5.2 Combat States (b5eaa612)",
+      "sizeBytes": 13239,
+      "sha256": "d538150bba32482fdfadac43086384b98a7ed3338b79b828fe21c574131ef817",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_2_CombatStates_b5eaa612/wayfarer_unarmed_run.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/03_V152_b5eaa612_CombatStates/wayfarer_unarmed_run.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5_2",
+      "sourceVersion": "Wayfarer V1.5.2 Combat States (b5eaa612)",
+      "sizeBytes": 11193,
+      "sha256": "afdf5d5eed9d081fdef36e6a2505c5b70da5c358d598f03ece5f2e2771d6059a",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_2_CombatStates_b5eaa612/wayfarer_use_item.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/03_V152_b5eaa612_CombatStates/wayfarer_use_item.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5_2",
+      "sourceVersion": "Wayfarer V1.5.2 Combat States (b5eaa612)",
+      "sizeBytes": 9360,
+      "sha256": "1885ebe1fffa63b469c3e1309ba6588af9c708fc09d32ab8773d1f3819c07fc8",
+      "png": {
+        "width": 256,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_2_CombatStates_b5eaa612/wayfarer_walk.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/03_V152_b5eaa612_CombatStates/wayfarer_walk.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5_2",
+      "sourceVersion": "Wayfarer V1.5.2 Combat States (b5eaa612)",
+      "sizeBytes": 11818,
+      "sha256": "9080b9094c20720d5925dada339216144541970368280f2522b53176adbc8fc3",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_2_CombatStates_b5eaa612/wayfarer_weapon_art.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/03_V152_b5eaa612_CombatStates/wayfarer_weapon_art.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5_2",
+      "sourceVersion": "Wayfarer V1.5.2 Combat States (b5eaa612)",
+      "sizeBytes": 27244,
+      "sha256": "f23bb3d10e31b2971e7c29f0e0c70679690601b63540591d2c209e18f7b2ddf1",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_2_CombatStates_b5eaa612/wayfarer_weapon_toggle.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/03_V152_b5eaa612_CombatStates/wayfarer_weapon_toggle.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5_2",
+      "sourceVersion": "Wayfarer V1.5.2 Combat States (b5eaa612)",
+      "sizeBytes": 14261,
+      "sha256": "4086ff61cf552dadc70cba4ea3ca4886cd2099a5de6919b82e21f870129fab37",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_PaletteScale_646f3d3e/wayfarer_attack.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/02_V15_646f3d3e_PaletteScale/wayfarer_attack.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5",
+      "sourceVersion": "Wayfarer V1.5 Palette/Scale (646f3d3e)",
+      "sizeBytes": 23847,
+      "sha256": "3311d6c84f119138deca00475801805b43d39b014fabae1f37e12aebb6a6d911",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_PaletteScale_646f3d3e/wayfarer_death.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/02_V15_646f3d3e_PaletteScale/wayfarer_death.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5",
+      "sourceVersion": "Wayfarer V1.5 Palette/Scale (646f3d3e)",
+      "sizeBytes": 17114,
+      "sha256": "7accdf8d1099e4dd5a3380e6c3940a7b903c9fb1930bb1637a2d1fdfd53c3e71",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_PaletteScale_646f3d3e/wayfarer_gather.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/02_V15_646f3d3e_PaletteScale/wayfarer_gather.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5",
+      "sourceVersion": "Wayfarer V1.5 Palette/Scale (646f3d3e)",
+      "sizeBytes": 12170,
+      "sha256": "a444e3e73e970aaae8dbc4ec793c8e508b007ea8022804ea65932ae9ccf865bf",
+      "png": {
+        "width": 256,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_PaletteScale_646f3d3e/wayfarer_hurt.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/02_V15_646f3d3e_PaletteScale/wayfarer_hurt.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5",
+      "sourceVersion": "Wayfarer V1.5 Palette/Scale (646f3d3e)",
+      "sizeBytes": 6549,
+      "sha256": "4aa5d367a1a8648f9fbc6ec5b52988c46c6ede63c0a5aa807c270b63e57383b5",
+      "png": {
+        "width": 192,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_PaletteScale_646f3d3e/wayfarer_idle.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/02_V15_646f3d3e_PaletteScale/wayfarer_idle.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5",
+      "sourceVersion": "Wayfarer V1.5 Palette/Scale (646f3d3e)",
+      "sizeBytes": 10992,
+      "sha256": "987dc890e9cc7008a009db3fa6ee6470139614a5c3432dc409eebe2ca119f0ef",
+      "png": {
+        "width": 256,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_PaletteScale_646f3d3e/wayfarer_interact.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/02_V15_646f3d3e_PaletteScale/wayfarer_interact.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5",
+      "sourceVersion": "Wayfarer V1.5 Palette/Scale (646f3d3e)",
+      "sizeBytes": 12338,
+      "sha256": "d43bc043725b04722d230e70a76eaa027af2da2f307a7762469932c2cba80d7e",
+      "png": {
+        "width": 256,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_PaletteScale_646f3d3e/wayfarer_portrait.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/02_V15_646f3d3e_PaletteScale/wayfarer_portrait.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5",
+      "sourceVersion": "Wayfarer V1.5 Palette/Scale (646f3d3e)",
+      "sizeBytes": 4976,
+      "sha256": "4f5131db3557693a24aa9a46b2f038ccaf008d7a2d79f43acda095da2dab54eb",
+      "png": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_PaletteScale_646f3d3e/wayfarer_run.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/02_V15_646f3d3e_PaletteScale/wayfarer_run.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5",
+      "sourceVersion": "Wayfarer V1.5 Palette/Scale (646f3d3e)",
+      "sizeBytes": 21120,
+      "sha256": "e976cf8067763fa25d7feea2b84227e0b4e593ca5316bfe4e18b10f5653069da",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_PaletteScale_646f3d3e/wayfarer_use_item.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/02_V15_646f3d3e_PaletteScale/wayfarer_use_item.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5",
+      "sourceVersion": "Wayfarer V1.5 Palette/Scale (646f3d3e)",
+      "sizeBytes": 12495,
+      "sha256": "76fc7019d39ed19506fdab0510b7fde15a41f17d8149d70490be05111136f445",
+      "png": {
+        "width": 256,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "03_LEGACY_ARCHIVE/V1_5_PaletteScale_646f3d3e/wayfarer_walk.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/02_Codex_Black_Knight_V2/02_V15_646f3d3e_PaletteScale/wayfarer_walk.png",
+      "category": "LEGACY",
+      "status": "LEGACY_SUPERSEDED_V1_5",
+      "sourceVersion": "Wayfarer V1.5 Palette/Scale (646f3d3e)",
+      "sizeBytes": 21465,
+      "sha256": "b190bbf89b30a5d244eca6dedfc3e28be7e03b2aae179b302ca2bb568b88c3a1",
+      "png": {
+        "width": 384,
+        "height": 256,
+        "mode": "RGBA"
+      }
+    },
+    {
+      "destRelPath": "04_METADATA_AND_DOCS/ANIMATION_REGISTRY_SNAPSHOT.json",
+      "sourceRelPath": "GENERATED_BY_HW_ART_REF_02",
+      "category": "METADATA_AND_DOCS",
+      "status": "GENERATED_METADATA",
+      "sourceVersion": "HW-ART-REF-02",
+      "sizeBytes": 18479,
+      "sha256": "031a99c989a8eebd1409d1d383ec7fdf8117c7a5df73590be5fb6a2d54d24246",
+      "png": null
+    },
+    {
+      "destRelPath": "04_METADATA_AND_DOCS/CONVERSION_METADATA_INDEX.json",
+      "sourceRelPath": "GENERATED_BY_HW_ART_REF_02",
+      "category": "METADATA_AND_DOCS",
+      "status": "GENERATED_METADATA",
+      "sourceVersion": "HW-ART-REF-02",
+      "sizeBytes": 42369,
+      "sha256": "6504cb8755fc9a05fcd3c3c186ab4a84a46da6a6e75419198d4c16594cc0cbb9",
+      "png": null
+    },
+    {
+      "destRelPath": "04_METADATA_AND_DOCS/LICENSE_AND_CREDITS.md",
+      "sourceRelPath": "GENERATED_BY_HW_ART_REF_02",
+      "category": "METADATA_AND_DOCS",
+      "status": "GENERATED_DOCS",
+      "sourceVersion": "HW-ART-REF-02",
+      "sizeBytes": 1315,
+      "sha256": "83d457767018bb7f0390641b03bf7f61bcef426946d2f8a261fdf89acc7e3904",
+      "png": null
+    },
+    {
+      "destRelPath": "04_METADATA_AND_DOCS/Original_Reports/HW_CHAR_01_R2_CODEX_BLACK_KNIGHT_V2_RECOVERY.md",
+      "sourceRelPath": "Read/V1.5/Reports/HW_CHAR_01_R2_CODEX_BLACK_KNIGHT_V2_RECOVERY.md",
+      "category": "METADATA_AND_DOCS",
+      "status": "RECOVERY_REPORT",
+      "sourceVersion": "HW-CHAR-01-R2 Recovery Report",
+      "sizeBytes": 15461,
+      "sha256": "f29998a47d0b7d854705812ce85295875a35d8d770d1c22f22f3adab7f7fd38b",
+      "png": null
+    },
+    {
+      "destRelPath": "04_METADATA_AND_DOCS/Original_Reports/RECOVERY_PROVENANCE_MANIFEST.json",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/08_Documentation/RECOVERY_PROVENANCE_MANIFEST.json",
+      "category": "METADATA_AND_DOCS",
+      "status": "HISTORICAL_REPORT_AND_PROVENANCE",
+      "sourceVersion": "08_Documentation from Meliodas_Blackwood",
+      "sizeBytes": 85118,
+      "sha256": "1195494cb99fd0a450890ae218b671a0bd68231108bd4a6d3f0e464d84fd5855",
+      "png": null
+    },
+    {
+      "destRelPath": "04_METADATA_AND_DOCS/Original_Reports/SHA256SUMS.txt",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/08_Documentation/SHA256SUMS.txt",
+      "category": "METADATA_AND_DOCS",
+      "status": "HISTORICAL_REPORT_AND_PROVENANCE",
+      "sourceVersion": "08_Documentation from Meliodas_Blackwood",
+      "sizeBytes": 24682,
+      "sha256": "9d624353688681bf9f44d881098548a8352c31f9b90e6c5e6e95db9b137895fe",
+      "png": null
+    },
+    {
+      "destRelPath": "04_METADATA_AND_DOCS/Original_Reports/V152_05_BLACK_KNIGHT_WAYFARER_COMBAT_REPORT.md",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/08_Documentation/V152_05_BLACK_KNIGHT_WAYFARER_COMBAT_REPORT.md",
+      "category": "METADATA_AND_DOCS",
+      "status": "HISTORICAL_REPORT_AND_PROVENANCE",
+      "sourceVersion": "08_Documentation from Meliodas_Blackwood",
+      "sizeBytes": 8466,
+      "sha256": "d4fa091afed24f5ecd69e5e35c215ec9995355cc05ac77d8bdcb7b5de7779d32",
+      "png": null
+    },
+    {
+      "destRelPath": "04_METADATA_AND_DOCS/Original_Reports/V153_BLACK_KNIGHT_SOURCE_PARITY_REPORT.md",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/08_Documentation/V153_BLACK_KNIGHT_SOURCE_PARITY_REPORT.md",
+      "category": "METADATA_AND_DOCS",
+      "status": "HISTORICAL_REPORT_AND_PROVENANCE",
+      "sourceVersion": "08_Documentation from Meliodas_Blackwood",
+      "sizeBytes": 17635,
+      "sha256": "88460798fd341f6f6861863e8dccb4091c4dc9f8a2ee755c1811b3c83e7c1113",
+      "png": null
+    },
+    {
+      "destRelPath": "04_METADATA_AND_DOCS/Original_Reports/V153_CLOUD_01A_ORIGINAL_BLACK_KNIGHT_EXTRACTION.md",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/08_Documentation/V153_CLOUD_01A_ORIGINAL_BLACK_KNIGHT_EXTRACTION.md",
+      "category": "METADATA_AND_DOCS",
+      "status": "HISTORICAL_REPORT_AND_PROVENANCE",
+      "sourceVersion": "08_Documentation from Meliodas_Blackwood",
+      "sizeBytes": 9471,
+      "sha256": "bd5ecd81a782ba34fdb86cf7df2039c6ff0920c35e64c4f2096efbc1c012d692",
+      "png": null
+    },
+    {
+      "destRelPath": "04_METADATA_AND_DOCS/Original_Reports/V153_F0_0_BLACK_KNIGHT_FRAME_MAP.md",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/08_Documentation/V153_F0_0_BLACK_KNIGHT_FRAME_MAP.md",
+      "category": "METADATA_AND_DOCS",
+      "status": "HISTORICAL_REPORT_AND_PROVENANCE",
+      "sourceVersion": "08_Documentation from Meliodas_Blackwood",
+      "sizeBytes": 16743,
+      "sha256": "cc0f26e7493e5a0013d2e725f090e79c504cedd1adc0c4c7d12b6c12302fb930",
+      "png": null
+    },
+    {
+      "destRelPath": "04_METADATA_AND_DOCS/Original_Reports/Visuals/V153_BLACK_KNIGHT_SOURCE_PARITY/actions-contact.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/08_Documentation/Visuals/V153_BLACK_KNIGHT_SOURCE_PARITY/actions-contact.png",
+      "category": "METADATA_AND_DOCS",
+      "status": "HISTORICAL_REPORT_AND_PROVENANCE",
+      "sourceVersion": "08_Documentation from Meliodas_Blackwood",
+      "sizeBytes": 240127,
+      "sha256": "6b40fd91e3625c1094d48a97fb9c199b639cb45871289b13b5d7c69108c456d0",
+      "png": {
+        "width": 826,
+        "height": 3048,
+        "mode": "RGB"
+      }
+    },
+    {
+      "destRelPath": "04_METADATA_AND_DOCS/Original_Reports/Visuals/V153_BLACK_KNIGHT_SOURCE_PARITY/air-contact.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/08_Documentation/Visuals/V153_BLACK_KNIGHT_SOURCE_PARITY/air-contact.png",
+      "category": "METADATA_AND_DOCS",
+      "status": "HISTORICAL_REPORT_AND_PROVENANCE",
+      "sourceVersion": "08_Documentation from Meliodas_Blackwood",
+      "sizeBytes": 317627,
+      "sha256": "c23a88034ee3b3136be6c3d1d40019c9f2fb4e85dd28b516a96d2d75e2cc7ef9",
+      "png": {
+        "width": 826,
+        "height": 4344,
+        "mode": "RGB"
+      }
+    },
+    {
+      "destRelPath": "04_METADATA_AND_DOCS/Original_Reports/Visuals/V153_BLACK_KNIGHT_SOURCE_PARITY/combat-contact.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/08_Documentation/Visuals/V153_BLACK_KNIGHT_SOURCE_PARITY/combat-contact.png",
+      "category": "METADATA_AND_DOCS",
+      "status": "HISTORICAL_REPORT_AND_PROVENANCE",
+      "sourceVersion": "08_Documentation from Meliodas_Blackwood",
+      "sizeBytes": 978541,
+      "sha256": "aa47c938eecaf35feb415b66f07a0260cc7ce1cb238b6fece315047ea0bb06b0",
+      "png": {
+        "width": 4074,
+        "height": 3480,
+        "mode": "RGB"
+      }
+    },
+    {
+      "destRelPath": "04_METADATA_AND_DOCS/Original_Reports/Visuals/V153_BLACK_KNIGHT_SOURCE_PARITY/motion-contact.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/08_Documentation/Visuals/V153_BLACK_KNIGHT_SOURCE_PARITY/motion-contact.png",
+      "category": "METADATA_AND_DOCS",
+      "status": "HISTORICAL_REPORT_AND_PROVENANCE",
+      "sourceVersion": "08_Documentation from Meliodas_Blackwood",
+      "sizeBytes": 461379,
+      "sha256": "34b7315178165f440cdd2c38ffced22fecac471382046146c742ad0043903b34",
+      "png": {
+        "width": 1498,
+        "height": 1752,
+        "mode": "RGB"
+      }
+    },
+    {
+      "destRelPath": "04_METADATA_AND_DOCS/Original_Reports/Visuals/V153_BLACK_KNIGHT_SOURCE_PARITY/states-contact.png",
+      "sourceRelPath": "HOLLOW_WOODS_EXPORT/Pixel_Art/01_Characters/Player/Meliodas_Blackwood/08_Documentation/Visuals/V153_BLACK_KNIGHT_SOURCE_PARITY/states-contact.png",
+      "category": "METADATA_AND_DOCS",
+      "status": "HISTORICAL_REPORT_AND_PROVENANCE",
+      "sourceVersion": "08_Documentation from Meliodas_Blackwood",
+      "sizeBytes": 702390,
+      "sha256": "1339c4dd25ce8b55db0694d731dcbaf18a948555c0b68a78ec1a2404515951c4",
+      "png": {
+        "width": 2170,
+        "height": 2616,
+        "mode": "RGB"
+      }
+    },
+    {
+      "destRelPath": "04_METADATA_AND_DOCS/SOURCE_PROVENANCE.md",
+      "sourceRelPath": "GENERATED_BY_HW_ART_REF_02",
+      "category": "METADATA_AND_DOCS",
+      "status": "GENERATED_DOCS",
+      "sourceVersion": "HW-ART-REF-02",
+      "sizeBytes": 3802,
+      "sha256": "70db092ec9783ec3be1068b6e6f4693ad867fdc5364e7251d046498d357c5713",
+      "png": null
+    },
+    {
+      "destRelPath": "README.md",
+      "sourceRelPath": "GENERATED_BY_HW_ART_REF_02",
+      "category": "METADATA_AND_DOCS",
+      "status": "GENERATED_DOCS",
+      "sourceVersion": "HW-ART-REF-02",
+      "sizeBytes": 2359,
+      "sha256": "5fd9c31810c0f973bed3f2aa2ae0c883dafa7f8044cbddb2a37f732583c669b4",
+      "png": null
+    }
+  ]
+}
