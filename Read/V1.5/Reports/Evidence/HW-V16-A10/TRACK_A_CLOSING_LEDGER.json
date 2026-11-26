@@ -1,0 +1,28 @@
+{
+  "taskId": "HW-V16-A10",
+  "overallTrackAStatus": "INCOMPLETE_GATES_OPEN",
+  "tasks": [
+    { "id": "HW-V16-A01", "canonStatus": "CANON-APPROVED (22/23 + 1 Deferred)", "implStatus": "LOCKED", "verifiedStatus": "VERIFIED (0 runtime delta)", "blockingGate": null },
+    { "id": "HW-V16-A02", "canonStatus": "CANON-APPROVED", "implStatus": "IMPLEMENTED", "verifiedStatus": "RUNTIME VERIFIED (PASS)", "blockingGate": null },
+    { "id": "HW-V16-A03", "canonStatus": "CANON-APPROVED + DLG-006/007 DRAFT", "implStatus": "IMPLEMENTED (Bellhollow + Act0)", "verifiedStatus": "RUNTIME VERIFIED (PASS, A03-T01..T10)", "blockingGate": "Verbatim DLG-006/007 awaiting Owner Approval" },
+    { "id": "HW-V16-A04", "canonStatus": "CANON-APPROVED + DLG-009/012-015 DRAFT", "implStatus": "IMPLEMENTED (Vaelen + Mordric compat)", "verifiedStatus": "RUNTIME VERIFIED (PASS, A04-T01..T10)", "blockingGate": "Final Vaelen/Mordric fate & verbatim lines awaiting Owner Approval" },
+    { "id": "HW-V16-A05", "canonStatus": "CANON-APPROVED (DEC-LOCK-18)", "implStatus": "IMPLEMENTED (7-state DialogueSystem)", "verifiedStatus": "RUNTIME VERIFIED (18/18 PASS)", "blockingGate": null },
+    { "id": "HW-V16-A06", "canonStatus": "CANON-APPROVED (DEC-LOCK-06/07)", "implStatus": "IMPLEMENTED (Fail-closed gate)", "verifiedStatus": "RUNTIME VERIFIED (PARTIAL)", "blockingGate": "Superseded by A06-R1 on approval" },
+    { "id": "HW-V16-A06-R1", "canonStatus": "OWNER APPROVED (2026-11-27)", "implStatus": "IMPLEMENTED (Isolated branch feat/v1.6-a06-r1-identity-evidence @ fc5bf1d)", "verifiedStatus": "RUNTIME VERIFIED (24/24 + Playwright 6/6)", "blockingGate": "Awaiting GPT acceptance & merge into A07" },
+    { "id": "HW-V16-A07", "canonStatus": "CANON-APPROVED (thresholds 50/3/65) + Ending copy DRAFT", "implStatus": "PARTIAL (4 src edits preserved locally in G:/HOLLOW WOODS)", "verifiedStatus": "PENDING RESUME VERIFICATION", "blockingGate": "Waiting on A06-R1 GPT acceptance + Ending copy approval (DEC-LOCK-18)" },
+    { "id": "HW-V16-A08", "canonStatus": "DEC-LOCK-20 Hybrid 28s Format Approved", "implStatus": "DRAFT (Preproduction @ d2ff9e8)", "verifiedStatus": "PREPROD VERIFIED (A08-T01..T06 PASS; T07..T12 NOT RUN)", "blockingGate": "Owner Approval Gate on Storyboard, Narration, Crest (DEC-LOCK-06), Audio" },
+    { "id": "HW-V16-A09", "canonStatus": "DEC-LOCK-20", "implStatus": "BLOCKED", "verifiedStatus": "NOT RUN (Entry Gate Unmet @ 9e94b2f)", "blockingGate": "Blocked on A08 Media Production & Owner Approval" },
+    { "id": "HW-V16-A10", "canonStatus": "DEC-LOCK-11/16/18/21", "implStatus": "PARTIAL / DRAFT REGISTRY ONLY", "verifiedStatus": "EXISTING EVENTS BASELINE AUDITED; A10-T01..T20 GATED", "blockingGate": "Blocked on A07, A08/A09 & Owner Approval of CIN-* candidates" }
+  ],
+  "handoverToTrackB": [
+    { "targetTask": "HW-V16-B01 / B02 (Codex)", "item": "BUG-058 / BUG-059 (Black Knight combat/movement alignment fixes)" },
+    { "targetTask": "HW-V16-B06", "item": "AudioManager fixes, short 2.6-2.8s sfx_bell_short_fade asset, Sir Vaelen / Sir Mordric dialogue voice slots, DAW stems if handed over by Owner" },
+    { "targetTask": "HW-V16-B07", "item": "SaveManager.ts MEM-04 non-destructive lore backfill for sparse legacy saves + migration of legacy dialogue markers" },
+    { "targetTask": "HW-V16-D06 / D07 / E06 (Deferred)", "item": "CHAR-006 The Headless Warden kept DEFERRED (DEC-LOCK-14)" }
+  ],
+  "legacyAssertionsPreserved": [
+    { "script": "scripts/verify_v15_20_multiple_endings.mjs", "baselineResult": "44/46", "reason": "2 legacy assertions check removed V1.5 strings 'Chỉ Huy Hiệp Sĩ Đen' and 'ngọn đèn'; intentionally kept intact without deleting assertions (superseded in verify_v16_a07_quest_and_endings.mjs)." },
+    { "script": "scripts/verify_v15_17_villager_stories.mjs", "baselineResult": "47/48", "reason": "1 V1.5.17 assertion checks legacy string 'Rad, Isa, Algiz' on edda_rune_guide." },
+    { "script": "scripts/verify_v15_18_knight_awakening.mjs", "baselineResult": "Historical V1.5 expectation", "reason": "V1.5 script asserts pre-V16 early lore_wayfarer_inner_journal unlock on HoodedKnightBoss defeat before DEC-LOCK-07 Identity Reveal Gate." }
+  ]
+}
