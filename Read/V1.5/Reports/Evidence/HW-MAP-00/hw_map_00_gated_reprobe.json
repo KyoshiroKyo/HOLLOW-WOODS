@@ -1,0 +1,206 @@
+{
+  "probes": [
+    {
+      "probe": "bellhollow_to_farm_from_510",
+      "srcZone": "bellhollow",
+      "expectedDst": "sanctuary_farm",
+      "start": [
+        650,
+        510
+      ],
+      "after": {
+        "zone": "sanctuary_farm",
+        "detected": "sanctuary_farm",
+        "foot": {
+          "x": 650,
+          "y": 575.9999999999995
+        },
+        "lastTransitionId": "to_sanctuary_farm",
+        "shrineOpen": true
+      },
+      "passed": true
+    },
+    {
+      "probe": "deep_forest_to_abyssal_chasm_unlocked",
+      "srcZone": "deep_forest",
+      "expectedDst": "abyssal_chasm",
+      "start": [
+        2240,
+        -605
+      ],
+      "after": {
+        "zone": "deep_forest",
+        "detected": "deep_forest",
+        "foot": {
+          "x": 2240,
+          "y": -622
+        },
+        "lastTransitionId": null,
+        "shrineOpen": true
+      },
+      "passed": false
+    },
+    {
+      "probe": "silent_mire_to_shrine_unlocked",
+      "srcZone": "silent_mire",
+      "expectedDst": "broken_bell_shrine",
+      "start": [
+        3945,
+        310
+      ],
+      "after": {
+        "zone": "broken_bell_shrine",
+        "detected": "broken_bell_shrine",
+        "foot": {
+          "x": 4046.999999999989,
+          "y": 310
+        },
+        "lastTransitionId": "to_shrine",
+        "shrineOpen": true
+      },
+      "passed": true
+    },
+    {
+      "probe": "silent_mire_to_drowned_depths_unlocked",
+      "srcZone": "silent_mire",
+      "expectedDst": "drowned_mire_depths",
+      "start": [
+        3380,
+        700
+      ],
+      "after": {
+        "zone": "drowned_mire_depths",
+        "detected": "drowned_mire_depths",
+        "foot": {
+          "x": 3380,
+          "y": 859.3333333333312
+        },
+        "lastTransitionId": "to_drowned_mire_depths",
+        "shrineOpen": true
+      },
+      "passed": true
+    },
+    {
+      "probe": "root_cellar_to_veil_origin_unlocked",
+      "srcZone": "sub_root_cellar",
+      "expectedDst": "veil_origin_cavern",
+      "start": [
+        800,
+        1400
+      ],
+      "after": {
+        "zone": "veil_origin_cavern",
+        "detected": "veil_origin_cavern",
+        "foot": {
+          "x": 800,
+          "y": 1577.9166666666708
+        },
+        "lastTransitionId": "to_veil_origin_cavern",
+        "shrineOpen": true
+      },
+      "passed": true
+    },
+    {
+      "probe": "deep_forest_to_whispering_clearing_from_south",
+      "srcZone": "deep_forest",
+      "expectedDst": "sub_whispering_clearing",
+      "start": [
+        1840,
+        -10
+      ],
+      "after": {
+        "zone": "deep_forest",
+        "detected": "sub_whispering_clearing",
+        "foot": {
+          "x": 1840,
+          "y": -85.08333333333341
+        },
+        "lastTransitionId": null,
+        "shrineOpen": true
+      },
+      "passed": false
+    },
+    {
+      "probe": "whispering_clearing_north_unlocked",
+      "srcZone": "sub_whispering_clearing",
+      "expectedDst": "deep_forest",
+      "start": [
+        1840,
+        -295
+      ],
+      "after": {
+        "zone": "sub_whispering_clearing",
+        "detected": "sub_whispering_clearing",
+        "foot": {
+          "x": 1840,
+          "y": -326
+        },
+        "lastTransitionId": null,
+        "shrineOpen": true
+      },
+      "passed": false
+    },
+    {
+      "probe": "whispering_grove_to_clearing_unlocked",
+      "srcZone": "whispering_grove_sanctum",
+      "expectedDst": "sub_whispering_clearing",
+      "start": [
+        1600,
+        -420
+      ],
+      "after": {
+        "zone": "whispering_grove_sanctum",
+        "detected": "whispering_grove_sanctum",
+        "foot": {
+          "x": 1600,
+          "y": -360.01
+        },
+        "lastTransitionId": null,
+        "shrineOpen": true
+      },
+      "passed": false
+    },
+    {
+      "probe": "whispering_grove_to_clearing_offset_x1645",
+      "srcZone": "whispering_grove_sanctum",
+      "expectedDst": "sub_whispering_clearing",
+      "start": [
+        1645,
+        -420
+      ],
+      "after": {
+        "zone": "whispering_grove_sanctum",
+        "detected": "whispering_grove_sanctum",
+        "foot": {
+          "x": 1645,
+          "y": -384
+        },
+        "lastTransitionId": null,
+        "shrineOpen": true
+      },
+      "passed": false
+    },
+    {
+      "probe": "rune_puzzle_to_sunken_crypt_unlocked",
+      "srcZone": "ancient_rune_puzzle",
+      "expectedDst": "sunken_crypt_ruins",
+      "start": [
+        3530,
+        195
+      ],
+      "after": {
+        "zone": "sunken_crypt_ruins",
+        "detected": "sunken_crypt_ruins",
+        "foot": {
+          "x": 3600,
+          "y": -177.91666666666626
+        },
+        "lastTransitionId": "to_sunken_crypt_ruins",
+        "shrineOpen": true
+      },
+      "passed": true
+    }
+  ],
+  "wildlifeSample": [],
+  "zoneUnlocked": {}
+}

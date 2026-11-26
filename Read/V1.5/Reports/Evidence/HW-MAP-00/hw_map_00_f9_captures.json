@@ -1,0 +1,95 @@
+{
+  "viteUrl": "http://127.0.0.1:4179/?dev=1",
+  "captures": [
+    {
+      "file": "fog_crossing_f9_F.png",
+      "targetZone": "fog_crossing",
+      "zoneActual": "fog_crossing",
+      "foot": {
+        "x": 220,
+        "y": 195
+      }
+    },
+    {
+      "file": "bellhollow_f9_F.png",
+      "targetZone": "bellhollow",
+      "zoneActual": "bellhollow",
+      "foot": {
+        "x": 900,
+        "y": 260
+      }
+    },
+    {
+      "file": "sanctuary_farm_f9_F.png",
+      "targetZone": "sanctuary_farm",
+      "zoneActual": "sanctuary_farm",
+      "foot": {
+        "x": 800,
+        "y": 780
+      }
+    },
+    {
+      "file": "outer_woods_f9_F.png",
+      "targetZone": "outer_woods",
+      "zoneActual": "outer_woods",
+      "foot": {
+        "x": 1360,
+        "y": 780
+      }
+    },
+    {
+      "file": "crooked_path_f9_F.png",
+      "targetZone": "crooked_path",
+      "zoneActual": "crooked_path",
+      "foot": {
+        "x": 2200,
+        "y": 300
+      }
+    },
+    {
+      "file": "deep_forest_abyss_gate_f9_F.png",
+      "targetZone": "deep_forest",
+      "zoneActual": "deep_forest",
+      "foot": {
+        "x": 2240,
+        "y": -560
+      }
+    },
+    {
+      "file": "silent_mire_f9_F.png",
+      "targetZone": "silent_mire",
+      "zoneActual": "silent_mire",
+      "foot": {
+        "x": 3220,
+        "y": 360
+      }
+    },
+    {
+      "file": "ancient_rune_puzzle_f9_F.png",
+      "targetZone": "ancient_rune_puzzle",
+      "zoneActual": "ancient_rune_puzzle",
+      "foot": {
+        "x": 3420,
+        "y": 260
+      }
+    },
+    {
+      "file": "broken_bell_shrine_f9_F.png",
+      "targetZone": "broken_bell_shrine",
+      "zoneActual": "broken_bell_shrine",
+      "foot": {
+        "x": 4480,
+        "y": 300
+      }
+    },
+    {
+      "file": "sub_whispering_clearing_f9_F.png",
+      "targetZone": "sub_whispering_clearing",
+      "zoneActual": "sub_whispering_clearing",
+      "foot": {
+        "x": 1840,
+        "y": -240
+      }
+    }
+  ]
+}

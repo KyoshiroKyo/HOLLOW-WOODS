@@ -1,0 +1,137 @@
+{
+  "tests": {
+    "L01_launch": {
+      "pass": true,
+      "phaserVersion": "4.2.1",
+      "rendererType": "WebGL",
+      "cameraZoom": 2.2
+    },
+    "L02_assets_loaded": {
+      "pass": true,
+      "collisionBodies": 58,
+      "treeColliders": 34,
+      "cullTargets": 130
+    },
+    "L03_idle_walk_run": {
+      "pass": true,
+      "idle": {
+        "anim": "wayfarer_idle_down",
+        "frameMs": 160,
+        "scale": 1.5
+      },
+      "walk": {
+        "anim": "wayfarer_walk_right",
+        "x": 262.25,
+        "scale": 1.5
+      },
+      "run": {
+        "anim": "wayfarer_run_right",
+        "x": 324.33,
+        "scale": 1.2000000000000002
+      }
+    },
+    "L04_wasd_trail_traversal": {
+      "pass": true,
+      "mode": "REAL_KEYBOARD_WASD_SHIFT",
+      "from": [
+        326.67,
+        1152
+      ],
+      "to": [
+        547.76,
+        958.16
+      ]
+    },
+    "L05_tree_trunk_collider": {
+      "pass": true,
+      "blockedBodyY": 720,
+      "blockedPlayerY": 738,
+      "treeBaseY": 720
+    },
+    "L06_y_depth_front_and_behind": {
+      "pass": true,
+      "frontDepth": 756,
+      "behindDepth": 680,
+      "treeCanopyDepth": 720.5
+    },
+    "L07_stone_ruins_proximity": {
+      "pass": true,
+      "stoppedBodyY": 380,
+      "stoppedPlayerY": 398,
+      "shrineBaseY": 380
+    },
+    "L08_camera_follow_bounds": {
+      "pass": true,
+      "topLeftWorldView": [
+        0,
+        0
+      ],
+      "midWorldView": [
+        1099.09,
+        271.36
+      ]
+    },
+    "L09_blur_focus_no_sticky_keys": {
+      "pass": true,
+      "x1": 1407,
+      "x2": 1407,
+      "animKey": "wayfarer_idle_right"
+    },
+    "L11_performance_sample": {
+      "pass": true,
+      "frames": 301,
+      "durationMs": 5012.5,
+      "avgFps": 60.05,
+      "minFps": 58.82,
+      "onePercentLowFps": 59.17,
+      "frameTimeAvgMs": 16.65,
+      "frameTimeP50Ms": 16.7,
+      "frameTimeP95Ms": 16.8,
+      "frameTimeP99Ms": 16.9,
+      "avgDrawCalls": 8,
+      "totalDisplayObjects": 205,
+      "visibleCullTargets": 62,
+      "cullTargetsTotal": 130,
+      "collisionBodies": 58,
+      "jsHeapMB": 22.56
+    },
+    "L10_zero_errors": {
+      "pass": true,
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "httpErrors": 0
+    },
+    "L12_archives_and_prod_untouched": {
+      "pass": true,
+      "archivesBefore": 89,
+      "archivesAfter": 89,
+      "sha256AllMatch": true
+    }
+  },
+  "console_errors": [],
+  "page_errors": [],
+  "http_errors": [],
+  "gpu_info": {
+    "webgl": true,
+    "vendor": "Google Inc. (NVIDIA)",
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)"
+  },
+  "performance": {
+    "frames": 301,
+    "durationMs": 5012.5,
+    "avgFps": 60.05,
+    "minFps": 58.82,
+    "onePercentLowFps": 59.17,
+    "frameTimeAvgMs": 16.65,
+    "frameTimeP50Ms": 16.7,
+    "frameTimeP95Ms": 16.8,
+    "frameTimeP99Ms": 16.9,
+    "avgDrawCalls": 8,
+    "totalDisplayObjects": 205,
+    "visibleCullTargets": 62,
+    "cullTargetsTotal": 130,
+    "collisionBodies": 58,
+    "jsHeapMB": 22.56
+  }
+}

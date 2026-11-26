@@ -1,0 +1,2121 @@
+{
+  "baseUrl": "http://127.0.0.1:10243/",
+  "consoleErrors": [],
+  "pageErrors": [],
+  "auditA": {
+    "initState": {
+      "currentZoneId": "fog_crossing",
+      "visitedZones": [
+        "fog_crossing",
+        "bellhollow"
+      ],
+      "hasParchmentModal": true,
+      "isAudioMuted": false
+    },
+    "keyN": {
+      "isOpen": true,
+      "subTitleText": "🎯 HỒI 1: LÀNG CHUÔNG BELLHOLLOW • Làng Chuông Cổ",
+      "contentTexts": [
+        "🧭 Đã khai mở: 2/10 Khu Vực",
+        "🟡 Vị trí hiện tại   🎯 Mục tiêu kế tiếp   🔒 Phong ấn   ✨ Vùng đã mở   🌫️ Sương mù",
+        "🔒 PHONG ẤN RỄ",
+        "Cần Chìa Khóa",
+        "🌫️",
+        "Chưa Khám Phá",
+        "🌫️",
+        "Chưa Khám Phá",
+        "Lối Mòn Xuyên Sương",
+        "Cửa Ngõ Tây Nam",
+        "• Bờ Vực Sương Mù\n• Lửa Trại Tàn Tích",
+        "🌫️",
+        "Chưa Khám Phá",
+        "Làng Bellhollow",
+        "Vùng Lõi Bình Yên • Khu Dân Cư",
+        "• Tháp Chuông Cổ\n• Bảng Tin Dị Thường",
+        "🎯 MỤC TIÊU KẾ TIẾP",
+        "🌫️",
+        "Chưa Khám Phá",
+        "🌫️",
+        "Chưa Khám Phá",
+        "🌫️",
+        "Chưa Khám Phá",
+        "🌫️",
+        "Chưa Khám Phá"
+      ]
+    },
+    "keyM": {
+      "isWorldMapOpen": false,
+      "soundSystemMuted": false,
+      "audioMuted": true,
+      "debugToastText": null
+    },
+    "journalMap": {
+      "isOpen": false,
+      "currentTab": "map",
+      "mapNodesCount": 13,
+      "selectedZoneId": "fog_crossing"
+    },
+    "unmappedMapState": {
+      "currentZoneId": "drowned_mire_depths",
+      "isOpen": true,
+      "subTitleText": "🎯 HỒI 1: LÀNG CHUÔNG BELLHOLLOW • Làng Chuông Cổ",
+      "contentTexts": [
+        "🧭 Đã khai mở: 4/10 Khu Vực",
+        "🟡 Vị trí hiện tại   🎯 Mục tiêu kế tiếp   🔒 Phong ấn   ✨ Vùng đã mở   🌫️ Sương mù",
+        "🔒 PHONG ẤN RỄ",
+        "Cần Chìa Khóa",
+        "🌫️",
+        "Chưa Khám Phá",
+        "🌫️",
+        "Chưa Khám Phá",
+        "Lối Mòn Xuyên Sương",
+        "Cửa Ngõ Tây Nam",
+        "• Bờ Vực Sương Mù\n• Lửa Trại Tàn Tích",
+        "Đường Mòn Quanh Co",
+        "Tiền Tuyến Phía Bắc",
+        "• Ổ Đá Canh Gác\n• Biển Cảnh Báo",
+        "Làng Bellhollow",
+        "Vùng Lõi Bình Yên • Khu Dân Cư",
+        "• Tháp Chuông Cổ\n• Bảng Tin Dị Thường",
+        "🎯 MỤC TIÊU KẾ TIẾP",
+        "🌫️",
+        "Chưa Khám Phá",
+        "🌫️",
+        "Chưa Khám Phá",
+        "Đầm Lầy Sương Mù",
+        "Vùng Trũng Nước Đông Nam",
+        "• Miếu Thờ Chìm\n• Chuông Đồng Chìm"
+      ]
+    },
+    "saveOk": true,
+    "localStorageKeys": [
+      "hollow_woods_save_backup_v13",
+      "p2game:standalone:kv:hw_save_meta",
+      "hollow_woods_backup_slot_1",
+      "hollow_woods_save_backup_v1_3",
+      "hollow_woods_v1_savegame",
+      "p2game:standalone:kv:progress",
+      "p2game:standalone:kv:hw_save_slot_1"
+    ],
+    "savedSummary": {
+      "zoneId": "drowned_mire_depths",
+      "visitedZones": [
+        "fog_crossing",
+        "bellhollow",
+        "crooked_path",
+        "silent_mire",
+        "drowned_mire_depths"
+      ]
+    },
+    "continueMethod": "continueGame",
+    "afterContinue": {
+      "currentZoneId": "drowned_mire_depths",
+      "visitedZones": [
+        "fog_crossing",
+        "bellhollow",
+        "crooked_path",
+        "silent_mire",
+        "drowned_mire_depths"
+      ],
+      "playerPos": {
+        "x": 3380,
+        "y": 900
+      }
+    },
+    "listeners": {
+      "init": {
+        "total": 291,
+        "byScene": {
+          "BootScene": 26,
+          "PreloadScene": 26,
+          "MainMenuScene": 26,
+          "GameScene": 88,
+          "UIScene": 99,
+          "EndingScene": 26
+        }
+      },
+      "after5xMap": {
+        "total": 291,
+        "byScene": {
+          "BootScene": 26,
+          "PreloadScene": 26,
+          "MainMenuScene": 26,
+          "GameScene": 88,
+          "UIScene": 99,
+          "EndingScene": 26
+        }
+      },
+      "afterContinue": {
+        "total": 291,
+        "byScene": {
+          "BootScene": 26,
+          "PreloadScene": 26,
+          "MainMenuScene": 26,
+          "GameScene": 88,
+          "UIScene": 99,
+          "EndingScene": 26
+        }
+      },
+      "afterRestart": {
+        "total": 291,
+        "byScene": {
+          "BootScene": 26,
+          "PreloadScene": 26,
+          "MainMenuScene": 26,
+          "GameScene": 88,
+          "UIScene": 99,
+          "EndingScene": 26
+        }
+      }
+    }
+  },
+  "auditB_runtime": {
+    "renderInfo": {
+      "beforeCount": 12,
+      "afterCount": 17,
+      "totalZones": 17
+    },
+    "livePhysics": {
+      "totalStaticBodies": 329,
+      "totalChildren": 1199,
+      "cullables": {
+        "total": 747,
+        "visible": 99,
+        "culled": 648
+      },
+      "canopiesLen": null,
+      "perZone": [
+        {
+          "id": "fog_crossing",
+          "staticBodiesCount": 21,
+          "defaultSpawnColliderHits": [],
+          "triggerColliderHits": [],
+          "targetSpawnColliderHits": []
+        },
+        {
+          "id": "bellhollow",
+          "staticBodiesCount": 98,
+          "defaultSpawnColliderHits": [],
+          "triggerColliderHits": [
+            {
+              "id": "to_fog_crossing",
+              "toZone": "fog_crossing",
+              "hits": [
+                {
+                  "x": 464,
+                  "y": 260,
+                  "w": 32,
+                  "h": 100,
+                  "right": 496,
+                  "bottom": 360,
+                  "label": "auto_east_fog_crossing_seg_end"
+                }
+              ]
+            }
+          ],
+          "targetSpawnColliderHits": []
+        },
+        {
+          "id": "crooked_path",
+          "staticBodiesCount": 46,
+          "defaultSpawnColliderHits": [],
+          "triggerColliderHits": [
+            {
+              "id": "to_outer_woods_from_cp",
+              "toZone": "outer_woods",
+              "hits": [
+                {
+                  "x": 1598,
+                  "y": 360,
+                  "w": 32,
+                  "h": 208,
+                  "right": 1630,
+                  "bottom": 568,
+                  "label": "bell_bound_east_bottom"
+                }
+              ]
+            },
+            {
+              "id": "to_deep_forest",
+              "toZone": "deep_forest",
+              "hits": [
+                {
+                  "x": 2093,
+                  "y": 38,
+                  "w": 14,
+                  "h": 10,
+                  "right": 2107,
+                  "bottom": 48,
+                  "label": "Biển Chỉ Dẫn"
+                }
+              ]
+            }
+          ],
+          "targetSpawnColliderHits": []
+        },
+        {
+          "id": "silent_mire",
+          "staticBodiesCount": 67,
+          "defaultSpawnColliderHits": [],
+          "triggerColliderHits": [
+            {
+              "id": "to_rune_puzzle",
+              "toZone": "ancient_rune_puzzle",
+              "hits": [
+                {
+                  "x": 3362,
+                  "y": 247,
+                  "w": 12,
+                  "h": 10,
+                  "right": 3374,
+                  "bottom": 257,
+                  "label": "Đèn Đá Nghi Thức"
+                }
+              ]
+            },
+            {
+              "id": "to_shrine",
+              "toZone": "broken_bell_shrine",
+              "hits": [
+                {
+                  "x": 3980,
+                  "y": 360,
+                  "w": 30,
+                  "h": 240,
+                  "right": 4010,
+                  "bottom": 600,
+                  "label": "shrine_bound_left_bottom"
+                }
+              ]
+            }
+          ],
+          "targetSpawnColliderHits": []
+        },
+        {
+          "id": "broken_bell_shrine",
+          "staticBodiesCount": 38,
+          "defaultSpawnColliderHits": [],
+          "triggerColliderHits": [
+            {
+              "id": "to_silent_mire_from_shrine",
+              "toZone": "silent_mire",
+              "hits": [
+                {
+                  "x": 3984,
+                  "y": 100,
+                  "w": 32,
+                  "h": 140,
+                  "right": 4016,
+                  "bottom": 240,
+                  "label": "auto_east_silent_mire_seg_0"
+                }
+              ]
+            }
+          ],
+          "targetSpawnColliderHits": []
+        },
+        {
+          "id": "sanctuary_farm",
+          "staticBodiesCount": 49,
+          "defaultSpawnColliderHits": [],
+          "triggerColliderHits": [],
+          "targetSpawnColliderHits": []
+        },
+        {
+          "id": "outer_woods",
+          "staticBodiesCount": 61,
+          "defaultSpawnColliderHits": [],
+          "triggerColliderHits": [
+            {
+              "id": "to_bellhollow_from_ow",
+              "toZone": "bellhollow",
+              "hits": [
+                {
+                  "x": 1161,
+                  "y": 576,
+                  "w": 18,
+                  "h": 10,
+                  "right": 1179,
+                  "bottom": 586,
+                  "label": "Gốc Cây Pixel Art"
+                }
+              ]
+            }
+          ],
+          "targetSpawnColliderHits": []
+        },
+        {
+          "id": "deep_forest",
+          "staticBodiesCount": 54,
+          "defaultSpawnColliderHits": [],
+          "triggerColliderHits": [
+            {
+              "id": "to_whispering_clearing",
+              "toZone": "sub_whispering_clearing",
+              "hits": [
+                {
+                  "x": 1801,
+                  "y": -47,
+                  "w": 12,
+                  "h": 14,
+                  "right": 1813,
+                  "bottom": -33,
+                  "label": "Cột Mốc Khoảng Trống Tây"
+                },
+                {
+                  "x": 1867,
+                  "y": -47,
+                  "w": 12,
+                  "h": 14,
+                  "right": 1879,
+                  "bottom": -33,
+                  "label": "Cột Mốc Khoảng Trống Đông"
+                }
+              ]
+            },
+            {
+              "id": "to_abyssal_chasm",
+              "toZone": "abyssal_chasm",
+              "hits": [
+                {
+                  "x": 2204,
+                  "y": -642,
+                  "w": 72,
+                  "h": 24,
+                  "right": 2276,
+                  "bottom": -618,
+                  "label": "Phong Ấn Cổng Hư Không"
+                }
+              ]
+            }
+          ],
+          "targetSpawnColliderHits": []
+        },
+        {
+          "id": "ancient_rune_puzzle",
+          "staticBodiesCount": 18,
+          "defaultSpawnColliderHits": [
+            {
+              "x": 3362,
+              "y": 247,
+              "w": 12,
+              "h": 10,
+              "right": 3374,
+              "bottom": 257,
+              "label": "Đèn Đá Nghi Thức"
+            }
+          ],
+          "triggerColliderHits": [],
+          "targetSpawnColliderHits": []
+        },
+        {
+          "id": "sub_bell_workshop",
+          "staticBodiesCount": 20,
+          "defaultSpawnColliderHits": [],
+          "triggerColliderHits": [],
+          "targetSpawnColliderHits": []
+        },
+        {
+          "id": "sub_root_cellar",
+          "staticBodiesCount": 22,
+          "defaultSpawnColliderHits": [],
+          "triggerColliderHits": [],
+          "targetSpawnColliderHits": []
+        },
+        {
+          "id": "sub_whispering_clearing",
+          "staticBodiesCount": 16,
+          "defaultSpawnColliderHits": [],
+          "triggerColliderHits": [
+            {
+              "id": "to_deep_forest_from_wc",
+              "toZone": "deep_forest",
+              "hits": [
+                {
+                  "x": 1640,
+                  "y": -376,
+                  "w": 440,
+                  "h": 32,
+                  "right": 2080,
+                  "bottom": -344,
+                  "label": "auto_south_whispering_grove_sanctum_seg_end"
+                }
+              ]
+            },
+            {
+              "id": "to_whispering_grove_sanctum",
+              "toZone": "whispering_grove_sanctum",
+              "hits": [
+                {
+                  "x": 1640,
+                  "y": -376,
+                  "w": 440,
+                  "h": 32,
+                  "right": 2080,
+                  "bottom": -344,
+                  "label": "auto_south_whispering_grove_sanctum_seg_end"
+                }
+              ]
+            }
+          ],
+          "targetSpawnColliderHits": [
+            {
+              "id": "to_whispering_grove_sanctum",
+              "toZone": "whispering_grove_sanctum",
+              "spawn": {
+                "x": 1600,
+                "y": -420
+              },
+              "hits": [
+                {
+                  "x": 1600,
+                  "y": -640,
+                  "w": 30,
+                  "h": 640,
+                  "right": 1630,
+                  "bottom": 0,
+                  "label": "df_bound_left"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "abyssal_chasm",
+          "staticBodiesCount": 24,
+          "defaultSpawnColliderHits": [],
+          "triggerColliderHits": [],
+          "targetSpawnColliderHits": []
+        },
+        {
+          "id": "drowned_mire_depths",
+          "staticBodiesCount": 16,
+          "defaultSpawnColliderHits": [],
+          "triggerColliderHits": [],
+          "targetSpawnColliderHits": []
+        },
+        {
+          "id": "whispering_grove_sanctum",
+          "staticBodiesCount": 25,
+          "defaultSpawnColliderHits": [
+            {
+              "x": 1600,
+              "y": -640,
+              "w": 30,
+              "h": 640,
+              "right": 1630,
+              "bottom": 0,
+              "label": "df_bound_left"
+            }
+          ],
+          "triggerColliderHits": [
+            {
+              "id": "to_whispering_clearing_from_wgs",
+              "toZone": "sub_whispering_clearing",
+              "hits": [
+                {
+                  "x": 1600,
+                  "y": -640,
+                  "w": 30,
+                  "h": 640,
+                  "right": 1630,
+                  "bottom": 0,
+                  "label": "df_bound_left"
+                },
+                {
+                  "x": 1620,
+                  "y": -600,
+                  "w": 35,
+                  "h": 560,
+                  "right": 1655,
+                  "bottom": -40,
+                  "label": "Rặng Cây Viền Tây Deep Forest"
+                }
+              ]
+            }
+          ],
+          "targetSpawnColliderHits": []
+        },
+        {
+          "id": "sunken_crypt_ruins",
+          "staticBodiesCount": 12,
+          "defaultSpawnColliderHits": [],
+          "triggerColliderHits": [],
+          "targetSpawnColliderHits": []
+        },
+        {
+          "id": "veil_origin_cavern",
+          "staticBodiesCount": 19,
+          "defaultSpawnColliderHits": [],
+          "triggerColliderHits": [],
+          "targetSpawnColliderHits": []
+        }
+      ],
+      "npcs": [
+        {
+          "id": "",
+          "zone": "bellhollow",
+          "pos": {
+            "x": 540,
+            "y": 205
+          },
+          "colliderHits": 0
+        },
+        {
+          "id": "",
+          "zone": "bellhollow",
+          "pos": {
+            "x": 1160,
+            "y": 160
+          },
+          "colliderHits": 0
+        },
+        {
+          "id": "",
+          "zone": "bellhollow",
+          "pos": {
+            "x": 570,
+            "y": 460
+          },
+          "colliderHits": 0
+        },
+        {
+          "id": "",
+          "zone": "bellhollow",
+          "pos": {
+            "x": 1333,
+            "y": 477
+          },
+          "colliderHits": 0
+        },
+        {
+          "id": "",
+          "zone": "bellhollow",
+          "pos": {
+            "x": 909,
+            "y": 231
+          },
+          "colliderHits": 0
+        },
+        {
+          "id": "",
+          "zone": "outer_woods",
+          "pos": {
+            "x": 1435,
+            "y": 710
+          },
+          "colliderHits": 0
+        }
+      ]
+    }
+  },
+  "auditD_traversal": [
+    {
+      "probe": "fog_to_bellhollow",
+      "srcZone": "fog_crossing",
+      "expectedDst": "bellhollow",
+      "start": [
+        430,
+        230
+      ],
+      "key": "KeyD",
+      "holdMs": 900,
+      "before": {
+        "zone": "fog_crossing",
+        "foot": {
+          "x": 430,
+          "y": 230
+        }
+      },
+      "after": {
+        "zone": "bellhollow",
+        "detected": "bellhollow",
+        "foot": {
+          "x": 507.9166666666677,
+          "y": 230
+        },
+        "lastTransitionId": "to_bellhollow",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "bellhollow_to_fog",
+      "srcZone": "bellhollow",
+      "expectedDst": "fog_crossing",
+      "start": [
+        520,
+        250
+      ],
+      "key": "KeyA",
+      "holdMs": 900,
+      "before": {
+        "zone": "bellhollow",
+        "foot": {
+          "x": 520,
+          "y": 250
+        }
+      },
+      "after": {
+        "zone": "fog_crossing",
+        "detected": "fog_crossing",
+        "foot": {
+          "x": 453.4166666666655,
+          "y": 250
+        },
+        "lastTransitionId": "to_fog_crossing",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "bellhollow_to_farm",
+      "srcZone": "bellhollow",
+      "expectedDst": "sanctuary_farm",
+      "start": [
+        650,
+        505
+      ],
+      "key": "KeyS",
+      "holdMs": 900,
+      "before": {
+        "zone": "bellhollow",
+        "foot": {
+          "x": 650,
+          "y": 505
+        }
+      },
+      "after": {
+        "zone": "bellhollow",
+        "detected": "bellhollow",
+        "foot": {
+          "x": 650,
+          "y": 554.5833333333337
+        },
+        "lastTransitionId": null,
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": false
+    },
+    {
+      "probe": "farm_to_bellhollow",
+      "srcZone": "sanctuary_farm",
+      "expectedDst": "bellhollow",
+      "start": [
+        650,
+        595
+      ],
+      "key": "KeyW",
+      "holdMs": 900,
+      "before": {
+        "zone": "sanctuary_farm",
+        "foot": {
+          "x": 650,
+          "y": 595
+        }
+      },
+      "after": {
+        "zone": "bellhollow",
+        "detected": "bellhollow",
+        "foot": {
+          "x": 650,
+          "y": 517.9166666666667
+        },
+        "lastTransitionId": "to_bellhollow_from_farm",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "bellhollow_to_outer_woods",
+      "srcZone": "bellhollow",
+      "expectedDst": "outer_woods",
+      "start": [
+        1210,
+        505
+      ],
+      "key": "KeyS",
+      "holdMs": 900,
+      "before": {
+        "zone": "bellhollow",
+        "foot": {
+          "x": 1210,
+          "y": 505
+        }
+      },
+      "after": {
+        "zone": "outer_woods",
+        "detected": "outer_woods",
+        "foot": {
+          "x": 1210,
+          "y": 581.4999999999997
+        },
+        "lastTransitionId": "to_outer_woods",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "outer_woods_to_bellhollow",
+      "srcZone": "outer_woods",
+      "expectedDst": "bellhollow",
+      "start": [
+        1210,
+        595
+      ],
+      "key": "KeyW",
+      "holdMs": 900,
+      "before": {
+        "zone": "outer_woods",
+        "foot": {
+          "x": 1210,
+          "y": 595
+        }
+      },
+      "after": {
+        "zone": "bellhollow",
+        "detected": "bellhollow",
+        "foot": {
+          "x": 1210,
+          "y": 529.2500000000007
+        },
+        "lastTransitionId": "to_bellhollow_from_ow",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "bellhollow_to_crooked_path",
+      "srcZone": "bellhollow",
+      "expectedDst": "crooked_path",
+      "start": [
+        1545,
+        280
+      ],
+      "key": "KeyD",
+      "holdMs": 900,
+      "before": {
+        "zone": "bellhollow",
+        "foot": {
+          "x": 1545,
+          "y": 280
+        }
+      },
+      "after": {
+        "zone": "crooked_path",
+        "detected": "crooked_path",
+        "foot": {
+          "x": 1603.0833333333364,
+          "y": 280
+        },
+        "lastTransitionId": "to_crooked_path",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "crooked_path_to_bellhollow",
+      "srcZone": "crooked_path",
+      "expectedDst": "bellhollow",
+      "start": [
+        1635,
+        280
+      ],
+      "key": "KeyA",
+      "holdMs": 900,
+      "before": {
+        "zone": "crooked_path",
+        "foot": {
+          "x": 1635,
+          "y": 280
+        }
+      },
+      "after": {
+        "zone": "bellhollow",
+        "detected": "bellhollow",
+        "foot": {
+          "x": 1557.9166666666645,
+          "y": 280
+        },
+        "lastTransitionId": "to_bellhollow_from_cp",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "crooked_path_to_outer_woods",
+      "srcZone": "crooked_path",
+      "expectedDst": "outer_woods",
+      "start": [
+        1645,
+        495
+      ],
+      "key": "KeyA",
+      "holdMs": 900,
+      "before": {
+        "zone": "crooked_path",
+        "foot": {
+          "x": 1645,
+          "y": 495
+        }
+      },
+      "after": {
+        "zone": "outer_woods",
+        "detected": "outer_woods",
+        "foot": {
+          "x": 1471.9999999999964,
+          "y": 780
+        },
+        "lastTransitionId": "to_outer_woods_from_cp",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "outer_woods_to_crooked_path",
+      "srcZone": "outer_woods",
+      "expectedDst": "crooked_path",
+      "start": [
+        1540,
+        770
+      ],
+      "key": "KeyD",
+      "holdMs": 900,
+      "before": {
+        "zone": "outer_woods",
+        "foot": {
+          "x": 1540,
+          "y": 770
+        }
+      },
+      "after": {
+        "zone": "crooked_path",
+        "detected": "crooked_path",
+        "foot": {
+          "x": 1658.4166666666677,
+          "y": 500
+        },
+        "lastTransitionId": "to_crooked_path_from_ow",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "crooked_path_to_deep_forest",
+      "srcZone": "crooked_path",
+      "expectedDst": "deep_forest",
+      "start": [
+        2080,
+        65
+      ],
+      "key": "KeyW",
+      "holdMs": 900,
+      "before": {
+        "zone": "crooked_path",
+        "foot": {
+          "x": 2080,
+          "y": 65
+        }
+      },
+      "after": {
+        "zone": "deep_forest",
+        "detected": "deep_forest",
+        "foot": {
+          "x": 2080,
+          "y": -12.333333333333343
+        },
+        "lastTransitionId": "to_deep_forest",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -640,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "deep_forest_to_crooked_path",
+      "srcZone": "deep_forest",
+      "expectedDst": "crooked_path",
+      "start": [
+        2080,
+        -55
+      ],
+      "key": "KeyS",
+      "holdMs": 900,
+      "before": {
+        "zone": "deep_forest",
+        "foot": {
+          "x": 2080,
+          "y": -55
+        }
+      },
+      "after": {
+        "zone": "crooked_path",
+        "detected": "crooked_path",
+        "foot": {
+          "x": 2080,
+          "y": 21.499999999999996
+        },
+        "lastTransitionId": "to_crooked_path_from_df",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "crooked_path_to_silent_mire",
+      "srcZone": "crooked_path",
+      "expectedDst": "silent_mire",
+      "start": [
+        2835,
+        310
+      ],
+      "key": "KeyD",
+      "holdMs": 900,
+      "before": {
+        "zone": "crooked_path",
+        "foot": {
+          "x": 2835,
+          "y": 310
+        }
+      },
+      "after": {
+        "zone": "silent_mire",
+        "detected": "silent_mire",
+        "foot": {
+          "x": 2911.499999999992,
+          "y": 310
+        },
+        "lastTransitionId": "to_silent_mire",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "silent_mire_to_crooked_path",
+      "srcZone": "silent_mire",
+      "expectedDst": "crooked_path",
+      "start": [
+        2920,
+        310
+      ],
+      "key": "KeyA",
+      "holdMs": 900,
+      "before": {
+        "zone": "silent_mire",
+        "foot": {
+          "x": 2920,
+          "y": 310
+        }
+      },
+      "after": {
+        "zone": "crooked_path",
+        "detected": "crooked_path",
+        "foot": {
+          "x": 2843.500000000008,
+          "y": 310
+        },
+        "lastTransitionId": "to_crooked_path_from_sm",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "deep_forest_to_abyssal_chasm",
+      "srcZone": "deep_forest",
+      "expectedDst": "abyssal_chasm",
+      "start": [
+        2240,
+        -605
+      ],
+      "key": "KeyW",
+      "holdMs": 1200,
+      "before": {
+        "zone": "deep_forest",
+        "foot": {
+          "x": 2240,
+          "y": -605
+        }
+      },
+      "after": {
+        "zone": "deep_forest",
+        "detected": "deep_forest",
+        "foot": {
+          "x": 2240,
+          "y": -622
+        },
+        "lastTransitionId": null,
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -640,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": false
+    },
+    {
+      "probe": "abyssal_chasm_to_deep_forest",
+      "srcZone": "abyssal_chasm",
+      "expectedDst": "deep_forest",
+      "start": [
+        2240,
+        -700
+      ],
+      "key": "KeyS",
+      "holdMs": 900,
+      "before": {
+        "zone": "abyssal_chasm",
+        "foot": {
+          "x": 2240,
+          "y": -700
+        }
+      },
+      "after": {
+        "zone": "deep_forest",
+        "detected": "deep_forest",
+        "foot": {
+          "x": 2240,
+          "y": -547.5833333333347
+        },
+        "lastTransitionId": "to_deep_forest_from_ac",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -640,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "silent_mire_to_rune_puzzle",
+      "srcZone": "silent_mire",
+      "expectedDst": "ancient_rune_puzzle",
+      "start": [
+        3340,
+        260
+      ],
+      "key": "KeyD",
+      "holdMs": 900,
+      "before": {
+        "zone": "silent_mire",
+        "foot": {
+          "x": 3340,
+          "y": 260
+        }
+      },
+      "after": {
+        "zone": "ancient_rune_puzzle",
+        "detected": "ancient_rune_puzzle",
+        "foot": {
+          "x": 3367.166666666665,
+          "y": 252
+        },
+        "lastTransitionId": "to_rune_puzzle",
+        "dialogueActive": true,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "rune_puzzle_to_silent_mire",
+      "srcZone": "ancient_rune_puzzle",
+      "expectedDst": "silent_mire",
+      "start": [
+        3365,
+        260
+      ],
+      "key": "KeyA",
+      "holdMs": 1100,
+      "before": {
+        "zone": "ancient_rune_puzzle",
+        "foot": {
+          "x": 3365,
+          "y": 260
+        }
+      },
+      "after": {
+        "zone": "silent_mire",
+        "detected": "silent_mire",
+        "foot": {
+          "x": 3267.50000000001,
+          "y": 252
+        },
+        "lastTransitionId": "to_silent_mire_from_puzzle",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "silent_mire_to_shrine",
+      "srcZone": "silent_mire",
+      "expectedDst": "broken_bell_shrine",
+      "start": [
+        3945,
+        310
+      ],
+      "key": "KeyD",
+      "holdMs": 900,
+      "before": {
+        "zone": "silent_mire",
+        "foot": {
+          "x": 3945,
+          "y": 310
+        }
+      },
+      "after": {
+        "zone": "silent_mire",
+        "detected": "silent_mire",
+        "foot": {
+          "x": 3943,
+          "y": 310
+        },
+        "lastTransitionId": null,
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": false
+    },
+    {
+      "probe": "shrine_to_silent_mire",
+      "srcZone": "broken_bell_shrine",
+      "expectedDst": "silent_mire",
+      "start": [
+        4035,
+        290
+      ],
+      "key": "KeyA",
+      "holdMs": 900,
+      "before": {
+        "zone": "broken_bell_shrine",
+        "foot": {
+          "x": 4035,
+          "y": 290
+        }
+      },
+      "after": {
+        "zone": "silent_mire",
+        "detected": "silent_mire",
+        "foot": {
+          "x": 3977,
+          "y": 290
+        },
+        "lastTransitionId": "to_silent_mire_from_shrine",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "silent_mire_to_drowned_depths",
+      "srcZone": "silent_mire",
+      "expectedDst": "drowned_mire_depths",
+      "start": [
+        3380,
+        700
+      ],
+      "key": "KeyS",
+      "holdMs": 900,
+      "before": {
+        "zone": "silent_mire",
+        "foot": {
+          "x": 3380,
+          "y": 700
+        }
+      },
+      "after": {
+        "zone": "silent_mire",
+        "detected": "silent_mire",
+        "foot": {
+          "x": 3380,
+          "y": 733
+        },
+        "lastTransitionId": null,
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": false
+    },
+    {
+      "probe": "drowned_depths_to_silent_mire",
+      "srcZone": "drowned_mire_depths",
+      "expectedDst": "silent_mire",
+      "start": [
+        3380,
+        790
+      ],
+      "key": "KeyW",
+      "holdMs": 900,
+      "before": {
+        "zone": "drowned_mire_depths",
+        "foot": {
+          "x": 3380,
+          "y": 790
+        }
+      },
+      "after": {
+        "zone": "silent_mire",
+        "detected": "silent_mire",
+        "foot": {
+          "x": 3380,
+          "y": 627.5833333333347
+        },
+        "lastTransitionId": "to_silent_mire_from_dmd",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "farm_to_root_cellar",
+      "srcZone": "sanctuary_farm",
+      "expectedDst": "sub_root_cellar",
+      "start": [
+        805,
+        985
+      ],
+      "key": "KeyS",
+      "holdMs": 900,
+      "before": {
+        "zone": "sanctuary_farm",
+        "foot": {
+          "x": 805,
+          "y": 985
+        }
+      },
+      "after": {
+        "zone": "sub_root_cellar",
+        "detected": "sub_root_cellar",
+        "foot": {
+          "x": 800,
+          "y": 1132.583333333335
+        },
+        "lastTransitionId": "to_root_cellar",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1440
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "root_cellar_to_farm",
+      "srcZone": "sub_root_cellar",
+      "expectedDst": "sanctuary_farm",
+      "start": [
+        805,
+        1090
+      ],
+      "key": "KeyW",
+      "holdMs": 900,
+      "before": {
+        "zone": "sub_root_cellar",
+        "foot": {
+          "x": 805,
+          "y": 1090
+        }
+      },
+      "after": {
+        "zone": "sanctuary_farm",
+        "detected": "sanctuary_farm",
+        "foot": {
+          "x": 800,
+          "y": 936.0833333333345
+        },
+        "lastTransitionId": "to_farm_from_cellar",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "root_cellar_to_veil_origin",
+      "srcZone": "sub_root_cellar",
+      "expectedDst": "veil_origin_cavern",
+      "start": [
+        800,
+        1400
+      ],
+      "key": "KeyS",
+      "holdMs": 900,
+      "before": {
+        "zone": "sub_root_cellar",
+        "foot": {
+          "x": 800,
+          "y": 1400
+        }
+      },
+      "after": {
+        "zone": "sub_root_cellar",
+        "detected": "sub_root_cellar",
+        "foot": {
+          "x": 800,
+          "y": 1421.2500000000011
+        },
+        "lastTransitionId": null,
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1440
+        }
+      },
+      "passed": false
+    },
+    {
+      "probe": "veil_origin_to_root_cellar",
+      "srcZone": "veil_origin_cavern",
+      "expectedDst": "sub_root_cellar",
+      "start": [
+        800,
+        1510
+      ],
+      "key": "KeyW",
+      "holdMs": 900,
+      "before": {
+        "zone": "veil_origin_cavern",
+        "foot": {
+          "x": 800,
+          "y": 1510
+        }
+      },
+      "after": {
+        "zone": "sub_root_cellar",
+        "detected": "sub_root_cellar",
+        "foot": {
+          "x": 800,
+          "y": 1347.5833333333305
+        },
+        "lastTransitionId": "to_root_cellar_from_voc",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1440
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "outer_woods_to_bell_workshop",
+      "srcZone": "outer_woods",
+      "expectedDst": "sub_bell_workshop",
+      "start": [
+        1360,
+        985
+      ],
+      "key": "KeyS",
+      "holdMs": 900,
+      "before": {
+        "zone": "outer_woods",
+        "foot": {
+          "x": 1360,
+          "y": 985
+        }
+      },
+      "after": {
+        "zone": "sub_bell_workshop",
+        "detected": "sub_bell_workshop",
+        "foot": {
+          "x": 1360,
+          "y": 1160.91666666667
+        },
+        "lastTransitionId": "to_bell_workshop",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1440
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "bell_workshop_to_outer_woods",
+      "srcZone": "sub_bell_workshop",
+      "expectedDst": "outer_woods",
+      "start": [
+        1360,
+        1090
+      ],
+      "key": "KeyW",
+      "holdMs": 900,
+      "before": {
+        "zone": "sub_bell_workshop",
+        "foot": {
+          "x": 1360,
+          "y": 1090
+        }
+      },
+      "after": {
+        "zone": "outer_woods",
+        "detected": "outer_woods",
+        "foot": {
+          "x": 1360,
+          "y": 927.5833333333347
+        },
+        "lastTransitionId": "to_outer_woods_from_bw",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "deep_forest_to_whispering_clearing",
+      "srcZone": "deep_forest",
+      "expectedDst": "sub_whispering_clearing",
+      "start": [
+        1840,
+        -65
+      ],
+      "key": "KeyW",
+      "holdMs": 900,
+      "before": {
+        "zone": "deep_forest",
+        "foot": {
+          "x": 1840,
+          "y": -65
+        }
+      },
+      "after": {
+        "zone": "deep_forest",
+        "detected": "sub_whispering_clearing",
+        "foot": {
+          "x": 1840,
+          "y": -141.49999999999994
+        },
+        "lastTransitionId": null,
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -640,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": false
+    },
+    {
+      "probe": "whispering_clearing_north_test",
+      "srcZone": "sub_whispering_clearing",
+      "expectedDst": "deep_forest",
+      "start": [
+        1840,
+        -295
+      ],
+      "key": "KeyW",
+      "holdMs": 1200,
+      "before": {
+        "zone": "sub_whispering_clearing",
+        "foot": {
+          "x": 1840,
+          "y": -295
+        }
+      },
+      "after": {
+        "zone": "sub_whispering_clearing",
+        "detected": "sub_whispering_clearing",
+        "foot": {
+          "x": 1840,
+          "y": -326
+        },
+        "lastTransitionId": null,
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -360,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": false
+    },
+    {
+      "probe": "whispering_clearing_south_to_cp",
+      "srcZone": "sub_whispering_clearing",
+      "expectedDst": "crooked_path",
+      "start": [
+        1840,
+        -55
+      ],
+      "key": "KeyS",
+      "holdMs": 900,
+      "before": {
+        "zone": "sub_whispering_clearing",
+        "foot": {
+          "x": 1840,
+          "y": -55
+        }
+      },
+      "after": {
+        "zone": "crooked_path",
+        "detected": "crooked_path",
+        "foot": {
+          "x": 1840,
+          "y": 22.916666666666664
+        },
+        "lastTransitionId": "to_crooked_path_from_wc",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "whispering_grove_to_clearing",
+      "srcZone": "whispering_grove_sanctum",
+      "expectedDst": "sub_whispering_clearing",
+      "start": [
+        1600,
+        -420
+      ],
+      "key": "KeyS",
+      "holdMs": 900,
+      "before": {
+        "zone": "whispering_grove_sanctum",
+        "foot": {
+          "x": 1600,
+          "y": -420
+        }
+      },
+      "after": {
+        "zone": "whispering_grove_sanctum",
+        "detected": "whispering_grove_sanctum",
+        "foot": {
+          "x": 1600,
+          "y": -366.16666666666595
+        },
+        "lastTransitionId": null,
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -800,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": false
+    },
+    {
+      "probe": "rune_puzzle_to_sunken_crypt",
+      "srcZone": "ancient_rune_puzzle",
+      "expectedDst": "sunken_crypt_ruins",
+      "start": [
+        3530,
+        195
+      ],
+      "key": "KeyW",
+      "holdMs": 900,
+      "before": {
+        "zone": "ancient_rune_puzzle",
+        "foot": {
+          "x": 3530,
+          "y": 195
+        }
+      },
+      "after": {
+        "zone": "silent_mire",
+        "detected": "silent_mire",
+        "foot": {
+          "x": 3520,
+          "y": 148
+        },
+        "lastTransitionId": "to_silent_mire_from_puzzle",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": false
+    },
+    {
+      "probe": "sunken_crypt_to_rune_puzzle",
+      "srcZone": "sunken_crypt_ruins",
+      "expectedDst": "ancient_rune_puzzle",
+      "start": [
+        3600,
+        -85
+      ],
+      "key": "KeyS",
+      "holdMs": 900,
+      "before": {
+        "zone": "sunken_crypt_ruins",
+        "foot": {
+          "x": 3600,
+          "y": -85
+        }
+      },
+      "after": {
+        "zone": "ancient_rune_puzzle",
+        "detected": "ancient_rune_puzzle",
+        "foot": {
+          "x": 3520,
+          "y": 180
+        },
+        "lastTransitionId": "to_rune_puzzle_from_scr",
+        "dialogueActive": true,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "outer_woods_to_mire_shortcut",
+      "srcZone": "outer_woods",
+      "expectedDst": "silent_mire",
+      "start": [
+        1545,
+        690
+      ],
+      "key": "KeyD",
+      "holdMs": 900,
+      "before": {
+        "zone": "outer_woods",
+        "foot": {
+          "x": 1545,
+          "y": 690
+        }
+      },
+      "after": {
+        "zone": "silent_mire",
+        "detected": "silent_mire",
+        "foot": {
+          "x": 2962.4999999999955,
+          "y": 420
+        },
+        "lastTransitionId": "to_silent_mire_via_shortcut",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    },
+    {
+      "probe": "mire_to_outer_woods_shortcut",
+      "srcZone": "silent_mire",
+      "expectedDst": "outer_woods",
+      "start": [
+        2935,
+        430
+      ],
+      "key": "KeyA",
+      "holdMs": 900,
+      "before": {
+        "zone": "silent_mire",
+        "foot": {
+          "x": 2935,
+          "y": 430
+        }
+      },
+      "after": {
+        "zone": "outer_woods",
+        "detected": "outer_woods",
+        "foot": {
+          "x": 1500.3333333333312,
+          "y": 700
+        },
+        "lastTransitionId": "to_outer_woods_via_shortcut",
+        "dialogueActive": false,
+        "isCutscene": false,
+        "worldBounds": {
+          "x": 0,
+          "y": -250,
+          "right": 5000,
+          "bottom": 1150
+        }
+      },
+      "passed": true
+    }
+  ],
+  "zoneCaptures": [
+    {
+      "file": "fog_crossing_overview_A.png",
+      "targetZone": "fog_crossing",
+      "zoneActual": "fog_crossing",
+      "detected": "fog_crossing",
+      "foot": {
+        "x": 220,
+        "y": 195
+      },
+      "fps": 60
+    },
+    {
+      "file": "fog_crossing_west_barrier_D.png",
+      "targetZone": "fog_crossing",
+      "zoneActual": "fog_crossing",
+      "detected": "fog_crossing",
+      "foot": {
+        "x": 75,
+        "y": 195
+      },
+      "fps": 60
+    },
+    {
+      "file": "bellhollow_overview_A.png",
+      "targetZone": "bellhollow",
+      "zoneActual": "bellhollow",
+      "detected": "bellhollow",
+      "foot": {
+        "x": 900,
+        "y": 260
+      },
+      "fps": 60
+    },
+    {
+      "file": "bellhollow_plaza_tile_edge_D.png",
+      "targetZone": "bellhollow",
+      "zoneActual": "bellhollow",
+      "detected": "bellhollow",
+      "foot": {
+        "x": 840,
+        "y": 340
+      },
+      "fps": 60
+    },
+    {
+      "file": "sanctuary_farm_overview_A.png",
+      "targetZone": "sanctuary_farm",
+      "zoneActual": "sanctuary_farm",
+      "detected": "sanctuary_farm",
+      "foot": {
+        "x": 800,
+        "y": 780
+      },
+      "fps": 60
+    },
+    {
+      "file": "outer_woods_overview_A.png",
+      "targetZone": "outer_woods",
+      "zoneActual": "outer_woods",
+      "detected": "outer_woods",
+      "foot": {
+        "x": 1360,
+        "y": 780
+      },
+      "fps": 60
+    },
+    {
+      "file": "crooked_path_overview_A.png",
+      "targetZone": "crooked_path",
+      "zoneActual": "crooked_path",
+      "detected": "crooked_path",
+      "foot": {
+        "x": 2200,
+        "y": 300
+      },
+      "fps": 60
+    },
+    {
+      "file": "deep_forest_overview_A.png",
+      "targetZone": "deep_forest",
+      "zoneActual": "deep_forest",
+      "detected": "deep_forest",
+      "foot": {
+        "x": 2240,
+        "y": -320
+      },
+      "fps": 60
+    },
+    {
+      "file": "silent_mire_overview_A.png",
+      "targetZone": "silent_mire",
+      "zoneActual": "silent_mire",
+      "detected": "silent_mire",
+      "foot": {
+        "x": 3220,
+        "y": 360
+      },
+      "fps": 60
+    },
+    {
+      "file": "ancient_rune_puzzle_overview_A.png",
+      "targetZone": "ancient_rune_puzzle",
+      "zoneActual": "ancient_rune_puzzle",
+      "detected": "ancient_rune_puzzle",
+      "foot": {
+        "x": 3525,
+        "y": 290
+      },
+      "fps": 60
+    },
+    {
+      "file": "broken_bell_shrine_overview_A.png",
+      "targetZone": "broken_bell_shrine",
+      "zoneActual": "broken_bell_shrine",
+      "detected": "broken_bell_shrine",
+      "foot": {
+        "x": 4480,
+        "y": 300
+      },
+      "fps": 60
+    },
+    {
+      "file": "sub_bell_workshop_overview_A.png",
+      "targetZone": "sub_bell_workshop",
+      "zoneActual": "sub_bell_workshop",
+      "detected": "sub_bell_workshop",
+      "foot": {
+        "x": 1360,
+        "y": 1240
+      },
+      "fps": 60
+    },
+    {
+      "file": "sub_root_cellar_overview_A.png",
+      "targetZone": "sub_root_cellar",
+      "zoneActual": "sub_root_cellar",
+      "detected": "sub_root_cellar",
+      "foot": {
+        "x": 800,
+        "y": 1240
+      },
+      "fps": 60
+    },
+    {
+      "file": "sub_whispering_clearing_overview_A.png",
+      "targetZone": "sub_whispering_clearing",
+      "zoneActual": "sub_whispering_clearing",
+      "detected": "sub_whispering_clearing",
+      "foot": {
+        "x": 1800,
+        "y": -180
+      },
+      "fps": 60
+    },
+    {
+      "file": "abyssal_chasm_overview_A.png",
+      "targetZone": "abyssal_chasm",
+      "zoneActual": "abyssal_chasm",
+      "detected": "abyssal_chasm",
+      "foot": {
+        "x": 2240,
+        "y": -960
+      },
+      "fps": 60
+    },
+    {
+      "file": "drowned_mire_depths_overview_A.png",
+      "targetZone": "drowned_mire_depths",
+      "zoneActual": "drowned_mire_depths",
+      "detected": "drowned_mire_depths",
+      "foot": {
+        "x": 3440,
+        "y": 1060
+      },
+      "fps": 60
+    },
+    {
+      "file": "whispering_grove_sanctum_overview_A.png",
+      "targetZone": "whispering_grove_sanctum",
+      "zoneActual": "whispering_grove_sanctum",
+      "detected": "whispering_grove_sanctum",
+      "foot": {
+        "x": 1600,
+        "y": -580
+      },
+      "fps": 60
+    },
+    {
+      "file": "sunken_crypt_ruins_overview_A.png",
+      "targetZone": "sunken_crypt_ruins",
+      "zoneActual": "sunken_crypt_ruins",
+      "detected": "sunken_crypt_ruins",
+      "foot": {
+        "x": 3915,
+        "y": -320
+      },
+      "fps": 60
+    },
+    {
+      "file": "veil_origin_cavern_overview_A.png",
+      "targetZone": "veil_origin_cavern",
+      "zoneActual": "veil_origin_cavern",
+      "detected": "veil_origin_cavern",
+      "foot": {
+        "x": 1040,
+        "y": 1760
+      },
+      "fps": 60
+    }
+  ]
+}
