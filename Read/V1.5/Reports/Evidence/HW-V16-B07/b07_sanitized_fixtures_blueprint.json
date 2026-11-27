@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 3,
+  "realUserSavesTouched": false,
+  "executionStatus": "NOT_RUN_BLOCKED_BY_A06_R1_A07_B05_GATE",
+  "fixtures": [
+    {
+      "id": "v13_legacy_pre_narrative",
+      "description": "Legacy V1.3 payload with questFlags array, quest_corrupted_knight_crest, no memoryAwakeningStage, no storyFlags"
+    },
+    {
+      "id": "schema3_pre_a05_stage3_sparse_lore",
+      "description": "Schema 3 save pre-A05 with memoryAwakeningStage=3, unlockedLoreIds=['lore_three_rules'], missing dlg_* markers"
+    },
+    {
+      "id": "schema3_post_a05_with_markers",
+      "description": "Schema 3 save post-A05 carrying dlg_trust:*, dlg_reward:*, dlg_quest:*"
+    },
+    {
+      "id": "memory_stages_0_to_3_matrix",
+      "description": "Stage 0, 1, 2, 3 saves validating stage preservation and exact lore backfill"
+    },
+    {
+      "id": "identity_evidence_absent_vs_present",
+      "description": "Stage 3 with no evidence vs MAIN_PATH_Q05 vs SIDE_PATH_SQ08 gating lore_wayfarer_inner_journal"
+    },
+    {
+      "id": "sq08_optional_skipped_vs_completed",
+      "description": "Main route Q06/First Toll completion without SQ08 vs with SQ08"
+    },
+    {
+      "id": "pre_and_post_reward_with_consumed_items",
+      "description": "Neris poultice / Garth oil consumed from inventory after completion flag is set"
+    },
+    {
+      "id": "pre_and_post_first_toll",
+      "description": "State immediately prior to Broken Bell Shrine First Toll vs post-Toll ending state"
+    },
+    {
+      "id": "missing_optional_fields",
+      "description": "Minimal payload omitting storyFlags, unlockedLoreIds, equippedSlots, storageChest, villageTrustScore"
+    },
+    {
+      "id": "malformed_save_payload",
+      "description": "Corrupt JSON, null/primitive root, negative/NaN numeric bounds, non-array flags"
+    },
+    {
+      "id": "local_vs_cloud_mock_envelope",
+      "description": "Nested player.villageTrustScore / player.storyFlags envelope vs top-level local Schema 3"
+    },
+    {
+      "id": "idempotency_load_save_load",
+      "description": "Load -> Save -> Load round-trip verifying zero lore duplicates, zero trust drift, zero re-rewards, zero repeated reveal events"
+    }
+  ]
+}

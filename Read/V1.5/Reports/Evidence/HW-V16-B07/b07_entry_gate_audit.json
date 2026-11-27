@@ -1,0 +1,69 @@
+{
+  "task_id": "HW-V16-B07",
+  "status": "BLOCKED",
+  "checkpoint_type": "Safe Docs-Only Checkpoint (HW_GIT_REPORTING_POLICY.md 2C)",
+  "worktree": "G:\\HOLLOW_WOODS_B07",
+  "branch": "fix/v1.6-b07-save-migration",
+  "base_commit": "73a5d63fc131b5667dad3b75fc21c52a465bf3d",
+  "src_edits_count": 0,
+  "asset_edits_count": 0,
+  "dependencies": {
+    "HW-V16-A06-R1": {
+      "branch": "feat/v1.6-a06-r1-identity-evidence",
+      "commit": "fc5bf1d5f849f694a6b92e270ef747b2f2914246",
+      "merged_into_main_polish": false,
+      "merged_into_track_b": false,
+      "status": "IMPLEMENTED_ON_ISOLATED_BRANCH_PENDING_GPT_ACCEPTANCE"
+    },
+    "HW-V16-A07": {
+      "location": "G:\\HOLLOW WOODS",
+      "branch": "feat/v1.5.3-ag-world-polish",
+      "head": "e4edb07bcbf2865681277a12404624c4c495bb1f",
+      "uncommitted_src_files": [
+        "src/scenes/GameScene.ts",
+        "src/state/PlayerState.ts",
+        "src/systems/BossEncounterSystem.ts",
+        "src/world/WorldGatingSystem.ts"
+      ],
+      "untracked_files": [
+        "Read/V1.5/Reports/V16/HW_V16_A07_ENDING_APPROVAL_DRAFT.md",
+        "scripts/verify_v16_a07_quest_and_endings.mjs"
+      ],
+      "status": "INTERRUPTED_AT_STEP_1_OF_5_UNCOMMITTED_UNACCEPTED"
+    },
+    "HW-V16-B05": {
+      "branch": "fix/v1.6-b05-quest-reward",
+      "commit": "73a5d63fc131b5667dad3b75fc21c52a465bf3d",
+      "status": "BLOCKED_PENDING_A07_AND_A06_R1"
+    }
+  },
+  "read_only_audit_findings": {
+    "mem_04_root_cause": {
+      "save_manager_lines": [699, 719],
+      "player_state_lines": [739, 780],
+      "description": "SaveManager.applySaveToState sets state.memoryAwakeningStage directly without running stage 1..3 lore unlocks, and restoreUnlockedLore only loads saved unlockedLoreIds. On base commit without A06-R1, APPROVED_IDENTITY_EVIDENCE_RULES is still [] at IdentityRevealResolver.ts:86."
+    },
+    "legacy_dialogue_marker_classification": {
+      "provable_by_flags_or_quests": [
+        "garth_warning (onCompleteFlag=talked_to_villagers, nextQuestId=Q01_MEET_EDDA)",
+        "garth_brother_story (onCompleteFlag=quest_garth_lantern_accepted, nextQuestId=SQ09_BROKEN_LANTERN)",
+        "garth_broken_lantern_complete (onCompleteFlag=garth_lantern_rewarded, rewardItem=item_lantern_oil)",
+        "edda_intro (onCompleteFlag=talked_to_edda, nextQuestId=Q02_MEET_NERIS)",
+        "edda_rune_guide (choice.setFlag=edda_rune_charm_granted, rewardItem=eqp_bell_ward_charm)",
+        "neris_intro (onCompleteFlag=talked_to_neris, rewardItem=item_herbal_poultice, nextQuestId=Q03_PREPARE_RESOURCES)",
+        "campfire_knight_q1_complete (onCompleteFlag=campfire_knight_q2_accepted, rewardItem=food_calming_tea, nextQuestId=SQ07_LOST_COMRADES)",
+        "campfire_knight_q2_complete (onCompleteFlag=campfire_knight_q3_accepted, rewardItem=res_tree_resin, nextQuestId=SQ08_PURIFY_FALLEN)",
+        "campfire_knight_q3_complete (onCompleteFlag=campfire_knight_q3_completed, rewardItem=eqp_bell_ward_charm)",
+        "hooded_knight_encounter_defeat (onCompleteFlag=boss_hooded_knight_defeated, rewardItem=quest_corrupted_crest)"
+      ],
+      "ambiguous_without_a05_marker": [
+        "garth_east_gate_open (trust choice has setFlag=null, onCompleteFlag=null)",
+        "garth_horseman_tactics (trust choice has setFlag=null, onCompleteFlag=null)",
+        "edda_reminder_open (trust choice has setFlag=null, onCompleteFlag=null)",
+        "edda_bell_shatter_secret (alternate choice has setFlag=null, onCompleteFlag=null)",
+        "neris_heal_open (trust choice has setFlag=null, onCompleteFlag=null)",
+        "repeatable blessing dialogues (campfire_knight_rest_blessing*)"
+      ]
+    }
+  }
+}
