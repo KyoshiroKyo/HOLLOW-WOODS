@@ -1318,9 +1318,9 @@ export class JournalModal {
     mapBg.strokeEllipse(mapCanvasX + 165, mapCanvasY + 215, 130, 82);
     mapBg.strokeEllipse(mapCanvasX + 165, mapCanvasY + 215, 175, 112);
 
-    // La bàn hoa gió (Compass Rose) ở góc phải trên bản đồ
-    const compX = mapCanvasX + mapCanvasW - 36;
-    const compY = mapCanvasY + 62;
+    // La bàn hoa gió (Compass Rose) ở góc phải trên bản đồ (tách thoáng khỏi dòng Khai Mở)
+    const compX = mapCanvasX + mapCanvasW - 34;
+    const compY = mapCanvasY + 74;
     mapBg.lineStyle(1, 0x8d6b34, 0.65);
     mapBg.strokeCircle(compX, compY, 15);
     mapBg.lineBetween(compX, compY - 19, compX, compY + 19);
@@ -1351,13 +1351,20 @@ export class JournalModal {
       color: '#88d4ab'
     }).setOrigin(1, 0);
 
-    // Chú giải nhanh phía dưới bản đồ (Mini Legend)
-    const legendText = HDTextHelper.createText(this.scene, mapCanvasX + 16, mapCanvasY + mapCanvasH - 22, '🟡 Lõi   🟢 Biên Viễn   🟣 Vùng Cấm   🔓 Đang Mở   ⭐ Mục Tiêu   🌫️ Chưa Khai Mở', {
-      fontSize: '10.5px',
-      color: '#aeb7a8'
-    });
+    // Chú giải nhanh phía dưới bản đồ (nền tối tăng độ tương phản & dễ đọc)
+    const legendBg = this.scene.add.graphics();
+    legendBg.fillStyle(0x0d100c, 0.88);
+    legendBg.fillRoundedRect(mapCanvasX + 10, mapCanvasY + mapCanvasH - 28, mapCanvasW - 20, 20, 4);
+    legendBg.lineStyle(1, 0x3b4432, 0.7);
+    legendBg.strokeRoundedRect(mapCanvasX + 10, mapCanvasY + mapCanvasH - 28, mapCanvasW - 20, 20, 4);
 
-    this.contentContainer.add([mapBg, compN, mapTitle, mapStats, legendText]);
+    const legendText = HDTextHelper.createText(this.scene, mapCanvasX + mapCanvasW / 2, mapCanvasY + mapCanvasH - 18, '🟡 Lõi   🟢 Biên Viễn   🟣 Vùng Cấm   🔓 Đang Mở   ⭐ Mục Tiêu   🌫️ Chưa Khai Mở', {
+      fontSize: '10.5px',
+      fontStyle: 'bold',
+      color: '#dce3d5'
+    }).setOrigin(0.5, 0.5);
+
+    this.contentContainer.add([mapBg, compN, mapTitle, mapStats, legendBg, legendText]);
 
     // 3. Vẽ các tuyến đường mòn Fantasy (Connections) giữa các node
     const connGraphics = this.scene.add.graphics();
@@ -1411,6 +1418,7 @@ export class JournalModal {
     // 4. Vẽ các Nút Phân Khu (Zone Medallions + Fog of War)
     const nodeWidth = 66;
     const nodeHeight = 38;
+    const overlayBadges: Phaser.GameObjects.GameObject[] = [];
 
     for (const node of this.mapNodes) {
       const status = this.getNodeStatus(node.id);
@@ -1511,23 +1519,28 @@ export class JournalModal {
         color: textColor
       }).setOrigin(0.5, 0.5);
 
+      let badgeBg: Phaser.GameObjects.Graphics | null = null;
       let badge: Phaser.GameObjects.Text | null = null;
-      if (isCurrent) {
-        badge = HDTextHelper.createText(this.scene, nx, by - 8, '📍 BẠN Ở ĐÂY', {
-          fontSize: '9px',
-          fontStyle: 'bold',
-          color: '#ffd700',
-          stroke: '#000000',
-          strokeThickness: 2
-        }).setOrigin(0.5, 0.5);
-      } else if (isQuestTarget) {
-        badge = HDTextHelper.createText(this.scene, nx, by - 8, '⭐ MỤC TIÊU', {
+      if (isCurrent || isQuestTarget) {
+        const badgeLabel = isCurrent ? '📍 BẠN Ở ĐÂY' : '⭐ MỤC TIÊU';
+        const badgeColor = isCurrent ? '#ffd700' : '#f3b64e';
+        const borderHex = isCurrent ? 0xC8963E : 0xb87b28;
+        const badgeY = by - 9;
+
+        badge = HDTextHelper.createText(this.scene, nx, badgeY, badgeLabel, {
           fontSize: '8.5px',
           fontStyle: 'bold',
-          color: '#f39c12',
-          stroke: '#000000',
-          strokeThickness: 2
+          color: badgeColor
         }).setOrigin(0.5, 0.5);
+
+        const bw = Math.ceil(badge.width) + 10;
+        const bh = 14;
+        badgeBg = this.scene.add.graphics();
+        badgeBg.fillStyle(0x0d100c, 0.94);
+        badgeBg.fillRoundedRect(nx - bw / 2, badgeY - bh / 2, bw, bh, 3);
+        badgeBg.lineStyle(1, borderHex, 0.9);
+        badgeBg.strokeRoundedRect(nx - bw / 2, badgeY - bh / 2, bw, bh, 3);
+        overlayBadges.push(badgeBg, badge);
       }
 
       const hitZone = this.scene.add.zone(nx, ny, nodeWidth + 6, nodeHeight + 6);
@@ -1545,9 +1558,10 @@ export class JournalModal {
       });
 
       this.contentContainer.add([nodeG, nodeText, nameText, hitZone]);
-      if (badge) {
-        this.contentContainer.add(badge);
-      }
+    }
+
+    if (overlayBadges.length > 0) {
+      this.contentContainer.add(overlayBadges);
     }
 
     // 5. Vẽ Bảng Chi Tiết Phân Khu Bên Phải (Zone Inspector Panel)
