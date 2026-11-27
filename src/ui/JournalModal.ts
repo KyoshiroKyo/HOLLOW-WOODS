@@ -389,12 +389,7 @@ export class JournalModal {
           this.refresh();
         }
       });
-      addKey('keydown-M', () => {
-        if (this.isOpen) {
-          this.currentTab = 'map';
-          this.refresh();
-        }
-      });
+      // HW-AG-FIX-11 (H4-NEW-05): Phím M dành riêng cho Mute âm thanh; tab Bản Đồ trong Sổ Tay dùng phím [4] (và [N] ngoài thế giới).
       const handlePrev = () => {
         if (!this.isOpen) return;
         if (this.currentTab === 'lore') {
