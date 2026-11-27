@@ -3824,8 +3824,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     });
 
     // Lời nhắc tiếp tục chuẩn HD Tiếng Việt
-    this.dialogueContinuePrompt = HDTextHelper.createText(this, halfW - 28, halfH - 22, '▶ [E / SPACE]', {
-      fontSize: '14px',
+    this.dialogueContinuePrompt = HDTextHelper.createText(this, halfW - 28, halfH - 22, '▶ [E / SPACE] Tiếp tục', {
+      fontSize: '13.5px',
       fontStyle: 'bold',
       color: '#d8ccb8'
     }).setOrigin(1, 0.5);
@@ -3930,6 +3930,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.dialogueContentText) {
       this.dialogueContentText.setText('');
     }
+    if (this.dialogueContinuePrompt) {
+      this.dialogueContinuePrompt.setText('▶ [E / SPACE] Tiếp tục').setColor('#d8ccb8');
+    }
 
     this.setDialogueActive(true);
     if (this.dialogueContainer) {
@@ -3966,28 +3969,35 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.dialogueChoicesContainer.setVisible(true);
     this.choiceRenderItems = [];
 
-    const btnWidth = 920;
-    const spacing = 8;
+    const btnWidth = 940;
+    const spacing = 10;
     let choiceClicked = false;
 
     const measured = choices.map((choice) => {
-      const keyBadge = HDTextHelper.createText(this, -btnWidth / 2 + 18, 0, `[${choice.index + 1}]`, {
-        fontSize: '15px',
+      const keyBadge = HDTextHelper.createText(this, -btnWidth / 2 + 20, 0, `[${choice.index + 1}]`, {
+        fontSize: '14.5px',
         fontStyle: 'bold',
-        color: '#f39c12'
+        color: '#E09F3E'
       }).setOrigin(0, 0.5);
 
-      const choiceText = HDTextHelper.createText(this, -btnWidth / 2 + 56, 0, choice.text, {
-        fontSize: '15px',
+      const choiceText = HDTextHelper.createText(this, -btnWidth / 2 + 58, 0, choice.text, {
+        fontSize: '14.5px',
         color: '#f5eedc',
-        wordWrap: { width: btnWidth - 76, useAdvancedWrap: true },
-        lineSpacing: 4,
-        padding: { left: 4, right: 8, top: 2, bottom: 2 }
+        wordWrap: { width: btnWidth - 88, useAdvancedWrap: true },
+        lineSpacing: 5,
+        padding: { left: 4, right: 12, top: 4, bottom: 4 }
       }).setOrigin(0, 0.5);
 
-      const btnHeight = Math.max(36, Math.ceil(choiceText.height) + 14);
+      const btnHeight = Math.max(40, Math.ceil(choiceText.height) + 18);
       return { choice, keyBadge, choiceText, btnHeight };
     });
+
+    if (this.dialogueContinuePrompt && choices.length > 0) {
+      const hintLabel = choices.length > 1
+        ? `[1–${choices.length}] Chọn câu trả lời`
+        : '[1] Chọn câu trả lời';
+      this.dialogueContinuePrompt.setText(hintLabel).setColor('#e6c98a');
+    }
 
     // Xếp từ dưới lên trên sao cho không bao giờ chồng đè hay vượt mép trên 720p
     let cursorBottomY = -8;
@@ -4049,6 +4059,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.dialogueChoicesContainer) {
       this.dialogueChoicesContainer.removeAll(true);
       this.dialogueChoicesContainer.setVisible(false);
+    }
+    if (this.dialogueContinuePrompt) {
+      this.dialogueContinuePrompt.setText('▶ [E / SPACE] Tiếp tục').setColor('#d8ccb8');
     }
   }
 
