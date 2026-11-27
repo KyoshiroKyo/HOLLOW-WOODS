@@ -10,7 +10,8 @@
     "R3": "PARTIAL / REVISE; archive pending",
     "R4": "OWNER-REJECTED; archive pending",
     "R5": "PENDING OWNER REVIEW / PARTIAL; four equipment PNGs archived",
-    "R6": "PENDING OWNER REVIEW / PARTIAL; eight Soulfire layer PNG paths archived"
+    "R6": "TECHNICAL ACCEPTED / ART REVISE; eight Soulfire layer PNG paths archived",
+    "R7": "PENDING OWNER REVIEW / PARTIAL; eight Soulfire layer PNG paths archived"
   },
   "rejected": "Soulfire Reaper V3.3",
   "gate": "B ONLY",
@@ -20,5 +21,6 @@
   "gate_d": "LOCKED",
   "r6": "EXECUTED / PENDING OWNER REVIEW",
   "git_archive": "PARTIAL",
-  "r7": "NOT AUTHORIZED"
+  "r7": "EXECUTED / PENDING OWNER REVIEW",
+  "r8": "NOT AUTHORIZED"
 }
