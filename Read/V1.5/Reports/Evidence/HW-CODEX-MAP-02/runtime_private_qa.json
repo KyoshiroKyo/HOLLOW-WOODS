@@ -1,0 +1,216 @@
+{
+  "task": "HW-CODEX-MAP-02",
+  "build": "qa-evidence",
+  "sha": "MAP-02-worktree",
+  "environment": {
+    "os": "Windows 10 build 19045",
+    "node": "v26.7.0",
+    "browser_mode": "headless Chrome, isolated throwaway profile",
+    "endpoint": "http://127.0.0.1:5247",
+    "bundle": "npm run build, Vite preview",
+    "sdk": "external P2Game SDK blocked for isolated standalone test",
+    "owner_save_used": false,
+    "keyboard": "Chrome DevTools synthetic key events; physical EVKey NOT_RUN",
+    "window": [
+      1280,
+      720
+    ],
+    "device_scale_factor": 1,
+    "graphics_flags": [],
+    "browser": "Chrome/158.0.8127.38",
+    "chrome_gpu": {
+      "devices": [
+        {
+          "vendorId": 4318,
+          "deviceId": 7042,
+          "subSysId": 932451416,
+          "revision": 161,
+          "vendorString": "",
+          "deviceString": "NVIDIA GeForce GTX 1070 Ti",
+          "driverVendor": "NVIDIA",
+          "driverVersion": "32.0.15.8266"
+        },
+        {
+          "vendorId": 5140,
+          "deviceId": 140,
+          "subSysId": 0,
+          "revision": 0,
+          "vendorString": "",
+          "deviceString": "Microsoft Basic Render Driver",
+          "driverVendor": "",
+          "driverVersion": "10.0.19041.7548"
+        }
+      ],
+      "feature_status": {
+        "gpu_compositing": "enabled",
+        "webgl": "enabled"
+      },
+      "gl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8266)",
+      "gl_vendor": "Google Inc. (NVIDIA)"
+    },
+    "renderer": {
+      "type": 2,
+      "renderer": "WebGL",
+      "webgl_version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+      "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "webgl_vendor": "Google Inc. (NVIDIA)",
+      "canvas": [
+        1280,
+        720
+      ],
+      "viewport": [
+        1280,
+        720
+      ],
+      "pixel_ratio": 1,
+      "rect": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "graphics_quality": null
+    }
+  },
+  "checks": {
+    "Four nested labels, 12 playable, zero placeholders": {
+      "status": "PASS",
+      "observation": {
+        "labels": [
+          "Lối Mòn\nXuyên Sương",
+          "Làng Chuông Cổ",
+          "Đường Mòn Quanh Co",
+          "Đầm Lầy Tĩnh Lặng",
+          "Miếu Chuông Phế Tích",
+          "Nông Trại Trú Ẩn",
+          "Rừng Ngoại Vi",
+          "Rừng Sâu",
+          "Khu Vực Câu Đố Cổ Ngữ",
+          "Xưởng Chuông Bỏ Hoang",
+          "Hầm Rễ Cổ",
+          "Khoảng Trống Thì Thầm",
+          "Đã khám phá 12/12",
+          "● Bạn đang ở đây  ◎ Mục tiêu  ▪ Phong ấn  Nét nối · Lối đi đã biết"
+        ],
+        "regions": [
+          "fog_crossing",
+          "bellhollow",
+          "crooked_path",
+          "silent_mire",
+          "broken_bell_shrine",
+          "sanctuary_farm",
+          "outer_woods",
+          "deep_forest",
+          "ancient_rune_puzzle",
+          "sub_bell_workshop",
+          "sub_root_cellar",
+          "sub_whispering_clearing"
+        ],
+        "cache": [
+          "parchment-map-terrain"
+        ]
+      }
+    },
+    "Private QA F4 and F9 with score guard": {
+      "status": "PASS",
+      "observation": {
+        "f4": true,
+        "qa": true,
+        "f9": true,
+        "devSession": true,
+        "canReport": false,
+        "save": "hollow_woods_qa_v1_savegame"
+      }
+    }
+  },
+  "media": [],
+  "diagnostics": {
+    "page_exceptions": [],
+    "local_http_errors": [],
+    "browser_warnings": [
+      "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+    ],
+    "external_resources_blocked": [
+      "https://games.p2game.io/sdk/p2game-sdk.v1.js"
+    ]
+  },
+  "openMs": 142.47619999999733,
+  "initial": {
+    "open": true,
+    "zone": "fog_crossing",
+    "visited": [
+      "fog_crossing",
+      "bellhollow"
+    ],
+    "detail": "Mục tiêu · Làng Chuông Cổ",
+    "objects": 6,
+    "labels": [
+      "Địa hình chưa khảo sát",
+      "Lối Mòn\nXuyên Sương",
+      "Đã khám phá 1/12",
+      "● Bạn đang ở đây  ◎ Mục tiêu  ▪ Phong ấn  Nét nối · Lối đi đã biết"
+    ],
+    "cache": [
+      "parchment-map-terrain"
+    ]
+  },
+  "frames": {
+    "p50": 16.700000000000728,
+    "p95": 16.799999999999272
+  },
+  "discovered": {
+    "open": true,
+    "zone": "bellhollow",
+    "visited": [
+      "fog_crossing",
+      "bellhollow"
+    ],
+    "detail": "Mục tiêu · Làng Chuông Cổ",
+    "objects": 7,
+    "labels": [
+      "Địa hình chưa khảo sát",
+      "Lối Mòn\nXuyên Sương",
+      "Làng Chuông Cổ",
+      "Đã khám phá 2/12",
+      "● Bạn đang ở đây  ◎ Mục tiêu  ▪ Phong ấn  Nét nối · Lối đi đã biết"
+    ],
+    "cache": [
+      "parchment-map-terrain"
+    ]
+  },
+  "fixture": {
+    "labels": [
+      "Lối Mòn\nXuyên Sương",
+      "Làng Chuông Cổ",
+      "Đường Mòn Quanh Co",
+      "Đầm Lầy Tĩnh Lặng",
+      "Miếu Chuông Phế Tích",
+      "Nông Trại Trú Ẩn",
+      "Rừng Ngoại Vi",
+      "Rừng Sâu",
+      "Khu Vực Câu Đố Cổ Ngữ",
+      "Xưởng Chuông Bỏ Hoang",
+      "Hầm Rễ Cổ",
+      "Khoảng Trống Thì Thầm",
+      "Đã khám phá 12/12",
+      "● Bạn đang ở đây  ◎ Mục tiêu  ▪ Phong ấn  Nét nối · Lối đi đã biết"
+    ],
+    "regions": [
+      "fog_crossing",
+      "bellhollow",
+      "crooked_path",
+      "silent_mire",
+      "broken_bell_shrine",
+      "sanctuary_farm",
+      "outer_woods",
+      "deep_forest",
+      "ancient_rune_puzzle",
+      "sub_bell_workshop",
+      "sub_root_cellar",
+      "sub_whispering_clearing"
+    ],
+    "cache": [
+      "parchment-map-terrain"
+    ]
+  }
+}

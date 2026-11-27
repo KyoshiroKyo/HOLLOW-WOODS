@@ -7550,6 +7550,10 @@ export class GameScene extends Phaser.Scene {
     return this.playerState;
   }
 
+  public getMapPlayerPosition(): { x: number; y: number } | undefined {
+    return this.player?.getFootPosition();
+  }
+
   public getRunningState() {
     return this.player?.getRunningState() ?? 'normal';
   }

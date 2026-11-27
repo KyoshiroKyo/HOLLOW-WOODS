@@ -1010,6 +1010,9 @@ export class PlayerState extends Phaser.Events.EventEmitter {
     const changed = this.currentZoneId !== zoneId;
     this.currentZoneId = zoneId;
     this.markZoneVisited(zoneId);
+    if (zoneId === 'bellhollow' && !this.hasFlag('map_bellhollow_charted')) {
+      this.setFlag('map_bellhollow_charted');
+    }
     if (changed) {
       this.emit('zone_changed', zoneId);
     }

@@ -41,3 +41,8 @@
 - ANIM thêm hai ca **2/2** ở 1× trên ZIP cập nhật. Collider thật tại Fog Crossing dừng Run và khóa dịch chuyển. Hurt trở về Idle rồi Walk, collider chân 18×12 và camera 2,2×. Các tổ hợp hướng và dáng từ ANIM-01-R2 giữ bằng chứng riêng. [Trace va chạm và Hurt](../Evidence/HW-CODEX-FIX15/animation_wall_and_hurt.json).
 - Dark Knight Save/Continue **3/3** từ bản build trước bản vá cổng. Tiếp tục giữa trận khởi tạo encounter 300 HP mới. Tiếp tục sau khi thắng giữ đúng một huy hiệu và boss không xuất hiện lại. [Trace boss](../Evidence/HW-CODEX-FIX15/boss_save_continue.json).
 - ZIP để Owner dùng nằm tại release/p2game/competition-candidate/HOLLOW_WOODS_V1.6.1_P2GAME_RELEASE.zip. Source 2ea4f63b76c822d4b01e63ad31f13cf308b7a10f, 292 tệp, **62.448.743 bytes**, SHA-256 **57ec2f0b87f1a3560693f4b687a16ce981997d9e158ac2ba0a937657dadf0494**. SHA-256 từng tệp đã đối chiếu sau giải nén. Không publish hoặc thay ZIP 1.6.0.
+
+
+## Bổ sung HW-CODEX-MAP-02
+
+Chromium production **4/4**, Private QA **2/2**, validator P2Game local **23/23**. Bản đồ địa hình chỉ vén sương theo khám phá và vẫn giữ gợi ý nhiệm vụ. Save/Continue bảo toàn tiến trình bản đồ. Năm phân khu chưa hoàn thiện vẫn đóng. Các kết quả FIX15 trước đó và SHA của ZIP Competition Candidate giữ nguyên. MAP-02 đã kiểm thử từ bản build riêng. [Báo cáo MAP-02, ảnh trước/sau và hiệu năng](HW_CODEX_MAP_02_REPORT.md).
