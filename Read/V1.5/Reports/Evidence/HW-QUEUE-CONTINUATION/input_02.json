@@ -1,0 +1,156 @@
+{
+  "task": "HW-QUEUE-CONTINUATION",
+  "build": "input",
+  "sha": "1a0a346",
+  "environment": {
+    "os": "Windows 10 build 19045",
+    "node": "v26.7.0",
+    "browser_mode": "headless Chrome, isolated throwaway profile",
+    "endpoint": "http://127.0.0.1:5247",
+    "bundle": "npm run build, Vite preview",
+    "sdk": "external P2Game SDK blocked for isolated standalone test",
+    "owner_save_used": false,
+    "keyboard": "Chrome DevTools synthetic key events; physical EVKey NOT_RUN",
+    "window": [
+      1280,
+      720
+    ],
+    "device_scale_factor": 1,
+    "graphics_flags": [],
+    "browser": "Chrome/158.0.8127.38",
+    "chrome_gpu": {
+      "devices": [
+        {
+          "vendorId": 4318,
+          "deviceId": 7042,
+          "subSysId": 932451416,
+          "revision": 161,
+          "vendorString": "",
+          "deviceString": "NVIDIA GeForce GTX 1070 Ti",
+          "driverVendor": "NVIDIA",
+          "driverVersion": "32.0.15.8266"
+        },
+        {
+          "vendorId": 5140,
+          "deviceId": 140,
+          "subSysId": 0,
+          "revision": 0,
+          "vendorString": "",
+          "deviceString": "Microsoft Basic Render Driver",
+          "driverVendor": "",
+          "driverVersion": "10.0.19041.7548"
+        }
+      ],
+      "feature_status": {
+        "gpu_compositing": "enabled",
+        "webgl": "enabled"
+      },
+      "gl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8266)",
+      "gl_vendor": "Google Inc. (NVIDIA)"
+    },
+    "renderer": {
+      "type": 2,
+      "renderer": "WebGL",
+      "webgl_version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+      "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "webgl_vendor": "Google Inc. (NVIDIA)",
+      "canvas": [
+        1280,
+        720
+      ],
+      "viewport": [
+        1280,
+        720
+      ],
+      "pixel_ratio": 1,
+      "rect": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "graphics_quality": null
+    }
+  },
+  "checks": {
+    "Shift and movement keyup clear sprint and movement": {
+      "status": "PASS",
+      "observation": {
+        "x": 138.6666666666666,
+        "y": 195,
+        "zone": "fog_crossing"
+      }
+    },
+    "Map blocks movement and releases modal controls on Esc": {
+      "status": "PASS",
+      "observation": {
+        "beforeKeys": {
+          "x": 138.6666666666666,
+          "y": 195,
+          "zone": "fog_crossing"
+        },
+        "afterKeys": {
+          "x": 138.6666666666666,
+          "y": 195,
+          "zone": "fog_crossing"
+        },
+        "beforeRefocus": {
+          "x": 138.6666666666666,
+          "y": 195,
+          "zone": "fog_crossing"
+        },
+        "withReleased": {
+          "x": 138.6666666666666,
+          "y": 195,
+          "zone": "fog_crossing"
+        }
+      }
+    },
+    "Journal does not move player": {
+      "status": "PASS",
+      "observation": {
+        "journalStart": {
+          "x": 138.6666666666666,
+          "y": 195,
+          "zone": "fog_crossing"
+        },
+        "journalEnd": {
+          "x": 138.6666666666666,
+          "y": 195,
+          "zone": "fog_crossing"
+        }
+      }
+    },
+    "Synthetic composition blocks gameplay and focus restores movement": {
+      "status": "PASS",
+      "observation": {
+        "imeStart": {
+          "x": 138.6666666666666,
+          "y": 195,
+          "zone": "fog_crossing"
+        },
+        "imeEnd": {
+          "x": 138.6666666666666,
+          "y": 195,
+          "zone": "fog_crossing"
+        },
+        "returned": {
+          "x": 161.33333333333312,
+          "y": 195,
+          "zone": "fog_crossing"
+        }
+      }
+    }
+  },
+  "media": [],
+  "diagnostics": {
+    "page_exceptions": [],
+    "local_http_errors": [],
+    "browser_warnings": [
+      "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+    ],
+    "external_resources_blocked": [
+      "https://games.p2game.io/sdk/p2game-sdk.v1.js"
+    ]
+  }
+}
