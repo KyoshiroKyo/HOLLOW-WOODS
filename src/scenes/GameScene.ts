@@ -4729,7 +4729,7 @@ export class GameScene extends Phaser.Scene {
       }
 
       if (this.uiScene) {
-        this.uiScene.setInteractionPrompt('[E] / [WASD] Bước ra khỏi chỗ trốn', this.player.x, this.player.y - 36);
+        this.uiScene.setInteractionPrompt('[E] Rời chỗ ẩn nấp', this.player.x, this.player.y - 36);
       }
       for (const npc of this.npcs) {
         npc.setNearby(false);
@@ -5106,7 +5106,8 @@ export class GameScene extends Phaser.Scene {
     for (const { item: nearby, dist } of nearbyList) {
       const worldTriggerDist = 52;
       const isWithinActionRange = dist <= worldTriggerDist;
-      let rawPrompt = nearby.promptText;
+      const isHidingSpot = nearby.type === 'hiding_spot' || nearby.actionId === 'hide_player';
+      let rawPrompt = isHidingSpot ? 'Ẩn nấp' : nearby.promptText;
 
       // V15-30 / V15-33: Kiểm tra nếu là mẩu nhật ký / biển báo / văn bia trong TORN_PAGES_REGISTRY
       let isAlreadyRead = false;
@@ -5148,7 +5149,7 @@ export class GameScene extends Phaser.Scene {
         depth: nearby.y,
         isAlreadyRead,
         action: () => {
-          this.executeMapInteraction(nearby.actionId, nearby.name);
+          this.executeMapInteraction(isHidingSpot ? 'hide_player' : nearby.actionId, nearby.name);
         }
       });
     }
@@ -6424,7 +6425,7 @@ export class GameScene extends Phaser.Scene {
         this.playerState.completeQuestTask('Q04_ANCIENT_RUNES', 't2');
         if (this.uiScene) {
           this.uiScene.showPopupMessage('🌿 Đang ẩn nấp an toàn trong Thân Cây / Bụi Rậm! Kẻ Lắng Nghe sẽ không thể nghe thấy bạn.');
-          this.uiScene.setInteractionPrompt('[E] / [WASD] Bước ra khỏi chỗ trốn', this.player.x, this.player.y - 36);
+          this.uiScene.setInteractionPrompt('[E] Rời chỗ ẩn nấp', this.player.x, this.player.y - 36);
         }
       } else {
         // C4-13-01 & V15-34: Thoát ẩn nấp — Tìm vector thoát an toàn hướng về mặt đường thông thoáng, tránh xa cổng sắt/tường đá
