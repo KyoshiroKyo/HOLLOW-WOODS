@@ -661,7 +661,7 @@ export class DevPanelOverlay {
     return `<section class="dp-section"><h3>Nhiệm vụ & Môi trường</h3><button data-action="gates">Mở mọi Cổng & Phong Ấn</button><label>Xem chặng <select data-control="act"><option value="0">Tiến trình hiện tại</option>${[1,2,3,4,5,6,7].map(n=>`<option>${n}</option>`).join('')}</select></label><div class="dp-row">${['Ngày','Hoàng Hôn','Đêm'].map((n,i)=>`<button data-action="time" data-value="${i}">${n}</button>`).join('')}</div>${[['Đóng băng thời gian','timeFrozen'],['Sương mù','fog'],['Mưa','rain']].map(([n,id])=>`<label>${n}<input type="checkbox" data-control="${id}"></label>`).join('')}<div class="dp-row">${[['True','true'],['Sacrifice','sacrifice'],['Fog Loop','fog_loop']].map(([n,id])=>`<button data-action="ending" data-value="${id}">${n}</button>`).join('')}</div></section>`;
   }
   private entityTab(): string {
-    return `<section class="dp-section"><h3>Thực thể & AI</h3><label>Đóng băng AI <input type="checkbox" data-control="aiFrozen"></label><div class="dp-row">${['The Listener','Skull Wolf','Fallen Knight'].map(n=>`<button data-action="spawn" data-value="${n}">${n}</button>`).join('')}</div><div data-entities></div></section>`;
+    return `<section class="dp-section"><h3>Thực thể & AI</h3><label>Đóng băng AI <input type="checkbox" data-control="aiFrozen"></label><div class="dp-row">${['The Listener','Skull Wolf','Fallen Knight'].map(n=>`<button data-action="spawn" data-value="${n}">${n}</button>`).join('')}</div><div data-entities></div></section><section class="dp-section"><h3>Kiểm kê thực thể đang hoạt động</h3><input data-entity-filter placeholder="Lọc tên, loại, phân khu"><button data-action="entity-refresh">Cập nhật</button><button data-action="entity-export">Xuất JSON</button><div data-entity-snapshot style="white-space:pre-line"></div></section>`;
   }
 
   private syncControls(): void {
@@ -680,6 +680,7 @@ export class DevPanelOverlay {
     });
     this.refreshItems();
     this.refreshEntities();
+    this.refreshEntitySnapshot();
     this.syncSpeeds();
   }
 
@@ -771,6 +772,12 @@ export class DevPanelOverlay {
         if (this.mode !== 'full') this.setMode('full');
         this.renderTab();
         this.update();
+        break;
+      case 'entity-export':
+        this.downloadEntitySnapshot();
+        break;
+      case 'entity-refresh':
+        this.refreshEntitySnapshot();
         break;
       case 'copy-bug':
         this.copyBugInfo(target);
@@ -950,6 +957,32 @@ export class DevPanelOverlay {
         this.selectedItem = button.dataset.item || '';
       })
     );
+  }
+
+  private refreshEntitySnapshot(): void {
+    const output = this.body.querySelector<HTMLElement>('[data-entity-snapshot]');
+    if (!output) return;
+    const snapshot = this.manager.getEntitySnapshot();
+    const filter = this.body.querySelector<HTMLInputElement>('[data-entity-filter]')?.value.trim().toLowerCase() ?? '';
+    if (!snapshot) {
+      output.textContent = 'Chưa có dữ liệu thực thể.';
+      return;
+    }
+    const rows = snapshot.active
+      .filter(e => [e.type, e.zone, e.name, e.id, e.texture].some(v => v?.toLowerCase().includes(filter)))
+      .map(e => `[${e.type}] ${e.name} · ${e.zone} · ${e.x.toFixed(0)}, ${e.y.toFixed(0)}${e.issues.length ? ' · ' + e.issues.join(', ') : ''}`);
+    output.textContent = rows.join('\n') || 'Không có thực thể khớp bộ lọc.';
+  }
+
+  private downloadEntitySnapshot(): void {
+    const snapshot = this.manager.getEntitySnapshot();
+    if (!snapshot) return;
+    const url = URL.createObjectURL(new Blob([JSON.stringify(snapshot, null, 2)], { type: 'application/json' }));
+    const download = document.createElement('a');
+    download.href = url;
+    download.download = 'hollow-woods-qa-entities.json';
+    download.click();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
   private refreshEntities(): void {

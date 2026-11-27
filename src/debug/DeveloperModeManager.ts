@@ -5,6 +5,7 @@ import { QuestSystem } from '../systems/QuestSystem';
 import { TIME_CONFIG, type TimePhase } from '../config/TimeConfig';
 import type { ZoneId } from '../types';
 import type { GameScene } from '../scenes/GameScene';
+import { ContentRegistry } from '../registry/ContentRegistry';
 import zonesData from '../data/zones.json';
 import itemsData from '../data/items.json';
 
@@ -31,6 +32,17 @@ export interface DeveloperPerfSnapshot {
   isSanityDucked: boolean | null;
 }
 
+type DiagnosticEntity = Phaser.GameObjects.Sprite & {
+  spec?: { id?: string; name?: string; runtimeKey?: string };
+  body?: Phaser.Physics.Arcade.Body;
+  currentHp?: number;
+  maxHp?: number;
+  stats?: { health: number; maxHealth: number; isSprinting: boolean };
+  wolfState?: string;
+  knightState?: string;
+  bossState?: string;
+  horseState?: string;
+};
 export class DeveloperModeManager {
   private static instance: DeveloperModeManager | null = null;
   private enabled = false;
@@ -245,6 +257,82 @@ export class DeveloperModeManager {
     const listener = scene.listenerMonster;
     if (listener?.active) entities.push({ id: 'listener', name: 'Kẻ Lắng Nghe', x: listener.x, y: listener.y });
     return entities;
+  }
+
+  public getEntitySnapshot() {
+    const scene = this.runtime();
+    if (!QA_BUILD || !this.isEnabled || !scene?.player) return null;
+
+    const registry = ContentRegistry.getInstance();
+    const wildlife = scene.wildlifeSystem;
+    const groups: Array<{ type: string; entities: Array<DiagnosticEntity | null> }> = [
+      { type: 'player', entities: [scene.player] },
+      { type: 'npc', entities: scene.npcs },
+      { type: 'enemy', entities: [
+        scene.listenerMonster, ...wildlife.getSkullWolves(), ...wildlife.getShadowCrows(),
+        ...wildlife.getShadowEyes(), ...wildlife.getFallenKnights(), ...wildlife.getDreadHorsemen(),
+        ...wildlife.getMistBats(), ...wildlife.getWanderingShades(), ...wildlife.getGoblinScouts()
+      ] },
+      { type: 'boss', entities: [scene.mireWardenBoss, wildlife.getHoodedKnight(), wildlife.getShadowBehemoth()] },
+      { type: 'apparition', entities: scene.knightApparitions },
+      { type: 'ambient', entities: wildlife.getEntities() }
+    ];
+
+    const active = groups.flatMap(({ type, entities }) => entities.filter((e): e is DiagnosticEntity => Boolean(e?.active)).map(e => {
+      const texture = e.texture?.key ?? null;
+      const frame = e.frame?.name ?? null;
+      const animation = e.anims?.currentAnim?.key ?? null;
+      const body = e.body;
+      const id = e.spec?.id || e.name || null;
+      const runtimeKey = e.spec?.runtimeKey || null;
+      const zone = scene.worldBuilder.detectCurrentZone({ x: e.x, y: e.y });
+      const issues: string[] = [];
+      if (!texture || texture === '__MISSING' || !scene.textures.exists(texture)) issues.push('missing_texture');
+      if (animation && !scene.anims.exists(animation)) issues.push('animation_not_registered');
+      if (!Number.isFinite(e.x) || !Number.isFinite(e.y)) issues.push('invalid_position');
+      const bounds = scene.worldBuilder.getZone(zone)?.bounds;
+      if (bounds && (e.x < bounds.x || e.x > bounds.x + bounds.width ||
+          e.y < bounds.y || e.y > bounds.y + bounds.height)) issues.push('position_outside_zone');
+      if (body?.enable && (body.width <= 0 || body.height <= 0)) issues.push('invalid_collision_bounds');
+      if (type === 'apparition' && body?.enable) issues.push('unexpected_apparition_collision');
+      if (type === 'player' && animation && /_(walk|run)_/.test(animation) &&
+          animation.includes('_run_') !== Boolean(e.stats?.isSprinting)) issues.push('gait_mismatch');
+      if (runtimeKey && !registry.getByRuntimeKey(runtimeKey)) issues.push('runtime_key_not_registered');
+
+      return {
+        id, name: e.spec?.name || e.name || e.constructor.name, type, zone, runtimeKey,
+        x: e.x, y: e.y, texture, frame, animation,
+        currentHp: e.currentHp ?? e.stats?.health ?? null,
+        maxHp: e.maxHp ?? e.stats?.maxHealth ?? null,
+        state: e.wolfState ?? e.knightState ?? e.bossState ?? e.horseState ?? e.state ?? null,
+        collider: body?.enable ? { x: body.x, y: body.y, width: body.width, height: body.height } : null,
+        issues
+      };
+    }));
+    const seenIds = new Set<string>();
+    for (const entity of active) {
+      if (!entity.id) continue;
+      const key = `${entity.zone}/${entity.type}/${entity.id}`;
+      if (seenIds.has(key)) entity.issues.push('duplicate_active_id');
+      seenIds.add(key);
+    }
+
+    const catalog = registry.getAllEntries()
+      .filter(entry => ['NPC', 'MON', 'ANI', 'MOD', 'AST'].includes(entry.type))
+      .map(entry => ({
+        id: entry.id, type: entry.type, name: entry.nameVi, runtimeKey: entry.runtimeKey,
+        status: entry.status,
+        assets: (entry.assetRefs ?? []).map(id => ({ id, filePath: registry.getAsset(id)?.filePath ?? null }))
+      }));
+    return {
+      capturedAt: new Date().toISOString(),
+      zone: scene.currentZoneId,
+      active,
+      catalog,
+      registryChecks: registry.validateRegistry(),
+      performance: this.getPerfSnapshot(),
+      log: this.getLogs()
+    };
   }
 
   private clearTransientControls(): void {
