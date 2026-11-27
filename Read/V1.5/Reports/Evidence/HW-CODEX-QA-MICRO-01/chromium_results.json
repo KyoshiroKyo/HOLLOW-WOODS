@@ -1,0 +1,707 @@
+{
+  "timestamp": "2026-11-27T21:16:11.302Z",
+  "runtime_errors": [],
+  "results": [
+    {
+      "test": "startup_menu_prologue_space_skip",
+      "menu": {
+        "active": true,
+        "loaderHidden": true,
+        "focus": [],
+        "x": 363.926953125,
+        "y": 216.66666666666666
+      },
+      "prologue": {
+        "active": true,
+        "menu": false
+      },
+      "gameplay": {
+        "active": true,
+        "zone": "fog_crossing",
+        "prologue": false,
+        "focus": [
+          true
+        ]
+      },
+      "pass": true
+    },
+    {
+      "test": "TC0_cancel_before_grant",
+      "desc": "Cancel mid-dialogue before first grant gives 0 charm and sets no reward flags",
+      "before_charm": 0,
+      "after_charm": 0,
+      "edda_rune_charm_granted": false,
+      "dlg_reward_edda": false,
+      "pass": true
+    },
+    {
+      "test": "TC1_first_completion",
+      "desc": "eqp_bell_ward_charm 0→1 on first edda_rune_guide completion",
+      "before_charm": 0,
+      "after_charm": 1,
+      "edda_rune_charm_granted": true,
+      "dlg_reward_edda": true,
+      "pass": true
+    },
+    {
+      "test": "TC2_repeat_no_duplicate",
+      "desc": "No additional charm on second edda_rune_guide",
+      "before_charm": 1,
+      "after_charm": 1,
+      "pass": true
+    },
+    {
+      "test": "TC3_b05_neris_guard",
+      "desc": "B05 guard: neris_intro grants 1 poultice once and blocks repeat",
+      "poulticeBefore": 0,
+      "poulticeAfter1": 1,
+      "poulticeAfter2": 1,
+      "pass": true
+    },
+    {
+      "test": "TC4_save_continue_no_loss_no_dup",
+      "desc": "Save -> Reload -> Continue preserves 1 charm and blocks duplicate on re-talk",
+      "savedOk": true,
+      "afterContinue": {
+        "charmCount": 1,
+        "edda_rune_charm_granted": true,
+        "dlg_reward_edda": true
+      },
+      "afterContinueRetalk": {
+        "charmCount": 1,
+        "edda_rune_charm_granted": true,
+        "dlg_reward_edda": true
+      },
+      "pass": true
+    },
+    {
+      "test": "production_F4_F9_locked",
+      "pass": true,
+      "evidence": {
+        "zone": "fog_crossing",
+        "foot": [
+          120,
+          195
+        ],
+        "prompt": "[E] Đọc Mẩu Nhật Ký Cũ Bị Rách",
+        "outline": {
+          "id": "fog_journal_scrap_1",
+          "x": 150,
+          "y": 195
+        },
+        "calls": [],
+        "resin": 0,
+        "hiding": false,
+        "depleted": false,
+        "dialogue": false,
+        "nodes": [],
+        "qa": false,
+        "debug": false
+      }
+    },
+    {
+      "test": "WORLD-01_fog_sign",
+      "pass": true,
+      "evidence": {
+        "sign": {
+          "zone": "fog_crossing",
+          "foot": [
+            240,
+            203
+          ],
+          "prompt": "[E] Xem Tấm Biển Mục",
+          "outline": {
+            "id": "fog_sign",
+            "x": 240,
+            "y": 180
+          },
+          "calls": [],
+          "resin": 0,
+          "hiding": false,
+          "depleted": false,
+          "dialogue": false,
+          "nodes": [],
+          "qa": false,
+          "debug": false
+        },
+        "signAfter": {
+          "zone": "fog_crossing",
+          "foot": [
+            240,
+            203
+          ],
+          "prompt": null,
+          "outline": null,
+          "calls": [
+            "read_fog_sign"
+          ],
+          "resin": 0,
+          "hiding": false,
+          "depleted": false,
+          "dialogue": false,
+          "nodes": [],
+          "qa": false,
+          "debug": false
+        }
+      }
+    },
+    {
+      "test": "WORLD-01_outside_sign_radius",
+      "pass": true,
+      "evidence": {
+        "outsideSign": {
+          "zone": "fog_crossing",
+          "foot": [
+            245,
+            135
+          ],
+          "prompt": "[E] Thu thập Gỗ Khô (x1)",
+          "outline": {
+            "id": "node_wood_1",
+            "x": 220,
+            "y": 130
+          },
+          "calls": [
+            "read_fog_sign"
+          ],
+          "resin": 0,
+          "hiding": false,
+          "depleted": false,
+          "dialogue": false,
+          "nodes": [
+            "node_wood_1"
+          ],
+          "qa": false,
+          "debug": false
+        },
+        "outsideAfter": {
+          "zone": "fog_crossing",
+          "foot": [
+            245,
+            135
+          ],
+          "prompt": "Xem Tấm Biển Mục",
+          "outline": null,
+          "calls": [
+            "read_fog_sign"
+          ],
+          "resin": 0,
+          "hiding": false,
+          "depleted": false,
+          "dialogue": false,
+          "nodes": [],
+          "qa": false,
+          "debug": false
+        }
+      }
+    },
+    {
+      "test": "walk_fog_to_bellhollow",
+      "pass": true,
+      "evidence": {
+        "zone": "bellhollow",
+        "foot": [
+          488.41666666666737,
+          222
+        ],
+        "prompt": "Trò chuyện với Garth",
+        "outline": null,
+        "calls": [
+          "read_fog_sign"
+        ],
+        "resin": 0,
+        "hiding": false,
+        "depleted": false,
+        "dialogue": false,
+        "nodes": [],
+        "qa": false,
+        "debug": false
+      }
+    },
+    {
+      "test": "walk_bellhollow_to_outer_woods",
+      "pass": true,
+      "evidence": {
+        "zone": "outer_woods",
+        "foot": [
+          1218,
+          573.1666666666663
+        ],
+        "prompt": null,
+        "outline": null,
+        "calls": [
+          "read_fog_sign"
+        ],
+        "resin": 0,
+        "hiding": false,
+        "depleted": false,
+        "dialogue": false,
+        "nodes": [],
+        "qa": false,
+        "debug": false
+      }
+    },
+    {
+      "test": "outside_hiding_range",
+      "pass": true,
+      "evidence": {
+        "outOfTreeRange": {
+          "zone": "outer_woods",
+          "foot": [
+            1360,
+            705
+          ],
+          "prompt": "[E] Thu thập Gỗ Khô (x1)",
+          "outline": {
+            "id": "node_wood_ow_2",
+            "x": 1380,
+            "y": 720
+          },
+          "calls": [
+            "read_fog_sign"
+          ],
+          "resin": 0,
+          "hiding": false,
+          "depleted": false,
+          "dialogue": false,
+          "nodes": [
+            "node_wood_ow_2"
+          ],
+          "qa": false,
+          "debug": false
+        },
+        "outOfTreeAfter": {
+          "zone": "outer_woods",
+          "foot": [
+            1360,
+            705
+          ],
+          "prompt": null,
+          "outline": null,
+          "calls": [
+            "read_fog_sign"
+          ],
+          "resin": 0,
+          "hiding": false,
+          "depleted": false,
+          "dialogue": false,
+          "nodes": [],
+          "qa": false,
+          "debug": false
+        }
+      }
+    },
+    {
+      "test": "fresh_resin_selected_once",
+      "pass": true,
+      "evidence": {
+        "fresh": {
+          "zone": "outer_woods",
+          "foot": [
+            1360,
+            635
+          ],
+          "prompt": "[E] Thu thập Nhựa Cây Dính (x1)",
+          "outline": {
+            "id": "node_resin_ow_1",
+            "x": 1360,
+            "y": 620
+          },
+          "calls": [
+            "read_fog_sign"
+          ],
+          "resin": 0,
+          "hiding": false,
+          "depleted": false,
+          "dialogue": false,
+          "nodes": [
+            "node_resin_ow_1"
+          ],
+          "qa": false,
+          "debug": false
+        },
+        "gathered": {
+          "zone": "outer_woods",
+          "foot": [
+            1360,
+            635
+          ],
+          "prompt": "[E] Ẩn nấp",
+          "outline": {
+            "id": "hide_tree_ow_north",
+            "x": 1360,
+            "y": 620
+          },
+          "calls": [
+            "read_fog_sign"
+          ],
+          "resin": 1,
+          "hiding": false,
+          "depleted": true,
+          "dialogue": false,
+          "nodes": [],
+          "qa": false,
+          "debug": false
+        }
+      }
+    },
+    {
+      "test": "depleted_resin_allows_hiding_once",
+      "pass": true,
+      "evidence": {
+        "empty": {
+          "zone": "outer_woods",
+          "foot": [
+            1360,
+            635
+          ],
+          "prompt": "[E] Ẩn nấp",
+          "outline": {
+            "id": "hide_tree_ow_north",
+            "x": 1360,
+            "y": 620
+          },
+          "calls": [
+            "read_fog_sign"
+          ],
+          "resin": 1,
+          "hiding": false,
+          "depleted": true,
+          "dialogue": false,
+          "nodes": [],
+          "qa": false,
+          "debug": false
+        },
+        "hiding": {
+          "zone": "outer_woods",
+          "foot": [
+            1360,
+            635
+          ],
+          "prompt": "[E] Rời chỗ ẩn nấp",
+          "outline": null,
+          "calls": [
+            "read_fog_sign",
+            "hide_player"
+          ],
+          "resin": 1,
+          "hiding": true,
+          "depleted": true,
+          "dialogue": false,
+          "nodes": [],
+          "qa": false,
+          "debug": false
+        }
+      }
+    },
+    {
+      "test": "E_exit_hiding",
+      "pass": true,
+      "evidence": {
+        "zone": "outer_woods",
+        "foot": [
+          1360,
+          663
+        ],
+        "prompt": "[E] Ẩn nấp",
+        "outline": {
+          "id": "hide_tree_ow_north",
+          "x": 1360,
+          "y": 620
+        },
+        "calls": [
+          "read_fog_sign",
+          "hide_player",
+          "hide_player"
+        ],
+        "resin": 1,
+        "hiding": false,
+        "depleted": true,
+        "dialogue": false,
+        "nodes": [],
+        "qa": false,
+        "debug": false
+      }
+    },
+    {
+      "test": "WASD_exit_hiding",
+      "pass": true,
+      "evidence": {
+        "beforeW": {
+          "zone": "outer_woods",
+          "foot": [
+            1360,
+            635
+          ],
+          "prompt": "[E] Rời chỗ ẩn nấp",
+          "outline": null,
+          "calls": [
+            "read_fog_sign",
+            "hide_player",
+            "hide_player",
+            "hide_player"
+          ],
+          "resin": 1,
+          "hiding": true,
+          "depleted": true,
+          "dialogue": false,
+          "nodes": [],
+          "qa": false,
+          "debug": false
+        },
+        "leftMove": {
+          "zone": "outer_woods",
+          "foot": [
+            1388,
+            635
+          ],
+          "prompt": "[E] Ẩn nấp",
+          "outline": {
+            "id": "hide_tree_ow_north",
+            "x": 1360,
+            "y": 620
+          },
+          "calls": [
+            "read_fog_sign",
+            "hide_player",
+            "hide_player",
+            "hide_player",
+            "hide_player"
+          ],
+          "resin": 1,
+          "hiding": false,
+          "depleted": true,
+          "dialogue": false,
+          "nodes": [],
+          "qa": false,
+          "debug": false
+        }
+      }
+    },
+    {
+      "test": "nearby_bush",
+      "pass": true,
+      "evidence": {
+        "bush": {
+          "zone": "outer_woods",
+          "foot": [
+            1150,
+            655
+          ],
+          "prompt": "[E] Ẩn nấp",
+          "outline": {
+            "id": "hide_bush_ow_s_curve",
+            "x": 1150,
+            "y": 655
+          },
+          "calls": [
+            "read_fog_sign",
+            "hide_player",
+            "hide_player",
+            "hide_player",
+            "hide_player"
+          ],
+          "resin": 1,
+          "hiding": false,
+          "depleted": true,
+          "dialogue": false,
+          "nodes": [
+            "node_wood_ow_1"
+          ],
+          "qa": false,
+          "debug": false
+        },
+        "bushHiding": {
+          "zone": "outer_woods",
+          "foot": [
+            1150,
+            655
+          ],
+          "prompt": "[E] Rời chỗ ẩn nấp",
+          "outline": null,
+          "calls": [
+            "read_fog_sign",
+            "hide_player",
+            "hide_player",
+            "hide_player",
+            "hide_player",
+            "hide_player"
+          ],
+          "resin": 1,
+          "hiding": true,
+          "depleted": true,
+          "dialogue": false,
+          "nodes": [
+            "node_wood_ow_1"
+          ],
+          "qa": false,
+          "debug": false
+        }
+      }
+    },
+    {
+      "test": "bonfire_target",
+      "pass": true,
+      "evidence": {
+        "fire": {
+          "zone": "outer_woods",
+          "foot": [
+            1470,
+            710
+          ],
+          "prompt": "[E] Sưởi Ấm Bên Lửa Cổ",
+          "outline": {
+            "id": "quiet_forest_bonfire",
+            "x": 1470,
+            "y": 710
+          },
+          "calls": [
+            "read_fog_sign",
+            "hide_player",
+            "hide_player",
+            "hide_player",
+            "hide_player",
+            "hide_player",
+            "hide_player"
+          ],
+          "resin": 1,
+          "hiding": false,
+          "depleted": true,
+          "dialogue": false,
+          "nodes": [],
+          "qa": false,
+          "debug": false
+        },
+        "fireAction": {
+          "zone": "outer_woods",
+          "foot": [
+            1470,
+            710
+          ],
+          "prompt": "[E] Sưởi Ấm Bên Lửa Cổ",
+          "outline": {
+            "id": "quiet_forest_bonfire",
+            "x": 1470,
+            "y": 710
+          },
+          "calls": [
+            "read_fog_sign",
+            "hide_player",
+            "hide_player",
+            "hide_player",
+            "hide_player",
+            "hide_player",
+            "hide_player",
+            "warm_quiet_bonfire"
+          ],
+          "resin": 1,
+          "hiding": false,
+          "depleted": true,
+          "dialogue": false,
+          "nodes": [],
+          "qa": false,
+          "debug": false
+        }
+      }
+    },
+    {
+      "test": "vaelen_target",
+      "pass": true,
+      "evidence": {
+        "npc": {
+          "zone": "outer_woods",
+          "foot": [
+            1435,
+            724
+          ],
+          "prompt": "[E] Trò chuyện với Kỵ Sĩ Vaelen",
+          "outline": {
+            "id": "npc_campfire_knight",
+            "x": 1435,
+            "y": 694
+          },
+          "calls": [
+            "read_fog_sign",
+            "hide_player",
+            "hide_player",
+            "hide_player",
+            "hide_player",
+            "hide_player",
+            "hide_player",
+            "warm_quiet_bonfire"
+          ],
+          "resin": 1,
+          "hiding": false,
+          "depleted": true,
+          "dialogue": false,
+          "nodes": [
+            "node_herb_ow_1"
+          ],
+          "qa": false,
+          "debug": false
+        },
+        "npcAction": {
+          "zone": "outer_woods",
+          "foot": [
+            1435,
+            724
+          ],
+          "prompt": null,
+          "outline": null,
+          "calls": [
+            "read_fog_sign",
+            "hide_player",
+            "hide_player",
+            "hide_player",
+            "hide_player",
+            "hide_player",
+            "hide_player",
+            "warm_quiet_bonfire"
+          ],
+          "resin": 1,
+          "hiding": false,
+          "depleted": true,
+          "dialogue": true,
+          "nodes": [
+            "node_herb_ow_1"
+          ],
+          "qa": false,
+          "debug": false
+        }
+      }
+    },
+    {
+      "test": "walk_outer_woods_to_bellhollow_without_stale_target",
+      "pass": true,
+      "evidence": {
+        "zone": "bellhollow",
+        "foot": [
+          1210,
+          547.666666666667
+        ],
+        "prompt": "Xem Biển Rừng Ngoại Vi",
+        "outline": null,
+        "calls": [
+          "read_fog_sign",
+          "hide_player",
+          "hide_player",
+          "hide_player",
+          "hide_player",
+          "hide_player",
+          "hide_player",
+          "warm_quiet_bonfire"
+        ],
+        "resin": 1,
+        "hiding": false,
+        "depleted": true,
+        "dialogue": false,
+        "nodes": [],
+        "qa": false,
+        "debug": false
+      }
+    }
+  ],
+  "passed": 20,
+  "total": 20,
+  "summary": "20/20 PASS"
+}
