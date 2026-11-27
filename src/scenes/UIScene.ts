@@ -377,6 +377,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       fontStyle: 'bold',
       color: RUNNING_LABELS.normal.color
     }).setOrigin(1, 0).setDepth(8053);
+    this.fitPlayerNameText();
 
     this.oilValText = HDTextHelper.createText(this, -999, -999, '', {
       fontSize: '10px',
@@ -1029,6 +1030,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     const runningLabel = RUNNING_LABELS[runningState];
     if (this.runningStateText && this.runningStateText.text !== runningLabel.text) {
       this.runningStateText.setText(runningLabel.text).setColor(runningLabel.color);
+      this.fitPlayerNameText();
     }
 
     const curC = Math.round(stats.composure);
@@ -1086,7 +1088,21 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         this.playerNameText.setText(identity.hudBadge);
         this.playerNameText.setColor(identity.isRevealed ? '#ffc048' : '#e5a93c');
         this.playerNameText.setStroke(identity.isRevealed ? '#3d1a04' : '#000000', identity.isRevealed ? 3 : 2);
+        this.fitPlayerNameText();
       }
+    }
+  }
+
+  /**
+   * HW-AG-FIX-09: Đảm bảo danh xưng dài không bao giờ đè lên nhãn trạng thái chạy góc phải
+   */
+  private fitPlayerNameText(): void {
+    if (!this.playerNameText) return;
+    this.playerNameText.setScale(1, 1);
+    const statusWidth = this.runningStateText ? this.runningStateText.width : 75;
+    const maxAllowedW = Math.max(140, 377 - statusWidth - 26 - 10);
+    if (this.playerNameText.width > maxAllowedW) {
+      this.playerNameText.setScale(maxAllowedW / this.playerNameText.width, 1);
     }
   }
 
