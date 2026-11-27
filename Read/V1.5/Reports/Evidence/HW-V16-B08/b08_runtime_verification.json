@@ -1,0 +1,108 @@
+{
+  "hosted_qa_status": "HOSTED QA NOT RUN",
+  "bug_024_note": "Verified HTTP 206 Partial Content locally via Range-enabled static server; live external P2Game CDN not tested (HOSTED QA NOT RUN).",
+  "scenarios": {
+    "iframe_sdk_mock_save_continue_206": {
+      "first_playable_ms": 5232.6,
+      "sdk_state": {
+        "mockLog": {
+          "init": 1,
+          "ready": 1,
+          "hasPause": true,
+          "hasResume": true,
+          "hasUnload": true
+        },
+        "startupHidden": true
+      },
+      "moved_dx": 31.17,
+      "gameplay_res": {
+        "playerX": 151.16666666666663,
+        "playerY": 195,
+        "keysSeen": [
+          "KeyD",
+          "ArrowDown",
+          "Space"
+        ],
+        "activeCodesNow": [],
+        "outerScrollY": 0,
+        "innerScrollY": 0,
+        "sleepingOnPause": true,
+        "wokeOnResume": true,
+        "localSaveExists": true,
+        "cloudSaveKeys": [
+          "hw_save_slot_1",
+          "hw_save_meta",
+          "progress"
+        ],
+        "diag_lock": {
+          "isLocked": false,
+          "uiAnyModal": false,
+          "dlg": false,
+          "activeEl": "CANVAS",
+          "isAttacking": false,
+          "actionLocked": false,
+          "hasFocus": true
+        },
+        "mid_vel": {
+          "vx": 85,
+          "vy": 0,
+          "blocked": {
+            "l": false,
+            "r": false,
+            "u": false,
+            "d": false
+          },
+          "scenePaused": false,
+          "sysStatus": 5,
+          "activeCodes": [
+            "KeyD"
+          ],
+          "desiredDir": null,
+          "actionLocked": false,
+          "uiAnyModal": false,
+          "dlgActive": false,
+          "isEnding": false,
+          "pauseOpen": false,
+          "loopFrameAfter": 135
+        },
+        "pos_before": {
+          "x": 120,
+          "y": 195,
+          "loopFrame": 131
+        }
+      },
+      "continued_pos": {
+        "x": 151.16666666666663,
+        "zone": "fog_crossing"
+      },
+      "observed_206_count": 3,
+      "observed_mimes": {
+        ".html": "text/html",
+        ".js": "application/javascript",
+        ".woff": "font/woff",
+        ".png": "image/png",
+        ".json": "application/json",
+        ".mp3": "audio/mpeg",
+        ".wav": "audio/wav"
+      },
+      "passed": true
+    },
+    "offline_sdk_and_missing_media_fallback": {
+      "menuActive": true,
+      "dummyExists": true,
+      "startupHidden": true,
+      "page_errors": [],
+      "passed": true
+    },
+    "loading_error_fallback_ui": {
+      "state": "error",
+      "visible": true,
+      "reloadLinkVisible": true,
+      "passed": true
+    }
+  },
+  "page_errors": [],
+  "console_errors": [],
+  "network_404s": [],
+  "passed": true
+}

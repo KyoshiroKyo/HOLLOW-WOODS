@@ -1,0 +1,55 @@
+{
+  "packageVersion": "1.5.2",
+  "p2gameManifestVersion": "1.5.2",
+  "distFileCount": 288,
+  "distTotalBytes": 83202373,
+  "distTotalMB": 79.35,
+  "sourceArchivePreserved": {
+    "path": "G:\\HOLLOW WOODS\\public\\assets\\characters\\mossbound_wayfarer.rar",
+    "bytes": 185541,
+    "sha256": "A2630EF198C84F88ACA465B64654D3F497D481E51E5BFEA342436ADB706BA46A",
+    "presentInDist": false
+  },
+  "keyArtifacts": [
+    {
+      "path": "index.html",
+      "bytes": 2780,
+      "sha256": "5dc87b6f80081d8c8b8459eb4f5a7d90cb94685566aff4aceea770392333d014"
+    },
+    {
+      "path": "p2game.json",
+      "bytes": 2539,
+      "sha256": "38cbefb03b27b63f35386097c17d86b09b983f2762865b431e60eea26c35f45e"
+    },
+    {
+      "path": "startup-status.js",
+      "bytes": 1561,
+      "sha256": "4b080cfdc255e23dbd00794ecbda5782d52d2d8bf50eb40a581ef9cc5e1a86c1"
+    },
+    {
+      "path": "assets\\game-data-B4rWVHub.js",
+      "bytes": 189555,
+      "sha256": "cbdba168140c1c28e9335e1f4ea90d9ba29d019331bb1655fc0fff98f3f6ceaf"
+    },
+    {
+      "path": "assets\\index-CobcV5N8.js",
+      "bytes": 1224652,
+      "sha256": "d1bd1d2df2dd5296233c914929d69f7b64adff18ae4adc2e552250214baf8a4a"
+    },
+    {
+      "path": "assets\\vendor-phaser-CUeKjumc.js",
+      "bytes": 1685164,
+      "sha256": "281440cb845162a5f064045a952b82f7c7b4eac2e3877ea8df7643ab76650ee5"
+    },
+    {
+      "path": "assets\\ui\\fonts\\hollow-woods-ui-bold.woff",
+      "bytes": 73816,
+      "sha256": "b7ef96ebf930cf85f9816a3803ec8c0904bd811778a18370c339ff1918e7d885"
+    },
+    {
+      "path": "assets\\ui\\fonts\\hollow-woods-ui-regular.woff",
+      "bytes": 74552,
+      "sha256": "73a61aa327246ecced034d64ad7e6ca6744e32f8f7b96e619305e7c639651f89"
+    }
+  ]
+}

@@ -341,7 +341,7 @@ with zipfile.ZipFile(zip_path, 'w', compression=zipfile.ZIP_DEFLATED, compressle
         for file in files:
             full = os.path.join(root, file)
             arc = os.path.relpath(full, src_dir).replace('\\\\', '/')
-            if arc.endswith('.bak') or arc.endswith('.tmp'):
+            if arc.lower().endswith(('.bak', '.tmp', '.rar', '.zip', '.7z', '.tar', '.gz', '.psd', '.aseprite', '.log')):
                 continue
             zf.write(full, arc)
 

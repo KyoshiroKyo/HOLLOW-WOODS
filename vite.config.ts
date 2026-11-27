@@ -1,4 +1,23 @@
 import { defineConfig } from 'vite';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const EXCLUDED_DIST_EXTENSIONS = new Set(['.rar', '.zip', '.7z', '.tar', '.gz', '.bak', '.tmp', '.psd', '.aseprite']);
+
+function stripNonRuntimeFiles(dir: string): number {
+  if (!fs.existsSync(dir)) return 0;
+  let removed = 0;
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      removed += stripNonRuntimeFiles(full);
+    } else if (EXCLUDED_DIST_EXTENSIONS.has(path.extname(entry.name).toLowerCase())) {
+      fs.unlinkSync(full);
+      removed++;
+    }
+  }
+  return removed;
+}
 
 export default defineConfig({
   base: './',
@@ -27,6 +46,13 @@ export default defineConfig({
         let cleaned = code.replace(/navigator\.getUserMedia/g, 'window._gum');
         cleaned = cleaned.replace(/new\s+Function\s*\(\s*["']return this["']\s*\)\s*\(\)/g, '(function(){return window})()');
         return cleaned;
+      },
+      closeBundle() {
+        const distDir = path.resolve(process.cwd(), 'dist');
+        const removed = stripNonRuntimeFiles(distDir);
+        if (removed > 0) {
+          console.log(`[p2game-cleaner] Excluded ${removed} non-runtime archive/backup file(s) from dist/`);
+        }
       }
     }
   ],

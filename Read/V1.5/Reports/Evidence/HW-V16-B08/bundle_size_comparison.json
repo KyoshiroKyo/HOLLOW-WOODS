@@ -1,0 +1,70 @@
+{
+  "mainWorkspaceBaselineDist": {
+    "fileCount": 289,
+    "totalBytes": 83382279,
+    "totalMB": 79.52,
+    "archivesLeaked": [
+      {
+        "path": "assets\\characters\\mossbound_wayfarer.rar",
+        "bytes": 185541,
+        "sha256": "a2630ef198c84f88aca465b64654d3f497d481e51e5bfea342436adb706ba46a"
+      }
+    ]
+  },
+  "b08CleanDist": {
+    "fileCount": 288,
+    "totalBytes": 83202373,
+    "totalMB": 79.35,
+    "archivesLeaked": [],
+    "byExtension": {
+      ".html": {
+        "count": 1,
+        "bytes": 2780,
+        "mb": 0.003
+      },
+      ".js": {
+        "count": 4,
+        "bytes": 3100932,
+        "mb": 2.957
+      },
+      ".json": {
+        "count": 13,
+        "bytes": 1436328,
+        "mb": 1.37
+      },
+      ".mp3": {
+        "count": 20,
+        "bytes": 46143973,
+        "mb": 44.006
+      },
+      ".png": {
+        "count": 202,
+        "bytes": 7605066,
+        "mb": 7.253
+      },
+      ".txt": {
+        "count": 1,
+        "bytes": 4232,
+        "mb": 0.004
+      },
+      ".wav": {
+        "count": 45,
+        "bytes": 24760694,
+        "mb": 23.614
+      },
+      ".woff": {
+        "count": 2,
+        "bytes": 148368,
+        "mb": 0.141
+      }
+    }
+  },
+  "unreferencedLegacyPublicMedia": [
+    "media/avatar_512x512.png",
+    "media/cover_banner_1280x720.png",
+    "media/screen_01_bellhollow_v15.png",
+    "media/screen_02_sir_vaelen_fire.png",
+    "media/screen_03_crafting_ui.png",
+    "media/screen_04_boss_shadow.png"
+  ]
+}

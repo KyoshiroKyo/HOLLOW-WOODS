@@ -31,7 +31,9 @@ async function waitForSdkScript(): Promise<void> {
   });
   document.head.append(script);
   try {
-    await withDeadline(loaded, 12000, 'P2Game tải quá lâu. Hãy kiểm tra mạng rồi tải lại.');
+    await withDeadline(loaded, 10000, 'P2Game tải quá lâu. Hãy kiểm tra mạng rồi tải lại.');
+  } catch (sdkLoadErr) {
+    console.warn('[P2Game SDK] Không thể nạp script SDK kịp thời, tiếp tục fallback standalone:', sdkLoadErr);
   } finally {
     events.abort();
   }
@@ -121,7 +123,12 @@ async function startGame(): Promise<void> {
 
   // V15-48: Chặn trình duyệt / iframe cuộn trang ngoài ý muốn khi nhấn phím điều hướng & phím Space
   window.addEventListener('keydown', (e: KeyboardEvent) => {
-    if (document.activeElement !== game.canvas) return;
+    const active = document.activeElement;
+    const isTextInput =
+      active instanceof HTMLInputElement ||
+      active instanceof HTMLTextAreaElement ||
+      (active instanceof HTMLElement && active.isContentEditable);
+    if (isTextInput) return;
     if (
       ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code) ||
       ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)

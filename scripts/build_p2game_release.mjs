@@ -93,8 +93,8 @@ with zipfile.ZipFile(zip_path, 'w', compression=zipfile.ZIP_DEFLATED, compressle
         for file in files:
             full = os.path.join(root, file)
             arc = os.path.relpath(full, dist_dir).replace('\\\\', '/')
-            # Loại bỏ các file rác, file backup và media trùng lặp
-            if arc.endswith('.bak') or arc.endswith('.tmp') or arc.startswith('store/') or 'screen_03_crafting_journal' in arc:
+            # Loại bỏ các file rác, file nén archive, source art và media trùng lặp
+            if arc.lower().endswith(('.bak', '.tmp', '.rar', '.zip', '.7z', '.tar', '.gz', '.psd', '.aseprite', '.log')) or arc.startswith('store/') or 'screen_03_crafting_journal' in arc:
                 continue
             zf.write(full, arc)
 
