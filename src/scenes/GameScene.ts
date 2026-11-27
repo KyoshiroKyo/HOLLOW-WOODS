@@ -887,6 +887,7 @@ export class GameScene extends Phaser.Scene {
       this.audioManager.cleanupAudioLoops();
       this.audioManager.setHeartbeatActive(false);
       this.audioManager.stopAmbience();
+      this.audioManager.stopBGM(0.15);
       if (this.farmingSystem) {
         this.farmingSystem.destroy();
       }
@@ -1118,7 +1119,7 @@ export class GameScene extends Phaser.Scene {
     if (now - this.lastMuteTime < 200) return;
     this.lastMuteTime = now;
 
-    const muted = this.audioManager.toggleMute();
+    const muted = SettingsManager.getInstance().toggleMute();
     if (this.uiScene) {
       this.uiScene.showPopupMessage(muted ? '🔇 Đã tắt toàn bộ âm thanh [Phím M]' : '🔊 Đã bật âm thanh [Phím M]');
     }

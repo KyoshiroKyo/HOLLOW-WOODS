@@ -39,6 +39,7 @@ export class PauseModal {
   private graphicsQualityBtnBg!: Phaser.GameObjects.Graphics;
   private graphicsDescText!: Phaser.GameObjects.Text;
   private unsubscribeQuality?: () => void;
+  private unsubscribeSettings?: () => void;
 
   // Hộp thoại phụ hướng dẫn phím (Controls Guide Sub-Modal)
   private guideOverlayContainer?: Phaser.GameObjects.Container;
@@ -55,6 +56,7 @@ export class PauseModal {
   private panicIntensityControl?: { container: Phaser.GameObjects.Container; setValue: (val: 'LOW' | 'STANDARD' | 'HIGH') => void };
   private muteBtnTxt?: Phaser.GameObjects.Text;
   private muteBtnBg?: Phaser.GameObjects.Graphics;
+  private renderMuteBtn?: (isHover?: boolean) => void;
 
   public onOpen?: () => void;
   public onClose?: () => void;
@@ -69,6 +71,9 @@ export class PauseModal {
 
     this.unsubscribeQuality = GraphicsQualitySystem.getInstance().onQualityChange(() => {
       this.updateGraphicsQualityText();
+    });
+    this.unsubscribeSettings = SettingsManager.getInstance().onSettingsChange(() => {
+      this.updateVolumeTexts();
     });
 
     this.buildUI();
@@ -342,6 +347,7 @@ export class PauseModal {
       this.muteBtnTxt.setText(muted ? '🔇 TẮT' : '🔊 BẬT');
       this.muteBtnTxt.setColor(muted ? '#ff7675' : '#2ecc71');
     };
+    this.renderMuteBtn = renderMute;
     renderMute();
 
     muteBtnContainer.on('pointerover', () => renderMute(true));
@@ -632,6 +638,9 @@ export class PauseModal {
     if (this.sfxSliderControl) {
       this.sfxSliderControl.setValue(settings.getSfxVolume());
     }
+    if (this.renderMuteBtn) {
+      this.renderMuteBtn(false);
+    }
     if (this.reducedMotionToggleControl) {
       this.reducedMotionToggleControl.setEnabled(settings.isReducedMotionEnabled());
     }
@@ -776,6 +785,10 @@ export class PauseModal {
     if (this.unsubscribeQuality) {
       this.unsubscribeQuality();
       this.unsubscribeQuality = undefined;
+    }
+    if (this.unsubscribeSettings) {
+      this.unsubscribeSettings();
+      this.unsubscribeSettings = undefined;
     }
     if (this.container) {
       this.container.removeAll(true);

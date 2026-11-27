@@ -26,6 +26,7 @@ export class MainMenuScene extends Phaser.Scene {
   private continueBtnX: number = 288;
   private continueBtnY: number = 306;
   private authContainer?: Phaser.GameObjects.Container;
+  private modalCleanup?: () => void;
 
   constructor() {
     super({ key: SCENE_MAIN_MENU });
@@ -524,6 +525,19 @@ export class MainMenuScene extends Phaser.Scene {
       renderMuteBtn(true);
     });
 
+    const unsubSettings = settings.onSettingsChange(() => {
+      bgmSlider.setValue(settings.getMusicVolume());
+      sfxSlider.setValue(settings.getSfxVolume());
+      masterSlider.setValue(settings.getMasterVolume());
+      renderMuteBtn(false);
+    });
+    const cleanupModalSettings = () => {
+      unsubSettings();
+      this.events.off('shutdown', cleanupModalSettings);
+    };
+    this.modalCleanup = cleanupModalSettings;
+    this.events.once('shutdown', cleanupModalSettings);
+
     // Phân cách trong tab Audio
     const divAudio = this.add.graphics();
     divAudio.lineStyle(1, 0x3d2b18, 0.8);
@@ -848,6 +862,10 @@ export class MainMenuScene extends Phaser.Scene {
   }
 
   private closeActiveMenuModal(): void {
+    if (this.modalCleanup) {
+      this.modalCleanup();
+      this.modalCleanup = undefined;
+    }
     if (this.activeMenuModal) {
       AudioManager.getInstance().playInteract();
       this.activeMenuModal.destroy();

@@ -216,6 +216,8 @@ export class AudioManager {
 
   // Trạng thái mở khóa AudioContext
   private isUnlocked: boolean = false;
+  private boundUnlockHandler: (() => void) | null = null;
+  private static readonly AUTOPLAY_UNLOCK_EVENTS = ['pointerdown', 'keydown', 'touchstart', 'mousedown', 'click'] as const;
 
   private constructor() {
     this.initAudioContext();
@@ -564,17 +566,15 @@ export class AudioManager {
    * Đăng ký sự kiện người dùng tương tác với trình duyệt để mở khóa âm thanh tự động
    */
   private setupAutoplayUnlock(): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined' || this.isUnlocked) return;
+    this.cleanupAutoplayUnlock();
 
-    const events = ['pointerdown', 'keydown', 'touchstart', 'mousedown', 'click'];
     const unlockHandler = () => {
       this.resumeAudio();
       if (this.ctx && this.ctx.state === 'running') {
         this.isUnlocked = true;
+        this.cleanupAutoplayUnlock();
         this.preloadSampledAudio();
-        for (const ev of events) {
-          window.removeEventListener(ev, unlockHandler);
-        }
         if (this.pendingAmbienceZone) {
           const zone = this.pendingAmbienceZone;
           this.pendingAmbienceZone = null;
@@ -588,8 +588,21 @@ export class AudioManager {
       }
     };
 
-    for (const ev of events) {
+    this.boundUnlockHandler = unlockHandler;
+    for (const ev of AudioManager.AUTOPLAY_UNLOCK_EVENTS) {
       window.addEventListener(ev, unlockHandler, { passive: true, capture: true });
+    }
+  }
+
+  /**
+   * H4-NEW-06: Gỡ sạch toàn bộ capture listener mở khóa autoplay (khớp đúng capture: true)
+   */
+  private cleanupAutoplayUnlock(): void {
+    if (typeof window === 'undefined' || !this.boundUnlockHandler) return;
+    const handler = this.boundUnlockHandler;
+    this.boundUnlockHandler = null;
+    for (const ev of AudioManager.AUTOPLAY_UNLOCK_EVENTS) {
+      window.removeEventListener(ev, handler, { capture: true });
     }
   }
 
@@ -641,6 +654,33 @@ export class AudioManager {
   // 2. ĐIỀU CHỈNH ÂM LƯỢNG & BẬT / TẮT TIẾNG ÊM ÁI (SMOOTH MUTE)
   // =========================================================================
 
+  /**
+   * Bù trừ âm lượng phi phá hủy cho từng nhóm ambience (ambience_forest.mp3 đo gốc -12.8 LUFS)
+   */
+  private getAmbienceZoneTrim(zone: AmbienceZone | null): number {
+    return zone === 'forest' ? 0.28 : 1.0;
+  }
+
+  private getEffectiveAmbienceGain(zone: AmbienceZone | null = this.currentAmbienceZone, multiplier: number = 1.0): number {
+    const duckFactor = this.isDucked ? this.currentDuckFactor : 1.0;
+    return Math.max(0, Math.min(1, this.ambienceVolume * this.getAmbienceZoneTrim(zone) * duckFactor * multiplier));
+  }
+
+  private syncCurrentBGMAudioVolume(): void {
+    if (this.activeBGMRampInterval !== null) {
+      window.clearInterval(this.activeBGMRampInterval);
+      this.activeBGMRampInterval = null;
+    }
+    if (this.currentBGMAudio) {
+      this.currentBGMAudio.volume = this.calculateEffectiveBGMVolume();
+    }
+    if (this.isMuted) {
+      for (const fb of this.fadingBGMAudios) {
+        try { fb.audio.volume = 0; } catch {}
+      }
+    }
+  }
+
   public setMute(muted: boolean): void {
     this.isMuted = muted;
     if (this.masterGain && this.ctx) {
@@ -651,9 +691,7 @@ export class AudioManager {
       // Chuyển âm lượng mượt trong 0.08s loại bỏ tiếng lách tách (pop/click)
       this.masterGain.gain.linearRampToValueAtTime(targetGain, now + 0.08);
     }
-    if (this.currentBGMAudio) {
-      this.currentBGMAudio.volume = this.calculateEffectiveBGMVolume();
-    }
+    this.syncCurrentBGMAudioVolume();
   }
 
   public toggleMute(): boolean {
@@ -675,9 +713,7 @@ export class AudioManager {
       this.masterGain.gain.setValueAtTime(this.masterGain.gain.value, now);
       this.masterGain.gain.linearRampToValueAtTime(this.masterVolume, now + 0.05);
     }
-    if (this.currentBGMAudio) {
-      this.currentBGMAudio.volume = this.calculateEffectiveBGMVolume();
-    }
+    this.syncCurrentBGMAudioVolume();
   }
 
   public getMusicVolume(): number {
@@ -689,10 +725,12 @@ export class AudioManager {
     this.ambienceVolume = Math.max(0, Math.min(1, Math.round(val * 100) / 100));
     if (this.activeAmbience && this.ctx) {
       const now = this.ctx.currentTime;
+      const targetAmbience = this.getEffectiveAmbienceGain(this.activeAmbience.zone);
       this.activeAmbience.gainNode.gain.cancelScheduledValues(now);
       this.activeAmbience.gainNode.gain.setValueAtTime(this.activeAmbience.gainNode.gain.value, now);
-      this.activeAmbience.gainNode.gain.linearRampToValueAtTime(this.ambienceVolume, now + 0.05);
+      this.activeAmbience.gainNode.gain.linearRampToValueAtTime(targetAmbience, now + 0.05);
     }
+    this.setBGMVolume(this.ambienceVolume);
   }
 
   // V15-39: Điều chỉnh âm lượng Nhạc Nền BGM
@@ -703,9 +741,7 @@ export class AudioManager {
   public setBGMVolume(val: number): void {
     this.resumeAudio();
     this.bgmVolume = Math.max(0, Math.min(1, Math.round(val * 100) / 100));
-    if (this.currentBGMAudio) {
-      this.currentBGMAudio.volume = this.calculateEffectiveBGMVolume();
-    }
+    this.syncCurrentBGMAudioVolume();
     if (this.currentBGMGain && this.ctx && !this.isBGMSuppressed) {
       const now = this.ctx.currentTime;
       this.currentBGMGain.gain.cancelScheduledValues(now);
@@ -1008,14 +1044,15 @@ export class AudioManager {
       this.activeAmbience = null;
     }
 
-    // 2. Tạo và Fade-in kênh ambience mới
+    // 2. Tạo và Fade-in kênh ambience mới (áp dụng trim phi phá hủy theo vùng, ví dụ ambience_forest)
+    const initialAmbienceGain = this.getEffectiveAmbienceGain(targetZone);
     const newChannelGain = this.ctx.createGain();
     newChannelGain.gain.setValueAtTime(0.0001, now);
-    newChannelGain.gain.linearRampToValueAtTime(this.ambienceVolume, now + fadeDurationSec);
+    newChannelGain.gain.linearRampToValueAtTime(initialAmbienceGain, now + fadeDurationSec);
     const ambienceDest = this.ambienceFilter || this.veilFilter!;
     newChannelGain.connect(ambienceDest);
     this.windGain = newChannelGain; // Lưu lại để setWindIntensity có thể tinh chỉnh
-    this.lastWindTargetGain = this.ambienceVolume;
+    this.lastWindTargetGain = initialAmbienceGain;
     this.lastWindIntensity = -1;
 
     const nodesToTrack: (AudioNode | number)[] = [newChannelGain];
@@ -1163,15 +1200,11 @@ export class AudioManager {
     if (Math.abs(clamped - this.lastWindIntensity) < 0.05) return;
     this.lastWindIntensity = clamped;
 
-    // AUDIO-HOTFIX-01: Tính toán âm lượng gió tự nhiên theo phân khu
-    // Trong vùng Fog Crossing (vùng gió chính): cường độ gió điều biến nhẹ từ 0.8x đến 1.25x của ambienceVolume
-    // Trong các phân khu khác: giữ nguyên âm lượng không khí của vùng, tăng nhẹ khi vào sương sâu (deep fog)
-    let targetGain: number;
-    if (this.currentAmbienceZone === 'crossing') {
-      targetGain = this.ambienceVolume * Math.min(1.25, 0.75 + clamped * 0.35);
-    } else {
-      targetGain = this.ambienceVolume * (clamped > 1.0 ? 1.15 : 1.0);
-    }
+    // AUDIO-HOTFIX-01: Tính toán âm lượng gió tự nhiên theo phân khu (bảo toàn trim vùng và ducking)
+    const zoneFactor = this.currentAmbienceZone === 'crossing'
+      ? Math.min(1.25, 0.75 + clamped * 0.35)
+      : (clamped > 1.0 ? 1.15 : 1.0);
+    const targetGain = this.getEffectiveAmbienceGain(this.currentAmbienceZone, zoneFactor);
 
     // Chống spam gọi AudioParam làm nghẽn CPU âm thanh
     if (Math.abs(targetGain - this.lastWindTargetGain) >= 0.01) {
@@ -1421,20 +1454,31 @@ export class AudioManager {
       newAudio.loop = true;
       newAudio.volume = 0;
 
-      const targetVol = this.calculateEffectiveBGMVolume(volumeScale);
       const playPromise = newAudio.play();
       if (playPromise !== undefined) {
         playPromise.then(() => {
+          // Ngăn double-BGM nếu track đã bị đổi hoặc dừng trong lúc promise đang chờ resolve
+          if (this.currentBGMAudio !== newAudio || this.currentBGMTrack !== track) {
+            try {
+              newAudio.pause();
+              newAudio.currentTime = 0;
+              newAudio.removeAttribute('src');
+              newAudio.load();
+            } catch {}
+            return;
+          }
           if (this.activeBGMRampInterval !== null) {
             window.clearInterval(this.activeBGMRampInterval);
             this.activeBGMRampInterval = null;
           }
-          this.activeBGMRampInterval = this.rampAudioVolume(newAudio, targetVol, fadeDuration, () => {
+          this.activeBGMRampInterval = this.rampAudioVolume(newAudio, this.calculateEffectiveBGMVolume(volumeScale), fadeDuration, () => {
             this.activeBGMRampInterval = null;
           });
         }).catch(() => {
           // Trình duyệt chặn autoplay khi chưa có tương tác
-          this.pendingBGMTrack = { track, fadeDuration, volumeScale };
+          if (this.currentBGMAudio === newAudio && this.currentBGMTrack === track) {
+            this.pendingBGMTrack = { track, fadeDuration, volumeScale };
+          }
         });
       }
 
@@ -1753,7 +1797,7 @@ export class AudioManager {
     this.currentDuckFactor = duckFactor;
 
     const now = this.ctx.currentTime;
-    const targetGain = this.ambienceVolume * duckFactor;
+    const targetGain = this.getEffectiveAmbienceGain(this.activeAmbience.zone);
     this.activeAmbience.gainNode.gain.cancelScheduledValues(now);
     this.activeAmbience.gainNode.gain.setValueAtTime(this.activeAmbience.gainNode.gain.value, now);
     this.activeAmbience.gainNode.gain.linearRampToValueAtTime(targetGain, now + 0.15);
@@ -1778,9 +1822,10 @@ export class AudioManager {
     this.isDucked = false;
     this.currentDuckFactor = 1.0;
     const now = this.ctx.currentTime;
+    const targetGain = this.getEffectiveAmbienceGain(this.activeAmbience.zone);
     this.activeAmbience.gainNode.gain.cancelScheduledValues(now);
     this.activeAmbience.gainNode.gain.setValueAtTime(this.activeAmbience.gainNode.gain.value, now);
-    this.activeAmbience.gainNode.gain.linearRampToValueAtTime(this.ambienceVolume, now + rampSec);
+    this.activeAmbience.gainNode.gain.linearRampToValueAtTime(targetGain, now + rampSec);
   }
 
   public getIsDucked(): boolean {
@@ -2303,6 +2348,8 @@ export class AudioManager {
       sampleKey = 'dialogue_garth';
     }
 
+    // Ghi chú DEC-LOCK-21 / AUD-K12: Sir Vaelen và Sir Mordric dùng tạm giọng trầm mặc định (dialogue_garth)
+    // cho tới khi có asset thoại riêng được Owner phê duyệt (BLOCKED ON AUDIO ASSET DEPENDENCY).
     if (this.playSampled(sampleKey, 0.8, 1.0, false)) {
       return;
     }
@@ -2576,12 +2623,32 @@ export class AudioManager {
     osc.stop(now + 0.58);
   }
 
+  private fadeOutSampledChannel(key: string): void {
+    if (!this.ctx) return;
+    const channels = this.activeSFXChannels.get(key);
+    if (!channels || channels.length === 0) return;
+    const t = this.ctx.currentTime;
+    while (channels.length > 0) {
+      const ch = channels.shift();
+      if (!ch) continue;
+      ch.gain.gain.cancelScheduledValues(t);
+      ch.gain.gain.setValueAtTime(ch.gain.gain.value, t);
+      ch.gain.gain.setTargetAtTime(0.0001, t, 0.025);
+      setTimeout(() => {
+        try { ch.source.stop(); } catch {}
+        try { ch.source.disconnect(); ch.gain.disconnect(); } catch {}
+      }, 35);
+    }
+  }
+
   public playBronzeBellToll(): void {
     if (!this.ctx || this.isMuted || !this.masterGain) return;
     if (!this.checkCooldown('bronze_bell', 800)) return;
     this.resumeAudio();
+    this.fadeOutSampledChannel('bell_toll_low');
 
-    if (this.playSampled('bronze_bell', 0.9, 1.0, false)) {
+    // Giới hạn maxPolyphony = 1 để không chồng 2 lượt chuông dài 11.22s mà không cắt file âm thanh gốc
+    if (this.playSampled('bronze_bell', 0.9, 1.0, false, 1)) {
       return;
     }
 
@@ -2617,8 +2684,10 @@ export class AudioManager {
     if (!this.ctx || this.isMuted || !this.masterGain || this.isSanctuaryMusicOnly) return;
     if (!this.checkCooldown('cracked_bell', 1500)) return;
     this.resumeAudio();
+    this.fadeOutSampledChannel('bronze_bell');
 
-    if (this.playSampled('bell_toll_low', 0.95, 0.85, false)) {
+    // Giới hạn maxPolyphony = 1 để không chồng 2 lượt chuông nứt dài 11.22s mà không cắt file âm thanh gốc
+    if (this.playSampled('bell_toll_low', 0.95, 0.85, false, 1)) {
       return;
     }
 
@@ -3929,6 +3998,7 @@ export class AudioManager {
   }
 
   public destroy(): void {
+    this.cleanupAutoplayUnlock();
     if (this.activeBGMRampInterval !== null) {
       window.clearInterval(this.activeBGMRampInterval);
       this.activeBGMRampInterval = null;

@@ -1,0 +1,161 @@
+{
+  "branch": "fix/v1.6-b06-audio-lifecycle",
+  "checks": {
+    "autoplay_unlock_cleanup": {
+      "before_click": {
+        "totalCapture": 9,
+        "unlockAdded": 5
+      },
+      "after_click": {
+        "removedTotal": 5,
+        "unlockStillLeaked": 0,
+        "nonUnlockPhaserActive": 4
+      },
+      "passed": true
+    },
+    "slider_synchronization": {
+      "steps": [
+        {
+          "control": "master",
+          "value": 0,
+          "bgmScale": 0.75,
+          "amMaster": 0,
+          "masterGain": 0,
+          "bgmVolAttr": 0,
+          "expectedBgmVol": 0
+        },
+        {
+          "control": "master",
+          "value": 0.5,
+          "bgmScale": 0.75,
+          "amMaster": 0.5,
+          "masterGain": 0.5,
+          "bgmVolAttr": 0.262,
+          "expectedBgmVol": 0.262
+        },
+        {
+          "control": "master",
+          "value": 1,
+          "bgmScale": 0.75,
+          "amMaster": 1,
+          "masterGain": 1,
+          "bgmVolAttr": 0.525,
+          "expectedBgmVol": 0.525
+        },
+        {
+          "control": "music",
+          "value": 0,
+          "bgmScale": 0.75,
+          "amMusic": 0,
+          "amBgm": 0,
+          "ambienceGain": 0,
+          "bgmVolAttr": 0,
+          "expectedBgmVol": 0
+        },
+        {
+          "control": "music",
+          "value": 0.5,
+          "bgmScale": 0.75,
+          "amMusic": 0.5,
+          "amBgm": 0.5,
+          "ambienceGain": 0.5,
+          "bgmVolAttr": 0.375,
+          "expectedBgmVol": 0.375
+        },
+        {
+          "control": "music",
+          "value": 1,
+          "bgmScale": 0.75,
+          "amMusic": 1,
+          "amBgm": 1,
+          "ambienceGain": 1,
+          "bgmVolAttr": 0.75,
+          "expectedBgmVol": 0.75
+        },
+        {
+          "control": "sfx",
+          "value": 0,
+          "amSfx": 0
+        },
+        {
+          "control": "sfx",
+          "value": 0.5,
+          "amSfx": 0.5
+        },
+        {
+          "control": "sfx",
+          "value": 1,
+          "amSfx": 1
+        }
+      ],
+      "passed": true
+    },
+    "mute_sync_and_persistence": {
+      "after_m_mute": {
+        "amMuted": true,
+        "masterGain": 0,
+        "bgmVolAttr": 0,
+        "pauseMuteText": "🔇 TẮT",
+        "storageKeys": {
+          "hw_settings": "{\"masterVolume\":1,\"musicVolume\":0.7,\"sfxVolume\":0.85,\"isMuted\":true,\"screenShakeEnabled\":true,\"screenFlashEnabled\":true,\"reducedMotionEnabled\":false,\"graphicsQuality\":\"HIGH\",\"panicEffectsEnabled\":true,\"lightMotionEnabled\":false,\"panicIntensity\":\"STANDARD\"}",
+          "hollow_woods_settings": "{\"masterVolume\":1,\"musicVolume\":0.7,\"sfxVolume\":0.85,\"isMuted\":true,\"screenShakeEnabled\":true,\"screenFlashEnabled\":true,\"reducedMotionEnabled\":false,\"graphicsQuality\":\"HIGH\",\"panicEffectsEnabled\":true,\"lightMotionEnabled\":false,\"panicIntensity\":\"STANDARD\"}"
+        }
+      },
+      "after_reload_continue": {
+        "amMutedAfterReload": true,
+        "pauseMuteTextAfterReload": "🔇 TẮT"
+      },
+      "after_unmute": {
+        "amMuted": false,
+        "pauseMuteText": "🔊 BẬT",
+        "masterGain": 1
+      },
+      "passed": true
+    },
+    "zone_trim_and_sanctuary": {
+      "measured": {
+        "village": 0.7,
+        "crossing": 0.696,
+        "mire": 0.7,
+        "forest": 0.196,
+        "forest_after_wind": 0.197
+      },
+      "sancActive": true,
+      "sancBgm": "bgm_knights_quiet_fire",
+      "postSancActive": false,
+      "forest_trim_db": -11.06,
+      "passed": true
+    },
+    "dialogue_ducking_and_speech": {
+      "duckedGain": 0.098,
+      "unduckedGain": 0.196,
+      "passed": true
+    },
+    "bell_non_overlap": {
+      "afterDoubleBronze": 1,
+      "bronzeAfterCracked": 0,
+      "crackedCount": 1,
+      "passed": true
+    },
+    "bgm_race_and_scene_lifecycle": {
+      "raceTrack": "bgm_evergrove",
+      "fadingAfterRace": 0,
+      "unlockCaptureLeaked": 0,
+      "totalRemovedCapture": 7,
+      "passed": true
+    }
+  },
+  "errors": [],
+  "console_errors": [],
+  "cutscene_status": "NOT APPLICABLE (A08/A09 not integrated in current branch)",
+  "human_listening_status": "HUMAN LISTENING NOT RUN",
+  "voice_asset_dependency": {
+    "status": "BLOCKED ON AUDIO ASSET DEPENDENCY",
+    "speakers": [
+      "Sir Vaelen",
+      "Sir Mordric"
+    ],
+    "runtime_fallback": "dialogue_garth"
+  },
+  "overall_passed": true
+}

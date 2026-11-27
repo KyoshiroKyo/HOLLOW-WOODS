@@ -1,0 +1,26 @@
+{
+  "baseline_sha": "6fd63fb3d566f9f44777155a7cdeb75631520561",
+  "before": {
+    "autoplay_capture_listeners": {
+      "added": 11,
+      "removed": 0,
+      "stillLeakedCount": 11
+    },
+    "music_vs_bgm_desync": {
+      "requestedMusic": 0.25,
+      "amMusicGetter": 0.25,
+      "amBgmGetter": 0.55,
+      "currentBGMAudioVolume": null
+    },
+    "keyM_mute_desync": {
+      "amMuted": true,
+      "localStorageSettingsRaw": "{}"
+    },
+    "forest_and_bell": {
+      "forestGain": 0.7,
+      "activeBellCount": 2,
+      "speakerFallbackForVaelen": "dialogue_garth (default)"
+    }
+  },
+  "errors": []
+}
