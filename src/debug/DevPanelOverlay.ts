@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import { DeveloperModeManager } from './DeveloperModeManager';
 import type { InspectorLayer } from '../utils/HitboxDebugInspector';
 import itemData from '../data/items.json';
+import { focusGameCanvasSafely } from '../utils/focusHelper';
 
 type DevAction = (...args: unknown[]) => unknown;
 export type DevPanelMode = 'full' | 'compact' | 'pill';
@@ -412,7 +413,7 @@ export class DevPanelOverlay {
       this.timer = null;
     }
     if (restoreFocus) {
-      document.getElementById('game-canvas')?.focus();
+      focusGameCanvasSafely();
     }
   }
 
@@ -890,7 +891,7 @@ export class DevPanelOverlay {
       event.preventDefault();
       this.manager.setEnabled(false);
       this.hide();
-      document.getElementById('game-canvas')?.focus();
+      focusGameCanvasSafely();
       return;
     }
     if (event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement || event.target instanceof HTMLTextAreaElement) {
@@ -903,7 +904,7 @@ export class DevPanelOverlay {
       event.preventDefault();
       this.manager.setEnabled(false);
       this.hide();
-      document.getElementById('game-canvas')?.focus();
+      focusGameCanvasSafely();
     }
   };
 

@@ -14,6 +14,7 @@ import { WorldBuilder } from '../world/WorldBuilder';
 import { CameraSystem } from '../systems/camera/CameraSystem';
 import { DebugOverlay } from '../utils/DebugOverlay';
 import { HitboxDebugInspector } from '../utils/HitboxDebugInspector';
+import { focusGameCanvasSafely } from '../utils/focusHelper';
 import { UIScene } from './UIScene';
 import { PlayerState } from '../state/PlayerState';
 import { SurvivalSystem } from '../systems/SurvivalSystem';
@@ -1676,18 +1677,9 @@ export class GameScene extends Phaser.Scene {
       }
     });
 
-    // V15-48: Tự động ép tiêu điểm bàn phím cho Canvas khi khởi tạo cảnh chơi GameScene
-    const focusCanvas = () => {
-      try {
-        window.focus();
-        if (this.game && this.game.canvas) {
-          this.game.canvas.focus();
-        }
-      } catch {}
-    };
-    focusCanvas();
+    // RT-002 / V15-48: Chỉ trả tiêu điểm bàn phím cho Canvas khi có tương tác người dùng (pointerdown)
     this.input.on('pointerdown', () => {
-      focusCanvas();
+      focusGameCanvasSafely(this.game?.canvas);
     });
   }
 

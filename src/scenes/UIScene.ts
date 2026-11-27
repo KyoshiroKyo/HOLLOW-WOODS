@@ -3,6 +3,7 @@ import * as Phaser from 'phaser';
 import { PlayerState } from '../state/PlayerState';
 import { ZoneAtmosphere, ZoneData, TransitionZone } from '../types';
 import { HDTextHelper } from '../utils/HDTextHelper';
+import { focusGameCanvasSafely } from '../utils/focusHelper';
 import { IDialogueView } from '../systems/DialogueSystem';
 import { CraftingModal } from '../ui/CraftingModal';
 import { JournalModal } from '../ui/JournalModal';
@@ -2993,12 +2994,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
    * V15-48: Trả lại tiêu điểm cho canvas game khi người chơi đóng modal hoặc hội thoại
    */
   public focusGameCanvas(): void {
-    try {
-      window.focus();
-      if (this.game && this.game.canvas) {
-        this.game.canvas.focus();
-      }
-    } catch {}
+    focusGameCanvasSafely(this.game?.canvas);
   }
 
   public get isDialogueActive(): boolean {

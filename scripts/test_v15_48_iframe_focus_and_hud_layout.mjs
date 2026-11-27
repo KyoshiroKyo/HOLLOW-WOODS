@@ -36,8 +36,8 @@ assert(indexHtml.includes('HOLLOW WOODS V1.5'), 'Tiêu đề cập nhật V1.5')
 console.log('\n2. Kiểm tra src/main.ts:');
 const mainTs = fs.readFileSync('src/main.ts', 'utf8');
 assert(mainTs.includes('existingCanvas.tabIndex = 0'), 'Thiết lập existingCanvas.tabIndex = 0');
-assert(mainTs.includes('autoFocus: true'), 'Cấu hình autoFocus: true');
-assert(mainTs.includes('const focusGameCanvas'), 'Có hàm focusGameCanvas');
+assert(!mainTs.includes('autoFocus: true') && mainTs.includes('autoFocus: false'), 'Cấu hình autoFocus: false tuân thủ Permissions Policy (RT-002)');
+assert(mainTs.includes('const focusGameCanvas') && mainTs.includes('focusGameCanvasSafely'), 'Có hàm focusGameCanvas dùng focusGameCanvasSafely (chỉ focus khi có user activation)');
 assert(mainTs.includes("focusCanvas?.addEventListener('pointerdown', focusGameCanvas") &&
   !mainTs.includes("window.addEventListener('pointerdown'"), 'Focus trên canvas, không lấy tiêu điểm của panel ngoài canvas');
 assert(mainTs.includes('window.addEventListener(\'keydown\'') && mainTs.includes('e.preventDefault()'), 'Chặn cuộn trang iframe đối với các phím điều hướng & phím Space');
@@ -63,7 +63,7 @@ assert(gameSceneTs.includes('if (this.currentZoneId === \'fog_crossing\' && spaw
 assert(gameSceneTs.includes('this.isGameOverPending = false'), 'Reset isGameOverPending = false');
 assert(gameSceneTs.includes('this.isDebugBoxesVisible = false'), 'Khung debug mặc định tắt (false)');
 assert(gameSceneTs.includes('this.player.resetAllActionAndMotionStates()'), 'Gọi player.resetAllActionAndMotionStates() khi khởi tạo');
-assert(gameSceneTs.includes('focusCanvas()') && gameSceneTs.includes('this.input.on(\'pointerdown\''), 'Ép tiêu điểm canvas trong GameScene');
+assert(gameSceneTs.includes('focusGameCanvasSafely(this.game?.canvas)') && gameSceneTs.includes('this.input.on(\'pointerdown\''), 'Chỉ focus canvas khi có tương tác pointerdown trong GameScene (RT-002)');
 
 // 5. Kiểm tra src/scenes/UIScene.ts
 console.log('\n5. Kiểm tra src/scenes/UIScene.ts:');
