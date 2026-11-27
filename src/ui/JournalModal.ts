@@ -119,7 +119,7 @@ export class JournalModal {
       landmarks: [
         'Tháp Chuông Cổ Đại (The Great Bell)',
         'Bàn Chế Tạo Dụng Cụ & Thuốc [Phím I]',
-        'Nhà Bà Lão Edda & Thầy Thuốc Neris',
+        'Nhà Edda & Thầy Thuốc Neris',
         'Giếng Nước Cổ & Bảng Cáo Thị Làng',
         'Cổng Đông Phong Ấn Dẫn Sang Rừng Cấm'
       ],

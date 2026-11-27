@@ -32,7 +32,7 @@ export class WhisperTrap {
 
   public static readonly LURE_OPTIONS: WhisperLureOption[] = [
     { speaker: 'Garth', quote: '"Này... Garth đây... Mau lại đây!"' },
-    { speaker: 'Bà lão Edda', quote: '"Lữ khách ơi... ta tìm thấy lối rồi..."' },
+    { speaker: 'Edda', quote: '"Lữ khách ơi... ta tìm thấy lối rồi..."' },
     { speaker: 'Finn', quote: '"Anh ơi! Có thư khẩn từ làng... lại đây!"' },
     { speaker: 'Neris', quote: '"Thuốc thảo mộc của anh xong rồi... mau qua đây..."' },
     { speaker: 'Giọng Quen', quote: '"Ai đó... đang thì thào gọi tên bạn từ trong sương..."' }
