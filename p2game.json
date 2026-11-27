@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "hollow-woods",
   "name": "HOLLOW WOODS",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "sdk": {
     "version": "1.1",
     "cloudSave": true

@@ -69,7 +69,7 @@ export class MainMenuScene extends Phaser.Scene {
       strokeThickness: 1.5,
     }).setLetterSpacing(1.2);
     this.add.rectangle(80, 204, 114, 2, 0xC8963E).setOrigin(0, 0);
-    HDTextHelper.createText(this, 1254, 702, 'V1.6.0', {
+    HDTextHelper.createText(this, 1254, 702, 'V1.6.1', {
       fontSize: '12px',
       color: '#98a391',
       stroke: '#080c09',

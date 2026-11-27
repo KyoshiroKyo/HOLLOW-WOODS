@@ -3603,7 +3603,11 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       danger: { text: '#ff7675', border: 0xc0392b, bg: 0x241010 }
     };
     const style = palette[severity];
-    const maxTextW = 580;
+    const inset = 14;
+    const lift = 20;
+    const viewW = this.scale.gameSize.width;
+    const viewH = this.scale.gameSize.height;
+    const maxTextW = Math.min(580, Math.max(1, viewW - 2 * inset - 36));
 
     // BUG-028: Tái sử dụng Container pooled đặt tại Y=205 trôi nhẹ lên Y=195 -> Y=185, tách biệt Zone Banner
     if (!this.pooledPopupContainer || !this.pooledPopupBg || !this.pooledPopupText) {
@@ -3627,17 +3631,22 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     const popup = this.pooledPopupText;
 
     popup.setColor(style.text);
+    popup.setWordWrapWidth(maxTextW, true);
     popup.setText(msg);
+    const textScale = Math.min(1, maxTextW / Math.max(1, popup.width),
+      Math.max(1, viewH - 2 * inset - lift - 18) / Math.max(1, popup.height));
+    popup.setScale(textScale);
 
-    const boxW = Math.min(620, Math.max(220, Math.ceil(popup.width) + 36));
-    const boxH = Math.max(38, Math.ceil(popup.height) + 18);
+    const boxW = Math.min(viewW - 2 * inset, Math.max(220, Math.ceil(popup.displayWidth) + 36));
+    const boxH = Math.max(38, Math.ceil(popup.displayHeight) + 18);
+    const startY = Phaser.Math.Clamp(205, inset + lift + boxH / 2, viewH - inset - boxH / 2);
     bg.clear();
     bg.fillStyle(style.bg, 0.94);
     bg.fillRoundedRect(-boxW / 2, -boxH / 2, boxW, boxH, 6);
     bg.lineStyle(1.5, style.border, 0.9);
     bg.strokeRoundedRect(-boxW / 2, -boxH / 2, boxW, boxH, 6);
 
-    container.setPosition(640, 205);
+    container.setPosition(viewW / 2, startY);
     container.setAlpha(1);
     container.setVisible(true);
 
@@ -3649,14 +3658,14 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     this.activePopupTween = this.tweens.add({
       targets: container,
-      y: 195,
+      y: startY - lift / 2,
       duration: 250,
       ease: 'Quad.easeOut',
       onComplete: () => {
         this.activePopupTween = this.tweens.add({
           targets: container,
           alpha: 0,
-          y: 185,
+          y: startY - lift,
           delay: holdDuration,
           duration: fadeDuration,
           ease: 'Quad.easeIn',
