@@ -239,8 +239,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   private lastPromptAlpha: number = -1;
 
   // Quản lý Popup duy nhất tránh tích tụ Tween và cấp phát rác (GATE 3B, C4-13-09)
-  private activePopup?: Phaser.GameObjects.Text;
+  private activePopup?: Phaser.GameObjects.Container;
   private activePopupTween?: Phaser.Tweens.Tween;
+  private pooledPopupContainer?: Phaser.GameObjects.Container;
+  private pooledPopupBg?: Phaser.GameObjects.Graphics;
   private pooledPopupText?: Phaser.GameObjects.Text;
   private lastPoulticeTime: number = 0;
   private lastOilTime: number = 0;
@@ -757,7 +759,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.zoneBadgeMapBtn = undefined;
       if (this.parchmentWorldMapModal) { this.parchmentWorldMapModal.destroy(); this.parchmentWorldMapModal = undefined as any; }
       if (this.tornPageModal) { this.tornPageModal.destroy(); this.tornPageModal = undefined as any; }
-      if (this.pooledPopupText) { this.pooledPopupText.destroy(); this.pooledPopupText = undefined as any; }
+      if (this.pooledPopupContainer) { this.pooledPopupContainer.destroy(); this.pooledPopupContainer = undefined; this.pooledPopupBg = undefined; this.pooledPopupText = undefined; }
       if (this.activePanicFadeTween) { this.activePanicFadeTween.stop(); this.activePanicFadeTween = undefined; }
       if (this.panicVignetteGraphics) { this.panicVignetteGraphics.clear(); this.panicVignetteGraphics = undefined as any; }
       if (this.activeRedDangerTween) { this.activeRedDangerTween.stop(); this.activeRedDangerTween = undefined; }
@@ -3520,53 +3522,111 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     }
   }
 
-  public showPopupMessage(msg: string): void {
+  private resolvePopupSeverity(msg: string, explicit?: 'success' | 'info' | 'warning' | 'danger'): 'success' | 'info' | 'warning' | 'danger' {
+    if (explicit) return explicit;
+    const lower = msg.toLocaleLowerCase();
+    if (
+      msg.includes('💀') || msg.includes('🩸') || msg.includes('❌') || msg.includes('💔') ||
+      lower.includes('nguy kịch') || lower.includes('tử vong') || lower.includes('hấp hối') ||
+      lower.includes('cạn kiệt') || lower.includes('tuyệt vọng')
+    ) {
+      return 'danger';
+    }
+    if (
+      msg.includes('⚠️') || msg.includes('👁️') || msg.includes('🦇') || msg.includes('🍂') ||
+      lower.includes('quạ bóng tối') || lower.includes('kẻ lắng nghe') || lower.includes('tinh thần') && lower.includes('gặm nhấm') ||
+      lower.includes('tâm trí đang rạn nứt') || lower.includes('rút cạn tinh thần') ||
+      lower.includes('chưa có') || lower.includes('không đủ') || lower.includes('đang khóa')
+    ) {
+      return 'warning';
+    }
+    if (
+      msg.includes('✔') || msg.includes('✅') || msg.includes('🎉') || msg.includes('⚔') ||
+      msg.includes('👑') || msg.includes('🌿') || msg.includes('🏮') || msg.includes('🍵') ||
+      msg.includes('💚') || msg.includes('✨') ||
+      lower.includes('thành công') || lower.includes('đã mở') || lower.includes('nhận được') ||
+      lower.includes('thu được') || lower.includes('hoàn thành') || lower.includes('xua tan') ||
+      lower.includes('đã dùng') || lower.includes('đã ăn') || lower.includes('đã trang bị') || lower.includes('đã thắp')
+    ) {
+      return 'success';
+    }
+    return 'info';
+  }
+
+  public showPopupMessage(msg: string, explicitSeverity?: 'success' | 'info' | 'warning' | 'danger'): void {
     if (this.activePopupTween) {
       this.activePopupTween.stop();
       this.activePopupTween = undefined;
     }
 
-    // BUG-028: Tái sử dụng Text pooled đặt tại Y=205 trôi nhẹ lên Y=195 -> Y=185, hoàn toàn tách biệt khỏi Zone Banner (Y=138, đáy 165)
-    if (!this.pooledPopupText) {
-      this.pooledPopupText = HDTextHelper.createText(this, 640, 205, '', {
-        fontSize: '15px',
+    const severity = this.resolvePopupSeverity(msg, explicitSeverity);
+    const palette: Record<'success' | 'info' | 'warning' | 'danger', { text: string; border: number; bg: number }> = {
+      success: { text: '#66d99a', border: 0x38b87c, bg: 0x101c15 },
+      info: { text: '#E8DFC8', border: 0x8d7b56, bg: 0x151813 },
+      warning: { text: '#f3b64e', border: 0xC8963E, bg: 0x20180d },
+      danger: { text: '#ff7675', border: 0xc0392b, bg: 0x241010 }
+    };
+    const style = palette[severity];
+    const maxTextW = 580;
+
+    // BUG-028: Tái sử dụng Container pooled đặt tại Y=205 trôi nhẹ lên Y=195 -> Y=185, tách biệt Zone Banner
+    if (!this.pooledPopupContainer || !this.pooledPopupBg || !this.pooledPopupText) {
+      this.pooledPopupContainer = this.add.container(640, 205).setDepth(10000);
+      this.pooledPopupBg = this.add.graphics();
+      this.pooledPopupText = HDTextHelper.createText(this, 0, 0, '', {
+        fontSize: '14.5px',
         fontStyle: 'bold',
-        color: '#2ecc71',
-        backgroundColor: '#0b0e14ee',
-        padding: { x: 16, y: 8 },
+        color: style.text,
+        align: 'center',
         stroke: '#000000',
-        strokeThickness: 2
-      }).setOrigin(0.5, 0.5).setDepth(10000);
+        strokeThickness: 2,
+        wordWrap: { width: maxTextW, useAdvancedWrap: true },
+        lineSpacing: 3
+      }).setOrigin(0.5, 0.5);
+      this.pooledPopupContainer.add([this.pooledPopupBg, this.pooledPopupText]);
     }
 
+    const container = this.pooledPopupContainer;
+    const bg = this.pooledPopupBg;
     const popup = this.pooledPopupText;
-    popup.setText(msg);
-    popup.setPosition(640, 205);
-    popup.setAlpha(1);
-    popup.setVisible(true);
 
-    this.activePopup = popup;
+    popup.setColor(style.text);
+    popup.setText(msg);
+
+    const boxW = Math.min(620, Math.max(220, Math.ceil(popup.width) + 36));
+    const boxH = Math.max(38, Math.ceil(popup.height) + 18);
+    bg.clear();
+    bg.fillStyle(style.bg, 0.94);
+    bg.fillRoundedRect(-boxW / 2, -boxH / 2, boxW, boxH, 6);
+    bg.lineStyle(1.5, style.border, 0.9);
+    bg.strokeRoundedRect(-boxW / 2, -boxH / 2, boxW, boxH, 6);
+
+    container.setPosition(640, 205);
+    container.setAlpha(1);
+    container.setVisible(true);
+
+    this.activePopup = container;
 
     // V152-06A: Tăng thời lượng hiển thị thông báo lên 4.5 đến 6.0 giây (+40ms/ký tự, tối đa 7.5s) kèm fade-out 0.5s
     const holdDuration = Math.min(7000, Math.max(4000, 4000 + msg.length * 40));
     const fadeDuration = 500;
 
     this.activePopupTween = this.tweens.add({
-      targets: popup,
+      targets: container,
       y: 195,
       duration: 250,
       ease: 'Quad.easeOut',
       onComplete: () => {
         this.activePopupTween = this.tweens.add({
-          targets: popup,
+          targets: container,
           alpha: 0,
           y: 185,
           delay: holdDuration,
           duration: fadeDuration,
           ease: 'Quad.easeIn',
           onComplete: () => {
-            popup.setVisible(false);
-            if (this.activePopup === popup) {
+            container.setVisible(false);
+            if (this.activePopup === container) {
               this.activePopup = undefined;
               this.activePopupTween = undefined;
             }
