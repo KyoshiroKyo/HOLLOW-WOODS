@@ -2252,6 +2252,9 @@ export class GameScene extends Phaser.Scene {
       this.triggerAct0AtmosphereTelegraph();
     }
 
+    // Group 3 — HW-V16-COMPETITION-01: Booth Micro-Guidance hints (một lần duy nhất mỗi phiên)
+    this.updateBoothMicroHints();
+
     // C4-14-B04: Cân bằng nhịp độ Sanctuary an toàn vs Rừng Sương Mù nguy hiểm
     this.updateSanctuaryAndWildernessAtmosphere(delta);
 
@@ -3441,6 +3444,49 @@ export class GameScene extends Phaser.Scene {
     this.time.delayedCall(1200, () => {
       this.audioManager?.playBronzeBellToll();
     });
+  }
+
+  /**
+   * Group 3 — HW-V16-COMPETITION-01: Booth Micro-Guidance hints
+   * Hiển thị gợi ý điều khiển bối cảnh lần đầu, một lần duy nhất mỗi phiên.
+   * Dùng flags vĩnh viễn để không lặp lại khi tải save.
+   */
+  private updateBoothMicroHints(): void {
+    if (!this.player || !this.playerState || !this.uiScene) return;
+
+    const ps = this.playerState;
+    const comp = ps.stats.composure;
+    const lanternOn = Boolean(this.player.stats.isLanternOn && this.player.stats.lanternOil > 0);
+
+    // Hint 1: Composure < 85 và đèn tắt → gợi ý [F] Vòng Sáng
+    if (comp < 85 && !lanternOn && !ps.hasFlag('hint_lantern_shown')) {
+      ps.setFlag('hint_lantern_shown');
+      this.uiScene.showPopupMessage('🌀 [F] Bật Vòng Sáng Hộ Tâm để bảo vệ Tinh Thần trong màn sương!');
+    }
+
+    // Hint 2: Lần đầu vào Bellhollow và chưa nói chuyện với bất kỳ dân làng nào → gợi ý [E]
+    if (
+      this.currentZoneId === 'bellhollow' &&
+      !ps.hasFlag('hint_interact_shown') &&
+      !ps.hasFlag('talked_to_garth') &&
+      !ps.hasFlag('talked_to_edda')
+    ) {
+      ps.setFlag('hint_interact_shown');
+      this.uiScene.showPopupMessage('💬 [E] để trò chuyện với dân làng — họ có thông tin và vật phẩm hữu ích!');
+    }
+
+    // Hint 3: Lần đầu đến Bellhollow (khu trung tâm) → gợi ý [J] Sổ tay
+    if (
+      this.currentZoneId === 'bellhollow' &&
+      !ps.hasFlag('hint_journal_shown')
+    ) {
+      ps.setFlag('hint_journal_shown');
+      this.time.delayedCall(3000, () => {
+        if (this.uiScene) {
+          this.uiScene.showPopupMessage('📔 [J] mở Sổ Tay để xem Lộ Trình và theo dõi nhiệm vụ!');
+        }
+      });
+    }
   }
 
   /**

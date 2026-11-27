@@ -667,6 +667,54 @@ export class MainMenuScene extends Phaser.Scene {
       30
     );
 
+    // Group 3 — Demo Reset: nút đặt lại demo 2 bước (tránh nhấn nhầm tại gian hàng)
+    const demoResetBtn = this.add.container(0, -modalH / 2 + 362);
+    const demoResetBg = this.add.graphics();
+    let demoResetStep = 0; // 0 = bình thường, 1 = chờ xác nhận
+    const demoResetTxt = HDTextHelper.createText(this, 0, 0, '🔄 Đặt Lại Demo', {
+      fontSize: '11px',
+      fontStyle: 'bold',
+      color: '#f39c12'
+    }).setOrigin(0.5, 0.5);
+    const drawDemoResetBg = (step: number) => {
+      demoResetBg.clear();
+      demoResetBg.fillStyle(step === 0 ? 0x2c1a0a : 0x7a1a1a, 0.9);
+      demoResetBg.fillRoundedRect(-190, -13, 380, 26, 4);
+      demoResetBg.lineStyle(1, step === 0 ? 0xc8963e : 0xe74c3c, 0.8);
+      demoResetBg.strokeRoundedRect(-190, -13, 380, 26, 4);
+    };
+    drawDemoResetBg(0);
+    demoResetBtn.add([demoResetBg, demoResetTxt]);
+    demoResetBtn.setSize(380, 26);
+    demoResetBtn.setInteractive(new Phaser.Geom.Rectangle(-190, -13, 380, 26), Phaser.Geom.Rectangle.Contains);
+    demoResetBtn.on('pointerover', () => {
+      demoResetTxt.setColor(demoResetStep === 0 ? '#ffd700' : '#ff6b6b');
+    });
+    demoResetBtn.on('pointerout', () => {
+      demoResetTxt.setColor(demoResetStep === 0 ? '#f39c12' : '#ff4444');
+    });
+    demoResetBtn.on('pointerdown', () => {
+      if (demoResetStep === 0) {
+        demoResetStep = 1;
+        demoResetTxt.setText('⚠️ XÁC NHẬN XÓA — Nhấn lại để đặt lại demo').setColor('#ff4444');
+        drawDemoResetBg(1);
+        // Tự động hủy xác nhận sau 4 giây nếu không nhấn
+        this.time.delayedCall(4000, () => {
+          if (demoResetStep === 1) {
+            demoResetStep = 0;
+            demoResetTxt.setText('🔄 Đặt Lại Demo').setColor('#f39c12');
+            drawDemoResetBg(0);
+          }
+        });
+      } else {
+        // Bước 2: thực sự xóa
+        demoResetStep = 0;
+        SaveManager.clearSave();
+        this.onSaveDataCleared();
+        this.closeActiveMenuModal();
+      }
+    });
+
     audioTabGroup.add([
       bgmSlider.container,
       sfxSlider.container,
@@ -674,7 +722,8 @@ export class MainMenuScene extends Phaser.Scene {
       muteBtnContainer,
       divAudio,
       saveSectionLabel,
-      clearSaveBtn
+      clearSaveBtn,
+      demoResetBtn
     ]);
 
     // --- TAB 2: HÌNH ẢNH & TIẾP CẬN ---
