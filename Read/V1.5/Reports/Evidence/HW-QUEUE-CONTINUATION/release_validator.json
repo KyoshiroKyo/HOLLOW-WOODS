@@ -1,0 +1,137 @@
+{
+  "passed": true,
+  "checksPassed": 23,
+  "checksTotal": 23,
+  "errors": [],
+  "warnings": [
+    "Unreferenced legacy files in public/media/ (6): avatar_512x512.png, cover_banner_1280x720.png, screen_01_bellhollow_v15.png, screen_02_sir_vaelen_fire.png, screen_03_crafting_ui.png, screen_04_boss_shadow.png"
+  ],
+  "distSummary": {
+    "fileCount": 292,
+    "totalBytes": 83436848,
+    "totalMB": 79.57,
+    "jsChunks": {
+      "assets/game-data-D5oZvJAV.js": 190694,
+      "assets/index-Bq1TNt6T.js": 1295863,
+      "assets/vendor-phaser-DeZ2BOCs.js": 1685164,
+      "startup-status.js": 1774
+    }
+  },
+  "checks": [
+    {
+      "name": "package.json baseline version is 1.6.1",
+      "passed": true,
+      "detail": "got 1.6.1"
+    },
+    {
+      "name": "root p2game.json version matches package.json",
+      "passed": true,
+      "detail": "1.6.1 vs 1.6.1"
+    },
+    {
+      "name": "public/p2game.json version matches package.json",
+      "passed": true,
+      "detail": "1.6.1 vs 1.6.1"
+    },
+    {
+      "name": "p2game.json identity metadata valid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "p2game.json entry & sdk valid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "public media exists: media/hollow_woods_avatar.png",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "public media exists: media/hollow_woods_avatar.png",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "public media exists: media/hollow_woods_black_knight_cover.png",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "public media exists: media/hollow_woods_black_knight_cover.png",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "public media exists: media/screen_v153_01_main_menu.png",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "public media exists: media/screen_v153_02_bellhollow.png",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "public media exists: media/screen_v153_03_outer_woods.png",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "public media exists: media/screen_v153_04_crooked_path.png",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "public media exists: media/screen_v153_05_silent_mire.png",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "public media exists: media/screen_v153_06_crafting.png",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "dist/index.html exists",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "dist/index.html uses strictly relative URLs",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "dist/index.html obeys P2Game sandbox rules",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "dist/startup-status.js present and relative",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "dist/p2game.json exists",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Zero forbidden archives/backups in dist/",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "UI font regular.woff bundled in dist/",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "UI font bold.woff bundled in dist/",
+      "passed": true,
+      "detail": ""
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "script": "verify_b07_edda_save_migration.mjs",
+    "exit": 0
+  },
+  {
+    "script": "verify_v16_b05_quest_hardening.mjs",
+    "exit": 0
+  },
+  {
+    "script": "test_v153_save_schema3.mjs",
+    "exit": 0
+  },
+  {
+    "script": "test_v15_48_iframe_focus_and_hud_layout.mjs",
+    "exit": 0
+  },
+  {
+    "script": "test_v152_08_p2game_sdk.mjs",
+    "exit": 0
+  },
+  {
+    "script": "test_v153_dev_score_safety.mjs",
+    "exit": 0
+  }
+]

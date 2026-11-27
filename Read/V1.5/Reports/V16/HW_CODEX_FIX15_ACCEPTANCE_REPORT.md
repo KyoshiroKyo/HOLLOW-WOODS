@@ -46,3 +46,8 @@
 ## Bổ sung HW-CODEX-MAP-02
 
 Chromium production **4/4**, Private QA **2/2**, validator P2Game local **23/23**. Bản đồ địa hình chỉ vén sương theo khám phá và vẫn giữ gợi ý nhiệm vụ. Save/Continue bảo toàn tiến trình bản đồ. Năm phân khu chưa hoàn thiện vẫn đóng. Các kết quả FIX15 trước đó và SHA của ZIP Competition Candidate giữ nguyên. MAP-02 đã kiểm thử từ bản build riêng. [Báo cáo MAP-02, ảnh trước/sau và hiệu năng](HW_CODEX_MAP_02_REPORT.md).
+
+
+## Queue Continuation — Final Acceptance
+
+RELEASE-QA local đạt Chromium **25/25**, Private QA **4/4** và validator P2Game **23/23**. Ứng viên mới được lưu riêng, ZIP dự thi và các bảng nghiệm thu trước được giữ. [Kết quả ANIM, WORLD, QUEST, INPUT, PERF và Release QA](HW_CODEX_RELEASE_QA_CONTINUATION_REPORT.md).
