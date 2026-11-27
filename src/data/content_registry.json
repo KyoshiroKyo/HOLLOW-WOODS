@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "version": "1.5.5",
+  "version": "1.6.0",
   "updatedAt": "2026-11-17T16:25:00Z",
   "project": "HOLLOW WOODS: The Fog That Remembers",
   "architecture": "4-Tier Content Registry & Safe Alias Resolution",

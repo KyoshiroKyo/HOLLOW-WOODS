@@ -505,7 +505,7 @@ export class SaveManager {
     return {
       saveVersion: SaveManager.CURRENT_SCHEMA_VERSION,
       saveSchemaVersion: SaveManager.CURRENT_SCHEMA_VERSION,
-      version: '1.5.5',
+      version: '1.6.0',
       timestamp: Date.now(),
       checkpointName,
       zoneId,
