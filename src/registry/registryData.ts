@@ -793,7 +793,7 @@ export const INITIAL_CONTENT_ENTRIES: ContentEntry[] = [
   // 5. NPCS (NPC)
   // ==========================================
   { id: 'HW-NPC-VILLAGER-000001', type: 'NPC', subType: 'VILLAGER', slug: 'garth', nameVi: 'Garth – Người Gác Cổng', nameEn: 'Garth the Gatekeeper', runtimeKey: 'npc_garth', status: 'CONFIRMED_V1_3', introducedIn: '1.0.0' },
-  { id: 'HW-NPC-VILLAGER-000002', type: 'NPC', subType: 'VILLAGER', slug: 'edda', nameVi: 'Bà Lão Edda – Người Giữ Chuông', nameEn: 'Elder Edda the Bellkeeper', runtimeKey: 'npc_edda', status: 'CONFIRMED_V1_3', introducedIn: '1.0.0' },
+  { id: 'HW-NPC-VILLAGER-000002', type: 'NPC', subType: 'VILLAGER', slug: 'edda', nameVi: 'Edda – Người Giữ Chuông', nameEn: 'Edda the Bellkeeper', runtimeKey: 'npc_edda', status: 'CONFIRMED_V1_3', introducedIn: '1.0.0' },
   { id: 'HW-NPC-VILLAGER-000003', type: 'NPC', subType: 'VILLAGER', slug: 'neris', nameVi: 'Neris – Thầy Thuốc Thảo Mộc', nameEn: 'Neris the Herbalist', runtimeKey: 'npc_neris', status: 'CONFIRMED_V1_3', introducedIn: '1.0.0' },
   { id: 'HW-NPC-VILLAGER-000004', type: 'NPC', subType: 'VILLAGER', slug: 'bram', nameVi: 'Bram – Thợ Rèn', nameEn: 'Bram the Blacksmith', runtimeKey: 'npc_bram', status: 'CONFIRMED_V1_3', introducedIn: '1.0.0' },
   { id: 'HW-NPC-VILLAGER-000005', type: 'NPC', subType: 'VILLAGER', slug: 'finn', nameVi: 'Finn – Cậu Bé Đưa Tin', nameEn: 'Finn the Messenger Boy', runtimeKey: 'npc_finn', status: 'CONFIRMED_V1_3', introducedIn: '1.0.0' },
