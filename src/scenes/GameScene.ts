@@ -544,6 +544,23 @@ export class GameScene extends Phaser.Scene {
         if (this.uiScene) {
           this.uiScene.showPopupMessage('🌿 Neris đã nhận Hoa Mạch Rễ và sắc thành công Trà An Thần Thượng Hạng!');
         }
+      } else if (completedPayload?.onCompleteFlag === 'talked_to_finn_rumors') {
+        this.playerState.setFlag('finn_talked');
+        this.playerState.completeQuestTask('SQ05_FINN_INTEL', 't1');
+      } else if (completedPayload?.onCompleteFlag === 'campfire_knight_q3_completed') {
+        const wasRevealed = this.playerState.canRevealPlayerIdentity();
+        this.playerState.completeQuestTask('SQ08_PURIFY_FALLEN', 't1');
+        this.playerState.completeQuestTask('SQ08_PURIFY_FALLEN', 't2');
+        this.playerState.completeQuestTask('SQ08_PURIFY_FALLEN', 't3');
+        const stageAdvanced = this.promoteToMemoryStage3();
+        const justRevealed = !wasRevealed && this.playerState.canRevealPlayerIdentity();
+        if (this.uiScene) {
+          this.uiScene.redrawStats();
+          if (!justRevealed && stageAdvanced && !this.playerState.hasFlag('vaelen_q3_completion_notified')) {
+            this.playerState.setFlag('vaelen_q3_completion_notified');
+            this.uiScene.showPopupMessage('⚔️ THỨC TỈNH KÝ ỨC: Mảnh ký ức về Quân Huy Đoàn Kỵ Sĩ Hắc Lang đã khép lại!');
+          }
+        }
       }
     });
     this.inventorySystem = new InventorySystem(this);
@@ -1536,7 +1553,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     if (npcId === 'npc_finn') {
-      if (!this.playerState.isQuestTaskCompleted('SQ05_FINN_INTEL', 't1') && !this.playerState.hasFlag('finn_talked')) {
+      if (!this.playerState.isQuestTaskCompleted('SQ05_FINN_INTEL', 't1') && !this.playerState.hasFlag('talked_to_finn_rumors') && !this.playerState.hasFlag('finn_talked')) {
         return 'new';
       }
       return 'none';
@@ -1544,9 +1561,7 @@ export class GameScene extends Phaser.Scene {
 
     if (npcId === 'npc_campfire_knight') {
       if (this.playerState.hasFlag('campfire_knight_q3_accepted') && !this.playerState.hasFlag('campfire_knight_q3_completed')) {
-        const hasCorruptedCrest = (this.playerState.getItemCount('quest_corrupted_crest') > 0 ||
-                                   this.playerState.hasFlag('boss_hooded_knight_defeated'));
-        if (hasCorruptedCrest) return 'complete';
+        if (this.playerState.hasFlag('boss_hooded_knight_defeated')) return 'complete';
       } else if (this.playerState.hasFlag('campfire_knight_q2_accepted') && !this.playerState.hasFlag('campfire_knight_q2_completed')) {
         const hasRunedIron = (this.playerState.getItemCount('mat_runed_iron') > 0 ||
                               this.playerState.getItemCount('item_knight_journal_page') > 0 ||
@@ -4292,7 +4307,7 @@ export class GameScene extends Phaser.Scene {
       this.triggerCreatureObservationsForZone(this.currentZoneId);
 
       // V1.4 - P6: Tự động kích hoạt trận đấu trùm Miếu Chuông khi bước vào phân khu sau khi giải Cổ Ngữ
-      if (trans.toZone === 'broken_bell_shrine' && !this.playerState.hasFlag('boss_mire_warden_defeated') && (this.playerState.hasFlag('mire_pillars_solved') || this.playerState.hasFlag('mire_puzzle_solved'))) {
+      if (trans.toZone === 'broken_bell_shrine' && !this.playerState.hasFlag('boss_mire_warden_defeated') && (this.playerState.hasFlag('mire_root_seal_broken') || this.playerState.hasFlag('shrine_bridge_lowered') || this.playerState.hasFlag('mire_pillars_solved') || this.playerState.hasFlag('mire_puzzle_solved'))) {
         this.time.delayedCall(800, () => {
           this.triggerMireWardenBossEncounter();
         });
@@ -4385,7 +4400,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     // V1.4 - P6: Tự động kích hoạt trận đấu trùm Miếu Chuông khi bước vào phân khu sau khi giải Cổ Ngữ
-    if (trans.toZone === 'broken_bell_shrine' && !this.playerState.hasFlag('boss_mire_warden_defeated') && (this.playerState.hasFlag('mire_pillars_solved') || this.playerState.hasFlag('mire_puzzle_solved'))) {
+    if (trans.toZone === 'broken_bell_shrine' && !this.playerState.hasFlag('boss_mire_warden_defeated') && (this.playerState.hasFlag('mire_root_seal_broken') || this.playerState.hasFlag('shrine_bridge_lowered') || this.playerState.hasFlag('mire_pillars_solved') || this.playerState.hasFlag('mire_puzzle_solved'))) {
       this.time.delayedCall(800, () => {
         this.triggerMireWardenBossEncounter();
       });
@@ -4803,10 +4818,11 @@ export class GameScene extends Phaser.Scene {
             } else if (npc.spec.id === 'npc_finn') {
               if (this.playerState.canRevealPlayerIdentity()) {
                 dKey = 'finn_black_knight_reverence';
-              } else {
+              } else if (!this.playerState.hasFlag('talked_to_finn_rumors')) {
                 dKey = 'finn_rumors';
+              } else {
+                dKey = 'finn_chat';
               }
-              this.playerState.completeQuestTask('SQ05_FINN_INTEL', 't1');
             } else if (npc.spec.id === 'npc_campfire_knight') {
               CampSanctuarySystem.getInstance().onDialogueStart(this.player.x);
               const hasPurificationKey = this.playerState.getItemCount('quest_purification_key') > 0 || this.playerState.hasFlag('has_purification_key');
@@ -4819,9 +4835,16 @@ export class GameScene extends Phaser.Scene {
                 dKey = 'vaelen_reminder_use_purification_key';
               } else if (hasMold && hasRune) {
                 dKey = 'vaelen_forge_purification_key';
-                QuestSystem.getInstance().craftPurificationKey(this.playerState);
+                const wasRevealed = this.playerState.canRevealPlayerIdentity();
+                const crafted = QuestSystem.getInstance().craftPurificationKey(this.playerState);
+                if (crafted) {
+                  this.promoteToMemoryStage3();
+                }
+                const justRevealed = !wasRevealed && this.playerState.canRevealPlayerIdentity();
                 if (this.uiScene) {
-                  this.uiScene.showPopupMessage('🔑 Sir Vaelen đã tôi luyện thành công: [Chìa Khóa Thanh Tẩy]!');
+                  if (!justRevealed) {
+                    this.uiScene.showPopupMessage('🔑 Sir Vaelen đã tôi luyện thành công: [Chìa Khóa Thanh Tẩy]!');
+                  }
                   this.uiScene.updateQuestTracker();
                 }
               } else if (hasMold) {
@@ -4833,23 +4856,9 @@ export class GameScene extends Phaser.Scene {
               } else if (this.playerState.hasFlag('campfire_knight_q3_completed')) {
                 dKey = 'campfire_knight_idle_talk';
               } else if (this.playerState.hasFlag('campfire_knight_q3_accepted')) {
-                const hasCorruptedCrest = (this.playerState.getItemCount('quest_corrupted_crest') > 0 ||
-                                           this.playerState.hasFlag('boss_hooded_knight_defeated'));
-                if (hasCorruptedCrest) {
+                const hasDefeatedMordric = this.playerState.hasFlag('boss_hooded_knight_defeated');
+                if (hasDefeatedMordric) {
                   dKey = 'campfire_knight_q3_complete';
-                  this.playerState.completeQuestTask('SQ08_PURIFY_FALLEN', 't1');
-                  this.playerState.completeQuestTask('SQ08_PURIFY_FALLEN', 't2');
-                  this.playerState.completeQuestTask('SQ08_PURIFY_FALLEN', 't3');
-                  this.playerState.setFlag('campfire_knight_q3_completed');
-
-                  // V14-P8-15B & HW-V16-A06: Nâng tiến trình Ký Ức lên Stage 3, giữ nguyên Reveal Gate (Stage >= 3 AND Approved Evidence)
-                  this.playerState.setMemoryAwakeningStage(3);
-                  this.events.emit('memory_awakening_stage_changed', 3);
-                  this.events.emit('memory_awakening_completed');
-                  if (this.uiScene) {
-                    this.uiScene.redrawStats();
-                    this.uiScene.showPopupMessage('⚔️ THỨC TỈNH KÝ ỨC: Mảnh ký ức về Quân Huy Đoàn Kỵ Sĩ Hắc Lang đã khép lại!');
-                  }
                 } else {
                   dKey = 'campfire_knight_q3_reminder';
                 }
@@ -6148,15 +6157,25 @@ export class GameScene extends Phaser.Scene {
       }
 
       if (sealState.canBreak) {
+        const wasRevealed = this.playerState.canRevealPlayerIdentity();
+        const prevStage = this.playerState.memoryAwakeningStage;
         questSys.unlockBridge(this.playerState);
+        if (prevStage < 3 && this.playerState.memoryAwakeningStage >= 3) {
+          this.events.emit('memory_awakening_stage_changed', 3);
+          this.events.emit('memory_awakening_completed');
+        }
         if (this.cameraSystem) {
           this.cameraSystem.shake(450, 0.015);
         } else if (SettingsManager.getInstance().isScreenShakeEnabled()) {
           this.cameras.main.shake(450, 0.015);
         }
         this.audioManager.playBronzeBellToll();
+        const justRevealed = !wasRevealed && this.playerState.canRevealPlayerIdentity();
         if (this.uiScene) {
-          this.uiScene.showPopupMessage('🌟 CHÌA KHÓA THANH TẨY PHÁ BỎ PHONG ẤN RỄ CỔ!\nThân cây cổ thụ khổng lồ rền vang hạ xuống làm cầu vượt vực, thông lối sang Miếu Chuông Phế Tích (C)!');
+          this.uiScene.redrawStats();
+          if (!justRevealed) {
+            this.uiScene.showPopupMessage('🌟 CHÌA KHÓA THANH TẨY PHÁ BỎ PHONG ẤN RỄ CỔ!\nThân cây cổ thụ khổng lồ rền vang hạ xuống làm cầu vượt vực, thông lối sang Miếu Chuông Phế Tích (C)!');
+          }
           this.uiScene.updateQuestTracker();
         }
         return;
@@ -6239,7 +6258,7 @@ export class GameScene extends Phaser.Scene {
     // Tương tác Quả Chuông Cổ Khổng Lồ (C4-12-25)
     if (actionId === 'inspect_cracked_bell') {
       this.audioManager.playInteract();
-      if (!this.playerState.hasFlag('boss_mire_warden_defeated') && (this.playerState.hasFlag('mire_pillars_solved') || this.playerState.hasFlag('mire_puzzle_solved'))) {
+      if (!this.playerState.hasFlag('boss_mire_warden_defeated') && (this.playerState.hasFlag('mire_root_seal_broken') || this.playerState.hasFlag('shrine_bridge_lowered') || this.playerState.hasFlag('mire_pillars_solved') || this.playerState.hasFlag('mire_puzzle_solved'))) {
         this.triggerMireWardenBossEncounter();
         return;
       }
@@ -6259,13 +6278,15 @@ export class GameScene extends Phaser.Scene {
     } else if (actionId === 'touch_pillar_3') {
       this.handlePillarInteraction('pillar_eye');
     } else if (actionId === 'collect_bell_tongue') {
-      if (!this.playerState.hasFlag('boss_mire_warden_defeated') && (this.playerState.hasFlag('mire_pillars_solved') || this.playerState.hasFlag('mire_puzzle_solved'))) {
+      if (!this.playerState.hasFlag('boss_mire_warden_defeated') && (this.playerState.hasFlag('mire_root_seal_broken') || this.playerState.hasFlag('shrine_bridge_lowered') || this.playerState.hasFlag('mire_pillars_solved') || this.playerState.hasFlag('mire_puzzle_solved'))) {
         this.triggerMireWardenBossEncounter();
         return;
       }
       if (!this.playerState.hasFlag('clapper_collected')) {
         this.audioManager.playBronzeBellToll();
-        this.playerState.addItem('quest_bronze_clapper', 1);
+        if (this.playerState.getItemCount('quest_bronze_clapper') === 0) {
+          this.playerState.addItem('quest_bronze_clapper', 1);
+        }
         this.playerState.setFlag('clapper_collected');
         this.worldBuilder.interactables = this.worldBuilder.interactables.filter(item => item.actionId !== 'collect_bell_tongue');
         this.uiScene?.setInteractionPrompt(null);
@@ -6438,7 +6459,9 @@ export class GameScene extends Phaser.Scene {
       this.playerState.completeQuestTask('Q05_SOLVE_MIRE', 't1');
       this.playerState.completeQuestTask('Q05_SOLVE_MIRE', 't2');
       this.playerState.completeQuestTask('Q05_SOLVE_MIRE', 't3');
-      this.playerState.setCurrentQuest('Q06_RETRIEVE_CLAPPER');
+      if (this.playerState.hasFlag('mire_root_seal_broken') || this.playerState.hasFlag('shrine_bridge_lowered')) {
+        this.playerState.setCurrentQuest('Q06_RETRIEVE_CLAPPER');
+      }
       SaveManager.saveGame('HỒI 4: ĐẦM LẦY TĨNH LẶNG (ĐÃ GIẢI MÃ CỘT ĐÁ)', 'ancient_rune_puzzle', this.player.x, this.player.y);
       return;
     }
@@ -7362,14 +7385,12 @@ export class GameScene extends Phaser.Scene {
     this.audioManager.playBronzeBellToll();
     this.cameraSystem.flash(1500, 255, 240, 200);
 
-    // Trao phần thưởng di vật cốt truyện duy nhất (không farm lặp lại)
-    this.playerState.addItem('relic_heart_of_roots', 1);
-    if (this.playerState.getItemCount('quest_bronze_clapper') === 0) {
-      this.playerState.addItem('quest_bronze_clapper', 1);
+    // Trao phần thưởng di vật cốt truyện duy nhất (chống cấp lặp relic_heart_of_roots và không kích hoạt clapper_collected sớm trước khi nhặt tại bệ thờ)
+    if (!this.playerState.hasFlag('boss_mire_warden_defeated') && this.playerState.getItemCount('relic_heart_of_roots') === 0) {
+      this.playerState.addItem('relic_heart_of_roots', 1);
     }
     this.playerState.setFlag('boss_mire_warden_defeated');
     this.playerState.setFlag('root_seal_restored');
-    this.playerState.setFlag('clapper_collected');
     this.playerState.setFlag('title_purifier_of_mist');
     this.playerState.unlockLore('lore_mire_warden_memory');
     BossEncounterSystem.getInstance().completeEncounter();
@@ -7384,8 +7405,20 @@ export class GameScene extends Phaser.Scene {
     });
 
     if (this.uiScene) {
-      this.uiScene.showPopupMessage('✨ PHONG ẤN HOÀN TẤT! Kẻ Nuốt Tiếng Chuông đã yên nghỉ. Bạn nhận được [Trái Tim Mạch Rễ Cổ], danh hiệu [Người Thanh Tẩy Màn Sương] & Mảnh Ký Ức Cốt Truyện!');
+      this.uiScene.showPopupMessage('✨ PHONG ẤN HOÀN TẤT! Kẻ Nuốt Tiếng Chuông đã yên nghỉ. Bạn nhận được [Trái Tim Mạch Rễ Cổ] — Hãy nhấn [E] tại Bệ Thờ Miếu Chuông để thu hồi [Lưỡi Chuông Đồng]!');
     }
+  }
+
+  private promoteToMemoryStage3(): boolean {
+    const prevStage = this.playerState.memoryAwakeningStage;
+    this.playerState.setMemoryAwakeningStage(3);
+    const advanced = prevStage < 3 && this.playerState.memoryAwakeningStage >= 3;
+    if (advanced) {
+      this.events.emit('memory_awakening_stage_changed', 3);
+      this.events.emit('memory_awakening_completed');
+    }
+    this.uiScene?.redrawStats();
+    return advanced;
   }
 
   public getCurrentZoneId(): ZoneId {
