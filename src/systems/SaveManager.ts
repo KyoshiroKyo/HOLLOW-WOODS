@@ -89,7 +89,7 @@ export class SaveManager {
   /**
    * Đọc dữ liệu thô từ localStorage với cơ chế tự động chuyển dữ liệu tương thích ngược
    */
-  public static getRawSaveData(): string | null {
+  public static getRawSaveData({ promoteLegacy = true } = {}): string | null {
     try {
       if (QA_BUILD) return localStorage.getItem(QA_SAVE_KEY);
       let raw = localStorage.getItem(`${LOCAL_PREFIX}slot_1`) || localStorage.getItem(SaveManager.SAVE_KEY);
@@ -100,7 +100,7 @@ export class SaveManager {
           try {
             JSON.parse(legacyRaw);
             raw = legacyRaw;
-            localStorage.setItem(SaveManager.SAVE_KEY, legacyRaw);
+            if (promoteLegacy) localStorage.setItem(SaveManager.SAVE_KEY, legacyRaw);
           } catch {
             // legacy save bị hỏng
           }
@@ -460,12 +460,12 @@ export class SaveManager {
   }
 
   public static hasSave(): boolean {
-    return SaveManager.getRawSaveData() !== null;
+    return SaveManager.getRawSaveData({ promoteLegacy: false }) !== null;
   }
 
   public static getSaveSummary(): { checkpoint: string; date: string } | null {
     try {
-      const raw = SaveManager.getRawSaveData();
+      const raw = SaveManager.getRawSaveData({ promoteLegacy: false });
       if (!raw) return null;
       const parsed = JSON.parse(raw);
       const data = SaveManager.sanitizeAndMigrateSaveData(parsed);
