@@ -1012,8 +1012,10 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
       dropCount: 1
     });
 
+    let didTriggerFadeOut = false;
     const triggerFadeOut = () => {
-      if (!this.active) return;
+      if (didTriggerFadeOut || !this.active) return;
+      didTriggerFadeOut = true;
       this.scene.tweens.add({
         targets: this,
         alpha: 0,
@@ -1023,13 +1025,18 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
     };
 
     if (gameScene.dialogueSystem?.isActive) {
-      this.scene.events.once('dialogue_completed', () => {
+      const onDialogueEnded = () => {
+        this.scene?.events?.off('dialogue_completed', onDialogueEnded);
+        this.scene?.events?.off('dialogue_cancelled', onDialogueEnded);
         triggerFadeOut();
-      });
+      };
+      this.scene.events.once('dialogue_completed', onDialogueEnded);
+      this.scene.events.once('dialogue_cancelled', onDialogueEnded);
     } else {
       this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
         triggerFadeOut();
       });
+      this.scene.time.delayedCall(1200, triggerFadeOut);
     }
   }
 

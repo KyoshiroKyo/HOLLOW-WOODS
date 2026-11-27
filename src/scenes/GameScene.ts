@@ -4314,6 +4314,8 @@ export class GameScene extends Phaser.Scene {
     this.transitionCooldown = 1500; // 1.5s cooldown chống kích hoạt lặp liên tục
     this.transitionCooldownUntil = performance.now() + 1500;
     this.lastTransitionId = trans.id;
+    this.dialogueSystem?.cancelDialogue?.();
+    this.uiScene?.closeAllModalsForTransition?.();
 
     // V14-P7-01: Thu dọn audio loops và VFX overlay trước khi chuyển cảnh
     this.audioManager.cleanupAudioLoops();
@@ -7090,7 +7092,7 @@ export class GameScene extends Phaser.Scene {
       if (!this.player || !this.mireWardenBoss) return;
       const dist = Math.hypot(this.player.x - this.mireWardenBoss.x, this.player.y - this.mireWardenBoss.y);
       if (dist <= 155 && this.canTakeEncounterDamage()) {
-        const isRolling = (this.player as any).isRolling || false;
+        const isRolling = typeof this.player.isRolling === 'function' ? this.player.isRolling() : Boolean((this.player as any).isRolling);
         if (!isRolling) {
           const isCompZero = this.playerState.stats.composure <= 0;
           if (isCompZero) {

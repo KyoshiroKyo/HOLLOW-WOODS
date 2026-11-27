@@ -518,6 +518,10 @@ export class PauseModal {
   /**
    * Bật/Tắt hiển thị bảng Keycap Badges hướng dẫn phím bấm
    */
+  public isGuideOpen(): boolean {
+    return Boolean(this.guideOverlayContainer);
+  }
+
   public toggleGuideOverlay(): void {
     if (this.guideOverlayContainer) {
       this.guideOverlayContainer.destroy();
@@ -571,7 +575,15 @@ export class PauseModal {
   }
 
   private updateGraphicsQualityText(): void {
-    if (!this.graphicsQualityBtnText) return;
+    if (
+      !this.scene ||
+      !this.scene.sys ||
+      !this.graphicsQualityBtnText ||
+      !this.graphicsQualityBtnText.scene ||
+      !(this.graphicsQualityBtnText as any).context
+    ) {
+      return;
+    }
     const gqs = GraphicsQualitySystem.getInstance();
     const settings = gqs.getSettings();
     let label = '';

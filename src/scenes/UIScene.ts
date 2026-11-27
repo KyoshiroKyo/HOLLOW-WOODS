@@ -855,6 +855,16 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         this.events.emit('ui_toggle_lantern');
       });
 
+      const hasBlockingOverlayModal = (): boolean => Boolean(
+        this.isDialogueActive ||
+        (this.gameOverModal && this.gameOverModal.isOpen) ||
+        (this.pauseModal && this.pauseModal.isOpen) ||
+        (this.tornPageModal && this.tornPageModal.isOpen) ||
+        (this.storageChestModal && this.storageChestModal.isOpen) ||
+        (this.campfireModal && this.campfireModal.isOpen) ||
+        (this.cauldronModal && this.cauldronModal.isOpen)
+      );
+
       const seenShortcutEvents = new WeakSet<KeyboardEvent>();
       const handleShortcut = (event: KeyboardEvent) => {
         if (seenShortcutEvents.has(event) || event.repeat) return;
@@ -866,28 +876,26 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         if (code === 'KeyC' || code === 'KeyI' || code === 'Tab') {
           seenShortcutEvents.add(event);
           if (code === 'Tab') event.preventDefault();
-          if (this.gameOverModal && this.gameOverModal.isOpen) return;
-          if (this.isDialogueActive) return;
+          if (hasBlockingOverlayModal()) return;
           if (this.craftingModal && this.craftingModal.isOpen) {
             this.craftingModal.close();
             return;
           }
           if (this.journalModal && this.journalModal.isOpen) this.journalModal.close();
-          if (this.tornPageModal && this.tornPageModal.isOpen) this.tornPageModal.close();
           if (this.equipmentModal && this.equipmentModal.isOpen) this.equipmentModal.close();
+          if (this.parchmentWorldMapModal && this.parchmentWorldMapModal.isOpen) this.parchmentWorldMapModal.close();
           this.selectQuickSlot(5);
           this.toggleCrafting();
         } else if (code === 'KeyJ') {
           seenShortcutEvents.add(event);
-          if (this.gameOverModal && this.gameOverModal.isOpen) return;
-          if (this.isDialogueActive) return;
+          if (hasBlockingOverlayModal()) return;
           if (this.journalModal && this.journalModal.isOpen) {
             this.journalModal.close();
             return;
           }
           if (this.craftingModal && this.craftingModal.isOpen) this.craftingModal.close();
-          if (this.tornPageModal && this.tornPageModal.isOpen) this.tornPageModal.close();
           if (this.equipmentModal && this.equipmentModal.isOpen) this.equipmentModal.close();
+          if (this.parchmentWorldMapModal && this.parchmentWorldMapModal.isOpen) this.parchmentWorldMapModal.close();
           this.selectQuickSlot(6);
           this.toggleJournal();
         } else if (code === 'Escape') {
@@ -895,14 +903,15 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
           this.handleESC();
         } else if (code === 'KeyB') {
           seenShortcutEvents.add(event);
-          if (this.gameOverModal && this.gameOverModal.isOpen) return;
+          if (hasBlockingOverlayModal()) return;
+          if (this.craftingModal && this.craftingModal.isOpen) this.craftingModal.close();
+          if (this.journalModal && this.journalModal.isOpen) this.journalModal.close();
+          if (this.parchmentWorldMapModal && this.parchmentWorldMapModal.isOpen) this.parchmentWorldMapModal.close();
           this.toggleEquipment();
         } else if (code === 'KeyN') {
           seenShortcutEvents.add(event);
+          if (hasBlockingOverlayModal()) return;
           this.toggleMiniMap();
-        } else if (code === 'KeyM') {
-          seenShortcutEvents.add(event);
-          this.toggleWorldMap();
         }
       };
       this.input.keyboard.on('keydown', handleShortcut);
@@ -1494,7 +1503,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         icon: '🧭',
         key: 'N',
         title: '🧭 La Bàn & Bản Đồ',
-        shortcut: '[N] / [M]',
+        shortcut: '[N]',
         desc: 'Mở rộng la bàn định vị hoặc bản đồ giấy da thế giới.',
         action: () => this.toggleWorldMap()
       },
@@ -3004,6 +3013,15 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
    * C4-13-03: Kích hoạt giao diện Game Over trên UIScene, ẩn toàn bộ prompt và đóng các modal khác
    */
   public showGameOverModal(reason?: string, scoreParams?: SubmitScoreParams): void {
+    this.closeAllModalsForTransition();
+    this.handleModalOpened();
+    this.setInteractionPrompt(null);
+    if (this.gameOverModal) {
+      this.gameOverModal.open(reason, scoreParams);
+    }
+  }
+
+  public closeAllModalsForTransition(): void {
     if (this.craftingModal && this.craftingModal.isOpen) this.craftingModal.close();
     if (this.journalModal && this.journalModal.isOpen) this.journalModal.close();
     if (this.pauseModal && this.pauseModal.isOpen) this.pauseModal.close();
@@ -3014,10 +3032,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.parchmentWorldMapModal && this.parchmentWorldMapModal.isOpen) this.parchmentWorldMapModal.close();
     if (this.tornPageModal && this.tornPageModal.isOpen) this.tornPageModal.close();
     this.hideDialogue();
-    this.handleModalOpened();
-    this.setInteractionPrompt(null);
-    if (this.gameOverModal) {
-      this.gameOverModal.open(reason, scoreParams);
+    const gameScene = this.scene.get('GameScene') as any;
+    if (gameScene && gameScene.player && typeof gameScene.player.resetAllInputState === 'function') {
+      gameScene.player.resetAllInputState();
     }
   }
 
@@ -3143,7 +3160,14 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.campfireModal && this.campfireModal.isOpen) { this.campfireModal.close(); return; }
     if (this.cauldronModal && this.cauldronModal.isOpen) { this.cauldronModal.close(); return; }
     if (this.parchmentWorldMapModal && this.parchmentWorldMapModal.isOpen) { this.parchmentWorldMapModal.close(); return; }
-    if (this.pauseModal && this.pauseModal.isOpen) { this.pauseModal.close(); return; }
+    if (this.pauseModal && this.pauseModal.isOpen) {
+      if (this.pauseModal.isGuideOpen()) {
+        this.pauseModal.toggleGuideOverlay();
+        return;
+      }
+      this.pauseModal.close();
+      return;
+    }
 
     const now = Date.now();
     if (now - (this.lastModalCloseTime || 0) < 250) return;
@@ -3366,6 +3390,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   public toggleEquipment(): void {
     if (this.gameOverModal && this.gameOverModal.isOpen) return;
     if (this.isDialogueActive) return;
+    if (this.pauseModal && this.pauseModal.isOpen) return;
+    if (this.craftingModal && this.craftingModal.isOpen) this.craftingModal.close();
+    if (this.journalModal && this.journalModal.isOpen) this.journalModal.close();
+    if (this.parchmentWorldMapModal && this.parchmentWorldMapModal.isOpen) this.parchmentWorldMapModal.close();
     const modal = this.getEquipmentModal();
     modal.toggle();
   }

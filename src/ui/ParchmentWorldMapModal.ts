@@ -250,7 +250,7 @@ export class ParchmentWorldMapModal {
       strokeThickness: 1
     }).setOrigin(0.5, 0);
 
-    this.subTitleText = HDTextHelper.createText(this.scene, 640, py + 42, 'Sơ Đồ Tuyến Đường 7 Chặng A -> E -> B -> D -> F -> E -> C • [M] hoặc [ESC] để Gấp Bản Đồ', {
+    this.subTitleText = HDTextHelper.createText(this.scene, 640, py + 42, 'Sơ Đồ Tuyến Đường 7 Chặng A -> E -> B -> D -> F -> E -> C • [N] hoặc [ESC] để Gấp Bản Đồ', {
       fontSize: '10.5px',
       fontStyle: 'bold',
       color: '#8a4b12'

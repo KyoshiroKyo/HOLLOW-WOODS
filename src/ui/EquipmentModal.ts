@@ -195,9 +195,6 @@ export class EquipmentModal {
 
   public open(): void {
     if (this.isOpen) return;
-    const now = Date.now();
-    if (now - this.lastToggleTime < 200) return;
-    this.lastToggleTime = now;
 
     this.isOpen = true;
     this.container.setVisible(true);
@@ -209,9 +206,6 @@ export class EquipmentModal {
   public close(): void {
     ItemTooltipHelper.getInstance().hide();
     if (!this.isOpen) return;
-    const now = Date.now();
-    if (now - this.lastToggleTime < 200) return;
-    this.lastToggleTime = now;
 
     this.isOpen = false;
     this.container.setVisible(false);
@@ -220,6 +214,10 @@ export class EquipmentModal {
   }
 
   public toggle(): void {
+    const now = Date.now();
+    if (now - this.lastToggleTime < 200) return;
+    this.lastToggleTime = now;
+
     if (this.isOpen) {
       this.close();
     } else {

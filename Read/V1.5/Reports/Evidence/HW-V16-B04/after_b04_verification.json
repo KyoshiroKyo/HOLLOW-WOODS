@@ -1,0 +1,457 @@
+{
+  "task": "HW-V16-B04",
+  "timestamp": "2026-11-27T09:44:46",
+  "checks": {
+    "continuous_20x_toggle_C_J_B_N": {
+      "passed": true,
+      "KeyC": {
+        "cycles_passed": 20
+      },
+      "KeyJ": {
+        "cycles_passed": 20
+      },
+      "KeyB": {
+        "cycles_passed": 20
+      },
+      "KeyN": {
+        "cycles_passed": 20
+      }
+    },
+    "mouse_and_keyboard_modal_close": {
+      "passed": true,
+      "crafting": {
+        "opened": true,
+        "closed_by_mouse": true,
+        "close_xy": {
+          "x": 922,
+          "y": 137,
+          "text": "✕ [I / ESC]"
+        }
+      },
+      "journal": {
+        "opened": true,
+        "closed_by_mouse": true,
+        "close_xy": {
+          "x": 1002,
+          "y": 122,
+          "text": "✕ [J / ESC]"
+        }
+      },
+      "equip": {
+        "opened": true,
+        "closed_by_mouse": true,
+        "close_xy": {
+          "x": 1016,
+          "y": 112,
+          "text": "✕ ESC"
+        }
+      },
+      "worldMap": {
+        "opened": true,
+        "closed_by_mouse": true,
+        "close_xy": {
+          "x": 1071,
+          "y": 88,
+          "text": "✖ [ESC]"
+        }
+      }
+    },
+    "journal_header_no_overlap_and_filter_click": {
+      "passed": true,
+      "layout": {
+        "histTitle": {
+          "text": "DANH SÁCH CÁC HỒI:",
+          "x": 670,
+          "y": 164,
+          "right": 829,
+          "bottom": 181
+        },
+        "fAll": {
+          "text": "[TẤT CẢ]",
+          "x": 670,
+          "y": 189,
+          "right": 714,
+          "bottom": 202
+        },
+        "fMain": {
+          "text": "[CHÍNH]",
+          "x": 755,
+          "y": 189,
+          "right": 800,
+          "bottom": 202
+        },
+        "fSide": {
+          "text": "[PHỤ]",
+          "x": 830,
+          "y": 189,
+          "right": 861,
+          "bottom": 202
+        },
+        "overlapsTitleAll": false,
+        "overlapsFilters": false
+      },
+      "filter_after_click": "main"
+    },
+    "map_N_and_mute_M_no_conflict": {
+      "passed": true,
+      "after_n": {
+        "spd": 0,
+        "isRolling": false,
+        "codes": [],
+        "muted": false,
+        "selectedSlot": -1,
+        "crafting": false,
+        "journal": false,
+        "equip": false,
+        "worldMap": true,
+        "pause": false,
+        "guide": false,
+        "dialogue": false,
+        "dialogueState": "CLOSED",
+        "trust": 0,
+        "openCount": 1
+      },
+      "after_m1": {
+        "spd": 0,
+        "isRolling": false,
+        "codes": [],
+        "muted": true,
+        "selectedSlot": -1,
+        "crafting": false,
+        "journal": false,
+        "equip": false,
+        "worldMap": false,
+        "pause": false,
+        "guide": false,
+        "dialogue": false,
+        "dialogueState": "CLOSED",
+        "trust": 0,
+        "openCount": 0
+      },
+      "after_m2": {
+        "spd": 0,
+        "isRolling": false,
+        "codes": [],
+        "muted": false,
+        "selectedSlot": -1,
+        "crafting": false,
+        "journal": false,
+        "equip": false,
+        "worldMap": false,
+        "pause": false,
+        "guide": false,
+        "dialogue": false,
+        "dialogueState": "CLOSED",
+        "trust": 0,
+        "openCount": 0
+      },
+      "journal_m": {
+        "tab": "map",
+        "mapOpen": false,
+        "muted": false
+      }
+    },
+    "roll_state_method_and_roll_to_ui": {
+      "passed": true,
+      "mid_roll": {
+        "spd": 220,
+        "isRolling": true,
+        "codes": [
+          "KeyS"
+        ],
+        "muted": false,
+        "selectedSlot": -1,
+        "crafting": false,
+        "journal": false,
+        "equip": false,
+        "worldMap": false,
+        "pause": false,
+        "guide": false,
+        "dialogue": false,
+        "dialogueState": "CLOSED",
+        "trust": 0,
+        "openCount": 0
+      },
+      "during_ui": {
+        "spd": 0,
+        "isRolling": false,
+        "codes": [],
+        "muted": false,
+        "selectedSlot": -1,
+        "crafting": true,
+        "journal": false,
+        "equip": false,
+        "worldMap": false,
+        "pause": false,
+        "guide": false,
+        "dialogue": false,
+        "dialogueState": "CLOSED",
+        "trust": 0,
+        "openCount": 1
+      },
+      "after_close": {
+        "spd": 0,
+        "isRolling": false,
+        "codes": [],
+        "muted": false,
+        "selectedSlot": -1,
+        "crafting": false,
+        "journal": false,
+        "equip": false,
+        "worldMap": false,
+        "pause": false,
+        "guide": false,
+        "dialogue": false,
+        "dialogueState": "CLOSED",
+        "trust": 0,
+        "openCount": 0
+      }
+    },
+    "dialogue_1_to_5_ownership_and_esc_cancel_no_trust": {
+      "passed": true,
+      "at_choices": {
+        "spd": 0,
+        "isRolling": false,
+        "codes": [],
+        "muted": false,
+        "selectedSlot": -1,
+        "crafting": false,
+        "journal": false,
+        "equip": false,
+        "worldMap": false,
+        "pause": false,
+        "guide": false,
+        "dialogue": true,
+        "dialogueState": "WAITING_FOR_CHOICE",
+        "trust": 0,
+        "openCount": 0
+      },
+      "still_only_dlg": {
+        "spd": 0,
+        "isRolling": false,
+        "codes": [],
+        "muted": false,
+        "selectedSlot": -1,
+        "crafting": false,
+        "journal": false,
+        "equip": false,
+        "worldMap": false,
+        "pause": false,
+        "guide": false,
+        "dialogue": true,
+        "dialogueState": "WAITING_FOR_CHOICE",
+        "trust": 0,
+        "openCount": 0
+      },
+      "after_choice4": {
+        "spd": 0,
+        "isRolling": false,
+        "codes": [],
+        "muted": false,
+        "selectedSlot": -1,
+        "crafting": false,
+        "journal": false,
+        "equip": false,
+        "worldMap": false,
+        "pause": false,
+        "guide": false,
+        "dialogue": true,
+        "dialogueState": "PRESENTING",
+        "trust": 0,
+        "openCount": 0
+      },
+      "after_dlg_esc": {
+        "spd": 0,
+        "isRolling": false,
+        "codes": [],
+        "muted": false,
+        "selectedSlot": -1,
+        "crafting": false,
+        "journal": false,
+        "equip": false,
+        "worldMap": false,
+        "pause": false,
+        "guide": false,
+        "dialogue": false,
+        "dialogueState": "CLOSED",
+        "trust": 0,
+        "openCount": 0
+      }
+    },
+    "zone_transition_closes_open_modal_cleanly": {
+      "passed": true,
+      "open_before_switch": true,
+      "zone": "deep_forest",
+      "after_switch": {
+        "spd": 0,
+        "isRolling": false,
+        "codes": [],
+        "muted": false,
+        "selectedSlot": -1,
+        "crafting": false,
+        "journal": false,
+        "equip": false,
+        "worldMap": false,
+        "pause": false,
+        "guide": false,
+        "dialogue": false,
+        "dialogueState": "CLOSED",
+        "trust": 0,
+        "openCount": 0
+      }
+    },
+    "hooded_knight_esc_cancel_fades_out_no_respawn": {
+      "passed": true,
+      "spawned": {
+        "found": true,
+        "dlgActive": true,
+        "bossActive": true,
+        "flag": true
+      },
+      "after_esc": {
+        "cancelledEvent": true,
+        "completedEvent": false,
+        "bossRemaining": false,
+        "bossRespawned": false,
+        "flag": true
+      }
+    },
+    "pause_guide_esc_order_and_blocking": {
+      "passed": true,
+      "pause_with_guide": {
+        "spd": 0,
+        "isRolling": false,
+        "codes": [],
+        "muted": false,
+        "selectedSlot": -1,
+        "crafting": false,
+        "journal": false,
+        "equip": false,
+        "worldMap": false,
+        "pause": true,
+        "guide": true,
+        "dialogue": false,
+        "dialogueState": "CLOSED",
+        "trust": 0,
+        "openCount": 1
+      },
+      "after_guide_esc": {
+        "spd": 0,
+        "isRolling": false,
+        "codes": [],
+        "muted": false,
+        "selectedSlot": -1,
+        "crafting": false,
+        "journal": false,
+        "equip": false,
+        "worldMap": false,
+        "pause": true,
+        "guide": false,
+        "dialogue": false,
+        "dialogueState": "CLOSED",
+        "trust": 0,
+        "openCount": 1
+      },
+      "after_pause_esc": {
+        "spd": 0,
+        "isRolling": false,
+        "codes": [],
+        "muted": false,
+        "selectedSlot": -1,
+        "crafting": false,
+        "journal": false,
+        "equip": false,
+        "worldMap": false,
+        "pause": false,
+        "guide": false,
+        "dialogue": false,
+        "dialogueState": "CLOSED",
+        "trust": 0,
+        "openCount": 0
+      }
+    },
+    "hold_movement_key_when_opening_modal": {
+      "passed": true,
+      "moving": {
+        "spd": 85,
+        "isRolling": false,
+        "codes": [
+          "KeyS"
+        ],
+        "muted": false,
+        "selectedSlot": -1,
+        "crafting": false,
+        "journal": false,
+        "equip": false,
+        "worldMap": false,
+        "pause": false,
+        "guide": false,
+        "dialogue": false,
+        "dialogueState": "CLOSED",
+        "trust": 0,
+        "openCount": 0
+      },
+      "held_in_modal": {
+        "spd": 0,
+        "isRolling": false,
+        "codes": [],
+        "muted": false,
+        "selectedSlot": -1,
+        "crafting": false,
+        "journal": false,
+        "equip": true,
+        "worldMap": false,
+        "pause": false,
+        "guide": false,
+        "dialogue": false,
+        "dialogueState": "CLOSED",
+        "trust": 0,
+        "openCount": 1
+      },
+      "after_rel": {
+        "spd": 0,
+        "isRolling": false,
+        "codes": [],
+        "muted": false,
+        "selectedSlot": -1,
+        "crafting": false,
+        "journal": false,
+        "equip": false,
+        "worldMap": false,
+        "pause": false,
+        "guide": false,
+        "dialogue": false,
+        "dialogueState": "CLOSED",
+        "trust": 0,
+        "openCount": 0
+      }
+    },
+    "save_load_continue_and_zero_listener_leak": {
+      "passed": true,
+      "before": {
+        "uiKeydown": 2,
+        "lsLen": 8,
+        "save_btn_xy": true
+      },
+      "after_load": {
+        "uiKeydown": 2,
+        "flag": true,
+        "schema": 3
+      },
+      "after_restart": 2,
+      "craft_after_load": true
+    },
+    "zero_page_errors": {
+      "passed": true,
+      "count": 0,
+      "errors": []
+    },
+    "zero_console_errors": {
+      "passed": true,
+      "count": 0,
+      "errors": []
+    }
+  },
+  "page_errors": [],
+  "console_errors": []
+}

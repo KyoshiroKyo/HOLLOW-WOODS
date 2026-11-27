@@ -534,7 +534,9 @@ export class DialogueSystem {
   /** Close an interrupted conversation without applying the completion effects. */
   public cancelDialogue(): void {
     if (!this.isActive && this.state === 'CLOSED') return;
+    const cancelledPayload = this.currentPayload ? { ...this.currentPayload, dialogueKey: this.currentDialogueKey } : { dialogueKey: this.currentDialogueKey };
     this.closeInternal();
+    this.scene.events.emit('dialogue_cancelled', cancelledPayload);
   }
 
   private closeInternal(): void {

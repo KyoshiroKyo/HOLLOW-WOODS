@@ -1,0 +1,35 @@
+{
+  "baseline_sha": "3fe8a8f72857462dba1964b9c536bfc871c4acc3",
+  "repro": {
+    "journal_header_overlap": {
+      "histTitle": {
+        "text": "DANH SÁCH CÁC HỒI:",
+        "x": 670,
+        "y": 166,
+        "right": 840,
+        "bottom": 186
+      },
+      "filterAll": {
+        "text": "[TẤT CẢ]",
+        "x": 835,
+        "y": 168,
+        "right": 879,
+        "bottom": 181
+      },
+      "overlaps": true
+    },
+    "key_M_conflict": {
+      "muted_before": false,
+      "after_M": {
+        "muted": false,
+        "mapOpen": true
+      }
+    },
+    "roll_state_bug": {
+      "typeof_isRolling": "function",
+      "bool_property_access": true,
+      "actual_method_call": false
+    }
+  },
+  "errors": []
+}

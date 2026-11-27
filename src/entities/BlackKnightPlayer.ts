@@ -1578,10 +1578,11 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
   }
 
   private playIdleAnim(): void {
+    if (!this.anims || !this.scene || !this.active) return;
     // The gameplay window ends on scene time. Let the remaining defensive
     // artwork finish at rest even if rendering fell behind.
     if (this.isActionLocked() || (this.anims.isPlaying &&
-      (this.texture.key === BLACK_KNIGHT_DEFENSE_KEY || this.texture.key === BLACK_KNIGHT_CONVERSION_ACTIONS_KEY))) return;
+      (this.texture?.key === BLACK_KNIGHT_DEFENSE_KEY || this.texture?.key === BLACK_KNIGHT_CONVERSION_ACTIONS_KEY))) return;
 
     const key = this.getIdleAnimationKey();
     if (key && (this.anims.currentAnim?.key !== key || !this.anims.isPlaying)) {
@@ -1733,7 +1734,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     if (this._isDead) return;
     this.cancelAttackAnimation?.();
     this.clearDefenseTimer();
-    if (this.anims.isPlaying && this.texture.key === BLACK_KNIGHT_DEFENSE_KEY) this.anims.stop();
+    if (this.anims?.isPlaying && this.texture?.key === BLACK_KNIGHT_DEFENSE_KEY) this.anims.stop();
     if (this._isRolling && this.body) this.setVelocity(0, 0);
     this.attackCombo = undefined;
     this._isAttacking = false;
@@ -1749,7 +1750,7 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     this._isUsingItem = false;
     this.stats.isSprinting = false;
     this._actionLockTimestamp = 0;
-    this.clearTint();
+    if (this.active && this.scene) this.clearTint();
   }
 
   public isActionLocked(): boolean {

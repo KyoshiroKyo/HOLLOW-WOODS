@@ -795,14 +795,14 @@ export class JournalModal {
     }
 
     // Cột bên phải: Danh mục các Hồi đã mở khóa
-    const histTitle = HDTextHelper.createText(this.scene, mx + mw / 2 + 30, my + 66, 'DANH SÁCH CÁC HỒI:', {
-      fontSize: '16px',
+    const histTitle = HDTextHelper.createText(this.scene, mx + mw / 2 + 30, my + 64, 'DANH SÁCH CÁC HỒI:', {
+      fontSize: '15px',
       fontStyle: 'bold',
       color: '#3498db'
     });
 
-    // Nút lọc [TẤT CẢ] [CHÍNH] [PHỤ]
-    const fAll = HDTextHelper.createText(this.scene, mx + mw / 2 + 195, my + 68, '[TẤT CẢ]', {
+    // Nút lọc [TẤT CẢ] [CHÍNH] [PHỤ] tách hàng dưới tiêu đề để không chồng lấn chữ
+    const fAll = HDTextHelper.createText(this.scene, mx + mw / 2 + 30, my + 89, '[TẤT CẢ]', {
       fontSize: '11px',
       fontStyle: 'bold',
       color: this.questFilter === 'all' ? '#f1c40f' : '#7f8c8d'
@@ -812,7 +812,7 @@ export class JournalModal {
       this.refresh();
     });
 
-    const fMain = HDTextHelper.createText(this.scene, mx + mw / 2 + 255, my + 68, '[CHÍNH]', {
+    const fMain = HDTextHelper.createText(this.scene, mx + mw / 2 + 115, my + 89, '[CHÍNH]', {
       fontSize: '11px',
       fontStyle: 'bold',
       color: this.questFilter === 'main' ? '#f1c40f' : '#7f8c8d'
@@ -822,7 +822,7 @@ export class JournalModal {
       this.refresh();
     });
 
-    const fSide = HDTextHelper.createText(this.scene, mx + mw / 2 + 310, my + 68, '[PHỤ]', {
+    const fSide = HDTextHelper.createText(this.scene, mx + mw / 2 + 190, my + 89, '[PHỤ]', {
       fontSize: '11px',
       fontStyle: 'bold',
       color: this.questFilter === 'side' ? '#f1c40f' : '#7f8c8d'
@@ -832,7 +832,7 @@ export class JournalModal {
       this.refresh();
     });
 
-    let histY = my + 98;
+    let histY = my + 114;
     const questsToDisplay = Array.from(this.playerState.quests.values()).filter(q => {
       if (this.questFilter === 'main') return (q.category || 'main') === 'main';
       if (this.questFilter === 'side') return q.category === 'side';
