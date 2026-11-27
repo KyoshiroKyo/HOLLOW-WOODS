@@ -92,10 +92,10 @@ def run_tests():
             // Xác minh node_wood_3 nằm ngoài footing móng xưởng mới [1296..1450, 400..432]
             const isWoodOutsideSmithy = woodNode3 && !(woodNode3.x >= 1296 && woodNode3.x <= 1450 && woodNode3.y >= 400 && woodNode3.y <= 432);
 
-            // 2. Kiểm tra Rương Trú Ẩn Bellhollow (775, 295)
+            // 2. Kiểm tra Rương Trú Ẩn Bellhollow (856, 376 - South Sanctuary wing, W20-BUG-002 fix)
             const campChest = wb.interactables.find(i => i.id === 'camp_storage_chest');
 
-            // 3. Kiểm tra Lều Trú Ẩn Bellhollow (778, 261)
+            // 3. Kiểm tra Lều Trú Ẩn Bellhollow (798, 378 - South Sanctuary wing, W20-BUG-002 fix)
             const campTent = wb.interactables.find(i => i.id === 'camp_shelter_tent');
 
             // 4. Kiểm tra Lửa Trại Bellhollow (860, 310)
@@ -132,10 +132,10 @@ def run_tests():
         assert tc1_result['isWoodOutsideSmithy'] == True, "node_wood_3 must NOT be inside smithy footing collider!"
 
         print(f"  - Rương Trú Ẩn Bellhollow: pos=({tc1_result['campChest']['x']}, {tc1_result['campChest']['y']})")
-        assert tc1_result['campChest']['x'] == 775 and tc1_result['campChest']['y'] == 295
+        assert tc1_result['campChest']['x'] == 856 and tc1_result['campChest']['y'] == 376
 
         print(f"  - Lều Trú Ẩn Bellhollow: pos=({tc1_result['campTent']['x']}, {tc1_result['campTent']['y']})")
-        assert tc1_result['campTent']['x'] == 778 and tc1_result['campTent']['y'] == 261
+        assert tc1_result['campTent']['x'] == 798 and tc1_result['campTent']['y'] == 378
 
         print(f"  - Lửa Trại Bellhollow: pos=({tc1_result['campFire']['x']}, {tc1_result['campFire']['y']})")
         assert tc1_result['campFire']['x'] == 860 and tc1_result['campFire']['y'] == 310

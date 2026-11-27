@@ -1,0 +1,1175 @@
+{
+  "frames": {
+    "arch_gatehouse": {
+      "frame": {
+        "x": 2,
+        "y": 2,
+        "w": 176,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 176,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 176,
+        "h": 256
+      }
+    },
+    "tree_moss_tall": {
+      "frame": {
+        "x": 180,
+        "y": 2,
+        "w": 121,
+        "h": 189
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 121,
+        "h": 189
+      },
+      "sourceSize": {
+        "w": 121,
+        "h": 189
+      }
+    },
+    "tree_forest_tall": {
+      "frame": {
+        "x": 303,
+        "y": 2,
+        "w": 109,
+        "h": 189
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 109,
+        "h": 189
+      },
+      "sourceSize": {
+        "w": 109,
+        "h": 189
+      }
+    },
+    "tree_moss_broad": {
+      "frame": {
+        "x": 414,
+        "y": 2,
+        "w": 117,
+        "h": 150
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 117,
+        "h": 150
+      },
+      "sourceSize": {
+        "w": 117,
+        "h": 150
+      }
+    },
+    "tree_forest_broad": {
+      "frame": {
+        "x": 533,
+        "y": 2,
+        "w": 118,
+        "h": 150
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 118,
+        "h": 150
+      },
+      "sourceSize": {
+        "w": 118,
+        "h": 150
+      }
+    },
+    "statue_knight_r": {
+      "frame": {
+        "x": 653,
+        "y": 2,
+        "w": 51,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 51,
+        "h": 144
+      },
+      "sourceSize": {
+        "w": 51,
+        "h": 144
+      }
+    },
+    "statue_knight_l": {
+      "frame": {
+        "x": 706,
+        "y": 2,
+        "w": 51,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 51,
+        "h": 144
+      },
+      "sourceSize": {
+        "w": 51,
+        "h": 144
+      }
+    },
+    "tree_moss_tall_canopy": {
+      "frame": {
+        "x": 759,
+        "y": 2,
+        "w": 121,
+        "h": 141
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 121,
+        "h": 141
+      },
+      "sourceSize": {
+        "w": 121,
+        "h": 141
+      }
+    },
+    "tree_forest_tall_canopy": {
+      "frame": {
+        "x": 882,
+        "y": 2,
+        "w": 109,
+        "h": 141
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 109,
+        "h": 141
+      },
+      "sourceSize": {
+        "w": 109,
+        "h": 141
+      }
+    },
+    "stone_stairs_wide": {
+      "frame": {
+        "x": 2,
+        "y": 260,
+        "w": 64,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 128
+      }
+    },
+    "tree_moss_gnarled": {
+      "frame": {
+        "x": 68,
+        "y": 260,
+        "w": 154,
+        "h": 127
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 154,
+        "h": 127
+      },
+      "sourceSize": {
+        "w": 154,
+        "h": 127
+      }
+    },
+    "tree_forest_gnarled": {
+      "frame": {
+        "x": 224,
+        "y": 260,
+        "w": 150,
+        "h": 127
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 150,
+        "h": 127
+      },
+      "sourceSize": {
+        "w": 150,
+        "h": 127
+      }
+    },
+    "stone_stairs_narrow": {
+      "frame": {
+        "x": 376,
+        "y": 260,
+        "w": 32,
+        "h": 126
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 126
+      },
+      "sourceSize": {
+        "w": 32,
+        "h": 126
+      }
+    },
+    "tree_moss_slender": {
+      "frame": {
+        "x": 410,
+        "y": 260,
+        "w": 84,
+        "h": 121
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 84,
+        "h": 121
+      },
+      "sourceSize": {
+        "w": 84,
+        "h": 121
+      }
+    },
+    "monolith_rune": {
+      "frame": {
+        "x": 496,
+        "y": 260,
+        "w": 32,
+        "h": 112
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 112
+      },
+      "sourceSize": {
+        "w": 32,
+        "h": 112
+      }
+    },
+    "tree_moss_medium": {
+      "frame": {
+        "x": 530,
+        "y": 260,
+        "w": 84,
+        "h": 110
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 84,
+        "h": 110
+      },
+      "sourceSize": {
+        "w": 84,
+        "h": 110
+      }
+    },
+    "tree_moss_broad_canopy": {
+      "frame": {
+        "x": 616,
+        "y": 260,
+        "w": 117,
+        "h": 102
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 117,
+        "h": 102
+      },
+      "sourceSize": {
+        "w": 117,
+        "h": 102
+      }
+    },
+    "tree_forest_broad_canopy": {
+      "frame": {
+        "x": 735,
+        "y": 260,
+        "w": 118,
+        "h": 102
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 118,
+        "h": 102
+      },
+      "sourceSize": {
+        "w": 118,
+        "h": 102
+      }
+    },
+    "tree_moss_small": {
+      "frame": {
+        "x": 855,
+        "y": 260,
+        "w": 66,
+        "h": 91
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 66,
+        "h": 91
+      },
+      "sourceSize": {
+        "w": 66,
+        "h": 91
+      }
+    },
+    "gazebo_stone": {
+      "frame": {
+        "x": 923,
+        "y": 260,
+        "w": 82,
+        "h": 88
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 82,
+        "h": 88
+      },
+      "sourceSize": {
+        "w": 82,
+        "h": 88
+      }
+    },
+    "shrine_mossy": {
+      "frame": {
+        "x": 2,
+        "y": 390,
+        "w": 44,
+        "h": 84
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 44,
+        "h": 84
+      },
+      "sourceSize": {
+        "w": 44,
+        "h": 84
+      }
+    },
+    "tree_moss_gnarled_canopy": {
+      "frame": {
+        "x": 48,
+        "y": 390,
+        "w": 154,
+        "h": 79
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 154,
+        "h": 79
+      },
+      "sourceSize": {
+        "w": 154,
+        "h": 79
+      }
+    },
+    "tree_forest_gnarled_canopy": {
+      "frame": {
+        "x": 204,
+        "y": 390,
+        "w": 150,
+        "h": 79
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 150,
+        "h": 79
+      },
+      "sourceSize": {
+        "w": 150,
+        "h": 79
+      }
+    },
+    "tree_moss_slender_canopy": {
+      "frame": {
+        "x": 356,
+        "y": 390,
+        "w": 84,
+        "h": 73
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 84,
+        "h": 73
+      },
+      "sourceSize": {
+        "w": 84,
+        "h": 73
+      }
+    },
+    "ruin_wall_arch_4": {
+      "frame": {
+        "x": 442,
+        "y": 390,
+        "w": 192,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 192,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 192,
+        "h": 64
+      }
+    },
+    "ruin_wall_broken_4": {
+      "frame": {
+        "x": 636,
+        "y": 390,
+        "w": 192,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 192,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 192,
+        "h": 64
+      }
+    },
+    "stone_arch_small": {
+      "frame": {
+        "x": 830,
+        "y": 390,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "rock_moss_cluster_1": {
+      "frame": {
+        "x": 896,
+        "y": 390,
+        "w": 64,
+        "h": 63
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 63
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 63
+      }
+    },
+    "tree_moss_medium_canopy": {
+      "frame": {
+        "x": 2,
+        "y": 476,
+        "w": 84,
+        "h": 62
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 84,
+        "h": 62
+      },
+      "sourceSize": {
+        "w": 84,
+        "h": 62
+      }
+    },
+    "rock_moss_outcrop_1": {
+      "frame": {
+        "x": 88,
+        "y": 476,
+        "w": 59,
+        "h": 62
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 59,
+        "h": 62
+      },
+      "sourceSize": {
+        "w": 59,
+        "h": 62
+      }
+    },
+    "rock_moss_outcrop_2": {
+      "frame": {
+        "x": 149,
+        "y": 476,
+        "w": 44,
+        "h": 62
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 44,
+        "h": 62
+      },
+      "sourceSize": {
+        "w": 44,
+        "h": 62
+      }
+    },
+    "rock_moss_cluster_2": {
+      "frame": {
+        "x": 195,
+        "y": 476,
+        "w": 62,
+        "h": 62
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 62,
+        "h": 62
+      },
+      "sourceSize": {
+        "w": 62,
+        "h": 62
+      }
+    },
+    "ruin_pillar_broken": {
+      "frame": {
+        "x": 259,
+        "y": 476,
+        "w": 64,
+        "h": 56
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 56
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 56
+      }
+    },
+    "stepping_stones_1": {
+      "frame": {
+        "x": 325,
+        "y": 476,
+        "w": 99,
+        "h": 56
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 99,
+        "h": 56
+      },
+      "sourceSize": {
+        "w": 99,
+        "h": 56
+      }
+    },
+    "sapling_moss_2": {
+      "frame": {
+        "x": 426,
+        "y": 476,
+        "w": 34,
+        "h": 55
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 55
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 55
+      }
+    },
+    "tree_moss_tall_trunk": {
+      "frame": {
+        "x": 462,
+        "y": 476,
+        "w": 121,
+        "h": 48
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 121,
+        "h": 48
+      },
+      "sourceSize": {
+        "w": 121,
+        "h": 48
+      }
+    },
+    "tree_moss_broad_trunk": {
+      "frame": {
+        "x": 585,
+        "y": 476,
+        "w": 117,
+        "h": 48
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 117,
+        "h": 48
+      },
+      "sourceSize": {
+        "w": 117,
+        "h": 48
+      }
+    },
+    "tree_moss_slender_trunk": {
+      "frame": {
+        "x": 704,
+        "y": 476,
+        "w": 84,
+        "h": 48
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 84,
+        "h": 48
+      },
+      "sourceSize": {
+        "w": 84,
+        "h": 48
+      }
+    },
+    "tree_moss_medium_trunk": {
+      "frame": {
+        "x": 790,
+        "y": 476,
+        "w": 84,
+        "h": 48
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 84,
+        "h": 48
+      },
+      "sourceSize": {
+        "w": 84,
+        "h": 48
+      }
+    },
+    "tree_moss_small_trunk": {
+      "frame": {
+        "x": 876,
+        "y": 476,
+        "w": 66,
+        "h": 48
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 66,
+        "h": 48
+      },
+      "sourceSize": {
+        "w": 66,
+        "h": 48
+      }
+    },
+    "tree_moss_gnarled_trunk": {
+      "frame": {
+        "x": 2,
+        "y": 540,
+        "w": 154,
+        "h": 48
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 154,
+        "h": 48
+      },
+      "sourceSize": {
+        "w": 154,
+        "h": 48
+      }
+    },
+    "tree_forest_tall_trunk": {
+      "frame": {
+        "x": 158,
+        "y": 540,
+        "w": 109,
+        "h": 48
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 109,
+        "h": 48
+      },
+      "sourceSize": {
+        "w": 109,
+        "h": 48
+      }
+    },
+    "tree_forest_broad_trunk": {
+      "frame": {
+        "x": 269,
+        "y": 540,
+        "w": 118,
+        "h": 48
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 118,
+        "h": 48
+      },
+      "sourceSize": {
+        "w": 118,
+        "h": 48
+      }
+    },
+    "tree_forest_gnarled_trunk": {
+      "frame": {
+        "x": 389,
+        "y": 540,
+        "w": 150,
+        "h": 48
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 150,
+        "h": 48
+      },
+      "sourceSize": {
+        "w": 150,
+        "h": 48
+      }
+    },
+    "sapling_moss_1": {
+      "frame": {
+        "x": 541,
+        "y": 540,
+        "w": 33,
+        "h": 48
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 33,
+        "h": 48
+      },
+      "sourceSize": {
+        "w": 33,
+        "h": 48
+      }
+    },
+    "tree_moss_small_canopy": {
+      "frame": {
+        "x": 576,
+        "y": 540,
+        "w": 66,
+        "h": 43
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 66,
+        "h": 43
+      },
+      "sourceSize": {
+        "w": 66,
+        "h": 43
+      }
+    },
+    "ruin_rubble": {
+      "frame": {
+        "x": 644,
+        "y": 540,
+        "w": 42,
+        "h": 40
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 42,
+        "h": 40
+      },
+      "sourceSize": {
+        "w": 42,
+        "h": 40
+      }
+    },
+    "bush_moss_4": {
+      "frame": {
+        "x": 688,
+        "y": 540,
+        "w": 60,
+        "h": 37
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 60,
+        "h": 37
+      },
+      "sourceSize": {
+        "w": 60,
+        "h": 37
+      }
+    },
+    "bush_moss_3": {
+      "frame": {
+        "x": 750,
+        "y": 540,
+        "w": 60,
+        "h": 35
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 60,
+        "h": 35
+      },
+      "sourceSize": {
+        "w": 60,
+        "h": 35
+      }
+    },
+    "plaza_circle": {
+      "frame": {
+        "x": 812,
+        "y": 540,
+        "w": 82,
+        "h": 35
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 82,
+        "h": 35
+      },
+      "sourceSize": {
+        "w": 82,
+        "h": 35
+      }
+    },
+    "bush_moss_5": {
+      "frame": {
+        "x": 896,
+        "y": 540,
+        "w": 33,
+        "h": 31
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 33,
+        "h": 31
+      },
+      "sourceSize": {
+        "w": 33,
+        "h": 31
+      }
+    },
+    "bush_moss_2": {
+      "frame": {
+        "x": 931,
+        "y": 540,
+        "w": 60,
+        "h": 30
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 60,
+        "h": 30
+      },
+      "sourceSize": {
+        "w": 60,
+        "h": 30
+      }
+    },
+    "shadow_tree_large": {
+      "frame": {
+        "x": 2,
+        "y": 590,
+        "w": 67,
+        "h": 28
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 67,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 67,
+        "h": 28
+      }
+    },
+    "shadow_tree_med": {
+      "frame": {
+        "x": 71,
+        "y": 590,
+        "w": 73,
+        "h": 27
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 73,
+        "h": 27
+      },
+      "sourceSize": {
+        "w": 73,
+        "h": 27
+      }
+    },
+    "stump_moss_2": {
+      "frame": {
+        "x": 146,
+        "y": 590,
+        "w": 38,
+        "h": 25
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 38,
+        "h": 25
+      },
+      "sourceSize": {
+        "w": 38,
+        "h": 25
+      }
+    },
+    "bush_moss_1": {
+      "frame": {
+        "x": 186,
+        "y": 590,
+        "w": 60,
+        "h": 23
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 60,
+        "h": 23
+      },
+      "sourceSize": {
+        "w": 60,
+        "h": 23
+      }
+    },
+    "stump_moss_1": {
+      "frame": {
+        "x": 248,
+        "y": 590,
+        "w": 15,
+        "h": 23
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 15,
+        "h": 23
+      },
+      "sourceSize": {
+        "w": 15,
+        "h": 23
+      }
+    },
+    "shadow_bush": {
+      "frame": {
+        "x": 265,
+        "y": 590,
+        "w": 48,
+        "h": 15
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 48,
+        "h": 15
+      },
+      "sourceSize": {
+        "w": 48,
+        "h": 15
+      }
+    }
+  },
+  "meta": {
+    "app": "HOLLOW WOODS HW-MAP-LAB-01 Packer",
+    "version": "1.0",
+    "image": "resurrected_props_atlas.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1024,
+      "h": 1024
+    },
+    "scale": "1"
+  }
+}
