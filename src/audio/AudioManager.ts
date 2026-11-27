@@ -505,13 +505,14 @@ export class AudioManager {
     playbackRate: number = 1.0,
     routeToVeil: boolean = true,
     maxPolyphony: number = 4,
-    tail?: { end: number; fadeFrom: number }
+    tail?: { end: number; fadeFrom: number; fadeIn?: number; smooth?: boolean },
+    bufferKey: string = key
   ): boolean {
     if (!this.ctx || this.isMuted) return false;
-    const buffer = this.audioBuffers.get(key);
+    const buffer = this.audioBuffers.get(bufferKey);
     if (!buffer) {
-      if (LAZY_SFX_MANIFEST[key]) {
-        this.loadAudioBuffer(key, LAZY_SFX_MANIFEST[key]);
+      if (LAZY_SFX_MANIFEST[bufferKey]) {
+        this.loadAudioBuffer(bufferKey, LAZY_SFX_MANIFEST[bufferKey]);
       }
       return false;
     }
@@ -542,10 +543,24 @@ export class AudioManager {
       const gain = this.ctx.createGain();
       const now = this.ctx.currentTime;
       const level = volume * this.sfxVolume;
-      gain.gain.setValueAtTime(level, now);
+      if (tail?.fadeIn) {
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(level, now + tail.fadeIn);
+      } else {
+        gain.gain.setValueAtTime(level, now);
+      }
       if (tail) {
-        gain.gain.setValueAtTime(level, now + tail.fadeFrom);
-        gain.gain.linearRampToValueAtTime(0, now + tail.end);
+        if (tail.smooth) {
+          gain.gain.setValueAtTime(level, now + tail.fadeFrom);
+          for (let step = 1; step <= 16; step++) {
+            const phase = step / 16;
+            const gainAtStep = level * (1 + Math.cos(Math.PI * phase)) / 2;
+            gain.gain.linearRampToValueAtTime(gainAtStep, now + tail.fadeFrom + phase * (tail.end - tail.fadeFrom));
+          }
+        } else {
+          gain.gain.setValueAtTime(level, now + tail.fadeFrom);
+          gain.gain.linearRampToValueAtTime(0, now + tail.end);
+        }
       }
 
       source.connect(gain);
@@ -2666,13 +2681,22 @@ export class AudioManager {
   }
 
   public playIntroBell(): void {
-    this.playBronzeBellToll({ end: 6, fadeFrom: 3.5 });
+    if (!this.ctx || this.isMuted || !this.masterGain) return;
+    if ((this.activeSFXChannels.get('intro_bell')?.length ?? 0) > 0) return;
+    this.playSampled('intro_bell', 0.9 * 10 ** (-4 / 20), 1, false, 1,
+      { end: 2.6, fadeFrom: 1.35, fadeIn: 0.012, smooth: true }, 'bronze_bell');
+  }
+
+  public stopIntroBell(): void {
+    // Stop the dedicated cue before a new GameScene begins.
+    this.fadeOutSampledChannel('intro_bell');
   }
 
   public playBronzeBellToll(tail?: { end: number; fadeFrom: number }): void {
     if (!this.ctx || this.isMuted || !this.masterGain) return;
     if (!this.checkCooldown('bronze_bell', 800)) return;
     this.resumeAudio();
+    this.stopIntroBell();
     this.fadeOutSampledChannel('bell_toll_low');
 
     // Giới hạn maxPolyphony = 1 để không chồng 2 lượt chuông dài 11.22s mà không cắt file âm thanh gốc
@@ -2712,6 +2736,7 @@ export class AudioManager {
     if (!this.ctx || this.isMuted || !this.masterGain || this.isSanctuaryMusicOnly) return;
     if (!this.checkCooldown('cracked_bell', 1500)) return;
     this.resumeAudio();
+    this.stopIntroBell();
     this.fadeOutSampledChannel('bronze_bell');
 
     // Giới hạn maxPolyphony = 1 để không chồng 2 lượt chuông nứt dài 11.22s mà không cắt file âm thanh gốc

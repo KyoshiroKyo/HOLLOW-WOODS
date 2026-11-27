@@ -911,6 +911,7 @@ export class GameScene extends Phaser.Scene {
         this.game.canvas.removeEventListener('contextmenu', this.onContextMenu);
         this.onContextMenu = null;
       }
+      this.audioManager.stopIntroBell();
       this.audioManager.cleanupAudioLoops();
       this.audioManager.setHeartbeatActive(false);
       this.audioManager.stopAmbience();
