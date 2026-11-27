@@ -1,0 +1,2329 @@
+{
+  "task": "HW-CODEX-ANIM-01",
+  "prior_commit": "ddd18dc938d94d680eead9f1889ed4fa170753e2",
+  "comparison_method": "Same synthetic CDP sequence on both Vite production builds; samples collected on Phaser postrender. The video is captured separately from the game canvas at 60 fps.",
+  "before": {
+    "bundle": "index-BWblqL3P.js",
+    "environment": {
+      "os": "Windows 10 build 19045",
+      "node": "v26.7.0",
+      "browser_mode": "headless Chrome, isolated throwaway profile",
+      "endpoint": "http://127.0.0.1:5187",
+      "bundle": "npm run build, Vite preview",
+      "sdk": "external P2Game SDK blocked for isolated standalone test",
+      "owner_save_used": false,
+      "keyboard": "Chrome DevTools synthetic key events; physical EVKey NOT_RUN",
+      "window": [1280, 720],
+      "device_scale_factor": 1,
+      "graphics_flags": [],
+      "browser": "Chrome/158.0.8127.38",
+      "chrome_gpu": {
+        "devices": [
+          {
+            "vendorId": 4318,
+            "deviceId": 7042,
+            "subSysId": 932451416,
+            "revision": 161,
+            "vendorString": "",
+            "deviceString": "NVIDIA GeForce GTX 1070 Ti",
+            "driverVendor": "NVIDIA",
+            "driverVersion": "32.0.15.8266"
+          },
+          {
+            "vendorId": 5140,
+            "deviceId": 140,
+            "subSysId": 0,
+            "revision": 0,
+            "vendorString": "",
+            "deviceString": "Microsoft Basic Render Driver",
+            "driverVendor": "",
+            "driverVersion": "10.0.19041.7548"
+          }
+        ],
+        "feature_status": {
+          "gpu_compositing": "enabled",
+          "webgl": "enabled"
+        },
+        "gl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8266)",
+        "gl_vendor": "Google Inc. (NVIDIA)"
+      },
+      "renderer": {
+        "type": 2,
+        "renderer": "WebGL",
+        "webgl_version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+        "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "webgl_vendor": "Google Inc. (NVIDIA)",
+        "canvas": [1280, 720],
+        "viewport": [1280, 720],
+        "pixel_ratio": 1,
+        "rect": [0, 0, 1280, 720],
+        "graphics_quality": null
+      }
+    },
+    "diagnostics": {
+      "page_exceptions": [],
+      "local_http_errors": [],
+      "browser_warnings": [
+        "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+      ],
+      "external_resources_blocked": [
+        "https://games.p2game.io/sdk/p2game-sdk.v1.js"
+      ]
+    },
+    "physics_camera": {
+      "fps": 60,
+      "fixedStep": true,
+      "zoom": 2.2,
+      "roundPixels": true
+    },
+    "runtime_frames": 875,
+    "average_render_fps": 59.95417689911751,
+    "render_interval_p95_ms": 17.400000002235174,
+    "max_render_interval_ms": 26.600000001490116,
+    "physics_steps_per_locomotion_render": {
+      "1": 701,
+      "2": 1
+    },
+    "max_live_body_offset_error_world_px": [
+      2.842170943040401e-14,
+      2
+    ],
+    "blur_result": {
+      "time": 39072.3,
+      "delta": 16.65333333333377,
+      "rawDelta": 16.700000000004366,
+      "steps": 0,
+      "key": "wayfarer_unarmed_idle_right",
+      "index": 2,
+      "count": 6,
+      "elapsed": 56.45000000000728,
+      "duration": 160,
+      "scale": 1.5,
+      "texture": "black_knight_movement",
+      "frame": "unarmed_idle_right_1",
+      "pivot": [0.5, 1],
+      "dimensions": [64, 64],
+      "origin": [32, 64],
+      "foot": [-9, -18],
+      "body": [18, 12],
+      "sprite": [297.02267316155286, 251.2882846216818],
+      "velocity": [0, 0],
+      "armed": false,
+      "sprinting": false,
+      "facing": "right",
+      "camera": [-349.0909090909091, -121.00144467640547, 2.2]
+    },
+    "zone_weapon_restore": {
+      "zone": "fog_crossing",
+      "x": 297.02267316155286,
+      "y": 251.2882846216818,
+      "anim": "wayfarer_weapon_on_right",
+      "frame": "weapon_on_right_0",
+      "texture": "black_knight_defense",
+      "armed": true,
+      "scale": 1.5,
+      "origin": [0.5, 1],
+      "body": [18, 12],
+      "camZoom": 2.2,
+      "composure": 95.99859999999998
+    },
+    "checks": {
+      "tests": {
+        "four_directions_both_stances": true,
+        "walk_run_roundtrips": true,
+        "turns_in_both_gaits": true,
+        "phase_regression": true,
+        "steady_walk_completes_cycle_without_restart": true,
+        "velocity_matches_gait": true,
+        "frame_geometry": true,
+        "no_position_jump_at_clip_switch": true,
+        "blur_releases_movement_and_sprint": true,
+        "zone_auto_weapon_reenabled": true,
+        "no_local_runtime_errors": true
+      },
+      "locomotion_transitions": 24,
+      "max_cycle_phase_error": 0.11137254901960789
+    },
+    "transition_samples": [
+      [
+        {
+          "key": "wayfarer_walk_right",
+          "index": 2,
+          "elapsed_ms": 113.5399999999998,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_right_1",
+          "sprite_world_xy": [142.6666666666667, 195],
+          "body_world_wh": [18, 12],
+          "velocity": [140, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        },
+        {
+          "key": "wayfarer_run_right",
+          "index": 3,
+          "elapsed_ms": 0,
+          "frame_ms": 70,
+          "scale": 1.1400000000000001,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "armed_run_sequence_right_2",
+          "sprite_world_xy": [142.6666666666667, 195],
+          "body_world_wh": [18, 12],
+          "velocity": [140, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_run_right",
+          "index": 9,
+          "elapsed_ms": 30.359999999999168,
+          "frame_ms": 70,
+          "scale": 1.1400000000000001,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "armed_run_sequence_right_8",
+          "sprite_world_xy": [204.75000000000028, 195],
+          "body_world_wh": [18, 12],
+          "velocity": [85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        },
+        {
+          "key": "wayfarer_walk_right",
+          "index": 5,
+          "elapsed_ms": 0,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_right_4",
+          "sprite_world_xy": [204.75000000000028, 195],
+          "body_world_wh": [18, 12],
+          "velocity": [85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_walk_right",
+          "index": 6,
+          "elapsed_ms": 96.88000000000062,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_right_5",
+          "sprite_world_xy": [224, 204.83853715337614],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        },
+        {
+          "key": "wayfarer_walk_down",
+          "index": 6,
+          "elapsed_ms": 0,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_down_5",
+          "sprite_world_xy": [224, 204.83853715337614],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_walk_down",
+          "index": 1,
+          "elapsed_ms": 80.18999999999976,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_down_0",
+          "sprite_world_xy": [224, 226.088537153376],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -155.5742863323151, 2.2]
+        },
+        {
+          "key": "wayfarer_run_down",
+          "index": 1,
+          "elapsed_ms": 0,
+          "frame_ms": 70,
+          "scale": 1.1400000000000001,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "armed_run_sequence_down_0",
+          "sprite_world_xy": [224, 226.088537153376],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -155.5742863323151, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_run_down",
+          "index": 7,
+          "elapsed_ms": 30.340000000000153,
+          "frame_ms": 70,
+          "scale": 1.1400000000000001,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "armed_run_sequence_down_6",
+          "sprite_world_xy": [224, 288.17187048670957],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -104.11557175504024, 2.2]
+        },
+        {
+          "key": "wayfarer_walk_down",
+          "index": 4,
+          "elapsed_ms": 0,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_down_3",
+          "sprite_world_xy": [224, 288.17187048670957],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -104.11557175504024, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_walk_down",
+          "index": 5,
+          "elapsed_ms": 96.9199999999997,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_down_4",
+          "sprite_world_xy": [218.16146284662386, 307.67707430675256],
+          "body_world_wh": [18, 12],
+          "velocity": [-85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -75.39725351346509, 2.2]
+        },
+        {
+          "key": "wayfarer_walk_left",
+          "index": 5,
+          "elapsed_ms": 0,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_left_4",
+          "sprite_world_xy": [218.16146284662386, 307.67707430675256],
+          "body_world_wh": [18, 12],
+          "velocity": [-85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -75.39725351346509, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_walk_left",
+          "index": 6,
+          "elapsed_ms": 80.20000000000073,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_left_5",
+          "sprite_world_xy": [196.911462846624, 307.67707430675256],
+          "body_world_wh": [18, 12],
+          "velocity": [-140, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -66.60303158533932, 2.2]
+        },
+        {
+          "key": "wayfarer_run_left",
+          "index": 11,
+          "elapsed_ms": 0,
+          "frame_ms": 70,
+          "scale": 1.1400000000000001,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "armed_run_sequence_left_10",
+          "sprite_world_xy": [196.911462846624, 307.67707430675256],
+          "body_world_wh": [18, 12],
+          "velocity": [-140, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -66.60303158533932, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_run_left",
+          "index": 5,
+          "elapsed_ms": 30.31999999999936,
+          "frame_ms": 70,
+          "scale": 1.1400000000000001,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "armed_run_sequence_left_4",
+          "sprite_world_xy": [134.82812951329043, 307.67707430675256],
+          "body_world_wh": [18, 12],
+          "velocity": [-85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -64.45551325121167, 2.2]
+        },
+        {
+          "key": "wayfarer_walk_left",
+          "index": 3,
+          "elapsed_ms": 0,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_left_2",
+          "sprite_world_xy": [134.82812951329043, 307.67707430675256],
+          "body_world_wh": [18, 12],
+          "velocity": [-85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -64.45551325121167, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_walk_left",
+          "index": 4,
+          "elapsed_ms": 96.91000000000021,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_left_3",
+          "sprite_world_xy": [115.32292569324754, 301.83853715337636],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -64.36453307384632, 2.2]
+        },
+        {
+          "key": "wayfarer_walk_up",
+          "index": 4,
+          "elapsed_ms": 0,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_up_3",
+          "sprite_world_xy": [115.32292569324754, 301.83853715337636],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -64.36453307384632, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_walk_up",
+          "index": 5,
+          "elapsed_ms": 63.47000000000007,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_up_4",
+          "sprite_world_xy": [115.32292569324754, 282.00520382004277],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -64.54678306400739, 2.2]
+        },
+        {
+          "key": "wayfarer_run_up",
+          "index": 9,
+          "elapsed_ms": 0,
+          "frame_ms": 70,
+          "scale": 1.1400000000000001,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "armed_run_sequence_up_8",
+          "sprite_world_xy": [115.32292569324754, 282.00520382004277],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -64.54678306400739, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_run_up",
+          "index": 3,
+          "elapsed_ms": 30.400000000000034,
+          "frame_ms": 70,
+          "scale": 1.1400000000000001,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "armed_run_sequence_up_2",
+          "sprite_world_xy": [115.32292569324754, 219.92187048670905],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -108.26837633407136, 2.2]
+        },
+        {
+          "key": "wayfarer_walk_up",
+          "index": 2,
+          "elapsed_ms": 0,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_up_1",
+          "sprite_world_xy": [115.32292569324754, 219.92187048670905],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -108.26837633407136, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_run_right",
+          "index": 6,
+          "elapsed_ms": 16.950000000000728,
+          "frame_ms": 70,
+          "scale": 1.1400000000000001,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "armed_run_sequence_right_5",
+          "sprite_world_xy": [268.10600649488646, 211.62161795501498],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -145.9947297222669, 2.2]
+        },
+        {
+          "key": "wayfarer_run_down",
+          "index": 6,
+          "elapsed_ms": 0,
+          "frame_ms": 70,
+          "scale": 1.1400000000000001,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "armed_run_sequence_down_5",
+          "sprite_world_xy": [268.10600649488646, 211.62161795501498],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -145.9947297222669, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_walk_right",
+          "index": 2,
+          "elapsed_ms": 113.6,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_right_1",
+          "sprite_world_xy": [142.6666666666667, 195],
+          "body_world_wh": [18, 12],
+          "velocity": [140, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_run_right",
+          "index": 3,
+          "elapsed_ms": 0,
+          "frame_ms": 70,
+          "scale": 0.99,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "unarmed_run_sequence_right_2",
+          "sprite_world_xy": [142.6666666666667, 195],
+          "body_world_wh": [18, 12],
+          "velocity": [140, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_run_right",
+          "index": 9,
+          "elapsed_ms": 30.410000000000235,
+          "frame_ms": 70,
+          "scale": 1.1099999999999999,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "unarmed_run_sequence_right_8",
+          "sprite_world_xy": [204.75000000000028, 195],
+          "body_world_wh": [18, 12],
+          "velocity": [85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_walk_right",
+          "index": 5,
+          "elapsed_ms": 0,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_right_4",
+          "sprite_world_xy": [204.75000000000028, 195],
+          "body_world_wh": [18, 12],
+          "velocity": [85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_walk_right",
+          "index": 6,
+          "elapsed_ms": 96.89000000000013,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_right_5",
+          "sprite_world_xy": [224, 204.83853715337614],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_walk_down",
+          "index": 6,
+          "elapsed_ms": 0,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_down_5",
+          "sprite_world_xy": [224, 204.83853715337614],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_walk_down",
+          "index": 1,
+          "elapsed_ms": 80.15999999999985,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_down_0",
+          "sprite_world_xy": [224, 226.088537153376],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -155.5742863323151, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_run_down",
+          "index": 1,
+          "elapsed_ms": 0,
+          "frame_ms": 70,
+          "scale": 0.99,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "unarmed_run_sequence_down_0",
+          "sprite_world_xy": [224, 226.088537153376],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -155.5742863323151, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_run_down",
+          "index": 7,
+          "elapsed_ms": 30.29000000000086,
+          "frame_ms": 70,
+          "scale": 1.1099999999999999,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "unarmed_run_sequence_down_6",
+          "sprite_world_xy": [224, 288.17187048670957],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -104.11557175504024, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_walk_down",
+          "index": 4,
+          "elapsed_ms": 0,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_down_3",
+          "sprite_world_xy": [224, 288.17187048670957],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -104.11557175504024, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_walk_down",
+          "index": 5,
+          "elapsed_ms": 96.89999999999927,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_down_4",
+          "sprite_world_xy": [218.16146284662386, 307.67707430675256],
+          "body_world_wh": [18, 12],
+          "velocity": [-85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -75.39725351346509, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_walk_left",
+          "index": 5,
+          "elapsed_ms": 0,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_left_4",
+          "sprite_world_xy": [218.16146284662386, 307.67707430675256],
+          "body_world_wh": [18, 12],
+          "velocity": [-85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -75.39725351346509, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_walk_left",
+          "index": 6,
+          "elapsed_ms": 80.23999999999943,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_left_5",
+          "sprite_world_xy": [196.911462846624, 307.67707430675256],
+          "body_world_wh": [18, 12],
+          "velocity": [-140, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -66.60303158533932, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_run_left",
+          "index": 11,
+          "elapsed_ms": 0,
+          "frame_ms": 70,
+          "scale": 1.1099999999999999,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "unarmed_run_sequence_left_10",
+          "sprite_world_xy": [196.911462846624, 307.67707430675256],
+          "body_world_wh": [18, 12],
+          "velocity": [-140, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -66.60303158533932, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_run_left",
+          "index": 5,
+          "elapsed_ms": 30.340000000000153,
+          "frame_ms": 70,
+          "scale": 0.99,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "unarmed_run_sequence_left_4",
+          "sprite_world_xy": [134.82812951329043, 307.67707430675256],
+          "body_world_wh": [18, 12],
+          "velocity": [-85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -64.45551325121167, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_walk_left",
+          "index": 3,
+          "elapsed_ms": 0,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_left_2",
+          "sprite_world_xy": [134.82812951329043, 307.67707430675256],
+          "body_world_wh": [18, 12],
+          "velocity": [-85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -64.45551325121167, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_walk_left",
+          "index": 4,
+          "elapsed_ms": 96.8600000000006,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_left_3",
+          "sprite_world_xy": [115.32292569324754, 301.83853715337636],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -64.36453307384632, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_walk_up",
+          "index": 4,
+          "elapsed_ms": 0,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_up_3",
+          "sprite_world_xy": [115.32292569324754, 301.83853715337636],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -64.36453307384632, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_walk_up",
+          "index": 5,
+          "elapsed_ms": 63.54000000000087,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_up_4",
+          "sprite_world_xy": [115.32292569324754, 282.00520382004277],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -64.54678306400739, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_run_up",
+          "index": 9,
+          "elapsed_ms": 0,
+          "frame_ms": 70,
+          "scale": 1.1099999999999999,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "unarmed_run_sequence_up_8",
+          "sprite_world_xy": [115.32292569324754, 282.00520382004277],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -64.54678306400739, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_run_up",
+          "index": 3,
+          "elapsed_ms": 30.289999999998702,
+          "frame_ms": 70,
+          "scale": 0.99,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "unarmed_run_sequence_up_2",
+          "sprite_world_xy": [115.32292569324754, 219.92187048670905],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -108.26837633407136, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_walk_up",
+          "index": 2,
+          "elapsed_ms": 0,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_up_1",
+          "sprite_world_xy": [115.32292569324754, 219.92187048670905],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -108.26837633407136, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_run_right",
+          "index": 6,
+          "elapsed_ms": 33.64000000000014,
+          "frame_ms": 70,
+          "scale": 0.99,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "unarmed_run_sequence_right_5",
+          "sprite_world_xy": [269.0226731615531, 211.62161795501498],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -145.9947297222669, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_run_down",
+          "index": 6,
+          "elapsed_ms": 0,
+          "frame_ms": 70,
+          "scale": 0.99,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "unarmed_run_sequence_down_5",
+          "sprite_world_xy": [269.0226731615531, 211.62161795501498],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -145.9947297222669, 2.2]
+        }
+      ]
+    ],
+    "clips": {
+      "wayfarer_walk_down": {
+        "frames": 6,
+        "frame_ms": [170],
+        "cycle_ms": 1020
+      },
+      "wayfarer_walk_up": {
+        "frames": 6,
+        "frame_ms": [170],
+        "cycle_ms": 1020
+      },
+      "wayfarer_walk_left": {
+        "frames": 6,
+        "frame_ms": [170],
+        "cycle_ms": 1020
+      },
+      "wayfarer_walk_right": {
+        "frames": 6,
+        "frame_ms": [170],
+        "cycle_ms": 1020
+      },
+      "wayfarer_run_down": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_run_up": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_run_left": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_run_right": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_unarmed_walk_down": {
+        "frames": 6,
+        "frame_ms": [170],
+        "cycle_ms": 1020
+      },
+      "wayfarer_unarmed_walk_up": {
+        "frames": 6,
+        "frame_ms": [170],
+        "cycle_ms": 1020
+      },
+      "wayfarer_unarmed_walk_left": {
+        "frames": 6,
+        "frame_ms": [170],
+        "cycle_ms": 1020
+      },
+      "wayfarer_unarmed_walk_right": {
+        "frames": 6,
+        "frame_ms": [170],
+        "cycle_ms": 1020
+      },
+      "wayfarer_unarmed_run_down": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_unarmed_run_up": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_unarmed_run_left": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_unarmed_run_right": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_unarmed_run_sequence": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_unarmed_run_sequence_down": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_unarmed_run_sequence_up": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_unarmed_run_sequence_left": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_unarmed_run_sequence_right": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      }
+    },
+    "video": {
+      "stage": "before",
+      "width": 1280,
+      "height": 720,
+      "nonblack": 9216,
+      "changed": 9208,
+      "bytes": 765226,
+      "sha256": "1309387f3332daae8b97a1d264122011513fa2cd961225eb1bd39b3994f831d8"
+    }
+  },
+  "after": {
+    "bundle": "index-C37lkJEc.js",
+    "environment": {
+      "os": "Windows 10 build 19045",
+      "node": "v26.7.0",
+      "browser_mode": "headless Chrome, isolated throwaway profile",
+      "endpoint": "http://127.0.0.1:5187",
+      "bundle": "npm run build, Vite preview",
+      "sdk": "external P2Game SDK blocked for isolated standalone test",
+      "owner_save_used": false,
+      "keyboard": "Chrome DevTools synthetic key events; physical EVKey NOT_RUN",
+      "window": [1280, 720],
+      "device_scale_factor": 1,
+      "graphics_flags": [],
+      "browser": "Chrome/158.0.8127.38",
+      "chrome_gpu": {
+        "devices": [
+          {
+            "vendorId": 4318,
+            "deviceId": 7042,
+            "subSysId": 932451416,
+            "revision": 161,
+            "vendorString": "",
+            "deviceString": "NVIDIA GeForce GTX 1070 Ti",
+            "driverVendor": "NVIDIA",
+            "driverVersion": "32.0.15.8266"
+          },
+          {
+            "vendorId": 5140,
+            "deviceId": 140,
+            "subSysId": 0,
+            "revision": 0,
+            "vendorString": "",
+            "deviceString": "Microsoft Basic Render Driver",
+            "driverVendor": "",
+            "driverVersion": "10.0.19041.7548"
+          }
+        ],
+        "feature_status": {
+          "gpu_compositing": "enabled",
+          "webgl": "enabled"
+        },
+        "gl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8266)",
+        "gl_vendor": "Google Inc. (NVIDIA)"
+      },
+      "renderer": {
+        "type": 2,
+        "renderer": "WebGL",
+        "webgl_version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+        "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "webgl_vendor": "Google Inc. (NVIDIA)",
+        "canvas": [1280, 720],
+        "viewport": [1280, 720],
+        "pixel_ratio": 1,
+        "rect": [0, 0, 1280, 720],
+        "graphics_quality": null
+      }
+    },
+    "diagnostics": {
+      "page_exceptions": [],
+      "local_http_errors": [],
+      "browser_warnings": [
+        "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+      ],
+      "external_resources_blocked": [
+        "https://games.p2game.io/sdk/p2game-sdk.v1.js"
+      ]
+    },
+    "physics_camera": {
+      "fps": 60,
+      "fixedStep": true,
+      "zoom": 2.2,
+      "roundPixels": true
+    },
+    "runtime_frames": 868,
+    "average_render_fps": 59.97260766708013,
+    "render_interval_p95_ms": 19.099999997764826,
+    "max_render_interval_ms": 32.30000000074506,
+    "physics_steps_per_locomotion_render": {
+      "1": 704
+    },
+    "max_live_body_offset_error_world_px": [
+      2.842170943040401e-14,
+      2
+    ],
+    "blur_result": {
+      "time": 40421.2,
+      "delta": 16.626666666667248,
+      "rawDelta": 16.69999999999709,
+      "steps": 0,
+      "key": "wayfarer_unarmed_idle_right",
+      "index": 2,
+      "count": 6,
+      "elapsed": 72.92000000000553,
+      "duration": 160,
+      "scale": 1.5,
+      "texture": "black_knight_movement",
+      "frame": "unarmed_idle_right_1",
+      "pivot": [0.5, 1],
+      "dimensions": [64, 64],
+      "origin": [32, 64],
+      "foot": [-9, -18],
+      "body": [18, 12],
+      "sprite": [298.0244077682338, 253.03481540831984],
+      "velocity": [0, 0],
+      "armed": false,
+      "sprinting": false,
+      "facing": "right",
+      "camera": [-349.0909090909091, -119.22313152814304, 2.2]
+    },
+    "zone_weapon_restore": {
+      "zone": "fog_crossing",
+      "x": 298.0244077682338,
+      "y": 253.03481540831984,
+      "anim": "wayfarer_weapon_on_right",
+      "frame": "weapon_on_right_1",
+      "texture": "black_knight_defense",
+      "armed": true,
+      "scale": 1.5,
+      "origin": [0.5, 1],
+      "body": [18, 12],
+      "camZoom": 2.2,
+      "composure": 95.77374000000006
+    },
+    "checks": {
+      "tests": {
+        "four_directions_both_stances": true,
+        "walk_run_roundtrips": true,
+        "turns_in_both_gaits": true,
+        "phase_regression": true,
+        "steady_walk_completes_cycle_without_restart": true,
+        "velocity_matches_gait": true,
+        "frame_geometry": true,
+        "no_position_jump_at_clip_switch": true,
+        "blur_releases_movement_and_sprint": true,
+        "zone_auto_weapon_reenabled": true,
+        "no_local_runtime_errors": true
+      },
+      "locomotion_transitions": 26,
+      "max_cycle_phase_error": 1.1102230246251565e-16
+    },
+    "transition_samples": [
+      [
+        {
+          "key": "wayfarer_walk_right",
+          "index": 2,
+          "elapsed_ms": 130.20999999999944,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_right_1",
+          "sprite_world_xy": [144.08333333333337, 195],
+          "body_world_wh": [18, 12],
+          "velocity": [140, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        },
+        {
+          "key": "wayfarer_run_right",
+          "index": 4,
+          "elapsed_ms": 37.23176470588194,
+          "frame_ms": 70,
+          "scale": 1.1400000000000001,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "armed_run_sequence_right_3",
+          "sprite_world_xy": [144.08333333333337, 195],
+          "body_world_wh": [18, 12],
+          "velocity": [140, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_run_right",
+          "index": 10,
+          "elapsed_ms": 67.59176470588216,
+          "frame_ms": 70,
+          "scale": 1.1400000000000001,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "armed_run_sequence_right_9",
+          "sprite_world_xy": [206.16666666666694, 195],
+          "body_world_wh": [18, 12],
+          "velocity": [85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        },
+        {
+          "key": "wayfarer_walk_right",
+          "index": 5,
+          "elapsed_ms": 167.07571428571396,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_right_4",
+          "sprite_world_xy": [206.16666666666694, 195],
+          "body_world_wh": [18, 12],
+          "velocity": [85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_walk_right",
+          "index": 1,
+          "elapsed_ms": 93.97571428571393,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_right_0",
+          "sprite_world_xy": [224, 205.25346921336185],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        },
+        {
+          "key": "wayfarer_walk_down",
+          "index": 1,
+          "elapsed_ms": 93.97571428571393,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_down_0",
+          "sprite_world_xy": [224, 205.25346921336185],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_walk_down",
+          "index": 3,
+          "elapsed_ms": 4.215714285714029,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_down_2",
+          "sprite_world_xy": [224, 226.5034692133617],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -155.25427741852144, 2.2]
+        },
+        {
+          "key": "wayfarer_run_down",
+          "index": 5,
+          "elapsed_ms": 3.4717647058821512,
+          "frame_ms": 70,
+          "scale": 1.1400000000000001,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "armed_run_sequence_down_4",
+          "sprite_world_xy": [224, 226.5034692133617],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -155.25427741852144, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_run_down",
+          "index": 11,
+          "elapsed_ms": 33.79176470588224,
+          "frame_ms": 70,
+          "scale": 1.1400000000000001,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "armed_run_sequence_down_10",
+          "sprite_world_xy": [224, 288.5868025466952],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -103.70615945104113, 2.2]
+        },
+        {
+          "key": "wayfarer_walk_down",
+          "index": 6,
+          "elapsed_ms": 41.03285714285698,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_down_5",
+          "sprite_world_xy": [224, 288.5868025466952],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -103.70615945104113, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_walk_down",
+          "index": 1,
+          "elapsed_ms": 137.89285714285683,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_down_0",
+          "sprite_world_xy": [218.16146284662386, 308.0920063667382],
+          "body_world_wh": [18, 12],
+          "velocity": [-85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -74.98334427540752, 2.2]
+        },
+        {
+          "key": "wayfarer_walk_left",
+          "index": 1,
+          "elapsed_ms": 137.89285714285683,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_left_0",
+          "sprite_world_xy": [218.16146284662386, 308.0920063667382],
+          "body_world_wh": [18, 12],
+          "velocity": [-85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -74.98334427540752, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_walk_left",
+          "index": 3,
+          "elapsed_ms": 31.412857142856865,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_left_2",
+          "sprite_world_xy": [198.32812951329066, 308.0920063667382],
+          "body_world_wh": [18, 12],
+          "velocity": [-140, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -66.44167861332468, 2.2]
+        },
+        {
+          "key": "wayfarer_run_left",
+          "index": 5,
+          "elapsed_ms": 25.86941176470566,
+          "frame_ms": 70,
+          "scale": 1.1400000000000001,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "armed_run_sequence_left_4",
+          "sprite_world_xy": [198.32812951329066, 308.0920063667382],
+          "body_world_wh": [18, 12],
+          "velocity": [-140, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -66.44167861332468, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_run_left",
+          "index": 12,
+          "elapsed_ms": 2.9294117647055486,
+          "frame_ms": 70,
+          "scale": 1.1400000000000001,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "armed_run_sequence_left_11",
+          "sprite_world_xy": [133.9114628466238, 308.0920063667382],
+          "body_world_wh": [18, 12],
+          "velocity": [-85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -64.0405934369771, 2.2]
+        },
+        {
+          "key": "wayfarer_walk_left",
+          "index": 6,
+          "elapsed_ms": 88.55714285714237,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_left_5",
+          "sprite_world_xy": [133.9114628466238, 308.0920063667382],
+          "body_world_wh": [18, 12],
+          "velocity": [-85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -64.0405934369771, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_walk_left",
+          "index": 2,
+          "elapsed_ms": 15.397142857142114,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_left_1",
+          "sprite_world_xy": [114.40625902658093, 302.253469213362],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -63.949604856707126, 2.2]
+        },
+        {
+          "key": "wayfarer_walk_up",
+          "index": 2,
+          "elapsed_ms": 15.397142857142114,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_up_1",
+          "sprite_world_xy": [114.40625902658093, 302.253469213362],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -63.949604856707126, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_walk_up",
+          "index": 3,
+          "elapsed_ms": 78.91714285714215,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_up_2",
+          "sprite_world_xy": [114.40625902658093, 282.4201358800284],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -64.13185411672737, 2.2]
+        },
+        {
+          "key": "wayfarer_run_up",
+          "index": 5,
+          "elapsed_ms": 64.99058823529356,
+          "frame_ms": 70,
+          "scale": 1.1400000000000001,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "armed_run_sequence_up_4",
+          "sprite_world_xy": [114.40625902658093, 282.4201358800284],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -64.13185411672737, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_run_up",
+          "index": 12,
+          "elapsed_ms": 25.35058823529379,
+          "frame_ms": 70,
+          "scale": 1.1400000000000001,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "armed_run_sequence_up_11",
+          "sprite_world_xy": [114.40625902658093, 220.33680254669468],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -107.85344445508875, 2.2]
+        },
+        {
+          "key": "wayfarer_walk_up",
+          "index": 6,
+          "elapsed_ms": 115.78285714285676,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_up_5",
+          "sprite_world_xy": [114.40625902658093, 220.33680254669468],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -107.85344445508875, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_run_right",
+          "index": 6,
+          "elapsed_ms": 33.65999999999951,
+          "frame_ms": 70,
+          "scale": 1.1400000000000001,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "armed_run_sequence_right_5",
+          "sprite_world_xy": [268.10600649488646, 212.0365500150006],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -145.57980430805057, 2.2]
+        },
+        {
+          "key": "wayfarer_run_down",
+          "index": 6,
+          "elapsed_ms": 33.65999999999951,
+          "frame_ms": 70,
+          "scale": 1.1400000000000001,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "armed_run_sequence_down_5",
+          "sprite_world_xy": [268.10600649488646, 212.0365500150006],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -145.57980430805057, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_run_down",
+          "index": 10,
+          "elapsed_ms": 20.509999999999906,
+          "frame_ms": 70,
+          "scale": 1.1400000000000001,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "armed_run_sequence_down_9",
+          "sprite_world_xy": [268.10600649488646, 249.3698833483341],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -136.17410043337637, 2.2]
+        },
+        {
+          "key": "wayfarer_walk_down",
+          "index": 5,
+          "elapsed_ms": 109.90499999999986,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "armed_walk_down_4",
+          "sprite_world_xy": [268.10600649488646, 249.3698833483341],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -136.17410043337637, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_walk_right",
+          "index": 2,
+          "elapsed_ms": 113.55000000000074,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_right_1",
+          "sprite_world_xy": [142.6666666666667, 195],
+          "body_world_wh": [18, 12],
+          "velocity": [140, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_run_right",
+          "index": 4,
+          "elapsed_ms": 23.511764705882968,
+          "frame_ms": 70,
+          "scale": 0.99,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "unarmed_run_sequence_right_3",
+          "sprite_world_xy": [142.6666666666667, 195],
+          "body_world_wh": [18, 12],
+          "velocity": [140, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_run_right",
+          "index": 10,
+          "elapsed_ms": 53.871764705882825,
+          "frame_ms": 70,
+          "scale": 1.1099999999999999,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "unarmed_run_sequence_right_9",
+          "sprite_world_xy": [204.75000000000028, 195],
+          "body_world_wh": [18, 12],
+          "velocity": [85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_walk_right",
+          "index": 5,
+          "elapsed_ms": 150.41571428571478,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_right_4",
+          "sprite_world_xy": [204.75000000000028, 195],
+          "body_world_wh": [18, 12],
+          "velocity": [85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_walk_right",
+          "index": 1,
+          "elapsed_ms": 77.28571428571449,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_right_0",
+          "sprite_world_xy": [224, 203.8368025466952],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_walk_down",
+          "index": 1,
+          "elapsed_ms": 77.28571428571449,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_down_0",
+          "sprite_world_xy": [224, 203.8368025466952],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -165, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_walk_down",
+          "index": 2,
+          "elapsed_ms": 157.47571428571462,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_down_1",
+          "sprite_world_xy": [224, 225.08680254669505],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -156.33847148873068, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_run_down",
+          "index": 4,
+          "elapsed_ms": 59.68588235294146,
+          "frame_ms": 70,
+          "scale": 0.99,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "unarmed_run_sequence_down_3",
+          "sprite_world_xy": [224, 225.08680254669505],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -156.33847148873068, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_run_down",
+          "index": 11,
+          "elapsed_ms": 20.0458823529413,
+          "frame_ms": 70,
+          "scale": 1.1099999999999999,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "unarmed_run_sequence_down_10",
+          "sprite_world_xy": [224, 287.1701358800286],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -105.10349292366304, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_walk_down",
+          "index": 6,
+          "elapsed_ms": 24.341428571428764,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_down_5",
+          "sprite_world_xy": [224, 287.1701358800286],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -105.10349292366304, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_walk_down",
+          "index": 1,
+          "elapsed_ms": 121.2114285714292,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_down_0",
+          "sprite_world_xy": [219.1631974533048, 307.09027176005736],
+          "body_world_wh": [18, 12],
+          "velocity": [-85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -76.22650963430135, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_walk_left",
+          "index": 1,
+          "elapsed_ms": 121.2114285714292,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_left_0",
+          "sprite_world_xy": [219.1631974533048, 307.09027176005736],
+          "body_world_wh": [18, 12],
+          "velocity": [-85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -76.22650963430135, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_walk_left",
+          "index": 3,
+          "elapsed_ms": 31.431428571428153,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_left_2",
+          "sprite_world_xy": [197.91319745330495, 307.09027176005736],
+          "body_world_wh": [18, 12],
+          "velocity": [-140, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -67.2397531728948, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_run_left",
+          "index": 5,
+          "elapsed_ms": 25.88470588235259,
+          "frame_ms": 70,
+          "scale": 0.99,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "unarmed_run_sequence_left_4",
+          "sprite_world_xy": [197.91319745330495, 307.09027176005736],
+          "body_world_wh": [18, 12],
+          "velocity": [-140, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -67.2397531728948, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_run_left",
+          "index": 11,
+          "elapsed_ms": 56.224705882354186,
+          "frame_ms": 70,
+          "scale": 1.1099999999999999,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "unarmed_run_sequence_left_10",
+          "sprite_world_xy": [135.82986411997138, 307.09027176005736],
+          "body_world_wh": [18, 12],
+          "velocity": [-85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -65.04521857700432, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_walk_left",
+          "index": 6,
+          "elapsed_ms": 68.2728571428587,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_left_5",
+          "sprite_world_xy": [135.82986411997138, 307.09027176005736],
+          "body_world_wh": [18, 12],
+          "velocity": [-85, 0],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -65.04521857700432, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_walk_left",
+          "index": 1,
+          "elapsed_ms": 165.1428571428584,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_left_0",
+          "sprite_world_xy": [116.32466029992848, 301.25173460668117],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -64.95224654338038, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_walk_up",
+          "index": 1,
+          "elapsed_ms": 165.1428571428584,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_up_0",
+          "sprite_world_xy": [116.32466029992848, 301.25173460668117],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -64.95224654338038, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_walk_up",
+          "index": 3,
+          "elapsed_ms": 75.30285714285823,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_up_2",
+          "sprite_world_xy": [116.32466029992848, 280.0017346066809],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -65.42071765171379, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_run_up",
+          "index": 5,
+          "elapsed_ms": 62.01411764705966,
+          "frame_ms": 70,
+          "scale": 0.99,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "unarmed_run_sequence_up_4",
+          "sprite_world_xy": [116.32466029992848, 280.0017346066809],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -65.42071765171379, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_run_up",
+          "index": 12,
+          "elapsed_ms": 5.734117647058667,
+          "frame_ms": 70,
+          "scale": 1.1099999999999999,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "unarmed_run_sequence_up_11",
+          "sprite_world_xy": [116.32466029992848, 220.25173460668043],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -107.99778170372261, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_walk_up",
+          "index": 6,
+          "elapsed_ms": 91.96285714285693,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_up_5",
+          "sprite_world_xy": [116.32466029992848, 220.25173460668043],
+          "body_world_wh": [18, 12],
+          "velocity": [0, -85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -107.99778170372261, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_run_right",
+          "index": 6,
+          "elapsed_ms": 33.61999999999897,
+          "frame_ms": 70,
+          "scale": 0.99,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "unarmed_run_sequence_right_5",
+          "sprite_world_xy": [270.024407768234, 211.95148207498636],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -145.66486567644614, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_run_down",
+          "index": 6,
+          "elapsed_ms": 33.61999999999898,
+          "frame_ms": 70,
+          "scale": 0.99,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "unarmed_run_sequence_down_5",
+          "sprite_world_xy": [270.024407768234, 211.95148207498636],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 140],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -145.66486567644614, 2.2]
+        }
+      ],
+      [
+        {
+          "key": "wayfarer_unarmed_run_down",
+          "index": 10,
+          "elapsed_ms": 20.52999999999957,
+          "frame_ms": 70,
+          "scale": 1.1099999999999999,
+          "pivot": [0.5, 0.875],
+          "texture": "black_knight_conversion_motion",
+          "frame": "unarmed_run_sequence_down_9",
+          "sprite_world_xy": [270.024407768234, 249.28481540831984],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -136.25916608200885, 2.2]
+        },
+        {
+          "key": "wayfarer_unarmed_walk_down",
+          "index": 5,
+          "elapsed_ms": 109.92928571428513,
+          "frame_ms": 170,
+          "scale": 1.5,
+          "pivot": [0.5, 1],
+          "texture": "black_knight_movement",
+          "frame": "unarmed_walk_down_4",
+          "sprite_world_xy": [270.024407768234, 249.28481540831984],
+          "body_world_wh": [18, 12],
+          "velocity": [0, 85],
+          "camera_scroll_xy_zoom": [-349.0909090909091, -136.25916608200885, 2.2]
+        }
+      ]
+    ],
+    "clips": {
+      "wayfarer_walk_down": {
+        "frames": 6,
+        "frame_ms": [170],
+        "cycle_ms": 1020
+      },
+      "wayfarer_walk_up": {
+        "frames": 6,
+        "frame_ms": [170],
+        "cycle_ms": 1020
+      },
+      "wayfarer_walk_left": {
+        "frames": 6,
+        "frame_ms": [170],
+        "cycle_ms": 1020
+      },
+      "wayfarer_walk_right": {
+        "frames": 6,
+        "frame_ms": [170],
+        "cycle_ms": 1020
+      },
+      "wayfarer_run_down": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_run_up": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_run_left": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_run_right": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_unarmed_walk_down": {
+        "frames": 6,
+        "frame_ms": [170],
+        "cycle_ms": 1020
+      },
+      "wayfarer_unarmed_walk_up": {
+        "frames": 6,
+        "frame_ms": [170],
+        "cycle_ms": 1020
+      },
+      "wayfarer_unarmed_walk_left": {
+        "frames": 6,
+        "frame_ms": [170],
+        "cycle_ms": 1020
+      },
+      "wayfarer_unarmed_walk_right": {
+        "frames": 6,
+        "frame_ms": [170],
+        "cycle_ms": 1020
+      },
+      "wayfarer_unarmed_run_down": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_unarmed_run_up": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_unarmed_run_left": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_unarmed_run_right": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_unarmed_run_sequence": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_unarmed_run_sequence_down": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_unarmed_run_sequence_up": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_unarmed_run_sequence_left": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      },
+      "wayfarer_unarmed_run_sequence_right": {
+        "frames": 12,
+        "frame_ms": [70],
+        "cycle_ms": 840
+      }
+    },
+    "video": {
+      "stage": "after",
+      "width": 1280,
+      "height": 720,
+      "nonblack": 9216,
+      "changed": 9207,
+      "bytes": 738796,
+      "sha256": "b24f80e02d6ecae408f10b4ff71270686b8d7ea74270d2656c4e5cee6808220c"
+    }
+  },
+  "atlas_scan": {
+    "alpha_threshold": 128,
+    "movement": {
+      "png_sha256": "17279d83290fa349855066381f557548e08df31b123fe1c745b29017a2a14d8f",
+      "json_sha256": "5acbdda5fbad6577f88575253d9e2d5b8f54f6268b10fb2ece55e1c2fec152e1",
+      "frames": {
+
+        "armed_walk_down_0": { "bounds_xyxy_inclusive": [20, 32, 45, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_down_1": { "bounds_xyxy_inclusive": [20, 31, 45, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_down_2": { "bounds_xyxy_inclusive": [20, 32, 45, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_down_3": { "bounds_xyxy_inclusive": [20, 32, 43, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_down_4": { "bounds_xyxy_inclusive": [21, 31, 43, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_down_5": { "bounds_xyxy_inclusive": [20, 32, 44, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_up_0": { "bounds_xyxy_inclusive": [20, 32, 44, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_up_1": { "bounds_xyxy_inclusive": [20, 31, 45, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_up_2": { "bounds_xyxy_inclusive": [20, 33, 43, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_up_3": { "bounds_xyxy_inclusive": [20, 32, 44, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_up_4": { "bounds_xyxy_inclusive": [21, 31, 45, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_up_5": { "bounds_xyxy_inclusive": [20, 33, 42, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_left_0": { "bounds_xyxy_inclusive": [21, 31, 47, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_left_1": { "bounds_xyxy_inclusive": [20, 31, 47, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_left_2": { "bounds_xyxy_inclusive": [20, 32, 47, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_left_3": { "bounds_xyxy_inclusive": [20, 32, 46, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_left_4": { "bounds_xyxy_inclusive": [22, 31, 46, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_left_5": { "bounds_xyxy_inclusive": [21, 32, 47, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_right_0": { "bounds_xyxy_inclusive": [18, 32, 42, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_right_1": { "bounds_xyxy_inclusive": [17, 31, 41, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_right_2": { "bounds_xyxy_inclusive": [17, 33, 42, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_right_3": { "bounds_xyxy_inclusive": [18, 32, 42, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_right_4": { "bounds_xyxy_inclusive": [18, 31, 42, 62], "anchor_xy": [32, 64] },
+
+        "armed_walk_right_5": { "bounds_xyxy_inclusive": [17, 33, 42, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_down_0": { "bounds_xyxy_inclusive": [22, 32, 44, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_down_1": { "bounds_xyxy_inclusive": [22, 31, 43, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_down_2": { "bounds_xyxy_inclusive": [22, 31, 43, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_down_3": { "bounds_xyxy_inclusive": [22, 31, 43, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_down_4": { "bounds_xyxy_inclusive": [22, 31, 43, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_down_5": { "bounds_xyxy_inclusive": [22, 31, 43, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_up_0": { "bounds_xyxy_inclusive": [21, 32, 43, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_up_1": { "bounds_xyxy_inclusive": [22, 31, 44, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_up_2": { "bounds_xyxy_inclusive": [22, 32, 44, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_up_3": { "bounds_xyxy_inclusive": [23, 31, 43, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_up_4": { "bounds_xyxy_inclusive": [23, 32, 44, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_up_5": { "bounds_xyxy_inclusive": [22, 31, 43, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_left_0": { "bounds_xyxy_inclusive": [26, 32, 44, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_left_1": { "bounds_xyxy_inclusive": [25, 31, 44, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_left_2": { "bounds_xyxy_inclusive": [24, 31, 45, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_left_3": { "bounds_xyxy_inclusive": [26, 31, 44, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_left_4": { "bounds_xyxy_inclusive": [26, 32, 45, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_left_5": { "bounds_xyxy_inclusive": [26, 31, 44, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_right_0": { "bounds_xyxy_inclusive": [20, 32, 37, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_right_1": { "bounds_xyxy_inclusive": [19, 32, 37, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_right_2": { "bounds_xyxy_inclusive": [18, 32, 39, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_right_3": { "bounds_xyxy_inclusive": [19, 31, 36, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_right_4": { "bounds_xyxy_inclusive": [18, 31, 38, 62], "anchor_xy": [32, 64] },
+
+        "unarmed_walk_right_5": { "bounds_xyxy_inclusive": [19, 32, 37, 62], "anchor_xy": [32, 64] }
+      }
+    },
+    "conversion_motion": {
+      "png_sha256": "3ea692c586431d737bcd93dceb3525a5c02591029b4993a2f63778da402e2da0",
+      "json_sha256": "b93672ea8f6ca371658dc1aed69a00812f181b7aadcad4b9685edc76be25e22a",
+      "frames": {
+
+        "unarmed_run_sequence_down_0": { "bounds_xyxy_inclusive": [23, 13, 64, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_down_1": { "bounds_xyxy_inclusive": [23, 14, 64, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_down_2": { "bounds_xyxy_inclusive": [23, 14, 65, 59], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_down_3": { "bounds_xyxy_inclusive": [22, 14, 64, 56], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_down_4": { "bounds_xyxy_inclusive": [24, 15, 64, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_down_5": { "bounds_xyxy_inclusive": [23, 16, 63, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_down_6": { "bounds_xyxy_inclusive": [25, 22, 60, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_down_7": { "bounds_xyxy_inclusive": [25, 19, 62, 60], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_down_8": { "bounds_xyxy_inclusive": [25, 18, 63, 56], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_down_9": { "bounds_xyxy_inclusive": [24, 19, 61, 60], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_down_10": { "bounds_xyxy_inclusive": [23, 20, 58, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_down_11": { "bounds_xyxy_inclusive": [23, 22, 58, 59], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_up_0": { "bounds_xyxy_inclusive": [26, 12, 63, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_up_1": { "bounds_xyxy_inclusive": [25, 13, 63, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_up_2": { "bounds_xyxy_inclusive": [27, 12, 63, 58], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_up_3": { "bounds_xyxy_inclusive": [26, 10, 64, 54], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_up_4": { "bounds_xyxy_inclusive": [26, 12, 64, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_up_5": { "bounds_xyxy_inclusive": [26, 13, 63, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_up_6": { "bounds_xyxy_inclusive": [23, 19, 58, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_up_7": { "bounds_xyxy_inclusive": [21, 17, 55, 59], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_up_8": { "bounds_xyxy_inclusive": [21, 16, 56, 53], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_up_9": { "bounds_xyxy_inclusive": [19, 17, 55, 60], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_up_10": { "bounds_xyxy_inclusive": [18, 18, 54, 60], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_up_11": { "bounds_xyxy_inclusive": [18, 20, 52, 58], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_left_0": { "bounds_xyxy_inclusive": [33, 15, 80, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_left_1": { "bounds_xyxy_inclusive": [38, 16, 79, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_left_2": { "bounds_xyxy_inclusive": [38, 15, 78, 59], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_left_3": { "bounds_xyxy_inclusive": [38, 14, 80, 55], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_left_4": { "bounds_xyxy_inclusive": [36, 15, 81, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_left_5": { "bounds_xyxy_inclusive": [38, 17, 80, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_left_6": { "bounds_xyxy_inclusive": [27, 20, 64, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_left_7": { "bounds_xyxy_inclusive": [26, 18, 63, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_left_8": { "bounds_xyxy_inclusive": [26, 15, 64, 54], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_left_9": { "bounds_xyxy_inclusive": [21, 17, 63, 58], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_left_10": { "bounds_xyxy_inclusive": [25, 20, 62, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_left_11": { "bounds_xyxy_inclusive": [24, 21, 62, 59], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_right_0": { "bounds_xyxy_inclusive": [5, 15, 50, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_right_1": { "bounds_xyxy_inclusive": [5, 15, 47, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_right_2": { "bounds_xyxy_inclusive": [5, 14, 48, 60], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_right_3": { "bounds_xyxy_inclusive": [4, 13, 47, 55], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_right_4": { "bounds_xyxy_inclusive": [5, 15, 49, 60], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_right_5": { "bounds_xyxy_inclusive": [5, 16, 47, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_right_6": { "bounds_xyxy_inclusive": [18, 20, 55, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_right_7": { "bounds_xyxy_inclusive": [18, 17, 55, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_right_8": { "bounds_xyxy_inclusive": [19, 15, 55, 54], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_right_9": { "bounds_xyxy_inclusive": [13, 17, 57, 59], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_right_10": { "bounds_xyxy_inclusive": [15, 20, 53, 61], "anchor_xy": [42, 63] },
+
+        "unarmed_run_sequence_right_11": { "bounds_xyxy_inclusive": [15, 22, 51, 60], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_down_0": { "bounds_xyxy_inclusive": [25, 21, 65, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_down_1": { "bounds_xyxy_inclusive": [25, 23, 65, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_down_2": { "bounds_xyxy_inclusive": [24, 22, 66, 60], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_down_3": { "bounds_xyxy_inclusive": [22, 21, 66, 56], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_down_4": { "bounds_xyxy_inclusive": [22, 21, 64, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_down_5": { "bounds_xyxy_inclusive": [23, 23, 61, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_down_6": { "bounds_xyxy_inclusive": [23, 22, 60, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_down_7": { "bounds_xyxy_inclusive": [23, 21, 60, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_down_8": { "bounds_xyxy_inclusive": [22, 20, 60, 56], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_down_9": { "bounds_xyxy_inclusive": [21, 22, 60, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_down_10": { "bounds_xyxy_inclusive": [20, 24, 59, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_down_11": { "bounds_xyxy_inclusive": [21, 25, 58, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_up_0": { "bounds_xyxy_inclusive": [19, 19, 59, 60], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_up_1": { "bounds_xyxy_inclusive": [19, 21, 58, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_up_2": { "bounds_xyxy_inclusive": [17, 20, 57, 58], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_up_3": { "bounds_xyxy_inclusive": [14, 19, 57, 56], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_up_4": { "bounds_xyxy_inclusive": [15, 20, 58, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_up_5": { "bounds_xyxy_inclusive": [17, 21, 57, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_up_6": { "bounds_xyxy_inclusive": [25, 19, 63, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_up_7": { "bounds_xyxy_inclusive": [25, 19, 62, 59], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_up_8": { "bounds_xyxy_inclusive": [22, 17, 61, 54], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_up_9": { "bounds_xyxy_inclusive": [22, 19, 62, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_up_10": { "bounds_xyxy_inclusive": [23, 20, 60, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_up_11": { "bounds_xyxy_inclusive": [22, 21, 59, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_left_0": { "bounds_xyxy_inclusive": [33, 22, 77, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_left_1": { "bounds_xyxy_inclusive": [34, 23, 76, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_left_2": { "bounds_xyxy_inclusive": [33, 21, 77, 60], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_left_3": { "bounds_xyxy_inclusive": [32, 21, 77, 55], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_left_4": { "bounds_xyxy_inclusive": [33, 21, 77, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_left_5": { "bounds_xyxy_inclusive": [32, 23, 76, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_left_6": { "bounds_xyxy_inclusive": [21, 23, 63, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_left_7": { "bounds_xyxy_inclusive": [21, 21, 65, 60], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_left_8": { "bounds_xyxy_inclusive": [21, 19, 64, 55], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_left_9": { "bounds_xyxy_inclusive": [20, 22, 66, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_left_10": { "bounds_xyxy_inclusive": [20, 25, 64, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_left_11": { "bounds_xyxy_inclusive": [19, 24, 61, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_right_0": { "bounds_xyxy_inclusive": [7, 21, 47, 60], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_right_1": { "bounds_xyxy_inclusive": [9, 23, 47, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_right_2": { "bounds_xyxy_inclusive": [7, 22, 46, 59], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_right_3": { "bounds_xyxy_inclusive": [7, 21, 48, 54], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_right_4": { "bounds_xyxy_inclusive": [5, 21, 46, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_right_5": { "bounds_xyxy_inclusive": [5, 22, 46, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_right_6": { "bounds_xyxy_inclusive": [22, 22, 64, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_right_7": { "bounds_xyxy_inclusive": [22, 21, 64, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_right_8": { "bounds_xyxy_inclusive": [21, 18, 64, 53], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_right_9": { "bounds_xyxy_inclusive": [18, 21, 63, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_right_10": { "bounds_xyxy_inclusive": [19, 23, 62, 61], "anchor_xy": [42, 63] },
+
+        "armed_run_sequence_right_11": { "bounds_xyxy_inclusive": [18, 24, 61, 61], "anchor_xy": [42, 63] }
+      }
+    }
+  }
+}

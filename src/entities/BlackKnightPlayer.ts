@@ -1537,8 +1537,8 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
       }
     }
 
-    const currentAnimKey = this.anims.currentAnim?.key;
-    if (currentAnimKey === targetKey && this.anims.isPlaying) {
+    const state = this.anims;
+    if (state.currentAnim?.key === targetKey && state.isPlaying) {
       return;
     }
 
@@ -1552,11 +1552,33 @@ export class BlackKnightPlayer extends Phaser.Physics.Arcade.Sprite {
     }
 
     this.attackCombo = undefined;
-    const previousAnim = this.anims.currentAnim;
-    if (previousAnim && /_(walk|run)_/.test(previousAnim.key) && this.anims.currentFrame) {
-      const phase = (this.anims.currentFrame.index - 1) / previousAnim.frames.length;
-      const frameIdx = Math.min(targetAnim.frames.length - 1, Math.max(0, Math.floor(phase * targetAnim.frames.length)));
-      this.play({ key: targetKey, startFrame: frameIdx });
+    const previousAnim = state.currentAnim;
+    const previousFrame = state.currentFrame;
+    if (state.isPlaying && previousAnim && previousFrame && /_(walk|run)_/.test(previousAnim.key)) {
+      // Phaser play() resets its clock even with startFrame. Transfer the elapsed
+      // cycle time as well as the pose, including between 6-frame Walk and 12-frame Run.
+      let previousCycleMs = 0;
+      let previousElapsedMs = Math.min(state.accumulator, state.nextTick);
+      for (const frame of previousAnim.frames) {
+        const frameMs = state.frameRate === previousAnim.frameRate
+          ? frame.duration || state.msPerFrame
+          : state.msPerFrame;
+        previousCycleMs += frameMs;
+        if (frame.index < previousFrame.index) previousElapsedMs += frameMs;
+      }
+
+      const targetFrameTimes = targetAnim.frames.map(frame => frame.duration || targetAnim.msPerFrame);
+      const targetCycleMs = targetFrameTimes.reduce((sum, frameMs) => sum + frameMs, 0);
+      const phase = (previousElapsedMs % previousCycleMs) / previousCycleMs;
+      let elapsedInFrame = phase * targetCycleMs;
+      let startFrame = 0;
+      while (startFrame < targetFrameTimes.length - 1 && elapsedInFrame >= targetFrameTimes[startFrame]) {
+        elapsedInFrame -= targetFrameTimes[startFrame];
+        startFrame++;
+      }
+
+      this.play({ key: targetKey, startFrame });
+      state.accumulator = elapsedInFrame;
     } else {
       this.play(targetKey, true);
     }
