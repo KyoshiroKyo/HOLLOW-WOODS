@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-11-27T18:16:43.491Z",
+  "branch": "feat/v1.6-competition-preview",
+  "head": "bf4b629888750f5dbaee1b7092ef852e673958d8",
+  "verdict": "BLOCKED",
+  "reason": "mat_skull_fang is already valid in items.json, content_registry.json, registryData.ts, SkullWolfEntity.ts, and crafting recipes; the warning originates solely from hardcoded SaveManager.KNOWN_ITEM_KEYS in src/systems/SaveManager.ts (outside allowed edit scope).",
+  "checks": {
+    "items_json_has_mat_skull_fang": true,
+    "craft_skull_fang_spear_valid": true,
+    "craft_skull_fang_charm_valid": true,
+    "content_registry_has_mat_skull_fang": true,
+    "save_manager_known_keys_has_mat_skull_fang": false,
+    "missing_in_save_manager_count": 13,
+    "missing_in_save_manager": [
+      "food_forest_root_soup",
+      "res_forest_roots",
+      "res_forest_mushroom",
+      "res_tough_fiber",
+      "seed_roots",
+      "seed_mushroom",
+      "seed_fiber",
+      "mat_skull_fang",
+      "mat_shadow_essence",
+      "quest_rune_fragment",
+      "quest_purification_key",
+      "eqp_skull_fang_charm",
+      "eqp_abyssal_ward_charm"
+    ]
+  }
+}
