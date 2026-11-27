@@ -191,7 +191,7 @@ try {
     'R1-T05: Side path SQ08 + Stage 3 reveals Meliodas Blackwood cleanly',
     ps.canRevealPlayerIdentity() &&
       getMatchedEvidenceRuleIds(ps).includes('SIDE_PATH_SQ08') &&
-      getPlayerDisplayIdentity(ps).plainName === 'Meliodas Blackwood' &&
+      getPlayerDisplayIdentity(ps).plainName === 'Lord Meliodas Blackwood — The Wolf Lord' &&
       sideEvents === 1
   );
   ps.off('identity_revealed', onSideRev);

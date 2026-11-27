@@ -51,3 +51,8 @@ Chromium production **4/4**, Private QA **2/2**, validator P2Game local **23/23*
 ## Queue Continuation — Final Acceptance
 
 RELEASE-QA local đạt Chromium **25/25**, Private QA **4/4** và validator P2Game **23/23**. Ứng viên mới được lưu riêng, ZIP dự thi và các bảng nghiệm thu trước được giữ. [Kết quả ANIM, WORLD, QUEST, INPUT, PERF và Release QA](HW_CODEX_RELEASE_QA_CONTINUATION_REPORT.md).
+
+
+## Bổ sung HW-CODEX-UI-LORE-01
+
+FIX-06-R1 đạt trên ba viewport với đúng thông báo echo_fog_gate. LORE-SYNC đã triển khai ba danh xưng được duyệt qua cổng chứng cứ hiện hành, Save/Continue giữ kết quả và popup im lặng. A06 **24/24**, A07 **23/23**. Các đề xuất câu chữ chưa duyệt giữ riêng. [Báo cáo UI-Lore và ảnh trước/sau](HW_CODEX_UI_LORE_01_REPORT.md).

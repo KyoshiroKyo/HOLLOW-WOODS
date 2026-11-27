@@ -77,7 +77,7 @@ export class EndingSystem {
       borderTint: 0xf39c12,
       narrativeLines: [
         'Hồi chuông thứ bảy ngân vang, chấn động tầng mây u ám đã giam cầm thung lũng suốt bao mùa sương lạnh.',
-        'Nhờ sự thức tỉnh trọn vẹn của Meliodas Blackwood — The Wolf Lord và niềm tin tuyệt đối từ dân làng Bellhollow, Mạch Rễ cổ đã được thanh tẩy.',
+        'Nhờ sự thức tỉnh trọn vẹn của Lord Meliodas Blackwood — The Wolf Lord và niềm tin tuyệt đối từ dân làng Bellhollow, Mạch Rễ cổ đã được thanh tẩy.',
         'Những tia nắng ban mai đầu tiên sưởi ấm vùng đất rêu phong. Ngôi làng mở rộng cổng đón ánh sáng mới.',
         'Vị hiệp sĩ không rời đi. Ông tháo giáp trụ, ở lại bên đống lửa ấm, trở thành người bảo hộ cho sự sống nơi đây.'
       ]
@@ -95,7 +95,7 @@ export class EndingSystem {
       bgGradientBottom: 0x060c14,
       borderTint: 0x3498db,
       narrativeLines: [
-        'Meliodas Blackwood đã nhớ lại cội nguồn và lời thề năm xưa, nhưng khoảng cách vô hình với dân làng khiến lời nguyền không thể hóa giải trọn vẹn.',
+        'Lord Meliodas Blackwood — The Wolf Lord đã nhớ lại cội nguồn và lời thề năm xưa, nhưng khoảng cách vô hình với dân làng khiến lời nguyền không thể hóa giải trọn vẹn.',
         'Để bảo vệ Bellhollow khỏi sự diệt vong, người lữ khách một mình tiến vào tâm chấn đại mạch ngầm, cắm gươm và thắp sáng Vòng Sáng Hộ Tâm rực cháy.',
         'Dùng chính linh hồn và thân xác làm vật tế, ông khóa chặt khe nứt The Veil từ bên trong, giữ lại bình yên cho thung lũng.',
         'Màn sương làng tan đi, người dân được cứu... Nhưng không một ai biết tên người đã lặng lẽ gánh chịu bóng tối thay cho họ.'
@@ -808,7 +808,7 @@ export class EndingSystem {
     const col1Texts = [
       `⏱️ Thời Gian: Ngày ${day} (${timeCycle})`,
       `❤️ Sinh Lực: ${hp}/${maxHp} HP | 🕯️ Dầu: ${oil}%`,
-      `🧠 Tinh Thần Còn Lại: ${comp}/100 [Bình Tâm]`,
+      `🧠 Tinh Thần Còn Lại: ${comp}/100`,
       `🌟 Trạng Thái: ${endingStateLabel}`
     ];
 
@@ -838,6 +838,7 @@ export class EndingSystem {
           stroke: '#000000',
           strokeThickness: 2
         }).setOrigin(0, 0.5).setAlpha(0);
+        if (textObj.width > 280) textObj.setScale(280 / textObj.width, 1);
         textElements.push(textObj);
       });
     };

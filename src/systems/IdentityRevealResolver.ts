@@ -120,11 +120,11 @@ const REDACTED_LORE_PROJECTIONS: Record<string, { title?: string; author?: strin
     title: 'HỒI ỨC IV: MẢNH KÝ ỨC CHƯA TRỌN VẸN',
     author: 'Tàn Dư Ký Ức Bản Thể',
     content:
-      'Khi dấu ấn Quân Huy được kiểm chứng bên ngọn lửa Trạm Lửa Rừng Tĩnh Lặng, Sir Vaelen nhận ra ký hiệu của Đoàn Kỵ Sĩ Hắc Lang. Những mảnh ký ức vẫn còn lớp sương che phủ — cần thêm bằng chứng được xác thực để gọi đúng tên quá khứ của kẻ đã bước vào rừng năm xưa theo tiếng cầu cứu bí ẩn.\n\nDù chưa thể gọi thành tên, thanh kiếm và Vòng Sáng Hộ Tâm [F] vẫn tiếp tục soi đường hoàn tất lời thề bảo vệ Bellhollow: Fides Ultra Tenebras.'
+      'Những mảnh ký ức vẫn còn lớp sương che phủ — cần thêm bằng chứng được xác thực để gọi đúng tên quá khứ của kẻ đã bước vào rừng năm xưa theo tiếng cầu cứu bí ẩn.\n\nDù chưa thể gọi thành tên, thanh kiếm và Vòng Sáng Hộ Tâm [F] vẫn tiếp tục soi đường hoàn tất lời thề bảo vệ Bellhollow: Fides Ultra Tenebras.'
   },
   lore_wayfarer_inner_journal: {
     title: 'NHẬT KÝ LỮ KHÁCH: LỜI THỀ TRONG RÊU PHONG',
-    author: 'Lữ Khách Rêu Phong',
+    author: 'Người lữ khách',
     content:
       'Từng mảnh ký ức như dòng nước ấm chảy qua lớp băng giá của thời gian...\n\n[Danh tính quá khứ vẫn còn chìm trong màn sương — cần thêm bằng chứng được xác thực để khôi phục trọn vẹn.]\n\nNgọn lửa kiên định của Sir Vaelen, chén thuốc của Neris, lò rèn của Bram, lòng dũng cảm của Garth và tiếng tin từ Finn... tất cả đã giữ ta vững bước.\n\nLời thề bảo vệ Bellhollow chưa bao giờ tắt. Ta sẽ đưa Lưỡi Chuông Đồng trở về đỉnh tháp và gióng lên hồi chuông giải phóng cho thung lũng này!'
   }
@@ -215,32 +215,16 @@ export function getPlayerDisplayIdentity(
 ): PlayerDisplayIdentity {
   const memoryStage = clampMemoryStage(state.memoryAwakeningStage);
   const isRevealed = canRevealPlayerIdentity(state, approvedRules);
-
-  if (isRevealed) {
-    return {
-      isRevealed: true,
-      memoryStage,
-      hudBadge: '⚔️ Meliodas Blackwood',
-      plainName: 'Meliodas Blackwood',
-      chronicleTitle: 'Meliodas Blackwood',
-      subtitle: 'The Wolf Lord'
-    };
-  }
-
-  let chronicleTitle = 'Lữ Khách Rêu Phong';
-  if (memoryStage >= 2) {
-    chronicleTitle = 'Tàn Tích Kỵ Sĩ';
-  } else if (memoryStage >= 1) {
-    chronicleTitle = 'Manh Mối Xưởng Chuông';
-  }
+  const title = isRevealed ? 'Lord Meliodas Blackwood — The Wolf Lord'
+    : memoryStage >= 2 ? 'The Lone Wolf' : 'The Nameless Wayfarer';
 
   return {
-    isRevealed: false,
+    isRevealed,
     memoryStage,
-    hudBadge: '🌲 Lữ Khách Rêu Phong',
-    plainName: 'Lữ Khách Rêu Phong',
-    chronicleTitle,
-    subtitle: 'The Mossbound Wayfarer'
+    hudBadge: `${isRevealed ? '⚔️' : '🌲'} ${title}`,
+    plainName: title,
+    chronicleTitle: title,
+    subtitle: isRevealed ? 'The Wolf Lord' : title
   };
 }
 
@@ -298,9 +282,15 @@ export function getLoreVisibilityStatus(
 
 function redactIdentityNames(text: string): string {
   return text
-    .replace(/Meliodas Blackwood\s*[—-]\s*The Wolf Lord/g, 'Người lữ khách mang Vòng Sáng Hộ Tâm')
+    .replace(/(?:Lord )?Meliodas Blackwood\s*[—-]\s*The Wolf Lord/g, 'Người lữ khách mang Vòng Sáng Hộ Tâm')
     .replace(/Lord Meliodas Blackwood/g, 'Người lữ khách ấy')
     .replace(/Meliodas Blackwood/g, 'Người lữ khách ấy');
+}
+
+function redactEndingNarrative(text: string): string {
+  return redactIdentityNames(text
+    .replace(/sự thức tỉnh trọn vẹn của (?:Lord )?Meliodas Blackwood — The Wolf Lord và /g, '')
+    .replace(/^(?:Lord )?Meliodas Blackwood(?: — The Wolf Lord)? đã nhớ lại[^\n]+(?:\n\n)?/, ''));
 }
 
 /**
@@ -335,7 +325,7 @@ export function projectLoreEntryForDisplay<T extends IdentityLoreView>(
       ...entry,
       title: redactIdentityNames(entry.title),
       author: redactIdentityNames(entry.author),
-      content: redactIdentityNames(entry.content)
+      content: redactEndingNarrative(entry.content)
     }
   };
 }
@@ -352,5 +342,5 @@ export function getEndingDisplayLines(
   if (endingType === 'fog_loop_ending' || canRevealPlayerIdentity(state, approvedRules)) {
     return canonicalLines;
   }
-  return canonicalLines.map((line) => redactIdentityNames(line));
+  return canonicalLines.map(redactEndingNarrative).filter(Boolean);
 }

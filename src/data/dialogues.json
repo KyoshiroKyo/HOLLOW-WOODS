@@ -145,7 +145,7 @@
       "opensEastGate": true,
       "lines": [
         "Khuôn mặt này... ánh nhìn này... Đã bao nhiêu mùa trôi qua kể từ khi có một kẻ sống sót bước ra từ Màn Sương Rừng Sâu?",
-        "Chiếc áo choàng vương rêu xanh... Ngươi là Lữ Khách Rêu Phong vừa bước ra từ màn sương sao? Dáng vẻ ngươi giống như một dư âm còn sót lại giữa ranh giới sương mù.",
+        "Chiếc áo choàng vương rêu xanh... Ngươi là The Nameless Wayfarer vừa bước ra từ màn sương sao? Dáng vẻ ngươi giống như một dư âm còn sót lại giữa ranh giới sương mù.",
         "Ở làng Bellhollow này, nếu ngươi muốn sống sót qua đêm nay, hãy khắc cốt ghi tâm BA QUY TẮC BẰNG MÁU:",
         "QUY TẮC 1: Đừng bao giờ trả lời khi khu rừng cất tiếng gọi đúng họ tên mình. Đó không phải người quen, mà là Kẻ Lắng Nghe đang mượn giọng.",
         "QUY TẮC 2: Đừng đi theo chiếc đèn thứ hai xuất hiện trong sương mù. Chiếc đèn đó không có người cầm.",
@@ -273,7 +273,7 @@
         "Cầm lấy nắm Thuốc Đắp Thảo Mộc này. Nó sẽ giúp vết thương khép miệng và xoa dịu nỗi sợ hãi trong đầu ngươi.",
         "Khu rừng Hollow Woods chứa đầy thảo dược bạc và nhựa cây thông. Hãy thu thập chúng bên các bờ suối và thân cây cổ thụ.",
         "Dùng bàn chế tạo [Phím I]: Nhựa thông và Gỗ khô sẽ luyện ra Hương Trầm Tinh Thần. Hai nắm Thảo dược sẽ giã thành Thuốc Đắp. Còn Đá lửa ghép với Gỗ sẽ tạo thành Mồi Tiếng Động để ném đánh lạc hướng quái vật.",
-        "Ta đã phục hồi sinh lực cho ngươi. Hãy giữ vững ngọn lửa tinh thần luôn cháy sáng, hỡi Lữ Khách Rêu Phong!",
+        "Ta đã phục hồi sinh lực cho ngươi. Hãy giữ vững ngọn lửa tinh thần luôn cháy sáng, hỡi người lữ khách!",
         "Khi chữa xong cho ngươi, ta sẽ báo cho Garth mở Cổng Đông."
       ],
       "choices": [
@@ -886,7 +886,7 @@
       "speaker": "Garth – Người Gác Cổng",
       "portrait": "portrait_garth",
       "lines": [
-        "Trời đất ơi... Lữ Khách Rêu Phong mà tôi từng nghi ngờ khi ngài bước ra từ màn sương... lại chính là Lord Meliodas Blackwood — The Wolf Lord trong truyền thuyết sao?!",
+        "Trời đất ơi... The Nameless Wayfarer mà tôi từng nghi ngờ khi ngài bước ra từ màn sương... lại chính là Lord Meliodas Blackwood — The Wolf Lord trong truyền thuyết sao?!",
         "Xin tha thứ cho sự lỗ mãng trước đây của tôi! Cổng làng Bellhollow từ nay sẽ luôn mở rộng cung nghênh bước chân ngài. Ngài chính là niềm hy vọng lớn nhất để xua tan màn sương The Veil này!"
       ]
     },
@@ -895,7 +895,7 @@
       "portrait": "portrait_edda",
       "lines": [
         "Ta đã cảm nhận được điều quen thuộc ấy ngay từ khi ngài bước qua làn sương với Vòng Sáng Hộ Tâm... Khí phách kiên định không hề khuất phục trước bóng tối.",
-        "Hỡi Lord Meliodas Blackwood, màn sương lạnh bao mùa qua đang dần tan biến dưới từng nhát kiếm và lời thề của ngài. Nguyện ánh sáng Đại Hồng Chung luôn soi lối cho ngài!"
+        "Hỡi Lord Meliodas Blackwood — The Wolf Lord, màn sương lạnh bao mùa qua đang dần tan biến dưới từng nhát kiếm và lời thề của ngài. Nguyện ánh sáng Đại Hồng Chung luôn soi lối cho ngài!"
       ]
     },
     "neris_black_knight_reverence": {
@@ -918,7 +918,7 @@
       "speaker": "Finn – Cậu Bé Tinh Nghịch",
       "portrait": "portrait_finn",
       "lines": [
-        "Oa! Anh Wayfarer... không phải, ngài chính là Ngài Meliodas Blackwood — Lang Chủ trong những câu chuyện mà chú Garth hay kể sao?! Tuyệt vời quá đi mất!",
+        "Oa! Anh Wayfarer... không phải, ngài chính là Lord Meliodas Blackwood — The Wolf Lord trong những câu chuyện mà chú Garth hay kể sao?! Tuyệt vời quá đi mất!",
         "Sau này lớn lên, em nhất định cũng sẽ rèn luyện thật giỏi để cùng bảo vệ tháp chuông làng Bellhollow!"
       ]
     },

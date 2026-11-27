@@ -714,7 +714,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     const onIdentityRevealed = () => {
       this.redrawStats();
       if (this.journalModal?.isOpen) this.journalModal.refresh();
-      this.showPopupMessage('⚔️ KHÔI PHỤC DANH TÍNH: Bạn là Meliodas Blackwood — The Wolf Lord!');
+      this.showPopupMessage(`⚔️ KHÔI PHỤC DANH TÍNH: Bạn là ${this.playerState.getPlayerDisplayIdentity().plainName}!`);
     };
 
     this.playerState.on('stats_changed', onStatsChanged);
@@ -3588,7 +3588,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     return 'info';
   }
 
-  public showPopupMessage(msg: string, explicitSeverity?: 'success' | 'info' | 'warning' | 'danger'): void {
+  public showPopupMessage(msg: string, explicitSeverity?: 'success' | 'info' | 'warning' | 'danger', preferredWidth = 580): void {
     if (this.activePopupTween) {
       this.activePopupTween.stop();
       this.activePopupTween = undefined;
@@ -3606,7 +3606,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     const lift = 20;
     const viewW = this.scale.gameSize.width;
     const viewH = this.scale.gameSize.height;
-    const maxTextW = Math.min(580, Math.max(1, viewW - 2 * inset - 36));
+    const maxTextW = Math.min(preferredWidth, Math.max(1, viewW - 2 * inset - 36));
 
     // BUG-028: Tái sử dụng Container pooled đặt tại Y=205 trôi nhẹ lên Y=195 -> Y=185, tách biệt Zone Banner
     if (!this.pooledPopupContainer || !this.pooledPopupBg || !this.pooledPopupText) {

@@ -2269,7 +2269,7 @@ export class GameScene extends Phaser.Scene {
       this.player.y,
       (msg: string) => {
         if (this.uiScene) {
-          this.uiScene.showPopupMessage(`✨ Tiếng Vọng thì thầm: "${msg}"`);
+          this.uiScene.showPopupMessage(`✨ Tiếng Vọng thì thầm: "${msg}"`, 'info', 500);
         }
       },
       this.player.facing,
