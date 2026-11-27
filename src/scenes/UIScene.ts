@@ -2301,12 +2301,18 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       const countTxt = this.inventorySlotCounts[i];
       const keyTxt = this.inventorySlotKeyTexts[i];
 
+      const baseImg = this.inventorySlotBaseImages[i];
+      const slotBg = this.inventorySlotGfx[i];
+
       if (!slot || !slot.itemId) {
         if (iconTxt) iconTxt.setText('').setAlpha(1.0);
-        if (iconImg) iconImg.setVisible(false);
+        if (iconImg) iconImg.clearTint().setVisible(false);
         if (countTxt) countTxt.setText('');
         if (keyTxt) keyTxt.setColor('#7a6855');
+        if (baseImg) baseImg.clearTint().setAlpha(1.0);
+        if (slotBg) slotBg.setAlpha(1.0);
       } else {
+        const hasStock = slot.count > 0;
         // BUG-025: Hiển thị 100% biểu tượng Pixel Art sắc nét từ ItemIconHelper (chống emoji □)
         const iconRes = ItemIconHelper.resolveItemIcon(this, slot.itemId);
         if (iconImg) {
@@ -2317,23 +2323,37 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
           }
           iconImg.setDisplaySize(22, 22);
           iconImg.setVisible(true);
-          iconImg.setAlpha(slot.count > 0 ? 1.0 : 0.4);
+          if (hasStock) {
+            iconImg.clearTint();
+            iconImg.setAlpha(1.0);
+          } else {
+            // HW-AG-FIX-08: Giữ binding ô nhưng làm mờ + xỉn màu rõ rệt khi hết đồ (x0)
+            iconImg.setTint(0x5a6058);
+            iconImg.setAlpha(0.24);
+          }
+        }
+        if (baseImg) {
+          if (hasStock) baseImg.clearTint().setAlpha(1.0);
+          else baseImg.setTint(0x6d746b).setAlpha(0.65);
+        }
+        if (slotBg) {
+          slotBg.setAlpha(hasStock ? 1.0 : 0.65);
         }
         if (iconTxt) iconTxt.setText('');
         if (countTxt) {
-          // Ô [1] và [2] hiện x0 nếu hết đồ để người chơi nhận biết; các ô khác hiện nếu > 0
-          if (slot.count > 0) {
+          // Ô [1] và [2] giữ binding khi hết đồ: hiển thị "—" xám thay cho "x0" gây hiểu nhầm
+          if (hasStock) {
             countTxt.setText(`x${slot.count}`);
             countTxt.setColor('#2ecc71');
           } else if (i < 2) {
-            countTxt.setText('x0');
-            countTxt.setColor('#7f8c8d');
+            countTxt.setText('—');
+            countTxt.setColor('#737b71');
           } else {
             countTxt.setText('');
           }
         }
         if (keyTxt) {
-          keyTxt.setColor(slot.count > 0 ? '#f1c40f' : '#baa892');
+          keyTxt.setColor(hasStock ? '#f1c40f' : '#6c736a');
         }
       }
     }
