@@ -858,7 +858,6 @@ export class PreloadScene extends Phaser.Scene {
     this.load.audio('footstep_wood_2', 'assets/audio/sfx/v14/footstep_wood_2.wav');
     this.load.audio('footstep_stone_1', 'assets/audio/sfx/v14/footstep_stone_1.wav');
     this.load.audio('footstep_stone_2', 'assets/audio/sfx/v14/footstep_stone_2.wav');
-    this.load.audio('footstep_leaves_1', 'assets/audio/sfx/v14/footstep_leaves_1.mp3');
     this.load.audio('bat_flap', 'assets/audio/sfx/v14/bat_flap.wav');
     this.load.audio('bat_screech', 'assets/audio/sfx/v14/bat_screech.wav');
     this.load.audio('bat_bite', 'assets/audio/sfx/v14/bat_bite.wav');

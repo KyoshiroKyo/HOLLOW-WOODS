@@ -1486,7 +1486,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.time.delayedCall(800, () => {
-      this.audioManager.playBronzeBellToll();
+      this.audioManager.playIntroBell();
       if (this.uiScene) {
         this.uiScene.showPopupMessage('🔔 Một tiếng chuông đồng mơ hồ ngân vang từ phía Đông màn sương...');
       }
@@ -3433,10 +3433,6 @@ export class GameScene extends Phaser.Scene {
       this.uiScene.showPopupMessage('🍂 RĂNG RẮC! Có tiếng cành cây gãy sau lưng... [F] Bật Vòng Sáng để tìm đường trong sương!');
     }
 
-    // 5. Tiếng chuông đồng ngân nga từ xa dẫn hướng
-    this.time.delayedCall(1200, () => {
-      this.audioManager?.playBronzeBellToll();
-    });
   }
 
   /**

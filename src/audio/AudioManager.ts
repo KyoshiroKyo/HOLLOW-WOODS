@@ -78,7 +78,6 @@ export const LAZY_SFX_MANIFEST: Record<string, string> = {
   footstep_mud_2: 'assets/audio/sfx/v14/footstep_mud_2.wav',
   footstep_wood_2: 'assets/audio/sfx/v14/footstep_wood_2.wav',
   footstep_stone_2: 'assets/audio/sfx/v14/footstep_stone_2.wav',
-  footstep_leaves_1: 'assets/audio/sfx/v14/footstep_leaves_1.mp3',
   runestone: 'assets/audio/sfx/rune_resonance.mp3',
   runestone_err: 'assets/audio/sfx/rune_error.mp3',
   bat_flap: 'assets/audio/sfx/v14/bat_flap.wav',
@@ -110,15 +109,15 @@ export const ZONE_SFX_MAP: Record<string, string[]> = {
   sanctuary_farm: ['chest_creak', 'journal_page'],
   sub_bell_workshop: ['chest_creak', 'journal_page'],
   sub_root_cellar: ['chest_creak', 'journal_page'],
-  outer_woods: ['skull_wolf_growl', 'skull_wolf_snarl', 'footstep_leaves_1', 'bat_flap', 'bat_screech', 'jumpscare_stinger', 'sanity_gasp', 'dagger_slash'],
-  fog_crossing: ['ambience_crossing', 'footstep_leaves_1', 'ghost_whisper', 'jumpscare_stinger', 'sanity_gasp'],
+  outer_woods: ['skull_wolf_growl', 'skull_wolf_snarl', 'bat_flap', 'bat_screech', 'jumpscare_stinger', 'sanity_gasp', 'dagger_slash'],
+  fog_crossing: ['ambience_crossing', 'ghost_whisper', 'jumpscare_stinger', 'sanity_gasp'],
   crooked_path: ['ambience_crossing', 'skull_wolf_growl', 'skull_wolf_snarl', 'bat_flap', 'bat_screech', 'jumpscare_stinger', 'sanity_gasp'],
   sub_whispering_clearing: ['ghost_whisper', 'ghost_moan', 'sanity_gasp'],
   silent_mire: ['ambience_mire', 'footstep_mud_1', 'footstep_mud_2', 'footstep_stone_2', 'rune_shift', 'runestone', 'runestone_err', 'bell_toll_low', 'behemoth_roar', 'behemoth_thud'],
   ancient_rune_puzzle: ['runestone', 'runestone_err', 'rune_shift', 'footstep_mud_1', 'footstep_stone_2', 'bell_toll_low'],
   drowned_mire_depths: ['ambience_mire', 'footstep_mud_1', 'footstep_mud_2', 'rune_shift', 'behemoth_roar', 'behemoth_thud', 'bell_toll_low'],
   broken_bell_shrine: ['bell_toll_low', 'rune_shift', 'runestone', 'runestone_err', 'chest_creak', 'journal_page'],
-  deep_forest: ['footstep_leaves_1', 'footstep_stone_2', 'ghost_moan', 'ghost_whisper', 'ghost_scream', 'ghost_dissipate', 'scout_whistle', 'void_stalker_drone', 'void_stalker_screech'],
+  deep_forest: ['footstep_stone_2', 'ghost_moan', 'ghost_whisper', 'ghost_scream', 'ghost_dissipate', 'scout_whistle', 'void_stalker_drone', 'void_stalker_screech'],
   whispering_grove_sanctum: ['ghost_whisper', 'ghost_moan', 'ghost_dissipate', 'boss_drone'],
   sunken_crypt_ruins: ['footstep_stone_2', 'ghost_scream', 'ghost_dissipate', 'void_stalker_drone', 'void_stalker_screech', 'boss_drone'],
   veil_origin_cavern: ['void_stalker_drone', 'void_stalker_screech', 'boss_drone', 'ghost_scream'],
@@ -172,6 +171,7 @@ export class AudioManager {
   private currentAmbienceZone: AmbienceZone | null = null;
   private noiseBuffer: AudioBuffer | null = null;
   private pendingAmbienceZone: AmbienceZone | null = null;
+  private ambienceFadeInUntil = 0;
   private windGain: GainNode | null = null; // Tương thích ngược với setWindIntensity
   private rainGain: GainNode | null = null; // V1.4: Kênh âm thanh mưa sương
   private rainSource: AudioBufferSourceNode | null = null; // V15-FIX-02: Tham chiếu nguồn phát tiếng mưa chống rò rỉ loop
@@ -432,7 +432,7 @@ export class AudioManager {
       'heal_poultice', 'oil_refill', 'dialogue_garth', 'dialogue_edda',
       'dialogue_neris', 'dialogue_bram', 'dialogue_finn', 'dialogue_text_blip',
       'footstep_mud_1', 'footstep_mud_2', 'footstep_wood_1', 'footstep_wood_2',
-      'footstep_stone_1', 'footstep_stone_2', 'footstep_leaves_1',
+      'footstep_stone_1', 'footstep_stone_2',
       'bat_flap', 'bat_screech', 'bat_bite', 'ghost_moan', 'ghost_whisper',
       'ghost_scream', 'ghost_dissipate', 'jumpscare_stinger', 'sanity_gasp',
       'scout_whistle', 'dagger_slash', 'skull_wolf_growl', 'skull_wolf_snarl',
@@ -504,7 +504,8 @@ export class AudioManager {
     volume: number = 1.0,
     playbackRate: number = 1.0,
     routeToVeil: boolean = true,
-    maxPolyphony: number = 4
+    maxPolyphony: number = 4,
+    tail?: { end: number; fadeFrom: number }
   ): boolean {
     if (!this.ctx || this.isMuted) return false;
     const buffer = this.audioBuffers.get(key);
@@ -539,7 +540,13 @@ export class AudioManager {
       source.playbackRate.setValueAtTime(playbackRate, this.ctx.currentTime);
 
       const gain = this.ctx.createGain();
-      gain.gain.setValueAtTime(volume * this.sfxVolume, this.ctx.currentTime);
+      const now = this.ctx.currentTime;
+      const level = volume * this.sfxVolume;
+      gain.gain.setValueAtTime(level, now);
+      if (tail) {
+        gain.gain.setValueAtTime(level, now + tail.fadeFrom);
+        gain.gain.linearRampToValueAtTime(0, now + tail.end);
+      }
 
       source.connect(gain);
       const targetNode = routeToVeil && this.veilFilter ? this.veilFilter : this.masterGain!;
@@ -559,7 +566,8 @@ export class AudioManager {
         } catch {}
       };
 
-      source.start(0);
+      source.start(now);
+      if (tail) source.stop(now + tail.end);
       return true;
     } catch {
       return false;
@@ -828,9 +836,9 @@ export class AudioManager {
     } else if (terrain === 'stone') {
       chosenKey = this.getNoRepeatSample('stone', ['footstep_stone_1', 'footstep_stone_2']);
     } else if (terrain === 'grass') {
-      chosenKey = this.getNoRepeatSample('grass', ['footstep_grass', 'footstep_leaves_1']);
+      chosenKey = 'footstep_grass';
     } else if (terrain === 'dirt') {
-      chosenKey = this.getNoRepeatSample('dirt', ['footstep_stone_1', 'footstep_leaves_1']);
+      chosenKey = this.getNoRepeatSample('dirt', ['footstep_grass', 'footstep_stone_1']);
     }
 
     if (chosenKey && this.playSampled(chosenKey, volume, pitch, true, 3)) {
@@ -1051,6 +1059,7 @@ export class AudioManager {
     // 2. Tạo và Fade-in kênh ambience mới (áp dụng trim phi phá hủy theo vùng, ví dụ ambience_forest)
     const initialAmbienceGain = this.getEffectiveAmbienceGain(targetZone);
     const newChannelGain = this.ctx.createGain();
+    this.ambienceFadeInUntil = now + fadeDurationSec;
     newChannelGain.gain.setValueAtTime(0.0001, now);
     newChannelGain.gain.linearRampToValueAtTime(initialAmbienceGain, now + fadeDurationSec);
     const ambienceDest = this.ambienceFilter || this.veilFilter!;
@@ -1069,7 +1078,18 @@ export class AudioManager {
       const sampleSource = this.ctx.createBufferSource();
       sampleSource.buffer = sampledBuffer;
       sampleSource.loop = true;
-      sampleSource.connect(newChannelGain);
+      if (targetZone === 'village') {
+        // Soften the sharp upper transients in the original furnace loop.
+        const furnaceFilter = this.ctx.createBiquadFilter();
+        furnaceFilter.type = 'highshelf';
+        furnaceFilter.frequency.value = 1650;
+        furnaceFilter.gain.value = -7;
+        sampleSource.connect(furnaceFilter);
+        furnaceFilter.connect(newChannelGain);
+        nodesToTrack.push(furnaceFilter);
+      } else {
+        sampleSource.connect(newChannelGain);
+      }
       sampleSource.start(now);
       nodesToTrack.push(sampleSource);
 
@@ -1199,7 +1219,7 @@ export class AudioManager {
   }
 
   public setWindIntensity(intensity: number): void {
-    if (!this.ctx || !this.windGain) return;
+    if (!this.ctx || !this.windGain || this.ctx.currentTime < this.ambienceFadeInUntil) return;
     const clamped = Math.max(0.2, Math.min(2.0, intensity));
     if (Math.abs(clamped - this.lastWindIntensity) < 0.05) return;
     this.lastWindIntensity = clamped;
@@ -2645,14 +2665,18 @@ export class AudioManager {
     }
   }
 
-  public playBronzeBellToll(): void {
+  public playIntroBell(): void {
+    this.playBronzeBellToll({ end: 6, fadeFrom: 3.5 });
+  }
+
+  public playBronzeBellToll(tail?: { end: number; fadeFrom: number }): void {
     if (!this.ctx || this.isMuted || !this.masterGain) return;
     if (!this.checkCooldown('bronze_bell', 800)) return;
     this.resumeAudio();
     this.fadeOutSampledChannel('bell_toll_low');
 
     // Giới hạn maxPolyphony = 1 để không chồng 2 lượt chuông dài 11.22s mà không cắt file âm thanh gốc
-    if (this.playSampled('bronze_bell', 0.9, 1.0, false, 1)) {
+    if (this.playSampled('bronze_bell', 0.9, 1.0, false, 1, tail)) {
       return;
     }
 
@@ -2669,13 +2693,13 @@ export class AudioManager {
       osc.frequency.setValueAtTime(freqs[i], now);
 
       gain.gain.setValueAtTime(weights[i] * this.masterVolume, now);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 3.5);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + (tail?.end ?? 3.6) - 0.1);
 
       osc.connect(gain);
       gain.connect(this.masterLimiter || this.masterGain);
 
       osc.start(now);
-      osc.stop(now + 3.6);
+      osc.stop(now + (tail?.end ?? 3.6));
     }
   }
 
@@ -2893,7 +2917,7 @@ export class AudioManager {
     if (!this.checkCooldown('attack', 200)) return;
     this.resumeAudio();
 
-    if (this.playSampled('attack', 0.8, 1.0, true)) {
+    if (this.playSampled('attack', 0.96, 1.06, true, 2)) {
       return;
     }
 
