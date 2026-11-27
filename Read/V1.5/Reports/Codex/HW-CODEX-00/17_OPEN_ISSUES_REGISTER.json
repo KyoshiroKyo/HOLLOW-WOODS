@@ -1,0 +1,184 @@
+{
+  "issues": [
+    {
+      "id": "BUG-059",
+      "status": "PARTIAL",
+      "owner": "B02",
+      "summary": "Thiếu artwork Idle/Walk Conversion-tier; yêu cầu tham chiếu 96 frame."
+    },
+    {
+      "id": "HOTFIX-B2",
+      "status": "OPEN",
+      "owner": "B03",
+      "summary": "EVKey vật lý trên Windows chưa thử."
+    },
+    {
+      "id": "A06-R1",
+      "status": "PARTIAL",
+      "owner": "AG",
+      "summary": "Có commit và bằng chứng ở nhánh riêng; resolver B08 vẫn fail-closed."
+    },
+    {
+      "id": "A07",
+      "status": "PARTIAL",
+      "owner": "AG",
+      "summary": "Checkpoint nói 4 file source + 2 untracked, chưa test sau edit."
+    },
+    {
+      "id": "B05",
+      "status": "BLOCKED",
+      "owner": "AG",
+      "summary": "Docs-only, chờ A07."
+    },
+    {
+      "id": "B07",
+      "status": "BLOCKED",
+      "owner": "AG",
+      "summary": "Docs-only, chờ A06-R1/A07/B05; MEM-04 và legacy reward marker."
+    },
+    {
+      "id": "BUG-024",
+      "status": "NOT RUN_HOSTED",
+      "owner": "B08 / AG",
+      "summary": "Local HTTP 206 simulation có evidence AG; real hosted chưa xác minh."
+    },
+    {
+      "id": "C01",
+      "status": "OPEN",
+      "owner": "AG",
+      "summary": "Chưa thấy checkpoint remote, collision route QA pending."
+    },
+    {
+      "id": "C02",
+      "status": "OPEN",
+      "owner": "AG",
+      "summary": "Chưa thấy checkpoint remote, Fog Crossing và Bellhollow remaster pending."
+    },
+    {
+      "id": "HW-H4-03-AUDIT",
+      "status": "OPEN",
+      "owner": "C01",
+      "summary": "Cổng Deep Forest tới Abyssal Chasm: evidence lịch sử về world bounds/trigger; chưa chạy lại."
+    },
+    {
+      "id": "MAP-BUG-001",
+      "status": "OPEN",
+      "owner": "C01",
+      "summary": "Clipped transitions Whispering Clearing."
+    },
+    {
+      "id": "MAP-BUG-002",
+      "status": "OPEN",
+      "owner": "C01",
+      "summary": "Sanctum world bounds/collision overlap."
+    },
+    {
+      "id": "MAP-BUG-003",
+      "status": "OPEN",
+      "owner": "C01",
+      "summary": "Ancient Rune Puzzle portal positioning."
+    },
+    {
+      "id": "BUG-033",
+      "status": "PARTIAL",
+      "owner": "C09",
+      "summary": "Map node 10/17 nguồn; Owner review, Minimap HUD chờ gate."
+    },
+    {
+      "id": "A08",
+      "status": "PARTIAL",
+      "owner": "AG",
+      "summary": "Preproduction only; media approval chưa đủ."
+    },
+    {
+      "id": "A09",
+      "status": "BLOCKED",
+      "owner": "AG",
+      "summary": "Game-ready MP4 và Owner gate chưa có."
+    },
+    {
+      "id": "A10",
+      "status": "PARTIAL",
+      "owner": "AG",
+      "summary": "Registry draft; event mới NOT RUN."
+    },
+    {
+      "id": "DEC-LOCK-14",
+      "status": "DEFERRED",
+      "owner": "Design / Lore / Owner",
+      "summary": "CHAR-006 Gate B chưa nghiệm thu; D06/D07/E06."
+    },
+    {
+      "id": "W20-BUG-001",
+      "status": "PENDING_REVERIFICATION",
+      "owner": "C01/C02 then C03–C10",
+      "summary": "Inherited issue from HW_WORLD_20_MAP_BUG_REGISTRY; target zone and prior evidence listed in report 07."
+    },
+    {
+      "id": "W20-BUG-002",
+      "status": "PENDING_REVERIFICATION",
+      "owner": "C01/C02 then C03–C10",
+      "summary": "Inherited issue from HW_WORLD_20_MAP_BUG_REGISTRY; target zone and prior evidence listed in report 07."
+    },
+    {
+      "id": "W20-BUG-003",
+      "status": "PENDING_REVERIFICATION",
+      "owner": "C01/C02 then C03–C10",
+      "summary": "Inherited issue from HW_WORLD_20_MAP_BUG_REGISTRY; target zone and prior evidence listed in report 07."
+    },
+    {
+      "id": "W20-BUG-004",
+      "status": "PENDING_REVERIFICATION",
+      "owner": "C01/C02 then C03–C10",
+      "summary": "Inherited issue from HW_WORLD_20_MAP_BUG_REGISTRY; target zone and prior evidence listed in report 07."
+    },
+    {
+      "id": "W20-BUG-005",
+      "status": "PENDING_REVERIFICATION",
+      "owner": "C01/C02 then C03–C10",
+      "summary": "Inherited issue from HW_WORLD_20_MAP_BUG_REGISTRY; target zone and prior evidence listed in report 07."
+    },
+    {
+      "id": "W20-BUG-006",
+      "status": "PENDING_REVERIFICATION",
+      "owner": "C01/C02 then C03–C10",
+      "summary": "Inherited issue from HW_WORLD_20_MAP_BUG_REGISTRY; target zone and prior evidence listed in report 07."
+    },
+    {
+      "id": "W20-BUG-007",
+      "status": "PENDING_REVERIFICATION",
+      "owner": "C01/C02 then C03–C10",
+      "summary": "Inherited issue from HW_WORLD_20_MAP_BUG_REGISTRY; target zone and prior evidence listed in report 07."
+    },
+    {
+      "id": "W20-BUG-008",
+      "status": "PENDING_REVERIFICATION",
+      "owner": "C01/C02 then C03–C10",
+      "summary": "Inherited issue from HW_WORLD_20_MAP_BUG_REGISTRY; target zone and prior evidence listed in report 07."
+    },
+    {
+      "id": "W20-BUG-009",
+      "status": "PENDING_REVERIFICATION",
+      "owner": "C01/C02 then C03–C10",
+      "summary": "Inherited issue from HW_WORLD_20_MAP_BUG_REGISTRY; target zone and prior evidence listed in report 07."
+    },
+    {
+      "id": "W20-BUG-010",
+      "status": "PENDING_REVERIFICATION",
+      "owner": "C01/C02 then C03–C10",
+      "summary": "Inherited issue from HW_WORLD_20_MAP_BUG_REGISTRY; target zone and prior evidence listed in report 07."
+    },
+    {
+      "id": "W20-BUG-011",
+      "status": "PENDING_REVERIFICATION",
+      "owner": "C01/C02 then C03–C10",
+      "summary": "Inherited issue from HW_WORLD_20_MAP_BUG_REGISTRY; target zone and prior evidence listed in report 07."
+    },
+    {
+      "id": "W20-BUG-012",
+      "status": "PENDING_REVERIFICATION",
+      "owner": "C01/C02 then C03–C10",
+      "summary": "Inherited issue from HW_WORLD_20_MAP_BUG_REGISTRY; target zone and prior evidence listed in report 07."
+    }
+  ]
+}

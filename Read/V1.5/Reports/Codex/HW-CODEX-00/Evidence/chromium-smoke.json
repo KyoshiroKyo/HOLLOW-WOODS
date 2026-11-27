@@ -1,0 +1,108 @@
+{
+  "baseline": "c9de0c21b0301003895cf2d106229dfef564a2b6",
+  "mode": "Chromium headless, built JS over loopback, isolated storage, no SDK authentication",
+  "renderers": {
+    "canvas": {
+      "status": "PASS",
+      "pageErrors": [],
+      "consoleWarnings": [
+        "[P2Game SDK] Kh\u00f4ng t\u00ecm th\u1ea5y window.p2, ch\u1ea1y \u1edf ch\u1ebf \u0111\u1ed9 d\u1ef1 ph\u00f2ng."
+      ],
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_FAILED"
+      ],
+      "httpErrors": [],
+      "failedRequests": [
+        [
+          "https://games.p2game.io/sdk/p2game-sdk.v1.js",
+          "net::ERR_FAILED"
+        ]
+      ],
+      "menuMs": 3766,
+      "renderer": 1,
+      "before": {
+        "x": 120,
+        "y": 195,
+        "texture": "black_knight_armed_idle",
+        "frame": "armed_idle_down_3",
+        "anim": "wayfarer_idle_down",
+        "zoom": 2.2,
+        "scale": 1.5,
+        "texCount": 527,
+        "children": 1100,
+        "actors": 1
+      },
+      "walking": {
+        "x": 176.66666666666646,
+        "y": 195,
+        "texture": "black_knight_movement",
+        "frame": "armed_walk_right_3",
+        "anim": "wayfarer_walk_right",
+        "zoom": 2.2,
+        "scale": 1.5,
+        "texCount": 532,
+        "children": 1195,
+        "actors": 1
+      },
+      "frameTiming": {
+        "samples": 74,
+        "meanMs": 18.46756756756756,
+        "p95Ms": 33.30000000000018,
+        "worst1PctFps": 29.940119760478552,
+        "fps": 54.14898287721355
+      }
+    },
+    "webgl": {
+      "status": "PASS",
+      "pageErrors": [],
+      "consoleWarnings": [
+        "[P2Game SDK] Kh\u00f4ng t\u00ecm th\u1ea5y window.p2, ch\u1ea1y \u1edf ch\u1ebf \u0111\u1ed9 d\u1ef1 ph\u00f2ng.",
+        "[GraphicsQualitySystem] FPS dropped below 38 for 4s (7.1 FPS). Auto-fallback -> MEDIUM",
+        "[GraphicsQualitySystem] FPS dropped below 38 for 4s (6.9 FPS). Auto-fallback -> LOW"
+      ],
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_FAILED"
+      ],
+      "httpErrors": [],
+      "failedRequests": [
+        [
+          "https://games.p2game.io/sdk/p2game-sdk.v1.js",
+          "net::ERR_FAILED"
+        ]
+      ],
+      "menuMs": 6317,
+      "renderer": 2,
+      "before": {
+        "x": 120,
+        "y": 195,
+        "texture": "black_knight_armed_idle",
+        "frame": "armed_idle_down_0",
+        "anim": "wayfarer_idle_down",
+        "zoom": 2.2,
+        "scale": 1.5,
+        "texCount": 515,
+        "children": 701,
+        "actors": 1
+      },
+      "walking": {
+        "x": 124.25000000000001,
+        "y": 195,
+        "texture": "black_knight_movement",
+        "frame": "armed_walk_right_0",
+        "anim": "wayfarer_walk_right",
+        "zoom": 2.2,
+        "scale": 1.5,
+        "texCount": 516,
+        "children": 794,
+        "actors": 1
+      },
+      "frameTiming": {
+        "samples": 74,
+        "meanMs": 183.77702702702706,
+        "p95Ms": 383.39999999999964,
+        "worst1PctFps": 1.395283940281846,
+        "fps": 5.4413765211956315
+      }
+    }
+  }
+}
