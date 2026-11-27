@@ -19,10 +19,12 @@ import * as Phaser from 'phaser';
 import {
   SPRITE_FALLEN_KNIGHT,
   SPRITE_DREAD_HORSEMAN,
-  SPRITE_HOODED_KNIGHT
+  SPRITE_HOODED_KNIGHT,
+  SPRITE_CAMPFIRE_KNIGHT_IDLE
 } from '../config/Constants';
 import { AudioManager } from '../audio/AudioManager';
 import { PlayerState } from '../state/PlayerState';
+import { SafeSpawnResolver } from '../systems/SafeSpawnResolver';
 
 // Hợp đồng cam kết tách bạch tài nguyên giữa quái vật hiệp sĩ tà ác và NPC thân thiện
 export const EVIL_KNIGHTS_ASSET_CONTRACT = {
@@ -53,8 +55,8 @@ export type FallenKnightState = 'pray' | 'idle' | 'chase' | 'attack' | 'vulnerab
 
 export class FallenKnightEntity extends Phaser.Physics.Arcade.Sprite {
   public knightState: FallenKnightState = 'pray';
-  public hp: number = 4;
-  public maxHp: number = 4;
+  public hp: number;
+  public maxHp: number;
   public isDefeated: boolean = false;
   public isVulnerable: boolean = false;
   public hasHitPlayerInCurrentAttack: boolean = false;
@@ -67,8 +69,10 @@ export class FallenKnightEntity extends Phaser.Physics.Arcade.Sprite {
   private footShadowGfx: Phaser.GameObjects.Graphics | null = null;
   private darkAuraGfx: Phaser.GameObjects.Graphics | null = null;
 
-  constructor(scene: Phaser.Scene, x: number, y: number) {
+  constructor(scene: Phaser.Scene, x: number, y: number, maxHp = 4) {
     super(scene, x, y, SPRITE_FALLEN_KNIGHT);
+    this.maxHp = maxHp;
+    this.hp = maxHp;
     this.spawnX = x;
     this.spawnY = y;
 
@@ -667,12 +671,18 @@ export type HoodedKnightState = 'idle' | 'walk' | 'powerup' | 'attack' | 'stagge
 
 export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
   public bossState: HoodedKnightState = 'idle';
-  public maxHp: number = 10;
-  public currentHp: number = 10;
+  public readonly maxHp = 300;
+  public currentHp = this.maxHp;
   public isDefeated: boolean = false;
   public isVulnerable: boolean = false;
   public hasHitPlayerInCurrentAttack: boolean = false;
   public hasRecognizedCommander: boolean = false;
+
+  private readonly healthBar: Phaser.GameObjects.Graphics;
+  private readonly healthLabel: Phaser.GameObjects.Text;
+  private assistUsed = false;
+  private assistSprite?: Phaser.GameObjects.Sprite;
+  private assistTimer?: Phaser.Time.TimerEvent;
 
   private stateTimer: number = 0;
   private attackCooldown: number = 2400;
@@ -707,6 +717,11 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
     this.darkAuraGfx.setVisible(false);
 
     this.initAnims();
+    this.healthBar = scene.add.graphics().setDepth(100000).setVisible(false);
+    this.healthLabel = scene.add.text(0, 0, '', {
+      fontSize: '9px', color: '#fff0ca', stroke: '#171117', strokeThickness: 2
+    }).setOrigin(0.5, 1).setDepth(100001).setVisible(false);
+    this.updateHealthBar();
     this.play('hooded_knight_idle', true);
   }
 
@@ -741,7 +756,7 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
     if (!anims.exists('hooded_knight_attack')) {
       anims.create({
         key: 'hooded_knight_attack',
-        frames: anims.generateFrameNumbers(SPRITE_HOODED_KNIGHT, { start: 26, end: 44 }),
+        frames: anims.generateFrameNumbers(SPRITE_HOODED_KNIGHT, { start: 26, end: 42 }),
         frameRate: 14,
         repeat: 0
       });
@@ -758,6 +773,10 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
 
   public updateAI(_time: number, delta: number, ctx: KnightContext): void {
     if (this.isDefeated || !this.active) return;
+
+    const showHealth = Math.hypot(this.x - ctx.playerX, this.y - ctx.playerY) <= 300;
+    this.healthBar.setVisible(showHealth).setPosition(this.x, this.y - 126);
+    this.healthLabel.setVisible(showHealth).setPosition(this.x, this.y - 128);
 
     // C4-14-B03: Dynamic Depth Sorting theo trục Y chân đứng
     const targetDepth = Math.floor(this.y);
@@ -954,6 +973,39 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
+  private updateHealthBar(): void {
+    this.healthBar.clear();
+    this.healthBar.fillStyle(0x171117).fillRect(-41, 0, 82, 7);
+    this.healthBar.fillStyle(0xb63d32).fillRect(-40, 1, 80 * (this.currentHp / this.maxHp), 5);
+    this.healthLabel.setText(`${this.currentHp} / ${this.maxHp}`);
+  }
+
+  private callVaelen(): void {
+    this.assistUsed = true;
+    const scene = this.scene;
+    if (!scene.textures.exists(SPRITE_CAMPFIRE_KNIGHT_IDLE)) return;
+    const place = SafeSpawnResolver.findNearestSafePosition(scene, this.x - 52, this.y + 16, 48);
+    if (!place) return;
+
+    const ally = scene.add.sprite(place.x, place.y, SPRITE_CAMPFIRE_KNIGHT_IDLE);
+    ally.setName('vaelen_encounter_ally').setOrigin(0.5, 1).setDepth(Math.floor(place.y));
+    if (scene.anims.exists('anim_campfire_knight_idle')) ally.play('anim_campfire_knight_idle');
+    this.assistSprite = ally;
+    // Support interrupts the assault and leaves all damage and the final blow to the player.
+    this.bossState = 'stagger';
+    this.stateTimer = 1800;
+    this.setVelocity(0, 0);
+    this.play('hooded_knight_stagger', true);
+    this.assistTimer = scene.time.delayedCall(1800, () => this.clearVaelen());
+    scene.events.emit('hooded_knight_vaelen_assist');
+  }
+
+  private clearVaelen(): void {
+    this.assistTimer?.remove(false);
+    this.assistTimer = undefined;
+    this.assistSprite?.destroy();
+    this.assistSprite = undefined;
+  }
   public takeDamage(amount: number = 1): void {
     if (this.isDefeated || this.bossState === 'death') return;
 
@@ -963,7 +1015,9 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
     }
 
     const effectiveDamage = this.isVulnerable ? amount * 2 : amount;
-    this.currentHp -= effectiveDamage;
+    const before = this.currentHp;
+    this.currentHp = Math.max(0, before - effectiveDamage);
+    this.updateHealthBar();
 
     AudioManager.getInstance().playArmorClank();
     this.setTint(0xff3333);
@@ -980,12 +1034,17 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
 
     if (this.currentHp <= 0) {
       this.defeatBoss();
+    } else if (!this.assistUsed && before > 150 && this.currentHp <= 150) {
+      this.callVaelen();
     }
   }
 
   private defeatBoss(): void {
     this.isDefeated = true;
     this.bossState = 'death';
+    this.healthBar.setVisible(false);
+    this.healthLabel.setVisible(false);
+    this.clearVaelen();
     this.setVelocity(0, 0);
     this.clearTint();
 
@@ -1041,6 +1100,9 @@ export class HoodedKnightBoss extends Phaser.Physics.Arcade.Sprite {
   }
 
   public destroy(fromScene?: boolean): void {
+    this.clearVaelen();
+    this.healthBar?.destroy();
+    this.healthLabel?.destroy();
     if (this.footShadowGfx) {
       this.footShadowGfx.destroy();
       this.footShadowGfx = null;

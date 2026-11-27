@@ -94,8 +94,7 @@ export class WildlifeSystem {
   };
 
   private static readonly HOODED_KNIGHT_HABITATS: Record<string, { x: number; y: number }> = {
-    deep_forest: { x: 2340, y: -190 },
-    ancient_rune_puzzle: { x: 3590, y: 290 }
+    deep_forest: { x: 2340, y: -190 }
   };
 
   // Danh mục tọa độ sinh cảnh chuẩn cho từng phân khu
@@ -502,6 +501,10 @@ export class WildlifeSystem {
       const bossSpot = WildlifeSystem.HOODED_KNIGHT_HABITATS[this.currentZoneId];
       if (bossSpot) {
         this.hoodedKnight = new HoodedKnightBoss(this.scene, bossSpot.x, bossSpot.y);
+        this.fallenKnights.push(
+          new FallenKnightEntity(this.scene, bossSpot.x - 110, bossSpot.y + 15, 100),
+          new FallenKnightEntity(this.scene, bossSpot.x + 110, bossSpot.y + 15, 100)
+        );
       }
     }
 
@@ -532,12 +535,6 @@ export class WildlifeSystem {
       this.hoodedKnight.updateAI(time, delta, knightCtx);
       if (!this.hoodedKnight.active) {
         this.hoodedKnight = null;
-      } else if (!this.hoodedKnight.isDefeated && !PlayerState.getInstance().hasFlag('boss_hooded_knight_defeated')) {
-        // Đội hình Hộ Vệ: Luôn có 2 Fallen Knight tháp tùng cách trùm ~110px
-        if (this.currentZoneId === 'deep_forest' && this.fallenKnights.length < 2) {
-          this.fallenKnights.push(new FallenKnightEntity(this.scene, this.hoodedKnight.x - 110, this.hoodedKnight.y + 15));
-          this.fallenKnights.push(new FallenKnightEntity(this.scene, this.hoodedKnight.x + 110, this.hoodedKnight.y + 15));
-        }
       }
     }
 
