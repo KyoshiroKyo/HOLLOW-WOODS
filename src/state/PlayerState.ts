@@ -610,14 +610,16 @@ export class PlayerState extends Phaser.Events.EventEmitter {
       this.completeQuestTask('Q06_RETRIEVE_CLAPPER', 't1');
       this.unlockLore('lore_clapper_curse');
     } else if (flag === 'mire_pillars_solved' || flag === 'mire_puzzle_solved') {
-      // C4-12-24: Tự động hoàn thành nhiệm vụ Q05 và mở khóa Q06 khi giải đố Ba Cột Đá thành công
+      // C4-12-24 & HW-V16-A07: Hoàn tất câu đố Ba Cột Đá tại Đầm Lầy (chỉ sang Q06 nếu Phong Ấn Rễ Cổ đã mở)
       this.completeQuestTask('Q05_SOLVE_MIRE', 't1');
       this.completeQuestTask('Q05_SOLVE_MIRE', 't2');
       this.completeQuestTask('Q05_SOLVE_MIRE', 't3');
       this.flags.add('mire_drained');
       this.flags.add('mire_pillars_solved');
       this.flags.add('mire_puzzle_solved');
-      this.advanceStoryQuest('Q06_RETRIEVE_CLAPPER');
+      if (this.flags.has('mire_root_seal_broken') || this.flags.has('shrine_bridge_lowered')) {
+        this.advanceStoryQuest('Q06_RETRIEVE_CLAPPER');
+      }
       this.unlockLore('lore_runestones');
     }
   }
@@ -664,7 +666,7 @@ export class PlayerState extends Phaser.Events.EventEmitter {
     const recorded = MAIN_QUEST_IDS_LATEST_FIRST.find(id => this.flags.has(MAIN_QUEST_FLAG_PREFIX + id));
     if (recorded) return recorded;
     if (MAIN_QUEST_IDS.includes(this.currentQuestId)) return this.currentQuestId;
-    if (this.hasFlag('clapper_collected') || this.hasFlag('mire_pillars_solved')) return 'Q06_RETRIEVE_CLAPPER';
+    if (this.hasFlag('clapper_collected') || this.hasFlag('mire_root_seal_broken') || this.hasFlag('shrine_bridge_lowered')) return 'Q06_RETRIEVE_CLAPPER';
     if (this.hasFlag('entered_silent_mire')) return 'Q05_SOLVE_MIRE';
     if (this.isQuestTaskCompleted('Q04_ANCIENT_RUNES', 't1') || this.hasFlag('east_gate_unlocked')) return 'Q04_ANCIENT_RUNES';
     if (this.hasFlag('talked_to_neris')) return 'Q03_PREPARE_RESOURCES';

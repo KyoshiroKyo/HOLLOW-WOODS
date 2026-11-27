@@ -1,0 +1,342 @@
+{
+  "tests": {
+    "A07-T01": {
+      "status": "PASS",
+      "detail": {
+        "start": {
+          "startQuest": "Q01_MEET_EDDA",
+          "zoneStart": "fog_crossing",
+          "eastUnlockedBefore": false
+        },
+        "finnAfter": {
+          "indicatorAfter": "none",
+          "finnTalked": true,
+          "rumorsDone": true,
+          "sq05Done": true,
+          "eastUnlocked": true,
+          "questId": "Q03_PREPARE_RESOURCES"
+        }
+      }
+    },
+    "A07-T03": {
+      "status": "PASS",
+      "detail": {
+        "shrineOpenJustFromPillars": false,
+        "storyAfterPillarsOnly": "Q03_PREPARE_RESOURCES",
+        "gsActionBridgeNoKey": false,
+        "sq08IndicatorWithoutBoss": "none",
+        "clapperBeforeBoss": false
+      }
+    },
+    "A07-T07": {
+      "status": "PASS",
+      "detail": {
+        "pillars": {
+          "shrineOpenJustFromPillars": false,
+          "storyAfterPillarsOnly": "Q03_PREPARE_RESOURCES",
+          "gsActionBridgeNoKey": false,
+          "sq08IndicatorWithoutBoss": "none",
+          "clapperBeforeBoss": false
+        },
+        "clapperGuard": {
+          "bossTriggered": true,
+          "earlyClapper": false,
+          "earlyCount": 0
+        }
+      }
+    },
+    "A07-T02": {
+      "status": "PASS",
+      "detail": {
+        "early": {
+          "s1": "Q03_PREPARE_RESOURCES",
+          "s2_shrineLocked": false
+        },
+        "mid": {
+          "sq08Skipped": true,
+          "questBeforeKey": "Q05_SOLVE_MIRE"
+        },
+        "late": {
+          "shrineOpenAfterBridge": true,
+          "afterBoss": {
+            "relicCount": 1,
+            "bossDefeated": true,
+            "clapperBeforeAltar": false,
+            "clapperItemBeforeAltar": 0
+          },
+          "afterAltar": {
+            "clapperCollected": true,
+            "clapperCount": 1,
+            "chaseStarted": true,
+            "questId": "Q06_RETRIEVE_CLAPPER"
+          }
+        }
+      }
+    },
+    "A07-T04": {
+      "status": "PASS",
+      "detail": {
+        "sq08Skipped": true,
+        "mainRouteReachedBellReady": true
+      }
+    },
+    "A07-T06": {
+      "status": "PASS",
+      "detail": {
+        "relicCount": 1,
+        "clapperCount": 1
+      }
+    },
+    "A07-T05": {
+      "status": "PASS",
+      "detail": {
+        "escCancel": {
+          "completed": false,
+          "charms": 0,
+          "stage": 3
+        },
+        "afterDoubleComplete": {
+          "completed": true,
+          "charms": 1,
+          "stage": 3,
+          "sq08Done": true,
+          "trust": 61
+        }
+      }
+    },
+    "A07-T08": {
+      "status": "PASS",
+      "detail": {
+        "Q01_MEET_EDDA": {
+          "currentQuest": "Q01_MEET_EDDA",
+          "storyQuest": "Q01_MEET_EDDA",
+          "clapper": 0
+        },
+        "Q05_SOLVE_MIRE": {
+          "currentQuest": "Q05_SOLVE_MIRE",
+          "storyQuest": "Q05_SOLVE_MIRE",
+          "clapper": 0
+        },
+        "Q06_RETRIEVE_CLAPPER": {
+          "currentQuest": "Q06_RETRIEVE_CLAPPER",
+          "storyQuest": "Q06_RETRIEVE_CLAPPER",
+          "clapper": 1
+        }
+      }
+    },
+    "A07-T09": {
+      "status": "PASS",
+      "detail": {
+        "counts": {
+          "fog": 8,
+          "sac": 7,
+          "true": 1
+        },
+        "extreme4": [
+          {
+            "stage": 3,
+            "comp": 0,
+            "trust": 0,
+            "ending": "sacrifice_ending"
+          },
+          {
+            "stage": 3,
+            "comp": 100,
+            "trust": 100,
+            "ending": "true_ending"
+          },
+          {
+            "stage": 1,
+            "comp": 100,
+            "trust": 100,
+            "ending": "fog_loop_ending"
+          },
+          {
+            "stage": 0,
+            "comp": 0,
+            "trust": 100,
+            "ending": "fog_loop_ending"
+          }
+        ]
+      }
+    },
+    "A07-T10": {
+      "status": "PASS",
+      "detail": {
+        "endingType": "true_ending",
+        "matchesExpected": true,
+        "bellRung": true,
+        "hasEndingFlag": true,
+        "revealed": false
+      }
+    },
+    "A07-T11": {
+      "status": "PASS",
+      "detail": {
+        "endingType": "sacrifice_ending",
+        "matchesExpected": true,
+        "bellRung": true,
+        "hasEndingFlag": true,
+        "revealed": false
+      }
+    },
+    "A07-T12": {
+      "status": "PASS",
+      "detail": {
+        "endingType": "fog_loop_ending",
+        "matchesExpected": true,
+        "bellRung": true,
+        "hasEndingFlag": true,
+        "revealed": false
+      }
+    },
+    "A07-T13": {
+      "status": "PASS",
+      "detail": {
+        "continue": {
+          "bellRungPreserved": true,
+          "clapper": 1
+        },
+        "newJourney": {
+          "bellRung": false,
+          "stage": 0,
+          "revealed": false,
+          "quest": "Q01_MEET_EDDA"
+        }
+      }
+    },
+    "A07-T14": {
+      "status": "PASS",
+      "detail": {
+        "identityStaysFailClosed": true
+      }
+    }
+  },
+  "endingBoundary16": [
+    {
+      "stage": 0,
+      "trust": 64,
+      "comp": 49,
+      "ending": "fog_loop_ending"
+    },
+    {
+      "stage": 0,
+      "trust": 64,
+      "comp": 50,
+      "ending": "fog_loop_ending"
+    },
+    {
+      "stage": 0,
+      "trust": 65,
+      "comp": 49,
+      "ending": "fog_loop_ending"
+    },
+    {
+      "stage": 0,
+      "trust": 65,
+      "comp": 50,
+      "ending": "fog_loop_ending"
+    },
+    {
+      "stage": 1,
+      "trust": 64,
+      "comp": 49,
+      "ending": "fog_loop_ending"
+    },
+    {
+      "stage": 1,
+      "trust": 64,
+      "comp": 50,
+      "ending": "fog_loop_ending"
+    },
+    {
+      "stage": 1,
+      "trust": 65,
+      "comp": 49,
+      "ending": "fog_loop_ending"
+    },
+    {
+      "stage": 1,
+      "trust": 65,
+      "comp": 50,
+      "ending": "fog_loop_ending"
+    },
+    {
+      "stage": 2,
+      "trust": 64,
+      "comp": 49,
+      "ending": "sacrifice_ending"
+    },
+    {
+      "stage": 2,
+      "trust": 64,
+      "comp": 50,
+      "ending": "sacrifice_ending"
+    },
+    {
+      "stage": 2,
+      "trust": 65,
+      "comp": 49,
+      "ending": "sacrifice_ending"
+    },
+    {
+      "stage": 2,
+      "trust": 65,
+      "comp": 50,
+      "ending": "sacrifice_ending"
+    },
+    {
+      "stage": 3,
+      "trust": 64,
+      "comp": 49,
+      "ending": "sacrifice_ending"
+    },
+    {
+      "stage": 3,
+      "trust": 64,
+      "comp": 50,
+      "ending": "sacrifice_ending"
+    },
+    {
+      "stage": 3,
+      "trust": 65,
+      "comp": 49,
+      "ending": "sacrifice_ending"
+    },
+    {
+      "stage": 3,
+      "trust": 65,
+      "comp": 50,
+      "ending": "true_ending"
+    }
+  ],
+  "endingExtreme4": [
+    {
+      "stage": 3,
+      "comp": 0,
+      "trust": 0,
+      "ending": "sacrifice_ending"
+    },
+    {
+      "stage": 3,
+      "comp": 100,
+      "trust": 100,
+      "ending": "true_ending"
+    },
+    {
+      "stage": 1,
+      "comp": 100,
+      "trust": 100,
+      "ending": "fog_loop_ending"
+    },
+    {
+      "stage": 0,
+      "comp": 0,
+      "trust": 100,
+      "ending": "fog_loop_ending"
+    }
+  ],
+  "consoleErrors": [],
+  "pageErrors": [],
+  "failedRequests": []
+}

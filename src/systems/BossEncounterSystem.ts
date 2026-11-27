@@ -187,7 +187,9 @@ export class BossEncounterSystem {
     }
 
     const state = PlayerState.getInstance();
-    state.addItem('relic_heart_of_roots', 1);
+    if (!state.hasFlag('boss_mire_warden_defeated') && state.getItemCount('relic_heart_of_roots') === 0) {
+      state.addItem('relic_heart_of_roots', 1);
+    }
     state.setFlag('boss_mire_warden_defeated');
     state.setFlag('root_seal_restored');
     state.setFlag('title_purifier_of_mist');
