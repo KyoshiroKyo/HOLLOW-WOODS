@@ -1,0 +1,261 @@
+{
+  "timestamp": "2026-11-27T17:55:23.497Z",
+  "runtime_errors": [],
+  "results": [
+    {
+      "test": "R1-1: node_resin_ow_1 exists at (1520,595) & available=true",
+      "pass": true,
+      "detail": "{\"id\":\"node_resin_ow_1\",\"x\":1520,\"y\":595,\"itemId\":\"res_tree_resin\",\"count\":1,\"available\":true,\"visible\":true}"
+    },
+    {
+      "test": "R1-2: node_resin_ow_1 NOT in range at hide_tree_ow_north (1360,620)",
+      "pass": true,
+      "detail": "runtimeNodesInRange=[]"
+    },
+    {
+      "test": "R1-3: Exact prompt at (1360,620) is \"[E] Ẩn nấp\" with outline on hide_tree_ow_north",
+      "pass": true,
+      "detail": "prompt=\"[E] Ẩn nấp\", outlineTarget={\"x\":1360,\"y\":620,\"id\":\"hide_tree_ow_north\",\"actionId\":\"hide_tree_ow_north\"}"
+    },
+    {
+      "test": "R1-4: E hides player, exact exit prompt \"[E] Rời chỗ ẩn nấp\", resin unchanged, single dispatch",
+      "pass": true,
+      "detail": "isHiding=true, prompt=\"[E] Rời chỗ ẩn nấp\", resin=0, hideCalls=1"
+    },
+    {
+      "test": "R1-5: E exits hiding cleanly",
+      "pass": true,
+      "detail": "wasHiding=true, isHiding=false"
+    },
+    {
+      "test": "R1-6: WASD exits hiding cleanly",
+      "pass": true,
+      "detail": "wasHiding=true, isHiding=false"
+    },
+    {
+      "test": "R1-7: node_resin_ow_1 (1520,595) is walkable via normal WASD movement (foot moved & within 50px)",
+      "pass": true,
+      "detail": "startFoot={\"x\":1520,\"y\":650}, endFoot={\"x\":1512,\"y\":612}, dist=19"
+    },
+    {
+      "test": "R1-8: Exact prompt \"[E] Thu thập Nhựa Cây Dính (x1)\" & outline on node_resin_ow_1",
+      "pass": true,
+      "detail": "prompt=\"[E] Thu thập Nhựa Cây Dính (x1)\", outlineTarget={\"x\":1520,\"y\":595,\"id\":\"node_resin_ow_1\",\"actionId\":null}"
+    },
+    {
+      "test": "R1-9: E collects node_resin_ow_1 (+1 delta), marks node_resin_ow_1 depleted & hidden",
+      "pass": true,
+      "detail": "resin=0->1, depleted=true, avail=false, visible=false"
+    },
+    {
+      "test": "R1-10: Second E on depleted node_resin_ow_1 does NOT double-grant",
+      "pass": true,
+      "detail": "resin=1, prompt=\"null\""
+    },
+    {
+      "test": "R1-11: Exact prompt \"[E] Ẩn nấp\" at (1360,620) after node_resin_ow_1 depleted",
+      "pass": true,
+      "detail": "prompt=\"[E] Ẩn nấp\", outline={\"x\":1360,\"y\":620,\"id\":\"hide_tree_ow_north\",\"actionId\":\"hide_tree_ow_north\"}"
+    },
+    {
+      "test": "R1-12: E hides player after node_resin_ow_1 depleted",
+      "pass": true,
+      "detail": "isHiding=true"
+    },
+    {
+      "test": "R1-13: Map gather_resin_ow_1 (1170,630) remains usable (+2 resin, flag set)",
+      "pass": true,
+      "detail": "promptBefore=\"[E] Thu Thập Nhựa Thông Rừng Già\", flag=true, resin=1->3"
+    },
+    {
+      "test": "R1-14: Neighbor hide_bush_ow_s_curve (1150,655) exact prompt \"[E] Ẩn nấp\"",
+      "pass": true,
+      "detail": "prompt=\"[E] Ẩn nấp\", outline={\"x\":1150,\"y\":655,\"id\":\"hide_bush_ow_s_curve\",\"actionId\":\"hide_player\"}"
+    },
+    {
+      "test": "R1-15: Bonfire (1470,710) exact prompt \"[E] Sưởi Ấm Bên Lửa Cổ\" & no hiding spot in range",
+      "pass": true,
+      "detail": "prompt=\"[E] Sưởi Ấm Bên Lửa Cổ\", worldInRange=[\"quiet_forest_bonfire\"]"
+    },
+    {
+      "test": "R1-16: Zero uncaught runtime errors",
+      "pass": true,
+      "detail": "0 errors"
+    }
+  ],
+  "trace": [
+    {
+      "step": "1_at_hide_while_node_available",
+      "snapshot": {
+        "foot": {
+          "x": 1360,
+          "y": 620
+        },
+        "prompt": "[E] Ẩn nấp",
+        "outlineCmdCount": 314,
+        "outlineTarget": {
+          "x": 1360,
+          "y": 620,
+          "id": "hide_tree_ow_north",
+          "actionId": "hide_tree_ow_north"
+        },
+        "isHiding": false,
+        "resinCount": 0,
+        "nodeDepleted": false,
+        "gatherFlag": false,
+        "runtimeNodesInRange": [],
+        "worldInRange": [
+          {
+            "id": "abandoned_ranger_outpost",
+            "type": "clue",
+            "actionId": "inspect_ranger_outpost",
+            "dist": 60,
+            "x": 1420,
+            "y": 620
+          },
+          {
+            "id": "hide_tree_ow_north",
+            "type": "hiding_spot",
+            "actionId": "hide_tree_ow_north",
+            "dist": 0,
+            "x": 1360,
+            "y": 620
+          }
+        ],
+        "nodeResinOw1": {
+          "id": "node_resin_ow_1",
+          "x": 1520,
+          "y": 595,
+          "itemId": "res_tree_resin",
+          "count": 1,
+          "available": true,
+          "visible": true
+        },
+        "hideCalls": 0
+      }
+    },
+    {
+      "step": "1_after_E_hide",
+      "snapshot": {
+        "foot": {
+          "x": 1360,
+          "y": 620
+        },
+        "prompt": "[E] Rời chỗ ẩn nấp",
+        "outlineCmdCount": 0,
+        "outlineTarget": null,
+        "isHiding": true,
+        "resinCount": 0,
+        "nodeDepleted": false,
+        "gatherFlag": false,
+        "runtimeNodesInRange": [],
+        "worldInRange": [
+          {
+            "id": "abandoned_ranger_outpost",
+            "type": "clue",
+            "actionId": "inspect_ranger_outpost",
+            "dist": 60,
+            "x": 1420,
+            "y": 620
+          },
+          {
+            "id": "hide_tree_ow_north",
+            "type": "hiding_spot",
+            "actionId": "hide_tree_ow_north",
+            "dist": 0,
+            "x": 1360,
+            "y": 620
+          }
+        ],
+        "nodeResinOw1": {
+          "id": "node_resin_ow_1",
+          "x": 1520,
+          "y": 595,
+          "itemId": "res_tree_resin",
+          "count": 1,
+          "available": true,
+          "visible": true
+        },
+        "hideCalls": 1
+      }
+    },
+    {
+      "step": "2_walked_to_node_resin_ow_1",
+      "beforeWalk": {
+        "x": 1520,
+        "y": 650
+      },
+      "snapshot": {
+        "foot": {
+          "x": 1512,
+          "y": 612
+        },
+        "prompt": "[E] Thu thập Nhựa Cây Dính (x1)",
+        "outlineCmdCount": 314,
+        "outlineTarget": {
+          "x": 1520,
+          "y": 595,
+          "id": "node_resin_ow_1",
+          "actionId": null
+        },
+        "isHiding": false,
+        "resinCount": 0,
+        "nodeDepleted": false,
+        "gatherFlag": false,
+        "runtimeNodesInRange": [
+          {
+            "id": "node_resin_ow_1",
+            "itemId": "res_tree_resin",
+            "itemName": "Nhựa Cây Dính",
+            "count": 1,
+            "x": 1520,
+            "y": 595,
+            "distance": 18.93923030232428
+          }
+        ],
+        "worldInRange": [],
+        "nodeResinOw1": {
+          "id": "node_resin_ow_1",
+          "x": 1520,
+          "y": 595,
+          "itemId": "res_tree_resin",
+          "count": 1,
+          "available": true,
+          "visible": true
+        },
+        "hideCalls": 4
+      }
+    },
+    {
+      "step": "2_after_harvest_node_resin_ow_1",
+      "snapshot": {
+        "foot": {
+          "x": 1512,
+          "y": 612
+        },
+        "prompt": null,
+        "outlineCmdCount": 0,
+        "outlineTarget": null,
+        "isHiding": false,
+        "resinCount": 1,
+        "nodeDepleted": true,
+        "gatherFlag": false,
+        "runtimeNodesInRange": [],
+        "worldInRange": [],
+        "nodeResinOw1": {
+          "id": "node_resin_ow_1",
+          "x": 1520,
+          "y": 595,
+          "itemId": "res_tree_resin",
+          "count": 1,
+          "available": false,
+          "visible": false
+        },
+        "hideCalls": 4
+      }
+    }
+  ],
+  "passed": 16,
+  "total": 16,
+  "summary": "16/16 PASS"
+}
