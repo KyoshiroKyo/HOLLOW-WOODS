@@ -1,0 +1,461 @@
+{
+  "task": "HW-QUEUE-CONTINUATION",
+  "build": "anim-final",
+  "sha": "4595ac9",
+  "environment": {
+    "os": "Windows 10 build 19045",
+    "node": "v26.7.0",
+    "browser_mode": "headless Chrome, isolated throwaway profile",
+    "endpoint": "http://127.0.0.1:5247",
+    "bundle": "npm run build, Vite preview",
+    "sdk": "external P2Game SDK blocked for isolated standalone test",
+    "owner_save_used": false,
+    "keyboard": "Chrome DevTools synthetic key events; physical EVKey NOT_RUN",
+    "window": [
+      1280,
+      720
+    ],
+    "device_scale_factor": 1,
+    "graphics_flags": [],
+    "browser": "Chrome/158.0.8127.38",
+    "chrome_gpu": {
+      "devices": [
+        {
+          "vendorId": 4318,
+          "deviceId": 7042,
+          "subSysId": 932451416,
+          "revision": 161,
+          "vendorString": "",
+          "deviceString": "NVIDIA GeForce GTX 1070 Ti",
+          "driverVendor": "NVIDIA",
+          "driverVersion": "32.0.15.8266"
+        },
+        {
+          "vendorId": 5140,
+          "deviceId": 140,
+          "subSysId": 0,
+          "revision": 0,
+          "vendorString": "",
+          "deviceString": "Microsoft Basic Render Driver",
+          "driverVendor": "",
+          "driverVersion": "10.0.19041.7548"
+        }
+      ],
+      "feature_status": {
+        "gpu_compositing": "enabled",
+        "webgl": "enabled"
+      },
+      "gl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8266)",
+      "gl_vendor": "Google Inc. (NVIDIA)"
+    },
+    "renderer": {
+      "type": 2,
+      "renderer": "WebGL",
+      "webgl_version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+      "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "webgl_vendor": "Google Inc. (NVIDIA)",
+      "canvas": [
+        1280,
+        720
+      ],
+      "viewport": [
+        1280,
+        720
+      ],
+      "pixel_ratio": 1,
+      "rect": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "graphics_quality": null
+    }
+  },
+  "checks": {
+    "Direction, weapon state, zone transition and alpha bounds": {
+      "status": "PASS",
+      "observation": {
+        "idle": {
+          "clip": "wayfarer_idle_down",
+          "frame": "armed_idle_down_0",
+          "size": [
+            64,
+            64
+          ],
+          "alpha": [
+            19,
+            33,
+            45,
+            62
+          ],
+          "relative": [
+            -19.5,
+            -46.5,
+            21,
+            -1.5
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "position": [
+            120,
+            195
+          ],
+          "foot": {
+            "x": 120,
+            "y": 195
+          },
+          "bounds": {
+            "w": 18,
+            "h": 12
+          },
+          "scale": 1.5,
+          "velocity": [
+            0,
+            0
+          ],
+          "camera": 2.2,
+          "stamina": 100,
+          "sprint": false,
+          "armed": true,
+          "zone": "fog_crossing"
+        },
+        "walk": {
+          "clip": "wayfarer_walk_right",
+          "frame": "armed_walk_right_0",
+          "size": [
+            64,
+            64
+          ],
+          "alpha": [
+            18,
+            32,
+            42,
+            62
+          ],
+          "relative": [
+            -21,
+            -48,
+            16.5,
+            -1.5
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "position": [
+            131.33333333333337,
+            195
+          ],
+          "foot": {
+            "x": 131.33333333333337,
+            "y": 195
+          },
+          "bounds": {
+            "w": 18,
+            "h": 12
+          },
+          "scale": 1.5,
+          "velocity": [
+            85,
+            0
+          ],
+          "camera": 2.2,
+          "stamina": 100,
+          "sprint": false,
+          "armed": true,
+          "zone": "fog_crossing"
+        },
+        "run": {
+          "clip": "wayfarer_run_right",
+          "frame": "armed_run_sequence_right_1",
+          "size": [
+            84,
+            72
+          ],
+          "alpha": [
+            9,
+            23,
+            47,
+            61
+          ],
+          "relative": [
+            -37.620000000000005,
+            -45.60000000000001,
+            6.840000000000001,
+            -1.1400000000000001
+          ],
+          "origin": [
+            0.5,
+            0.875
+          ],
+          "position": [
+            134.16666666666674,
+            195
+          ],
+          "foot": {
+            "x": 134.16666666666674,
+            "y": 195
+          },
+          "bounds": {
+            "w": 18,
+            "h": 12
+          },
+          "scale": 1.1400000000000001,
+          "velocity": [
+            140,
+            0
+          ],
+          "camera": 2.2,
+          "stamina": 99.63377333333334,
+          "sprint": true,
+          "armed": true,
+          "zone": "fog_crossing"
+        },
+        "reverse": {
+          "clip": "wayfarer_walk_left",
+          "frame": "armed_walk_left_0",
+          "size": [
+            64,
+            64
+          ],
+          "alpha": [
+            21,
+            31,
+            47,
+            62
+          ],
+          "relative": [
+            -16.5,
+            -49.5,
+            24,
+            -1.5
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "position": [
+            128.91666666666663,
+            195
+          ],
+          "foot": {
+            "x": 128.91666666666663,
+            "y": 195
+          },
+          "bounds": {
+            "w": 18,
+            "h": 12
+          },
+          "scale": 1.5,
+          "velocity": [
+            -85,
+            0
+          ],
+          "camera": 2.2,
+          "stamina": 99.26754666666668,
+          "sprint": false,
+          "armed": true,
+          "zone": "fog_crossing"
+        },
+        "entry": {
+          "clip": "wayfarer_unarmed_idle_right",
+          "frame": "unarmed_idle_right_0",
+          "size": [
+            64,
+            64
+          ],
+          "alpha": [
+            20,
+            31,
+            37,
+            62
+          ],
+          "relative": [
+            -18,
+            -49.5,
+            9,
+            -1.5
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "position": [
+            492.41666666666737,
+            220
+          ],
+          "foot": {
+            "x": 492.41666666666737,
+            "y": 220
+          },
+          "bounds": {
+            "w": 18,
+            "h": 12
+          },
+          "scale": 1.5,
+          "velocity": [
+            0,
+            0
+          ],
+          "camera": 2.2,
+          "stamina": 100,
+          "sprint": false,
+          "armed": false,
+          "zone": "bellhollow"
+        },
+        "stowed": {
+          "clip": "wayfarer_unarmed_idle_right",
+          "frame": "unarmed_idle_right_0",
+          "size": [
+            64,
+            64
+          ],
+          "alpha": [
+            20,
+            31,
+            37,
+            62
+          ],
+          "relative": [
+            -18,
+            -49.5,
+            9,
+            -1.5
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "position": [
+            492.41666666666737,
+            220
+          ],
+          "foot": {
+            "x": 492.41666666666737,
+            "y": 220
+          },
+          "bounds": {
+            "w": 18,
+            "h": 12
+          },
+          "scale": 1.5,
+          "velocity": [
+            0,
+            0
+          ],
+          "camera": 2.2,
+          "stamina": 100,
+          "sprint": false,
+          "armed": false,
+          "zone": "bellhollow"
+        },
+        "stowedWalk": {
+          "clip": "wayfarer_unarmed_walk_up",
+          "frame": "unarmed_walk_up_0",
+          "size": [
+            64,
+            64
+          ],
+          "alpha": [
+            21,
+            32,
+            43,
+            62
+          ],
+          "relative": [
+            -16.5,
+            -48,
+            18,
+            -1.5
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "position": [
+            492.41666666666737,
+            208.66666666666674
+          ],
+          "foot": {
+            "x": 492.41666666666737,
+            "y": 208.66666666666674
+          },
+          "bounds": {
+            "w": 18,
+            "h": 12
+          },
+          "scale": 1.5,
+          "velocity": [
+            0,
+            -85
+          ],
+          "camera": 2.2,
+          "stamina": 100,
+          "sprint": false,
+          "armed": false,
+          "zone": "bellhollow"
+        },
+        "draw": {
+          "clip": "wayfarer_weapon_on_up",
+          "frame": "weapon_on_up_0",
+          "size": [
+            64,
+            64
+          ],
+          "alpha": [
+            20,
+            31,
+            42,
+            62
+          ],
+          "relative": [
+            -18,
+            -49.5,
+            16.5,
+            -1.5
+          ],
+          "origin": [
+            0.5,
+            1
+          ],
+          "position": [
+            492.41666666666737,
+            205.83333333333343
+          ],
+          "foot": {
+            "x": 492.41666666666737,
+            "y": 205.83333333333343
+          },
+          "bounds": {
+            "w": 18,
+            "h": 12
+          },
+          "scale": 1.5,
+          "velocity": [
+            0,
+            0
+          ],
+          "camera": 2.2,
+          "stamina": 100,
+          "sprint": false,
+          "armed": true,
+          "zone": "bellhollow"
+        }
+      }
+    }
+  },
+  "media": [],
+  "diagnostics": {
+    "page_exceptions": [],
+    "local_http_errors": [],
+    "browser_warnings": [
+      "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+    ],
+    "external_resources_blocked": [
+      "https://games.p2game.io/sdk/p2game-sdk.v1.js"
+    ]
+  }
+}
