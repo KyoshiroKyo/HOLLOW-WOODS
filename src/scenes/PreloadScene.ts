@@ -25,6 +25,9 @@ import {
   TILE_SWAMP_MUD,
   TILE_COBBLE_ROAD,
   TILE_STONE_FLOOR,
+  ATLAS_RESURRECTED_PROPS,
+  TILE_RESURRECTED_GRASS,
+  TILE_RESURRECTED_DIRT_PATH,
   CONFIG_USE_V14_PILOT_ENVIRONMENT,
   CONFIG_USE_V14_ENVIRONMENT,
   TILE_FOREST_GRASS_V14_A,
@@ -624,6 +627,15 @@ export class PreloadScene extends Phaser.Scene {
       this.load.image(TILE_TILLED_SOIL_V14, 'assets/environment/v14/tiles/tile_tilled_soil_v14.png');
       this.load.image(TILE_WOOD_PLANK_WEATHERED_V14, 'assets/environment/v14/tiles/tile_wood_plank_weathered_v14.png');
     }
+
+    // 8.2 HW-V16-C02: Curated Resurrected_RPG tileset & split Trunk/Canopy props atlas
+    this.load.atlas(
+      ATLAS_RESURRECTED_PROPS,
+      'assets/environment/remastered/resurrected_props_atlas.png',
+      'assets/environment/remastered/resurrected_props_atlas.json'
+    );
+    this.load.image(TILE_RESURRECTED_GRASS, 'assets/environment/remastered/resurrected_grass.png');
+    this.load.image(TILE_RESURRECTED_DIRT_PATH, 'assets/environment/remastered/resurrected_dirt_path.png');
 
     // 9. V15-FIX-05: Chuẩn hóa toàn bộ sprite & chân dung NPC về 1 nguồn duy nhất tại assets/characters/npcs/
     this.load.image(PORTRAIT_GARTH, 'assets/characters/npcs/portrait_garth.png');

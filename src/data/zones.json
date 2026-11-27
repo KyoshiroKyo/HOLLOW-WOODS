@@ -62,9 +62,9 @@
         {
           "id": "fog_bound_right_bottom",
           "x": 448,
-          "y": 260,
+          "y": 320,
           "width": 32,
-          "height": 100,
+          "height": 40,
           "type": "boundary",
           "isSolid": true
         },
@@ -80,7 +80,7 @@
         {
           "id": "fog_tree_1",
           "x": 160,
-          "y": 100,
+          "y": 65,
           "width": 32,
           "height": 16,
           "type": "tree_trunk",
@@ -89,7 +89,7 @@
         {
           "id": "fog_tree_2",
           "x": 300,
-          "y": 240,
+          "y": 310,
           "width": 32,
           "height": 16,
           "type": "tree_trunk",
@@ -142,7 +142,7 @@
             "x": 460,
             "y": 200,
             "width": 20,
-            "height": 60
+            "height": 120
           },
           "targetSpawn": {
             "x": 520,
@@ -292,7 +292,7 @@
         {
           "id": "bell_bound_east_top",
           "name": "Biên Đông Bắc Làng",
-          "x": 1598,
+          "x": 1568,
           "y": 6,
           "width": 32,
           "height": 194,
@@ -302,7 +302,7 @@
         {
           "id": "bell_bound_east_bottom",
           "name": "Biên Đông Nam Làng",
-          "x": 1598,
+          "x": 1568,
           "y": 360,
           "width": 32,
           "height": 208,
@@ -373,8 +373,8 @@
           "id": "camp_storage_chest",
           "name": "Rương Trú Ẩn 12 Ô",
           "type": "storage",
-          "x": 775,
-          "y": 295,
+          "x": 856,
+          "y": 376,
           "width": 28,
           "height": 18,
           "promptText": "[E] Mở Rương Trú Ẩn 12 Ô",
@@ -384,8 +384,8 @@
           "id": "camp_shelter_tent",
           "name": "Lều Trú Ẩn Sanctuary",
           "type": "shelter",
-          "x": 778,
-          "y": 261,
+          "x": 798,
+          "y": 378,
           "width": 44,
           "height": 36,
           "promptText": "[E] Nghỉ ngơi tại Lều Trú Ẩn",
@@ -940,6 +940,29 @@
           },
           "displayLabel": "Tiến vào Đầm Lầy Tĩnh Lặng",
           "description": "Tiến vào Đầm Lầy Tĩnh Lặng"
+        },
+        {
+          "id": "to_whispering_clearing_from_cp",
+          "fromZone": "crooked_path",
+          "toZone": "sub_whispering_clearing",
+          "status": "active",
+          "barrierType": "open",
+          "triggerRect": {
+            "x": 1800,
+            "y": 0,
+            "width": 80,
+            "height": 24
+          },
+          "targetSpawn": {
+            "x": 1840,
+            "y": -60
+          },
+          "returnPoint": {
+            "x": 1840,
+            "y": 60
+          },
+          "displayLabel": "Lối Bắc vào Khoảng Rừng Thì Thầm",
+          "description": "Lối mòn rẽ Bắc vào Khoảng Rừng Thì Thầm"
         }
       ],
       "tier": "LAYER_2_FRONTIER",
@@ -1044,9 +1067,9 @@
         {
           "id": "sm_bound_right_bottom",
           "x": 3970,
-          "y": 400,
+          "y": 360,
           "width": 30,
-          "height": 310,
+          "height": 350,
           "type": "boundary",
           "isSolid": true
         },
@@ -1458,7 +1481,7 @@
             "x": 3980,
             "y": 240,
             "width": 20,
-            "height": 160
+            "height": 120
           },
           "targetSpawn": {
             "x": 4050,
@@ -1479,7 +1502,7 @@
           "barrierType": "open",
           "triggerRect": {
             "x": 3340,
-            "y": 720,
+            "y": 716,
             "width": 80,
             "height": 24
           },
@@ -1565,7 +1588,7 @@
         },
         {
           "id": "shrine_bound_left_top",
-          "x": 3980,
+          "x": 4000,
           "y": 0,
           "width": 30,
           "height": 220,
@@ -1574,7 +1597,7 @@
         },
         {
           "id": "shrine_bound_left_bottom",
-          "x": 3980,
+          "x": 4000,
           "y": 360,
           "width": 30,
           "height": 240,
@@ -2775,9 +2798,9 @@
       "tierName": "Tầng 3 — Forbidden",
       "status": "active",
       "bounds": {
-        "x": 3350,
+        "x": 3310,
         "y": 150,
-        "width": 350,
+        "width": 390,
         "height": 280
       },
       "defaultSpawn": {
@@ -3258,7 +3281,7 @@
           "barrierType": "open",
           "triggerRect": {
             "x": 760,
-            "y": 1420,
+            "y": 1416,
             "width": 80,
             "height": 24
           },
@@ -3487,7 +3510,7 @@
             "height": 24
           },
           "targetSpawn": {
-            "x": 1600,
+            "x": 960,
             "y": -420
           },
           "returnPoint": {
@@ -3804,13 +3827,13 @@
       "tierName": "Thánh địa Tầng 2 — Vùng Đất Thanh Tẩy",
       "status": "active",
       "bounds": {
-        "x": 1120,
+        "x": 480,
         "y": -800,
         "width": 960,
         "height": 440
       },
       "defaultSpawn": {
-        "x": 1600,
+        "x": 960,
         "y": -420
       },
       "atmosphere": {
@@ -3824,7 +3847,7 @@
       "colliders": [
         {
           "id": "wgs_bound_top",
-          "x": 1120,
+          "x": 480,
           "y": -800,
           "width": 960,
           "height": 30,
@@ -3833,7 +3856,7 @@
         },
         {
           "id": "wgs_bound_bottom_left",
-          "x": 1120,
+          "x": 480,
           "y": -390,
           "width": 440,
           "height": 30,
@@ -3842,7 +3865,7 @@
         },
         {
           "id": "wgs_bound_bottom_right",
-          "x": 1640,
+          "x": 1000,
           "y": -390,
           "width": 440,
           "height": 30,
@@ -3851,7 +3874,7 @@
         },
         {
           "id": "wgs_bound_left",
-          "x": 1120,
+          "x": 480,
           "y": -800,
           "width": 30,
           "height": 440,
@@ -3860,7 +3883,7 @@
         },
         {
           "id": "wgs_bound_right",
-          "x": 2050,
+          "x": 1410,
           "y": -800,
           "width": 30,
           "height": 440,
@@ -3876,7 +3899,7 @@
           "status": "active",
           "barrierType": "open",
           "triggerRect": {
-            "x": 1560,
+            "x": 920,
             "y": -400,
             "width": 80,
             "height": 30
@@ -3886,7 +3909,7 @@
             "y": -310
           },
           "returnPoint": {
-            "x": 1600,
+            "x": 960,
             "y": -420
           },
           "displayLabel": "Về Khoảng Rừng Thì Thầm",
@@ -3897,7 +3920,7 @@
         {
           "id": "elder_grove_altar",
           "type": "interactable",
-          "x": 1600,
+          "x": 960,
           "y": -580,
           "prompt": "Cầu nguyện trước Bàn Tế Đại Thụ",
           "loreId": "lore_elder_grove_blessing",
@@ -3907,7 +3930,7 @@
         {
           "id": "elder_tree_sap_node",
           "type": "harvest",
-          "x": 1680,
+          "x": 1040,
           "y": -620,
           "prompt": "Thu thập Nhựa Cây Thần",
           "resourceType": "resin"
@@ -3919,22 +3942,22 @@
         "resources": [
           {
             "type": "herbs",
-            "x": 1420,
+            "x": 780,
             "y": -600
           },
           {
             "type": "herbs",
-            "x": 1780,
+            "x": 1140,
             "y": -540
           },
           {
             "type": "tree_resin",
-            "x": 1680,
+            "x": 1040,
             "y": -620
           },
           {
             "type": "dry_wood",
-            "x": 1520,
+            "x": 880,
             "y": -480
           }
         ]

@@ -207,6 +207,7 @@ export class QuestSystem {
     ps.setFlag('mire_root_seal_broken');
     ps.setFlag('shrine_bridge_lowered');
     ps.setFlag('shrine_unlocked');
+    ps.setMemoryAwakeningStage(3);
     ps.setCurrentQuest('Q06_RETRIEVE_CLAPPER');
 
     return true;
@@ -217,7 +218,12 @@ export class QuestSystem {
    */
   public craftPurificationKey(state?: PlayerState): boolean {
     const ps = state || PlayerState.getInstance();
-    if (ps.getItemCount('quest_purification_key') > 0) return true;
+    if (ps.hasFlag('mire_root_seal_broken') || ps.hasFlag('shrine_bridge_lowered')) {
+      return false;
+    }
+    if (ps.getItemCount('quest_purification_key') > 0 || ps.hasFlag('purification_key_crafted')) {
+      return true;
+    }
 
     const hasMold = ps.getItemCount('item_bell_mold') > 0 || ps.hasFlag('has_bell_mold');
     const hasRune = ps.getItemCount('quest_rune_fragment') > 0 ||

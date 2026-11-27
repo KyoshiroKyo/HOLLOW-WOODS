@@ -64,6 +64,12 @@ export class MainMenuScene extends Phaser.Scene {
       strokeThickness: 1.5,
     }).setLetterSpacing(0.5);
     this.add.rectangle(80, 204, 114, 2, 0xC8963E).setOrigin(0, 0);
+    HDTextHelper.createText(this, 1254, 702, 'V1.6.0', {
+      fontSize: '12px',
+      color: '#98a391',
+      stroke: '#080c09',
+      strokeThickness: 1.5,
+    }).setOrigin(1, 1);
 
     const menuX = 288;
     const firstY = 248;
@@ -291,10 +297,110 @@ export class MainMenuScene extends Phaser.Scene {
   private startNewGame(): void {
     AudioManager.getInstance().playInteract();
     SaveManager.clearSave();
-    this.cameras.main.fade(500, 0, 0, 0);
-    this.time.delayedCall(500, () => {
-      this.scene.start(SCENE_GAME, { isContinue: false });
+    this.showAtmosphericPrologueCards(() => {
+      this.cameras.main.fade(500, 0, 0, 0);
+      this.time.delayedCall(500, () => {
+        this.scene.start(SCENE_GAME, { isContinue: false });
+      });
     });
+  }
+
+  /**
+   * Group 2 — HW-V16-COMPETITION-01: Hiển thị 3 thẻ màn hình dẫn truyện A08
+   * Khung đen + chữ trắng mờ dần, skip bằng [ESC/SPACE/ENTER] hoặc click.
+   * Sau khi hoàn thành, gọi onComplete() để bắt đầu game.
+   */
+  private showAtmosphericPrologueCards(onComplete: () => void): void {
+    const W = this.scale.width;
+    const H = this.scale.height;
+    const FADE_MS = 700;
+    const DISPLAY_MS = 2000;
+
+    // Ba dòng canon A08 được duyệt
+    const cards = [
+      'Từng có một lời thề\ngiữ lửa nơi rìa rừng sương...',
+      'Không còn tên tuổi. Không còn ký ức.\nChỉ còn ánh sáng le lói...',
+      'Tiếng chuông đồng khẽ vang...\nhành trình Bellhollow bắt đầu.'
+    ];
+
+    // Container phủ toàn màn hình (depth cao nhất)
+    const overlay = this.add.container(0, 0).setDepth(9999);
+    const bg = this.add.rectangle(W / 2, H / 2, W, H, 0x000000).setAlpha(0);
+    overlay.add(bg);
+
+    const cardText = HDTextHelper.createText(this, W / 2, H / 2, '', {
+      fontFamily: 'Georgia, "Times New Roman", serif',
+      fontSize: '24px',
+      color: '#E8DFC8',
+      stroke: '#000000',
+      strokeThickness: 2,
+      align: 'center',
+      wordWrap: { width: W * 0.7 }
+    }).setAlpha(0).setOrigin(0.5, 0.5);
+    overlay.add(cardText);
+
+    const skipHint = HDTextHelper.createText(this, W / 2, H - 48, '[ESC / SPACE] Bỏ qua', {
+      fontSize: '13px',
+      color: '#8a9080'
+    }).setAlpha(0).setOrigin(0.5, 0.5);
+    overlay.add(skipHint);
+
+    let cardIndex = 0;
+    let skipped = false;
+
+    const finish = () => {
+      if (skipped) return;
+      skipped = true;
+      this.tweens.add({
+        targets: overlay,
+        alpha: 0,
+        duration: FADE_MS,
+        onComplete: () => {
+          overlay.destroy();
+          onComplete();
+        }
+      });
+    };
+
+    // Skip handler — ESC, SPACE, ENTER hoặc click
+    const skipHandler = () => { finish(); };
+    const keyboard = this.input.keyboard;
+    keyboard?.once('keydown-ESC', skipHandler);
+    keyboard?.once('keydown-SPACE', skipHandler);
+    keyboard?.once('keydown-ENTER', skipHandler);
+    this.input.once('pointerdown', skipHandler);
+
+    const showCard = (idx: number) => {
+      if (skipped) return;
+      if (idx >= cards.length) {
+        finish();
+        return;
+      }
+      cardText.setText(cards[idx]).setAlpha(0);
+      this.tweens.add({
+        targets: [bg, cardText, skipHint],
+        alpha: (target: Phaser.GameObjects.GameObject) => {
+          if (target === bg) return 0.92;
+          if (target === skipHint) return 0.5;
+          return 1;
+        },
+        duration: FADE_MS,
+        onComplete: () => {
+          if (skipped) return;
+          this.time.delayedCall(DISPLAY_MS, () => {
+            if (skipped) return;
+            this.tweens.add({
+              targets: cardText,
+              alpha: 0,
+              duration: FADE_MS,
+              onComplete: () => showCard(idx + 1)
+            });
+          });
+        }
+      });
+    };
+
+    showCard(cardIndex);
   }
 
   private renderContinueButton(): void {

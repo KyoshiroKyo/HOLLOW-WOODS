@@ -12,6 +12,9 @@ import {
   TILE_TILLED_SOIL_V14,
   TILE_COBBLE_ROAD,
   TILE_STONE_FLOOR,
+  ATLAS_RESURRECTED_PROPS,
+  TILE_RESURRECTED_GRASS,
+  TILE_RESURRECTED_DIRT_PATH,
   SPRITE_TREE_OAK_1,
   SPRITE_TREE_OAK_2,
   SPRITE_TREE_OAK_3,
@@ -368,47 +371,66 @@ export class WorldBuilder {
         const ctx = canvasTex.getContext();
         ctx.imageSmoothingEnabled = false;
 
-        // 1. Nền cỏ rừng sương mù tối màu có chiều sâu (không lặp ô xanh ô-liu đơn điệu)
-        ctx.fillStyle = '#263326';
+        // 1. Nền cỏ rừng sương mù tối màu có chiều sâu (Resurrected_RPG grass tiles + Hollow Woods dark-moss glaze)
+        ctx.fillStyle = '#222f22';
         ctx.fillRect(0, 0, totalWidth, bounds.height);
 
-        const grassImg = this.scene.textures.get(TILE_FOREST_GRASS).getSourceImage() as HTMLImageElement | HTMLCanvasElement;
-        if (grassImg && grassImg.width > 0) {
+        const resGrassImg = this.scene.textures.exists(TILE_RESURRECTED_GRASS)
+          ? (this.scene.textures.get(TILE_RESURRECTED_GRASS).getSourceImage() as HTMLImageElement | HTMLCanvasElement)
+          : null;
+        if (resGrassImg && resGrassImg.width >= 448) {
           ctx.save();
-          ctx.globalAlpha = 0.35;
+          ctx.globalAlpha = 0.72;
           for (let gy = 0; gy < bounds.height; gy += 32) {
             for (let gx = 0; gx < totalWidth; gx += 32) {
-              ctx.drawImage(grassImg, gx, gy, 32, 32);
+              const h = Math.abs(Math.floor(gx * 73856093 ^ gy * 19349663));
+              const col = 10 + (h % 4);
+              const row = (h >> 2) % 2;
+              ctx.drawImage(resGrassImg, col * 32, row * 32, 32, 32, gx, gy, 32, 32);
             }
           }
           ctx.restore();
+          ctx.fillStyle = 'rgba(22, 33, 24, 0.34)';
+          ctx.fillRect(0, 0, totalWidth, bounds.height);
+        } else {
+          const grassImg = this.scene.textures.get(TILE_FOREST_GRASS).getSourceImage() as HTMLImageElement | HTMLCanvasElement;
+          if (grassImg && grassImg.width > 0) {
+            ctx.save();
+            ctx.globalAlpha = 0.35;
+            for (let gy = 0; gy < bounds.height; gy += 32) {
+              for (let gx = 0; gx < totalWidth; gx += 32) {
+                ctx.drawImage(grassImg, gx, gy, 32, 32);
+              }
+            }
+            ctx.restore();
+          }
         }
 
         // Bóng rừng sẫm màu hai bên rìa Bắc - Nam
         const topGrad = ctx.createLinearGradient(0, 0, 0, 95);
-        topGrad.addColorStop(0, 'rgba(12, 18, 14, 0.82)');
+        topGrad.addColorStop(0, 'rgba(12, 18, 14, 0.85)');
         topGrad.addColorStop(1, 'rgba(12, 18, 14, 0)');
         ctx.fillStyle = topGrad;
         ctx.fillRect(0, 0, totalWidth, 95);
 
         const botGrad = ctx.createLinearGradient(0, bounds.height - 95, 0, bounds.height);
         botGrad.addColorStop(0, 'rgba(12, 18, 14, 0)');
-        botGrad.addColorStop(1, 'rgba(12, 18, 14, 0.82)');
+        botGrad.addColorStop(1, 'rgba(12, 18, 14, 0.85)');
         ctx.fillStyle = botGrad;
         ctx.fillRect(0, bounds.height - 95, totalWidth, 95);
 
-        // Thảm rêu và bụi cỏ tự nhiên rải rác
+        // Thảm rêu và cụm cỏ Resurrected_RPG Overlay tự nhiên rải rác (tránh lặp lưới)
         let seed = 104729;
         const nextRand = () => {
           seed = (seed * 1664525 + 1013904223) >>> 0;
           return seed / 4294967296;
         };
-        for (let i = 0; i < 260; i++) {
+        for (let i = 0; i < 200; i++) {
           const px = Math.floor(nextRand() * totalWidth);
           const py = Math.floor(nextRand() * bounds.height);
           const w = 4 + Math.floor(nextRand() * 8);
           const h = 3 + Math.floor(nextRand() * 5);
-          ctx.fillStyle = nextRand() > 0.5 ? 'rgba(31, 46, 31, 0.65)' : 'rgba(54, 74, 48, 0.45)';
+          ctx.fillStyle = nextRand() > 0.5 ? 'rgba(26, 40, 27, 0.55)' : 'rgba(54, 74, 48, 0.35)';
           ctx.fillRect(px, py, w, h);
         }
 
@@ -423,24 +445,42 @@ export class WorldBuilder {
           return 184 + smooth * 48; // 184 -> 232 tại x=480
         };
 
+        const resDirtImg = this.scene.textures.exists(TILE_RESURRECTED_DIRT_PATH)
+          ? (this.scene.textures.get(TILE_RESURRECTED_DIRT_PATH).getSourceImage() as HTMLImageElement | HTMLCanvasElement)
+          : null;
+        let resDirtPattern: CanvasPattern | null = null;
+        if (resDirtImg && resDirtImg.width >= 64) {
+          const dirtTileCanvas = document.createElement('canvas');
+          dirtTileCanvas.width = 32;
+          dirtTileCanvas.height = 32;
+          const dCtx = dirtTileCanvas.getContext('2d');
+          if (dCtx) {
+            dCtx.imageSmoothingEnabled = false;
+            dCtx.drawImage(resDirtImg, 96, 96, 32, 32, 0, 0, 32, 32);
+            dCtx.fillStyle = 'rgba(42, 30, 20, 0.28)';
+            dCtx.fillRect(0, 0, 32, 32);
+            resDirtPattern = ctx.createPattern(dirtTileCanvas, 'repeat');
+          }
+        }
+
         for (let x = 0; x < totalWidth; x += 2) {
           const cy = Math.round(trailCenterY(x));
           const halfW = 22 + Math.round(Math.sin(x * 0.07) * 2);
 
           // Viền cỏ đạp dập / đất ẩm chuyển tiếp
-          ctx.fillStyle = '#3b3728';
+          ctx.fillStyle = '#333425';
           ctx.fillRect(x, cy - halfW - 6, 2, halfW * 2 + 12);
 
           // Lớp đất nâu trầm bên ngoài
-          ctx.fillStyle = '#523e2c';
+          ctx.fillStyle = '#473626';
           ctx.fillRect(x, cy - halfW - 2, 2, halfW * 2 + 4);
 
-          // Lòng đường đất nâu ấm
-          ctx.fillStyle = '#684f38';
+          // Lòng đường đất pixel art từ Resurrected_RPG (hoặc fallback ấm trầm)
+          ctx.fillStyle = resDirtPattern || '#5e4732';
           ctx.fillRect(x, cy - halfW + 2, 2, halfW * 2 - 4);
 
           // Vệt đất mòn sáng nhẹ ở tâm lối đi
-          ctx.fillStyle = '#785c42';
+          ctx.fillStyle = resDirtPattern ? 'rgba(116, 90, 64, 0.24)' : '#6e543c';
           ctx.fillRect(x, cy - 8, 2, 16);
         }
 
@@ -450,12 +490,12 @@ export class WorldBuilder {
           const cy = trailCenterY(px);
           const offset = (nextRand() - 0.5) * 38;
           const py = Math.round(cy + offset);
-          ctx.fillStyle = nextRand() > 0.45 ? '#463525' : '#877560';
+          ctx.fillStyle = nextRand() > 0.45 ? '#3d2f21' : '#7b6c59';
           ctx.fillRect(px, py, 2 + Math.floor(nextRand() * 2), 2);
         }
 
         // C4-14-B04: Chuỗi dấu chân bùn và cỏ dập dẫn hướng từ điểm xuất phát (80, 180) về phía Đông
-        ctx.fillStyle = '#261910';
+        ctx.fillStyle = '#24180f';
         for (let fx = 95; fx < 450; fx += 24) {
           const fy = Math.round(trailCenterY(fx)) + ((fx % 48 === 0) ? -4 : 4);
           ctx.beginPath();
@@ -464,13 +504,23 @@ export class WorldBuilder {
           ctx.fillRect(fx + 2, fy - 1, 2, 2);
         }
 
-        // Bậc đá cổ dẫn vào cổng Tây làng ở x = 452..515
-        for (let sx = 452; sx < totalWidth - 5; sx += 7) {
+        // Bậc đá cổ dẫn vào cổng Tây làng ở x = 452..515 (mài tròn tự nhiên, có rêu viền)
+        for (let sx = 452; sx < totalWidth - 8; sx += 11) {
           const sy = Math.round(trailCenterY(sx));
-          ctx.fillStyle = '#545b61';
-          ctx.fillRect(sx, sy - 16, 5, 32);
-          ctx.fillStyle = '#6d757c';
-          ctx.fillRect(sx + 1, sy - 15, 3, 30);
+          const slabOffsets = [-10, 0, 10];
+          for (const dy of slabOffsets) {
+            const ox = Math.round((nextRand() - 0.5) * 3);
+            ctx.fillStyle = '#3b4247';
+            ctx.fillRect(sx + ox, sy + dy - 4, 9, 8);
+            ctx.fillStyle = '#576067';
+            ctx.fillRect(sx + ox + 1, sy + dy - 3, 7, 5);
+            ctx.fillStyle = 'rgba(205, 220, 225, 0.16)';
+            ctx.fillRect(sx + ox + 1, sy + dy - 3, 6, 1);
+            if (nextRand() > 0.55) {
+              ctx.fillStyle = '#334d30';
+              ctx.fillRect(sx + ox, sy + dy + 2, 3, 2);
+            }
+          }
         }
 
         // C4-13-16: Gradient sương đen sâu thẳm che phủ và làm chìm hẳn con đường ở rìa Tây (x: 0..80)
@@ -610,22 +660,41 @@ export class WorldBuilder {
         const toLY = (wy: number) => Math.round(wy - oy);
 
         // =========================================================================
-        // 1. NỀN CỎ RỪNG ĐA SẮC ĐỘ & CHUYỂN TIẾP BÌA RỪNG (THAY THẾ CỎ XANH Ô-LIU ĐƠN ĐIỆU)
+        // 1. NỀN CỎ RỪNG ĐA SẮC ĐỘ & CHUYỂN TIẾP BÌA RỪNG (RESURRECTED_RPG GRASS + MOSS GLAZE)
         // =========================================================================
-        ctx.fillStyle = '#2a3d24';
+        ctx.fillStyle = '#243521';
         ctx.fillRect(0, 0, W, H);
 
-        // Pha trộn nhẹ vân cỏ từ TILE_FOREST_GRASS với độ mờ thấp để giữ chất liệu pixel-art mà không bị lặp lưới
-        const grassImg = this.scene.textures.get(TILE_FOREST_GRASS).getSourceImage() as HTMLImageElement | HTMLCanvasElement;
-        if (grassImg && grassImg.width > 0) {
+        const resBellGrass = this.scene.textures.exists(TILE_RESURRECTED_GRASS)
+          ? (this.scene.textures.get(TILE_RESURRECTED_GRASS).getSourceImage() as HTMLImageElement | HTMLCanvasElement)
+          : null;
+        if (resBellGrass && resBellGrass.width >= 448) {
           ctx.save();
-          ctx.globalAlpha = 0.26;
+          ctx.globalAlpha = 0.65;
           for (let gy = 0; gy < H; gy += 32) {
             for (let gx = 0; gx < W; gx += 32) {
-              ctx.drawImage(grassImg, gx, gy, 32, 32);
+              const h = Math.abs(Math.floor(gx * 73856093 ^ gy * 19349663));
+              const col = 10 + (h % 4);
+              const row = (h >> 2) % 2;
+              ctx.drawImage(resBellGrass, col * 32, row * 32, 32, 32, gx, gy, 32, 32);
             }
           }
           ctx.restore();
+          ctx.fillStyle = 'rgba(24, 36, 22, 0.30)';
+          ctx.fillRect(0, 0, W, H);
+        } else {
+          // Fallback: Pha trộn nhẹ vân cỏ từ TILE_FOREST_GRASS
+          const grassImg = this.scene.textures.get(TILE_FOREST_GRASS).getSourceImage() as HTMLImageElement | HTMLCanvasElement;
+          if (grassImg && grassImg.width > 0) {
+            ctx.save();
+            ctx.globalAlpha = 0.26;
+            for (let gy = 0; gy < H; gy += 32) {
+              for (let gx = 0; gx < W; gx += 32) {
+                ctx.drawImage(grassImg, gx, gy, 32, 32);
+              }
+            }
+            ctx.restore();
+          }
         }
 
         // Tạo vùng cỏ trảng làng ấm hơn quanh khu dân cư (wx: 520..1260, wy: 50..500)
@@ -676,9 +745,26 @@ export class WorldBuilder {
         }
 
         // =========================================================================
-        // 2. HÀM VẼ ĐƯỜNG MÒN ĐẤT / SỎI HỮU CƠ (CÓ VIỀN CỎ ĐẠP & SỎI CHUYỂN TIẾP)
+        // 2. HÀM VẼ ĐƯỜNG MÒN ĐẤT / SỎI HỮU CƠ (RESURRECTED_RPG DIRT PATTERN + STEPPING STONES)
         // =========================================================================
-        const dirtPattern = this.createDirtTrailPattern(ctx, bounds.x, bounds.y);
+        let resBellDirtPattern: CanvasPattern | null = null;
+        const resBellDirtImg = this.scene.textures.exists(TILE_RESURRECTED_DIRT_PATH)
+          ? (this.scene.textures.get(TILE_RESURRECTED_DIRT_PATH).getSourceImage() as HTMLImageElement | HTMLCanvasElement)
+          : null;
+        if (resBellDirtImg && resBellDirtImg.width >= 64) {
+          const dirtCanvas = document.createElement('canvas');
+          dirtCanvas.width = 32;
+          dirtCanvas.height = 32;
+          const dCtx = dirtCanvas.getContext('2d');
+          if (dCtx) {
+            dCtx.imageSmoothingEnabled = false;
+            dCtx.drawImage(resBellDirtImg, 96, 96, 32, 32, 0, 0, 32, 32);
+            dCtx.fillStyle = 'rgba(42, 30, 20, 0.26)';
+            dCtx.fillRect(0, 0, 32, 32);
+            resBellDirtPattern = ctx.createPattern(dirtCanvas, 'repeat');
+          }
+        }
+        const dirtPattern = resBellDirtPattern || this.createDirtTrailPattern(ctx, bounds.x, bounds.y);
         const drawOrganicDirtPath = (
           points: Array<{ x: number; y: number; r: number }>,
           withSteppingStones = false,
@@ -768,18 +854,20 @@ export class WorldBuilder {
             }
           }
 
-          // Tùy chọn: Đá lát bước chân (Stepping Stones) điểm xuyết trên lối mòn
+          // Tùy chọn: Đá lát bước chân (Stepping Stones) điểm xuyết tự nhiên trên lối mòn
           if (withSteppingStones) {
-            for (let i = 8; i < samples.length - 8; i += 14) {
+            for (let i = 10; i < samples.length - 8; i += 16) {
               const sp = samples[i];
-              const oxStone = Math.round((nextRand() - 0.5) * 6);
-              const oyStone = Math.round((nextRand() - 0.5) * 5);
-              ctx.fillStyle = '#484e54';
-              ctx.fillRect(sp.lx + oxStone - 5, sp.ly + oyStone - 4, 10, 7);
-              ctx.fillStyle = '#687078';
-              ctx.fillRect(sp.lx + oxStone - 4, sp.ly + oyStone - 3, 8, 5);
-              ctx.fillStyle = '#3a5433';
-              ctx.fillRect(sp.lx + oxStone - 5, sp.ly + oyStone + 2, 3, 2);
+              const oxStone = Math.round((nextRand() - 0.5) * 8);
+              const oyStone = Math.round((nextRand() - 0.5) * 6);
+              ctx.fillStyle = '#3c4246';
+              ctx.fillRect(sp.lx + oxStone - 4, sp.ly + oyStone - 3, 8, 6);
+              ctx.fillStyle = '#535b61';
+              ctx.fillRect(sp.lx + oxStone - 3, sp.ly + oyStone - 2, 6, 4);
+              ctx.fillStyle = 'rgba(195, 210, 215, 0.14)';
+              ctx.fillRect(sp.lx + oxStone - 3, sp.ly + oyStone - 2, 5, 1);
+              ctx.fillStyle = '#334c2e';
+              ctx.fillRect(sp.lx + oxStone - 4, sp.ly + oyStone + 2, 3, 2);
             }
           }
         };
@@ -787,14 +875,14 @@ export class WorldBuilder {
         // =========================================================================
         // 3. MẠNG LƯỚI ĐƯỜNG MÒN KẾT NỐI TẤT CẢ CÁC KHU VỰC TRONG LÀNG BELLHOLLOW
         // =========================================================================
-        // 3.1. Đường Cổng Tây (nối liền mạch từ Fog Crossing tại x=480, y=232 qua vị trí Garth (490, 210) vào Ngã Ba Bảng Tin và Quảng Trường Trung Tâm)
+        // 3.1. Đường Cổng Tây (nối liền mạch từ Fog Crossing tại x=480, y=232 qua vị trí Garth vào Ngã Ba Bảng Tin và Quảng Trường Trung Tâm)
         drawOrganicDirtPath([
           { x: 480, y: 232, r: 22 },
-          { x: 520, y: 235, r: 24 },
-          { x: 610, y: 255, r: 23 },
-          { x: 660, y: 265, r: 24 },
-          { x: 740, y: 285, r: 25 }
-        ], true);
+          { x: 525, y: 238, r: 24 },
+          { x: 610, y: 256, r: 24 },
+          { x: 665, y: 270, r: 25 },
+          { x: 740, y: 278, r: 26 }
+        ], true, true);
 
         // 3.2. Nhánh đường dẫn lên Tháp Chuông Cổ Đại ở phía Bắc (x=900, y=130)
         drawOrganicDirtPath([
@@ -834,15 +922,15 @@ export class WorldBuilder {
           { x: 1330, y: 440, r: 20 }
         ], false);
 
-        // 3.6. Đường Rừng Phía Đông (từ Quảng Trường Trung Tâm x=935 uốn lượn qua Cổng Đông x=1490 tới ranh giới The Crooked Path x=1600, y=280)
+        // 3.6. Đường Rừng Phía Đông (từ Quảng Trường Trung Tâm x=935 uốn lượn mượt qua Cổng Đông x=1490 tới ranh giới The Crooked Path x=1600, y=280)
         drawOrganicDirtPath([
-          { x: 935, y: 300, r: 22 },
-          { x: 1060, y: 288, r: 21 },
-          { x: 1200, y: 275, r: 20 },
-          { x: 1340, y: 286, r: 20 },
+          { x: 935, y: 290, r: 23 },
+          { x: 1060, y: 284, r: 21 },
+          { x: 1200, y: 276, r: 20 },
+          { x: 1340, y: 284, r: 20 },
           { x: 1475, y: 278, r: 21 },
           { x: 1600, y: 282, r: 22 }
-        ], false);
+        ], false, true);
 
         // =========================================================================
         // 4. HÀM VẼ SÂN ĐÁ CUỘI CỔ (COBBLESTONE COURTYARD / PLAZA) CÓ VIỀN ĐÁ & RÊU PHONG
@@ -2675,14 +2763,24 @@ export class WorldBuilder {
       // C4-13-16: Dựng cụm cảnh quan chặn đầu đường phía Tây (x: 0..90)
       this.createWestBarrierLandscape();
 
-      // C4-14-B04: Điểm hút 30-60 giây đầu: Mẩu nhật ký rách, cành cây gãy & bia đá dẫn lối
+      // C4-14-B04: Điểm hút 30-60 giây đầu: Mẩu nhật ký rách, gốc mục & đá rêu dẫn lối (Resurrected_RPG)
       this.createTornJournalScrapProp(150, 195);
-      this.createFallenLog(220, 130, 42, 12);
+      this.placeResurrectedProp(222, 134, 'stump_moss_2', { scale: 1.0, colliderW: 20, colliderH: 10, label: 'Gốc Cây Mục', tint: 0xc2d0be });
+      this.placeResurrectedProp(198, 126, 'rock_moss_cluster_1', { scale: 0.72, colliderW: 22, colliderH: 10, label: 'Đá Phủ Rêu', tint: 0xbdc8ba });
+      this.placeResurrectedProp(346, 118, 'monolith_rune', { scale: 0.86, colliderW: 16, colliderH: 10, label: 'Bia Đá Cổ', tint: 0xbcc8c0 });
+      this.placeResurrectedProp(148, 276, 'rock_moss_cluster_2', { scale: 0.78, tint: 0xb5c2b4 });
+      this.placeResurrectedProp(414, 152, 'bush_moss_3', { scale: 0.75, tint: 0xb8c8b6 });
+      this.placeResurrectedProp(390, 278, 'bush_moss_2', { scale: 0.78, tint: 0xb5c4b2 });
       this.createDenseBush(210, 120);
 
-      // V15-61: Lối mòn xuyên sương y=190..250 tuyệt đối thông suốt, di dời cây sang rìa Bắc và rìa Nam
+      // V15-61 & HW-V16-C02: Lối mòn xuyên sương y=180..255 thông suốt, rìa Bắc-Nam tách Trunk/Canopy
       this.createTree(160, 65, 'Cây Khô Sương Mù', false);
       this.createTree(300, 310, 'Cây Khô Sương Mù', false);
+      this.placeResurrectedSplitTree(84, 72, 'moss_tall', 0.85, 0xc2d0be, false, false);
+      this.placeResurrectedSplitTree(258, 56, 'forest_broad', 0.82, 0xb8c6b6, false, false);
+      this.placeResurrectedSplitTree(386, 60, 'moss_slender', 0.86, 0xb4c2b2, false, false);
+      this.placeResurrectedSplitTree(130, 344, 'moss_medium', 0.88, 0xb0beb0, false, true);
+      this.placeResurrectedSplitTree(424, 342, 'moss_tall', 0.86, 0xacbcae, false, true);
       this.createStoneSign(240, 180, 'TẤM BIỂN MỤC');
     } else if (id === 'bellhollow') {
       // =========================================================================
@@ -2694,7 +2792,8 @@ export class WorldBuilder {
       this.createAnomalyNoticeBoard(650, 240);
       this.createSanctuaryCampHub();
       this.createVillageWell(730, 375);
-      this.createVillageLanternPost(780, 250);
+      // W20-BUG-002: Dời cột đèn từ giữa lòng đường (780, 250) lên mép Bắc quảng trường (772, 218)
+      this.createVillageLanternPost(772, 218);
 
       // 4. Tháp Chuông Cổ Đại (Bắc Quảng Trường: tâm x=900, chân tháp y=130, đỉnh vươn cao qua tán rừng)
       this.createBellTower(900, 130, 160, 240);
@@ -2769,17 +2868,13 @@ export class WorldBuilder {
     const barrierX = 48;
     const roadCenterY = 184;
 
-    // 1. Hai cây cổ thụ khô/già ở hai mấu rìa Bắc - Nam kẹp lấy lối mòn
-    this.createHollowTree(32, 135, 'Cây Khô Rìa Tây Bắc');
-    this.createHollowTree(28, 235, 'Cây Khô Rìa Tây Nam');
+    // 1. Hai cây cổ thụ phủ rêu rìa Tây Bắc - Tây Nam kẹp lấy lối mòn (split trunk/canopy)
+    this.placeResurrectedSplitTree(32, 136, 'moss_gnarled', 0.85, 0xaab8aa, false, false);
+    this.placeResurrectedSplitTree(30, 236, 'moss_broad', 0.84, 0xa6b4a6, false, true);
 
-    // 2. V15-61: Thân cây cổ thụ đổ chắn ngang đường dùng Sprite Pixel Art Thật (y: 138..232)
-    const trunkLog = this.safeAddImage(barrierX, roadCenterY, 'prop_fallen_log_mossy_v14', SPRITE_HOLLOW_TREE);
-    trunkLog.setOrigin(0.5, 0.5);
-    trunkLog.setScale(1.6, 1.2);
-    trunkLog.setAngle(90);
-    trunkLog.setDepth(roadCenterY + 15);
-    this.registerCullable(trunkLog, barrierX, roadCenterY, 70);
+    // 2. HW-V16-C02: Thay thế prop_fallen_log_mossy_v14 xoay ngang bằng gốc cây mục & cụm đá rêu thực tế
+    this.placeResurrectedProp(barrierX + 2, roadCenterY - 4, 'stump_moss_2', { scale: 1.05, tint: 0xaab8aa, depthOffset: 8 });
+    this.placeResurrectedProp(barrierX - 4, roadCenterY + 14, 'rock_moss_outcrop_1', { scale: 0.72, tint: 0x9ea89e, depthOffset: 10 });
 
     // 3. Hàng rào gỗ gãy nát (Broken Fence)
     const fenceGfx = this.scene.add.graphics();
@@ -3012,6 +3107,75 @@ export class WorldBuilder {
     image.setOrigin(0.5, 1).setScale(scale).setDepth(y);
     this.registerCullable(image, x, y, Math.max(image.displayWidth, image.displayHeight));
     return image;
+  }
+
+  /**
+   * HW-V16-C02: Đặt đạo cụ từ atlas Resurrected_RPG (neo chân 0.5, 1.0 + collider gọn tùy chọn)
+   */
+  private placeResurrectedProp(
+    x: number,
+    y: number,
+    frame: string,
+    opts?: { scale?: number; tint?: number; depthOffset?: number; colliderW?: number; colliderH?: number; label?: string }
+  ): Phaser.GameObjects.Image | null {
+    if (!this.scene.textures?.exists(ATLAS_RESURRECTED_PROPS)) return null;
+    const scale = opts?.scale ?? 1.0;
+    const img = this.scene.add.image(x, y, ATLAS_RESURRECTED_PROPS, frame);
+    img.setOrigin(0.5, 1.0);
+    img.setScale(scale);
+    if (opts?.tint) img.setTint(opts.tint);
+    img.setDepth(Math.round(y) + (opts?.depthOffset ?? 0));
+    this.registerCullable(img, x, y, Math.max(img.displayWidth, img.displayHeight, 48));
+    if (opts?.colliderW && opts?.colliderH) {
+      this.createStaticBoxColliderCentered(x, y - 4, opts.colliderW, opts.colliderH, opts.label || 'Chướng ngại vật');
+    }
+    return img;
+  }
+
+  /**
+   * HW-V16-C02: Phân tách tầng Trunk / Canopy theo kiến trúc LAB-01_RESURRECTED_FOREST
+   * Shadow (DEPTH_GROUND_TURF + 10) -> Trunk (depth y) -> Canopy (depth y + 0.5, trong treeCanopyGroup) -> Collider chỉ ở chân gốc.
+   */
+  private placeResurrectedSplitTree(
+    x: number,
+    y: number,
+    variant: 'moss_tall' | 'forest_tall' | 'moss_broad' | 'forest_broad' | 'moss_gnarled' | 'forest_gnarled' | 'moss_slender' | 'moss_medium',
+    scale: number = 0.85,
+    tint: number = 0xffffff,
+    withCollider: boolean = false,
+    isSouthBorder: boolean = false
+  ): void {
+    if (!this.scene.textures?.exists(ATLAS_RESURRECTED_PROPS)) {
+      this.createTree(x, y, 'Cây Cổ Thụ', withCollider);
+      return;
+    }
+
+    const trunkFrame = `tree_${variant}_trunk`;
+    const canopyFrame = `tree_${variant}_canopy`;
+    const shadowFrame = (variant.includes('broad') || variant.includes('gnarled') || variant.includes('tall'))
+      ? 'shadow_tree_large'
+      : 'shadow_tree_med';
+
+    const shadow = this.scene.add.image(x, y - 2, ATLAS_RESURRECTED_PROPS, shadowFrame);
+    shadow.setOrigin(0.5, 0.5).setScale(scale).setAlpha(0.52).setDepth(DEPTH_GROUND_TURF + 10);
+    this.registerCullable(shadow, x, y, 80);
+
+    const trunk = this.scene.add.image(x, y, ATLAS_RESURRECTED_PROPS, trunkFrame);
+    trunk.setOrigin(0.5, 1.0).setScale(scale).setDepth(Math.round(y));
+    if (tint !== 0xffffff) trunk.setTint(tint);
+    this.registerCullable(trunk, x, y, 70);
+
+    const trunkH = trunk.displayHeight || 40;
+    const canopy = this.scene.add.image(x, y - trunkH, ATLAS_RESURRECTED_PROPS, canopyFrame);
+    const canopyDepth = isSouthBorder ? Math.max(Math.round(y) + 0.5, 700) : Math.round(y) + 0.5;
+    canopy.setOrigin(0.5, 1.0).setScale(scale).setDepth(canopyDepth);
+    if (tint !== 0xffffff) canopy.setTint(tint);
+    this.registerCullable(canopy, x, y - trunkH, 120);
+    this.treeCanopyGroup.add(canopy);
+
+    if (withCollider) {
+      this.createStaticBoxColliderCentered(x, y - 4, 18, 10, 'Gốc Cây Cổ Thụ');
+    }
   }
 
   /**
@@ -4097,6 +4261,13 @@ export class WorldBuilder {
     for (const tr of northRimTrees) {
       placeVariantTree(tr.x, tr.y, tr.v, tr.s, tr.t, tr.c);
     }
+    // HW-V16-C02: Bổ sung rặng thông/sồi phân tầng LAB-01 ngoài mép Bắc-Đông để tạo chiều sâu rừng bao quanh làng
+    this.placeResurrectedSplitTree(660, 26, 'moss_tall', 0.85, 0xc2d2bc, false, false);
+    this.placeResurrectedSplitTree(738, 22, 'forest_broad', 0.82, 0xb8cab2, false, false);
+    this.placeResurrectedSplitTree(972, 24, 'moss_tall', 0.86, 0xbcd0b8, false, false);
+    this.placeResurrectedSplitTree(1018, 32, 'moss_slender', 0.82, 0xc0d2bc, false, false);
+    this.placeResurrectedSplitTree(1522, 174, 'moss_tall', 0.88, 0x9cb098, false, false);
+    this.placeResurrectedSplitTree(1548, 368, 'forest_gnarled', 0.84, 0x9ab094, false, false);
 
     // =========================================================================
     // 2. V15-61: DỌN SẠCH 100% CÂY BÊN TRONG KHU DÂN CƯ & QUẢNG TRƯỜNG LÀNG BELLHOLLOW
@@ -4152,6 +4323,11 @@ export class WorldBuilder {
     for (const bp of bushPlacements) {
       placeBush(bp.x, bp.y, bp.s, bp.t);
     }
+    // HW-V16-C02: Bụi rậm & đá rêu Resurrected_RPG ở rìa Cổng Đông & góc tường (không chắn lối đi)
+    this.placeResurrectedProp(1450, 214, 'rock_moss_cluster_1', { scale: 0.72, tint: 0xaabaa8 });
+    this.placeResurrectedProp(1456, 352, 'rock_moss_cluster_2', { scale: 0.72, tint: 0xaabaa8 });
+    this.placeResurrectedProp(772, 200, 'bush_moss_5', { scale: 0.82, tint: 0xbfd0ba });
+    this.placeResurrectedProp(966, 364, 'bush_moss_1', { scale: 0.78, tint: 0xbacaba });
 
     // 5. Cành cây khô, khúc gỗ mục phủ rêu & cụm hoa/cỏ ven rừng (1 đối tượng Graphics nhẹ duy nhất ở depth -90)
     const floorFlora = this.scene.add.graphics();
@@ -4260,23 +4436,23 @@ export class WorldBuilder {
       this.createGroundDecal(fn.x, fn.y, SPRITE_DECAL_FERN_CLUSTER_V15, fn.s, 0.92);
     }
 
-    // 5. Nấm phát sáng nhỏ ở góc ẩm thấp râm mát & cạnh giếng cổ (DEPTH_GROUND_DECALS)
+    // 5. HW-V16-C02: Dời nấm phát sáng ra thảm cỏ râm mát & gốc cây ven rìa (không mọc trên gạch lát quảng trường)
     const glowingMushrooms = [
-      { x: 612, y: 312, s: 0.9 },
-      { x: 816, y: 346, s: 0.85 },
+      { x: 504, y: 128, s: 0.9 },
+      { x: 598, y: 368, s: 0.85 },
       { x: 982, y: 86, s: 0.95 },
-      { x: 1042, y: 362, s: 0.9 },
+      { x: 1048, y: 462, s: 0.9 },
       { x: 1282, y: 86, s: 0.85 },
-      { x: 712, y: 326, s: 0.9 } // Ven giếng cổ
+      { x: 1396, y: 514, s: 0.9 }
     ];
     for (const gm of glowingMushrooms) {
-      this.createGroundDecal(gm.x, gm.y, SPRITE_DECAL_GLOWING_MUSHROOMS_V15, gm.s, 0.95);
+      this.createGroundDecal(gm.x, gm.y, SPRITE_DECAL_GLOWING_MUSHROOMS_V15, gm.s, 0.92);
     }
 
-    // 6. Vũng nước đầm lầy / nước đọng sương ven giếng và rãnh thoát nước phía đông (DEPTH_GROUND_WATER)
+    // 6. Vũng nước đầm lầy dời ra rãnh thoát nước bùn cỏ phía đông (tránh đặt giữa sân gạch đá)
     const puddles = [
-      { x: 688, y: 318, s: 0.85, a: 0.8 },
-      { x: 1475, y: 325, s: 0.95, a: 0.85 }
+      { x: 1310, y: 526, s: 0.85, a: 0.75 },
+      { x: 1475, y: 332, s: 0.92, a: 0.82 }
     ];
     for (const pd of puddles) {
       this.createGroundDecal(pd.x, pd.y, SPRITE_DECAL_SWAMP_PUDDLE_V15, pd.s, pd.a);
@@ -5293,10 +5469,10 @@ export class WorldBuilder {
     this.createHollowTree(1305, 885, 'Cây Rỗng Bãi Liễu');
 
     // 6. V15-14: Quần thể Cụm Rừng Tự Nhiên (Organic Clusters) & Viền Rừng Ngoại Vi
-    // Cụm 1: Cụm Thông Cổ Thụ Ven Làng (Bìa Bắc - Tây Bắc) (HW-FIX-21: đá đặt hướng Tây dx: -15 để giải phóng khúc cua S)
+    // Cụm 1: Cụm Thông Cổ Thụ Ven Làng (Bìa Bắc - Tây Bắc) (HW-V16-C01: dời cây phụ ra khỏi triggerRect to_bellhollow_from_ow)
     this.createOrganicTreeCluster(1145, 595, {
       primaryType: 'pine',
-      subTrees: [{ dx: 25, dy: -10, type: 'pine' }],
+      subTrees: [{ dx: -18, dy: 12, type: 'pine' }],
       bushes: [{ dx: -12, dy: 14 }],
       rocks: [{ dx: -15, dy: 15, w: 22, h: 14 }]
     });
@@ -5417,8 +5593,9 @@ export class WorldBuilder {
    */
   private createSanctuaryCampHub(): void {
     this.createCentralCampfire(860, 310);
-    this.createChestProp(775, 295);
-    this.createShelterTent(778, 261);
+    // W20-BUG-002: Dời Rương & Lều xuống cánh Nam Sanctuary (dưới lửa trại, cạnh giếng), giải phóng hoàn toàn trục đường chính
+    this.createChestProp(856, 376);
+    this.createShelterTent(798, 378);
     this.createHerbalCauldron(630, 445);
   }
 
@@ -5764,19 +5941,21 @@ export class WorldBuilder {
   }
 
   /**
-   * V15-61: Thân Cây Cổ Thụ Đổ (Fallen Log) dùng Sprite Pixel Art Thật (prop_fallen_log_mossy_v14)
+   * V15-61 & HW-V16-C01: Thân Cây Cổ Thụ Đổ (prop_fallen_log_mossy_v14)
+   * Giữ nguyên key sprite gốc (chưa có asset thân cây đổ ngang thay thế hợp lệ),
+   * nhưng neo chân gốc (0.5, 1.0) và đặt collider gọn tại gốc (18x10) thay vì lơ lửng giữa tán.
    */
   private createFallenLog(x: number, y: number, length: number = 50, angleDeg: number = 0): void {
     const log = this.safeAddImage(x, y, 'prop_fallen_log_mossy_v14', SPRITE_HOLLOW_TREE);
-    log.setOrigin(0.5, 0.5);
+    log.setOrigin(0.5, 1.0);
     log.setScale(length / 46, 1.0);
     if (angleDeg !== 0) {
       log.setAngle(angleDeg);
     }
-    log.setDepth(y + 4);
+    log.setDepth(y);
     this.registerCullable(log, x, y, Math.max(length, 40));
 
-    this.createStaticBoxColliderCentered(x, y, Math.round(length * 0.6), 10, 'Thân Cây Đổ');
+    this.createStaticBoxColliderCentered(x, y - 4, 18, 10, 'Thân Cây Đổ');
   }
 
   /**
@@ -5842,7 +6021,8 @@ export class WorldBuilder {
 
     // 1. Biển Báo & Cột Mốc Định Hướng (Signs & Landmark Totems)
     this.createStoneSign(1660, 320, 'LỐI MÒN QUANH CO');
-    this.createStoneSign(2100, 45, 'NGUY HIỂM: RỪNG SÂU');
+    // HW-V16-C01: Dời biển báo ra mép Đông cổng Rừng Sâu để không đè lên triggerRect to_deep_forest (2000..2160, 10..45)
+    this.createStoneSign(2185, 58, 'NGUY HIỂM: RỪNG SÂU');
     this.createStoneMarker(2760, 240); // Cột đá cổ Bắc ngưỡng cửa Đầm Lầy
     this.createStoneMarker(2760, 360); // Cột đá cổ Nam ngưỡng cửa Đầm Lầy
 
@@ -5946,8 +6126,9 @@ export class WorldBuilder {
       withColliders: false
     });
 
-    // V1.5 (BƯỚC V15-03 & V15-43): Mở rộng hành lang thông lên Rừng Sâu đạt 180px (1980..2160)
-    this.createStaticBoxCollider(bounds.x + 40, 90, 1980 - (bounds.x + 40), 30, 'Rặng Cây Viền Bắc Tây');
+    // V1.5 & HW-V16-C01: Mở rộng hành lang thông lên Rừng Sâu (1980..2160) và chừa lối Bắc sang sub_whispering_clearing (1796..1884)
+    this.createStaticBoxCollider(bounds.x + 40, 90, 1796 - (bounds.x + 40), 30, 'Rặng Cây Viền Bắc Tây');
+    this.createStaticBoxCollider(1884, 90, 1980 - 1884, 30, 'Rặng Cây Viền Bắc Giữa');
     this.createStaticBoxCollider(2160, 90, bounds.x + bounds.width - 40 - 2160, 30, 'Rặng Cây Viền Bắc Đông');
     this.createStaticBoxCollider(1660, 500, 2690 - 1660, 30, 'Rặng Cây Viền Nam');
     this.createStaticBoxCollider(2810, 500, bounds.x + bounds.width - 40 - 2810, 30, 'Rặng Cây Viền Nam Đông');
@@ -6495,10 +6676,10 @@ export class WorldBuilder {
     pillarR.setDepth(y + 2);
     this.createStaticBoxColliderCentered(x + 55, y, 22, 16, 'Trụ Cổ Ngữ Cổng Bắc Đ');
 
-    // 3. Khối va chạm chặn cổng khi Vực Sâu Bóng Tối chưa mở khóa
+    // 3. Khối va chạm chặn cổng khi Vực Sâu Bóng Tối chưa mở khóa (HW-V16-C01: đặt ngay trước mép trigger -624 để không chồng triggerRect)
     const playerState = PlayerState.getInstance();
     const isUnlocked = WorldGatingSystem.getInstance().isZoneUnlocked('abyssal_chasm', playerState);
-    this.abyssalGateColliderBody = this.createStaticBoxColliderCentered(x, y - 10, 72, 24, 'Phong Ấn Cổng Hư Không');
+    this.abyssalGateColliderBody = this.createStaticBoxColliderCentered(x, y + 6, 72, 16, 'Phong Ấn Cổng Hư Không');
     const gateBody = this.abyssalGateColliderBody.body as Phaser.Physics.Arcade.Body;
     if (gateBody) {
       gateBody.enable = !isUnlocked;
@@ -6577,21 +6758,21 @@ export class WorldBuilder {
   private createWhisperingClearingEntrance(x: number, y: number): void {
     const steleL = this.scene.add.graphics();
     steleL.fillStyle(0x2c3e50, 1);
-    steleL.fillRect(x - 38, y - 14, 10, 22);
+    steleL.fillRect(x - 45, y - 14, 10, 22);
     steleL.fillStyle(0x1abc9c, 0.7);
-    steleL.fillRect(x - 35, y - 8, 4, 10);
+    steleL.fillRect(x - 42, y - 8, 4, 10);
     steleL.setDepth(y + 8);
-    this.registerCullable(steleL, x - 33, y, 20);
-    this.createStaticBoxColliderCentered(x - 33, y, 12, 14, 'Cột Mốc Khoảng Trống Tây');
+    this.registerCullable(steleL, x - 40, y, 20);
+    this.createStaticBoxColliderCentered(x - 40, y, 12, 14, 'Cột Mốc Khoảng Trống Tây');
 
     const steleR = this.scene.add.graphics();
     steleR.fillStyle(0x2c3e50, 1);
-    steleR.fillRect(x + 28, y - 14, 10, 22);
+    steleR.fillRect(x + 35, y - 14, 10, 22);
     steleR.fillStyle(0x1abc9c, 0.7);
-    steleR.fillRect(x + 31, y - 8, 4, 10);
+    steleR.fillRect(x + 38, y - 8, 4, 10);
     steleR.setDepth(y + 8);
-    this.registerCullable(steleR, x + 33, y, 20);
-    this.createStaticBoxColliderCentered(x + 33, y, 12, 14, 'Cột Mốc Khoảng Trống Đông');
+    this.registerCullable(steleR, x + 40, y, 20);
+    this.createStaticBoxColliderCentered(x + 40, y, 12, 14, 'Cột Mốc Khoảng Trống Đông');
   }
 
   /**
@@ -6937,8 +7118,8 @@ export class WorldBuilder {
     // 3. Bia Đá Cổ Thư Đầm Lầy (Gợi ý thứ tự giải đố)
     this.createAncientRuneStele(3460, 290);
 
-    // 4. Bốn Đỉnh Đá Nghi Thức (Ancient Stone Braziers) tại 4 góc sân
-    this.createAncientBrazier(3368, 250); // Tây
+    // 4. Bốn Đỉnh Đá Nghi Thức (Ancient Stone Braziers) tại 4 góc sân (HW-V16-C01: dời đỉnh Tây ra khỏi lối cầu ván gỗ và to_rune_puzzle)
+    this.createAncientBrazier(3368, 200); // Tây Bắc (góc sân)
     this.createAncientBrazier(3660, 260); // Đông
     this.createAncientBrazier(3460, 370); // Tây Nam
     this.createAncientBrazier(3580, 370); // Đông Nam

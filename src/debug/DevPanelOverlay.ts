@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import { DeveloperModeManager } from './DeveloperModeManager';
 import type { InspectorLayer } from '../utils/HitboxDebugInspector';
 import itemData from '../data/items.json';
+import { focusGameCanvasSafely } from '../utils/focusHelper';
 
 type DevAction = (...args: unknown[]) => unknown;
 export type DevPanelMode = 'full' | 'compact' | 'pill';
@@ -412,7 +413,7 @@ export class DevPanelOverlay {
       this.timer = null;
     }
     if (restoreFocus) {
-      document.getElementById('game-canvas')?.focus();
+      focusGameCanvasSafely();
     }
   }
 
@@ -778,11 +779,14 @@ export class DevPanelOverlay {
         this.manager.clearLogs();
         this.update();
         break;
-      case 'copy-log':
-        void navigator.clipboard?.writeText(
-          this.manager.getLogs().map(e => `[${e.time}] ${e.level}: ${e.message}${e.count > 1 ? ` ×${e.count}` : ''}`).join('\n')
-        );
+      case 'copy-log': {
+        // SE-004: Không gọi navigator.clipboard (P2Game sandbox cấm clipboard-write)
+        const logText = this.manager.getLogs()
+          .map(e => `[${e.time}] ${e.level}: ${e.message}${e.count > 1 ? ` ×${e.count}` : ''}`)
+          .join('\n');
+        this.presentCopyTextarea('[data-log-summary]', 'Dev Logs', logText, target, 'Đã chọn log');
         break;
+      }
       case 'speed':
         this.manager.setSpeedMultiplier(Number(value) as 1 | 2 | 3);
         this.syncSpeeds();
@@ -887,7 +891,7 @@ export class DevPanelOverlay {
       event.preventDefault();
       this.manager.setEnabled(false);
       this.hide();
-      document.getElementById('game-canvas')?.focus();
+      focusGameCanvasSafely();
       return;
     }
     if (event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement || event.target instanceof HTMLTextAreaElement) {
@@ -900,7 +904,7 @@ export class DevPanelOverlay {
       event.preventDefault();
       this.manager.setEnabled(false);
       this.hide();
-      document.getElementById('game-canvas')?.focus();
+      focusGameCanvasSafely();
     }
   };
 
@@ -908,25 +912,29 @@ export class DevPanelOverlay {
   public getBugInfo?: () => string;
   public getProfilerInfo?: () => string;
 
+  private presentCopyTextarea(
+    selector: string,
+    ariaLabel: string,
+    text: string,
+    target: HTMLElement,
+    label: string
+  ): void {
+    const area = this.body.querySelector<HTMLTextAreaElement>(selector) ?? document.createElement('textarea');
+    if (selector === '[data-bug-summary]') area.dataset.bugSummary = '';
+    else area.dataset.logSummary = '';
+    area.readOnly = true;
+    area.setAttribute('aria-label', ariaLabel);
+    area.value = text;
+    this.body.prepend(area);
+    area.select();
+    target.textContent = label;
+  }
+
   private copyBugInfo(target: HTMLElement): void {
     const summary = this.getBugInfo?.();
     if (!summary) return;
-    const fallback = () => {
-      const area = this.body.querySelector<HTMLTextAreaElement>('[data-bug-summary]') ?? document.createElement('textarea');
-      area.dataset.bugSummary = '';
-      area.readOnly = true;
-      area.setAttribute('aria-label', 'Bug Info');
-      area.value = summary;
-      this.body.prepend(area);
-      area.select();
-    };
-    if (!navigator.clipboard?.writeText) {
-      fallback();
-      return;
-    }
-    void navigator.clipboard.writeText(summary).then(() => {
-      target.textContent = 'Đã sao chép';
-    }, fallback);
+    // SE-004: Không gọi navigator.clipboard để tuân thủ P2Game static scan (không khai báo clipboard-write)
+    this.presentCopyTextarea('[data-bug-summary]', 'Bug Info', summary, target, 'Đã chọn thông tin');
   }
 
   private refreshItems(query = ''): void {

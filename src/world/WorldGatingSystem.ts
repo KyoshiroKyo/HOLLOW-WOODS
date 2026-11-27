@@ -238,7 +238,21 @@ export class WorldGatingSystem {
 
     const storyQuestId = playerState.getStoryQuestId();
 
-    // 2. Khu vực Rừng Sâu Deep Forest: Chỉ mở khi Cổng Đông đã mở VÀ tiến trình đạt từ Q04 trở đi (hoặc có flag deep_forest_unlocked)
+    // 2. Khu vực Khoảng Trống Thì Thầm & Rừng Sâu: Mở thông qua Cổng Đông (hoặc khi đã đạt Q03 trở đi)
+    if (zoneId === 'sub_whispering_clearing') {
+      const eastGateOpen = this.isZoneUnlocked('crooked_path', playerState);
+      if (!eastGateOpen) return false;
+
+      return (
+        playerState.hasFlag('whispering_clearing_unlocked') ||
+        storyQuestId === 'Q03_PREPARE_RESOURCES' ||
+        storyQuestId === 'Q04_ANCIENT_RUNES' ||
+        storyQuestId === 'Q05_SOLVE_MIRE' ||
+        storyQuestId === 'Q06_RETRIEVE_CLAPPER'
+      );
+    }
+
+    // 3. Khu vực Rừng Sâu Deep Forest: Chỉ mở khi Cổng Đông đã mở VÀ tiến trình đạt từ Q04 trở đi (hoặc có flag deep_forest_unlocked)
     if (zoneId === 'deep_forest') {
       const eastGateOpen = this.isZoneUnlocked('crooked_path', playerState);
       if (!eastGateOpen) return false;
@@ -270,14 +284,11 @@ export class WorldGatingSystem {
     }
 
     // Tầng 3 (Forbidden): Miếu Chuông Phế Tích (The Broken Bell Shrine)
+    // Chỉ mở sau khi dùng Chìa Khóa Thanh Tẩy phá Phong Ấn Rễ Cổ (hoặc bản lưu cũ đã thu hồi clapper)
     if (zoneId === 'broken_bell_shrine') {
       return (
         playerState.hasFlag('mire_root_seal_broken') ||
         playerState.hasFlag('shrine_bridge_lowered') ||
-        playerState.hasFlag('mire_puzzle_solved') ||
-        playerState.hasFlag('mire_pillars_solved') ||
-        playerState.hasFlag('mire_drained') ||
-        storyQuestId === 'Q06_RETRIEVE_CLAPPER' ||
         playerState.hasFlag('clapper_collected')
       );
     }

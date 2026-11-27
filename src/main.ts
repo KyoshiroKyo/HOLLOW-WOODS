@@ -3,6 +3,7 @@ import { GameConfig } from './config/GameConfig';
 import { ScaleManager } from './utils/ScaleManager';
 import { SaveManager } from './systems/SaveManager';
 import { SCENE_MAIN_MENU } from './config/Constants';
+import { focusGameCanvasSafely } from './utils/focusHelper';
 
 async function withDeadline<T>(pending: Promise<T>, delayMs: number, failure: string): Promise<T> {
   let timer: number | undefined;
@@ -85,7 +86,7 @@ async function startGame(): Promise<void> {
 
   const game = new Phaser.Game({
     ...GameConfig,
-    autoFocus: true,
+    autoFocus: false,
     type: canUseWebGL ? Phaser.WEBGL : Phaser.CANVAS,
     ...(existingCanvas ? { canvas: existingCanvas } : {})
   });
@@ -99,13 +100,7 @@ async function startGame(): Promise<void> {
   game.events.on(Phaser.Core.Events.POST_RENDER, onMenuRendered);
 
   const focusGameCanvas = () => {
-    try {
-      window.focus();
-      const cv = game.canvas || existingCanvas;
-      if (cv && typeof cv.focus === 'function') {
-        cv.focus();
-      }
-    } catch {}
+    focusGameCanvasSafely(game.canvas || existingCanvas);
   };
 
   // Gắn tham chiếu game vào window phục vụ kiểm thử QA & Automation

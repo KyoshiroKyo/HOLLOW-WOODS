@@ -72,6 +72,7 @@ export interface IdentityStatusSnapshot {
   memoryStage: number;
   hasEvidence: boolean;
   identityRevealed: boolean;
+  matchedEvidenceRuleIds: string[];
   npcRecognition: NpcRecognitionLevel;
   loreUnlockedIds: string[];
   questCompleted: QuestCompletionSnapshot;
@@ -79,11 +80,33 @@ export interface IdentityStatusSnapshot {
 }
 
 /**
- * Sổ quy tắc chứng cứ đã được Owner phê duyệt chính thức.
- * Hiện để trống (fail-closed) theo HW-V16-A06 §6 cho tới khi Owner phê duyệt phương án
- * trong HW_V16_A06_EVIDENCE_DECISION_MATRIX.md — tuyệt đối không tự kích hoạt điều kiện chưa duyệt.
+ * Sổ quy tắc chứng cứ đã được Owner phê duyệt chính thức (HW-V16-A06-R1 — Option 1, 2026-11-27):
+ *   - MAIN_PATH_Q05 : Tuyến chính Q05 không ép SQ08
+ *   - SIDE_PATH_SQ08: Tuyến phụ SQ08 song song với Sir Mordric & Sir Vaelen
  */
-export const APPROVED_IDENTITY_EVIDENCE_RULES: ReadonlyArray<ApprovedEvidenceRule> = [];
+export const APPROVED_IDENTITY_EVIDENCE_RULES: ReadonlyArray<ApprovedEvidenceRule> = [
+  {
+    id: 'MAIN_PATH_Q05',
+    label: 'Tuyến chính Q05: Xác nhận Quân Huy Hắc Lang + Rèn Chìa / Phá Phong Ấn + Văn Bia Kỵ Sĩ',
+    route: 'main',
+    evaluate: (state: IdentityStateView): boolean =>
+      hasAnyFlag(state, 'vaelen_mold_quest_assigned') &&
+      (hasAnyFlag(state, 'purification_key_crafted') || hasAnyFlag(state, 'mire_root_seal_broken')) &&
+      (
+        hasAnyFlag(state, 'inspected_knights_memorial_stele') ||
+        hasAnyFlag(state, 'collected_note_inspect_knights_memorial_stele') ||
+        hasAnyFlag(state, 'collected_note_read_black_knight_stele')
+      )
+  },
+  {
+    id: 'SIDE_PATH_SQ08',
+    label: 'Tuyến phụ SQ08: Hạ gục Sir Mordric & Hoàn tất kiểm chứng cùng Sir Vaelen',
+    route: 'side',
+    evaluate: (state: IdentityStateView): boolean =>
+      hasAnyFlag(state, 'campfire_knight_q3_completed') &&
+      hasAnyFlag(state, 'boss_hooded_knight_defeated')
+  }
+];
 
 const IDENTITY_SENSITIVE_LORE_IDS = new Set<string>([
   'lore_memory_chapter_4',
@@ -119,20 +142,31 @@ function clampMemoryStage(stage: number): number {
 /**
  * Kiểm tra người chơi có thỏa ít nhất một quy tắc chứng cứ nhận diện đã được Owner phê duyệt hay không.
  */
+export function getMatchedEvidenceRuleIds(
+  state: IdentityStateView,
+  approvedRules: ReadonlyArray<ApprovedEvidenceRule> = APPROVED_IDENTITY_EVIDENCE_RULES
+): string[] {
+  if (!approvedRules || approvedRules.length === 0) {
+    return [];
+  }
+  const matched: string[] = [];
+  for (const rule of approvedRules) {
+    try {
+      if (rule.evaluate(state)) {
+        matched.push(rule.id);
+      }
+    } catch {
+      // Bỏ qua lỗi cục bộ trên rule đơn lẻ để giữ an toàn fail-closed
+    }
+  }
+  return matched;
+}
+
 export function hasIdentityEvidence(
   state: IdentityStateView,
   approvedRules: ReadonlyArray<ApprovedEvidenceRule> = APPROVED_IDENTITY_EVIDENCE_RULES
 ): boolean {
-  if (!approvedRules || approvedRules.length === 0) {
-    return false;
-  }
-  return approvedRules.some((rule) => {
-    try {
-      return rule.evaluate(state);
-    } catch {
-      return false;
-    }
-  });
+  return getMatchedEvidenceRuleIds(state, approvedRules).length > 0;
 }
 
 /**
@@ -225,12 +259,14 @@ export function getIdentityStatusSnapshot(
   approvedRules: ReadonlyArray<ApprovedEvidenceRule> = APPROVED_IDENTITY_EVIDENCE_RULES
 ): IdentityStatusSnapshot {
   const memoryStage = clampMemoryStage(state.memoryAwakeningStage);
-  const hasEvidence = hasIdentityEvidence(state, approvedRules);
+  const matchedEvidenceRuleIds = getMatchedEvidenceRuleIds(state, approvedRules);
+  const hasEvidence = matchedEvidenceRuleIds.length > 0;
   const identityRevealed = memoryStage >= 3 && hasEvidence;
   return {
     memoryStage,
     hasEvidence,
     identityRevealed,
+    matchedEvidenceRuleIds,
     npcRecognition: getNpcRecognitionLevel(state, approvedRules),
     loreUnlockedIds: (state.unlockedLore || []).map((l) => l.id),
     questCompleted: getQuestCompletionSnapshot(state),

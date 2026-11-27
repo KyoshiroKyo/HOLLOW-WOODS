@@ -692,7 +692,7 @@ export class ZoneConnectionRegistry {
         barrierType: 'rune_ward',
         gatingCondition: 'mire_puzzle_solved',
         displayLabel: 'Bước qua Rào Ấn tiến vào Miếu Chuông Phế Tích',
-        triggerRect: { x: 3980, y: 240, width: 20, height: 160 },
+        triggerRect: { x: 3980, y: 240, width: 20, height: 120 },
         entryPoint: { x: 4050, y: 280, direction: 'right' },
         returnPoint: { x: 3940, y: 320, direction: 'left' },
         description: 'Cánh cổng cổ sừng sững mở ra sau khi kích hoạt thành công chuỗi 3 cột đá cổ ngữ.'

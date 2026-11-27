@@ -20,7 +20,7 @@ const pkg = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'package.json'), 'utf
 const rootManifest = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'p2game.json'), 'utf8'));
 const pubManifest = JSON.parse(fs.readFileSync(path.join(PUBLIC_DIR, 'p2game.json'), 'utf8'));
 
-check(pkg.version === '1.5.2', 'package.json baseline version is 1.5.2', `got ${pkg.version}`);
+check(pkg.version === '1.6.0', 'package.json baseline version is 1.6.0', `got ${pkg.version}`);
 check(rootManifest.version === pkg.version, 'root p2game.json version matches package.json', `${rootManifest.version} vs ${pkg.version}`);
 check(pubManifest.version === pkg.version, 'public/p2game.json version matches package.json', `${pubManifest.version} vs ${pkg.version}`);
 check(rootManifest.schemaVersion === 1 && rootManifest.id === 'hollow-woods', 'p2game.json identity metadata valid');

@@ -159,6 +159,11 @@ export const TILE_SWAMP_MUD = 'tile_swamp_mud';
 export const TILE_COBBLE_ROAD = 'tile_cobble_road';
 export const TILE_STONE_FLOOR = 'tile_stone_floor';
 
+// HW-V16-C02: Curated Resurrected_RPG remastered environment textures (Fog Crossing & Bellhollow)
+export const ATLAS_RESURRECTED_PROPS = 'resurrected_props_atlas';
+export const TILE_RESURRECTED_GRASS = 'resurrected_grass';
+export const TILE_RESURRECTED_DIRT_PATH = 'resurrected_dirt_path';
+
 // Khóa Texture NPC & Chân Dung (NPC Sprite & Portrait Keys - PASS T09 / C4-12-08 / C4-13-21)
 export const SPRITE_NPC_GARTH = 'npc_garth';
 export const PORTRAIT_GARTH = 'portrait_garth';

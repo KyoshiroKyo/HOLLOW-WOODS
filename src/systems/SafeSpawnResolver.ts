@@ -33,8 +33,8 @@ export class SafeSpawnResolver {
   public static readonly WORLD_BOUNDS = {
     minX: 20,
     maxX: 4980,
-    minY: -230,
-    maxY: 1380
+    minY: -1300,
+    maxY: 2100
   };
 
   /**
@@ -190,7 +190,7 @@ export class SafeSpawnResolver {
         return { x: 2080, y: -80 };
       case 'whispering_grove_sanctum':
         // Thánh Điạ Rừng Thì Thầm Cổ Thụ
-        return { x: 1600, y: -580 };
+        return { x: 960, y: -580 };
       case 'abyssal_chasm':
         // Vực Sâu Thăm Thẳm (mặt cầu đá vững chãi trước miệng vực)
         return { x: 2240, y: -720 };

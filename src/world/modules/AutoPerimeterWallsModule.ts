@@ -97,17 +97,17 @@ export class AutoPerimeterWallsModule {
       return [];
     }
 
-    // V15-43 & V15-49: Các phân khu rừng mở và quảng trường liên kết liền mạch:
-    // deep_forest, sub_whispering_clearing, crooked_path, bellhollow
-    // Tuyệt đối không sinh tường chu vi tự động để tránh cắt ngang lối đi sang Miếu Chuông,
-    // không chia đôi bản đồ tại ranh giới Y ~ 0 và không dựng tường dọc chắn lối đi X = 2080.
-    // Làng Bellhollow đã có hàng rào gỗ hand-crafted hoàn chỉnh, không dựng tường chu vi tự động
-    // để giữ thông thoáng lối ra Outer Woods và Trạm Lửa của Sir Vaelen (x: 1435, y: 705).
+    // V15-43 & V15-49 & HW-V16-C01: Bỏ qua các phân khu đã có hàng rào/biên định nghĩa thủ công 4 phía trong zones.json
+    // hoặc là phân khu rừng mở liên kết liền mạch để tránh tường tự động chồng 2–3 lớp và tràn qua trigger chuyển vùng.
     if (
       zoneId === 'deep_forest' ||
       zoneId === 'sub_whispering_clearing' ||
       zoneId === 'crooked_path' ||
-      zoneId === 'bellhollow'
+      zoneId === 'bellhollow' ||
+      zoneId === 'fog_crossing' ||
+      zoneId === 'silent_mire' ||
+      zoneId === 'broken_bell_shrine' ||
+      zoneId === 'whispering_grove_sanctum'
     ) {
       if (TILED_PIPELINE_CONFIG.debugDrawModuleLogs) {
         console.log(`[TiledPipeline:PerimeterWalls] Skipped for zone '${zoneId}' (Open Forest & Seamless Transition)`);

@@ -1,0 +1,3383 @@
+{
+  "phase": "AFTER",
+  "lockedSummary": {
+    "totalColliders": 310,
+    "activeColliders": 308,
+    "colliderTransitionOverlapsCount": 0,
+    "colliderTransitionOverlaps": [],
+    "oobTransitionsCount": 0,
+    "oobTransitions": [],
+    "spawnColliderOverlapsCount": 0,
+    "spawnColliderOverlaps": [],
+    "oneWayTransitionsCount": 0,
+    "oneWayTransitions": []
+  },
+  "unlockedOverlapsCount": 0,
+  "fogCrossingColliders": [
+    {
+      "index": 0,
+      "name": "bound_top",
+      "active": true,
+      "x": 0,
+      "y": 0,
+      "width": 480,
+      "height": 40
+    },
+    {
+      "index": 1,
+      "name": "bound_bottom",
+      "active": true,
+      "x": 0,
+      "y": 320,
+      "width": 480,
+      "height": 40
+    },
+    {
+      "index": 2,
+      "name": "bound_left",
+      "active": true,
+      "x": 0,
+      "y": 0,
+      "width": 32,
+      "height": 360
+    },
+    {
+      "index": 3,
+      "name": "fog_bound_right_top",
+      "active": true,
+      "x": 448,
+      "y": 0,
+      "width": 32,
+      "height": 100
+    },
+    {
+      "index": 4,
+      "name": "fog_bound_right_bottom",
+      "active": true,
+      "x": 448,
+      "y": 320,
+      "width": 32,
+      "height": 40
+    },
+    {
+      "index": 5,
+      "name": "fog_west_barrier",
+      "active": true,
+      "x": 36,
+      "y": 120,
+      "width": 28,
+      "height": 130
+    },
+    {
+      "index": 6,
+      "name": "fence_top",
+      "active": true,
+      "x": 480,
+      "y": 6,
+      "width": 1120,
+      "height": 32
+    },
+    {
+      "index": 10,
+      "name": "bell_bound_west_top",
+      "active": true,
+      "x": 450,
+      "y": 6,
+      "width": 32,
+      "height": 194
+    },
+    {
+      "index": 11,
+      "name": "bell_bound_west_bottom",
+      "active": true,
+      "x": 450,
+      "y": 320,
+      "width": 32,
+      "height": 248
+    },
+    {
+      "index": 111,
+      "name": "Cây Rỗng",
+      "active": true,
+      "x": 22,
+      "y": 126,
+      "width": 20,
+      "height": 10
+    },
+    {
+      "index": 112,
+      "name": "Cây Rỗng",
+      "active": true,
+      "x": 18,
+      "y": 226,
+      "width": 20,
+      "height": 10
+    },
+    {
+      "index": 113,
+      "name": "Tảng Đá",
+      "active": true,
+      "x": 24,
+      "y": 163,
+      "width": 26,
+      "height": 10
+    },
+    {
+      "index": 114,
+      "name": "Thân Cây Đổ",
+      "active": true,
+      "x": 211,
+      "y": 121,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 115,
+      "name": "Biển Chỉ Dẫn",
+      "active": true,
+      "x": 233,
+      "y": 173,
+      "width": 14,
+      "height": 10
+    },
+    {
+      "index": 118,
+      "name": "Cột Đèn Lồng",
+      "active": true,
+      "x": 509,
+      "y": 178,
+      "width": 10,
+      "height": 8
+    },
+    {
+      "index": 138,
+      "name": "Hàng Rào Cổng Tây",
+      "active": true,
+      "x": 510,
+      "y": 280,
+      "width": 92,
+      "height": 12
+    }
+  ],
+  "probes": [
+    {
+      "name": "abyssal_gate_locked",
+      "start": {
+        "zone": "deep_forest",
+        "x": 2240,
+        "y": -570,
+        "footX": 2240,
+        "footY": -570,
+        "noclip": false
+      },
+      "end": {
+        "zone": "deep_forest",
+        "x": 2240,
+        "y": -588,
+        "footX": 2240,
+        "footY": -588,
+        "noclip": false
+      },
+      "keys": [
+        "KeyW"
+      ],
+      "duration": 1.0,
+      "expectedZone": "deep_forest",
+      "passed": true
+    },
+    {
+      "name": "fog_to_bellhollow",
+      "start": {
+        "zone": "fog_crossing",
+        "x": 420,
+        "y": 290,
+        "footX": 420,
+        "footY": 290,
+        "noclip": false
+      },
+      "end": {
+        "zone": "bellhollow",
+        "x": 512.3,
+        "y": 280.2,
+        "footX": 512.3,
+        "footY": 280.2,
+        "noclip": false
+      },
+      "keys": [
+        "KeyD"
+      ],
+      "duration": 1.4,
+      "expectedZone": "bellhollow",
+      "passed": true
+    },
+    {
+      "name": "bellhollow_to_fog",
+      "start": {
+        "zone": "bellhollow",
+        "x": 520,
+        "y": 290,
+        "footX": 520,
+        "footY": 290,
+        "noclip": false
+      },
+      "end": {
+        "zone": "fog_crossing",
+        "x": 424.4,
+        "y": 290,
+        "footX": 424.4,
+        "footY": 290,
+        "noclip": false
+      },
+      "keys": [
+        "KeyA"
+      ],
+      "duration": 1.4,
+      "expectedZone": "fog_crossing",
+      "passed": true
+    },
+    {
+      "name": "deep_forest_to_abyssal_unlocked",
+      "start": {
+        "zone": "deep_forest",
+        "x": 2240,
+        "y": -570,
+        "footX": 2240,
+        "footY": -570,
+        "noclip": false
+      },
+      "end": {
+        "zone": "abyssal_chasm",
+        "x": 2240,
+        "y": -700,
+        "footX": 2240,
+        "footY": -700,
+        "noclip": false
+      },
+      "keys": [
+        "KeyW"
+      ],
+      "duration": 1.4,
+      "expectedZone": "abyssal_chasm",
+      "passed": true
+    },
+    {
+      "name": "mire_to_rune_puzzle",
+      "start": {
+        "zone": "ancient_rune_puzzle",
+        "x": 3340,
+        "y": 260,
+        "footX": 3340,
+        "footY": 260,
+        "noclip": false
+      },
+      "end": {
+        "zone": "ancient_rune_puzzle",
+        "x": 3340,
+        "y": 260,
+        "footX": 3340,
+        "footY": 260,
+        "noclip": false
+      },
+      "keys": [
+        "KeyD"
+      ],
+      "duration": 1.0,
+      "expectedZone": "ancient_rune_puzzle",
+      "passed": true
+    },
+    {
+      "name": "mire_to_shrine",
+      "start": {
+        "zone": "silent_mire",
+        "x": 3940,
+        "y": 320,
+        "footX": 3940,
+        "footY": 320,
+        "noclip": false
+      },
+      "end": {
+        "zone": "broken_bell_shrine",
+        "x": 4017.9,
+        "y": 320,
+        "footX": 4017.9,
+        "footY": 320,
+        "noclip": false
+      },
+      "keys": [
+        "KeyD"
+      ],
+      "duration": 1.2,
+      "expectedZone": "broken_bell_shrine",
+      "passed": true
+    },
+    {
+      "name": "shrine_to_mire",
+      "start": {
+        "zone": "broken_bell_shrine",
+        "x": 4050,
+        "y": 280,
+        "footX": 4050,
+        "footY": 280,
+        "noclip": false
+      },
+      "end": {
+        "zone": "silent_mire",
+        "x": 3953.7,
+        "y": 280,
+        "footX": 3953.7,
+        "footY": 280,
+        "noclip": false
+      },
+      "keys": [
+        "KeyA"
+      ],
+      "duration": 1.2,
+      "expectedZone": "silent_mire",
+      "passed": true
+    },
+    {
+      "name": "wc_to_sanctum",
+      "start": {
+        "zone": "sub_whispering_clearing",
+        "x": 1840,
+        "y": -310,
+        "footX": 1840,
+        "footY": -310,
+        "noclip": false
+      },
+      "end": {
+        "zone": "whispering_grove_sanctum",
+        "x": 960,
+        "y": -420,
+        "footX": 960,
+        "footY": -420,
+        "noclip": false
+      },
+      "keys": [
+        "KeyW"
+      ],
+      "duration": 1.4,
+      "expectedZone": "whispering_grove_sanctum",
+      "passed": true
+    },
+    {
+      "name": "sanctum_to_wc",
+      "start": {
+        "zone": "whispering_grove_sanctum",
+        "x": 960,
+        "y": -420,
+        "footX": 960,
+        "footY": -420,
+        "noclip": false
+      },
+      "end": {
+        "zone": "sub_whispering_clearing",
+        "x": 1840,
+        "y": -310,
+        "footX": 1840,
+        "footY": -310,
+        "noclip": false
+      },
+      "keys": [
+        "KeyS"
+      ],
+      "duration": 1.2,
+      "expectedZone": "sub_whispering_clearing",
+      "passed": true
+    },
+    {
+      "name": "cp_to_wc",
+      "start": {
+        "zone": "crooked_path",
+        "x": 1840,
+        "y": 140,
+        "footX": 1840,
+        "footY": 140,
+        "noclip": false
+      },
+      "end": {
+        "zone": "sub_whispering_clearing",
+        "x": 1840,
+        "y": -34.3,
+        "footX": 1840,
+        "footY": -34.3,
+        "noclip": false
+      },
+      "keys": [
+        "KeyW"
+      ],
+      "duration": 2.0,
+      "expectedZone": "sub_whispering_clearing",
+      "passed": true
+    },
+    {
+      "name": "wc_to_cp",
+      "start": {
+        "zone": "sub_whispering_clearing",
+        "x": 1791.7,
+        "y": -33.6,
+        "footX": 1791.7,
+        "footY": -33.6,
+        "noclip": false
+      },
+      "end": {
+        "zone": "crooked_path",
+        "x": 1768.6,
+        "y": 83.1,
+        "footX": 1768.6,
+        "footY": 83.1,
+        "noclip": false
+      },
+      "keys": [
+        "KeyS"
+      ],
+      "duration": 1.5,
+      "expectedZone": "crooked_path",
+      "passed": true
+    },
+    {
+      "name": "cp_to_outer_woods",
+      "start": {
+        "zone": "crooked_path",
+        "x": 1660,
+        "y": 480,
+        "footX": 1660,
+        "footY": 480,
+        "noclip": false
+      },
+      "end": {
+        "zone": "outer_woods",
+        "x": 1540,
+        "y": 780,
+        "footX": 1540,
+        "footY": 780,
+        "noclip": false
+      },
+      "keys": [
+        "KeyA"
+      ],
+      "duration": 1.2,
+      "expectedZone": "outer_woods",
+      "passed": true
+    },
+    {
+      "name": "cp_to_deep_forest",
+      "start": {
+        "zone": "crooked_path",
+        "x": 2100,
+        "y": 75,
+        "footX": 2100,
+        "footY": 75,
+        "noclip": false
+      },
+      "end": {
+        "zone": "deep_forest",
+        "x": 2100,
+        "y": -15.7,
+        "footX": 2100,
+        "footY": -15.7,
+        "noclip": false
+      },
+      "keys": [
+        "KeyW"
+      ],
+      "duration": 1.2,
+      "expectedZone": "deep_forest",
+      "passed": true
+    },
+    {
+      "name": "ow_to_bellhollow",
+      "start": {
+        "zone": "outer_woods",
+        "x": 1170,
+        "y": 610,
+        "footX": 1170,
+        "footY": 610,
+        "noclip": false
+      },
+      "end": {
+        "zone": "bellhollow",
+        "x": 1170,
+        "y": 523.6,
+        "footX": 1170,
+        "footY": 523.6,
+        "noclip": false
+      },
+      "keys": [
+        "KeyW"
+      ],
+      "duration": 1.2,
+      "expectedZone": "bellhollow",
+      "passed": true
+    },
+    {
+      "name": "sanctuary_farm_648_741",
+      "start": {
+        "zone": "sanctuary_farm",
+        "x": 648,
+        "y": 741,
+        "footX": 648,
+        "footY": 741,
+        "noclip": false
+      },
+      "end": {
+        "zone": "sanctuary_farm",
+        "x": 689.1,
+        "y": 741,
+        "footX": 689.1,
+        "footY": 741,
+        "noclip": false
+      },
+      "keys": [
+        "KeyD"
+      ],
+      "duration": 0.6,
+      "expectedZone": "sanctuary_farm",
+      "passed": true
+    },
+    {
+      "name": "mire_to_drowned",
+      "start": {
+        "zone": "silent_mire",
+        "x": 3380,
+        "y": 680,
+        "footX": 3380,
+        "footY": 680,
+        "noclip": false
+      },
+      "end": {
+        "zone": "drowned_mire_depths",
+        "x": 3380,
+        "y": 780,
+        "footX": 3380,
+        "footY": 780,
+        "noclip": false
+      },
+      "keys": [
+        "KeyS"
+      ],
+      "duration": 1.0,
+      "expectedZone": "drowned_mire_depths",
+      "passed": true
+    },
+    {
+      "name": "cellar_to_veil",
+      "start": {
+        "zone": "sub_root_cellar",
+        "x": 800,
+        "y": 1390,
+        "footX": 800,
+        "footY": 1390,
+        "noclip": false
+      },
+      "end": {
+        "zone": "veil_origin_cavern",
+        "x": 800,
+        "y": 1500,
+        "footX": 800,
+        "footY": 1500,
+        "noclip": false
+      },
+      "keys": [
+        "KeyS"
+      ],
+      "duration": 1.0,
+      "expectedZone": "veil_origin_cavern",
+      "passed": true
+    }
+  ],
+  "consoleErrors": [],
+  "pageErrors": [],
+  "allColliders": [
+    {
+      "index": 0,
+      "name": "bound_top",
+      "active": true,
+      "x": 0,
+      "y": 0,
+      "width": 480,
+      "height": 40
+    },
+    {
+      "index": 1,
+      "name": "bound_bottom",
+      "active": true,
+      "x": 0,
+      "y": 320,
+      "width": 480,
+      "height": 40
+    },
+    {
+      "index": 2,
+      "name": "bound_left",
+      "active": true,
+      "x": 0,
+      "y": 0,
+      "width": 32,
+      "height": 360
+    },
+    {
+      "index": 3,
+      "name": "fog_bound_right_top",
+      "active": true,
+      "x": 448,
+      "y": 0,
+      "width": 32,
+      "height": 100
+    },
+    {
+      "index": 4,
+      "name": "fog_bound_right_bottom",
+      "active": true,
+      "x": 448,
+      "y": 320,
+      "width": 32,
+      "height": 40
+    },
+    {
+      "index": 5,
+      "name": "fog_west_barrier",
+      "active": true,
+      "x": 36,
+      "y": 120,
+      "width": 28,
+      "height": 130
+    },
+    {
+      "index": 6,
+      "name": "fence_top",
+      "active": true,
+      "x": 480,
+      "y": 6,
+      "width": 1120,
+      "height": 32
+    },
+    {
+      "index": 7,
+      "name": "fence_bottom_west",
+      "active": true,
+      "x": 480,
+      "y": 536,
+      "width": 130,
+      "height": 32
+    },
+    {
+      "index": 8,
+      "name": "fence_bottom_mid",
+      "active": true,
+      "x": 710,
+      "y": 536,
+      "width": 440,
+      "height": 32
+    },
+    {
+      "index": 9,
+      "name": "fence_bottom_east",
+      "active": true,
+      "x": 1270,
+      "y": 536,
+      "width": 330,
+      "height": 32
+    },
+    {
+      "index": 10,
+      "name": "bell_bound_west_top",
+      "active": true,
+      "x": 450,
+      "y": 6,
+      "width": 32,
+      "height": 194
+    },
+    {
+      "index": 11,
+      "name": "bell_bound_west_bottom",
+      "active": true,
+      "x": 450,
+      "y": 320,
+      "width": 32,
+      "height": 248
+    },
+    {
+      "index": 12,
+      "name": "bell_bound_east_top",
+      "active": true,
+      "x": 1568,
+      "y": 6,
+      "width": 32,
+      "height": 194
+    },
+    {
+      "index": 13,
+      "name": "bell_bound_east_bottom",
+      "active": true,
+      "x": 1568,
+      "y": 360,
+      "width": 32,
+      "height": 208
+    },
+    {
+      "index": 14,
+      "name": "cp_bound_bottom",
+      "active": true,
+      "x": 1600,
+      "y": 610,
+      "width": 1280,
+      "height": 30
+    },
+    {
+      "index": 15,
+      "name": "sm_bound_top",
+      "active": true,
+      "x": 2880,
+      "y": 100,
+      "width": 1120,
+      "height": 30
+    },
+    {
+      "index": 16,
+      "name": "sm_bound_bottom_left",
+      "active": true,
+      "x": 2880,
+      "y": 710,
+      "width": 460,
+      "height": 30
+    },
+    {
+      "index": 17,
+      "name": "sm_bound_bottom_right",
+      "active": true,
+      "x": 3420,
+      "y": 710,
+      "width": 580,
+      "height": 30
+    },
+    {
+      "index": 18,
+      "name": "sm_bound_left_top_1",
+      "active": true,
+      "x": 2880,
+      "y": 100,
+      "width": 30,
+      "height": 60
+    },
+    {
+      "index": 19,
+      "name": "sm_bound_left_top_2",
+      "active": true,
+      "x": 2880,
+      "y": 215,
+      "width": 30,
+      "height": 15
+    },
+    {
+      "index": 20,
+      "name": "sm_bound_left_bridge_top",
+      "active": true,
+      "x": 2880,
+      "y": 400,
+      "width": 30,
+      "height": 10
+    },
+    {
+      "index": 21,
+      "name": "sm_bound_left_bottom",
+      "active": true,
+      "x": 2880,
+      "y": 460,
+      "width": 30,
+      "height": 250
+    },
+    {
+      "index": 22,
+      "name": "sm_bound_right_top",
+      "active": true,
+      "x": 3970,
+      "y": 100,
+      "width": 30,
+      "height": 140
+    },
+    {
+      "index": 23,
+      "name": "sm_bound_right_bottom",
+      "active": true,
+      "x": 3970,
+      "y": 360,
+      "width": 30,
+      "height": 350
+    },
+    {
+      "index": 24,
+      "name": "shrine_bound_top",
+      "active": true,
+      "x": 4000,
+      "y": 0,
+      "width": 960,
+      "height": 30
+    },
+    {
+      "index": 25,
+      "name": "shrine_bound_bottom",
+      "active": true,
+      "x": 4000,
+      "y": 570,
+      "width": 960,
+      "height": 30
+    },
+    {
+      "index": 26,
+      "name": "shrine_bound_left_top",
+      "active": true,
+      "x": 4000,
+      "y": 0,
+      "width": 30,
+      "height": 220
+    },
+    {
+      "index": 27,
+      "name": "shrine_bound_left_bottom",
+      "active": true,
+      "x": 4000,
+      "y": 360,
+      "width": 30,
+      "height": 240
+    },
+    {
+      "index": 28,
+      "name": "shrine_bound_right",
+      "active": true,
+      "x": 4930,
+      "y": 0,
+      "width": 30,
+      "height": 600
+    },
+    {
+      "index": 29,
+      "name": "farm_bound_bottom_left",
+      "active": true,
+      "x": 480,
+      "y": 1020,
+      "width": 300,
+      "height": 32
+    },
+    {
+      "index": 30,
+      "name": "farm_bound_bottom_right",
+      "active": true,
+      "x": 840,
+      "y": 1020,
+      "width": 280,
+      "height": 32
+    },
+    {
+      "index": 31,
+      "name": "farm_bound_left",
+      "active": true,
+      "x": 448,
+      "y": 560,
+      "width": 32,
+      "height": 480
+    },
+    {
+      "index": 32,
+      "name": "farm_bound_right_top",
+      "active": true,
+      "x": 1100,
+      "y": 560,
+      "width": 32,
+      "height": 120
+    },
+    {
+      "index": 33,
+      "name": "farm_bound_right_bottom",
+      "active": true,
+      "x": 1100,
+      "y": 820,
+      "width": 32,
+      "height": 220
+    },
+    {
+      "index": 34,
+      "name": "auto_north_sanctuary_farm_seg_0",
+      "active": true,
+      "x": 480,
+      "y": 544,
+      "width": 130,
+      "height": 32
+    },
+    {
+      "index": 35,
+      "name": "auto_north_sanctuary_farm_seg_end",
+      "active": true,
+      "x": 710,
+      "y": 544,
+      "width": 410,
+      "height": 32
+    },
+    {
+      "index": 36,
+      "name": "auto_west_sanctuary_farm_seg_end",
+      "active": true,
+      "x": 464,
+      "y": 560,
+      "width": 32,
+      "height": 480
+    },
+    {
+      "index": 37,
+      "name": "ow_bound_bottom_left",
+      "active": true,
+      "x": 1120,
+      "y": 1020,
+      "width": 200,
+      "height": 32
+    },
+    {
+      "index": 38,
+      "name": "ow_bound_bottom_right",
+      "active": true,
+      "x": 1400,
+      "y": 1020,
+      "width": 200,
+      "height": 32
+    },
+    {
+      "index": 39,
+      "name": "ow_bound_right_top",
+      "active": true,
+      "x": 1580,
+      "y": 560,
+      "width": 32,
+      "height": 100
+    },
+    {
+      "index": 40,
+      "name": "ow_bound_right_bottom",
+      "active": true,
+      "x": 1580,
+      "y": 840,
+      "width": 32,
+      "height": 200
+    },
+    {
+      "index": 41,
+      "name": "auto_north_outer_woods_seg_0",
+      "active": true,
+      "x": 1120,
+      "y": 544,
+      "width": 30,
+      "height": 32
+    },
+    {
+      "index": 42,
+      "name": "auto_north_outer_woods_seg_end",
+      "active": true,
+      "x": 1270,
+      "y": 544,
+      "width": 330,
+      "height": 32
+    },
+    {
+      "index": 43,
+      "name": "auto_west_outer_woods_seg_1",
+      "active": true,
+      "x": 1104,
+      "y": 580,
+      "width": 32,
+      "height": 100
+    },
+    {
+      "index": 44,
+      "name": "auto_east_outer_woods_seg_1",
+      "active": true,
+      "x": 1584,
+      "y": 710,
+      "width": 32,
+      "height": 10
+    },
+    {
+      "index": 45,
+      "name": "df_bound_top_left",
+      "active": true,
+      "x": 1600,
+      "y": -640,
+      "width": 610,
+      "height": 30
+    },
+    {
+      "index": 46,
+      "name": "df_bound_top_right",
+      "active": true,
+      "x": 2270,
+      "y": -640,
+      "width": 610,
+      "height": 30
+    },
+    {
+      "index": 47,
+      "name": "df_bound_left",
+      "active": true,
+      "x": 1600,
+      "y": -640,
+      "width": 30,
+      "height": 640
+    },
+    {
+      "index": 48,
+      "name": "df_bound_right_top",
+      "active": true,
+      "x": 2850,
+      "y": -640,
+      "width": 30,
+      "height": 330
+    },
+    {
+      "index": 49,
+      "name": "df_bound_right_bottom",
+      "active": true,
+      "x": 2850,
+      "y": -210,
+      "width": 30,
+      "height": 210
+    },
+    {
+      "index": 50,
+      "name": "bw_bound_top_left",
+      "active": true,
+      "x": 1120,
+      "y": 1040,
+      "width": 200,
+      "height": 32
+    },
+    {
+      "index": 51,
+      "name": "bw_bound_top_right",
+      "active": true,
+      "x": 1400,
+      "y": 1040,
+      "width": 200,
+      "height": 32
+    },
+    {
+      "index": 52,
+      "name": "bw_bound_bottom",
+      "active": true,
+      "x": 1120,
+      "y": 1408,
+      "width": 480,
+      "height": 32
+    },
+    {
+      "index": 53,
+      "name": "bw_bound_left",
+      "active": true,
+      "x": 1120,
+      "y": 1040,
+      "width": 32,
+      "height": 400
+    },
+    {
+      "index": 54,
+      "name": "bw_bound_right",
+      "active": true,
+      "x": 1568,
+      "y": 1040,
+      "width": 32,
+      "height": 400
+    },
+    {
+      "index": 55,
+      "name": "auto_south_sub_bell_workshop_seg_end",
+      "active": true,
+      "x": 1120,
+      "y": 1424,
+      "width": 480,
+      "height": 32
+    },
+    {
+      "index": 56,
+      "name": "auto_west_sub_bell_workshop_seg_end+auto_east_sub_root_cellar_seg_end",
+      "active": true,
+      "x": 1104,
+      "y": 1040,
+      "width": 32,
+      "height": 400
+    },
+    {
+      "index": 57,
+      "name": "auto_east_sub_bell_workshop_seg_end",
+      "active": true,
+      "x": 1584,
+      "y": 1040,
+      "width": 32,
+      "height": 400
+    },
+    {
+      "index": 58,
+      "name": "rc_bound_top_left",
+      "active": true,
+      "x": 480,
+      "y": 1040,
+      "width": 300,
+      "height": 20
+    },
+    {
+      "index": 59,
+      "name": "rc_bound_top_right",
+      "active": true,
+      "x": 840,
+      "y": 1040,
+      "width": 280,
+      "height": 20
+    },
+    {
+      "index": 60,
+      "name": "rc_bound_bottom_left",
+      "active": true,
+      "x": 480,
+      "y": 1420,
+      "width": 280,
+      "height": 20
+    },
+    {
+      "index": 61,
+      "name": "rc_bound_bottom_right",
+      "active": true,
+      "x": 840,
+      "y": 1420,
+      "width": 280,
+      "height": 20
+    },
+    {
+      "index": 62,
+      "name": "rc_bound_left",
+      "active": true,
+      "x": 480,
+      "y": 1040,
+      "width": 20,
+      "height": 400
+    },
+    {
+      "index": 63,
+      "name": "auto_west_sub_root_cellar_seg_end",
+      "active": true,
+      "x": 464,
+      "y": 1040,
+      "width": 32,
+      "height": 400
+    },
+    {
+      "index": 64,
+      "name": "wc_bound_top_left",
+      "active": true,
+      "x": 1600,
+      "y": -360,
+      "width": 200,
+      "height": 20
+    },
+    {
+      "index": 65,
+      "name": "wc_bound_top_right",
+      "active": true,
+      "x": 1880,
+      "y": -360,
+      "width": 200,
+      "height": 20
+    },
+    {
+      "index": 66,
+      "name": "wc_bound_left",
+      "active": true,
+      "x": 1600,
+      "y": -360,
+      "width": 20,
+      "height": 360
+    },
+    {
+      "index": 67,
+      "name": "ac_bound_top",
+      "active": true,
+      "x": 1600,
+      "y": -1280,
+      "width": 1280,
+      "height": 30
+    },
+    {
+      "index": 68,
+      "name": "ac_bound_bottom_left",
+      "active": true,
+      "x": 1600,
+      "y": -670,
+      "width": 600,
+      "height": 30
+    },
+    {
+      "index": 69,
+      "name": "ac_bound_bottom_right",
+      "active": true,
+      "x": 2280,
+      "y": -670,
+      "width": 600,
+      "height": 30
+    },
+    {
+      "index": 70,
+      "name": "ac_bound_left",
+      "active": true,
+      "x": 1600,
+      "y": -1280,
+      "width": 30,
+      "height": 640
+    },
+    {
+      "index": 71,
+      "name": "ac_bound_right",
+      "active": true,
+      "x": 2850,
+      "y": -1280,
+      "width": 30,
+      "height": 640
+    },
+    {
+      "index": 72,
+      "name": "ac_chasm_void",
+      "active": true,
+      "x": 2000,
+      "y": -1050,
+      "width": 480,
+      "height": 160
+    },
+    {
+      "index": 73,
+      "name": "auto_north_abyssal_chasm_seg_end",
+      "active": true,
+      "x": 1600,
+      "y": -1296,
+      "width": 1280,
+      "height": 32
+    },
+    {
+      "index": 74,
+      "name": "auto_south_abyssal_chasm_seg_0",
+      "active": true,
+      "x": 1600,
+      "y": -656,
+      "width": 600,
+      "height": 32
+    },
+    {
+      "index": 75,
+      "name": "auto_south_abyssal_chasm_seg_end",
+      "active": true,
+      "x": 2280,
+      "y": -656,
+      "width": 600,
+      "height": 32
+    },
+    {
+      "index": 76,
+      "name": "auto_west_abyssal_chasm_seg_end",
+      "active": true,
+      "x": 1584,
+      "y": -1280,
+      "width": 32,
+      "height": 640
+    },
+    {
+      "index": 77,
+      "name": "auto_east_abyssal_chasm_seg_end",
+      "active": true,
+      "x": 2864,
+      "y": -1280,
+      "width": 32,
+      "height": 640
+    },
+    {
+      "index": 78,
+      "name": "dmd_bound_top_left",
+      "active": true,
+      "x": 2880,
+      "y": 740,
+      "width": 460,
+      "height": 30
+    },
+    {
+      "index": 79,
+      "name": "dmd_bound_top_right",
+      "active": true,
+      "x": 3420,
+      "y": 740,
+      "width": 580,
+      "height": 30
+    },
+    {
+      "index": 80,
+      "name": "dmd_bound_bottom",
+      "active": true,
+      "x": 2880,
+      "y": 1350,
+      "width": 1120,
+      "height": 30
+    },
+    {
+      "index": 81,
+      "name": "dmd_bound_left",
+      "active": true,
+      "x": 2880,
+      "y": 740,
+      "width": 30,
+      "height": 640
+    },
+    {
+      "index": 82,
+      "name": "dmd_bound_right",
+      "active": true,
+      "x": 3970,
+      "y": 740,
+      "width": 30,
+      "height": 640
+    },
+    {
+      "index": 83,
+      "name": "auto_north_drowned_mire_depths_seg_0",
+      "active": true,
+      "x": 2880,
+      "y": 724,
+      "width": 460,
+      "height": 32
+    },
+    {
+      "index": 84,
+      "name": "auto_north_drowned_mire_depths_seg_end",
+      "active": true,
+      "x": 3420,
+      "y": 724,
+      "width": 580,
+      "height": 32
+    },
+    {
+      "index": 85,
+      "name": "auto_south_drowned_mire_depths_seg_end",
+      "active": true,
+      "x": 2880,
+      "y": 1364,
+      "width": 1120,
+      "height": 32
+    },
+    {
+      "index": 86,
+      "name": "auto_west_drowned_mire_depths_seg_end",
+      "active": true,
+      "x": 2864,
+      "y": 740,
+      "width": 32,
+      "height": 640
+    },
+    {
+      "index": 87,
+      "name": "auto_east_drowned_mire_depths_seg_end",
+      "active": true,
+      "x": 3984,
+      "y": 740,
+      "width": 32,
+      "height": 640
+    },
+    {
+      "index": 88,
+      "name": "wgs_bound_top",
+      "active": true,
+      "x": 480,
+      "y": -800,
+      "width": 960,
+      "height": 30
+    },
+    {
+      "index": 89,
+      "name": "wgs_bound_bottom_left",
+      "active": true,
+      "x": 480,
+      "y": -390,
+      "width": 440,
+      "height": 30
+    },
+    {
+      "index": 90,
+      "name": "wgs_bound_bottom_right",
+      "active": true,
+      "x": 1000,
+      "y": -390,
+      "width": 440,
+      "height": 30
+    },
+    {
+      "index": 91,
+      "name": "wgs_bound_left",
+      "active": true,
+      "x": 480,
+      "y": -800,
+      "width": 30,
+      "height": 440
+    },
+    {
+      "index": 92,
+      "name": "wgs_bound_right",
+      "active": true,
+      "x": 1410,
+      "y": -800,
+      "width": 30,
+      "height": 440
+    },
+    {
+      "index": 93,
+      "name": "scr_bound_top",
+      "active": true,
+      "x": 3350,
+      "y": -640,
+      "width": 1130,
+      "height": 30
+    },
+    {
+      "index": 94,
+      "name": "scr_bound_bottom",
+      "active": true,
+      "x": 3350,
+      "y": -30,
+      "width": 1130,
+      "height": 30
+    },
+    {
+      "index": 95,
+      "name": "scr_bound_left",
+      "active": true,
+      "x": 3350,
+      "y": -640,
+      "width": 30,
+      "height": 640
+    },
+    {
+      "index": 96,
+      "name": "scr_bound_right",
+      "active": true,
+      "x": 4450,
+      "y": -640,
+      "width": 30,
+      "height": 640
+    },
+    {
+      "index": 97,
+      "name": "auto_north_sunken_crypt_ruins_seg_end",
+      "active": true,
+      "x": 3350,
+      "y": -656,
+      "width": 1130,
+      "height": 32
+    },
+    {
+      "index": 98,
+      "name": "auto_south_sunken_crypt_ruins_seg_0",
+      "active": true,
+      "x": 3350,
+      "y": -16,
+      "width": 210,
+      "height": 32
+    },
+    {
+      "index": 99,
+      "name": "auto_south_sunken_crypt_ruins_seg_end",
+      "active": true,
+      "x": 3640,
+      "y": -16,
+      "width": 840,
+      "height": 32
+    },
+    {
+      "index": 100,
+      "name": "auto_west_sunken_crypt_ruins_seg_end",
+      "active": true,
+      "x": 3334,
+      "y": -640,
+      "width": 32,
+      "height": 640
+    },
+    {
+      "index": 101,
+      "name": "auto_east_sunken_crypt_ruins_seg_end",
+      "active": true,
+      "x": 4464,
+      "y": -640,
+      "width": 32,
+      "height": 640
+    },
+    {
+      "index": 102,
+      "name": "voc_bound_top_left",
+      "active": true,
+      "x": 480,
+      "y": 1440,
+      "width": 280,
+      "height": 30
+    },
+    {
+      "index": 103,
+      "name": "voc_bound_top_right",
+      "active": true,
+      "x": 840,
+      "y": 1440,
+      "width": 760,
+      "height": 30
+    },
+    {
+      "index": 104,
+      "name": "voc_bound_bottom",
+      "active": true,
+      "x": 480,
+      "y": 2050,
+      "width": 1120,
+      "height": 30
+    },
+    {
+      "index": 105,
+      "name": "voc_bound_left",
+      "active": true,
+      "x": 480,
+      "y": 1440,
+      "width": 30,
+      "height": 640
+    },
+    {
+      "index": 106,
+      "name": "voc_bound_right",
+      "active": true,
+      "x": 1570,
+      "y": 1440,
+      "width": 30,
+      "height": 640
+    },
+    {
+      "index": 107,
+      "name": "auto_north_veil_origin_cavern_seg_end",
+      "active": true,
+      "x": 840,
+      "y": 1424,
+      "width": 760,
+      "height": 32
+    },
+    {
+      "index": 108,
+      "name": "auto_south_veil_origin_cavern_seg_end",
+      "active": true,
+      "x": 480,
+      "y": 2064,
+      "width": 1120,
+      "height": 32
+    },
+    {
+      "index": 109,
+      "name": "auto_west_veil_origin_cavern_seg_end",
+      "active": true,
+      "x": 464,
+      "y": 1440,
+      "width": 32,
+      "height": 640
+    },
+    {
+      "index": 110,
+      "name": "auto_east_veil_origin_cavern_seg_end",
+      "active": true,
+      "x": 1584,
+      "y": 1440,
+      "width": 32,
+      "height": 640
+    },
+    {
+      "index": 111,
+      "name": "Cây Rỗng",
+      "active": true,
+      "x": 22,
+      "y": 126,
+      "width": 20,
+      "height": 10
+    },
+    {
+      "index": 112,
+      "name": "Cây Rỗng",
+      "active": true,
+      "x": 18,
+      "y": 226,
+      "width": 20,
+      "height": 10
+    },
+    {
+      "index": 113,
+      "name": "Tảng Đá",
+      "active": true,
+      "x": 24,
+      "y": 163,
+      "width": 26,
+      "height": 10
+    },
+    {
+      "index": 114,
+      "name": "Thân Cây Đổ",
+      "active": true,
+      "x": 211,
+      "y": 121,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 115,
+      "name": "Biển Chỉ Dẫn",
+      "active": true,
+      "x": 233,
+      "y": 173,
+      "width": 14,
+      "height": 10
+    },
+    {
+      "index": 116,
+      "name": "Trạm Gác Cổng Tây",
+      "active": true,
+      "x": 514,
+      "y": 128,
+      "width": 96,
+      "height": 32
+    },
+    {
+      "index": 117,
+      "name": "Biển Chỉ Dẫn",
+      "active": true,
+      "x": 593,
+      "y": 198,
+      "width": 14,
+      "height": 10
+    },
+    {
+      "index": 118,
+      "name": "Cột Đèn Lồng",
+      "active": true,
+      "x": 509,
+      "y": 178,
+      "width": 10,
+      "height": 8
+    },
+    {
+      "index": 119,
+      "name": "Bảng Tin Dị Thường",
+      "active": true,
+      "x": 657,
+      "y": 258,
+      "width": 14,
+      "height": 8
+    },
+    {
+      "index": 120,
+      "name": "Lửa Trại Làng",
+      "active": true,
+      "x": 848,
+      "y": 302,
+      "width": 24,
+      "height": 16
+    },
+    {
+      "index": 121,
+      "name": "Rương Gỗ Đai Đồng",
+      "active": true,
+      "x": 762,
+      "y": 290,
+      "width": 26,
+      "height": 14
+    },
+    {
+      "index": 122,
+      "name": "Lều Trú Ẩn",
+      "active": true,
+      "x": 759,
+      "y": 255,
+      "width": 38,
+      "height": 16
+    },
+    {
+      "index": 123,
+      "name": "Nồi Thảo Dược",
+      "active": true,
+      "x": 620,
+      "y": 440,
+      "width": 20,
+      "height": 14
+    },
+    {
+      "index": 124,
+      "name": "Giếng Nước Làng",
+      "active": true,
+      "x": 711,
+      "y": 363,
+      "width": 38,
+      "height": 20
+    },
+    {
+      "index": 125,
+      "name": "Cột Đèn Lồng",
+      "active": true,
+      "x": 775,
+      "y": 245,
+      "width": 10,
+      "height": 8
+    },
+    {
+      "index": 126,
+      "name": "Tháp Chuông",
+      "active": true,
+      "x": 845,
+      "y": 96,
+      "width": 110,
+      "height": 34
+    },
+    {
+      "index": 127,
+      "name": "Nhà Edda – Người Giữ Chuông",
+      "active": true,
+      "x": 1092,
+      "y": 98,
+      "width": 136,
+      "height": 32
+    },
+    {
+      "index": 128,
+      "name": "Cụm Vật Phẩm Làng",
+      "active": true,
+      "x": 1090,
+      "y": 122,
+      "width": 20,
+      "height": 12
+    },
+    {
+      "index": 129,
+      "name": "Cụm Vật Phẩm Làng",
+      "active": true,
+      "x": 1220,
+      "y": 122,
+      "width": 20,
+      "height": 12
+    },
+    {
+      "index": 130,
+      "name": "Mái Xưởng Rèn",
+      "active": true,
+      "x": 1296,
+      "y": 400,
+      "width": 154,
+      "height": 32
+    },
+    {
+      "index": 131,
+      "name": "Bàn Chế Tạo",
+      "active": true,
+      "x": 1375,
+      "y": 449,
+      "width": 40,
+      "height": 12
+    },
+    {
+      "index": 132,
+      "name": "Cụm Vật Phẩm Làng",
+      "active": true,
+      "x": 1423,
+      "y": 448,
+      "width": 20,
+      "height": 12
+    },
+    {
+      "index": 133,
+      "name": "Nhà Neris – Thảo Mộc",
+      "active": true,
+      "x": 505,
+      "y": 400,
+      "width": 130,
+      "height": 30
+    },
+    {
+      "index": 134,
+      "name": "Bàn Thuốc Trái",
+      "active": true,
+      "x": 488,
+      "y": 432,
+      "width": 24,
+      "height": 10
+    },
+    {
+      "index": 135,
+      "name": "Bàn Thuốc Phải",
+      "active": true,
+      "x": 603,
+      "y": 431,
+      "width": 24,
+      "height": 10
+    },
+    {
+      "index": 136,
+      "name": "Biển Chỉ Dẫn",
+      "active": true,
+      "x": 688,
+      "y": 504,
+      "width": 14,
+      "height": 10
+    },
+    {
+      "index": 137,
+      "name": "Cụm Vật Phẩm Làng",
+      "active": true,
+      "x": 500,
+      "y": 431,
+      "width": 20,
+      "height": 12
+    },
+    {
+      "index": 138,
+      "name": "Hàng Rào Cổng Tây",
+      "active": true,
+      "x": 510,
+      "y": 280,
+      "width": 92,
+      "height": 12
+    },
+    {
+      "index": 139,
+      "name": "Hàng Rào Bắc Làng",
+      "active": true,
+      "x": 778,
+      "y": 82,
+      "width": 94,
+      "height": 12
+    },
+    {
+      "index": 140,
+      "name": "Hàng Rào Cổng Đông",
+      "active": true,
+      "x": 1060,
+      "y": 226,
+      "width": 142,
+      "height": 12
+    },
+    {
+      "index": 141,
+      "name": "Rào Bắc Cổng Đông",
+      "active": true,
+      "x": 1431,
+      "y": 230,
+      "width": 46,
+      "height": 12
+    },
+    {
+      "index": 142,
+      "name": "Rào Nam Cổng Đông",
+      "active": true,
+      "x": 1431,
+      "y": 312,
+      "width": 46,
+      "height": 12
+    },
+    {
+      "index": 143,
+      "name": "Biển Chỉ Dẫn",
+      "active": true,
+      "x": 1416,
+      "y": 319,
+      "width": 14,
+      "height": 10
+    },
+    {
+      "index": 144,
+      "name": "Trụ Bắc Cổng Đông",
+      "active": true,
+      "x": 1476,
+      "y": 229,
+      "width": 18,
+      "height": 14
+    },
+    {
+      "index": 145,
+      "name": "Trụ Nam Cổng Đông",
+      "active": true,
+      "x": 1476,
+      "y": 311,
+      "width": 18,
+      "height": 14
+    },
+    {
+      "index": 146,
+      "name": "Cổng Đông",
+      "active": false,
+      "x": 1477,
+      "y": 242,
+      "width": 16,
+      "height": 76
+    },
+    {
+      "index": 147,
+      "name": "Biển Chỉ Dẫn",
+      "active": true,
+      "x": 608,
+      "y": 583,
+      "width": 14,
+      "height": 10
+    },
+    {
+      "index": 148,
+      "name": "Kho Thóc",
+      "active": true,
+      "x": 544,
+      "y": 708,
+      "width": 92,
+      "height": 22
+    },
+    {
+      "index": 149,
+      "name": "Bàn Sơ Chế Thảo Mộc",
+      "active": true,
+      "x": 686,
+      "y": 624,
+      "width": 32,
+      "height": 10
+    },
+    {
+      "index": 150,
+      "name": "Giếng Nước Làng",
+      "active": true,
+      "x": 901,
+      "y": 688,
+      "width": 38,
+      "height": 20
+    },
+    {
+      "index": 151,
+      "name": "Rương Gỗ Đai Đồng",
+      "active": true,
+      "x": 667,
+      "y": 635,
+      "width": 26,
+      "height": 14
+    },
+    {
+      "index": 152,
+      "name": "Cụm Vật Phẩm Làng",
+      "active": true,
+      "x": 505,
+      "y": 721,
+      "width": 20,
+      "height": 12
+    },
+    {
+      "index": 153,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 751,
+      "y": 586,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 154,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 841,
+      "y": 586,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 155,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 896,
+      "y": 631,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 156,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 496,
+      "y": 831,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 157,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 496,
+      "y": 951,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 158,
+      "name": "Hàng Rào Nông Trại",
+      "active": true,
+      "x": 498,
+      "y": 611,
+      "width": 42,
+      "height": 10
+    },
+    {
+      "index": 159,
+      "name": "Hàng Rào Nông Trại",
+      "active": true,
+      "x": 498,
+      "y": 681,
+      "width": 42,
+      "height": 10
+    },
+    {
+      "index": 160,
+      "name": "Hàng Rào Nông Trại",
+      "active": true,
+      "x": 498,
+      "y": 751,
+      "width": 42,
+      "height": 10
+    },
+    {
+      "index": 161,
+      "name": "Hàng Rào Nông Trại",
+      "active": true,
+      "x": 498,
+      "y": 821,
+      "width": 42,
+      "height": 10
+    },
+    {
+      "index": 162,
+      "name": "Hàng Rào Nông Trại",
+      "active": true,
+      "x": 498,
+      "y": 891,
+      "width": 42,
+      "height": 10
+    },
+    {
+      "index": 163,
+      "name": "Hàng Rào Nông Trại",
+      "active": true,
+      "x": 498,
+      "y": 961,
+      "width": 42,
+      "height": 10
+    },
+    {
+      "index": 164,
+      "name": "Hàng Rào Nông Trại",
+      "active": true,
+      "x": 522,
+      "y": 779,
+      "width": 42,
+      "height": 10
+    },
+    {
+      "index": 165,
+      "name": "Hàng Rào Nông Trại",
+      "active": true,
+      "x": 570,
+      "y": 779,
+      "width": 42,
+      "height": 10
+    },
+    {
+      "index": 166,
+      "name": "Hàng Rào Nông Trại",
+      "active": true,
+      "x": 712,
+      "y": 779,
+      "width": 42,
+      "height": 10
+    },
+    {
+      "index": 167,
+      "name": "Hàng Rào Nông Trại",
+      "active": true,
+      "x": 760,
+      "y": 779,
+      "width": 42,
+      "height": 10
+    },
+    {
+      "index": 168,
+      "name": "Hàng Rào Nông Trại",
+      "active": true,
+      "x": 808,
+      "y": 779,
+      "width": 42,
+      "height": 10
+    },
+    {
+      "index": 169,
+      "name": "Hàng Rào Nông Trại",
+      "active": true,
+      "x": 856,
+      "y": 779,
+      "width": 42,
+      "height": 10
+    },
+    {
+      "index": 170,
+      "name": "Biển Chỉ Dẫn",
+      "active": true,
+      "x": 1213,
+      "y": 633,
+      "width": 14,
+      "height": 10
+    },
+    {
+      "index": 171,
+      "name": "Lều Thợ Săn",
+      "active": true,
+      "x": 1347,
+      "y": 689,
+      "width": 36,
+      "height": 14
+    },
+    {
+      "index": 172,
+      "name": "Cụm Vật Phẩm Làng",
+      "active": true,
+      "x": 1375,
+      "y": 721,
+      "width": 20,
+      "height": 12
+    },
+    {
+      "index": 173,
+      "name": "Cụm Vật Phẩm Làng",
+      "active": true,
+      "x": 1265,
+      "y": 706,
+      "width": 20,
+      "height": 12
+    },
+    {
+      "index": 174,
+      "name": "Rương Gỗ Đai Đồng",
+      "active": true,
+      "x": 1432,
+      "y": 640,
+      "width": 26,
+      "height": 14
+    },
+    {
+      "index": 175,
+      "name": "Trạm Kiểm Lâm",
+      "active": true,
+      "x": 1418,
+      "y": 642,
+      "width": 60,
+      "height": 20
+    },
+    {
+      "index": 176,
+      "name": "Bếp Lửa Hồng Đá Cổ",
+      "active": true,
+      "x": 1458,
+      "y": 702,
+      "width": 24,
+      "height": 16
+    },
+    {
+      "index": 177,
+      "name": "Thân Cây Đổ",
+      "active": true,
+      "x": 1126,
+      "y": 661,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 178,
+      "name": "Thân Cây Đổ",
+      "active": true,
+      "x": 1466,
+      "y": 786,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 179,
+      "name": "Thân Cây Đổ",
+      "active": true,
+      "x": 1206,
+      "y": 946,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 180,
+      "name": "Cây Rỗng",
+      "active": true,
+      "x": 1350,
+      "y": 611,
+      "width": 20,
+      "height": 10
+    },
+    {
+      "index": 181,
+      "name": "Cây Rỗng",
+      "active": true,
+      "x": 1295,
+      "y": 876,
+      "width": 20,
+      "height": 10
+    },
+    {
+      "index": 182,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 1136,
+      "y": 586,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 183,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 1118,
+      "y": 598,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 184,
+      "name": "Tảng Đá",
+      "active": true,
+      "x": 1132.5,
+      "y": 615,
+      "width": 17,
+      "height": 7
+    },
+    {
+      "index": 185,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 1271,
+      "y": 576,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 186,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 1121,
+      "y": 856,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 187,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 1106,
+      "y": 876,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 188,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 1391,
+      "y": 846,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 189,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 1419,
+      "y": 870,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 190,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 1191,
+      "y": 906,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 191,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 1153,
+      "y": 888,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 192,
+      "name": "Tảng Đá",
+      "active": true,
+      "x": 1220.5,
+      "y": 932,
+      "width": 17,
+      "height": 7
+    },
+    {
+      "index": 193,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 1531,
+      "y": 836,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 194,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 1516,
+      "y": 801,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 195,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 1441,
+      "y": 641,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 196,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 1166,
+      "y": 986,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 197,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 1226,
+      "y": 1001,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 198,
+      "name": "Biển Chỉ Dẫn",
+      "active": true,
+      "x": 1293,
+      "y": 978,
+      "width": 14,
+      "height": 10
+    },
+    {
+      "index": 199,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 1451,
+      "y": 976,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 200,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 1531,
+      "y": 971,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 201,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 1521,
+      "y": 621,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 202,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 1531,
+      "y": 721,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 203,
+      "name": "Gốc Cây Pixel Art",
+      "active": true,
+      "x": 1481,
+      "y": 871,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 204,
+      "name": "Tảng Đá",
+      "active": true,
+      "x": 1268.5,
+      "y": 991,
+      "width": 21,
+      "height": 8
+    },
+    {
+      "index": 205,
+      "name": "Tảng Đá",
+      "active": true,
+      "x": 1419.5,
+      "y": 794,
+      "width": 29,
+      "height": 11
+    },
+    {
+      "index": 206,
+      "name": "Tảng Đá",
+      "active": true,
+      "x": 1454,
+      "y": 847,
+      "width": 24,
+      "height": 9
+    },
+    {
+      "index": 207,
+      "name": "Tảng Đá",
+      "active": true,
+      "x": 1493.5,
+      "y": 926,
+      "width": 23,
+      "height": 8
+    },
+    {
+      "index": 208,
+      "name": "Hốc Sồi Ngàn Năm",
+      "active": true,
+      "x": 751,
+      "y": 111,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 209,
+      "name": "Biển Chỉ Dẫn",
+      "active": true,
+      "x": 1653,
+      "y": 313,
+      "width": 14,
+      "height": 10
+    },
+    {
+      "index": 210,
+      "name": "Biển Chỉ Dẫn",
+      "active": true,
+      "x": 2178,
+      "y": 51,
+      "width": 14,
+      "height": 10
+    },
+    {
+      "index": 211,
+      "name": "Cột Mốc Đá",
+      "active": true,
+      "x": 2760,
+      "y": 239,
+      "width": 12,
+      "height": 10
+    },
+    {
+      "index": 212,
+      "name": "Cột Mốc Đá",
+      "active": true,
+      "x": 2760,
+      "y": 359,
+      "width": 12,
+      "height": 10
+    },
+    {
+      "index": 213,
+      "name": "Thân Cây Đổ",
+      "active": true,
+      "x": 1731,
+      "y": 341,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 214,
+      "name": "Thân Cây Đổ",
+      "active": true,
+      "x": 2271,
+      "y": 371,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 215,
+      "name": "Thân Cây Đổ",
+      "active": true,
+      "x": 2571,
+      "y": 251,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 216,
+      "name": "Cây Rỗng",
+      "active": true,
+      "x": 1890,
+      "y": 171,
+      "width": 20,
+      "height": 10
+    },
+    {
+      "index": 217,
+      "name": "Cây Rỗng",
+      "active": true,
+      "x": 2340,
+      "y": 411,
+      "width": 20,
+      "height": 10
+    },
+    {
+      "index": 218,
+      "name": "Tảng Đá",
+      "active": true,
+      "x": 2107,
+      "y": 300,
+      "width": 44,
+      "height": 14
+    },
+    {
+      "index": 219,
+      "name": "Tảng Đá",
+      "active": true,
+      "x": 1794.5,
+      "y": 229,
+      "width": 29,
+      "height": 11
+    },
+    {
+      "index": 220,
+      "name": "Tảng Đá",
+      "active": true,
+      "x": 2225,
+      "y": 341,
+      "width": 32,
+      "height": 13
+    },
+    {
+      "index": 221,
+      "name": "Tảng Đá",
+      "active": true,
+      "x": 2444.5,
+      "y": 418,
+      "width": 27,
+      "height": 10
+    },
+    {
+      "index": 222,
+      "name": "Tảng Đá",
+      "active": true,
+      "x": 2725,
+      "y": 280,
+      "width": 30,
+      "height": 12
+    },
+    {
+      "index": 223,
+      "name": "Biển Chỉ Dẫn",
+      "active": true,
+      "x": 2053,
+      "y": 163,
+      "width": 14,
+      "height": 10
+    },
+    {
+      "index": 224,
+      "name": "Rặng Cây Viền Bắc Tây",
+      "active": true,
+      "x": 1640,
+      "y": 90,
+      "width": 156,
+      "height": 30
+    },
+    {
+      "index": 225,
+      "name": "Rặng Cây Viền Bắc Giữa",
+      "active": true,
+      "x": 1884,
+      "y": 90,
+      "width": 96,
+      "height": 30
+    },
+    {
+      "index": 226,
+      "name": "Rặng Cây Viền Bắc Đông",
+      "active": true,
+      "x": 2160,
+      "y": 90,
+      "width": 680,
+      "height": 30
+    },
+    {
+      "index": 227,
+      "name": "Rặng Cây Viền Nam",
+      "active": true,
+      "x": 1660,
+      "y": 500,
+      "width": 1030,
+      "height": 30
+    },
+    {
+      "index": 228,
+      "name": "Rặng Cây Viền Nam Đông",
+      "active": true,
+      "x": 2810,
+      "y": 500,
+      "width": 30,
+      "height": 30
+    },
+    {
+      "index": 229,
+      "name": "Biển Chỉ Dẫn",
+      "active": true,
+      "x": 2938,
+      "y": 367,
+      "width": 14,
+      "height": 10
+    },
+    {
+      "index": 230,
+      "name": "Cột Mốc Đá",
+      "active": true,
+      "x": 2900,
+      "y": 221,
+      "width": 12,
+      "height": 10
+    },
+    {
+      "index": 231,
+      "name": "Cột Mốc Đá",
+      "active": true,
+      "x": 2900,
+      "y": 369,
+      "width": 12,
+      "height": 10
+    },
+    {
+      "index": 232,
+      "name": "Cột Mốc Đá",
+      "active": true,
+      "x": 3960,
+      "y": 229,
+      "width": 12,
+      "height": 10
+    },
+    {
+      "index": 233,
+      "name": "Cột Mốc Đá",
+      "active": true,
+      "x": 3960,
+      "y": 369,
+      "width": 12,
+      "height": 10
+    },
+    {
+      "index": 234,
+      "name": "Vùng Nước Sình Lầy",
+      "active": true,
+      "x": 3047.5,
+      "y": 399,
+      "width": 165,
+      "height": 72
+    },
+    {
+      "index": 235,
+      "name": "Vùng Nước Sình Lầy",
+      "active": true,
+      "x": 3205,
+      "y": 155,
+      "width": 150,
+      "height": 55
+    },
+    {
+      "index": 236,
+      "name": "Vùng Nước Sình Lầy",
+      "active": true,
+      "x": 3630,
+      "y": 451,
+      "width": 180,
+      "height": 78
+    },
+    {
+      "index": 237,
+      "name": "Tàn Tích Bia Đá Cổ",
+      "active": true,
+      "x": 3226.5,
+      "y": 218,
+      "width": 31,
+      "height": 16
+    },
+    {
+      "index": 238,
+      "name": "Tàn Tích Bia Đá Cổ",
+      "active": true,
+      "x": 3727,
+      "y": 409,
+      "width": 34,
+      "height": 16
+    },
+    {
+      "index": 239,
+      "name": "Liễu Titan Khô",
+      "active": true,
+      "x": 3580,
+      "y": 160,
+      "width": 32,
+      "height": 16
+    },
+    {
+      "index": 240,
+      "name": "Phong Ấn Miếu",
+      "active": true,
+      "x": 3952,
+      "y": 242,
+      "width": 16,
+      "height": 76
+    },
+    {
+      "index": 241,
+      "name": "Cây Rỗng",
+      "active": true,
+      "x": 3070,
+      "y": 251,
+      "width": 20,
+      "height": 10
+    },
+    {
+      "index": 242,
+      "name": "Cây Rỗng",
+      "active": true,
+      "x": 3586,
+      "y": 173,
+      "width": 20,
+      "height": 10
+    },
+    {
+      "index": 243,
+      "name": "Thân Cây Đổ",
+      "active": true,
+      "x": 3031,
+      "y": 231,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 244,
+      "name": "Thân Cây Đổ",
+      "active": true,
+      "x": 3711,
+      "y": 341,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 245,
+      "name": "Rặng Cây Khô Viền Bắc Tây Silent Mire",
+      "active": true,
+      "x": 2920,
+      "y": 125,
+      "width": 575,
+      "height": 35
+    },
+    {
+      "index": 246,
+      "name": "Rặng Cây Khô Viền Bắc Đông Silent Mire",
+      "active": true,
+      "x": 3565,
+      "y": 125,
+      "width": 395,
+      "height": 35
+    },
+    {
+      "index": 247,
+      "name": "Rặng Cây Khô Viền Nam Tây Silent Mire",
+      "active": true,
+      "x": 2920,
+      "y": 665,
+      "width": 415,
+      "height": 35
+    },
+    {
+      "index": 248,
+      "name": "Rặng Cây Khô Viền Nam Đông Silent Mire",
+      "active": true,
+      "x": 3425,
+      "y": 665,
+      "width": 535,
+      "height": 35
+    },
+    {
+      "index": 249,
+      "name": "Rặng Cây Khô Viền Tây Bắc Silent Mire",
+      "active": true,
+      "x": 2895,
+      "y": 140,
+      "width": 35,
+      "height": 20
+    },
+    {
+      "index": 250,
+      "name": "Rặng Cây Khô Viền Tây Giữa Silent Mire",
+      "active": true,
+      "x": 2895,
+      "y": 215,
+      "width": 35,
+      "height": 15
+    },
+    {
+      "index": 251,
+      "name": "Rặng Cây Khô Viền Tây Nam Silent Mire",
+      "active": true,
+      "x": 2895,
+      "y": 452,
+      "width": 35,
+      "height": 248
+    },
+    {
+      "index": 252,
+      "name": "Rặng Cây Khô Viền Đông Bắc Silent Mire",
+      "active": true,
+      "x": 3955,
+      "y": 140,
+      "width": 35,
+      "height": 95
+    },
+    {
+      "index": 253,
+      "name": "Rặng Cây Khô Viền Đông Nam Silent Mire",
+      "active": true,
+      "x": 3955,
+      "y": 400,
+      "width": 35,
+      "height": 300
+    },
+    {
+      "index": 254,
+      "name": "Miếu Chuông Vỡ",
+      "active": true,
+      "x": 4524,
+      "y": 252,
+      "width": 48,
+      "height": 16
+    },
+    {
+      "index": 255,
+      "name": "Trụ Miếu Chuông",
+      "active": true,
+      "x": 4340,
+      "y": 168,
+      "width": 20,
+      "height": 16
+    },
+    {
+      "index": 256,
+      "name": "Trụ Miếu Chuông",
+      "active": true,
+      "x": 4640,
+      "y": 168,
+      "width": 20,
+      "height": 16
+    },
+    {
+      "index": 257,
+      "name": "Trụ Miếu Chuông",
+      "active": true,
+      "x": 4670,
+      "y": 368,
+      "width": 20,
+      "height": 16
+    },
+    {
+      "index": 258,
+      "name": "Trụ Miếu Chuông",
+      "active": true,
+      "x": 4310,
+      "y": 368,
+      "width": 20,
+      "height": 16
+    },
+    {
+      "index": 259,
+      "name": "Đống Đổ Nát",
+      "active": true,
+      "x": 4342,
+      "y": 370,
+      "width": 36,
+      "height": 16
+    },
+    {
+      "index": 260,
+      "name": "Cây Rỗng",
+      "active": true,
+      "x": 4130,
+      "y": 181,
+      "width": 20,
+      "height": 10
+    },
+    {
+      "index": 261,
+      "name": "Bia Đá Cổ Ngữ",
+      "active": true,
+      "x": 4272,
+      "y": 266,
+      "width": 16,
+      "height": 12
+    },
+    {
+      "index": 262,
+      "name": "Thân Cây Đổ",
+      "active": true,
+      "x": 4211,
+      "y": 321,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 263,
+      "name": "Thân Cây Đổ",
+      "active": true,
+      "x": 4611,
+      "y": 381,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 264,
+      "name": "Rặng Cây Khô Viền Bắc Miếu Chuông",
+      "active": true,
+      "x": 4030,
+      "y": 35,
+      "width": 900,
+      "height": 35
+    },
+    {
+      "index": 265,
+      "name": "Rặng Cây Khô Viền Nam Miếu Chuông",
+      "active": true,
+      "x": 4030,
+      "y": 555,
+      "width": 900,
+      "height": 35
+    },
+    {
+      "index": 266,
+      "name": "Rặng Cây Khô Viền Đông Miếu Chuông",
+      "active": true,
+      "x": 4915,
+      "y": 40,
+      "width": 35,
+      "height": 520
+    },
+    {
+      "index": 267,
+      "name": "Rặng Cây Khô Viền Tây Bắc Miếu Chuông",
+      "active": true,
+      "x": 4005,
+      "y": 40,
+      "width": 35,
+      "height": 170
+    },
+    {
+      "index": 268,
+      "name": "Rặng Cây Khô Viền Tây Nam Miếu Chuông",
+      "active": true,
+      "x": 4005,
+      "y": 370,
+      "width": 35,
+      "height": 190
+    },
+    {
+      "index": 269,
+      "name": "Biển Chỉ Dẫn",
+      "active": true,
+      "x": 1967,
+      "y": -77,
+      "width": 14,
+      "height": 10
+    },
+    {
+      "index": 270,
+      "name": "Rương Gỗ Rừng Sâu",
+      "active": true,
+      "x": 1974,
+      "y": -76,
+      "width": 20,
+      "height": 8
+    },
+    {
+      "index": 271,
+      "name": "Biển Chỉ Dẫn",
+      "active": true,
+      "x": 2333,
+      "y": -497,
+      "width": 14,
+      "height": 10
+    },
+    {
+      "index": 272,
+      "name": "Cột Mốc Đá",
+      "active": true,
+      "x": 2840,
+      "y": -221,
+      "width": 12,
+      "height": 10
+    },
+    {
+      "index": 273,
+      "name": "Cột Mốc Đá",
+      "active": true,
+      "x": 2840,
+      "y": -321,
+      "width": 12,
+      "height": 10
+    },
+    {
+      "index": 274,
+      "name": "Cột Vật Tổ Thì Thầm",
+      "active": true,
+      "x": 2103,
+      "y": -274,
+      "width": 22,
+      "height": 12
+    },
+    {
+      "index": 275,
+      "name": "Thân Cây Đổ",
+      "active": true,
+      "x": 2111,
+      "y": -349,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 276,
+      "name": "Thân Cây Đổ",
+      "active": true,
+      "x": 1871,
+      "y": -209,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 277,
+      "name": "Thân Cây Đổ",
+      "active": true,
+      "x": 2251,
+      "y": -289,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 278,
+      "name": "Thân Cây Đổ",
+      "active": true,
+      "x": 2531,
+      "y": -369,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 279,
+      "name": "Cây Rỗng",
+      "active": true,
+      "x": 1810,
+      "y": -249,
+      "width": 20,
+      "height": 10
+    },
+    {
+      "index": 280,
+      "name": "Cây Rỗng",
+      "active": true,
+      "x": 2170,
+      "y": -309,
+      "width": 20,
+      "height": 10
+    },
+    {
+      "index": 281,
+      "name": "Cây Rỗng",
+      "active": true,
+      "x": 2440,
+      "y": -479,
+      "width": 20,
+      "height": 10
+    },
+    {
+      "index": 282,
+      "name": "Tảng Đá",
+      "active": true,
+      "x": 2346.5,
+      "y": -472,
+      "width": 41,
+      "height": 14
+    },
+    {
+      "index": 283,
+      "name": "Tảng Đá",
+      "active": true,
+      "x": 2085.5,
+      "y": -348,
+      "width": 33,
+      "height": 14
+    },
+    {
+      "index": 284,
+      "name": "Tảng Đá",
+      "active": true,
+      "x": 2645,
+      "y": -249,
+      "width": 32,
+      "height": 13
+    },
+    {
+      "index": 285,
+      "name": "Rặng Cây Viền Bắc Tây Deep Forest",
+      "active": true,
+      "x": 1640,
+      "y": -610,
+      "width": 550,
+      "height": 36
+    },
+    {
+      "index": 286,
+      "name": "Rặng Cây Viền Bắc Đông Deep Forest",
+      "active": true,
+      "x": 2290,
+      "y": -610,
+      "width": 550,
+      "height": 36
+    },
+    {
+      "index": 287,
+      "name": "Rặng Cây Viền Tây Deep Forest",
+      "active": true,
+      "x": 1620,
+      "y": -600,
+      "width": 35,
+      "height": 560
+    },
+    {
+      "index": 288,
+      "name": "Rặng Cây Viền Đông Bắc Deep Forest",
+      "active": true,
+      "x": 2845,
+      "y": -600,
+      "width": 35,
+      "height": 270
+    },
+    {
+      "index": 289,
+      "name": "Rặng Cây Viền Đông Nam Deep Forest",
+      "active": true,
+      "x": 2845,
+      "y": -190,
+      "width": 35,
+      "height": 150
+    },
+    {
+      "index": 290,
+      "name": "Tảng Đá",
+      "active": true,
+      "x": 1626.5,
+      "y": -597,
+      "width": 41,
+      "height": 14
+    },
+    {
+      "index": 291,
+      "name": "Thân Cây Đổ",
+      "active": true,
+      "x": 1631,
+      "y": -594,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 292,
+      "name": "Tảng Đá",
+      "active": true,
+      "x": 2866.5,
+      "y": -597,
+      "width": 41,
+      "height": 14
+    },
+    {
+      "index": 293,
+      "name": "Thân Cây Đổ",
+      "active": true,
+      "x": 1621,
+      "y": -44,
+      "width": 18,
+      "height": 10
+    },
+    {
+      "index": 294,
+      "name": "Tảng Đá",
+      "active": true,
+      "x": 2866.5,
+      "y": -17,
+      "width": 41,
+      "height": 14
+    },
+    {
+      "index": 295,
+      "name": "Trụ Cổ Ngữ Cổng Bắc T",
+      "active": true,
+      "x": 2174,
+      "y": -628,
+      "width": 22,
+      "height": 16
+    },
+    {
+      "index": 296,
+      "name": "Trụ Cổ Ngữ Cổng Bắc Đ",
+      "active": true,
+      "x": 2284,
+      "y": -628,
+      "width": 22,
+      "height": 16
+    },
+    {
+      "index": 297,
+      "name": "Phong Ấn Cổng Hư Không",
+      "active": true,
+      "x": 2204,
+      "y": -622,
+      "width": 72,
+      "height": 16
+    },
+    {
+      "index": 298,
+      "name": "Bụi Gai U Minh",
+      "active": false,
+      "x": 2833,
+      "y": -313,
+      "width": 22,
+      "height": 106
+    },
+    {
+      "index": 299,
+      "name": "Cột Mốc Khoảng Trống Tây",
+      "active": true,
+      "x": 1794,
+      "y": -47,
+      "width": 12,
+      "height": 14
+    },
+    {
+      "index": 300,
+      "name": "Cột Mốc Khoảng Trống Đông",
+      "active": true,
+      "x": 1874,
+      "y": -47,
+      "width": 12,
+      "height": 14
+    },
+    {
+      "index": 301,
+      "name": "Cột Cổ Ngữ",
+      "active": true,
+      "x": 3392,
+      "y": 212,
+      "width": 16,
+      "height": 12
+    },
+    {
+      "index": 302,
+      "name": "Cột Cổ Ngữ",
+      "active": true,
+      "x": 3512,
+      "y": 352,
+      "width": 16,
+      "height": 12
+    },
+    {
+      "index": 303,
+      "name": "Cột Cổ Ngữ",
+      "active": true,
+      "x": 3632,
+      "y": 212,
+      "width": 16,
+      "height": 12
+    },
+    {
+      "index": 304,
+      "name": "Bệ Thờ Đá",
+      "active": true,
+      "x": 3507,
+      "y": 272,
+      "width": 26,
+      "height": 12
+    },
+    {
+      "index": 305,
+      "name": "Bia Đá Cổ Thư",
+      "active": true,
+      "x": 3453,
+      "y": 288,
+      "width": 14,
+      "height": 12
+    },
+    {
+      "index": 306,
+      "name": "Đèn Đá Nghi Thức",
+      "active": true,
+      "x": 3362,
+      "y": 197,
+      "width": 12,
+      "height": 10
+    },
+    {
+      "index": 307,
+      "name": "Đèn Đá Nghi Thức",
+      "active": true,
+      "x": 3654,
+      "y": 257,
+      "width": 12,
+      "height": 10
+    },
+    {
+      "index": 308,
+      "name": "Đèn Đá Nghi Thức",
+      "active": true,
+      "x": 3454,
+      "y": 367,
+      "width": 12,
+      "height": 10
+    },
+    {
+      "index": 309,
+      "name": "Đèn Đá Nghi Thức",
+      "active": true,
+      "x": 3574,
+      "y": 367,
+      "width": 12,
+      "height": 10
+    }
+  ]
+}

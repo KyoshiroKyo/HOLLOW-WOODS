@@ -137,7 +137,7 @@ export class LeaderboardService {
         deathReason: String(params.deathReason || 'Sinh lực cạn kiệt trong màn sương').slice(0, 120),
         composure: Math.round(params.composure ?? 0),
         secrets: (params.unlockedLoreCount || 0) + (params.relicsCount || 0),
-        version: '1.5.2',
+        version: '1.6.0',
         at: new Date().toISOString()
       };
 

@@ -475,7 +475,7 @@ export class DialogueSystem {
       if (payload.rewardItem) {
         const rewardMarker = `dlg_reward:${dialogueKey}`;
         const questAlreadyOwned = payload.rewardItem.startsWith('quest_') && state.getItemCount(payload.rewardItem) > 0;
-        const runeCharmAlreadyGranted = dialogueKey === 'edda_rune_guide' && hadRuneCharmBeforePass;
+        const runeCharmAlreadyGranted = dialogueKey === 'edda_rune_guide' && (hadRuneCharmBeforePass || state.hasFlag('edda_rune_charm_granted'));
         if (
           !state.hasFlag(rewardMarker) &&
           !state.hasStoryFlag(rewardMarker) &&
@@ -483,8 +483,8 @@ export class DialogueSystem {
           !runeCharmAlreadyGranted
         ) {
           state.addItem(payload.rewardItem, payload.rewardCount || 1);
-          state.setStoryFlag(rewardMarker);
         }
+        state.setStoryFlag(rewardMarker);
       }
 
       if (payload.healPlayer) {
