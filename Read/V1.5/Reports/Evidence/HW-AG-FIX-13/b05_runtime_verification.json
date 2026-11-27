@@ -1,0 +1,170 @@
+{
+  "cases": [
+    {
+      "name": "edda_rune_guide_first_run",
+      "status": "FAIL",
+      "expected": {
+        "charmCount": 1,
+        "eddaRuneCharmGranted": true,
+        "dlgRewardEdda": true,
+        "trust": 53
+      },
+      "before": {
+        "charmCount": 0,
+        "poulticeCount": 0,
+        "purificationKeyCount": 0,
+        "trust": 50,
+        "eddaRuneCharmGranted": false,
+        "dlgRewardEdda": false,
+        "dlgRewardNeris": false,
+        "dlgRewardVaelenKey": false
+      },
+      "after": {
+        "charmCount": 0,
+        "poulticeCount": 0,
+        "purificationKeyCount": 0,
+        "trust": 53,
+        "eddaRuneCharmGranted": true,
+        "dlgRewardEdda": true,
+        "dlgRewardNeris": false,
+        "dlgRewardVaelenKey": false
+      },
+      "note": "BUG: DialogueSystem.ts:443 sets edda_rune_charm_granted before line 478 checks state.hasFlag(\"edda_rune_charm_granted\"), blocking first-time eqp_bell_ward_charm reward!"
+    },
+    {
+      "name": "edda_rune_guide_retalk_after_remove",
+      "status": "RUNTIME PASS",
+      "before": {
+        "charmCount": 0,
+        "poulticeCount": 0,
+        "purificationKeyCount": 0,
+        "trust": 53,
+        "eddaRuneCharmGranted": true,
+        "dlgRewardEdda": true,
+        "dlgRewardNeris": false,
+        "dlgRewardVaelenKey": false
+      },
+      "after": {
+        "charmCount": 0,
+        "poulticeCount": 0,
+        "purificationKeyCount": 0,
+        "trust": 53,
+        "eddaRuneCharmGranted": true,
+        "dlgRewardEdda": true,
+        "dlgRewardNeris": false,
+        "dlgRewardVaelenKey": false
+      }
+    },
+    {
+      "name": "neris_intro_retalk_idempotency",
+      "status": "RUNTIME PASS",
+      "first": {
+        "before": {
+          "charmCount": 0,
+          "poulticeCount": 0,
+          "purificationKeyCount": 0,
+          "trust": 53,
+          "eddaRuneCharmGranted": true,
+          "dlgRewardEdda": true,
+          "dlgRewardNeris": false,
+          "dlgRewardVaelenKey": false
+        },
+        "after": {
+          "charmCount": 0,
+          "poulticeCount": 1,
+          "purificationKeyCount": 0,
+          "trust": 56,
+          "eddaRuneCharmGranted": true,
+          "dlgRewardEdda": true,
+          "dlgRewardNeris": true,
+          "dlgRewardVaelenKey": false
+        }
+      },
+      "retalk": {
+        "before": {
+          "charmCount": 0,
+          "poulticeCount": 0,
+          "purificationKeyCount": 0,
+          "trust": 56,
+          "eddaRuneCharmGranted": true,
+          "dlgRewardEdda": true,
+          "dlgRewardNeris": true,
+          "dlgRewardVaelenKey": false
+        },
+        "after": {
+          "charmCount": 0,
+          "poulticeCount": 0,
+          "purificationKeyCount": 0,
+          "trust": 56,
+          "eddaRuneCharmGranted": true,
+          "dlgRewardEdda": true,
+          "dlgRewardNeris": true,
+          "dlgRewardVaelenKey": false
+        }
+      }
+    },
+    {
+      "name": "vaelen_forge_key_preowned_and_retalk",
+      "status": "RUNTIME PASS",
+      "before": {
+        "charmCount": 0,
+        "poulticeCount": 0,
+        "purificationKeyCount": 1,
+        "trust": 56,
+        "eddaRuneCharmGranted": true,
+        "dlgRewardEdda": true,
+        "dlgRewardNeris": true,
+        "dlgRewardVaelenKey": false
+      },
+      "afterFirst": {
+        "charmCount": 0,
+        "poulticeCount": 0,
+        "purificationKeyCount": 1,
+        "trust": 56,
+        "eddaRuneCharmGranted": true,
+        "dlgRewardEdda": true,
+        "dlgRewardNeris": true,
+        "dlgRewardVaelenKey": true
+      },
+      "afterRetalk": {
+        "charmCount": 0,
+        "poulticeCount": 0,
+        "purificationKeyCount": 0,
+        "trust": 56,
+        "eddaRuneCharmGranted": true,
+        "dlgRewardEdda": true,
+        "dlgRewardNeris": true,
+        "dlgRewardVaelenKey": true
+      }
+    },
+    {
+      "name": "save_continue_retalk_persistence",
+      "status": "RUNTIME PASS",
+      "afterContinue": {
+        "charmCount": 0,
+        "poulticeCount": 0,
+        "purificationKeyCount": 0,
+        "trust": 56,
+        "eddaRuneCharmGranted": true,
+        "dlgRewardEdda": true,
+        "dlgRewardNeris": true,
+        "dlgRewardVaelenKey": true
+      },
+      "afterContinueRetalk": {
+        "charmCount": 0,
+        "poulticeCount": 0,
+        "purificationKeyCount": 0,
+        "trust": 56,
+        "eddaRuneCharmGranted": true,
+        "dlgRewardEdda": true,
+        "dlgRewardNeris": true,
+        "dlgRewardVaelenKey": true
+      }
+    }
+  ],
+  "runtimeErrors": [],
+  "summary": {
+    "runtimePass": 4,
+    "fail": 1
+  }
+}
