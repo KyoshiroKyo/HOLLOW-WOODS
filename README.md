@@ -1,6 +1,6 @@
 # 🌲 HOLLOW WOODS V1.5 – THE FOG THAT REMEMBERS (Màn Sương Vọng Ký Ức)
 
-> **Tập 1: The First Toll (Tiếng Chuông Đầu Tiên) — Bản Phát Hành Chính Thức V1.5 Production**  
+> **Tập 1: The First Toll (Tiếng Chuông Đầu Tiên) — Bản Phát Hành Chính Thức V1.5.5 Production**  
 > **Thể loại:** 2D Atmospheric Psychological Survival Horror (Kinh Dị Sinh Tồn Tâm Lý & Giải Đố)  
 > **Độ phân giải:** Native Canvas HD 1280×720 | World Camera Zoom 2.2× | Target 60 FPS  
 > **Kho lưu trữ GitHub:** [https://github.com/KyoshiroKyo/HOLLOW-WOODS](https://github.com/KyoshiroKyo/HOLLOW-WOODS)  

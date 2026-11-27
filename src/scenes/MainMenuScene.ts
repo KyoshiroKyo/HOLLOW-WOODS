@@ -64,6 +64,12 @@ export class MainMenuScene extends Phaser.Scene {
       strokeThickness: 1.5,
     }).setLetterSpacing(0.5);
     this.add.rectangle(80, 204, 114, 2, 0xC8963E).setOrigin(0, 0);
+    HDTextHelper.createText(this, 1254, 702, 'V1.5.5', {
+      fontSize: '12px',
+      color: '#98a391',
+      stroke: '#080c09',
+      strokeThickness: 1.5,
+    }).setOrigin(1, 1);
 
     const menuX = 288;
     const firstY = 248;
