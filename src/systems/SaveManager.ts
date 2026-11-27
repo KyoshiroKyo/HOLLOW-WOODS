@@ -416,6 +416,11 @@ export class SaveManager {
         }
       }
 
+      // HW-AG-B07: Migration cho các Save cũ bị lỗi trước FIX-23
+      // Điều kiện: đã làm edda_rune_guide (có cờ thưởng) NHƯNG chưa có eqp_bell_ward_charm ở bất kỳ vị trí nào
+      // và chưa được migrate lần này (idempotency guard).
+      SaveManager.migrateEddaRuneCharmV161(inventory, flags, storyFlags, equippedSlots, storageChest);
+
       return {
         saveVersion,
         saveSchemaVersion,
@@ -769,6 +774,60 @@ export class SaveManager {
       console.warn('[SaveManager] Lỗi tải Cloud Save bất đồng bộ, dùng bản lưu cục bộ:', e);
       return SaveManager.loadGame();
     }
+  }
+
+  /**
+   * HW-AG-B07: Migrate các Save cũ bị lỗi trước FIX-23 — không cấp thêm nếu eqp_bell_ward_charm
+   * đã tồn tại ở bất kỳ vị trí hợp lệ nào (inventory, equippedSlots.charm, storageChest).
+   * Idempotent: chỉ chạy 1 lần nhờ cờ 'migrated_edda_rune_charm_v161'.
+   * Được gọi từ sanitizeAndMigrateSaveData() — áp dụng cho cả loadGame() lẫn loadGameAsync().
+   */
+  private static migrateEddaRuneCharmV161(
+    inventory: [string, number][],
+    flags: string[],
+    storyFlags: string[],
+    equippedSlots: EquippedSlotsData,
+    storageChest: [string, number][]
+  ): void {
+    const CHARM_ID = 'eqp_bell_ward_charm';
+    const MIGRATION_FLAG = 'migrated_edda_rune_charm_v161';
+    const GRANT_FLAG = 'edda_rune_charm_granted';
+    const REWARD_FLAG = 'dlg_reward:edda_rune_guide';
+
+    // Guard idempotency: bỏ qua nếu đã migrate
+    if (flags.includes(MIGRATION_FLAG) || storyFlags.includes(MIGRATION_FLAG)) return;
+
+    // Chỉ migrate nếu Save đã từng hoàn thành edda_rune_guide (có ít nhất 1 cờ thưởng)
+    const hadGrantFlag = flags.includes(GRANT_FLAG) || storyFlags.includes(GRANT_FLAG);
+    const hadRewardFlag = flags.includes(REWARD_FLAG) || storyFlags.includes(REWARD_FLAG);
+    if (!hadGrantFlag && !hadRewardFlag) return;
+
+    // Kiểm tra eqp_bell_ward_charm ở mọi vị trí hợp lệ
+    const inInventory = inventory.some(([id, cnt]) => id === CHARM_ID && cnt > 0);
+    const inEquipped = equippedSlots.charm === CHARM_ID;
+    const inChest = storageChest.some(([id, cnt]) => id === CHARM_ID && cnt > 0);
+
+    // Đảm bảo cờ guard chống nhận trùng luôn được set đồng bộ (dù có hay không có vật phẩm)
+    if (!flags.includes(GRANT_FLAG)) flags.push(GRANT_FLAG);
+    if (!flags.includes(REWARD_FLAG)) flags.push(REWARD_FLAG);
+    if (!storyFlags.includes(GRANT_FLAG)) storyFlags.push(GRANT_FLAG);
+    if (!storyFlags.includes(REWARD_FLAG)) storyFlags.push(REWARD_FLAG);
+
+    if (!inInventory && !inEquipped && !inChest) {
+      // Save bị lỗi thực sự: cấp đúng 1 vật phẩm vào inventory
+      const existing = inventory.find(([id]) => id === CHARM_ID);
+      if (existing) {
+        existing[1] = 1;
+      } else {
+        inventory.push([CHARM_ID, 1]);
+      }
+      console.log('[SaveManager B07] Đã phục hồi eqp_bell_ward_charm cho Save bị lỗi trước FIX-23.');
+    }
+    // Else: charm đã có ở đâu đó — chỉ gắn idempotency flag, không cấp thêm
+
+    // Gắn cờ idempotency để không chạy lại lần sau
+    flags.push(MIGRATION_FLAG);
+    storyFlags.push(MIGRATION_FLAG);
   }
 
   public static clearSave(): void {
