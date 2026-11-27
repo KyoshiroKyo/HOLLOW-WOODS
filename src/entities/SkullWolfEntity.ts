@@ -21,8 +21,8 @@ export interface SkullWolfContext {
 
 export class SkullWolfEntity extends Phaser.Physics.Arcade.Sprite {
   public wolfState: SkullWolfState = 'patrol';
-  public maxHp: number = 3;
-  public currentHp: number = 3;
+  public maxHp: number = 30;
+  public currentHp: number = this.maxHp;
   public isDefeated: boolean = false;
   public hasHitPlayerInCurrentLunge: boolean = false;
 

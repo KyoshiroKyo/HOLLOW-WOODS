@@ -49,6 +49,8 @@ export class WildlifeSystem {
   public static readonly MAX_CROWS_PER_ZONE = 8;
   public static readonly MAX_MOTHS_PER_ZONE = 8;
   public static readonly MAX_SKULL_WOLVES_PER_ZONE = 2;
+  // Unapproved ambient encounters keep their implementations without production spawn permission.
+  private static readonly APPROVED_AMBUSH_SPAWNS: ReadonlySet<string> = new Set();
   public static readonly MAX_GLOBAL_ENTITIES = 28;
   public static readonly CULLING_DISTANCE = 560; // Bán kính ngủ đông (pixels)
 
@@ -553,7 +555,7 @@ export class WildlifeSystem {
     // Đội hình Quái Hộ Vệ Đầm Lầy: Mire Warden / Behemoth kéo theo 3 Dơi Sương Mù
     const isBehemothOrWardenActive = (this.shadowBehemoth && this.shadowBehemoth.active && !this.shadowBehemoth.isDefeated && this.shadowBehemoth.bossState !== 'idle') ||
       Boolean((this.scene as any).isBossFightActive);
-    if (isBehemothOrWardenActive && this.mistBats.length < 3 && (time - this.lastBatAmbushTime > 15000)) {
+    if (WildlifeSystem.APPROVED_AMBUSH_SPAWNS.has('mist_bat') && isBehemothOrWardenActive && this.mistBats.length < 3 && (time - this.lastBatAmbushTime > 15000)) {
       this.lastBatAmbushTime = time;
       this.mistBats.push(new MistBatAmbushEntity(this.scene, px - 60, py - 90, px, py));
       this.mistBats.push(new MistBatAmbushEntity(this.scene, px + 60, py - 90, px, py));
@@ -568,7 +570,7 @@ export class WildlifeSystem {
     const batCooldown = this.currentZoneId === 'deep_forest' ? 30000 : (this.currentZoneId === 'silent_mire' ? 40000 : (this.currentZoneId === 'crooked_path' ? 45000 : 60000));
     const maxBats = this.currentZoneId === 'deep_forest' ? 3 : (this.currentZoneId === 'crooked_path' ? 1 : 2);
 
-    if (isNocturnal && !isSafeZone && batZones.includes(this.currentZoneId) && !isUnderGracePeriod) {
+    if (WildlifeSystem.APPROVED_AMBUSH_SPAWNS.has('mist_bat') && isNocturnal && !isSafeZone && batZones.includes(this.currentZoneId) && !isUnderGracePeriod) {
       if (this.mistBats.length < maxBats && (time - this.lastBatAmbushTime > batCooldown)) {
         if (ctx.isPlayerSprinting || !lightActive) {
           this.lastBatAmbushTime = time;
@@ -594,7 +596,7 @@ export class WildlifeSystem {
     const shadeCooldown = (this.currentZoneId === 'deep_forest' || this.currentZoneId === 'broken_bell_shrine') ? 30000 : (this.currentZoneId === 'sub_root_cellar' ? 75000 : 45000);
     const maxShades = this.currentZoneId === 'broken_bell_shrine' ? 3 : (this.currentZoneId === 'crooked_path' || this.currentZoneId === 'silent_mire' ? 1 : 2);
 
-    if ((ctx.timePhase === 'NIGHT' || isUnderground) && !isSafeZone && shadeZones.includes(this.currentZoneId) && !isUnderGracePeriod) {
+    if (WildlifeSystem.APPROVED_AMBUSH_SPAWNS.has('wandering_shade') && (ctx.timePhase === 'NIGHT' || isUnderground) && !isSafeZone && shadeZones.includes(this.currentZoneId) && !isUnderGracePeriod) {
       const playerComposure = PlayerState.getInstance().stats.composure;
       if (this.wanderingShades.length < maxShades && (time - this.lastShadeAmbushTime > shadeCooldown)) {
         if (playerComposure < 50 || isUnderground) {
@@ -618,7 +620,7 @@ export class WildlifeSystem {
 
     // 3. Goblin Scout (Kẻ Rình Mập Vô Diện / The Unseen Stalker)
     const scoutZones = ['crooked_path', 'deep_forest', 'abyssal_chasm'];
-    if (!isSafeZone && scoutZones.includes(this.currentZoneId)) {
+    if (WildlifeSystem.APPROVED_AMBUSH_SPAWNS.has('goblin_scout') && !isSafeZone && scoutZones.includes(this.currentZoneId)) {
       if (this.goblinScouts.length === 0 && (time - this.lastScoutSpawnTime > 60000)) {
         this.lastScoutSpawnTime = time;
         const spawnX = px + (Math.random() < 0.5 ? -140 : 140);

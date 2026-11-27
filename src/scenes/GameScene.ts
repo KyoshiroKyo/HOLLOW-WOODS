@@ -3876,7 +3876,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     const composure = this.playerState.stats.composure;
-    const isSafeSettlement = isVillageSanctuary(this.currentZoneId);
+    const isSafeSettlement = isVillageSanctuary(this.currentZoneId) || this.currentZoneId === 'fog_crossing';
     const isNearCampfire = this.survivalSystem.isNearWarmth(this.player.x, this.player.y, this.currentZoneId);
     const isInSanctuary = CampSanctuarySystem.getInstance().isPlayerInSanctuary(this.player.x, this.player.y, this.currentZoneId);
 
@@ -3910,6 +3910,16 @@ export class GameScene extends Phaser.Scene {
       }
 
       const dist = Math.hypot(this.player.x - app.x, this.player.y - app.y);
+
+      // Nhánh 2: Tự động mờ dần và dọn dẹp sạch khỏi bộ nhớ khi:
+      // - Người chơi quay lưng bỏ đi xa (> 320px)
+      // - Người chơi bước vào vòng lửa của Sir Vaelen / Làng Bellhollow
+      // - Tinh Thần hồi phục lên trên 45/100
+      if (dist > 320 || isNearCampfire || isSafeSettlement || isInSanctuary || composure >= 45) {
+        app.fadeOutAndDestroy();
+        this.knightApparitions.splice(i, 1);
+        continue;
+      }
 
       // Nhánh 1: Tan rã bạo phát khói đen khi:
       // - Người chơi tiến lại gần (< 85px)
@@ -3947,16 +3957,6 @@ export class GameScene extends Phaser.Scene {
         if (this.uiScene) {
           this.uiScene.showPopupMessage('⚠️ Ảo ảnh tan rã trong sương đêm! Tinh Thần -4');
         }
-        continue;
-      }
-
-      // Nhánh 2: Tự động mờ dần và dọn dẹp sạch khỏi bộ nhớ khi:
-      // - Người chơi quay lưng bỏ đi xa (> 320px)
-      // - Người chơi bước vào vòng lửa của Sir Vaelen / Làng Bellhollow
-      // - Tinh Thần hồi phục lên trên 45/100
-      if (dist > 320 || isNearCampfire || isSafeSettlement || isInSanctuary || composure >= 45) {
-        app.fadeOutAndDestroy();
-        this.knightApparitions.splice(i, 1);
         continue;
       }
 
