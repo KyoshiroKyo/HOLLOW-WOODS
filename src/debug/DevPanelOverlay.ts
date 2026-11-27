@@ -779,17 +779,11 @@ export class DevPanelOverlay {
         this.update();
         break;
       case 'copy-log': {
-        // SE-004: clipboard-write không có trong permissions P2Game — dùng try/catch + fallback
+        // SE-004: Không gọi navigator.clipboard (P2Game sandbox cấm clipboard-write)
         const logText = this.manager.getLogs()
           .map(e => `[${e.time}] ${e.level}: ${e.message}${e.count > 1 ? ` ×${e.count}` : ''}`)
           .join('\n');
-        if (navigator.clipboard?.writeText) {
-          navigator.clipboard.writeText(logText).catch(() => {
-            console.warn('[DevPanel] clipboard-write bị từ chối (P2Game sandbox).');
-          });
-        } else {
-          console.warn('[DevPanel] clipboard-write không khả dụng.');
-        }
+        this.presentCopyTextarea('[data-log-summary]', 'Dev Logs', logText, target, 'Đã chọn log');
         break;
       }
       case 'speed':
@@ -917,25 +911,29 @@ export class DevPanelOverlay {
   public getBugInfo?: () => string;
   public getProfilerInfo?: () => string;
 
+  private presentCopyTextarea(
+    selector: string,
+    ariaLabel: string,
+    text: string,
+    target: HTMLElement,
+    label: string
+  ): void {
+    const area = this.body.querySelector<HTMLTextAreaElement>(selector) ?? document.createElement('textarea');
+    if (selector === '[data-bug-summary]') area.dataset.bugSummary = '';
+    else area.dataset.logSummary = '';
+    area.readOnly = true;
+    area.setAttribute('aria-label', ariaLabel);
+    area.value = text;
+    this.body.prepend(area);
+    area.select();
+    target.textContent = label;
+  }
+
   private copyBugInfo(target: HTMLElement): void {
     const summary = this.getBugInfo?.();
     if (!summary) return;
-    const fallback = () => {
-      const area = this.body.querySelector<HTMLTextAreaElement>('[data-bug-summary]') ?? document.createElement('textarea');
-      area.dataset.bugSummary = '';
-      area.readOnly = true;
-      area.setAttribute('aria-label', 'Bug Info');
-      area.value = summary;
-      this.body.prepend(area);
-      area.select();
-    };
-    if (!navigator.clipboard?.writeText) {
-      fallback();
-      return;
-    }
-    void navigator.clipboard.writeText(summary).then(() => {
-      target.textContent = 'Đã sao chép';
-    }, fallback);
+    // SE-004: Không gọi navigator.clipboard để tuân thủ P2Game static scan (không khai báo clipboard-write)
+    this.presentCopyTextarea('[data-bug-summary]', 'Bug Info', summary, target, 'Đã chọn thông tin');
   }
 
   private refreshItems(query = ''): void {
