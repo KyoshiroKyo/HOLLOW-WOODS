@@ -1,0 +1,49 @@
+{
+  "task": "HW-V16-B05",
+  "status": "BLOCKED",
+  "blocker_reason": "HW-V16-A07 is neither committed nor accepted on any branch (4 modified src/ files and 2 untracked A07 files remain uncommitted in G:\\HOLLOW WOODS); additionally HW-V16-A06-R1 (fc5bf1d5f849f694a6b92e270ef747b2f2914246) is on isolated branch feat/v1.6-a06-r1-identity-evidence and has not been merged into feat/v1.5.3-ag-world-polish.",
+  "dependencies_checked": {
+    "A05": {
+      "status": "COMMITTED & ACCEPTED",
+      "report": "Read/V1.5/Reports/V16/HW_V16_A05_BRANCHING_DIALOGUE_SYSTEM_REPORT.md"
+    },
+    "A06_R1": {
+      "status": "COMMITTED & PUSHED ON ISOLATED BRANCH (PENDING GPT ACCEPTANCE / UNMERGED TO TRACK A/B)",
+      "branch": "origin/feat/v1.6-a06-r1-identity-evidence",
+      "sha": "fc5bf1d5f849f694a6b92e270ef747b2f2914246",
+      "note": "Working tree report HW_V16_A06_R1_IDENTITY_EVIDENCE_REPORT.md on feat/v1.5.3-ag-world-polish still reflects pre-approval BLOCKED checkpoint, while isolated branch holds A06-R1 implementation."
+    },
+    "A07": {
+      "status": "UNCOMMITTED / UNTESTED / NOT ACCEPTED",
+      "worktree": "G:\\HOLLOW WOODS",
+      "branch": "feat/v1.5.3-ag-world-polish",
+      "head_sha": "e4edb07bcbf2865681277a12404624c4c495bb1f",
+      "resume_checkpoint": "36f43b6 (HW_V16_A07_RESUME_CHECKPOINT.md)",
+      "uncommitted_src_files": [
+        "src/scenes/GameScene.ts",
+        "src/state/PlayerState.ts",
+        "src/systems/BossEncounterSystem.ts",
+        "src/world/WorldGatingSystem.ts"
+      ],
+      "untracked_a07_files": [
+        "Read/V1.5/Reports/V16/HW_V16_A07_ENDING_APPROVAL_DRAFT.md",
+        "scripts/verify_v16_a07_quest_and_endings.mjs"
+      ],
+      "tests_executed_after_a07_edit": 0
+    },
+    "B04": {
+      "status": "COMMITTED & PUSHED",
+      "branch": "origin/fix/v1.6-b04-input-ui",
+      "sha": "6fd63fb3d566f9f44777155a7cdeb75631520561",
+      "report": "Read/V1.5/Reports/V16/HW_V16_B04_INPUT_UI_REGRESSION_REPORT.md"
+    }
+  },
+  "read_only_bug_inventory_against_baseline": {
+    "H4-NEW-03_OPEN-01_relic_heart_of_roots_and_clapper": "Drafted in uncommitted A07 diff (GameScene.ts, BossEncounterSystem.ts); NOT verified/committed.",
+    "OPEN-02_broken_bell_shrine_early_unlock": "Drafted in uncommitted A07 diff (WorldGatingSystem.ts, PlayerState.ts, GameScene.ts); NOT verified/committed.",
+    "finn_dialogue_routing_and_sq08": "Drafted in uncommitted A07 diff (GameScene.ts); NOT verified/committed.",
+    "A05_dialogue_idempotency_markers": "dlg_trust:<key>, dlg_quest:<key>, dlg_reward:<key>, and edda_rune_guide charm guard exist in DialogueSystem.ts (lines 447-487) on Track A/B baseline.",
+    "npc_consume_or_reopen_regression_matrix": "NOT RUN (blocked pending A07 verified commit checkpoint + A06-R1 sync)."
+  },
+  "src_changes_made_by_b05": 0
+}
