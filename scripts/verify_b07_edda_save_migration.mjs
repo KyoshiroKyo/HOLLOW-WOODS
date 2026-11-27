@@ -330,3 +330,49 @@ test('FIX-23 regression: Neris grants first poultice once', () => {
   completeDialogue('neris_intro', 0);
   assert.equal(state.getItemCount('item_herbal_poultice'), 1);
 });
+
+test('MICRO-03-R1: catalog items round-trip without false warnings, unknown key survives and warns', t => {
+  const verifiedIds = [
+    'food_forest_root_soup', 'res_forest_roots', 'res_forest_mushroom', 'res_tough_fiber',
+    'seed_roots', 'seed_mushroom', 'seed_fiber', 'mat_skull_fang', 'mat_shadow_essence',
+    'quest_rune_fragment', 'quest_purification_key', 'eqp_skull_fang_charm', 'eqp_abyssal_ward_charm'
+  ];
+  const catalog = JSON.parse(readFileSync(new URL('../src/data/items.json', import.meta.url), 'utf8'));
+  const catalogIds = new Set(catalog.items.map(item => item.id));
+  for (const id of verifiedIds) assert.ok(catalogIds.has(id), id);
+
+  const unknown = 'fixture_unknown_item_micro03';
+  assert.ok(!catalogIds.has(unknown));
+  const legacyIds = ['item_runed_iron_part', 'food_root_soup'];
+  const inventory = [...verifiedIds, ...legacyIds, 'quest_corrupted_knight_crest', unknown]
+    .map((id, i) => [id, (i % 3) + 1]);
+  const expectedInventory = inventory.map(([id, count]) =>
+    [id === 'quest_corrupted_knight_crest' ? 'quest_corrupted_crest' : id, count]);
+  seedLocal(fixture({ inventory, storyFlags: [grant, reward] }));
+  const warn = t.mock.method(console, 'warn', () => {});
+  const flags = [grant, reward];
+
+  function assertLoaded(data) {
+    assert.ok(data);
+    assert.equal(data.saveSchemaVersion, 3);
+    assert.deepEqual(data.inventory, expectedInventory);
+    assert.deepEqual([...state.inventory], expectedInventory);
+    assert.deepEqual(data.storyFlags, flags);
+    assert.equal(state.getItemCount(charm), 0);
+  }
+
+  function unknownWarnings() {
+    return warn.mock.calls.map(call => String(call.arguments[0])).filter(message =>
+      message.includes('[SaveManager Warning]') && message.includes('runtimeKey'));
+  }
+
+  assertLoaded(SaveManager.loadGame());
+  assert.equal(SaveManager.saveGame('MICRO-03 round trip', 'bellhollow', 800, 700), true);
+  assert.deepEqual(JSON.parse(local.get(slot)).inventory, expectedInventory);
+  state.reset();
+  assertLoaded(SaveManager.loadGame());
+
+  const warnedKeys = unknownWarnings().map(message => message.match(/"([^"]+)"/)?.[1]);
+  assert.deepEqual([...new Set(warnedKeys)], [unknown]);
+  assert.equal(warnedKeys.length, 3, 'one warning from each load and save');
+});

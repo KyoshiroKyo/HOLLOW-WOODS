@@ -83,7 +83,12 @@ export class SaveManager {
     'food_calming_tea', 'food_roasted_mushroom', 'food_root_soup', 'item_resin_flare',
     'wpn_walking_staff', 'wpn_iron_spear', 'wpn_hunting_hatchet',
     'eqp_moss_cloak', 'eqp_trail_boots', 'eqp_field_backpack', 'eqp_bell_ward_charm',
-    'quest_corrupted_crest', 'item_knight_journal_page'
+    'quest_corrupted_crest', 'item_knight_journal_page',
+    'food_forest_root_soup', 'res_forest_roots', 'res_forest_mushroom', 'res_tough_fiber',
+    'seed_roots', 'seed_mushroom', 'seed_fiber',
+    'mat_skull_fang', 'mat_shadow_essence',
+    'quest_rune_fragment', 'quest_purification_key',
+    'eqp_skull_fang_charm', 'eqp_abyssal_ward_charm'
   ]);
 
   /**
