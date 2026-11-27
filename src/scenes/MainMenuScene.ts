@@ -33,7 +33,10 @@ export class MainMenuScene extends Phaser.Scene {
     super({ key: SCENE_MAIN_MENU });
   }
 
-  public create(): void {
+  public create(data?: { spawnUnavailable?: boolean }): void {
+    if (data?.spawnUnavailable) {
+      this.time.delayedCall(500, () => this.showNoticeToast('Không tìm được vị trí an toàn để tiếp tục bản lưu.'));
+    }
     this.cameras.main.setRoundPixels(true);
     this.cameras.main.setZoom(1.0);
 

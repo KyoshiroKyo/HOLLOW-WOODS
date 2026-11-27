@@ -412,6 +412,10 @@ export class GameScene extends Phaser.Scene {
 
       // V15-34: Tự động dò quét và giải quyết vị trí đứng an toàn khi nạp điểm lưu
       const safeSpawn = SafeSpawnResolver.resolveSafeSpawn(this, rawX, rawY, initialZone);
+      if (!safeSpawn) {
+        this.scene.start(SCENE_MAIN_MENU, { spawnUnavailable: true });
+        return;
+      }
       spawnX = safeSpawn.x;
       spawnY = safeSpawn.y;
 
@@ -1376,7 +1380,7 @@ export class GameScene extends Phaser.Scene {
 
     if (SafeSpawnResolver.isPositionBlocked(this, this.player.x, this.player.y)) {
       const result = SafeSpawnResolver.resolveSafeSpawn(this, this.player.x, this.player.y, this.currentZoneId);
-      if (result.adjusted) {
+      if (result?.adjusted) {
         this.player.setPosition(result.x, result.y);
         this.player.lastSafePosition = { x: result.x, y: result.y };
         if (this.player.body) {
@@ -4415,6 +4419,14 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
+    this.worldBuilder.ensureZoneRendered(trans.toZone);
+    const destination = SafeSpawnResolver.resolveSafeSpawn(this, trans.targetSpawn.x, trans.targetSpawn.y, trans.toZone);
+    if (!destination) {
+      this.transitionCooldownUntil = performance.now() + 1500;
+      this.uiScene?.showPopupMessage('Lối đi chưa có điểm đến an toàn.');
+      return;
+    }
+
     // TRƯỜNG HỢP 2B: CỔNG DỊCH CHUYỂN / PHÂN KHU ĐẶC BIỆT (PORTAL / GATEWAY)
     this.isTransitioning = true;
     this.transitionCooldown = 1500; // 1.5s cooldown chống kích hoạt lặp liên tục
@@ -4431,7 +4443,6 @@ export class GameScene extends Phaser.Scene {
     }
 
     // C4-13-20 & V152-07 (#13): Đảm bảo vùng đích đã dựng và ngủ đông các vùng xa
-    this.worldBuilder.ensureZoneRendered(trans.toZone);
     this.worldBuilder.hibernateDistantZoneObjects(trans.toZone);
 
     // Hiệu ứng flash nhẹ camera tạo cảm giác chuyển tiếp tự nhiên
@@ -4441,16 +4452,16 @@ export class GameScene extends Phaser.Scene {
     this.applyCameraBoundsForZone(trans.toZone);
 
     // Đặt vị trí và hướng nhìn chuẩn xác tại vùng đích
-    this.player.setPosition(trans.targetSpawn.x, trans.targetSpawn.y);
+    this.player.setPosition(destination.x, destination.y);
     if (this.player.body) {
-      (this.player.body as Phaser.Physics.Arcade.Body).reset(trans.targetSpawn.x, trans.targetSpawn.y);
+      (this.player.body as Phaser.Physics.Arcade.Body).reset(destination.x, destination.y);
     }
     this.player.setVelocity(0, 0);
     const targetFacing = this.resolveTransitionFacing(trans);
     this.player.setFacing(targetFacing);
 
     // C4-13-02: Canh giữa camera ngay lập tức vào vị trí nhân vật tại vùng mới
-    this.cameraSystem.centerOn(trans.targetSpawn.x, trans.targetSpawn.y);
+    this.cameraSystem.centerOn(destination.x, destination.y);
     // C4-12-29: Cập nhật culling ngay lập tức cho vùng đích mới
     this.worldBuilder.updateCameraCulling(this.cameras.main);
 
@@ -4518,6 +4529,10 @@ export class GameScene extends Phaser.Scene {
 
     this.worldBuilder.ensureZoneRendered(zoneId);
     const spawn = SafeSpawnResolver.resolveSafeSpawn(this, x, y, zoneId);
+    if (!spawn) {
+      this.uiScene?.showPopupMessage('Không tìm được vị trí an toàn để dịch chuyển.');
+      return;
+    }
     this.player.setPosition(spawn.x, spawn.y);
     (this.player.body as Phaser.Physics.Arcade.Body).reset(spawn.x, spawn.y);
     this.player.resetAllInputState();

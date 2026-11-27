@@ -65,6 +65,7 @@ export class SafeSpawnResolver {
     y: number,
     padding: number = 0
   ): boolean {
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return true;
     const foot = SafeSpawnResolver.getFootBoundingBox(x, y, padding);
 
     // 1. Kiểm tra giới hạn thế giới
@@ -111,10 +112,11 @@ export class SafeSpawnResolver {
     startX: number,
     startY: number,
     maxRadius: number = 160,
-    step: number = 16
+    step: number = 16,
+    isAvailable = (x: number, y: number) => !SafeSpawnResolver.isPositionBlocked(scene, x, y, 2)
   ): { x: number; y: number } | null {
     // Nếu vị trí hiện tại đã an toàn tuyệt đối
-    if (!SafeSpawnResolver.isPositionBlocked(scene, startX, startY, 2)) {
+    if (isAvailable(startX, startY)) {
       return { x: startX, y: startY };
     }
 
@@ -143,7 +145,7 @@ export class SafeSpawnResolver {
         const candX = Math.round(startX + r * Math.cos(angle));
         const candY = Math.round(startY + r * Math.sin(angle));
 
-        if (!SafeSpawnResolver.isPositionBlocked(scene, candX, candY, 2)) {
+        if (isAvailable(candX, candY)) {
           return { x: candX, y: candY };
         }
       }
@@ -223,40 +225,27 @@ export class SafeSpawnResolver {
     rawX: number,
     rawY: number,
     zoneId?: string
-  ): SafeSpawnResult {
-    // 1. Kiểm tra vị trí gốc
-    if (!SafeSpawnResolver.isPositionBlocked(scene, rawX, rawY, 1)) {
-      return { x: rawX, y: rawY, adjusted: false, fallback: false };
-    }
+  ): SafeSpawnResult | null {
+    const bounds = zoneId ? scene.worldBuilder?.getZone?.(zoneId)?.bounds : undefined;
+    if (zoneId && !bounds) return null;
 
-    console.warn(`[SafeSpawnResolver] Vị trí ban đầu (${rawX}, ${rawY}) bị kẹt va chạm! Đang quét vị trí an toàn lân cận...`);
-
-    // 2. Quét xoắn ốc trong bán kính 16px -> 160px
-    const nearbySafe = SafeSpawnResolver.findNearestSafePosition(scene, rawX, rawY, 160, 16);
-    if (nearbySafe) {
-      console.log(`[SafeSpawnResolver] Đã tìm thấy vị trí an toàn lân cận tại (${nearbySafe.x}, ${nearbySafe.y})`);
-      return {
-        x: nearbySafe.x,
-        y: nearbySafe.y,
-        adjusted: true,
-        fallback: false,
-        reason: 'nearby_scan'
-      };
-    }
-
-    // 3. Fallback về điểm Sanctuary an toàn của phân khu
-    const fallback = SafeSpawnResolver.getSanctuaryFallback(zoneId);
-    // Xác minh vị trí fallback không bị kẹt (nếu kẹt nhẹ thì quét lân cận fallback)
-    const verifiedFallback = SafeSpawnResolver.findNearestSafePosition(scene, fallback.x, fallback.y, 80, 16) || fallback;
-    console.warn(`[SafeSpawnResolver] Không tìm thấy ô trống quanh (${rawX}, ${rawY}). Dịch chuyển về Sanctuary Fallback: (${verifiedFallback.x}, ${verifiedFallback.y})`);
-
-    return {
-      x: verifiedFallback.x,
-      y: verifiedFallback.y,
-      adjusted: true,
-      fallback: true,
-      reason: 'sanctuary_fallback'
+    const isAvailable = (x: number, y: number): boolean => {
+      // The character anchor marks ground contact. Portal spawns may sit exactly on a seam.
+      if (bounds && (x < bounds.x || x > bounds.x + bounds.width ||
+          y < bounds.y || y > bounds.y + bounds.height)) return false;
+      return !SafeSpawnResolver.isPositionBlocked(scene, x, y, 2);
     };
+
+    if (isAvailable(rawX, rawY)) return { x: rawX, y: rawY, adjusted: false, fallback: false };
+    const nearby = SafeSpawnResolver.findNearestSafePosition(scene, rawX, rawY, 160, 16, isAvailable);
+    if (nearby) return { ...nearby, adjusted: true, fallback: false, reason: 'nearby_scan' };
+
+    const fallback = SafeSpawnResolver.getSanctuaryFallback(zoneId);
+    const verified = SafeSpawnResolver.findNearestSafePosition(scene, fallback.x, fallback.y, 80, 16, isAvailable);
+    if (verified) return { ...verified, adjusted: true, fallback: true, reason: 'sanctuary_fallback' };
+
+    console.warn('[SafeSpawnResolver] Không tìm được vị trí an toàn trong phân khu:', zoneId);
+    return null;
   }
 
   /**
