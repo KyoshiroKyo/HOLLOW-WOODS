@@ -1,0 +1,674 @@
+{
+  "task": "HW-CODEX-00-R1",
+  "date": "2026-11-27",
+  "baseline": "c9de0c21b0301003895cf2d106229dfef564a2b6",
+  "environment": {
+    "os": "Windows 10 build 19045",
+    "node": "v26.7.0",
+    "browser_mode": "headless Chrome, isolated throwaway profile",
+    "endpoint": "http://127.0.0.1:5187",
+    "bundle": "npm run build, Vite preview",
+    "sdk": "external P2Game SDK blocked for isolated standalone test",
+    "owner_save_used": false,
+    "keyboard": "Chrome DevTools synthetic key events; physical EVKey NOT_RUN",
+    "window": [
+      1280,
+      720
+    ],
+    "device_scale_factor": 1,
+    "graphics_flags": [],
+    "browser": "Chrome/158.0.8127.38",
+    "chrome_gpu": {
+      "devices": [
+        {
+          "vendorId": 4318,
+          "deviceId": 7042,
+          "subSysId": 932451416,
+          "revision": 161,
+          "vendorString": "",
+          "deviceString": "NVIDIA GeForce GTX 1070 Ti",
+          "driverVendor": "NVIDIA",
+          "driverVersion": "32.0.15.8266"
+        },
+        {
+          "vendorId": 5140,
+          "deviceId": 140,
+          "subSysId": 0,
+          "revision": 0,
+          "vendorString": "",
+          "deviceString": "Microsoft Basic Render Driver",
+          "driverVendor": "",
+          "driverVersion": "10.0.19041.7548"
+        }
+      ],
+      "feature_status": {
+        "gpu_compositing": "enabled",
+        "webgl": "enabled"
+      },
+      "gl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8266)",
+      "gl_vendor": "Google Inc. (NVIDIA)"
+    },
+    "renderer": {
+      "type": 2,
+      "renderer": "WebGL",
+      "webgl_version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+      "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "webgl_vendor": "Google Inc. (NVIDIA)",
+      "canvas": [
+        1280,
+        720
+      ],
+      "viewport": [
+        1280,
+        720
+      ],
+      "pixel_ratio": 1,
+      "rect": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "graphics_quality": null
+    },
+    "branch": "feat/v1.6-codex-development",
+    "dependencies": {
+      "npm": "11.19.0",
+      "phaser": "4.2.1",
+      "vite": "5.4.21",
+      "typescript": "5.9.3",
+      "install_method": "Copied existing read-only project dependency installation to ignored Codex node_modules after npm ci ECONNRESET and validated platform-relevant versions against package-lock.json."
+    }
+  },
+  "checks": {
+    "main_menu": {
+      "status": "PASS",
+      "observation": {
+        "scene": true,
+        "rect": [
+          0,
+          0,
+          1280,
+          720
+        ]
+      }
+    },
+    "new_game": {
+      "status": "PASS",
+      "observation": {
+        "input": "CDP mouse click on BƯỚC VÀO MÀN SƯƠNG",
+        "canvas_xy": [
+          288,
+          248
+        ],
+        "spawn": {
+          "zone": "fog_crossing",
+          "x": 120,
+          "y": 195,
+          "anim": "wayfarer_idle_down",
+          "frame": "armed_idle_down_5",
+          "texture": "black_knight_armed_idle",
+          "armed": true,
+          "scale": 1.5,
+          "origin": [
+            0.5,
+            1
+          ],
+          "body": [
+            18,
+            12
+          ],
+          "camZoom": 2.2,
+          "composure": 91.24819
+        }
+      }
+    },
+    "hud": {
+      "status": "PASS",
+      "observation": {
+        "composureValText": {
+          "visible": true,
+          "text": "Tinh Thần: 91/100"
+        },
+        "staminaValText": {
+          "visible": true,
+          "text": "Thể Lực: 100/100"
+        },
+        "healthValText": {
+          "visible": true,
+          "text": "Sinh Lực: 100/100"
+        },
+        "zoneBadgeText": {
+          "visible": true,
+          "text": "🧭 Fog Crossing"
+        },
+        "timeWidgetBg": {
+          "visible": true,
+          "text": null
+        }
+      }
+    },
+    "performance": {
+      "status": "PASS",
+      "observation": {
+        "method": "requestAnimationFrame callback intervals; foreground headless tab stationary, after gameplay warmup",
+        "sampling_ms": 5003.899999999998,
+        "interval_count": 300,
+        "fps": 59.9532364755491,
+        "avg_ms": 16.67966666666666,
+        "p50_ms": 16.700000000000728,
+        "p95_ms": 16.799999999999272,
+        "p99_ms": 16.900000000001455,
+        "max_ms": 17,
+        "phaser_actual_fps": 55.5843473514542,
+        "visibility": "visible"
+      }
+    },
+    "locomotion_initial_stance": {
+      "status": "PASS",
+      "observation": {
+        "starts": {
+          "zone": "fog_crossing",
+          "x": 120,
+          "y": 195,
+          "anim": "wayfarer_idle_down",
+          "frame": "armed_idle_down_1",
+          "texture": "black_knight_armed_idle",
+          "armed": true,
+          "scale": 1.5,
+          "origin": [
+            0.5,
+            1
+          ],
+          "body": [
+            18,
+            12
+          ],
+          "camZoom": 2.2,
+          "composure": 99.1023449999993
+        },
+        "walk": {
+          "zone": "fog_crossing",
+          "x": 144.08333333333337,
+          "y": 195,
+          "anim": "wayfarer_walk_right",
+          "frame": "armed_walk_right_1",
+          "texture": "black_knight_movement",
+          "armed": true,
+          "scale": 1.5,
+          "origin": [
+            0.5,
+            1
+          ],
+          "body": [
+            18,
+            12
+          ],
+          "camZoom": 2.2,
+          "composure": 99.55273499999927
+        },
+        "sprint": {
+          "zone": "fog_crossing",
+          "x": 196.83333333333357,
+          "y": 195,
+          "anim": "wayfarer_run_right",
+          "frame": "armed_run_sequence_right_7",
+          "texture": "black_knight_conversion_motion",
+          "armed": true,
+          "scale": 1.1400000000000001,
+          "origin": [
+            0.5,
+            0.875
+          ],
+          "body": [
+            18,
+            12
+          ],
+          "camZoom": 2.2,
+          "composure": 100
+        },
+        "released": {
+          "zone": "fog_crossing",
+          "x": 211.91666666666683,
+          "y": 195,
+          "anim": "wayfarer_walk_right",
+          "frame": "armed_walk_right_3",
+          "texture": "black_knight_movement",
+          "armed": true,
+          "scale": 1.5,
+          "origin": [
+            0.5,
+            1
+          ],
+          "body": [
+            18,
+            12
+          ],
+          "camZoom": 2.2,
+          "composure": 100
+        },
+        "idle": {
+          "zone": "fog_crossing",
+          "x": 213.33333333333348,
+          "y": 195,
+          "anim": "wayfarer_idle_right",
+          "frame": "armed_idle_right_0",
+          "texture": "black_knight_movement",
+          "armed": true,
+          "scale": 1.5,
+          "origin": [
+            0.5,
+            1
+          ],
+          "body": [
+            18,
+            12
+          ],
+          "camZoom": 2.2,
+          "composure": 95.20020499999997
+        }
+      }
+    },
+    "locomotion_other_stance": {
+      "status": "PASS",
+      "observation": {
+        "starts": {
+          "zone": "fog_crossing",
+          "x": 166.5833333333338,
+          "y": 195,
+          "anim": "wayfarer_idle_left",
+          "frame": "armed_idle_left_1",
+          "texture": "black_knight_armed_idle",
+          "armed": true,
+          "scale": 1.5,
+          "origin": [
+            0.5,
+            1
+          ],
+          "body": [
+            18,
+            12
+          ],
+          "camZoom": 2.2,
+          "composure": 98.57790499999972
+        },
+        "walk": {
+          "zone": "fog_crossing",
+          "x": 190.66666666666697,
+          "y": 195,
+          "anim": "wayfarer_walk_right",
+          "frame": "armed_walk_right_1",
+          "texture": "black_knight_movement",
+          "armed": true,
+          "scale": 1.5,
+          "origin": [
+            0.5,
+            1
+          ],
+          "body": [
+            18,
+            12
+          ],
+          "camZoom": 2.2,
+          "composure": 99.02835499999968
+        },
+        "sprint": {
+          "zone": "fog_crossing",
+          "x": 238.00000000000006,
+          "y": 203,
+          "anim": "wayfarer_run_right",
+          "frame": "armed_run_sequence_right_7",
+          "texture": "black_knight_conversion_motion",
+          "armed": true,
+          "scale": 1.1400000000000001,
+          "origin": [
+            0.5,
+            0.875
+          ],
+          "body": [
+            18,
+            12
+          ],
+          "camZoom": 2.2,
+          "composure": 99.57880999999962
+        },
+        "released": {
+          "zone": "fog_crossing",
+          "x": 254.49999999999997,
+          "y": 203,
+          "anim": "wayfarer_walk_right",
+          "frame": "armed_walk_right_3",
+          "texture": "black_knight_movement",
+          "armed": true,
+          "scale": 1.5,
+          "origin": [
+            0.5,
+            1
+          ],
+          "body": [
+            18,
+            12
+          ],
+          "camZoom": 2.2,
+          "composure": 99.85392499999959
+        },
+        "idle": {
+          "zone": "fog_crossing",
+          "x": 255.91666666666663,
+          "y": 203,
+          "anim": "wayfarer_idle_right",
+          "frame": "armed_idle_right_1",
+          "texture": "black_knight_movement",
+          "armed": true,
+          "scale": 1.5,
+          "origin": [
+            0.5,
+            1
+          ],
+          "body": [
+            18,
+            12
+          ],
+          "camZoom": 2.2,
+          "composure": 100
+        }
+      }
+    },
+    "journal": {
+      "status": "PASS",
+      "observation": {
+        "code": "KeyJ",
+        "modal": "journalModal",
+        "opened": true,
+        "closed": true
+      }
+    },
+    "inventory": {
+      "status": "PASS",
+      "observation": {
+        "code": "KeyI",
+        "modal": "craftingModal",
+        "opened": true,
+        "closed": true
+      }
+    },
+    "world_map": {
+      "status": "PASS",
+      "observation": {
+        "code": "KeyN",
+        "modal": "parchmentWorldMapModal",
+        "opened": true,
+        "closed": true
+      }
+    },
+    "day_night": {
+      "status": "PASS",
+      "observation": {
+        "method": "Accelerated in-memory TimeSystem phase edges",
+        "before": {
+          "phase": "DAY",
+          "time": 10.605109999999996,
+          "ambient": 10137796,
+          "day": 1
+        },
+        "night": {
+          "phase": "NIGHT",
+          "time": 271.8180899999995,
+          "ambient": 1709339,
+          "day": 1,
+          "events": [
+            {
+              "from": "DAY",
+              "to": "DUSK",
+              "dayCount": 1,
+              "alert": "🌅 Hoàng hôn cam tím buông xuống... Gió lạnh bắt đầu thổi qua rặng thông."
+            },
+            {
+              "from": "DUSK",
+              "to": "NIGHT",
+              "dayCount": 1,
+              "alert": "🌙 Đêm sương lạnh giá đã bao trùm khu rừng! Hãy giữ lấy ánh sáng."
+            }
+          ]
+        }
+      }
+    },
+    "classic_sanity_2_1": {
+      "status": "PASS",
+      "observation": {
+        "spawn": {
+          "zone": "fog_crossing",
+          "x": 255.91666666666663,
+          "y": 203,
+          "anim": "wayfarer_idle_right",
+          "frame": "armed_idle_right_2",
+          "texture": "black_knight_movement",
+          "armed": true,
+          "scale": 1.5,
+          "origin": [
+            0.5,
+            1
+          ],
+          "body": [
+            18,
+            12
+          ],
+          "camZoom": 2.2,
+          "composure": 88.48825599999998
+        },
+        "safe_zone": "fog_crossing",
+        "protectedResult": {
+          "active": false,
+          "commands": 7
+        },
+        "active": {
+          "active": true,
+          "zone": "outer_woods",
+          "sanity": 11,
+          "commands": 208,
+          "triangles_first_render": [
+            [
+              0,
+              0,
+              241,
+              0,
+              0,
+              241
+            ],
+            [
+              1280,
+              0,
+              1039,
+              0,
+              1280,
+              241
+            ],
+            [
+              0,
+              720,
+              241,
+              720,
+              0,
+              479
+            ],
+            [
+              1280,
+              720,
+              1039,
+              720,
+              1280,
+              479
+            ],
+            [
+              0,
+              0,
+              174,
+              0,
+              0,
+              174
+            ],
+            [
+              1280,
+              0,
+              1106,
+              0,
+              1280,
+              174
+            ],
+            [
+              0,
+              720,
+              174,
+              720,
+              0,
+              546
+            ],
+            [
+              1280,
+              720,
+              1106,
+              720,
+              1280,
+              546
+            ],
+            [
+              0,
+              0,
+              108,
+              0,
+              0,
+              108
+            ],
+            [
+              1280,
+              0,
+              1172,
+              0,
+              1280,
+              108
+            ],
+            [
+              0,
+              720,
+              108,
+              720,
+              0,
+              612
+            ],
+            [
+              1280,
+              720,
+              1172,
+              720,
+              1280,
+              612
+            ]
+          ]
+        },
+        "method": "In-memory zone-context and composure fixture; exact live graphics calls captured, not a natural route or full BUG-023 matrix."
+      }
+    }
+  },
+  "media": [
+    "Evidence/01_main_menu.png",
+    "Evidence/02_gameplay_day.png",
+    "Evidence/03_journal.png",
+    "Evidence/04_inventory.png",
+    "Evidence/05_world_map.png",
+    "Evidence/06_gameplay_night.png",
+    "Evidence/07_classic_sanity_fixture.png"
+  ],
+  "diagnostics": {
+    "page_exceptions": [],
+    "local_http_errors": [],
+    "browser_warnings": [
+      "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+    ],
+    "external_resources_blocked": [
+      "https://games.p2game.io/sdk/p2game-sdk.v1.js"
+    ]
+  },
+  "gpu_classification": "HARDWARE_WEBGL_OBSERVED",
+  "automated_build": {
+    "typescript": "PASS: npx --no-install tsc --noEmit",
+    "build": "PASS: npm run build",
+    "data": "PASS: npm run verify:data (15/15)",
+    "vite_warnings": [
+      "startup-status.js classic script is copied as a static asset",
+      "two WOFF references resolved by the browser at runtime; no local HTTP errors were observed"
+    ]
+  },
+  "not_run": [
+    "physical EVKey / UniKey",
+    "P2Game hosted SDK or CDN",
+    "natural time cycle",
+    "natural travel route for the Classic Sanity scenario",
+    "full BUG-023 matrix",
+    "full 24-case locomotion matrix"
+  ],
+  "evidence_integrity": [
+    {
+      "path": "Evidence/01_main_menu.png",
+      "bytes": 167956,
+      "sha256": "89c9f574cc3ccb8f7949f2528ff9265d3b3cbc6649239c76ad6756bb629d6a39",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "Evidence/02_gameplay_day.png",
+      "bytes": 346305,
+      "sha256": "2e2dfc5a736715c1fd43c627c669ee714cd447e3a0549f404333feedd144e8b4",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "Evidence/03_journal.png",
+      "bytes": 175498,
+      "sha256": "ced6db5cad30512ff730179551dba2d1b2e0aa4dfb998de966bdc4e3f09016dd",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "Evidence/04_inventory.png",
+      "bytes": 167130,
+      "sha256": "015b3430e1bcb3d0b1433921e02137b64f6775ea503f80aff2d0792c5f103d8f",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "Evidence/05_world_map.png",
+      "bytes": 125718,
+      "sha256": "e72b0f80c74f643621b91894931fda6558865a8b9ebdddb88014382a5474798e",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "Evidence/06_gameplay_night.png",
+      "bytes": 351850,
+      "sha256": "94fdb2343cbbea7fb0db43cd32d0217b138fecb03c34936ae2da3f53c9be8488",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "Evidence/07_classic_sanity_fixture.png",
+      "bytes": 365494,
+      "sha256": "cf33ce6a16ec41a562467630e737d3cbc67209938f9e15ef7bfd8b8c21306e0a",
+      "pixels": [
+        1280,
+        720
+      ]
+    }
+  ]
+}
