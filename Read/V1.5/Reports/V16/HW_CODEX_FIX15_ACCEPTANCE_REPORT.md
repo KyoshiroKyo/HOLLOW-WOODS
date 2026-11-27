@@ -6,7 +6,7 @@
 
 | # | Hạng mục | Trạng thái | Kết quả có bằng chứng | Commit |
 | --- | --- | --- | --- | --- |
-| 01 | Scale và Walk/Run | **PARTIAL** | 24 tổ hợp ở mỗi mức 1×/2×/3×, 0 frame Walk/Run sai cờ sprint | `f23e513` |
+| 01 | Scale và Walk/Run | **PARTIAL** | 24 tổ hợp ở mỗi mức 1×/2×/3×, 0 frame Walk/Run sai cờ sprint. Kiệt sức, hồi thể lực và mất focus xác nhận ở 1×. | `f23e513` |
 | 02 | Fallen Knight giống Sir Vaelen | **BLOCKED** | NPC, ảo ảnh và enemy vẫn phân biệt bằng runtime ID | `81230e6` |
 | 03 | Chuông mở đầu gây khó chịu | **PARTIAL** | Web Audio trace một source, stop 2,60 giây; mẫu B peak −21,55 dBFS, không clipping | `3560e4b` |
 | 04 | Kiểm kê thực thể và diagnostics F9 | **PARTIAL** | Private QA một panel, 13 active, 23 catalog, texture lỗi được gắn cờ; F4/F9 production bị khóa | `6de0020` |
@@ -15,10 +15,10 @@
 | 07 | Quái chưa duyệt xuất hiện | **PARTIAL** | Fixture rừng đêm và vùng an toàn quan sát 0 thực thể từ ba loại; B05 6/6 | `7bc4003` |
 | 08 | Kiểm kê quái, vị trí và Satyr | **PARTIAL** | 17 dòng phân khu và các ca quan sát có ghi kết quả | `6de0020` |
 | 09 | Tên Edda | **PASS** | NPC Edda đúng tên, thưởng FIX-23 giữ một bùa qua Continue, ID ổn định | `e8996c4` |
-| 10 | Map, mật độ và quái | **PARTIAL** | Resolver 6/6; tuyến mở đầu tự nhiên và portal Xưởng Chuông hai chiều chạy được | `2063fd6` |
-| 11 | Dark Knight canonical encounter | **PARTIAL** | Chromium xác nhận 151→143, một ally, teardown, retry 300 HP và một huy hiệu | `81230e6` |
-| 12 | Xưởng Chuông và Vực Sâu | **PARTIAL** | Xưởng Chuông vào/ra hai chiều. Vực Sâu chỉ quan sát trên private QA | `2063fd6` |
-| 13 | 17 phân khu và hệ sinh thái | **PARTIAL** | Playable điểm đầu và Xưởng xác minh, placeholder tách rõ | `2063fd6` |
+| 10 | Map, mật độ và quái | **PARTIAL** | Resolver 6/6, tuyến đầu đi tự nhiên. Portal Xưởng Chuông và Hầm Rễ Cổ hai chiều đạt. | `2ea4f63` |
+| 11 | Dark Knight canonical encounter | **PARTIAL** | Chromium xác nhận 151→143 và một đồng minh. Save/Continue 3/3 trước/sau ngưỡng và sau thắng. | `81230e6` |
+| 12 | Xưởng Chuông và Vực Sâu | **PARTIAL** | Xưởng Chuông vào/ra hai chiều. Vực Sâu bị khóa kể cả khi cờ mở đã bật. | `2ea4f63` |
+| 13 | 17 phân khu và hệ sinh thái | **PARTIAL** | Năm cửa vào placeholder bị khóa, năm save cũ Continue về vùng hợp lệ. | `2ea4f63` |
 | 14 | Asset chưa sử dụng | **PARTIAL** | Xác nhận frame 43–44 rỗng, clip boss dừng ở frame 42 | `81230e6` |
 | 15 | Asset Marden trong trailer | **BLOCKED** | Chưa thể xác nhận Marden là asset hoặc nhân vật nào | `e8996c4` |
 
@@ -31,5 +31,13 @@
 - Với popup 26 dòng, baseline Chromium đo cạnh trên `−66,5 px`. Bản vá giữ nền và chữ trong viewport trong lúc tween, vẫn giữ scale 1× cho thông báo thường. Giữ bản đồ hiện hành. Lore dùng văn bản Canon hiện có; A06 **24/24**, A07 **23/23**. Các đề xuất Lore trong hồ sơ bàn giao tiếp tục chờ duyệt.
 - B07-R1/MICRO-03 **18/18**, B05 **6/6**, Schema 3, TypeScript/build và regression âm thanh **12/12** đạt. V152-02 cũ đạt 18/22. Bốn ca fail kiểm file backup lịch sử vắng trong worktree, phạm vi này không tạo các backup lịch sử để thay đổi kết quả.
 - **Chromium 25/25 trên nội dung giải nén từ ZIP**. Xác nhận asset/HTTP local, popup thường và nhiều dòng ở viewport 1280×720 và 960×540 (canvas logic 1280×720), N mở/đóng bản đồ, Save/Continue, FIX-23 và khóa production F4/F9. Validator P2Game local **23/23**, SE-004 và RT-002 **28/28**. [Trace production](../Evidence/HW-CODEX-FIX15/production_zip_smoke.json).
-- ZIP local tại `release/p2game/HOLLOW_WOODS_V1.6.1_P2GAME_RELEASE.zip`, manifest 1.6.1, 292 tệp, **62.448.534 bytes**, SHA-256 `b80781a1a91265766cd7c52073ae7fb78d9566445f966a930b2d11e431173a7e`. Đã so SHA-256 từng file giải nén với build. Gói là candidate bàn giao. Bản V1.6.0 dự thi và ZIP/offline hiện có được bảo toàn.
+- ZIP checkpoint b36ca58, giữ riêng sau khi phát hiện lỗi cửa vào cuối tuyến, tại `release/p2game/HOLLOW_WOODS_V1.6.1_P2GAME_RELEASE.zip`, manifest 1.6.1, 292 tệp, **62.448.534 bytes**, SHA-256 `b80781a1a91265766cd7c52073ae7fb78d9566445f966a930b2d11e431173a7e`. Đã so SHA-256 từng file giải nén với build. Gói là candidate bàn giao. Bản V1.6.0 dự thi và ZIP/offline hiện có được bảo toàn.
 - Trace nhóm nằm dưới `scratch/hw-codex-fix15/`. Mẫu chuông A/B và số đo ở `scratch/hw-codex-audio-01a-r1/`. Phần artwork/Canon chưa được duyệt tiếp tục đi qua HW-Lore → HW-Design → HW-Code → HW-Dev. Bản dự thi đã qua Portal tiếp tục là mốc tham chiếu để Owner quyết định.
+
+## Competition Candidate cập nhật sau kiểm tra cuối tuyến
+
+- Bản Chromium đầu tiên vào được cả năm phân khu chưa hoàn thiện khi đã có cờ cốt truyện. Nguyên nhân là vùng mang trạng thái active và cổng tiến trình cho phép chuyển. Checkpoint sau sửa lấy trạng thái pending từ dữ liệu phân khu tại WorldGatingSystem. Continue từ save cũ trong vùng pending dùng điểm quay về qua SafeSpawnResolver và giữ quest, vật phẩm, cờ. [Trace trước](../Evidence/HW-CODEX-FIX15/placeholder_gates_before.json) · [Trace sau](../Evidence/HW-CODEX-FIX15/placeholder_gates_after.json).
+- Chromium trên ZIP cập nhật **12/12**. Hầm Rễ Cổ hai chiều, năm lối vào pending với cờ đã mở, và năm lượt Continue từ fixture save cũ đều đạt. Không có lỗi JavaScript hoặc asset HTTP local. TypeScript/Vite build, validator P2Game local **23/23** và smoke production **25/25** trên bản ZIP cập nhật. [Smoke](../Evidence/HW-CODEX-FIX15/competition_candidate_smoke.json) · [Validator](../Evidence/HW-CODEX-FIX15/competition_candidate_validator.json).
+- ANIM thêm hai ca **2/2** ở 1× trên ZIP cập nhật. Collider thật tại Fog Crossing dừng Run và khóa dịch chuyển. Hurt trở về Idle rồi Walk, collider chân 18×12 và camera 2,2×. Các tổ hợp hướng và dáng từ ANIM-01-R2 giữ bằng chứng riêng. [Trace va chạm và Hurt](../Evidence/HW-CODEX-FIX15/animation_wall_and_hurt.json).
+- Dark Knight Save/Continue **3/3** từ bản build trước bản vá cổng. Tiếp tục giữa trận khởi tạo encounter 300 HP mới. Tiếp tục sau khi thắng giữ đúng một huy hiệu và boss không xuất hiện lại. [Trace boss](../Evidence/HW-CODEX-FIX15/boss_save_continue.json).
+- ZIP để Owner dùng nằm tại release/p2game/competition-candidate/HOLLOW_WOODS_V1.6.1_P2GAME_RELEASE.zip. Source 2ea4f63b76c822d4b01e63ad31f13cf308b7a10f, 292 tệp, **62.448.743 bytes**, SHA-256 **57ec2f0b87f1a3560693f4b687a16ce981997d9e158ac2ba0a937657dadf0494**. SHA-256 từng tệp đã đối chiếu sau giải nén. Không publish hoặc thay ZIP 1.6.0.
