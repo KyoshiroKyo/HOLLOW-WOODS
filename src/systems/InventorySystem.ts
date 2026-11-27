@@ -105,7 +105,7 @@ export class InventorySystem {
 
       // 2B. C4-12-20: Rừng Ngoại Vi (Outer Woods: x=1120..1600, y=560..1040 - Vùng tài nguyên tự do đầu game)
       { id: 'node_wood_ow_1', itemId: 'res_dry_wood', x: 1190, y: 650, count: 1 },
-      { id: 'node_resin_ow_1', itemId: 'res_tree_resin', x: 1360, y: 620, count: 1 },
+      { id: 'node_resin_ow_1', itemId: 'res_tree_resin', x: 1520, y: 595, count: 1 },
       { id: 'node_flint_ow_1', itemId: 'res_flint', x: 1300, y: 755, count: 1 },
       { id: 'node_wood_ow_2', itemId: 'res_dry_wood', x: 1380, y: 720, count: 1 },
       { id: 'node_herb_ow_1', itemId: 'res_herbs', x: 1440, y: 770, count: 2 },

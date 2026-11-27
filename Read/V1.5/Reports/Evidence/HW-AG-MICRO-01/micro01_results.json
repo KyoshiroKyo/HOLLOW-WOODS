@@ -1,0 +1,79 @@
+{
+  "timestamp": "2026-11-27T17:44:20.610Z",
+  "runtime_errors": [],
+  "results": [
+    {
+      "test": "A1: gather_resin_ow_1 NOT in range at (1360,620)",
+      "pass": true,
+      "detail": "resinInRange=false"
+    },
+    {
+      "test": "A2: hide_tree_ow_north IS in range at (1360,620)",
+      "pass": true,
+      "detail": "hideInRange=true"
+    },
+    {
+      "test": "A3: Prompt at hide spot mentions hiding/tree (not resin)",
+      "pass": true,
+      "detail": "prompt=\"[E] Ẩn nấp\""
+    },
+    {
+      "test": "A4: E at hide_tree_ow_north sets isHiding=true",
+      "pass": true,
+      "detail": "isHiding=true"
+    },
+    {
+      "test": "A5: E at hide spot does NOT collect resin (no wrong dispatch)",
+      "pass": true,
+      "detail": "resin before=0 after=0"
+    },
+    {
+      "test": "A6: WASD exits hiding (isHiding=false)",
+      "pass": true,
+      "detail": "isHiding=false"
+    },
+    {
+      "test": "A7: Single E triggers hide_player exactly once (no double dispatch)",
+      "pass": true,
+      "detail": "hideCallCount=1"
+    },
+    {
+      "test": "B1: Gather resin action works (flag set)",
+      "pass": true,
+      "detail": "gathered=true, resinCount=2"
+    },
+    {
+      "test": "B2: hide_tree_ow_north prompt correct after resin depleted",
+      "pass": true,
+      "detail": "prompt=\"[E] Ẩn nấp\", hideInRange=true"
+    },
+    {
+      "test": "B3: E hides player after resin depleted",
+      "pass": true,
+      "detail": "isHiding=true"
+    },
+    {
+      "test": "C1: hide_bush_ow_s_curve in range at (1150,655)",
+      "pass": true,
+      "detail": "candidates=gather_wood_ow_1,gather_resin_ow_1,hide_bush_ow_s_curve"
+    },
+    {
+      "test": "C2: E at hide_bush_ow_s_curve hides player",
+      "pass": true,
+      "detail": "isHiding=true"
+    },
+    {
+      "test": "D1: Bonfire prompt shown near (1470,710)",
+      "pass": true,
+      "detail": "candidates=quiet_forest_bonfire, prompt=\"[E] Sưởi Ấm Bên Lửa Cổ\""
+    },
+    {
+      "test": "D2: No residual hiding prompt shown at bonfire area",
+      "pass": true,
+      "detail": "hideSpotsInRange="
+    }
+  ],
+  "passed": 14,
+  "total": 14,
+  "summary": "14/14 PASS"
+}
