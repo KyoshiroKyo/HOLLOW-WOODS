@@ -4,7 +4,9 @@ import {
   SCENE_GAME,
   SCENE_MAIN_MENU,
   LANTERN_RADIUS_NORMAL,
-  LANTERN_RADIUS_DIM
+  LANTERN_RADIUS_DIM,
+  SPRITE_FOG_SMOOTH,
+  ATLAS_RESURRECTED_PROPS
 } from '../config/Constants';
 import { BlackKnightPlayer } from '../entities/BlackKnightPlayer';
 import { registerBlackKnightAnimations } from '../animation/BlackKnightAnimations';
@@ -1427,22 +1429,57 @@ export class GameScene extends Phaser.Scene {
       this.cameras.main.fadeIn(600, 0, 0, 0);
     }
 
-    // Dựng hình bóng The Echo mờ ảo dẫn đường tại X: 350, Y: 220
-    this.act0EchoGfx = this.add.graphics();
-    this.act0EchoGfx.fillStyle(0x7fb3d5, 0.45);
-    this.act0EchoGfx.fillEllipse(350, 220, 16, 32);
-    this.act0EchoGfx.fillStyle(0xebf5fb, 0.7);
-    this.act0EchoGfx.fillCircle(350, 206, 6);
-    this.act0EchoGfx.setDepth(230);
+    // Group 2: Dùng sprite fog_smooth thay cho Phaser.Graphics procedural (AI_IRON_RULES §3)
+    // The Echo dẫn đường tại X:350 Y:220 — tô màu xanh sương huyền bí
+    if (this.textures.exists(SPRITE_FOG_SMOOTH)) {
+      this.act0EchoGfx = this.add.graphics(); // Giữ field để code destroy cũ vẫn hoạt động
+      const echoSprite = this.add.image(350, 220, SPRITE_FOG_SMOOTH)
+        .setAlpha(0)
+        .setScale(0.08)
+        .setTint(0x88ccff)
+        .setDepth(230)
+        .setScrollFactor(0);
 
-    this.tweens.add({
-      targets: this.act0EchoGfx,
-      alpha: 0.25,
-      y: 216,
-      duration: 1200,
-      yoyo: true,
-      repeat: -1
-    });
+      this.tweens.add({
+        targets: echoSprite,
+        alpha: 0.6,
+        duration: 800,
+        ease: 'Sine.easeInOut',
+        onComplete: () => {
+          this.tweens.add({
+            targets: echoSprite,
+            alpha: 0.2,
+            y: 216,
+            scaleX: 0.09,
+            scaleY: 0.07,
+            duration: 1200,
+            yoyo: true,
+            repeat: -1,
+            ease: 'Sine.easeInOut'
+          });
+        }
+      });
+
+      // Liên kết vào act0EchoGfx để destroy cùng lúc với Graphics cũ
+      this.events.once('act0_intro_cleanup', () => echoSprite.destroy());
+    } else {
+      // Fallback: giữ nguyên graphics gốc nếu texture chưa nạp
+      this.act0EchoGfx = this.add.graphics();
+      this.act0EchoGfx.fillStyle(0x7fb3d5, 0.45);
+      this.act0EchoGfx.fillEllipse(350, 220, 16, 32);
+      this.act0EchoGfx.fillStyle(0xebf5fb, 0.7);
+      this.act0EchoGfx.fillCircle(350, 206, 6);
+      this.act0EchoGfx.setDepth(230);
+
+      this.tweens.add({
+        targets: this.act0EchoGfx,
+        alpha: 0.25,
+        y: 216,
+        duration: 1200,
+        yoyo: true,
+        repeat: -1
+      });
+    }
 
     this.time.delayedCall(800, () => {
       this.audioManager.playBronzeBellToll();
@@ -3360,26 +3397,44 @@ export class GameScene extends Phaser.Scene {
     // 2. Rung nhẹ camera tạo cảm giác giật mình tinh tế
     this.cameraSystem?.shake(240, 0.005);
 
-    // 3. Bóng ma thoáng qua lướt nhanh sau rặng cây phía Bắc (240, 95)
-    const shadowWisp = this.add.graphics();
-    shadowWisp.fillStyle(0x0a0f0d, 0.75);
-    shadowWisp.fillEllipse(240, 95, 20, 36);
-    shadowWisp.fillStyle(0x8e44ad, 0.4);
-    shadowWisp.fillCircle(240, 85, 8);
-    shadowWisp.setDepth(90);
+    // 3. Group 2: Bóng ma thoáng qua — dùng shadow_bush atlas thay Phaser.Graphics (AI_IRON_RULES §3)
+    if (this.textures.exists(ATLAS_RESURRECTED_PROPS)) {
+      const shadowWisp = this.add.image(240, 95, ATLAS_RESURRECTED_PROPS, 'shadow_bush')
+        .setAlpha(0.8)
+        .setTint(0x220033)
+        .setScale(0.4)
+        .setDepth(90);
 
-    this.tweens.add({
-      targets: shadowWisp,
-      x: 275,
-      alpha: 0,
-      duration: 650,
-      ease: 'Power2',
-      onComplete: () => shadowWisp.destroy()
-    });
+      this.tweens.add({
+        targets: shadowWisp,
+        x: 275,
+        alpha: 0,
+        duration: 650,
+        ease: 'Power2',
+        onComplete: () => shadowWisp.destroy()
+      });
+    } else {
+      // Fallback: graphics gốc nếu atlas chưa nạp
+      const shadowWisp = this.add.graphics();
+      shadowWisp.fillStyle(0x0a0f0d, 0.75);
+      shadowWisp.fillEllipse(240, 95, 20, 36);
+      shadowWisp.fillStyle(0x8e44ad, 0.4);
+      shadowWisp.fillCircle(240, 85, 8);
+      shadowWisp.setDepth(90);
 
-    // 4. Dòng suy nghĩ nội tâm dẫn dắt mục tiêu tò mò
+      this.tweens.add({
+        targets: shadowWisp,
+        x: 275,
+        alpha: 0,
+        duration: 650,
+        ease: 'Power2',
+        onComplete: () => shadowWisp.destroy()
+      });
+    }
+
+    // 4. Group 2: Toast chính xác — hướng dẫn Vòng Sáng thay cho thông điệp cũ
     if (this.uiScene) {
-      this.uiScene.showPopupMessage('🍂 RĂNG RẮC! Có tiếng cành cây gãy sau lưng... Hãy đi theo ánh đèn phía trước!');
+      this.uiScene.showPopupMessage('🍂 RĂNG RẮC! Có tiếng cành cây gãy sau lưng... [F] Bật Vòng Sáng để tìm đường trong sương!');
     }
 
     // 5. Tiếng chuông đồng ngân nga từ xa dẫn hướng
