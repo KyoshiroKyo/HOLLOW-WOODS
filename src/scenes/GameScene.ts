@@ -4532,16 +4532,34 @@ export class GameScene extends Phaser.Scene {
   public teleportForDeveloper(zoneId: ZoneId, x: number, y: number): void {
     const dev = DeveloperModeManager.getInstance();
     const zone = this.worldBuilder.getZone(zoneId);
-    if (!dev.isEnabled || !zone || !dev.markDevUsed() || this.player.isDead()) return;
+    if (!dev.isEnabled || this.player.isDead()) return;
+    if (!zone || WorldGatingSystem.isZonePending(zoneId)) {
+      this.uiScene?.showPopupMessage('Phân khu này chưa có điểm đến cho QA.');
+      return;
+    }
+
+    const insideZone = (atX: number, atY: number) => {
+      const foot = SafeSpawnResolver.getFootBoundingBox(atX, atY);
+      const bounds = zone.bounds;
+      return foot.left >= bounds.x && foot.right <= bounds.x + bounds.width &&
+        foot.top >= bounds.y && foot.bottom <= bounds.y + bounds.height;
+    };
+    if (!insideZone(x, y)) {
+      this.uiScene?.showPopupMessage('Tọa độ nằm ngoài phân khu đã chọn.');
+      return;
+    }
+
+    if (!dev.markDevUsed()) return;
 
     this.worldBuilder.ensureZoneRendered(zoneId);
     const spawn = SafeSpawnResolver.resolveSafeSpawn(this, x, y, zoneId);
-    if (!spawn) {
+    if (!spawn || !insideZone(spawn.x, spawn.y)) {
       this.uiScene?.showPopupMessage('Không tìm được vị trí an toàn để dịch chuyển.');
       return;
     }
-    this.player.setPosition(spawn.x, spawn.y);
-    (this.player.body as Phaser.Physics.Arcade.Body).reset(spawn.x, spawn.y);
+    const body = this.player.body as Phaser.Physics.Arcade.Body;
+    body.reset(spawn.x, spawn.y);
+    body.updateFromGameObject();
     this.player.resetAllInputState();
 
     this.currentZoneId = zoneId;
