@@ -2896,7 +2896,6 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
 
     this.zoneTitleText.setText(atmosphere.titleVietnamese);
     this.zoneSubtitleText.setText(atmosphere.subTitleVietnamese);
-    this.updateZoneBadge(atmosphere.titleVietnamese);
 
     // V14-P8-12: Tự động tính chiều rộng khung viền dựa theo độ dài thực tế của chữ + lề an toàn >= 32px mỗi bên
     const maxTextW = Math.max(this.zoneTitleText.width, this.zoneSubtitleText.width);
@@ -3536,7 +3535,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   ): void {
     const mm = this.getMiniMapWidget();
     mm.updateZoneTerrain(zone, colliders, transitions);
-    this.updateZoneBadge(zone.name);
+    this.updateZoneBadge(zone.titleVietnamese);
   }
 
   public updateZoneBadge(zoneName?: string): void {

@@ -1249,7 +1249,7 @@ export class JournalModal {
   private renderMapTab(mx: number, my: number, _mw: number, _mh: number): void {
     const currentZone = this.playerState.getCurrentZone();
     const tracked = QuestSystem.getInstance().getTrackedQuestDisplay(this.playerState);
-    const questTargetZone = (tracked?.quest as { targetZone?: string } | undefined)?.targetZone;
+    const questTargetZone = tracked?.targetZone;
 
     // 1. Kích thước & Tọa độ 2 khung hiển thị
     const mapCanvasX = mx + 20;   // 240
