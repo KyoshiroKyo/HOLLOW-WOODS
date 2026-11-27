@@ -37,7 +37,7 @@ assert(Array.isArray(questsData.stages) && questsData.stages.length === 7, 'ques
 // 3. Targeted Progression Fixes in Source
 const worldGatingSrc = fs.readFileSync(path.resolve('src/world/WorldGatingSystem.ts'), 'utf8');
 const bossEncSrc = fs.readFileSync(path.resolve('src/systems/BossEncounterSystem.ts'), 'utf8');
-const gameSceneSrc = fs.readFileSync(path.resolve('src/scenes/GameScene.ts'), 'utf8');
+const gameSceneSrc = fs.readFileSync(path.resolve('src/scenes/GameScene.ts'), 'utf8').replace(/\r\n/g, '\n');
 const playerStateSrc = fs.readFileSync(path.resolve('src/state/PlayerState.ts'), 'utf8');
 const endingSysSrc = fs.readFileSync(path.resolve('src/systems/EndingSystem.ts'), 'utf8');
 
