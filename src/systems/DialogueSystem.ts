@@ -475,7 +475,9 @@ export class DialogueSystem {
       if (payload.rewardItem) {
         const rewardMarker = `dlg_reward:${dialogueKey}`;
         const questAlreadyOwned = payload.rewardItem.startsWith('quest_') && state.getItemCount(payload.rewardItem) > 0;
-        const runeCharmAlreadyGranted = dialogueKey === 'edda_rune_guide' && (hadRuneCharmBeforePass || state.hasFlag('edda_rune_charm_granted'));
+        // FIX HW-AG-FIX-23: Chỉ dùng snapshot trước vòng lặp để tránh false-positive
+        // khi selectedChoice.setFlag đã set 'edda_rune_charm_granted' trong cùng pass.
+        const runeCharmAlreadyGranted = dialogueKey === 'edda_rune_guide' && hadRuneCharmBeforePass;
         if (
           !state.hasFlag(rewardMarker) &&
           !state.hasStoryFlag(rewardMarker) &&

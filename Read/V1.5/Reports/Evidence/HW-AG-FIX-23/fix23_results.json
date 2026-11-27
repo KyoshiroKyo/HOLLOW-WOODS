@@ -1,0 +1,58 @@
+{
+  "timestamp": "2026-11-27T14:59:04.598Z",
+  "runtime_errors": [],
+  "results": [
+    {
+      "test": "TC0_cancel_before_grant",
+      "desc": "Cancel mid-dialogue before first grant gives 0 charm and sets no reward flags",
+      "before_charm": 0,
+      "after_charm": 0,
+      "edda_rune_charm_granted": false,
+      "dlg_reward_edda": false,
+      "pass": true
+    },
+    {
+      "test": "TC1_first_completion",
+      "desc": "eqp_bell_ward_charm 0→1 on first edda_rune_guide completion",
+      "before_charm": 0,
+      "after_charm": 1,
+      "edda_rune_charm_granted": true,
+      "dlg_reward_edda": true,
+      "pass": true
+    },
+    {
+      "test": "TC2_repeat_no_duplicate",
+      "desc": "No additional charm on second edda_rune_guide",
+      "before_charm": 1,
+      "after_charm": 1,
+      "pass": true
+    },
+    {
+      "test": "TC3_b05_neris_guard",
+      "desc": "B05 guard: neris_intro grants 1 poultice once and blocks repeat",
+      "poulticeBefore": 0,
+      "poulticeAfter1": 1,
+      "poulticeAfter2": 1,
+      "pass": true
+    },
+    {
+      "test": "TC4_save_continue_no_loss_no_dup",
+      "desc": "Save -> Reload -> Continue preserves 1 charm and blocks duplicate on re-talk",
+      "savedOk": true,
+      "afterContinue": {
+        "charmCount": 1,
+        "edda_rune_charm_granted": true,
+        "dlg_reward_edda": true
+      },
+      "afterContinueRetalk": {
+        "charmCount": 1,
+        "edda_rune_charm_granted": true,
+        "dlg_reward_edda": true
+      },
+      "pass": true
+    }
+  ],
+  "passed": 5,
+  "total": 5,
+  "summary": "5/5 PASS"
+}
