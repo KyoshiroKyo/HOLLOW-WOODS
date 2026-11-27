@@ -4799,7 +4799,9 @@ export class GameScene extends Phaser.Scene {
               const hasMold = this.playerState.getItemCount('item_bell_mold') > 0 || this.playerState.hasFlag('has_bell_mold');
               const hasRune = this.playerState.getItemCount('quest_rune_fragment') > 0 || this.playerState.hasFlag('has_rune_fragment');
               const hasKey = this.playerState.getItemCount('quest_purification_key') > 0 || this.playerState.hasFlag('has_purification_key');
-              if (!hasKey && hasMold && hasRune) {
+              const isSealAlreadyBroken = this.playerState.hasFlag('mire_root_seal_broken') || this.playerState.hasFlag('shrine_bridge_lowered');
+              const isKeyAlreadyCrafted = isSealAlreadyBroken || this.playerState.hasFlag('purification_key_crafted') || this.playerState.hasFlag('purification_key_received');
+              if (!hasKey && !isKeyAlreadyCrafted && hasMold && hasRune) {
                 dKey = 'bram_help_forge_purification_key';
                 QuestSystem.getInstance().craftPurificationKey(this.playerState);
                 if (this.uiScene) {
@@ -4830,10 +4832,12 @@ export class GameScene extends Phaser.Scene {
               const hasRune = this.playerState.getItemCount('quest_rune_fragment') > 0 || this.playerState.hasFlag('has_rune_fragment');
               const hasCrest = this.playerState.getItemCount('quest_corrupted_crest') > 0 ||
                                this.playerState.hasFlag('corrupted_crest_obtained');
+              const isSealAlreadyBroken = this.playerState.hasFlag('mire_root_seal_broken') || this.playerState.hasFlag('shrine_bridge_lowered');
+              const isKeyAlreadyCrafted = isSealAlreadyBroken || this.playerState.hasFlag('purification_key_crafted') || this.playerState.hasFlag('purification_key_received');
 
-              if (hasPurificationKey) {
+              if (hasPurificationKey && !isSealAlreadyBroken) {
                 dKey = 'vaelen_reminder_use_purification_key';
-              } else if (hasMold && hasRune) {
+              } else if (!isKeyAlreadyCrafted && hasMold && hasRune) {
                 dKey = 'vaelen_forge_purification_key';
                 const wasRevealed = this.playerState.canRevealPlayerIdentity();
                 const crafted = QuestSystem.getInstance().craftPurificationKey(this.playerState);
@@ -4847,11 +4851,11 @@ export class GameScene extends Phaser.Scene {
                   }
                   this.uiScene.updateQuestTracker();
                 }
-              } else if (hasMold) {
+              } else if (!isKeyAlreadyCrafted && hasMold) {
                 dKey = 'vaelen_mold_reminder';
-              } else if (hasCrest && !this.playerState.hasFlag('vaelen_mold_quest_assigned')) {
+              } else if (!isKeyAlreadyCrafted && hasCrest && !this.playerState.hasFlag('vaelen_mold_quest_assigned')) {
                 dKey = 'vaelen_examine_crest_and_seek_mold';
-              } else if (hasCrest && !hasMold) {
+              } else if (!isKeyAlreadyCrafted && hasCrest && !hasMold) {
                 dKey = 'vaelen_mold_reminder';
               } else if (this.playerState.hasFlag('campfire_knight_q3_completed')) {
                 dKey = 'campfire_knight_idle_talk';

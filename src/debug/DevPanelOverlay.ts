@@ -778,11 +778,20 @@ export class DevPanelOverlay {
         this.manager.clearLogs();
         this.update();
         break;
-      case 'copy-log':
-        void navigator.clipboard?.writeText(
-          this.manager.getLogs().map(e => `[${e.time}] ${e.level}: ${e.message}${e.count > 1 ? ` ×${e.count}` : ''}`).join('\n')
-        );
+      case 'copy-log': {
+        // SE-004: clipboard-write không có trong permissions P2Game — dùng try/catch + fallback
+        const logText = this.manager.getLogs()
+          .map(e => `[${e.time}] ${e.level}: ${e.message}${e.count > 1 ? ` ×${e.count}` : ''}`)
+          .join('\n');
+        if (navigator.clipboard?.writeText) {
+          navigator.clipboard.writeText(logText).catch(() => {
+            console.warn('[DevPanel] clipboard-write bị từ chối (P2Game sandbox).');
+          });
+        } else {
+          console.warn('[DevPanel] clipboard-write không khả dụng.');
+        }
         break;
+      }
       case 'speed':
         this.manager.setSpeedMultiplier(Number(value) as 1 | 2 | 3);
         this.syncSpeeds();
