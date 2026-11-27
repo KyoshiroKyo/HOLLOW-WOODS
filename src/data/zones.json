@@ -3551,7 +3551,7 @@
       "titleVietnamese": "Vực Sâu Bóng Tối",
       "tier": "LAYER_3_FORBIDDEN",
       "tierName": "Cấm địa Tầng 5 — Vực Sâu Hư Không",
-      "status": "active",
+      "status": "pending_construction",
       "bounds": {
         "x": 1600,
         "y": -1280,
@@ -3704,7 +3704,7 @@
       "titleVietnamese": "Đầm Lầy Chìm",
       "tier": "LAYER_3_FORBIDDEN",
       "tierName": "Vùng nguy hiểm Tầng 4 — Vực Nước Tử Khí",
-      "status": "active",
+      "status": "pending_construction",
       "bounds": {
         "x": 2880,
         "y": 740,
@@ -3848,7 +3848,7 @@
       "titleVietnamese": "Thánh Địa Cây Đại Ngàn",
       "tier": "LAYER_2_FRONTIER",
       "tierName": "Thánh địa Tầng 2 — Vùng Đất Thanh Tẩy",
-      "status": "active",
+      "status": "pending_construction",
       "bounds": {
         "x": 480,
         "y": -800,
@@ -3992,7 +3992,7 @@
       "titleVietnamese": "Hầm Mộ Cổ Ngữ",
       "tier": "LAYER_3_FORBIDDEN",
       "tierName": "Điện thờ ngầm Tầng 4 — Hầm Mộ Hiệp Sĩ",
-      "status": "active",
+      "status": "pending_construction",
       "bounds": {
         "x": 3350,
         "y": -640,
@@ -4122,7 +4122,7 @@
       "titleVietnamese": "Hang Cội Rễ Hư Vô",
       "tier": "LAYER_3_FORBIDDEN",
       "tierName": "Lõi sương mù Tầng 5 — Trái Tim The Veil",
-      "status": "active",
+      "status": "pending_construction",
       "bounds": {
         "x": 480,
         "y": 1440,

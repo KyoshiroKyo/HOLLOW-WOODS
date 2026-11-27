@@ -1,0 +1,214 @@
+{
+  "task": "HW-CODEX-WORLD-02 additional routes",
+  "build": "additional-routes",
+  "sha": "b36ca58afdaf626aa9a72d50e6c16b748cd953ef",
+  "environment": {
+    "os": "Windows 10 build 19045",
+    "node": "v26.7.0",
+    "browser_mode": "headless Chrome, isolated throwaway profile",
+    "endpoint": "http://127.0.0.1:5247",
+    "bundle": "npm run build, Vite preview",
+    "sdk": "external P2Game SDK blocked for isolated standalone test",
+    "owner_save_used": false,
+    "keyboard": "Chrome DevTools synthetic key events; physical EVKey NOT_RUN",
+    "window": [
+      1280,
+      720
+    ],
+    "device_scale_factor": 1,
+    "graphics_flags": [],
+    "browser": "Chrome/158.0.8127.38",
+    "chrome_gpu": {
+      "devices": [
+        {
+          "vendorId": 4318,
+          "deviceId": 7042,
+          "subSysId": 932451416,
+          "revision": 161,
+          "vendorString": "",
+          "deviceString": "NVIDIA GeForce GTX 1070 Ti",
+          "driverVendor": "NVIDIA",
+          "driverVersion": "32.0.15.8266"
+        },
+        {
+          "vendorId": 5140,
+          "deviceId": 140,
+          "subSysId": 0,
+          "revision": 0,
+          "vendorString": "",
+          "deviceString": "Microsoft Basic Render Driver",
+          "driverVendor": "",
+          "driverVersion": "10.0.19041.7548"
+        }
+      ],
+      "feature_status": {
+        "gpu_compositing": "enabled",
+        "webgl": "enabled"
+      },
+      "gl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8266)",
+      "gl_vendor": "Google Inc. (NVIDIA)"
+    },
+    "renderer": {
+      "type": 2,
+      "renderer": "WebGL",
+      "webgl_version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+      "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "webgl_vendor": "Google Inc. (NVIDIA)",
+      "canvas": [
+        1280,
+        720
+      ],
+      "viewport": [
+        1280,
+        720
+      ],
+      "pixel_ratio": 1,
+      "rect": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "graphics_quality": null
+    }
+  },
+  "checks": {
+    "to_root_cellar": {
+      "status": "PASS",
+      "observation": {
+        "src": "sanctuary_farm",
+        "dst": "sub_root_cellar",
+        "zone": "sub_root_cellar",
+        "x": 800,
+        "y": 1100,
+        "id": "to_root_cellar",
+        "status": "active",
+        "bounds": {
+          "x": 480,
+          "y": 1040,
+          "width": 640,
+          "height": 400
+        }
+      }
+    },
+    "to_farm_from_cellar": {
+      "status": "PASS",
+      "observation": {
+        "src": "sub_root_cellar",
+        "dst": "sanctuary_farm",
+        "zone": "sanctuary_farm",
+        "x": 800,
+        "y": 980,
+        "id": "to_farm_from_cellar",
+        "status": "active",
+        "bounds": {
+          "x": 480,
+          "y": 560,
+          "width": 640,
+          "height": 480
+        }
+      }
+    },
+    "to_abyssal_chasm": {
+      "status": "FAIL",
+      "observation": {
+        "src": "deep_forest",
+        "dst": "abyssal_chasm",
+        "zone": "abyssal_chasm",
+        "x": 2240,
+        "y": -700,
+        "id": "to_abyssal_chasm",
+        "status": "active",
+        "bounds": {
+          "x": 1600,
+          "y": -1280,
+          "width": 1280,
+          "height": 640
+        }
+      }
+    },
+    "to_drowned_mire_depths": {
+      "status": "FAIL",
+      "observation": {
+        "src": "silent_mire",
+        "dst": "drowned_mire_depths",
+        "zone": "drowned_mire_depths",
+        "x": 3380,
+        "y": 780,
+        "id": "to_drowned_mire_depths",
+        "status": "active",
+        "bounds": {
+          "x": 2880,
+          "y": 740,
+          "width": 1120,
+          "height": 640
+        }
+      }
+    },
+    "to_whispering_grove_sanctum": {
+      "status": "FAIL",
+      "observation": {
+        "src": "sub_whispering_clearing",
+        "dst": "whispering_grove_sanctum",
+        "zone": "whispering_grove_sanctum",
+        "x": 960,
+        "y": -420,
+        "id": "to_whispering_grove_sanctum",
+        "status": "active",
+        "bounds": {
+          "x": 480,
+          "y": -800,
+          "width": 960,
+          "height": 440
+        }
+      }
+    },
+    "to_sunken_crypt_ruins": {
+      "status": "FAIL",
+      "observation": {
+        "src": "ancient_rune_puzzle",
+        "dst": "sunken_crypt_ruins",
+        "zone": "sunken_crypt_ruins",
+        "x": 3600,
+        "y": -100,
+        "id": "to_sunken_crypt_ruins",
+        "status": "active",
+        "bounds": {
+          "x": 3350,
+          "y": -640,
+          "width": 1130,
+          "height": 640
+        }
+      }
+    },
+    "to_veil_origin_cavern": {
+      "status": "FAIL",
+      "observation": {
+        "src": "sub_root_cellar",
+        "dst": "veil_origin_cavern",
+        "zone": "veil_origin_cavern",
+        "x": 800,
+        "y": 1500,
+        "id": "to_veil_origin_cavern",
+        "status": "active",
+        "bounds": {
+          "x": 480,
+          "y": 1440,
+          "width": 1120,
+          "height": 640
+        }
+      }
+    }
+  },
+  "media": [],
+  "diagnostics": {
+    "page_exceptions": [],
+    "local_http_errors": [],
+    "browser_warnings": [
+      "[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng."
+    ],
+    "external_resources_blocked": [
+      "https://games.p2game.io/sdk/p2game-sdk.v1.js"
+    ]
+  }
+}

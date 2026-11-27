@@ -1,5 +1,11 @@
 import { ZoneId, WorldTier, ZoneAccessRule } from '../types';
 import { PlayerState } from '../state/PlayerState';
+import zonesData from '../data/zones.json';
+
+const pendingZones = new Set<string>(zonesData.zones
+  .filter(zone => zone.status === 'pending_construction')
+  .map(zone => zone.id));
+const pendingZoneReason = 'Khu vực này đang được hoàn thiện.';
 
 export interface TransitionEvaluation {
   allowed: boolean;
@@ -26,6 +32,10 @@ export class WorldGatingSystem {
       WorldGatingSystem.instance = new WorldGatingSystem();
     }
     return WorldGatingSystem.instance;
+  }
+
+  public static isZonePending(zoneId: ZoneId): boolean {
+    return pendingZones.has(zoneId);
   }
 
   /**
@@ -225,6 +235,7 @@ export class WorldGatingSystem {
    * Nơi duy nhất định nghĩa và kiểm tra quy tắc cốt truyện để mở khóa thế giới.
    */
   public isZoneUnlocked(zoneId: ZoneId, playerState: PlayerState): boolean {
+    if (WorldGatingSystem.isZonePending(zoneId)) return false;
     const rule = this.accessRules.get(zoneId);
     if (!rule) {
       console.warn(`[WorldGatingSystem] Phân khu chưa được đăng ký hoặc không xác định: ${zoneId}`);
@@ -432,6 +443,9 @@ export class WorldGatingSystem {
   ): { unlocked: boolean; tier: WorldTier; reason: string; hint: string } {
     const rule = this.accessRules.get(zoneId);
     const tier = rule ? rule.tier : 'LAYER_1_CORE';
+    if (WorldGatingSystem.isZonePending(zoneId)) {
+      return { unlocked: false, tier, reason: pendingZoneReason, hint: '' };
+    }
     const unlocked = this.isZoneUnlocked(zoneId, playerState);
 
     return {
@@ -456,6 +470,9 @@ export class WorldGatingSystem {
   ): TransitionEvaluation {
     const rule = this.accessRules.get(toZone);
     const tier = rule ? rule.tier : 'LAYER_1_CORE';
+    if (WorldGatingSystem.isZonePending(toZone)) {
+      return { allowed: false, tier, targetZoneId: toZone, reason: pendingZoneReason };
+    }
 
     const unlocked = this.isZoneUnlocked(toZone, playerState);
     if (unlocked) {

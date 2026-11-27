@@ -405,13 +405,18 @@ export class GameScene extends Phaser.Scene {
       this.playerState.setFlag('mire_unlocked');
       this.playerState.setFlag('shrine_unlocked');
     } else if (this.isContinueMode && this.continueSaveData) {
-      const rawX = this.continueSaveData.playerPos.x;
-      const rawY = this.continueSaveData.playerPos.y;
-      const initialZone = (this.continueSaveData.zoneId as ZoneId) || 'fog_crossing';
+      const savedZone = (this.continueSaveData.zoneId as ZoneId) || 'fog_crossing';
+      const pending = WorldGatingSystem.isZonePending(savedZone);
+      const entrance = pending ? this.worldBuilder.transitions.find(transition =>
+        transition.toZone === savedZone && !WorldGatingSystem.isZonePending(transition.fromZone)) : undefined;
+      const initialZone = pending ? entrance?.fromZone ?? 'bellhollow' : savedZone;
+      const savedPoint = pending
+        ? entrance?.returnPoint ?? this.worldBuilder.getZone(initialZone)?.defaultSpawn
+        : this.continueSaveData.playerPos;
       this.worldBuilder.ensureZoneRendered(initialZone);
 
       // V15-34: Tự động dò quét và giải quyết vị trí đứng an toàn khi nạp điểm lưu
-      const safeSpawn = SafeSpawnResolver.resolveSafeSpawn(this, rawX, rawY, initialZone);
+      const safeSpawn = savedPoint && SafeSpawnResolver.resolveSafeSpawn(this, savedPoint.x, savedPoint.y, initialZone);
       if (!safeSpawn) {
         this.scene.start(SCENE_MAIN_MENU, { spawnUnavailable: true });
         return;
@@ -420,13 +425,14 @@ export class GameScene extends Phaser.Scene {
       spawnY = safeSpawn.y;
 
       // C4-13-11: Xác định chính xác phân khu thực tế từ tọa độ và cập nhật ngay lập tức cho GameScene & Camera
-      const detectedZone = this.worldBuilder.detectCurrentZone({ x: spawnX, y: spawnY }) || initialZone;
+      const atSpawn = this.worldBuilder.detectCurrentZone({ x: spawnX, y: spawnY });
+      const detectedZone = !pending && atSpawn && !WorldGatingSystem.isZonePending(atSpawn) ? atSpawn : initialZone;
       this.worldBuilder.setActiveZone(detectedZone);
       this.currentZoneId = detectedZone;
       this.previousZoneId = detectedZone;
       this.playerState.setCurrentZone(detectedZone);
 
-      if (safeSpawn.adjusted) {
+      if (pending || safeSpawn.adjusted) {
         this.time.delayedCall(450, () => {
           if (this.uiScene) {
             this.uiScene.showPopupMessage('🛡️ Đã điều chỉnh vị trí đứng an toàn sau cập nhật bản đồ.');
