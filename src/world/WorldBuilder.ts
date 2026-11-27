@@ -62,6 +62,7 @@ import {
   SPRITE_STONE_ALTAR,
   SPRITE_ROCK_LARGE,
   SPRITE_ROCK_MEDIUM,
+  SPRITE_ROCK_LARGE_MOSSY_V14,
   SPRITE_WOODEN_FENCE,
   SPRITE_SIGNPOST,
   SPRITE_FOG_SMOOTH,
@@ -197,16 +198,12 @@ export class WorldBuilder {
     const zone = this.getZone(zoneId);
     if (!zone) return list;
     const b = zone.bounds;
-    this.colliderGroup.getChildren().forEach((child: any) => {
-      const cx = child.x;
-      const cy = child.y;
-      if (cx >= b.x - 50 && cx <= b.x + b.width + 50 && cy >= b.y - 50 && cy <= b.y + b.height + 50) {
-        list.push({
-          x: cx - (child.displayWidth ? child.displayWidth / 2 : 12),
-          y: cy - (child.displayHeight ? child.displayHeight / 2 : 12),
-          width: child.displayWidth || 24,
-          height: child.displayHeight || 24
-        });
+    this.colliderGroup.getChildren().forEach(child => {
+      const body = (child as Phaser.Physics.Arcade.Sprite).body as Phaser.Physics.Arcade.StaticBody | null;
+      if (!body?.enable) return;
+      if (body.right >= b.x - 50 && body.x <= b.x + b.width + 50 &&
+          body.bottom >= b.y - 50 && body.y <= b.y + b.height + 50) {
+        list.push({ x: body.x, y: body.y, width: body.width, height: body.height });
       }
     });
     return list;
@@ -2761,35 +2758,38 @@ export class WorldBuilder {
 
     if (id === 'fog_crossing') {
       // C4-13-16: Dựng cụm cảnh quan chặn đầu đường phía Tây (x: 0..90)
-      this.createWestBarrierLandscape();
+      const westBarrier = zone.interactables.find(item => item.id === 'fog_west_barrier');
+      if (westBarrier) this.createWestBarrierLandscape(westBarrier.x, westBarrier.y);
 
       // C4-14-B04: Điểm hút 30-60 giây đầu: Mẩu nhật ký rách, gốc mục & đá rêu dẫn lối (Resurrected_RPG)
-      this.createTornJournalScrapProp(150, 195);
+      const journal = zone.interactables.find(item => item.id === 'fog_journal_scrap_1');
+      if (journal) this.createTornJournalScrapProp(journal.x, journal.y, journal.id);
       this.placeResurrectedProp(222, 134, 'stump_moss_2', { scale: 1.0, colliderW: 20, colliderH: 10, label: 'Gốc Cây Mục', tint: 0xc2d0be });
       this.placeResurrectedProp(198, 126, 'rock_moss_cluster_1', { scale: 0.72, colliderW: 22, colliderH: 10, label: 'Đá Phủ Rêu', tint: 0xbdc8ba });
       this.placeResurrectedProp(346, 118, 'monolith_rune', { scale: 0.86, colliderW: 16, colliderH: 10, label: 'Bia Đá Cổ', tint: 0xbcc8c0 });
-      this.placeResurrectedProp(148, 276, 'rock_moss_cluster_2', { scale: 0.78, tint: 0xb5c2b4 });
+      this.placeResurrectedProp(148, 276, 'rock_moss_cluster_2', { scale: 0.78, colliderW: 24, colliderH: 10, label: 'fog_moss_rock_south', tint: 0xb5c2b4 });
       this.placeResurrectedProp(414, 152, 'bush_moss_3', { scale: 0.75, tint: 0xb8c8b6 });
       this.placeResurrectedProp(390, 278, 'bush_moss_2', { scale: 0.78, tint: 0xb5c4b2 });
       this.createDenseBush(210, 120);
 
       // V15-61 & HW-V16-C02: Lối mòn xuyên sương y=180..255 thông suốt, rìa Bắc-Nam tách Trunk/Canopy
-      this.createTree(160, 65, 'Cây Khô Sương Mù', false);
-      this.createTree(300, 310, 'Cây Khô Sương Mù', false);
+      this.createTree(160, 65, 'Cây Khô Sương Mù');
+      this.createTree(300, 310, 'Cây Khô Sương Mù');
       this.placeResurrectedSplitTree(84, 72, 'moss_tall', 0.85, 0xc2d0be, false, false);
       this.placeResurrectedSplitTree(258, 56, 'forest_broad', 0.82, 0xb8c6b6, false, false);
       this.placeResurrectedSplitTree(386, 60, 'moss_slender', 0.86, 0xb4c2b2, false, false);
       this.placeResurrectedSplitTree(130, 344, 'moss_medium', 0.88, 0xb0beb0, false, true);
       this.placeResurrectedSplitTree(424, 342, 'moss_tall', 0.86, 0xacbcae, false, true);
-      this.createStoneSign(240, 180, 'TẤM BIỂN MỤC');
+      this.createZoneSignposts(zone, 'fog_sign');
     } else if (id === 'bellhollow') {
       // =========================================================================
       // Trạm gác lùi về phía bắc để chừa trục Cổng Tây.
       this.createWestWatchpost(562, 160);
-      this.createStoneSign(600, 205);
+      this.createZoneSignposts(zone, 'bellhollow_west_sign', 'bellhollow_farm_gate_sign', 'bellhollow_outer_woods_gate_sign');
       this.createVillageLanternPost(514, 183);
 
-      this.createAnomalyNoticeBoard(650, 240);
+      const noticeBoard = zone.interactables.find(item => item.id === 'bellhollow_notice_board');
+      if (noticeBoard) this.createAnomalyNoticeBoard(noticeBoard);
       this.createSanctuaryCampHub();
       this.createVillageWell(730, 375);
       // W20-BUG-002: Dời cột đèn từ giữa lòng đường (780, 250) lên mép Bắc quảng trường (772, 218)
@@ -2807,15 +2807,13 @@ export class WorldBuilder {
       // 6. Xưởng Rèn & Lò Lửa của Bram (HW-BUG-#5: Di dời sang Đông-Nam mới tâm x=1373, chân móng y=432; Bram đứng tại 1333, 477)
       this.createCraftingWorkshopPavilion(1373, 432);
       const bench = zone.interactables.find(item => item.id === 'village_crafting_bench');
-      if (bench) this.createCraftingBench(bench.x, bench.y);
+      if (bench) this.createCraftingBench(bench, 40);
       this.createVillagePropCluster(1433, 452, 'firewood');
 
       // 7. Nhà Thảo Mộc Neris & Vườn Dược Sanctuary (Tây-Nam: tâm x=570, chân móng y=430; Neris đứng tại 570, 460)
       this.createBuilding(570, 430, 152, 136, 0x4a4335, 0x6e7845, 'Nhà Neris – Thảo Mộc');
       this.createChimneySmoke(616, 302);
       this.createApothecaryTables(500, 435, 615, 434);
-      const southSign = zone.interactables.find(item => item.id === 'bellhollow_farm_gate_sign');
-      if (southSign) this.createStoneSign(southSign.x, southSign.y);
       this.createSanctuaryHerbGarden(765, 477);
       this.createVillagePropCluster(510, 435, 'barrels');
 
@@ -2864,10 +2862,7 @@ export class WorldBuilder {
    * 4. Lớp sương mù dày đặc đa tầng cuộn trào che phủ hoàn toàn mép đen của bản đồ.
    * 5. Hộp va chạm vật lý chặn tuyệt đối nhân vật đi ngược vào hư vô.
    */
-  private createWestBarrierLandscape(): void {
-    const barrierX = 48;
-    const roadCenterY = 184;
-
+  private createWestBarrierLandscape(barrierX: number, roadCenterY: number): void {
     // 1. Hai cây cổ thụ phủ rêu rìa Tây Bắc - Tây Nam kẹp lấy lối mòn (split trunk/canopy)
     this.placeResurrectedSplitTree(32, 136, 'moss_gnarled', 0.85, 0xaab8aa, false, false);
     this.placeResurrectedSplitTree(30, 236, 'moss_broad', 0.84, 0xa6b4a6, false, true);
@@ -2989,17 +2984,17 @@ export class WorldBuilder {
     height: number,
     name?: string
   ): Phaser.Physics.Arcade.Sprite {
-    // V15-40: Chống trùng lặp Collider (Deduplication) - Tái sử dụng collider tĩnh nếu đã tồn tại vị trí và kích cỡ tương đương
+    // Reuse the same rectangle only. Nearby prop footprints can overlap without being duplicates.
     const children = this.colliderGroup.getChildren();
     for (let i = 0; i < children.length; i++) {
       const existing = children[i] as Phaser.Physics.Arcade.Sprite;
       const body = existing.body as Phaser.Physics.Arcade.StaticBody;
       if (
         body &&
-        Math.abs(body.x - minX) <= 6 &&
-        Math.abs(body.y - minY) <= 6 &&
-        Math.abs(body.width - width) <= 12 &&
-        Math.abs(body.height - height) <= 12
+        Math.abs(body.x - minX) < 0.001 &&
+        Math.abs(body.y - minY) < 0.001 &&
+        Math.abs(body.width - width) < 0.001 &&
+        Math.abs(body.height - height) < 0.001
       ) {
         if (name && !existing.name) {
           existing.setName(name);
@@ -3102,9 +3097,9 @@ export class WorldBuilder {
     return this.scene.add.image(x, y, validKey);
   }
 
-  private placeFootAnchoredSprite(x: number, y: number, key: string, scale = 1): Phaser.GameObjects.Image {
+  private placeFootAnchoredSprite(x: number, y: number, key: string, scale = 1, originY = 1): Phaser.GameObjects.Image {
     const image = this.safeAddImage(x, y, key);
-    image.setOrigin(0.5, 1).setScale(scale).setDepth(y);
+    image.setOrigin(0.5, originY).setScale(scale).setDepth(y);
     this.registerCullable(image, x, y, Math.max(image.displayWidth, image.displayHeight));
     return image;
   }
@@ -3121,6 +3116,7 @@ export class WorldBuilder {
     if (!this.scene.textures?.exists(ATLAS_RESURRECTED_PROPS)) return null;
     const scale = opts?.scale ?? 1.0;
     const img = this.scene.add.image(x, y, ATLAS_RESURRECTED_PROPS, frame);
+    if (opts?.label) img.setName(opts.label);
     img.setOrigin(0.5, 1.0);
     img.setScale(scale);
     if (opts?.tint) img.setTint(opts.tint);
@@ -3347,21 +3343,26 @@ export class WorldBuilder {
    * V15-12: Biển Chỉ Đường Gỗ Khắc Mũi Tên Cổ Điển (prop_signpost_wood.png 36×48 px)
    * Cọc gỗ sồi cắm đất, 2 thanh biển gỗ vát nhọn chỉ hướng có khắc ký hiệu cổ, chóp cọc phủ rêu xanh.
    */
-  private createStoneSign(x: number, y: number, _text?: string): void {
-    const sign = this.safeAddImage(x, y, SPRITE_PROP_SIGNPOST_WOOD_V15, SPRITE_SIGNPOST);
-    sign.setOrigin(0.5, 0.92);
-    sign.setDepth(y);
-    this.registerCullable(sign, x, y, 36);
+  private createSignpost(x: number, y: number, id = 'Biển Chỉ Dẫn', scale = 1): void {
+    const modern = this.scene.textures.exists(SPRITE_PROP_SIGNPOST_WOOD_V15);
+    const key = modern ? SPRITE_PROP_SIGNPOST_WOOD_V15 : SPRITE_SIGNPOST;
+    if (!this.scene.textures.exists(key)) return;
+    this.placeFootAnchoredSprite(x, y, key, scale, modern ? 45 / 48 : 1).setName(id);
+    this.createStaticBoxColliderCentered(x, y - 2 * scale, 14 * scale, 10 * scale, id);
+  }
 
-    // C4-13-17 & V15-12: Hộp va chạm chân biển chỉ đường chuẩn xác chống đi xuyên
-    this.createStaticBoxColliderCentered(x, y - 2, 14, 10, 'Biển Chỉ Dẫn');
+  private createZoneSignposts(zone: ZoneData, ...ids: string[]): void {
+    for (const id of ids) {
+      const item = zone.interactables.find(candidate => candidate.id === id);
+      if (item) this.createSignpost(item.x, item.y, item.id);
+    }
   }
 
   /**
    * C4-14-B04: Mẩu Nhật Ký Rách phát sáng hổ phách huyền ảo (Điểm hút 30-60 giây đầu)
    */
-  private createTornJournalScrapProp(x: number, y: number): void {
-    const g = this.scene.add.graphics();
+  private createTornJournalScrapProp(x: number, y: number, id: string): void {
+    const g = this.scene.add.graphics().setName(id);
     // Quầng sáng phát quang hổ phách nhẹ
     g.fillStyle(0xf39c12, 0.22);
     g.fillCircle(x, y, 14);
@@ -3474,11 +3475,12 @@ export class WorldBuilder {
     this.createStaticBoxColliderCentered(x, wellY - 10, 38, 20, 'Giếng Nước Làng');
   }
 
-  private createCraftingBench(x: number, y: number): void {
-    const bench = this.safeAddImage(x, y, SPRITE_CRAFTING_BENCH);
-    bench.setOrigin(0.5, 0.85).setDepth(y);
-    this.registerCullable(bench, x, y, 50);
-    this.createStaticBoxColliderCentered(x, y, 40, 12, 'Bàn Chế Tạo');
+  private createCraftingBench(item: InteractableSpec, colliderWidth: number, scale = 1): void {
+    const { x, y, id } = item;
+    if (!this.scene.textures.exists(SPRITE_CRAFTING_BENCH)) return;
+    this.placeFootAnchoredSprite(x, y, SPRITE_CRAFTING_BENCH, scale, 35 / 36).setName(id);
+    const colliderHeight = 12 * scale;
+    this.createStaticBoxCollider(x - colliderWidth / 2, y - colliderHeight, colliderWidth, colliderHeight, id);
   }
 
   /**
@@ -3779,7 +3781,7 @@ export class WorldBuilder {
     this.createStaticBoxColliderCentered(gateX - 31, southPostY - 4, 46, 12, 'Rào Nam Cổng Đông');
 
     // 2. Biển chỉ đường gỗ cổ (SPRITE_SIGNPOST) trước Cổng Đông
-    this.createStoneSign(gateX - 62, southPostY + 4, 'RỪNG NGOẠI VI');
+    this.createSignpost(gateX - 62, southPostY + 4);
 
     // 3. Trụ cổng đá - gỗ phía Bắc (depth = northPostY = 240)
     const northPillar = this.scene.add.graphics();
@@ -4535,55 +4537,30 @@ export class WorldBuilder {
    * Đồng bộ bóng đổ mờ mịn (alpha 0.25) và hitbox vật lý ẩn chuẩn xác.
    */
   private createRock(x: number, y: number, w: number, h: number): void {
-    // C4-132-03: Vùng cấm rải chướng ngại vật ngẫu nhiên (Exclusion Zone bán kính 220px quanh tâm Miếu Chuông Vỡ 4500, 250)
-    // đảm bảo tuyệt đối không có tảng đá lớn (rock_large) hay đá trung đè chồng lên giữa Miếu Chuông Vỡ
-    if (Math.hypot(x + w / 2 - 4500, y + h / 2 - 250) < 220) {
-      return;
-    }
+    this.createRockAtFoot(x + w / 2, y + h - 2, w, h);
+  }
 
-    // 1. Bóng đổ mặt đất mịn màng (alpha 0.25) ôm sát chân đá
-    const shadow = this.scene.add.graphics();
-    shadow.fillStyle(0x000000, 0.25);
-    shadow.fillEllipse(x + w / 2, y + h - 1, Math.max(w * 0.9, 20), Math.max(h * 0.42, 8));
-    shadow.setDepth(y + h - 2);
-    this.registerCullable(shadow, x + w / 2, y + h / 2, Math.max(w, h));
+  private createRockAtFoot(x: number, y: number, w: number, h: number, id = 'Tảng Đá'): void {
+    // Preserve the clear approach to the Broken Bell Shrine.
+    if (Math.hypot(x - 4500, y + 2 - h / 2 - 250) < 220) return;
 
-    // 2. Sprite tảng đá Pixel Art sắc nét
     const isLarge = w >= 48 || h >= 30;
     const spriteKey = isLarge ? SPRITE_ROCK_LARGE : SPRITE_ROCK_MEDIUM;
+    if (!this.scene.textures.exists(spriteKey)) return;
 
-    if (this.scene.textures && this.scene.textures.exists(spriteKey)) {
-      const rockImg = this.scene.add.image(x + w / 2, y + h - 2, spriteKey);
-      rockImg.setOrigin(0.5, 0.88);
-      // Cân đối scale theo kích thước mong muốn của ô (khớp tỷ lệ pixel art chuẩn 32x30 và 24x20)
-      const baseW = isLarge ? 32 : 24;
-      const baseH = isLarge ? 30 : 20;
-      const targetScale = Math.max(0.85, Math.min(1.4, Math.max(w / baseW, h / baseH) * 0.75));
-      rockImg.setScale(targetScale);
-      rockImg.setDepth(y + h);
-      this.registerCullable(rockImg, x + w / 2, y + h / 2, Math.max(w, h));
-    } else {
-      // Fallback đồ họa nhiều lớp vân đá pixel art (không dùng elip xám đơn sắc)
-      const rock = this.scene.add.graphics();
-      // Khối thân đá chính màu xám hoa cương
-      rock.fillStyle(0x384145, 1);
-      rock.fillRoundedRect(x + 2, y + 2, w - 4, h - 4, 6);
-      // Mảng vân sáng góc trên
-      rock.fillStyle(0x56656a, 1);
-      rock.fillRoundedRect(x + 4, y + 3, w * 0.6, h * 0.45, 4);
-      // Đốm rêu xanh tự nhiên trên lưng đá
-      rock.fillStyle(0x27ae60, 0.7);
-      rock.fillRect(x + 6, y + 4, Math.max(6, w * 0.25), 3);
-      rock.fillStyle(0x1e8449, 0.8);
-      rock.fillRect(x + 8, y + 7, Math.max(4, w * 0.2), 2);
-      rock.setDepth(y + h);
-      this.registerCullable(rock, x + w / 2, y + h / 2, Math.max(w, h));
-    }
-
-    // 3. Vật thể va chạm Arcade Physics hoàn toàn vô hình
-    const colW = Math.round(w * 0.75);
-    const colH = Math.round(Math.min(h * 0.5, 14));
-    this.createStaticBoxColliderCentered(x + w / 2, y + h - 2 - colH / 2, colW, colH, 'Tảng Đá');
+    const baseW = isLarge ? 32 : 24;
+    const baseH = isLarge ? 30 : 20;
+    const scale = Phaser.Math.Clamp(Math.max(w / baseW, h / baseH) * 0.75, 0.85, 1.4);
+    // Opaque contact widths and last opaque rows of the authored atlas frames.
+    const footWidth = Math.round((isLarge ? 22 : 14) * scale);
+    const footHeight = Math.round((isLarge ? 9 : 7) * scale);
+    this.placeFootAnchoredSprite(x, y, spriteKey, scale, isLarge ? 26 / 30 : 16 / 20).setName(id);
+    const shadow = this.scene.add.graphics();
+    shadow.fillStyle(0x000000, 0.25);
+    shadow.fillEllipse(x, y - 1, footWidth * 1.2, Math.max(5, footHeight));
+    shadow.setDepth(y - 1);
+    this.registerCullable(shadow, x, y, footWidth);
+    this.createStaticBoxCollider(x - footWidth / 2, y - footHeight, footWidth, footHeight, id);
   }
 
   private createMireWater(x: number, y: number, w: number, h: number): void {
@@ -5383,19 +5360,27 @@ export class WorldBuilder {
     const { bounds } = zone;
 
     // 1. Biển Đón Vào Nông Trại Trú Ẩn tại cửa ngõ phía Bắc (615, 590)
-    this.createStoneSign(615, 590, 'NÔNG TRẠI TRÚ ẨN');
+    this.createZoneSignposts(zone, 'farm_welcome_sign');
 
     // 2. Nhà Kho / Chuồng Trại Nông Trại (x=540, y=680, w=100, h=50)
     this.createFarmBarnStructure(540, 680, 100, 50);
 
     // 3. Mái Che & Bàn Sơ Chế Thảo Mộc (Herbalist Processing Shelter & Workbench: 685, 625)
-    this.createHerbalistProcessingShelter(685, 625);
+    const bench = zone.interactables.find(item => item.id === 'farm_processing_bench');
+    if (bench) {
+      this.placeFootAnchoredSprite(bench.x, bench.y + 4, SPRITE_PROP_WAYFARER_TENT_V15, 0.75);
+      this.createCraftingBench(bench, 32, 0.7);
+    }
 
     // 4. Giếng Nước Nông Trại & Nguồn nước tưới cây (920, 700)
     this.createVillageWell(920, 700);
 
     // 5. Khu Vườn Dược Sanctuary Terrace (Bờ đá, máng nước, biển đề danh: 730, 625)
-    this.createSanctuaryHerbTerrace(730, 625);
+    const terraceSign = zone.interactables.find(item => item.id === 'farm_herb_terrace_sign');
+    if (terraceSign) {
+      this.createSignpost(terraceSign.x, terraceSign.y, terraceSign.id, 0.6);
+      this.placeFootAnchoredSprite(terraceSign.x + 16, terraceSign.y + 3, 'prop_barrel_aged_v14', 0.6);
+    }
 
     // 6. Rương Trú Ẩn Nông Trại (680, 640)
     this.createChestProp(680, 640);
@@ -5433,10 +5418,10 @@ export class WorldBuilder {
    * đường mòn uốn lượn có tuyến chính và lối rẽ phụ tiếp cận nguồn tài nguyên đầu game (gỗ khô, đá lửa, nhựa cây, thảo mộc),
    * các cụm cây cổ thụ, thân cây đổ có nấm mọc, bụi rậm, đá tảng và lớp sương mù ranh giới nhẹ nhàng.
    */
-  private renderOuterWoodsDecorations(_zone: ZoneData): void {
+  private renderOuterWoodsDecorations(zone: ZoneData): void {
 
     // 1. Biển Chỉ Dẫn Mộc Mạc tại cửa rừng phía Bắc (1220, 640)
-    this.createStoneSign(1220, 640, 'RỪNG NGOẠI VI');
+    this.createZoneSignposts(zone, 'ow_signpost');
 
     // 2. Bãi Trại Thợ Săn (Hunter's Camp: 1320..1360, 700..740)
     this.createHunterLeanToShelter(1350, 690);
@@ -5518,7 +5503,7 @@ export class WorldBuilder {
     // HW-MAP-28: Cây viền Nam trung tâm đặt tại (1235, 1010) sát hàng rào boundary, loại bỏ tán cây che lấp tầm nhìn nhân vật tại (1283, 923)
     this.createTree(1235, 1010, 'Cây Cổ Thụ Viền Nam', true);
     // V152-04: Biển chỉ dẫn nối liền sang phân khu Xưởng Chuông Bỏ Hoang (sub_bell_workshop)
-    this.createStoneSign(1300, 985, 'XƯỞNG CHUÔNG BỎ HOANG ↓');
+    this.createZoneSignposts(zone, 'sign_sub_bell_workshop');
     this.createTree(1460, 985, 'Cây Cổ Thụ Viền Nam', true);
     this.createTree(1540, 980, 'Cây Cổ Thụ Viền Nam', true);
     this.createTree(1530, 630, 'Cây Cổ Thụ Viền Đông', true);
@@ -5908,23 +5893,6 @@ export class WorldBuilder {
   }
 
   /**
-   * C4-12-19: Tạo Mái Che & Bàn Sơ Chế Thảo Mộc (Herbalist Processing Shelter & Workbench).
-   */
-  private createHerbalistProcessingShelter(x: number, y: number): void {
-    this.placeFootAnchoredSprite(x + 17, y + 8, SPRITE_PROP_WAYFARER_TENT_V15, 0.75);
-    this.placeFootAnchoredSprite(x + 17, y + 4, SPRITE_CRAFTING_BENCH, 0.7);
-    this.createStaticBoxColliderCentered(x + 17, y + 4, 32, 10, 'Bàn Sơ Chế Thảo Mộc');
-  }
-
-  /**
-   * C4-12-19: Tạo khu vực Vườn Dược Sanctuary Terrace (Bờ đá, máng nước tưới, biển đề danh).
-   */
-  private createSanctuaryHerbTerrace(x: number, y: number): void {
-    this.placeFootAnchoredSprite(x - 10, y + 13, SPRITE_PROP_SIGNPOST_WOOD_V15, 0.6);
-    this.placeFootAnchoredSprite(x + 6, y + 16, 'prop_barrel_aged_v14', 0.6);
-  }
-
-  /**
    * V152-04: Lều Trại Thợ Săn Pixel Art (prop_wayfarer_tent.png 64x56 px)
    * Thay thế 100% hình vẽ code Phaser.Graphics bằng Sprite Pixel Art thật.
    */
@@ -6020,9 +5988,7 @@ export class WorldBuilder {
     const { bounds } = zone;
 
     // 1. Biển Báo & Cột Mốc Định Hướng (Signs & Landmark Totems)
-    this.createStoneSign(1660, 320, 'LỐI MÒN QUANH CO');
-    // HW-V16-C01: Dời biển báo ra mép Đông cổng Rừng Sâu để không đè lên triggerRect to_deep_forest (2000..2160, 10..45)
-    this.createStoneSign(2185, 58, 'NGUY HIỂM: RỪNG SÂU');
+    this.createZoneSignposts(zone, 'cp_frontier_sign', 'crooked_path_deep_forest_sign', 'sign_detour_winding');
     this.createStoneMarker(2760, 240); // Cột đá cổ Bắc ngưỡng cửa Đầm Lầy
     this.createStoneMarker(2760, 360); // Cột đá cổ Nam ngưỡng cửa Đầm Lầy
 
@@ -6048,7 +6014,8 @@ export class WorldBuilder {
     this.createDenseBush(2620, 360);
 
     // 5. Khối Đá Canh Gác Cổ Đại & Đá Tảng (Great Sentinel Rock & Boulders)
-    this.createRock(2100, 280, 58, 36); // Great Sentinel Rock
+    const sentinel = zone.interactables.find(item => item.id === 'cp_ancient_sentinel_rock');
+    if (sentinel) this.createRockAtFoot(sentinel.x, sentinel.y, 58, 36, sentinel.id);
     this.createRock(1790, 220, 38, 22);
     this.createRock(2220, 330, 42, 26);
     this.createRock(2440, 410, 36, 20);
@@ -6065,7 +6032,6 @@ export class WorldBuilder {
     this.createDetourWoodenBridge(2740, 390, 68);
 
     // V14-P8-13: Biển Chỉ Dẫn Tuyến Đường Vòng Tại Ngã Rẽ Bìa Rừng Sâu
-    this.createStoneSign(2060, 170, 'LỐI VÒNG THÁP CHUÔNG');
 
     // V14-P8-13 & V15-14: Bố trí 5 Node Thu Thập Nguyên Liệu theo đúng Quy Luật Sinh Thái
     // 1. Nhựa Thông: Sát gốc thông già ngã rẽ Rừng Sâu
@@ -6451,9 +6417,9 @@ export class WorldBuilder {
 
     // 1. Biển Báo & Cột Mốc Định Hướng (Signs & Landmark Markers)
     // V15-43: Dời biển báo Rừng Sâu và Rương gỗ lùi sang trái 36px (từ 2010 về 1974, y=-70) vào khoảng đất trống
-    this.createStoneSign(1974, -70, 'RỪNG SÂU'); // Mép Tây hành lang cửa rừng
+    this.createSignpost(1974, -70); // Mép Tây hành lang cửa rừng
     this.createChestPropWithBaseHitbox(1984, -80); // Rương gỗ lùi sang trái 36px với hitbox gọn đáy
-    this.createStoneSign(2340, -490, 'LÃNH ĐỊA KẺ LẮNG NGHE');
+    this.createSignpost(2340, -490);
     this.createStoneMarker(2840, -220); // Cột đá cổ Bắc ranh giới Đầm Lầy
     this.createStoneMarker(2840, -320); // Cột đá cổ Nam ranh giới Đầm Lầy
     // V1.4 Blueprint: Cột Vật Tổ Thì Thầm (Whispering Totem Pillar - Landmark tại 2100, -320)
@@ -6922,7 +6888,7 @@ export class WorldBuilder {
     const { bounds } = zone;
 
     // 1. Biển Báo & Cột Mốc Định Hướng (Signs & Landmark Markers)
-    this.createStoneSign(2945, 374, 'ĐẦM LẦY TĨNH LẶNG');
+    this.createZoneSignposts(zone, 'sm_entry_sign');
     this.createStoneMarker(2900, 222); // Cột đá mốc Tây Bắc
     this.createStoneMarker(2900, 370); // Cột đá mốc Tây Nam
     this.createStoneMarker(3960, 230); // Cột đá mốc Đông Bắc
@@ -8022,12 +7988,34 @@ export class WorldBuilder {
 
   private renderSubBellWorkshopDecorations(zone: ZoneData): void {
     const b = zone.bounds;
-    this.placeFootAnchoredSprite(b.x + 220, b.y + 177, SPRITE_CRAFTING_BENCH);
-    this.placeFootAnchoredSprite(b.x + 320, b.y + 193, 'rock_large_mossy_v14', 0.85);
-    const pickup = this.interactables.find(item => item.actionId === 'collect_runed_iron_part');
+    const bench = zone.interactables.find(item => item.id === 'inspect_ancient_workbench');
+    if (bench) this.createCraftingBench(bench, 60);
+
+    const debris = zone.colliders.find(spec => spec.id === 'bw_scrap_pile');
+    if (debris?.isSolid && this.scene.textures.exists(SPRITE_ROCK_LARGE_MOSSY_V14)) {
+      this.placeFootAnchoredSprite(debris.x + debris.width / 2, debris.y + debris.height,
+        SPRITE_ROCK_LARGE_MOSSY_V14, 0.85, 26 / 30).setName(debris.id).setTint(0xc2b7a4);
+      this.createStaticBoxCollider(debris.x, debris.y, debris.width, debris.height, debris.id);
+    }
+
+    const pickup = this.interactables.find(item => item.id === 'inspect_runed_iron_part');
     if (pickup) {
       this.runedIronPickup = this.scene.add.image(pickup.x, pickup.y, SPRITE_RES_RUNED_IRON)
-        .setOrigin(0.5, 1).setScale(1.5).setDepth(pickup.y);
+        .setOrigin(0.5, 18 / 24).setScale(1.5).setDepth(pickup.y).setName(pickup.id);
+    }
+
+    // The mold is stored in a crate. Keep the crate after the quest item is taken.
+    const mold = zone.interactables.find(item => item.id === 'inspect_bell_mold');
+    if (mold) {
+      this.placeFootAnchoredSprite(mold.x, mold.y, SPRITE_PROP_CRATE_WEATHERED_V14).setName(mold.id);
+      this.createStaticBoxCollider(mold.x - 8, mold.y - 7, 16, 7, mold.id);
+    }
+    const journal = zone.interactables.find(item => item.id === 'inspect_blacksmith_journal');
+    if (journal) this.createTornJournalScrapProp(journal.x, journal.y, journal.id);
+    const stele = zone.interactables.find(item => item.id === 'inspect_black_knight_stele');
+    if (stele) {
+      this.placeFootAnchoredSprite(stele.x, stele.y, SPRITE_PROP_ANCIENT_MONOLITH_V14, 0.7).setName(stele.id);
+      this.createStaticBoxCollider(stele.x - 9, stele.y - 8, 18, 8, stele.id);
     }
 
     // Quầng sáng đèn treo cổ
@@ -8315,8 +8303,10 @@ export class WorldBuilder {
   /**
    * V1.4: Bảng Tin Dị Thường (The Anomaly Notice Board) tại Quảng Trường Làng Bellhollow (x: 750, y: 270)
    */
-  private createAnomalyNoticeBoard(x: number, y: number): void {
-    const g = this.scene.add.graphics();
+  private createAnomalyNoticeBoard(item: InteractableSpec): void {
+    const x = item.x - 14;
+    const y = item.y - 26;
+    const g = this.scene.add.graphics().setName(item.id);
     // Bóng chân bảng tin
     g.fillStyle(0x0a0e0c, 0.45);
     g.fillEllipse(x + 14, y + 26, 26, 8);
@@ -8350,11 +8340,11 @@ export class WorldBuilder {
     g.fillStyle(0xf39c12, 0.9);
     g.fillCircle(x + 14, y - 2, 2.5);
 
-    g.setDepth(y + 24);
-    this.registerCullable(g, x + 14, y + 12, 30);
+    g.setDepth(item.y);
+    this.registerCullable(g, item.x, item.y - 14, 36);
 
     // Hitbox chân đế chuẩn xác (25%-35% phần chân cọc)
-    this.createStaticBoxColliderCentered(x + 14, y + 22, 14, 8, 'Bảng Tin Dị Thường');
+    this.createStaticBoxColliderCentered(item.x, item.y - 4, 14, 8, item.id);
   }
 
   /**

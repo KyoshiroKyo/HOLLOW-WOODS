@@ -13,6 +13,7 @@ import { registerBlackKnightAnimations } from '../animation/BlackKnightAnimation
 import { WorldBuilder } from '../world/WorldBuilder';
 import { CameraSystem } from '../systems/camera/CameraSystem';
 import { DebugOverlay } from '../utils/DebugOverlay';
+import { QA_BUILD } from '../debug/DevSessionPolicy';
 import { HitboxDebugInspector } from '../utils/HitboxDebugInspector';
 import { focusGameCanvasSafely } from '../utils/focusHelper';
 import { UIScene } from './UIScene';
@@ -50,7 +51,7 @@ import { DevPanelOverlay } from '../debug/DevPanelOverlay';
 import { MireWardenBoss, RunePillarTarget, BrazierTarget, BossMireWarden } from '../entities/BossMireWarden';
 import { BossEncounterSystem } from '../systems/BossEncounterSystem';
 import { QuestSystem } from '../systems/QuestSystem';
-import { ZoneId, TransitionZone, FacingDirection, WeaponDef, WildlifeSpookEvent } from '../types';
+import { ZoneId, TransitionZone, FacingDirection, WeaponDef, WildlifeSpookEvent, WORLD_INTERACTION_RADIUS } from '../types';
 import { TILED_PIPELINE_CONFIG } from '../config/tiledPipelineConfig';
 import { YSortingModule } from '../world/modules/YSortingModule';
 import { GraphicsQualitySystem, GraphicsQualitySettings } from '../systems/GraphicsQualitySystem';
@@ -92,7 +93,7 @@ export class GameScene extends Phaser.Scene {
   private player!: BlackKnightPlayer;
   private worldBuilder!: WorldBuilder;
   private cameraSystem!: CameraSystem;
-  private debugOverlay!: DebugOverlay;
+  private debugOverlay?: DebugOverlay;
   private hitboxInspector?: HitboxDebugInspector;
   private devPanel?: DevPanelOverlay;
   private devModeKeyHandler!: (event: KeyboardEvent) => void;
@@ -664,8 +665,10 @@ export class GameScene extends Phaser.Scene {
     };
     this.playerState.on('player_health_depleted', this.onHealthDepletedHandler);
 
-    // 11. Công cụ kiểm toán kỹ thuật F4 Debug (Graphics trên GameScene, Text trên UIScene Zoom 1.0)
-    this.debugOverlay = new DebugOverlay(this, this.player, this.uiScene);
+    // F4 is a read-only overlay in private QA builds, independent of F9.
+    if (QA_BUILD) {
+      this.debugOverlay = new DebugOverlay(this, this.player, this.uiScene, this.worldBuilder);
+    }
     // V1.5 (BƯỚC V15-04 / V15-29): Chế độ Kiểm tra Kỹ thuật Hitbox & Performance Profiler (Phím F9)
     // Tách biệt hoàn toàn khỏi giao diện người chơi thường, mặc định TẮT hoàn toàn (false)
     if (devManager.canToggleWithSimpleF9()) {
@@ -1018,7 +1021,7 @@ export class GameScene extends Phaser.Scene {
       this.devPanel?.hide();
       if (this.debugOverlay) {
         this.debugOverlay.destroy();
-        this.debugOverlay = undefined as any;
+        this.debugOverlay = undefined;
       }
       this.tweens.killAll();
       this.time.removeAllEvents();
@@ -1945,9 +1948,7 @@ export class GameScene extends Phaser.Scene {
           this.handleESCPress();
         }
       }
-      if (this.debugOverlay) {
-        this.debugOverlay.update(this.currentZoneId);
-      }
+      this.debugOverlay?.update(this.currentZoneId);
       if (this.hitboxInspector) {
         this.hitboxInspector.update(this.currentZoneId);
       }
@@ -2575,7 +2576,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     // Cập nhật F4 & F9 Debug Overlays
-    this.debugOverlay.update(this.currentZoneId);
+    this.debugOverlay?.update(this.currentZoneId);
     this.hitboxInspector?.update(this.currentZoneId, delta);
     if (this.devManagerState !== DeveloperModeManager.getInstance().isEnabled) this.syncDeveloperModeUI();
     // V15-34: Bắt phím tắt F8 Gỡ Kẹt Về Điểm An Toàn cho người chơi
@@ -5104,7 +5105,7 @@ export class GameScene extends Phaser.Scene {
     // 3. Kiểm tra các vật thể, Bàn Chế Tạo và câu đố trên bản đồ (triggerDist: 52px, quét gợi ý: 65px)
     const nearbyList = this.worldBuilder.getNearbyInteractables(this.player.getFootPosition(), 65);
     for (const { item: nearby, dist } of nearbyList) {
-      const worldTriggerDist = 52;
+      const worldTriggerDist = nearby.triggerRadius ?? WORLD_INTERACTION_RADIUS;
       const isWithinActionRange = dist <= worldTriggerDist;
       let rawPrompt = nearby.promptText;
 
@@ -5139,7 +5140,7 @@ export class GameScene extends Phaser.Scene {
         x: nearby.x,
         y: nearby.y,
         promptX: nearby.x,
-        promptY: nearby.y - 14,
+        promptY: nearby.y - (nearby.triggerRadius === undefined ? 14 : propH + 4),
         outlineFootY: nearby.y,
         width: propW,
         height: propH,
@@ -5311,7 +5312,7 @@ export class GameScene extends Phaser.Scene {
     const best = candidates[0];
     const isWithinActionRange = best.dist <= best.triggerDist;
     // V15-29: Bán kính tương tác viền sáng chuẩn hóa <= 52px
-    const isWithinOutlineRange = best.dist <= 52;
+    const isWithinOutlineRange = best.dist <= Math.min(WORLD_INTERACTION_RADIUS, best.triggerDist);
 
     // V15-29 & BUG-043: Tự động tạm ẩn bảng tên cố định của NPC khi hiện khung nhắc "[E] ..." để không bao giờ chồng 2 khung chữ
     const activeNPC = (best.targetRef instanceof NPCEntity) ? best.targetRef : null;

@@ -1,160 +1,108 @@
-/**
- * HOLLOW WOODS V1.3
- * HD DEBUG OVERLAY (PHÍM F4)
- * Hiển thị chuẩn khung 64×64 của Satyr và hộp va chạm chân 14×8 px trên độ phân giải 1280×720
- * Bảng chữ số liệu render tại UIScene (Zoom 1.0), bounding box render tại GameScene (World Space)
- */
-
 import * as Phaser from 'phaser';
-import { BlackKnightPlayer } from '../entities/BlackKnightPlayer';
-import { 
-  SATYR_FRAME_WIDTH, 
-  SATYR_FRAME_HEIGHT, 
-  SATYR_ORIGIN_X, 
-  SATYR_ORIGIN_Y,
-  SATYR_BODY_WIDTH,
-  SATYR_BODY_HEIGHT,
-  SATYR_BODY_OFFSET_X,
-  SATYR_BODY_OFFSET_Y
-} from '../config/Constants';
-import { ZoneId } from '../types';
+import type { BlackKnightPlayer } from '../entities/BlackKnightPlayer';
+import { WORLD_INTERACTION_RADIUS, type InteractableSpec, type ZoneId } from '../types';
+import type { WorldBuilder } from '../world/WorldBuilder';
 import { HDTextHelper } from './HDTextHelper';
 
+/** F4 inspection of live world geometry in the private QA build. */
 export class DebugOverlay {
-  private scene: Phaser.Scene;
-  private uiScene: Phaser.Scene;
-  private player: BlackKnightPlayer;
-  private graphics: Phaser.GameObjects.Graphics;
-  private textObject: Phaser.GameObjects.Text;
-  private isVisible: boolean = false;
-  private f4Key: Phaser.Input.Keyboard.Key;
+  private readonly graphics: Phaser.GameObjects.Graphics;
+  private readonly text: Phaser.GameObjects.Text;
+  private readonly toggleKey: Phaser.Input.Keyboard.Key;
+  private visible = false;
+  private lastUpdate = -Infinity;
 
-  constructor(scene: Phaser.Scene, player: BlackKnightPlayer, uiScene?: Phaser.Scene) {
-    this.scene = scene;
-    this.uiScene = uiScene || scene;
-    this.player = player;
-
-    // Graphics vẽ trong GameScene (world coordinates bao quanh player)
-    this.graphics = scene.add.graphics();
-    this.graphics.setDepth(9999);
-
-    // Bảng thông số Debug chuẩn HD đặt tại (24, 140) trên UIScene (Zoom 1.0 cố định)
-    this.textObject = HDTextHelper.createText(this.uiScene, 24, 140, '', {
+  constructor(
+    private readonly scene: Phaser.Scene,
+    private readonly player: BlackKnightPlayer,
+    uiScene: Phaser.Scene,
+    private readonly world: WorldBuilder
+  ) {
+    this.graphics = scene.add.graphics().setDepth(9999).setVisible(false);
+    this.text = HDTextHelper.createText(uiScene, 60, 626, '', {
       fontFamily: 'Consolas, monospace',
       fontSize: '13px',
-      color: '#00ffcc',
-      backgroundColor: '#0a0e14dd',
-      padding: { x: 12, y: 10 },
-      stroke: '#000000',
-      strokeThickness: 2
-    });
-    this.textObject.setScrollFactor(0);
-    this.textObject.setDepth(10000);
-
-    this.graphics.setVisible(this.isVisible);
-    this.textObject.setVisible(this.isVisible);
-
-    if (scene.input && scene.input.keyboard) {
-      this.f4Key = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F4);
-    } else {
-      throw new Error('Keyboard input not available');
-    }
+      color: '#f0ead3',
+      backgroundColor: '#101716ed',
+      padding: { x: 12, y: 8 }
+    }).setOrigin(0, 1).setScrollFactor(0).setDepth(10000).setVisible(false);
+    this.toggleKey = scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.F4);
   }
 
-  public setUIScene(uiScene: Phaser.Scene): void {
-    if (this.uiScene !== uiScene) {
-      if (this.textObject) {
-        this.textObject.destroy();
-      }
-      this.uiScene = uiScene;
-      this.textObject = HDTextHelper.createText(this.uiScene, 24, 140, '', {
-        fontFamily: 'Consolas, monospace',
-        fontSize: '13px',
-        color: '#00ffcc',
-        backgroundColor: '#0a0e14dd',
-        padding: { x: 12, y: 10 },
-        stroke: '#000000',
-        strokeThickness: 2
-      });
-      this.textObject.setScrollFactor(0);
-      this.textObject.setDepth(10000);
-      this.textObject.setVisible(this.isVisible);
+  public update(zoneId: ZoneId): void {
+    if (Phaser.Input.Keyboard.JustDown(this.toggleKey)) {
+      this.visible = !this.visible;
+      this.graphics.setVisible(this.visible);
+      this.text.setVisible(this.visible);
+      this.lastUpdate = -Infinity;
     }
-  }
+    if (!this.visible || this.scene.time.now - this.lastUpdate < 100) return;
+    this.lastUpdate = this.scene.time.now;
 
-  public update(currentZoneId: ZoneId): void {
-    if (Phaser.Input.Keyboard.JustDown(this.f4Key)) {
-      this.isVisible = !this.isVisible;
-      this.graphics.setVisible(this.isVisible);
-      this.textObject.setVisible(this.isVisible);
-    }
-
-    if (!this.isVisible) return;
+    const foot = this.player.getFootPosition();
+    const body = this.player.body as Phaser.Physics.Arcade.Body;
+    const nearest = this.world.getNearbyInteractables(foot, 90).reduce<{
+      item: InteractableSpec;
+      dist: number;
+    } | undefined>((closest, entry) => !closest || entry.dist < closest.dist ? entry : closest, undefined);
+    const targetBodyID = nearest?.item.id;
+    let candidateBody: Phaser.Physics.Arcade.StaticBody | undefined;
+    let candidateID = '';
+    let nearestBodyDistance = Infinity;
+    let matchingFootprint = false;
 
     this.graphics.clear();
-
-    const px = this.player.x;
-    const py = this.player.y;
-
-    // 1. Vẽ Canvas Bounds chuẩn 64×64 của Satyr (Khung vàng)
-    const canvasTopLeftX = px - SATYR_FRAME_WIDTH * SATYR_ORIGIN_X;
-    const canvasTopLeftY = py - SATYR_FRAME_HEIGHT * SATYR_ORIGIN_Y;
-    this.graphics.lineStyle(1.5, 0xf1c40f, 0.95);
-    this.graphics.strokeRect(canvasTopLeftX, canvasTopLeftY, SATYR_FRAME_WIDTH, SATYR_FRAME_HEIGHT);
-
-    // 2. Vẽ Opaque Bounds thực tế của Satyr (Khoảng 36×58 px màu xanh lá)
-    const opaqueTopLeftX = canvasTopLeftX + 14;
-    const opaqueTopLeftY = canvasTopLeftY + 4;
-    this.graphics.lineStyle(1.5, 0x2ecc71, 0.9);
-    this.graphics.strokeRect(opaqueTopLeftX, opaqueTopLeftY, 36, 58);
-
-    // 3. Vẽ Hộp va chạm vật lý gót chân (Collider Body 14×8 px màu xanh dương)
-    const bodyTopLeftX = canvasTopLeftX + SATYR_BODY_OFFSET_X;
-    const bodyTopLeftY = canvasTopLeftY + SATYR_BODY_OFFSET_Y;
-    this.graphics.lineStyle(1.5, 0x3498db, 1);
-    this.graphics.fillStyle(0x3498db, 0.45);
-    this.graphics.fillRect(bodyTopLeftX, bodyTopLeftY, SATYR_BODY_WIDTH, SATYR_BODY_HEIGHT);
-    this.graphics.strokeRect(bodyTopLeftX, bodyTopLeftY, SATYR_BODY_WIDTH, SATYR_BODY_HEIGHT);
-
-    // 4. Vẽ Foot Anchor (Điểm neo gót chân màu đỏ rực)
-    this.graphics.fillStyle(0xe74c3c, 1);
-    this.graphics.fillCircle(px, py, 3);
-
-    // 5. Cập nhật thông số Debug chuẩn HD
-    const body = this.player.body as Phaser.Physics.Arcade.Body;
-    const speed = body ? Math.round(body.speed) : 0;
-    const animName = this.player.anims.currentAnim?.key || 'none';
-    const flipStr = this.player.flipX ? 'CÓ (Lật phải)' : 'KHÔNG';
-
-    let cullingInfo = '';
-    const wb = (this.scene as any).worldBuilder;
-    if (wb && typeof wb.getCullableStats === 'function') {
-      const stats = wb.getCullableStats();
-      cullingInfo = `  |  Culling: ${stats.visible}/${stats.total} hiện (${stats.culled} ẩn)`;
+    this.graphics.lineStyle(0.6, 0x38d0ce, 0.78);
+    for (const child of this.world.colliderGroup.getChildren()) {
+      const collider = (child as Phaser.Physics.Arcade.Sprite).body as Phaser.Physics.Arcade.StaticBody | null;
+      if (!collider?.enable || collider.right < foot.x - 130 || collider.x > foot.x + 130 ||
+          collider.bottom < foot.y - 130 || collider.y > foot.y + 130) continue;
+      this.graphics.strokeRect(collider.x, collider.y, collider.width, collider.height);
+      const matchesTarget = Boolean(targetBodyID && targetBodyID === child.name);
+      if (matchingFootprint && !matchesTarget) continue;
+      const distance = Math.hypot(
+        foot.x - Phaser.Math.Clamp(foot.x, collider.x, collider.right),
+        foot.y - Phaser.Math.Clamp(foot.y, collider.y, collider.bottom)
+      );
+      if (matchesTarget || distance < nearestBodyDistance) {
+        candidateBody = collider;
+        candidateID = child.name || '(không có ID)';
+        nearestBodyDistance = distance;
+        matchingFootprint = matchesTarget;
+      }
     }
 
-    this.textObject.setText([
-      '=== [F4] THÔNG SỐ KỸ THUẬT NHÂN VẬT SATYR — HOLLOW WOODS V1.4 ===',
-      `Tọa độ gót chân: X = ${Math.round(px)}, Y = ${Math.round(py)}`,
-      `Phân khu hiện tại: ${currentZoneId}`,
-      `Vận tốc: ${speed} px/s  |  Hướng mặt: ${this.player.facing}  |  FlipX: ${flipStr}`,
-      `Hoạt ảnh đang chạy: ${animName}`,
-      `Khung Sprite Sheet: 64×64 px (Chuẩn lưới Satyr 22 cột × 4 hàng)`,
-      `Hộp va chạm chân (Collider): ${SATYR_BODY_WIDTH}×${SATYR_BODY_HEIGHT} px  |  Offset: (${SATYR_BODY_OFFSET_X}, ${SATYR_BODY_OFFSET_Y})`,
-      `Điểm neo chân (Origin): (${SATYR_ORIGIN_X.toFixed(2)}, ${SATYR_ORIGIN_Y.toFixed(2)})  |  Bàn chân tại y = 58`,
-      `Độ phân giải: 1280×720 HD  |  Camera Zoom: 2.2×  |  FPS: ${Math.round(this.scene.game.loop.actualFps)}${cullingInfo}`
+    this.graphics.lineStyle(0.8, 0x50a9ff, 1);
+    if (body?.enable) this.graphics.strokeRect(body.x, body.y, body.width, body.height);
+    this.graphics.fillStyle(0x50a9ff).fillCircle(foot.x, foot.y, 1.7);
+    if (candidateBody) {
+      this.graphics.lineStyle(1, 0x38d0ce, 1)
+        .strokeRect(candidateBody.x, candidateBody.y, candidateBody.width, candidateBody.height);
+    }
+
+    const item = nearest?.item;
+    const radius = item?.triggerRadius ?? WORLD_INTERACTION_RADIUS;
+    if (item) {
+      this.graphics.lineStyle(0.6, 0xffca65, 0.82).strokeCircle(item.x, item.y, radius);
+      this.graphics.fillStyle(0xffca65).fillCircle(item.x, item.y, 2);
+    }
+
+    const xy = (x: number, y: number) => '(' + x.toFixed(1) + ', ' + y.toFixed(1) + ')';
+    const box = (b: Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody) =>
+      xy(b.x, b.y) + ' · ' + b.width.toFixed(1) + ' × ' + b.height.toFixed(1);
+    this.text.setText([
+      '[F4] WORLD QA',
+      'Zone ' + zoneId + ' · Người chơi ' + xy(foot.x, foot.y),
+      'Body người chơi ' + (body ? box(body) : '—'),
+      item ? 'Object ID gần nhất ' + item.id : 'Object ID —',
+      item ? 'Anchor ' + xy(item.x, item.y) + ' · R ' + radius + ' · D ' + nearest.dist.toFixed(1) : 'Anchor —',
+      'Collider ' + (candidateBody ? candidateID + ' ' + box(candidateBody) : '—')
     ]);
   }
 
   public destroy(): void {
-    if (this.f4Key) {
-      this.f4Key.removeAllListeners();
-    }
-    if (this.graphics) {
-      this.graphics.destroy();
-    }
-    if (this.textObject) {
-      this.textObject.destroy();
-    }
+    this.scene.input.keyboard?.removeKey(this.toggleKey, true);
+    this.graphics.destroy();
+    this.text.destroy();
   }
 }

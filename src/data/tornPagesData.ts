@@ -44,9 +44,18 @@ export const TORN_PAGES_REGISTRY: Record<string, TornPageEntry> = {
     author: 'Biển Gỗ Phong Hóa – Fog Crossing',
     ancientRune: '🧭',
     pages: [
-      'Tấm ván sồi nứt nẻ đóng trên cọc gỗ bên mép vực sương mù:\n\n"◄ HƯỚNG ĐÔNG: Làng Chuông Bellhollow — Vùng Trú Ẩn An Toàn.\n\nHỡi lữ khách vừa thoát khỏi màn đêm, hãy giữ ngọn đèn luôn cháy sáng và đi theo vệt hoa dại dẫn vào cổng làng!"'
+      'Tấm ván sồi nứt nẻ đóng trên cọc gỗ bên mép vực sương mù:\n\n"HƯỚNG ĐÔNG ► Làng Chuông Bellhollow — Vùng Trú Ẩn An Toàn.\n\nHỡi lữ khách vừa thoát khỏi màn đêm, hãy giữ ngọn đèn luôn cháy sáng và đi theo vệt hoa dại dẫn vào cổng làng!"'
     ],
     composureBonus: 5
+  },
+
+  read_bellhollow_west_sign: {
+    id: 'read_bellhollow_west_sign',
+    variant: 'signpost',
+    title: 'CỔNG TÂY BELLHOLLOW',
+    author: 'Làng Chuông Bellhollow',
+    ancientRune: '🧭',
+    pages: ['◄ TÂY: Lối Xuyên Sương (Fog Crossing).\n\nĐÔNG ► Quảng trường và Tháp Chuông Bellhollow.']
   },
 
   // 3. Biển Chỉ Đường Tuyến Vòng (Crooked Path)

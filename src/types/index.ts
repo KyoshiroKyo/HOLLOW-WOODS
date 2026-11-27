@@ -109,10 +109,13 @@ export interface InteractableSpec {
   y: number;
   width: number;
   height: number;
+  triggerRadius?: number;
   promptText: string;
   actionId: string;
   requiresItem?: string;
 }
+
+export const WORLD_INTERACTION_RADIUS = 52;
 
 // Trạng thái khả dụng của kết nối phân khu
 export type ConnectionStatus = 'active' | 'pending_construction';
