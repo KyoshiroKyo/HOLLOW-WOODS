@@ -1,6 +1,6 @@
 # HOLLOW WOODS — CANON DECISION REGISTRY (`HW-V16-A01 LOCKED`)
 
-- **Mission History:** `HW-NARRATIVE-00B` → `HW-V16-A01` (Canon Lock) → `HW-V16-A02` → `HW-V16-A03/A04/A05` → **`HW-V16-A06` (`MEMORY & IDENTITY REVEAL GATES SYNCHRONIZED — PARTIAL PENDING EVIDENCE LOCK`)** (`2026-11-26`)
+- **Mission History:** `HW-NARRATIVE-00B` → `HW-V16-A01` (Canon Lock) → `HW-V16-A02` → `HW-V16-A03/A04/A05` → `HW-V16-A06` (`PARTIAL`) → **`HW-V16-A06-R1` (`OWNER APPROVED OPTION 1 & IDENTITY EVIDENCE ROUTES ACTIVATED`)** (`2026-11-27`)
 - **Primary Decision Matrix:** [HW_CANON_OWNER_DECISION_MATRIX.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/Narrative/HW_CANON_OWNER_DECISION_MATRIX.md) (`22` Owner-Authorized IDs + `1` Reserved `DEC-LOCK-14`) | **A02 Report:** [HW_V16_A02_LEGACY_LORE_IMPLEMENTATION_REPORT.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/V16/HW_V16_A02_LEGACY_LORE_IMPLEMENTATION_REPORT.md)
 - **References:** `HOLLOW_WOODS_MASTER_GAME_BIBLE_UNIFIED.docx`, `HOLLOW WOODS V1.6 — Technical Implementation Bible · Roadmap 3.0.docx`, `HOLLOW_WOODS_HEADLESS_WARDEN_V3_2_DESIGN_CODE_HANDOVER.docx`
 
@@ -17,8 +17,8 @@
 
 | Decision ID | Chủ đề & Khóa `DEC-LOCK-*` | Canon Status | Implementation Status | Chi tiết & Ràng buộc |
 | :--- | :--- | :---: | :---: | :--- |
-| **`CHAR-K01`** | Đổi tên thật NVC: **`Drager` → `Meliodas Blackwood`** (`DEC-LOCK-01/07`) | **`CANON-APPROVED`** (`Drager` `SUPERSEDED`) | **`PARTIAL` (`A06` Fail-Closed Gate Implemented)** | Ẩn ở Menu, Stage `0–2` & Stage `3` thiếu Approved Evidence qua `IdentityRevealResolver.ts`; chờ Owner duyệt quy tắc chứng cứ ở [HW_V16_A06_EVIDENCE_DECISION_MATRIX.md](file:///G:/HOLLOW%20WOODS/Read/V1.5/Reports/V16/HW_V16_A06_EVIDENCE_DECISION_MATRIX.md). |
-| **`CHAR-K02`** | Danh hiệu **`Lord Blackwood`**, **`The Wolf Lord`**, Người Thầy & **Tổng Chỉ Huy** ẩn (`DEC-LOCK-01/07`) | **`CANON-APPROVED`** | **`PARTIAL` (`A06` Fail-Closed Gate Implemented)** | Đã chặn leak tại `PlayerState:610–622, 770`, `EvilKnights:1002`, HUD, villagers, Journal (`REDACTED`) & Ending display. |
+| **`CHAR-K01`** | Đổi tên thật NVC: **`Drager` → `Meliodas Blackwood`** (`DEC-LOCK-01/07`) | **`CANON-APPROVED`** (`Drager` `SUPERSEDED`) | **`GAME-IMPLEMENTED` (`HW-V16-A06-R1`)** | Kích hoạt Option 1 (`MAIN_PATH_Q05` + `SIDE_PATH_SQ08` + Main Stage 3 trigger) trong `IdentityRevealResolver.ts`, `PlayerState.ts`, `QuestSystem.ts`, `GameScene.ts`, `UIScene.ts`, `SaveManager.ts`; giữ nguyên bảo vệ `Stage 0–2` và `Stage 3` thiếu chứng cứ; `MEM-04` backfill thuộc `B07`. |
+| **`CHAR-K02`** | Danh hiệu **`Lord Blackwood`**, **`The Wolf Lord`**, Người Thầy & **Tổng Chỉ Huy** ẩn (`DEC-LOCK-01/07`) | **`CANON-APPROVED`** | **`GAME-IMPLEMENTED` (`HW-V16-A06-R1`)** | Ẩn ở Stage `0–2` & Stage `3` thiếu chứng cứ; chỉ đồng bộ mở `lore_wayfarer_inner_journal`, HUD badge, 5 thoại dân làng và Ending display khi đạt `Stage >= 3 && (MAIN_PATH_Q05 \|\| SIDE_PATH_SQ08)`. |
 | **`CHAR-K03`** | Tuyến Kỵ Sĩ: **`Vaelen`**, **`Mordric = Dark Knight / HoodedKnightBoss`**, **`Roderick`**, **`Aldemar`** (`DEC-LOCK-09..13`) | **`CANON-APPROVED`** (`Vaelen`/`Mordric` base) & **`APPROVED-WITH-LIMITATIONS`** (`Roderick`/`Aldemar`) | `Vaelen` & `HoodedKnightBoss` baseline; đổi display/thoại `IMPLEMENTATION-PENDING` | `Sir Mordric` = `HoodedKnightBoss` (giữ runtime ID/class/texture/quest/`quest_corrupted_crest`). Số phận cuối `Vaelen`/`Mordric` & tiểu sử/sprite/vị trí `Roderick`/`Aldemar` còn mở. |
 | **`CHAR-K04`** | Boss **`The Headless Warden`** (`CHAR-006`, `DEC-LOCK-14`) | **`RESERVED / DEFERRED`** | `DEFERRED` (Excluded from V1.6) | Phát triển độc lập ở `HW-Design` (`V3.2`); hoãn `D06/D07/E06`; cấm entity/AI/spawn/placeholder runtime. |
 | **`NAR-K05`** | Nguồn mất trí nhớ & lời cầu cứu (`DEC-LOCK-02/03/04/05/19`) | **`CANON-APPROVED`** | `IMPLEMENTATION-PENDING` (`A02`) | Thay tự phong ấn/`Algiz`/tái sinh bằng **biến cố xuyên thời gian bí ẩn** (giữ `Algiz` không liên quan Lore); lời gọi `UNKNOWN`; không chốt số năm; `Làng Sương Mù = Bellhollow`; Edda nắm truyền khẩu/cảm nhận. |
@@ -39,7 +39,7 @@
 | NAR ID | Nội dung thay đổi tóm tắt | Liên kết `DEC-LOCK` | Canon Status (`A01`) | Impl Status |
 | :--- | :--- | :---: | :---: | :---: |
 | `NAR-001` | Nguồn gọi đầu game: Lời cầu cứu bí ẩn từ rừng (`UNKNOWN`) | `DEC-LOCK-03` | **`CANON-APPROVED`** | `IMPLEMENTATION-PENDING` (`A02`/`A03`) |
-| `NAR-002` | Ẩn `Tổng Chỉ Huy` & tên `Meliodas` cho tới Stage 3 + chứng cứ | `DEC-LOCK-01/07` | **`CANON-APPROVED`** | `IMPLEMENTATION-PENDING` (`A02`/`A06`) |
+| `NAR-002` | Ẩn `Tổng Chỉ Huy` & tên `Meliodas` cho tới Stage 3 + chứng cứ | `DEC-LOCK-01/07` | **`CANON-APPROVED`** | **`GAME-IMPLEMENTED`** (`A06`/`A06-R1`) |
 | `NAR-003` | Thay tự phong ấn/`Algiz`/tái sinh bằng biến cố xuyên thời gian bí ẩn | `DEC-LOCK-02` | **`CANON-APPROVED`** | `IMPLEMENTATION-PENDING` (`A02`) |
 | `NAR-004` | Bỏ `hàng trăm năm`/`số thế hệ`; Làng Sương Mù = Bellhollow | `DEC-LOCK-04` | **`CANON-APPROVED`** | `IMPLEMENTATION-PENDING` (`A02`/`A07`) |
 | `NAR-005` | Meliodas vừa là Người Thầy vừa là Tổng Chỉ Huy (ẩn tới reveal) | `DEC-LOCK-01` | **`CANON-APPROVED`** | `IMPLEMENTATION-PENDING` (`A02`/`A04`) |

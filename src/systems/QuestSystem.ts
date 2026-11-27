@@ -207,6 +207,7 @@ export class QuestSystem {
     ps.setFlag('mire_root_seal_broken');
     ps.setFlag('shrine_bridge_lowered');
     ps.setFlag('shrine_unlocked');
+    ps.setMemoryAwakeningStage(3);
     ps.setCurrentQuest('Q06_RETRIEVE_CLAPPER');
 
     return true;

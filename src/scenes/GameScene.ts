@@ -4815,9 +4815,16 @@ export class GameScene extends Phaser.Scene {
                 dKey = 'vaelen_reminder_use_purification_key';
               } else if (hasMold && hasRune) {
                 dKey = 'vaelen_forge_purification_key';
-                QuestSystem.getInstance().craftPurificationKey(this.playerState);
+                const wasRevealed = this.playerState.canRevealPlayerIdentity();
+                const crafted = QuestSystem.getInstance().craftPurificationKey(this.playerState);
+                if (crafted) {
+                  this.promoteToMemoryStage3();
+                }
+                const justRevealed = !wasRevealed && this.playerState.canRevealPlayerIdentity();
                 if (this.uiScene) {
-                  this.uiScene.showPopupMessage('🔑 Sir Vaelen đã tôi luyện thành công: [Chìa Khóa Thanh Tẩy]!');
+                  if (!justRevealed) {
+                    this.uiScene.showPopupMessage('🔑 Sir Vaelen đã tôi luyện thành công: [Chìa Khóa Thanh Tẩy]!');
+                  }
                   this.uiScene.updateQuestTracker();
                 }
               } else if (hasMold) {
@@ -4832,19 +4839,21 @@ export class GameScene extends Phaser.Scene {
                 const hasCorruptedCrest = (this.playerState.getItemCount('quest_corrupted_crest') > 0 ||
                                            this.playerState.hasFlag('boss_hooded_knight_defeated'));
                 if (hasCorruptedCrest) {
+                  const wasRevealed = this.playerState.canRevealPlayerIdentity();
                   dKey = 'campfire_knight_q3_complete';
                   this.playerState.completeQuestTask('SQ08_PURIFY_FALLEN', 't1');
                   this.playerState.completeQuestTask('SQ08_PURIFY_FALLEN', 't2');
                   this.playerState.completeQuestTask('SQ08_PURIFY_FALLEN', 't3');
                   this.playerState.setFlag('campfire_knight_q3_completed');
 
-                  // V14-P8-15B & HW-V16-A06: Nâng tiến trình Ký Ức lên Stage 3, giữ nguyên Reveal Gate (Stage >= 3 AND Approved Evidence)
-                  this.playerState.setMemoryAwakeningStage(3);
-                  this.events.emit('memory_awakening_stage_changed', 3);
-                  this.events.emit('memory_awakening_completed');
+                  // V14-P8-15B & HW-V16-A06-R1: Nâng tiến trình Ký Ức lên Stage 3, giữ nguyên Reveal Gate (Stage >= 3 AND Approved Evidence)
+                  const stageAdvanced = this.promoteToMemoryStage3();
+                  const justRevealed = !wasRevealed && this.playerState.canRevealPlayerIdentity();
                   if (this.uiScene) {
                     this.uiScene.redrawStats();
-                    this.uiScene.showPopupMessage('⚔️ THỨC TỈNH KÝ ỨC: Mảnh ký ức về Quân Huy Đoàn Kỵ Sĩ Hắc Lang đã khép lại!');
+                    if (!justRevealed && stageAdvanced) {
+                      this.uiScene.showPopupMessage('⚔️ THỨC TỈNH KÝ ỨC: Mảnh ký ức về Quân Huy Đoàn Kỵ Sĩ Hắc Lang đã khép lại!');
+                    }
                   }
                 } else {
                   dKey = 'campfire_knight_q3_reminder';
@@ -6144,15 +6153,25 @@ export class GameScene extends Phaser.Scene {
       }
 
       if (sealState.canBreak) {
+        const wasRevealed = this.playerState.canRevealPlayerIdentity();
+        const prevStage = this.playerState.memoryAwakeningStage;
         questSys.unlockBridge(this.playerState);
+        if (prevStage < 3 && this.playerState.memoryAwakeningStage >= 3) {
+          this.events.emit('memory_awakening_stage_changed', 3);
+          this.events.emit('memory_awakening_completed');
+        }
         if (this.cameraSystem) {
           this.cameraSystem.shake(450, 0.015);
         } else if (SettingsManager.getInstance().isScreenShakeEnabled()) {
           this.cameras.main.shake(450, 0.015);
         }
         this.audioManager.playBronzeBellToll();
+        const justRevealed = !wasRevealed && this.playerState.canRevealPlayerIdentity();
         if (this.uiScene) {
-          this.uiScene.showPopupMessage('🌟 CHÌA KHÓA THANH TẨY PHÁ BỎ PHONG ẤN RỄ CỔ!\nThân cây cổ thụ khổng lồ rền vang hạ xuống làm cầu vượt vực, thông lối sang Miếu Chuông Phế Tích (C)!');
+          this.uiScene.redrawStats();
+          if (!justRevealed) {
+            this.uiScene.showPopupMessage('🌟 CHÌA KHÓA THANH TẨY PHÁ BỎ PHONG ẤN RỄ CỔ!\nThân cây cổ thụ khổng lồ rền vang hạ xuống làm cầu vượt vực, thông lối sang Miếu Chuông Phế Tích (C)!');
+          }
           this.uiScene.updateQuestTracker();
         }
         return;
@@ -7382,6 +7401,18 @@ export class GameScene extends Phaser.Scene {
     if (this.uiScene) {
       this.uiScene.showPopupMessage('✨ PHONG ẤN HOÀN TẤT! Kẻ Nuốt Tiếng Chuông đã yên nghỉ. Bạn nhận được [Trái Tim Mạch Rễ Cổ], danh hiệu [Người Thanh Tẩy Màn Sương] & Mảnh Ký Ức Cốt Truyện!');
     }
+  }
+
+  private promoteToMemoryStage3(): boolean {
+    const prevStage = this.playerState.memoryAwakeningStage;
+    this.playerState.setMemoryAwakeningStage(3);
+    const advanced = prevStage < 3 && this.playerState.memoryAwakeningStage >= 3;
+    if (advanced) {
+      this.events.emit('memory_awakening_stage_changed', 3);
+      this.events.emit('memory_awakening_completed');
+    }
+    this.uiScene?.redrawStats();
+    return advanced;
   }
 
   public getCurrentZoneId(): ZoneId {
