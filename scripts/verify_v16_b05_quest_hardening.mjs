@@ -113,8 +113,8 @@ pass('BossEncounterSystem single-drop guard holds even when relic_heart_of_roots
 // (Phaser timer-based typewriter prevents runtime test in Node; verify source guards directly)
 const dsSrc = fs.readFileSync(path.join(ROOT_DIR, 'src/systems/DialogueSystem.ts'), 'utf8');
 assert.ok(
-  dsSrc.includes("hadRuneCharmBeforePass || state.hasFlag('edda_rune_charm_granted')"),
-  'edda_rune_guide charm guard checks both hadRuneCharmBeforePass and current flag'
+  dsSrc.includes("const runeCharmAlreadyGranted = dialogueKey === 'edda_rune_guide' && hadRuneCharmBeforePass;"),
+  'edda_rune_guide charm guard uses pre-pass hadRuneCharmBeforePass snapshot (FIX-23)'
 );
 assert.ok(
   dsSrc.includes('state.setStoryFlag(rewardMarker);'),

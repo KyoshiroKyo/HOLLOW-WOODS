@@ -1,0 +1,18 @@
+{
+  "scenario1_slowNetwork": {
+    "menuReachedMs": 58680,
+    "sawErrorStateDuringSlowLoad": false,
+    "capturedMidLoad": true,
+    "audioResponsesCount": 72,
+    "audio206Count": 0,
+    "audio200Count": 72,
+    "requestErrorsCount": 0,
+    "consoleErrorsCount": 0
+  },
+  "scenario2_realLoadError": {
+    "errorUiShown": true,
+    "errorMsgText": "Không tải được mã trò chơi. Hãy tải lại trang.",
+    "requestErrorsCount": 2,
+    "consoleErrorsCount": 1
+  }
+}

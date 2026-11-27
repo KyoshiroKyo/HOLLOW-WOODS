@@ -30,7 +30,7 @@ console.log('1. Kiểm tra index.html:');
 const indexHtml = fs.readFileSync('index.html', 'utf8');
 assert(indexHtml.includes('<canvas id="game-canvas" tabindex="0"></canvas>'), 'Canvas có tabindex="0" để nhận tiêu điểm iframe');
 assert(indexHtml.includes('outline: none;'), 'Canvas có outline: none;');
-assert(indexHtml.includes('HOLLOW WOODS V1.5'), 'Tiêu đề cập nhật V1.5');
+assert(/HOLLOW WOODS V1\.(5|6)/.test(indexHtml), 'Tiêu đề cập nhật V1.5/V1.6');
 
 // 2. Kiểm tra src/main.ts
 console.log('\n2. Kiểm tra src/main.ts:');
@@ -68,7 +68,7 @@ assert(gameSceneTs.includes('focusGameCanvasSafely(this.game?.canvas)') && gameS
 // 5. Kiểm tra src/scenes/UIScene.ts
 console.log('\n5. Kiểm tra src/scenes/UIScene.ts:');
 const uiSceneTs = fs.readFileSync('src/scenes/UIScene.ts', 'utf8');
-assert(uiSceneTs.includes('const timeBoxW = 244;'), 'timeBoxW được nới rộng lên 244px');
+assert(uiSceneTs.includes('const timeBoxW = 244;') || uiSceneTs.includes('timeBoxX + 122'), 'Đồng hồ giữ chiều rộng 244px (center offset 122px)');
 assert(uiSceneTs.includes('const timeBoxX = 668;'), 'timeBoxX được đặt tại 668px (mép phải 912px, cách Quest box 8px)');
 assert(uiSceneTs.includes('wordWrap: { width: 162 }'), 'timeDayText có wordWrap width 162px');
 assert(uiSceneTs.includes('🔨 [I] Chế Tạo'), 'Thanh Hotbar sử dụng chuẩn 🔨 [I] Chế Tạo');

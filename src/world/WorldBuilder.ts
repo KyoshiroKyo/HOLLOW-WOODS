@@ -7968,8 +7968,8 @@ export class WorldBuilder {
 
         const cx = W / 2;
         const cy = H / 2;
-        ctx.strokeStyle = 'rgba(110, 90, 150, 0.45)';
-        ctx.lineWidth = 3;
+        ctx.strokeStyle = 'rgba(110, 90, 150, 0.26)';
+        ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.arc(cx, cy, 130, 0, Math.PI * 2);
         ctx.stroke();
@@ -8099,17 +8099,13 @@ export class WorldBuilder {
     ];
 
     for (const p of pillarPositions) {
-      const pGfx = this.scene.add.graphics();
-      pGfx.fillStyle(0x31273f, 1);
-      pGfx.fillRoundedRect(p.x - 18, p.y - 24, 36, 48, 4);
-      pGfx.lineStyle(1.5, 0x9b59b6, 0.7);
-      pGfx.strokeRoundedRect(p.x - 18, p.y - 24, 36, 48, 4);
-
-      // Ký tự cổ ngữ phát sáng trên cột
-      pGfx.fillStyle(0xd2b4de, 0.8);
-      pGfx.fillCircle(p.x, p.y - 5, 5);
-      pGfx.setDepth(p.y + 10);
-      this.registerCullable(pGfx, p.x, p.y, 40);
+      // HW-AG-FIX-21: Thay thế khối chữ nhật tím placeholder bằng sprite Cột Đá Cổ Ngữ chính thức
+      const pillarSprite = this.safeAddImage(p.x, p.y + 22, SPRITE_PILLAR_EYE, SPRITE_PROP_ANCIENT_MONOLITH_V14);
+      pillarSprite.setOrigin(0.5, 1.0);
+      pillarSprite.setScale(0.95);
+      pillarSprite.setTint(0xd8c4f0);
+      pillarSprite.setDepth(p.y + 10);
+      this.registerCullable(pillarSprite, p.x, p.y, 48);
 
       // Quầng hào quang tím mờ ảo nhấp nháy
       const aura = this.scene.add.graphics();

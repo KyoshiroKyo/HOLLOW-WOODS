@@ -367,12 +367,33 @@ export class EquipmentModal {
     }
 
     if (candidates.length === 0) {
-      const emptyText = HDTextHelper.createText(this.scene, startX, startY + 28, 'Chưa có trang bị phù hợp. Chế tạo vật phẩm tại [I].', {
+      const boxH = 54;
+      const emptyBg = this.scene.add.graphics();
+      emptyBg.fillStyle(0x16120d, 0.85);
+      emptyBg.fillRoundedRect(startX, startY + 26, w, boxH, 5);
+      emptyBg.lineStyle(1, 0x4a3722, 0.75);
+      emptyBg.strokeRoundedRect(startX, startY + 26, w, boxH, 5);
+
+      const emptyTitle = HDTextHelper.createText(this.scene, startX + 14, startY + 36, 'Chưa có trang bị phù hợp', {
         fontSize: '12px',
-        color: '#C8CFC2',
-        wordWrap: { width: w - 20, useAdvancedWrap: true }
+        fontStyle: 'bold',
+        color: '#E8DFC8',
+        wordWrap: { width: w - 28, useAdvancedWrap: true }
       });
-      this.inventoryListContainer.add(emptyText);
+
+      const emptyKey = HDTextHelper.createText(this.scene, startX + 14, startY + 56, '[I / C]', {
+        fontSize: '11.5px',
+        fontStyle: 'bold',
+        color: '#E09F3E'
+      });
+
+      const emptyHint = HDTextHelper.createText(this.scene, startX + 14 + emptyKey.width + 6, startY + 56, 'Mở menu chế tạo', {
+        fontSize: '11.5px',
+        color: '#C8CFC2',
+        wordWrap: { width: w - 40 - emptyKey.width, useAdvancedWrap: true }
+      });
+
+      this.inventoryListContainer.add([emptyBg, emptyTitle, emptyKey, emptyHint]);
       return;
     }
 

@@ -57,12 +57,12 @@ export class MainMenuScene extends Phaser.Scene {
       stroke: '#080c09',
       strokeThickness: 2,
     }).setLetterSpacing(0.5);
-    HDTextHelper.createText(this, 80, 181, 'THE FOG THAT REMEMBERS', {
+    HDTextHelper.createText(this, 80, 181, 'THE UNBROKEN OATH', {
       fontSize: '13px',
-      color: '#C8CFC2',
+      color: '#d4c9b0',
       stroke: '#080c09',
       strokeThickness: 1.5,
-    }).setLetterSpacing(0.5);
+    }).setLetterSpacing(1.2);
     this.add.rectangle(80, 204, 114, 2, 0xC8963E).setOrigin(0, 0);
     HDTextHelper.createText(this, 1254, 702, 'V1.6.0', {
       fontSize: '12px',
@@ -72,8 +72,8 @@ export class MainMenuScene extends Phaser.Scene {
     }).setOrigin(1, 1);
 
     const menuX = 288;
-    const firstY = 248;
-    const step = 58;
+    const firstY = 250;
+    const step = 56;
     this.createMenuButton('new', menuX, firstY, 'BƯỚC VÀO MÀN SƯƠNG', null, '#ffdc9a', true, () => this.startNewGame());
     this.continueBtnX = menuX;
     this.continueBtnY = firstY + step;
@@ -221,66 +221,97 @@ export class MainMenuScene extends Phaser.Scene {
     x: number,
     y: number,
     mainText: string,
-    subText: string | null,
+    _subText: string | null,
     color: string,
     enabled: boolean,
     onClick: () => void,
+    tooltipText?: string,
   ): Phaser.GameObjects.Container {
     const btn = this.add.container(x, y).setName(`menu-${action}`);
     const width = 416;
-    const height = subText ? 54 : 48;
+    const height = 48;
     const primary = action === 'new';
     const baseKey = this.textures.exists('menu_black_knight_button') ? 'menu_black_knight_button' : 'ui_pack_btn_wood';
     const hoverKey = this.textures.exists('menu_black_knight_button_hover') ? 'menu_black_knight_button_hover' : baseKey;
     const material = this.textures.exists(baseKey)
       ? this.add.image(0, 0, baseKey).setDisplaySize(width, height)
       : this.add.rectangle(0, 0, width, height);
-    const main = HDTextHelper.createText(this, 0, subText ? -9 : 0, mainText, {
-      fontSize: '17px', fontStyle: 'bold', color,
-    }).setOrigin(0.5);
+    const labelColor = enabled ? color : '#7d8578';
+    const main = HDTextHelper.createText(this, 0, 0, mainText, {
+      fontSize: '16px',
+      fontStyle: 'bold',
+      color: labelColor,
+      stroke: '#080c09',
+      strokeThickness: 2,
+    }).setOrigin(0.5).setLetterSpacing(0.6);
     btn.add([material, main]);
-    if (subText) {
-      btn.add(HDTextHelper.createText(this, 0, 13, subText, {
+
+    let tooltipContainer: Phaser.GameObjects.Container | undefined;
+    const showTooltip = () => {
+      if (!tooltipText || tooltipContainer) return;
+      const tipX = width / 2 + 12;
+      tooltipContainer = this.add.container(tipX, 0).setDepth(50);
+      const tipText = HDTextHelper.createText(this, 10, 0, tooltipText, {
         fontSize: '11px',
-        color: enabled ? '#C8CFC2' : '#8a9485',
-        maxLines: 1,
-        stroke: '#0b0e0c',
-        strokeThickness: 1.5,
-        wordWrap: { width: width - 40, useAdvancedWrap: true },
-      }).setOrigin(0.5));
-    }
+        color: '#E8DFC8',
+      }).setOrigin(0, 0.5);
+      const padW = Math.min(260, tipText.width + 20);
+      const tipBg = this.add.graphics();
+      tipBg.fillStyle(0x141712, 0.94);
+      tipBg.fillRoundedRect(0, -14, padW, 28, 4);
+      tipBg.lineStyle(1, 0xC8963E, 0.85);
+      tipBg.strokeRoundedRect(0, -14, padW, 28, 4);
+      tooltipContainer.add([tipBg, tipText]);
+      btn.add(tooltipContainer);
+    };
+    const hideTooltip = () => {
+      if (tooltipContainer) {
+        tooltipContainer.destroy();
+        tooltipContainer = undefined;
+      }
+    };
 
     const setFocused = (focused: boolean) => {
       const highlight = enabled && focused;
-      const shade = highlight ? 0x92703f : primary ? 0x5f4f30 : 0x394238;
+      const shade = !enabled
+        ? 0x252b25
+        : highlight
+          ? 0xa37c42
+          : primary
+            ? 0x755930
+            : 0x3a4338;
       if (material instanceof Phaser.GameObjects.Image) {
         material.setTexture(highlight ? hoverKey : baseKey).setDisplaySize(width, height).setTint(shade);
       } else {
         material.setFillStyle(shade, 0.9).setStrokeStyle(1, highlight ? 0xe0aa59 : 0x5f664e);
       }
-      main.setColor(highlight ? '#fff6e0' : color);
+      main.setColor(highlight ? '#fff7df' : labelColor);
+      btn.setScale(highlight ? 1.015 : 1.0);
     };
     const activate = () => {
+      hideTooltip();
       AudioManager.getInstance().playInteract();
       onClick();
     };
     setFocused(this.menuSelection === action);
     this.menuButtons.set(action, { enabled, activate, setFocused });
 
-    const hitZone = this.add.zone(0, 0, width, height).setInteractive({ useHandCursor: enabled });
+    const hitZone = this.add.zone(0, 0, width, height);
     btn.add(hitZone);
     if (enabled) {
+      hitZone.setInteractive({ useHandCursor: true });
       hitZone.on('pointerover', () => {
         this.focusMenuAction(action);
         AudioManager.getInstance().playWoodTap(0.45);
+        showTooltip();
       });
       hitZone.on('pointerout', () => {
         if (this.menuSelection === action) this.focusMenuAction(undefined);
+        hideTooltip();
       });
       hitZone.on('pointerup', activate);
     } else {
-      btn.setAlpha(0.65);
-      hitZone.on('pointerdown', onClick);
+      btn.setAlpha(0.42);
     }
     return btn;
   }
@@ -419,22 +450,22 @@ export class MainMenuScene extends Phaser.Scene {
         this.continueBtnX,
         this.continueBtnY,
         'TIẾP TỤC HÀNH TRÌNH',
-        checkpointDesc,
-        '#e5a93c',
+        null,
+        '#E8DFC8',
         true,
-        () => this.continueGame()
+        () => this.continueGame(),
+        `📍 ${checkpointDesc}`
       );
-
     } else {
       this.continueBtnContainer = this.createMenuButton(
         'continue',
         this.continueBtnX,
         this.continueBtnY,
         'TIẾP TỤC HÀNH TRÌNH',
-        'Chưa có bản lưu hành trình',
-        '#C8CFC2',
+        null,
+        '#7d8578',
         false,
-        () => this.showNoticeToast('⚠️ Chưa có bản lưu hành trình! Vui lòng chọn Bước Vào Màn Sương.')
+        () => {}
       );
     }
   }

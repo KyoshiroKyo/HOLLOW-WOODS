@@ -239,8 +239,10 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
   private lastPromptAlpha: number = -1;
 
   // Quản lý Popup duy nhất tránh tích tụ Tween và cấp phát rác (GATE 3B, C4-13-09)
-  private activePopup?: Phaser.GameObjects.Text;
+  private activePopup?: Phaser.GameObjects.Container;
   private activePopupTween?: Phaser.Tweens.Tween;
+  private pooledPopupContainer?: Phaser.GameObjects.Container;
+  private pooledPopupBg?: Phaser.GameObjects.Graphics;
   private pooledPopupText?: Phaser.GameObjects.Text;
   private lastPoulticeTime: number = 0;
   private lastOilTime: number = 0;
@@ -375,6 +377,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       fontStyle: 'bold',
       color: RUNNING_LABELS.normal.color
     }).setOrigin(1, 0).setDepth(8053);
+    this.fitPlayerNameText();
 
     this.oilValText = HDTextHelper.createText(this, -999, -999, '', {
       fontSize: '10px',
@@ -757,7 +760,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       this.zoneBadgeMapBtn = undefined;
       if (this.parchmentWorldMapModal) { this.parchmentWorldMapModal.destroy(); this.parchmentWorldMapModal = undefined as any; }
       if (this.tornPageModal) { this.tornPageModal.destroy(); this.tornPageModal = undefined as any; }
-      if (this.pooledPopupText) { this.pooledPopupText.destroy(); this.pooledPopupText = undefined as any; }
+      if (this.pooledPopupContainer) { this.pooledPopupContainer.destroy(); this.pooledPopupContainer = undefined; this.pooledPopupBg = undefined; this.pooledPopupText = undefined; }
       if (this.activePanicFadeTween) { this.activePanicFadeTween.stop(); this.activePanicFadeTween = undefined; }
       if (this.panicVignetteGraphics) { this.panicVignetteGraphics.clear(); this.panicVignetteGraphics = undefined as any; }
       if (this.activeRedDangerTween) { this.activeRedDangerTween.stop(); this.activeRedDangerTween = undefined; }
@@ -1027,6 +1030,7 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     const runningLabel = RUNNING_LABELS[runningState];
     if (this.runningStateText && this.runningStateText.text !== runningLabel.text) {
       this.runningStateText.setText(runningLabel.text).setColor(runningLabel.color);
+      this.fitPlayerNameText();
     }
 
     const curC = Math.round(stats.composure);
@@ -1084,7 +1088,21 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
         this.playerNameText.setText(identity.hudBadge);
         this.playerNameText.setColor(identity.isRevealed ? '#ffc048' : '#e5a93c');
         this.playerNameText.setStroke(identity.isRevealed ? '#3d1a04' : '#000000', identity.isRevealed ? 3 : 2);
+        this.fitPlayerNameText();
       }
+    }
+  }
+
+  /**
+   * HW-AG-FIX-09: Đảm bảo danh xưng dài không bao giờ đè lên nhãn trạng thái chạy góc phải
+   */
+  private fitPlayerNameText(): void {
+    if (!this.playerNameText) return;
+    this.playerNameText.setScale(1, 1);
+    const statusWidth = this.runningStateText ? this.runningStateText.width : 75;
+    const maxAllowedW = Math.max(140, 377 - statusWidth - 26 - 10);
+    if (this.playerNameText.width > maxAllowedW) {
+      this.playerNameText.setScale(maxAllowedW / this.playerNameText.width, 1);
     }
   }
 
@@ -2299,12 +2317,18 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
       const countTxt = this.inventorySlotCounts[i];
       const keyTxt = this.inventorySlotKeyTexts[i];
 
+      const baseImg = this.inventorySlotBaseImages[i];
+      const slotBg = this.inventorySlotGfx[i];
+
       if (!slot || !slot.itemId) {
         if (iconTxt) iconTxt.setText('').setAlpha(1.0);
-        if (iconImg) iconImg.setVisible(false);
+        if (iconImg) iconImg.clearTint().setVisible(false);
         if (countTxt) countTxt.setText('');
         if (keyTxt) keyTxt.setColor('#7a6855');
+        if (baseImg) baseImg.clearTint().setAlpha(1.0);
+        if (slotBg) slotBg.setAlpha(1.0);
       } else {
+        const hasStock = slot.count > 0;
         // BUG-025: Hiển thị 100% biểu tượng Pixel Art sắc nét từ ItemIconHelper (chống emoji □)
         const iconRes = ItemIconHelper.resolveItemIcon(this, slot.itemId);
         if (iconImg) {
@@ -2315,23 +2339,37 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
           }
           iconImg.setDisplaySize(22, 22);
           iconImg.setVisible(true);
-          iconImg.setAlpha(slot.count > 0 ? 1.0 : 0.4);
+          if (hasStock) {
+            iconImg.clearTint();
+            iconImg.setAlpha(1.0);
+          } else {
+            // HW-AG-FIX-08: Giữ binding ô nhưng làm mờ + xỉn màu rõ rệt khi hết đồ (x0)
+            iconImg.setTint(0x5a6058);
+            iconImg.setAlpha(0.24);
+          }
+        }
+        if (baseImg) {
+          if (hasStock) baseImg.clearTint().setAlpha(1.0);
+          else baseImg.setTint(0x6d746b).setAlpha(0.65);
+        }
+        if (slotBg) {
+          slotBg.setAlpha(hasStock ? 1.0 : 0.65);
         }
         if (iconTxt) iconTxt.setText('');
         if (countTxt) {
-          // Ô [1] và [2] hiện x0 nếu hết đồ để người chơi nhận biết; các ô khác hiện nếu > 0
-          if (slot.count > 0) {
+          // Ô [1] và [2] giữ binding khi hết đồ: hiển thị "—" xám thay cho "x0" gây hiểu nhầm
+          if (hasStock) {
             countTxt.setText(`x${slot.count}`);
             countTxt.setColor('#2ecc71');
           } else if (i < 2) {
-            countTxt.setText('x0');
-            countTxt.setColor('#7f8c8d');
+            countTxt.setText('—');
+            countTxt.setColor('#737b71');
           } else {
             countTxt.setText('');
           }
         }
         if (keyTxt) {
-          keyTxt.setColor(slot.count > 0 ? '#f1c40f' : '#baa892');
+          keyTxt.setColor(hasStock ? '#f1c40f' : '#6c736a');
         }
       }
     }
@@ -3520,53 +3558,111 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     }
   }
 
-  public showPopupMessage(msg: string): void {
+  private resolvePopupSeverity(msg: string, explicit?: 'success' | 'info' | 'warning' | 'danger'): 'success' | 'info' | 'warning' | 'danger' {
+    if (explicit) return explicit;
+    const lower = msg.toLocaleLowerCase();
+    if (
+      msg.includes('💀') || msg.includes('🩸') || msg.includes('❌') || msg.includes('💔') ||
+      lower.includes('nguy kịch') || lower.includes('tử vong') || lower.includes('hấp hối') ||
+      lower.includes('cạn kiệt') || lower.includes('tuyệt vọng')
+    ) {
+      return 'danger';
+    }
+    if (
+      msg.includes('⚠️') || msg.includes('👁️') || msg.includes('🦇') || msg.includes('🍂') ||
+      lower.includes('quạ bóng tối') || lower.includes('kẻ lắng nghe') || lower.includes('tinh thần') && lower.includes('gặm nhấm') ||
+      lower.includes('tâm trí đang rạn nứt') || lower.includes('rút cạn tinh thần') ||
+      lower.includes('chưa có') || lower.includes('không đủ') || lower.includes('đang khóa')
+    ) {
+      return 'warning';
+    }
+    if (
+      msg.includes('✔') || msg.includes('✅') || msg.includes('🎉') || msg.includes('⚔') ||
+      msg.includes('👑') || msg.includes('🌿') || msg.includes('🏮') || msg.includes('🍵') ||
+      msg.includes('💚') || msg.includes('✨') ||
+      lower.includes('thành công') || lower.includes('đã mở') || lower.includes('nhận được') ||
+      lower.includes('thu được') || lower.includes('hoàn thành') || lower.includes('xua tan') ||
+      lower.includes('đã dùng') || lower.includes('đã ăn') || lower.includes('đã trang bị') || lower.includes('đã thắp')
+    ) {
+      return 'success';
+    }
+    return 'info';
+  }
+
+  public showPopupMessage(msg: string, explicitSeverity?: 'success' | 'info' | 'warning' | 'danger'): void {
     if (this.activePopupTween) {
       this.activePopupTween.stop();
       this.activePopupTween = undefined;
     }
 
-    // BUG-028: Tái sử dụng Text pooled đặt tại Y=205 trôi nhẹ lên Y=195 -> Y=185, hoàn toàn tách biệt khỏi Zone Banner (Y=138, đáy 165)
-    if (!this.pooledPopupText) {
-      this.pooledPopupText = HDTextHelper.createText(this, 640, 205, '', {
-        fontSize: '15px',
+    const severity = this.resolvePopupSeverity(msg, explicitSeverity);
+    const palette: Record<'success' | 'info' | 'warning' | 'danger', { text: string; border: number; bg: number }> = {
+      success: { text: '#66d99a', border: 0x38b87c, bg: 0x101c15 },
+      info: { text: '#E8DFC8', border: 0x8d7b56, bg: 0x151813 },
+      warning: { text: '#f3b64e', border: 0xC8963E, bg: 0x20180d },
+      danger: { text: '#ff7675', border: 0xc0392b, bg: 0x241010 }
+    };
+    const style = palette[severity];
+    const maxTextW = 580;
+
+    // BUG-028: Tái sử dụng Container pooled đặt tại Y=205 trôi nhẹ lên Y=195 -> Y=185, tách biệt Zone Banner
+    if (!this.pooledPopupContainer || !this.pooledPopupBg || !this.pooledPopupText) {
+      this.pooledPopupContainer = this.add.container(640, 205).setDepth(10000);
+      this.pooledPopupBg = this.add.graphics();
+      this.pooledPopupText = HDTextHelper.createText(this, 0, 0, '', {
+        fontSize: '14.5px',
         fontStyle: 'bold',
-        color: '#2ecc71',
-        backgroundColor: '#0b0e14ee',
-        padding: { x: 16, y: 8 },
+        color: style.text,
+        align: 'center',
         stroke: '#000000',
-        strokeThickness: 2
-      }).setOrigin(0.5, 0.5).setDepth(10000);
+        strokeThickness: 2,
+        wordWrap: { width: maxTextW, useAdvancedWrap: true },
+        lineSpacing: 3
+      }).setOrigin(0.5, 0.5);
+      this.pooledPopupContainer.add([this.pooledPopupBg, this.pooledPopupText]);
     }
 
+    const container = this.pooledPopupContainer;
+    const bg = this.pooledPopupBg;
     const popup = this.pooledPopupText;
-    popup.setText(msg);
-    popup.setPosition(640, 205);
-    popup.setAlpha(1);
-    popup.setVisible(true);
 
-    this.activePopup = popup;
+    popup.setColor(style.text);
+    popup.setText(msg);
+
+    const boxW = Math.min(620, Math.max(220, Math.ceil(popup.width) + 36));
+    const boxH = Math.max(38, Math.ceil(popup.height) + 18);
+    bg.clear();
+    bg.fillStyle(style.bg, 0.94);
+    bg.fillRoundedRect(-boxW / 2, -boxH / 2, boxW, boxH, 6);
+    bg.lineStyle(1.5, style.border, 0.9);
+    bg.strokeRoundedRect(-boxW / 2, -boxH / 2, boxW, boxH, 6);
+
+    container.setPosition(640, 205);
+    container.setAlpha(1);
+    container.setVisible(true);
+
+    this.activePopup = container;
 
     // V152-06A: Tăng thời lượng hiển thị thông báo lên 4.5 đến 6.0 giây (+40ms/ký tự, tối đa 7.5s) kèm fade-out 0.5s
     const holdDuration = Math.min(7000, Math.max(4000, 4000 + msg.length * 40));
     const fadeDuration = 500;
 
     this.activePopupTween = this.tweens.add({
-      targets: popup,
+      targets: container,
       y: 195,
       duration: 250,
       ease: 'Quad.easeOut',
       onComplete: () => {
         this.activePopupTween = this.tweens.add({
-          targets: popup,
+          targets: container,
           alpha: 0,
           y: 185,
           delay: holdDuration,
           duration: fadeDuration,
           ease: 'Quad.easeIn',
           onComplete: () => {
-            popup.setVisible(false);
-            if (this.activePopup === popup) {
+            container.setVisible(false);
+            if (this.activePopup === container) {
               this.activePopup = undefined;
               this.activePopupTween = undefined;
             }
@@ -3764,8 +3860,8 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     });
 
     // Lời nhắc tiếp tục chuẩn HD Tiếng Việt
-    this.dialogueContinuePrompt = HDTextHelper.createText(this, halfW - 28, halfH - 22, '▶ [E / SPACE]', {
-      fontSize: '14px',
+    this.dialogueContinuePrompt = HDTextHelper.createText(this, halfW - 28, halfH - 22, '▶ [E / SPACE] Tiếp tục', {
+      fontSize: '13.5px',
       fontStyle: 'bold',
       color: '#d8ccb8'
     }).setOrigin(1, 0.5);
@@ -3870,6 +3966,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.dialogueContentText) {
       this.dialogueContentText.setText('');
     }
+    if (this.dialogueContinuePrompt) {
+      this.dialogueContinuePrompt.setText('▶ [E / SPACE] Tiếp tục').setColor('#d8ccb8');
+    }
 
     this.setDialogueActive(true);
     if (this.dialogueContainer) {
@@ -3906,28 +4005,35 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     this.dialogueChoicesContainer.setVisible(true);
     this.choiceRenderItems = [];
 
-    const btnWidth = 920;
-    const spacing = 8;
+    const btnWidth = 940;
+    const spacing = 10;
     let choiceClicked = false;
 
     const measured = choices.map((choice) => {
-      const keyBadge = HDTextHelper.createText(this, -btnWidth / 2 + 18, 0, `[${choice.index + 1}]`, {
-        fontSize: '15px',
+      const keyBadge = HDTextHelper.createText(this, -btnWidth / 2 + 20, 0, `[${choice.index + 1}]`, {
+        fontSize: '14.5px',
         fontStyle: 'bold',
-        color: '#f39c12'
+        color: '#E09F3E'
       }).setOrigin(0, 0.5);
 
-      const choiceText = HDTextHelper.createText(this, -btnWidth / 2 + 56, 0, choice.text, {
-        fontSize: '15px',
+      const choiceText = HDTextHelper.createText(this, -btnWidth / 2 + 58, 0, choice.text, {
+        fontSize: '14.5px',
         color: '#f5eedc',
-        wordWrap: { width: btnWidth - 76, useAdvancedWrap: true },
-        lineSpacing: 4,
-        padding: { left: 4, right: 8, top: 2, bottom: 2 }
+        wordWrap: { width: btnWidth - 88, useAdvancedWrap: true },
+        lineSpacing: 5,
+        padding: { left: 4, right: 12, top: 4, bottom: 4 }
       }).setOrigin(0, 0.5);
 
-      const btnHeight = Math.max(36, Math.ceil(choiceText.height) + 14);
+      const btnHeight = Math.max(40, Math.ceil(choiceText.height) + 18);
       return { choice, keyBadge, choiceText, btnHeight };
     });
+
+    if (this.dialogueContinuePrompt && choices.length > 0) {
+      const hintLabel = choices.length > 1
+        ? `[1–${choices.length}] Chọn câu trả lời`
+        : '[1] Chọn câu trả lời';
+      this.dialogueContinuePrompt.setText(hintLabel).setColor('#e6c98a');
+    }
 
     // Xếp từ dưới lên trên sao cho không bao giờ chồng đè hay vượt mép trên 720p
     let cursorBottomY = -8;
@@ -3989,6 +4095,9 @@ export class UIScene extends Phaser.Scene implements IDialogueView {
     if (this.dialogueChoicesContainer) {
       this.dialogueChoicesContainer.removeAll(true);
       this.dialogueChoicesContainer.setVisible(false);
+    }
+    if (this.dialogueContinuePrompt) {
+      this.dialogueContinuePrompt.setText('▶ [E / SPACE] Tiếp tục').setColor('#d8ccb8');
     }
   }
 
