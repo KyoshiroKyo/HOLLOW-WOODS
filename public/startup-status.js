@@ -2,6 +2,7 @@
 (() => {
   const status = document.getElementById('game-startup');
   const message = document.getElementById('game-startup-message');
+  if (window.parent !== window) status.dataset.phase = 'hosted';
   const fail = (text) => {
     if (status.hidden || status.dataset.state === 'error') return;
     status.dataset.state = 'error';
@@ -16,6 +17,10 @@
     }, 45000);
   };
   armWatchdog();
+  window.addEventListener('hollow-woods:startup-hosted', () => {
+    status.dataset.phase = 'hosted';
+    armWatchdog();
+  }, { once: true });
   const onProgress = () => {
     if (!status.hidden && status.dataset.state !== 'error') {
       status.dataset.phase = 'preload';

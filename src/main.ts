@@ -2,7 +2,7 @@ import * as Phaser from 'phaser';
 import { GameConfig } from './config/GameConfig';
 import { ScaleManager } from './utils/ScaleManager';
 import { SaveManager } from './systems/SaveManager';
-import { SCENE_MAIN_MENU } from './config/Constants';
+import { SCENE_MAIN_MENU, SCENE_PRELOAD } from './config/Constants';
 import { focusGameCanvasSafely } from './utils/focusHelper';
 
 async function withDeadline<T>(pending: Promise<T>, delayMs: number, failure: string): Promise<T> {
@@ -40,7 +40,7 @@ async function waitForSdkScript(): Promise<void> {
   }
 }
 
-async function initSdk(): Promise<void> {
+async function initSdk(): Promise<Window['p2']> {
   try {
     if (typeof window.p2?.init !== 'function') {
       console.warn('[P2Game SDK] Không tìm thấy window.p2, chạy ở chế độ dự phòng.');
@@ -52,19 +52,22 @@ async function initSdk(): Promise<void> {
       debug: false
     });
     console.log('[P2Game SDK] Khởi tạo thành công:', ctx?.sessionId ?? 'standalone');
+    return window.p2;
   } catch (err) {
     console.warn('[P2Game SDK] Cảnh báo lỗi khởi tạo SDK (dự phòng standalone):', err);
   }
 }
 
 async function startGame(): Promise<void> {
-  const uiFontSample = 'Sinh Lực · Thể Lực · Tinh Thần · Vòng Sáng';
+  const uiFontSample = 'Sinh Lực · Thể Lực · Tinh Thần · Vòng Sáng · Từng có một lời thề giữ lửa nơi rìa rừng sương';
   const uiFontsReady = Promise.allSettled([
     document.fonts.load('400 16px "Hollow Woods UI"', uiFontSample),
     document.fonts.load('700 16px "Hollow Woods UI"', uiFontSample),
   ]);
   await waitForSdkScript();
-  await withDeadline(initSdk(), 11000, 'P2Game chưa phản hồi. Hãy tải lại để kết nối lại.');
+  const sdk = await withDeadline(initSdk(), 11000, 'P2Game chưa phản hồi. Hãy tải lại để kết nối lại.');
+  const hostedLoading = window.parent !== window && sdk?.isStandalone === false;
+  if (hostedLoading) window.dispatchEvent(new Event('hollow-woods:startup-hosted'));
   await withDeadline(uiFontsReady, 4500, 'Font trò chơi tải chậm.').catch((error) => {
     console.warn('[HOLLOW WOODS startup]', error);
   });
@@ -88,13 +91,23 @@ async function startGame(): Promise<void> {
     ...GameConfig,
     autoFocus: false,
     type: canUseWebGL ? Phaser.WEBGL : Phaser.CANVAS,
+    callbacks: {
+      preBoot: (game) => { game.registry.set('hostedLoading', hostedLoading); },
+    },
     ...(existingCanvas ? { canvas: existingCanvas } : {})
   });
 
   const onMenuRendered = () => {
-    if (game.scene.isActive(SCENE_MAIN_MENU) && game.canvas.clientWidth > 0 && game.canvas.clientHeight > 0) {
+    if (game.scene.isActive(SCENE_MAIN_MENU) && !game.scene.isActive(SCENE_PRELOAD) &&
+        game.canvas.width > 0 && game.canvas.height > 0) {
       game.events.off(Phaser.Core.Events.POST_RENDER, onMenuRendered);
       window.dispatchEvent(new Event('hollow-woods:startup-ready'));
+      // The portal can now reveal a complete, interactive frame.
+      try {
+        sdk?.ready();
+      } catch (error) {
+        console.warn('[P2Game SDK] Không thể gửi tín hiệu sẵn sàng:', error);
+      }
     }
   };
   game.events.on(Phaser.Core.Events.POST_RENDER, onMenuRendered);

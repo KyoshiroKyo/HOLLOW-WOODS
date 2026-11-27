@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import { SCENE_MAIN_MENU, SCENE_GAME, SPRITE_FOG_SMOOTH } from '../config/Constants';
+import { SCENE_MAIN_MENU, SCENE_GAME, SCENE_PROLOGUE, SPRITE_FOG_SMOOTH } from '../config/Constants';
 import { SaveManager } from '../systems/SaveManager';
 import { HDTextHelper } from '../utils/HDTextHelper';
 import { AudioManager } from '../audio/AudioManager';
@@ -27,6 +27,7 @@ export class MainMenuScene extends Phaser.Scene {
   private continueBtnY: number = 306;
   private authContainer?: Phaser.GameObjects.Container;
   private modalCleanup?: () => void;
+  private leavingMenu = false;
 
   constructor() {
     super({ key: SCENE_MAIN_MENU });
@@ -36,6 +37,7 @@ export class MainMenuScene extends Phaser.Scene {
     this.cameras.main.setRoundPixels(true);
     this.cameras.main.setZoom(1.0);
 
+    this.leavingMenu = false;
     this.menuButtons.clear();
     this.menuSelection = undefined;
     this.activeMenuModal = undefined;
@@ -143,17 +145,6 @@ export class MainMenuScene extends Phaser.Scene {
     // =========================================================================
     this.setupAuthWidget();
 
-    // Phát tín hiệu p2.ready() ngay khi MainMenuScene vẽ xong khung hình đầu tiên (tránh cảnh báo SD-004)
-    this.events.once('render', () => {
-      try {
-        if (typeof window !== 'undefined' && window.p2 && typeof window.p2.ready === 'function') {
-          window.p2.ready();
-          console.log('[P2Game SDK] Đã phát tín hiệu p2.ready() khi MainMenuScene hoàn thành khung hình đầu tiên.');
-        }
-      } catch (err) {
-        console.warn('[P2Game SDK] Lỗi khi gọi p2.ready() từ MainMenuScene:', err);
-      }
-    });
   }
 
   private createCinematicBackdrop(): void {
@@ -317,6 +308,8 @@ export class MainMenuScene extends Phaser.Scene {
   }
 
   private async continueGame(): Promise<void> {
+    if (this.leavingMenu) return;
+    this.leavingMenu = true;
     AudioManager.getInstance().playInteract();
     const saveData = await SaveManager.loadGameAsync();
     this.cameras.main.fade(500, 0, 0, 0);
@@ -326,113 +319,13 @@ export class MainMenuScene extends Phaser.Scene {
   }
 
   private startNewGame(): void {
+    if (this.leavingMenu) return;
+    this.leavingMenu = true;
     AudioManager.getInstance().playInteract();
     SaveManager.clearSave();
-    this.showAtmosphericPrologueCards(() => {
-      this.cameras.main.fade(500, 0, 0, 0);
-      this.time.delayedCall(500, () => {
-        this.scene.start(SCENE_GAME, { isContinue: false });
-      });
-    });
+    this.scene.start(SCENE_PROLOGUE);
   }
 
-  /**
-   * Group 2 — HW-V16-COMPETITION-01: Hiển thị 3 thẻ màn hình dẫn truyện A08
-   * Khung đen + chữ trắng mờ dần, skip bằng [ESC/SPACE/ENTER] hoặc click.
-   * Sau khi hoàn thành, gọi onComplete() để bắt đầu game.
-   */
-  private showAtmosphericPrologueCards(onComplete: () => void): void {
-    const W = this.scale.width;
-    const H = this.scale.height;
-    const FADE_MS = 700;
-    const DISPLAY_MS = 2000;
-
-    // Ba dòng canon A08 được duyệt
-    const cards = [
-      'Từng có một lời thề\ngiữ lửa nơi rìa rừng sương...',
-      'Không còn tên tuổi. Không còn ký ức.\nChỉ còn ánh sáng le lói...',
-      'Tiếng chuông đồng khẽ vang...\nhành trình Bellhollow bắt đầu.'
-    ];
-
-    // Container phủ toàn màn hình (depth cao nhất)
-    const overlay = this.add.container(0, 0).setDepth(9999);
-    const bg = this.add.rectangle(W / 2, H / 2, W, H, 0x000000).setAlpha(0);
-    overlay.add(bg);
-
-    const cardText = HDTextHelper.createText(this, W / 2, H / 2, '', {
-      fontFamily: 'Georgia, "Times New Roman", serif',
-      fontSize: '24px',
-      color: '#E8DFC8',
-      stroke: '#000000',
-      strokeThickness: 2,
-      align: 'center',
-      wordWrap: { width: W * 0.7 }
-    }).setAlpha(0).setOrigin(0.5, 0.5);
-    overlay.add(cardText);
-
-    const skipHint = HDTextHelper.createText(this, W / 2, H - 48, '[ESC / SPACE] Bỏ qua', {
-      fontSize: '13px',
-      color: '#8a9080'
-    }).setAlpha(0).setOrigin(0.5, 0.5);
-    overlay.add(skipHint);
-
-    let cardIndex = 0;
-    let skipped = false;
-
-    const finish = () => {
-      if (skipped) return;
-      skipped = true;
-      this.tweens.add({
-        targets: overlay,
-        alpha: 0,
-        duration: FADE_MS,
-        onComplete: () => {
-          overlay.destroy();
-          onComplete();
-        }
-      });
-    };
-
-    // Skip handler — ESC, SPACE, ENTER hoặc click
-    const skipHandler = () => { finish(); };
-    const keyboard = this.input.keyboard;
-    keyboard?.once('keydown-ESC', skipHandler);
-    keyboard?.once('keydown-SPACE', skipHandler);
-    keyboard?.once('keydown-ENTER', skipHandler);
-    this.input.once('pointerdown', skipHandler);
-
-    const showCard = (idx: number) => {
-      if (skipped) return;
-      if (idx >= cards.length) {
-        finish();
-        return;
-      }
-      cardText.setText(cards[idx]).setAlpha(0);
-      this.tweens.add({
-        targets: [bg, cardText, skipHint],
-        alpha: (target: Phaser.GameObjects.GameObject) => {
-          if (target === bg) return 0.92;
-          if (target === skipHint) return 0.5;
-          return 1;
-        },
-        duration: FADE_MS,
-        onComplete: () => {
-          if (skipped) return;
-          this.time.delayedCall(DISPLAY_MS, () => {
-            if (skipped) return;
-            this.tweens.add({
-              targets: cardText,
-              alpha: 0,
-              duration: FADE_MS,
-              onComplete: () => showCard(idx + 1)
-            });
-          });
-        }
-      });
-    };
-
-    showCard(cardIndex);
-  }
 
   private renderContinueButton(): void {
     if (this.continueBtnContainer) {

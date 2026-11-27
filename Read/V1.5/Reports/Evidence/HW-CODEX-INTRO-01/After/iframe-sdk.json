@@ -1,0 +1,133 @@
+{
+  "task": "HW-CODEX-INTRO-01",
+  "build": "after",
+  "sha": "WORKTREE",
+  "environment": {
+    "os": "Windows 10 build 19045",
+    "node": "v26.7.0",
+    "browser_mode": "headless Chrome, isolated throwaway profile",
+    "endpoint": "http://127.0.0.1:5193",
+    "bundle": "npm run build, Vite preview",
+    "sdk": "external P2Game SDK blocked for isolated standalone test",
+    "owner_save_used": false,
+    "keyboard": "Chrome DevTools synthetic key events; physical EVKey NOT_RUN",
+    "window": [
+      1280,
+      720
+    ],
+    "device_scale_factor": 1,
+    "graphics_flags": [],
+    "browser": "Chrome/158.0.8127.38",
+    "chrome_gpu": {
+      "devices": [
+        {
+          "vendorId": 4318,
+          "deviceId": 7042,
+          "subSysId": 932451416,
+          "revision": 161,
+          "vendorString": "",
+          "deviceString": "NVIDIA GeForce GTX 1070 Ti",
+          "driverVendor": "NVIDIA",
+          "driverVersion": "32.0.15.8266"
+        },
+        {
+          "vendorId": 5140,
+          "deviceId": 140,
+          "subSysId": 0,
+          "revision": 0,
+          "vendorString": "",
+          "deviceString": "Microsoft Basic Render Driver",
+          "driverVendor": "",
+          "driverVersion": "10.0.19041.7548"
+        }
+      ],
+      "feature_status": {
+        "gpu_compositing": "enabled",
+        "webgl": "enabled"
+      },
+      "gl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8266)",
+      "gl_vendor": "Google Inc. (NVIDIA)"
+    }
+  },
+  "diagnostics": {
+    "page_exceptions": [],
+    "local_http_errors": [],
+    "browser_warnings": [],
+    "external_resources_blocked": []
+  },
+  "loader": {
+    "active": true,
+    "cameraVisible": false,
+    "domVisible": "hidden"
+  },
+  "beforeClick": {
+    "title": "HOLLOW WOODS V1.6.0 — THE UNBROKEN OATH",
+    "focus": [],
+    "ready": [
+      {
+        "time": 40710.80000000447,
+        "localEvent": 40710.70000000298,
+        "active": true,
+        "w": 1280,
+        "initDone": 3637.2000000029802
+      }
+    ],
+    "local": 40710.70000000298,
+    "art": true
+  },
+  "prologue": {
+    "active": true,
+    "menu": false,
+    "font": true,
+    "body": [
+      [
+        "Từng có một lời thề\ngiữ lửa nơi rìa rừng sương...",
+        409,
+        2
+      ],
+      [
+        "[ESC / SPACE] Bỏ qua",
+        167,
+        2
+      ]
+    ]
+  },
+  "gameplay": {
+    "menu": false,
+    "prologue": false,
+    "zone": "fog_crossing",
+    "timeline": {
+      "ready": [
+        {
+          "time": 40710.80000000447,
+          "localEvent": 40710.70000000298,
+          "active": true,
+          "w": 1280,
+          "initDone": 3637.2000000029802
+        }
+      ],
+      "preload": [
+        3637
+      ],
+      "focus": [
+        true
+      ],
+      "seen": [
+        "BootScene",
+        "PreloadScene",
+        "MainMenuScene",
+        "PrologueScene",
+        "GameScene,UIScene"
+      ],
+      "hostHandshake": 9160.20000000298,
+      "loader": {
+        "active": true,
+        "cameraVisible": false,
+        "domVisible": "hidden"
+      },
+      "initDone": 3637.2000000029802,
+      "event": 40710.70000000298
+    }
+  },
+  "host": "{\"ready\":[{\"ns\":\"p2game\",\"v\":\"1.0\",\"id\":\"p2-4\",\"kind\":\"request\",\"type\":\"ready\",\"payload\":{\"at\":1795795794643}}],\"visible\":false}"
+}

@@ -33,7 +33,13 @@ assert(mainSrc.includes('window.p2.onPause') && mainSrc.includes('pauseAll()'), 
 assert(mainSrc.includes('window.p2.onResume') && mainSrc.includes('resumeAll()'), 'main.ts gắn p2.onResume khôi phục cả game loop và âm thanh');
 assert(mainSrc.includes('window.p2.onBeforeUnload') && mainSrc.includes('quickSaveOnUnload'), 'main.ts gắn p2.onBeforeUnload lưu nhanh tiến trình');
 assert(!bootSrc.includes('window.p2.ready()'), 'BootScene đã dỡ bỏ p2.ready() để tránh cảnh báo SD-004');
-assert(menuSrc.includes("this.events.once('render'") && menuSrc.includes('window.p2.ready()'), 'MainMenuScene phát tín hiệu p2.ready() ngay khi vẽ xong khung hình đầu tiên');
+const readinessHook = mainSrc.slice(mainSrc.indexOf('const onMenuRendered'), mainSrc.indexOf('const focusGameCanvas'));
+assert(readinessHook.includes('isActive(SCENE_MAIN_MENU)') && readinessHook.includes('!game.scene.isActive(SCENE_PRELOAD)') &&
+  readinessHook.includes('game.events.off(Phaser.Core.Events.POST_RENDER, onMenuRendered)') &&
+  readinessHook.includes('game.events.on(Phaser.Core.Events.POST_RENDER, onMenuRendered)') &&
+  readinessHook.indexOf('hollow-woods:startup-ready') < readinessHook.indexOf('sdk?.ready()') &&
+  readinessHook.includes('sdk?.ready()') && !menuSrc.includes('.ready()'),
+  'Startup chỉ gửi ready một lần sau khung Main Menu và sau khi kết thúc Preload');
 
 // 2. Đăng nhập chuẩn p2.auth
 console.log('\n--- 2. Kiểm tra Đăng nhập chuẩn p2.auth (MainMenuScene.ts) ---');

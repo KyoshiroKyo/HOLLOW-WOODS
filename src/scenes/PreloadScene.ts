@@ -158,6 +158,8 @@ export class PreloadScene extends Phaser.Scene {
   }
 
   public preload(): void {
+    const hostedLoading = this.registry.get('hostedLoading') === true;
+    this.cameras.main.setVisible(!hostedLoading);
     // C4-13-11: Tạo texture trong suốt 1x1 sớm nhất có thể chống ô vuông lỗi texture
     if (!this.textures.exists('dummy_transparent')) {
       const dummyGfx = this.make.graphics({ x: 0, y: 0 });
@@ -302,7 +304,7 @@ export class PreloadScene extends Phaser.Scene {
       strokeThickness: 4
     }).setOrigin(0.5, 0.5);
 
-    HDTextHelper.createText(this, 640, 310, 'THE FOG THAT REMEMBERS', {
+    HDTextHelper.createText(this, 640, 310, 'THE UNBROKEN OATH', {
       fontSize: '12px',
       fontStyle: 'italic',
       color: '#8c9ba5',
@@ -427,7 +429,7 @@ export class PreloadScene extends Phaser.Scene {
         lastProgress = value;
         notifyStartupProgress();
       }
-      percentText.setText(`${Math.floor(value * 100)}%`);
+      percentText.setText(`${Math.min(99, Math.floor(value * 100))}%`);
       const fillW = Math.max(0, (barWidth - 8) * value);
 
       progressBar.clear();
@@ -469,9 +471,9 @@ export class PreloadScene extends Phaser.Scene {
 
     this.load.on('complete', () => {
       tipTimerEvent.destroy();
-      percentText.setText('100%');
-      loadingText.setText('Khởi tạo thế giới hoàn tất...');
-      assetStatusText.setText('Sẵn sàng bước vào Khu Rừng Rỗng...');
+      percentText.setText('');
+      loadingText.setText('Đang chuẩn bị màn hình chính…');
+      assetStatusText.setText('');
 
       // Điền đầy đủ thanh tải vàng kim rực rỡ
       progressBar.clear();
@@ -1036,7 +1038,12 @@ export class PreloadScene extends Phaser.Scene {
     // C4-133-02: Đồng bộ tức thì các AudioBuffer đã được Phaser nạp vào AudioManager
     AudioManager.getInstance().syncWithPhaserCache(this);
 
-    // V15-21: Thêm hiệu ứng mờ dần chuyển cảnh mượt mà (Camera Fade Out 450ms) khi tải xong 100%
+    if (this.registry.get('hostedLoading') === true) {
+      this.scene.start(SCENE_MAIN_MENU);
+      return;
+    }
+
+    // Fade the standalone loader after the menu assets are ready.
     let isTransitioning = false;
     const proceedToMenu = () => {
       if (isTransitioning) return;

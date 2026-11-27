@@ -17,8 +17,6 @@ export class BootScene extends Phaser.Scene {
     bg.fillStyle(0x0b0c10, 1);
     bg.fillRect(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
 
-    // V152-08: p2.ready() được chuyển sang MainMenuScene khi vẽ xong khung hình đầu tiên để tránh SD-004
-
     // Chuyển ngay sang PreloadScene
     this.scene.start(SCENE_PRELOAD);
   }

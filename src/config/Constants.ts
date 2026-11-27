@@ -98,6 +98,7 @@ export const SATYR_BODY_OFFSET_Y = 56;
 export const SCENE_BOOT = 'BootScene';
 export const SCENE_PRELOAD = 'PreloadScene';
 export const SCENE_MAIN_MENU = 'MainMenuScene';
+export const SCENE_PROLOGUE = 'PrologueScene';
 export const SCENE_GAME = 'GameScene';
 export const SCENE_HUD = 'HUDScene';
 export const SCENE_ENDING = 'EndingScene';

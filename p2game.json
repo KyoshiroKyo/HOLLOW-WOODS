@@ -17,7 +17,7 @@
       "minSessionSeconds": 30
     }
   ],
-  "description": "HOLLOW WOODS — The Fog That Remembers là game sinh tồn kinh dị, khám phá và giải đố 2D Pixel Art. Hóa thân thành Kỵ Sĩ Đen, khám phá khu rừng bí ẩn, sử dụng Vòng Sáng, quản lý Thể Lực và Tinh Thần, thu thập tài nguyên, chế tạo vật phẩm và giải mã những bí mật của Miếu Chuông Phế Tích.",
+  "description": "HOLLOW WOODS — THE UNBROKEN OATH là game sinh tồn kinh dị, khám phá và giải đố 2D Pixel Art. Hóa thân thành Kỵ Sĩ Đen, khám phá khu rừng bí ẩn, sử dụng Vòng Sáng, quản lý Thể Lực và Tinh Thần, thu thập tài nguyên, chế tạo vật phẩm và giải mã những bí mật của Miếu Chuông Phế Tích.",
   "shortDescription": "Hóa thân thành Kỵ Sĩ Đen trong game sinh tồn kinh dị 2D Pixel Art. Thắp Vòng Sáng, chế tạo và giải mã bí mật của khu rừng.",
   "entry": "index.html",
   "engine": "webgl",
