@@ -4077,8 +4077,8 @@ export class GameScene extends Phaser.Scene {
       const cameraBounds = starterZone ? { x: 0, y: 0, width: 1600, height: 1040 }
         : this.worldBuilder.getZone(parentZone)?.bounds ?? zoneBounds;
       this.cameraSystem.setWorldBounds(cameraBounds);
-      const top = Math.min(-250, zoneBounds.y);
-      const bottom = Math.max(1150, zoneBounds.y + zoneBounds.height);
+      const top = Math.min(-250, zoneBounds.y - 60);
+      const bottom = Math.max(1150, zoneBounds.y + zoneBounds.height + 60);
       this.physics.world.setBounds(0, top, 5000, bottom - top);
     }
 
@@ -4332,6 +4332,9 @@ export class GameScene extends Phaser.Scene {
     // Hiệu ứng flash nhẹ camera tạo cảm giác chuyển tiếp tự nhiên
     this.cameraSystem.flash(180, 10, 15, 20);
 
+    // Cập nhật camera bounds & physics bounds TRƯỚC khi setPosition/body.reset để không bị kẹp vào bounds cũ
+    this.applyCameraBoundsForZone(trans.toZone);
+
     // Đặt vị trí và hướng nhìn chuẩn xác tại vùng đích
     this.player.setPosition(trans.targetSpawn.x, trans.targetSpawn.y);
     if (this.player.body) {
@@ -4341,8 +4344,6 @@ export class GameScene extends Phaser.Scene {
     const targetFacing = this.resolveTransitionFacing(trans);
     this.player.setFacing(targetFacing);
 
-    // Cập nhật camera bounds & physics bounds
-    this.applyCameraBoundsForZone(trans.toZone);
     // C4-13-02: Canh giữa camera ngay lập tức vào vị trí nhân vật tại vùng mới
     this.cameraSystem.centerOn(trans.targetSpawn.x, trans.targetSpawn.y);
     // C4-12-29: Cập nhật culling ngay lập tức cho vùng đích mới

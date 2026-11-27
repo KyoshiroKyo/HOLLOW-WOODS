@@ -238,7 +238,21 @@ export class WorldGatingSystem {
 
     const storyQuestId = playerState.getStoryQuestId();
 
-    // 2. Khu vực Rừng Sâu Deep Forest: Chỉ mở khi Cổng Đông đã mở VÀ tiến trình đạt từ Q04 trở đi (hoặc có flag deep_forest_unlocked)
+    // 2. Khu vực Khoảng Trống Thì Thầm & Rừng Sâu: Mở thông qua Cổng Đông (hoặc khi đã đạt Q03 trở đi)
+    if (zoneId === 'sub_whispering_clearing') {
+      const eastGateOpen = this.isZoneUnlocked('crooked_path', playerState);
+      if (!eastGateOpen) return false;
+
+      return (
+        playerState.hasFlag('whispering_clearing_unlocked') ||
+        storyQuestId === 'Q03_PREPARE_RESOURCES' ||
+        storyQuestId === 'Q04_ANCIENT_RUNES' ||
+        storyQuestId === 'Q05_SOLVE_MIRE' ||
+        storyQuestId === 'Q06_RETRIEVE_CLAPPER'
+      );
+    }
+
+    // 3. Khu vực Rừng Sâu Deep Forest: Chỉ mở khi Cổng Đông đã mở VÀ tiến trình đạt từ Q04 trở đi (hoặc có flag deep_forest_unlocked)
     if (zoneId === 'deep_forest') {
       const eastGateOpen = this.isZoneUnlocked('crooked_path', playerState);
       if (!eastGateOpen) return false;

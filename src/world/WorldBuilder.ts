@@ -5293,10 +5293,10 @@ export class WorldBuilder {
     this.createHollowTree(1305, 885, 'Cây Rỗng Bãi Liễu');
 
     // 6. V15-14: Quần thể Cụm Rừng Tự Nhiên (Organic Clusters) & Viền Rừng Ngoại Vi
-    // Cụm 1: Cụm Thông Cổ Thụ Ven Làng (Bìa Bắc - Tây Bắc) (HW-FIX-21: đá đặt hướng Tây dx: -15 để giải phóng khúc cua S)
+    // Cụm 1: Cụm Thông Cổ Thụ Ven Làng (Bìa Bắc - Tây Bắc) (HW-V16-C01: dời cây phụ ra khỏi triggerRect to_bellhollow_from_ow)
     this.createOrganicTreeCluster(1145, 595, {
       primaryType: 'pine',
-      subTrees: [{ dx: 25, dy: -10, type: 'pine' }],
+      subTrees: [{ dx: -18, dy: 12, type: 'pine' }],
       bushes: [{ dx: -12, dy: 14 }],
       rocks: [{ dx: -15, dy: 15, w: 22, h: 14 }]
     });
@@ -5764,19 +5764,21 @@ export class WorldBuilder {
   }
 
   /**
-   * V15-61: Thân Cây Cổ Thụ Đổ (Fallen Log) dùng Sprite Pixel Art Thật (prop_fallen_log_mossy_v14)
+   * V15-61 & HW-V16-C01: Thân Cây Cổ Thụ Đổ (prop_fallen_log_mossy_v14)
+   * Giữ nguyên key sprite gốc (chưa có asset thân cây đổ ngang thay thế hợp lệ),
+   * nhưng neo chân gốc (0.5, 1.0) và đặt collider gọn tại gốc (18x10) thay vì lơ lửng giữa tán.
    */
   private createFallenLog(x: number, y: number, length: number = 50, angleDeg: number = 0): void {
     const log = this.safeAddImage(x, y, 'prop_fallen_log_mossy_v14', SPRITE_HOLLOW_TREE);
-    log.setOrigin(0.5, 0.5);
+    log.setOrigin(0.5, 1.0);
     log.setScale(length / 46, 1.0);
     if (angleDeg !== 0) {
       log.setAngle(angleDeg);
     }
-    log.setDepth(y + 4);
+    log.setDepth(y);
     this.registerCullable(log, x, y, Math.max(length, 40));
 
-    this.createStaticBoxColliderCentered(x, y, Math.round(length * 0.6), 10, 'Thân Cây Đổ');
+    this.createStaticBoxColliderCentered(x, y - 4, 18, 10, 'Thân Cây Đổ');
   }
 
   /**
@@ -5842,7 +5844,8 @@ export class WorldBuilder {
 
     // 1. Biển Báo & Cột Mốc Định Hướng (Signs & Landmark Totems)
     this.createStoneSign(1660, 320, 'LỐI MÒN QUANH CO');
-    this.createStoneSign(2100, 45, 'NGUY HIỂM: RỪNG SÂU');
+    // HW-V16-C01: Dời biển báo ra mép Đông cổng Rừng Sâu để không đè lên triggerRect to_deep_forest (2000..2160, 10..45)
+    this.createStoneSign(2185, 58, 'NGUY HIỂM: RỪNG SÂU');
     this.createStoneMarker(2760, 240); // Cột đá cổ Bắc ngưỡng cửa Đầm Lầy
     this.createStoneMarker(2760, 360); // Cột đá cổ Nam ngưỡng cửa Đầm Lầy
 
@@ -5946,8 +5949,9 @@ export class WorldBuilder {
       withColliders: false
     });
 
-    // V1.5 (BƯỚC V15-03 & V15-43): Mở rộng hành lang thông lên Rừng Sâu đạt 180px (1980..2160)
-    this.createStaticBoxCollider(bounds.x + 40, 90, 1980 - (bounds.x + 40), 30, 'Rặng Cây Viền Bắc Tây');
+    // V1.5 & HW-V16-C01: Mở rộng hành lang thông lên Rừng Sâu (1980..2160) và chừa lối Bắc sang sub_whispering_clearing (1796..1884)
+    this.createStaticBoxCollider(bounds.x + 40, 90, 1796 - (bounds.x + 40), 30, 'Rặng Cây Viền Bắc Tây');
+    this.createStaticBoxCollider(1884, 90, 1980 - 1884, 30, 'Rặng Cây Viền Bắc Giữa');
     this.createStaticBoxCollider(2160, 90, bounds.x + bounds.width - 40 - 2160, 30, 'Rặng Cây Viền Bắc Đông');
     this.createStaticBoxCollider(1660, 500, 2690 - 1660, 30, 'Rặng Cây Viền Nam');
     this.createStaticBoxCollider(2810, 500, bounds.x + bounds.width - 40 - 2810, 30, 'Rặng Cây Viền Nam Đông');
@@ -6495,10 +6499,10 @@ export class WorldBuilder {
     pillarR.setDepth(y + 2);
     this.createStaticBoxColliderCentered(x + 55, y, 22, 16, 'Trụ Cổ Ngữ Cổng Bắc Đ');
 
-    // 3. Khối va chạm chặn cổng khi Vực Sâu Bóng Tối chưa mở khóa
+    // 3. Khối va chạm chặn cổng khi Vực Sâu Bóng Tối chưa mở khóa (HW-V16-C01: đặt ngay trước mép trigger -624 để không chồng triggerRect)
     const playerState = PlayerState.getInstance();
     const isUnlocked = WorldGatingSystem.getInstance().isZoneUnlocked('abyssal_chasm', playerState);
-    this.abyssalGateColliderBody = this.createStaticBoxColliderCentered(x, y - 10, 72, 24, 'Phong Ấn Cổng Hư Không');
+    this.abyssalGateColliderBody = this.createStaticBoxColliderCentered(x, y + 6, 72, 16, 'Phong Ấn Cổng Hư Không');
     const gateBody = this.abyssalGateColliderBody.body as Phaser.Physics.Arcade.Body;
     if (gateBody) {
       gateBody.enable = !isUnlocked;
@@ -6577,21 +6581,21 @@ export class WorldBuilder {
   private createWhisperingClearingEntrance(x: number, y: number): void {
     const steleL = this.scene.add.graphics();
     steleL.fillStyle(0x2c3e50, 1);
-    steleL.fillRect(x - 38, y - 14, 10, 22);
+    steleL.fillRect(x - 45, y - 14, 10, 22);
     steleL.fillStyle(0x1abc9c, 0.7);
-    steleL.fillRect(x - 35, y - 8, 4, 10);
+    steleL.fillRect(x - 42, y - 8, 4, 10);
     steleL.setDepth(y + 8);
-    this.registerCullable(steleL, x - 33, y, 20);
-    this.createStaticBoxColliderCentered(x - 33, y, 12, 14, 'Cột Mốc Khoảng Trống Tây');
+    this.registerCullable(steleL, x - 40, y, 20);
+    this.createStaticBoxColliderCentered(x - 40, y, 12, 14, 'Cột Mốc Khoảng Trống Tây');
 
     const steleR = this.scene.add.graphics();
     steleR.fillStyle(0x2c3e50, 1);
-    steleR.fillRect(x + 28, y - 14, 10, 22);
+    steleR.fillRect(x + 35, y - 14, 10, 22);
     steleR.fillStyle(0x1abc9c, 0.7);
-    steleR.fillRect(x + 31, y - 8, 4, 10);
+    steleR.fillRect(x + 38, y - 8, 4, 10);
     steleR.setDepth(y + 8);
-    this.registerCullable(steleR, x + 33, y, 20);
-    this.createStaticBoxColliderCentered(x + 33, y, 12, 14, 'Cột Mốc Khoảng Trống Đông');
+    this.registerCullable(steleR, x + 40, y, 20);
+    this.createStaticBoxColliderCentered(x + 40, y, 12, 14, 'Cột Mốc Khoảng Trống Đông');
   }
 
   /**
@@ -6937,8 +6941,8 @@ export class WorldBuilder {
     // 3. Bia Đá Cổ Thư Đầm Lầy (Gợi ý thứ tự giải đố)
     this.createAncientRuneStele(3460, 290);
 
-    // 4. Bốn Đỉnh Đá Nghi Thức (Ancient Stone Braziers) tại 4 góc sân
-    this.createAncientBrazier(3368, 250); // Tây
+    // 4. Bốn Đỉnh Đá Nghi Thức (Ancient Stone Braziers) tại 4 góc sân (HW-V16-C01: dời đỉnh Tây ra khỏi lối cầu ván gỗ và to_rune_puzzle)
+    this.createAncientBrazier(3368, 200); // Tây Bắc (góc sân)
     this.createAncientBrazier(3660, 260); // Đông
     this.createAncientBrazier(3460, 370); // Tây Nam
     this.createAncientBrazier(3580, 370); // Đông Nam
