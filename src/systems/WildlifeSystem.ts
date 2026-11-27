@@ -672,8 +672,17 @@ export class WildlifeSystem {
   public spawnDebugCreature(type: 'skull_wolf' | 'fallen_knight', x: number, y: number): void {
     const dev = DeveloperModeManager.getInstance();
     if (!dev.isEnabled || !dev.markDevUsed()) return;
-    if (type === 'skull_wolf') this.skullWolves.push(new SkullWolfEntity(this.scene, x, y, this.currentZoneId));
-    else if (type === 'fallen_knight') this.fallenKnights.push(new FallenKnightEntity(this.scene, x, y));
+    const tracked = [...this.skullWolves, ...this.fallenKnights];
+    if (tracked.filter(entity => entity.active && entity.getData('qaSpawn') === true).length >= 2) return;
+    if (type === 'skull_wolf') {
+      const wolf = new SkullWolfEntity(this.scene, x, y, this.currentZoneId);
+      wolf.setData('qaSpawn', true);
+      this.skullWolves.push(wolf);
+    } else if (type === 'fallen_knight') {
+      const knight = new FallenKnightEntity(this.scene, x, y);
+      knight.setData('qaSpawn', true);
+      this.fallenKnights.push(knight);
+    }
   }
 
   public stopDebugMotion(): void {

@@ -661,7 +661,7 @@ export class DevPanelOverlay {
     return `<section class="dp-section"><h3>Nhiệm vụ & Môi trường</h3><button data-action="gates">Mở mọi Cổng & Phong Ấn</button><label>Xem chặng <select data-control="act"><option value="0">Tiến trình hiện tại</option>${[1,2,3,4,5,6,7].map(n=>`<option>${n}</option>`).join('')}</select></label><div class="dp-row">${['Ngày','Hoàng Hôn','Đêm'].map((n,i)=>`<button data-action="time" data-value="${i}">${n}</button>`).join('')}</div>${[['Đóng băng thời gian','timeFrozen'],['Sương mù','fog'],['Mưa','rain']].map(([n,id])=>`<label>${n}<input type="checkbox" data-control="${id}"></label>`).join('')}<div class="dp-row">${[['True','true'],['Sacrifice','sacrifice'],['Fog Loop','fog_loop']].map(([n,id])=>`<button data-action="ending" data-value="${id}">${n}</button>`).join('')}</div></section>`;
   }
   private entityTab(): string {
-    return `<section class="dp-section"><h3>Thực thể & AI</h3><label>Đóng băng AI <input type="checkbox" data-control="aiFrozen"></label><div class="dp-row">${['The Listener','Skull Wolf','Fallen Knight'].map(n=>`<button data-action="spawn" data-value="${n}">${n}</button>`).join('')}</div><div data-entities></div></section><section class="dp-section"><h3>Kiểm kê thực thể đang hoạt động</h3><input data-entity-filter placeholder="Lọc tên, loại, phân khu"><button data-action="entity-refresh">Cập nhật</button><button data-action="entity-export">Xuất JSON</button><div data-entity-snapshot style="white-space:pre-line"></div></section>`;
+    return `<section class="dp-section"><h3>Thực thể & AI</h3><label>Đóng băng AI <input type="checkbox" data-control="aiFrozen"></label><div class="dp-row" data-qa-spawn></div><div data-entities></div></section><section class="dp-section"><h3>Kiểm kê thực thể đang hoạt động</h3><input data-entity-filter placeholder="Lọc tên, loại, phân khu"><button data-action="entity-refresh">Cập nhật</button><button data-action="entity-export">Xuất JSON</button><div data-entity-snapshot style="white-space:pre-line"></div></section>`;
   }
 
   private syncControls(): void {
@@ -681,6 +681,16 @@ export class DevPanelOverlay {
     this.refreshItems();
     this.refreshEntities();
     this.refreshEntitySnapshot();
+    const spawnRow = this.body.querySelector('[data-qa-spawn]');
+    if (spawnRow) {
+      spawnRow.replaceChildren(...this.manager.getSpawnableCatalog().map(entry => {
+        const button = document.createElement('button');
+        button.dataset.action = 'spawn';
+        button.dataset.value = entry.runtimeKey;
+        button.textContent = entry.name;
+        return button;
+      }));
+    }
     this.syncSpeeds();
   }
 
@@ -827,13 +837,8 @@ export class DevPanelOverlay {
         this.manager.triggerEnding(value as 'true' | 'sacrifice' | 'fog_loop');
         break;
       case 'spawn':
-        this.manager.spawnTestMonster(
-          ({
-            'The Listener': 'listener',
-            'Skull Wolf': 'skull_wolf',
-            'Fallen Knight': 'fallen_knight'
-          } as Record<string, 'listener' | 'skull_wolf' | 'fallen_knight'>)[value || 'listener']
-        );
+        if (value) this.manager.spawnTestMonster(value);
+        this.refreshEntitySnapshot();
         break;
     }
   };
@@ -971,7 +976,13 @@ export class DevPanelOverlay {
     const rows = snapshot.active
       .filter(e => [e.type, e.zone, e.name, e.id, e.texture].some(v => v?.toLowerCase().includes(filter)))
       .map(e => `[${e.type}] ${e.name} · ${e.zone} · ${e.x.toFixed(0)}, ${e.y.toFixed(0)}${e.issues.length ? ' · ' + e.issues.join(', ') : ''}`);
-    output.textContent = rows.join('\n') || 'Không có thực thể khớp bộ lọc.';
+    const registered = snapshot.catalog
+      .filter(e => [e.type, e.name, e.id, e.runtimeKey, ...e.assets.map(asset => asset.filePath)]
+        .some(value => value?.toLowerCase().includes(filter)))
+      .map(e => `[${e.type}] ${e.name} · ${e.runtimeKey} · ${e.qaSpawnable ? 'QA spawn' : 'Chỉ kiểm kê'}`);
+    output.textContent = [
+      'Đang hoạt động', ...rows, '', 'Đã đăng ký', ...registered
+    ].join('\n');
   }
 
   private downloadEntitySnapshot(): void {

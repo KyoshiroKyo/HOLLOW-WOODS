@@ -5,6 +5,7 @@ import { QuestSystem } from '../systems/QuestSystem';
 import { TIME_CONFIG, type TimePhase } from '../config/TimeConfig';
 import type { ZoneId } from '../types';
 import type { GameScene } from '../scenes/GameScene';
+import { SafeSpawnResolver } from '../systems/SafeSpawnResolver';
 import { ContentRegistry } from '../registry/ContentRegistry';
 import zonesData from '../data/zones.json';
 import itemsData from '../data/items.json';
@@ -36,6 +37,7 @@ type DiagnosticEntity = Phaser.GameObjects.Sprite & {
   spec?: { id?: string; name?: string; runtimeKey?: string };
   body?: Phaser.Physics.Arcade.Body;
   currentHp?: number;
+  hp?: number;
   maxHp?: number;
   stats?: { health: number; maxHealth: number; isSprinting: boolean };
   wolfState?: string;
@@ -43,6 +45,10 @@ type DiagnosticEntity = Phaser.GameObjects.Sprite & {
   bossState?: string;
   horseState?: string;
 };
+const QA_ENTITY_FACTORIES = new Map<string, 'skull_wolf' | 'fallen_knight'>([
+  ['mon_skull_wolf', 'skull_wolf'],
+  ['mon_fallen_knight', 'fallen_knight']
+] as const);
 export class DeveloperModeManager {
   private static instance: DeveloperModeManager | null = null;
   private enabled = false;
@@ -231,22 +237,25 @@ export class DeveloperModeManager {
     }
   }
 
-  public spawnTestMonster(type: 'listener' | 'skull_wolf' | 'fallen_knight'): void {
+  public getSpawnableCatalog() {
+    if (!QA_BUILD) return [];
+    const registry = ContentRegistry.getInstance();
+    return [...QA_ENTITY_FACTORIES.keys()].flatMap(runtimeKey => {
+      const entry = registry.getByRuntimeKey(runtimeKey);
+      return entry ? [{ runtimeKey, name: entry.nameVi }] : [];
+    });
+  }
+
+  public spawnTestMonster(runtimeKey: string): void {
     if (!this.canMutate()) return;
+    const factory = QA_ENTITY_FACTORIES.get(runtimeKey);
     const scene = this.runtime();
-    const player = scene?.player;
-    if (!player) return;
-    const x = player.x + 80;
-    if (type === 'listener') {
-      const listener = scene.listenerMonster;
-      if (listener) {
-        listener.setPosition(x, player.y);
-        listener.body?.reset(x, player.y);
-        listener.setVelocity(0, 0);
-      }
-      return;
-    }
-    scene.wildlifeSystem?.spawnDebugCreature(type, x, player.y);
+    if (!factory || !scene?.player || !ContentRegistry.getInstance().getByRuntimeKey(runtimeKey)) return;
+    const { x, y } = scene.player;
+    const zone = scene.currentZoneId;
+    const position = SafeSpawnResolver.resolveSafeSpawn(scene, x + 80, y, zone);
+    if (!position || Math.hypot(position.x - x, position.y - y) < 32) return;
+    scene.wildlifeSystem?.spawnDebugCreature(factory, position.x, position.y);
   }
 
   public getNearbyEntities(): Array<{ id: string; name: string; x: number; y: number }> {
@@ -265,28 +274,33 @@ export class DeveloperModeManager {
 
     const registry = ContentRegistry.getInstance();
     const wildlife = scene.wildlifeSystem;
-    const groups: Array<{ type: string; entities: Array<DiagnosticEntity | null> }> = [
+    const groups: Array<{ type: string; key?: string; entities: Array<DiagnosticEntity | null> }> = [
       { type: 'player', entities: [scene.player] },
       { type: 'npc', entities: scene.npcs },
-      { type: 'enemy', entities: [
-        scene.listenerMonster, ...wildlife.getSkullWolves(), ...wildlife.getShadowCrows(),
-        ...wildlife.getShadowEyes(), ...wildlife.getFallenKnights(), ...wildlife.getDreadHorsemen(),
-        ...wildlife.getMistBats(), ...wildlife.getWanderingShades(), ...wildlife.getGoblinScouts()
-      ] },
-      { type: 'boss', entities: [scene.mireWardenBoss, wildlife.getHoodedKnight(), wildlife.getShadowBehemoth()] },
+      { type: 'enemy', key: 'mon_the_listener', entities: [scene.listenerMonster] },
+      { type: 'enemy', key: 'mon_skull_wolf', entities: wildlife.getSkullWolves() },
+      { type: 'enemy', key: 'mon_shadow_crow', entities: wildlife.getShadowCrows() },
+      { type: 'enemy', key: 'mon_shadow_eyes', entities: wildlife.getShadowEyes() },
+      { type: 'enemy', key: 'mon_fallen_knight', entities: wildlife.getFallenKnights() },
+      { type: 'enemy', key: 'mon_dread_horseman', entities: wildlife.getDreadHorsemen() },
+      { type: 'enemy', entities: [...wildlife.getMistBats(), ...wildlife.getWanderingShades(), ...wildlife.getGoblinScouts()] },
+      { type: 'boss', key: 'mon_mire_warden', entities: [scene.mireWardenBoss] },
+      { type: 'boss', key: 'boss_hooded_knight', entities: [wildlife.getHoodedKnight()] },
+      { type: 'boss', key: 'boss_shadow_behemoth', entities: [wildlife.getShadowBehemoth()] },
       { type: 'apparition', entities: scene.knightApparitions },
       { type: 'ambient', entities: wildlife.getEntities() }
     ];
 
-    const active = groups.flatMap(({ type, entities }) => entities.filter((e): e is DiagnosticEntity => Boolean(e?.active)).map(e => {
+    const active = groups.flatMap(({ type, key, entities }) => entities.filter((e): e is DiagnosticEntity => Boolean(e?.active)).map(e => {
       const texture = e.texture?.key ?? null;
       const frame = e.frame?.name ?? null;
       const animation = e.anims?.currentAnim?.key ?? null;
       const body = e.body;
       const id = e.spec?.id || e.name || null;
-      const runtimeKey = e.spec?.runtimeKey || null;
+      const runtimeKey = key ?? e.spec?.runtimeKey ?? (type === 'npc' ? e.spec?.id : null) ?? null;
       const zone = scene.worldBuilder.detectCurrentZone({ x: e.x, y: e.y });
       const issues: string[] = [];
+      if (type === 'player' && SafeSpawnResolver.isPositionBlocked(scene, e.x, e.y)) issues.push('player_foot_overlap');
       if (!texture || texture === '__MISSING' || !scene.textures.exists(texture)) issues.push('missing_texture');
       if (animation && !scene.anims.exists(animation)) issues.push('animation_not_registered');
       if (!Number.isFinite(e.x) || !Number.isFinite(e.y)) issues.push('invalid_position');
@@ -301,8 +315,8 @@ export class DeveloperModeManager {
 
       return {
         id, name: e.spec?.name || e.name || e.constructor.name, type, zone, runtimeKey,
-        x: e.x, y: e.y, texture, frame, animation,
-        currentHp: e.currentHp ?? e.stats?.health ?? null,
+        x: e.x, y: e.y, texture, frame, animation, qaOnly: e.getData('qaSpawn') === true,
+        currentHp: e.currentHp ?? e.hp ?? e.stats?.health ?? null,
         maxHp: e.maxHp ?? e.stats?.maxHealth ?? null,
         state: e.wolfState ?? e.knightState ?? e.bossState ?? e.horseState ?? e.state ?? null,
         collider: body?.enable ? { x: body.x, y: body.y, width: body.width, height: body.height } : null,
@@ -321,11 +335,12 @@ export class DeveloperModeManager {
       .filter(entry => ['NPC', 'MON', 'ANI', 'MOD', 'AST'].includes(entry.type))
       .map(entry => ({
         id: entry.id, type: entry.type, name: entry.nameVi, runtimeKey: entry.runtimeKey,
-        status: entry.status,
+        status: entry.status, qaSpawnable: QA_ENTITY_FACTORIES.has(entry.runtimeKey),
         assets: (entry.assetRefs ?? []).map(id => ({ id, filePath: registry.getAsset(id)?.filePath ?? null }))
       }));
     return {
       capturedAt: new Date().toISOString(),
+      build: (import.meta as ImportMeta & { env?: { VITE_BUILD_SHA?: string } }).env?.VITE_BUILD_SHA ?? null,
       zone: scene.currentZoneId,
       active,
       catalog,
