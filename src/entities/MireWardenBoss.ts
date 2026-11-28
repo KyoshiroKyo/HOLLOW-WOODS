@@ -75,8 +75,8 @@ export class MireWardenBoss extends Phaser.GameObjects.Container {
 
   // V15-46: Lớp khiên phong ấn và Sinh Lực thực chiến của Boss
   public isShieldBroken: boolean = false;
-  public bossHp: number = 100;
-  public readonly maxBossHp: number = 100;
+  public bossHp: number = 500;
+  public readonly maxBossHp: number = 500;
 
   // V15-47: Bán kính vùng cộng hưởng bóng tối (Dark Resonance Aura)
   public darkResonanceRadius: number = 110;

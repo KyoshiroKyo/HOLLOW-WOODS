@@ -77,9 +77,10 @@ export class WildlifeSystem {
     sub_root_cellar: [{ x: 320, y: 240 }]
   };
 
+  // HW-AG-BOSS-TEAM-RELEASE-01: removed broken_bell_shrine — Mire Warden exclusive territory.
+  // Abyssal Chasm is future territory (not yet unlocked); do not add until approved.
   private static readonly SHADOW_BEHEMOTH_HABITATS: Record<string, { x: number; y: number }> = {
-    silent_mire: { x: 780, y: 280 },
-    broken_bell_shrine: { x: 920, y: 300 }
+    silent_mire: { x: 780, y: 280 }
   };
 
   // HW-H4-07: Đặt tọa độ sinh cảnh Hiệp Sĩ Tà Ác đúng ranh giới từng khu vực
